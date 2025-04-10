@@ -1,0 +1,19 @@
+</div>
+{# wrapper end - we need this extra closing tag here #}
+
+{# Footer content... #}
+<footer class="mx-auto text-center">
+	{{ '©'|raw }}
+	Copyright
+	{{ "now"|date('Y') }}
+</footer>
+{# ...Footer content #}
+
+{% if options.footer_scripts %}
+{{ options.footer_scripts }}
+{% endif %}
+
+{{ fn('wp_footer') }}
+</body>
+
+</html>

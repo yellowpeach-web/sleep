@@ -1,0 +1,20 @@
+{#
+/**
+* Content component
+* To be used with a wysiwyg, content can be over written with the content param else will take the fields.content
+*
+* Example
+* {% include 'components/content.twig' with{class:'this-is-a-class'} %}
+*
+*
+*/
+#}
+{% if content %}
+<div class="content-wrapper {{ class }}">
+    {{ content }}
+</div>
+{% elseif fields.content %}
+<div class="content-wrapper {{ class }}">
+    {{ fields.content }}
+</div>
+{% endif %}

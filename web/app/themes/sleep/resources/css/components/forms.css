@@ -1,0 +1,196 @@
+/**
+* forms.css
+*/
+form {
+  @apply flex w-full flex-col gap-6 md:gap-8 !important;
+  label.gfield_label,
+  label,
+  legend {
+    @apply mb-2.5 text-label text-input-label-fill-default focus:text-input-label-fill-focused disabled:text-input-label-fill-disabled !important;
+  }
+
+  input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]),
+  textarea,
+  select {
+    /* layout */
+    @apply w-full py-2 px-3 gap-2.5 focus:ring-0 focus:outline-none !important;
+    /* field */
+    @apply border rounded bg-input-bg-fill-default focus:bg-input-bg-fill-focused disabled:bg-input-bg-fill-disabled border-input-bg-stroke-default focus:border-input-bg-stroke-focused disabled:border-input-bg-stroke-disabled !important;
+    /* text */
+    @apply text-input-fill-default placeholder:text-input-fill-placeholder disabled:text-input-fill-disabled text-input font-medium !important;
+  }
+
+  /* Custom chevron for selects  */
+  select.gfield_select,
+  select {
+    @apply relative cursor-pointer bg-select-chevron bg-no-repeat pr-[46px] !important;
+    background-size: 6px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: relative;
+  }
+
+  /* Add vertical line to selects */
+  .input-container,
+  .ginput_container_select {
+    @apply relative !important;
+    select {
+      @apply pl-[32px] !important;
+    }
+  }
+  .input-container,
+  .ginput_container_select::after {
+    content: "";
+    @apply absolute right-[34px] top-0 bottom-0 w-px bg-ui-bg-stroke-default pointer-events-none;
+  }
+
+  /* input specific prefixed icons - add new input specific icons via tailwind config as bg-image (set no-icon as class to not use icon on field)  */
+  .ginput_container--name {
+    @apply relative;
+    input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]) {
+      @apply pl-[32px] !important;
+    }
+  }
+  .ginput_container--name::before {
+    content: "";
+    @apply absolute left-3 top-1/2 -translate-y-1/2 size-4 bg-input-name bg-no-repeat bg-contain pointer-events-none;
+  }
+
+  .gfield--type-email:not(.no-icon) {
+    .ginput_container_email {
+      @apply relative;
+      input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]) {
+        @apply pl-[32px] !important;
+      }
+    }
+    .ginput_container_email:not(.no-icon)::before {
+      content: "";
+      @apply absolute left-3 top-1/2 -translate-y-1/2 size-4 bg-input-email bg-no-repeat bg-contain pointer-events-none;
+    }
+  }
+
+  .ginput_container_phone {
+    @apply relative;
+    input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]) {
+      @apply pl-[32px] !important;
+    }
+  }
+  .ginput_container_phone::before {
+    content: "";
+    @apply absolute left-3 top-1/2 -translate-y-1/2 size-4 bg-input-phone bg-no-repeat bg-contain pointer-events-none;
+  }
+
+  .ginput_container_select::before {
+    content: "";
+    @apply absolute left-3 top-1/2 -translate-y-1/2 size-4 bg-input-select bg-no-repeat bg-contain pointer-events-none z-1;
+  }
+
+  /* Errors */
+  .gfield_error {
+    label {
+      @apply text-input-label-fill-error !important;
+    }
+    input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]),
+    textarea,
+    select {
+      @apply border-input-bg-stroke-error bg-input-bg-fill-error !important;
+    }
+  }
+
+  /* Text area sizing */
+  textarea {
+    &.large {
+      @apply h-60;
+    }
+    &.medium {
+      @apply h-36;
+    }
+
+    &.small {
+      @apply h-20;
+    }
+  }
+}
+
+/* Normalising input fields.... */
+.ginput_container {
+  span {
+    @apply px-0 !important;
+  }
+  @apply m-0 mx-0 !important;
+}
+
+.gform_wrapper {
+  /* Errors continued.... */
+  .gform-icon {
+    @apply hidden !important;
+  }
+  .gform_validation_errors {
+    @apply text-input-label-fill-error border-none focus:ring-0 focus:outline-none p-0 m-0 pb-6 !important;
+  }
+  .gform_submission_error {
+    @apply text-input-label-fill-error text-base font-medium body-small border-none focus:ring-0 focus:outline-none !important;
+  }
+
+  /* success */
+  .gform_confirmation_message {
+    @apply text-state-success text-base font-medium !important;
+  }
+  .gform_required_legend {
+    @apply hidden;
+  }
+  .gfield_required {
+    @apply text-state-warning text-label !important;
+  }
+  .validation_message {
+    @apply hidden !important;
+  }
+  .gform_fields {
+    @apply sm:gap-x-8 gap-y-6 md:gap-y-8 !important;
+    .gfield {
+      @apply col-span-12;
+
+      &.gfield--width-half {
+        @apply md:col-span-6;
+      }
+
+      &.gfield--width-third {
+        @apply md:col-span-4;
+      }
+    }
+  }
+
+  /* Add this class for flex layout form */
+  .flex-form {
+    .gform_fields {
+      @apply flex flex-col md:flex-row gap-y-3 sm:gap-y-6 !important;
+    }
+    .gfield:not(.gfield--type-submit) {
+      @apply w-full grow;
+    }
+    .gfield--type-submit {
+      @apply shrink-0;
+    }
+  }
+
+  /* Handling gform footer depending on where the button is positioned :( */
+  .gform_footer {
+    @apply mt-0 !important;
+  }
+  .gform_footer {
+    @apply hidden !important;
+  }
+  .gform_footer:has(input[type="submit"]) {
+    @apply block !important;
+  }
+}
+
+/* footer form sepcific styles */
+footer {
+  .gform_wrapper {
+    .gform_fields {
+      @apply gap-3 md:gap-6  !important;
+    }
+  }
+}

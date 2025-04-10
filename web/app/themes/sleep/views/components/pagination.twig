@@ -1,0 +1,71 @@
+{% if pagination.pages is not empty %}
+<nav aria-label="Pagination" class="flex justify-center">
+	<ul class="pagination-list list-none flex items-center gap-3 sm:gap-5 md:gap-20 w-fit pl-0">
+
+		<!-- Previous Page Link -->
+		<li class="pagination-item">
+			{% if pagination.prev.link %}
+			<a rel="prev" title="View previous page" class="pagination-link next size-9 ui-button primary"
+				href="{{ pagination.prev.link }}" aria-label="Go to previous page">
+				{% include "resources/images/icons/chev-left.twig" %}
+			</a>
+			{% else %}
+			<span class="pagination-link next no-link-style size-9 ui-button primary disabled">
+				{% include "resources/images/icons/chev-left.twig" %}
+			</span>
+			{% endif %}
+		</li>
+
+		<!-- Page Links -->
+		<li class="pagination-item">
+			<ul class="flex list-none pl-0 items-center gap-3 sm:gap-5">
+				{% if pagination.show_pre %}
+				<li class="pagination-item-link">
+					<span class="pagination-link size-9 elips ui-button primary">
+						...
+					</span>
+				</li>
+				{% endif %}
+				{% for page in pagination.pages %}
+
+				<li class="pagination-item-link">
+					{% if page.current %}
+					<span class="pagination-link active size-9 ui-button primary" aria-current="page">
+						{{ page.title }}
+						<span class="sr-only">(current)</span>
+					</span>
+					{% else %}
+					<a class="pagination-link no-link-style size-9 ui-button primary" href="{{ page.link }}">
+						{{ page.title }}
+					</a>
+					{% endif %}
+				</li>
+
+				{% endfor %}
+				{% if pagination.show_post %}
+				<li class="pagination-item-link">
+					<span class="pagination-link size-9 ui-button primary elips">
+						...
+					</span>
+				</li>
+				{% endif %}
+			</ul>
+		</li>
+
+		<!-- Next Page Link -->
+		<li class="pagination-item">
+			{% if pagination.next.link %}
+			<a rel="next" title="View next page" class="pagination-link next size-9 ui-button primary"
+				href="{{ pagination.next.link }}" aria-label="Go to next page">
+				{% include "resources/images/icons/chev-right.twig" %}
+			</a>
+			{% else %}
+			<span class="pagination-link next no-link-style size-9 ui-button primary disabled">
+				{% include "resources/images/icons/chev-right.twig" %}
+			</span>
+			{% endif %}
+		</li>
+
+	</ul>
+</nav>
+{% endif %}

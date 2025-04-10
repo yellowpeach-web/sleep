@@ -1,0 +1,36 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+<div class="container flex flex-col lg:flex-row gap-10 md:gap-20">
+      <div class="flex flex-col w-full lg:w-[400px] grow-0 shrink-0">
+            {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading, class: ''} %}
+            {% include 'components/content.twig' with {class: 'm-0'} %}
+      </div>
+      {% if faqs %}
+      <ul class="accordion-container list-none flex flex-col w-full p-0" itemscope
+            itemtype="https://schema.org/FAQPage">
+            {% for item in faqs %}
+            <li class="accordion flex flex-col w-full border-b last:border-b-0 hover:cursor-pointer"
+                  aria-expanded="false" role="button" itemprop="mainEntity" itemscope
+                  itemtype="https://schema.org/Question">
+                  <div class="flex items-center justify-between gap-4 py-2 font-semibold">
+                        {% if item.title %}
+                        <p class="m-0" itemprop="name">{{ item.title }}</p>
+                        {% endif %}
+                        <div class="size-4 shrink-0">
+                              {% include "resources/images/icons/accordion-icon.twig" %}
+                        </div>
+                  </div>
+                  <div class="accordion-content py-2" itemprop="acceptedAnswer" itemscope
+                        itemtype="https://schema.org/Answer">
+                        {% if item.content %}
+                        <div itemprop="text">
+                              {% include 'components/content.twig' with {class: 'm-0', content: item.content} %}
+                        </div>
+                        {% endif %}
+                  </div>
+            </li>
+            {% endfor %}
+      </ul>
+      {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{
+  "name": "faqs",
+  "title": "FAQs",
+  "description": "FAQ block",
+  "category": "yellow-peach",
+  "icon": "editor-help",
+  "keywords": [
+    "faqs",
+    "accordion",
+    "expandable",
+    "sections",
+    "questions"
+  ],
+  "acf": {
+    "mode": "auto",
+    "validate": false
+  },
+  "supports": {
+    "align": false,
+    "anchor": true,
+    "alignContent": false,
+    "color": {
+      "text": false,
+      "background": true,
+      "link": true
+    },
+    "alignText": true,
+    "spacing": {
+      "margin": false,
+      "padding": true
+    }
+  }
+}

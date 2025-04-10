@@ -1,0 +1,38 @@
+<article class="news-item" itemscope itemtype="https://schema.org/Article">
+    <a {{ get_link_attr(item) }} class="no-link-style" aria-label="Read more about {{ item.title }}" role="article">
+        <!-- Image -->
+        <div class="block h-[300px]">
+            {{ responsive_img(item.thumbnail,{
+            size:'large',
+            alt:item.thumbnail.alt,
+            class:'object-cover h-full w-full',
+            itemprop: 'image'
+            }) }}
+        </div>
+        <!-- Date -->
+        <time class="date" itemprop="datePublished" datetime="{{ item.post_date|date('c') }}">
+            {{ item.post_date|date('d M Y') }}
+        </time>
+        <!-- Heading -->
+        <h2 itemprop="headline">{{ item.title }}</h2>
+        <!-- Read time -->
+        {% if item.read_time %}
+        <p class="" itemprop="readingTime" content="{{ item.read_time }}">
+            Read time: {{ item.read_time }} min
+        </p>
+        {% endif %}
+        <!-- Excerpt -->
+        <p class="" itemprop="description">
+            {{ item.excerpt({ words: 40, read_more: false }) }}
+        </p>
+        <!-- Button -->
+        {% include 'components/button.twig' with {
+        button:{
+        url:item.link,
+        title:'Read more',
+        },
+        class:'',
+        span: true
+        } %}
+    </a>
+</article>

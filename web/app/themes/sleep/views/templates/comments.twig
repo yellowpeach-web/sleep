@@ -1,0 +1,30 @@
+{% extends "base/base.twig" %}
+
+{% block body %}
+
+	<div id="comments-{{comment.ID}}" class="comments-area {{comment.comment_type}}">
+        <h2 class="comments-title">{{ comment.title }}</h2>
+		<h5 class="comment-author">{{comment.author.name}}
+			says</h5>
+		<div class="comment-content">{{comment.comment_content|wpautop}}</div>
+
+		<section
+			class="comment-box">
+			<!-- child comments -->
+			{% if post.comments %}
+				<h4>
+					replies
+				</h4>
+				<div class="comments comment-list">
+					{% for cmt in comment.children %}
+						{% include "comment.twig" with {comment:cmt} %}
+					{% endfor %}
+				</div>
+			{% endif %}
+
+			<!-- comment form -->
+			{% include "comment-form.twig" %}
+		</section>
+	</div>
+
+{% endblock %}

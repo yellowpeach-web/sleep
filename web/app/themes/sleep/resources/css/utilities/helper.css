@@ -1,0 +1,46 @@
+/**
+* Helper.css
+*/
+
+/* Hide scrollbar */
+.no-scroll-bar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+.no-scroll-bar {
+  scrollbar-width: none; /* Firefox */
+}
+.no-scroll-bar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* offset if using sticky nav with sticky elements within body */
+.sticky-offset {
+  @apply top-[170px];
+}
+
+/* Responsive iframe styling */
+.responsive-iframe {
+  @apply relative overflow-hidden w-full mb-6;
+  /* Remove padding by default */
+  padding-top: 0;
+  iframe {
+    @apply absolute top-0 left-0 w-full h-full;
+    height: 100%;
+  }
+  /* Add padding-top only if the element inside is not iframe */
+  &::before {
+    content: "";
+    display: block;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
+  }
+  /* Remove aspect ratio padding if an iframe is detected */
+  iframe + &::before {
+    display: none;
+  }
+}
+
+/* set px values to screen size at each breakpoint  */
+.yp-offset-container {
+  @apply xl:pl-[calc((100vw-1200px)/2)] lg:pl-[calc((100vw-864px)/2)] md:pl-[calc((100vw-688px)/2)] sm:pl-[calc((100vw-608px)/2)] pl-6  max-w-[100vw] !overflow-hidden;
+}

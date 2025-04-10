@@ -1,0 +1,8 @@
+{% if main_menu %}
+    <nav id="navigation" class="yp-nav h-fit">
+        <ul class="{{ main_menu.class }} yp-menu accordion">
+            {% for item in main_menu.items %}
+            {% endfor %}
+        </ul>
+    </nav>
+{% endif %}

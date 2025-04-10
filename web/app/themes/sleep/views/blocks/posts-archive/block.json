@@ -1,0 +1,32 @@
+{
+  "name": "posts-archive",
+  "title": "Posts Archive",
+  "description": "A Posts archive block",
+  "category": "yellow-peach",
+  "icon": "admin-post",
+  "keywords": [
+    "posts",
+    "archive",
+    "index",
+    "projects"
+  ],
+  "acf": {
+    "mode": "auto",
+    "validate": false
+  },
+  "supports": {
+    "align": false,
+    "anchor": true,
+    "alignContent": false,
+    "color": {
+      "text": false,
+      "background": true,
+      "link": true
+    },
+    "alignText": true,
+    "spacing": {
+      "margin": false,
+      "padding": true
+    }
+  }
+}

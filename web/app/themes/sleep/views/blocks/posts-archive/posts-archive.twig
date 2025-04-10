@@ -1,0 +1,13 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+
+{% if case_studies_archive %}
+<div class="yp-container flex flex-col gap-md">
+      {% include "components/posts-grid.twig" with {data: case_studies_archive.posts} %}
+      {% if case_studies_archive.yp_pagination %}
+      {% include "components/pagination.twig" with {pagination: case_studies_archive.yp_pagination} %}
+      {% endif %}
+</div>
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+.modal-wrapper {
+  @apply fixed top-0 left-0 w-full h-full bg-white/40 opacity-0 pointer-events-none transition-all duration-300 ease-linear z-50 md:flex md:items-center md:justify-center;
+
+  &.open {
+    @apply pointer-events-auto opacity-100;
+    .modal-inner {
+      @apply scale-100 z-50;
+    }
+  }
+}
+
+.modal-inner {
+  @apply relative bg-black w-full max-w-2xl max-h-80vh border border-solid border-white/10 overflow-y-auto scale-0 transition-all duration-300 ease-linear md:ml-3;
+}
+
+.modal-header {
+  @apply sticky bg-black/25 flex items-center justify-center pt-3 text-center text-white border-b border-solid border-white/10;
+}
+
+.modal-content {
+  @apply p-8 text-white;
+}
+
+.modal-close-div {
+  @apply absolute bg-transparent top-0 left-0 w-full h-full -z-1;
+}
+.modal-close {
+  @apply absolute right-8 mt-1 text-xs -translate-y-1/2 cursor-pointer transition-all duration-300 ease-linear;
+  svg {
+    @apply fill-white hover:fill-gray-400 transition-all duration-300 ease-linear;
+  }
+  &:hover {
+    @apply opacity-60;
+    svg {
+      @apply scale-105;
+    }
+  }
+}

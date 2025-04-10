@@ -1,0 +1,26 @@
+{% extends "base/base.twig" %}
+
+{% block body %}
+
+    {% include "components/breadcrumb.twig" %}
+
+    <section class="py-20">
+        <div class="container">
+
+
+            <div class="grid grid-cols-3 gap-5">
+                {% for item in posts %}
+                    {% include "components/news-item.twig" %}
+                {% endfor %}
+            </div>
+            {% if posts.pagination %}
+                <div class="py-10">
+                    {% include "components/pagination.twig" with {pagination: posts.pagination} %}
+                </div>
+            {% endif %}
+
+
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,69 @@
+/**
+* buttons.css
+*/
+.btn-set {
+  @apply flex gap-x-5 gap-y-4 flex-wrap !p-0 !m-0 !h-fit;
+  a {
+    @apply m-0;
+  }
+}
+
+button,
+input[type="button"],
+input[type="submit"],
+.y-btn {
+  @apply text-base font-semibold transition-all ease-in-out duration-200 flex items-center gap-2.5 w-fit focus:ring-0 focus:outline-0 !important;
+  &.primary {
+    @apply rounded-full px-4 py-1.5 gap-2.5 border !important;
+    /* Background */
+    @apply bg-button-primary-bg-fill-default hover:bg-button-primary-bg-fill-hover disabled:bg-button-primary-bg-fill-disabled focus:bg-button-primary-bg-fill-focused active:bg-button-primary-bg-fill-pressed !important;
+    /* Stroke */
+    @apply border-button-primary-bg-stroke-default hover:border-button-primary-bg-stroke-hover disabled:border-button-primary-bg-stroke-disabled focus:border-button-primary-bg-stroke-focused active:border-button-primary-bg-stroke-pressed !important;
+    /* Text */
+    @apply text-button-primary-fill-default hover:text-button-primary-fill-hover  disabled:text-button-primary-fill-disabled  focus:text-button-primary-fill-focused  active:text-button-primary-fill-pressed !important;
+  }
+  &.secondary {
+    @apply px-0 py-1.5 gap-2.5 border;
+    /* Background */
+    @apply bg-button-secondary-bg-fill-default hover:bg-button-secondary-bg-fill-hover hover:!text-button-secondary-fill-hover disabled:bg-button-secondary-bg-fill-disabled focus:bg-button-secondary-bg-fill-focused active:bg-button-secondary-bg-fill-pressed;
+    /* Stroke */
+    @apply border-button-secondary-bg-stroke-default hover:border-button-secondary-bg-stroke-hover disabled:border-button-secondary-bg-stroke-disabled focus:border-button-secondary-bg-stroke-focused active:border-button-secondary-bg-stroke-pressed;
+    /* Text */
+    @apply text-button-secondary-fill-default hover:text-button-secondary-fill-hover disabled:text-button-secondary-fill-disabled focus:text-button-secondary-fill-focused active:text-button-secondary-fill-pressed;
+  }
+}
+
+.ui-button {
+  /* General */
+  @apply text-xs font-medium border hover:cursor-pointer;
+
+  /* Primary */
+  &.primary {
+    @apply border-ui-bg-stroke-default bg-ui-bg-fill-default text-ui-fill-default hover:bg-ui-bg-fill-hover hover:text-ui-fill-hover hover:border-ui-bg-stroke-hover hover:cursor-pointer;
+    /* Icon */
+    @apply fill-ui-fill-default hover:fill-ui-fill-hover;
+  }
+  /* Active button state */
+  &.primary.active {
+    @apply border-ui-bg-stroke-active bg-ui-bg-fill-active text-ui-fill-active hover:bg-ui-bg-fill-active hover:fill-ui-fill-active cursor-auto !important;
+  }
+  /* Disabled button state */
+  &.primary.disabled {
+    @apply border-ui-bg-stroke-inactive bg-ui-bg-fill-inactive text-ui-bg-stroke-inactive hover:bg-ui-bg-fill-inactive hover:border-ui-bg-stroke-inactive fill-ui-bg-stroke-inactive cursor-auto !important;
+  }
+
+  /* Secondary */
+  &.secondary {
+    @apply border-ui-icon-fill-secondary-default bg-ui-icon-fill-secondary-default text-ui-icon-fill-secondary-default hover:bg-ui-icon-fill-secondary-hover hover:text-ui-icon-fill-secondary-hover hover:border-ui-icon-fill-secondary-hover hover:cursor-pointer;
+    /* Icon */
+    @apply fill-ui-icon-fill-secondary-default hover:fill-ui-icon-fill-secondary-hover;
+  }
+  /* Active button state */
+  &.secondary.active {
+    @apply border-ui-icon-fill-secondary-active bg-ui-icon-fill-secondary-active text-ui-icon-fill-secondary-active hover:bg-ui-icon-fill-secondary-active hover:fill-ui-icon-fill-secondary-active cursor-auto !important;
+  }
+  /* Disabled button state */
+  &.secondary.disabled {
+    @apply border-ui-icon-fill-secondary-inactive bg-ui-icon-fill-secondary-inactive text-ui-icon-fill-secondary-inactive hover:bg-ui-icon-fill-secondary-inactive hover:border-ui-icon-fill-secondary-inactive fill-ui-icon-fill-secondary-inactive cursor-auto !important;
+  }
+}

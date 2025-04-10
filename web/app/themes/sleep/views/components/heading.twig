@@ -1,0 +1,15 @@
+{#
+/**
+* Heading component
+* To be used with the acf clone 'heading'
+*
+* Example
+* {% include 'components/heading.twig' with{tag:heading tag , heading:heading text class:'class to be added to the tag'}
+%}
+*
+*
+*/
+#}
+{% if fields.heading %}
+<{{ tag }} {{ class ?'class="m-0 ' ~ class ~ '"':'' }}>{{ heading }}</{{ tag }}>
+{% endif %}

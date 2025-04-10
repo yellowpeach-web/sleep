@@ -1,0 +1,18 @@
+{% extends "base/base.twig" %}
+
+{% block body %}
+
+	<div class="page-banner">
+		<div class="container">
+			<div class="text-center">
+				<h1>Page cannot be found</h1>
+				<h3 class="mt-2">Oops, it looks like nothing was found at this location.</h3>
+				<div class="btn-set mb-10 mt-10">
+					<a href="{{ home_url() }}" class="y-btn" title="Return home">Return home</a>
+					<a href="{{ home_url }}/contact" class="y-btn" title="Get in touch">Contact us</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

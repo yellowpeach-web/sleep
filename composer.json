@@ -1,0 +1,129 @@
+{
+  "name": "roots/bedrock",
+  "type": "project",
+  "license": "MIT",
+  "description": "WordPress boilerplate with Composer, easier configuration, and an improved folder structure",
+  "homepage": "https://roots.io/bedrock/",
+  "authors": [
+    {
+      "name": "Scott Walkinshaw",
+      "email": "scott.walkinshaw@gmail.com",
+      "homepage": "https://github.com/swalkinshaw"
+    },
+    {
+      "name": "Ben Word",
+      "email": "ben@benword.com",
+      "homepage": "https://github.com/retlehs"
+    }
+  ],
+  "keywords": [
+    "bedrock",
+    "composer",
+    "roots",
+    "wordpress",
+    "wp",
+    "wp-config"
+  ],
+  "support": {
+    "issues": "https://github.com/roots/bedrock/issues",
+    "forum": "https://discourse.roots.io/category/bedrock"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org",
+      "only": [
+        "wpackagist-plugin/*",
+        "wpackagist-theme/*"
+      ]
+    },
+    {
+      "type": "composer",
+      "url": "https://connect.advancedcustomfields.com"
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "junaidbhura/gravityforms",
+        "version": "2.8.5",
+        "type": "wordpress-plugin",
+        "dist": {
+          "type": "zip",
+          "url": "https://www.gravityforms.com/"
+        },
+        "require": {
+          "junaidbhura/composer-wp-pro-plugins": "*"
+        }
+      }
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "composer/installers": "^1.4",
+    "vlucas/phpdotenv": "^5.4",
+    "johnpbloch/wordpress": "^6",
+    "oscarotero/env": "^2.1",
+    "roots/bedrock-autoloader": "^1.0",
+    "roots/bedrock-disallow-indexing": "^2.0",
+    "roots/wp-config": "1.0.0",
+    "illuminate/collections": "^8.83",
+    "wpackagist-plugin/ewww-image-optimizer": "^7.2.1.",
+    "wpackagist-plugin/wordpress-seo": "^22.4",
+    "wpackagist-plugin/mailgun": "^1.8",
+    "wpackagist-plugin/autoptimize": "^3.1",
+    "wpackagist-plugin/safe-svg": "dev-trunk",
+    "wpackagist-plugin/acf-content-analysis-for-yoast-seo": "^3.0",
+    "wpackagist-plugin/better-wp-security": "^9.1.0",
+    "wpengine/advanced-custom-fields-pro": "^6.2",
+    "junaidbhura/gravityforms": "*",
+    "timber/timber": "^2.0",
+    "stoutlogic/acf-builder": "^1.12",
+    "wpackagist-plugin/duplicate-post": "^4.5",
+    "wpackagist-plugin/redirection": "^5.5",
+    "wpackagist-plugin/better-search-replace": "^1.4"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.7.1",
+    "roave/security-advisories": "dev-latest",
+    "symfony/var-dumper": "^7.0"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "allow-plugins": {
+      "composer/installers": true,
+      "roots/wordpress-core-installer": true,
+      "junaidbhura/composer-wp-pro-plugins": true,
+      "johnpbloch/wordpress-core-installer": true
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "installer-paths": {
+      "web/app/mu-plugins/{$name}/": [
+        "type:wordpress-muplugin"
+      ],
+      "web/app/plugins/{$name}/": [
+        "type:wordpress-plugin"
+      ],
+      "web/app/themes/{$name}/": [
+        "type:wordpress-theme"
+      ]
+    },
+    "wordpress-install-dir": "web/wp"
+  },
+  "scripts": {
+    "post-root-package-install": [
+      "php -r \"copy('.env.example', '.env');\""
+    ],
+    "test": [
+      "phpcs"
+    ]
+  },
+  "autoload": {
+    "psr-4": {
+      "YPTheme\\": "web/app/themes/timber-starter/inc/"
+    }
+  }
+}

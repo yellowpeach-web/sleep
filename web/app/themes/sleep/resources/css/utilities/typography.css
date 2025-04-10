@@ -1,0 +1,165 @@
+/**
+* typography.css
+*/
+
+*,
+*::before,
+*::after {
+  @apply box-border;
+}
+
+* {
+  @apply antialiased;
+}
+
+.wp-block {
+  @apply m-0 leading-normal text-black;
+}
+
+strong,
+b {
+  @apply font-bold;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply mt-0 mr-0 mb-4 ml-0 font-bold text-text-heading-fill-primary;
+}
+
+h1 {
+  @apply text-2xl sm:text-5xl;
+}
+
+h2 {
+  @apply text-xl;
+}
+
+h3 {
+  @apply text-lg;
+}
+
+h4 {
+  @apply text-base;
+}
+
+h5 {
+  @apply text-sm;
+}
+
+h6 {
+  @apply text-xs;
+}
+
+p {
+  @apply mb-15px;
+}
+
+address {
+  @apply not-italic;
+}
+
+ul,
+ol,
+dl {
+  @apply mt-0 pl-7;
+
+  li {
+    @apply mb-0.5;
+  }
+}
+
+ul {
+  @apply list-disc;
+}
+
+ol {
+  @apply list-decimal;
+}
+
+a:not(.y-btn):not(.no-link-style) {
+  @apply text-text-link-fill-default hover:text-text-link-fill-hover visited:text-text-link-fill-visited ease-in-out;
+}
+
+.content-wrapper {
+  *:last-child {
+    @apply mb-0 pb-0 !important;
+  }
+
+  a {
+    @apply font-semibold underline hover:opacity-80 transition duration-200 ease-linear;
+  }
+
+  ul,
+  ol {
+    @apply py-5 pl-10;
+
+    ul {
+      @apply list-circle;
+    }
+  }
+}
+
+/*
+** Custom typography classes
+ */
+.display-large {
+  @apply text-5xl md:text-7xl xl:text-9xl;
+}
+
+.display-small {
+  @apply text-3xl md:text-5xl xl:text-7xl;
+}
+
+.headline-large {
+  @apply text-2xl md:text-4xl xl:text-6xl;
+}
+
+.headline-small {
+  @apply text-xl md:text-3xl xl:text-5xl;
+}
+
+.title-large {
+  @apply text-lg md:text-2xl xl:text-4xl;
+}
+
+.title-small {
+  @apply text-base md:text-2xl xl:text-3xl;
+}
+
+.subtitle-large {
+  @apply text-sm md:text-lg xl:text-xl;
+}
+
+.subtitle-small {
+  @apply text-xs md:text-base xl:text-lg;
+}
+
+.overline-large {
+  @apply text-sm md:text-lg xl:text-xl uppercase;
+}
+
+.overline-small {
+  @apply text-xs md:text-base xl:text-lg uppercase;
+}
+
+.body-large > p, /* WYSIWYG  */
+.body-large {
+  @apply text-lg md:text-lg xl:text-lg;
+}
+
+.body-small > p, /* WYSIWYG  */
+.body-small {
+  @apply text-sm md:text-sm xl:text-sm;
+}
+
+.hyperlink-large {
+  @apply text-lg md:text-lg xl:text-lg underline;
+}
+
+.hyperlink-small {
+  @apply text-sm md:text-sm xl:text-sm underline;
+}

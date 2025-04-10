@@ -1,0 +1,20 @@
+{#
+/**
+* Button component
+* Pass the whole button object to button and any classes to class i.e.
+*
+* Example
+* {% include 'components/button.twig'with{ button:button, class:'this-is-a-class'} %}
+*
+*/
+#}
+
+{% if span %}
+<span class="y-btn {{ class }}">
+    {{ button.title }}
+</span>
+{% else %}
+<a {{ get_link_attr(button) }} class="y-btn {{ class }}">
+    {{ button.title }}
+</a>
+{% endif %}

@@ -1,0 +1,53 @@
+/**
+* Card surfaces
+*/
+
+.yp-card {
+  &.primary {
+    @apply border-surface-primary-bg-stroke-default bg-surface-primary-bg-fill-default border;
+    p,
+    time {
+      @apply text-text-body-fill-primary;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply text-text-heading-fill-primary;
+    }
+  }
+
+  &.secondary {
+    @apply border-surface-secondary-bg-stroke-default bg-surface-secondary-bg-fill-default;
+    p,
+    time {
+      @apply text-text-body-fill-secondary;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply text-text-heading-fill-secondary;
+    }
+  }
+
+  &.tertiary {
+    @apply bg-surface-tertiary-bg-fill-default;
+    p,
+    time {
+      @apply text-text-body-fill-tertiary;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply text-text-heading-fill-tertiary;
+    }
+  }
+}

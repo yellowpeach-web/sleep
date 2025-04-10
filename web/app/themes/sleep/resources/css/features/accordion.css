@@ -1,0 +1,15 @@
+.accordion-content {
+  @apply hidden;
+}
+.accordion.active {
+  @apply opacity-100;
+  .accordion-content {
+    @apply flex;
+  }
+  .accordion-icon {
+    @apply rotate-[-90deg];
+  }
+  .accordion-label-active {
+    @apply block;
+  }
+}

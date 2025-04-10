@@ -1,0 +1,56 @@
+/**
+* hamburger.css
+*/
+
+/**
+* hamburger.css
+*/
+
+
+.burger-wrapper {
+    @apply relative w-9 cursor-pointer transition-all duration-300 ease-in-out;
+    height: 26px;
+    span {
+      @apply absolute bottom-3 left-0 text-white transition-all duration-300 ease-in-out;
+    }
+  }
+  
+  #burger-line,
+  #burger-line-middle,
+  #burger-line-bottom {
+    @apply absolute block bg-white z-10 transition-all duration-300 ease-in-out;
+    width: 35px;
+    height: 2px;
+  }
+  
+  #burger-line-middle {
+    top: 10px;
+  }
+  
+  #burger-line-bottom {
+    @apply bottom-1;
+  }
+  
+  .flip-top {
+    @apply invisible opacity-0 transition-all duration-300 ease-in-out;
+  }
+  
+  .flip-middle {
+    @apply transition-all duration-300 ease-in-out;
+    transform: rotate(-45deg);
+    top: 12px !important
+  }
+  
+  .flip-bottom {
+    @apply transition-all duration-300 ease-in-out;
+    transform: rotate(45deg);
+    bottom: 12px !important
+  }
+  
+  #mobile-menu {
+    @apply hidden invisible opacity-0 -z-50 transition-all duration-300 ease-in-out;
+    &.show {
+      @apply block visible opacity-100 z-50;
+    }
+  }
+  

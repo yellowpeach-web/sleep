@@ -1,0 +1,21 @@
+/**
+* base.css
+*/
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
+body.yp-frontend,
+.wp-block.acf-block-preview {
+  @apply m-0
+    font-safiro 
+    font-normal
+    text-base
+    antialiased
+    border-background-primary-bg-stroke
+    text-text-body-fill-primary
+   bg-background-primary-bg-fill;
+  text-rendering: optimizeLegibility;
+}

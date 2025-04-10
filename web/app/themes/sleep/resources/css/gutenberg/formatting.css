@@ -1,0 +1,67 @@
+.wp-block-post-content, .edit-post-visual-editor__post-title-wrapper {
+    max-width: 90%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+}
+
+.wp-block {
+    max-width: 90%;
+    margin-left: 0 !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+.wp-block-acf-article-hero-how-to, .wp-block-acf-article-hero-buying-guide, .wp-block-acf-article-hero-review, .wp-block-acf-article-hero-generic {
+    max-width: none;
+
+}
+
+.wp-block .accordion .card {
+    max-width: none;
+}
+
+.wp-elements-0 a {
+    color:unset !important;
+}
+
+
+.gform_fields {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+.editor-styles-wrapper p {
+    @apply mt-0 !important;
+}
+
+.section-wrapper {
+
+    &.padding-top-small {
+        @apply !pt-0;
+    }
+
+    &.padding-bottom-small {
+        @apply !pb-0;
+    }
+
+    &.padding-top-regular {
+        @apply !pt-0;
+    }
+
+    &.padding-bottom-regular {
+        @apply !pb-0;
+    }
+
+    &.padding-top-large {
+        @apply !pt-0;
+    }
+
+    &.padding-bottom-large {
+        @apply !pb-0;
+    }
+
+}
+

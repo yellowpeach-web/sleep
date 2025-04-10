@@ -1,0 +1,20 @@
+{#
+/**
+* Button repeater
+* To be used with a button repeater
+*
+* Example
+* {% include 'components/buttons.twig'with{buttons:the buttons data ,wrapper_class:'classes for the btn-set wrapper', button_class:'classes for the a tag'} %}
+*
+*/
+#}
+{% if buttons %}
+    <div class="btn-set {{ wrapper_class }}">
+        {% for button in buttons %}
+            {% if button.button %}
+                {% include 'components/button.twig'with
+                    { button:button.button, class: button_class} %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

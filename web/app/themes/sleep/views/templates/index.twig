@@ -1,0 +1,22 @@
+{% extends "base/base.twig" %}
+
+{% block body %}
+
+<section class="py-20">
+    <div class="container">
+
+        <div class="grid grid-cols-3 gap-5">
+            {% for item in posts %}
+            {% include "components/post-card.twig" %}
+            {% endfor %}
+        </div>
+        {% if posts.pagination %}
+        <div class="py-10">
+            {% include "components/pagination.twig" with {pagination: posts.pagination} %}
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}
