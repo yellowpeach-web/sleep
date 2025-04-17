@@ -5,11 +5,8 @@ use YPTheme\AcfBuilder\ThemeFieldBuilder;
 $block = new ThemeFieldBuilder('faqs');
 $block
     ->getClone('heading')
-    ->addTextarea('content')
-    ->addTrueFalse('swap_layout', [
-        'label' => 'Swap layout?',
-        'ui' => 1,
-    ])
+    ->addLink('button')
+    ->addWysiwyg('content')
     ->addTrueFalse('show_selected', [
         'label' => 'Select specific FAQs?',
         'instructions' => '*if not selected all FAQs will be displayed',

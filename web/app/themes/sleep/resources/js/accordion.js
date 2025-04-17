@@ -5,19 +5,15 @@ export function initAccordions() {
     if (!section || !section.closest(".accordion-container")) return;
 
     const accordionContainer = section.closest(".accordion-container");
-    const sections = accordionContainer.querySelectorAll(".accordion");
 
     // Check if the section is active
     const isActive = section.classList.contains("active");
 
-    // Close all sections
-    sections.forEach((s) => {
-      s.classList.remove("active");
-      s.setAttribute("aria-expanded", "false");
-    });
-
-    // If not active, toggle the current section to active
-    if (!isActive) {
+    // Toggle the active state
+    if (isActive) {
+      section.classList.remove("active");
+      section.setAttribute("aria-expanded", "false");
+    } else {
       section.classList.add("active");
       section.setAttribute("aria-expanded", "true");
     }

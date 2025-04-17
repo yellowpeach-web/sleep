@@ -13,7 +13,7 @@
 }
 
 .wp-block {
-  @apply m-0 leading-normal text-black;
+  @apply m-0 leading-normal;
 }
 
 strong,
@@ -27,35 +27,35 @@ h3,
 h4,
 h5,
 h6 {
-  @apply mt-0 mr-0 mb-4 ml-0 font-bold text-text-heading-fill-primary;
+  @apply mt-0 mr-0 mb-5 ml-0 font-medium text-text-heading-fill-primary;
 }
 
 h1 {
-  @apply text-2xl sm:text-5xl;
+  @apply text-4xl md:text-5xl xl:text-6xl;
 }
 
 h2 {
-  @apply text-xl;
+  @apply text-3xl md:text-4xl xl:text-5xl;
 }
 
 h3 {
-  @apply text-lg;
+  @apply text-2xl md:text-3xl xl:text-4xl;
 }
 
 h4 {
-  @apply text-base;
+  @apply text-xl md:text-2xl xl:text-3xl;
 }
 
 h5 {
-  @apply text-sm;
+  @apply text-lg md:text-xl xl:text-2xl;
 }
 
 h6 {
-  @apply text-xs;
+  @apply text-lg md:text-lg xl:text-xl;
 }
 
 p {
-  @apply mb-15px;
+  @apply font-medium text-base mb-5 text-text-body-fill-primary;
 }
 
 address {
@@ -107,59 +107,64 @@ a:not(.y-btn):not(.no-link-style) {
 ** Custom typography classes
  */
 .display-large {
-  @apply text-5xl md:text-7xl xl:text-9xl;
+  @apply uppercase font-light text-3xl md:text-6xl xl:text-8xl;
 }
 
 .display-small {
-  @apply text-3xl md:text-5xl xl:text-7xl;
+  @apply uppercase font-light text-4xl md:text-5xl xl:text-6xl;
 }
 
 .headline-large {
-  @apply text-2xl md:text-4xl xl:text-6xl;
+  @apply font-medium text-3xl md:text-5xl xl:text-5xl;
 }
 
 .headline-small {
-  @apply text-xl md:text-3xl xl:text-5xl;
+  @apply font-medium text-3xl md:text-4xl xl:text-4xl;
 }
 
 .title-large {
-  @apply text-lg md:text-2xl xl:text-4xl;
+  @apply font-medium text-2xl md:text-2xl xl:text-3xl;
 }
 
 .title-small {
-  @apply text-base md:text-2xl xl:text-3xl;
+  @apply font-medium text-xl md:text-2xl xl:text-2xl;
 }
 
 .subtitle-large {
-  @apply text-sm md:text-lg xl:text-xl;
+  @apply font-medium text-lg;
 }
 
 .subtitle-small {
-  @apply text-xs md:text-base xl:text-lg;
+  @apply font-medium text-base;
 }
 
 .overline-large {
-  @apply text-sm md:text-lg xl:text-xl uppercase;
+  @apply font-semibold uppercase text-sm;
 }
 
 .overline-small {
-  @apply text-xs md:text-base xl:text-lg uppercase;
+  @apply font-semibold uppercase text-xs;
 }
 
 .body-large > p, /* WYSIWYG  */
 .body-large {
-  @apply text-lg md:text-lg xl:text-lg;
+  @apply font-medium text-lg;
 }
 
 .body-small > p, /* WYSIWYG  */
 .body-small {
-  @apply text-sm md:text-sm xl:text-sm;
+  @apply font-medium text-base;
 }
 
 .hyperlink-large {
-  @apply text-lg md:text-lg xl:text-lg underline;
+  @apply font-medium text-lg;
 }
 
 .hyperlink-small {
-  @apply text-sm md:text-sm xl:text-sm underline;
+  @apply font-medium text-base;
+}
+
+.text-base p,
+.text-lg p {
+  @apply mb-5;
 }

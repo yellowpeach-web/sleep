@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html {{ fn('language_attributes') }}>
+
 <head>
 	<meta charset="{{ site.charset }}">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,7 +11,7 @@
 	<link rel="pingback" href="{{ site.pingback_url }}">
 	{{ fn('wp_head') }}
 	{% if options.head_scripts %}
-		{{ options.head_scripts }}
+	{{ options.head_scripts }}
 	{% endif %}
 </head>
 
@@ -19,12 +20,23 @@
 	<div class="site" id="page">
 
 		{# The Navbar Area #}
-		<div id="wrapper-navbar" itemscope itemtype="http://schema.org/WebSite">
-			<header>
-
-			</header>
+		<div id="wrapper-navbar" itemscope itemtype="http://schema.org/WebSite"
+			class="sticky top-0 z-20 flex-flex-col {{general_settings.header_color}}">
+			<div class="bg-background-primary-bg-fill">
+				<div class="h-[3px] bg-full-gradient w-full"></div>
+				<header class="">
+					<div class="yp-container py-5 flex items-center justify-between w-full px-0">
+						<a href="{{home_url}}" title="Take me to the homepage"
+							class="no-link-style w-auto flex grow-0 shrink-0 h-10" aria-label="Homepage"
+							rel="home">
+							{% include "resources/images/logo.svg" %}
+						</a>
+						{% include "components/nav.twig" %}
+					</div>
+				</header>
+			</div>
 		</div>
 		{# wrapper-navbar end #}
 
 		<div id="main-content-inner">
-		{# this id="main-content-inner" close on footer #}
+			{# this id="main-content-inner" close on footer #}

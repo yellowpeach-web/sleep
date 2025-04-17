@@ -34,20 +34,4 @@
       @apply text-text-heading-fill-secondary;
     }
   }
-
-  &.tertiary {
-    @apply bg-surface-tertiary-bg-fill-default;
-    p,
-    time {
-      @apply text-text-body-fill-tertiary;
-    }
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      @apply text-text-heading-fill-tertiary;
-    }
-  }
 }

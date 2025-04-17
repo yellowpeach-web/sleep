@@ -1,0 +1,23 @@
+/* Logo Marquee */
+.marquee_logo {
+  @apply flex select-none relative;
+}
+
+.marquee_content_logo {
+  @apply flex will-change-transform;
+  animation: scroll_logo 20s linear infinite;
+}
+
+.marquee_item_logo {
+  @apply w-52 h-20 mx-6 md:mx-10 flex items-center justify-center;
+}
+
+/* Animation */
+@keyframes scroll_logo {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100%));
+  }
+}

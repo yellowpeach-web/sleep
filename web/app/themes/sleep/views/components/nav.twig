@@ -1,8 +1,45 @@
-{% if main_menu %}
-    <nav id="navigation" class="yp-nav h-fit">
-        <ul class="{{ main_menu.class }} yp-menu accordion">
-            {% for item in main_menu.items %}
-            {% endfor %}
-        </ul>
-    </nav>
+{% if primary_nav %}
+<nav id="navigation" class="yp-nav" role="navigation" aria-label="Primary" itemscope
+    itemtype="https://schema.org/SiteNavigationElement">
+
+    <ul class="yp-menu list-none pl-0 flex items-center  md:gap-8" role="list">
+
+        {% for item in primary_nav.items %}
+
+        {% set is_active = (item.url == fn('get_permalink')) %}
+        <li class="m-0 hidden md:flex" itemprop="name">
+            {% if item.meta('none_link') %}
+            <span class="no-link-style nav-item text-text-heading-fill-primary text-lg font-semibold">
+                {{ item.title }}
+            </span>
+            {% else %}
+            <a class="general-transition no-link-style nav-item text-text-heading-fill-primary text-lg font-semibold {{ is_active ? 'active' : '' }}"
+                href="{{ item.url }}" itemprop="url" {{ is_active ? 'aria-current="page"' }} target="{{item.target }}"
+                title="Go to the {{ item.title }} page">
+                {{ item.title }}
+            </a>
+            {% endif %}
+        </li>
+        {% endfor %}
+
+        {% if general_settings.header_button %}
+        <span class="hidden md:flex">
+            {% include 'components/button.twig' with {
+            button: general_settings.header_button,
+            class:'secondary',
+            } %}
+        </span>
+        {% endif %}
+
+        {# hamburger #}
+        <li class="block md:hidden">
+            <button
+                class="border yp-button secondary p-0 min-w-[38px] min-h-[38px] rounded-full flex items-center justify-center yp-hamburger"
+                aria-label="Menu" aria-controls="navigation-menu" aria-expanded="false">
+                {% include "resources/images/icons/hamburger.svg" %}
+            </button>
+        </li>
+    </ul>
+
+</nav>
 {% endif %}

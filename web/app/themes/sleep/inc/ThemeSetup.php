@@ -37,13 +37,15 @@ class ThemeSetup
         register_nav_menus([
             'primary-navigation' => __('Primary Navigation'),
             'footer-navigation' => __('Footer Navigation'),
-            'foot-navigation' => __('Foot Navigation'),
+            'legal-navigation' => __('Legal Navigation'),
         ]);
     }
 
     public static function add_menus_to_timber($context)
     {
-        $context['primary_navigation'] = Timber::get_menu('primary-navigation');
+        $context['primary_nav'] = Timber::get_menu('primary-navigation');
+        $context['footer_nav'] = Timber::get_menu('footer-navigation');
+        $context['legal_nav'] = Timber::get_menu('legal-navigation');
         return $context;
     }
 

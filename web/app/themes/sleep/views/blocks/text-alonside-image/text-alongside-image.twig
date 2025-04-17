@@ -1,0 +1,29 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+<div class="yp-container">
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-10 xl:gap-24">
+
+            <div class="col-span-1 flex flex-col gap-6 {{ fields.swap_layout ? 'order-last' : '' }}">
+
+                  {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
+                  class:'headline-small'} %}
+
+                  {% include 'components/content.twig' with {class: 'm-0 body-large'} %}
+
+                  {% include "components/buttons.twig" with {buttons: fields.buttons, button_class: 'primary'} %}
+            </div>
+
+            {% if fields.image %}
+            <div class="w-full h-[280px] md:h-[460px] xl:h-auto rounded overflow-hidden">
+                  {{ responsive_img(
+                  fields.image, {
+                  size: 'large',
+                  class: 'object-cover w-full h-full',
+                  })
+                  }}
+            </div>
+            {% endif %}
+
+      </div>
+</div>
+{% endblock %}

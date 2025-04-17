@@ -1,0 +1,42 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+{% if fields.logos %}
+<div class="flex flex-col gap-md">
+
+      <div class="yp-container">
+            <div class="flex flex-col gap-md">
+                  {% if fields.text %}
+                  <p class="m-0 title-large text-text-heading-fill-primary">
+                        {{ fields.text }}
+                  </p>
+                  {% endif %}
+            </div>
+      </div>
+
+      <div class="max-w-[606px] md:max-w-[688px] lg:max-w-[864px] xl:max-w-[1200px] mx-auto overflow-hidden">
+
+            <div class="marquee_logo">
+                  <ul class="marquee_content_logo list-none pl-0">
+                        {% for item in fields.logos %}
+                        <li class="marquee_item_logo">
+                              <img src="{{ item.url }}" alt="{{ item.alt }}"
+                                    class="w-full h-full max-w-[180px] object-contain" />
+                        </li>
+                        {% endfor %}
+                  </ul>
+
+                  <ul class="marquee_content_logo list-none pl-0" aria-hidden="true">
+                        {% for item in fields.logos %}
+                        <li class="marquee_item_logo">
+                              <img src="{{ item.url }}" alt="{{ item.alt }}"
+                                    class="w-full h-full max-w-[180px] object-contain" />
+                        </li>
+                        {% endfor %}
+                  </ul>
+            </div>
+
+      </div>
+
+</div>
+{% endif %}
+{% endblock %}

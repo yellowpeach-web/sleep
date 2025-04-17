@@ -48,12 +48,16 @@ class HelperFunctions
         return [
             'company_name' => get_field('company_name', 'options') ? get_field('company_name', 'options') : '',
             'email_address' => get_field('email_address', 'options') ? get_field('email_address', 'options') : '',
-            'address' => get_field('address', 'options') ? get_field('address', 'options') : '',
+            'location' => get_field('location', 'options') ? get_field('location', 'options') : '',
             'facebook' => get_field('facebook_url', 'options') ? get_field('facebook_url', 'options') : '',
             'twitter' => get_field('twitter_url', 'options') ? get_field('twitter_url', 'options') : '',
             'instagram' => get_field('instagram_url', 'options') ? get_field('instagram_url', 'options') : '',
             'linkedin' => get_field('linkedin_url', 'options') ? get_field('linkedin_url', 'options') : '',
-            'pinterest' => get_field('pinterest_url', 'options') ? get_field('pinterest_url', 'options') : ''
+            'pinterest' => get_field('pinterest_url', 'options') ? get_field('pinterest_url', 'options') : '',
+            'header_button' => get_field('header_button', 'options') ? get_field('header_button', 'options') : '',
+            'footer_button' => get_field('footer_button', 'options') ? get_field('footer_button', 'options') : '',
+            'left_column' => get_field('left_column', 'options') ? get_field('left_column', 'options') : '',
+            'header_color' => get_field('header_bg_color', 'options') ? get_field('header_bg_color', 'options') : '',
         ];
     }
 

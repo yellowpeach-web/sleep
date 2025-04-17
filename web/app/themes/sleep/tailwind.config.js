@@ -1,11 +1,12 @@
 const plugin = require("tailwindcss/plugin");
 const configuration = require("./theme-configuration.json");
+const colors = require("./theme-color-configuration.json");
 const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   mode: "jit",
   configuration,
-  content: require("fast-glob").sync(["./**/*.php", "./**/*.twig", "./safelist.txt"]),
+  content: require("fast-glob").sync(["./**/*.php", "./**/*.twig", "./**/*.svg", "./safelist.txt"]),
   theme: {
     screens: Object.fromEntries(Object.entries(defaultTheme.screens).filter(([key, value]) => key !== "2xl")),
     container: {
@@ -14,7 +15,7 @@ module.exports = {
     spacing: configuration.spacing,
     fontSize: configuration.fontSize,
     extend: {
-      colors: configuration.colors,
+      colors: colors,
       fontFamily: configuration.fontFamily,
       maxWidth: configuration.maxWidth,
       transitionProperty: configuration.transition,

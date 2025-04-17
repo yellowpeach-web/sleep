@@ -1,4 +1,5 @@
 <?php
+
 namespace YPTheme;
 
 class AssetLoader
@@ -12,6 +13,7 @@ class AssetLoader
         add_action('wp_footer', [self::class, 'remove_core_block_support_styles']);
         add_action('wp_enqueue_scripts', [self::class, 'dequeue_block_styles'], 100);
 
+
         add_action('wp_enqueue_scripts', [self::class, 'enqueue_frontend_assets']);
         add_action('admin_enqueue_scripts', [self::class, 'enqueue_admin_assets']);
         add_action('admin_head', [self::class, 'add_inline_styles']);
@@ -23,6 +25,7 @@ class AssetLoader
         wp_enqueue_script('jquery');
         wp_enqueue_style('app', self::get_mix_compiled_asset_url('build/css/app.css'), [], $theme->get('Version'));
         wp_enqueue_script('app', self::get_mix_compiled_asset_url('build/js/app.js'), ['jquery'], $theme->get('Version'));
+        wp_enqueue_style('typekit-fonts', 'https://use.typekit.net/yzf4juo.css', [], null);
     }
 
     public static function enqueue_admin_assets($hook)
@@ -31,6 +34,7 @@ class AssetLoader
             $theme = wp_get_theme();
             wp_enqueue_style('yp-editor-style', self::get_mix_compiled_asset_url('build/css/admin/editor-style.css'), [], $theme->get('Version'));
             wp_enqueue_style('yp-gutenberg-style', self::get_mix_compiled_asset_url('build/css/admin/gutenberg-style.css'), [], $theme->get('Version'));
+            wp_enqueue_style('typekit-fonts', 'https://use.typekit.net/yzf4juo.css', [], null);
         }
     }
 
@@ -96,7 +100,4 @@ class AssetLoader
     {
         wp_dequeue_style('core-block-supports');
     }
-
-
-
 }

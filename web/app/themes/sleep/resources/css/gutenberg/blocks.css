@@ -2,23 +2,20 @@
 * blocks.css
 */
 
-
 /* Core block styling*/
 
 .core-block-section {
-    padding: 0;
+  padding: 0;
 }
 
 /* Core block */
 
 .wp-block-media-text {
-    @apply md:block;
+  @apply md:block;
 
-    .wp-block-media-text__content {
-        @apply md:block md:p-0;
-
-    }
-
+  .wp-block-media-text__content {
+    @apply md:block md:p-0;
+  }
 }
 
 /*
@@ -28,59 +25,59 @@
   */
 
 .section-block {
-    @apply mb-6 sm:mb-8;
+  @apply mb-6 sm:mb-8;
 
-    &.heading-block {
-        @apply mb-1 sm:mb-3;
-    }
+  &.heading-block {
+    @apply mb-1 sm:mb-3;
+  }
 }
 
 .section-wrapper {
-    &.padding-top-small {
-        @apply pt-5 md:pt-10;
-    }
+  &.padding-top-small {
+    @apply pt-6 md:pt-10;
+  }
 
-    &.padding-bottom-small {
-        @apply pb-5 md:pb-10;
-    }
+  &.padding-bottom-small {
+    @apply pb-6 md:pb-10;
+  }
 
-    &.padding-top-regular {
-        @apply pt-10 md:pt-20;
-    }
+  &.padding-top-regular {
+    @apply pt-14;
+  }
 
-    &.padding-bottom-regular {
-        @apply pb-10 md:pb-20;
-    }
+  &.padding-bottom-regular {
+    @apply pb-14;
+  }
 
-    &.padding-top-large {
-        @apply pt-32 md:pt-40;
-    }
+  &.padding-top-large {
+    @apply xl:pt-36 md:pt-24 pt-20;
+  }
 
-    &.padding-bottom-large {
-        @apply pb-32 md:pb-40;
-    }
+  &.padding-bottom-large {
+    @apply xl:pb-36 md:pb-24 pb-20;
+  }
 
-    &.margin-top-small {
-        @apply mt-5 md:mt-10;
-    }
+  &.margin-top-small {
+    @apply mt-5 md:mt-10;
+  }
 
-    &.margin-bottom-small {
-        @apply mb-5 md:mb-10;
-    }
+  &.margin-bottom-small {
+    @apply mb-5 md:mb-10;
+  }
 
-    &.margin-top-regular {
-        @apply mt-10 md:mt-20;
-    }
+  &.margin-top-regular {
+    @apply mt-10 md:mt-20;
+  }
 
-    &.margin-bottom-regular {
-        @apply mb-10 md:mb-20;
-    }
+  &.margin-bottom-regular {
+    @apply mb-10 md:mb-20;
+  }
 
-    &.margin-top-large {
-        @apply mt-32 md:mt-40;
-    }
+  &.margin-top-large {
+    @apply mt-32 md:mt-40;
+  }
 
-    &.margin-bottom-large {
-        @apply mb-32 md:mb-40;
-    }
+  &.margin-bottom-large {
+    @apply mb-32 md:mb-40;
+  }
 }

@@ -1,0 +1,50 @@
+{% set count = 0 %}
+{% set highlight_classes = [
+'text-text-heading-fill-highlight-1',
+'text-text-heading-fill-highlight-2',
+'text-text-heading-fill-highlight-3'
+] %}
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+<div class="yp-container">
+      {% if fields.services %}
+      <div class="flex flex-col">
+            {% for item in fields.services %}
+            {% set index = loop.index0 %}
+            {% set count_color = highlight_classes[index % highlight_classes|length] %}
+
+
+            {% if item.service %}
+            <a class="no-link-style flex justify-between items-start md:items-center gap-sm group pt-6 pb-6 md:pb-8 md:pt-8 border-b border-background-primary-bg-stroke first:pt-0 last:pb-0 last:border-b-0 service-list-item"
+                  {% if item.service.url %} href="{{item.service.url }}" {% endif %}>
+                  {# hover_image #}
+                  <div
+                        class="hover-image pointer-events-none top-0 left-0 fixed w-[140px] h-[110px] rounded overflow-hidden {{ count is even ? 'rotate-[10deg] plus' : 'rotate-[-10deg] minus' }}">
+                        {{ responsive_img(
+                        item.image, {
+                        size: 'large',
+                        class: 'object-cover w-full h-full',
+                        })
+                        }}
+                  </div>
+                  <div class=" flex items-start md:items-center gap-3">
+                        <p class="!m-0 display-small {{count_color}}">
+                              {{count}}
+                        </p>
+                        {% if item.service.title %}
+                        <p class="!m-0 display-small text-text-heading-fill-primary">
+                              {{item.service.title}}
+                        </p>
+                        {% endif %}
+                  </div>
+                  <div class="h-9 w-auto">
+                        {% include "resources/images/icons/arrow.svg" %}
+                  </div>
+            </a>
+            {% endif %}
+            {% set count = count + 1 %}
+            {% endfor %}
+      </div>
+      {% endif %}
+</div>
+{% endblock %}

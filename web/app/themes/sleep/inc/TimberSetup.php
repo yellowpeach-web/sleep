@@ -160,17 +160,34 @@ class TimberAcfBlocks
         $context['is_preview'] = $is_preview;
         $context['fields'] = get_fields();
 
-        $context = apply_filters('timber/acf-gutenberg-blocks-data', $context);
-        Timber::render(self::timber_acf_path_render($slug, $is_preview), $context);
 
         // Get posts archive data for posts archive block
         $context['posts'] = self::get_posts_archive($block);
+        $context['testimonials'] = self::get_testimonials($block);
+        $context['faqs'] = self::get_faqs($block);
 
-        // Assign block spacing for block
+        // Assign block spacing 
         $context['block_spacing'] = trim(
             self::generate_spacing_classes($block['style']['spacing']['padding']['top'] ?? '', 'padding-top') . ' ' .
                 self::generate_spacing_classes($block['style']['spacing']['padding']['bottom'] ?? '', 'padding-bottom')
         );
+
+        // Assign block color
+        $backgroundColor = isset($block['backgroundColor']) ? $block['backgroundColor'] : 'bg-background-primary-bg-fill';
+
+        if (str_starts_with($backgroundColor, 'dark-')) {
+            $context['background_color'] = str_replace('dark-', '', $backgroundColor);
+            $context['color_profile'] = 'dark-theme';
+        } elseif (str_starts_with($backgroundColor, 'light-')) {
+            $context['background_color'] = str_replace('light-', '', $backgroundColor);
+            $context['color_profile'] = 'light-theme';
+        } else {
+            $context['background_color'] = $backgroundColor;
+            $context['color_profile'] = 'dark';
+        }
+
+        $context = apply_filters('timber/acf-gutenberg-blocks-data', $context);
+        Timber::render(self::timber_acf_path_render($slug, $is_preview), $context);
     }
 
 
@@ -226,6 +243,36 @@ class TimberAcfBlocks
     }
 
     /**
+     * Get posts helper
+     */
+    private static function get_related_posts($block, $block_name, $post_type, $field_name)
+    {
+        if ($block['name'] !== $block_name) {
+            return [];
+        }
+
+        $show_selected = get_field('show_selected');
+
+        if ($show_selected) {
+            $selected = get_field($field_name);
+            if (!empty($selected)) {
+                return Timber::get_posts([
+                    'post_type'      => $post_type,
+                    'post__in'       => $selected,
+                    'orderby'        => 'post__in',
+                    'posts_per_page' => -1
+                ]);
+            }
+            return [];
+        }
+
+        return Timber::get_posts([
+            'post_type'      => $post_type,
+            'posts_per_page' => -1
+        ]);
+    }
+
+    /**
      * Block specific methods
      */
     private static function get_posts_archive($block)
@@ -246,6 +293,16 @@ class TimberAcfBlocks
             ];
         }
         return;
+    }
+
+    private static function get_faqs($block)
+    {
+        return self::get_related_posts($block, 'acf/faqs', 'faq', 'faqs');
+    }
+
+    private static function get_testimonials($block)
+    {
+        return self::get_related_posts($block, 'acf/testimonial-carousel', 'testimonial', 'testimonials');
     }
 
 

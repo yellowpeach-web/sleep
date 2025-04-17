@@ -12,24 +12,24 @@ button,
 input[type="button"],
 input[type="submit"],
 .y-btn {
-  @apply text-base font-semibold transition-all ease-in-out duration-200 flex items-center gap-2.5 w-fit focus:ring-0 focus:outline-0 !important;
+  @apply text-base leading-[0.8] font-semibold transition-all ease-in-out duration-200 flex items-center w-fit shrink-0 focus:ring-0 focus:outline-0 !important;
+  @apply py-3.5 px-5 gap-2.5 rounded-full border;
   &.primary {
-    @apply rounded-full px-4 py-1.5 gap-2.5 border !important;
     /* Background */
     @apply bg-button-primary-bg-fill-default hover:bg-button-primary-bg-fill-hover disabled:bg-button-primary-bg-fill-disabled focus:bg-button-primary-bg-fill-focused active:bg-button-primary-bg-fill-pressed !important;
     /* Stroke */
     @apply border-button-primary-bg-stroke-default hover:border-button-primary-bg-stroke-hover disabled:border-button-primary-bg-stroke-disabled focus:border-button-primary-bg-stroke-focused active:border-button-primary-bg-stroke-pressed !important;
     /* Text */
-    @apply text-button-primary-fill-default hover:text-button-primary-fill-hover  disabled:text-button-primary-fill-disabled  focus:text-button-primary-fill-focused  active:text-button-primary-fill-pressed !important;
+    @apply text-button-primary-text-fill-default hover:text-button-primary-text-fill-hover  disabled:text-button-primary-text-fill-disabled  focus:text-button-primary-text-fill-focused  active:text-button-primary-text-fill-pressed !important;
   }
   &.secondary {
-    @apply px-0 py-1.5 gap-2.5 border;
+    @apply !bg-transparent;
     /* Background */
     @apply bg-button-secondary-bg-fill-default hover:bg-button-secondary-bg-fill-hover hover:!text-button-secondary-fill-hover disabled:bg-button-secondary-bg-fill-disabled focus:bg-button-secondary-bg-fill-focused active:bg-button-secondary-bg-fill-pressed;
     /* Stroke */
     @apply border-button-secondary-bg-stroke-default hover:border-button-secondary-bg-stroke-hover disabled:border-button-secondary-bg-stroke-disabled focus:border-button-secondary-bg-stroke-focused active:border-button-secondary-bg-stroke-pressed;
     /* Text */
-    @apply text-button-secondary-fill-default hover:text-button-secondary-fill-hover disabled:text-button-secondary-fill-disabled focus:text-button-secondary-fill-focused active:text-button-secondary-fill-pressed;
+    @apply text-button-secondary-text-fill-default hover:text-button-secondary-text-fill-hover disabled:text-button-secondary-text-fill-disabled focus:text-button-secondary-text-fill-focused active:text-button-secondary-text-fill-pressed;
   }
 }
 
