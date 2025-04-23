@@ -1,15 +1,15 @@
 {% extends "components/block-wrapper.twig" %}
 {% block block_content %}
 <div class="overflow-clip">
-      <div class=" yp-container flex flex-col gap-10 md:gap-24 xl:flex-row xl:justify-between xl:items-end xl:gap-0">
+      <div class=" yp-container flex flex-col gap-10 md:gap-24 xl:flex-row xl:justify-between xl:items-center xl:gap-0">
 
             {# content #}
-            <div class="pt-md xl:pb-24 flex flex-col gap-10 w-full xl:w-[544px]">
+            <div class="pt-10 md:pt-24 xl:pb-24 flex flex-col gap-10 w-full xl:w-[544px]">
                   <div class="flex flex-col gap-8">
                         {% include 'components/heading.twig' with {
                         tag: fields.tag,
                         heading: fields.heading,
-                        class:'heading-large'
+                        class:'headline-large'
                         }
                         %}
                         {% include 'components/content.twig' with {class: 'm-0 body-large'} %}
@@ -52,31 +52,34 @@
                   </div>
             </div>
             {# phone images #}
-            <div class="relative h-[320px] md:h-[500px] xl:w-[500px] xl:h-full">
-                  {% if fields.hero_image_primary %}
-                  <div class="w-[230px] md:w-[360px] xl:w-[345px] h-auto absolute bottom-0 right-0 z-2">
-                        {{ responsive_img(
-                        fields.hero_image_primary, {
-                        size: 'large',
-                        class: 'object-container w-full h-auto',
-                        })
-                        }}
-                  </div>
-                  {% endif %}
+            <div
+                  class="relative mx-auto w-full h-[410px] md:w-[400px] md:h-[490px] xl:w-[415px] xl:h-[525px] mb-10 md:mb-24 xl:mb-0">
+
+                  <span
+                        class="absolute top-1/2 left-1/2 w-[440px] md:w-[530px] xl:w-[550px] h-auto -translate-x-1/2 -translate-y-1/2  fill-background-primary-shape-fill">
+                        {% include "resources/images/icons/blob-2.svg" %}
+                  </span>
+
                   {% if fields.hero_image_secondary %}
-                  <div class="w-[180px] md:w-[290px] xl:w-[275px] h-auto absolute bottom-0 left-0 z-1">
+                  <div class="absolute w-fit top-0 right-0 hero-phone-1">
                         {{ responsive_img(
                         fields.hero_image_secondary, {
                         size: 'large',
-                        class: 'object-contain w-full h-auto',
+                        class: 'object-contain w-fit h-[360px] md:h-[420px] xl:h-[450px]',
                         })
                         }}
                   </div>
                   {% endif %}
-                  <div
-                        class="absolute h-auto bottom-[-110px] w-[350px] right-[-200px] xl:bottom-[-110px]  xl:right-[-180px] xl:w-[460px]">
-                        {% include "resources/images/icons/blob.svg" %}
+                  {% if fields.hero_image_primary %}
+                  <div class="absolute w-fit bottom-0 left-0 hero-phone-2">
+                        {{ responsive_img(
+                        fields.hero_image_primary, {
+                        size: 'large',
+                        class: 'object-contain w-fit h-[360px] md:h-[420px] xl:h-[450px]',
+                        })
+                        }}
                   </div>
+                  {% endif %}
             </div>
       </div>
 </div>

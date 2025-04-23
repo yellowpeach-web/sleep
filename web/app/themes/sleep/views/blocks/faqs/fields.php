@@ -7,6 +7,10 @@ $block
     ->getClone('heading')
     ->addLink('button')
     ->addWysiwyg('content')
+    ->addTrueFalse('include_filter', [
+        'label' => 'Include filters?',
+        'ui' => 1,
+    ])
     ->addTrueFalse('show_selected', [
         'label' => 'Select specific FAQs?',
         'instructions' => '*if not selected all FAQs will be displayed',

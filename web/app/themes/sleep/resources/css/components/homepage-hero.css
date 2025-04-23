@@ -1,0 +1,31 @@
+@keyframes float {
+  0% {
+    transform: translateY(-1.5px) rotate3d(1, 0, 0, -2deg) scale(1);
+  }
+  50% {
+    transform: translateY(1.5px) rotate3d(1, 0, 0, 2deg) scale(1.005);
+  }
+  100% {
+    transform: translateY(-1.5px) rotate3d(1, 0, 0, -2deg) scale(1);
+  }
+}
+
+@keyframes floatReverse {
+  0% {
+    transform: translateY(1.5px) rotate3d(1, 0, 0, 2deg) scale(1.005);
+  }
+  50% {
+    transform: translateY(-1.5px) rotate3d(1, 0, 0, -2deg) scale(1);
+  }
+  100% {
+    transform: translateY(1.5px) rotate3d(1, 0, 0, 2deg) scale(1.005);
+  }
+}
+
+.hero-phone-2 {
+  animation: float 2.2s ease-in-out alternate infinite;
+}
+
+.hero-phone-1 {
+  animation: floatReverse 2.2s ease-in-out alternate infinite;
+}

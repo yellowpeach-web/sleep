@@ -1,48 +1,59 @@
 {% extends "components/block-wrapper.twig" %}
 {% block block_content %}
-<div class="yp-container">
-      <div class="flex flex-col gap-md">
-            {% include "components/title-content-with-button.twig" %}
-            {% if faqs %}
+<div class="yp-container faq-section">
+      <div class="flex flex-col gap-10 items-center">
 
-            {# setting masonary cols for faqs #}
-            {% set left_column = [] %}
-            {% set right_column = [] %}
+            <div class="flex flex-col gap-4 items-center">
+                  {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
+                  class:'headline-small text-center'} %}
+                  {% include 'components/content.twig' with {class: 'm-0 body-small text-center'} %}
+            </div>
 
-            {% for item in faqs %}
-            {% if loop.index is odd %}
-            {% set left_column = left_column|merge([item]) %}
-            {% else %}
-            {% set right_column = right_column|merge([item]) %}
+            {% if fields.include_filter %}
+            <div class="flex items-center gap-3 text-button-primary-text-fill-default">
+                  <button data-filter="business"
+                        class="faq-filter-button py-2.5 px-5 border-button-primary-bg-stroke-default active">
+                        For Business
+                  </button>
+                  <button data-filter="personal-sleep"
+                        class="faq-filter-button py-2.5 px-5 border-button-primary-bg-stroke-default">
+                        For Personal Sleep
+                  </button>
+            </div>
             {% endif %}
-            {% endfor %}
 
+            {% if faqs %}
+            {# Hidden source FAQ items (for JS cloning) #}
+            <ul id="all-faqs" class="hidden">
+                  {% for item in faqs %}
+                  {% set terms = item.terms('filter') %}
+                  {% if terms|length %}
+                  {% set term = terms[0] %}
+                  {% endif %}
+                  {% include "components/accordion-segment.twig" with {item: item} %}
+                  {% endfor %}
+            </ul>
+
+            {# Displayed FAQ containers #}
             <div class="grid gap-sm grid-cols-1 xl:grid-cols-2" itemscope itemtype="https://schema.org/FAQPage">
-                  {% if left_column %}
-                  <ul class="accordion-container pl-0 list-none hidden flex-col w-full gap-sm xl:flex">
-                        {% for item in left_column %}
-                        {% include "components/accordion-segment.twig" %}
-                        {% endfor %}
+                  {# xl and above #}
+                  <ul data-col="left"
+                        class="accordion-container faq-col pl-0 list-none hidden flex-col w-full gap-sm xl:flex">
+                        {# rendered via JS #}
                   </ul>
-                  {% endif %}
-
-                  {% if right_column %}
-                  <ul class="accordion-container pl-0 list-none hidden flex-col w-full gap-sm xl:flex">
-                        {% for item in right_column %}
-                        {% include "components/accordion-segment.twig" %}
-                        {% endfor %}
+                  <ul data-col="right"
+                        class="accordion-container faq-col pl-0 list-none hidden flex-col w-full gap-sm xl:flex">
+                        {# rendered via JS #}
                   </ul>
-                  {% endif %}
-
-                  <ul class="accordion-container pl-0 list-none flex flex-col w-full gap-sm xl:hidden">
+                  {# below xl #}
+                  <ul class="accordion-container faq-single-col pl-0 list-none flex flex-col w-full gap-sm xl:hidden">
                         {% for item in faqs %}
                         {% include "components/accordion-segment.twig" %}
                         {% endfor %}
                   </ul>
             </div>
-
-
             {% endif %}
+
       </div>
 </div>
 {% endblock %}

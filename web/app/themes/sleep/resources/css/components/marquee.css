@@ -1,15 +1,15 @@
 /* Logo Marquee */
 .marquee_logo {
-  @apply flex select-none relative;
+  @apply flex w-fit select-none relative gap-0;
 }
 
 .marquee_content_logo {
-  @apply flex will-change-transform;
-  animation: scroll_logo 20s linear infinite;
+  @apply flex w-fit will-change-transform shrink-0;
+  animation: scroll_logo 16s linear infinite;
 }
 
 .marquee_item_logo {
-  @apply w-52 h-20 mx-6 md:mx-10 flex items-center justify-center;
+  @apply w-[132px] h-6 mx-6 md:mx-10 flex items-center justify-center;
 }
 
 /* Animation */

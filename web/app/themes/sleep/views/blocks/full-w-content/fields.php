@@ -4,9 +4,12 @@ use YPTheme\AcfBuilder\ThemeFieldBuilder;
 
 $block = new ThemeFieldBuilder('full-w-content');
 $block
+    ->addTrueFalse('bg_graphic', [
+        'label' => 'display background texture?',
+        'ui' => 1,
+    ])
     ->addTrueFalse('narrow_width', [
         'label' => 'Narrow content width?',
-        'instructions' => '*if not selected static graphic will be used',
         'ui' => 1,
     ])
     ->addTrueFalse('central_content', [

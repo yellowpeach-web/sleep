@@ -1,8 +1,16 @@
 {% extends "components/block-wrapper.twig" %}
 {% block block_content %}
-{% if fields.logos %}
-<div class="container">
-
+<div class="xl:container">
+      {% if fields.cta %}
+      <div class="relative flex w-full h-auto overflow-x-clip justify-center">
+            {% include "resources/images/icons/grid.svg" %}
+            <a href="{{fields.cta.url}}" title="{{fields.cta.title}}"
+                  class="no-link-style size-[200px] left-1/2 -translate-x-1/2 absolute top-[-25px] rounded-full flex items-center justify-center bg-[#E8B6D1] p-6">
+                  <p class="!m-0 text-xl text-text-heading-fill-primary font-semibold text-center uppercase">
+                        {{fields.cta.title}}
+                  </p>
+            </a>
+      </div>
+      {% endif %}
 </div>
-{% endif %}
 {% endblock %}

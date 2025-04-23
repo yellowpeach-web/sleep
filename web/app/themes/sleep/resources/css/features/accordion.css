@@ -1,13 +1,30 @@
 .accordion-content {
-  @apply hidden;
+  @apply overflow-hidden max-h-0 pt-0;
+  transition: max-height 0.4s cubic-bezier(0.87, 0, 0.13, 1), padding 0.2s ease-in 0.2s;
 }
+
+.accord-icon {
+  transition: all 0.3s ease-in-out;
+  .hor-line {
+    @apply opacity-100;
+    transition: opacity 0.2s ease-in;
+  }
+}
+
 .accordion.active {
   @apply opacity-100;
   .accordion-content {
-    @apply flex;
+    @apply max-h-[500px] pt-6;
+    transition: 0.3s ease-out 0.1s;
+    .accordion-icon {
+      @apply rotate-90 pt-6;
+    }
   }
-  .accordion-icon {
-    @apply rotate-[-90deg];
+  .accord-icon {
+    @apply rotate-[90deg] stroke-ui-icon-fill-active;
+    .hor-line {
+      @apply opacity-0;
+    }
   }
   .accordion-label-active {
     @apply block;

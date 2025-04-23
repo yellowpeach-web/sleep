@@ -1,0 +1,27 @@
+{% set terms = item.terms('filter') %}
+{% if terms|length %}
+{% set term = terms[0] %}
+{% endif %}
+
+<li class="accordion flex flex-col w-full hover:cursor-pointer p-8 rounded-lg bg-surface-primary-bg-fill-default"
+      aria-expanded="false" role="button" itemprop="mainEntity" itemscope itemtype="https://schema.org/Question"
+      data-category="{{term.slug}}">
+      <div class=" flex items-center justify-between gap-sm">
+            {% if item.title %}
+            <h3 class="m-0 text-text-heading-fill-primary title-small" itemprop="name">{{
+                  item.title }}
+            </h3>
+            {% endif %}
+            <div class="shrink-0">
+                  {% include "resources/images/icons/plus.twig" %}
+            </div>
+      </div>
+      <div class="accordion-content pt-6" itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
+            {% if item.content %}
+            <div itemprop="text">
+                  {% include 'components/content.twig' with {class: 'm-0 body-small', content:
+                  item.content} %}
+            </div>
+            {% endif %}
+      </div>
+</li>

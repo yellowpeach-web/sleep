@@ -1,7 +1,71 @@
+{% set highlight_classes = [
+'text-text-heading-fill-highlight-1',
+'text-text-heading-fill-highlight-2',
+'text-text-heading-fill-highlight-3'
+] %}
 {% extends "components/block-wrapper.twig" %}
 {% block block_content %}
 
 <div class="yp-container">
+      {% if fields.statements %}
+      {% set count = 1 %}
+      {% set count_footer = 1 %}
+      <div class="flex flex-col gap-10">
+            {# statement #}
+            <div class="flex items-center justify-center flex-wrap">
+                  {% for statements in fields.statements %}
+                  {% for statement in statements %}
+                  {% for item in statement %}
+                  {% set index = loop.index0 %}
+                  {% set color_class = highlight_classes[(count - 1) % highlight_classes|length] %}
+                  {% if item.type == 'image' %}
+                  <div
+                        class="h-[30px] w-[40px] md:w-[60px] md:h-[45px] xl:w-[120px] xl:h-[90px] rounded overflow-hidden my-1.5 md:my-2 xl:my-3 mx-1.5 md:mx-2 xl:mx-3">
+                        {{ responsive_img(item.image, {
+                        size: 'large',
+                        class: 'object-cover w-full h-full',
+                        }) }}
+                  </div>
+                  {% else %}
+                  <span
+                        class="flex display-large text-text-heading-fill-primary h-[30px] md:h-[61px] xl:h-[90px] mx-1.5 md:mx-2 xl:mx-3">
+                        <span class="flex items-start gap-1">
+                              <span>
+                                    {{ item.text }}
+                              </span>
+                              {% if loop.last %}
+                              <span class="text-base md:text-4xl xl:text-6xl font-normal {{color_class}} "> {{ count }}
+                              </span>
+                              {% endif %}
+                        </span>
+                  </span>
+                  {% endif %}
+                  {% endfor %}
+                  {% endfor %}
+                  {% set count = count + 1 %}
+                  {% endfor %}
+            </div>
+            {# footer #}
+            <div
+                  class="mx-auto w-full md:w-fit flex gap-x-2 md:gap-x-6 gap-y-3 items-center h-full flex-col xl:flex-row">
+                  {% for item in fields.statements %}
+                  {% set index = loop.index0 %}
+                  {% set color_class = highlight_classes[(count_footer - 1) % highlight_classes|length] %}
+                  <div
+                        class="flex items-center gap-3 xl:pr-6 border-b-[1px] last:border-b-0 xl:last:pr-0 xl:border-b-0 xl:border-r-[1px] pb-3 last:pb-0 xl:pb-0">
+                        <p class="!m-0 text-base font-bold {{color_class}} ">
+                              {{count_footer}}
+                        </p>
+                        {% include 'components/content.twig' with {class: 'm-0 text-sm md:text-base
+                        text-text-body-fill-primary',
+                        content: item.reference_text} %}
+                  </div>
+                  {% set count_footer = count_footer + 1 %}
+                  {% endfor %}
+            </div>
+      </div>
+
+      {% endif %}
 
 </div>
 

@@ -23,6 +23,7 @@ class AssetLoader
     {
         $theme = wp_get_theme();
         wp_enqueue_script('jquery');
+        wp_enqueue_style('vendor', self::get_mix_compiled_asset_url('build/css/vendor.css'), array(), $theme->get('Version'));
         wp_enqueue_style('app', self::get_mix_compiled_asset_url('build/css/app.css'), [], $theme->get('Version'));
         wp_enqueue_script('app', self::get_mix_compiled_asset_url('build/js/app.js'), ['jquery'], $theme->get('Version'));
         wp_enqueue_style('typekit-fonts', 'https://use.typekit.net/yzf4juo.css', [], null);

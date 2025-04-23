@@ -40,8 +40,5 @@ mix.browserSync({
 });
 
 mix.version();
-// mix.combine([
-// ], './build/css/vendor.css');
-//
-
-// mix.combine([], './build/js/vendor.js');
+mix.combine(["node_modules/swiper/swiper.min.css", "node_modules/swiper/modules/navigation.min.css", "node_modules/swiper/modules/thumbs.min.css", "node_modules/swiper/modules/controller.min.css", "node_modules/swiper/modules/pagination.min.css"], "./build/css/vendor.css");
+mix.combine([], "./build/js/vendor.js");

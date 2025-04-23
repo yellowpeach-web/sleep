@@ -1,0 +1,18 @@
+.swiper-pagination {
+  .swiper-pagination-bullet {
+    @apply size-[12px] !rounded !m-0 bg-state-highlight-fade opacity-100;
+  }
+  .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    @apply bg-state-highlight-default;
+  }
+}
+
+.testimonial-swiper {
+  .swiper-slide {
+    @apply opacity-50;
+    transition: opacity 0.6s ease-in-out;
+  }
+  .swiper-slide-active {
+    @apply !opacity-100;
+  }
+}
