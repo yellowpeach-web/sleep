@@ -5,6 +5,7 @@ import { navVisibility } from "./nav.js";
 import { initHoverImageCursor } from "./image-cursor.js";
 import { initSwipers } from "./swiper";
 import { filterFaqs } from "./faq-filter.js";
+import { initMasonary } from "./masonary.js";
 // import AOS from 'aos';
 $(document).ready(function () {
   initAccordions();
@@ -13,4 +14,5 @@ $(document).ready(function () {
   navVisibility();
   initSwipers();
   filterFaqs();
+  initMasonary();
 });

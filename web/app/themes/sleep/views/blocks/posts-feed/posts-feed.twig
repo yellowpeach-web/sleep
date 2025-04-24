@@ -1,0 +1,75 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+<div class="yp-container posts-feed-section">
+      <div class="flex flex-col gap-10 items-center">
+            <div class="flex flex-col gap-8 md:items-center">
+                  <div class="flex flex-col gap-6 items-center">
+                        {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
+                        class:'headline-large md:text-center'} %}
+                        {% include 'components/content.twig' with {class: 'm-0 body-small md:text-center'} %}
+                  </div>
+                  {# filters... #}
+                  {% if insight_terms %}
+                  <div class="flex items-center gap-3 text-button-primary-text-fill-default flex-wrap">
+                        <button data-filter="all"
+                              class="posts-filter-button py-2.5 px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default active">
+                              All Insights
+                        </button>
+                        {% for item in insight_terms %}
+                        <button data-filter="{{item.slug}}"
+                              class="posts-filter-button py-2.5 px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default">
+                              {{item.name}}
+                        </button>
+                        {% endfor %}
+                  </div>
+                  {% endif %}
+
+            </div>
+            {% if insights %}
+            {# above md view... #}
+            <div class="blog-feed-container w-full h-fit hidden md:block">
+                  {% for item in insights %}
+                  {% set terms = item.terms('category') %}
+                  {% if terms|length %}
+                  {% set term = terms[0] %}
+                  {% if term.slug == 'blog' %}
+                  {% set term_color = 'text-heading-fill-highlight-1' %}
+                  {% elseif term.slug == 'latest-news' %}
+                  {% set term_color = 'text-heading-fill-highlight-2' %}
+                  {% elseif term.slug == 'whitepaper' %}
+                  {% set term_color = 'text-heading-fill-highlight-3' %}
+                  {% endif %}
+                  {% endif %}
+                  {% include "components/post-card.twig" %}
+                  {% endfor %}
+            </div>
+            {% endif %}
+      </div>
+</div>
+{# below md view #}
+
+{% if insights %}
+<div class="yp-container pt-10 overflow-visible block md:hidden">
+      <div class="swiper posts-swiper overflow-visible">
+            <div class="swiper-wrapper h-auto">
+                  {% for item in insights %}
+                  {% set terms = item.terms('category') %}
+                  {% if terms|length %}
+                  {% set term = terms[0] %}
+                  {% if term.slug == 'blog' %}
+                  {% set term_color = 'text-heading-fill-highlight-1' %}
+                  {% elseif term.slug == 'latest-news' %}
+                  {% set term_color = 'text-heading-fill-highlight-2' %}
+                  {% elseif term.slug == 'whitepaper' %}
+                  {% set term_color = 'text-heading-fill-highlight-3' %}
+                  {% endif %}
+                  {% endif %}
+                  <div class="swiper-slide w-[303px] h-auto mr-6">
+                        {% include "components/post-card.twig" %}
+                  </div>
+                  {% endfor %}
+            </div>
+      </div>
+</div>
+{% endif %}
+{% endblock %}

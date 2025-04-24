@@ -42,7 +42,7 @@ export function filterFaqs() {
       filterButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.filter === filterValue));
     }
 
-    // 🟢 Look for default filter based on .active class
+    // set default filter based on .active class
     const defaultActive = section.querySelector(".faq-filter-button.active");
     const defaultFilter = defaultActive?.dataset.filter || null;
     applyFilter(defaultFilter);

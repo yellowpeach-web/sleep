@@ -1,0 +1,52 @@
+{% if data %}
+{# above xl #}
+<div class="flex-col gap-4 hidden xl:flex">
+      <h2 class="m-0 title-small">{{ data.name }}</h2>
+      <ul class="flex flex-col gap-4 pl-0 list-none">
+            {% for item in data.items %}
+            <li>
+                  <a href="{{ item.link }}" title="Go to {{ item.title }}"
+                        class="flex flex-col gap-1 no-link-style group">
+                        <span
+                              class="subtitle-small group-hover:text-text-link-fill-hover general-transition text-text-heading-fill-primary">
+                              {{ item.title }}
+                        </span>
+                        <p class="!m-0 text-text-body-fill-primary">
+                              {{ item.meta('synopsis') }}
+                        </p>
+                  </a>
+            </li>
+            {% endfor %}
+      </ul>
+</div>
+{# below xl #}
+<li class="pl-0 accordion flex flex-col w-full hover:cursor-pointer py-8 bg-surface-primary-bg-fill-default border-b border-background-primary-bg-stroke xl:hidden"
+      aria-expanded="false" role="button">
+      <div class=" flex items-center justify-between gap-sm">
+            {% if data.name %}
+            <h3 class="m-0 text-text-heading-fill-primary title-small">
+                  {{ data.name }}
+            </h3>
+            {% endif %}
+            <div class="shrink-0 stroke-ui-icon-fill-primary-default">
+                  {% include "resources/images/icons/plus.twig" %}
+            </div>
+      </div>
+      <ul class="pl-0 accordion-content pt-6 flex flex-col gap-4 list-none xl:hidden">
+            {% for item in data.items %}
+            <li>
+                  <a href="{{ item.link }}" title="Go to {{ item.title }}"
+                        class="flex flex-col gap-1 no-link-style group">
+                        <span
+                              class="subtitle-small group-hover:text-text-link-fill-hover general-transition text-text-heading-fill-primary">
+                              {{ item.title }}
+                        </span>
+                        <p class="!m-0 text-text-body-fill-primary">
+                              {{ item.meta('synopsis') }}
+                        </p>
+                  </a>
+            </li>
+            {% endfor %}
+      </ul>
+</li>
+{% endif %}

@@ -161,7 +161,9 @@ class TimberAcfBlocks
         $context['fields'] = get_fields();
 
 
-        // Get posts archive data for posts archive block
+        // Get block specific posts
+        $context['insights'] = self::get_posts_feed($block);
+        $context['insight_terms'] = self::get_post_terms($block);
         $context['posts'] = self::get_posts_archive($block);
         $context['testimonials'] = self::get_testimonials($block);
         $context['faqs'] = self::get_faqs($block);
@@ -245,8 +247,9 @@ class TimberAcfBlocks
     /**
      * Get posts helper
      */
-    private static function get_related_posts($block, $block_name, $post_type, $field_name)
+    public static function get_related_posts($block, $block_name, $post_type, $field_name, $posts_amount = -1, $term_args = [])
     {
+
         if ($block['name'] !== $block_name) {
             return [];
         }
@@ -260,17 +263,47 @@ class TimberAcfBlocks
                     'post_type'      => $post_type,
                     'post__in'       => $selected,
                     'orderby'        => 'post__in',
-                    'posts_per_page' => -1
+                    'posts_per_page' => $posts_amount
                 ]);
             }
             return [];
         }
 
-        return Timber::get_posts([
+        $args = [
             'post_type'      => $post_type,
-            'posts_per_page' => -1
-        ]);
+            'posts_per_page' => $posts_amount,
+        ];
+
+        if (!empty($term_args['taxonomy']) && !empty($term_args['term'])) {
+            $args['tax_query'] = [
+                [
+                    'taxonomy' => $term_args['taxonomy'],
+                    'field'    => 'slug',
+                    'terms'    => $term_args['term'],
+                ]
+            ];
+        }
+
+        return Timber::get_posts($args);
     }
+
+    private static function get_filter_terms($taxonomy, $post_type, $hide_empty = true, $uncat = false)
+    {
+        $args = [
+            'taxonomy'   => $taxonomy,
+            'hide_empty' => $hide_empty,
+        ];
+        $terms = Timber::get_terms($args);
+
+        if (!$uncat && is_array($terms)) {
+            $terms = array_filter($terms, function ($term) {
+                return $term->slug !== 'uncategorized';
+            });
+        }
+
+        return $terms;
+    }
+
 
     /**
      * Block specific methods
@@ -298,6 +331,18 @@ class TimberAcfBlocks
     private static function get_faqs($block)
     {
         return self::get_related_posts($block, 'acf/faqs', 'faq', 'faqs');
+    }
+
+    private static function get_post_terms($block)
+    {
+        if ($block['name'] == 'acf/posts-feed') {
+            return self::get_filter_terms('category', 'post');
+        }
+    }
+
+    public static function get_posts_feed($block, $term_args = [])
+    {
+        return self::get_related_posts($block, 'acf/posts-feed', 'post', 'posts', 6, $term_args);
     }
 
     private static function get_testimonials($block)

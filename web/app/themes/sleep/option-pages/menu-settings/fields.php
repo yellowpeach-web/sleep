@@ -3,6 +3,7 @@
 use YPTheme\AcfBuilder\ThemeFieldBuilder;
 
 $menu_item_footer = new ThemeFieldBuilder('Menu fields -footer');
+$menu_item_product = new ThemeFieldBuilder('Menu fields -product');
 $menu_item_legal = new ThemeFieldBuilder('Menu fields -legal');
 $menu_item_prime = new ThemeFieldBuilder('Menu fields -primary');
 
@@ -26,4 +27,11 @@ $menu_item_legal
     'label' => 'Page synopsis',
   ])
   ->setLocation('nav_menu_item', '==', 'location/legal-navigation')
+  ->setFields();
+
+$menu_item_product
+  ->addTextarea('synopsis', [
+    'label' => 'Page synopsis',
+  ])
+  ->setLocation('nav_menu_item', '==', 'location/products-navigation')
   ->setFields();

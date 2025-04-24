@@ -1,38 +1,26 @@
-<article class="news-item" itemscope itemtype="https://schema.org/Article">
-    <a {{ get_link_attr(item) }} class="no-link-style" aria-label="Read more about {{ item.title }}" role="article">
-        <!-- Image -->
-        <div class="block h-[300px]">
-            {{ responsive_img(item.thumbnail,{
-            size:'large',
-            alt:item.thumbnail.alt,
-            class:'object-cover h-full w-full',
-            itemprop: 'image'
-            }) }}
-        </div>
-        <!-- Date -->
-        <time class="date" itemprop="datePublished" datetime="{{ item.post_date|date('c') }}">
-            {{ item.post_date|date('d M Y') }}
-        </time>
-        <!-- Heading -->
-        <h2 itemprop="headline">{{ item.title }}</h2>
-        <!-- Read time -->
-        {% if item.read_time %}
-        <p class="" itemprop="readingTime" content="{{ item.read_time }}">
-            Read time: {{ item.read_time }} min
+<article
+    class="bg-surface-primary-bg-fill-default hover:bg-surface-primary-bg-fill-hover p-8 w-full group border border-surface-primary-bg-stroke-default general-transition rounded"
+    itemscope itemtype="https://schema.org/Article" role="article">
+    <a href="{{item.link}}" class="no-link-style flex flex-col gap-3" aria-label="Read more about {{ item.title }}"
+        title="Read more about {{ item.title }}" itemprop="url">
+        {% if term %}
+        <p class="!m-0 overline-large text-{{term_color}}">
+            {{term}}
         </p>
         {% endif %}
-        <!-- Excerpt -->
-        <p class="" itemprop="description">
-            {{ item.excerpt({ words: 40, read_more: false }) }}
+        <div class="flex items-start gap-6">
+            <h3 class="m-0 title-small" itemprop="headline">
+                {{item.title}}
+            </h3>
+            <div
+                class="h-5 xl:h-6 w-auto shrink-0 grow-0 fill-text-heading-fill-secondary group-hover:fill-{{term_color}}">
+                {% include "resources/images/icons/arrow.svg" %}
+            </div>
+        </div>
+        {% if item.excerpt %}
+        <p class="!m-0 body-small" itemprop="description">
+            {{ item.excerpt.strip(true).read_more('').length(999) | truncate(20, true, '…') }}
         </p>
-        <!-- Button -->
-        {% include 'components/button.twig' with {
-        button:{
-        url:item.link,
-        title:'Read more',
-        },
-        class:'',
-        span: true
-        } %}
+        {% endif %}
     </a>
 </article>

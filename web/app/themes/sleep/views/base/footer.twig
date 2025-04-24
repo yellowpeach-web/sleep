@@ -2,10 +2,94 @@
 {# wrapper end - we need this extra closing tag here #}
 
 {# Footer content... #}
-<footer class="mx-auto text-center">
-	{# {{ '©'|raw }}
-	Copyright
-	{{ "now"|date('Y') }} #}
+<footer class="dark-theme">
+	<div class="section-wrapper bg-background-secondary-bg-fill pt-16 md:pt-24 pb-16 md:pb-24 xl:pb-14">
+		<div class="yp-container flex flex-col gap-14">
+			<div class="flex justify-between items-center">
+				<a href="{{home_url}}" title="Take me to the homepage"
+					class="no-link-style w-auto flex grow-0 shrink-0 h-11" aria-label="Homepage" rel="home">
+					{% include "resources/images/logo.svg" %}
+				</a>
+				{% if general_settings.footer_button %}
+				{% include 'components/button.twig' with {
+				button: general_settings.footer_button,
+				class:'primary',
+				} %}
+				{% endif %}
+			</div>
+			{# above XL #}
+			<ul class="hidden xl:grid grid-cols-4 gap-8 pl-0">
+				<li class="col-span-3 list-none">
+					<nav class="grid grid-cols-3 gap-8" aria-label="Footer Navigation">
+						{% include "components/footer-menu-section.twig" with {data: products_nav} %}
+						{% include "components/footer-menu-section.twig" with {data: discover_nav} %}
+						{% include "components/footer-menu-section.twig" with {data: legal_nav} %}
+					</nav>
+				</li>
+				<li class="flex flex-col gap-4 list-none">
+					<h2 class="m-0 title-small">
+						contact
+					</h2>
+					{% for item in general_settings.location %}
+					<div class="flex flex-col gap-1">
+						<h3 class="!m-0 subtitle-small">
+							{{ item.heading }}
+						</h3>
+						<address class="body-small">
+							{{ item.address | nl2br }}
+						</address>
+					</div>
+					{% endfor %}
+				</li>
+			</ul>
+			{# below xl #}
+			<nav>
+				<ul class="accordion-container pl-0 flex-col w-full gap-0 xl:hidden">
+					{% include "components/footer-menu-section.twig" with {data: products_nav} %}
+					{% include "components/footer-menu-section.twig" with {data: discover_nav} %}
+					{% include "components/footer-menu-section.twig" with {data: legal_nav} %}
+					<li class="pl-0 accordion flex flex-col w-full hover:cursor-pointer py-8 bg-surface-primary-bg-fill-default border-b border-background-primary-bg-stroke xl:hidden"
+						aria-expanded="false" role="button">
+						<div class=" flex items-center justify-between gap-sm">
+							<h3 class="m-0 text-text-heading-fill-primary title-small">
+								Contact
+							</h3>
+							<div class="shrink-0 stroke-ui-icon-fill-primary-default">
+								{% include "resources/images/icons/plus.twig" %}
+							</div>
+						</div>
+						<ul class="pl-0 accordion-content pt-6 flex flex-col gap-4 list-none xl:hidden">
+							{% for item in general_settings.location %}
+							<div class="flex flex-col gap-1">
+								<h3 class="!m-0 subtitle-small">
+									{{ item.heading }}
+								</h3>
+								<address class="body-small">
+									{{ item.address | nl2br }}
+								</address>
+							</div>
+							{% endfor %}
+						</ul>
+					</li>
+				</ul>
+			</nav>
+			<div class="flex flex-wrap gap-2 xl:gap-1 xl:justify-center">
+				<p class="!m-0 body-large xl:text-center">
+					© {{ "now"|date("Y") }} Consumer Sleep Solutions LLC.
+				</p>
+				<p class="!m-0 body-large xl:text-center">
+					All rights reserved.
+				</p>
+				<p class="!m-0 body-large xl:text-center">
+					Website by
+					<a class="underline underline-offset-4 text-nowrap" href="https://yellowpeach.co.uk/"
+						target="_blank">
+						Yellow Peach.
+					</a>
+				</p>
+			</div>
+		</div>
+	</div>
 </footer>
 {# ...Footer content #}
 

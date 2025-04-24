@@ -30,4 +30,10 @@ export function initSwipers() {
       },
     },
   });
+  const posts = new Swiper(".posts-swiper", {
+    slidesPerView: "auto",
+    grabCursor: true,
+    navigation: {},
+    breakpoints: {},
+  });
 }

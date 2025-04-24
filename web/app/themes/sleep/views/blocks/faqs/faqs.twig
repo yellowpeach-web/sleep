@@ -1,16 +1,16 @@
 {% extends "components/block-wrapper.twig" %}
 {% block block_content %}
 <div class="yp-container faq-section">
-      <div class="flex flex-col gap-10 items-center">
+      <div class="flex flex-col gap-10 md:items-center">
 
             <div class="flex flex-col gap-4 items-center">
                   {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
-                  class:'headline-small text-center'} %}
-                  {% include 'components/content.twig' with {class: 'm-0 body-small text-center'} %}
+                  class:'headline-small md:text-center'} %}
+                  {% include 'components/content.twig' with {class: 'm-0 body-small md:text-center'} %}
             </div>
 
             {% if fields.include_filter %}
-            <div class="flex items-center gap-3 text-button-primary-text-fill-default">
+            <div class="flex items-center gap-3 text-button-primary-text-fill-default flex-wrap gap-y-1.5">
                   <button data-filter="business"
                         class="faq-filter-button py-2.5 px-5 border-button-primary-bg-stroke-default active">
                         For Business
@@ -47,9 +47,7 @@
                   </ul>
                   {# below xl #}
                   <ul class="accordion-container faq-single-col pl-0 list-none flex flex-col w-full gap-sm xl:hidden">
-                        {% for item in faqs %}
-                        {% include "components/accordion-segment.twig" %}
-                        {% endfor %}
+                        {# rendered via JS #}
                   </ul>
             </div>
             {% endif %}
