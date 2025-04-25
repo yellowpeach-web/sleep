@@ -1,0 +1,23 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+<div class="padding-top-regular padding-bottom-regular section-wrapper overflow-clip relative">
+      <div
+            class="w-[280px] md:w-[380px] xl:w-[500px] rotate-[-135deg] absolute bottom-[-25%] left-[-25%] md:left-[-12%] fill-background-primary-shape-fill">
+            {% include "resources/images/icons/blob-2.svg" %}
+      </div>
+      <div
+            class="w-[280px] md:w-[380px] xl:w-[500px] rotate-[-120deg] absolute top-[-25%] right-[-25%] md:right-[-12%] fill-background-primary-shape-fill">
+            {% include "resources/images/icons/blob-2.svg" %}
+      </div>
+      <div class="yp-container content-width-sm flex flex-col items-center gap-6">
+            {% if fields.secondary_heading %}
+            <h2 class="!m-0 text-text-heading-fill-highlight-2 title-small text-center">
+                  {{fields.secondary_heading}}
+            </h2>
+            {% endif %}
+            {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
+            class:'headline-small text-center'} %}
+            {% include 'components/content.twig' with {class: 'm-0 body-small text-center'} %}
+      </div>
+</div>
+{% endblock %}

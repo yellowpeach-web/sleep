@@ -1,0 +1,22 @@
+{% if primary_nav %}
+<nav class="menu-modal bg-background-primary-bg-fill md:hidden" role="navigation" aria-label="Primary Navigation"
+      itemscope itemtype="https://schema.org/SiteNavigationElement">
+      <div class="yp-container pb-5">
+            <ul class="list-none pl-0 flex flex-col">
+                  {% for item in primary_nav.items %}
+                  {% set is_active = (item.url == fn('get_permalink')) %}
+                  <li class="m-0" itemprop="name">
+                        <a title="{{ item.title }}"
+                              class="py-6 title-large border-b border-background-primary-bg-stroke no-link-style flex items-center justify-between mob-nav-item {{ is_active ? 'active' : '' }}"
+                              href="{{ item.url }}">
+                              {{ item.title }}
+                              <div class="mob-nav-icon w-6 h-auto fill-text-body-fill-primary">
+                                    {% include "resources/images/icons/arrow.svg" %}
+                              </div>
+                        </a>
+                  </li>
+                  {% endfor %}
+            </ul>
+      </div>
+</nav>
+{% endif %}

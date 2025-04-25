@@ -1,0 +1,29 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+<div class="yp-container">
+      <div class="flex gap-12 md:gap-16 xl:gap-24 flex-col xl:flex-row">
+            <div class="flex flex-col gap-6">
+                  <div class="flex flex-col gap-3">
+                        {% if fields.subheading %}
+                        <h3 class="!m-0 title-small text-text-heading-fill-highlight-2">
+                              {{fields.subheading}}
+                        </h3>
+                        {% endif %}
+                        {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
+                        class:'headline-small'} %}
+                  </div>
+                  {% include 'components/content.twig' with {class: 'm-0 body-large'} %}
+            </div>
+            <div class="w-full xl:w-[632px] bg-surface-primary-bg-fill-default p-6 md:p-10 rounded-lg shrink-0 h-fit">
+                  {% if fields.form_id %}
+                  {{ fn(
+                  'do_shortcode',
+                  '[gravityform id=' ~ fields.form_id ~ '
+                  ajax=true title=false
+                  description=false]'
+                  ) }}
+                  {% endif %}
+            </div>
+      </div>
+</div>
+{% endblock %}

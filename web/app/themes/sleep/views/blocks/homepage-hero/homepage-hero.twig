@@ -1,10 +1,11 @@
 {% extends "components/block-wrapper.twig" %}
 {% block block_content %}
 <div class="overflow-clip">
-      <div class=" yp-container flex flex-col gap-10 md:gap-24 xl:flex-row xl:justify-between xl:items-center xl:gap-0">
+
+      <div class="yp-container flex flex-col gap-12 md:gap-24 xl:flex-row xl:justify-between xl:items-center xl:gap-0">
 
             {# content #}
-            <div class="pt-10 md:pt-24 xl:pb-24 flex flex-col gap-10 w-full xl:w-[544px]">
+            <div class="pt-12 md:pt-16 xl:pb-24 flex flex-col gap-10 w-full xl:w-[544px]">
                   <div class="flex flex-col gap-8">
                         {% include 'components/heading.twig' with {
                         tag: fields.tag,
@@ -19,9 +20,10 @@
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-x-sm gap-y-3 md:gap-y-4"
                         aria-labelledby="stats-heading" itemscope itemtype="https://schema.org/Statistics">
                         {% for item in fields.statistics %}
-                        <div class="flex items-center justify-between border-b pb-3 md:pb-4 border-background-primary-bg-stroke"
+                        {% set is_last_two = loop.revindex <= 2 %} <div
+                              class="flex items-center xl:justify-between gap-3 border-background-primary-bg-stroke {% if not is_last_two %}border-b pb-4 {% else %} pb-4 border-b md:pb-0 md:border-b-0 last:border-b-0 last:pb-0 {% endif %}"
                               itemscope itemprop="hasPart" itemtype="https://schema.org/QuantitativeValue">
-                              <p class="!m-0 flex title-large text-text-heading-fill-primary">
+                              <p class="!m-0 flex title-large text-text-heading-fill-primary min-w-[72px]">
                                     {% if item.prefix %}
                                     <span aria-hidden="true" itemprop="unitText">{{ item.prefix }}</span>
                                     {% endif %}
@@ -46,41 +48,40 @@
                                     {{ item.copy }}
                               </p>
                               {% endif %}
-
-                        </div>
-                        {% endfor %}
                   </div>
-            </div>
-            {# phone images #}
-            <div
-                  class="relative mx-auto w-full h-[410px] md:w-[400px] md:h-[490px] xl:w-[415px] xl:h-[525px] mb-10 md:mb-24 xl:mb-0">
-
-                  <span
-                        class="absolute top-1/2 left-1/2 w-[440px] md:w-[530px] xl:w-[550px] h-auto -translate-x-1/2 -translate-y-1/2  fill-background-primary-shape-fill">
-                        {% include "resources/images/icons/blob-2.svg" %}
-                  </span>
-
-                  {% if fields.hero_image_secondary %}
-                  <div class="absolute w-fit top-0 right-0 hero-phone-1">
-                        {{ responsive_img(
-                        fields.hero_image_secondary, {
-                        size: 'large',
-                        class: 'object-contain w-fit h-[360px] md:h-[420px] xl:h-[450px]',
-                        })
-                        }}
-                  </div>
-                  {% endif %}
-                  {% if fields.hero_image_primary %}
-                  <div class="absolute w-fit bottom-0 left-0 hero-phone-2">
-                        {{ responsive_img(
-                        fields.hero_image_primary, {
-                        size: 'large',
-                        class: 'object-contain w-fit h-[360px] md:h-[420px] xl:h-[450px]',
-                        })
-                        }}
-                  </div>
-                  {% endif %}
+                  {% endfor %}
             </div>
       </div>
+      {# phone images #}
+      <div
+            class="relative mx-auto xl:mx-0 w-full h-[410px] md:w-[400px] md:h-[490px] xl:w-[415px] xl:h-[525px] mb-12 md:mb-16 xl:mb-0">
+            <span
+                  class="absolute top-1/2 left-1/2 w-[440px] md:w-[530px] xl:w-[550px] h-auto -translate-x-1/2 -translate-y-1/2  fill-background-primary-shape-fill">
+                  {% include "resources/images/icons/blob-2.svg" %}
+            </span>
+
+            {% if fields.hero_image_secondary %}
+            <div class="absolute w-fit top-0 right-0 hero-phone-1">
+                  {{ responsive_img(
+                  fields.hero_image_secondary, {
+                  size: 'large',
+                  class: 'object-contain w-fit h-[360px] md:h-[420px] xl:h-[450px]',
+                  })
+                  }}
+            </div>
+            {% endif %}
+            {% if fields.hero_image_primary %}
+            <div class="absolute w-fit bottom-0 left-0 hero-phone-2">
+                  {{ responsive_img(
+                  fields.hero_image_primary, {
+                  size: 'large',
+                  class: 'object-contain w-fit h-[360px] md:h-[420px] xl:h-[450px]',
+                  })
+                  }}
+            </div>
+            {% endif %}
+      </div>
+
+</div>
 </div>
 {% endblock %}

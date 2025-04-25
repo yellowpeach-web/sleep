@@ -6,6 +6,7 @@ import { initHoverImageCursor } from "./image-cursor.js";
 import { initSwipers } from "./swiper";
 import { filterFaqs } from "./faq-filter.js";
 import { initMasonary } from "./masonary.js";
+import { initHamburger } from "./hamburger.js";
 // import AOS from 'aos';
 $(document).ready(function () {
   initAccordions();
@@ -15,4 +16,5 @@ $(document).ready(function () {
   initSwipers();
   filterFaqs();
   initMasonary();
+  initHamburger();
 });

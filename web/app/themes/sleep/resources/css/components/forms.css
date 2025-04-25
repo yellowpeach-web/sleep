@@ -17,7 +17,7 @@ form {
     /* field */
     @apply border rounded bg-input-bg-fill-default focus:bg-input-bg-fill-focused disabled:bg-input-bg-fill-disabled border-input-bg-stroke-default focus:border-input-bg-stroke-focused disabled:border-input-bg-stroke-disabled !important;
     /* text */
-    @apply text-input-fill-default placeholder:text-input-fill-placeholder disabled:text-input-fill-disabled text-input font-medium !important;
+    @apply text-input-fill-default placeholder:text-input-fill-placeholder disabled:text-input-fill-disabled text-input font-medium  !important;
   }
 
   /* Custom chevron for selects  */
@@ -36,7 +36,7 @@ form {
   .ginput_container_select {
     @apply relative !important;
     select {
-      @apply pl-[32px] !important;
+      @apply pl-[38px] !important;
     }
   }
   .input-container,
@@ -49,7 +49,7 @@ form {
   .ginput_container--name {
     @apply relative;
     input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]) {
-      @apply pl-[32px] !important;
+      @apply pl-[38px] !important;
     }
   }
   .ginput_container--name::before {
@@ -61,19 +61,33 @@ form {
     .ginput_container_email {
       @apply relative;
       input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]) {
-        @apply pl-[32px] !important;
+        @apply pl-[38px] !important;
       }
     }
     .ginput_container_email:not(.no-icon)::before {
       content: "";
-      @apply absolute left-3 top-1/2 -translate-y-1/2 size-4 bg-input-email bg-no-repeat bg-contain pointer-events-none;
+      @apply absolute left-3 top-1/2 -translate-y-1/2 size-4 bg-input-email bg-no-repeat bg-contain pointer-events-none fill-input-icon-fill-default;
+    }
+  }
+
+  .gfield.business {
+    .ginput_container {
+      @apply relative;
+      input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]) {
+        @apply pl-[38px] !important;
+      }
+    }
+
+    .ginput_container::before {
+      content: "";
+      @apply absolute left-3 top-1/2 -translate-y-1/2 size-4 bg-input-business bg-no-repeat bg-contain pointer-events-none fill-input-icon-fill-default;
     }
   }
 
   .ginput_container_phone {
     @apply relative;
     input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]) {
-      @apply pl-[32px] !important;
+      @apply pl-[38px] !important;
     }
   }
   .ginput_container_phone::before {
@@ -190,7 +204,11 @@ form {
 footer {
   .gform_wrapper {
     .gform_fields {
-      @apply gap-3 md:gap-6  !important;
+      @apply flex gap-3 md:gap-6  !important;
     }
   }
+}
+
+.gform_fields {
+  @apply flex flex-col md:grid  !important;
 }

@@ -74,15 +74,15 @@ body.yp-frontend,
 
 /* Med */
 .gap-md {
-  @apply gap-10;
+  @apply gap-12 md:gap-16;
 }
 
 .gap-x-md {
-  @apply gap-x-10;
+  @apply gap-x-12 md:gap-x-16;
 }
 
 .gap-y-md {
-  @apply gap-y-10;
+  @apply gap-y-12 md:gap-16;
 }
 
 .pt-md {

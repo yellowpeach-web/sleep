@@ -13,7 +13,7 @@ input[type="button"],
 input[type="submit"],
 .y-btn {
   @apply text-base leading-[0.8] font-semibold transition-all ease-in-out duration-200 flex items-center w-fit shrink-0 focus:ring-0 focus:outline-0 !important;
-  @apply py-3.5 px-5 gap-2.5 rounded-full border;
+  @apply py-3.5 px-5 gap-2.5 rounded-full border !important;
   &.primary {
     /* Background */
     @apply bg-button-primary-bg-fill-default hover:bg-button-primary-bg-fill-hover disabled:bg-button-primary-bg-fill-disabled focus:bg-button-primary-bg-fill-focused active:bg-button-primary-bg-fill-pressed !important;

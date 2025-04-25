@@ -14,7 +14,7 @@
             {% set count_color = highlight_classes[index % highlight_classes|length] %}
 
             {% if item.service %}
-            <a class="no-link-style flex justify-between items-start md:items-center gap-sm group pt-6 pb-6 md:pb-8 md:pt-8 border-b border-background-primary-bg-stroke first:pt-0 last:pb-0 last:border-b-0 service-list-item"
+            <a class="no-link-style flex justify-between items-center gap-sm group pt-6 pb-6 md:pb-8 md:pt-8 border-b border-background-primary-bg-stroke first:pt-0 last:pb-0 last:border-b-0 service-list-item"
                   {% if item.service.url %} href="{{item.service.url }}" {% endif %}>
                   {# hover_image #}
                   <div

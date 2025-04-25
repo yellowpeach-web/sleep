@@ -1,7 +1,7 @@
 {% extends "components/block-wrapper.twig" %}
 {% block block_content %}
 <div class="yp-container posts-feed-section">
-      <div class="flex flex-col gap-10 items-center">
+      <div class="flex flex-col gap-12 md:gap-16 items-center">
             <div class="flex flex-col gap-8 md:items-center">
                   <div class="flex flex-col gap-6 items-center">
                         {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
@@ -12,12 +12,12 @@
                   {% if insight_terms %}
                   <div class="flex items-center gap-3 text-button-primary-text-fill-default flex-wrap">
                         <button data-filter="all"
-                              class="posts-filter-button py-2.5 px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default active">
+                              class="posts-filter-button !py-2.5 !px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default active">
                               All Insights
                         </button>
                         {% for item in insight_terms %}
-                        <button data-filter="{{item.slug}}"
-                              class="posts-filter-button py-2.5 px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default">
+                        <button data-filter="{{item.slug}}" class="posts-filter-button !py-2.5 
+                              !px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default">
                               {{item.name}}
                         </button>
                         {% endfor %}

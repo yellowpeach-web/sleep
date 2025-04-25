@@ -5,13 +5,13 @@
 <div class="swiper testimonial-swiper" aria-label="Testimonials Carousel" role="region">
       <div class="swiper-wrapper">
             {% for item in testimonials %}
-            <div class="swiper-slide w-[327px] md:w-[608px] xl:w-[736px] rounded-lg bg-surface-primary-bg-fill-default h-auto"
+            <div class="swiper-slide w-[327px] md:w-[608px] xl:w-[736px] rounded-lg bg-surface-primary-bg-fill-default h-fit"
                   itemscope itemtype="https://schema.org/Review">
                   <div itemprop="itemReviewed" itemscope itemtype="https://schema.org/Organization" hidden>
                         <meta itemprop="name" content="Sleep.ai">
                   </div>
                   <div
-                        class="flex flex-col p-8 md:p-14 gap-6 text-text-heading-fill-primary items-center justify-center h-full">
+                        class="flex flex-col p-8 md:p-14 gap-6 text-text-heading-fill-primary items-center justify-center h-full p-sm sm: ">
                         <div class="size-12 rounded-full bg-full-gradient-180 p-[2px] overflow-hidden">
                               <div
                                     class="w-full h-full rounded-full {{background_color}} flex items-center justify-center">

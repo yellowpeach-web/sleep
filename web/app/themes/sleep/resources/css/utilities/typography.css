@@ -84,6 +84,12 @@ a:not(.y-btn):not(.no-link-style) {
   @apply text-text-link-fill-default hover:text-text-link-fill-hover visited:text-text-link-fill-visited ease-in-out;
 }
 
+.reference-link {
+  a {
+    @apply m-0 text-sm md:text-base text-text-body-fill-primary no-underline font-medium !important;
+  }
+}
+
 .content-wrapper {
   *:last-child {
     @apply mb-0 pb-0 !important;

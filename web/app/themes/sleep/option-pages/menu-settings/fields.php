@@ -12,6 +12,10 @@ $menu_item_prime
     'label' => 'None link item?',
     'ui' => 1,
   ])
+  ->addTrueFalse('mobile_only', [
+    'label' => 'only display on mobile screen size?',
+    'ui' => 1,
+  ])
   ->setLocation('nav_menu_item', '==', 'location/primary-navigation')
   ->setFields();
 

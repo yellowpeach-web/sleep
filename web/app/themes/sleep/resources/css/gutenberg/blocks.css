@@ -42,11 +42,11 @@
   }
 
   &.padding-top-regular {
-    @apply pt-14;
+    @apply pt-12 md:pt-16 xl:pt-24;
   }
 
   &.padding-bottom-regular {
-    @apply pb-14;
+    @apply pb-12 md:pb-16 xl:pb-24;
   }
 
   &.padding-top-large {

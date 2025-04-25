@@ -1,0 +1,31 @@
+{
+  "name": "map",
+  "title": "Map",
+  "description": "Map with office locations",
+  "category": "yellow-peach",
+  "icon": "location",
+  "keywords": [
+    "location",
+    "contact",
+    "find us"
+  ],
+  "acf": {
+    "mode": "auto",
+    "validate": false
+  },
+  "supports": {
+    "align": false,
+    "anchor": true,
+    "alignContent": false,
+    "color": {
+      "text": false,
+      "background": true,
+      "link": true
+    },
+    "alignText": true,
+    "spacing": {
+      "margin": false,
+      "padding": true
+    }
+  }
+}

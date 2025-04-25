@@ -12,3 +12,23 @@
 #wrapper-navbar {
   transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
 }
+
+.mob-nav-item.active {
+  @apply text-state-highlight-default !important;
+  .mob-nav-icon {
+    @apply fill-state-highlight-default !important;
+  }
+}
+
+.closed {
+  @apply hidden;
+}
+
+.yp-hamburger.active {
+  .closed {
+    @apply flex;
+  }
+  .open {
+    @apply hidden;
+  }
+}

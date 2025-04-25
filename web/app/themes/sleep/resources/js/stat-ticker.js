@@ -10,13 +10,18 @@ export function initStatsCounter() {
 
     function updateCounter() {
       const targetNumber = +counter.getAttribute("data-target-number");
+
       if (targetNumber === 0) {
         counter.innerText = 0;
         return;
       }
+      if (targetNumber <= 30) {
+        counter.innerText = formatNumber(targetNumber);
+      }
 
       const current = +counter.innerText;
-      const increment = targetNumber / 30;
+      let increment = targetNumber / 30;
+
       let rateOfChange = 50;
       if (current < targetNumber) {
         counter.innerText = Math.ceil(current + increment);
