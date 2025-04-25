@@ -1,32 +1,13 @@
 {% extends "components/block-wrapper.twig" %}
 {% block block_content %}
-<div class="yp-container faq-section">
+<div class="yp-container filter-data-section">
       <div class="flex flex-col gap-12 md:gap-16 md:items-center">
 
-            <div class="flex flex-col gap-6 md:gap-8 items-center">
-                  <div class="flex flex-col gap-4 items-center">
-                        {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
-                        class:'headline-small md:text-center'} %}
-                        {% include 'components/content.twig' with {class: 'm-0 body-small md:text-center'} %}
-                  </div>
-
-                  {% if fields.include_filter %}
-                  <div class="flex items-center gap-3 text-button-primary-text-fill-default flex-wrap gap-y-1.5">
-                        <button data-filter="business"
-                              class="faq-filter-button !py-2.5 !px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default active">
-                              For Business
-                        </button>
-                        <button data-filter="personal-sleep"
-                              class="faq-filter-button !py-2.5 !px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default">
-                              For Personal Sleep
-                        </button>
-                  </div>
-                  {% endif %}
-            </div>
+            {% include "components/filters-with-heading.twig" with {terms: faq_terms} %}
 
             {% if faqs %}
             {# Hidden source FAQ items (for JS cloning) #}
-            <ul id="all-faqs" class="hidden">
+            <ul id="all-data" class="hidden">
                   {% for item in faqs %}
                   {% set terms = item.terms('filter') %}
                   {% if terms|length %}
@@ -40,15 +21,16 @@
             <div class="grid gap-sm grid-cols-1 xl:grid-cols-2" itemscope itemtype="https://schema.org/FAQPage">
                   {# xl and above #}
                   <ul data-col="left"
-                        class="accordion-container faq-col pl-0 list-none hidden flex-col w-full gap-sm xl:flex">
+                        class="accordion-container data-container faq-col pl-0 list-none hidden flex-col w-full gap-sm xl:flex">
                         {# rendered via JS #}
                   </ul>
                   <ul data-col="right"
-                        class="accordion-container faq-col pl-0 list-none hidden flex-col w-full gap-sm xl:flex">
+                        class="accordion-container data-container faq-col pl-0 list-none hidden flex-col w-full gap-sm xl:flex">
                         {# rendered via JS #}
                   </ul>
                   {# below xl #}
-                  <ul class="accordion-container faq-single-col pl-0 list-none flex flex-col w-full gap-sm xl:hidden">
+                  <ul
+                        class="accordion-container data-container single-col pl-0 list-none flex flex-col w-full gap-sm xl:hidden">
                         {# rendered via JS #}
                   </ul>
             </div>

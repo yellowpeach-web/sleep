@@ -2,6 +2,7 @@
 {% block block_content %}
 <div class="yp-container posts-feed-section">
       <div class="flex flex-col gap-12 md:gap-16 items-center">
+
             <div class="flex flex-col gap-8 md:items-center">
                   <div class="flex flex-col gap-6 items-center">
                         {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
@@ -23,8 +24,8 @@
                         {% endfor %}
                   </div>
                   {% endif %}
-
             </div>
+
             {% if insights %}
             {# above md view... #}
             <div class="blog-feed-container w-full h-fit hidden md:block">

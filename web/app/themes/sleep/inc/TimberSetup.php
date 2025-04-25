@@ -167,6 +167,9 @@ class TimberAcfBlocks
         $context['posts'] = self::get_posts_archive($block);
         $context['testimonials'] = self::get_testimonials($block);
         $context['faqs'] = self::get_faqs($block);
+        $context['faq_terms'] = self::get_faq_terms($block);
+        $context['team'] = self::get_team($block);
+        $context['team_terms'] = self::get_team_terms($block);
 
         // Assign block spacing 
         $context['block_spacing'] = trim(
@@ -287,7 +290,7 @@ class TimberAcfBlocks
         return Timber::get_posts($args);
     }
 
-    private static function get_filter_terms($taxonomy, $post_type, $hide_empty = true, $uncat = false)
+    private static function get_filter_terms($taxonomy, $hide_empty = true, $uncat = false)
     {
         $args = [
             'taxonomy'   => $taxonomy,
@@ -328,6 +331,11 @@ class TimberAcfBlocks
         return;
     }
 
+    private static function get_team($block)
+    {
+        return self::get_related_posts($block, 'acf/meet-the-team', 'team', 'teams');
+    }
+
     private static function get_faqs($block)
     {
         return self::get_related_posts($block, 'acf/faqs', 'faq', 'faqs');
@@ -336,7 +344,21 @@ class TimberAcfBlocks
     private static function get_post_terms($block)
     {
         if ($block['name'] == 'acf/posts-feed') {
-            return self::get_filter_terms('category', 'post');
+            return self::get_filter_terms('category');
+        }
+    }
+
+    private static function get_faq_terms($block)
+    {
+        if ($block['name'] == 'acf/faqs') {
+            return self::get_filter_terms('filter');
+        }
+    }
+
+    private static function get_team_terms($block)
+    {
+        if ($block['name'] == 'acf/meet-the-team') {
+            return self::get_filter_terms('department');
         }
     }
 

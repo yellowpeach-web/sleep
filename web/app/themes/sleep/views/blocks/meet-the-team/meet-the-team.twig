@@ -1,0 +1,56 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+<div class="filter-data-section">
+      <div class="yp-container">
+            <div class="flex flex-col gap-12 md:gap-16 md:items-center">
+
+                  {% include "components/filters-with-heading.twig" with {terms: team_terms} %}
+
+                  {% if team %}
+                  {# Hidden source FAQ items (for JS cloning) #}
+                  <ul id="all-data" class="hidden">
+                        {% for item in team %}
+                        {% set terms = item.terms('department') %}
+                        {% if terms|length %}
+                        {% set term = terms[0] %}
+                        {% endif %}
+                        {% include "components/team-card.twig" with {item: item} %}
+                        {% endfor %}
+                  </ul>
+
+                  {# Displayed FAQ containers #}
+                  <div class="grid w-full gap-sm grid-cols-1 xl:grid-cols-2">
+                        {# xl and above #}
+                        <ul data-col="left" class="data-container pl-0 list-none hidden flex-col w-full gap-sm xl:flex">
+                              {# rendered via JS #}
+                        </ul>
+                        <ul data-col="right"
+                              class="data-container pl-0 list-none hidden flex-col w-full gap-sm xl:flex">
+                              {# rendered via JS #}
+                        </ul>
+                        {# below xl #}
+                        <ul
+                              class="data-container single-col pl-0 list-none hidden md:flex flex-col w-full gap-sm xl:hidden">
+                              {# rendered via JS #}
+                        </ul>
+                  </div>
+
+                  {% endif %}
+
+            </div>
+      </div>
+      {# Mobile #}
+      {% if team %}
+      <div class="yp-container overflow-visible block md:hidden">
+            <div class="swiper team-swiper overflow-visible">
+                  <ul class="pl-0 swiper-wrapper swiper-col data-container single-col">
+                        {# rendered via JS #}
+                  </ul>
+            </div>
+            <div class="yp-container pt-12">
+                  <div class="swiper-pagination absolute !bottom-0 flex items-center gap-3 justify-center"></div>
+            </div>
+      </div>
+      {% endif %}
+</div>
+{% endblock %}

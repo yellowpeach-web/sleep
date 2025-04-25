@@ -1,7 +1,7 @@
 import Swiper from "swiper";
 import { Autoplay, Controller, Navigation, Pagination } from "swiper/modules";
 Swiper.use([Autoplay, Navigation, Pagination, Controller]);
-
+export let teamSwiper;
 export function initSwipers() {
   const testimonialSwiper = new Swiper(".testimonial-swiper", {
     slidesPerView: "auto",
@@ -35,5 +35,20 @@ export function initSwipers() {
     grabCursor: true,
     navigation: {},
     breakpoints: {},
+  });
+  teamSwiper = new Swiper(".team-swiper", {
+    slidesPerView: "auto",
+    grabCursor: true,
+    navigation: {},
+    breakpoints: {},
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+      type: "bullets",
+      renderBullet: function (index, className) {
+        const totalSlides = this.slides.length;
+        return `<span class="${className}" aria-label="View slide ${index + 1} of ${totalSlides}"></span>`;
+      },
+    },
   });
 }

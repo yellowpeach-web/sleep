@@ -1,0 +1,48 @@
+<li class="h-fit w-[303px] flex flex-col md:flex-row md:w-full rounded bg-surface-primary-bg-fill-default overflow-hidden"
+      data-term="{{term.slug}}">
+      <div class="w-full h-[280px] md:w-[212px] md:h-full overflow-hidden shrink-0">
+            {% if item.thumbnail %}
+            {{ responsive_img(
+            item.thumbnail, {
+            size: 'large',
+            class: 'object-cover w-full h-full',
+            })
+            }}
+            {% endif %}
+      </div>
+      <div class="p-8 flex flex-col gap-3">
+            <div class="flex flex-col gap-1.5">
+                  {% if item.name %}
+                  <h2 class="!m-0 title-small"> {{item.name}} </h2>
+                  {% endif %}
+                  {% if item.meta('role') %}
+                  <h3 class="!m-0 overline-large text-text-heading-fill-highlight-2">
+                        {{item.meta('role')}}
+                  </h3>
+                  {% endif %}
+            </div>
+
+            {% include 'components/content.twig' with {class: 'm-0 body-small'} %}
+
+            <div class="flex items-center gap-2 mt-1">
+                  {% if item.meta('linkedin') %}
+                  <a href="{{item.meta('linkedin')}}" target="_blank" title="View {{item.name}} on LinkedIn"
+                        class="no-link-style size-7 rounded border border-ui-bg-stroke-default hover:border-ui-bg-stroke-hover general-transition flex items-center justify-center">
+                        {% include "resources/images/icons/linkedin.svg" %}
+                  </a>
+                  {% endif %}
+                  {% if item.meta('x') %}
+                  <a href="{{item.meta('x')}}" target="_blank" title="View {{item.name}} on X"
+                        class="no-link-style size-7 rounded border border-ui-bg-stroke-default hover:border-ui-bg-stroke-hover general-transition flex items-center justify-center">
+                        {% include "resources/images/icons/x_social.svg" %}
+                  </a>
+                  {% endif %}
+                  {% if item.meta('medium') %}
+                  <a href="{{item.meta('medium')}}" target="_blank" title="View {{item.name}} on Medium"
+                        class="no-link-style size-7 rounded border border-ui-bg-stroke-default hover:border-ui-bg-stroke-hover general-transition flex items-center justify-center">
+                        {% include "resources/images/icons/medium.svg" %}
+                  </a>
+                  {% endif %}
+            </div>
+      </div>
+</li>
