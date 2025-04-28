@@ -1,0 +1,12 @@
+<div class="w-full xl:w-[320px] flex flex-col gap-2">
+      {% if item.stat %}
+      <h3 class="!m-0 text-text-heading-fill-highlight-2 display-small">
+            {{item.stat}}
+      </h3>
+      {% endif %}
+      {% if item.context %}
+      <p class="!m-0 text-text-heading-fill-primary subtitle-large">
+            {{item.context }}
+      </p>
+      {% endif %}
+</div>
