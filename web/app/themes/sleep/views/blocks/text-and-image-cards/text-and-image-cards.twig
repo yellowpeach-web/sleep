@@ -1,0 +1,45 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+<div class="yp-container">
+      <div class="flex flex-col gap-24">
+
+            <div class="flex gap-5 xl:gap-24 flex-col xl:flex-row">
+                  <div class="flex flex-col gap-16 w-ull xl:w-[448px] shrink-0">
+                        {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
+                        class:'headline-large'} %}
+                        {% include "components/buttons.twig" with {buttons: fields.buttons, wrapper_class: '!hidden
+                        xl:!flex', button_class: 'primary'} %}
+                  </div>
+                  <div class="w-full flex flex-col gap-8">
+                        {% include 'components/content.twig' with {class: 'm-0 body-large'} %}
+                        {% include "components/buttons.twig" with {buttons: fields.buttons, wrapper_class: '!flex
+                        xl:!hidden', button_class: 'primary'} %}
+                  </div>
+            </div>
+            {# above xl #}
+            {% if fields.cards %}
+            <div class="grid-cols-3 gap-8 hidden xl:grid w-full">
+                  {% for item in fields.cards %}
+                  {% include "components/utility-card.twig" %}
+                  {% endfor %}
+            </div>
+            {% endif %}
+
+      </div>
+</div>
+{# below xl #}
+<div class="yp-offset-container mt-16 xl:hidden">
+      <div class="swiper utility-swiper w-full h-full pr-[calc((100vw-327px)/2)] md:pr-[calc((100vw-608px)/2)]">
+            <div class="swiper-wrapper w-full h-full !flex !items-stretch">
+                  {% for item in fields.cards %}
+                  <div class="swiper-slide w-auto h-auto">
+                        {% include "components/utility-card.twig" %}
+                  </div>
+                  {% endfor %}
+            </div>
+      </div>
+</div>
+<span class="xl:hidden block">
+      {% include "components/swiper-pagination.twig" %}
+</span>
+{% endblock %}

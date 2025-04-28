@@ -1,0 +1,31 @@
+{
+  "name": "text-and-image-cards",
+  "title": "Text and Image Cards",
+  "description": "A utility block to display text with image cards",
+  "category": "yellow-peach",
+  "icon": "block-default",
+  "keywords": [
+    "block",
+    "cards",
+    "services"
+  ],
+  "acf": {
+    "mode": "auto",
+    "validate": false
+  },
+  "supports": {
+    "align": false,
+    "anchor": true,
+    "alignContent": false,
+    "color": {
+      "text": false,
+      "background": true,
+      "link": true
+    },
+    "alignText": true,
+    "spacing": {
+      "margin": false,
+      "padding": true
+    }
+  }
+}

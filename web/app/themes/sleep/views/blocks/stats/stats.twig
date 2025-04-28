@@ -8,7 +8,7 @@
                   {% include 'components/content.twig' with {class: 'm-0 body-large'} %}
             </div>
             {% if fields.stats %}
-            <div class="grid grid-cols-2 gap-x-3 gap-y-6 md:gap-y-8 justify-between mt-auto">
+            <div class="grid grid-cols-2 gap-x-3 gap-y-6 md:gap-y-8 justify-between mt-auto w-full grow">
                   {% for item in fields.stats %}
                   {% include "components/stat.twig" %}
                   {% endfor %}
