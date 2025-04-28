@@ -1,0 +1,79 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+<div class="overflow-clip pb-2">
+
+      <div class="yp-container flex flex-col gap-20 md:gap-24 xl:flex-row xl:justify-between xl:items-start">
+
+            {# content #}
+            <div class="flex flex-col gap-8 w-full xl:w-[736px] shrink-0">
+
+                  <div class="flex flex-col gap-6">
+                        {% include 'components/heading.twig' with {
+                        tag: fields.tag,
+                        heading: fields.heading,
+                        class:'headline-large'
+                        }
+                        %}
+                        {% include 'components/content.twig' with {class: 'm-0 body-large'} %}
+                  </div>
+
+                  {# points #}
+                  {% if fields.points %}
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-sm gap-y-3 md:gap-y-4">
+                        {% for item in fields.points %}
+                        {% set is_last_two = loop.revindex <= 2 %} <div
+                              class="flex items-center xl:justify-between gap-3 border-background-primary-bg-stroke {% if not is_last_two %}border-b pb-4 {% else %} pb-4 border-b md:pb-0 md:border-b-0 last:border-b-0 last:pb-0 {% endif %}">
+                              <div class="flex items-center gap-5">
+                                    <div
+                                          class="size-8 border rounded border-text-heading-fill-highlight-2 flex justify-center items-center">
+                                          {{ responsive_img(
+                                          item.icon, {
+                                          size: 'large',
+                                          class: 'object-contain size-5 max-h-5 max-w-5',
+                                          })
+                                          }}
+                                    </div>
+                                    <p class="!m-0 body-large">
+                                          {{item.point}}
+                                    </p>
+                              </div>
+                  </div>
+                  {% endfor %}
+            </div>
+
+            {% endif %}
+
+      </div>
+      {# phone images #}
+      <div
+            class="relative mx-auto xl:mx-0 w-full md:w-[400px] xl:w-full h-[410px] md:h-[490px] xl:h-[360px] mb-12 md:mb-16 xl:mb-0 grow-0">
+            <span
+                  class="absolute top-1/2 left-1/2 w-[440px] md:w-[530px] xl:w-[390px] h-auto -translate-x-1/2 -translate-y-1/2 fill-background-primary-shape-fill">
+                  {% include "resources/images/icons/blob-2.svg" %}
+            </span>
+
+            {% if fields.hero_image_secondary %}
+            <div class="absolute w-fit top-0 right-0 hero-phone-1">
+                  {{ responsive_img(
+                  fields.hero_image_secondary, {
+                  size: 'large',
+                  class: 'object-contain w-fit h-[360px] md:h-[420px] xl:h-[315px]',
+                  })
+                  }}
+            </div>
+            {% endif %}
+            {% if fields.hero_image_primary %}
+            <div class="absolute w-fit bottom-0 left-0 hero-phone-2">
+                  {{ responsive_img(
+                  fields.hero_image_primary, {
+                  size: 'large',
+                  class: 'object-contain w-fit h-[360px] md:h-[420px] xl:h-[315px]',
+                  })
+                  }}
+            </div>
+            {% endif %}
+      </div>
+
+</div>
+</div>
+{% endblock %}
