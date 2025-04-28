@@ -1,0 +1,30 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+
+<div class="yp-container relative">
+  {# Embed Video View #}
+  {% if fields.video_type == 'embed' and fields.video_embed %}
+  <div class="responsive-iframe rounded-xl overflow-hidden">
+    {{ fields.video_embed }}
+  </div>
+  {% endif %}
+
+  {# Uploaded File View #}
+  {% if fields.video_type == 'upload' and fields.video_upload %}
+  <div class="h-[240px] md:h-[400px] xl:h-[600px] group hover:cursor-pointer overflow-hidden relative video-view">
+    <video class="yp-video w-full h-full object-cover rounded-xl overflow-hidden" preload="metadata">
+      <source src="{{ fields.video_upload.url }}" type="{{ fields.video_upload.mime_type }}">
+      Your browser does not support the video tag.
+    </video>
+    <button aria-label="Play video" type="button"
+      class="general-transition video-play-button pointer-events-none flex play-button bg-ui-bg-fill-default border border-ui-bg-stroke-default rounded-full !size-14 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center group-hover:bg-ui-bg-fill-hover group-hover:border-ui-bg-stroke-hover general-transition justify-center">
+      <svg viewBox="0 0 24 24"
+        class="general-transition fill-ui-icon-fill-primary-default group-hover:fill- w-[20px] h-auto shrink-0">
+        <polygon points="7,5 19,12 7,19" />
+      </svg>
+    </button>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

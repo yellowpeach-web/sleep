@@ -1,8 +1,8 @@
 import { teamSwiper } from "./swiper";
 export function filterData() {
-  const faqSection = document.querySelectorAll(".filter-data-section");
+  const dataSection = document.querySelectorAll(".filter-data-section");
 
-  faqSection.forEach((section) => {
+  dataSection.forEach((section) => {
     const data = section.querySelectorAll("#all-data > li");
     const leftCol = section.querySelector('.data-container[data-col="left"]');
     const rightCol = section.querySelector('.data-container[data-col="right"]');
@@ -64,6 +64,50 @@ export function filterData() {
     filterButtons.forEach((button) => {
       button.addEventListener("click", () => {
         applyFilter(button.dataset.filter);
+      });
+    });
+  });
+}
+
+export function simpleFilterData() {
+  const sections = document.querySelectorAll(".simple-data-filter");
+
+  sections.forEach((section) => {
+    const filterButtons = section.querySelectorAll(".filter-button");
+    const views = section.querySelectorAll(".simple-data-view");
+
+    if (!filterButtons.length || !views.length) return;
+
+    function activateFilter(filterValue) {
+      views.forEach((view) => {
+        if (view.dataset.filter === filterValue) {
+          view.style.display = "flex";
+        } else {
+          view.style.display = "none";
+        }
+      });
+
+      filterButtons.forEach((btn) => {
+        if (btn.dataset.filter === filterValue) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+    }
+
+    // on mount...
+    const firstButton = filterButtons[0];
+    if (firstButton) {
+      activateFilter(firstButton.dataset.filter);
+    }
+
+    // on clicks...
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        const filterValue = button.dataset.filter;
+        activateFilter(filterValue);
       });
     });
   });
