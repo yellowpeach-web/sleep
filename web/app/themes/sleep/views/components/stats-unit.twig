@@ -1,0 +1,33 @@
+<div class="grid h-fit grid-cols-1 md:grid-cols-2 gap-x-sm gap-y-3 md:gap-y-4" aria-labelledby="stats-heading" itemscope
+      itemtype="https://schema.org/Statistics">
+      {% for item in fields.statistics %}
+      {% set is_last_two = loop.revindex <= 2 %} <div
+            class="flex items-center xl:justify-between gap-3 border-background-primary-bg-stroke {% if not is_last_two %}border-b pb-4 {% else %} pb-4 border-b md:pb-0 md:border-b-0 last:border-b-0 last:pb-0 {% endif %}"
+            itemscope itemprop="hasPart" itemtype="https://schema.org/QuantitativeValue">
+            <p class="!m-0 flex title-large text-text-heading-fill-primary min-w-[72px]">
+                  {% if item.prefix %}
+                  <span aria-hidden="true" itemprop="unitText">{{ item.prefix }}</span>
+                  {% endif %}
+                  {% if item.number %}
+                  <span class="stat-number" data-target-number="{{ item.number }}" role="status" itemprop="value"
+                        aria-label="{{ item.prefix ~ ' ' ~ item.number ~ ' ' ~ item.postfix }}">
+                        {% if fn('is_admin') %}
+                        {{ item.number }}
+                        {% else %}
+                        0
+                        {% endif %}
+                  </span>
+                  {% endif %}
+                  {% if item.postfix %}
+                  <span aria-hidden="true" itemprop="unitText">{{ item.postfix }}</span>
+                  {% endif %}
+            </p>
+
+            {% if item.copy %}
+            <p class="!m-0 body-large" itemprop="description">
+                  {{ item.copy }}
+            </p>
+            {% endif %}
+</div>
+{% endfor %}
+</div>
