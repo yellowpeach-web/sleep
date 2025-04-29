@@ -4,13 +4,13 @@ import { initAccordions } from "./accordion";
 import { navVisibility } from "./nav.js";
 import { initHoverImageCursor } from "./image-cursor.js";
 import { initSwipers } from "./swiper";
-import { filterData, simpleFilterData } from "./filter.js";
+import { simpleFilterData, masonryFilterData } from "./filter.js";
 import { initMasonary } from "./masonary.js";
 import { initHamburger } from "./hamburger.js";
 import { initVideos } from "./video.js";
 // import AOS from 'aos';
 $(document).ready(function () {
-  filterData();
+  masonryFilterData();
   simpleFilterData();
   initAccordions();
   initStatsCounter();

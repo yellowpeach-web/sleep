@@ -1,0 +1,76 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+<div class="yp-container flex flex-col gap-12 md:gap-16 xl:gap-24 simple-data-filter">
+      {# filter buttons #}
+      <div class="flex flex-col gap-6 md:gap-8 md:items-center max-w-[736px] mx-auto">
+            <div class="flex flex-col gap-4 md:items-center">
+                  {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
+                  class:'headline-large md:text-center'} %}
+                  {% include 'components/content.twig' with {class: 'm-0 body-small md:text-center'} %}
+            </div>
+            {% if fields['filter-headings'] %}
+            <div class="flex items-center gap-3 text-button-primary-text-fill-default flex-wrap">
+                  {% for item in fields['filter-headings'] %}
+                  <button data-filter="{{item.label}}"
+                        class="filter-button !py-2.5 !px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default active">
+                        {{item.label}}
+                  </button>
+                  {% endfor %}
+            </div>
+            {% endif %}
+      </div>
+      {# display view #}
+      {% for item in fields['filter-headings'] %}
+      <div data-filter="{{item.label}}"
+            class=" flex h-full gap-12 md:gap-16 xl:gap-24 simple-data-view flex-col xl:flex-row">
+            <div class=" flex flex-col gap-12 md:gap-16 w-full xl:w-[445px] grow-0 shrink-0 order-last xl:order-none">
+                  {% for item in item.content %}
+                  <div
+                        class="flex flex-col gap-6 pb-8 md:pb-16 border-b border-background-primary-bg-stroke last:pb-0 last:border-0">
+                        <div class="flex flex-col gap-3">
+                              {% if item.subheading %}
+                              <h4 class="!m-0 text-text-heading-fill-highlight-1 title-small">
+                                    {{item.subheading}}
+                              </h4>
+                              {% endif %}
+                              {% if item.heading %}
+                              <h3 class="!m-0 headline-small">
+                                    {{item.heading}}
+                              </h3>
+                              {% endif %}
+                        </div>
+                        {% include 'components/content.twig' with {class: 'm-0 body-large', content:
+                        item.content} %}
+                        {% if item.button %}
+                        {% include "components/button.twig" with {class:'primary', button: item.button} %}
+                        {% endif %}
+                  </div>
+                  {% endfor %}
+            </div>
+            <div class="xl:sticky xl:h-full xl:top-24 w-full grow-0">
+                  {% if item.media_type == 'image' %}
+                  <div class="h-[240px] md:h-[380px] w-full rounded-xl overflow-hidden relative">
+                        {{ responsive_img(
+                        item.image, {
+                        size: 'large',
+                        class: 'object-cover w-full h-full',
+                        })
+                        }}
+                  </div>
+                  {% else %}
+                  <div
+                        class="h-[240px] md:h-[380px] w-full group hover:cursor-pointer overflow-hidden relative video-view">
+                        <video class="yp-video w-full h-full object-cover rounded-xl overflow-hidden"
+                              preload="metadata">
+                              <source src="{{ item.video.url }}" type="{{ fields.vide.mime_type }}">
+                              Your browser does not support the video tag.
+                        </video>
+                        {% include "components/play-button.twig" %}
+                  </div>
+                  {% endif %}
+            </div>
+      </div>
+      {% endfor %}
+
+</div>
+{% endblock %}

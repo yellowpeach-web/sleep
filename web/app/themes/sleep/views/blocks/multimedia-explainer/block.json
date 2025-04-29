@@ -1,0 +1,32 @@
+{
+  "name": "multimedia-explainer",
+  "title": "Multimedia Explainer",
+  "description": "A filterable infomation block with scope to add imagery and video",
+  "category": "yellow-peach",
+  "icon": "info",
+  "keywords": [
+    "filter",
+    "instructions",
+    "video",
+    "customer journey"
+  ],
+  "acf": {
+    "mode": "auto",
+    "validate": false
+  },
+  "supports": {
+    "align": false,
+    "anchor": true,
+    "alignContent": false,
+    "color": {
+      "text": false,
+      "background": true,
+      "link": true
+    },
+    "alignText": true,
+    "spacing": {
+      "margin": false,
+      "padding": true
+    }
+  }
+}

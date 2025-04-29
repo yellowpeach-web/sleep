@@ -1,28 +1,30 @@
 {% extends "components/block-wrapper.twig" %}
 {% block block_content %}
+<div class="relative">
+      {% if fields.bg_graphic %}
+      <span
+            class="absolute md:w-[450px] left-[-10%]  bottom-[-180px] !fill-background-secondary-shape-fill hidden md:block">
+            {% include "resources/images/icons/blob.svg" %}
+      </span>
+      <span
+            class="absolute md:w-[450px] right-[-10%] top-[-180px]   !fill-background-secondary-shape-fill hidden md:block">
+            {% include "resources/images/icons/blob.svg" %}
+      </span>
+      {% endif %}
 
-<div class="yp-container {% if fields.narrow_width %} xl:max-w-[736px] md:max-w-[608px]  {% endif %}">
+
+      <div class="yp-container {% if fields.narrow_width %} xl:max-w-[736px] md:max-w-[608px]  {% endif %}">
 
 
-      <div class="relative flex flex-col gap-6 {% if fields.central_content %} text-center items-center {% endif %}">
+            <div
+                  class="relative flex flex-col gap-6 {% if fields.central_content %} text-center items-center {% endif %}">
+                  {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
+                  class:'headline-small'} %}
 
-            {% if fields.bg_graphic %}
-            <span
-                  class="absolute md:w-[450px] left-[-50%] bottom-[-60%]  !fill-background-secondary-shape-fill hidden md:block">
-                  {% include "resources/images/icons/blob.svg" %}
-            </span>
-            <span
-                  class="absolute md:w-[450px] right-[-50%] top-[-60%]   !fill-background-secondary-shape-fill hidden md:block">
-                  {% include "resources/images/icons/blob.svg" %}
-            </span>
-            {% endif %}
+                  {% include 'components/content.twig' with {class: 'm-0 body-large'} %}
 
-            {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
-            class:'headline-small'} %}
-
-            {% include 'components/content.twig' with {class: 'm-0 body-large'} %}
-
-            {% include "components/buttons.twig" with {buttons: fields.buttons, button_class: 'primary'} %}
+                  {% include "components/buttons.twig" with {buttons: fields.buttons, button_class: 'primary'} %}
+            </div>
       </div>
 </div>
 

@@ -1,59 +1,65 @@
 export function initStatsCounter() {
   const counters = document.querySelectorAll(".stat-number");
+  const DURATION = 1500;
+  const DECIMAL_DELAY = 100;
 
   function animateCounter(counter) {
-    let rateCounter = 0;
+    const target = parseFloat(counter.getAttribute("data-target-number"));
+    const isFloat = !Number.isInteger(target);
 
-    function formatNumber(number) {
-      return number.toLocaleString(); // Automatically formats with appropriate commas
+    if (target < 5) {
+      setTimeout(() => {
+        counter.innerText = formatNumber(target, isFloat);
+      }, DURATION);
+      return;
     }
 
-    function updateCounter() {
-      const targetNumber = +counter.getAttribute("data-target-number");
+    const startTime = performance.now();
 
-      if (targetNumber === 0) {
-        counter.innerText = 0;
-        return;
-      }
-      if (targetNumber <= 30) {
-        counter.innerText = formatNumber(targetNumber);
-      }
+    function formatNumber(num, showDecimal) {
+      return num.toLocaleString(undefined, {
+        minimumFractionDigits: showDecimal ? 1 : 0,
+        maximumFractionDigits: showDecimal ? 1 : 0,
+      });
+    }
 
-      const current = +counter.innerText;
-      let increment = targetNumber / 30;
+    function update(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / DURATION, 1);
+      const currentValue = target * progress;
 
-      let rateOfChange = 50;
-      if (current < targetNumber) {
-        counter.innerText = Math.ceil(current + increment);
-        rateCounter++;
-        if (rateCounter > 10) {
-          rateOfChange = 40;
-        }
-        if (rateCounter > 20) {
-          rateOfChange = 30;
-        }
-        setTimeout(updateCounter, rateOfChange);
+      const showDecimal = false; // don't show decimals during animation
+      counter.innerText = formatNumber(currentValue, showDecimal);
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
       } else {
-        counter.innerText = formatNumber(targetNumber);
+        // Animation complete: show rounded number first
+        counter.innerText = formatNumber(target, false);
+
+        // Then apply decimal after a short delay if needed
+        if (isFloat) {
+          setTimeout(() => {
+            counter.innerText = formatNumber(target, true);
+          }, DECIMAL_DELAY);
+        }
       }
     }
 
-    updateCounter();
+    requestAnimationFrame(update);
   }
 
   const observer = new IntersectionObserver(
-    (entries, observer) => {
+    (entries, obs) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           animateCounter(entry.target);
-          observer.unobserve(entry.target);
+          obs.unobserve(entry.target);
         }
       });
     },
     { threshold: 0.5 }
   );
 
-  if (counters) {
-    counters.forEach((counter) => observer.observe(counter));
-  }
+  counters.forEach((counter) => observer.observe(counter));
 }

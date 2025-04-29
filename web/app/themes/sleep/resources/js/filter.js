@@ -1,5 +1,5 @@
 import { teamSwiper } from "./swiper";
-export function filterData() {
+export function masonryFilterData() {
   const dataSection = document.querySelectorAll(".filter-data-section");
 
   dataSection.forEach((section) => {

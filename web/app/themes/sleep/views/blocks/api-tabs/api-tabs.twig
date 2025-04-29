@@ -1,0 +1,92 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+<div class="yp-container gap-12 md:gap-16 xl:gap-24 flex flex-col xl:flex-row simple-data-filter">
+      {# filter buttons #}
+      <div class="flex flex-col w-full gap-6 md:gap-8 xl:w-[480px] shrink-0 grow-0 xl:h-full xl:sticky xl:top-16">
+            {% for item in fields.api_service %}
+            <div class="filter-button hover:cursor-pointer list-button fill-background-secondary-bg-stroke hover:fill-text-heading-fill-secondary  flex w-full gap-8 items-center justify-between pb-6 md:pb-10 border-b border-background-secondary-bg-stroke last:pb-0 last:border-0"
+                  data-filter="{{item.name}}">
+                  <h3 class="!m-0 display-small text-state-highlight-fade">
+                        {{item.name}}
+                  </h3>
+                  <div class="h-5 md:h-7 xl:h-9 w-auto shrink-0 grow-0 group-hover:fill-text-heading-fill-secondary">
+                        {% include "resources/images/icons/arrow.svg" %}
+                  </div>
+            </div>
+            {% endfor %}
+      </div>
+      {# display view #}
+      {% for item in fields.api_service %}
+      <div data-filter="{{item.name}}" class="simple-data-view w-full flex flex-col gap-12 md:gap-16">
+            {% if item.media_type == 'image' %}
+            <div class="h-[240px] md:h-[325px] xl:h-[290px] w-full rounded-xl overflow-hidden relative">
+                  {{ responsive_img(
+                  item.image, {
+                  size: 'large',
+                  class: 'object-cover w-full h-full',
+                  })
+                  }}
+            </div>
+            {% else %}
+            <div
+                  class="h-[240px] md:h-[325px] xl:h-[290px] w-full group hover:cursor-pointer overflow-hidden relative video-view">
+                  <video class="yp-video w-full h-full object-cover rounded-xl overflow-hidden" preload="metadata">
+                        <source src="{{ item.video.url }}" type="{{ fields.vide.mime_type }}">
+                        Your browser does not support the video tag.
+                  </video>
+                  {% include "components/play-button.twig" %}
+            </div>
+            {% endif %}
+            <div class="flex flex-col gap-6">
+                  {% if item.heading %}
+                  <h4 class="!m-0 headline-small">
+                        {{item.heading}}
+                  </h4>
+                  {% endif %}
+                  {% include 'components/content.twig' with {class: 'm-0 body-large', content:
+                  item.content} %}
+            </div>
+            {% if item.statistics is not empty %}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6 md:gap-y-8" aria-labelledby="stats-heading"
+                  itemscope itemtype="https://schema.org/Statistics">
+                  {% for item in item.statistics %}
+                  {% set is_last_two = loop.revindex <= 2 %} <div class="flex flex-col gap-3 min-w-[256px]" itemscope
+                        itemprop="hasPart" itemtype="https://schema.org/QuantitativeValue">
+                        <p class="!m-0 display-small text-text-heading-fill-highlight-2">
+                              {% if item.prefix %}
+                              <span aria-hidden="true" itemprop="unitText">{{ item.prefix }}</span>
+                              {% endif %}
+                              {% if item.number %}
+                              <span class="stat-number" data-target-number="{{ item.number }}" role="status"
+                                    itemprop="value"
+                                    aria-label="{{ item.prefix ~ ' ' ~ item.number ~ ' ' ~ item.postfix }}">
+                                    {% if fn('is_admin') %}
+                                    {{ item.number }}
+                                    {% else %}
+                                    0
+                                    {% endif %}
+                              </span>
+                              {% endif %}
+                              {% if item.postfix %}
+                              <span aria-hidden="true" itemprop="unitText">{{ item.postfix }}</span>
+                              {% endif %}
+                        </p>
+                        {% if item.copy %}
+                        <p class="!m-0 subtitle-large" itemprop="description">
+                              {{ item.copy }}
+                        </p>
+                        {% endif %}
+            </div>
+            {% endfor %}
+      </div>
+
+      {% endif %}
+      {% if item.button %}
+      {% include "components/button.twig" with {class:'primary', button: item.button} %}
+      {% endif %}
+</div>
+{% endfor %}
+
+</div>
+{% endblock %}

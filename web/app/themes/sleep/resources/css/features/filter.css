@@ -1,3 +1,10 @@
-.filter-button.active {
+.filter-button.active:not(.list-button) {
   @apply bg-button-primary-bg-fill-default text-button-primary-text-fill-default !important;
+}
+
+.filter-button.list-button.active {
+  @apply fill-text-heading-fill-secondary;
+  h3 {
+    @apply text-text-heading-fill-secondary;
+  }
 }
