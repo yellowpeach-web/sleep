@@ -1,0 +1,10 @@
+{% if item.icon %}
+<div class="size-8 border-2 rounded border-text-heading-fill-highlight-2 flex justify-center items-center">
+      {{ responsive_img(
+      item.icon, {
+      size: 'large',
+      class: 'object-contain size-5 max-h-5 max-w-5',
+      })
+      }}
+</div>
+{% endif %}

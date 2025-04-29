@@ -1,0 +1,38 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+<div class="yp-container flex flex-col gap-12 md:gap-16 items-center">
+      <div class="flex flex-col gap-6 max-w-[736px] mx-auto  items-center">
+            {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
+            class:'headline-large text-center'} %}
+            {% include 'components/content.twig' with {class: 'm-0 body-large text-center'} %}
+      </div>
+      {% if fields.boxes %}
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8 w-full">
+            {% for item in fields.boxes %}
+            <div class="rounded bg-surface-primary-bg-fill-default p-8 flex flex-col gap-3 h-fit">
+                  <div class="flex flex-col gap-3">
+                        {% include "components/icon.twig" %}
+                        {% if item.heading %}
+                        <h3 class="!m-0 title-small">
+                              {{item.heading}}
+                        </h3>
+                        {% endif %}
+                  </div>
+                  {% if item.point %}
+                  <div class="flex flex-col">
+                        {% for item in item.point %}
+                        <div class="py-2 border-t border-background-primary-bg-stroke">
+                              <p class="my-auto !m-0">
+                                    {{item.copy}}
+                              </p>
+                        </div>
+                        {% endfor %}
+                  </div>
+                  {% endif %}
+            </div>
+            {% endfor %}
+      </div>
+      {% endif %}
+      {% include "components/buttons.twig" with {buttons: fields.buttons, button_class: 'primary'} %}
+</div>
+{% endblock %}

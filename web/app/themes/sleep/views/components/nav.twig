@@ -6,7 +6,7 @@
 
         {% for item in primary_nav.items %}
         {% set is_active = (item.url == fn('get_permalink')) %}
-        <li class="m-0 hidden md:flex  {% if item.meta('mobile_only') %} flex md:hidden {% endif %}" itemprop="name">
+        <li class="m-0 hidden xl:flex  {% if item.meta('mobile_only') %} flex xl:hidden {% endif %}" itemprop="name">
             {% if item.meta('none_link') %}
             <span class="no-link-style nav-item text-text-heading-fill-primary text-lg font-semibold">
                 {{ item.title }}
@@ -31,7 +31,7 @@
         {% endif %}
 
         {# hamburger #}
-        <li class="block md:hidden size-10 !m-0 !p-0">
+        <li class="block xl:hidden size-10 !m-0 !p-0">
             <button
                 class="border secondary !w-10 h-full !shink-0 !grow-0 rounded-full flex items-center justify-center yp-hamburger !p-0 !m-0"
                 aria-label="Menu" aria-controls="navigation-menu" aria-expanded="false">
