@@ -1,17 +1,26 @@
 {% extends "components/block-wrapper.twig" %}
 {% block block_content %}
-<div class="yp-container flex flex-col gap-12 md:gap-16 items-center">
-      <div class="flex flex-col gap-6 max-w-[736px] mx-auto  items-center">
+<div class="yp-container flex flex-col gap-12 md:gap-16 md:items-center">
+      <div class="flex flex-col gap-6 max-w-[736px] mx-auto md:items-center">
             {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
-            class:'headline-large text-center'} %}
-            {% include 'components/content.twig' with {class: 'm-0 body-large text-center'} %}
+            class:'headline-large md:text-center'} %}
+            {% include 'components/content.twig' with {class: 'm-0 body-large md:text-center'} %}
       </div>
       {% if fields.boxes %}
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8 w-full">
             {% for item in fields.boxes %}
-            <div class="rounded bg-surface-primary-bg-fill-default p-8 flex flex-col gap-3 h-fit">
-                  <div class="flex flex-col gap-3">
-                        {% include "components/icon.twig" %}
+            <div class="rounded bg-surface-primary-bg-fill-default p-8 flex flex-col gap-5 h-fit">
+                  <div class="flex flex-col gap-5">
+                        {% if item.icon %}
+                        <div class="size-14 flex justify-center items-center shrink-0 grow-0">
+                              {{ responsive_img(
+                              item.icon, {
+                              size: 'large',
+                              class: 'object-contain w-full h-full',
+                              })
+                              }}
+                        </div>
+                        {% endif %}
                         {% if item.heading %}
                         <h3 class="!m-0 title-small">
                               {{item.heading}}

@@ -8,7 +8,7 @@ add_action('init', function () {
         'singular_name' => 'Testimonial',
         'plural_name' => 'Testimonials',
         'icon' => 'dashicons-testimonial',
-        'supports'  => ['title', 'thumbnail'],
+        'supports'  => ['title'],
         'show_in_rest' => true,
     ]);
 }, 0);

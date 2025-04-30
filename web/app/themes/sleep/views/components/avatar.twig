@@ -1,0 +1,16 @@
+<div class="size-12 rounded-full bg-full-gradient-180 p-[2px] overflow-hidden">
+      <div class="w-full h-full rounded-full {{background_color}} flex items-center justify-center">
+            {% if item.thumbnail %}
+            {{ responsive_img(
+            item.thumbnail, {
+            size: 'large',
+            class: 'object-cover w-full h-full rounded-full',
+            })
+            }}
+            {% else %}
+            <div class="size-6 flex items-center justify-center">
+                  {% include "resources/images/icons/user.svg" %}
+            </div>
+            {% endif %}
+      </div>
+</div>

@@ -5,6 +5,11 @@
 <div class="swiper testimonial-swiper" aria-label="Testimonials Carousel" role="region">
       <div class="swiper-wrapper">
             {% for item in testimonials %}
+            {% if color_profile == 'dark-theme' %}
+            {% set logo = item.meta('white_company_logo') %}
+            {% else %}
+            {% set logo = item.meta('blue_company_logo') %}
+            {% endif %}
             <div class="swiper-slide w-[327px] md:w-[608px] xl:w-[736px] rounded-lg bg-surface-primary-bg-fill-default h-fit"
                   itemscope itemtype="https://schema.org/Review">
                   <div itemprop="itemReviewed" itemscope itemtype="https://schema.org/Organization" hidden>
@@ -12,22 +17,19 @@
                   </div>
                   <div
                         class="flex flex-col p-8 md:p-14 gap-6 text-text-heading-fill-primary items-center justify-center h-full p-sm sm: ">
-                        <div class="size-12 rounded-full bg-full-gradient-180 p-[2px] overflow-hidden">
-                              <div
-                                    class="w-full h-full rounded-full {{background_color}} flex items-center justify-center">
-                                    {% if item.thumbnail %}
-                                    {{ responsive_img(
-                                    item.thumbnail, {
-                                    size: 'large',
-                                    class: 'object-cover w-full h-full rounded-full',
-                                    })
-                                    }}
-                                    {% else %}
-                                    <div class="size-6 flex items-center justify-center">
-                                          {% include "resources/images/icons/user.svg" %}
-                                    </div>
-                                    {% endif %}
+                        <div class="max-w-[120px] max-h-[32px]">
+                              {% if logo %}
+                              {{ responsive_img(
+                              logo, {
+                              size: 'large',
+                              class: 'object-contain w-full h-full',
+                              })
+                              }}
+                              {% else %}
+                              <div class="size-6 flex items-center justify-center">
+                                    {% include "resources/images/icons/user.svg" %}
                               </div>
+                              {% endif %}
                         </div>
                         {% if item.quote %}
                         <p class="!m-0 title-large text-text-heading-fill-primary text-center" itemprop="reviewBody">
@@ -52,9 +54,9 @@
             </div>
             {% endfor %}
       </div>
-</div>
-<div class="yp-container pt-12">
-      <div class="swiper-pagination absolute !bottom-0 flex items-center gap-3 justify-center"></div>
+      <div class="yp-container pt-[60px] md:pt-[78px]">
+            <div class="swiper-pagination absolute !bottom-0 flex items-center gap-3 justify-center"></div>
+      </div>
 </div>
 {% endif %}
 

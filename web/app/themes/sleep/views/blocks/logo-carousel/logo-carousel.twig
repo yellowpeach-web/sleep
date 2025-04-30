@@ -1,31 +1,71 @@
 {% extends "components/block-wrapper.twig" %}
 {% block block_content %}
-{% if fields.logos %}
 
+{% if fields.heading or fields.content %}
+<div class="yp-container xl:max-w-[928px] mx-auto flex flex-col gap-5 pb-12 md:pb-16">
+      {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
+      class:'headline-large md:text-center'} %}
+      {% include 'components/content.twig' with {class: 'm-0 body-small md:text-center'} %}
+</div>
+{% endif %}
 
+{% if logos %}
 <div class="max-w-[606px] md:max-w-[688px] lg:max-w-[864px] xl:max-w-[1200px] mx-auto overflow-hidden">
 
       <div class="marquee_logo">
             <ul class="marquee_content_logo list-none pl-0">
-                  {% for item in fields.logos %}
+                  {% for item in logos %}
+
+                  {% if not fields.show_selected %}
+                  {% if color_profile == 'dark-theme' %}
+                  {% set logo = item.white_company_logo %}
+                  {% else %}
+                  {% set logo = item.blue_company_logo %}
+                  {% endif %}
+                  {% else %}
+                  {% set logo = item %}
+                  {% endif %}
+
                   <li class="marquee_item_logo">
-                        <img src="{{ item.url }}" alt="{{ item.alt }}" class="w-full h-full object-contain" />
+                        <img src="{{ logo.url }}" alt="{{ logo.alt }}" class="w-full h-full object-contain" />
                   </li>
                   {% endfor %}
             </ul>
 
-            <ul class="marquee_content_logo list-none pl-0" aria-hidden="true">
-                  {% for item in fields.logos %}
+            <ul class="marquee_content_logo list-none pl-0">
+                  {% for item in logos %}
+
+                  {% if not fields.show_selected %}
+                  {% if color_profile == 'dark-theme' %}
+                  {% set logo = item.white_company_logo %}
+                  {% else %}
+                  {% set logo = item.blue_company_logo %}
+                  {% endif %}
+                  {% else %}
+                  {% set logo = item %}
+                  {% endif %}
+
                   <li class="marquee_item_logo">
-                        <img src="{{ item.url }}" alt="{{ item.alt }}" class="w-full h-full object-contain" />
+                        <img src="{{ logo.url }}" alt="{{ logo.alt }}" class="w-full h-full object-contain" />
                   </li>
                   {% endfor %}
             </ul>
 
-            <ul class="marquee_content_logo list-none pl-0" aria-hidden="true">
-                  {% for item in fields.logos %}
+            <ul class="marquee_content_logo list-none pl-0">
+                  {% for item in logos %}
+
+                  {% if not fields.show_selected %}
+                  {% if color_profile == 'dark-theme' %}
+                  {% set logo = item.white_company_logo %}
+                  {% else %}
+                  {% set logo = item.blue_company_logo %}
+                  {% endif %}
+                  {% else %}
+                  {% set logo = item %}
+                  {% endif %}
+
                   <li class="marquee_item_logo">
-                        <img src="{{ item.url }}" alt="{{ item.alt }}" class="w-full h-full object-contain" />
+                        <img src="{{ logo.url }}" alt="{{ logo.alt }}" class="w-full h-full object-contain" />
                   </li>
                   {% endfor %}
             </ul>

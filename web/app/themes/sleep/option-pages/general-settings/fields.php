@@ -53,5 +53,16 @@ $general_settings
     ->endGroup()
     ->addTab('Set archive pages')
     ->addPostObject('posts_archive', ['label' => 'Posts Archive', 'return_format' => 'id', 'instructions' => 'set arhive page for posts'])
+    ->addTab('Partner logos')
+    ->addRepeater('logos')
+    ->addImage(
+        'blue_company_logo',
+        ['instructions' => 'For use on white background']
+    )
+    ->addImage(
+        'white_company_logo',
+        ['instructions' => 'For use on blue background']
+    )
+    ->endRepeater()
     ->setLocation('options_page', '==', 'general-settings')
     ->setFields();

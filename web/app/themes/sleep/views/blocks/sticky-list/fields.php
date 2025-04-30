@@ -11,5 +11,6 @@ $block
     ->addText('heading')
     ->addText('copy')
     ->endRepeater()
+    ->getClone('buttons')
     ->setLocation('block', '==', 'acf/sticky-list')
     ->setFields();

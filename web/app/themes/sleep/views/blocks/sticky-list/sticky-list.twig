@@ -22,6 +22,7 @@
                   {% endfor %}
             </div>
             {% endif %}
+            {% include "components/buttons.twig" with {buttons: fields.buttons, button_class: 'primary'} %}
       </div>
       <div class="xl:sticky xl:top-24 h-full order-first xl:order-none">
             {% if fields.image %}

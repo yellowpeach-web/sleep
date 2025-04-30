@@ -1,11 +1,11 @@
 <li class="h-fit w-[303px] flex flex-col md:flex-row md:w-full rounded bg-surface-primary-bg-fill-default overflow-hidden"
       data-term="{{term.slug}}">
-      <div class="w-full h-[280px] md:w-[212px] md:h-full overflow-hidden shrink-0">
+      <div class="relative w-full h-[280px] md:w-[212px] md:h-full md:min-h-[200px]  overflow-hidden shrink-0">
             {% if item.thumbnail %}
             {{ responsive_img(
             item.thumbnail, {
             size: 'large',
-            class: 'object-cover w-full h-full',
+            class: 'object-cover w-full h-full absolute inset-0',
             })
             }}
             {% endif %}
@@ -22,7 +22,7 @@
                   {% endif %}
             </div>
 
-            {% include 'components/content.twig' with {class: 'm-0 body-small'} %}
+            {% include 'components/content.twig' with {class: 'm-0 body-small', content: item.content} %}
 
             <div class="flex items-center gap-2 mt-1">
                   {% if item.meta('linkedin') %}

@@ -170,6 +170,7 @@ class TimberAcfBlocks
         $context['faq_terms'] = self::get_faq_terms($block);
         $context['team'] = self::get_team($block);
         $context['team_terms'] = self::get_team_terms($block);
+        $context['logos'] = self::get_logos($block);
 
         // Assign block spacing 
         $context['block_spacing'] = trim(
@@ -311,6 +312,21 @@ class TimberAcfBlocks
     /**
      * Block specific methods
      */
+
+    private static function get_logos($block)
+    {
+        if ($block['name'] === 'acf/logo-carousel') {
+            $show_selected = get_field('show_selected');
+            if ($show_selected) {
+                return get_field('logos');
+            } else {
+                return get_field('logos', 'options') ?: null;
+            }
+        }
+        return null;
+    }
+
+
     private static function get_posts_archive($block)
     {
         if ($block['name'] === 'acf/posts-archive') {
@@ -333,7 +349,7 @@ class TimberAcfBlocks
 
     private static function get_team($block)
     {
-        return self::get_related_posts($block, 'acf/meet-the-team', 'team', 'teams');
+        return self::get_related_posts($block, 'acf/meet-the-team', 'team', 'team');
     }
 
     private static function get_faqs($block)

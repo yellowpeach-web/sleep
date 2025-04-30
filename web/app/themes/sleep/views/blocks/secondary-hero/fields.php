@@ -7,5 +7,6 @@ $block
     ->addText('secondary_heading')
     ->getClone('heading')
     ->addWysiwyg('content')
+    ->addImage('image')
     ->setLocation('block', '==', 'acf/secondary-hero')
     ->setFields();

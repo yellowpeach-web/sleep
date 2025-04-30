@@ -12,11 +12,11 @@
             </div>
 
             {% if fields.image %}
-            <div class="w-full h-[280px] md:h-[460px] xl:h-auto rounded overflow-hidden">
+            <div class="w-full relative flex h-[280px] md:h-[460px] xl:h-auto rounded overflow-hidden">
                   {{ responsive_img(
                   fields.image, {
                   size: 'large',
-                  class: 'object-cover w-full h-full',
+                  class: 'object-cover h-full w-full absolute inset-0',
                   })
                   }}
             </div>
