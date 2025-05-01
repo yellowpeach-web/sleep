@@ -19,7 +19,8 @@
     {# Uploaded File View #}
     {% if fields.video_type == 'upload' and fields.video_upload %}
     <div class="h-[240px] md:h-[400px] xl:h-[600px] group hover:cursor-pointer overflow-hidden relative video-view">
-      <video class="yp-video w-full h-full object-cover rounded-xl overflow-hidden" preload="metadata">
+      <video class="yp-video w-full h-full object-cover rounded-xl overflow-hidden" preload="metadata" {% if
+        fields.video_fallback_still %} poster="{{ fields.video_fallback_still.url }}" {% endif %}>
         <source src="{{ fields.video_upload.url }}" type="{{ fields.video_upload.mime_type }}">
         Your browser does not support the video tag.
       </video>

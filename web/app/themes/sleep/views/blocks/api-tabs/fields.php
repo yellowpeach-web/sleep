@@ -32,7 +32,7 @@ $block
     ])
     ->addFile('video', [
         'label' => 'Upload Video',
-        'mime_types' => 'mp4,webm,ogg',
+        'mime_types' => 'mp4,webm,ogg,mov',
         'conditional_logic' => [
             [
                 [

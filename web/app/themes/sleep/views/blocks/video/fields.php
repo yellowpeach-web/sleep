@@ -31,7 +31,7 @@ $block
     ])
     ->addFile('video_upload', [
         'label' => 'Video File Upload',
-        'mime_types' => 'mp4,webm,ogg',
+        'mime_types' => 'mp4,webm,ogg,mov',
         'conditional_logic' => [
             [
                 [
@@ -42,5 +42,6 @@ $block
             ],
         ],
     ])
+    ->addImage('video_fallback_still')
     ->setLocation('block', '==', 'acf/video')
     ->setFields();
