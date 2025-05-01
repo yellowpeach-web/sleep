@@ -10,7 +10,6 @@ export function initStatsCounter() {
     const append = counter.parentElement?.querySelector(".append");
 
     setTimeout(() => {
-      console.log(append);
       append?.classList.add("active");
     }, DURATION + DECIMAL_DELAY - 100);
 
