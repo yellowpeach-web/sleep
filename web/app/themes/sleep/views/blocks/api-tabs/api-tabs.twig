@@ -29,6 +29,21 @@
                   }}
             </div>
             {% else %}
+            {# video... #}
+            {% if item.portrait_video %}
+            <div class="portrait-play-button h-[240px] md:h-[325px] xl:h-[290px] w-full rounded-xl overflow-hidden relative bg-background-primary-shape-fill hover:cursor-pointer"
+                  data-video="{{ item.video.url }}" data-type="{{ item.vide.mime_type }}">
+                  {% if item.video_fallback_still %}
+                  {{ responsive_img(
+                  item.video_fallback_still, {
+                  size: 'large',
+                  class: 'object-cover w-full h-full',
+                  })
+                  }}
+                  {% include "components/play-button.twig" %}
+                  {% endif %}
+            </div>
+            {% else %}
             <div
                   class="h-[240px] md:h-[325px] xl:h-[290px] w-full group hover:cursor-pointer overflow-hidden relative video-view">
                   <video class="yp-video w-full h-full object-cover rounded-xl overflow-hidden" preload="metadata" {% if
@@ -38,6 +53,7 @@
                   </video>
                   {% include "components/play-button.twig" %}
             </div>
+            {% endif %}
             {% endif %}
             <div class="flex flex-col gap-6">
                   {% if item.heading %}
@@ -90,5 +106,20 @@
 </div>
 {% endfor %}
 
+</div>
+{# portrait video modal #}
+<div id="portrait-video-modal" class="fixed inset-0 bg-black bg-opacity-80 items-center justify-center z-50 hidden">
+      <div
+            class="relative p-6 max-w-[350px] sm:max-w-[400px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-[32px]">
+            <video controls class="w-full h-auto rounded-xl">
+                  <source src="" type="">
+                  Your browser does not support the video tag.
+            </video>
+      </div>
+      <div class="py-3 px-3 bg-background-primary-bg-fill absolute top-0 w-full flex justify-end z-50">
+            <button class="portrait-modal-close shrink-0 grow-0 !size-10 flex items-center justify-center !p-0">
+                  {% include "resources/images/icons/close_icon.svg" %}
+            </button>
+      </div>
 </div>
 {% endblock %}

@@ -30,6 +30,19 @@ $block
             ],
         ],
     ])
+    ->addTrueFalse('portrait_video', [
+        'label' => 'Portrait aspect ratio?',
+        'ui' => 1,
+        'conditional_logic' => [
+            [
+                [
+                    'field' => 'media_type',
+                    'operator' => '==',
+                    'value' => 'video',
+                ],
+            ],
+        ],
+    ])
     ->addFile('video', [
         'label' => 'Upload Video',
         'mime_types' => 'mp4,webm,ogg,mov',
@@ -43,7 +56,17 @@ $block
             ],
         ],
     ])
-    ->addImage('video_fallback_still')
+    ->addImage(
+        'video_fallback_still',
+        [
+            'conditional_logic' => [
+
+                'field' => 'media_type',
+                'operator' => '==',
+                'value' => 'video',
+            ],
+        ]
+    )
     ->addText('heading')
     ->addWysiwyg('content')
     ->addRepeater('statistics', ['max' => 10])
