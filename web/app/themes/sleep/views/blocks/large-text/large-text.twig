@@ -50,7 +50,7 @@
                   {% for item in fields.statements %}
                   {% set index = loop.index0 %}
                   {% set color_class = highlight_classes[(count_footer - 1) % highlight_classes|length] %}
-                  <div class="flex gap-3 last:border-b-0 border-b pb-3 last:pb-0">
+                  <div class="flex gap-3 border-background-primary-bg-stroke last:border-b-0 border-b pb-3 last:pb-0">
                         <p class="!m-0 text-base font-bold {{color_class}} ">
                               {{count_footer}}
                         </p>
