@@ -6,7 +6,7 @@
             <div
                   class="col-span-1 flex flex-col gap-6 {{ fields.swap_layout ? 'order-last' : 'order-last xl:order-first' }}">
                   {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
-                  class:'headline-small'} %}
+                  class:'m-0 headline-small'} %}
                   {% include 'components/content.twig' with {class: 'm-0 body-large'} %}
                   {% include "components/buttons.twig" with {buttons: fields.buttons, button_class: 'primary'} %}
             </div>

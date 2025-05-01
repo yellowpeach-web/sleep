@@ -5,6 +5,8 @@ use YPTheme\AcfBuilder\ThemeFieldBuilder;
 $block = new ThemeFieldBuilder('video');
 
 $block
+    ->getClone('heading')
+    ->addWysiwyg('content')
     ->addSelect('video_type', [
         'label' => 'Video Type',
         'instructions' => 'Select whether to embed a video or upload a file.',

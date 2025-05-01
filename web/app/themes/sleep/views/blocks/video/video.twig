@@ -1,24 +1,32 @@
 {% extends "components/block-wrapper.twig" %}
 {% block block_content %}
-
-<div class="yp-container relative">
-  {# Embed Video View #}
-  {% if fields.video_type == 'embed' and fields.video_embed %}
-  <div class="responsive-iframe rounded-xl overflow-hidden">
-    {{ fields.video_embed }}
+<div class="flex flex-col yp-container gap-12 md:gap-16">
+  {% if fields.heading or fields.contet %}
+  <div class="flex flex-col gap-6">
+    {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
+    class:'m-0 headline-small'} %}
+    {% include 'components/content.twig' with {class: 'm-0 body-small'} %}
   </div>
   {% endif %}
+  <div class="relative">
+    {# Embed Video View #}
+    {% if fields.video_type == 'embed' and fields.video_embed %}
+    <div class="responsive-iframe rounded-xl overflow-hidden">
+      {{ fields.video_embed }}
+    </div>
+    {% endif %}
 
-  {# Uploaded File View #}
-  {% if fields.video_type == 'upload' and fields.video_upload %}
-  <div class="h-[240px] md:h-[400px] xl:h-[600px] group hover:cursor-pointer overflow-hidden relative video-view">
-    <video class="yp-video w-full h-full object-cover rounded-xl overflow-hidden" preload="metadata">
-      <source src="{{ fields.video_upload.url }}" type="{{ fields.video_upload.mime_type }}">
-      Your browser does not support the video tag.
-    </video>
-    {% include "components/play-button.twig" %}
+    {# Uploaded File View #}
+    {% if fields.video_type == 'upload' and fields.video_upload %}
+    <div class="h-[240px] md:h-[400px] xl:h-[600px] group hover:cursor-pointer overflow-hidden relative video-view">
+      <video class="yp-video w-full h-full object-cover rounded-xl overflow-hidden" preload="metadata">
+        <source src="{{ fields.video_upload.url }}" type="{{ fields.video_upload.mime_type }}">
+        Your browser does not support the video tag.
+      </video>
+      {% include "components/play-button.twig" %}
+    </div>
+    {% endif %}
   </div>
-  {% endif %}
 </div>
 
 {% endblock %}

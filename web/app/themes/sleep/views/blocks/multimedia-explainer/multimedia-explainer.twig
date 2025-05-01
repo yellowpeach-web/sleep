@@ -39,8 +39,9 @@
                               </h3>
                               {% endif %}
                         </div>
-                        {% include 'components/content.twig' with {class: 'm-0 body-large', content:
-                        item.content} %}
+                        {% if item.content %}
+                        {% include 'components/content.twig' with {class: 'm-0 body-large', content: item.content} %}
+                        {% endif %}
                         {% if item.button %}
                         {% include "components/button.twig" with {class:'primary', button: item.button} %}
                         {% endif %}

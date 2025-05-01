@@ -4,7 +4,7 @@
       <div class="flex flex-col gap-24">
 
             <div class="flex gap-5 xl:gap-24 flex-col xl:flex-row">
-                  <div class="flex flex-col gap-16 w-ull xl:w-[448px] shrink-0">
+                  <div class="flex flex-col gap-8 w-ull xl:w-[448px] shrink-0">
                         {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
                         class:'headline-large'} %}
                         {% include "components/buttons.twig" with {buttons: fields.buttons, wrapper_class: '!hidden
@@ -24,7 +24,6 @@
                   {% endfor %}
             </div>
             {% endif %}
-
       </div>
 </div>
 {# below xl #}
@@ -37,9 +36,9 @@
                   </div>
                   {% endfor %}
             </div>
+            <div class="yp-container pt-[60px] md:pt-[78px]">
+                  <div class="swiper-pagination absolute !bottom-0 flex items-center gap-3 justify-center"></div>
+            </div>
       </div>
 </div>
-<span class="xl:hidden block">
-      {% include "components/swiper-pagination.twig" %}
-</span>
 {% endblock %}

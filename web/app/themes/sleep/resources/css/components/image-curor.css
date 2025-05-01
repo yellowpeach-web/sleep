@@ -1,12 +1,12 @@
 .hover-image {
-  @apply hidden;
-  transform: scale(0.95);
-  transition: transform 0.1s ease;
+  @apply opacity-0;
+  transform: scale(0.5);
+  transition: transform 1s ease;
 }
 
 .hover-image.active {
   transform: scale(1);
-  @apply block;
+  @apply block opacity-100;
 }
 
 .hover-image.active.plus {

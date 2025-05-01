@@ -1,11 +1,18 @@
 export function initStatsCounter() {
   const counters = document.querySelectorAll(".stat-number");
+
   const DURATION = 1500;
   const DECIMAL_DELAY = 100;
 
   function animateCounter(counter) {
     const target = parseFloat(counter.getAttribute("data-target-number"));
     const isFloat = !Number.isInteger(target);
+    const append = counter.parentElement?.querySelector(".append");
+
+    setTimeout(() => {
+      console.log(append);
+      append?.classList.add("active");
+    }, DURATION + DECIMAL_DELAY - 100);
 
     if (target < 5) {
       setTimeout(() => {
