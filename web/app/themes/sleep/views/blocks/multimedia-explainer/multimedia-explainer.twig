@@ -22,7 +22,7 @@
       {# display view #}
       {% for item in fields['filter-headings'] %}
       <div data-filter="{{item.label}}"
-            class=" flex h-full gap-12 md:gap-16 xl:gap-24 simple-data-view flex-col xl:flex-row">
+            class="filterable-data-view flex h-full gap-12 md:gap-16 xl:gap-24 simple-data-view flex-col xl:flex-row">
             <div class=" flex flex-col gap-12 md:gap-16 w-full xl:w-[445px] grow-0 shrink-0 order-last xl:order-none">
                   {% for item in item.content %}
                   <div

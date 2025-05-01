@@ -79,6 +79,19 @@
   }
 }
 
+.acf-block-preview {
+  @apply overflow-hidden;
+}
+
+.no-admin-clip.overflow-clip,
 section.overflow-clip {
   @apply overflow-y-visible !important;
+}
+
+#all-data {
+  @apply grid gap-8 grid-cols-1 xl:grid-cols-2;
+}
+
+.filterable-data-view {
+  @apply hidden last:flex !important;
 }

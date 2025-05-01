@@ -18,7 +18,8 @@
       </div>
       {# display view #}
       {% for item in fields.api_service %}
-      <div data-filter="{{item.name}}" class="simple-data-view w-full flex flex-col gap-12 md:gap-16">
+      <div data-filter="{{item.name}}"
+            class="filterable-data-view simple-data-view w-full flex flex-col gap-12 md:gap-16">
             {% if item.media_type == 'image' %}
             <div class="h-[240px] md:h-[325px] xl:h-[290px] w-full rounded-xl overflow-hidden relative">
                   {{ responsive_img(
