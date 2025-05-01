@@ -43,6 +43,7 @@ $block
             ],
         ],
     ])
+    ->addImage('video_fallback_still')
     ->addText('heading')
     ->addWysiwyg('content')
     ->addRepeater('statistics', ['max' => 10])
