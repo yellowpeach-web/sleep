@@ -22,13 +22,9 @@
                               {{ responsive_img(
                               logo, {
                               size: 'large',
-                              class: 'object-contain w-full h-full',
+                              class: 'object-contain w-auto h-full max-w-[120px] max-h-[32px]',
                               })
                               }}
-                              {% else %}
-                              <div class="size-6 flex items-center justify-center">
-                                    {% include "resources/images/icons/user.svg" %}
-                              </div>
                               {% endif %}
                         </div>
                         {% if item.quote %}
