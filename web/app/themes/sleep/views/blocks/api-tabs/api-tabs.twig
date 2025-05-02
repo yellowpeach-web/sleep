@@ -32,7 +32,7 @@
             {% else %}
             {# video... #}
             {% if item.portrait_video %}
-            <div class="portrait-play-button h-[240px] md:h-[325px] xl:h-[290px] w-full rounded-xl overflow-hidden relative bg-background-primary-shape-fill hover:cursor-pointer"
+            <div class="portrait-play-button h-[240px] md:h-[325px] xl:h-[290px] w-full rounded-xl overflow-hidden relative bg-background-primary-shape-fill hover:cursor-pointer group"
                   data-video="{{ item.video.url }}" data-type="{{ item.vide.mime_type }}">
                   {% if item.video_fallback_still %}
                   {{ responsive_img(
