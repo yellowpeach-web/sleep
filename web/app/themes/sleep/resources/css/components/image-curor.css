@@ -6,7 +6,7 @@
 
 .hover-image.active {
   transform: scale(1);
-  @apply block opacity-100;
+  @apply hidden sm:block sm:opacity-100;
 }
 
 .hover-image.active.plus {
