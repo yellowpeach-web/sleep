@@ -45,6 +45,17 @@ $block
             ],
         ],
     ])
+    ->addImage('video_fallback_still', [
+        'conditional_logic' => [
+            [
+                [
+                    'field' => 'media_type',
+                    'operator' => '==',
+                    'value' => 'video',
+                ],
+            ],
+        ],
+    ])
     ->addRepeater('content', [
         'layout' => 'block',
     ])

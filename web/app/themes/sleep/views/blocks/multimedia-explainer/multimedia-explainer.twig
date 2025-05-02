@@ -61,8 +61,9 @@
                   {% else %}
                   <div
                         class="h-[240px] md:h-[380px] w-full group hover:cursor-pointer overflow-hidden relative video-view">
-                        <video class="yp-video w-full h-full object-cover rounded-xl overflow-hidden"
-                              preload="metadata">
+                        <video class="yp-video w-full h-full object-cover rounded-xl overflow-hidden" preload="metadata"
+                              {% if item.video_fallback_still %} poster="{{ item.video_fallback_still.url }}" {% endif
+                              %}>
                               <source src="{{ item.video.url }}" type="{{ fields.vide.mime_type }}">
                               Your browser does not support the video tag.
                         </video>
