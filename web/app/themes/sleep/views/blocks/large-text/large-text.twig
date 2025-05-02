@@ -12,39 +12,42 @@
       {% set count_footer = 1 %}
       <div class="flex flex-col gap-20 md:gap-24">
             {# statement #}
-            <div class="flex items-center justify-center flex-wrap">
-                  {% for statements in fields.statements %}
-                  {% for statement in statements %}
-                  {% for item in statement %}
-                  {% set index = loop.index0 %}
-                  {% set color_class = highlight_classes[(count - 1) % highlight_classes|length] %}
-                  {% if item.type == 'image' %}
-                  <div
-                        class="h-[30px] w-[40px] md:w-[60px] md:h-[45px] xl:w-[120px] xl:h-[90px] rounded overflow-hidden my-1.5 md:my-2 xl:my-3 mx-[1.5px] md:mx-2 xl:mx-3">
-                        {{ responsive_img(item.image, {
-                        size: 'large',
-                        class: 'object-cover w-full h-full',
-                        }) }}
-                  </div>
-                  {% else %}
-                  <span
-                        class="flex display-large text-text-heading-fill-primary h-[30px] md:h-[61px] xl:h-[90px] mx-1.5 md:mx-2 xl:mx-3">
-                        <span class="flex items-start gap-1">
-                              <span>
-                                    {{ item.text }}
-                              </span>
-                              {% if loop.last %}
-                              <span class="text-base md:text-4xl xl:text-6xl font-normal {{color_class}} "> {{ count }}
-                              </span>
-                              {% endif %}
+            <p class="!m-0">
+                  <span class="flex items-center justify-center flex-wrap">
+                        {% for statements in fields.statements %}
+                        {% for statement in statements %}
+                        {% for item in statement %}
+                        {% set index = loop.index0 %}
+                        {% set color_class = highlight_classes[(count - 1) % highlight_classes|length] %}
+                        {% if item.type == 'image' %}
+                        <span
+                              class="block h-[30px] w-[40px] md:w-[60px] md:h-[45px] xl:w-[120px] xl:h-[90px] rounded overflow-hidden my-1.5 md:my-2 xl:my-3 mx-[1.5px] md:mx-2 xl:mx-3">
+                              {{ responsive_img(item.image, {
+                              size: 'large',
+                              class: 'object-cover w-full h-full',
+                              }) }}
                         </span>
+                        {% else %}
+                        <span
+                              class="flex display-large text-text-heading-fill-primary h-[42px] md:h-[61px] xl:h-[90px] mx-1.5 md:mx-2 xl:mx-3">
+                              <span class="flex items-start gap-1">
+                                    <span>
+                                          {{ item.text }}
+                                    </span>
+                                    {% if loop.last %}
+                                    <span class="text-base md:text-4xl xl:text-6xl font-normal {{color_class}} "> {{
+                                          count }}
+                                    </span>
+                                    {% endif %}
+                              </span>
+                        </span>
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
+                        {% set count = count + 1 %}
+                        {% endfor %}
                   </span>
-                  {% endif %}
-                  {% endfor %}
-                  {% endfor %}
-                  {% set count = count + 1 %}
-                  {% endfor %}
-            </div>
+            </p>
             {# footer #}
             <div class="w-full flex gap-x-2 md:gap-x-6 gap-y-3 h-full flex-col">
                   {% for item in fields.statements %}
