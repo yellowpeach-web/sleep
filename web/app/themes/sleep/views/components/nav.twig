@@ -8,11 +8,11 @@
         {% set is_active = (item.url == fn('get_permalink')) %}
         <li class="m-0 hidden xl:flex  {% if item.meta('mobile_only') %} flex xl:hidden {% endif %}" itemprop="name">
             {% if item.meta('none_link') %}
-            <span class="no-link-style nav-item text-text-heading-fill-primary text-lg font-semibold">
+            <span class="no-link-style nav-item text-text-body-fill-primary text-lg font-semibold">
                 {{ item.title }}
             </span>
             {% else %}
-            <a class="general-transition no-link-style nav-item text-text-heading-fill-primary text-lg font-semibold {{ is_active ? 'active' : '' }}"
+            <a class="general-transition no-link-style nav-item text-text-body-fill-primary text-lg font-semibold {{ is_active ? 'active' : '' }}"
                 href="{{ item.url }}" itemprop="url" {{ is_active ? 'aria-current="page"' }} target="{{item.target }}"
                 title="Go to the {{ item.title }} page">
                 {{ item.title }}

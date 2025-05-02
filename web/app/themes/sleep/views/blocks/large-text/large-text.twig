@@ -20,7 +20,7 @@
                   {% set color_class = highlight_classes[(count - 1) % highlight_classes|length] %}
                   {% if item.type == 'image' %}
                   <div
-                        class="h-[30px] w-[40px] md:w-[60px] md:h-[45px] xl:w-[120px] xl:h-[90px] rounded overflow-hidden my-1.5 md:my-2 xl:my-3 mx-1.5 md:mx-2 xl:mx-3">
+                        class="h-[30px] w-[40px] md:w-[60px] md:h-[45px] xl:w-[120px] xl:h-[90px] rounded overflow-hidden my-1.5 md:my-2 xl:my-3 mx-[1.5px] md:mx-2 xl:mx-3">
                         {{ responsive_img(item.image, {
                         size: 'large',
                         class: 'object-cover w-full h-full',

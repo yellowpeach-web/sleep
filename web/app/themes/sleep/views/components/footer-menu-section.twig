@@ -11,9 +11,11 @@
                               class="subtitle-small group-hover:text-text-link-fill-hover general-transition text-text-heading-fill-primary">
                               {{ item.title }}
                         </span>
+                        {% if item.meta('synopsis') %}
                         <p class="!m-0 text-text-body-fill-primary">
                               {{ item.meta('synopsis') }}
                         </p>
+                        {% endif %}
                   </a>
             </li>
             {% endfor %}
