@@ -1,9 +1,5 @@
 import { teamSwiper } from "./swiper";
 
-const swiperMap = {
-  "team-swiper": teamSwiper,
-};
-
 export function masonryFilterData() {
   const dataSection = document.querySelectorAll(".filter-data-section");
 
@@ -80,7 +76,6 @@ export function simpleFilterData() {
   sections.forEach((section) => {
     const filterButtons = section.querySelectorAll(".filter-button");
     const views = section.querySelectorAll(".simple-data-view");
-    const swiper = section.querySelectorAll(".swiper");
 
     if (!filterButtons.length || !views.length) return;
 
@@ -112,7 +107,12 @@ export function simpleFilterData() {
     filterButtons.forEach((button) => {
       button.addEventListener("click", (e) => {
         e.preventDefault();
-        if (swiper) {
+        const container = button.closest(".team-section");
+        const swiperEl = container.querySelector(".swiper");
+        const swiperInstance = swiperEl?.swiper;
+        if (swiperInstance) {
+          swiperInstance.update();
+          swiperInstance.slideTo(0, 0);
         }
         const filterValue = button.dataset.filter;
         activateFilter(filterValue);
