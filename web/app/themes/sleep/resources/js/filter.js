@@ -75,6 +75,7 @@ export function simpleFilterData() {
 
   sections.forEach((section) => {
     const filterButtons = section.querySelectorAll(".filter-button");
+
     const views = section.querySelectorAll(".simple-data-view");
 
     if (!filterButtons.length || !views.length) return;
@@ -108,11 +109,13 @@ export function simpleFilterData() {
       button.addEventListener("click", (e) => {
         e.preventDefault();
         const container = button.closest(".team-section");
-        const swiperEl = container.querySelector(".swiper");
-        const swiperInstance = swiperEl?.swiper;
-        if (swiperInstance) {
-          swiperInstance.update();
-          swiperInstance.slideTo(0, 0);
+        if (container) {
+          const swiperEl = container.querySelector(".swiper");
+          const swiperInstance = swiperEl?.swiper;
+          if (swiperInstance) {
+            swiperInstance.update();
+            swiperInstance.slideTo(0, 0);
+          }
         }
         const filterValue = button.dataset.filter;
         activateFilter(filterValue);
