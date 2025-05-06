@@ -12,5 +12,9 @@ $block
     ->addWysiwyg('content')
     ->getClone('buttons')
     ->addImage('image')
+    ->addTrueFalse('contain_image', [
+        'label' => 'Contain Image?',
+        'ui' => 1,
+    ])
     ->setLocation('block', '==', 'acf/text-alongside-image')
     ->setFields();

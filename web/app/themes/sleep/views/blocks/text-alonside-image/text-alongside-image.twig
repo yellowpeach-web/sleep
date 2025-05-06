@@ -1,5 +1,12 @@
 {% extends "components/block-wrapper.twig" %}
 {% block block_content %}
+
+{% if fields.contain_image %}
+{% set image_classes = 'object-contain my-auto h-full w-full max-h-[380px]' %}
+{% else %}
+{% set image_classes = 'object-cover h-full w-full absolute inset-0' %}
+{% endif %}
+
 <div class="yp-container">
       <div class="grid grid-cols-1 xl:grid-cols-2 gap-12 md:gap-16 xl:gap-24">
 
@@ -16,7 +23,7 @@
                   {{ responsive_img(
                   fields.image, {
                   size: 'large',
-                  class: 'object-cover h-full w-full absolute inset-0',
+                  class: image_classes,
                   })
                   }}
             </div>
