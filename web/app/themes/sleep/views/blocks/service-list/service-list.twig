@@ -15,7 +15,7 @@
 
             {% if item.service %}
             <a class="no-link-style flex justify-between items-center gap-sm group pt-6 pb-6 md:pb-8 md:pt-8 border-b border-background-primary-bg-stroke first:pt-0 last:pb-0 last:border-b-0 service-list-item w-full"
-                  {% if item.service.url %} href="{{item.service.url }}" {% endif %}>
+                  {% if item.service.url %} href="{{item.service.url }}" target="{{item.service.target}}" {% endif %}>
                   {# hover_image #}
                   <div
                         class="hover-image pointer-events-none top-0 left-0 fixed w-[140px] h-[110px] rounded overflow-hidden {{ count is even ? 'rotate-[10deg] plus' : 'rotate-[-10deg] minus' }}">
