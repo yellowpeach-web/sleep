@@ -15,13 +15,22 @@
                   {% include 'components/content.twig' with {class: 'm-0 body-large'} %}
             </div>
             <div class="w-full xl:w-[632px] bg-surface-primary-bg-fill-default p-6 md:p-10 rounded-lg shrink-0 h-fit">
-                  {% if fields.form_id %}
+                  {% if fields.gravity_form and fields.form_id %}
                   {{ fn(
                   'do_shortcode',
                   '[gravityform id=' ~ fields.form_id ~ '
                   ajax=true title=false
                   description=false]'
                   ) }}
+                  {% else %}
+                  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+                  <script>
+                        hbspt.forms.create({
+                              portalId: "22145270",
+                              formId: "eb69ab18-163a-485d-aaf6-6bff16872a85",
+                              region: "na1"
+                        });
+                  </script>
                   {% endif %}
             </div>
       </div>
