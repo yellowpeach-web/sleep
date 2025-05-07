@@ -1,0 +1,16 @@
+/* Basic fallback styles for user-inserted tables */
+table {
+  @apply w-full border-collapse my-6 text-sm block overflow-x-auto;
+}
+
+thead {
+  @apply text-base;
+}
+
+th,
+td {
+  @apply border !border-input-bg-stroke-default px-6 py-4 text-left align-top;
+}
+
+tbody tr:nth-child(odd) {
+}
