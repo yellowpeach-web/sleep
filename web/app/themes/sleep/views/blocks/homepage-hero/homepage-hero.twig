@@ -28,22 +28,12 @@
                         {% include "resources/images/icons/blob-2.svg" %}
                   </span>
 
-                  {% if fields.hero_image_secondary %}
-                  <div class="absolute w-fit top-0 right-0 hero-phone-1">
+                  {% if fields.image %}
+                  <div class="absolute h-auto top-0 right-0 hero-phone-1">
                         {{ responsive_img(
-                        fields.hero_image_secondary, {
+                        fields.image, {
                         size: 'large',
-                        class: 'object-contain w-fit h-[360px] md:h-[420px] xl:h-[450px]',
-                        })
-                        }}
-                  </div>
-                  {% endif %}
-                  {% if fields.hero_image_primary %}
-                  <div class="absolute w-fit bottom-0 left-0 hero-phone-2">
-                        {{ responsive_img(
-                        fields.hero_image_primary, {
-                        size: 'large',
-                        class: 'object-contain w-fit h-[360px] md:h-[420px] xl:h-[450px]',
+                        class: 'object-contain h-auto w-full md:w-[400px] xl:w-[400px] max-w-[330px] md:max-w-none',
                         })
                         }}
                   </div>
