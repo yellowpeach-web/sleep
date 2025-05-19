@@ -35,6 +35,13 @@
 	<link rel="icon" type="image/png" href="{{template_directory_uri}}favicon-16x16.png" sizes="16x16" />
 	<link rel="icon" type="image/png" href="{{template_directory_uri}}favicon-128.png" sizes="128x128" />
 	{# favicons #}
+
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+					new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+				'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-MZ2SQKDF');</script>
+
 	{{ fn('wp_head') }}
 	{% if options.head_scripts %}
 	{{ options.head_scripts }}
@@ -42,6 +49,9 @@
 </head>
 
 <body id="" class="yp-frontend {{ body_class }}">
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ2SQKDF"
+				  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 	<div class="site" id="page">
 
