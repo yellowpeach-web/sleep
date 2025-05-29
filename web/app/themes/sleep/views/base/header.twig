@@ -36,11 +36,14 @@
 	<link rel="icon" type="image/png" href="{{template_directory_uri}}favicon-128.png" sizes="128x128" />
 	{# favicons #}
 
-	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-					new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-				'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-		})(window,document,'script','dataLayer','GTM-MZ2SQKDF');</script>
+	<script>(function (w, d, s, l, i) {
+			w[l] = w[l] || []; w[l].push({
+				'gtm.start':
+					new Date().getTime(), event: 'gtm.js'
+			}); var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+					'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-MZ2SQKDF');</script>
 
 	{{ fn('wp_head') }}
 	{% if options.head_scripts %}
@@ -50,8 +53,8 @@
 
 <body id="" class="yp-frontend {{ body_class }}">
 
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ2SQKDF"
-				  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ2SQKDF" height="0" width="0"
+			style="display:none;visibility:hidden"></iframe></noscript>
 
 	<div class="site" id="page">
 
@@ -59,9 +62,21 @@
 		<div id="wrapper-navbar" itemscope itemtype="http://schema.org/WebSite"
 			class="sticky top-0 z-20 flex-flex-col {{general_settings.header_color}}">
 			<div class="bg-background-primary-bg-fill">
-				<div class="h-[3px] bg-full-gradient w-full"></div>
+				{# Announcement bar #}
+				{% if general_settings.announcement_bar %}
+				<a href="{{general_settings.announcement_bar.url}}"
+					class="no-link-style announcement-bar general-transition block w-full">
+					<div class="bg-button-primary-bg-fill-default py-1.5">
+						<div class="yp-container flex justify-center">
+							<p class="!m-0 overline-large text-button-primary-text-fill-default">
+								{{general_settings.announcement_bar.title}}
+							</p>
+						</div>
+					</div>
+				</a>
+				{% endif %}
 				<header class="">
-					<div class="yp-container py-5 flex items-center justify-between w-full px-0">
+					<div class="yp-container py-5 xl:py-0 flex items-center justify-between w-full px-0">
 						<a href="{{home_url}}" title="Take me to the homepage"
 							class="no-link-style w-auto flex grow-0 shrink-0 h-10" aria-label="Homepage"
 							rel="home">

@@ -1,22 +1,60 @@
-{% if primary_nav %}
-<nav class="menu-modal bg-background-primary-bg-fill xl:hidden" role="navigation" aria-label="Primary Navigation"
-      itemscope itemtype="https://schema.org/SiteNavigationElement">
-      <div class="yp-container pb-5">
-            <ul class="list-none pl-0 flex flex-col">
-                  {% for item in primary_nav.items %}
-                  {% set is_active = (item.url == fn('get_permalink')) %}
-                  <li class="m-0" itemprop="name">
-                        <a title="{{ item.title }}"
-                              class="py-6 title-large border-b border-background-primary-bg-stroke no-link-style flex items-center justify-between mob-nav-item {{ is_active ? 'active' : '' }}"
-                              href="{{ item.url }}">
-                              {{ item.title }}
-                              <div class="mob-nav-icon w-6 h-auto fill-text-body-fill-primary">
-                                    {% include "resources/images/icons/arrow.svg" %}
-                              </div>
-                        </a>
-                  </li>
-                  {% endfor %}
-            </ul>
-      </div>
-</nav>
-{% endif %}
+<div
+      class="h-screen-[100vh-80px] md:h-screen-[100vh-81px] bg-background-primary-bg-fill fixed top-[110px] md:top-[112px] w-full z-2 xl:hidden">
+      {% if primary_nav %}
+      <nav class="menu-modal yp-menu h-screen overflow-y-scroll no-scroll-bar" role="navigation"
+            aria-label="Primary Navigation" itemscope itemtype="https://schema.org/SiteNavigationElement">
+            <div class="yp-container pb-[132px] overflow-y-scroll no-scroll-bar h-full">
+                  <ul class="accordion-container list-none pl-0 flex flex-col">
+                        {% for item in primary_nav.items %}
+                        {% set menu_options = item.meta('menu_options') %}
+                        {% set is_active = (item.url == fn('get_permalink')) %}
+                        {% if item.meta('mega_menu') %}
+                        <li class="m-0 accordion" itemprop="name">
+                              <span
+                                    class="py-6 md:py-8 title-large {% if not loop.first %} border-t {% endif %} border-background-primary-bg-stroke no-link-style flex items-center justify-between mob-nav-item">
+                                    <p class="!m-0 title-large nav-title general-transition">
+                                          {{ item.title }}
+                                    </p>
+                                    <div class="shrink-0 icon-container stroke-ui-icon-fill-primary-default">
+                                          {% include "resources/images/icons/plus.twig" %}
+                                    </div>
+                              </span>
+
+                              {% if item.cat_terms %}
+                              <ul class="ml-0 pl-0 grid grid-cols-1 gap-8 accordion-content">
+                                    {% for item in item.cat_terms %}
+                                    {% include "components/mega-col-term.twig" %}
+                                    {% endfor %}
+                              </ul>
+                              {% else %}
+                              {% if menu_options %}
+                              <ul class="ml-0 pl-0 grid grid-cols-1 gap-8 accordion-content">
+                                    {% for item in menu_options.page_cols %}
+                                    {% set link = item.heading.url != "#" %}
+                                    {% if item.col_type == 'item' %}
+                                    {% include "components/mega-col-item.twig" %}
+                                    {% else %}
+                                    {% include "components/mega-col-list.twig" %}
+                                    {% endif %}
+                                    {% endfor %}
+                              </ul>
+                              {% endif %}
+                              {% endif %}
+                        </li>
+                        {% else %}
+                        <li class="m-0" itemprop="name">
+                              <a title="{{ item.title }}"
+                                    class="py-6 md:py-8 title-large {% if not loop.first %} border-t {% endif %} border-background-primary-bg-stroke no-link-style flex items-center justify-between mob-nav-item"
+                                    href="{{ item.url }}">
+                                    <p class="!m-0 title-large nav-title general-transition">
+                                          {{ item.title }}
+                                    </p>
+                              </a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                  </ul>
+            </div>
+      </nav>
+      {% endif %}
+</div>

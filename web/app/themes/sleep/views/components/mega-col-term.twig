@@ -1,0 +1,25 @@
+<li class="flex flex-col gap-5 list-none">
+
+      <div class="flex flex-col gap-3">
+            {% if item.name %}
+            <a class="no-link-style title-small text-text-heading-fill-secondary" href="{{ item.link }}"
+                  title="View {{ item.name }} insights">
+                  {{ item.name }}
+            </a>
+            {% endif %}
+
+            {% if item.description %}
+            <p class="!m-0 body-small">
+                  {{ item.description }}
+            </p>
+            {% endif %}
+
+      </div>
+
+      {% include "components/button.twig" with
+      {
+      button: {url: item.link, title: __('Learn More', 'sleep')},
+      class: 'secondary'
+      } %}
+
+</li>

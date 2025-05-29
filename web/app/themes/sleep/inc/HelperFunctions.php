@@ -58,6 +58,7 @@ class HelperFunctions
             'footer_button' => get_field('footer_button', 'options') ? get_field('footer_button', 'options') : '',
             'left_column' => get_field('left_column', 'options') ? get_field('left_column', 'options') : '',
             'header_color' => get_field('header_bg_color', 'options') ? get_field('header_bg_color', 'options') : '',
+            'announcement_bar' => get_field('announcement_bar', 'options') ? get_field('announcement_bar', 'options') : '',
         ];
     }
 

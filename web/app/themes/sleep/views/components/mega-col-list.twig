@@ -1,0 +1,41 @@
+<li class="flex flex-col gap-5 list-none">
+      {% if link %}
+      <span class="flex items-center justify-between flex-wrap gap-5">
+            <a class="no-link-style title-small text-text-heading-fill-secondary" href="{{ item.heading.url }}"
+                  title="View {{ item.heading.title }}">
+                  {{ item.heading.title }}
+            </a>
+            {% include "components/button.twig" with
+            {
+            button: {url: item.heading.url, title:__('Learn More ', 'sleep') ~ item.heading.title },
+            class: 'secondary'
+            } %}
+      </span>
+      {% else %}
+      <span class="title-small text-text-heading-fill-secondary">
+            {{ item.heading.title }}
+      </span>
+      {% endif %}
+      {% if item.sub_pages %}
+      <ul class="pl-0 ml-0 flex flex-col gap-5">
+            {% for item in item.sub_pages %}
+            <li class="list-none flex flex-col gap-1">
+                  <a href="{{item.sub_page.url}}"
+                        class="no-link-style flex items-center justify-between text-text-heading-fill-highlight-2 subtitle-small flex-wrap gap-3">
+                        <span class="">
+                              {{item.sub_page.title}}
+                        </span>
+                        <span class="">
+                              {% include "resources/images/icons/menu-arrow.svg" %}
+                        </span>
+                  </a>
+                  {% if item.sub_page_synopsis %}
+                  <p class="!m-0 body-small">
+                        {{ item.sub_page_synopsis }}
+                  </p>
+                  {% endif %}
+            </li>
+            {% endfor %}
+      </ul>
+      {% endif %}
+</li>

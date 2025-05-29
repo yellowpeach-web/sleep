@@ -15,6 +15,17 @@ class ThemeSetup
         add_action('after_setup_theme', [self::class, 'setup_theme']);
         add_action('after_setup_theme', [self::class, 'setup_menus']);
         add_filter('timber/context', [self::class, 'add_menus_to_timber']);
+        add_action('admin_head', [self::class, 'wide_nav_menu_wpadmin']);
+    }
+
+    public static function wide_nav_menu_wpadmin()
+    {
+        echo
+        '<style>
+                .menu-item-settings {
+                    max-width: 100% !important;
+                }
+        </style>';
     }
 
     public static function setup_theme()
@@ -44,7 +55,17 @@ class ThemeSetup
 
     public static function add_menus_to_timber($context)
     {
-        $context['primary_nav'] = Timber::get_menu('primary-navigation');
+        $primary_menu = Timber::get_menu('primary-navigation');
+        foreach ($primary_menu->items as &$item) {
+            if ($item->meta('insight_mega_menu')) {
+                $all_cat_terms = Timber::get_terms([
+                    'taxonomy'   => 'category',
+                    'hide_empty' => true,
+                ]);
+                $item->cat_terms = $all_cat_terms;
+            }
+        }
+        $context['primary_nav'] = $primary_menu;
         $context['discover_nav'] = Timber::get_menu('footer-navigation');
         $context['products_nav'] = Timber::get_menu('products-navigation');
         $context['legal_nav'] = Timber::get_menu('legal-navigation');

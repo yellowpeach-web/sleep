@@ -13,8 +13,16 @@
 
 .accordion.active {
   @apply opacity-100;
+  p.nav-title {
+    @apply text-state-highlight-default !important;
+  }
+  .mob-nav-item {
+    .accord-icon {
+      @apply stroke-state-highlight-default;
+    }
+  }
   .accordion-content {
-    @apply max-h-[500px] pt-6;
+    @apply max-h-[1500px] pt-6 md:pt-8 pb-6 md:pb-8;
     transition: 0.3s ease-out 0.1s;
     .accordion-icon {
       @apply rotate-90 pt-6;

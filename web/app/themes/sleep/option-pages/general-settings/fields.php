@@ -32,6 +32,7 @@ $general_settings
         'label' => 'LinkedIn URL'
     ])
     ->addTab('Header')
+    ->addLink('announcement_bar')
     ->addSelect('header_bg_color', [
         'label' => 'Header Background Color',
         'instructions' => 'Select a background color for the navigation.',
@@ -44,15 +45,8 @@ $general_settings
     ->addLink('header_button')
     ->addTab('Footer')
     ->addLink('footer_button')
-    // ->addGroup('left_column')
-    // ->addText('heading')
-    // ->addRepeater('item')
-    // ->addText('heading')
-    // ->addWysiwyg('synopsis', ['toolbar' => 'basic'])
-    // ->endRepeater()
-    // ->endGroup()
-    ->addTab('Set archive pages')
-    ->addPostObject('posts_archive', ['label' => 'Posts Archive', 'return_format' => 'id', 'instructions' => 'set arhive page for posts'])
+    // ->addTab('Set archive pages')
+    // ->addPostObject('posts_archive', ['label' => 'Posts Archive', 'return_format' => 'id', 'instructions' => 'set arhive page for posts'])
     ->addTab('Partner logos')
     ->addRepeater('logos')
     ->addImage(

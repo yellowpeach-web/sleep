@@ -1,0 +1,45 @@
+<li class="flex flex-col gap-5 list-none">
+      {% if item.image %}
+      {% if link %}
+      <a href="{{ item.heading.url }}" class="no-link-style hidden xl:block" title="View {{ item.heading.title }}">
+            {% endif %}
+            <div class="w-full h-[180px] rounded overflow-hidden">
+                  {{ responsive_img(
+                  item.image, {
+                  size: 'large',
+                  class: 'object-cover w-full h-full',
+                  })
+                  }}
+            </div>
+            {% if link %}
+      </a>
+      {% endif %}
+      {% endif %}
+
+      <div class="flex flex-col gap-3">
+            {% if link %}
+            <a class="no-link-style title-small text-text-heading-fill-secondary" href="{{ item.heading.url }}"
+                  title="View {{ item.heading.title }}">
+                  {{ item.heading.title }}
+            </a>
+            {% else %}
+            <span class="title-small text-text-heading-fill-secondary">
+                  {{ item.heading.title }}
+            </span>
+            {% endif %}
+
+            {% if item.page_synopsis %}
+            <p class="!m-0 body-small">
+                  {{ item.page_synopsis }}
+            </p>
+            {% endif %}
+      </div>
+
+      {% if link %}
+      {% include "components/button.twig" with
+      {
+      button: {url: item.heading.url, title: __('Learn More', 'sleep')},
+      class: 'secondary'
+      } %}
+      {% endif %}
+</li>
