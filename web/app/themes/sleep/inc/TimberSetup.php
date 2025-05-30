@@ -253,7 +253,6 @@ class TimberAcfBlocks
      */
     public static function get_related_posts($block, $block_name, $post_type, $field_name, $posts_amount = -1, $term_args = [])
     {
-
         if ($block['name'] !== $block_name) {
             return [];
         }
@@ -278,6 +277,11 @@ class TimberAcfBlocks
             'posts_per_page' => $posts_amount,
         ];
 
+        // Exclude current post if on a single post page
+        if (is_singular($post_type)) {
+            $args['post__not_in'] = [get_the_ID()];
+        }
+
         if (!empty($term_args['taxonomy']) && !empty($term_args['term'])) {
             $args['tax_query'] = [
                 [
@@ -290,6 +294,7 @@ class TimberAcfBlocks
 
         return Timber::get_posts($args);
     }
+
 
     private static function get_filter_terms($taxonomy, $hide_empty = true, $uncat = false)
     {
@@ -357,7 +362,7 @@ class TimberAcfBlocks
         return self::get_related_posts($block, 'acf/faqs', 'faq', 'faqs');
     }
 
-    private static function get_post_terms($block)
+    public static function get_post_terms($block)
     {
         if ($block['name'] == 'acf/posts-feed') {
             return self::get_filter_terms('category');

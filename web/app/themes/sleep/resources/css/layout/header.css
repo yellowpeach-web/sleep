@@ -7,6 +7,9 @@
 }
 .nav-item.active {
   @apply text-state-highlight-default hover:text-state-highlight-default hover:cursor-pointer;
+  svg {
+    @apply fill-text-link-fill-hover;
+  }
 }
 
 #wrapper-navbar {

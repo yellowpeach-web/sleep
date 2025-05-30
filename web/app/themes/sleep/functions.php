@@ -1,4 +1,5 @@
 <?php
+
 namespace YPTheme;
 
 use YPTheme\AcfBuilder\ThemeFieldBuilder;
@@ -32,6 +33,7 @@ Images::init();
 Security::init();
 TimberSetup::init();
 ThemeSetup::init();
+Ajax::init();
 
 
 class Theme

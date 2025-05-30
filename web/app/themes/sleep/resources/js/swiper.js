@@ -2,7 +2,10 @@ import Swiper from "swiper";
 import { Autoplay, Controller, Navigation, Pagination } from "swiper/modules";
 Swiper.use([Autoplay, Navigation, Pagination, Controller]);
 export let teamSwiper;
+let postsSwiper = null;
+
 export function initSwipers() {
+  initPostSwiper();
   const testimonialSwiper = new Swiper(".testimonial-swiper", {
     slidesPerView: "auto",
     centeredSlides: true,
@@ -50,13 +53,29 @@ export function initSwipers() {
       },
     },
   });
-  const posts = new Swiper(".posts-swiper", {
+
+  teamSwiper = new Swiper(".team-swiper", {
     slidesPerView: "auto",
     grabCursor: true,
     navigation: {},
     breakpoints: {},
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+      type: "bullets",
+      renderBullet: function (index, className) {
+        const totalSlides = this.slides.length;
+        return `<span class="${className}" aria-label="View slide ${index + 1} of ${totalSlides}"></span>`;
+      },
+    },
   });
-  teamSwiper = new Swiper(".team-swiper", {
+}
+
+export function initPostSwiper() {
+  if (postsSwiper) {
+    postsSwiper.destroy(true, true);
+  }
+  const postsSwiper = new Swiper(".posts-swiper", {
     slidesPerView: "auto",
     grabCursor: true,
     navigation: {},

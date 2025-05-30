@@ -1,5 +1,8 @@
 <?php
-$templates = array( 'templates/archive.twig', 'templates/index.twig' );
+
+use Timber\Timber;
+
+$templates = array('templates/archive.twig', 'templates/index.twig');
 
 $context = Timber::context();
 
@@ -21,4 +24,4 @@ if (is_day()) {
 }
 
 $context['posts'] = Timber::get_posts();
-Timber\Timber::render($templates, $context);
+Timber::render($templates, $context);

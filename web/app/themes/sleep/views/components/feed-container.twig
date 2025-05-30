@@ -1,0 +1,47 @@
+{% if insights %}
+<div class="blog-feed-container w-full h-fit hidden md:block">
+      {% for item in insights %}
+      {% set terms = item.terms('category') %}
+      {% if terms|length %}
+      {% set term = terms[0] %}
+      {% if term.slug == 'blog' %}
+      {% set term_color = 'text-heading-fill-highlight-1' %}
+      {% elseif term.slug == 'latest-news' %}
+      {% set term_color = 'text-heading-fill-highlight-2' %}
+      {% elseif term.slug == 'whitepaper' %}
+      {% set term_color = 'text-heading-fill-highlight-3' %}
+      {% endif %}
+      {% endif %}
+      {% include "components/post-card.twig" %}
+      {% endfor %}
+</div>
+{% endif %}
+
+
+{% if insights %}
+<div class="yp-container overflow-visible block md:hidden">
+      <div class="swiper posts-swiper overflow-visible">
+            <div class="swiper-wrapper h-auto">
+                  {% for item in insights %}
+                  {% set terms = item.terms('category') %}
+                  {% if terms|length %}
+                  {% set term = terms[0] %}
+                  {% if term.slug == 'blog' %}
+                  {% set term_color = 'text-heading-fill-highlight-1' %}
+                  {% elseif term.slug == 'latest-news' %}
+                  {% set term_color = 'text-heading-fill-highlight-2' %}
+                  {% elseif term.slug == 'whitepaper' %}
+                  {% set term_color = 'text-heading-fill-highlight-3' %}
+                  {% endif %}
+                  {% endif %}
+                  <div class="swiper-slide w-[303px] h-auto mr-6">
+                        {% include "components/post-card.twig" %}
+                  </div>
+                  {% endfor %}
+            </div>
+            <div class="pt-[60px]">
+                  <div class="swiper-pagination flex items-center gap-3 justify-center"></div>
+            </div>
+      </div>
+</div>
+{% endif %}

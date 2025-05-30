@@ -1,27 +1,31 @@
 {% if pagination.pages is not empty %}
 <nav aria-label="Pagination" class="flex justify-center">
-	<ul class="pagination-list list-none flex items-center gap-3 sm:gap-5 md:gap-20 w-fit pl-0">
+	<ul
+		class="pagination-list list-none flex items-center gap-3 sm:gap-5 md:gap-20 w-full md:w-fit justify-between md:justify-normal pl-0">
 
 		<!-- Previous Page Link -->
 		<li class="pagination-item">
 			{% if pagination.prev.link %}
-			<a rel="prev" title="View previous page" class="pagination-link next size-9 ui-button primary"
+			<a rel="prev" title="View previous page"
+				class="pagination-link flex items-center justify-center rounded next shrink-0 grow-0 size-9 ui-button primary"
 				href="{{ pagination.prev.link }}" aria-label="Go to previous page">
-				{% include "resources/images/icons/chev-left.twig" %}
+				{% include "resources/images/icons/chev-left.svg" %}
 			</a>
 			{% else %}
-			<span class="pagination-link next no-link-style size-9 ui-button primary disabled">
-				{% include "resources/images/icons/chev-left.twig" %}
+			<span
+				class="pagination-link flex items-center justify-center rounded next no-link-style shrink-0 grow-0 size-9 ui-button primary disabled">
+				{% include "resources/images/icons/chev-left.svg" %}
 			</span>
 			{% endif %}
 		</li>
 
 		<!-- Page Links -->
 		<li class="pagination-item">
-			<ul class="flex list-none pl-0 items-center gap-3 sm:gap-5">
+			<ul class="flex list-none pl-0 items-center gap-3">
 				{% if pagination.show_pre %}
 				<li class="pagination-item-link">
-					<span class="pagination-link size-9 elips ui-button primary">
+					<span
+						class="pagination-link flex items-center justify-center rounded shrink-0 grow-0 size-9 elips ui-button primary">
 						...
 					</span>
 				</li>
@@ -30,12 +34,14 @@
 
 				<li class="pagination-item-link">
 					{% if page.current %}
-					<span class="pagination-link active size-9 ui-button primary" aria-current="page">
+					<span class="pagination-link flex items-center justify-center rounded active shrink-0 grow-0 !size-9 ui-button primary"
+						aria-current="page">
 						{{ page.title }}
 						<span class="sr-only">(current)</span>
 					</span>
 					{% else %}
-					<a class="pagination-link no-link-style size-9 ui-button primary" href="{{ page.link }}">
+					<a class="pagination-link flex items-center justify-center rounded no-link-style shrink-0 grow-0 size-9 ui-button primary"
+						href="{{ page.link }}">
 						{{ page.title }}
 					</a>
 					{% endif %}
@@ -44,7 +50,8 @@
 				{% endfor %}
 				{% if pagination.show_post %}
 				<li class="pagination-item-link">
-					<span class="pagination-link size-9 ui-button primary elips">
+					<span
+						class="pagination-link flex items-center justify-center rounded shrink-0 grow-0 size-9 ui-button primary elips">
 						...
 					</span>
 				</li>
@@ -55,13 +62,15 @@
 		<!-- Next Page Link -->
 		<li class="pagination-item">
 			{% if pagination.next.link %}
-			<a rel="next" title="View next page" class="pagination-link next size-9 ui-button primary"
+			<a rel="next" title="View next page"
+				class="no-link-style pagination-link flex items-center justify-center rounded next shrink-0 grow-0 size-9 ui-button primary"
 				href="{{ pagination.next.link }}" aria-label="Go to next page">
-				{% include "resources/images/icons/chev-right.twig" %}
+				{% include "resources/images/icons/chev-right.svg" %}
 			</a>
 			{% else %}
-			<span class="pagination-link next no-link-style size-9 ui-button primary disabled">
-				{% include "resources/images/icons/chev-right.twig" %}
+			<span
+				class="pagination-link flex items-center justify-center rounded next no-link-style shrink-0 grow-0 size-9 ui-button primary disabled">
+				{% include "resources/images/icons/chev-right.svg" %}
 			</span>
 			{% endif %}
 		</li>

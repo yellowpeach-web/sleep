@@ -25,7 +25,7 @@ input[type="submit"],
   &.secondary {
     @apply !bg-transparent;
     /* Background */
-    @apply bg-button-secondary-bg-fill-default hover:bg-button-secondary-bg-fill-hover hover:!text-button-secondary-fill-hover disabled:bg-button-secondary-bg-fill-disabled focus:bg-button-secondary-bg-fill-focused active:bg-button-secondary-bg-fill-pressed;
+    @apply bg-button-secondary-bg-fill-default hover:bg-button-secondary-bg-fill-hover hover:text-button-secondary-fill-hover disabled:bg-button-secondary-bg-fill-disabled focus:bg-button-secondary-bg-fill-focused active:bg-button-secondary-bg-fill-pressed;
     /* Stroke */
     @apply border-button-secondary-bg-stroke-default hover:border-button-secondary-bg-stroke-hover disabled:border-button-secondary-bg-stroke-disabled focus:border-button-secondary-bg-stroke-focused active:border-button-secondary-bg-stroke-pressed;
     /* Text */

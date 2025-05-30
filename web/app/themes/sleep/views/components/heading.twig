@@ -10,6 +10,6 @@
 *
 */
 #}
-{% if fields.heading %}
+{% if fields.heading or heading %}
 <{{ tag }} {{ class ?'class="m-0 ' ~ class ~ '"':'' }}>{{ heading }}</{{ tag }}>
 {% endif %}

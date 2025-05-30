@@ -1,26 +1,40 @@
-<article
-    class="bg-surface-primary-bg-fill-default hover:bg-surface-primary-bg-fill-hover p-8 w-full group border border-surface-primary-bg-stroke-default general-transition rounded"
-    itemscope itemtype="https://schema.org/Article" role="article">
-    <a href="{{item.link}}" class="no-link-style flex flex-col gap-3" aria-label="Read more about {{ item.title }}"
-        title="Read more about {{ item.title }}" itemprop="url">
-        {% if term %}
-        <p class="!m-0 overline-large text-{{term_color}}">
-            {{term}}
-        </p>
+<a class="no-link-style" href="{{item.link}}" aria-label="Read more about {{ item.title }}"
+    title="Read more about {{ item.title }}" itemprop="url">
+    <article
+        class="flex overflow-hidden flex-col roundedd group border border-surface-primary-bg-stroke-default general-transition rounded"
+        itemscope itemtype="https://schema.org/Article" role="article">
+        {% if item.thumbnail %}
+        <div class="w-full  h-[200px] rounded overflow-hidden">
+            {{ responsive_img(
+            item.thumbnail, {
+            size: 'large',
+            class: 'h-full w-full object-cover',
+            })
+            }}
+        </div>
         {% endif %}
-        <div class="flex items-start gap-6">
-            <h3 class="m-0 title-small" itemprop="headline">
-                {{item.title}}
-            </h3>
-            <div
-                class="h-5 xl:h-6 w-auto shrink-0 grow-0 fill-text-heading-fill-secondary group-hover:fill-{{term_color}}">
-                {% include "resources/images/icons/arrow.svg" %}
+        <div class="bg-surface-primary-bg-fill-default group-hover:bg-surface-primary-bg-fill-hover p-8 w-full">
+            <div class="flex flex-col gap-3">
+                {% if term %}
+                <p class="!m-0 overline-large text-{{term_color}}">
+                    {{term}}
+                </p>
+                {% endif %}
+                <div class="flex items-start gap-6">
+                    <h3 class="m-0 title-small" itemprop="headline">
+                        {{item.title}}
+                    </h3>
+                    <div
+                        class="h-5 xl:h-6 w-auto shrink-0 grow-0 fill-text-heading-fill-secondary group-hover:fill-{{term_color}}">
+                        {% include "resources/images/icons/arrow.svg" %}
+                    </div>
+                </div>
+                {% if item.excerpt %}
+                <p class="!m-0 body-small" itemprop="description">
+                    {{ item.excerpt.strip(true).read_more('').length(999) | truncate(20, true, '…') }}
+                </p>
+                {% endif %}
             </div>
         </div>
-        {% if item.excerpt %}
-        <p class="!m-0 body-small" itemprop="description">
-            {{ item.excerpt.strip(true).read_more('').length(999) | truncate(20, true, '…') }}
-        </p>
-        {% endif %}
-    </a>
-</article>
+    </article>
+</a>

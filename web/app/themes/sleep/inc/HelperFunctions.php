@@ -6,7 +6,18 @@ class HelperFunctions
 {
     public static function init()
     {
+        add_filter('timber/twig', [self::class, 'register_twig_filters']);
         // Initialization logic if needed
+    }
+
+    public static function register_twig_filters($twig)
+    {
+        //add wp translation abilty to twig files
+        $twig->addFilter(new \Twig\TwigFilter('__', function ($text) {
+            return __($text, 'sleep');
+        }));
+
+        return $twig;
     }
 
     public static function theme_error_handling($error, $backtrace)
@@ -61,6 +72,33 @@ class HelperFunctions
             'announcement_bar' => get_field('announcement_bar', 'options') ? get_field('announcement_bar', 'options') : '',
         ];
     }
+
+    public static function get_insight_fields()
+    {
+        if (! class_exists('ACF')) {
+            return;
+        }
+        return [
+            'heading' => get_field('insights_heading', 'options') ? get_field('insights_heading', 'options') : '',
+            'content' => get_field('insights_content', 'options') ? get_field('insights_content', 'options') : '',
+            'cta' => get_field('insights_cta', 'options') ? get_field('insights_cta', 'options') : '',
+        ];
+    }
+
+    public static function get_insight_single_fields()
+    {
+        if (! class_exists('ACF')) {
+            return;
+        }
+        return [
+            'cta' => get_field('single_cta', 'options') ? get_field('single_cta', 'options') : '',
+            'subheading' => get_field('single_subheading', 'options') ? get_field('single_subheading', 'options') : '',
+            'feed' => get_field('insights_feed', 'options') ? get_field('insights_feed', 'options') : '',
+            'gravity_cta' => get_field('insight_single_cta', 'options') ? get_field('insight_single_cta', 'options') : '',
+        ];
+    }
+
+
 
     public static function get_breadcrumb()
     {

@@ -9,6 +9,7 @@ import { initMasonary } from "./masonary.js";
 import { initHamburger } from "./hamburger.js";
 import { initVideos } from "./video.js";
 import { initPortraitVideoModal } from "./portrait-video-modal.js";
+import { initAjaxFilter } from "./ajax.js";
 // import AOS from 'aos';
 $(document).ready(function () {
   masonryFilterData();
@@ -22,4 +23,5 @@ $(document).ready(function () {
   initHamburger();
   initVideos();
   initPortraitVideoModal();
+  initAjaxFilter();
 });

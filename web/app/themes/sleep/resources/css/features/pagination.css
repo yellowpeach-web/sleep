@@ -5,3 +5,8 @@
 .elips {
   @apply hover:!cursor-default hover:!bg-ui-bg-fill-default hover:!text-ui-fill-default hover:!border-ui-bg-stroke-default;
 }
+
+.social-link:hover svg,
+.pagination-link:not(.disabled):hover svg {
+  @apply fill-ui-fill-hover !important;
+}

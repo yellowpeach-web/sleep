@@ -1,9 +1,17 @@
 <?php
-$context = Timber::context();
-$context['posts'] = Timber::get_posts();
-$templates = array('index.twig');
-if (is_home()) {
 
-    array_unshift($templates, 'templates/front-page.twig', 'templates/home.twig', 'templates/index.twig');
-}
-Timber::render($templates, $context);
+use Timber\Timber;
+use YPTheme\HelperFunctions;
+
+$context = Timber::context();
+$context['insights_fields'] = HelperFunctions::get_insight_fields();
+$template = 'templates/index.twig';
+$args = [
+    'taxonomy'   => 'category',
+];
+$terms = Timber::get_terms($args);
+$context['terms'] = $terms;
+$context['archive_page'] = get_post_type_archive_link('post');
+$context['is_all'] = true;
+
+Timber::render($template, $context);

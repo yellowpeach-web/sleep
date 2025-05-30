@@ -51,7 +51,8 @@
 	{% endif %}
 </head>
 
-<body id="" class="yp-frontend {{ body_class }}">
+<body id="" class="yp-frontend {{ body_class }}
+" {% if post is defined and post.ID %} data-current-post-id="{{ post.ID }}" {% endif %}>
 
 	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ2SQKDF" height="0" width="0"
 			style="display:none;visibility:hidden"></iframe></noscript>
