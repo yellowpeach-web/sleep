@@ -1,0 +1,54 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+<div class="yp-container flex-col md:flex-row flex gap-12 md:gap-16 xl:gap-24 ">
+      <div class="flex flex-col gap-12 md:gap-16 w-full md:w-[364px] xl:w-[736px] grow-0 shrink-0">
+            {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
+            class:'headline-small'} %}
+            {# key points #}
+            {% if fields.app_features %}
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-sm">
+                  {% set total = fields.app_features|length %}
+                  {% for item in fields.app_features %}
+                  {% set is_last_item = loop.index == total %}
+                  {% set is_second_last_item = loop.index == total - 1 %}
+                  {# Determine if we should hide border for last 1 or 2 items depending on even/odd total #}
+                  {% if total is even %}
+                  {% set hide_border = is_last_item or is_second_last_item %}
+                  {% else %}
+                  {% set hide_border = is_last_item %}
+                  {% endif %}
+                  <div
+                        class="border-background-primary-bg-stroke flex gap-5 pb-6 {% if not hide_border %}xl:border-b border-b last:border-b-none {% else %} border-b last:border-none xl:border-b-0 {% endif %}">
+                        {% include "components/icon.twig" %}
+                        <div class="flex flex-col gap-1">
+                              {% include 'components/heading.twig' with {
+                              tag: fields.tag,
+                              heading: item.heading,
+                              class:'m-0 title-small'
+                              } %}
+                              {% if item.copy %}
+                              <p class="!m-0">
+                                    {{ item.copy }}
+                              </p>
+                              {% endif %}
+                        </div>
+                  </div>
+                  {% endfor %}
+            </div>
+            {% endif %}
+            {% include "components/app-badges.twig" %}
+      </div>
+      <div class="md:sticky md:top-24 w-full h-full">
+            {% if fields.image %}
+            <div class="w-full h-auto">
+                  {{ responsive_img(
+                  fields.image, {
+                  size: 'large',
+                  class: 'object-contain w-full h-full',
+                  })
+                  }}
+            </div>
+            {% endif %}
+      </div>
+</div>
+{% endblock %}

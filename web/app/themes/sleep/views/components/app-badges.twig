@@ -1,0 +1,16 @@
+{% if fields.stamps %}
+<div class="flex gap-3 items-center w-full flex-wrap">
+      {% for item in fields.stamps %}
+      {% if item.stamp and item.link %}
+      <a href="{{item.link}}" target="_blank" class="no-link-style h-10">
+            {{ responsive_img(
+            item.stamp, {
+            size: 'large',
+            class: 'h-full w-full object-contain',
+            })
+            }}
+      </a>
+      {% endif %}
+      {% endfor %}
+</div>
+{% endif %}
