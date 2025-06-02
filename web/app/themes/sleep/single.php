@@ -44,8 +44,13 @@ $share_links = [
 $context['share_links'] = $share_links;
 // single fields
 $fields = HelperFunctions::get_insight_single_fields();
+
 if ($fields) {
-    $context['cta'] = $fields['cta'];
+    if ($post->meta('overide_sidebard_cta')) {
+        $context['cta'] = $post->meta('single_cta');
+    } else {
+        $context['cta'] = $fields['cta'];
+    }
     $context['subheading'] = $fields['subheading'];
     $context['feed'] = $fields['feed'];
     $context['gravity_cta'] = $fields['gravity_cta'];
