@@ -13,6 +13,7 @@ class ThemeSetup
     public static function init()
     {
         add_action('after_setup_theme', [self::class, 'setup_theme']);
+        add_action('after_setup_theme', [self::class, 'setup_menus']);
         add_filter('timber/context', [self::class, 'add_pagination_to_timber']);
         add_filter('timber/context', [self::class, 'add_menus_to_timber']);
         add_action('admin_head', [self::class, 'wide_nav_menu_wpadmin']);
