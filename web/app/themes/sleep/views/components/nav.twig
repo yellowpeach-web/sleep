@@ -5,7 +5,20 @@
     <ul class="yp-menu  list-none pl-0 flex items-center md:gap-8 xl:gap-0" role="list">
         {% for item in primary_nav.items %}
         {% set insight_terms = item.cat_terms %}
-        {% set is_active = (item.url == fn('get_permalink')) %}
+
+
+        {# Determine if parent nav item is active #}
+        {% set current_url = fn('get_permalink') %}
+        {% set is_active = (item.url == current_url) %}
+        {% if not is_active and item.meta('menu_options') %}
+        {% set menu_options = item.meta('menu_options') %}
+        {% for col in menu_options.page_cols %}
+        {% if col.heading.url == current_url %}
+        {% set is_active = true %}
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
         {% if item.meta('mega_menu') %}
         {% set menu_options = item.meta('menu_options') %}
         {# Mega Menu #}
@@ -13,7 +26,7 @@
             itemprop="name">
             {% if item.meta('none_link') %}
             <span
-                class="primary-nav-item group-hover:text-text-link-fill-hover  no-link-style nav-item text-text-body-fill-primary text-lg flex items-center gap-2 font-semibold">
+                class="primary-nav-item group-hover:text-text-link-fill-hover  no-link-style nav-item text-text-body-fill-primary text-lg flex items-center gap-2 font-semibold {{ is_active ? 'active' : '' }}">
                 <span>
                     {{ item.title }}
                 </span>
