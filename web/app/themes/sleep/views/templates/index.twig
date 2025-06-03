@@ -52,6 +52,8 @@
                 {% set term_color = 'text-heading-fill-highlight-2' %}
                 {% elseif term.slug == 'whitepaper' %}
                 {% set term_color = 'text-heading-fill-highlight-3' %}
+                {% else %}
+                {% set term_color = 'text-text-heading-fill-primary' %}
                 {% endif %}
                 {% endif %}
                 {% include "components/post-card.twig" %}
