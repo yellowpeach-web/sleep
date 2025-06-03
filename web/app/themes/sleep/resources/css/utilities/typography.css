@@ -54,11 +54,14 @@ h6 {
   @apply text-lg md:text-lg xl:text-xl;
 }
 
-ol,
-ul,
-li,
 p {
   @apply font-medium text-base mb-5 text-text-body-fill-primary;
+}
+
+ol,
+ul,
+li {
+  @apply text-text-body-fill-primary;
 }
 
 address {
