@@ -1,0 +1,20 @@
+{% extends "components/block-wrapper.twig" %}
+{% block block_content %}
+
+<div class="yp-container posts-feed-section ajax-filter-section">
+      <div class="flex flex-col gap-12 md:gap-16 items-center">
+
+            <div class="flex flex-col gap-8 md:items-center">
+                  <div class="flex flex-col gap-6 items-center">
+                        {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
+                        class:'headline-large md:text-center'} %}
+                        {% include 'components/content.twig' with {class: 'm-0 body-small md:text-center'} %}
+                  </div>
+            </div>
+      </div>
+      <div class="pt-12 md:pt-16">
+            {% include "components/feed-container.twig" with {data: media} %}
+      </div>
+</div>
+
+{% endblock %}

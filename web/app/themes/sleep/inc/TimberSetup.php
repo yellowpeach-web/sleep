@@ -175,6 +175,7 @@ class TimberAcfBlocks
         $context['team'] = self::get_team($block);
         $context['team_terms'] = self::get_team_terms($block);
         $context['logos'] = self::get_logos($block);
+        $context['media'] = self::get_media($block);
 
         // Assign block spacing 
         $context['block_spacing'] = trim(
@@ -355,6 +356,28 @@ class TimberAcfBlocks
         }
         return;
     }
+
+    private static function get_media($block)
+    {
+        $term_id = get_field('media_entry_cat');
+        $term = $term_id ? get_term($term_id) : null;
+
+        $related_posts = self::get_related_posts(
+            $block,
+            'acf/media-entry-feed',
+            'media-entry',
+            'media_entry_cat',
+            -1,
+            $term ? [
+                'taxonomy' => 'media_type',
+                'term'     => $term->slug,
+            ] : []
+        );
+
+        return $related_posts;
+    }
+
+
 
     private static function get_team($block)
     {

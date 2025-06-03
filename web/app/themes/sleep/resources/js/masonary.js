@@ -37,7 +37,11 @@ export function initMasonary() {
         });
 
         macyInstances.push(instance);
-        container.style.opacity = "1";
+        // Delay for none image cards.
+        setTimeout(() => {
+          instance.recalculate(true);
+          container.style.opacity = "1";
+        }, 100);
       }, 100);
     });
   });

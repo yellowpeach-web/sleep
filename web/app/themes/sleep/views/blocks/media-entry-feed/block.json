@@ -1,0 +1,33 @@
+{
+  "name": "media-entry-feed",
+  "title": "Media Entry Feed",
+  "description": "A latest media block feed with abilty to specify meda type shown",
+  "category": "yellow-peach",
+  "icon": "portfolio",
+  "keywords": [
+    "media",
+    "studies",
+    "news",
+    "releases",
+    "press"
+  ],
+  "acf": {
+    "mode": "auto",
+    "validate": false
+  },
+  "supports": {
+    "align": false,
+    "anchor": true,
+    "alignContent": false,
+    "color": {
+      "text": false,
+      "background": true,
+      "link": true
+    },
+    "alignText": true,
+    "spacing": {
+      "margin": false,
+      "padding": true
+    }
+  }
+}

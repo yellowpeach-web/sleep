@@ -1,6 +1,6 @@
-{% if insights %}
+{% if data %}
 <div class="blog-feed-container w-full h-fit hidden md:block">
-      {% for item in insights %}
+      {% for item in data %}
       {% set terms = item.terms('category') %}
       {% if terms|length %}
       {% set term = terms[0] %}
@@ -20,11 +20,11 @@
 {% endif %}
 
 
-{% if insights %}
+{% if data %}
 <div class="yp-container overflow-visible block md:hidden">
       <div class="swiper posts-swiper overflow-visible">
             <div class="swiper-wrapper h-auto">
-                  {% for item in insights %}
+                  {% for item in data %}
                   {% set terms = item.terms('category') %}
                   {% if terms|length %}
                   {% set term = terms[0] %}
