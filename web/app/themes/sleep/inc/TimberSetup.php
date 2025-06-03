@@ -367,7 +367,7 @@ class TimberAcfBlocks
             'acf/media-entry-feed',
             'media-entry',
             'media_entry_cat',
-            -1,
+            6,
             $term ? [
                 'taxonomy' => 'media_type',
                 'term'     => $term->slug,

@@ -10,6 +10,9 @@
                         class:'headline-large md:text-center'} %}
                         {% include 'components/content.twig' with {class: 'm-0 body-small md:text-center'} %}
                   </div>
+                  {% if fields.button %}
+                  {% include "components/button.twig" with {class: 'primary', button: fields.button} %}
+                  {% endif %}
             </div>
       </div>
       <div class="pt-12 md:pt-16">
