@@ -8,5 +8,6 @@ $block
     ->getClone('heading')
     ->addWysiwyg('content')
     ->addImage('image')
+    ->addLink('button')
     ->setLocation('block', '==', 'acf/secondary-hero')
     ->setFields();
