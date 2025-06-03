@@ -166,8 +166,12 @@ class TimberAcfBlocks
         $context['insight_terms'] = self::get_post_terms($block);
         $context['posts'] = self::get_posts_archive($block);
         $context['testimonials'] = self::get_testimonials($block);
-        $context['faqs'] = self::get_faqs($block);
-        $context['faq_terms'] = self::get_faq_terms($block);
+        // $context['faqs'] = self::get_faqs($block);
+        // $context['faq_terms'] = self::get_faq_terms($block);
+        $faq_data = self::get_faq_data($block);
+        $context['faqs'] = $faq_data['faqs'];
+        $context['faq_terms'] = $faq_data['faq_terms'];
+
         $context['team'] = self::get_team($block);
         $context['team_terms'] = self::get_team_terms($block);
         $context['logos'] = self::get_logos($block);
@@ -357,22 +361,64 @@ class TimberAcfBlocks
         return self::get_related_posts($block, 'acf/meet-the-team', 'team', 'team');
     }
 
-    private static function get_faqs($block)
+
+    private static function get_faq_data($block)
     {
-        return self::get_related_posts($block, 'acf/faqs', 'faq', 'faqs');
+        if ($block['name'] !== 'acf/faqs') {
+            return [
+                'faqs' => [],
+                'faq_terms' => [],
+            ];
+        }
+
+        $fields = get_fields();
+        $faqs = [];
+        $terms = [];
+
+        if (!empty($fields['faq_terms'])) {
+            $term_ids = array_map('intval', $fields['faq_terms']);
+
+            // Fetch all terms by ID
+            $unsorted_terms = get_terms([
+                'taxonomy'   => 'filter',
+                'include'    => $term_ids,
+                'hide_empty' => false,
+            ]);
+
+            // Sort terms to match the selected ID order
+            $terms_map = [];
+            foreach ($unsorted_terms as $term) {
+                $terms_map[$term->term_id] = $term;
+            }
+
+            $terms = array_values(array_filter(array_map(
+                fn($id) => $terms_map[$id] ?? null,
+                $term_ids
+            )));
+
+            $term_slugs = wp_list_pluck($terms, 'slug');
+
+            if (!empty($term_slugs)) {
+                $faqs = self::get_related_posts($block, 'acf/faqs', 'faq', 'faqs', -1, [
+                    'taxonomy' => 'filter',
+                    'term'     => $term_slugs,
+                ]);
+            }
+        }
+
+        return [
+            'faqs' => $faqs,
+            'faq_terms' => !empty($fields['include_filter']) ? $terms : [],
+        ];
     }
+
+
+
 
     public static function get_post_terms($block)
     {
         if ($block['name'] == 'acf/posts-feed') {
             return self::get_filter_terms('category');
-        }
-    }
-
-    private static function get_faq_terms($block)
-    {
-        if ($block['name'] == 'acf/faqs') {
-            return self::get_filter_terms('filter');
         }
     }
 

@@ -11,17 +11,13 @@ $block
         'label' => 'Include filters?',
         'ui' => 1,
     ])
-    ->addTrueFalse('show_selected', [
-        'label' => 'Select specific FAQs?',
-        'instructions' => '*if not selected all FAQs will be displayed',
-        'ui' => 1,
+    ->addTaxonomy('faq_terms', [
+        'label' => 'FAQ Categories to include',
+        'instructions' => 'Select one or more FAQ categories to include.',
+        'taxonomy' => 'filter',
+        'field_type' => 'multi_select',
+        'add_term' => 0,
+        'return_format' => 'id',
     ])
-    ->addRelationship('faqs', [
-        'label' => 'FAQs',
-        'post_type' => ['faq'],
-        'filters' => [0 => 'search'],
-        'return_format' => 'id'
-    ])
-    ->conditional('show_selected', '==', '1')
     ->setLocation('block', '==', 'acf/faqs')
     ->setFields();
