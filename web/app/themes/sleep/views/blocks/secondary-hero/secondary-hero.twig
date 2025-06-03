@@ -41,7 +41,9 @@
                   {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
                   class:'headline-small text-center'} %}
                   {% include 'components/content.twig' with {class: 'm-0 body-small text-center'} %}
+                  {% if fields.button %}
                   {% include "components/button.twig" with {button: fields.button, class: 'primary'} %}
+                  {% endif %}
             </div>
             {% endif %}
       </div>
