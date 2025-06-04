@@ -166,8 +166,6 @@ class TimberAcfBlocks
         $context['insight_terms'] = self::get_post_terms($block);
         $context['posts'] = self::get_posts_archive($block);
         $context['testimonials'] = self::get_testimonials($block);
-        // $context['faqs'] = self::get_faqs($block);
-        // $context['faq_terms'] = self::get_faq_terms($block);
         $faq_data = self::get_faq_data($block);
         $context['faqs'] = $faq_data['faqs'];
         $context['faq_terms'] = $faq_data['faq_terms'];
@@ -357,25 +355,36 @@ class TimberAcfBlocks
         return;
     }
 
-    private static function get_media($block)
+    public static function get_media($block, $term_id = null)
     {
-        $term_id = get_field('media_entry_cat');
+        if ($term_id === null) {
+            $term_id = get_field('media_entry_cat');
+        }
+
         $term = $term_id ? get_term($term_id) : null;
+
+        $related_args = $term ? [
+            'taxonomy' => 'media_type',
+            'term'     => $term->slug,
+        ] : [];
+
+        // If on a single post, exclude the current one
+        if (is_singular('media-entry')) {
+            $related_args['post__not_in'] = [get_the_ID()];
+        }
 
         $related_posts = self::get_related_posts(
             $block,
             'acf/media-entry-feed',
-            'media-entry',
+            'media-entries',
             'media_entry_cat',
             6,
-            $term ? [
-                'taxonomy' => 'media_type',
-                'term'     => $term->slug,
-            ] : []
+            $related_args
         );
 
         return $related_posts;
     }
+
 
 
 

@@ -18,6 +18,5 @@ $posts
     ->addWysiwyg('content')
     ->addLink('button')
     ->endGroup()
-    ->addGroup('insights_feed')
     ->setLocation('post_type', '==', 'post')
     ->setFields();

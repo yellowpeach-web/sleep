@@ -10,5 +10,5 @@ $paper = new ThemeFieldBuilder('Paper Info', [
 $paper
       ->addText('abstract')
       ->addUrl('external_link')
-      ->setLocation('post_type', '==', 'faq')
+      ->setLocation('post_type', '==', 'papers')
       ->setFields();

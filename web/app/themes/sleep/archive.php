@@ -1,27 +1,36 @@
 <?php
 
 use Timber\Timber;
-
-$templates = array('templates/archive.twig', 'templates/index.twig');
+use YPTheme\HelperFunctions;
 
 $context = Timber::context();
+$template = 'templates/index.twig';
 
-$context['title'] = 'Archive';
-if (is_day()) {
-    $context['title'] = get_the_date('D M Y');
-} else if (is_month()) {
-    $context['title'] = get_the_date('M Y');
-} else if (is_year()) {
-    $context['title'] = get_the_date('Y');
-} else if (is_tag()) {
-    $context['title'] = single_tag_title('', false);
-} else if (is_category()) {
-    $context['title'] = single_cat_title('', false);
-    array_unshift($templates, 'templates/archive-' . get_query_var('cat') . '.twig');
-} else if (is_post_type_archive()) {
-    $context['title'] = post_type_archive_title('', false);
-    array_unshift($templates, 'templates/archive-' . get_post_type() . '.twig');
+if (is_post_type_archive('media-entries')) {
+    //media archive
+    $context['archive_fields'] = HelperFunctions::get_media_fields();
+    $args = [
+        'taxonomy'   => 'media_type',
+    ];
+    $terms = Timber::get_terms($args);
+    $context['terms'] = $terms;
+    $context['archive_title'] = 'Media Entries';
+    $context['is_all'] = true;
+    $context['archive_page'] = get_post_type_archive_link('media-entries');
+    $context['color_profile'] = 'dark-theme';
+} elseif (is_post_type_archive('papers')) {
+    //papers archive
+    $context['archive_fields'] = HelperFunctions::get_paper_fields();
+    $args = [
+        'taxonomy'   => 'paper_type',
+    ];
+    $terms = Timber::get_terms($args);
+    $context['terms'] = $terms;
+    $context['archive_title'] = 'Papers';
+    $context['is_all'] = true;
+    $context['archive_page'] = get_post_type_archive_link('papers');
+    $context['color_profile'] = 'light-theme';
+} {
 }
 
-$context['posts'] = Timber::get_posts();
-Timber::render($templates, $context);
+Timber::render($template, $context);

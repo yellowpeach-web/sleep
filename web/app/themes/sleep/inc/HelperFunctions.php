@@ -85,6 +85,31 @@ class HelperFunctions
         ];
     }
 
+    public static function get_media_fields()
+    {
+        if (! class_exists('ACF')) {
+            return;
+        }
+        return [
+            'heading' => get_field('media_entries_heading', 'options') ? get_field('media_entries_heading', 'options') : '',
+            'content' => get_field('media_entries_content', 'options') ? get_field('media_entries_content', 'options') : '',
+            'cta' => get_field('media_entries_cta', 'options') ? get_field('media_entries_cta', 'options') : '',
+        ];
+    }
+
+    public static function get_paper_fields()
+    {
+        if (! class_exists('ACF')) {
+            return;
+        }
+        return [
+            'heading' => get_field('papers_heading', 'options') ? get_field('papers_heading', 'options') : '',
+            'content' => get_field('papers_content', 'options') ? get_field('papers_content', 'options') : '',
+            'cta' => get_field('papers_cta', 'options') ? get_field('papers_cta', 'options') : '',
+        ];
+    }
+
+
     public static function get_insight_single_fields()
     {
         if (! class_exists('ACF')) {
@@ -97,6 +122,20 @@ class HelperFunctions
             'gravity_cta' => get_field('insight_single_cta', 'options') ? get_field('insight_single_cta', 'options') : '',
         ];
     }
+
+    public static function get_media_single_fields()
+    {
+        if (! class_exists('ACF')) {
+            return;
+        }
+        return [
+            'cta' => get_field('media_single_cta', 'options') ? get_field('media_single_cta', 'options') : '',
+            'subheading' => get_field('media_single_subheading', 'options') ? get_field('media_single_subheading', 'options') : '',
+            'feed' => get_field('media_feed', 'options') ? get_field('media_feed', 'options') : '',
+            'gravity_cta' => get_field('media_single_cta_gravity', 'options') ? get_field('media_single_cta_gravity', 'options') : '',
+        ];
+    }
+
 
 
 

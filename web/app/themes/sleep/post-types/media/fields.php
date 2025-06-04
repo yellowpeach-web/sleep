@@ -2,9 +2,21 @@
 
 use YPTheme\AcfBuilder\ThemeFieldBuilder;
 
-// $faqs = new ThemeFieldBuilder('faq', [
-//      'position' => 'acf_after_title'
-//  ]);
+$posts = new ThemeFieldBuilder('media_entry_sidebar_call_to_action', [
+      'position' => 'acf_after_title',
+]);
 
-// $faqs->setLocation('post_type', '==', 'faq')
-//      ->setFields();
+$posts
+      ->addTrueFalse('overide_sidebard_cta', [
+            'label' => 'Overide default sidebar CTA with specific message?',
+            'ui' => 1,
+      ])
+      ->addGroup('single_cta', ['label' => 'Single Call To Action'])
+      ->conditional('overide_sidebard_cta', '==', '1')
+      ->addText('subheading')
+      ->addText('heading')
+      ->addWysiwyg('content')
+      ->addLink('button')
+      ->endGroup()
+      ->setLocation('post_type', '==', 'media-entries')
+      ->setFields();

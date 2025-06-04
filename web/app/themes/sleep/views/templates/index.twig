@@ -3,7 +3,7 @@
 {% block body %}
 
 
-<section id="" class="light-theme overflow-clip">
+<section id="" class="{{color_profile}} overflow-clip">
     <div class="section-wrapper bg-background-primary-bg-fill padding-top-regular ">
         <div class="yp-container flex flex-col gap-6 md:gap-8">
             {# filter #}
@@ -11,26 +11,26 @@
                 <div class="flex flex-col gap-6 md:items-center">
                     {% include 'components/heading.twig' with {
                     tag: 'h1',
-                    heading: insights_fields.heading,
+                    heading: archive_fields.heading,
                     class: 'headline-large md:text-center'
                     } %}
                     {% include 'components/content.twig' with {
-                    content: insights_fields.content,
+                    content: archive_fields.content,
                     class: 'm-0 body-small md:text-center'
                     } %}
                 </div>
 
                 {% if terms %}
                 <div class="flex items-center gap-3 text-button-primary-text-fill-default flex-wrap">
-                    <a href="{{archive_page}}" title="View all insights" class="no-link-style">
+                    <a href="{{archive_page}}" title="View all {{archive_title}}" class="no-link-style">
                         <button
                             class="filter-button !py-[5px] !px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default {{ is_all ? 'active' }}">
-                            {{ 'All Insights' | __ }}
+                            {{ 'All ' ~ archive_title | __ }}
                         </button>
                     </a>
                     {% for item in terms %}
                     {% set is_active = current_term == item.slug %}
-                    <a href="{{item.link}}" title="View {{item.name}} insights" class="no-link-style">
+                    <a href="{{item.link}}" title="View {{item.name}} {{archive_title}}" class="no-link-style">
                         <button
                             class="filter-button !py-[5px] !px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default {{ is_active ? 'active' }}">
                             {{ item.name }}
@@ -69,15 +69,15 @@
     </div>
 </section>
 
-{% if insights_fields.cta %}
+{% if archive_fields.cta %}
 {% include "blocks/gravity-grid-cta/gravity-grid-cta.twig" with {
-color_profile: 'light-theme',
+color_profile: color_profile,
 background_color: 'bg-background-primary-bg-fill',
 block_spacing: 'padding-top-regular padding-bottom-regular',
 fields: {
 cta: {
-url: insights_fields.cta.url,
-title: insights_fields.cta.title
+url: archive_fields.cta.url,
+title: archive_fields.cta.title
 }
 }
 } %}

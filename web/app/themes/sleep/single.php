@@ -42,8 +42,29 @@ $share_links = [
     ]
 ];
 $context['share_links'] = $share_links;
+
 // single fields
-$fields = HelperFunctions::get_insight_single_fields();
+if ($post->post_type === 'post') {
+    $fields = HelperFunctions::get_insight_single_fields();
+    // feed fields
+    $context['block_name'] = "blocks/posts-feed/posts-feed.twig";
+    $block['name'] = 'acf/posts-feed';
+    $context['insight_terms'] = TimberAcfBlocks::get_post_terms($block);
+    $context['insights'] = TimberAcfBlocks::get_posts_feed($block);
+} elseif ($post->post_type === 'media-entries') {
+    $fields = HelperFunctions::get_media_single_fields();
+    // feed fields
+    $context['block_name'] = "blocks/media-entry-feed/media-entry-feed.twig";
+    $block['name'] = 'acf/media-entry-feed';
+    //current term
+    $terms = wp_get_post_terms($post->ID, 'media_type');
+    if (!empty($terms) && !is_wp_error($terms)) {
+        $current_term_id = $terms[0]->term_id;
+    }
+    $context['media'] = TimberAcfBlocks::get_media($block, $current_term_id);
+} else {
+    $fields = [];
+}
 
 if ($fields) {
     if ($post->meta('overide_sidebard_cta')) {
@@ -55,9 +76,5 @@ if ($fields) {
     $context['feed'] = $fields['feed'];
     $context['gravity_cta'] = $fields['gravity_cta'];
 }
-// feed fields
-$block['name'] = 'acf/posts-feed';
-$context['insight_terms'] = TimberAcfBlocks::get_post_terms($block);
-$context['insights'] = TimberAcfBlocks::get_posts_feed($block);
 
 Timber::render($template, $context);

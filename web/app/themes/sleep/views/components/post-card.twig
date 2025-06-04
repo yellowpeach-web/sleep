@@ -1,4 +1,12 @@
-<a class="no-link-style" href="{{item.link}}" aria-label="Read more about {{ item.title }}"
+{% if item.meta('external_link') %}
+{% set link = item.meta('external_link') %}
+{% set target = "_blank" %}
+{% else %}
+{% set link = item.link %}
+{% set target = "" %}
+{% endif %}
+
+<a class="no-link-style" href="{{link}}" target="{{target}}" aria-label="Read more about {{ item.title }}"
     title="Read more about {{ item.title }}" itemprop="url">
     <article
         class="flex overflow-hidden flex-col roundedd group border border-surface-primary-bg-stroke-default general-transition rounded"
@@ -29,7 +37,11 @@
                         {% include "resources/images/icons/arrow.svg" %}
                     </div>
                 </div>
-                {% if item.excerpt %}
+                {% if item.meta('abstract') %}
+                <p class="!m-0 overline-large">
+                    {{item.meta('abstract')}}
+                </p>
+                {% elseif item.excerpt %}
                 <p class="!m-0 body-small" itemprop="description">
                     {{ item.excerpt.strip(true).read_more('').length(999) | truncate(20, true, '…') }}
                 </p>
