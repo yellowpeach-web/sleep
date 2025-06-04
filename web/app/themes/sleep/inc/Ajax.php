@@ -40,7 +40,7 @@ class AJax
             }
 
             $posts = Timber::get_posts($args);
-            $context['insights'] = $posts;
+            $context['data'] = $posts;
 
             $html = Timber::compile('views/components/feed-container.twig', $context);
 
