@@ -33,11 +33,15 @@ web/.htaccess
 /vendor
 vendor
 !web/app/plugins/acfml
+!web/app/plugins/acfml/vendor
 !web/app/plugins/sitepress-multilingual-cms
+!web/app/plugins/sitepress-multilingual-cms/vendor
 !web/app/plugins/wp-seo-multilingual
+!web/app/plugins/wp-seo-multilingual/vendor
 !web/app/plugins/wpml-media-translation
+!web/app/plugins/wpml-media-translation/vendor
 !web/app/plugins/wpml-string-translation
-
+!web/app/plugins/wpml-string-translation/vendor
 
 lib/
 /log/
