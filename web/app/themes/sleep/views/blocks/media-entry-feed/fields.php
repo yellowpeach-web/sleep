@@ -8,9 +8,9 @@ $block
     ->addWysiwyg('content')
     ->addLink('button')
     ->addTaxonomy('media_entry_cat', [
-        'label' => 'Media Enty Category',
+        'label' => 'Media Entry Category',
         'instructions' => 'Select the category you would like to display 6 latest posts from.',
-        'taxonomy' => 'media_type',
+        'taxonomy' => 'news_media_categories',
         'field_type' => 'select',
         'add_term' => 0,
         'return_format' => 'id',
