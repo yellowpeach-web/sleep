@@ -32,6 +32,11 @@ web/.htaccess
 # Composer
 /vendor
 vendor
+!web/app/plugins/acfml
+!web/app/plugins/sitepress-multilingual-cms
+!web/app/plugins/wp-seo-multilingual
+!web/app/plugins/wpml-media-translation
+!web/app/plugins/wpml-string-translation
 
 
 lib/
