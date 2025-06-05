@@ -64,15 +64,18 @@ class ThemeSetup
     public static function add_menus_to_timber($context)
     {
         $primary_menu = Timber::get_menu('primary-navigation');
-        foreach ($primary_menu->items as &$item) {
-            if ($item->meta('insight_mega_menu')) {
-                $all_cat_terms = Timber::get_terms([
-                    'taxonomy'   => 'category',
-                    'hide_empty' => true,
-                ]);
-                $item->cat_terms = $all_cat_terms;
+        if($primary_menu) {
+            foreach ($primary_menu->items as &$item) {
+                if ($item->meta('insight_mega_menu')) {
+                    $all_cat_terms = Timber::get_terms([
+                        'taxonomy'   => 'category',
+                        'hide_empty' => true,
+                    ]);
+                    $item->cat_terms = $all_cat_terms;
+                }
             }
         }
+
         $context['primary_nav'] = $primary_menu;
         $context['discover_nav'] = Timber::get_menu('footer-navigation');
         $context['products_nav'] = Timber::get_menu('products-navigation');
