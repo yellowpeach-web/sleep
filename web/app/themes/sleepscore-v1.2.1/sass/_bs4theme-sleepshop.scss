@@ -1,0 +1,105 @@
+.validated-icon {
+	position:absolute;
+	top:15px;
+	left:30px;
+	z-index: 11;
+	display: block;
+	width:120px;
+	height: auto;
+}
+.validated-badge {
+	display:inline-block;
+	width:120px;
+	height: auto;
+}
+.cat-icon-nav {
+	background:$white;
+	padding-bottom:15px;
+	border-left: solid 5px #f8f8f8;
+	border-right: solid 5px #f8f8f8;
+	border-bottom: solid 10px #f8f8f8;
+	font-size: .75rem;
+}
+.archive .hero-section {
+	margin-bottom:30px;
+}
+.product-title {
+	margin-bottom:5px;
+}
+.product-excerpt {
+	display: block;
+	height: auto;
+	margin-bottom:5px;
+}
+.product-img {
+	display: block;
+	width:100%;
+	height:auto;
+	overflow: hidden;
+	margin-bottom: 15px
+}
+.sleep-shop-product {
+	margin-bottom: 60px;
+}
+.product-excerpt {
+	margin-bottom:0px;
+}
+.price-wrap {
+	margin-bottom: 30px;
+}
+.product-cta-button {
+	margin-left:15px;
+}
+.coupon-message {
+	margin-bottom:15px;
+}
+.coupon-code {
+	display: inline-block;
+	margin-bottom:15px;
+	padding:5px 30px;
+	text-align: center;
+	border: solid $victoria 1px;
+}
+// #ss-cat-nav-wrap {
+// 	display:none;
+// 	position:absolute;
+// 	top:50px;
+// 	left:0;
+// 	right:0;
+// 	border-bottom:solid 1px $white;
+// }
+// .ss-cat-nav {
+// 	background:$victoria;
+// 	font-size:.75rem;
+// 	border-top:solid 1px $white;
+// 	border-right:solid 1px $white;
+// 	border-bottom:solid 1px $white;
+// 	border-left:solid 1px $white;
+// 	white-space: nowrap;
+// }
+// .ss-cat-nav-branding {
+// 	text-align: center;
+// 	border:none;
+// 	line-height: 40px;
+// 	padding-left:0;
+// 	padding-right:0;
+// 	background-color:transparent;
+// }
+// button.ss-cat-nav-branding:focus {
+// 	outline:none;
+// }
+.square-24 {
+	display:inline-block;
+	width:24px;
+	height:24px;
+	color:$white;
+	line-height: 24px;
+}
+.square-24.fa-chevron-down {
+	-moz-transition: transform 400ms;
+	-webkit-transition: transform 400ms;
+	transition: transform 400ms;
+}
+.flip {
+	transform: rotate(-180deg);
+}

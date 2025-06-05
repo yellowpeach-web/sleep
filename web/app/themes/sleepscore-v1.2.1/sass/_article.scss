@@ -1,0 +1,399 @@
+#container-sslarticle {
+	.meta .author {
+		color: $white;
+		font-weight: 700;
+	}
+}
+#card-sslarticle {
+	background: transparent;
+}
+#col-sslarticle-right {
+	// margin-top: -50px;
+}
+#col-sslarticle-right {
+	a {
+		text-decoration: underline;
+	}
+}
+@media (max-width: 991px) {
+	#col-sslarticle-right {
+		margin-top: -90px;
+	}
+}
+@media (max-width: 767px) {
+	#col-sslarticle-right {
+		margin-top: 0;
+	}
+}
+/* midway banner app version */
+#midway-banner-outer-app-version {
+  background: rgba(255, 255, 255, 0.0) url("/wp-content/uploads/2021/05/SC03292101_BlogMidwayBanner_11S_v5.1_B-1920x660px.jpg") no-repeat center top;
+  background-size: contain;
+  max-width: 1140px;
+  max-height: auto;
+  font-family: $fontStackCustomRegular;
+  text-align: center;
+  position: relative;
+  margin-bottom: 20px
+}
+#midway-banner-outer-app-version #midway-banner-inner {
+  background-color: rgba(0, 0, 0, 0.0);
+  margin: 0 auto;
+  position: relative
+}
+#midway-banner-outer-app-version .midway-title {
+  color: $victoria;
+  font-weight: 300;
+  margin-top: 10px
+}
+#midway-banner-outer-app-version .midway-description {
+  color: $victoria;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 10px
+}
+#midway-banner-outer-app-version .midway-download {
+  margin-bottom: 10px
+}
+#midway-banner-outer-app-version .midway-free-app {
+  color: $victoria;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 0
+}
+#midway-banner-outer-app-version .midway-btn:hover,
+#midway-banner-outer-app-version .midway-btn:link,
+#midway-banner-outer-app-version .midway-btn:visited {
+  display: inline-block
+}
+#midway-banner-outer-app-version .column-left,
+#midway-banner-outer-app-version .column-right {
+  height: auto;
+  vertical-align: text-top;
+  display: inline-block
+}
+#midway-banner-outer-app-version .app-button {
+  margin-right: 0
+}
+#midway-banner-outer-app-version #btn-app-store {
+  margin-right: 10px
+}
+#midway-banner-outer-app-version .app-button img {
+  max-width: 122px
+}
+@media (min-width: $breakpointXLargeMax) {
+  #midway-banner-outer-app-version {
+    background-size: cover
+  }
+  #midway-banner-outer-app-version .midway-title {
+    font-size: 38px!important
+  }
+}
+@media (min-width: $breakpointLargeMax) and (max-width: $breakpointXLargeMax) {
+  #midway-banner-outer-app-version {
+    max-width: 960px;
+    background-size: cover
+  }
+  #midway-banner-outer-app-version .midway-title {
+    font-size: 36px
+  }
+  #midway-banner-outer-621 .midway-description,
+  #midway-banner-outer-app-version .midway-free-app {
+    font-size: 10px
+  }
+}
+@media (min-width: $breakpointMediumMax) and (max-width: $breakpointLargeMax) {
+  #midway-banner-outer-app-version {
+    max-width: 720px;
+  }
+  #midway-banner-outer-app-version .midway-title {
+    font-size: 26px;
+    margin-bottom: 0
+  }
+  #midway-banner-outer-app-version .midway-description,
+  #midway-banner-outer-app-version .midway-free-app {
+    line-height: auto;
+    margin-bottom: 8px;
+    font-size: 10px
+  }
+  #midway-banner-outer-app-version .app-button img {
+    max-width: 88px
+  }
+}
+@media (max-width: 767px) {
+  #midway-banner-outer-app-version {
+    background: rgba(246, 245, 241, 1.0) url("/wp-content/uploads/2021/06/SC03292101_BlogMidwayBanner_11S_v5.1_B-414x442px.jpg") no-repeat center bottom;
+    background-size: contain;
+    max-width: 720px;
+    min-height: 560px;
+    padding-bottom: 20px
+  }
+  #midway-banner-outer-6app-version #midway-banner-inner {
+    top: 30px;
+  }
+  #midway-banner-outer-app-version .midway-title {
+    font-size: 26px;
+    margin-bottom: 0
+  }
+  #midway-banner-outer-app-version .midway-description,
+  #midway-banner-outer-app-version .midway-free-app {
+    line-height: auto;
+    margin-bottom: 8px;
+    font-size: 10px
+  }
+  #midway-banner-outer-app-version .app-button img {
+    max-width: 88px
+  }
+}
+@media (min-width: 481px) and (max-width: 767px) {
+  #midway-banner-outer-app-version .midway-title {
+    font-size: 46px
+  }
+  #midway-banner-outer-app-version .midway-description, .midway-free-app {
+    font-size: 16px
+  }
+  #midway-banner-outer-app-version .app-button img {
+    max-width: 124px
+  }
+}
+@media (max-width: 575px) {
+  #midway-banner-outer-app-version {
+    width: 100%;
+    min-height: 580px
+  }
+}
+@media (min-width: 421px) and (max-width: 480px) {
+  #midway-banner-outer-app-version .midway-title {
+    font-size: 30px
+  }
+  #midway-banner-outer-app-version .app-button img {
+    max-width: 102px
+  }
+}
+@media (max-width: 480px) {
+  #midway-banner-outer-app-version {
+    min-height: 480px
+  }
+}
+@media (max-width: 420px) {
+  #midway-banner-outer-app-version {
+    min-height: 420px
+  }
+  #midway-banner-outer-app-version #midway-banner-inner {
+    top: 30px;
+  }
+}
+@media (max-width: 320px) {
+  #midway-banner-outer-app-version {
+    background-size: cover;
+    height: 443px
+  }
+}
+/* END midway banner app version */
+/* midway banner bubble version */
+#midway-banner-outer-bubble-version {
+  background: #CCE3EB url("/wp-content/uploads/2021/06/SC03292101_BlogMidwayBanner_11S_v5_feather.png") no-repeat right bottom;
+  background-size: contain;
+  max-width: 1140px;
+  max-height: auto;
+  font-family: $fontStackCustomRegular;
+  text-align: center;
+  position: relative;
+  margin-bottom: 20px
+}
+#midway-banner-outer-bubble-version #midway-banner-inner {
+  background-color: rgba(0, 0, 0, 0.0);
+  margin: 0 auto;
+  position: relative
+}
+#midway-banner-outer-bubble-version .column-left,
+#midway-banner-outer-bubble-version .column-right {
+  height: auto;
+  vertical-align: text-top;
+  display: inline-block
+}
+#midway-banner-outer-bubble-version .column-right::after {
+  content: " ";
+  width: 100%;
+  height: auto;
+  display: block
+}
+#midway-banner-outer-bubble-version .midway-title {
+  color: $victoria;
+  font-weight: 300;
+  margin-top: 50px
+}
+#midway-banner-outer-bubble-version .midway-title {
+  color: $victoria;
+  font-weight: 300
+}
+#midway-banner-outer-bubble-version .midway-description {
+  color: $victoria;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 10px
+}
+#midway-banner-outer-bubble-version .midway-cta {
+  margin-bottom: 10px
+}
+#midway-banner-outer-bubble-version .midway-btn,
+#midway-banner-outer-bubble-version .midway-btn:hover,
+#midway-banner-outer-bubble-version .midway-btn:link,
+#midway-banner-outer-bubble-version .midway-btn:visited {
+  background-color: $victoria;
+  border-radius: 30px;
+  color: $white;
+  display: inline-block;
+  padding: 3px 15px;
+  width: 50%
+}
+@media (min-width: $breakpointXLargeMax) {
+  #midway-banner-outer-bubble-version {
+    background-size: cover
+  }
+  #midway-banner-outer-bubble-version .column-left,
+  #midway-banner-outer-bubble-version .column-right {
+    min-height: 280px
+  }
+  #midway-banner-outer-bubble-version .midway-title {
+    font-size: 38px!important;
+    margin-top: 50px
+  }
+}
+@media (min-width: $breakpointLargeMax) and (max-width: $breakpointXLargeMax) {
+  #midway-banner-outer-bubble-version {
+    max-width: 960px;
+    background-size: cover
+  }
+  #midway-banner-outer-bubble-version .column-left,
+  #midway-banner-outer-bubble-version .column-right {
+    min-height: 235px
+  }
+  #midway-banner-outer-bubble-version .midway-title {
+    font-size: 36px;
+    margin-top: 30px
+  }
+  #midway-banner-outer-bubble-version .midway-description,
+  #midway-banner-outer-bubble-version .midway-btn {
+    font-size: 12px
+  }
+  #midway-banner-outer-bubble-version .midway-btn {
+    width: 60%
+  }
+}
+@media (min-width: $breakpointMediumMax) and (max-width: $breakpointLargeMax) {
+  #midway-banner-outer-bubble-version {
+    max-width: 720px
+  }
+  #midway-banner-outer-bubble-version .midway-title {
+    font-size: 26px;
+    margin-bottom: 0;
+    margin-top: 20px
+  }
+  #midway-banner-outer-bubble-version .midway-description,
+  #midway-banner-outer-bubble-version .midway-btn {
+    font-size: 10px
+  }
+  #midway-banner-outer-bubble-version .midway-description {
+    line-height: auto;
+    margin-bottom: 8px
+  }
+  #midway-banner-outer-bubble-version .midway-btn {
+    width: 60%
+  }
+}
+@media (max-width: 767px) {
+  #midway-banner-outer-bubble-version {
+    background: #CCE3EB url("/wp-content/uploads/2021/06/SC03292101_BlogMidwayBanner_11S_v5_mobile_feather.png") no-repeat center bottom;
+    background-size: contain;
+    max-width: 720px;
+    min-height: 560px;
+    padding-bottom: 20px
+  }
+  #midway-banner-outer-bubble-version #midway-banner-inner {
+    top: 30px
+  }
+  #midway-banner-outer-bubble-version .column-right::after {
+    height: 220px
+  }
+  #midway-banner-outer-bubble-version #midway-banner-inner .row {
+    flex-direction: column-reverse
+  }
+  #midway-banner-outer-bubble-version .midway-title {
+    font-size: 46px;
+    margin-top: 0;
+    margin-bottom: 0
+  }
+  #midway-banner-outer-bubble-version .midway-description {
+    line-height: auto;
+    margin-bottom: 8px;
+    font-size: 14px
+  }
+}
+@media (min-width: $breakpointSmallMax) and (max-width: 767px) {
+  #midway-banner-outer-bubble-version .midway-title {
+    margin-top: 50px
+  }
+}
+@media (max-width: 575px) {
+  #midway-banner-outer-bubble-version {
+    width: 100%;
+    min-height: 420px
+  }
+  #midway-banner-outer-bubble-version .column-right::after {
+    height: 130px
+  }
+  #midway-banner-outer-bubble-version .midway-title {
+    font-size: 36px;
+    margin-top: 50px
+  }
+  #midway-banner-outer-bubble-version .midway-description {
+    font-size: 14px
+  }
+}
+@media (min-width: 421px) and (max-width: 480px) {
+  #midway-banner-outer-bubble-version .midway-title {
+    font-size: 30px
+  }
+}
+@media (max-width: 480px) {
+  #midway-banner-outer-bubble-version {
+    min-height: 480px
+  }
+  #midway-banner-outer-bubble-version .column-right::after {
+    height: 130px
+  }
+}
+@media (max-width: 420px) {
+  #midway-banner-outer-bubble-version {
+    min-height: 380px;
+    background-position: center center
+  }
+  #midway-banner-outer-bubble-version #midway-banner-inner {
+    top: 30px
+  }
+  #midway-banner-outer-bubble-version .column-right::after {
+      height: 180px
+  }
+  #midway-banner-outer-bubble-version .midway-title {
+    margin-top: 0;
+    font-size: 26px
+  }
+  #midway-banner-outer-bubble-version .midway-description {
+    font-size: 10px
+  }
+  #midway-banner-outer-bubble-version .midway-btn {
+    width: 80%;
+    font-size: 12px
+  }
+}
+@media (max-width: 320px) {
+  #midway-banner-outer-bubble-version {
+    background-size: cover;
+    min-height: 430px
+  }
+  #midway-banner-outer-bubble-version .column-right::after {
+    height: 200px
+  }
+}
+/* END midway banner bubble version */

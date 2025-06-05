@@ -1,0 +1,14 @@
+#breadcrumbs {
+	font-size: 75%;
+	margin:1em 0 2em 0;
+	a {
+		display: inline;
+		border: none;
+		padding: 0;
+		text-transform: none;
+		color: $apricot;
+	}
+	.breadcrumb_last {
+		color: $white;
+	}
+}

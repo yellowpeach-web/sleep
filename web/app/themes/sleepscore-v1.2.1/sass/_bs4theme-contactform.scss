@@ -1,0 +1,23 @@
+.wpcf7-form input, .wpcf7-form textarea {
+	border:none;
+	background:none;
+	width:100%;
+}
+.cf7-span {
+	display: inline-block;
+	width:100%;
+	background:$white;
+	padding: 5px 15px;
+	border: solid 1px #9a9a9a;
+	border-radius: 25px;
+	margin:0 0 15px 0;
+}
+.wpcf7-form input[type="submit"] {
+	background-color:$victoria;
+	color:$white;
+	border-radius: 25px;
+	border:none;
+	font-size: .875rem;
+	width: auto;
+	padding:5px 15px;
+}

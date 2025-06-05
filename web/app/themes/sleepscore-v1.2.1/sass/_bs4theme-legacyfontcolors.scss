@@ -1,0 +1,30 @@
+.white-font {
+	color:$white;
+}
+// With the exception of above, the following utility classes have to be removed
+// in markup as well from CMS post/pages. For now, I am intentionally remapping
+// existing classes to updated brand colors.
+.grey-font {
+	color: $black;
+}
+.light-grey-font {
+	color: $black;
+}
+.royal-blue {
+	color:$bunting;
+}
+.light-blue {
+	color:$victoria;
+}
+.dark-blue-font {
+	color:$victoria;
+}
+.muted-royal-blue {
+	color:$victoria;
+}
+.bg-color-royal {
+	background-color:$victoria;
+}
+.bg-color-blue {
+	color:$victoria;
+}

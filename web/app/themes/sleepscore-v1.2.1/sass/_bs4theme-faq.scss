@@ -1,0 +1,24 @@
+.container.faq {
+	border-bottom: solid 1px $white;
+}
+.question {
+	display:block;
+	width: 100%;
+	min-height: 20px;
+	margin-bottom: 15px;
+	cursor: pointer;
+	font-weight: 700;
+}
+.question .fa {
+	display:inline-block;
+	margin-left: 15px;
+}
+.answer {
+	display:none;
+	margin-bottom:15px;
+}
+.job-listings .entry {
+	margin-bottom: 30px;
+	padding-bottom:15px;
+	border-bottom: solid 1px #9a9a9a;
+}

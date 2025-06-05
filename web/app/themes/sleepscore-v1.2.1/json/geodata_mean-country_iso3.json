@@ -1,0 +1,38 @@
+{
+  "schema": {
+    "fields": [
+      { "name": "country_iso3", "type": "string" },
+      { "name": "SleepScore", "type": "number" },
+      { "name": "MindScore", "type": "number" },
+      { "name": "BodyScore", "type": "number" },
+      { "name": "BedTime", "type": "string" },
+      { "name": "WakeUpTime", "type": "string" },
+      { "name": "WASO", "type": "number" },
+      { "name": "TimeInBed", "type": "number" },
+      { "name": "SleepOnsetPrc", "type": "number" },
+      { "name": "LightSleepPrc", "type": "number" },
+      { "name": "DeepSleepPrc", "type": "number" },
+      { "name": "REMSleepPrc", "type": "number" },
+      { "name": "WASOPrc", "type": "number" }
+    ],
+    "primaryKey": ["country_iso3"],
+    "pandas_version": "0.20.0"
+  },
+  "data": [
+    {
+      "country_iso3": "USA",
+      "SleepScore": 79.9909490589,
+      "MindScore": 79.3832424999,
+      "BodyScore": 74.0815856606,
+      "BedTime": "23:13:00",
+      "WakeUpTime": "07:05:00",
+      "WASO": 68.6302001214,
+      "TimeInBed": 459.2778649714,
+      "SleepOnsetPrc": 4.4766262612,
+      "LightSleepPrc": 50.0299328107,
+      "DeepSleepPrc": 15.0990909812,
+      "REMSleepPrc": 15.6828903658,
+      "WASOPrc": 14.7114595811
+    }
+  ]
+}

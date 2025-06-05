@@ -1,0 +1,15 @@
+// 2021 SleepScore Branding Elements
+@import '_fonts.scss';
+@import '_variables.scss';
+
+// Original BS4 theme must go first to preserve overall existing structures.
+@import '_bs4theme.scss';
+
+// SleepScore Custom Components
+// @import '_article.scss';
+@import '_breadcrumbs.scss';
+@import '_sidebar-single.scss';
+@import '_single';
+
+// Functions.php - locally hosted CUSTOM CSS that can be called here in sequence, do it.
+@import 'landingpage.scss';

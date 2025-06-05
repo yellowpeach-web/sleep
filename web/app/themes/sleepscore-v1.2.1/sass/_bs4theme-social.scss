@@ -1,0 +1,28 @@
+.social-follow {
+	position: relative;
+	z-index: 101;
+}
+.social-follow a {
+	display: inline-block;
+	padding:0 15px;
+	font-size:2rem;
+}
+.social-follow a:link, .social-follow a:visited {
+	color:$white;
+}
+.sharer.button {
+	display:inline-block;
+	width:30px;
+	height:30px;
+	margin: 0 5px;
+	border-radius: 50%;
+	background-color:$victoria;
+	border:none;
+	color:$white;
+	cursor: pointer;
+	font-size: .8rem;
+}
+.sharer.button:hover {
+	background-color:$apricot;
+	transition: all .25s ease-in;
+}

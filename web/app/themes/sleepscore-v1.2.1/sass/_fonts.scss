@@ -1,0 +1,27 @@
+// Fonts to apply from vendor.
+@font-face {
+	font-family: "Degular_Display-Bold";
+	src: url("/wp-content/themes/sleepscore-v1.2.0/fonts/DegularDisplay/Degular_Display-Bold.woff"),
+	url("/wp-content/themes/sleepscore-v1.2.0/fonts/DegularDisplay/Degular_Display-Bold.woff2");
+}
+@font-face {
+	font-family: "Degular_Display-Regular";
+	src: url("/wp-content/themes/sleepscore-v1.2.0/fonts/DegularDisplay/Degular_Display-Regular.woff"),
+	url("/wp-content/themes/sleepscore-v1.2.0/fonts/DegularDisplay/Degular_Display-Regular.woff2");
+}
+@font-face {
+	font-family: "Degular_Display-Semibold";
+	src: url("/wp-content/themes/sleepscore-v1.2.0/fonts/DegularDisplay/Degular_Display-Semibold.woff"),
+	url("/wp-content/themes/sleepscore-v1.2.0/fonts/DegularDisplay/Degular_Display-Semibold.woff2");
+}
+
+// Assign typefaces optionally with utilitiy class selectors.
+.degular-typeface-bold {
+	font-family: "Degular_Display-Bold", Verdana, Arial, sans-serif;
+}
+.degular-typeface-regular {
+	font-family: "Degular_Display-Regular", Verdana, Arial, sans-serif;
+}
+.degular-typeface-semibold {
+	font-family: "Degular_Display-Semibold", Verdana, Arial, sans-serif;
+}

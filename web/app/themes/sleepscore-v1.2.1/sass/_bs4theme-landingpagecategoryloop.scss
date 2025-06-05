@@ -1,0 +1,35 @@
+.hero-img {
+	border-right:solid 30px transparent;
+	border-left:solid 30px transparent;
+}
+.white-underline {
+	display: block;
+	width: 50px;
+	height: 2px;
+	margin: 15px auto;
+	background-color: $white;
+}
+.landing-page-post {
+	height:300px;
+	margin-bottom:30px
+}
+.title {
+	font-size:1.75rem;
+	line-height: 1;
+}
+.landing-page-post .bg-color-overlay {
+	display: flex;
+	padding:0 30px;
+}
+a.bg-color-overlay {
+	height:40%;
+}
+.landing-page-all-posts {
+	display:block;
+	margin-bottom: 15px;
+}
+#sleep-app-rounded-border {
+	border: solid 3px #85d5f0;
+	border-radius: 30px;
+	padding: 15px;
+}

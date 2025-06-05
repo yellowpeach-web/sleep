@@ -1,0 +1,79 @@
+.single {
+
+    main {
+
+        padding-top: 20px;
+        
+        .meta,
+        .meta .author,
+        .ctx-link p,
+        #breadcrumbs,
+        #breadcrumbs .breadcrumb_last,
+        p {
+            color: #000 !important;
+        }
+        
+        a {
+            color: #464c9c;
+        }
+
+    }
+
+}
+
+// .blog,
+// .single {
+    
+//     main.light-theme {
+        
+//         background: #fff !important;
+//         color: #000;
+//         padding-top: 20px;
+        
+//         .content {
+     
+//             p {
+//                 color: #000;
+//             }
+     
+//             strong,
+//             b {
+//                 font-family: $fontStackCustomBold;
+//                 font-weight: 700;
+//             }
+
+//             a {
+//                 color: #464c9c;
+//                 text-decoration: underline;
+//             }
+
+//         }
+
+//         .meta,
+//         .meta .author,
+//         .ctx-link p,
+//         #breadcrumbs .breadcrumb_last,
+//         p, 
+//         aside a {
+//             color: #000 !important;
+//         }
+
+//         #widget-sleepscore-store {
+//             padding-top: 0;
+//         }
+
+//         .hero-headline {
+//             color: #464c9c;
+//         }
+
+//         .post-link {
+//             color: #000;
+//         }
+
+//         .text-light {
+//             color: #fff;
+//         }
+
+//     }
+
+// }

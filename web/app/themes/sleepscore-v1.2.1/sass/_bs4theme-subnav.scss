@@ -1,0 +1,202 @@
+#searchform {
+	display: flex;
+	align-items: center;
+}
+
+#searchsubmit {
+	margin-left: auto;
+    font-size: 0.775rem;
+}
+
+.header-main.fixed + .fixed-sub-nav {
+	position: fixed;
+	width: 100%;
+}
+
+.fixed-sub-nav {
+	
+	background-color: #464c9c;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	position: inherit;
+	z-index: 100;
+
+	&.fixed {
+		position: fixed;
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
+
+	.search-field {
+
+		background-color: #fff;
+		border-radius: 30px;
+		display: flex;
+		align-items: center;
+		padding: 3px;
+
+		input {
+
+			background-color: transparent;
+			border: none;
+			padding: 0 0 0 15px; 
+			margin-bottom: 0;
+			font-size: 1rem;
+
+			&::placeholder {
+				color: #999;
+				font-size: 1rem;
+			}
+
+		}
+
+		button {
+			background-color: $apricot;
+			border: none;
+			border-radius: 30px;
+			color: $white;
+			padding: 5px 10px;
+		}
+
+	}
+
+}
+
+@media (min-width: 992px) {
+	
+	.fixed-sub-nav {
+
+		&.fixed {
+			position: fixed;
+			width: 100%;
+		}
+
+		.sub-nav-toggle {
+			display: none;
+		}
+
+		.container,
+		.container-lg {
+			display: flex;
+			align-items: center;
+			width: 100%;
+			flex-direction: row-reverse;
+			flex-wrap: wrap;
+		}
+
+		.sub-nav-content {
+
+			flex: 1;
+
+			ul {
+				display: flex;
+				flex-direction: row;
+				flex: 1;
+				padding-bottom: 0;
+				width: 100%;
+			}
+
+			li + li {
+				margin-left: 1.5rem;
+			}
+			
+		}
+
+		.search-field {
+			min-width: 250px;
+		}
+
+	}
+
+}
+
+@media (max-width: 991px) {
+
+    #searchsubmit {
+        margin-left: auto;
+        font-size: 0.775rem !important;
+    }
+
+	.fixed-sub-nav {
+
+		.container, 
+		.container-lg {
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			width: 100%;
+		}
+
+		.search-form-wrapper {
+			
+			flex-basis: 90%;
+			margin-left: auto;
+
+			form,
+			.search-field {
+				width: 100%;
+			}
+
+			button {
+				padding-left: 20px;
+				padding-right: 20px;
+			}
+
+		}
+
+		.sub-nav-toggle {
+			
+			background-color: transparent;
+			border: none;
+			flex-basis: 10%;
+			width: 20%;
+			transition: transform .25s;
+			text-align: left;
+
+			&.expanded {
+				transform: rotate(180deg);
+			}
+
+		}
+
+	}
+
+	.sub-nav-content {
+		
+		display: none;
+		position: relative;
+		flex-basis: 100%;
+		width: 100%;
+		padding-top: 1rem;
+
+		.navbar-nav {
+
+			background-color: #464c9c;
+			z-index: 1000;
+			position: relative;
+			width: 100%;
+
+			ul {
+
+				padding: 0;
+
+				.ss-cat-nav {
+					border: none;
+				}
+
+			}
+
+			.nav-link {
+				background-color: #464c9c;
+				border: none;
+				display: block;
+				padding-left: 1rem !important;
+			}
+	
+		}
+
+	}
+
+}

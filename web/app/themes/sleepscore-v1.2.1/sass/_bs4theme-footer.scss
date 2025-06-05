@@ -1,0 +1,46 @@
+.footer-banner {
+	padding-top:60px;
+	padding-bottom: 60px;
+	background-color:$apricot;
+}
+footer {
+	display: block;
+	width: 100%;
+	padding-bottom: 30px;
+	background: transparent;
+	color: $white;
+}
+footer nav {
+	text-align: left;
+}
+.footer-nav {
+	line-height:1.75;
+}
+.footer-nav ul {
+	list-style: none;
+}
+.footer-nav li {
+	text-align: left;
+	font-size:.875rem;
+	padding:0;
+}
+footer nav a:link, footer nav a:visited {
+	color: $white;
+	border-bottom: solid 0px $white;
+	transition: border-width 0.4s linear;
+}
+footer nav a:hover, footer nav a:active {
+	color: $white;
+	border-bottom-width:6px
+}
+.footer-nav ul ul li {
+	display: block;
+}
+.footer-email-sign-up {
+	margin-bottom:15px;
+}
+.copyright {
+	padding-top:30px;
+	text-align: center;
+	font-size: 10px;
+}

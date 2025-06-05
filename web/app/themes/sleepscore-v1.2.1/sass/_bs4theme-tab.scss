@@ -1,0 +1,14 @@
+.tab-menu {
+	margin:0;
+}
+.tab-menu li {
+	display:inline-block;
+	padding:5px 15px;
+}
+.tab-menu li a {
+	color:$white;
+}
+.tab-menu li.active a {
+	color:$white;
+	border-bottom:solid 3px;
+}
