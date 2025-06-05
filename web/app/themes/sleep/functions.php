@@ -34,6 +34,7 @@ Security::init();
 TimberSetup::init();
 ThemeSetup::init();
 Ajax::init();
+LayoutOptions::init();
 
 
 class Theme

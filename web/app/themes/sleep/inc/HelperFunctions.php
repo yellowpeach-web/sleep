@@ -176,7 +176,11 @@ class HelperFunctions
             'supports' => $args['supports'] ?? [],
             'has_archive' => $args['has_archive'] ?? true,
             'show_in_rest' => $args['show_in_rest'] ?? false,
+            // ✅ Add this line:
+            'rewrite' => $args['rewrite'] ?? ['slug' => $args['slug']],
         );
+
         register_post_type($args['slug'], $post_args);
     }
+
 }
