@@ -51,7 +51,7 @@ if ($post->post_type === 'post') {
     $block['name'] = 'acf/posts-feed';
     $context['insight_terms'] = TimberAcfBlocks::get_post_terms($block);
     $context['insights'] = TimberAcfBlocks::get_posts_feed($block);
-} elseif ($post->post_type === 'media-entries') {
+} elseif ($post->post_type === 'news_media') {
     $fields = HelperFunctions::get_media_single_fields();
     // feed fields
     $context['block_name'] = "blocks/media-entry-feed/media-entry-feed.twig";

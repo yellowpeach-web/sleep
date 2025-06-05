@@ -18,7 +18,7 @@ if (is_tax('news_media_categories')) {
       $terms = Timber::get_terms($args);
       $context['terms'] = $terms;
       $context['archive_title'] = 'Media Entries';
-      $context['archive_page'] = get_post_type_archive_link('media-entries');
+      $context['archive_page'] = get_post_type_archive_link('news_media');
       $context['current_term'] = get_queried_object()->slug ?? null;
       $context['color_profile'] = 'dark-theme';
 } elseif (is_tax('paper_type')) {

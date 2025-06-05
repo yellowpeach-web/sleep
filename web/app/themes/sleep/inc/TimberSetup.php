@@ -376,7 +376,7 @@ class TimberAcfBlocks
         $related_posts = self::get_related_posts(
             $block,
             'acf/media-entry-feed',
-            'media-entries',
+            'news_media',
             'media_entry_cat',
             6,
             $related_args

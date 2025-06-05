@@ -21,7 +21,7 @@ add_action('init', function () {
             'name' => 'Media Category',
         ],
         'rewrite' => array(
-            'slug' => 'media-entries',
+            'slug' => 'media',
             'with_front' => false,
             'hierarchical' => true
         ),

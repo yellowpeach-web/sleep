@@ -6,7 +6,7 @@ use YPTheme\HelperFunctions;
 $context = Timber::context();
 $template = 'templates/index.twig';
 
-if (is_post_type_archive('media-entries')) {
+if (is_post_type_archive('news_media')) {
     //media archive
     $context['archive_fields'] = HelperFunctions::get_media_fields();
     $args = [
@@ -16,7 +16,7 @@ if (is_post_type_archive('media-entries')) {
     $context['terms'] = $terms;
     $context['archive_title'] = 'Media Entries';
     $context['is_all'] = true;
-    $context['archive_page'] = get_post_type_archive_link('media-entries');
+    $context['archive_page'] = get_post_type_archive_link('news_media');
     $context['color_profile'] = 'dark-theme';
 } elseif (is_post_type_archive('papers')) {
     //papers archive

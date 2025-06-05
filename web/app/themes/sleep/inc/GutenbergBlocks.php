@@ -57,7 +57,7 @@ class GutenbergBlocks
 
     public static function disable_gutenberg_editor_by_post_type($can_edit, $post_type)
     {
-        $use_classic = ['post', 'faq', 'testimonial', 'team', 'media-entries', 'papers'];
+        $use_classic = ['post', 'faq', 'testimonial', 'team', 'news_media', 'papers'];
 
         return in_array($post_type, $use_classic, true) ? false : $can_edit;
     }

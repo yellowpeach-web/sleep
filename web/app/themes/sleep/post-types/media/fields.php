@@ -18,5 +18,5 @@ $posts
       ->addWysiwyg('content')
       ->addLink('button')
       ->endGroup()
-      ->setLocation('post_type', '==', 'media-entries')
+      ->setLocation('post_type', '==', 'news_media')
       ->setFields();
