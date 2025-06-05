@@ -10,7 +10,7 @@ if (is_post_type_archive('media-entries')) {
     //media archive
     $context['archive_fields'] = HelperFunctions::get_media_fields();
     $args = [
-        'taxonomy'   => 'media_type',
+        'taxonomy'   => 'news_media_categories',
     ];
     $terms = Timber::get_terms($args);
     $context['terms'] = $terms;

@@ -10,10 +10,10 @@ $queried_object = get_queried_object();
 $context['current_term'] = ($queried_object instanceof WP_Term) ? $queried_object->slug : null;
 $context['term'] = false;
 
-if (is_tax('media_type')) {
+if (is_tax('news_media_categories')) {
       $context['archive_fields'] = HelperFunctions::get_media_fields();
       $args = [
-            'taxonomy'   => 'media_type',
+            'taxonomy'   => 'news_media_categories',
       ];
       $terms = Timber::get_terms($args);
       $context['terms'] = $terms;

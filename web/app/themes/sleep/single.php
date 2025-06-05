@@ -57,7 +57,7 @@ if ($post->post_type === 'post') {
     $context['block_name'] = "blocks/media-entry-feed/media-entry-feed.twig";
     $block['name'] = 'acf/media-entry-feed';
     //current term
-    $terms = wp_get_post_terms($post->ID, 'media_type');
+    $terms = wp_get_post_terms($post->ID, 'news_media_categories');
     if (!empty($terms) && !is_wp_error($terms)) {
         $current_term_id = $terms[0]->term_id;
     }

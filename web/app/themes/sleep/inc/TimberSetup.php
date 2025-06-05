@@ -364,7 +364,7 @@ class TimberAcfBlocks
         $term = $term_id ? get_term($term_id) : null;
 
         $related_args = $term ? [
-            'taxonomy' => 'media_type',
+            'taxonomy' => 'news_media_categories',
             'term'     => $term->slug,
         ] : [];
 
