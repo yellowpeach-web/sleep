@@ -22,7 +22,7 @@
         {% if item.meta('mega_menu') %}
         {% set menu_options = item.meta('menu_options') %}
         {# Mega Menu #}
-        <li class="group m-0 hidden xl:flex  {% if item.meta('mobile_only') %} flex xl:hidden {% endif %}"
+        <li class="group m-0 hidden xl:flex no-scroll {% if item.meta('mobile_only') %} flex xl:hidden {% endif %}"
             itemprop="name">
             {% if item.meta('none_link') %}
             <span
