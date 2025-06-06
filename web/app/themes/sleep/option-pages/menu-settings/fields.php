@@ -24,6 +24,16 @@ $menu_item_prime
     'label' => 'Mega Menu for insights?',
     'ui' => 1,
   ])
+  ->addTaxonomy('insight_mega_categories', [
+    'label' => 'Select Categories for Mega Menu',
+    'instructions' => 'Select up to 4 categories to show in the mega menu.',
+    'taxonomy' => 'category',
+    'field_type' => 'multi_select',
+    'add_term' => 0,
+    'return_format' => 'id',
+    'multiple' => 1,
+  ])
+  ->conditional('insight_mega_menu', '==', 1)
   ->conditional('mega_menu', '==', '1')
   ->addGroup('menu_options',)
   ->addSelect('menu_cols', [

@@ -38,7 +38,6 @@ class ThemeSetup
 
     public static function setup_theme()
     {
-
         add_theme_support('title-tag');
         add_theme_support('post-thumbnails');
         add_theme_support('align-wide');
@@ -64,12 +63,14 @@ class ThemeSetup
     public static function add_menus_to_timber($context)
     {
         $primary_menu = Timber::get_menu('primary-navigation');
-        if($primary_menu) {
+        if ($primary_menu) {
             foreach ($primary_menu->items as &$item) {
                 if ($item->meta('insight_mega_menu')) {
+                    $insight_cats = $item->meta('insight_mega_categories');
                     $all_cat_terms = Timber::get_terms([
                         'taxonomy'   => 'category',
                         'hide_empty' => true,
+                        'include'    => $insight_cats,
                     ]);
                     $item->cat_terms = $all_cat_terms;
                 }
