@@ -21,7 +21,7 @@
                 </div>
 
                 {% if terms %}
-                <div class="flex items-center gap-3 text-button-primary-text-fill-default flex-wrap">
+                <div class="flex justify-center items-center gap-3 text-button-primary-text-fill-default flex-wrap">
                     <a href="{{archive_page}}" title="View all {{archive_title}}" class="no-link-style">
                         <button
                             class="filter-button !py-[5px] !px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default {{ is_all ? 'active' }}">
@@ -46,15 +46,14 @@
                 {% set terms = item.terms('category') %}
                 {% if terms|length %}
                 {% set term = terms[0] %}
-                {% if term.slug == 'blog' %}
+                {# {% if term.slug == 'blog' %}
                 {% set term_color = 'text-heading-fill-highlight-1' %}
                 {% elseif term.slug == 'latest-news' %}
                 {% set term_color = 'text-heading-fill-highlight-2' %}
                 {% elseif term.slug == 'whitepaper' %}
                 {% set term_color = 'text-heading-fill-highlight-3' %}
-                {% else %}
-                {% set term_color = 'text-text-heading-fill-primary' %}
-                {% endif %}
+                {% endif %} #}
+                {% set term_color = 'text-heading-fill-highlight-2' %}
                 {% endif %}
                 {% include "components/post-card.twig" %}
                 {% endfor %}
