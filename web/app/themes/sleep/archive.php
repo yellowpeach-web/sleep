@@ -6,6 +6,7 @@ use YPTheme\HelperFunctions;
 $context = Timber::context();
 $template = 'templates/index.twig';
 
+
 if (is_post_type_archive('news_media')) {
     //media archive
     $context['archive_fields'] = HelperFunctions::get_media_fields();

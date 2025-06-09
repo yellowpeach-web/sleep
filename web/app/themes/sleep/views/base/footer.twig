@@ -2,6 +2,7 @@
 {# wrapper end - we need this extra closing tag here #}
 
 {# Footer content... #}
+{% if layout_visible('footer') %}
 <footer class="dark-theme">
 	<div class="section-wrapper bg-background-secondary-bg-fill pt-16 md:pt-24 pb-16 md:pb-24 xl:pb-14">
 		<div class="yp-container flex flex-col gap-14">
@@ -91,6 +92,7 @@
 		</div>
 	</div>
 </footer>
+{% endif %}
 {# ...Footer content #}
 
 {% if options.footer_scripts %}

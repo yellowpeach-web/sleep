@@ -81,6 +81,14 @@ class ThemeSetup
         $context['discover_nav'] = Timber::get_menu('footer-navigation');
         $context['products_nav'] = Timber::get_menu('products-navigation');
         $context['legal_nav'] = Timber::get_menu('legal-navigation');
+
+        $languages = apply_filters('wpml_active_languages', null, [
+            'skip_missing'   => 0,
+            'link_empty_to'  => 'home',
+            'orderby'        => 'code',
+        ]);
+        $context['languages'] = $languages;
+
         return $context;
     }
 

@@ -2,7 +2,7 @@
 <nav id="navigation" class="yp-nav" role="navigation" aria-label="Primary" itemscope
     itemtype="https://schema.org/SiteNavigationElement">
 
-    <ul class="yp-menu  list-none pl-0 flex items-center md:gap-8 xl:gap-0" role="list">
+    <ul class="yp-menu  list-none pl-0 flex items-center gap-5 md:gap-8 xl:gap-0" role="list">
         {% for item in primary_nav.items %}
         {% set insight_terms = item.cat_terms %}
 
@@ -95,13 +95,39 @@
         {% endfor %}
 
         {% if general_settings.header_button %}
-        <span class="hidden md:flex pl-4">
+        <span class="hidden xl:flex pl-4">
             {% include 'components/button.twig' with {
             button: general_settings.header_button,
             class:'secondary',
             } %}
         </span>
         {% endif %}
+
+        {# language nav #}
+        {% if languages|length > 1 %}
+        {# Get active language for display #}
+        {% set active = languages|filter(lang => lang.active)|first %}
+        <div class="flex items-center gap-2 md:gap-3 language-switcher ml-8">
+            {% if active.country_flag_url %}
+            <div class="size-6 rounded-full overflow-hidden border shrink-0">
+                <img src="{{ active.country_flag_url }}" alt="{{ active.native_name }}"
+                    class="object-cover w-full h-full">
+            </div>
+            {% endif %}
+
+            <select onchange="window.location.href=this.value"
+                class="!bg-transparent w-[12px] sm:w-full py-[3px] text-[0px] md:text-sm font-semibold">
+                {% for code, lang in languages %}
+                <option value="{{ lang.url }}" {% if lang.active %}selected{% endif %}
+                    class="text-button-primary-text-fill-default">
+                    {{ lang.native_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
+
+
 
         {# hamburger #}
         <li class="block xl:hidden size-10 !m-0 !p-0">

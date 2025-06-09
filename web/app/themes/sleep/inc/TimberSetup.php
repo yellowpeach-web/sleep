@@ -23,6 +23,7 @@ class TimberSetup
         add_filter('timber/loader/loader', [self::class, 'register_timber_blocks_path']);
     }
 
+
     public static function add_twig_functions($twig)
     {
         $functions = [
@@ -46,6 +47,8 @@ class TimberSetup
         $twig->addFunction(new TwigFunction('get_link_attr', [HelperFunctions::class, 'get_link_attr']));
         $twig->addFunction(new TwigFunction('get_breadcrumb', [HelperFunctions::class, 'get_breadcrumb']));
         $twig->addFunction(new TwigFunction('responsive_img', [Images::class, 'responsive_img']));
+        $twig->addFunction(new TwigFunction('layout_visible', [\YPTheme\LayoutOptions::class, 'isVisible']));
+
 
         return $twig;
     }
@@ -369,7 +372,7 @@ class TimberAcfBlocks
         ] : [];
 
         // If on a single post, exclude the current one
-        if (is_singular('media-entry')) {
+        if (is_singular('news_media')) {
             $related_args['post__not_in'] = [get_the_ID()];
         }
 

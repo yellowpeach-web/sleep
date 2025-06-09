@@ -58,7 +58,7 @@
 			style="display:none;visibility:hidden"></iframe></noscript>
 
 	<div class="site" id="page">
-
+		{% if layout_visible('header') %}
 		{# The Navbar Area #}
 		<div id="wrapper-navbar" itemscope itemtype="http://schema.org/WebSite"
 			class="sticky top-0 z-20 flex-flex-col {{general_settings.header_color}}">
@@ -90,6 +90,7 @@
 				{% include "components/mobile-menu.twig" %}
 			</div>
 		</div>
+		{% endif %}
 		{# wrapper-navbar end #}
 
 
