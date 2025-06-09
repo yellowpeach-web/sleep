@@ -109,7 +109,7 @@
         {% set active = languages|filter(lang => lang.active)|first %}
         <div class="flex items-center gap-2 md:gap-3 language-switcher ml-8">
             {% if active.country_flag_url %}
-            <div class="size-6 rounded-full overflow-hidden border shrink-0">
+            <div class="size-6 rounded-full overflow-hidden shrink-0">
                 <img src="{{ active.country_flag_url }}" alt="{{ active.native_name }}"
                     class="object-cover w-full h-full">
             </div>
