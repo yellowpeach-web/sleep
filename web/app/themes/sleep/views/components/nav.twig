@@ -116,7 +116,7 @@
             {% endif %}
 
             <select onchange="window.location.href=this.value"
-                class="!bg-transparent w-[12px] sm:w-full py-[3px] text-[0px] md:text-sm font-semibold">
+                class="!bg-transparent w-[12px] sm:w-full py-[3px] text-[0px] md:text-sm font-semibold hover:cursor-pointer">
                 {% for code, lang in languages %}
                 <option value="{{ lang.url }}" {% if lang.active %}selected{% endif %}
                     class="text-button-primary-text-fill-default">
