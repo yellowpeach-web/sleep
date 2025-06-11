@@ -5,7 +5,7 @@
             {% include 'components/content.twig' with {class: 'm-0 body-small md:text-center'} %}
       </div>
       {% if fields.include_filter and terms %}
-      <div class="flex items-center gap-3 text-button-primary-text-fill-default flex-wrap">
+      <div class="flex items-center gap-3 text-button-primary-text-fill-default flex-wrap justify-center">
             {% for item in terms %}
             <button data-filter="{{item.slug}}"
                   class="filter-button !py-[5px] !px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default  {% if loop.first %} active {% endif %}">
