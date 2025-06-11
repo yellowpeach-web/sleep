@@ -22,14 +22,14 @@
     }
   }
   .accordion-content {
-    @apply max-h-[4500px] pt-6 md:pt-8 pb-0 md:pb-0;
+    @apply max-h-[14500px] pt-6 md:pt-8 pb-0 md:pb-0;
     transition: 0.3s ease-out 0.1s;
     .accordion-icon {
       @apply rotate-90 pt-6;
     }
   }
   .accordion-content.mobile-nav {
-    @apply max-h-[4500px] pt-6 md:pt-8 pb-6 md:pb-8;
+    @apply max-h-[14500px] pt-6 md:pt-8 pb-6 md:pb-8;
     transition: 0.3s ease-out 0.1s;
     .accordion-icon {
       @apply rotate-90 pt-6;
