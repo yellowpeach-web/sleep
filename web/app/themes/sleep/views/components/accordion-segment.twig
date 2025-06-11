@@ -16,7 +16,8 @@
                   {% include "resources/images/icons/plus.twig" %}
             </div>
       </div>
-      <div class="accordion-content pt-6" itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
+      <div class="accordion-content pt-6 overflow-y-scroll" itemprop="acceptedAnswer" itemscope
+            itemtype="https://schema.org/Answer">
             {% if item.content %}
             <div itemprop="text">
                   {% include 'components/content.twig' with {class: 'm-0 body-small', content:
