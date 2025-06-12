@@ -8,3 +8,10 @@
     @apply text-text-heading-fill-secondary;
   }
 }
+
+.filter-description {
+  @apply hidden;
+}
+.filter-description.active {
+  @apply !block;
+}

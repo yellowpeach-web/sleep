@@ -1,17 +1,34 @@
 <div class="flex flex-col gap-6 md:gap-8 md:items-center max-w-[957px] mx-auto justify-center">
       <div class="flex flex-col gap-6 md:items-center">
-            {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
-            class:'headline-large md:text-center'} %}
-            {% include 'components/content.twig' with {class: 'm-0 body-small md:text-center'} %}
+            {% include 'components/heading.twig' with {
+            tag: fields.tag,
+            heading: fields.heading,
+            class: 'headline-large md:text-center'
+            } %}
+            {% include 'components/content.twig' with {
+            class: 'm-0 body-small md:text-center'
+            } %}
       </div>
+
       {% if fields.include_filter and terms %}
       <div class="flex items-center gap-3 text-button-primary-text-fill-default flex-wrap justify-center">
             {% for item in terms %}
-            <button data-filter="{{item.slug}}"
-                  class="filter-button !py-[5px] !px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default  {% if loop.first %} active {% endif %}">
-                  {{item.name}}
+            <button data-filter="{{ item.slug }}"
+                  class="filter-button !py-[5px] !px-5 border-button-primary-bg-stroke-default text-button-secondary-text-fill-default {% if loop.first %}active{% endif %}">
+                  {{ item.name }}
             </button>
             {% endfor %}
       </div>
+
+
+      {% for item in terms %}
+      {% if item.description %}
+      <p class="filter-description !m-0 body-small" data-filter="{{ item.slug }}">
+            {{ item.description }}
+      </p>
+      {% endif %}
+      {% endfor %}
+
+
       {% endif %}
 </div>

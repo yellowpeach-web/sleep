@@ -11,6 +11,7 @@ export function masonryFilterData() {
     const swiperCol = section.querySelector(".data-container.swiper-col");
 
     const filterButtons = section.querySelectorAll(".filter-button");
+    const descriptions = section.querySelectorAll(".filter-description");
 
     if (!leftCol || !rightCol || !singleCol) return;
 
@@ -54,6 +55,13 @@ export function masonryFilterData() {
       renderFaqs(items);
 
       filterButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.filter === filterValue));
+      descriptions.forEach((des) => {
+        if (des.dataset.filter === filterValue) {
+          des.classList.add("active");
+        } else {
+          des.classList.remove("active");
+        }
+      });
     }
 
     // set default filter based on .active class
@@ -75,7 +83,6 @@ export function simpleFilterData() {
 
   sections.forEach((section) => {
     const filterButtons = section.querySelectorAll(".filter-button");
-
     const views = section.querySelectorAll(".simple-data-view");
 
     if (!filterButtons.length || !views.length) return;
