@@ -5,7 +5,7 @@ class Security
 {
     public static function init()
     {
-        add_filter('rest_endpoints', [self::class, 'remove_rest_api_user_data']);
+        //add_filter('rest_endpoints', [self::class, 'remove_rest_api_user_data']);
     }
 
 
