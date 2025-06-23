@@ -8,7 +8,7 @@ add_action('init', function () {
         'plural_name' => 'Papers',
         'icon' => 'dashicons-media-default',
         'show_in_rest' => false,
-        'has_archive' => 'sleep-science',
+        'has_archive' => 'science-publications',
     ]);
     register_taxonomy('paper_type', 'papers', [
         'labels' => [
