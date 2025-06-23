@@ -7,9 +7,21 @@
             {% include 'components/content.twig' with {class: 'm-0 body-large md:text-center'} %}
       </div>
       {% if fields.boxes %}
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8 w-full">
+      {% set box_count = fields.boxes|length %}
+      {% set xl_cols = box_count < 4 ? 'xl:grid-cols-' ~ box_count : 'xl:grid-cols-4' %} <div
+            class="grid grid-cols-1 md:grid-cols-2 {{ xl_cols }} gap-6 md:gap-8 w-full">
             {% for item in fields.boxes %}
-            <div class="rounded bg-surface-primary-bg-fill-default p-8 flex flex-col gap-5 h-auto">
+            {% set is_last = loop.last %}
+            {% set is_odd = box_count is odd %}
+            {% if is_last %}
+            {% if is_odd %}
+            {% set md_col_span = 'md:col-span-2' %}
+            {% else %}
+            {% set md_col_span = 'md:col-span-1' %}
+            {% endif %}
+            {% endif %}
+            <div
+                  class="rounded bg-surface-primary-bg-fill-default p-8 flex flex-col gap-5 h-auto col-span-1 {{md_col_span}} xl:col-span-1">
                   <div class="flex flex-col gap-5">
                         {% if item.icon %}
                         <div class="size-14 flex justify-center items-center shrink-0 grow-0">
@@ -40,8 +52,8 @@
                   {% endif %}
             </div>
             {% endfor %}
-      </div>
-      {% endif %}
-      {% include "components/buttons.twig" with {buttons: fields.buttons, button_class: 'primary'} %}
+</div>
+{% endif %}
+{% include "components/buttons.twig" with {buttons: fields.buttons, button_class: 'primary'} %}
 </div>
 {% endblock %}
