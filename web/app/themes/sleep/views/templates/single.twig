@@ -1,115 +1,115 @@
 {% extends "base/base.twig" %}
 
 {% block body %}
-    {# ARTICLE SECTION #}
-    <section class="relative light-theme">
-        <div class="section-wrapper  padding-top-regular padding-bottom-regular bg-background-primary-bg-fill">
-            <div class="yp-container flex flex-col xl:flex-row gap-md">
-                {# side bar #}
-                {% if layout_visible('sidebar') %}
-                    <div
-                            class="w-full xl:w-[288px] flex flex-col gap-sm sticky top-[64px] shrink-0 order-last xl:order-none h-full">
-                        <div
-                                class="flex flex-col gap-6 bg-surface-primary-bg-fill-default rounded-lg p-8 md:flex-row md:justify-between md:items-center xl:items-start xl:justify-normal xl:flex-col">
-                            <h3 class="subtitle-large text-text-heading-fill-primary !m-0">
-                                {{ 'Share this article.' | __ }}
-                            </h3>
-                            {% if share_links is not empty %}
-                                <div class="flex items-center gap-2">
-                                    {% for link in share_links %}
-                                        <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer"
-                                           title="Share {{ post.name }} on {{ link.name }}"
-                                           class="social-link size-8 p-2 flex items-center justify-center ui-button primary rounded">
-                                            {% include link.icon %}
-                                        </a>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        {% if cta %}
-                            <div class="flex flex-col gap-5 bg-surface-primary-bg-fill-default rounded-lg p-8">
-                                <div class="flex flex-col gap-3">
-                                    {% if cta.subheading %}
-                                        <h4 class="m-0 overline-large text-text-heading-fill-highlight-2">
-                                            {{ cta.subheading }}
-                                        </h4>
-                                    {% endif %}
-                                    {% if cta.heading %}
-                                        <h3 class="m-0 title-small">
-                                            {{ cta.heading }}
-                                        </h3>
-                                    {% endif %}
-                                    {% include 'components/content.twig' with {class: 'm-0 body-large', content: cta.content} %}
-                                </div>
-                                {% if cta.button %}
-                                    {% include "components/button.twig" with {button: cta.button, class: 'secondary'} %}
-                                {% endif %}
-                            </div>
-                        {% endif %}
+{# ARTICLE SECTION #}
+<section class="relative light-theme">
+    <div class="section-wrapper  padding-top-regular padding-bottom-regular bg-background-primary-bg-fill">
+        <div class="yp-container flex flex-col xl:flex-row gap-md">
+            {# side bar #}
+            {% if layout_visible('sidebar') %}
+            <div
+                class="w-full xl:w-[288px] flex flex-col gap-sm sticky top-[64px] shrink-0 order-last xl:order-none h-full">
+                <div
+                    class="flex flex-col gap-6 bg-surface-primary-bg-fill-default rounded-lg p-8 md:flex-row md:justify-between md:items-center xl:items-start xl:justify-normal xl:flex-col">
+                    <h3 class="subtitle-large text-text-heading-fill-primary !m-0">
+                        {{ 'Share this article.' | __ }}
+                    </h3>
+                    {% if share_links is not empty %}
+                    <div class="flex items-center gap-2">
+                        {% for link in share_links %}
+                        <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer"
+                            title="Share {{ post.name }} on {{ link.name }}"
+                            class="social-link size-8 p-2 flex items-center justify-center ui-button primary rounded">
+                            {% include link.icon %}
+                        </a>
+                        {% endfor %}
                     </div>
-                {% endif %}
-                {# content #}
-                <div class="flex flex-col h-full">
-                    <div class="flex flex-col gap-6">
-                        {% if subheading %}
-                            <h3 class="m-0 title-small text-text-heading-fill-highlight-2">
-                                {{ subheading }}
-                            </h3>
-                        {% endif %}
-                        {% if post.title %}
-                            <h1 class="headline-small m-0">
-                                {{ post.title }}
-                            </h1>
-                        {% endif %}
-                        <p class="m-0 overline-large text-text-heading-fill-highlight-2">
-                            {{ 'Last Published on' | __ }} {{ post.date('jS F Y') }} {{ 'by' | __ }} {{ post.author.name }}
-                        </p>
-                    </div>
-                    {% if post.thumbnail %}
-                        <div class="w-full h-[200px] sm:h-[400px] lg:h-[480px] rounded overflow-hidden mb-5">
-                            {{ responsive_img(
-                                post.thumbnail, {
-                                    size: 'large',
-                                    class: 'h-full w-full object-cover',
-                                })
-                            }}
-                        </div>
                     {% endif %}
-                    {% include 'components/content.twig' with {class: '', content: post.content} %}
                 </div>
+
+                {% if cta is not empty %}
+                <div class="flex flex-col gap-5 bg-surface-primary-bg-fill-default rounded-lg p-8">
+                    <div class="flex flex-col gap-3">
+                        {% if cta.subheading %}
+                        <h4 class="m-0 overline-large text-text-heading-fill-highlight-2">
+                            {{ cta.subheading }}
+                        </h4>
+                        {% endif %}
+                        {% if cta.heading %}
+                        <h3 class="m-0 title-small">
+                            {{ cta.heading }}
+                        </h3>
+                        {% endif %}
+                        {% include 'components/content.twig' with {class: 'm-0 body-large', content: cta.content} %}
+                    </div>
+                    {% if cta.button %}
+                    {% include "components/button.twig" with {button: cta.button, class: 'secondary'} %}
+                    {% endif %}
+                </div>
+                {% endif %}
             </div>
-    </section>
+            {% endif %}
+            {# content #}
+            <div class="flex flex-col h-full">
+                <div class="flex flex-col gap-6">
+                    {% if subheading %}
+                    <h3 class="m-0 title-small text-text-heading-fill-highlight-2">
+                        {{ subheading }}
+                    </h3>
+                    {% endif %}
+                    {% if post.title %}
+                    <h1 class="headline-small m-0">
+                        {{ post.title }}
+                    </h1>
+                    {% endif %}
+                    <p class="m-0 overline-large text-text-heading-fill-highlight-2">
+                        {{ 'Last Published on' | __ }} {{ post.date('jS F Y') }} {{ 'by' | __ }} {{ post.author.name }}
+                    </p>
+                </div>
+                {% if post.thumbnail %}
+                <div class="w-full h-[200px] sm:h-[400px] lg:h-[480px] rounded overflow-hidden mb-5">
+                    {{ responsive_img(
+                    post.thumbnail, {
+                    size: 'large',
+                    class: 'h-full w-full object-cover',
+                    })
+                    }}
+                </div>
+                {% endif %}
+                {% include 'components/content.twig' with {class: '', content: post.content} %}
+            </div>
+        </div>
+</section>
 
-    {% if layout_visible('sidebar') %}
-        {% if feed %}
-            {% include block_name with {
-                color_profile: 'dark-theme',
-                background_color: 'bg-background-primary-bg-fill',
-                block_spacing: 'padding-top-regular',
-                fields: {
-                    tag: 'h2',
-                    heading: feed.heading,
-                    content: feed.content
-                }
-            } %}
-        {% endif %}
+{% if layout_visible('sidebar') %}
+{% if feed %}
+{% include block_name with {
+color_profile: 'dark-theme',
+background_color: 'bg-background-primary-bg-fill',
+block_spacing: 'padding-top-regular',
+fields: {
+tag: 'h2',
+heading: feed.heading,
+content: feed.content
+}
+} %}
+{% endif %}
 
 
-        {% if gravity_cta %}
-            {% include "blocks/gravity-grid-cta/gravity-grid-cta.twig" with {
-                color_profile: 'dark-theme',
-                background_color: 'bg-background-primary-bg-fill',
-                block_spacing: 'padding-top-regular padding-bottom-regular',
-                fields: {
-                    cta: {
-                        url: gravity_cta.url,
-                        title: gravity_cta.title
-                    }
-                }
-            } %}
-        {% endif %}
-    {% endif %}
+{% if gravity_cta %}
+{% include "blocks/gravity-grid-cta/gravity-grid-cta.twig" with {
+color_profile: 'dark-theme',
+background_color: 'bg-background-primary-bg-fill',
+block_spacing: 'padding-top-regular padding-bottom-regular',
+fields: {
+cta: {
+url: gravity_cta.url,
+title: gravity_cta.title
+}
+}
+} %}
+{% endif %}
+{% endif %}
 
 
 {% endblock %}
