@@ -51,7 +51,6 @@ class ThemeSetup
 
     public static function setup_menus()
     {
-
         register_nav_menus([
             'primary-navigation' => __('Primary Navigation'),
             'footer-navigation' => __('Footer Navigation'),

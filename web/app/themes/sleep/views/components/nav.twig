@@ -104,6 +104,7 @@
         {% endif %}
 
         {# language nav #}
+        {{d(languages)}}
         {% if languages|length > 1 %}
         {# Get active language for display #}
         {% set active = languages|filter(lang => lang.active)|first %}
