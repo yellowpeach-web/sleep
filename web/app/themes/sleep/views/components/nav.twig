@@ -104,8 +104,8 @@
         {% endif %}
 
         {# language nav #}
-        {{d(languages)}}
-        {% if languages|length > 1 %}
+        {% set valid_languages = languages|filter(lang => not lang.missing) %}
+        {% if valid_languages|length > 1 %}
         {# Get active language for display #}
         {% set active = languages|filter(lang => lang.active)|first %}
         <div class="flex items-center gap-2 md:gap-3 language-switcher ml-8">
