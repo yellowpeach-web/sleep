@@ -27,7 +27,7 @@
                     {% endif %}
                 </div>
 
-                {% if cta is not empty %}
+                {% if cta.subheading or cta.heading %}
                 <div class="flex flex-col gap-5 bg-surface-primary-bg-fill-default rounded-lg p-8">
                     <div class="flex flex-col gap-3">
                         {% if cta.subheading %}
