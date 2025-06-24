@@ -26,11 +26,6 @@ $share_links = [
         'url' => 'https://twitter.com/intent/tweet?url=' . urlencode($permalink)
     ],
     [
-        'icon' => 'resources/images/icons/socials/instagram.svg',
-        'name' => 'Instagram',
-        'url' => 'https://www.instagram.com/',
-    ],
-    [
         'icon' => 'resources/images/icons/socials/threads.svg',
         'name' => 'Threads',
         'url' => 'https://www.threads.net/@yourusername',
