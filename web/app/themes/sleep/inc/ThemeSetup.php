@@ -83,7 +83,7 @@ class ThemeSetup
         $context['legal_nav'] = Timber::get_menu('legal-navigation');
 
         $languages = apply_filters('wpml_active_languages', null, [
-            'skip_missing'   => 0,
+            'skip_missing'   => 1,
             'link_empty_to'  => 'home',
             'orderby'        => 'code',
         ]);
