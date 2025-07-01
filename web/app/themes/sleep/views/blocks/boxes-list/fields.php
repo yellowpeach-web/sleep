@@ -12,6 +12,7 @@ $block
     ->addRepeater('point')
     ->addText('copy')
     ->endRepeater()
+    ->addLink('button')
     ->endRepeater()
     ->getClone('buttons')
     ->setLocation('block', '==', 'acf/boxes-list')
