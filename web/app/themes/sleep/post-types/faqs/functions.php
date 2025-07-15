@@ -8,7 +8,8 @@ add_action('init', function () {
         'plural_name' => 'FAQs',
         'icon' => 'dashicons-editor-help',
         'supports' => ['title', 'editor', 'thumbnail'],
-        'show_in_rest' => false
+        'show_in_rest' => false,
+        'public'    => false,
     ]);
     register_taxonomy('filter', 'faq', [
         'labels' => [

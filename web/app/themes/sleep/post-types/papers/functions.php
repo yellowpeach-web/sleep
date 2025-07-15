@@ -14,6 +14,9 @@ add_action('init', function () {
         'labels' => [
             'name' => 'Paper Type',
         ],
+        'rewrite'   => [
+            'slug'  => 'paper-type',
+        ],
         'hierarchical' => true,
         'show_in_rest' => true,
         'public' => true,

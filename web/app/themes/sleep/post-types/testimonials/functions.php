@@ -10,5 +10,6 @@ add_action('init', function () {
         'icon' => 'dashicons-testimonial',
         'supports'  => ['title'],
         'show_in_rest' => true,
+        'public'    => false,
     ]);
 }, 0);
