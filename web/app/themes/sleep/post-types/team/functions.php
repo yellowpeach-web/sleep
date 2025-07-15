@@ -22,6 +22,6 @@ add_action('init', function () {
         ],
         'hierarchical' => true,
         'show_in_rest' => true,
-        'public' => true,
+        'public' => false,
     ]);
 }, 0);
