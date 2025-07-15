@@ -23,5 +23,7 @@ add_action('init', function () {
         'hierarchical' => true,
         'show_in_rest' => true,
         'public' => false,
+        'show_ui' => true,
+        'show_in_nav_menus' => true,
     ]);
 }, 0);
