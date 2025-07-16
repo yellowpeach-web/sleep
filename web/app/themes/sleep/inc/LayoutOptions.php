@@ -70,7 +70,8 @@ class LayoutOptions
             }
         }
 
-        if (isset($params['partnerWebview']) && $params['partnerWebview'] === 'on') {
+        // The 'Zm9vdGVyPW9mZixzaWRlYmFyPW9mZixhcHBCYW5uZXI9b2Zm' value here is as specified by Sleep, due to incorrect config their side
+        if ((isset($params['partnerWebview']) && $params['partnerWebview'] === 'on') || $_GET[self::$queryParam] == 'Zm9vdGVyPW9mZixzaWRlYmFyPW9mZixhcHBCYW5uZXI9b2Zm') {
             self::togglePartnerWebview();
         }
     }
