@@ -23,12 +23,12 @@ $share_links = [
     [
         'icon' => 'resources/images/icons/socials/x_social.svg',
         'name' => 'X',
-        'url' => 'https://twitter.com/intent/tweet?url=' . urlencode($permalink)
+        'url' => 'https://x.com/intent/tweet?url=' . urlencode($permalink)
     ],
     [
         'icon' => 'resources/images/icons/socials/threads.svg',
         'name' => 'Threads',
-        'url' => 'https://www.threads.net/@yourusername',
+        'url' => 'https://www.threads.net/intent/post?url=' . urlencode($permalink) . '&text=' . urlencode($title),
     ],
     [
         'icon' => 'resources/images/icons/socials/whatsapp.svg',
