@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4aa8f64defac6d5c1b4159a33e0f977c",
+    "content-hash": "d11e89f6e48f2f674728140c7ccb6af8",
     "packages": [
         {
             "name": "composer/installers",
@@ -1969,6 +1969,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/wordpress-seo/"
+        },
+        {
+            "name": "wpackagist-plugin/wp-external-links",
+            "version": "2.63",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wp-external-links/",
+                "reference": "tags/2.63"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wp-external-links.2.63.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wp-external-links/"
         },
         {
             "name": "wpengine/advanced-custom-fields-pro",
