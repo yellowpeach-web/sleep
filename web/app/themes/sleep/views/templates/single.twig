@@ -77,6 +77,11 @@
                 </div>
                 {% endif %}
                 {% include 'components/content.twig' with {class: '', content: post.content} %}
+                {% if post.meta('news_articles_link') %}
+                    <div>
+                        <a class="y-btn primary" href="{{ post.meta('news_articles_link') }}" target="_blank">View Media Release</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
 </section>
