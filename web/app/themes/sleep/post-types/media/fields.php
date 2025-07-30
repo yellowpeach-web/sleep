@@ -7,9 +7,10 @@ $posts = new ThemeFieldBuilder('media_entry_sidebar_call_to_action', [
 ]);
 
 $posts
+      ->addText('news_articles_link')
       ->addTrueFalse('overide_sidebard_cta', [
-            'label' => 'Overide default sidebar CTA with specific message?',
-            'ui' => 1,
+        'label' => 'Overide default sidebar CTA with specific message?',
+        'ui' => 1,
       ])
       ->addGroup('single_cta', ['label' => 'Single Call To Action'])
       ->conditional('overide_sidebard_cta', '==', '1')

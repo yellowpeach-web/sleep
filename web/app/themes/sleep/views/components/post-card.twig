@@ -1,6 +1,9 @@
 {% if item.meta('external_link') %}
 {% set link = item.meta('external_link') %}
 {% set target = "_blank" %}
+{% elseif item.meta('news_articles_link') %}
+    {% set link = item.meta('news_articles_link') %}
+    {% set target = "_blank" %}
 {% else %}
 {% set link = item.link %}
 {% set target = "" %}
