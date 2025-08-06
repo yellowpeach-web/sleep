@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6ab4e5ff7f1c22a0efea8986b1872d7",
+    "content-hash": "d0342492f88a9b493b87debc99a509fa",
     "packages": [
         {
             "name": "composer/installers",
@@ -1969,6 +1969,24 @@
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/safe-svg/",
             "time": "2025-07-21T13:49:21+00:00"
+        },
+        {
+            "name": "wpackagist-plugin/wordfence",
+            "version": "8.0.5",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wordfence/",
+                "reference": "tags/8.0.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wordfence.8.0.5.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wordfence/"
         },
         {
             "name": "wpackagist-plugin/wordpress-seo",
