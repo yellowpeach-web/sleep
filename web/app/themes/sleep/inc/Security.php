@@ -5,14 +5,27 @@ class Security
 {
     public static function init()
     {
-        //add_filter('rest_endpoints', [self::class, 'remove_rest_api_user_data']);
+        add_filter( 'rest_pre_dispatch', [self::class, 'remove_rest_api_user_data'], 10, 3);
     }
 
-
-    public static function remove_rest_api_user_data($rest_endpoints)
+    public static function remove_rest_api_user_data($response, $server, $request)
     {
-        unset($rest_endpoints['/wp/v2/users'], $rest_endpoints['/wp/v2/users/(?P<id>[\d]+)']);
-        return $rest_endpoints;
+
+        $route = $request->get_route();
+
+        if (
+            preg_match( '#^/wp/v2/users(?:/.*)?$#', $route )
+            && ! is_user_logged_in()
+        ) {
+            return new \WP_Error(
+                'rest_forbidden',
+                'Not allowed.',
+                array( 'status' => 403 )
+            );
+        }
+
+        return $response;
+
     }
 
 }
