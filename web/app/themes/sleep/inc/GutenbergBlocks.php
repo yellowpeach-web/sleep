@@ -15,6 +15,7 @@ class GutenbergBlocks
 
     public static function allow_custom_gutenberg_blocks($allowed_block_types, $editor_context)
     {
+
         $files = glob(get_template_directory() . "/views/blocks/*.*");
         $sub_directory_files = glob(get_template_directory() . "/views/blocks/**/*.twig");
         $all_files = array_merge($files, $sub_directory_files);

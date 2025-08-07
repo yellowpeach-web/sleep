@@ -59,6 +59,7 @@ class ThemeSetup
         ]);
     }
 
+
     public static function add_menus_to_timber($context)
     {
         $primary_menu = Timber::get_menu('primary-navigation');

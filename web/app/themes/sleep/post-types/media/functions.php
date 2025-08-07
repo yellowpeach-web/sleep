@@ -13,7 +13,7 @@ add_action('init', function () {
             'slug' => 'news',
             'with_front' => false,
         ),
-        'supports' => ['title', 'editor', 'thumbnail'],
+        'supports' => ['title', 'editor', 'thumbnail', 'excerpt'],
         'show_in_rest' => true
     ]);
     register_taxonomy('news_media_categories', 'news_media', [
