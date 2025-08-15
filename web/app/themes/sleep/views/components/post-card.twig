@@ -1,15 +1,16 @@
+{% set link = item.link %}
+{% set target = "" %}
+{% set rel = "" %}
 {% if item.meta('external_link') %}
-{% set link = item.meta('external_link') %}
-{% set target = "_blank" %}
+    {% set link = item.meta('external_link') %}
+    {% set target = "_blank" %}
+    {% set rel = 'rel="nofollow"' %}
 {% elseif item.meta('news_articles_link') %}
     {% set link = item.meta('news_articles_link') %}
     {% set target = "_blank" %}
-{% else %}
-{% set link = item.link %}
-{% set target = "" %}
 {% endif %}
 
-<a class="no-link-style" href="{{link}}" target="{{target}}" aria-label="Read more about {{ item.title }}"
+<a class="no-link-style" href="{{link}}" target="{{target}}" {{ rel }} aria-label="Read more about {{ item.title }}"
     title="Read more about {{ item.title }}" itemprop="url">
     <article
         class="flex overflow-hidden flex-col roundedd group border border-surface-primary-bg-stroke-default general-transition rounded"
