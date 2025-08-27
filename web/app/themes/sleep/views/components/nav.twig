@@ -103,30 +103,32 @@
         </span>
         {% endif %}
 
-        {# language nav #}
-        {% set valid_languages = languages|filter(lang => not lang.missing) %}
-        {% if valid_languages|length > 1 %}
-        {# Get active language for display #}
-        {% set active = languages|filter(lang => lang.active)|first %}
-        <div class="flex items-center gap-2 md:gap-3 language-switcher ml-8">
-            {% if active.country_flag_url %}
-            <div class="size-6 rounded-full overflow-hidden shrink-0">
-                <img src="{{ active.country_flag_url }}" alt="{{ active.native_name }}"
-                    class="object-cover w-full h-full">
-            </div>
-            {% endif %}
-            <select onchange="window.location.href=this.value"
-                class="!bg-transparent w-[12px] sm:w-full py-[3px] text-[0px] md:text-sm font-semibold hover:cursor-pointer">
-                {% for code, lang in languages %}
-                <option value="{{ lang.url }}" {% if lang.active %}selected{% endif %}
-                    class="text-button-primary-text-fill-default">
-                    {{ lang.native_name }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-        {% endif %}
 
+        {% if general_settings.hide_language_switcher != true %}
+            {# language nav #}
+            {% set valid_languages = languages|filter(lang => not lang.missing) %}
+            {% if valid_languages|length > 1 %}
+                {# Get active language for display #}
+                {% set active = languages|filter(lang => lang.active)|first %}
+                <div class="flex items-center gap-2 md:gap-3 language-switcher ml-8">
+                    {% if active.country_flag_url %}
+                        <div class="size-6 rounded-full overflow-hidden shrink-0">
+                            <img src="{{ active.country_flag_url }}" alt="{{ active.native_name }}"
+                                 class="object-cover w-full h-full">
+                        </div>
+                    {% endif %}
+                    <select onchange="window.location.href=this.value"
+                            class="!bg-transparent w-[12px] sm:w-full py-[3px] text-[0px] md:text-sm font-semibold hover:cursor-pointer">
+                        {% for code, lang in languages %}
+                            <option value="{{ lang.url }}" {% if lang.active %}selected{% endif %}
+                                    class="text-button-primary-text-fill-default">
+                                {{ lang.native_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+        {% endif %}
 
 
         {# hamburger #}

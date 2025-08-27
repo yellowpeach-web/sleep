@@ -43,6 +43,7 @@ $general_settings
         'default_value' => 'Blue',
     ])
     ->addLink('header_button')
+    ->addTrueFalse('hide_language_switcher')
     ->addTab('Footer')
     ->addLink('footer_button')
     ->addTab('Insights Page')

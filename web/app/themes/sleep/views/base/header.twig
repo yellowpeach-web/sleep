@@ -36,6 +36,50 @@
 	<link rel="icon" type="image/png" href="{{template_directory_uri}}favicon-128.png" sizes="128x128" />
 	{# favicons #}
 
+	<script>
+		// Disable HubSpot's default cookie banner
+		window.disableHubSpotCookieBanner = true;
+		window._hsp = window._hsp || [];
+		// Updates HubSpot consent settings
+		const setHubSpotConsent = (consentDetails) => {
+			window._hsp.push(["setHubSpotConsent", consentDetails]);
+		};
+		// Maps CookieYes categories to HubSpot's consent format
+		const getConsentDetails = ({ analytics, advertisement, functional }) => ({
+			analytics: !!analytics,
+			advertisement: !!advertisement,
+			functionality: !!functional,
+		});
+		// Event listener for CookieYes banner load
+		document.addEventListener("cookieyes_banner_load", ({ detail }) => {
+			if (!detail || !detail.categories) {
+				console.error("Invalid detail object:", detail);
+				return;
+			}
+			setHubSpotConsent(
+					getConsentDetails({
+						analytics: detail.categories.analytics,
+						advertisement: detail.categories.advertisement,
+						functional: detail.categories.functional,
+					})
+			);
+		});
+		// Event listener for CookieYes consent update
+		document.addEventListener("cookieyes_consent_update", ({ detail }) => {
+			if (!detail || !detail.accepted) {
+				console.error("Invalid detail object:", detail);
+				return;
+			}
+			const acceptedCategories = new Set(detail.accepted);
+			const consentDetails = {
+				analytics: acceptedCategories.has("analytics"),
+				advertisement: acceptedCategories.has("advertisement"),
+				functionality: acceptedCategories.has("functional"),
+			};
+			setHubSpotConsent(consentDetails);
+		});
+	</script>
+
 	<script>(function (w, d, s, l, i) {
 			w[l] = w[l] || []; w[l].push({
 				'gtm.start':
