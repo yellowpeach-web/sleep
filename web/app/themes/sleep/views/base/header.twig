@@ -36,80 +36,91 @@
 	<link rel="icon" type="image/png" href="{{template_directory_uri}}favicon-128.png" sizes="128x128" />
 	{# favicons #}
 
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag() {
-			dataLayer.push(arguments);
-		}
-		gtag("consent", "default", {
-			ad_storage: "denied",
-			ad_user_data: "denied",
-			ad_personalization: "denied",
-			analytics_storage: "denied",
-			functionality_storage: "denied",
-			personalization_storage: "denied",
-			security_storage: "granted",
-			wait_for_update: 2000,
-		});
-		gtag("set", "ads_data_redaction", true);
-		gtag("set", "url_passthrough", false);
-	</script>
+	{% if layout_visible('cookieBanner') %}
 
-	<script>
-		// Disable HubSpot's default cookie banner
-		window.disableHubSpotCookieBanner = true;
-		window._hsp = window._hsp || [];
-		// Updates HubSpot consent settings
-		const setHubSpotConsent = (consentDetails) => {
-			window._hsp.push(["setHubSpotConsent", consentDetails]);
-		};
-		// Maps CookieYes categories to HubSpot's consent format
-		const getConsentDetails = ({ analytics, advertisement, functional }) => ({
-			analytics: !!analytics,
-			advertisement: !!advertisement,
-			functionality: !!functional,
-		});
-		// Event listener for CookieYes banner load
-		document.addEventListener("cookieyes_banner_load", ({ detail }) => {
-			if (!detail || !detail.categories) {
-				console.error("Invalid detail object:", detail);
-				return;
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
 			}
-			setHubSpotConsent(
-					getConsentDetails({
-						analytics: detail.categories.analytics,
-						advertisement: detail.categories.advertisement,
-						functional: detail.categories.functional,
-					})
-			);
-		});
-		// Event listener for CookieYes consent update
-		document.addEventListener("cookieyes_consent_update", ({ detail }) => {
-			if (!detail || !detail.accepted) {
-				console.error("Invalid detail object:", detail);
-				return;
-			}
-			const acceptedCategories = new Set(detail.accepted);
-			const consentDetails = {
-				analytics: acceptedCategories.has("analytics"),
-				advertisement: acceptedCategories.has("advertisement"),
-				functionality: acceptedCategories.has("functional"),
+			gtag("consent", "default", {
+				ad_storage: "denied",
+				ad_user_data: "denied",
+				ad_personalization: "denied",
+				analytics_storage: "denied",
+				functionality_storage: "denied",
+				personalization_storage: "denied",
+				security_storage: "granted",
+				wait_for_update: 2000,
+			});
+			gtag("set", "ads_data_redaction", true);
+			gtag("set", "url_passthrough", false);
+		</script>
+
+		<script>
+			// Disable HubSpot's default cookie banner
+			window.disableHubSpotCookieBanner = true;
+			window._hsp = window._hsp || [];
+			// Updates HubSpot consent settings
+			const setHubSpotConsent = (consentDetails) => {
+				window._hsp.push(["setHubSpotConsent", consentDetails]);
 			};
-			setHubSpotConsent(consentDetails);
-		});
-	</script>
+			// Maps CookieYes categories to HubSpot's consent format
+			const getConsentDetails = ({ analytics, advertisement, functional }) => ({
+				analytics: !!analytics,
+				advertisement: !!advertisement,
+				functionality: !!functional,
+			});
+			// Event listener for CookieYes banner load
+			document.addEventListener("cookieyes_banner_load", ({ detail }) => {
+				if (!detail || !detail.categories) {
+					console.error("Invalid detail object:", detail);
+					return;
+				}
+				setHubSpotConsent(
+						getConsentDetails({
+							analytics: detail.categories.analytics,
+							advertisement: detail.categories.advertisement,
+							functional: detail.categories.functional,
+						})
+				);
+			});
+			// Event listener for CookieYes consent update
+			document.addEventListener("cookieyes_consent_update", ({ detail }) => {
+				if (!detail || !detail.accepted) {
+					console.error("Invalid detail object:", detail);
+					return;
+				}
+				const acceptedCategories = new Set(detail.accepted);
+				const consentDetails = {
+					analytics: acceptedCategories.has("analytics"),
+					advertisement: acceptedCategories.has("advertisement"),
+					functionality: acceptedCategories.has("functional"),
+				};
+				setHubSpotConsent(consentDetails);
+			});
+		</script>
 
-	<script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/d973538cacdea531f7854464/script.js"></script>
+		<script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/d973538cacdea531f7854464/script.js"></script>
 
 
-	<script>(function (w, d, s, l, i) {
-			w[l] = w[l] || []; w[l].push({
-				'gtm.start':
-					new Date().getTime(), event: 'gtm.js'
-			}); var f = d.getElementsByTagName(s)[0],
-				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-					'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-		})(window, document, 'script', 'dataLayer', 'GTM-MZ2SQKDF');</script>
+		<script>(function (w, d, s, l, i) {
+				w[l] = w[l] || []; w[l].push({
+					'gtm.start':
+							new Date().getTime(), event: 'gtm.js'
+				}); var f = d.getElementsByTagName(s)[0],
+						j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+						'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+			})(window, document, 'script', 'dataLayer', 'GTM-MZ2SQKDF');</script>
+
+
+	{% else %}
+		<style>
+			.cky-consent-container, .cky-btn-revisit-wrapper {
+				display:none !important;
+			}
+		</style>
+	{% endif %}
 
 	{{ fn('wp_head') }}
 	{% if options.head_scripts %}
@@ -120,8 +131,10 @@
 <body id="" class="yp-frontend {{ body_class }}
 " {% if post is defined and post.ID %} data-current-post-id="{{ post.ID }}" {% endif %}>
 
+{% if layout_visible('cookieBanner') %}
 	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ2SQKDF" height="0" width="0"
 			style="display:none;visibility:hidden"></iframe></noscript>
+{% endif %}
 
 	<div class="site" id="page">
 		{% if layout_visible('header') %}
