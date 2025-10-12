@@ -28,6 +28,11 @@ class LayoutOptions
         return self::$contentSections[$section] ?? true;
     }
 
+    public static function hasQueryParam(): bool
+    {
+        return isset($_GET[self::$queryParam]);
+    }
+
     private static function togglePartnerWebview(): void
     {
         $hiddenSections = [

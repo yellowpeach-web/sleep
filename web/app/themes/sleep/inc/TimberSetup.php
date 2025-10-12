@@ -48,6 +48,7 @@ class TimberSetup
         $twig->addFunction(new TwigFunction('get_breadcrumb', [HelperFunctions::class, 'get_breadcrumb']));
         $twig->addFunction(new TwigFunction('responsive_img', [Images::class, 'responsive_img']));
         $twig->addFunction(new TwigFunction('layout_visible', [\YPTheme\LayoutOptions::class, 'isVisible']));
+        $twig->addFunction(new TwigFunction('hasQueryParam', [\YPTheme\LayoutOptions::class, 'hasQueryParam']));
 
 
         return $twig;

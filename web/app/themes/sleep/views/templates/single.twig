@@ -6,7 +6,7 @@
     <div class="section-wrapper  padding-top-regular padding-bottom-regular bg-background-primary-bg-fill">
         <div class="yp-container flex flex-col xl:flex-row gap-md">
             {# side bar #}
-            {% if layout_visible('sidebar') %}
+            {% if hasQueryParam() == false %}
             <div
                 class="w-full xl:w-[288px] flex flex-col gap-sm sticky top-[64px] shrink-0 order-last xl:order-none h-full">
                 <div
@@ -86,7 +86,7 @@
         </div>
 </section>
 
-{% if layout_visible('sidebar') %}
+{% if hasQueryParam() == false %}
 {% if feed %}
 {% include block_name with {
 color_profile: 'dark-theme',

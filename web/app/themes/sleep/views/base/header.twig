@@ -36,7 +36,7 @@
 	<link rel="icon" type="image/png" href="{{template_directory_uri}}favicon-128.png" sizes="128x128" />
 	{# favicons #}
 
-	{% if layout_visible('cookieBanner') %}
+	{% if hasQueryParam() == false %}
 
 		<script>
 			window.dataLayer = window.dataLayer || [];
@@ -131,13 +131,13 @@
 <body id="" class="yp-frontend {{ body_class }}
 " {% if post is defined and post.ID %} data-current-post-id="{{ post.ID }}" {% endif %}>
 
-{% if layout_visible('cookieBanner') %}
+{% if hasQueryParam() == false %}
 	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ2SQKDF" height="0" width="0"
 			style="display:none;visibility:hidden"></iframe></noscript>
 {% endif %}
 
 	<div class="site" id="page">
-		{% if layout_visible('header') %}
+		{% if hasQueryParam() == false %}
 		{# The Navbar Area #}
 		<div id="wrapper-navbar" itemscope itemtype="http://schema.org/WebSite"
 			class="sticky top-0 z-20 flex-flex-col {{general_settings.header_color}}">
