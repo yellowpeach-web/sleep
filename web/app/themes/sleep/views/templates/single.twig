@@ -11,9 +11,9 @@
                 class="w-full xl:w-[288px] flex flex-col gap-sm sticky top-[64px] shrink-0 order-last xl:order-none h-full">
                 <div
                     class="flex flex-col gap-6 bg-surface-primary-bg-fill-default rounded-lg p-8 md:flex-row md:justify-between md:items-center xl:items-start xl:justify-normal xl:flex-col">
-                    <h3 class="subtitle-large text-text-heading-fill-primary !m-0">
+                    <p class="subtitle-large text-text-heading-fill-primary !m-0">
                         {{ 'Share this article.' | __ }}
-                    </h3>
+                    </p>
                     {% if share_links is not empty %}
                     <div class="flex items-center gap-2">
                         {% for link in share_links %}
@@ -31,12 +31,12 @@
                 <div class="flex flex-col gap-5 bg-surface-primary-bg-fill-default rounded-lg p-8">
                     <div class="flex flex-col gap-3">
                         {% if cta.subheading %}
-                        <h4 class="m-0 overline-large text-text-heading-fill-highlight-2">
+                        <p class="!m-0 overline-large text-text-heading-fill-highlight-2">
                             {{ cta.subheading }}
-                        </h4>
+                        </p>
                         {% endif %}
                         {% if cta.heading %}
-                        <h3 class="m-0 title-small">
+                        <h3 class="!m-0 title-small text-text-heading-fill-primary">
                             {{ cta.heading }}
                         </h3>
                         {% endif %}
@@ -53,9 +53,9 @@
             <div class="flex flex-col h-full">
                 <div class="flex flex-col gap-6">
                     {% if subheading %}
-                    <h3 class="m-0 title-small text-text-heading-fill-highlight-2">
+                    <p class="!m-0 title-small text-text-heading-fill-highlight-2">
                         {{ subheading }}
-                    </h3>
+                    </p>
                     {% endif %}
                     {% if post.title %}
                     <h1 class="headline-small m-0">
