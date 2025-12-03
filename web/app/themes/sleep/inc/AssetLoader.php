@@ -12,6 +12,7 @@ class AssetLoader
         add_action('wp_default_scripts', [self::class, 'remove_jquery_migrate']);
         add_action('wp_footer', [self::class, 'remove_core_block_support_styles']);
         add_action('wp_enqueue_scripts', [self::class, 'dequeue_block_styles'], 100);
+        add_action('wp_enqueue_scripts', [self::class, 'prevent_global_styles_inline_css'], 1);
 
 
         add_action('wp_enqueue_scripts', [self::class, 'enqueue_frontend_assets']);
@@ -101,4 +102,12 @@ class AssetLoader
     {
         wp_dequeue_style('core-block-supports');
     }
+
+    public static function prevent_global_styles_inline_css()
+    {
+        // Prevent WordPress from adding global styles inline CSS
+        remove_action('wp_enqueue_scripts', 'wp_enqueue_global_styles');
+        remove_action('wp_footer', 'wp_enqueue_global_styles', 1);
+    }
+
 }
