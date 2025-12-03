@@ -58,6 +58,12 @@
 		</script>
 
 		<script>
+			if (window.location.pathname.startsWith("/de")) {
+				window.ckySettings = {
+					documentLang: "de"
+				};
+			}
+
 			// Disable HubSpot's default cookie banner
 			window.disableHubSpotCookieBanner = true;
 			window._hsp = window._hsp || [];
