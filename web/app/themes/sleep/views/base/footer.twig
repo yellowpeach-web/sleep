@@ -21,11 +21,23 @@
 			{# above XL #}
 			<ul class="hidden xl:grid grid-cols-4 gap-8 pl-0">
 				<li class="col-span-3 list-none">
-					<nav class="grid grid-cols-3 gap-8" aria-label="Footer Navigation">
-						{% include "components/footer-menu-section.twig" with {data: products_nav} %}
-						{% include "components/footer-menu-section.twig" with {data: discover_nav} %}
-						{% include "components/footer-menu-section.twig" with {data: legal_nav} %}
-					</nav>
+					<div class="flex flex-col gap-8">
+						<nav class="grid grid-cols-3 gap-8" aria-label="Footer Navigation">
+							{% include "components/footer-menu-section.twig" with {data: products_nav} %}
+							{% include "components/footer-menu-section.twig" with {data: discover_nav} %}
+							{% include "components/footer-menu-section.twig" with {data: legal_nav} %}
+						</nav>
+						{% if general_settings.footer_image %}
+						<div class="h-28 w-auto">
+							{{ responsive_img(
+							general_settings.footer_image, {
+							size: 'large',
+							class: 'object-contain h-full w-auto',
+							})
+							}}
+						</div>
+						{% endif %}
+					</div>
 				</li>
 				<li class="flex flex-col gap-4 list-none">
 					<h2 class="m-0 title-small">
@@ -74,6 +86,16 @@
 					</li>
 				</ul>
 			</nav>
+			{% if general_settings.footer_image %}
+			<div class="h-28 w-auto block xl:hidden">
+				{{ responsive_img(
+				general_settings.footer_image, {
+				size: 'large',
+				class: 'object-contain h-full w-auto',
+				})
+				}}
+			</div>
+			{% endif %}
 			<div class="flex flex-wrap gap-2 xl:gap-1 xl:justify-center">
 				<p class="!m-0 body-large xl:text-center">
 					© {{ "now"|date("Y") }} Consumer Sleep Solutions LLC.

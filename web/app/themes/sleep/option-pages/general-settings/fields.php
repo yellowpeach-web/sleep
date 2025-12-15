@@ -46,6 +46,7 @@ $general_settings
     ->addTrueFalse('hide_language_switcher')
     ->addTab('Footer')
     ->addLink('footer_button')
+    ->addImage('footer_image')
     ->addTab('Insights Page')
     ->addText('insights_heading')
     ->addWysiwyg('insights_content')

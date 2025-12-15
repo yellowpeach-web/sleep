@@ -14,5 +14,7 @@ $block
     ])
     ->addNumber('form_id')
     ->conditional('gravity_form', '==', '1')
+    ->addTextarea('form_embed_code')
+    ->conditional('gravity_form', '==', '0')
     ->setLocation('block', '==', 'acf/contact')
     ->setFields();
