@@ -106,8 +106,26 @@ class TimberAcfBlocks
     public function __construct()
     {
         if (is_callable('acf_register_block_type') && class_exists('Timber')) {
+            // ACF V3 must own the WP render callback; inject Timber via metadata instead.
+            add_filter('block_type_metadata', [self::class, 'inject_timber_render_callback'], 10, 1);
             add_action('init', [self::class, 'timber_block_init']);
         }
+    }
+
+    /**
+     * Inject Timber render callback into ACF block metadata so ACF keeps its V3 wrapper.
+     */
+    public static function inject_timber_render_callback($metadata)
+    {
+        if (empty($metadata['acf']) || !is_array($metadata['acf'])) {
+            return $metadata;
+        }
+
+        if (empty($metadata['acf']['renderCallback']) && empty($metadata['acf']['renderTemplate'])) {
+            $metadata['acf']['renderCallback'] = [self::class, 'timber_blocks_callback'];
+        }
+
+        return $metadata;
     }
 
     public static function timber_block_init()
@@ -133,8 +151,8 @@ class TimberAcfBlocks
 
                 $block_absolute_path = get_template_directory() . '/' . $dir;
 
+                // Do not pass render_callback — ACF must own the WP callback for V3.
                 register_block_type($block_absolute_path, [
-                    'render_callback' => [self::class, 'timber_blocks_callback'],
                     'attributes' => [
                         'style' => [
                             'type' => 'object',

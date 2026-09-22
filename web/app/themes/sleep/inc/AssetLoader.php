@@ -17,6 +17,8 @@ class AssetLoader
 
         add_action('wp_enqueue_scripts', [self::class, 'enqueue_frontend_assets']);
         add_action('admin_enqueue_scripts', [self::class, 'enqueue_admin_assets']);
+        // V3 canvas is iframed; enqueue_block_assets loads styles into that iframe.
+        add_action('enqueue_block_assets', [self::class, 'enqueue_block_editor_assets']);
         add_action('admin_head', [self::class, 'add_inline_styles']);
     }
 
@@ -38,6 +40,18 @@ class AssetLoader
             wp_enqueue_style('yp-gutenberg-style', self::get_mix_compiled_asset_url('build/css/admin/gutenberg-style.css'), [], $theme->get('Version'));
             wp_enqueue_style('typekit-fonts', 'https://use.typekit.net/yzf4juo.css', [], null);
         }
+    }
+
+    public static function enqueue_block_editor_assets()
+    {
+        if (!is_admin()) {
+            return;
+        }
+
+        $theme = wp_get_theme();
+        wp_enqueue_style('yp-editor-style', self::get_mix_compiled_asset_url('build/css/admin/editor-style.css'), [], $theme->get('Version'));
+        wp_enqueue_style('yp-gutenberg-style', self::get_mix_compiled_asset_url('build/css/admin/gutenberg-style.css'), [], $theme->get('Version'));
+        wp_enqueue_style('typekit-fonts', 'https://use.typekit.net/yzf4juo.css', [], null);
     }
 
     public static function add_inline_styles()

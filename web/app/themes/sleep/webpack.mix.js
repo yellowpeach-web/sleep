@@ -10,14 +10,14 @@ mix.postCss("resources/css/app.css", "build/css");
 mix.postCss("resources/css/gutenberg-style.css", "./build/css/admin", [
   require("postcss-prefix-selector")({
     prefix: ".editor-styles-wrapper",
-    exclude: ["body.yp-frontend", ".wp-block.acf-block-preview"],
+    exclude: ["body.yp-frontend", ".wp-block.acf-block-preview", ".editor-styles-wrapper"],
   }),
 ]);
 
 mix.postCss("resources/css/editor-style.css", "./build/css/admin", [
   require("postcss-prefix-selector")({
     prefix: ".editor-styles-wrapper .acf-block-preview",
-    exclude: ["body.yp-frontend", ".wp-block.acf-block-preview"],
+    exclude: ["body.yp-frontend", ".wp-block.acf-block-preview", ".editor-styles-wrapper"],
   }),
 ]);
 
