@@ -60,10 +60,13 @@ $block
         'video_fallback_still',
         [
             'conditional_logic' => [
-
-                'field' => 'media_type',
-                'operator' => '==',
-                'value' => 'video',
+                [
+                    [
+                        'field' => 'media_type',
+                        'operator' => '==',
+                        'value' => 'video',
+                    ],
+                ],
             ],
         ]
     )
