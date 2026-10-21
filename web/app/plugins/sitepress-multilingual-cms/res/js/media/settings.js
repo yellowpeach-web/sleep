@@ -1,22 +1,160 @@
 /*global jQuery, ajaxurl, addLoadEvent */
+
 (function () {
 	'use strict';
+
+	/**
+	 * Helper to safely call PostHog captureEvent
+	 */
+	function captureEvent(eventName, eventProperties) {
+		if (typeof window.wpmlPostHog?.captureEvent === 'function') {
+			window.wpmlPostHog.captureEvent(eventName, eventProperties);
+		}
+	}
+
+	/**
+	 * Detect WPML source parameter from URL
+	 */
+	function urlContainsMediaSettingsSection() {
+		return window.location.href.includes('#ml-content-setup-sec-media')
+	}
 
 	addLoadEvent(
 		function () {
 			var form            = jQuery('#wpml_media_options_form');
 			var form_action     = form.find('#wpml_media_options_action');
 			var existingContent = form.find('.wpml-media-existing-content');
-			var setLanguageInfo = form.find('input[name=set_language_info]');
 			var submitButton    = form.find(':submit');
 			var primaryButton   = form.find('.button-primary');
+      var shouldHandleMediaAutoSpinner = jQuery('#shouldhandlemediaautospinner');
+      var shouldHandleMediaAutoCheckbox = jQuery('#shouldhandlemediaauto');
+      var setupManuallyButton = jQuery('#show_hide-setup-manually');
+      var setupManuallyContainer = jQuery('.setup-manually-container');
 
-			existingContent.find(':checkbox').change(
+
+      // Capture PostHogEvent
+      captureEvent('wpml_mt_settings_viewed', {
+        deepLink: urlContainsMediaSettingsSection(),
+      })
+
+
+      var isFormVisible = false;
+
+      form.addClass('collapsed');
+      setupManuallyButton.addClass('collapsed');
+
+      if (shouldHandleMediaAutoCheckbox.is(':checked')) {
+        setupManuallyContainer.hide();
+      }
+
+      setupManuallyButton.on('click', function(e) {
+        e.preventDefault();
+        isFormVisible = !isFormVisible;
+
+        if(isFormVisible) {
+          form.removeClass('collapsed');
+          setupManuallyButton.removeClass('collapsed');
+        } else {
+          form.addClass('collapsed');
+          setupManuallyButton.addClass('collapsed');
+        }
+      });
+
+      setTimeout(function() {
+        var hasMediaShouldHandleMediaAutoSetting = (
+          window.wpml_media_settings_data &&
+          Object.prototype.hasOwnProperty.call(window.wpml_media_settings_data, 'should_handle_media_auto')
+        );
+        var hasTMShouldHandleMediaAutoSetting = (
+          window.WPML_TM_SETTINGS &&
+          Object.prototype.hasOwnProperty.call(window.WPML_TM_SETTINGS, 'shouldHandleMediaAuto')
+        );
+
+        var isShouldHandleMediaAutoChecked = shouldHandleMediaAutoCheckbox.is(':checked');
+
+        if (hasMediaShouldHandleMediaAutoSetting) {
+          isShouldHandleMediaAutoChecked = parseInt(window.wpml_media_settings_data.should_handle_media_auto, 10) === 1;
+        } else if (hasTMShouldHandleMediaAutoSetting) {
+          isShouldHandleMediaAutoChecked = parseInt(window.WPML_TM_SETTINGS.shouldHandleMediaAuto, 10) === 1;
+        }
+
+        if (!isShouldHandleMediaAutoChecked) {
+          shouldHandleMediaAutoCheckbox.prop('checked', false);
+          update_should_handle_media_auto_box_style(false);
+          show_all_media_controls();
+          var wasNewMediaAutoSettingDisabled = localStorage.getItem('wasNewMediaAutoSettingDisabled') === '1';
+          if (wasNewMediaAutoSettingDisabled) {
+            set_unchecked_state_for_duplication_form();
+          }
+        } else {
+          update_should_handle_media_auto_box_style(true);
+        }
+      }, 100);
+
+			shouldHandleMediaAutoCheckbox.on('change', function() {
+        var isShouldHandleMediaAutoChecked = shouldHandleMediaAutoCheckbox.is(':checked');
+        show_should_handle_media_auto_spinner();
+        wpml_media_save_should_handle_media_auto_setting( isShouldHandleMediaAutoChecked ? 1 : 0 );
+        update_should_handle_media_auto_box_style(isShouldHandleMediaAutoChecked);
+
+        if (isShouldHandleMediaAutoChecked && !form.hasClass('collapsed')) {
+          form.addClass('collapsed');
+          setupManuallyButton.addClass('collapsed');
+          isFormVisible = false;
+        }
+
+        // Capture PostHog event
+        captureEvent('wpml_mt_autodetect_toggled',{
+          enabled: !!isShouldHandleMediaAutoChecked,
+          source: urlContainsMediaSettingsSection() ? 'existing_users_banner' : 'settings'
+        })
+      });
+
+      var translateMediaLibraryTextsSpinner = jQuery('#translate_media_library_texts_spinner');
+      var translateMediaLibraryTextsCheckbox = jQuery('#translate_media_library_texts');
+
+      translateMediaLibraryTextsCheckbox.on('change', function() {
+        var isChecked = translateMediaLibraryTextsCheckbox.is(':checked');
+        show_translate_media_library_texts_spinner();
+        wpml_media_set_content_defaults(
+          function() {
+            hide_translate_media_library_texts_spinner();
+          },
+          function() {
+            hide_translate_media_library_texts_spinner();
+            wpml_update_status('Set Content Defaults: Please try again (' + textStatus + ')');
+          }
+        );
+      });
+
+      var lastNewTranslateMediaIsChecked = false;
+      var lastNewDuplicateMediaIsChecked = false;
+      var lastTranslateMetadataIsChecked = false;
+      function updateLastIsChecked() {
+        lastNewTranslateMediaIsChecked = jQuery('input[name="' + 'content_default_always_translate_media' + '"]').is(':checked');
+        lastNewDuplicateMediaIsChecked = jQuery('input[name="' + 'content_default_duplicate_featured' + '"]').is(':checked');
+        lastTranslateMetadataIsChecked = jQuery('input[name="' + 'translate_media_library_texts' + '"]').is(':checked');
+      }
+      updateLastIsChecked();
+
+			form.find(':checkbox').change(
 				function () {
-					var set_language_required_missing = !setLanguageInfo.prop('disabled') && !setLanguageInfo.prop('checked');
-					var checked                       = existingContent.find(':checkbox:checked');
+          var existingTranslateMedia = jQuery('#translate_media');
+          var existingDuplicateMedia = jQuery('#duplicate_featured');
+          var isExistingTranslateMediaChecked = existingTranslateMedia.is(':checked');
+          var isExistingDuplicateMediaChecked = existingDuplicateMedia.is(':checked');
 
-					if (!checked.length || set_language_required_missing) {
+          var currNewTranslateMediaIsChecked = jQuery('input[name="' + 'content_default_always_translate_media' + '"]').is(':checked');
+          var currNewDuplicateMediaIsChecked = jQuery('input[name="' + 'content_default_duplicate_featured' + '"]').is(':checked');
+
+          var isChecked = (
+            isExistingTranslateMediaChecked ||
+            isExistingDuplicateMediaChecked ||
+            lastNewTranslateMediaIsChecked !== currNewTranslateMediaIsChecked ||
+            lastNewDuplicateMediaIsChecked !== currNewDuplicateMediaIsChecked
+          );
+
+					if (!isChecked) {
 						primaryButton.addClass('disabled');
 					} else {
 						primaryButton.removeClass('disabled');
@@ -24,26 +162,13 @@
 				}
 			);
 
-			submitButton.click(
-				function () {
-					form_action.val(jQuery(this).attr('name'));
-				}
-			);
-
 			form.submit(
 				function () {
 
 					if (!submitButton.attr('disabled')) {
-
-						switch (form_action.val()) {
-							case 'start':
-								wpml_media_options_form_working();
-								wpml_media_options_form_scan_prepare();
-								break;
-							case 'set_defaults':
-								wpml_media_set_content_prepare();
-								break;
-						}
+            jQuery(form).find('.content-progress').fadeIn();
+            wpml_media_options_form_working();
+            wpml_media_options_form_scan_prepare();
 					}
 
 					form_action.val(0);
@@ -51,12 +176,59 @@
 				}
 			);
 
+      function show_all_media_controls() {
+        jQuery('#wpml-media-translation-should-handle-media-auto-notice').css('display', 'block');
+
+        // Capture PostHogEvent
+        captureEvent('wpml_mt_warning_shown', {
+          type: 'autodetect_off',
+        })
+      }
+
+      function hide_all_media_controls() {
+        jQuery('#wpml-media-translation-should-handle-media-auto-notice').css('display', 'none');
+      }
+
+      function update_should_handle_media_auto_box_style(isChecked) {
+        var li = shouldHandleMediaAutoCheckbox.closest('li');
+        var setupManuallyContainer = jQuery('.setup-manually-container');
+
+        if (isChecked) {
+          li.addClass('on').removeClass('off');
+          setupManuallyContainer.hide();
+        } else {
+          li.removeClass('on').addClass('off');
+          setupManuallyContainer.show();
+        }
+      }
+
+      function show_should_handle_media_auto_spinner() {
+        shouldHandleMediaAutoSpinner.css('display', 'grid').css('visibility', 'visible');
+        shouldHandleMediaAutoCheckbox.parent().css('display', 'none');
+      }
+
+      function hide_should_handle_media_auto_spinner() {
+        shouldHandleMediaAutoSpinner.css('display', 'none').css('visibility', 'hidden');
+        shouldHandleMediaAutoCheckbox.parent().css('display', 'inline-flex');
+      }
+
+      function show_translate_media_library_texts_spinner() {
+        translateMediaLibraryTextsSpinner.css('display', 'inline-block').css('visibility', 'visible');
+        translateMediaLibraryTextsCheckbox.parent().css('display', 'none');
+      }
+
+      function hide_translate_media_library_texts_spinner() {
+        translateMediaLibraryTextsSpinner.css('display', 'none').css('visibility', 'hidden');
+        translateMediaLibraryTextsCheckbox.parent().css('display', 'inline-flex');
+      }
+
 			function wpml_update_status(message) {
-				jQuery(form).find('.status').html(message);
+				// wpmldev-5105: server-supplied status markup.
+				jQuery(form).find('.content-status').html(WPML_core.purify(message));
 				if (message.length > 0) {
-					jQuery(form).find('.status').show();
+					jQuery(form).find('.content-status').show();
 				} else {
-					jQuery(form).find('.status').fadeOut();
+					jQuery(form).find('.content-status').fadeOut();
 				}
 			}
 
@@ -77,6 +249,42 @@
 				);
 			}
 
+      function wpml_media_save_should_handle_media_auto_setting( isEnabled ) {
+        jQuery.ajax(
+          {
+            url:      ajaxurl,
+            type:     'POST',
+            data:     {
+              action: 'wpml_media_save_should_handle_media_auto_setting',
+              nonce: wpml_media_settings_data.nonce_wpml_media_save_should_handle_media_auto_setting,
+              isEnabled: isEnabled,
+            },
+            dataType: 'json',
+            success:  function (ret) {
+              hide_should_handle_media_auto_spinner();
+              if (isEnabled) {
+                hide_all_media_controls();
+              } else {
+                show_all_media_controls();
+                set_unchecked_state_for_duplication_form();
+                localStorage.setItem('wasNewMediaAutoSettingDisabled', '1');
+              }
+            },
+            error:    function (jqXHR, textStatus) {
+              hide_should_handle_media_auto_spinner();
+              wpml_update_status('Save media setting: please try again (' + textStatus + ')');
+            }
+          }
+        );
+
+      }
+
+      function set_unchecked_state_for_duplication_form() {
+        jQuery('#translate_media').prop('checked', false);
+        jQuery('#duplicate_featured').prop('checked', false);
+        submitButton.addClass('disabled');
+      }
+
 			function wpml_media_options_form_scan_prepare() {
 				jQuery.ajax(
 					{
@@ -89,13 +297,7 @@
 						dataType: 'json',
 						success:  function (ret) {
 							wpml_update_status(ret.message);
-							if (jQuery('#wpml_media_options_form').find('input[name=no_lang_attachments]').val() > 0) {
-								// step 1
-								wpml_media_set_initial_language();
-							} else {
-								// step 2
-								wpml_media_translate_media();
-							}
+              wpml_media_translate_media();
 						},
 						error:    function (jqXHR, textStatus) {
 							jQuery('#icl-migrate-progress').find('.message').html(textStatus);
@@ -103,39 +305,6 @@
 
 					}
 				);
-
-			}
-
-			function wpml_media_set_initial_language() {
-
-				if (jQuery('#set_language_info', form).is(':checked')) {
-					jQuery.ajax(
-						{
-							url:      ajaxurl,
-							type:     'POST',
-							data:     {
-								action: 'wpml_media_set_initial_language',
-								nonce: wpml_media_settings_data.nonce_wpml_media_set_initial_language
-							},
-							dataType: 'json',
-							success:  function (ret) {
-								wpml_update_status(ret.message);
-								if (ret.left > 0) {
-									wpml_media_set_initial_language();
-								} else {
-									// step 2
-									wpml_media_translate_media();
-								}
-							},
-							error:    function (jqXHR, textStatus) {
-								wpml_update_status('Set initial language: please try again (' + textStatus + ')');
-							}
-
-						}
-					);
-				} else {
-					wpml_media_translate_media();
-				}
 
 			}
 
@@ -172,7 +341,7 @@
 
 			function wpml_media_duplicate_media() {
 
-				if (jQuery('#duplicate_media', form).is(':checked')) {
+        if (jQuery('#translate_media', form).is(':checked')) {
 					jQuery.ajax(
 						{
 							url:      ajaxurl,
@@ -244,8 +413,7 @@
 						},
 						dataType: 'json',
 						success:  function (ret) {
-							wpml_media_options_form_finished(ret.message);
-							jQuery('#wpml_media_all_done').fadeIn();
+              wpml_media_set_content_prepare();
 						},
 						error:    function (jqXHR, textStatus) {
 							wpml_update_status('Mark processed: Please try again (' + textStatus + ')');
@@ -257,9 +425,6 @@
 			}
 
 			function wpml_media_set_content_prepare() {
-				wpml_update_status('');
-				submitButton.attr('disabled', 'disabled');
-				jQuery(form).find('.content_default_progress').fadeIn();
 				jQuery.ajax(
 					{
 						url:      ajaxurl,
@@ -270,7 +435,8 @@
 						},
 						dataType: 'json',
 						success:  function (ret) {
-							jQuery(form).find('.content_default_status').html(ret.message);
+              jQuery(form).find('.content-status').css('display', 'inline');
+							jQuery(form).find('.content-status').html('');
 							wpml_media_set_content_defaults();
 						},
 						error:    function (jqXHR, textStatus) {
@@ -281,10 +447,16 @@
 
 			}
 
-			function wpml_media_set_content_defaults() {
-				wpml_update_status('');
-				submitButton.attr('disabled', 'disabled');
-				jQuery(form).find('.content_default_progress').fadeIn();
+			function wpml_media_set_content_defaults(onSuccess, onError) {
+        var onSuccess = onSuccess || function(ret) {
+          // wpmldev-5105: server-supplied status markup.
+          jQuery(form).find('.content-status').html(WPML_core.purify(ret.data.message));
+          wpml_media_set_content_defaults_finished();
+        };
+        var onError = onError || function(jqXHR, textStatus) {
+          wpml_update_status('Set Content Defaults: Please try again (' + textStatus + ')');
+        };
+
 				jQuery.ajax(
 					{
 						url:      ajaxurl,
@@ -292,31 +464,26 @@
 						data:     {
 							action:                 'wpml_media_set_content_defaults',
 							always_translate_media: jQuery('input[name=content_default_always_translate_media]', form).is(':checked'),
-							duplicate_media:        jQuery('input[name=content_default_duplicate_media]', form).is(':checked'),
+							duplicate_media:        jQuery('input[name=content_default_always_translate_media]', form).is(':checked'),
 							duplicate_featured:     jQuery('input[name=content_default_duplicate_featured]', form).is(':checked'),
 							translate_media_library_texts:     jQuery('input[name=translate_media_library_texts]', form).is(':checked'),
               				nonce: wpml_media_settings_data.nonce_wpml_media_set_content_defaults
 						},
 						dataType: 'json',
-						success:  function (ret) {
-							jQuery(form).find('.content_default_status').html(ret.message);
-							wpml_media_set_content_defaults_finished();
-						},
-						error:    function (jqXHR, textStatus) {
-							wpml_update_status('Set Content Defaults: Please try again (' + textStatus + ')');
-						}
+						success:  onSuccess,
+						error: onError,
 					}
 				);
 
 			}
 
-			function wpml_media_set_content_defaults_finished(status) {
+			function wpml_media_set_content_defaults_finished() {
+        updateLastIsChecked();
 				submitButton.prop('disabled', false);
-				jQuery(form).find('.content_default_progress').fadeOut();
-				jQuery(form).find('.content_default_status').html(status);
+				jQuery(form).find('.content-progress').fadeOut();
 				window.setTimeout(
 					function () {
-						jQuery(form).find('.content_default_status').fadeOut();
+						jQuery(form).find('.content-status').fadeOut();
 					}, 1000
 				);
 			}

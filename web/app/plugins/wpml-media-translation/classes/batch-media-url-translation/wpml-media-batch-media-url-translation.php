@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class WPML_Media_Batch_Url_Translation
- */
 abstract class WPML_Media_Batch_Url_Translation {
 
 	const BATCH_SIZE = 10;
@@ -10,25 +7,22 @@ abstract class WPML_Media_Batch_Url_Translation {
 	const BATCH_SIZE_FACTOR_ALL_MEDIA      = 1;
 	const BATCH_SIZE_FACTOR_SPECIFIC_MEDIA = 10;
 
-	/**
-	 * @var wpdb
-	 */
 	protected $wpdb;
 
-	/**
-	 * WPML_Media_Batch_Url_Translation constructor.
-	 *
-	 * @param wpdb $wpdb
-	 */
 	public function __construct( wpdb $wpdb ) {
 		$this->wpdb = $wpdb;
 	}
 
 	public function add_hooks() {
-		add_action( 'wp_ajax_' . $this->get_ajax_action(), array( $this, 'run_batch' ) );
+		\WPML\Request\Adapter\Ajax::register( $this->get_ajax_action(), \WPML\Request\Policy\Policy::capability( [ 'wpml_manage_media_translation', 'manage_translations' ], \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_media_translate_media_url', 'nonce' ) ), array( $this, 'run_batch' ) );
 	}
 
 	public function run_batch() {
+		if ( ! current_user_can( 'wpml_manage_media_translation' ) && ! current_user_can( 'manage_translations' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'wpml-media' ) );
+			return;
+		}
+
 		$offset        = isset( $_POST['offset'] ) ? (int) $_POST['offset'] : 0;
 		$attachment_id = isset( $_POST['attachment_id'] ) ? (int) $_POST['attachment_id'] : 0;
 		$all_media     = ! empty( $_POST['global'] );
@@ -48,45 +42,44 @@ abstract class WPML_Media_Batch_Url_Translation {
 		wp_send_json_success( $response );
 	}
 
-	/**
-	 * @param int $number_of_elements_left
-	 *
-	 * @return string
-	 */
 	abstract protected function get_response_message( $number_of_elements_left );
 
-	/**
-	 * @param int $offset
-	 *
-	 * @return int
-	 */
 	abstract protected function process_batch( $offset );
 
-	/**
-	 * @param int $offset
-	 * @param int $attachment_id
-	 *
-	 * @return int
-	 */
 	abstract protected function process_batch_for_selected_media( $offset, $attachment_id );
 
-	/**
-	 * @return array
-	 */
+	protected function get_media_url_like_patterns( $attachment_id ) {
+		$media_url = wp_get_attachment_url( $attachment_id );
+		if ( ! $media_url ) {
+			return array();
+		}
+
+		$media_url = (string) preg_replace( '#^(?:[a-z][a-z0-9+.-]*:)?//[^/]*#i', '', $media_url );
+
+		if ( ! preg_match( '/(.+)\.([A-Za-z0-9]+)$/', $media_url, $match ) ) {
+			return array();
+		}
+
+		$as_json = function ( $value ) {
+			return wpml_like_escape( str_replace( '/', '\\/', $value ) );
+		};
+
+		$extension = wpml_like_escape( $match[2] );
+
+		return array(
+			'%' . wpml_like_escape( $media_url ) . '%',
+			'%' . wpml_like_escape( $match[1] ) . '-%x%.' . $extension . '%',
+			'%' . $as_json( $media_url ) . '%',
+			'%' . $as_json( $match[1] ) . '-%x%.' . $extension . '%',
+		);
+	}
+
 	abstract protected function get_ajax_error_message();
 
-	/**
-	 * @param int $batch_size_factor
-	 *
-	 * @return int
-	 */
 	protected function get_batch_size( $batch_size_factor = self::BATCH_SIZE_FACTOR_ALL_MEDIA ) {
 		return $batch_size_factor * self::BATCH_SIZE;
 	}
 
-	/**
-	 * @return string
-	 */
 	abstract protected function get_ajax_action();
 
 }

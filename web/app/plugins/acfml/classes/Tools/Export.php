@@ -10,11 +10,6 @@ class Export extends Transfer implements \IWPML_Backend_Action, \IWPML_Frontend_
 		add_filter( 'acf/prepare_field_group_for_export', [ $this, 'addLanguageInformation' ] );
 	}
 	
-	/**
-	 * @param string $fieldKey
-	 *
-	 * @return null|string
-	 */
 	private function getLanguageCode( $fieldKey ) {
 		return apply_filters( 'wpml_element_language_code', null, [
 			'element_id'   => Obj::prop( 'ID', acf_get_field_group( $fieldKey ) ),
@@ -22,11 +17,6 @@ class Export extends Transfer implements \IWPML_Backend_Action, \IWPML_Frontend_
 		] );
 	}
 	
-	/**
-	 * @param array $fieldGroup
-	 *
-	 * @return array
-	 */
 	public function addLanguageInformation( $fieldGroup ) {
 		if ( $this->isGroupTranslatable() ) {
 			$language = $this->getLanguageCode( Obj::prop( 'key', $fieldGroup ) );

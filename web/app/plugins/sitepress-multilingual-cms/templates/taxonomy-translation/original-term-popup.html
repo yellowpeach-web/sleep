@@ -6,21 +6,21 @@
 	
 		<div class="wpml-form-row-no-translation">
 			<label for="term-name"><%= labels.Name %></label >
-			<input id="term-name" value="<%= term.name %>" type="text">
+			<input id="term-name" value="<%- term.name %>" type="text">
 		</div>
 
 		<div class="wpml-form-row-no-translation">
 			<label for="term-slug"><%= labels.Slug %></label>
-			<input id="term-slug" value="<%= term.slug %>" type="text">
+			<input id="term-slug" value="<%- term.slug %>" type="text">
 		</div>
 		<div class="wpml-form-row-no-translation">
 			<label for="term-description"><%= labels.Description %></label>
-			<textarea id="term-description" cols="22" rows="4"><%= term.description %></textarea>
+			<textarea id="term-description" cols="22" rows="4"><%- term.description %></textarea>
 		</div>
 		<div class="wpml-dialog-footer ">
 			<span class="errors icl_error_text"></span>
-			<input class="cancel wpml-dialog-close-button alignleft" value="<%= labels.cancel %>" type="button">
-			<input class="button-primary term-save alignright" value="<%= labels.save %>" type="submit">
+			<input class="cancel wpml-dialog-close-button alignleft button button-secondary" value="<%= labels.cancel %>" type="button">
+			<input class="term-save alignright button button-primary" value="<%= labels.save %>" type="submit">
 			<span class="spinner alignright"></span>
 		</div>	
 	</div>

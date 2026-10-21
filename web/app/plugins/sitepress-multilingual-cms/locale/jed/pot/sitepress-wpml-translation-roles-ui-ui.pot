@@ -3,40 +3,57 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/js/components/language/LanguagePairs.js:57
+#: src/js/components/language/LanguagePairs.js:111
+#. Text read out by screen readers for the checkbox of one target language. %s: the name of that language.
+msgid "Select %s"
+msgstr ""
+
+#: src/js/components/language/LanguagePairs.js:77
+#. Label of the dropdown that picks the language a translator translates from; the languages they translate into sit under the label "to:".
 msgid "From:"
 msgstr ""
 
-#: src/js/components/language/LanguagePairs.js:69
+#: src/js/components/language/LanguagePairs.js:87
+#. Shown in the language dropdown before a language has been picked.
 msgid "--Choose language--"
 msgstr ""
 
-#: src/js/components/language/LanguagePairs.js:81
+#: src/js/components/language/LanguagePairs.js:99
+#. Label of the checkboxes that pick the languages a translator translates into; it follows the label "From:" and is deliberately written in small letters.
 msgid "to:"
 msgstr ""
 
-#: src/js/components/language/SelectLanguagePairs.js:39
+#: src/js/components/language/SelectLanguagePairs.js:40
+#. Heading over the language pairs of one translator. %s: the name of the translator.
 msgid "Set language pair(s) for Translator %s:"
 msgstr ""
 
-#: src/js/components/language/SelectLanguagePairs.js:64
+#: src/js/components/language/SelectLanguagePairs.js:70
 msgid "+ Add more language pairs for this translator"
 msgstr ""
 
 #: src/js/components/roles/CreateUser.js:100
+#. Label of the first name field in the form that creates a new user.
 msgid "First Name"
 msgstr ""
 
 #: src/js/components/roles/CreateUser.js:101
+#. Label of the last name field in the form that creates a new user.
 msgid "Last Name"
 msgstr ""
 
 #: src/js/components/roles/CreateUser.js:105
+#. Label of the dropdown that picks the WordPress role of the new user.
 msgid "Role"
 msgstr ""
 
-#: src/js/components/roles/CreateUser.js:137
+#: src/js/components/roles/CreateUser.js:138
+#. Shown in small print after the label of a field that has to be filled in.
 msgid "(required)"
+msgstr ""
+
+#: src/js/components/roles/CreateUser.js:216
+msgid "Select a role for the user"
 msgstr ""
 
 #: src/js/components/roles/CreateUser.js:46
@@ -54,58 +71,79 @@ msgid "A translator can be any WordPress role."
 msgstr ""
 
 #: src/js/components/roles/CreateUser.js:98
+#. Label of the user name field in the form that creates a new user.
 msgid "Username"
 msgstr ""
 
 #: src/js/components/roles/CreateUser.js:99
+#. Label of the email address field in the form that creates a new user.
 msgid "Email"
 msgstr ""
 
-#: src/js/components/roles/ExistingUserSelect.js:46
-msgid "Search"
+#: src/js/components/roles/ExistingUserSelect.js:59
+msgid "Search by name, username or email"
+msgstr ""
+
+#: src/js/components/roles/ExistingUserSelect.js:70
+msgid ""
+"Your site has a large number of users, please enter the exact username or "
+"email address."
+msgstr ""
+
+#: src/js/components/translation-managers/AddManagerDialog.js:118
+#: src/js/components/translators/AddTranslatorDialog.js:152
+#: src/js/components/translators/EditLanguagesDialog.js:73
+#: src/js/setup/components/Steps/AddLanguagesModal.js:504
+#. Button label that closes a dialog or clears a filter without applying it: verb, imperative, not the noun "a cancellation".
+msgid "Cancel"
+msgstr ""
+
+#: src/js/components/translation-managers/AddManagerDialog.js:123
+msgid "Add Translation Manager"
 msgstr ""
 
 #: src/js/components/translation-managers/AddManagerDialog.js:47
+#. Used in the text read out by screen readers for the user search box of the Add Translation Manager dialog: "Search for existing user".
 msgid "user"
 msgstr ""
 
 #: src/js/components/translation-managers/AddManagerDialog.js:47
+#. The name of the WordPress Editor role, used in the text read out by screen readers for the user search box of the Add Translation Manager dialog: "Search for existing Editor".
 msgid "Editor"
 msgstr ""
 
-#: src/js/components/translation-managers/AddManagerDialog.js:61
-msgid "Select an existing %s and set as Translation Manager"
+#: src/js/components/translation-managers/AddManagerDialog.js:71
+msgid "Select an existing user and set them as Translation Manager"
 msgstr ""
 
-#: src/js/components/translation-managers/AddManagerDialog.js:72
-msgid "Create a new %s and set as Translation Manager"
-msgstr ""
-
-#: src/js/components/translation-managers/AddManagerDialog.js:85
-#: src/js/components/translators/AddTranslatorDialog.js:121
-#: src/js/components/translators/EditLanguagesDialog.js:73
-#: src/js/setup/components/Steps/AddLanguagesModal.js:496
-msgid "Cancel"
-msgstr ""
-
-#: src/js/components/translation-managers/AddManagerDialog.js:90
-msgid "Add Translation Manager"
+#: src/js/components/translation-managers/AddManagerDialog.js:97
+msgid "Create a new user and set them as Translation Manager"
 msgstr ""
 
 #: src/js/components/translation-managers/ManagerSection.js:27
 msgid "Add a Translation Manager"
 msgstr ""
 
-#: src/js/components/translators/AddTranslatorDialog.js:111
+#: src/js/components/translators/AddTranslatorDialog.js:101
+msgid "Select an existing user and set as Translator"
+msgstr ""
+
+#: src/js/components/translators/AddTranslatorDialog.js:125
+msgid "Create a new user and set as Translator"
+msgstr ""
+
+#: src/js/components/translators/AddTranslatorDialog.js:142
 msgid "Set language pair(s)"
 msgstr ""
 
-#: src/js/components/translators/AddTranslatorDialog.js:126
+#: src/js/components/translators/AddTranslatorDialog.js:157
+#. Button label that goes back to the earlier step of the dialog that adds a translator: verb, imperative, not the adjective "previous".
 msgid "Previous"
 msgstr ""
 
-#: src/js/components/translators/AddTranslatorDialog.js:129
+#: src/js/components/translators/AddTranslatorDialog.js:160
 #: src/js/components/translators/EditLanguagesDialog.js:78
+#. Button label that saves what was entered in the form or dialog; verb, imperative.
 msgid "Save"
 msgstr ""
 
@@ -114,179 +152,198 @@ msgstr ""
 msgid "Add a Translator"
 msgstr ""
 
-#: src/js/components/translators/AddTranslatorDialog.js:91
-msgid "Select an existing user and set as Translator"
-msgstr ""
-
-#: src/js/components/translators/AddTranslatorDialog.js:95
-msgid "Create a new user and set as Translator"
-msgstr ""
-
 #: src/js/components/translators/EditLanguagesDialog.js:55
 msgid "Edit language pair(s) for translator"
 msgstr ""
 
-#: src/js/components/translators/TranslatorsTable.js:128
-#: src/js/setup/components/Steps/AddLanguagesModal.js:346
+#: src/js/components/translators/TranslatorsTable.js:132
+#: src/js/setup/components/Steps/AddLanguagesModal.js:355
+#. Column heading and field label for the name of a person, a language or a translation service: a noun (the name), not the verb "to name".
 msgid "Name"
 msgstr ""
 
-#: src/js/components/translators/TranslatorsTable.js:140
+#: src/js/components/translators/TranslatorsTable.js:144
+#. Heading of the table column that lists the pairs of languages each translator translates between.
 msgid "Language Pairs"
 msgstr ""
 
-#: src/js/components/translators/TranslatorsTable.js:144
+#: src/js/components/translators/TranslatorsTable.js:148
 msgid "You can translate to and from all languages"
 msgstr ""
 
+#: src/js/components/translators/TranslatorsTable.js:55
+msgid "Edit language pair(s)"
+msgstr ""
+
+#: src/js/components/translators/TranslatorsTable.js:58
+msgid "Delete language pair(s)"
+msgstr ""
+
 #: src/js/setup/components/Steps/AddLanguages/Flag.js:48
+#. Error shown when a flag image could not be uploaded. %s: the name of the file.
 msgid "%s file upload failed."
 msgstr ""
 
 #: src/js/setup/components/Steps/AddLanguages/Flag.js:69
+#. Label of the field that uploads a flag image for a language. "Flag" is the little picture of a flag, not the verb "to flag".
 msgid "Flag"
 msgstr ""
 
 #: src/js/setup/components/Steps/AddLanguages/Flag.js:87
+#. Button label that opens the file picker for the flag image. "Flag" is the little picture of a flag, not the verb "to flag".
 msgid "Flag file"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:160
+#: src/js/setup/components/Steps/AddLanguagesModal.js:166
+#. Message shown after a language has been added. %s: the name of the new language.
 msgid ""
-"You just added  language. Next, select it as the site's default language or "
-"a translation language."
+"You just added %s language. Next, select it as the site's default language "
+"or a translation language."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:162
+#: src/js/setup/components/Steps/AddLanguagesModal.js:170
+#. Short confirmation shown after a new language has been added in the setup wizard.
 msgid "Language added"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:192
+#: src/js/setup/components/Steps/AddLanguagesModal.js:200
+#. Error under a field of the add-language form when another language already uses the same value. %s: what was typed in the field.
 msgid "The value \"%s\" already exists"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:215
+#: src/js/setup/components/Steps/AddLanguagesModal.js:223
 msgid "Add a new language"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:224
+#: src/js/setup/components/Steps/AddLanguagesModal.js:232
 msgid ""
 "Create a country-specific language by choosing the general language from "
 "the list below. Then, choose the country it should be localized for."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:229
+#: src/js/setup/components/Steps/AddLanguagesModal.js:237
 msgid ""
 "By choosing a combination that already exists in the database, WPML can "
 "help fill out the necessary fields. Read more about "
 "<AddingACustomLanguageLink />."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:242
+#: src/js/setup/components/Steps/AddLanguagesModal.js:250
+#. Question in small print under the language dropdown, followed by the link "Click here" for entering a language by hand.
 msgid "Cannot find?"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:244
+#: src/js/setup/components/Steps/AddLanguagesModal.js:252
+#. Link after the question "Cannot find?" in the add-language dialog; verb, imperative.
 msgid "Click here"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:300
+#: src/js/setup/components/Steps/AddLanguagesModal.js:308
+#. Error under the language code field of the add-language form. "It" is the language code. Keep the examples as they are.
 msgid ""
 "The wrong format. It may contain only small letters and \"-\". E.g: \"fr\" "
 ", \"pt-br\", \"zh-hans\""
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:308
+#: src/js/setup/components/Steps/AddLanguagesModal.js:316
+#. Label of the dropdown that picks the language, in the dialog that adds a language.
 msgid "Language"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:331
+#: src/js/setup/components/Steps/AddLanguagesModal.js:340
+#. Label of the dropdown that picks the country or region of the language, in the dialog that adds a language.
 msgid "Location"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:360
+#: src/js/setup/components/Steps/AddLanguagesModal.js:369
+#. The short code of a language, such as "en" or "pt-br". Used as an option in the Language Switcher block settings and as a field label in the dialog that adds a language.
 msgid "Code"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:374
-msgid "The language will not be supported by automatic translations"
+#: src/js/setup/components/Steps/AddLanguagesModal.js:38
+msgid "Flags must be:"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:392
+#: src/js/setup/components/Steps/AddLanguagesModal.js:383
+msgid "Automatic Translation will use the default behavior for this language"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:400
+#. Label of the field that says which supported language a custom language is translated as, in the dialog that adds a language.
 msgid "Language mapping"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:404
-msgid "Don't map this language"
+#: src/js/setup/components/Steps/AddLanguagesModal.js:412
+msgid "Use Automatic Translation default behavior"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:418
+#: src/js/setup/components/Steps/AddLanguagesModal.js:42
+msgid "PNG, SVG, or JPG files"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:426
+#. Label of the field that holds the WordPress locale of the language, such as "de_DE", in the dialog that adds a language.
 msgid "Default locale"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:423
+#: src/js/setup/components/Steps/AddLanguagesModal.js:431
+#. Error under the default locale field of the add-language form. "It" is the locale. Keep the examples as they are.
 msgid ""
 "The wrong format. It may contain only small letters and \"_\". E.g: \"de\" "
 ", \"de_DE\", \"zh_Hant_TW\""
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:435
+#: src/js/setup/components/Steps/AddLanguagesModal.js:443
+#. Label of the field that holds the hreflang value search engines read, in the dialog that adds a language. The name of an HTML attribute: keep it as it is.
 msgid "hreflang"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:449
-msgid "Encode url?"
-msgstr ""
-
 #: src/js/setup/components/Steps/AddLanguagesModal.js:45
-msgid "Flags must be:"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:453
-msgid "NO"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:454
-msgid "YES"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:460
-msgid " (required)"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:483
-msgid "Please fill in the field"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:49
-msgid "PNG, SVG, or JPG files"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:501
-msgid "Save language"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:52
 msgid "18 x 12 pixels"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:55
-msgid "Read more about "
+#: src/js/setup/components/Steps/AddLanguagesModal.js:457
+#. Label of the dropdown that says whether the language part of the web address should be encoded, in the dialog that adds a language.
+msgid "Encode url?"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:60
+#: src/js/setup/components/Steps/AddLanguagesModal.js:461
+#. Option in the "Encode url?" dropdown of the dialog that adds a language. Shown in capitals.
+msgid "NO"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:462
+#. Option in the "Encode url?" dropdown of the dialog that adds a language. Shown in capitals.
+msgid "YES"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:468
+#. Added after the label of a field that has to be filled in, for example "Name (required)". Keep the space at the start.
+msgid " (required)"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:49
 msgid ""
 "The name of your language as it will appear on your site's language "
 "switcher."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:61
+#: src/js/setup/components/Steps/AddLanguagesModal.js:491
+msgid "Please fill in the field"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:50
 msgid ""
 "A unique value that identifies the language in the database and URL. Once "
 "saved, the language code cannot be changed."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:62
+#: src/js/setup/components/Steps/AddLanguagesModal.js:509
+#. Button label that saves the new language in the dialog that adds a language; verb, imperative.
+msgid "Save language"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:51
 msgid ""
 "If your custom language is similar to an existing language, you can use the "
 "existing language's spellcheck and automatic translation. For example, if "
@@ -296,100 +353,121 @@ msgid ""
 "translation features will be unavailable in that language."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:66
+#: src/js/setup/components/Steps/AddLanguagesModal.js:55
 msgid ""
 "The value WPML checks when loading translations from MO and PO files. The "
 "default locale is included in the filenames in your /wp-content/languages/ "
 "folder in your WordPress setup."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:69
+#: src/js/setup/components/Steps/AddLanguagesModal.js:58
 msgid ""
 "Google uses the hreflang attribute to direct users to sites in their "
 "relevant language and location. Examples:"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:71
+#: src/js/setup/components/Steps/AddLanguagesModal.js:60
 msgid "All English-speaking users: en"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:72
+#: src/js/setup/components/Steps/AddLanguagesModal.js:61
 msgid "English for UK users: en-gb"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:73
+#: src/js/setup/components/Steps/AddLanguagesModal.js:62
 msgid "English for US users: en-us"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:81
+#: src/js/setup/components/Steps/AddLanguagesModal.js:70
 msgid ""
 "Determines if URLs in this language are encoded or use ASCII characters (if "
 "unsure, leave it as \"No\")."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:98
+#: src/js/setup/components/Steps/AddLanguagesModal.js:87
+#. Link that ends the sentence "Read more about adding a custom language." in the dialog that adds a language.
 msgid "adding a custom language"
 msgstr ""
 
-#: src/js/setup/components/Steps/Languages.js:102
-msgid "Default language"
-msgstr ""
-
-#: src/js/setup/components/Steps/Languages.js:104
-msgid "What is the current language of your website?"
-msgstr ""
-
-#: src/js/setup/components/Steps/Languages.js:115
-msgid "Translation languages"
-msgstr ""
-
-#: src/js/setup/components/Steps/Languages.js:117
-msgid "Which languages do you want to translate your site into?"
-msgstr ""
-
-#: src/js/setup/components/Steps/Languages.js:132
-msgid "If you cannot find languages that you need in the list"
-msgstr ""
-
-#: src/js/setup/components/Steps/Languages.js:133
-msgid "create a custom language"
-msgstr ""
-
-#: src/js/setup/components/Steps/Languages.js:92
+#: src/js/setup/components/Steps/Languages.js:162
 msgid "What are the languages of your site?"
 msgstr ""
 
-#: src/js/translation-roles-ui/components/Managers.js:12
+#: src/js/setup/components/Steps/Languages.js:172
+#. Heading over the dropdown that picks the language the site is written in, in the setup wizard.
+msgid "Default language"
+msgstr ""
+
+#: src/js/setup/components/Steps/Languages.js:174
+msgid "What is the current language of your website?"
+msgstr ""
+
+#: src/js/setup/components/Steps/Languages.js:185
+#. Heading over the dropdown that picks the languages the site is translated into, in the setup wizard.
+msgid "Translation languages"
+msgstr ""
+
+#: src/js/setup/components/Steps/Languages.js:187
+msgid "Which languages do you want to translate your site into?"
+msgstr ""
+
+#: src/js/setup/components/Steps/Languages.js:201
+msgid "If you cannot find languages that you need in the list,"
+msgstr ""
+
+#: src/js/setup/components/Steps/Languages.js:202
+#. Link that ends the sentence "If you cannot find languages that you need in the list, create a custom language."
+msgid "create a custom language"
+msgstr ""
+
+#: src/js/translation-roles-ui/components/Managers.js:10
 msgid ""
 "You can add a dedicated person to oversee everything translation-related on "
-"your site. %sTranslation Managers%s can add new local translators or "
+"your site. Translation Managers can add new local translators or "
 "professional translation services, create and assign translation jobs, "
 "review completed translations, and change translation-related settings."
 msgstr ""
 
-#: src/js/translation-roles-ui/components/Managers.js:22
+#: src/js/translation-roles-ui/components/Managers.js:17
+#. Heading of the section that lists the people who oversee translation on the site.
 msgid "Translation Managers"
 msgstr ""
 
-#: src/js/translation-roles-ui/components/Managers.js:25
+#: src/js/translation-roles-ui/components/Managers.js:20
 msgid ""
 "Note: All Administrators are automatically given Translation Manager "
 "privileges."
 msgstr ""
 
-#: src/js/translation-roles-ui/components/Users.js:14
+#: src/js/translation-roles-ui/components/Users.js:30
+#. Description of the translators section. %1$s: opening link tag, %2$s: closing link tag; the words between them become the link.
 msgid ""
-"%sLocal translators%s are users of your site that can log in and add, edit, "
-"and review your site's translations. Add a translator and their associated "
-"translation pairs to assign them translation jobs."
+"%1$sLocal translators%2$s are users of your site that can log in and add, "
+"edit, and review your site's translations. Add a translator and their "
+"associated translation pairs to assign them translation jobs."
 msgstr ""
 
-#: src/js/translation-roles-ui/components/Users.js:23
+#: src/js/translation-roles-ui/components/Users.js:40
+#. Line in the translators section. %1$s: opening link tag, %2$s: closing link tag; the words between them become the link.
 msgid ""
-"You can %shire an experienced translator%s to review your automatic "
+"You can %1$shire an experienced translator%2$s to review your automatic "
 "translations for perfect quality."
 msgstr ""
 
-#: src/js/translation-roles-ui/components/Users.js:33
+#: src/js/translation-roles-ui/components/Users.js:50
+#. Heading of the section that lists the people who translate the site.
 msgid "Translators"
+msgstr ""
+
+#: src/js/translation-roles-ui/components/Users.js:55
+msgid "Can't find a specific translator?"
+msgstr ""
+
+#: src/js/translation-roles-ui/components/Users.js:57
+#. Shown in place of the "Refresh list now." link while the list of translators is being read again.
+msgid "Refreshing…"
+msgstr ""
+
+#: src/js/translation-roles-ui/components/Users.js:58
+msgid "Refresh list now."
 msgstr ""

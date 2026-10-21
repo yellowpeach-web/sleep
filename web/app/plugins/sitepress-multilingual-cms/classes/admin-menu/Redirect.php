@@ -4,6 +4,7 @@ namespace WPML\AdminMenu;
 
 use WPML\FP\Lst;
 use WPML\FP\Obj;
+use WPML\SuperGlobals\Request;
 
 class Redirect implements \IWPML_Backend_Action {
 	public function add_hooks() {
@@ -23,10 +24,11 @@ class Redirect implements \IWPML_Backend_Action {
 		];
 
 		foreach ( $query as $param => $value ) {
-			$query[ $param ] = Obj::pathOr( $value, [ $param, $value ], $redirections );
+			$lookupKey = Request::param( $param );
+
+			$query[ $param ] = Obj::pathOr( $value, [ $param, $lookupKey ], $redirections );
 		}
 
-		/** @phpstan-ignore-next-line */
 		if ( array_diff_assoc( Lst::flatten( $_GET ), Lst::flatten( $query ) ) ) {
 			if ( wp_safe_redirect( add_query_arg( $query ), 301, 'WPML' ) ) {
 				exit;

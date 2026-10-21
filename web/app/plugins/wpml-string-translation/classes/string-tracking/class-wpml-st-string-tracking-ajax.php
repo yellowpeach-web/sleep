@@ -2,22 +2,12 @@
 
 class WPML_ST_String_Tracking_AJAX implements IWPML_Action {
 
-	/** @var WPML_ST_String_Positions $string_position */
 	private $string_position;
 
-	/** @var WPML_Super_Globals_Validation $globals_validation */
 	private $globals_validation;
 
-	/** @var string $action */
 	private $action;
 
-	/**
-	 * WPML_ST_String_Tracking_AJAX constructor.
-	 *
-	 * @param WPML_ST_String_Positions      $string_position
-	 * @param WPML_Super_Globals_Validation $globals_validation
-	 * @param string                        $action
-	 */
 	public function __construct(
 		WPML_ST_String_Positions $string_position,
 		WPML_Super_Globals_Validation $globals_validation,
@@ -29,7 +19,7 @@ class WPML_ST_String_Tracking_AJAX implements IWPML_Action {
 	}
 
 	public function add_hooks() {
-		add_action( 'wp_ajax_' . $this->action, array( $this, 'render_string_position' ) );
+		\WPML\Request\Adapter\Ajax::register( $this->action, \WPML\Request\Policy\Policy::capability( [ 'wpml_manage_string_translation', 'manage_translations' ], \WPML\Request\Policy\Authenticity::actionNonce( $this->action, 'nonce' ) ), array( $this, 'render_string_position' ) );
 	}
 
 	public function render_string_position() {

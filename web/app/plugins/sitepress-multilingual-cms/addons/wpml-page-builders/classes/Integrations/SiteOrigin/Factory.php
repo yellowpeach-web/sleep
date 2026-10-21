@@ -10,11 +10,15 @@ class Factory {
 			[
 				HandleCustomFieldsFactory::class,
 				Config\Factory::class,
+				Hooks\WordCount::class,
+				Hooks\TranslationJobImages::class,
 			]
 		);
 
 		$nodes        = new TranslatableNodes();
 		$dataSettings = new DataSettings();
+
+		( new \WPML\PB\Duplication\Hooks( $dataSettings ) )->add_hooks();
 
 		$stringRegistrationFactory = new \WPML_String_Registration_Factory( $dataSettings->get_pb_name() );
 		$stringRegistration        = $stringRegistrationFactory->create();
@@ -25,5 +29,4 @@ class Factory {
 			$dataSettings
 		);
 	}
-
 }

@@ -2,30 +2,35 @@
 
 use WPML\TM\Menu\McSetup\CfMetaBoxOption;
 
-/**
- * Class WPML_TM_MCS_Pagination_Ajax
- */
 class WPML_TM_MCS_Pagination_Ajax {
 
-	/** @var WPML_TM_MCS_Custom_Field_Settings_Menu_Factory */
 	private $menu_factory;
 
 	public function __construct( WPML_TM_MCS_Custom_Field_Settings_Menu_Factory $menu_factory ) {
 		$this->menu_factory = $menu_factory;
 	}
 
-	/**
-	 * Define Ajax hooks.
-	 */
 	public function add_hooks() {
-		add_action( 'wp_ajax_wpml_update_mcs_cf', array( $this, 'update_mcs_cf' ) );
+		\WPML\Request\Adapter\Ajax::register(
+			'wpml_update_mcs_cf',
+			\WPML\Request\Policy\Policy::capability(
+				'manage_options',
+				\WPML\Request\Policy\Authenticity::verifier(
+					function () {
+						$type  = isset( $_POST['type'] ) && is_string( $_POST['type'] ) ? sanitize_key( wp_unslash( $_POST['type'] ) ) : '';
+						$nonce = isset( $_POST['nonce'] ) && is_string( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+						return in_array( $type, array( 'cf', 'tcf' ), true ) && false !== wp_verify_nonce( $nonce, 'icl_' . $type . '_translation_nonce' );
+					},
+					'nonce "icl_{cf|tcf}_translation_nonce" in nonce, bound to the posted type'
+				)
+			),
+			array( $this, 'update_mcs_cf' )
+		);
 	}
 
-	/**
-	 * Update custom fields form.
-	 */
 	public function update_mcs_cf() {
-		if ( isset( $_POST['nonce'] ) && wp_verify_nonce( $_POST['nonce'], 'icl_' . $_POST['type'] . '_translation_nonce' ) ) {
+		if ( isset( $_POST['nonce'] ) && wp_verify_nonce( $_POST['nonce'], 'icl_' . $_POST['type'] . '_translation_nonce' ) && current_user_can( 'manage_options' ) ) {
 			$page = intval( $_POST['paged'] );
 			$args = array(
 				'items_per_page'      => intval( $_POST['items_per_page'] ),
@@ -61,7 +66,8 @@ class WPML_TM_MCS_Pagination_Ajax {
 		}
 		wp_send_json_error(
 			array(
-				'message' => __( 'Invalid Request.', 'wpml-translation-management' ),
+				/* translators: Error message returned when a request from the browser cannot be trusted and is turned away. */
+				'message' => __( 'Invalid Request.', 'sitepress' ),
 			)
 		);
 	}

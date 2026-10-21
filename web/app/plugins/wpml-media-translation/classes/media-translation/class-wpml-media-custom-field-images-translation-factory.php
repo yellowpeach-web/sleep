@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class WPML_Media_Custom_Field_Images_Translation_Factory
- */
 class WPML_Media_Custom_Field_Images_Translation_Factory implements IWPML_Backend_Action_Loader {
 
 	public function create() {
@@ -16,9 +13,19 @@ class WPML_Media_Custom_Field_Images_Translation_Factory implements IWPML_Backen
 				new WPML_Media_Attachment_By_URL_Factory(),
 				new \WPML\Media\Factories\WPML_Media_Attachment_By_URL_Query_Factory()
 			);
-			$image_updater    = new WPML_Media_Translated_Images_Update( new \WPML\Media\Factories\WPML_Media_Element_Parser_Factory(), $image_translator, new WPML_Media_Sizes() );
+			$media_parser_factory = new \WPML\Media\Factories\WPML_Media_Element_Parser_Factory();
+			$image_updater        = new WPML_Media_Translated_Images_Update( $media_parser_factory, $image_translator, new WPML_Media_Sizes() );
 
-			return new WPML_Media_Custom_Field_Images_Translation( $image_updater, $sitepress, $iclTranslationManagement );
+			$missing_translation_creator = new WPML_Media_Missing_Translation_Creator(
+				$sitepress,
+				$media_parser_factory,
+				$image_translator,
+				function () {
+					return \WPML\Container\Container::make( \WPML_Media_Attachments_Duplication::class );
+				}
+			);
+
+			return new WPML_Media_Custom_Field_Images_Translation( $image_updater, $sitepress, $iclTranslationManagement, $missing_translation_creator );
 		}
 
 		return null;

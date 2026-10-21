@@ -4,28 +4,102 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "uk"
          },
          "Preparing...": [
-            ""
+            "Підготовка..."
          ],
          "All jobs have been cancelled": [
-            ""
+            "Усі завдання скасовано"
          ],
          "There is no more jobs to cancel": [
-            ""
+            "Більше немає завдань для скасування"
          ],
          "The jobs cancellation has failed": [
-            ""
+            "Не вдалося скасувати завдання"
          ],
          "Cancel in-progress automatic jobs": [
-            ""
+            "Скасувати автоматичні завдання в процесі"
+         ],
+         "Domain name has been updated": [
+            "Доменне ім’я оновлено"
+         ],
+         "Domain name update has been failed": [
+            "Не вдалося оновити доменне ім’я"
+         ],
+         "Update domain name in language switcher settings": [
+            "Оновити доменне ім’я в налаштуваннях перемикача мов"
+         ],
+         "Disclaimer: MySQL Disk Space": [
+            "Відмова від відповідальності: дисковий простір MySQL"
+         ],
+         "Cleaning and compressing the wp_icl_translate and wp_icl_translation_status tables reduces its data size, but does not automatically free up disk space in MySQL. To reclaim disk space, a table rebuild is required—a risky operation not performed automatically by this tool.": [
+            "Очищення та стиснення таблиць wp_icl_translate та wp_icl_translation_status зменшує розмір їхніх даних, але не звільняє автоматично дисковий простір у MySQL. Щоб повернути дисковий простір, потрібна перебудова таблиці — ризикована операція, яка не виконується цим інструментом автоматично."
+         ],
+         "Optimize translation tables": [
+            "Оптимізувати таблиці перекладу"
+         ],
+         "Previous State Migration": [
+            "Міграція попереднього стану"
+         ],
+         "Translation Elements Migration": [
+            "Міграція елементів перекладу"
+         ],
+         "Processed": [
+            "Опрацьовано"
+         ],
+         "Error": [
+            "Помилка"
+         ],
+         "Success": [
+            "Успіх"
+         ],
+         "Database tables optimization completed successfully.": [
+            "Оптимізацію таблиць бази даних успішно завершено."
+         ],
+         "Warning": [
+            "Попередження"
+         ],
+         "This process is resource-intensive and may take a significant amount of time. It is recommended to run this optimization during periods of low traffic.": [
+            "Цей процес ресурсомісткий і може зайняти значний час. Рекомендується запускати цю оптимізацію в періоди низького трафіку."
+         ],
+         "Database Tables Optimization": [
+            "Оптимізація таблиць бази даних"
          ],
          "Refresh license data to recognise license update": [
-            ""
+            "Оновити дані ліцензії, щоб розпізнати оновлення ліцензії"
          ],
          "WPML License has been refreshed": [
-            ""
+            "Ліцензію WPML оновлено"
+         ],
+         "Translate Everything Automatically is not active.": [
+            "Функція «Автоматично перекладати все» не активна."
+         ],
+         "Retry stuck automatic translations": [
+            "Повторити застряглі автоматичні переклади"
+         ],
+         "Resends translation jobs that couldn't be processed due to a temporary issue while <b>Translate Everything Automatically</b> was active.": [
+            "Повторно надсилає завдання на переклад, які не вдалося опрацювати через тимчасову проблему, поки функція <b>Автоматично перекладати все</b> була активною."
+         ],
+         "Checking for stuck translation jobs...": [
+            "Перевірка застряглих завдань на переклад..."
+         ],
+         "Processing... %s stuck translation found so far": [
+            "Опрацювання... Поки що знайдено %s застряглий переклад",
+            "Опрацювання... Поки що знайдено %s застряглі переклади",
+            "Опрацювання... Поки що знайдено %s застряглих перекладів"
+         ],
+         "Something went wrong while checking for stuck translation jobs. Please <a>contact WPML support</a>.": [
+            "Під час перевірки застряглих завдань на переклад щось пішло не так. Будь ласка, <a>зверніться до служби підтримки WPML</a>."
+         ],
+         "No stuck translation jobs found.": [
+            "Застряглих завдань на переклад не знайдено."
+         ],
+         "%s stuck translation job found. WPML will translate it automatically in the background.\nYou can check the progress in the <b>Translation Dashboard</b>.": [
+            "Знайдено %s застрягле завдання на переклад. WPML перекладе його автоматично у фоновому режимі.\nВи можете перевірити прогрес у <b>Панелі керування перекладами</b>.",
+            "Знайдено %s застряглі завдання на переклад. WPML перекладе їх автоматично у фоновому режимі.\nВи можете перевірити їхній прогрес у <b>Панелі керування перекладами</b>.",
+            "Знайдено %s застряглих завдань на переклад. WPML перекладе їх автоматично у фоновому режимі.\nВи можете перевірити їхній прогрес у <b>Панелі керування перекладами</b>."
          ]
       }
    }

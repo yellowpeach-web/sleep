@@ -3,7 +3,9 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "nl_NL"
          },
          "Preparing...": [
             "Voorbereiden..."
@@ -15,25 +17,87 @@
             "Er zijn geen opdrachten meer om te annuleren"
          ],
          "The jobs cancellation has failed": [
-            "Het annuleren van opdrachten is mislukt"
+            "Het annuleren van de opdrachten is mislukt"
          ],
          "Cancel in-progress automatic jobs": [
-            "Annuleer lopende automatische opdrachten"
+            "Lopende automatische opdrachten annuleren"
          ],
          "Domain name has been updated": [
             "Domeinnaam is bijgewerkt"
          ],
          "Domain name update has been failed": [
-            "Domeinnaam aanpassing is mislukt"
+            "Bijwerken van domeinnaam is mislukt"
          ],
          "Update domain name in language switcher settings": [
-            "Domeinnaam bijwerken in instellingen voor taalswitcher"
+            "Domeinnaam bijwerken in de instellingen van de taalschakelaar"
+         ],
+         "Disclaimer: MySQL Disk Space": [
+            "Disclaimer: MySQL-schijfruimte"
+         ],
+         "Cleaning and compressing the wp_icl_translate and wp_icl_translation_status tables reduces its data size, but does not automatically free up disk space in MySQL. To reclaim disk space, a table rebuild is required—a risky operation not performed automatically by this tool.": [
+            "Het opschonen en comprimeren van de tabellen wp_icl_translate en wp_icl_translation_status verkleint de gegevensomvang, maar maakt niet automatisch schijfruimte vrij in MySQL. Om schijfruimte terug te winnen is het opnieuw opbouwen van de tabel vereist—een risicovolle bewerking die niet automatisch door dit hulpmiddel wordt uitgevoerd."
+         ],
+         "Optimize translation tables": [
+            "Vertaaltabellen optimaliseren"
+         ],
+         "Previous State Migration": [
+            "Migratie van vorige status"
+         ],
+         "Translation Elements Migration": [
+            "Migratie van vertaalelementen"
+         ],
+         "Processed": [
+            "Verwerkt"
+         ],
+         "Error": [
+            "Fout"
+         ],
+         "Success": [
+            "Succes"
+         ],
+         "Database tables optimization completed successfully.": [
+            "Optimalisatie van databasetabellen succesvol voltooid."
+         ],
+         "Warning": [
+            "Waarschuwing"
+         ],
+         "This process is resource-intensive and may take a significant amount of time. It is recommended to run this optimization during periods of low traffic.": [
+            "Dit proces is middelintensief en kan aanzienlijke tijd in beslag nemen. Het wordt aanbevolen om deze optimalisatie uit te voeren tijdens periodes met weinig verkeer."
+         ],
+         "Database Tables Optimization": [
+            "Optimalisatie van databasetabellen"
          ],
          "Refresh license data to recognise license update": [
-            "Licentiegegevens verversen om licentie-update te herkennen"
+            "Licentiegegevens vernieuwen om licentie-update te herkennen"
          ],
          "WPML License has been refreshed": [
-            "WPML licentie is geüpdatet"
+            "WPML-licentie is vernieuwd"
+         ],
+         "Translate Everything Automatically is not active.": [
+            "Alles automatisch vertalen is niet actief."
+         ],
+         "Retry stuck automatic translations": [
+            "Vastgelopen automatische vertalingen opnieuw proberen"
+         ],
+         "Resends translation jobs that couldn't be processed due to a temporary issue while <b>Translate Everything Automatically</b> was active.": [
+            "Verzendt vertaalopdrachten opnieuw die niet konden worden verwerkt vanwege een tijdelijk probleem terwijl <b>Alles automatisch vertalen</b> actief was."
+         ],
+         "Checking for stuck translation jobs...": [
+            "Controleren op vastgelopen vertaalopdrachten..."
+         ],
+         "Processing... %s stuck translation found so far": [
+            "Verwerken... tot nu toe %s vastgelopen vertaling gevonden",
+            "Verwerken... tot nu toe %s vastgelopen vertalingen gevonden"
+         ],
+         "Something went wrong while checking for stuck translation jobs. Please <a>contact WPML support</a>.": [
+            "Er is iets misgegaan bij het controleren op vastgelopen vertaalopdrachten. Neem contact op met <a>WPML-support</a>."
+         ],
+         "No stuck translation jobs found.": [
+            "Geen vastgelopen vertaalopdrachten gevonden."
+         ],
+         "%s stuck translation job found. WPML will translate it automatically in the background.\nYou can check the progress in the <b>Translation Dashboard</b>.": [
+            "%s vastgelopen vertaalopdracht gevonden. WPML zal deze automatisch vertalen op de achtergrond.\nU kunt de voortgang controleren in het <b>Vertaaldashboard</b>.",
+            "%s vastgelopen vertaalopdrachten gevonden. WPML zal deze automatisch vertalen op de achtergrond.\nU kunt de voortgang ervan controleren in het <b>Vertaaldashboard</b>."
          ]
       }
    }

@@ -12,7 +12,7 @@ class WPML_TM_Log implements WPML_TP_API_Log_Interface {
 
 		$log_item = array_merge( $log_base_data, $data );
 
-		$log_item['timestamp'] = date( 'Y-m-d H:i:s' );
+		$log_item['timestamp'] = current_time( 'mysql' );
 		$log_item['action']    = $action;
 
 		$log = $this->get_log_data();

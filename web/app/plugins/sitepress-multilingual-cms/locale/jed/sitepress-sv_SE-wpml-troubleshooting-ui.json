@@ -3,7 +3,9 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "sv_SE"
          },
          "Preparing...": [
             "Förbereder..."
@@ -15,7 +17,7 @@
             "Det finns inga fler jobb att avbryta"
          ],
          "The jobs cancellation has failed": [
-            "Annullering av jobben har misslyckats"
+            "Det gick inte att avbryta jobben"
          ],
          "Cancel in-progress automatic jobs": [
             "Avbryt pågående automatiska jobb"
@@ -24,16 +26,78 @@
             "Domännamnet har uppdaterats"
          ],
          "Domain name update has been failed": [
-            "Uppdatering av domännamnet har misslyckats"
+            "Uppdateringen av domännamnet misslyckades"
          ],
          "Update domain name in language switcher settings": [
-            "Uppdatera domännamnet i språkväxlarens inställningar"
+            "Uppdatera domännamn i inställningarna för språkväljare"
+         ],
+         "Disclaimer: MySQL Disk Space": [
+            "Ansvarsfriskrivning: MySQL-diskutrymme"
+         ],
+         "Cleaning and compressing the wp_icl_translate and wp_icl_translation_status tables reduces its data size, but does not automatically free up disk space in MySQL. To reclaim disk space, a table rebuild is required—a risky operation not performed automatically by this tool.": [
+            "Rensning och komprimering av tabellerna wp_icl_translate och wp_icl_translation_status minskar deras datastorlek, men frigör inte automatiskt diskutrymme i MySQL. För att återfå diskutrymme krävs en tabellombyggnad – en riskfylld åtgärd som inte utförs automatiskt av detta verktyg."
+         ],
+         "Optimize translation tables": [
+            "Optimera översättningstabeller"
+         ],
+         "Previous State Migration": [
+            "Migrering av tidigare tillstånd"
+         ],
+         "Translation Elements Migration": [
+            "Migrering av översättningselement"
+         ],
+         "Processed": [
+            "Bearbetade"
+         ],
+         "Error": [
+            "Fel"
+         ],
+         "Success": [
+            "Klart"
+         ],
+         "Database tables optimization completed successfully.": [
+            "Optimeringen av databastabellerna slutfördes framgångsrikt."
+         ],
+         "Warning": [
+            "Varning"
+         ],
+         "This process is resource-intensive and may take a significant amount of time. It is recommended to run this optimization during periods of low traffic.": [
+            "Denna process är resurskrävande och kan ta betydande tid. Det rekommenderas att köra denna optimering under perioder med låg trafik."
+         ],
+         "Database Tables Optimization": [
+            "Optimering av databastabeller"
          ],
          "Refresh license data to recognise license update": [
-            "Uppdatera licensdata för att identifiera licensuppdatering"
+            "Uppdatera licensdata för att känna igen licensuppdatering"
          ],
          "WPML License has been refreshed": [
             "WPML-licensen har uppdaterats"
+         ],
+         "Translate Everything Automatically is not active.": [
+            "Översätt allt automatiskt är inte aktivt."
+         ],
+         "Retry stuck automatic translations": [
+            "Försök igen med fastnade automatiska översättningar"
+         ],
+         "Resends translation jobs that couldn't be processed due to a temporary issue while <b>Translate Everything Automatically</b> was active.": [
+            "Skickar om översättningsjobb som inte kunde bearbetas på grund av ett tillfälligt problem medan <b>Översätt allt automatiskt</b> var aktivt."
+         ],
+         "Checking for stuck translation jobs...": [
+            "Letar efter fastnade översättningsjobb..."
+         ],
+         "Processing... %s stuck translation found so far": [
+            "Bearbetar... %s fastnad översättning har hittats hittills",
+            "Bearbetar... %s fastnade översättningar har hittats hittills"
+         ],
+         "Something went wrong while checking for stuck translation jobs. Please <a>contact WPML support</a>.": [
+            "Något gick fel när fastnade översättningsjobb skulle kontrolleras. Vänligen <a>kontakta WPML-supporten</a>."
+         ],
+         "No stuck translation jobs found.": [
+            "Inga fastnade översättningsjobb hittades."
+         ],
+         "%s stuck translation job found. WPML will translate it automatically in the background.\nYou can check the progress in the <b>Translation Dashboard</b>.": [
+            "%s fastnat översättningsjobb hittades. WPML kommer att översätta det automatiskt i bakgrunden.\nDu kan kontrollera framstegen i <b>översättningspanelen</b>.",
+            "%s fastnade översättningsjobb hittades. WPML kommer att översätta dem automatiskt i bakgrunden.\nDu kan kontrollera deras framsteg i <b>översättningspanelen</b>."
          ]
       }
    }

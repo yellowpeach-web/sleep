@@ -2,33 +2,21 @@
 
 class WPML_Post_Custom_Field_Setting_Keys {
 
-	/**
-	 * @return string
-	 */
 	public static function get_state_array_setting_index() {
 		return 'custom_fields_translation';
 	}
 
-	/**
-	 * @return string
-	 */
 	public static function get_unlocked_setting_index() {
 		return defined( 'WPML_POST_META_UNLOCKED_SETTING_INDEX' )
 			? WPML_POST_META_UNLOCKED_SETTING_INDEX
 			: 'custom_fields_unlocked_config';
 	}
 
-	/**
-	 * @return string
-	 */
 	public static function get_setting_prefix() {
 		return 'custom_fields_';
 	}
 
 
-	/**
-	 * @return  string[]
-	 */
 	public static function get_excluded_keys() {
 		return array(
 			'_edit_last',
@@ -43,7 +31,9 @@ class WPML_Post_Custom_Field_Setting_Keys {
 			'_wpml_media_duplicate',
 			'wpml_media_processed',
 			'_wpml_media_featured',
-			'_thumbnail_id'
+			'_thumbnail_id',
+			\WPML\MediaTranslation\PostWithMediaFiles::COPIED_MEDIA_IDS_SETTING,
+			\WPML\MediaTranslation\PostWithMediaFiles::REFERENCED_MEDIA_IDS_SETTING,
 		);
 	}
 }

@@ -2,41 +2,23 @@
 
 use WPML\Media\Classes\WPML_Media_Element_Translation_Factory;
 
-/**
- * Class WPML_Media_Custom_Field_Images_Translation
- * Translate images in posts custom fields translations when a custom field is created or updated
- */
 class WPML_Media_Custom_Field_Images_Translation implements IWPML_Action {
 
-	/**
-	 * @var WPML_Media_Custom_Field_Images_Translation
-	 */
 	private $images_updater;
-	/**
-	 * @var SitePress
-	 */
 	private $sitepress;
-	/**
-	 * @var TranslationManagement
-	 */
 	private $iclTranslationManagement;
+	private $missing_translation_creator;
 
-	/**
-	 * WPML_Media_Custom_Field_Images_Translation constructor.
-	 *
-	 * @param WPML_Media_Translated_Images_Update $images_updater
-	 * @param SitePress                           $sitepress
-	 * @param TranslationManagement               $iclTranslationManagement
-	 */
 	public function __construct(
 		WPML_Media_Translated_Images_Update $images_updater,
 		SitePress $sitepress,
-		TranslationManagement $iclTranslationManagement
-
+		TranslationManagement $iclTranslationManagement,
+		WPML_Media_Missing_Translation_Creator $missing_translation_creator
 	) {
-		$this->images_updater           = $images_updater;
-		$this->sitepress                = $sitepress;
-		$this->iclTranslationManagement = $iclTranslationManagement;
+		$this->images_updater              = $images_updater;
+		$this->sitepress                   = $sitepress;
+		$this->iclTranslationManagement    = $iclTranslationManagement;
+		$this->missing_translation_creator = $missing_translation_creator;
 	}
 
 	public function add_hooks() {
@@ -44,12 +26,6 @@ class WPML_Media_Custom_Field_Images_Translation implements IWPML_Action {
 		add_action( 'added_post_meta', array( $this, 'translate_images' ), PHP_INT_MAX, 4 );
 	}
 
-	/**
-	 * @param int    $meta_id
-	 * @param int    $object_id
-	 * @param string $meta_key
-	 * @param string $meta_value
-	 */
 	public function translate_images( $meta_id, $object_id, $meta_key, $meta_value ) {
 
 		$settings_factory = new WPML_Custom_Field_Setting_Factory( $this->iclTranslationManagement );
@@ -64,6 +40,12 @@ class WPML_Media_Custom_Field_Images_Translation implements IWPML_Action {
 			$post_element    = WPML_Media_Element_Translation_Factory::create( $object_id );
 			$source_language = $post_element->get_source_language_code();
 			if ( null !== $source_language ) {
+				$this->create_missing_media_translations(
+					$meta_value,
+					$post_element->get_language_code(),
+					$source_language
+				);
+
 				$this->filter_meta_value_and_update(
 					$meta_value,
 					$meta_key,
@@ -88,15 +70,10 @@ class WPML_Media_Custom_Field_Images_Translation implements IWPML_Action {
 		}
 	}
 
-	/**
-	 * @param string $meta_value
-	 * @param string $meta_key
-	 * @param string $target_language
-	 * @param string $source_language
-	 * @param int    $post_id
-	 *
-	 * @return string
-	 */
+	private function create_missing_media_translations( $meta_value, $target_language, $source_language ) {
+		$this->missing_translation_creator->create_for_text( $meta_value, $target_language, $source_language );
+	}
+
 	private function filter_meta_value_and_update( $meta_value, $meta_key, $target_language, $source_language, $post_id ) {
 		$meta_value_filtered = $this->images_updater->replace_images_with_translations(
 			$meta_value,

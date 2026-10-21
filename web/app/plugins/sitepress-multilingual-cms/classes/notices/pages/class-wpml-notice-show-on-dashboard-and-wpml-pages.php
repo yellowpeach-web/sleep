@@ -10,7 +10,7 @@ class WPML_Notice_Show_On_Dashboard_And_WPML_Pages {
 			}
 		}
 
-		$current_page = array_key_exists( 'page', $_GET ) ? $_GET['page'] : null;
+		$current_page = \WPML\SuperGlobals\Request::page();
 
 		foreach ( array( 'sitepress-multilingual-cms', 'wpml-translation-management' ) as $page ) {
 			if ( strpos( $current_page, $page ) === 0 ) {

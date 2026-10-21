@@ -9,17 +9,24 @@ class WPML_Initialize_Language_For_Post_Type {
 	}
 
 	public function run( $post_type, $default_language ) {
+		$wpdb = $this->wpdb;
+
 		do {
-			$trid_max = (int) $this->wpdb->get_var( "SELECT MAX(trid) FROM {$this->wpdb->prefix}icl_translations" ) + 1;
-			$sql          = "INSERT IGNORE INTO {$this->wpdb->prefix}icl_translations (`element_type`, `element_id`, `trid`, `language_code`)" . PHP_EOL;
-			$sql          .= "SELECT CONCAT('post_' , p.post_type) as element_type, p.ID as element_id, %d + p.ID as trid, %s as language_code" . PHP_EOL;
-			$sql          .= "FROM {$this->wpdb->posts} p" . PHP_EOL;
-			$sql          .= "LEFT OUTER JOIN {$this->wpdb->prefix}icl_translations t" . PHP_EOL;
-			$sql          .= "ON t.element_id = p.ID AND t.element_type = CONCAT('post_', p.post_type)" . PHP_EOL;
-			$sql          .= "WHERE p.post_type = %s AND t.translation_id IS NULL" . PHP_EOL;
-			$sql          .= "LIMIT 500";
-			$sql_prepared = $this->wpdb->prepare( $sql, array( $trid_max, $default_language, $post_type ) );
-			$results      = $this->wpdb->query( $sql_prepared );
+			$trid_max = (int) $this->wpdb->get_var( "SELECT MAX(trid) FROM {$wpdb->prefix}icl_translations" ) + 1;
+			$results  = $wpdb->query(
+				$wpdb->prepare(
+					"INSERT IGNORE INTO {$wpdb->prefix}icl_translations (`element_type`, `element_id`, `trid`, `language_code`)
+					SELECT CONCAT('post_' , p.post_type) as element_type, p.ID as element_id, %d + p.ID as trid, %s as language_code
+					FROM {$wpdb->posts} p
+					LEFT OUTER JOIN {$wpdb->prefix}icl_translations t
+					ON t.element_id = p.ID AND t.element_type = CONCAT('post_', p.post_type)
+					WHERE p.post_type = %s AND t.translation_id IS NULL
+					LIMIT 500",
+					$trid_max,
+					$default_language,
+					$post_type
+				)
+			);
 		} while ( $results && ! $this->wpdb->last_error );
 
 		do_action( 'wpml_translation_update', [

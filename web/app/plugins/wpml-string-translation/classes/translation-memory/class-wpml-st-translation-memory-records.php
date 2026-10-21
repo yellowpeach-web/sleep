@@ -2,55 +2,25 @@
 
 class WPML_ST_Translation_Memory_Records {
 
-	/** @var wpdb $wpdb */
 	private $wpdb;
 
 	public function __construct( wpdb $wpdb ) {
 		$this->wpdb = $wpdb;
 	}
 
-	/**
-	 * @param array $strings
-	 * @param string $source_lang
-	 * @param string $target_lang
-	 *
-	 * @return array
-	 */
-	public function get( $strings, $source_lang, $target_lang ) {
+	public function get( $strings, $source_lang, $target_lang, $context = null, $gettext_context = null ) {
 		if ( ! $strings ) {
 			return [];
 		}
 
 		$strings = $this->also_match_alternative_line_breaks( $strings );
+		$records = $this->find_records( $strings, $source_lang, $target_lang, $context, $gettext_context );
 
-		$prepared_strings = wpml_prepare_in( $strings );
-
-		$sql = "
-			SELECT s.value as original, coalesce(st.value, st.mo_string) as translation, st.language as language
-			FROM {$this->wpdb->prefix}icl_strings as s
-			JOIN {$this->wpdb->prefix}icl_string_translations as st
-			ON s.id = st.string_id
-			WHERE s.value IN ({$prepared_strings}) AND s.language = '%s'
-				AND (
-				(st.value IS NOT NULL AND st.status IN (" . ICL_STRING_TRANSLATION_COMPLETE . "," . ICL_STRING_TRANSLATION_NEEDS_UPDATE . "))
-				OR (st.value IS NULL AND st.mo_string IS NOT NULL)
-				)";
-
-		$prepare_args = array( $source_lang );
-
-		if ( $target_lang ) {
-			$sql .= " AND st.language = '%s'";
-			$prepare_args[] = $target_lang;
-		} else {
-			$sql .= " AND st.language <> '%s'";
-			$prepare_args[] = $source_lang;
+		if ( empty( $records ) && ( $context || $gettext_context ) ) {
+			$records = $this->find_records( $strings, $source_lang, $target_lang );
 		}
 
-		$records = $this->wpdb->get_results( $this->wpdb->prepare( $sql, $prepare_args ) );
-
-		$records = $this->also_include_matches_for_alternative_line_breaks( $records );
-
-		return $records;
+		return $this->also_include_matches_for_alternative_line_breaks( $records );
 	}
 
 	private function also_match_alternative_line_breaks( $strings ) {
@@ -83,5 +53,45 @@ class WPML_ST_Translation_Memory_Records {
 		}
 
 		return array_merge( $records, $new_records );
+	}
+
+	private function find_records( array $strings, $source_lang, $target_lang, $context = null, $gettext_context = null ) {
+		$wpdb               = $this->wpdb;
+		$has_context        = $context ? 1 : 0;
+		$has_gettext_context = $gettext_context ? 1 : 0;
+		$has_target_language = $target_lang ? 1 : 0;
+
+		return $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT s.value as original, COALESCE(st.value, st.mo_string) as translation, st.language as language
+				FROM {$wpdb->prefix}icl_strings as s
+				JOIN {$wpdb->prefix}icl_string_translations as st ON s.id = st.string_id
+				WHERE s.value IN (" . implode( ', ', array_fill( 0, count( $strings ), '%s' ) ) . ')
+					AND s.language = %s
+					AND (
+						(st.value IS NOT NULL AND st.status IN (%d, %d))
+						OR (st.value IS NULL AND st.mo_string IS NOT NULL)
+					)
+					AND (%d = 0 OR s.context = %s)
+					AND (%d = 0 OR s.gettext_context = %s)
+					AND ((%d = 1 AND st.language = %s) OR (%d = 0 AND st.language <> %s))',
+				array_merge(
+					$strings,
+					array(
+						$source_lang,
+						ICL_STRING_TRANSLATION_COMPLETE,
+						ICL_STRING_TRANSLATION_NEEDS_UPDATE,
+						$has_context,
+						(string) $context,
+						$has_gettext_context,
+						(string) $gettext_context,
+						$has_target_language,
+						(string) $target_lang,
+						$has_target_language,
+						$source_lang,
+					)
+				)
+			)
+		);
 	}
 }

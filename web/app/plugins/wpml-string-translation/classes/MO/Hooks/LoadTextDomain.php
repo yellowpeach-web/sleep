@@ -6,23 +6,24 @@ use WPML\ST\MO\File\Manager;
 use WPML\ST\MO\LoadedMODictionary;
 use WPML_ST_Translations_File_Locale;
 use function WPML\FP\partial;
-
+use WPML\LIB\WP\WordPress;
+use WPML\ST\MO\Hooks\LoadTranslationFile;
 
 class LoadTextDomain implements \IWPML_Action {
 
 	const PRIORITY_OVERRIDE = 10;
 
-	/** @var Manager $file_manager */
 	private $file_manager;
 
-	/** @var WPML_ST_Translations_File_Locale $file_locale */
 	private $file_locale;
 
-	/** @var LoadedMODictionary $loaded_mo_dictionary */
 	private $loaded_mo_dictionary;
 
-	/** @var array $loaded_domains */
 	private $loaded_domains = [];
+
+	private $default_paths = [];
+
+	private $existing_files = [];
 
 	public function __construct(
 		Manager $file_manager,
@@ -42,32 +43,18 @@ class LoadTextDomain implements \IWPML_Action {
 		add_action( 'wpml_language_has_switched', [ $this, 'languageHasSwitched' ] );
 	}
 
-	/**
-	 * When a MO file is loaded, we override the process to load
-	 * the custom MO file before.
-	 *
-	 * That way, the custom MO file will be merged into the subsequent
-	 * native MO files and the custom MO translations will always
-	 * overwrite the native ones.
-	 *
-	 * This gives us the ability to build partial custom MO files
-	 * with only the modified translations.
-	 *
-	 * @param bool   $override Whether to override the .mo file loading. Default false.
-	 * @param string $domain   Text domain. Unique identifier for retrieving translated strings.
-	 * @param string $mofile   Path to the MO file.
-	 *
-	 * @return bool
-	 */
 	public function overrideLoadTextDomain( $override, $domain, $mofile ) {
 		if ( ! $mofile ) {
 			return $override;
 		}
 
+
 		if ( ! $this->isCustomMOLoaded( $domain ) ) {
 			remove_filter( 'override_load_textdomain', [ $this, 'overrideLoadTextDomain' ], 10 );
 			$locale      = $this->file_locale->get( $mofile, $domain );
-			$this->loadCustomMOFile( $domain, $mofile, $locale );
+			$wpml_mofile = $this->file_manager->get( $domain, $locale );
+			$this->fallbackDefaultTranslations( $mofile, $domain, $locale, $wpml_mofile );
+			$this->loadCustomMOFile( $domain, $mofile, $locale, $wpml_mofile );
 			add_filter( 'override_load_textdomain', [ $this, 'overrideLoadTextDomain' ], 10, 3 );
 		}
 
@@ -76,12 +63,6 @@ class LoadTextDomain implements \IWPML_Action {
 		return $override;
 	}
 
-	/**
-	 * @param bool $override
-	 * @param string $domain
-	 *
-	 * @return bool
-	 */
 	public function overrideUnloadTextDomain( $override, $domain ) {
 		$key = array_search( $domain, $this->loaded_domains );
 
@@ -92,47 +73,122 @@ class LoadTextDomain implements \IWPML_Action {
 		return $override;
 	}
 
-	/**
-	 * @param string $domain
-	 *
-	 * @return bool
-	 */
 	private function isCustomMOLoaded( $domain ) {
 		return in_array( $domain, $this->loaded_domains, true );
 	}
 
-	private function loadCustomMOFile( $domain, $mofile, $locale ) {
-		$wpml_mofile = $this->file_manager->get( $domain, $locale );
+	private function loadCustomMOFile( $domain, $mofile, $locale, $wpml_mofile = false ) {
+		if ( false === $wpml_mofile ) {
+			$wpml_mofile = $this->file_manager->get( $domain, $locale );
+		}
 
 		if ( $wpml_mofile && $wpml_mofile !== $mofile ) {
+			$defaultTextdomainPath = $this->getDefaultWordPressTranslationPath( $domain, $locale );
+
 			load_textdomain( $domain, $wpml_mofile );
+
+			if ( $defaultTextdomainPath && ! self::isRequestedFile( $defaultTextdomainPath, $mofile ) ) {
+				$this->loadWordPressJITMoFile( $defaultTextdomainPath, $domain );
+			}
 		}
 
 		$this->setCustomMOLoaded( $domain );
 	}
 
+	private function loadWordPressJITMoFile( $path, $domain ) {
+		load_textdomain( $domain, $path );
+	}
+
+	private function getDefaultWordPressTranslationPath( $domain, $locale ) {
+		$key = $domain . '|' . $locale;
+		if ( ! array_key_exists( $key, $this->default_paths ) ) {
+			$this->default_paths[ $key ] = LoadTranslationFile::getDefaultWordPressTranslationPath( $domain, $locale ) ?: null;
+		}
+
+		return $this->default_paths[ $key ];
+	}
+
+	private function fileExists( $path ) {
+		if ( ! isset( $this->existing_files[ $path ] ) ) {
+			$this->existing_files[ $path ] = file_exists( $path );
+		}
+
+		return $this->existing_files[ $path ];
+	}
+
+	private static function isRequestedFile( $path, $mofile ) {
+		return is_string( $mofile )
+			&& '' !== $mofile
+			&& ( $path === $mofile || $path === LoadTranslationFile::replaceMoExtensionWithPhp( $mofile ) );
+	}
+
 	private function reloadAlreadyLoadedMOFiles() {
 		$this->loaded_mo_dictionary->getEntities()->each( function ( $entity ) {
 			unload_textdomain( $entity->domain );
-			$locale = $this->file_locale->get( $entity->mofile, $entity->domain );
-			$this->loadCustomMOFile( $entity->domain, $entity->mofile, $locale );
+			list( $mofile, $locale ) = $this->getFileInLocale( $entity );
+			$this->loadCustomMOFile( $entity->domain, $mofile, $locale );
 			if ( class_exists( '\WP_Translation_Controller' ) ) {
-				// WP 6.5 - passing locale
-				load_textdomain( $entity->domain, $entity->mofile, $locale );
+				load_textdomain( $entity->domain, $mofile, $locale );
 			} else {
-				load_textdomain($entity->domain, $entity->mofile);
+				load_textdomain( $entity->domain, $mofile );
 			}
 		} );
 	}
 
-	/**
-	 * @param string $domain
-	 */
+	private function getFileInLocale( $entity ) {
+		$fileLocale   = $this->file_locale->get( $entity->mofile, $entity->domain );
+		$loadedLocale = ! empty( $entity->locale ) ? $entity->locale : $fileLocale;
+
+		if ( ! $loadedLocale ) {
+			return [ $entity->mofile, $fileLocale ];
+		}
+
+		$requestLocale = determine_locale();
+
+		if (
+			! $requestLocale
+			|| $loadedLocale === $requestLocale
+			|| str_replace( LoadedMODictionary::LOCALE_PLACEHOLDER, $loadedLocale, $entity->mofile_pattern ) !== $entity->mofile
+		) {
+			return [ $entity->mofile, $fileLocale ];
+		}
+
+		return [
+			str_replace( LoadedMODictionary::LOCALE_PLACEHOLDER, $requestLocale, $entity->mofile_pattern ),
+			$requestLocale,
+		];
+	}
+
 	private function setCustomMOLoaded( $domain ) {
 		$this->loaded_domains[] = $domain;
 	}
 
 	public function languageHasSwitched() {
 		$this->loaded_domains = [];
+	}
+
+	public function fallbackDefaultTranslations( $mofile, $domain, $locale, $wpml_mofile = false ) {
+		if (WordPress::versionCompare('>', '6.6.999') && is_string( $mofile )) {
+			if ( false === $wpml_mofile ) {
+				$wpml_mofile = $this->file_manager->get( $domain, $locale );
+			}
+
+			if ( ! $wpml_mofile ) {
+				return;
+			}
+
+			if ( $wpml_mofile !== $mofile ) {
+				$defaultTextdomainPath = $this->getDefaultWordPressTranslationPath( $domain, $locale );
+				if ( $defaultTextdomainPath && self::isRequestedFile( $defaultTextdomainPath, $mofile ) ) {
+					return;
+				}
+			}
+
+			$replaced_mofile = LoadTranslationFile::replaceMoExtensionWithPhp( $mofile );
+			if ( ! $this->fileExists( $mofile ) && ! $this->fileExists( $replaced_mofile ) ) {
+				$defaultTranslationsFile = $this->getDefaultWordPressTranslationPath( $domain, $locale ) ?: $wpml_mofile;
+				LoadTranslationFile::replaceTranslationFile($domain, $mofile, $defaultTranslationsFile);
+			}
+		}
 	}
 }

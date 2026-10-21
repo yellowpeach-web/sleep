@@ -21,14 +21,14 @@
 		<li>
 			<label for="link_empty_off">
 				<input type="radio" name="link_empty" id="link_empty_off"
-					   class="js-wpml-ls-trigger-save"
+					   class="wpml-radio-native js-wpml-ls-trigger-save"
 					   value="0"{% if not settings.link_empty %} checked="checked"{% endif %}>{{ strings.options.option_skip_link }}
 			</label>
 		</li>
 		<li>
 			<label for="link_empty_on">
 				<input type="radio" name="link_empty" id="link_empty_on"
-					   class="js-wpml-ls-trigger-save"
+					   class="wpml-radio-native js-wpml-ls-trigger-save"
 					   value="1"{% if settings.link_empty %} checked="checked"{% endif %}>{{ strings.options.option_link_home }}
 			</label>
 		</li>
@@ -47,6 +47,7 @@
 		{% include 'save-notification.twig' %}
 
 		<input type="text" size="100" id="copy_parameters" name="copy_parameters"
+			   aria-describedby="{{ strings.tooltips.preserve_url_arguments.id }}"
 			   value="{{ settings.copy_parameters }}"
 			   class="js-wpml-ls-trigger-save js-wpml-ls-trigger-need-save{% if not settings.copy_parameters %} js-wpml-ls-toggle-target hidden{% endif %}">
 	</p>
@@ -64,7 +65,7 @@
 
 		{% include 'save-notification.twig' %}
 
-		<textarea id="additional_css" name="additional_css" rows="4"
+		<textarea id="additional_css" name="additional_css" rows="4" aria-describedby="{{ strings.tooltips.additional_css.id }}"
 				  class="large-text js-wpml-ls-additional-css js-wpml-ls-trigger-save js-wpml-ls-trigger-need-save{% if not settings.additional_css %} js-wpml-ls-toggle-target hidden{% endif %}">
 			{{- settings.additional_css -}}
 		</textarea>
@@ -87,9 +88,9 @@
 		{% include 'save-notification.twig' %}
 
 		<p{% if hide_backwards_compatibility %} class="js-wpml-ls-toggle-target hidden"{% endif %}>
-			<input type="checkbox" id="wpml-ls-backwards-compatibility" name="migrated"
+			<input type="checkbox" id="wpml-ls-backwards-compatibility" name="migrated" aria-describedby="{{ strings.tooltips.backwards_compatibility.id }}"
 				   value="0"{% if settings.migrated == 0 %} checked="checked"{% endif %}
-				   class="js-wpml-ls-migrated js-wpml-ls-trigger-save js-wpml-ls-trigger-need-save">
+				   class="wpml-checkbox-native js-wpml-ls-migrated js-wpml-ls-trigger-save js-wpml-ls-trigger-need-save">
 
 			<label for="wpml-ls-backwards-compatibility">
 				{{ strings.options.label_skip_backwards_compatibility }}

@@ -6,6 +6,7 @@
 	TaxonomyTranslation.views.FilterView = Backbone.View.extend({
 
 		template: WPML_core[ 'templates/taxonomy-translation/filter.html' ],
+		sentenceTemplate: WPML_core[ 'templates/taxonomy-translation/status-trans-select.html' ],
 		model: TaxonomyTranslation.models.Taxonomy,
 		tag: "div",
 		untranslated: false,
@@ -93,17 +94,46 @@
 		},
 		setSelectVisibility: function(){
 			var self = this;
-			var inLangLabel = jQuery('#in-lang-label');
-			var inLangSelect = self.$el.find("#in-lang");
-			if (self.untranslated || TaxonomyTranslation.mainView.mode === 'sync') {
+			var showLanguage = self.untranslated || TaxonomyTranslation.mainView.mode === 'sync';
+			if (TaxonomyTranslation.mainView.mode !== 'sync') {
+				self.renderSentence(showLanguage);
+			}
+			if (showLanguage) {
 				var lang = self.selectedLang();
 				self.lang = lang != undefined && lang != 'all' ? lang : 'all';
-				inLangSelect.show();
-				inLangLabel.show();
 			} else {
 				self.lang = 'all';
-				inLangSelect.hide();
-				inLangLabel.hide();
+			}
+
+			return self;
+		},
+		/**
+		 * The filter reads "Show [status]" or "Show [status] in [language]"
+		 * (wpmldev-8462). Each is one translated sentence with the dropdowns
+		 * where the translation puts them, so switching between them renders
+		 * the sentence again, keeping the chosen values and the focus.
+		 */
+		renderSentence: function(showLanguage){
+			var self = this;
+			var sentence = self.$el.find(".wpml-tt-filter-sentence");
+			if (!sentence.length || String(sentence.data("show-language")) === (showLanguage ? "1" : "0")) {
+				return self;
+			}
+			var inLangSelect = self.$el.find("#in-lang");
+			if (inLangSelect.length) {
+				self.chosenLang = inLangSelect.val();
+			}
+			var focusedId = document.activeElement && sentence[0].contains(document.activeElement) ? document.activeElement.id : "";
+			var currentTaxonomy = TaxonomyTranslation.data.taxonomies[self.model.get("taxonomy")];
+			sentence.replaceWith(self.sentenceTemplate({
+				taxonomy: currentTaxonomy,
+				langs: TaxonomyTranslation.data.activeLanguages,
+				showLanguage: showLanguage,
+				untranslated: self.untranslated,
+				language: self.chosenLang || "all"
+			}));
+			if (focusedId) {
+				self.$el.find("#" + focusedId).trigger("focus");
 			}
 
 			return self;

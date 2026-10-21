@@ -16,10 +16,8 @@ class ServicesRetriever {
 	public static function get( \WPML_TP_API_Services $servicesAPI, $getUserCountry, $mapService ) {
 		$userCountry = $getUserCountry( isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : null );
 
-		// $buildSection :: $services -> $header -> $showPopularity -> string
 		$buildSection = self::buildSection( $mapService );
 
-		// $otherSection :: $services -> $header -> string
 		$otherSection = $buildSection( Fns::__, Fns::__, false, true );
 
 		$buildPartnerServicesSections = self::buildPartnerServicesSections( $buildSection, $userCountry );
@@ -28,52 +26,42 @@ class ServicesRetriever {
 
 		$services[] = $otherSection(
 			$servicesAPI->get_translation_services( false ),
-			__( 'Other Translation Services', 'wpml-translation-management' )
+			__( 'Other Translation Services', 'sitepress' )
 		);
 
 		$services[] = $otherSection(
 			$servicesAPI->get_translation_management_systems(),
-			__( 'Translation Management System', 'wpml-translation-management' )
+			__( 'Translation Management System', 'sitepress' )
 		);
 
 		return $services;
 	}
 
-	// buildPartnerServicesSections :: \WPML_TP_Services[] -> string[]
 	private static function buildPartnerServicesSections( $buildSection, $userCountry ) {
 		$headers = [
-			'regular'        => __( 'Partner Translation Services', 'wpml-translation-management' ),
-			'inCountry'      => __(
-				sprintf(
-					'Partner Translation Services in %s',
-					isset( $userCountry['name'] ) ? $userCountry['name'] : ''
-				),
-				'wpml-translation-management'
+			'regular'        => __( 'Partner Translation Services', 'sitepress' ),
+			'inCountry'      => sprintf(
+				/* translators: Heading above the list of translation services near the user. %s: the name of the country. */
+				__( 'Partner Translation Services in %s', 'sitepress' ),
+				isset( $userCountry['name'] ) ? $userCountry['name'] : ''
 			),
 			'otherCountries' => __(
 				'Other Partner Translation Services from Around the World',
-				'wpml-translation-management'
+				'sitepress'
 			),
 		];
 
-		// $partnerSection :: $services -> $header -> string
 		$partnerSection = $buildSection( Fns::__, Fns::__, true, Fns::__ );
 
-		// $regularPartnerSection :: $services -> string
 		$regularPartnerSection = $partnerSection( Fns::__, $headers['regular'], true );
 
-		// $partnersInCountry  :: $services -> string
 		$partnersInCountry = $partnerSection( Fns::__, $headers['inCountry'], false );
 
-		// $partnersOther :: $services -> string
 		$partnersOther = $partnerSection( Fns::__, $headers['otherCountries'], true );
 
-		// $getServicesFromCountry :: [$servicesFromCountry, $otherServices] -> $servicesFromCountry
 		$inUserCountry = Lst::nth( 0 );
-		// $getServicesFromOtherCountries :: [$servicesFromCountry, $otherServices] -> $otherServices
 		$inOtherCountries = Lst::nth( 1 );
 
-		// $splitSections :: [$servicesFromCountry, $otherServices] -> [string, string]
 		$splitSections = Fns::converge(
 			Lst::make(),
 			[
@@ -82,7 +70,6 @@ class ServicesRetriever {
 			]
 		);
 
-		// $hasUserCountry :: [$servicesFromCountry, $otherServices] -> bool
 		$hasUserCountry = pipe( $inUserCountry, Logic::isEmpty(), Logic::not() );
 
 		return pipe(
@@ -95,11 +82,6 @@ class ServicesRetriever {
 		);
 	}
 
-	/**
-	 * @param  callable $mapService
-	 *
-	 * @return callable
-	 */
 	private static function buildSection( $mapService ) {
 		return curryN(
 			4,
@@ -114,7 +96,6 @@ class ServicesRetriever {
 		);
 	}
 
-	// belongToUserCountry :: \WPML_TP_Service -> bool
 	private static function belongToUserCountry( $userCountry ) {
 		return pipe(
 			invoke( 'get_countries' ),

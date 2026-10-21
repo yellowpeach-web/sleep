@@ -1,15 +1,7 @@
 <?php
 
-/**
- * Class WPML_Media_File_Factory
- */
 class WPML_Media_File_Factory {
 
-	/**
-	 * @param $attachment_id
-	 *
-	 * @return WPML_Media_File
-	 */
 	public function create( $attachment_id ) {
 		global $wpdb;
 

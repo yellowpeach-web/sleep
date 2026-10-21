@@ -3,7 +3,6 @@
 namespace WPML\TM\Upgrade\Commands;
 
 class ResetTranslatorOfAutomaticJobs implements \IWPML_Upgrade_Command {
-	/** @var bool $result */
 	private $result = false;
 
 	public function run_admin() {
@@ -16,40 +15,41 @@ class ResetTranslatorOfAutomaticJobs implements \IWPML_Upgrade_Command {
 		);
 
 		if ( ! $automatic_column_exists ) {
-			// No need to reset translator of automatic jobs
-			// as this site never used automatic translation.
-			// Return true to mark this upgrade as done.
 			return true;
 		}
 
-		$subquery = "
-		SELECT job_id, rid
-		FROM {$wpdb->prefix}icl_translate_job
-		WHERE job_id IN (
-			SELECT MAX(job_id)
-	        FROM {$wpdb->prefix}icl_translate_job					
-	        GROUP BY rid
-		) AND automatic = 1
-		";
 
-		$rowsToUpdate = $wpdb->get_results( $subquery );
+		$rowsToUpdate = $wpdb->get_results( "
+		SELECT jobs.job_id, jobs.rid
+		FROM {$wpdb->prefix}icl_translate_job jobs
+		INNER JOIN (
+			SELECT rid, MAX(job_id) AS job_id
+			FROM {$wpdb->prefix}icl_translate_job
+			GROUP BY rid
+		) latest_job ON latest_job.job_id = jobs.job_id
+		WHERE jobs.automatic = 1
+		" );
 
 		if ( count( $rowsToUpdate ) ) {
-			$rids = \wpml_prepare_in( array_column( $rowsToUpdate, 'rid' ), '%d' );
-			$sql  = "
-				UPDATE {$wpdb->prefix}icl_translation_status translation_status
-				SET translation_status.translator_id = 0
-				WHERE translation_status.rid IN ( $rids )
-			";
-			$wpdb->query( $sql );
+			$rids = array_map( 'intval', array_column( $rowsToUpdate, 'rid' ) );
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->prefix}icl_translation_status translation_status
+					SET translation_status.translator_id = 0
+					WHERE translation_status.rid IN (" . implode( ', ', array_fill( 0, count( $rids ), '%d' ) ) . ')',
+					$rids
+				)
+			);
 
-			$jobIds = \wpml_prepare_in( array_column( $rowsToUpdate, 'job_id' ), '%d' );
-			$sql    = "
-				UPDATE {$wpdb->prefix}icl_translate_job
-				SET translator_id = 0
-				WHERE job_id IN ( $jobIds ) 			       		
-			";
-			$wpdb->query( $sql );
+			$jobIds = array_map( 'intval', array_column( $rowsToUpdate, 'job_id' ) );
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->prefix}icl_translate_job
+					SET translator_id = 0
+					WHERE job_id IN (" . implode( ', ', array_fill( 0, count( $jobIds ), '%d' ) ) . ')',
+					$jobIds
+				)
+			);
 		}
 
 		$this->result = true;
@@ -57,27 +57,14 @@ class ResetTranslatorOfAutomaticJobs implements \IWPML_Upgrade_Command {
 		return $this->result;
 	}
 
-	/**
-	 * Unused.
-	 *
-	 * @return null
-	 */
 	public function run_ajax() {
 		return null;
 	}
 
-	/**
-	 * Unused.
-	 *
-	 * @return null
-	 */
 	public function run_frontend() {
 		return null;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function get_results() {
 		return $this->result;
 	}

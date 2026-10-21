@@ -7,28 +7,17 @@ use WPML\ST\TranslateWpmlString;
 
 class StringsRetrieve {
 
-	// We need to store the strings by key that is a combination of original and gettext context
-	// The join needs to be something that is unlikely to be in either so we can split later.
 	const KEY_JOIN = '::JOIN::';
 
-	/** @var \WPML\ST\DB\Mappers\StringsRetrieve */
+	const PLURAL_FORM_PATTERN = '/^(.+) \[plural ([0-9]+)\]$/';
+
 	private $string_retrieve;
 
-	/**
-	 * @param \WPML\ST\DB\Mappers\StringsRetrieve $string_retrieve
-	 */
 	public function __construct( \WPML\ST\DB\Mappers\StringsRetrieve $string_retrieve ) {
 		$this->string_retrieve = $string_retrieve;
 	}
 
 
-	/**
-	 * @param string $domain
-	 * @param string $language
-	 * @param bool   $modified_mo_only
-	 *
-	 * @return StringEntity[]
-	 */
 	public function get( $domain, $language, $modified_mo_only ) {
 		return $this->loadFromDb( $language, $domain, $modified_mo_only )
 					->filter(
@@ -46,19 +35,23 @@ class StringsRetrieve {
 							return $this->buildStringEntity( $strings, $key );
 						}
 					)
+					->filter()
 					->values()
 					->toArray();
 	}
 
-	/**
-	 * @param string $language
-	 * @param string $domain
-	 * @param bool   $modified_mo_only
-	 *
-	 * @return Collection
-	 */
 	private function loadFromDb( $language, $domain, $modified_mo_only = false ) {
-		$result = \wpml_collect( $this->string_retrieve->get( $language, $domain, $modified_mo_only ) );
+		$rows = $this->string_retrieve->get( $language, $domain, $modified_mo_only );
+
+		if ( $modified_mo_only && $rows ) {
+			$rows = $this->addOtherFormsOfChangedPluralStrings( $rows, $language, $domain );
+		}
+
+		if ( 'default' === strtolower( (string) $domain ) ) {
+			$rows = DefaultDomainResolver::resolve( $rows );
+		}
+
+		$result = \wpml_collect( $rows );
 
 		return $result->map(
 			function ( $row ) {
@@ -67,11 +60,79 @@ class StringsRetrieve {
 		);
 	}
 
-	/**
-	 * @param array $row_data
-	 *
-	 * @return array
-	 */
+	private function addOtherFormsOfChangedPluralStrings( array $rows, $language, $domain ) {
+		$pluralRows = $this->string_retrieve->getPluralFormRows( $language, $domain );
+		if ( ! $pluralRows ) {
+			return $rows;
+		}
+
+		$pluralRowsByGroup = [];
+		foreach ( $pluralRows as $row ) {
+			$group = $this->getFormGroup( $row );
+			if ( null !== $group && null !== $group['form'] ) {
+				$pluralRowsByGroup[ $group['key'] ][] = $row;
+			}
+		}
+
+		$present = [];
+		$changed = [];
+		foreach ( $rows as $row ) {
+			$present[ self::rowKey( $row ) ] = true;
+			$group                           = $this->getFormGroup( $row );
+			if ( null !== $group && isset( $pluralRowsByGroup[ $group['key'] ] ) ) {
+				$changed[ $group['key'] ] = $group;
+			}
+		}
+
+		if ( ! $changed ) {
+			return $rows;
+		}
+
+		$singulars = [];
+		foreach ( $changed as $key => $group ) {
+			foreach ( $pluralRowsByGroup[ $key ] as $row ) {
+				if ( ! isset( $present[ self::rowKey( $row ) ] ) ) {
+					$rows[]                          = $row;
+					$present[ self::rowKey( $row ) ] = true;
+				}
+			}
+			$singulars[] = $group['singular'];
+		}
+
+		foreach ( $this->string_retrieve->getRowsByOriginals( $language, $domain, $singulars ) as $row ) {
+			$group = $this->getFormGroup( $row );
+			if ( null !== $group && null === $group['form'] && isset( $changed[ $group['key'] ] ) && ! isset( $present[ self::rowKey( $row ) ] ) ) {
+				$rows[]                          = $row;
+				$present[ self::rowKey( $row ) ] = true;
+			}
+		}
+
+		return $rows;
+	}
+
+	private function getFormGroup( array $row ) {
+		if ( TranslateWpmlString::canTranslateWithMO( $row['original'], $row['name'] ) ) {
+			return null;
+		}
+
+		$singular = (string) $row['original'];
+		$form     = null;
+		if ( preg_match( self::PLURAL_FORM_PATTERN, $singular, $matches ) ) {
+			$singular = $matches[1];
+			$form     = (int) $matches[2];
+		}
+
+		return [
+			'key'      => $singular . self::KEY_JOIN . (string) $row['gettext_context'],
+			'singular' => $singular,
+			'form'     => $form,
+		];
+	}
+
+	private static function rowKey( array $row ) {
+		return ( isset( $row['source_context'] ) ? $row['source_context'] : '' ) . self::KEY_JOIN . $row['id'];
+	}
+
 	private function parseResult( array $row_data ) {
 		return [
 			'id'          => $row_data['id'],
@@ -82,16 +143,10 @@ class StringsRetrieve {
 		];
 	}
 
-	/**
-	 * @param array $row_data
-	 *
-	 * @return string|null
-	 */
 	public static function parseTranslation( array $row_data ) {
 		$value = null;
 
-		$has_translation = ! empty( $row_data['translated'] ) && in_array( $row_data['status'], [ ICL_TM_COMPLETE, ICL_TM_NEEDS_UPDATE ] );
-		if ( $has_translation ) {
+		if ( self::hasTranslatedValue( $row_data ) ) {
 			$value = $row_data['translated'];
 		} elseif ( ! empty( $row_data['mo_string'] ) ) {
 			$value = $row_data['mo_string'];
@@ -100,16 +155,18 @@ class StringsRetrieve {
 		return $value;
 	}
 
-	/**
-	 * @param array $string
-	 *
-	 * @return array
-	 */
+	public static function hasTranslatedValue( array $row_data ) {
+		if ( empty( $row_data['translated'] ) ) {
+			return false;
+		}
+
+		return in_array( $row_data['status'], [ ICL_TM_COMPLETE, ICL_TM_NEEDS_UPDATE ] );
+	}
+
 	private function groupPluralFormsOfSameString( array $string ) {
 		$groupKey = $this->getPluralGroupKey( $string );
-		$pattern  = '/^(.+) \[plural ([0-9]+)\]$/';
 
-		if ( preg_match( $pattern, $string['original'], $matches ) ) {
+		if ( preg_match( self::PLURAL_FORM_PATTERN, $string['original'], $matches ) ) {
 			$string['original'] = $matches[1];
 			$string['index']    = $matches[2];
 		} else {
@@ -121,15 +178,6 @@ class StringsRetrieve {
 		];
 	}
 
-	/**
-	 * Inside a domain, we can have several occurrences of strings
-	 * with the same original, but with different names.
-	 * In this situation, we should not try to group plurals.
-	 *
-	 * @param array $string
-	 *
-	 * @return mixed|string
-	 */
 	private function getPluralGroupKey( array $string ) {
 		$cannotBelongToPluralGroup = TranslateWpmlString::canTranslateWithMO( $string['original'], $string['name'] );
 
@@ -140,17 +188,29 @@ class StringsRetrieve {
 		return '';
 	}
 
-	/**
-	 * @param Collection $strings
-	 * @param string     $key
-	 *
-	 * @return StringEntity
-	 */
 	private function buildStringEntity( Collection $strings, $key ) {
-		$translations               = $strings->sortBy( 'index' )->pluck( 'translation' )->toArray();
+		$forms = [];
+		$name  = null;
+		foreach ( $strings as $string ) {
+			$form = (int) $string['index'];
+			if ( ! array_key_exists( $form, $forms ) ) {
+				$forms[ $form ] = $string['translation'];
+				if ( 0 === $form ) {
+					$name = $string['name'];
+				}
+			}
+		}
+		ksort( $forms );
+
+		if ( ! array_key_exists( 0, $forms ) ) {
+			return null;
+		}
+
 		list( $original, $context ) = explode( self::KEY_JOIN, $key );
-		$stringEntity               = new StringEntity( $original, $translations, $context );
-		$stringEntity->set_name( $strings->first()['name'] );
+		$isPlural                   = count( $forms ) > 1 && array_keys( $forms ) === range( 0, count( $forms ) - 1 );
+		$translations               = $isPlural ? array_values( $forms ) : [ $forms[0] ];
+		$stringEntity               = new StringEntity( $original, $translations, $context, $isPlural ? $original : null );
+		$stringEntity->set_name( $name );
 
 		return $stringEntity;
 	}

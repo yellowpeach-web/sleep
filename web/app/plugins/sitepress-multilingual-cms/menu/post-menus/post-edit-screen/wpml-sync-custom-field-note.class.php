@@ -2,12 +2,6 @@
 
 class WPML_Sync_Custom_Field_Note extends WPML_SP_User {
 
-	/**
-	 * Prints and admins notice if custom fields where copied to a new post.
-	 *
-	 * @param string $source_lang
-	 * @param int[]  $translations
-	 */
 	public function print_sync_copy_custom_field_note( $source_lang, $translations ) {
 		$copied_cf = $this->get_copied_custom_fields( $source_lang, $translations );
 		if ( ! empty( $copied_cf ) ) {
@@ -17,9 +11,10 @@ class WPML_Sync_Custom_Field_Note extends WPML_SP_User {
 				$ccf_note = '<i class="otgs-ico-warning"></i> ';
 				$ccf_note .= wp_nonce_field( 'save_user_preferences_nonce', '_icl_nonce_sup', false, false );
 				$ccf_note .= sprintf(
-					esc_html__( 'WPML will copy %s from %s when you save this post.', 'sitepress' ),
-					'<i><strong>' . join( '</strong>, <strong>', $copied_cf ) . '</strong></i>',
-					$lang_details['display_name']
+					/* translators: Note on the post editing screen about fields WPML fills from the original. %1$s: the names of those fields, in bold and separated by commas, %2$s: the name of the original language. */
+					esc_html__( 'WPML will copy %1$s from %2$s when you save this post.', 'sitepress' ),
+					'<i><strong>' . join( '</strong>, <strong>', array_map( 'esc_html', $copied_cf ) ) . '</strong></i>',
+					esc_html( $lang_details['display_name'] )
 				);
 				$ccf_note .= '<a class="icl_user_notice_hide notice-dismiss" href="#hide_custom_fields_copy"><span class="screen-reader-text">'. esc_html__( 'Never show this', 'sitepress' ) . '</span></a>';
 				$this->sitepress->admin_notices( $ccf_note, 'notice notice-info otgs-notice otgs-is-dismissible' );
@@ -27,12 +22,6 @@ class WPML_Sync_Custom_Field_Note extends WPML_SP_User {
 		}
 	}
 
-	/**
-	 * @param string $source_lang
-	 * @param array  $translations
-	 *
-	 * @return array
-	 */
 	private function get_copied_custom_fields( $source_lang, $translations ) {
 		$tm_settings               = $this->sitepress->get_setting( 'translation-management', array() );
 		$custom_fields_translation = ! empty( $tm_settings['custom_fields_translation'] )

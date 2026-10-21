@@ -1,77 +1,53 @@
 <?php
 
 class WPML_Rewrite_Rules_Filter {
-	/**
-	 * @var array
-	 */
-	private $active_languages;
 
-	/**
-	 * @var WPML_URL_Filters
-	 */
-	private $wpml_url_filters;
+	private $active_url_codes;
 
-	/**
-	 * @param array            $active_languages
-	 * @param WPML_URL_Filters $wpml_url_filters
-	 */
-	public function __construct( $active_languages, $wpml_url_filters = null ) {
-		$this->active_languages = $active_languages;
+	private $filtered_root;
 
-		if ( ! $wpml_url_filters ) {
-			global $wpml_url_filters;
-		}
-		$this->wpml_url_filters = $wpml_url_filters;
+	private $real_root;
+
+	public function __construct( array $active_url_codes, $filtered_home_url, $real_home_url ) {
+		$this->active_url_codes = $active_url_codes;
+		$this->filtered_root    = self::root_of( $filtered_home_url );
+		$this->real_root        = self::root_of( $real_home_url );
 	}
 
+	public function restore_home_root( $rules ) {
+		if ( ! $this->is_language_shaped() ) {
+			return $rules;
+		}
 
-	/**
-	 * @param string $htaccess_string Content of the .htaccess file
-	 *
-	 * @return string .htaccess file contents with adjusted RewriteBase
-	 */
-	public function rid_of_language_param( $htaccess_string ) {
-		if ( $this->wpml_url_filters->frontend_uses_root() || $this->is_permalink_page() || $this->is_shop_page() ) {
-			foreach ( $this->active_languages as $lang_code ) {
-				foreach ( array( '', 'index.php' ) as $base ) {
-					$htaccess_string = str_replace(
-						'/' . $lang_code . '/' . $base,
-						'/' . $base,
-						$htaccess_string
-					);
-				}
+		$filtered = preg_quote( $this->filtered_root, '/' );
+		$real     = addcslashes( $this->real_root, '\\$' );
+
+		$result = preg_replace(
+			[
+				'/^(RewriteBase\h+)' . $filtered . '(?=\h*\r?$)/m',
+				'/^(RewriteRule\h+\S+\h+)' . $filtered . '/m',
+			],
+			[ '${1}' . $real, '${1}' . $real ],
+			$rules
+		);
+
+		return null === $result ? $rules : $result;
+	}
+
+	private static function root_of( $url ) {
+		$path = trim( (string) wp_parse_url( (string) $url, PHP_URL_PATH ), '/' );
+
+		return '' === $path ? '/' : '/' . $path . '/';
+	}
+
+	private function is_language_shaped() {
+		foreach ( $this->active_url_codes as $code ) {
+			$code = (string) $code;
+			if ( '' !== $code && $this->filtered_root === $this->real_root . $code . '/' ) {
+				return true;
 			}
 		}
 
-		return $htaccess_string;
-	}
-
-	/**
-	 * Check if it is permalink page in admin.
-	 *
-	 * @return bool
-	 */
-	private function is_permalink_page() {
-		return $this->is_admin_screen( 'options-permalink' );
-	}
-
-	/**
-	 * Check if it is WooCommerce shop page in admin.
-	 *
-	 * @return bool
-	 */
-	private function is_shop_page() {
-		return $this->is_admin_screen( 'page' ) && get_option( 'woocommerce_shop_page_id' ) === intval( $_GET['post'] );
-	}
-
-	/**
-	 * Check if it as a certain screen on admin page.
-	 *
-	 * @param string $screen_id
-	 *
-	 * @return bool
-	 */
-	private function is_admin_screen( $screen_id ) {
-		return is_admin() && function_exists( 'get_current_screen' ) && get_current_screen() && get_current_screen()->id === $screen_id;
+		return false;
 	}
 }

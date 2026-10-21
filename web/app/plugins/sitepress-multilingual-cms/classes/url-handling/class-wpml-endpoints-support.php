@@ -4,18 +4,10 @@ class WPML_Endpoints_Support {
 
 	const STRING_CONTEXT = 'WP Endpoints';
 
-	/**
-	 * @var WPML_Post_Translation
-	 */
 	private $post_translations;
-	/**
-	 * @var string
-	 */
 	private $current_language;
-	/**
-	 * @var string
-	 */
 	private $default_language;
+	private $rewrite_rules_memo;
 
 	public function __construct( WPML_Post_Translation $post_translations, $current_language, $default_language ) {
 		$this->post_translations = $post_translations;
@@ -29,7 +21,7 @@ class WPML_Endpoints_Support {
 		add_filter( 'option_rewrite_rules', array(
 			$this,
 			'translate_endpoints_in_rewrite_rules'
-		), 0, 1 ); // high priority
+		), 0, 1 );
 		add_filter( 'page_link', array( $this, 'endpoint_permalink_filter' ), 10, 2 );
 		add_filter( 'wpml_ls_language_url', array( $this, 'add_endpoint_to_current_ls_language_url' ), 10, 2 );
 		add_filter( 'wpml_get_endpoint_translation', array( $this, 'get_endpoint_translation' ), 10, 3 );
@@ -58,13 +50,6 @@ class WPML_Endpoints_Support {
 		do_action( 'wpml_after_add_endpoints_translations', $this->current_language );
 	}
 
-	/**
-	 * @param string $key
-	 * @param string $endpoint
-	 * @param null|string $language
-	 *
-	 * @return string
-	 */
 	public function get_endpoint_translation( $key, $endpoint, $language = null ) {
 
 		$this->register_endpoint_string( $key, $endpoint );
@@ -78,10 +63,6 @@ class WPML_Endpoints_Support {
 		}
 	}
 
-	/**
-	 * @param string $key
-	 * @param string $endpoint
-	 */
 	public function register_endpoint_string( $key, $endpoint ) {
 
 		if ( $key === $endpoint ) {
@@ -92,11 +73,6 @@ class WPML_Endpoints_Support {
 		}
 	}
 
-	/**
-	 * @param string $endpoint
-	 *
-	 * @return bool
-	 */
 	private function is_registered( $endpoint ) {
 		global $wpdb;
 
@@ -115,12 +91,21 @@ class WPML_Endpoints_Support {
 		return in_array( $endpoint, $endpoints, true );
 	}
 
-	/**
-	 * @param array $value
-	 *
-	 * @return array
-	 */
 	public function translate_endpoints_in_rewrite_rules( $value ) {
+		if ( ! $this->rewrite_rules_memo ) {
+			$this->rewrite_rules_memo = \WPML\Utilities\RequestMemo::forRewriteRules();
+		}
+
+		return $this->rewrite_rules_memo->rewriteRules(
+			$value,
+			function ( $value ) {
+				return $this->build_translated_endpoints_in_rewrite_rules( $value );
+			},
+			md5( serialize( $this->get_registered_endpoints() ) )
+		);
+	}
+
+	private function build_translated_endpoints_in_rewrite_rules( $value ) {
 
 		if ( ! empty( $value ) ) {
 
@@ -139,7 +124,7 @@ class WPML_Endpoints_Support {
 					$buff_value = array();
 
 					foreach ( $value as $k => $v ) {
-						$k                = preg_replace( '/(\/|^)' . $endpoint_value . '(\/)?(\(\/\(\.\*\)\)\?\/\?\$)/', '$1' . $endpoint_translation . '$2$3', $k );
+						$k                = preg_replace( '/(\/|^)' . preg_quote( $endpoint_value, '/' ) . '(\/)?(\(\/\(\.\*\)\)\?\/\?\$)/', '$1' . $endpoint_translation . '$2$3', $k );
 						$buff_value[ $k ] = $v;
 					}
 					$value = $buff_value;
@@ -150,12 +135,6 @@ class WPML_Endpoints_Support {
 		return $value;
 	}
 
-	/**
-	 * @param string $link
-	 * @param int $pid
-	 *
-	 * @return string
-	 */
 	public function endpoint_permalink_filter( $link, $pid ) {
 		global $post, $wp;
 
@@ -188,7 +167,6 @@ class WPML_Endpoints_Support {
 
 				foreach ( $endpoints as $key => $endpoint ) {
 					if ( isset( $wp->query_vars[ $key ] ) ) {
-
 						list( $link, $endpoint ) = apply_filters( 'wpml_endpoint_permalink_filter', array( $link, $endpoint ), $key );
 
 						$link = $this->get_endpoint_url( $this->get_endpoint_translation( $key, $endpoint, $current_lang ), $wp->query_vars[ $key ], $link, $page_lang );
@@ -197,20 +175,15 @@ class WPML_Endpoints_Support {
 			}
 		}
 
-		return $link;
+		return esc_url_raw( $link );
 	}
 
-	/**
-	 * @param string $endpoint
-	 * @param string $value
-	 * @param string $permalink
-	 * @param bool|string $page_lang
-	 *
-	 * @return string
-	 */
 	public function get_endpoint_url( $endpoint, $value = '', $permalink = '', $page_lang = false ) {
 
 		$value = apply_filters( 'wpml_endpoint_url_value', $value, $page_lang );
+		$value = wp_kses_normalize_entities( $value );
+		$value = str_replace( '&amp;', '&#038;', $value );
+		$value = str_replace( "'", '&#039;', $value );
 
 		if ( get_option( 'permalink_structure' ) ) {
 
@@ -224,15 +197,9 @@ class WPML_Endpoints_Support {
 			$url = add_query_arg( $endpoint, $value, $permalink );
 		}
 
-		return $url;
+		return esc_url_raw( $url );
 	}
 
-	/**
-	 * @param string $url
-	 * @param array $data
-	 *
-	 * @return string
-	 */
 	public function add_endpoint_to_current_ls_language_url( $url, $data ) {
 		global $post;
 
@@ -249,47 +216,23 @@ class WPML_Endpoints_Support {
 			}
 		}
 
-		return apply_filters( 'wpml_current_ls_language_url_endpoint', $url, $post_lang, $data, $current_endpoint );
-
+		$url = apply_filters( 'wpml_current_ls_language_url_endpoint', $url, $post_lang, $data, $current_endpoint );
+		return esc_url_raw( $url );
 	}
 
-	/**
-	 * @return array
-	 */
 	public function get_registered_endpoints() {
 		global $wp_rewrite;
 
 		$endpoints = empty( $wp_rewrite->endpoints ) ? [] : $wp_rewrite->endpoints;
 
-		/**
-		 * @param array $endpoints
-		 *
-		 * @return array
-		 *
-		 * @deprecated since 4.6, use `wpml_registered_endpoints` instead.
-		 */
 		$endpoints = apply_filters(
 			'option_wpml_registered_endpoints',
 			array_filter( wp_list_pluck( $endpoints, 2, 1 ) )
 		);
 
-		/**
-		 * Filter the endpoints that WPML will handle.
-		 *
-		 * @param array $endpoints
-		 *
-		 * @return array
-		 *
-		 * @since 4.6
-		 */
 		return apply_filters( 'wpml_registered_endpoints', $endpoints );
 	}
 
-	/**
-	 * @param string $language
-	 *
-	 * @return array
-	 */
 	public function get_current_endpoint( $language ) {
 		global $wp;
 

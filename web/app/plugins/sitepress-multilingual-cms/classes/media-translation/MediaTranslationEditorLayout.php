@@ -3,10 +3,18 @@
 namespace WPML\MediaTranslation;
 
 use WPML\Media\Option;
+use WPML\MediaTranslation\MediaField;
 
 class MediaTranslationEditorLayout implements \IWPML_Action {
+	
+	private $media_field;
+	
+	public function __construct() {
+		$this->media_field = new MediaField();
+	}
+	
 	public function add_hooks() {
-		if ( Option::getTranslateMediaLibraryTexts() ) {
+		if ( Option::getTranslateMediaLibraryTexts() || Option::shouldHandleMediaAuto() ) {
 			add_filter( 'wpml_tm_job_layout', [ $this, 'group_media_fields' ] );
 			add_filter( 'wpml_tm_adjust_translation_fields', [ $this, 'set_custom_labels' ] );
 		}
@@ -28,7 +36,8 @@ class MediaTranslationEditorLayout implements \IWPML_Action {
 
 			$media_section_field = [
 				'field_type'    => 'tm-section',
-				'title'         => __( 'Media', 'wpml-media' ),
+				/* translators: Heading of the section that groups the media fields (title, caption, description, alt text) in the translation editor. */
+				'title'         => __( 'Media', 'sitepress' ),
 				'fields'        => [],
 				'empty'         => false,
 				'empty_message' => '',
@@ -63,15 +72,20 @@ class MediaTranslationEditorLayout implements \IWPML_Action {
 	}
 
 	private function is_media_field( $field ) {
-		$media_field = [];
-		if ( is_string( $field ) && preg_match( '/^media_([0-9]+)_([a-z_]+)/', $field, $match ) ) {
-			$media_field = [
-				'attachment_id' => (int) $match[1],
-				'label'         => $match[2],
+		$result = $this->media_field->extractAttachmentIdAndMediaFields( $field );
+		
+		if ( $result ) {
+			if ( $result['media_field'] ) {
+				$result['media_field'] = $this->media_field->getFieldId( $result['media_field'] );
+			}
+
+			return [
+				'attachment_id' => $result['attachment_id'],
+				'label'         => $result['media_field'],
 			];
 		}
 
-		return $media_field;
+		return [];
 	}
 
 	public function set_custom_labels( $fields ) {
@@ -90,19 +104,23 @@ class MediaTranslationEditorLayout implements \IWPML_Action {
 
 		switch ( $media_field['label'] ) {
 			case 'title':
-				$label = __( 'Title', 'wpml-media' );
+				/* translators: Column heading in the table of translation jobs, and the label of the title field in the translation editor: the title of the piece of content. */
+				$label = __( 'Title', 'sitepress' );
 				break;
 			case 'caption':
-				$label = __( 'Caption', 'wpml-media' );
+				/* translators: Label of the field holding the words shown under an image, in the translation editor. */
+				$label = __( 'Caption', 'sitepress' );
 				break;
 			case 'description':
-				$label = __( 'Description', 'wpml-media' );
+				/* translators: Column heading and field label for the longer text that describes something. */
+				$label = __( 'Description', 'sitepress' );
 				break;
 			case 'alt_text':
-				$label = __( 'Alt Text', 'wpml-media' );
+				/* translators: Label of the field holding the text that stands in for an image when it cannot be seen, in the translation editor. */
+				$label = __( 'Alt Text', 'sitepress' );
 				break;
 			default:
-				$label = '';
+				$label = $media_field['label'];
 		}
 
 		return $label;

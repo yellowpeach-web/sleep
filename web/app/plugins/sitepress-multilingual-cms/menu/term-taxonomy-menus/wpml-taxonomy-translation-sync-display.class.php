@@ -1,10 +1,12 @@
 <?php
 
+use WPML\Core\Component\PostHog\Application\Service\Event\EventInstanceService;
+
 class WPML_Taxonomy_Translation_Sync_Display {
 
 	public function __construct() {
-		add_action( 'wp_ajax_wpml_tt_sync_hierarchy_preview', array( $this, 'ajax_sync_preview' ) );
-		add_action( 'wp_ajax_wpml_tt_sync_hierarchy_save', array( $this, 'ajax_sync_save' ) );
+		\WPML\Request\Adapter\Ajax::register( 'wpml_tt_sync_hierarchy_preview', \WPML\Request\Policy\Policy::capability( [ 'wpml_manage_taxonomy_translation', 'manage_translations' ], \WPML\Request\Policy\Authenticity::wpmlActionNonce( 'wpml_tt_sync_hierarchy' ) ), array( $this, 'ajax_sync_preview' ) );
+		\WPML\Request\Adapter\Ajax::register( 'wpml_tt_sync_hierarchy_save', \WPML\Request\Policy\Policy::capability( [ 'wpml_manage_taxonomy_translation', 'manage_translations' ], \WPML\Request\Policy\Authenticity::wpmlActionNonce( 'wpml_tt_sync_hierarchy' ) ), array( $this, 'ajax_sync_save' ) );
 	}
 
 	private function get_req_data() {
@@ -40,6 +42,16 @@ class WPML_Taxonomy_Translation_Sync_Display {
 		list( $taxonomy, $ref_lang ) = $this->get_req_data();
 		if ( $taxonomy ) {
 			$sync_helper->sync_element_hierarchy( $taxonomy, $ref_lang );
+
+			$event_props = array(
+				'taxonomy' => $taxonomy,
+				'ref_lang' => $ref_lang,
+			);
+
+			\WPML\PostHog\Event\CaptureEvent::capture(
+				( new EventInstanceService() )->getTaxonomyHierarchySyncCompletedEvent( $event_props )
+			);
+
 			wp_send_json_success( 1 );
 		} else {
 			wp_send_json_error( 'No taxonomy in request!' );

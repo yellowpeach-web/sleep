@@ -2,10 +2,8 @@
 
 class WPML_TM_Post_Target_Lang_Filter extends WPML_TM_Record_User {
 
-	/** @var  WPML_TM_Translation_Status */
 	private $tm_status;
 
-	/** @var  WPML_Post_Translation $post_translations */
 	private $post_translations;
 
 	public function __construct(
@@ -18,23 +16,12 @@ class WPML_TM_Post_Target_Lang_Filter extends WPML_TM_Record_User {
 		$this->post_translations = &$post_translations;
 	}
 
-	/**
-	 * @param string[] $allowed_langs
-	 * @param int      $element_id
-	 * @param string   $element_type_prefix
-	 *
-	 * @return string[]
-	 */
 	public function filter_target_langs(
 		$allowed_langs,
 		$element_id,
 		$element_type_prefix
 	) {
-		if ( TranslationProxy_Basket::anywhere_in_basket( $element_id,
-			$element_type_prefix )
-		) {
-			$allowed_langs = array();
-		} elseif ( $element_type_prefix === 'post' ) {
+		if ( $element_type_prefix === 'post' ) {
 			if ( (bool) ( $this->post_translations->get_element_lang_code( $element_id ) ) === true ) {
 				$allowed_langs = array_fill_keys( $allowed_langs, 1 );
 				$translations  = $this

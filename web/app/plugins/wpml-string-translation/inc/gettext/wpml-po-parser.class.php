@@ -11,10 +11,9 @@ class WPML_PO_Parser {
 			$ids[ ] = $s[ 'string_id' ];
 		}
 		if ( ! empty( $ids ) ) {
-			$sql_prepared = $wpdb->prepare( "SELECT string_id, position_in_page
-	            			 				 FROM {$wpdb->prefix}icl_string_positions
-	            			 				 WHERE kind=%d AND string_id IN(%s)", ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_SOURCE, implode( ',', $ids ));
-			$res = $wpdb->get_results( $sql_prepared );
+			$res = $wpdb->get_results( $wpdb->prepare( "SELECT string_id, position_in_page
+							 FROM {$wpdb->prefix}icl_string_positions
+							 WHERE kind=%d AND string_id IN(%s)", ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_SOURCE, implode( ',', $ids ) ) );
 			foreach ( $res as $row ) {
 				$positions[ $row->string_id ] = $row->position_in_page;
 			}
@@ -30,8 +29,10 @@ class WPML_PO_Parser {
 				$translation = '';
 			}
 			if ( isset( $positions[ $s[ 'string_id' ] ] ) ) {
-				$exp  = @explode( '::', $positions[ $s[ 'string_id' ] ] );
-				$file = @file( $exp[ 0 ] );
+				$exp       = @explode( '::', $positions[ $s[ 'string_id' ] ] );
+				$domain    = isset( $s[ 'context' ] ) ? (string) $s[ 'context' ] : '';
+				$file_path = WPML_ST_Path_Confinement::resolve_source_path_for_domain( $exp[ 0 ], $domain );
+				$file      = false !== $file_path && is_file( $file_path ) ? @file( $file_path ) : null;
 			} else {
 				unset( $file );
 				unset( $exp );
@@ -40,8 +41,8 @@ class WPML_PO_Parser {
 			$po_single = '';
 			if ( isset( $file ) && isset( $exp ) ) {
 				$line_number = (int) $exp[ 1 ];
-				$line_number--; // Make it 0 base
-				$line_number -= 2; // Go back 2 lines
+				$line_number--;
+				$line_number -= 2;
 				if ( $line_number < 0 ) {
 					$line_number = 0;
 				}
@@ -69,14 +70,15 @@ class WPML_PO_Parser {
 
 	public static function get_po_file_header() {
 		$po_title             = 'WPML_EXPORT';
-		$translation_language = 'en';
+		$translation_language = \WPML\StringTranslation\Infrastructure\TranslateEverything\EnglishSourceLanguage::resolveForSite();
 
 		if ( isset( $_GET['context'] ) ) {
-			$po_title .= '_' . filter_var( $_GET['context'], FILTER_SANITIZE_STRING );
+			$sanitizedSuffix = \WPML\API\Sanitize::string( $_GET['context'] );
+			$po_title .= '_' . $sanitizedSuffix;
 		}
 
 		if ( isset( $_GET['translation_language'] ) ) {
-			$translation_language = filter_var( $_GET['translation_language'], FILTER_SANITIZE_STRING );
+			$translation_language = (string) \WPML\API\Sanitize::string( $_GET['translation_language'] );
 		}
 
 		$po = "";

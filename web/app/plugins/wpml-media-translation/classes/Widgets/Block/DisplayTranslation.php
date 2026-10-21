@@ -8,9 +8,6 @@ use function WPML\FP\spreadArgs;
 
 class DisplayTranslation implements \IWPML_Frontend_Action, \IWPML_DIC_Action {
 
-	/**
-	 * @var \WPML_Media_Translated_Images_Update $translatedImageUpdate
-	 */
 	private $translatedImageUpdate;
 
 	public function __construct( \WPML_Media_Translated_Images_Update $translatedImageUpdate ) {

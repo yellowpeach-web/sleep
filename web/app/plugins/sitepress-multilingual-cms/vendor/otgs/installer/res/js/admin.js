@@ -14,8 +14,21 @@ var otgs_wp_installer = {
         jQuery('.otgs_wp_installer_table').on('click', '.enter_site_key_js', otgs_wp_installer.show_site_key_form);
         jQuery('.otgs_wp_installer_table').on('click', '.cancel_site_key_js', otgs_wp_installer.hide_site_key_form);
 
-        jQuery('.otgs_wp_installer_table').on('click', '.remove_site_key_js', otgs_wp_installer.remove_site_key);
-        jQuery('.otgs_wp_installer_table').on('click', '.update_site_key_js', otgs_wp_installer.update_site_key);
+        jQuery(document).on('click', '.remove_site_key_js', otgs_wp_installer.remove_site_key);
+        jQuery(document).on('click', '.update_site_key_js', otgs_wp_installer.update_site_key);
+
+        jQuery(document).on('click', '.js-otgs-unregister-toggle', function () {
+            var $card = jQuery(this).closest('.otgs-installer-refund-card-body');
+            jQuery(this).hide();
+            $card.find('.otgs-installer-refund-confirm').show();
+            return false;
+        });
+        jQuery(document).on('click', '.js-otgs-unregister-cancel', function () {
+            var $card = jQuery(this).closest('.otgs-installer-refund-card-body');
+            $card.find('.otgs-installer-refund-confirm').hide();
+            $card.find('.js-otgs-unregister-toggle').show();
+            return false;
+        });
 
         jQuery('.otgs_wp_installer_table').on('submit', '.otgsi_site_key_form', otgs_wp_installer.save_site_key);
         jQuery('.otgs_wp_installer_table').on('submit', '.otgsi_downloads_form', otgs_wp_installer.download_downloads);
@@ -25,6 +38,7 @@ var otgs_wp_installer = {
 
         otgs_wp_installer.scroll_to_repository();
         otgs_wp_installer.maybe_register();
+        otgs_wp_installer.update_downloads_form();
 
         if (typeof pagenow != 'undefined' && pagenow == 'plugins') {
 
@@ -47,6 +61,7 @@ var otgs_wp_installer = {
         }
 
         jQuery('.installer-table-wrap').on('click', '.js-release-notes', otgs_wp_installer.toggle_release_notes);
+        jQuery('.installer-table-wrap').on('click', '.js-installer-plan-plugins-toggle', otgs_wp_installer.toggle_plan_plugins);
     },
 
     getQueryParameters: function (str) {
@@ -143,7 +158,7 @@ var otgs_wp_installer = {
 
         } else {
 
-            if (confirm(jQuery(this).data('confirmation'))) {
+            if (!jQuery(this).data('confirmation') || confirm(jQuery(this).data('confirmation'))) {
 
                 jQuery('<span class="spinner"></span>').css({
                     visibility: 'visible',
@@ -167,16 +182,23 @@ var otgs_wp_installer = {
     },
 
     update_site_key: function () {
-        var error_wrap = jQuery(this).closest('.otgsi_register_product_wrap').find('.installer-error-box');
+        var update_button = jQuery(this);
+        if (update_button.attr('aria-disabled') === 'true') {
+            return false;
+        }
+
+        update_button.addClass('disabled').attr('aria-disabled', 'true');
+
+        var error_wrap = update_button.closest('.otgsi_register_product_wrap, .otgs-installer-refund-card-body').find('.installer-error-box');
         error_wrap.html('');
 
         var spinner = jQuery('<span class="spinner"></span>');
 
-        spinner.css({visibility: 'visible', float: 'none'}).insertAfter(jQuery(this));
+        spinner.css({visibility: 'visible', float: 'none'}).insertAfter(update_button);
         data = {
             action: 'update_site_key',
-            repository_id: jQuery(this).data('repository'),
-            nonce: jQuery(this).data('nonce')
+            repository_id: update_button.data('repository'),
+            nonce: update_button.data('nonce')
         }
         jQuery.ajax({
             url: ajaxurl,
@@ -187,7 +209,10 @@ var otgs_wp_installer = {
                 var error = '';
                 if (xhr == 'success') {
                     var ret = event.responseJSON;
-                    if (ret.data.error) {
+                    if (ret.data.invalid_site_key) {
+                        location.reload();
+                        return;
+                    } else if (ret.data.error) {
                         error = ret.data.error;
                     } else {
                         otgs_wp_installer.updated_site_key(ret);
@@ -198,6 +223,7 @@ var otgs_wp_installer = {
                 if (error) {
                     error_wrap.html(error).show();
                     spinner.remove();
+                    update_button.removeClass('disabled').attr('aria-disabled', 'false');
                 }
 
             }
@@ -214,11 +240,10 @@ var otgs_wp_installer = {
     update_downloads_form: function () {
 
         var checked = jQuery('.otgsi_downloads_form :checkbox:checked[name="downloads[]"]').length;
-
         if (checked) {
-            jQuery(this).closest('form').find(':submit, :checkbox[name=activate]').removeAttr('disabled');
+            jQuery('.otgsi_downloads_form').closest('form').find(':submit, :checkbox[name=activate]').removeAttr('disabled');
         } else {
-            jQuery(this).closest('form').find(':submit, :checkbox[name=activate]').attr('disabled', 'disabled');
+            jQuery('.otgsi_downloads_form').closest('form').find(':submit, :checkbox[name=activate]').attr('disabled', 'disabled');
         }
 
 
@@ -231,7 +256,9 @@ var otgs_wp_installer = {
             activate_checkbox = jQuery(this).find(":checkbox[name=activate]"),
             downloads_form = jQuery(this),
             idx = 0,
-            checkboxes = [];
+            checkboxes = [],
+            failed = [],
+            activated = 0;
 
         jQuery(this).find(':checkbox:checked[name="downloads[]"]').each(function () {
             if (jQuery(this).attr('disabled')) return;
@@ -243,26 +270,64 @@ var otgs_wp_installer = {
         idx = 0;
 
         if (typeof checkboxes[idx] != 'undefined') {
-            download_and_activate(checkboxes[idx]);
+            otgs_wp_installer.reset_errors();
+            downloads_form.find('div.installer-status-success').hide();
             action_button.attr('disabled', 'disabled');
             activate_checkbox.attr('disabled', 'disabled');
+            download_and_activate(checkboxes[idx]);
+        }
+
+        function next_or_finish() {
+            idx++;
+            if (typeof checkboxes[idx] != 'undefined') {
+                download_and_activate(checkboxes[idx]);
+            } else {
+                finish();
+            }
+        }
+
+        // The batch is over. A failure stays on the page: a reload would redraw the table as if
+        // nothing had happened (wpmldev-8570). A success shows "Operation complete!" and, when a
+        // plugin was activated, reloads so its admin menu appears (wpmldev-2814).
+        function finish() {
+            otgs_wp_installer.hide_download_progress_status(downloads_form);
+            downloads_form.trigger('installer-update-complete');
+
+            if (failed.length) {
+                action_button.removeAttr('disabled');
+                activate_checkbox.removeAttr('disabled');
+                return;
+            }
+
+            downloads_form.find('div.installer-status-success').show();
+
+            if (activated) {
+                location.reload();
+                return;
+            }
+
+            if (downloads_form.find(':checkbox[name="downloads[]"]:not(:disabled)').length) {
+                action_button.removeAttr('disabled');
+                activate_checkbox.removeAttr('disabled');
+            }
         }
 
         function download_and_activate(elem) {
 
             var this_tr = elem.closest('tr');
             var is_update = this_tr.find('.installer-red-text').length;
+            // Status cells exist only in the compact table; Activate & Update rows report through
+            // otgs_wp_installer.mark_row_failed and the version pill instead.
             if (is_update) {
                 var installing = this_tr.find('.installer-status-updating');
                 var installed = this_tr.find('.installer-status-updated');
             } else {
                 var installing = this_tr.find('.installer-status-installing');
                 var installed = this_tr.find('.installer-status-installed');
-
             }
             if (activate) {
                 var activating = this_tr.find('.installer-status-activating');
-                var activated = this_tr.find('.installer-status-activated');
+                var activated_cell = this_tr.find('.installer-status-activated');
             }
 
             if (this_tr.find('.for_spinner_js .spinner').length > 0) {
@@ -271,18 +336,15 @@ var otgs_wp_installer = {
                 var spinner = this_tr.find('.installer-status-downloading');
             }
 
-            otgs_wp_installer.reset_errors();
-            downloads_form.find('div.installer-status-success').hide();
+            this_tr.find('.installer_checkbox.for_spinner_js label').css('display', 'none');
             spinner.css('visibility', 'visible');
-            installing.show();
 
-            var plugin_name = this_tr.find('.installer_plugin_name').html();
+            var plugin_name = otgs_wp_installer.plugin_name_of_row(this_tr);
             if (is_update) {
                 otgs_wp_installer.show_download_progress_status(downloads_form, installer_strings.updating.replace('%s', plugin_name));
             } else {
                 otgs_wp_installer.show_download_progress_status(downloads_form, installer_strings.installing.replace('%s', plugin_name));
             }
-
 
             data = {
                 action: 'installer_download_plugin',
@@ -300,24 +362,17 @@ var otgs_wp_installer = {
                     installing.hide();
 
                     if (!ret.success) {
-                        installed.addClass('installer-status-error');
-                        installed.html(
-                            installed.data('fail') +
-                            '<a class="error-details" href="#" title="' + ret.message + '"></a>'
-                        );
-
-                        if (ret.message) {
-                            installed.closest('.otgs_wp_installer_table')
-                                .find('.installer-error-box')
-                                .html('<p>' + ret.message + '</p>')
-                                .show();
-                        } else {
-                            installed.closest('.otgs_wp_installer_table')
-                                .find('.installer-error-box')
-                                .html('<p>' + downloads_form.find('.installer-revalidate-message').html() + '</p>')
-                                .show();
+                        failed.push(plugin_name);
+                        otgs_wp_installer.mark_row_failed(this_tr, downloads_form, plugin_name, installer_strings.download_failed, ret.message);
+                        elem.removeAttr('disabled'); // the user can tick it again and retry
+                        this_tr.find('.installer_checkbox.for_spinner_js label').css('display', '');
+                        if (installed.length) {
+                            installed.addClass('installer-status-error');
+                            installed.html(
+                                installed.data('fail') +
+                                '<a class="error-details" href="#" title="' + ret.message + '"></a>'
+                            );
                         }
-
                         downloads_form.trigger('installer-update-fail');
                     }
 
@@ -329,7 +384,7 @@ var otgs_wp_installer = {
                         if (ret.non_stable) {
                             updated_version += ' (' + ret.non_stable + ')';
                         }
-                        this_tr.find('.installer_version_installed').html(updated_version);
+                        otgs_wp_installer.installed_version_cell(this_tr).html(updated_version);
                     }
 
                     if (ret.success && activate) {
@@ -346,41 +401,21 @@ var otgs_wp_installer = {
                             data: {action: 'installer_activate_plugin', plugin_id: ret.plugin_id, nonce: ret.nonce},
                             success: function (ret) {
                                 activating.hide();
-                                if (!ret.error) {
-                                    activated.show();
+                                if (ret.error) {
+                                    failed.push(plugin_name);
+                                    otgs_wp_installer.mark_row_failed(this_tr, downloads_form, plugin_name, installer_strings.activation_failed, ret.error);
+                                    downloads_form.trigger('installer-update-fail');
+                                } else {
+                                    activated++;
+                                    activated_cell.show();
                                 }
 
                                 spinner.fadeOut();
-
-                                idx++;
-                                if (typeof checkboxes[idx] != 'undefined') {
-                                    download_and_activate(checkboxes[idx]);
-                                } else {
-                                    otgs_wp_installer.hide_download_progress_status(downloads_form);
-                                    downloads_form.find('div.installer-status-success').show();
-
-                                    var availableToDownloadCount = jQuery(this).find(':checkbox[name="downloads[]"]:not(:disabled)').length;
-                                    if (availableToDownloadCount !== 0) {
-                                        action_button.removeAttr('disabled');
-                                        activate_checkbox.removeAttr('disabled');
-                                    }
-
-                                    downloads_form.trigger('installer-update-complete');
-                                }
+                                next_or_finish();
                             }
                         });
                     } else {
-                        idx++;
-                        if (typeof checkboxes[idx] != 'undefined') {
-                            download_and_activate(checkboxes[idx]);
-                        } else {
-                            otgs_wp_installer.hide_download_progress_status(downloads_form);
-                            downloads_form.find('div.installer-status-success').show();
-                            action_button.removeAttr('disabled');
-
-                            downloads_form.trigger('installer-update-complete');
-
-                        }
+                        next_or_finish();
                     }
                 }
 
@@ -389,6 +424,36 @@ var otgs_wp_installer = {
         };
 
         return false;
+    },
+
+    // Activate & Update rows keep the version in a pill inside a wrapper; the compact table has the bare cell.
+    installed_version_cell: function (row) {
+        var pill = row.find('.installer_version_installed .installed-version');
+        return pill.length ? pill : row.find('.installer_version_installed');
+    },
+
+    plugin_name_of_row: function (row) {
+        var name = row.find('.installer_plugin_name span').first();
+        return name.length ? name.text() : row.find('.installer_plugin_name').html();
+    },
+
+    // A failed download or activation stays visible on the page: the row's "Installed" cell
+    // carries the label and the form's error box carries the reason the server logged.
+    mark_row_failed: function (row, downloads_form, plugin_name, label, message) {
+        var reason = message ? message : downloads_form.find('.installer-revalidate-message').html();
+
+        row.addClass('installer-row-failed');
+        otgs_wp_installer.installed_version_cell(row)
+            .html('<span class="installer-status-error installer-status-failed">' + label + '</span>');
+
+        downloads_form.find('.installer-error-box')
+            .append(
+                '<div class="otgs-reset"><div class="notification notification--error">' +
+                '<i class="otgs-ico otgs-ico-warning otgs-red otgs-text-sm"></i>' +
+                '<p class="otgs-text-xs"><strong>' + plugin_name + '</strong>: ' + reason + '</p>' +
+                '</div></div>'
+            )
+            .show();
     },
 
     show_download_progress_status: function (downloads_form, text) {
@@ -451,15 +516,38 @@ var otgs_wp_installer = {
 
     },
 
+    toggle_plan_plugins: function () {
+        var button = jQuery(this),
+            rows = jQuery('#' + button.attr('aria-controls')),
+            hide = button.attr('aria-expanded') === 'true';
+
+        rows.prop('hidden', hide);
+        button.attr('aria-expanded', hide ? 'false' : 'true').text(button.data(hide ? 'label-show' : 'label-hide'));
+
+        jQuery.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'installer_hide_plan_plugins',
+                nonce: button.data('nonce'),
+                hidden: hide ? 1 : 0
+            }
+        });
+
+        return false;
+    },
+
     toggle_release_notes: function () {
         var handle = jQuery(this);
-        var tr = handle.closest('tr');
-        if (tr.next('.installer-release-notes').is(':visible')) {
+        var plugin_id = handle.data('plugin-id');
+        var release_note_element = jQuery('#' + plugin_id + '_release-notes')
+
+        if (release_note_element.is(':visible')) {
             handle.removeClass('extended');
         } else {
             handle.addClass('extended');
         }
-        tr.next('.installer-release-notes').fadeToggle();
+        release_note_element.fadeToggle();
 
         return false;
     },

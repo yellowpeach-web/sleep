@@ -1,33 +1,26 @@
 <?php
 
-/**
- * Class WPML_Frontend_Cookie_Setting_Ajax
- */
 class WPML_Cookie_Setting_Ajax {
 
 	const NONCE_COOKIE_SETTING = 'wpml-frontend-cookie-setting-nonce';
 	const AJAX_RESPONSE_ID     = 'icl_ajx_response_cookie';
 	const ACTION               = 'wpml_update_cookie_setting';
 
-	/**
-	 * @var WPML_Cookie_Setting
-	 */
 	private $wpml_frontend_cookie_setting;
 
-	/**
-	 * WPML_Frontend_Cookie_Setting_Ajax constructor.
-	 *
-	 * @param WPML_Cookie_Setting $wpml_frontend_cookie_setting
-	 */
 	public function __construct( WPML_Cookie_Setting $wpml_frontend_cookie_setting ) {
 		$this->wpml_frontend_cookie_setting = $wpml_frontend_cookie_setting;
 	}
 
 	public function add_hooks() {
-		add_action( 'wp_ajax_wpml_update_cookie_setting', array( $this, 'update_cookie_setting' ) );
+		\WPML\Request\Adapter\Ajax::register( 'wpml_update_cookie_setting', \WPML\Request\Policy\Policy::capability( 'wpml_manage_languages', \WPML\Request\Policy\Authenticity::actionNonce( 'wpml-frontend-cookie-setting-nonce', 'nonce' ) ), array( $this, 'update_cookie_setting' ) );
 	}
 
 	public function update_cookie_setting() {
+		if ( \WPML\Setup\Initializer::rejectSettingsMutationAjax() ) {
+			return;
+		}
+
 		if ( ! $this->is_valid_request() ) {
 			wp_send_json_error();
 		} else {
@@ -43,9 +36,6 @@ class WPML_Cookie_Setting_Ajax {
 		}
 	}
 
-	/**
-	 * @return bool
-	 */
 	private function is_valid_request() {
 		$valid_request = false;
 

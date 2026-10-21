@@ -1,25 +1,14 @@
 <?php
 
-/**
- * Class WPML_Nav_Menu_Actions
- *
- * @package    wpml-core
- * @subpackage taxonomy-term-translation
- */
 class WPML_Nav_Menu_Actions extends WPML_Full_Translation_API {
 
-	/**
-	 * @param SitePress             $sitepress
-	 * @param wpdb                  $wpdb
-	 * @param WPML_Post_Translation $post_translations
-	 * @param WPML_Term_Translation $term_translations
-	 */
 	public function __construct( &$sitepress, &$wpdb, &$post_translations, &$term_translations ) {
 		parent::__construct( $sitepress, $wpdb, $post_translations, $term_translations );
 		add_action( 'wp_delete_nav_menu', array( $this, 'wp_delete_nav_menu' ) );
 		add_action( 'wp_create_nav_menu', array( $this, 'wp_update_nav_menu' ), 10, 2 );
 		add_action( 'wp_update_nav_menu', array( $this, 'wp_update_nav_menu' ), 10, 2 );
 		add_action( 'wp_update_nav_menu_item', array( $this, 'wp_update_nav_menu_item' ), 10, 3 );
+		add_action( 'set_object_terms', array( $this, 'update_menu_count_while_counting_is_deferred' ), 10, 6 );
 		add_action( 'delete_post', array( $this, 'wp_delete_nav_menu_item' ) );
 		add_filter( 'pre_update_option_theme_mods_' . get_option( 'stylesheet' ), array( $this, 'pre_update_theme_mods_theme' ) );
 		if ( is_admin() ) {
@@ -28,9 +17,11 @@ class WPML_Nav_Menu_Actions extends WPML_Full_Translation_API {
 	}
 
 	public function wp_delete_nav_menu( $id ) {
-		$menu_id_tt = $this->wpdb->get_var(
-			$this->wpdb->prepare(
-				"SELECT term_taxonomy_id FROM {$this->wpdb->term_taxonomy} WHERE term_id=%d AND taxonomy='nav_menu'",
+		$wpdb = $this->wpdb;
+
+		$menu_id_tt = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT term_taxonomy_id FROM {$wpdb->term_taxonomy} WHERE term_id=%d AND taxonomy='nav_menu'",
 				$id
 			)
 		);
@@ -42,24 +33,29 @@ class WPML_Nav_Menu_Actions extends WPML_Full_Translation_API {
 		);
 		do_action( 'wpml_translation_update', array_merge( $update_args, array( 'type' => 'before_delete' ) ) );
 
-		$q          = "DELETE FROM {$this->wpdb->prefix}icl_translations WHERE element_id=%d AND element_type='tax_nav_menu' LIMIT 1";
-		$q_prepared = $this->wpdb->prepare( $q, $menu_id_tt );
-		$this->wpdb->query( $q_prepared );
+		$wpdb->query(
+			$wpdb->prepare( "DELETE FROM {$wpdb->prefix}icl_translations WHERE element_id=%d AND element_type='tax_nav_menu' LIMIT 1", $menu_id_tt )
+		);
 
 		do_action( 'wpml_translation_update', array_merge( $update_args, array( 'type' => 'after_delete' ) ) );
 	}
 
 	function wp_update_nav_menu( $menu_id, $menu_data = null ) {
+		$wpdb = $this->wpdb;
+
 		if ( $menu_data ) {
-			$trid          = $this->get_trid_from_post_data();
 			$language_code = $this->get_save_lang( $menu_id );
-			$menu_id_tt    = $this->wpdb->get_var(
-				$this->wpdb->prepare(
-					"SELECT term_taxonomy_id FROM {$this->wpdb->term_taxonomy} WHERE term_id=%d AND taxonomy='nav_menu' LIMIT 1",
+			$menu_id_tt    = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT term_taxonomy_id FROM {$wpdb->term_taxonomy} WHERE term_id=%d AND taxonomy='nav_menu' LIMIT 1",
 					$menu_id
 				)
 			);
 			$this->term_translations->reload();
+			$language_box = $this->get_posted_language_box();
+			$trid         = null !== $language_box
+				? $this->get_trid_from_language_box( $language_box )
+				: $this->term_translations->get_element_trid( $menu_id_tt );
 			$this->sitepress->set_element_language_details( $menu_id_tt, 'tax_nav_menu', $trid, $language_code );
 		}
 	}
@@ -83,12 +79,29 @@ class WPML_Nav_Menu_Actions extends WPML_Full_Translation_API {
 
 		$language_code = isset( $language_code_item ) && $language_code_item
 			? $language_code_item : ( $menu_lang ? $menu_lang : $this->sitepress->get_current_language() );
-		$this->sitepress->set_element_language_details( $menu_item_db_id, 'post_nav_menu_item', $trid, $language_code );
+		$sitepress = $this->sitepress;
+		WPML_Set_Language::run_exempt_core_flow(
+			function () use ( $sitepress, $menu_item_db_id, $trid, $language_code ) {
+				$sitepress->set_element_language_details( $menu_item_db_id, 'post_nav_menu_item', $trid, $language_code );
+			}
+		);
+	}
+
+	public function update_menu_count_while_counting_is_deferred( $object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids ) {
+		if ( 'nav_menu' !== $taxonomy || ! wp_defer_term_counting() ) {
+			return;
+		}
+
+		$menu_tt_ids = array_unique( array_map( 'intval', array_merge( (array) $tt_ids, (array) $old_tt_ids ) ) );
+		if ( $menu_tt_ids ) {
+			wp_update_term_count_now( $menu_tt_ids, 'nav_menu' );
+		}
 	}
 
 	public function wp_delete_nav_menu_item( $menu_item_id ) {
 		$post = get_post( $menu_item_id );
 		if ( ! empty( $post->post_type ) && $post->post_type == 'nav_menu_item' ) {
+			$wpdb = $this->wpdb;
 
 			$update_args = array(
 				'element_id'   => $menu_item_id,
@@ -98,9 +111,9 @@ class WPML_Nav_Menu_Actions extends WPML_Full_Translation_API {
 
 			do_action( 'wpml_translation_update', array_merge( $update_args, array( 'type' => 'before_delete' ) ) );
 
-			$q          = "DELETE FROM {$this->wpdb->prefix}icl_translations WHERE element_id=%d AND element_type='post_nav_menu_item' LIMIT 1";
-			$q_prepared = $this->wpdb->prepare( $q, $menu_item_id );
-			$this->wpdb->query( $q_prepared );
+			$wpdb->query(
+				$wpdb->prepare( "DELETE FROM {$wpdb->prefix}icl_translations WHERE element_id=%d AND element_type='post_nav_menu_item' LIMIT 1", $menu_item_id )
+			);
 
 			do_action( 'wpml_translation_update', array_merge( $update_args, array( 'type' => 'after_delete' ) ) );
 		}
@@ -160,21 +173,27 @@ class WPML_Nav_Menu_Actions extends WPML_Full_Translation_API {
 		return $language_code;
 	}
 
-	/**
-	 * @return bool|int|mixed|null|string
-	 */
-	private function get_trid_from_post_data() {
-		$trid = null;
-		if ( ! empty( $_POST['icl_translation_of'] ) && $_POST['icl_translation_of'] !== 'none' ) {
-			$trid = $this->sitepress->get_element_trid( $_POST['icl_translation_of'], 'tax_nav_menu' );
-
-			return $trid;
-		} elseif ( isset( $_POST['icl_nav_menu_trid'] ) ) {
-			$trid = ( (int) $_POST['icl_nav_menu_trid'] );
-
-			return $trid;
+	private function get_posted_language_box() {
+		$nonce = isset( $_POST['update-nav-menu-nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['update-nav-menu-nonce'] ) ) : '';
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'update-nav_menu' ) ) {
+			return null;
 		}
 
-		return $trid;
+		if ( ! isset( $_POST['icl_translation_of'] ) && ! isset( $_POST['icl_nav_menu_trid'] ) ) {
+			return null;
+		}
+
+		return array(
+			'translation_of' => isset( $_POST['icl_translation_of'] ) ? sanitize_text_field( wp_unslash( $_POST['icl_translation_of'] ) ) : '',
+			'trid'           => isset( $_POST['icl_nav_menu_trid'] ) ? (int) $_POST['icl_nav_menu_trid'] : null,
+		);
+	}
+
+	private function get_trid_from_language_box( array $language_box ) {
+		if ( $language_box['translation_of'] && 'none' !== $language_box['translation_of'] ) {
+			return $this->sitepress->get_element_trid( $language_box['translation_of'], 'tax_nav_menu' );
+		}
+
+		return $language_box['trid'];
 	}
 }

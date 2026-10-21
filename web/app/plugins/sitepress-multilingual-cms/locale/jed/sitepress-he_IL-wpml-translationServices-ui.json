@@ -3,10 +3,12 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "he_IL"
          },
          "Connect this site to your %s account": [
-            "חבר אתר זה לחשבון %s שלך"
+            "חבר את האתר הזה לחשבון ה-%s שלך"
          ],
          "Error": [
             "שגיאה"
@@ -15,10 +17,13 @@
             "« השתמש בשירות תרגום אחר"
          ],
          "Authenticate": [
-            "בצע אימות"
+            "אימות"
          ],
          "Visit <link_to_service /> to request an API Token. This token allows WPML to connect to <service_name /> to send and receive jobs.": [
-            "בקר ב-<link_to_service /> כדילבקש אסימון API. אסימון זה יאפשר ל-WPML להתחבר ל-. <service_name /> כדי לשלוח משימות ולקבל אותן."
+            "בקר ב-<link_to_service /> כדי לבקש API Token. אסימון (token) זה מאפשר ל-WPML להתחבר אל <service_name /> כדי לשלוח ולקבל עבודות."
+         ],
+         "Search translation services": [
+            "חפש שירותי תרגום"
          ],
          "Search": [
             "חיפוש"
@@ -27,13 +32,22 @@
             "הגדרות"
          ],
          "It’s not currently possible to connect a translation service when WPML is set to translate your site’s content automatically. To use a translation service, please change your translation mode on the <LinkToSettingsPage /> page.": [
-            "כרגע לא ניתן לחבר שירות תרגום כאשר WPML מוגדר לתרגום האתר באופן אוטומטי. כדי להשתמש בשירות תרגום, שנה את מצב התרגום בדף <LinkToSettingsPage />."
+            "כרגע לא ניתן להתחבר לשירות תרגום כאשר WPML מוגדר לתרגם את תוכן האתר שלך באופן אוטומטי. כדי להשתמש בשירות תרגום, אנא שנה את מצב התרגום שלך בדף <LinkToSettingsPage />."
+         ],
+         "Sort descending": [
+            "מיון בסדר יורד"
+         ],
+         "Sort ascending": [
+            "מיון בסדר עולה"
+         ],
+         "Cancel sorting": [
+            "ביטול המיון"
          ],
          "Documentation": [
             "תיעוד"
          ],
          "Activate": [
-            "הפעל"
+            "הפעלה"
          ],
          "Name": [
             "שם"

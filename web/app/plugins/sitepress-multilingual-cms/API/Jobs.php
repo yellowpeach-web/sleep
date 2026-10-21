@@ -14,36 +14,19 @@ use WPML\FP\Lst;
 use WPML\Settings\PostType\Automatic;
 use WPML\TM\API\ATE\LanguageMappings;
 use WPML\TM\API\Job\Map;
+use WPML\TM\ATE\Review\ReviewStatusLookup;
+use WPML\TM\Menu\TranslationQueue\TranslationQueuePage;
+use WPML\TM\Jobs\JobLog;
 use WPML\TM\Records\UpdateTranslationReviewStatus;
+use WPML\Translation\TranslateJobErrorServiceFactory;
 use function WPML\Container\make;
 use function WPML\FP\curryN;
 use function WPML\FP\pipe;
 
-/**
- * Class Jobs
- * @package WPML\TM\API
- *
- * @phpstan-type curried "__CURRIED_PLACEHOLDER__"
- *
- * @method static callable|null|\stdClass getPostJob( ...$postId, ...$postType, ...$language ) : Curried:: int->string->string->null|\stdClass
- * @method static callable|null|\stdClass getTridJob( ...$trid, ...$language ) : Curried:: int->string->null|\stdClass
- * @method static callable|void setNotTranslatedStatus( ...$jobId )  : Curried:: int->int
- * @method static callable|void setTranslationService( ...$jobId, $translationService ) : Curried:: int->int|string->int
- * @method static callable|void clearReviewStatus( ...$jobId ) : Curried:: int->int->int
- * @method static callable|array getTranslation( ...$job ) - Curried :: \stdClass->array
- * @method static callable|int getTranslatedPostId( ...$job ) - Curried :: \stdClass->int
- * @method static callable|void incrementRetryCount( ...$jobId ) : Curried:: int->void
- * @method static callable|void setTranslated( ...$jobId, ...$status ) - Curried :: int->bool->int
- * @method static callable|void clearTranslated( ...$jobId ) - Curried :: int->int
- * @method static callable|int clearAutomatic( ...$jobId ) - Curried :: int->int
- * @method static callable|void delete( ...$jobId ) - Curried :: int->void
- * @method static callable|bool isEligibleForAutomaticTranslations( ...$jobId ) - Curried :: int->bool
- */
 class Jobs {
 	use Macroable;
 
 	const SENT_MANUALLY      = 1;
-	const SENT_VIA_BASKET    = 2;
 	const SENT_AUTOMATICALLY = 3;
 	const SENT_FROM_REVIEW   = 4;
 	const SENT_RETRY         = 5;
@@ -98,7 +81,6 @@ class Jobs {
 			return self::updateTranslateJobField( $jobId, 'translated', $status );
 		} ) );
 
-		/** @phpstan-ignore-next-line */
 		self::macro( 'clearTranslated', self::setTranslated( Fns::__, false ) );
 
 		self::macro( 'clearAutomatic', curryN( 1, function ( $jobId ) {
@@ -106,63 +88,49 @@ class Jobs {
 		} ) );
 
 		self::macro( 'delete', curryN( 1, function ( $jobId ) {
-			/** @var \wpdb $wpdb */
 			global $wpdb;
 
 			$rid           = Map::fromJobId( $jobId );
-			$previousState = \WPML_TM_ICL_Translation_Status::makeByRid( $rid )
-			                                                ->previous()
-			                                                ->getOrElse( null );
 
-			if ( is_object( $previousState ) || is_array( $previousState ) ) {
-				$wpdb->update(
-					$wpdb->prefix . 'icl_translation_status',
-					Obj::pick( [ 'status', 'translator_id', 'needs_update', 'md5 ' ], $previousState ),
-					[ 'rid' => $rid ]
-				);
-			} else {
-				$wpdb->delete(
-					$wpdb->prefix . 'icl_translation_status',
-					[ 'rid' => $rid ],
-					[ 'rid' => '%d' ]
-				);
-			}
 			$wpdb->delete(
-				$wpdb->prefix . 'icl_translate_job',
-				[ 'job_id' => $jobId ],
-				[ 'job_id' => '%d' ]
+				$wpdb->prefix . 'icl_translation_status',
+				[ 'rid' => $rid ],
+				[ 'rid' => '%d' ]
 			);
+
+			\WPML_Translation_Records_Delete::jobs_by_ids( [ $jobId ] );
+
+			$service = TranslateJobErrorServiceFactory::create();
+			$service->deleteError( $jobId );
 		} ) );
 
 		self::macro( 'isEligibleForAutomaticTranslations', curryN( 1, Fns::memorize( function ( $wpmlJobId ) {
 			$getPostType = pipe( Obj::prop( 'original_post_type' ), Str::replace( 'post_', '' ) );
-
 			return Maybe::of( $wpmlJobId )
 			            ->map( Jobs::get() )
 			            ->map( Logic::both(
 				            pipe( $getPostType, [ Automatic::class, 'shouldTranslate' ] ),
-				            pipe( Obj::prop( 'language_code' ), LanguageMappings::isCodeEligibleForAutomaticTranslations() )
+							function ( $job ) {
+								return LanguageMappings::isCodeEligibleForAutomaticTranslations(
+									Obj::prop( 'language_code', $job ),
+									Obj::prop( 'source_language_code', $job )
+								);
+							}
 			            ) )
 			            ->getOrElse( false );
 		} ) ) );
 	}
 
-	/**
-	 * @return string
-	 */
 	public static function getCurrentUrl() {
+		if ( ! isset( $_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'] ) ) {
+			return admin_url();
+		}
+
 		$protocol = ( ( ! empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] != 'off' ) || Obj::prop( 'SERVER_PORT', $_SERVER ) == 443 ) ? "https://" : "http://";
 
 		return $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}
 
-	/**
-	 * It checks whether the job must be synced with ATE or not
-	 *
-	 * @param array{status: int, editor: string}|\stdClass{status: int, editor: string} $job
-	 *
-	 * @return bool
-	 */
 	public static function shouldBeATESynced( $job ) {
 		$statuses = [ ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_IN_PROGRESS ];
 
@@ -170,12 +138,15 @@ class Jobs {
 		       Obj::prop( 'editor', $job ) === \WPML_TM_Editors::ATE;
 	}
 
-	/**
-	 * @param int $jobId
-	 * @param bool $isAutomatic
-	 *
-	 * @return void
-	 */
+	public static function isDeliveredAndCurrent( $translation ) {
+		if ( ! $translation ) {
+			return false;
+		}
+
+		return ICL_TM_COMPLETE === (int) Obj::prop( 'status', $translation )
+		       && 1 !== (int) Obj::prop( 'needs_update', $translation );
+	}
+
 	public static function setAutomaticStatus( $jobId, $isAutomatic ) {
 		self::updateTranslateJobField( $jobId, 'automatic', $isAutomatic ? 1 : 0 );
 
@@ -186,22 +157,84 @@ class Jobs {
 		}
 	}
 
-	/**
-	 * @template A as int
-	 * @template B as int
-	 * @template R as int
-	 *
-	 * @param ?(int|curried) $jobId
-	 * @param ?(int|curried) $status
-	 *
-	 * @return ($jobId is A
-	 *  ? ($status is B ? R : callable(B=):R)
-	 *  : ($jobId is curried
-	 *    ? ($status is B ? callable(A=):R : callable(A=,B=):R)
-	 *    : callable(A=,B=):R
-	 *    )
-	 *  )
-	 */
+	public static function setSentFrom( $jobId, $sentFrom ) {
+		if ( null === $sentFrom ) {
+			return;
+		}
+
+		global $wpdb;
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}icl_translate_job
+					SET sent_from = %d
+					WHERE job_id = %d AND sent_from IS NULL",
+				(int) $sentFrom,
+				(int) $jobId
+			)
+		);
+	}
+
+	public static function computeWordsLifetimeMax( $jobId ) {
+		global $wpdb;
+
+		$current = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT rid, wpml_words_to_translate_count_lifetime_max
+				 FROM {$wpdb->prefix}icl_translate_job
+				 WHERE job_id = %d",
+				$jobId
+			)
+		);
+
+		if ( ! $current ) {
+			return 0;
+		}
+
+		if ( ! empty( $current->wpml_words_to_translate_count_lifetime_max ) ) {
+			return (int) $current->wpml_words_to_translate_count_lifetime_max;
+		}
+
+		$max = self::previousJobsLifetimeMax( (int) $current->rid, $jobId );
+
+		if ( $max > 0 ) {
+			self::setWordsLifetimeMax( $jobId, $max );
+		}
+
+		return $max;
+	}
+
+	public static function previousJobsLifetimeMax( $rid, $jobId ) {
+		global $wpdb;
+
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COALESCE(
+					MAX( wpml_words_to_translate_count_lifetime_max ),
+					MAX( wpml_words_to_translate_count ),
+					0
+				)
+				FROM {$wpdb->prefix}icl_translate_job
+				WHERE rid = %d AND job_id < %d AND sent_from = %d",
+				$rid,
+				$jobId,
+				self::SENT_AUTOMATICALLY
+			)
+		);
+	}
+
+	public static function setWordsLifetimeMax( $jobId, $count ) {
+		return self::updateTranslateJobField( $jobId, 'wpml_words_to_translate_count_lifetime_max', (int) $count );
+	}
+
+	public static function wasCreatedByTEA( $jobId ) {
+		$job = self::get( $jobId );
+
+		return $job
+			&& isset( $job->sent_from )
+			&& self::SENT_AUTOMATICALLY === (int) $job->sent_from;
+	}
+
 	public static function setStatus( $jobId = null, $status = null ) {
 		return call_user_func_array(
 			curryN(
@@ -219,33 +252,26 @@ class Jobs {
 	}
 
 
-	/**
-	 * @template A as int
-	 * @template B as string
-	 * @template R as int
-	 *
-	 * @param ?(int|curried)    $jobId
-	 * @param ?(string|curried) $status
-	 *
-	 * @return ($jobId is A
-	 *  ? ($status is B ? R : callable(B=):R)
-	 *  : ($jobId is curried
-	 *    ? ($status is B ? callable(A=):R : callable(A=,B=):R)
-	 *    : callable(A=,B=):R
-	 *    )
-	 *  )
-	 */
+	public static function setNeedsUpdate( $jobId ) {
+		return self::updateTranslationStatusField( $jobId, 'needs_update', 1 );
+	}
+
+
 	public static function setReviewStatus( $jobId = null, $status = null ) {
 		return call_user_func_array(
 			curryN(
 				2,
 				function ( $jobId, $status ) {
-					return self::updateTranslationStatusField(
+					$result = self::updateTranslationStatusField(
 						$jobId,
 						'review_status',
 						$status,
 						'%s'
 					);
+
+					ReviewStatusLookup::invalidate();
+
+					return $result;
 				}
 			),
 			func_get_args()
@@ -253,19 +279,6 @@ class Jobs {
 	}
 
 
-	/**
-	 * @param int $jobId
-	 *
-	 * @return \stdClass|false
-	 *
-	 * @phpstan-template V1 of int|curried
-	 * @phpstan-template P1 of int
-	 * @phpstan-template R of \stdClass|false
-	 *
-	 * @phpstan-param ?V1 $jobId
-	 *
-	 * @phpstan-return ($jobId is P1 ? R : callable(P1=):R)
-	 */
 	public static function get( $jobId = null ) {
 		return call_user_func_array(
 			curryN(
@@ -278,34 +291,13 @@ class Jobs {
 		);
 	}
 
-	/**
-	 * @param string $returnUrl
-	 * @param int $jobId
-	 *
-	 * @return callable|string
-	 *
-	 * @phpstan-template A1 of string|curried
-	 * @phpstan-template A2 of int|curried
-	 * @phpstan-template P1 of string
-	 * @phpstan-template P2 of int
-	 * @phpstan-template R of string
-	 *
-	 * @phpstan-param ?A1 $returnUrl
-	 * @phpstan-param ?A2 $jobId
-	 *
-	 * @phpstan-return ($returnUrl is P1
-	 *  ? ($jobId is P2 ? R : callable(P2=):R)
-	 *  : ($jobId is P2 ? callable(P1=):R : callable(P1=,P2=):R)
-	 * )
-	 */
 	public static function getEditUrl( $returnUrl = null, $jobId = null ) {
 		return call_user_func_array(
 			curryN(
 				2,
 				function ( $returnUrl, $jobId ) {
-					$jobEditUrl = admin_url( 'admin.php?page='
-						. WPML_TM_FOLDER
-						. '/menu/translations-queue.php&job_id='
+					$jobEditUrl = admin_url( TranslationQueuePage::base()
+						. '&job_id='
 						. $jobId
 						. '&return_url=' . urlencode( $returnUrl ) );
 
@@ -316,44 +308,6 @@ class Jobs {
 		);
 	}
 
-	/**
-	 * @param int    $postId
-	 * @param string $elementType
-	 * @param string $language
-	 *
-	 * @return callable|\stdClass|null
-	 *
-	 * @phpstan-template A1 of int|curried
-	 * @phpstan-template A2 of string|curried
-	 * @phpstan-template A3 of string|curried
-	 * @phpstan-template P1 of int
-	 * @phpstan-template P2 of string
-	 * @phpstan-template P3 of string
-	 * @phpstan-template R of \stdClass|null
-	 *
-	 * @phpstan-param ?A1 $postId
-	 * @phpstan-param ?A2 $elementType
-	 * @phpstan-param ?A3 $language
-	 *
-	 * @phpstan-return ($postId is P1
-	 *  ? ($elementType is P2
-	 *    ? ($language is P3
-	 *      ? R
-	 *      : callable(P3=):R)
-	 *    : ($language is P3
-	 *      ? callable(P2=):R
-	 *      : callable(P2=,P3=):R)
-	 *  )
-	 *  : ($elementType is P2
-	 *    ? ($language is P3
-	 *      ? callable(P1=):R
-	 *      : callable(P1=,P3=):R)
-	 *    : ($language is P3
-	 *      ? callable(P1=,P2=):R
-	 *      : callable(P1=,P2=,P3=):R)
-	 *  )
-	 * )
-	 */
 	public static function getElementJob( $postId = null, $elementType = null, $language = null ) {
 		return call_user_func_array(
 			curryN(
@@ -370,8 +324,71 @@ class Jobs {
 		);
 	}
 
+	public static function getStatus( $jobId ) {
+		global $wpdb;
+
+		$status = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT s.status FROM {$wpdb->prefix}icl_translation_status s
+				 INNER JOIN {$wpdb->prefix}icl_translate_job j ON j.rid = s.rid
+				 WHERE j.job_id = %d",
+				$jobId
+			)
+		);
+
+		return null === $status ? null : (int) $status;
+	}
+
+	public static function isCancelled( int $jobId ): bool {
+		global $wpdb;
+
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT ts.status, j.translated FROM {$wpdb->prefix}icl_translate_job j
+				 INNER JOIN {$wpdb->prefix}icl_translation_status ts ON ts.rid = j.rid
+				 WHERE j.job_id = %d
+				   AND j.job_id = ( SELECT MAX( newer.job_id ) FROM {$wpdb->prefix}icl_translate_job newer WHERE newer.rid = j.rid )",
+				$jobId
+			)
+		);
+
+		if ( ! is_object( $row ) ) {
+			return false;
+		}
+
+		$status = (int) $row->status;
+
+		return ICL_TM_ATE_CANCELLED === $status
+			|| ( ! (int) $row->translated && in_array( $status, [ ICL_TM_NOT_TRANSLATED, ICL_TM_COMPLETE, ICL_TM_DUPLICATE ], true ) );
+	}
+
+	public static function isAutomatic( $jobId ) {
+		global $wpdb;
+
+		return (bool) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT j.automatic FROM {$wpdb->prefix}icl_translate_job j
+				 WHERE j.job_id = %d",
+				$jobId
+			)
+		);
+	}
+
 	private static function updateTranslationStatusField( $jobId, $fieldName, $newValue, $fieldType = '%d' ) {
 		global $wpdb;
+
+		$shouldLog = 'status' === $fieldName
+			&& class_exists( JobLog::class )
+			&& JobLog::canLog();
+		$oldStatus = null;
+		if ( $shouldLog ) {
+			$oldStatus = $wpdb->get_var( $wpdb->prepare(
+				"SELECT s.status FROM {$wpdb->prefix}icl_translation_status s
+				 INNER JOIN {$wpdb->prefix}icl_translate_job j ON j.rid = s.rid
+				 WHERE j.job_id = %d",
+				$jobId
+			) );
+		}
 
 		$newValueSqlString = null === $newValue ? 'NULL' : $fieldType;
 		$unpreparedQuery = "
@@ -384,15 +401,24 @@ class Jobs {
 					";
 
 		if ( null === $newValue ) {
-			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
 			$query = $wpdb->prepare( $unpreparedQuery, $jobId );
 		} else {
-			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
 			$query = $wpdb->prepare( $unpreparedQuery, $newValue, $jobId );
 		}
 
-		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
-		$wpdb->query( $query );
+		$affected = $wpdb->query( $query );
+		if ( $affected > 0 ) {
+			do_action( 'wpml_tm_ate_jobs_updated', [ $jobId ] );
+		}
+
+		if ( $shouldLog ) {
+			JobLog::add( 'job_status_set', [
+				'job_id'     => (int) $jobId,
+				'old_status' => null === $oldStatus ? null : (int) $oldStatus,
+				'new_status' => null === $newValue ? null : (int) $newValue,
+				'affected'   => false === $affected ? false : (int) $affected,
+			] );
+		}
 
 		return $jobId;
 	}
@@ -407,6 +433,20 @@ class Jobs {
 		);
 
 		return $jobId;
+	}
+
+	public static function getPreviousJob( $jobId ) {
+		global $wpdb;
+
+		$sql = "
+			SELECT * FROM {$wpdb->prefix}icl_translate_job job
+			WHERE job.job_id < %d AND job.rid = (
+				SELECT rid FROM {$wpdb->prefix}icl_translate_job WHERE job_id = %d
+			)
+			ORDER BY job.job_id DESC
+		";
+
+		return $wpdb->get_row( $wpdb->prepare( $sql, $jobId, $jobId ) );
 	}
 }
 

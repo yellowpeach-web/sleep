@@ -13,4 +13,8 @@ class WPML_Ajax_Update_Link_Targets_In_Posts extends WPML_Ajax_Update_Link_Targe
 		return new WPML_Translate_Link_Targets_In_Posts_Global( $this->translate_link_target_global_state, $this->wpdb, $this->pro_translation );
 	}
 
+	protected function create_sibling_translate_link_target() {
+		return new WPML_Translate_Link_Targets_In_Strings_Global( $this->translate_link_target_global_state, $this->wpdb, new WPML_WP_API(), $this->pro_translation );
+	}
+
 }

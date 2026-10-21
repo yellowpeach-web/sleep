@@ -2,22 +2,18 @@
 
 namespace WPML\PB\Elementor\Config\DynamicElements;
 
-use WPML\FP\Logic;
 use WPML\FP\Obj;
-use WPML\FP\Relation;
+use WPML\PB\Elementor\Helper\Path;
 
 class LoopCarousel {
 
-	/**
-	 * @return array
-	 */
 	public static function get() {
 		$loopCarouselIdPath = [ 'settings', 'template_id' ];
 
-		$hasLoopCarousel = Logic::allPass( [
-			Relation::propEq( 'widgetType', 'loop-carousel' ),
-			Obj::path( $loopCarouselIdPath ),
-		] );
+		$hasLoopCarousel = function ( $item ) use ( $loopCarouselIdPath ) {
+			return Path::prop( 'widgetType', $item ) === 'loop-carousel'
+				&& Path::get( $loopCarouselIdPath, $item );
+		};
 
 		$loopCarouselIdLens = Obj::lensPath( $loopCarouselIdPath );
 

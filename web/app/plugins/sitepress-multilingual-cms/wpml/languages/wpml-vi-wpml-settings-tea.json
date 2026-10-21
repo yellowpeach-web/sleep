@@ -1,0 +1,393 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "vi"
+         },
+         "Error in updating since dates for types.": [
+            "Lỗi khi cập nhật ngày kể từ cho các loại."
+         ],
+         "Error in fetching untranslated types count": [
+            "Lỗi khi lấy số lượng các loại chưa được dịch"
+         ],
+         "Error in updating since date for type.": [
+            "Lỗi khi cập nhật ngày kể từ cho loại."
+         ],
+         "Content to translate": [
+            "Nội dung cần dịch"
+         ],
+         "Content to Translate": [
+            "Nội dung cần dịch"
+         ],
+         "Content type": [
+            "Loại nội dung"
+         ],
+         "Include": [
+            "Bao gồm"
+         ],
+         "These settings can be changed on the Translations dashboard.": [
+            "Các cài đặt này có thể được thay đổi trên Bảng điều khiển dịch thuật."
+         ],
+         "Items": [
+            "Mục"
+         ],
+         "Word count": [
+            "Số lượng từ"
+         ],
+         "Loading content to translate": [
+            "Đang tải nội dung cần dịch"
+         ],
+         "Words to translate": [
+            "Số từ cần dịch"
+         ],
+         "Calculating… <s>less than 1 minute left.</s>": [
+            "Đang tính toán… <s>còn chưa đầy 1 phút.</s>"
+         ],
+         "Calculating… <s>%d minute left.</s>": [
+            "Đang tính toán… <s>còn %d phút.</s>"
+         ],
+         "Words needed to translate your existing content into the new languages: %s.": [
+            "Số từ cần thiết để dịch nội dung hiện có của bạn sang các ngôn ngữ mới: %s."
+         ],
+         "Words needed to translate your existing content into the new language.": [
+            "Số từ cần thiết để dịch nội dung hiện có của bạn sang ngôn ngữ mới."
+         ],
+         "Based on the remaining untranslated content across all languages.": [
+            "Dựa trên nội dung chưa dịch còn lại trên tất cả các ngôn ngữ."
+         ],
+         "Estimated from the selected source volume multiplied by the target languages.": [
+            "Ước tính từ khối lượng nguồn đã chọn nhân với các ngôn ngữ đích."
+         ],
+         "%1$s source words × %2$s language": [
+            "%1$s từ nguồn × %2$s ngôn ngữ"
+         ],
+         "Already translated content": [
+            "Nội dung đã được dịch"
+         ],
+         "Words required:": [
+            "Số từ yêu cầu:"
+         ],
+         "Words": [
+            "Từ"
+         ],
+         "Documents you translated yourself stay exactly as you made them": [
+            "Các tài liệu bạn tự dịch sẽ được giữ nguyên chính xác như cách bạn đã tạo"
+         ],
+         "(%d document)": [
+            "(%d tài liệu)"
+         ],
+         "View documents": [
+            "Xem tài liệu"
+         ],
+         "%1$d of %2$d language will be translated automatically": [
+            "%1$d trong số %2$d ngôn ngữ sẽ được dịch tự động"
+         ],
+         "Translated to %d language": [
+            "Đã dịch sang %d ngôn ngữ"
+         ],
+         "Add/remove languages": [
+            "Thêm/xóa ngôn ngữ"
+         ],
+         "Percentages show how much of your selected content is already translated in each language.": [
+            "Tỷ lệ phần trăm cho biết lượng nội dung đã chọn của bạn đã được dịch sang từng ngôn ngữ."
+         ],
+         "Note: Content already translated into all languages is not included in this calculation.": [
+            "Lưu ý: Nội dung đã được dịch sang tất cả các ngôn ngữ không được bao gồm trong tính toán này."
+         ],
+         "Same as default": [
+            "Giống như mặc định"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "Dịch tự động không khả dụng giữa %1$s và %2$s vì chúng được nhận dạng là cùng một ngôn ngữ."
+         ],
+         "Translation paused": [
+            "Bản dịch bị tạm dừng"
+         ],
+         "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor.": [
+            "WPML hiện không tạo bản dịch %s mới, do đó ngôn ngữ này không được bao gồm. Để đưa ngôn ngữ này vào, hãy sử dụng “Tiếp tục dịch” trên hàng của ngôn ngữ đó trong trình chỉnh sửa Ngôn ngữ."
+         ],
+         "Manual only": [
+            "Chỉ thủ công"
+         ],
+         "%s has no automatic-translation support. You can translate this content manually.": [
+            "%s không hỗ trợ dịch tự động. Bạn có thể dịch nội dung này theo cách thủ công."
+         ],
+         "Adjusted word rate (%s)": [
+            "Tỷ lệ từ đã điều chỉnh (%s)"
+         ],
+         "This adjusted word rate applies to legacy translation engines.": [
+            "Tỷ lệ từ đã điều chỉnh này áp dụng cho các công cụ dịch thuật cũ."
+         ],
+         "Translation engine: <strong>%s</strong>": [
+            "Công cụ dịch thuật: <strong>%s</strong>"
+         ],
+         "Legacy engine": [
+            "Công cụ cũ"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Đã áp dụng mức giá cũ. %s là một công cụ dịch thuật cũ, không được khuyến nghị cho các trang web mới và sẽ bị ngừng hỗ trợ. Các trang web hiện tại vẫn giữ tỷ lệ từ đã điều chỉnh cho công cụ này."
+         ],
+         "Switch to PTC": [
+            "Chuyển sang PTC"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
+            "Đây là số lượng từ cần để dịch nội dung hiện tại của bạn hôm nay. Số lượng này không bao gồm một số văn bản do các plugin khác thêm vào, chẳng hạn như biểu mẫu hoặc thanh trượt, vốn được tính sau khi thiết lập hoàn tất. Các chuỗi trang web từ giao diện và plugin cũng được tính sau khi thiết lập và thường thêm vào vài trăm từ. Sau đó, việc chỉnh sửa là miễn phí. Bạn chỉ trả tiền lại cho các từ mà bạn thêm vào."
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Đây là số lượng từ cần thiết để dịch nội dung hiện tại của bạn hôm nay. Nó không bao gồm một số văn bản được thêm bởi các plugin khác, chẳng hạn như biểu mẫu hoặc thanh trượt, vốn được tính sau khi quá trình thiết lập hoàn tất. Các chuỗi trang web từ giao diện và plugin của bạn cũng được tính sau khi thiết lập và thường thêm vài trăm từ. Theo tỷ lệ giá mỗi từ của %s; các thay đổi đối với các trang đã dịch sẽ bị tính phí lại."
+         ],
+         "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
+            "Đây là số lượng từ cần để dịch nội dung hiện tại của bạn hôm nay. Sau đó, việc chỉnh sửa là miễn phí. Bạn chỉ trả tiền lại cho các từ mà bạn thêm vào."
+         ],
+         "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Đây là số lượng từ cần thiết để dịch nội dung hiện tại của bạn hôm nay. Theo tỷ lệ giá mỗi từ của %s; các thay đổi đối với các trang đã dịch sẽ bị tính phí lại."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
+            "Số lượng này tính các trang, bài viết và sản phẩm cùng với các trường tùy chỉnh, văn bản trình tạo trang và văn bản phương tiện của chúng, cũng như các chuyên mục, thẻ và thuộc tính mà chúng sử dụng."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
+            "Số lượng này tính các trang, bài viết và sản phẩm cùng với các trường tùy chỉnh, văn bản trình tạo trang và văn bản phương tiện của chúng, các chuyên mục, thẻ và thuộc tính mà chúng sử dụng, cùng các chuỗi trang web. Một thuật ngữ được tính trong mọi mục sử dụng nó và một lần riêng lẻ, vì nó được gửi đi dịch theo cả hai cách."
+         ],
+         "Total items": [
+            "Tổng số mục"
+         ],
+         "Total source words": [
+            "Tổng số từ nguồn"
+         ],
+         "Previous": [
+            "Trước"
+         ],
+         "Next": [
+            "Tiếp theo"
+         ],
+         "Showing %1$d–%2$d of %3$d types.": [
+            "Đang hiển thị %1$d–%2$d trong số %3$d loại."
+         ],
+         "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated.": [
+            "Tất cả %1$s hiện tại đã được dịch sang tất cả các ngôn ngữ.<br>Các %2$s mới hoặc các bản chỉnh sửa sẽ được dịch tự động."
+         ],
+         "All %s": [
+            "Tất cả %s"
+         ],
+         "For translated types": [
+            "Đối với các loại đã dịch"
+         ],
+         "None": [
+            "Không có"
+         ],
+         "Since %s": [
+            "Kể từ %s"
+         ],
+         "Since specific date": [
+            "Kể từ ngày cụ thể"
+         ],
+         "<b>Pay-As-You-Go</b> is active on this site.": [
+            "<b>Trả theo mức sử dụng</b> đang hoạt động trên trang web này."
+         ],
+         "<b>%s words</b> are on this site. Continue.": [
+            "<b>%s từ</b> đang có trên trang web này. Tiếp tục."
+         ],
+         "Your site will be translated right after the setup.": [
+            "Trang web của bạn sẽ được dịch ngay sau khi thiết lập."
+         ],
+         "To use prepaid words, register WPML on this site.": [
+            "Để sử dụng từ trả trước, hãy đăng ký WPML trên trang web này."
+         ],
+         "Checking…": [
+            "Đang kiểm tra…"
+         ],
+         "Retry": [
+            "Thử lại"
+         ],
+         "We could not reach our translation system.": [
+            "Chúng tôi không thể kết nối tới hệ thống dịch thuật của mình."
+         ],
+         "This site is not registered with a WPML account, so prepaid words are not available.": [
+            "Trang web này chưa được đăng ký với tài khoản WPML, vì vậy các từ trả trước không khả dụng."
+         ],
+         "We could not read your WPML account.": [
+            "Chúng tôi không thể đọc tài khoản WPML của bạn."
+         ],
+         "%s more words are needed to translate your site.": [
+            "Cần thêm %s từ để dịch trang web của bạn."
+         ],
+         "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>.": [
+            "Gán các từ trả trước từ tài khoản WPML của bạn cho trang web này để bắt đầu <b>Dịch mọi thứ tự động</b>."
+         ],
+         "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>.": [
+            "Gán các từ bạn đã có và mua phần còn lại, hoặc kích hoạt <b>Trả theo mức sử dụng</b>."
+         ],
+         "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
+            "Để bắt đầu <b>Dịch mọi thứ tự động</b>, hãy kích hoạt <b>Trả theo mức sử dụng</b> hoặc mua từ trả trước."
+         ],
+         "Translation started": [
+            "Đã bắt đầu dịch"
+         ],
+         "Your content is being sent for automatic translation. Follow its progress on the Translations page.": [
+            "Nội dung của bạn đang được gửi để dịch tự động. Theo dõi tiến trình của nó trên trang Bản dịch."
+         ],
+         "Close": [
+            "Đóng"
+         ],
+         "Preparing…": [
+            "Đang chuẩn bị…"
+         ],
+         "Go to Translations": [
+            "Đi tới Bản dịch"
+         ],
+         "Adjust content limits for <b>Translate Everything</b>": [
+            "Điều chỉnh giới hạn nội dung cho <b>Dịch mọi thứ</b>"
+         ],
+         "Review the cost and adjust how far back automatic translation applies per content type.": [
+            "Xem lại chi phí và điều chỉnh thời gian áp dụng dịch tự động cho từng loại nội dung."
+         ],
+         "This amount will cover translating your existing content into the new language.": [
+            "Số lượng này sẽ bao gồm việc dịch nội dung hiện có của bạn sang các ngôn ngữ mới."
+         ],
+         "Choose how to pay for the translation": [
+            "Chọn cách thanh toán cho bản dịch"
+         ],
+         "WPML could not calculate the word count. You can add the language without a cost estimate.": [
+            "WPML không thể tính số lượng từ. Bạn có thể thêm ngôn ngữ mà không cần ước tính chi phí."
+         ],
+         "Cancel": [
+            "Hủy"
+         ],
+         "Save changes": [
+            "Lưu thay đổi"
+         ],
+         "You can adjust the content limits once Translate Everything finishes the current translation run.": [
+            "Bạn có thể điều chỉnh giới hạn nội dung sau khi Dịch mọi thứ hoàn thành đợt dịch hiện tại."
+         ],
+         "%1$sCheck pricing%2$s.": [
+            "%1$sKiểm tra giá%2$s."
+         ],
+         "Lowest cost per word": [
+            "Chi phí thấp nhất cho mỗi từ"
+         ],
+         "Pay only for what you use": [
+            "Chỉ trả cho những gì bạn sử dụng"
+         ],
+         "Never run out. Translation never stops.": [
+            "Không bao giờ hết. Việc dịch thuật không bao giờ dừng lại."
+         ],
+         "The first 500 words each month are free": [
+            "500 từ đầu tiên mỗi tháng là miễn phí"
+         ],
+         "Pay-As-You-Go": [
+            "Trả theo mức sử dụng"
+         ],
+         "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate.": [
+            "Kích hoạt <b>Trả theo mức sử dụng</b> để dịch tự động. <b>Trả theo mức sử dụng</b> tính phí bạn dựa trên số từ bạn dịch."
+         ],
+         "Activating <b>Pay-As-You-Go</b>…": [
+            "Đang kích hoạt <b>Trả theo mức sử dụng</b>…"
+         ],
+         "Continue in the new tab": [
+            "Tiếp tục trong tab mới"
+         ],
+         "Activate <b>Pay-As-You-Go</b>": [
+            "Kích hoạt <b>Trả theo mức sử dụng</b>"
+         ],
+         "<b>Pay-As-You-Go</b> is not active yet.": [
+            "<b>Trả theo mức sử dụng</b> vẫn chưa hoạt động."
+         ],
+         "Refresh": [
+            "Làm mới"
+         ],
+         "Already using <b>Pay-As-You-Go</b> on another site?": [
+            "Bạn đã sử dụng <b>Trả theo mức sử dụng</b> trên một trang web khác?"
+         ],
+         "Connect this site to it": [
+            "Kết nối trang web này với tài khoản đó"
+         ],
+         "Activate Pay-As-You-Go": [
+            "Kích hoạt Trả theo mức sử dụng"
+         ],
+         "Connect your sites to share translation memory, glossary and word quota.": [
+            "Kết nối các trang web của bạn để chia sẻ bộ nhớ dịch, thuật ngữ và hạn ngạch từ."
+         ],
+         "Learn more": [
+            "Tìm hiểu thêm"
+         ],
+         "Copy your migration code:": [
+            "Sao chép mã di chuyển của bạn:"
+         ],
+         "Loading…": [
+            "Đang tải…"
+         ],
+         "Copied!": [
+            "Đã sao chép!"
+         ],
+         "Log into a site with an active automatic translation account.": [
+            "Đăng nhập vào một trang web có tài khoản dịch tự động đang hoạt động."
+         ],
+         "Go to \"WPML\" → \"Translation Dashboard\".": [
+            "Đi tới “WPML” → “Bảng điều khiển dịch thuật”."
+         ],
+         "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
+            "Trong tab “Thanh toán & Bảo trì”, đi tới “Các trang web đã kết nối”."
+         ],
+         "Click \"Enter the connection key of another site\" to finish connecting your sites.": [
+            "Nhấp vào “Nhập khóa kết nối của một trang web khác” để hoàn tất việc kết nối các trang web của bạn."
+         ],
+         "Assign words": [
+            "Gán từ"
+         ],
+         "Buy and assign words": [
+            "Mua và gán từ"
+         ],
+         "Refresh to assign words": [
+            "Làm mới để gán từ"
+         ],
+         "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site.": [
+            "Mua một %1$sgói trả trước%2$s với ít nhất %3$s%4$s từ%5$s và gán chúng cho trang web này."
+         ],
+         "This amount will cover translation of all your current content.": [
+            "Số lượng này sẽ bao gồm việc dịch tất cả nội dung hiện tại của bạn."
+         ],
+         "Assign %1$s%2$s words%3$s to this site.": [
+            "Gán %1$s%2$s từ%3$s cho trang web này."
+         ],
+         "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s.": [
+            "Gán %1$s%2$s từ%3$s của bạn và mua thêm %4$s%5$s từ%6$s."
+         ],
+         "Buy %1$s%2$s words%3$s for this site.": [
+            "Mua %1$s%2$s từ%3$s cho trang web này."
+         ],
+         "Assign at least %1$s%2$s words%3$s to this site to continue.": [
+            "Gán ít nhất %1$s%2$s từ%3$s cho trang web này để tiếp tục."
+         ],
+         "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount.": [
+            "Gán từ từ tài khoản WPML của bạn và mua thêm một %1$sgói trả trước%2$s với ít nhất %3$s%4$s từ%5$s để bù đắp số lượng còn lại."
+         ],
+         "Prepaid words": [
+            "Từ trả trước"
+         ],
+         "There are %1$s%2$s words%3$s on your WPML account.": [
+            "Có %1$s%2$s từ%3$s trong tài khoản WPML của bạn."
+         ],
+         "There are %1$s%2$s available on your WPML account.%3$s": [
+            "Có %1$s%2$s từ khả dụng trên tài khoản WPML của bạn.%3$s"
+         ],
+         "(Only the WPML account owner can do this.)": [
+            "(Chỉ chủ sở hữu tài khoản WPML mới có thể thực hiện việc này.)"
+         ],
+         "Checking for new words...": [
+            "Đang kiểm tra từ mới..."
+         ],
+         "Still not enough words. Refresh again in %d seconds.": [
+            "Vẫn không đủ từ. Hãy làm mới lại sau %d giây."
+         ],
+         "Already assigned?": [
+            "Đã gán rồi?"
+         ],
+         "Close modal": [
+            "Đóng cửa sổ"
+         ]
+      }
+   }
+}

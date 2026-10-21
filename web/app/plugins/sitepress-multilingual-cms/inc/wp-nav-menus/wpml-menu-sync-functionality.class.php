@@ -10,15 +10,14 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 
 	private $menu_items_cache;
 
-	/**
-	 * @param SitePress               $sitepress
-	 * @param wpdb                    $wpdb
-	 * @param WPML_Post_Translation   $post_translations
-	 * @param WPML_Terms_Translations $term_translations
-	 */
+	private $orphan_map;
+
+	private $language_conflicts_fixed = false;
+
 	function __construct( &$sitepress, &$wpdb, &$post_translations, &$term_translations ) {
 		parent::__construct( $sitepress, $wpdb, $post_translations, $term_translations );
 		$this->menu_items_cache = array();
+		$this->orphan_map       = new WPML_Menu_Item_Orphan_Map( $wpdb );
 	}
 
 	function get_menu_items( $menu_id, $translations = true ) {
@@ -37,6 +36,10 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 			$items      = $this->menu_items_cache[ $menu_id ];
 			$menu_items = array();
 
+			if ( $translations && is_array( $items ) ) {
+				$this->preload_menu_item_translation_data( $items );
+			}
+
 			foreach ( $items as $item ) {
 				$item->object_type = get_post_meta( $item->ID, '_menu_item_type', true );
 				$_item_add         = array(
@@ -52,7 +55,7 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 						true
 					) : $item->object_id,
 					'title'       => $item->title,
-					'depth'       => $this->get_menu_item_depth( $item->ID ),
+					'depth'       => $this->get_menu_item_depth( $item->ID, $menu_id ),
 				);
 
 				if ( $translations ) {
@@ -72,7 +75,13 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 
 		foreach ( $menu_trans_data as $menu_id => $translations ) {
 			foreach ( $translations as $language => $name ) {
-				$_POST['icl_translation_of']    = $wpdb->get_var(
+				$existing_menu_id = $this->term_translations->term_id_in( $menu_id, $language );
+				if ( $existing_menu_id ) {
+					$menus[ $menu_id ]['translations'][ $language ] = array( 'id' => (int) $existing_menu_id );
+					continue;
+				}
+
+				$original_menu_tt_id            = $wpdb->get_var(
 					$wpdb->prepare(
 						"	SELECT term_taxonomy_id
 																					FROM {$wpdb->term_taxonomy}
@@ -82,6 +91,7 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 						$menu_id
 					)
 				);
+				$_POST['icl_translation_of']    = $original_menu_tt_id;
 				$_POST['icl_nav_menu_language'] = $language;
 
 				$menu_indentation = '';
@@ -99,6 +109,10 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 					$menu_indentation = '-';
 				} while ( is_wp_error( $new_menu_id ) && $menu_increment < 10 );
 
+				if ( ! is_wp_error( $new_menu_id ) ) {
+					$this->link_new_menu_translation( (int) $new_menu_id, (int) $original_menu_tt_id, $language );
+				}
+
 				$menus[ $menu_id ]['translations'][ $language ] = array( 'id' => $new_menu_id );
 			}
 		}
@@ -106,17 +120,40 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 		return $menus;
 	}
 
-	/**
-	 * @param \stdClass $item
-	 * @param int       $menu_id
-	 *
-	 * @return array
-	 */
+	private function link_new_menu_translation( $new_menu_id, $original_menu_tt_id, $language ) {
+		$wpdb = $this->wpdb;
+
+		$new_menu_tt_id = (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT term_taxonomy_id FROM {$wpdb->term_taxonomy} WHERE term_id = %d AND taxonomy = 'nav_menu' LIMIT 1",
+				$new_menu_id
+			)
+		);
+		$trid           = $original_menu_tt_id ? $this->term_translations->get_element_trid( $original_menu_tt_id ) : null;
+		if ( ! $new_menu_tt_id || ! $trid ) {
+			return;
+		}
+
+		$source_language = $this->term_translations->get_element_lang_code( $original_menu_tt_id );
+		$this->sitepress->set_element_language_details(
+			$new_menu_tt_id,
+			'tax_nav_menu',
+			$trid,
+			$language,
+			$source_language ? $source_language : $this->sitepress->get_default_language()
+		);
+		$this->term_translations->reload();
+	}
+
 	function get_menu_item_translations( $item, $menu_id ) {
 		$languages         = array_keys( $this->sitepress->get_active_languages() );
 		$item_translations = $this->post_translations->get_element_translations( $item->ID );
 		$languages         = array_diff( $languages, array( $this->sitepress->get_default_language() ) );
 		$translations      = array_fill_keys( $languages, false );
+
+		$item->object_type = property_exists( $item, 'object_type' ) ? $item->object_type : $item->type;
+		$this->prime_translated_post_caches( $item, $languages, $item_translations );
+
 		foreach ( $languages as $lang_code ) {
 
 			$item->object_type    = property_exists( $item, 'object_type' ) ? $item->object_type : $item->type;
@@ -136,6 +173,7 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 			$icl_st_url_exists       = true;
 			$label_changed           = false;
 			$url_changed             = false;
+			$object_not_public       = false;
 
 			if ( $item->object_type === 'post_type' ) {
 				list( $translated_object_id, $item_translations ) = $this->maybe_reload_post_item(
@@ -149,6 +187,7 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 					$translated_object_id = false;
 				} else {
 					$translated_object_title = $translated_object->post_title;
+					$object_not_public = ! is_post_publicly_viewable( $translated_object );
 				}
 			} elseif ( $item->object_type === 'taxonomy' ) {
 				$translated_object       = get_term(
@@ -179,10 +218,10 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 				}
 			}
 			$this->fix_assignment_to_menu( $item_translations, (int) $menu_id );
-			$this->fix_language_conflicts();
+			$this->fix_language_conflicts_once();
 
 			$translated_item_id = isset( $item_translations[ $lang_code ] ) ? (int) $item_translations[ $lang_code ] : false;
-			$item_depth         = $this->get_menu_item_depth( $translated_item_id );
+			$item_depth         = $this->get_menu_item_depth( $translated_item_id, $menu_id );
 			if ( $translated_item_id ) {
 				$translated_item               = get_post( $translated_item_id );
 				$translated_object_title       = ! empty( $translated_item->post_title ) && ! $icl_st_label_exists ? $translated_item->post_title : $translated_object_title;
@@ -217,6 +256,7 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 			$translation['object']                = $item->object;
 			$translation['object_type']           = $item->object_type;
 			$translation['object_id']             = $translated_object_id;
+			$translation['object_not_public']     = $object_not_public;
 			$translation['title']                 = $translated_object_title;
 			$translation['url']                   = $translated_object_url;
 			$translation['target']                = $item->target;
@@ -234,31 +274,18 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 		return $translations;
 	}
 
-	/**
-	 * Synchronises a page menu item's translations' trids according to the trids of the pages they link to.
-	 *
-	 * @param object $menu_item
-	 *
-	 * @return int number of affected menu item translations
-	 */
 	function sync_page_menu_item_trids( $menu_item ) {
 		$changed = 0;
 		if ( $menu_item->object_type === 'post_type' ) {
 			$translations = $this->post_translations->get_element_translations( $menu_item->ID );
 			if ( (bool) $translations === true ) {
-				get_post_meta( $menu_item->menu_item_parent, '_menu_item_object_id', true );
-				$orphans = $this->wpdb->get_results(
-					$this->get_page_orphan_sql(
-						array_keys( $translations ),
-						$menu_item->ID
-					)
-				);
+				$orphans = $this->orphan_map->take_orphans( (int) $menu_item->ID, array_keys( $translations ) );
 				if ( (bool) $orphans === true ) {
 					$trid = $this->post_translations->get_element_trid( $menu_item->ID );
 					foreach ( $orphans as $orphan ) {
 						$this->sitepress->set_element_language_details(
 							$orphan->element_id,
-							'post_nav_menu_item',
+							WPML_Menu_Item_Orphan_Map::MENU_ITEM_ELEMENT_TYPE,
 							$trid,
 							$orphan->language_code
 						);
@@ -271,13 +298,51 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 		return $changed;
 	}
 
-	/**
-	 * @param  int  $menu_id
-	 * @param bool $include_original
-	 *
-	 * @return bool|array
-	 */
+	private function preload_menu_item_translation_data( $items ) {
+		$item_ids        = array();
+		$ids_to_prefetch = array();
+
+		foreach ( $items as $item ) {
+			$item_ids[]        = (int) $item->ID;
+			$ids_to_prefetch[] = (int) $item->ID;
+			if ( 'post_type' === $item->type && $item->object_id ) {
+				$ids_to_prefetch[] = (int) $item->object_id;
+			}
+		}
+
+		$this->post_translations->prefetch_ids( $ids_to_prefetch );
+		$this->orphan_map->preload( $item_ids );
+		$this->fix_language_conflicts_once();
+	}
+
+	private function prime_translated_post_caches( $item, array $languages, array $item_translations ) {
+		$ids = array();
+
+		foreach ( $languages as $lang_code ) {
+			if ( ! empty( $item_translations[ $lang_code ] ) ) {
+				$ids[] = (int) $item_translations[ $lang_code ];
+			}
+		}
+
+		if ( 'post_type' === $item->object_type && ! empty( $item->object_id ) ) {
+			$object_translations = $this->post_translations->get_element_translations( (int) $item->object_id );
+			foreach ( $languages as $lang_code ) {
+				if ( ! empty( $object_translations[ $lang_code ] ) ) {
+					$ids[] = (int) $object_translations[ $lang_code ];
+				}
+			}
+		}
+
+		$ids = array_values( array_unique( array_filter( $ids ) ) );
+
+		if ( $ids && function_exists( '_prime_post_caches' ) ) {
+			_prime_post_caches( $ids, false, true );
+		}
+	}
+
 	function get_menu_translations( $menu_id, $include_original = false ) {
+		$wpdb = $this->wpdb;
+
 		$languages    = array_keys( $this->sitepress->get_active_languages() );
 		$translations = array();
 		foreach ( $languages as $lang_code ) {
@@ -285,13 +350,12 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 				$menu_translated_id = $this->term_translations->term_id_in( $menu_id, $lang_code );
 				$menu_data          = array();
 				if ( $menu_translated_id ) {
-					/** @var \stdClass $menu_object */
-					$menu_object  = $this->wpdb->get_row(
-						$this->wpdb->prepare(
+					$menu_object  = $wpdb->get_row(
+						$wpdb->prepare(
 							"
                         SELECT t.term_id, t.name
-                        FROM {$this->wpdb->terms} t
-                        JOIN {$this->wpdb->term_taxonomy} x
+                        FROM {$wpdb->terms} t
+                        JOIN {$wpdb->term_taxonomy} x
                         	ON t.term_id = t.term_id
                         WHERE t.term_id = %d
                         	AND x.taxonomy='nav_menu'
@@ -299,14 +363,16 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 							$menu_translated_id
 						)
 					);
-					$current_lang = $this->sitepress->get_current_language();
 					$this->sitepress->switch_lang( $lang_code, false );
-					$menu_data = array(
-						'id'    => $menu_object->term_id,
-						'name'  => $menu_object->name,
-						'items' => $this->get_menu_items( $menu_translated_id, false ),
-					);
-					$this->sitepress->switch_lang( $current_lang, false );
+					try {
+						$menu_data = array(
+							'id'    => $menu_object->term_id,
+							'name'  => $menu_object->name,
+							'items' => $this->get_menu_items( $menu_translated_id, false ),
+						);
+					} finally {
+						$this->sitepress->switch_lang();
+					}
 				}
 				$translations[ $lang_code ] = $menu_data;
 			}
@@ -321,12 +387,6 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 		return $menu ? $menu->name : false;
 	}
 
-	/**
-	 * @param int          $menu_id
-	 * @param string|false $language_code
-	 *
-	 * @return bool
-	 */
 	protected function get_translated_menu( $menu_id, $language_code = false ) {
 		$language_code = $language_code ? $language_code : $this->sitepress->get_default_language();
 		$menus         = $this->get_menu_translations( $menu_id, true );
@@ -334,18 +394,6 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 		return isset( $menus[ $language_code ] ) ? $menus[ $language_code ] : false;
 	}
 
-	/**
-	 * We need to register the string first in the default language
-	 * to avoid it being "auto-registered" in English
-	 *
-	 * @param string           $menu_name
-	 * @param WP_Post|stdClass $item
-	 * @param string           $lang
-	 * @param bool             $has_label_translation
-	 * @param bool             $has_url_translation
-	 *
-	 * @return array
-	 */
 	protected function icl_t_menu_item( $menu_name, $item, $lang, &$has_label_translation, &$has_url_translation ) {
 		$default_lang = $this->sitepress->get_default_language();
 		$label        = $item->post_title;
@@ -391,64 +439,26 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 		return array( $label, $url );
 	}
 
-	/**
-	 * @param object $item
-	 * @param string $lang_code
-	 *
-	 * @return int
-	 */
 	private function is_parent_not_translated( $item, $lang_code ) {
 
 		if ( $item->menu_item_parent > 0 ) {
 			$item_parent_object_id = get_post_meta( $item->menu_item_parent, '_menu_item_object_id', true );
 			$item_parent_object    = get_post_meta( $item->menu_item_parent, '_menu_item_object', true );
-			$parent_element_type   = $item_parent_object === 'custom' ? 'nav_menu_item' : $item_parent_object;
-			$parent_translated     = icl_object_id(
-				$item_parent_object_id,
-				$parent_element_type,
-				false,
-				$lang_code
-			);
+
+			if ( 'custom' === $item_parent_object ) {
+				return 0;
+			}
+
+			$parent_translated = icl_object_id( $item_parent_object_id, $item_parent_object, false, $lang_code );
+
+			if ( $parent_translated && post_type_exists( $item_parent_object ) && ! is_post_publicly_viewable( (int) $parent_translated ) ) {
+				$parent_translated = 0;
+			}
+
+			return $parent_translated ? 0 : 1;
 		}
 
-		return isset( $parent_translated ) && ! $parent_translated ? 1 : 0;
-	}
-
-	private function get_page_orphan_sql( $existing_languages, $menu_item_id ) {
-		$wpdb = &$this->wpdb;
-
-		return $wpdb->prepare(
-			"SELECT it.element_id, it.language_code
-			FROM {$wpdb->prefix}icl_translations it
-			JOIN {$wpdb->posts} pt
-				ON pt.ID = it.element_id
-					AND pt.post_type = 'nav_menu_item'
-					AND it.element_type = 'post_nav_menu_item'
-					AND it.language_code NOT IN (" . wpml_prepare_in( $existing_languages ) . ")
-			JOIN {$wpdb->prefix}icl_translations io
-				ON io.element_id = %d
-					AND io.element_type = 'post_nav_menu_item'
-					AND io.trid != it.trid
-			JOIN {$wpdb->posts} po
-				ON po.ID = io.element_id
-					AND po.post_type = 'nav_menu_item'
-			JOIN {$wpdb->postmeta} mo
-				ON mo.post_id = po.ID
-					AND mo.meta_key = '_menu_item_object_id'
-			JOIN {$wpdb->postmeta} mt
-				ON mt.post_id = pt.ID
-					AND mt.meta_key = '_menu_item_object_id'
-			JOIN {$wpdb->prefix}icl_translations page_t
-				ON mt.meta_value = page_t.element_id
-					AND page_t.element_type = 'post_page'
-			JOIN {$wpdb->prefix}icl_translations page_o
-				ON mo.meta_value = page_o.element_id
-					AND page_o.trid = page_t.trid
-			WHERE ( SELECT COUNT(count.element_id)
-					FROM {$wpdb->prefix}icl_translations count
-					WHERE count.trid = it.trid ) = 1",
-			$menu_item_id
-		);
+		return 0;
 	}
 
 	private function maybe_reload_post_item( $translated_object_id, $item_translations, $item, $lang_code ) {
@@ -464,20 +474,8 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 		return array( $translated_object_id, $item_translations );
 	}
 
-	private function get_menu_item_depth( $item_id ) {
-		$depth = 0;
-		do {
-			$object_parent = get_post_meta( $item_id, '_menu_item_menu_item_parent', true );
-			if ( $object_parent == $item_id ) {
-				$depth = 0;
-				break;
-			} elseif ( $object_parent ) {
-				$item_id = $object_parent;
-				$depth ++;
-			}
-		} while ( $object_parent > 0 );
-
-		return $depth;
+	private function get_menu_item_depth( $item_id, $menu_id = 0 ) {
+		return WPML_Menu_Hierarchy_Guard::depth_from_meta( $item_id, $menu_id );
 	}
 
 	private function st_actions( $lang_code,
@@ -492,28 +490,32 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 			require WPML_ST_PATH . '/inc/functions.php';
 		}
 
+		$label_changed = false;
+		$url_changed   = false;
+
 		$this->sitepress->switch_lang( $lang_code );
 
-		$label_changed             = false;
-		$url_changed               = false;
-		$menu_name                 = $this->get_menu_name( $menu_id );
-		$translated_object_title_t = '';
-		$translated_object_url_t   = '';
-		$translated_menu_id        = $this->term_translations->term_id_in( $menu_id, $lang_code );
+		try {
+			$menu_name                 = $this->get_menu_name( $menu_id );
+			$translated_object_title_t = '';
+			$translated_object_url_t   = '';
+			$translated_menu_id        = $this->term_translations->term_id_in( $menu_id, $lang_code );
 
-		if ( function_exists( 'icl_t' ) ) {
-			list( $translated_object_title_t, $translated_object_url_t ) = $this->icl_t_menu_item(
-				$menu_name,
-				$item,
-				$lang_code,
-				$icl_st_label_exists,
-				$icl_st_url_exists
-			);
-		} else {
-			$translated_object_title_t = $item->post_title . ' @' . $lang_code;
-			$translated_object_url_t   = $item->url;
+			if ( function_exists( 'icl_t' ) ) {
+				list( $translated_object_title_t, $translated_object_url_t ) = $this->icl_t_menu_item(
+					$menu_name,
+					$item,
+					$lang_code,
+					$icl_st_label_exists,
+					$icl_st_url_exists
+				);
+			} else {
+				$translated_object_title_t = $item->post_title . ' @' . $lang_code;
+				$translated_object_url_t   = $item->url;
+			}
+		} finally {
+			$this->sitepress->switch_lang();
 		}
-		$this->sitepress->switch_lang();
 
 		if ( $translated_object_id ) {
 			$translated_object       = get_post( $translated_object_id );
@@ -531,19 +533,17 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 		);
 	}
 
-	/**
-	 * @param array<string,int> $item_translations
-	 * @param int               $menu_id
-	 */
 	private function fix_assignment_to_menu( $item_translations, $menu_id ) {
+		$wpdb = $this->wpdb;
+
 		foreach ( $item_translations as $lang_code => $item_id ) {
 			$correct_menu_id = $this->term_translations->term_id_in( $menu_id, $lang_code );
 			if ( $correct_menu_id ) {
-				$ttid_trans = $this->wpdb->get_var(
-					$this->wpdb->prepare(
+				$ttid_trans = $wpdb->get_var(
+					$wpdb->prepare(
 						"	SELECT tt.term_taxonomy_id
-																			FROM {$this->wpdb->term_taxonomy} tt
-																			LEFT JOIN {$this->wpdb->term_relationships} tr
+																			FROM {$wpdb->term_taxonomy} tt
+																			LEFT JOIN {$wpdb->term_relationships} tr
 																				ON tt.term_taxonomy_id = tr.term_taxonomy_id
 																					AND tr.object_id = %d
 																			WHERE tt.taxonomy = 'nav_menu'
@@ -567,21 +567,27 @@ abstract class WPML_Menu_Sync_Functionality extends WPML_Full_Translation_API {
 		}
 	}
 
-	/**
-	 * Removes potentially mis-assigned menu items from their menu, whose language differs from that of their
-	 * associated menu.
-	 */
+	private function fix_language_conflicts_once() {
+		if ( $this->language_conflicts_fixed ) {
+			return;
+		}
+		$this->language_conflicts_fixed = true;
+		$this->fix_language_conflicts();
+	}
+
 	private function fix_language_conflicts() {
+		$wpdb = $this->wpdb;
+
 		$wrong_items = $this->wpdb->get_results(
 			"	SELECT r.object_id, t.term_taxonomy_id
-													FROM {$this->wpdb->term_relationships} r
-													  JOIN {$this->wpdb->prefix}icl_translations ip
-													  JOIN {$this->wpdb->posts} p
+													FROM {$wpdb->term_relationships} r
+													  JOIN {$wpdb->prefix}icl_translations ip
+													  JOIN {$wpdb->posts} p
 														ON ip.element_type = CONCAT('post_', p.post_type)
 														   AND ip.element_id = p.ID
 														   AND ip.element_id = r.object_id
-													  JOIN {$this->wpdb->prefix}icl_translations it
-													  JOIN {$this->wpdb->term_taxonomy} t
+													  JOIN {$wpdb->prefix}icl_translations it
+													  JOIN {$wpdb->term_taxonomy} t
 														ON it.element_type = CONCAT('tax_', t.taxonomy)
 														   AND it.element_id = t.term_taxonomy_id
 														   AND it.element_id = r.term_taxonomy_id

@@ -1,0 +1,368 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "pt_PT"
+         },
+         "Error in updating since dates for types.": [
+            "Erro ao atualizar as datas \"desde\" para os tipos."
+         ],
+         "Error in fetching untranslated types count": [
+            "Erro ao obter a contagem de tipos não traduzidos"
+         ],
+         "Error persisting the offered type since dates.": [
+            "Erro ao persistir as datas \"desde\" do tipo oferecido."
+         ],
+         "Error in updating since date for type.": [
+            "Erro ao atualizar a data \"desde\" para o tipo."
+         ],
+         "Content to translate": [
+            "Conteúdo para traduzir"
+         ],
+         "Content to Translate": [
+            "Conteúdo para traduzir"
+         ],
+         "Content type": [
+            "Tipo de conteúdo"
+         ],
+         "Include": [
+            "Incluir"
+         ],
+         "These settings can be changed on the Translations dashboard.": [
+            "Estas definições podem ser alteradas no Painel de Tradução."
+         ],
+         "Items": [
+            "Itens"
+         ],
+         "Word count": [
+            "Contagem de palavras"
+         ],
+         "Loading content to translate": [
+            "A carregar conteúdo para traduzir"
+         ],
+         "Words to translate": [
+            "Palavras para traduzir"
+         ],
+         "Calculating… <s>less than 1 minute left.</s>": [
+            "A calcular… <s>falta menos de 1 minuto.</s>"
+         ],
+         "Calculating… <s>%d minute left.</s>": [
+            "A calcular… <s>falta %d minuto.</s>",
+            "A calcular… <s>faltam %d minutos.</s>"
+         ],
+         "Words needed to translate your existing content into the new languages: %s.": [
+            "Palavras necessárias para traduzir o seu conteúdo existente para os novos idiomas: %s."
+         ],
+         "Words needed to translate your existing content into the new language.": [
+            "Palavras necessárias para traduzir o seu conteúdo existente para o novo idioma."
+         ],
+         "Based on the remaining untranslated content across all languages.": [
+            "Com base no conteúdo não traduzido restante em todos os idiomas."
+         ],
+         "Estimated from the selected source volume multiplied by the target languages.": [
+            "Estimado a partir do volume de origem selecionado multiplicado pelos idiomas de destino."
+         ],
+         "%1$s source words × %2$s language": [
+            "%1$s palavras de origem × %2$s idioma",
+            "%1$s palavras de origem × %2$s idiomas"
+         ],
+         "Already translated content": [
+            "Conteúdo já traduzido"
+         ],
+         "Words required:": [
+            "Palavras necessárias:"
+         ],
+         "Words": [
+            "Palavras"
+         ],
+         "Documents you translated yourself stay exactly as you made them": [
+            "Os documentos que traduziu pessoalmente permanecem exatamente como os criou"
+         ],
+         "(%d document)": [
+            "(%d documento)",
+            "(%d documentos)"
+         ],
+         "View documents": [
+            "Ver documentos"
+         ],
+         "%1$d of %2$d language will be translated automatically": [
+            "%1$d de %2$d idioma será traduzido automaticamente",
+            "%1$d de %2$d idiomas serão traduzidos automaticamente"
+         ],
+         "Translated to %d language": [
+            "Traduzido para %d idioma",
+            "Traduzido para %d idiomas"
+         ],
+         "Add/remove languages": [
+            "Adicionar/remover idiomas"
+         ],
+         "Percentages show how much of your selected content is already translated in each language.": [
+            "As percentagens mostram quanto do seu conteúdo selecionado já está traduzido em cada idioma."
+         ],
+         "Note: Content already translated into all languages is not included in this calculation.": [
+            "Nota: O conteúdo já traduzido para todos os idiomas não está incluído neste cálculo."
+         ],
+         "Same as default": [
+            "Igual ao predefinido"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "A tradução automática não está disponível entre %1$s e %2$s porque são reconhecidos como o mesmo idioma."
+         ],
+         "Translation paused": [
+            "Tradução em pausa"
+         ],
+         "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor.": [
+            "O WPML não está a criar novas traduções em %s, pelo que este idioma não está incluído. Para o incluir, utilize “Retomar tradução” na linha do idioma no editor de Idiomas."
+         ],
+         "Manual only": [
+            "Apenas manual"
+         ],
+         "%s has no automatic-translation support. You can translate this content manually.": [
+            "%s não tem suporte de tradução automática. Pode traduzir este conteúdo manualmente."
+         ],
+         "Adjusted word rate (%s)": [
+            "Taxa de palavras ajustada (%s)"
+         ],
+         "This adjusted word rate applies to legacy translation engines.": [
+            "Esta taxa de palavras ajustada aplica-se a motores de tradução legados."
+         ],
+         "Translation engine: <strong>%s</strong>": [
+            "Motor de tradução: <strong>%s</strong>"
+         ],
+         "Legacy engine": [
+            "Motor legado"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Preços legados aplicados. O %s é um motor de tradução legado, não recomendado para novos sites e será descontinuado. Os sites existentes mantêm uma taxa de palavras ajustada para o mesmo."
+         ],
+         "Switch to PTC": [
+            "Mudar para PTC"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
+            "Isto é o que é necessário hoje para traduzir o seu conteúdo atual. Não inclui alguns textos adicionados por outros plugins, como formulários ou sliders, que são contabilizados após a conclusão da configuração. As strings do site do seu tema e plugins também são contabilizadas após a configuração e normalmente adicionam várias centenas de palavras. Depois disso, as edições são gratuitas. Só volta a pagar pelas palavras que adicionar."
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Isto é o que a tradução do seu conteúdo atual necessita hoje. Não inclui alguns textos adicionados por outros plugins, como formulários ou controlos de deslize, que são contabilizados após a conclusão da configuração. As strings do site do seu tema e plugins também são contabilizadas após a configuração e normalmente adicionam várias centenas de palavras. À taxa por palavra do %s; as alterações em páginas traduzidas são cobradas novamente."
+         ],
+         "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
+            "Isto é o que é necessário hoje para traduzir o seu conteúdo atual. Depois disso, as edições são gratuitas. Só volta a pagar pelas palavras que adicionar."
+         ],
+         "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Isto é o que a tradução do seu conteúdo atual necessita hoje. À taxa por palavra do %s; as alterações em páginas traduzidas são cobradas novamente."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
+            "Conta páginas, artigos e produtos com os respetivos campos personalizados, textos de construtores de páginas e textos de multimédia, bem como as categorias, etiquetas e atributos que utilizam."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
+            "Conta páginas, artigos e produtos com os respetivos campos personalizados, textos de construtores de páginas e textos de multimédia, as categorias, etiquetas e atributos que utilizam, e as strings do site. Um termo é contabilizado em cada item que o utiliza e uma vez individualmente, porque é enviado para tradução de ambas as formas."
+         ],
+         "Total items": [
+            "Total de itens"
+         ],
+         "Total source words": [
+            "Total de palavras de origem"
+         ],
+         "Previous": [
+            "Anterior"
+         ],
+         "Next": [
+            "Seguinte"
+         ],
+         "Showing %1$d–%2$d of %3$d types.": [
+            "A mostrar %1$d–%2$d de %3$d tipos."
+         ],
+         "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated.": [
+            "Todos os %1$s atuais estão traduzidos para todos os idiomas.<br>Novos %2$s ou edições serão traduzidos automaticamente."
+         ],
+         "All %s": [
+            "Todos os %s"
+         ],
+         "For translated types": [
+            "Para tipos traduzidos"
+         ],
+         "None": [
+            "Nenhum"
+         ],
+         "Since %s": [
+            "Desde %s"
+         ],
+         "Since specific date": [
+            "Desde uma data específica"
+         ],
+         "<b>Pay-As-You-Go</b> is active on this site.": [
+            "O <b>Pagamento por utilização</b> está ativo neste site."
+         ],
+         "<b>%s words</b> are on this site. Continue.": [
+            "Existem <b>%s palavras</b> neste site. Continuar."
+         ],
+         "Your site will be translated right after the setup.": [
+            "O seu site será traduzido logo após a configuração."
+         ],
+         "To use prepaid words, register WPML on this site.": [
+            "Para utilizar palavras pré-pagas, registe o WPML neste site."
+         ],
+         "Checking…": [
+            "A verificar…"
+         ],
+         "Retry": [
+            "Repetir"
+         ],
+         "We could not reach our translation system.": [
+            "Não foi possível contactar o nosso sistema de tradução."
+         ],
+         "This site is not registered with a WPML account, so prepaid words are not available.": [
+            "Este site não está registado com uma conta WPML, pelo que as palavras pré-pagas não estão disponíveis."
+         ],
+         "We could not read your WPML account.": [
+            "Não foi possível ler a sua conta WPML."
+         ],
+         "%s more words are needed to translate your site.": [
+            "São necessárias mais %s palavras para traduzir o seu site."
+         ],
+         "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>.": [
+            "Atribua palavras pré-pagas da sua conta WPML a este site para iniciar o <b>Translate Everything Automatically</b>."
+         ],
+         "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>.": [
+            "Atribua as palavras que já possui e compre as restantes, ou ative o <b>Pagamento por utilização</b>."
+         ],
+         "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
+            "Para iniciar o <b>Translate Everything Automatically</b>, ative o <b>Pagamento por utilização</b> ou compre palavras pré-pagas."
+         ],
+         "Select payment method": [
+            "Selecione o método de pagamento"
+         ],
+         "%1$sCheck pricing%2$s.": [
+            "%1$sConsultar preços%2$s."
+         ],
+         "Lowest cost per word": [
+            "Custo por palavra mais baixo"
+         ],
+         "Pay only for what you use": [
+            "Pague apenas pelo que utilizar"
+         ],
+         "Never run out. Translation never stops.": [
+            "Nunca fique sem palavras. A tradução nunca para."
+         ],
+         "The first 500 words each month are free": [
+            "As primeiras 500 palavras de cada mês são gratuitas"
+         ],
+         "Pay-As-You-Go": [
+            "Pagamento por utilização"
+         ],
+         "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate.": [
+            "Ative o <b>Pagamento por utilização</b> para traduzir automaticamente. O <b>Pagamento por utilização</b> cobra-lhe pelas palavras que traduz."
+         ],
+         "Activating <b>Pay-As-You-Go</b>…": [
+            "A ativar o <b>Pagamento por utilização</b>…"
+         ],
+         "Continue in the new tab": [
+            "Continuar no novo separador"
+         ],
+         "Activate <b>Pay-As-You-Go</b>": [
+            "Ativar <b>Pagamento por utilização</b>"
+         ],
+         "<b>Pay-As-You-Go</b> is not active yet.": [
+            "O <b>Pagamento por utilização</b> ainda não está ativo."
+         ],
+         "Refresh": [
+            "Atualizar"
+         ],
+         "Already using <b>Pay-As-You-Go</b> on another site?": [
+            "Já utiliza o <b>Pagamento por utilização</b> noutro site?"
+         ],
+         "Connect this site to it": [
+            "Ligar este site a essa conta"
+         ],
+         "Activate Pay-As-You-Go": [
+            "Ativar Pagamento por utilização"
+         ],
+         "Cancel": [
+            "Cancelar"
+         ],
+         "Connect your sites to share translation memory, glossary and word quota.": [
+            "Ligue os seus sites para partilhar a memória de tradução, o glossário e a quota de palavras."
+         ],
+         "Learn more": [
+            "Saiba mais"
+         ],
+         "Copy your migration code:": [
+            "Copie o seu código de migração:"
+         ],
+         "Loading…": [
+            "A carregar…"
+         ],
+         "Copied!": [
+            "Copiado!"
+         ],
+         "Log into a site with an active automatic translation account.": [
+            "Inicie sessão num site com uma conta de tradução automática ativa."
+         ],
+         "Go to \"WPML\" → \"Translation Dashboard\".": [
+            "Vá a “WPML” → “Painel de Tradução”."
+         ],
+         "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
+            "No separador “Payment & Maintenance”, vá a “Connected sites”."
+         ],
+         "Click \"Enter the connection key of another site\" to finish connecting your sites.": [
+            "Clique em “Enter the connection key of another site” para terminar a ligação dos seus sites."
+         ],
+         "Assign words": [
+            "Atribuir palavras"
+         ],
+         "Buy and assign words": [
+            "Comprar e atribuir palavras"
+         ],
+         "Refresh to assign words": [
+            "Atualizar para atribuir palavras"
+         ],
+         "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site.": [
+            "Compre um %1$spacote pré-pago%2$s com pelo menos %3$s%4$s palavras%5$s e atribua-as a este site."
+         ],
+         "This amount will cover translation of all your current content.": [
+            "Este montante cobrirá a tradução de todo o seu conteúdo atual."
+         ],
+         "Assign %1$s%2$s words%3$s to this site.": [
+            "Atribua %1$s%2$s palavras%3$s a este site."
+         ],
+         "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s.": [
+            "Atribua as suas %1$s%2$s palavras%3$s e compre mais %4$s%5$s%6$s."
+         ],
+         "Buy %1$s%2$s words%3$s for this site.": [
+            "Compre %1$s%2$s palavras%3$s para este site."
+         ],
+         "Assign at least %1$s%2$s words%3$s to this site to continue.": [
+            "Atribua pelo menos %1$s%2$s palavras%3$s a este site para continuar."
+         ],
+         "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount.": [
+            "Atribua palavras da sua conta WPML e compre um %1$spacote pré-pago%2$s adicional com pelo menos %3$s%4$s palavras%5$s para cobrir o montante restante."
+         ],
+         "Prepaid words": [
+            "Palavras pré-pagas"
+         ],
+         "There are %1$s%2$s words%3$s on your WPML account.": [
+            "Existem %1$s%2$s palavras%3$s na sua conta WPML."
+         ],
+         "There are %1$s%2$s available on your WPML account.%3$s": [
+            "Existem %1$s%2$s disponíveis na sua conta WPML.%3$s"
+         ],
+         "(Only the WPML account owner can do this.)": [
+            "(Apenas o proprietário da conta WPML pode fazer isto.)"
+         ],
+         "Checking for new words...": [
+            "A verificar novas palavras..."
+         ],
+         "Still not enough words. Refresh again in %d seconds.": [
+            "Ainda não há palavras suficientes. Atualize novamente em %d segundos."
+         ],
+         "Already assigned?": [
+            "Já atribuídas?"
+         ],
+         "Close modal": [
+            "Fechar janela"
+         ]
+      }
+   }
+}

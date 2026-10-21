@@ -2,19 +2,13 @@
 
 class WPML_ST_Package_Factory {
 
-	/** @var WPML_WP_Cache_Factory $cache_factory */
 	private $cache_factory;
 
-	public function __construct( WPML_WP_Cache_Factory $cache_factory = null ) {
+	public function __construct( ?WPML_WP_Cache_Factory $cache_factory = null ) {
 		$this->cache_factory = $cache_factory;
 		wp_cache_add_non_persistent_groups( __CLASS__ );
 	}
 
-	/**
-	 * @param \stdClass|\WPML_Package|array|int $package_data
-	 *
-	 * @return WPML_Package
-	 */
 	public function create( $package_data ) {
 		$cache_item = $this->get_cache_item( $package_data );
 
@@ -22,14 +16,23 @@ class WPML_ST_Package_Factory {
 			$cache_item->set( new WPML_Package( $package_data ) );
 		}
 
-		return $cache_item->get();
+		$package = $cache_item->get();
+
+		return $package instanceof WPML_Package ? $package : new WPML_Package( $package_data );
 	}
 
-	/**
-	 * @param array|int|stdClass|WPML_Package $package_data
-	 *
-	 * @return WPML_WP_Cache_Item
-	 */
+	public function create_from_row( $row ) {
+		$cache_item = $this->get_cache_item( (string) $row->ID );
+
+		if ( ! $cache_item->exists() ) {
+			$cache_item->set( WPML_Package::from_row( $row ) );
+		}
+
+		$package = $cache_item->get();
+
+		return $package instanceof WPML_Package ? $package : WPML_Package::from_row( $row );
+	}
+
 	private function get_cache_item( $package_data ) {
 		if ( ! $this->cache_factory ) {
 			$this->cache_factory = new WPML_WP_Cache_Factory();

@@ -4,34 +4,10 @@ namespace OTGS\Installer\FP;
 
 use OTGS\Installer\Collect\Support\Macroable;
 
-/**
- * @method static callable|bool not( mixed ...$v ) - Curried :: mixed->bool
- * @method static callable|bool isNotNull( mixed ...$v ) - Curried :: mixed->bool
- * @method static callable|mixed ifElse( ...$predicate, ...$first, ...$second, ...$data ) - Curried :: ( a->bool )->callable->callable->callable
- * @method static callable when( ...$predicate, ...$fn ) - Curried :: ( a->bool )->callable->callable
- * @method static callable unless( ...$predicate, ...$fn ) - Curried :: ( a->bool )->callable->callable
- * @method static callable cond( ...$conditions, ...$fn ) - Curried :: [( a->bool ), callable]->callable
- * @method static callable both( ...$a, ...$b, ...$data ) - Curried :: ( a → bool ) → ( a → bool ) → a → bool
- * @method static callable|bool allPass( ...$predicates, ...$data ) - Curried :: [( *… → bool )] → ( *… → bool )
- * @method static callable|bool anyPass( ...$predicates, ...$data ) - Curried :: [( *… → bool )] → ( *… → bool )
- * @method static callable complement( ...$fn ) - Curried :: ( *… → * ) → ( *… → bool )
- * @method static callable|mixed defaultTo( ...$a, ...$b ) - Curried :: a → b → a | b
- * @method static callable|bool either( ...$a, ...$b ) - Curried :: ( *… → bool ) → ( *… → bool ) → ( *… → bool )
- * @method static callable|mixed until ( ...$predicate, ...$transform, ...$data ) - Curried :: ( a → bool ) → ( a → a ) → a → a
- * @method static callable|bool propSatisfies( ...$predicate, ...$prop, ...$data ) - Curried :: ( a → bool ) → String → [String => a] → bool
- * @method static callable|bool isArray ( ...$a ) - Curried :: a → bool
- * @method static callable|bool isMappable ( ...$a ) - Curried :: a → bool
- * @method static callable|bool isEmpty( ...$a ) - Curried:: a → bool
- * @method static callable|mixed firstSatisfying( ...$predicate, ...$functions, ...$data ) - Curried:: callable->callable[]->mixed->mixed
- * @method static callable|bool isTruthy( ...$data ) - Curried:: mixed->bool
- */
 class Logic {
 
 	use Macroable;
 
-	/**
-	 * @return void
-	 */
 	public static function init() {
 		self::macro( 'not', curryN( 1, function ( $v ) { return ! Fns::value( $v ); } ) );
 		self::macro( 'isNotNull', curryN( 1, pipe( 'is_null', self::not() ) ) );

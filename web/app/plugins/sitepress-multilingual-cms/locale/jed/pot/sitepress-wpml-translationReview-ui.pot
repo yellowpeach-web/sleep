@@ -4,10 +4,12 @@ msgstr ""
 "X-Generator: babel-plugin-makepot\n"
 
 #: src/js/translationReview/components/AcceptedMessage.js:8
+#. Shown beside a tick on the review screen after a translation has been accepted; an adjective describing the translation, not the verb.
 msgid "Accepted"
 msgstr ""
 
 #: src/js/translationReview/components/AcceptedText.js:8
+#. Confirmation shown for a moment after a translation has been approved on the review screen; an adjective describing the translation, not a command.
 msgid "Approved!"
 msgstr ""
 
@@ -17,32 +19,32 @@ msgid "Loading the next translation for review..."
 msgstr ""
 
 #: src/js/translationReview/components/BackButton.js:7
+#. Button label that goes to the step or screen before this one: verb, imperative, not the noun "the back".
 msgid "Back"
 msgstr ""
 
-#: src/js/translationReview/components/ContinueReviewToggle.js:17
+#: src/js/translationReview/components/ContinueReviewToggle.js:19
 msgid ""
 "Turn off to not automatically load the next translation after finishing "
 "this review."
 msgstr ""
 
-#: src/js/translationReview/components/ContinueReviewToggle.js:18
+#: src/js/translationReview/components/ContinueReviewToggle.js:20
 msgid "Turn on to automatically load the next translation after finishing this  ."
 msgstr ""
 
 #: src/js/translationReview/components/EditButton.js:10
+#. Button label that opens a translation for editing: verb, imperative, not the noun "an edit".
 msgid "Edit"
 msgstr ""
 
 #: src/js/translationReview/components/EditButton.js:9
+#. Button on the review screen that opens the translation for editing; verb, imperative.
 msgid "Edit translation"
 msgstr ""
 
-#: src/js/translationReview/components/InProgressText.js:8
-msgid "Please wait, applying translation.."
-msgstr ""
-
 #: src/js/translationReview/components/NextTranslationReview.js:22
+#. Link on the review screen that opens the next translation waiting to be reviewed.
 msgid "Next review"
 msgstr ""
 
@@ -55,13 +57,18 @@ msgid "Accept this translation"
 msgstr ""
 
 #: src/js/translationReview/components/PublishedText.js:8
+#. Confirmation shown for a moment after a reviewed translation has been published; an adjective describing the translation, not a command.
 msgid "Published!"
 msgstr ""
 
-#: src/js/translationReview/hooks/useATESync.js:36
-msgid "Someone is already reviewing this translation. Please try again later."
+#: src/js/updateTranslationFrontend/components/InProgressText.js:8
+msgid "Please wait, applying translation.."
 msgstr ""
 
-#: src/js/translationReview/store.js:29
+#: src/js/updateTranslationFrontend/store.js:29
 msgid "There was an error in applying translation."
+msgstr ""
+
+#: src/js/updateTranslationFrontend/useATESync.js:38
+msgid "Someone is already reviewing this translation. Please try again later."
 msgstr ""

@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Class WPML_Term_Hierarchy_Duplication
- *
- * @package    wpml-core
- * @subpackage taxonomy-term-translation
- */
 class WPML_Term_Hierarchy_Duplication extends WPML_WPDB_And_SP_User {
 
 	public function duplicates_require_sync( $post_ids, $duplicates_only = true ) {
@@ -15,7 +9,7 @@ class WPML_Term_Hierarchy_Duplication extends WPML_WPDB_And_SP_User {
 				unset( $taxonomies[ $key ] );
 			}
 		}
-		if ( (bool) $post_ids === true ) {
+		if ( (bool) $post_ids === true && ! empty( $taxonomies ) ) {
 			$need_sync_taxonomies = $duplicates_only === true
 				? $this->get_need_sync_new_dupl( $post_ids, $taxonomies )
 				: $this->get_need_sync_all_terms( $taxonomies, $post_ids );
@@ -62,15 +56,21 @@ class WPML_Term_Hierarchy_Duplication extends WPML_WPDB_And_SP_User {
 
 	private function get_need_sync_all_terms( $translated_taxonomies, $post_ids ) {
 		$hierarchy_sync_helper = wpml_get_hierarchy_sync_helper( 'term' );
-		$post_ids_in           = wpml_prepare_in( (array) $post_ids, '%d' );
-		$taxonomies_in         = wpml_prepare_in( $translated_taxonomies );
+		$wpdb                  = $this->wpdb;
 
-		$this->wpdb->get_col(
-			"SELECT DISTINCT tt.taxonomy
-						 FROM {$this->wpdb->term_taxonomy} tt
-						 JOIN {$this->wpdb->term_relationships} tr
+		$postIdList   = array_map( 'intval', array_values( (array) $post_ids ) );
+		$taxonomyList = array_values( (array) $translated_taxonomies );
+
+		$wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT DISTINCT tt.taxonomy
+						 FROM {$wpdb->term_taxonomy} tt
+						 JOIN {$wpdb->term_relationships} tr
 						  ON tt.term_taxonomy_id = tr.term_taxonomy_id
-						 WHERE tr.object_id IN ({$post_ids_in}) AND tt.taxonomy IN ({$taxonomies_in})"
+						 WHERE tr.object_id IN (" . implode( ', ', array_fill( 0, count( $postIdList ), '%d' ) ) . ")
+						   AND tt.taxonomy IN (" . implode( ', ', array_fill( 0, count( $taxonomyList ), '%s' ) ) . ')',
+				...array_merge( $postIdList, $taxonomyList )
+			)
 		);
 
 		foreach ( $translated_taxonomies as $key => $tax ) {
@@ -91,37 +91,49 @@ class WPML_Term_Hierarchy_Duplication extends WPML_WPDB_And_SP_User {
 			return array();
 		}
 
-		$duplicate_ids_in = wpml_prepare_in( $duplicate_ids, '%d' );
-		$taxonomies_in    = wpml_prepare_in( $taxonomies );
-		$terms            = $this->wpdb->get_results(
-			"SELECT tt.term_taxonomy_id, tt.taxonomy
-			 FROM {$this->wpdb->term_taxonomy} tt
-			 JOIN {$this->wpdb->term_relationships} tr
+		$wpdb = $this->wpdb;
+
+		$duplicateIdList = array_map( 'intval', array_values( (array) $duplicate_ids ) );
+		$taxonomyList    = array_values( (array) $taxonomies );
+
+		$terms = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT tt.term_taxonomy_id, tt.taxonomy
+			 FROM {$wpdb->term_taxonomy} tt
+			 JOIN {$wpdb->term_relationships} tr
 				ON tt.term_taxonomy_id = tr.term_taxonomy_id
-			 JOIN {$this->wpdb->postmeta} pm
+			 JOIN {$wpdb->postmeta} pm
 			    ON pm.post_id = tr.object_id
-			 JOIN {$this->wpdb->terms} t_duplicate
+			 JOIN {$wpdb->terms} t_duplicate
 			    ON t_duplicate.term_id = tt.term_id
-			 JOIN  {$this->wpdb->terms} t_original
+			 JOIN  {$wpdb->terms} t_original
 			    ON t_original.name = t_duplicate.name
-			 JOIN {$this->wpdb->term_taxonomy} tt_master
+			 JOIN {$wpdb->term_taxonomy} tt_master
 			    ON tt_master.term_id = t_original.term_id
-			 JOIN {$this->wpdb->term_relationships} tr_master
+			 JOIN {$wpdb->term_relationships} tr_master
 			    ON tt_master.term_taxonomy_id = tr_master.term_taxonomy_id
-			 LEFT JOIN {$this->wpdb->term_relationships} tr_other
+			 LEFT JOIN {$wpdb->term_relationships} tr_other
 			    ON tt.term_taxonomy_id = tr_other.term_taxonomy_id
 			      AND tr_other.object_id != tr.object_id
-			      AND tr_other.object_id NOT IN ({$duplicate_ids_in})
-		      LEFT JOIN {$this->wpdb->postmeta} pm_other
+			      AND tr_other.object_id NOT IN (" . implode( ', ', array_fill( 0, count( $duplicateIdList ), '%d' ) ) . ")
+		      LEFT JOIN {$wpdb->postmeta} pm_other
 		        ON pm_other.post_id = tr_other.object_id
 		          AND NOT (pm_other.meta_key = '_icl_lang_duplicate_of'
-		                    AND  pm_other.meta_value IN ({$duplicate_ids_in}))
+		                    AND  pm_other.meta_value IN (" . implode( ', ', array_fill( 0, count( $duplicateIdList ), '%d' ) ) . "))
 		     WHERE pm.meta_key = '_icl_lang_duplicate_of'
 		        AND tr_other.object_id IS NULL
 		        AND pm_other.post_id IS NULL
-		        AND pm.meta_value IN ({$duplicate_ids_in})
-		        AND tr_master.object_id IN ({$duplicate_ids_in})
-		        AND tt.taxonomy IN ({$taxonomies_in})"
+		        AND pm.meta_value IN (" . implode( ', ', array_fill( 0, count( $duplicateIdList ), '%d' ) ) . ")
+		        AND tr_master.object_id IN (" . implode( ', ', array_fill( 0, count( $duplicateIdList ), '%d' ) ) . ")
+		        AND tt.taxonomy IN (" . implode( ', ', array_fill( 0, count( $taxonomyList ), '%s' ) ) . ')',
+				...array_merge(
+					$duplicateIdList,
+					$duplicateIdList,
+					$duplicateIdList,
+					$duplicateIdList,
+					$taxonomyList
+				)
+			)
 		);
 
 		return $terms;

@@ -4,20 +4,12 @@ namespace WPML\TM\TranslationProxy\Services\Project;
 
 class Manager {
 
-	/** @var \WPML_TP_Project_API */
 	private $projectApi;
 
-	/** @var Storage */
 	private $projectStorage;
 
-	/** @var SiteDetails */
 	private $siteDetails;
 
-	/**
-	 * @param \WPML_TP_Project_API $projectApi
-	 * @param Storage              $projectStorage
-	 * @param SiteDetails          $siteDetails
-	 */
 	public function __construct(
 		\WPML_TP_Project_API $projectApi,
 		Storage $projectStorage,
@@ -28,13 +20,9 @@ class Manager {
 		$this->siteDetails    = $siteDetails;
 	}
 
-	/**
-	 * @param \stdClass $service
-	 *
-	 * @return Project
-	 * @throws \WPML_TP_API_Exception
-	 */
 	public function create( \stdClass $service ) {
+		$this->assertSettingsAreWritable();
+
 		$project = $this->projectStorage->getByService( $service ) ?: $this->fromTranslationProxy( $service );
 
 		$project->extraFields = $this->projectApi->get_extra_fields( $project );
@@ -45,14 +33,9 @@ class Manager {
 		return $project;
 	}
 
-	/**
-	 * @param \stdClass $service
-	 * @param \stdClass $credentials
-	 *
-	 * @return Project|null
-	 * @throws \WPML_TP_API_Exception
-	 */
 	public function updateCredentials( \stdClass $service, \stdClass $credentials ) {
+		$this->assertSettingsAreWritable();
+
 		$project = $this->projectStorage->getByService( $service );
 		if ( ! $project ) {
 			throw new \RuntimeException( 'Project does not exist' );
@@ -60,33 +43,32 @@ class Manager {
 		$this->projectApi->update_project_credentials( $project, $credentials );
 
 		$project->extraFields = $this->projectApi->get_extra_fields( $project );
-		$this->projectStorage->save( $this->createServiceWithNewCredentials( $service, $credentials ), $project );
+		$updatedService       = $this->createServiceWithNewCredentials( $service, $credentials );
+		$this->projectStorage->save( $updatedService, $project );
+
+		do_action( 'wpml_tp_project_created', $updatedService, $project, $this->projectStorage->getProjects()->toArray() );
 
 		return $project;
 	}
 
-	/**
-	 * @param \stdClass $service
-	 *
-	 * @return Project
-	 * @throws \WPML_TP_API_Exception
-	 */
 	private function fromTranslationProxy( \stdClass $service ) {
 		$response = $this->projectApi->create_project( $service, $this->siteDetails );
 
 		return Project::fromResponse( $response->project );
 	}
 
-	/**
-	 * @param \stdClass $service
-	 * @param \stdClass $credentials
-	 *
-	 * @return \stdClass
-	 */
 	private function createServiceWithNewCredentials( \stdClass $service, \stdClass $credentials ) {
 		$updatedService                     = clone $service;
 		$updatedService->custom_fields_data = $credentials;
 
 		return $updatedService;
+	}
+
+	private function assertSettingsAreWritable() {
+		if ( \WPML_Settings_Failsafe_Loader::isUnrecoverable() ) {
+			throw new \RuntimeException(
+				'WPML cannot create or reconnect a Translation Proxy project while its settings are unrecoverable.'
+			);
+		}
 	}
 }

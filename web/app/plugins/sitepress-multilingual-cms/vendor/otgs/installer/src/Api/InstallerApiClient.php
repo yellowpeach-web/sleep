@@ -9,32 +9,14 @@ use OTGS_Installer_Log;
 use OTGS_Installer_Logger_Storage;
 
 class InstallerApiClient {
-	/**
-	 * @var Client
-	 */
 	private $client;
 
-	/**
-	 * @var SubscriptionEndpoint
-	 */
 	private $subscription;
 
-	/**
-	 * @var ProductBucketUrlEndpoint
-	 */
 	private $productBucketUrl;
 
-	/**
-	 * @var OTGS_Installer_Logger_Storage
-	 */
 	private $loggerStorage;
 
-	/**
-	 * @param OTGS_Installer_Logger_Storage $loggerStorage
-	 * @param Client $client
-	 * @param SubscriptionEndpoint $subscription
-	 * @param ProductBucketUrlEndpoint $productBucketUrl
-	 */
 	public function __construct( OTGS_Installer_Logger_Storage $loggerStorage, Client $client, SubscriptionEndpoint $subscription, ProductBucketUrlEndpoint $productBucketUrl ) {
 		$this->loggerStorage           = $loggerStorage;
 		$this->client           = $client;
@@ -42,12 +24,6 @@ class InstallerApiClient {
 		$this->productBucketUrl = $productBucketUrl;
 	}
 
-	/**
-	 * @param string $siteKey
-	 * @param string $source
-	 *
-	 * @throws \OTGS_Installer_Fetch_Subscription_Exception
-	 */
 	public function fetchSubscription( $siteKey, $source ) {
 		$requestParams = $this->subscription->prepareRequest( $siteKey, $source );
 		try {
@@ -55,14 +31,10 @@ class InstallerApiClient {
 
 			return $this->subscription->parseResponse( $response );
 		} catch ( \Exception $exception ) {
-			throw new \OTGS_Installer_Fetch_Subscription_Exception( $exception->getMessage() );
+			throw new \OTGS_Installer_Fetch_Subscription_Exception( $exception->getMessage(), 0, $exception );
 		}
 	}
 
-	/**
-	 * @param string $siteKey
-	 *
-	 */
 	public function fetchProductUrl( $siteKey ) {
 		$requestParams = $this->productBucketUrl->prepareRequest( $siteKey );
 		try {

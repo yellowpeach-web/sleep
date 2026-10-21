@@ -3,7 +3,9 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "he_IL"
          },
          "Advanced": [
             "מתקדם"
@@ -12,37 +14,43 @@
             "עוגן HTML"
          ],
          "Add a shortcut to this block when loading the page using the “#anchor” URL.": [
-            "הוסף קיצור דרך לבלוק זה בעת טעינת הדף באמצעות כתובת URL “#anchor”."
+            "הוסף קיצור דרך לבלוק זה בעת טעינת העמוד באמצעות כתובת ה-URL ”#anchor“."
          ],
          "Additional CSS class(es)": [
             "מחלקות CSS נוספות"
          ],
          "Separate multiple classes with spaces.": [
-            "הפרד בין מחלקות באמצעות רווחים."
+            "הפרד מחלקות מרובות באמצעות רווחים."
          ],
          "Color": [
             "צבע"
          ],
+         "px": [
+            "px"
+         ],
+         "%": [
+            "%"
+         ],
          "Dimensions": [
-            "מידות"
+            "ממדים"
          ],
          "BLOCK": [
             "בלוק"
          ],
          "Block margin": [
-            "שולי בלוק"
+            "שולי הבלוק (Margin)"
          ],
          "Block padding": [
-            "ריפוד בלוק"
+            "ריווח הבלוק (Padding)"
          ],
          "LANGUAGE": [
             "שפה"
          ],
          "Language spacing": [
-            "ריווח שפה"
+            "מרווח בין שפות"
          ],
          "Language padding": [
-            "ריפוד שפה"
+            "ריווח שפה (Padding)"
          ],
          "Display": [
             "תצוגה"
@@ -69,10 +77,16 @@
             "גובה"
          ],
          "Spacing": [
-            "ריווח"
+            "מרווח"
+         ],
+         "Switch to %s": [
+            "עבור אל %s"
+         ],
+         "Available languages": [
+            "שפות זמינות"
          ],
          "Allow wrapping to multiple lines": [
-            "אפשר גלישה למספר שורות"
+            "אפשר גלישת טקסט לשורות מרובות"
          ],
          "Open on click": [
             "פתח בלחיצה"
@@ -88,6 +102,12 @@
          ],
          "Orientation": [
             "כיוון"
+         ],
+         "Language Switcher": [
+            "בורר שפות"
+         ],
+         "Language switcher, press tab to navigate to other languages": [
+            "בורר שפות, לחץ על Tab כדי לנווט לשפות אחרות"
          ],
          "Typography": [
             "טיפוגרפיה"
@@ -114,16 +134,16 @@
             "קוד"
          ],
          "Justify items left": [
-            "יישר פריטים לשמאל"
+            "יישור פריטים לשמאל"
          ],
          "Justify items center": [
-            "יישר פריטים למרכז"
+            "יישור פריטים למרכז"
          ],
          "Justify items right": [
-            "יישר פריטים לימין"
+            "יישור פריטים לימין"
          ],
          "Justify items space between": [
-            "יישר רווח בין פריטים"
+            "יישור פריטים עם מרווח ביניהם"
          ],
          "Horizontal": [
             "אופקי"
@@ -141,25 +161,28 @@
             "גדול"
          ],
          "X-Large": [
-            "גדול במיוחד"
+            "גדול מאוד"
+         ],
+         "Ab": [
+            "אב"
+         ],
+         "AB": [
+            "אב"
+         ],
+         "ab": [
+            "אב"
          ],
          "Small": [
             "קטן"
          ],
          "Displays the WPML Language Switcher.": [
-            "מציג את מחליף השפה של WPML."
-         ],
-         "Language Switcher": [
-            "מעביר שפה"
+            "מציג את בורר השפות של WPML."
          ],
          "displays the WPML Language Switcher": [
-            "מציג את מחליף השפה של WPML"
-         ],
-         "Displays the WPML Language Switcher. <br/> Learn <a>how to translate this block</a>.": [
-            "מציג את מחליף השפה של WPML. <br/> למד <a>כיצד לתרגם בלוק זה</a>."
+            "מציג את בורר השפות של WPML"
          ],
          "Navigation Language Switcher": [
-            "מחליף שפה בניווט"
+            "בורר שפות לתפריט ניווט"
          ],
          "Reset all": [
             "אפס הכל"

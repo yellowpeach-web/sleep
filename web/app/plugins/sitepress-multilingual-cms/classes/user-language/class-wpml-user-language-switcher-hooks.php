@@ -2,35 +2,27 @@
 
 use WPML\API\Sanitize;
 
-/**
- * @package    wpml-core
- * @subpackage wpml-user-language
- */
 class WPML_User_Language_Switcher_Hooks {
 
 	private $nonce_name = 'wpml_user_language_switcher';
 
-	/**
-	 * @var WPML_User_Language_Switcher_UI
-	 */
 	private $user_language_switcher_ui;
-	/**
-	 * @var WPML_User_Language_Switcher
-	 */
 	private $user_language_switcher;
 
-	/**
-	 * @param WPML_User_Language_Switcher $WPML_User_Language_Switcher
-	 * @param WPML_User_Language_Switcher_UI $WPML_User_Language_Switcher_UI
-	 */
 	public function __construct( &$WPML_User_Language_Switcher, &$WPML_User_Language_Switcher_UI ) {
 
 		$this->user_language_switcher    = &$WPML_User_Language_Switcher;
 		$this->user_language_switcher_ui = &$WPML_User_Language_Switcher_UI;
 
 		add_action( 'wpml_user_language_switcher', array( $this, 'language_switcher_action' ), 10, 1 );
-		add_action( 'wp_ajax_wpml_user_language_switcher_form_ajax', array( $this, 'language_switcher_form_ajax_callback' ) );
-		add_action( 'wp_ajax_nopriv_wpml_user_language_switcher_form_ajax', array( $this, 'language_switcher_form_ajax_callback' ) );
+		\WPML\Request\Adapter\Ajax::register(
+			'wpml_user_language_switcher_form_ajax',
+			\WPML\Request\Policy\Policy::authenticated(
+				\WPML\Request\Policy\Authenticity::actionNonce( $this->nonce_name, 'nonce' ),
+				'sets the admin language of the current user only (principal-bound; the mail parameter is ignored)'
+			),
+			array( $this, 'language_switcher_form_ajax_callback' )
+		);
 	}
 
 	public function language_switcher_action( $args ) {
@@ -54,9 +46,16 @@ class WPML_User_Language_Switcher_Hooks {
 		$language = Sanitize::stringProp( 'language', $_POST );
 		$language = $this->user_language_switcher->sanitize( $language );
 
-		$email = filter_input( INPUT_POST, 'mail', FILTER_SANITIZE_EMAIL );
+		$current = wp_get_current_user();
+		$email   = $current && ! empty( $current->user_email ) ? $current->user_email : '';
 
-		$valid = $this->is_valid_data( $_POST['nonce'], $email );
+		$posted_mail = filter_input( INPUT_POST, 'mail', FILTER_SANITIZE_EMAIL );
+		if ( is_string( $posted_mail ) && '' !== $posted_mail && strcasecmp( $posted_mail, (string) $email ) !== 0 ) {
+			wp_send_json_error();
+		}
+
+		$nonce = isset( $_POST['nonce'] ) && is_string( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+		$valid = $this->is_valid_data( $nonce, $email );
 
 		if ( ! $valid || ! $language ) {
 			wp_send_json_error();

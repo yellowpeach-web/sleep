@@ -4,10 +4,12 @@ msgstr ""
 "X-Generator: babel-plugin-makepot\n"
 
 #: src/js/blocks/LanguageSwitcher/Components/Advanced/Control.js:20
+#. Title of the Advanced panel in the settings sidebar of the Language Switcher block.
 msgid "Advanced"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Advanced/Control.js:25
+#. Label of the HTML anchor field in the Advanced panel of the Language Switcher block.
 msgid "HTML anchor"
 msgstr ""
 
@@ -24,52 +26,64 @@ msgid "Separate multiple classes with spaces."
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Color/Control.js:49
+#. Title of the Color panel in the settings sidebar of the Language Switcher block.
 msgid "Color"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Dimensions/Control.js:346
 #: src/js/blocks/LanguageSwitcher/Components/Flag/Control.js:42
+#. Unit offered in the size dropdowns of the Language Switcher block settings: pixels.
 msgid "px"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Dimensions/Control.js:347
 #: src/js/blocks/LanguageSwitcher/Components/Flag/Control.js:46
+#. Unit offered in the size dropdowns of the Language Switcher block settings: percent.
 msgid "%"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Dimensions/Control.js:358
+#. Title of the Dimensions panel in the settings sidebar of the Language Switcher block.
 msgid "Dimensions"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Dimensions/Control.js:365
+#. Heading over the controls that space the whole Language Switcher block, in its Dimensions panel. Shown in capitals.
 msgid "BLOCK"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Dimensions/Control.js:371
+#. Label of the control that sets the space outside the whole Language Switcher block, in its Dimensions panel.
 msgid "Block margin"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Dimensions/Control.js:388
+#. Label of the control that sets the space inside the whole Language Switcher block, in its Dimensions panel.
 msgid "Block padding"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Dimensions/Control.js:406
+#. Heading over the controls that space each single language of the Language Switcher block, in its Dimensions panel. Shown in capitals.
 msgid "LANGUAGE"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Dimensions/Control.js:412
+#. Label of the control that sets the space between the languages of the Language Switcher block.
 msgid "Language spacing"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Dimensions/Control.js:425
+#. Label of the control that sets the space inside each language of the Language Switcher block.
 msgid "Language padding"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Display/Control.js:37
+#. Title of the Display panel in the settings sidebar of the Language Switcher block: a noun (what is shown), not the verb "to display".
 msgid "Display"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Display/Control.js:41
+#. Label of the switch that turns the flags on and off in the Language Switcher block; verb, imperative.
 msgid "Show flag"
 msgstr ""
 
@@ -78,27 +92,45 @@ msgid "Show language name"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Display/Control.js:68
+#. Label over the buttons that choose which language the language names are written in; the buttons below finish the sentence.
 msgid "Display language name in"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Flag/Control.js:113
+#. Label over the buttons that choose the shape of the flags, square or round, in the Flag settings panel of the Language Switcher block.
 msgid "Style"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Flag/Control.js:55
+#. Title of the panel that sets the size and shape of the flags in the Language Switcher block. "Flag" is the little picture of a flag.
 msgid "Flag settings"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Flag/Control.js:59
+#. Label of the flag width field in the Flag settings panel of the Language Switcher block.
 msgid "Width"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Flag/Control.js:62
+#. Label of the flag height field in the Flag settings panel of the Language Switcher block.
 msgid "Height"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Flag/Control.js:94
+#. Label of the field that sets the space between a flag and the language name, in the Flag settings panel of the Language Switcher block.
 msgid "Spacing"
+msgstr ""
+
+#: src/js/blocks/LanguageSwitcher/Components/LanguageItem/Edit.js:44
+#: src/js/blocks/LanguageSwitcher/Components/LanguageItem/Save.js:44
+#. Text read out by screen readers for one language link in the Language Switcher block. %s: the name of that language.
+msgid "Switch to %s"
+msgstr ""
+
+#: src/js/blocks/LanguageSwitcher/Components/LanguageList/Edit.js:57
+#: src/js/blocks/LanguageSwitcher/Components/LanguageList/Save.js:58
+#. Text read out by screen readers for the list of languages in the Language Switcher block.
+msgid "Available languages"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Layout/Control.js:119
@@ -110,35 +142,56 @@ msgid "Open on click"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Layout/Control.js:145
+#. Label of the switch that shows an arrow on the dropdown of the Language Switcher block; verb, imperative.
 msgid "Show arrow"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Layout/Control.js:60
+#. Title of the Layout panel in the settings sidebar of the Language Switcher block.
 msgid "Layout"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Layout/Control.js:72
+#. Label over the buttons that choose how the languages are lined up, in the Layout panel of the Language Switcher block.
 msgid "Justification"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/Components/Layout/Control.js:74
+#. Label over the buttons that choose whether the languages sit side by side or one under the other, in the Layout panel of the Language Switcher block.
 msgid "Orientation"
 msgstr ""
 
-#: src/js/blocks/LanguageSwitcher/Components/Typography/Control.js:127
+#: src/js/blocks/LanguageSwitcher/Components/Layout/Edit.js:36
+#: src/js/blocks/LanguageSwitcher/Components/Layout/Save.js:30
+#: src/js/blocks/LanguageSwitcher/index.js:93
+#: src/js/blocks/NavigationLanguageSwitcher/index.js:91
+#. The name of the WPML Language Switcher block. Used as a keyword for finding the block in the editor, and as the text read out by screen readers for the switcher on the site.
+msgid "Language Switcher"
+msgstr ""
+
+#: src/js/blocks/LanguageSwitcher/Components/Layout/LayoutContent.js:132
+#: src/js/blocks/LanguageSwitcher/Components/Layout/SaveContent.js:107
+msgid "Language switcher, press tab to navigate to other languages"
+msgstr ""
+
+#: src/js/blocks/LanguageSwitcher/Components/Typography/Control.js:160
+#. Title of the Typography panel in the settings sidebar of the Language Switcher block.
 msgid "Typography"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/color.js:116
 #: src/js/blocks/NavigationLanguageSwitcher/attributes/color.js:25
+#. Label of the background colour setting of the Language Switcher block.
 msgid "Background"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/color.js:121
+#. Label of the colour setting for the language names in the Language Switcher block.
 msgid "Language Text"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/color.js:126
+#. Label of the background colour setting for each single language in the Language Switcher block.
 msgid "Language Background"
 msgstr ""
 
@@ -152,10 +205,12 @@ msgid "Current language background"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/display.js:5
+#. Option in the Language Switcher block settings: show the full name of each language, rather than its short code.
 msgid "Full name"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/display.js:9
+#. The short code of a language, such as "en" or "pt-br". Used as an option in the Language Switcher block settings and as a field label in the dialog that adds a language.
 msgid "Code"
 msgstr ""
 
@@ -176,69 +231,71 @@ msgid "Justify items space between"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/layout.js:47
+#. Option in the Layout panel of the Language Switcher block: list the languages side by side.
 msgid "Horizontal"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/layout.js:52
+#. Option in the Layout panel of the Language Switcher block: list the languages one under the other.
 msgid "Vertical"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/typography.js:14
+#. Font size offered in the Typography panel of the Language Switcher block.
 msgid "Normal"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/typography.js:19
+#. Font size offered in the Typography panel of the Language Switcher block.
 msgid "Medium"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/typography.js:24
+#. Font size offered in the Typography panel of the Language Switcher block.
 msgid "Large"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/typography.js:29
+#. Font size offered in the Typography panel of the Language Switcher block: extra large.
 msgid "X-Large"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/typography.js:35
+#. Sample on the button that capitalises the first letter of each language name, in the Typography panel of the Language Switcher block. Replace it with a sample in your own alphabet.
 msgid "Ab"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/typography.js:39
+#. Sample on the button that writes the language names in capitals, in the Typography panel of the Language Switcher block. Replace it with a sample in your own alphabet.
 msgid "AB"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/typography.js:43
+#. Sample on the button that writes the language names in small letters, in the Typography panel of the Language Switcher block. Replace it with a sample in your own alphabet.
 msgid "ab"
 msgstr ""
 
 #: src/js/blocks/LanguageSwitcher/attributes/typography.js:9
+#. Font size offered in the Typography panel of the Language Switcher block.
 msgid "Small"
 msgstr ""
 
-#: src/js/blocks/LanguageSwitcher/index.js:36
+#: src/js/blocks/LanguageSwitcher/index.js:44
+#: src/js/blocks/NavigationLanguageSwitcher/index.js:35
 msgid "Displays the WPML Language Switcher."
 msgstr ""
 
-#: src/js/blocks/LanguageSwitcher/index.js:42
-#: src/js/blocks/NavigationLanguageSwitcher/index.js:47
-msgid "Language Switcher"
-msgstr ""
-
-#: src/js/blocks/LanguageSwitcher/index.js:43
-#: src/js/blocks/NavigationLanguageSwitcher/index.js:48
+#: src/js/blocks/LanguageSwitcher/index.js:95
+#: src/js/blocks/NavigationLanguageSwitcher/index.js:93
+#. Keyword for finding the Language Switcher block in the block editor's search. It describes what the block does and is never shown on a page.
 msgid "displays the WPML Language Switcher"
 msgstr ""
 
-#: src/js/blocks/NavigationLanguageSwitcher/index.js:30
-msgid ""
-"Displays the WPML Language Switcher. <br/> Learn <a>how to translate this "
-"block</a>."
-msgstr ""
-
-#: src/js/blocks/NavigationLanguageSwitcher/index.js:38
+#: src/js/blocks/NavigationLanguageSwitcher/index.js:39
 msgid "Navigation Language Switcher"
 msgstr ""
 
 #: src/js/blocks/Shared/Controls/PanelSettingsDropdown.js:64
+#. Menu item in the settings menu of a Language Switcher block panel: verb, imperative (put every setting in that panel back to its default).
 msgid "Reset all"
 msgstr ""

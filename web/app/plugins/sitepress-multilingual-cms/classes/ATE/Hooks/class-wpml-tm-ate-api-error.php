@@ -8,8 +8,9 @@ class WPML_TM_ATE_API_Error {
 		$notice = new WPML_Notice(
 			WPML_TM_ATE_Jobs_Actions::RESPONSE_ATE_ERROR_NOTICE_ID,
 			sprintf(
-				__( 'There was a problem communicating with ATE: %s ', 'wpml-translation-management' ),
-				'(<i>' . $message . '</i>)'
+				/* translators: First part of an error message about automatic translation; the reason given by the service follows the colon. %s: that reason. Keep the space at the end. */
+				__( 'There was a problem communicating with our translation system: %s ', 'sitepress' ),
+				'(<i>' . esc_html( (string) $message ) . '</i>)'
 			),
 			WPML_TM_ATE_Jobs_Actions::RESPONSE_ATE_ERROR_NOTICE_GROUP
 		);

@@ -4,100 +4,179 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "zh_TW"
          },
          "Sending for translation": [
-            "傳送翻譯"
+            "正在傳送翻譯"
          ],
-         "Connecting to WPML’s Advanced Translation Editor": [
-            "正在連線到WPML的進階翻譯編輯器"
+         "The translation could not be started because the server did not answer.": [
+            "由於伺服器未回應，無法開始翻譯。"
          ],
-         "Try again": [
-            "重試"
+         "This translation cannot be opened right now.": [
+            "目前無法開啟此翻譯。"
+         ],
+         "Refresh this page": [
+            "重新整理此頁面"
+         ],
+         "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
+            "此內容正在自動翻譯中。如果您想進行其他操作，請先取消翻譯工作。"
          ],
          "You don't have the rights to review this language": [
-            "您無權檢視此語言"
+            "您沒有權限審核此語言"
          ],
-         "%d translations left": [
-            "%d 翻譯剩餘"
+         "%1$s and %2$s": [
+            "%1$s 與 %2$s"
+         ],
+         "Translating your content": [
+            "正在翻譯您的內容"
+         ],
+         "%d translation notice": [
+            "%d 則翻譯通知"
+         ],
+         "%d min remaining": [
+            "剩餘 %d 分鐘"
+         ],
+         "less than 1 min remaining": [
+            "剩餘時間少於 1 分鐘"
+         ],
+         "<b>Translate Everything Automatically</b> is temporarily paused": [
+            "<b>自動翻譯所有內容</b>已暫時暫停"
+         ],
+         "Automatic translation is temporarily paused": [
+            "自動翻譯已暫時暫停"
+         ],
+         "We noticed something unexpected in your recent translation activity and paused automatic translation on your account. Contact support and we’ll review it with you.": [
+            "我們在您最近的翻譯活動中發現異常情況，因此暫停了您帳戶的自動翻譯。請聯絡支援人員，我們將與您一起進行審核。"
+         ],
+         "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
+            "<b>自動翻譯所有內容</b>已暫停：已達到每月支出上限"
+         ],
+         "Automatic translation is paused: monthly spending cap reached": [
+            "自動翻譯已暫停：已達到每月支出上限"
+         ],
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
+            "此網站已達到為其設定的每月支出上限。提高上限或重設上限後，翻譯將繼續進行。只有帳戶擁有者可以執行此操作。"
          ],
          "Preparing content for translation": [
             "正在準備翻譯內容"
          ],
          "Preparing more content for translation": [
-            "正在準備更多的翻譯內容"
+            "正在準備更多翻譯內容"
          ],
-         "There is an issue with automatic translation that needs your attention. Fix it to continue.": [
-            "有一個自動翻譯問題需要您注意。請修復後繼續。"
+         "Your default language, %s, must be mapped to a supported language in order to use automatic translation.": [
+            "您的預設語言 %s 必須對應至支援的語言，才能使用自動翻譯。"
          ],
-         "Account credits used": [
-            "已用帳戶積分"
+         "Your language, %s, must be mapped to a supported language in order to use automatic translation.": [
+            "您網站上的以下語言必須對應至支援的語言，才能使用自動翻譯：%s"
          ],
-         "Once you’ve used all your prepaid credits, we’ll invoice you for any additional credits you use after the end of the month": [
-            "一旦您用完了所有預付積分，我們將在月底後為您使用的任何額外積分開具發票"
+         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
+            "除非您將這些語言（%s）對應至與預設語言不同的語言，否則無法自動翻譯這些語言的內容。"
          ],
-         "Payment limit:": [
-            "付款限額："
+         "%d translation waiting for review": [
+            "%d 份翻譯等待審核"
          ],
-         "%s credits": [
-            "%s個積分"
+         "<b>Translate Everything Automatically</b> has unresolved jobs": [
+            "<b>自動翻譯所有內容</b>有未解決的工作"
          ],
-         "Credits used:": [
-            "已用積分："
+         "Automatic translation has unresolved jobs": [
+            "自動翻譯有未解決的工作"
          ],
-         "Credits left:": [
-            "剩餘積分："
+         "%d job couldn't be completed. Go to <b>Translation Dashboard</b> to review and resolve.": [
+            "%d 個工作無法完成。請前往<b>翻譯控制台</b>進行審核與解決。"
          ],
-         "Calculating": [
-            "計算中"
+         "%1$s custom field became translatable (%2$s). Decide what happens to the translations that already exist.": [
+            "%1$s 個自訂欄位已變更為可翻譯 (%2$s)。請決定如何處理已存在的翻譯。"
          ],
-         "Remaining prepaid credits that are assigned to this site on WPML.org.": [
-            "在WPML.org上分配給此網站的剩餘預付積分。"
+         "Review": [
+            "檢閱"
          ],
-         "Prepaid credits left": [
-            "剩餘預付積分"
+         "Automatic translation status": [
+            "自動翻譯狀態"
          ],
-         "Error": [
-            "錯誤"
+         "No translations in the queue": [
+            "翻譯佇列中沒有內容"
          ],
-         "Draft — Pending review": [
-            "草稿 — 等候審閱"
+         "Translate Everything Automatically": [
+            "自動翻譯所有內容"
          ],
-         "Complete": [
-            "完成"
+         "<b>Translate Everything Automatically</b> is active": [
+            "<b>自動翻譯所有內容</b>已啟用"
          ],
-         "Insufficient funds": [
-            "資金不足"
+         "<b>Translate Everything Automatically</b> is paused — payment required": [
+            "<b>自動翻譯所有內容</b>已暫停 — 需要付款"
          ],
-         "Read more about how to translate your content in the <a>Getting Started Guide</a>": [
-            "閱讀<a>入門指南</a>中有關如何翻譯內容的更多資訊"
+         "Automatic translation is paused — payment required": [
+            "自動翻譯已暫停 — 需要付款"
          ],
-         "Let's Start Translating!": [
-            "讓我們開始翻譯吧！"
+         "We couldn’t process your payment. Click “Pay now” to complete the transaction and resume automatic translation.": [
+            "我們無法處理您的付款。請按一下「立即付款」以完成交易並恢復自動翻譯。"
          ],
-         "Choose your content from the Translation Dashboard below and create your first translation job!": [
-            "從下面的翻譯儀表板中選擇內容，建立第一個翻譯工作！"
+         "<b>Translate Everything Automatically</b> is paused — unpaid balance on a linked account": [
+            "<b>自動翻譯所有內容</b>已暫停 — 關聯帳戶有未付餘額"
          ],
-         "Change your <a>automatic translation settings</a> (in-progress translation jobs will be completed with the current settings).": [
-            "變更<a>自動翻譯設定</a>（正在進行的翻譯工作將使用當前設定完成）。"
+         "Automatic translation is paused — unpaid balance on a linked account": [
+            "自動翻譯已暫停 — 關聯帳戶有未付餘額"
          ],
-         "Read more about translating your site automatically.": [
-            "進一步瞭解如何自動翻譯網站。"
+         "There is an unpaid balance on another account linked to this card. Settle it or contact support.": [
+            "與此卡關聯的另一個帳戶有未付餘額。請結清餘額或聯絡支援團隊。"
          ],
-         "Your site is being automatically translated!": [
-            "正在自動翻譯您的網站！"
+         "There is an unpaid balance on another account linked to this billing e-mail. Settle it or contact support.": [
+            "與此帳單電子郵件關聯的另一個帳戶有未付餘額。請結清餘額或聯絡支援團隊。"
          ],
-         "Calculating...": [
-            "計算中..."
+         "<b>Translate Everything</b> automatically is paused - not enough words": [
+            "<b>自動翻譯所有內容</b>已暫停 — 字數不足"
          ],
-         "Do not close WP admin!": [
-            "不要關閉WP管理員！"
+         "Automatic translation is paused — not enough words": [
+            "自動翻譯已暫停 — 字數不足"
          ],
-         "The number of translations": [
-            "翻譯數量"
+         "Translation will resume automatically once you assign more words.": [
+            "一旦您分配更多字數，翻譯將自動恢復。"
          ],
-         "Cancel": [
-            "取消"
+         "You have %s prepaid translation words in your WPML account. Assign these words to this site to resume automatic translation": [
+            "您的 WPML 帳戶中有 %s 個預付翻譯字數。將這些字數分配給此網站以恢復自動翻譯"
+         ],
+         "Your site doesn't meet WPML's minimum requirements": [
+            "您的網站不符合 WPML 的最低需求"
+         ],
+         "Fix it": [
+            "修復"
+         ],
+         "Stop": [
+            "停止"
+         ],
+         "Pay now": [
+            "立即付款"
+         ],
+         "Get more words": [
+            "取得更多字數"
+         ],
+         "Assign words": [
+            "分配字數"
+         ],
+         "Go to Translation Jobs": [
+            "前往翻譯工作"
+         ],
+         "Raise the cap": [
+            "提高上限"
+         ],
+         "Contact support": [
+            "聯絡支援人員"
+         ],
+         "Go to billing": [
+            "前往帳單"
+         ],
+         "Resume": [
+            "恢復"
+         ],
+         "Refreshing translation status. Please wait.": [
+            "正在重新整理翻譯狀態。請稍候。"
+         ],
+         "This translation couldn't be completed due to an unexpected error. Please try resending it.": [
+            "由於發生非預期的錯誤，無法完成此翻譯。請嘗試重新傳送。"
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "我們的翻譯系統不接受此請求（其回應為 %d）。請稍候片刻再重試，若問題持續發生，請聯絡 WPML 支援團隊。"
          ]
       }
    }

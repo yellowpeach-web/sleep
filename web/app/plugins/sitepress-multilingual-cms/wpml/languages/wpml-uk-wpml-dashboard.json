@@ -1,0 +1,2713 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "uk"
+         },
+         "Untranslated strings that I encounter on front-end while logged in": [
+            "Неперекладені рядки, які я зустрічаю у фронтенді під час входу"
+         ],
+         "Untranslated strings that all front-end users encounter": [
+            "Неперекладені рядки, які зустрічають усі користувачі фронтенду"
+         ],
+         "Disable auto-registration of strings": [
+            "Вимкнути автоматичну реєстрацію рядків"
+         ],
+         "Plugins": [
+            "Плагіни"
+         ],
+         "Themes": [
+            "Теми"
+         ],
+         "WordPress": [
+            "WordPress"
+         ],
+         "Other": [
+            "Інше"
+         ],
+         "%1$s (%2$d item)": [
+            "%1$s (%2$d елемент)",
+            "%1$s (%2$d елементи)",
+            "%1$s (%2$d елементів)"
+         ],
+         "We cancelled %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
+            "Ми скасували %1$d із %2$d елементів, але %3$d не вдалося скасувати. Будь ласка, оновіть сторінку та спробуйте ще раз."
+         ],
+         "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
+            "Ми повторно надіслали %1$d із %2$d елементів, але %3$d не вдалося надіслати. Будь ласка, оновіть сторінку та спробуйте ще раз."
+         ],
+         "Error in fetching default translation batch name": [
+            "Помилка під час отримання назви пакета перекладу за замовчуванням"
+         ],
+         "Error in fetching translation editor type.": [
+            "Помилка під час отримання типу редактора перекладу."
+         ],
+         "Error in fetching untranslated types count": [
+            "Помилка під час отримання кількості неперекладених типів"
+         ],
+         "Error in fetching remote translation service data.": [
+            "Помилка під час отримання даних віддаленої служби перекладу."
+         ],
+         "Validation failed": [
+            "Перевірка не вдалася"
+         ],
+         "%s: labels and slug": [
+            "%s: назви та частина посилання"
+         ],
+         "%1$s (%2$s)": [
+            "%1$s (%2$s)"
+         ],
+         "Translation jobs couldn’t be cancelled": [
+            "Не вдалося скасувати завдання з перекладу"
+         ],
+         "Reload the page and try again.": [
+            "Оновіть сторінку та спробуйте ще раз."
+         ],
+         "All unfinished translation jobs were cancelled": [
+            "Усі незавершені завдання з перекладу скасовано"
+         ],
+         "WPML could not display the Translations dashboard.": [
+            "WPML не вдалося відобразити панель керування перекладами."
+         ],
+         "Reload the page to try again. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses, and the browser console for details.": [
+            "Оновіть сторінку, щоб спробувати ще раз. Якщо це продовжує траплятися, перевірте журнал помилок PHP сайту на наявність виводу, який порушує відповіді WPML, а також консоль браузера для отримання детальної інформації."
+         ],
+         "Please wait until download finishes": [
+            "Будь ласка, зачекайте до завершення завантаження"
+         ],
+         "You need to wait 5 minutes after the last check": [
+            "Вам потрібно зачекати 5 хвилин після останньої перевірки"
+         ],
+         "Check status and get translations": [
+            "Перевірити статус і отримати переклади"
+         ],
+         "%d translation could not be applied.": [
+            "Не вдалося застосувати %d переклад.",
+            "Не вдалося застосувати %d переклади.",
+            "Не вдалося застосувати %d перекладів."
+         ],
+         "Some were paused after repeated failures and will be retried automatically.": [
+            "Деякі з них були призупинені після повторних помилок і будуть повторені автоматично."
+         ],
+         "They are still waiting and will be tried again on the next download.": [
+            "Вони все ще очікують і будуть повторені під час наступного завантаження."
+         ],
+         "Status: ": [
+            "Статус: "
+         ],
+         "Downloaded jobs: ": [
+            "Завантажені завдання: "
+         ],
+         "Cancelled jobs: ": [
+            "Скасовані завдання: "
+         ],
+         "none of your translation jobs have been completed": [
+            "жодне з ваших завдань з перекладу не було завершене"
+         ],
+         "The download did not finish, so some translations may still be waiting. Please try again.": [
+            "Завантаження не завершилося, тому деякі переклади все ще можуть очікувати. Будь ласка, спробуйте ще раз."
+         ],
+         "%d batches are still being processed by the translation service. Check again in a few minutes.": [
+            "%d пакетів усе ще обробляються службою перекладу. Перевірте ще раз за кілька хвилин."
+         ],
+         "Checking translation jobs status. Please don't close this page!": [
+            "Перевірка статусу завдань з перекладу. Будь ласка, не закривайте цю сторінку!"
+         ],
+         "<strong>%d translation job</strong> has been sent to remote translators": [
+            "<strong>%d завдання з перекладу</strong> було надіслано віддаленим перекладачам",
+            "<strong>%d завдання з перекладу</strong> було надіслано віддаленим перекладачам",
+            "<strong>%d завдань з перекладу</strong> було надіслано віддаленим перекладачам"
+         ],
+         "Last check: %s": [
+            "Остання перевірка: %s"
+         ],
+         "Last check: Never": [
+            "Остання перевірка: ніколи"
+         ],
+         "Switch to Private Translation Cloud (PTC)": [
+            "Перейти на Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "Перейти на PTC"
+         ],
+         "Switching…": [
+            "Перемикання…"
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Не вдалося завантажити елементи керування механізмом перекладу. Оновіть сторінку та спробуйте ще раз."
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "Ми не змогли підтвердити перемикання. Спробуйте ще раз або оновіть сторінку, щоб побачити поточний механізм."
+         ],
+         "Loading translation engine settings…": [
+            "Завантаження налаштувань механізму перекладу…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "Заповніть контекст вашого сайту вище перед переходом на PTC."
+         ],
+         "Reload page": [
+            "Оновити сторінку"
+         ],
+         "Filtering is disabled to show all selected items. ": [
+            "Фільтрацію вимкнено, щоб показати всі вибрані елементи. "
+         ],
+         "Apply filters": [
+            "Застосувати фільтри"
+         ],
+         "%d item selected": [
+            "Вибрано %d елемент",
+            "Вибрано %d елементи",
+            "Вибрано %d елементів"
+         ],
+         "(%d words to translate)": [
+            "(%d слів для перекладу)"
+         ],
+         "%s item not showing.": [
+            "%s елемент не відображається.",
+            "%s елементи не відображаються.",
+            "%s елементів не відображаються."
+         ],
+         "Show all selected items": [
+            "Показати всі вибрані елементи"
+         ],
+         "Translate your content": [
+            "Перекласти ваш контент"
+         ],
+         "Unselect all": [
+            "Скасувати вибір усіх"
+         ],
+         "Source Language:": [
+            "Мова оригіналу:"
+         ],
+         "translated to:": [
+            "перекладено на:"
+         ],
+         "Filter": [
+            "Фільтрувати"
+         ],
+         "You are about to change the source language filter from %1$s to %2$s": [
+            "Ви збираєтеся змінити фільтр мови оригіналу з %1$s на %2$s"
+         ],
+         "Updating the source language filter will clear the items you've selected for translation. Are you sure you want to continue?": [
+            "Оновлення фільтра мови оригіналу очистить елементи, вибрані вами для перекладу. Ви впевнені, що хочете продовжити?"
+         ],
+         "Change source language": [
+            "Змінити мову оригіналу"
+         ],
+         "Cancel": [
+            "Скасувати"
+         ],
+         "Filter by publication status": [
+            "Фільтрувати за статусом публікації"
+         ],
+         "All Statuses": [
+            "Усі статуси"
+         ],
+         "All languages": [
+            "Усі мови"
+         ],
+         "All translation statuses": [
+            "Усі статуси перекладу"
+         ],
+         "Not completed": [
+            "Не завершено"
+         ],
+         "Needs updating": [
+            "Потребує оновлення"
+         ],
+         "Translation in progress": [
+            "Переклад у процесі"
+         ],
+         "Translation complete": [
+            "Переклад завершено"
+         ],
+         "Filter by translation status": [
+            "Фільтрувати за статусом перекладу"
+         ],
+         "Global Filter": [
+            "Глобальний фільтр"
+         ],
+         "%1$s (ID: %2$d)": [
+            "%1$s (ID: %2$d)"
+         ],
+         "Parent:": [
+            "Батьківська сторінка:"
+         ],
+         "Search parent by title, path, or ID": [
+            "Шукати батьківську сторінку за заголовком, шляхом або ID"
+         ],
+         "Parent: %s": [
+            "Батьківська сторінка: %s"
+         ],
+         "Search by term title in %s": [
+            "Шукати за назвою терміна мовою %s"
+         ],
+         "All taxonomies": [
+            "Усі таксономії"
+         ],
+         "Loading": [
+            "Завантаження"
+         ],
+         "Taxonomy Term:": [
+            "Термін таксономії:"
+         ],
+         "Loading terms": [
+            "Завантаження термінів"
+         ],
+         "No terms found": [
+            "Термінів не знайдено"
+         ],
+         "Filter by:": [
+            "Фільтрувати за:"
+         ],
+         "Title": [
+            "Заголовок"
+         ],
+         "Automatic translation is paused — payment required (%s).": [
+            "Автоматичний переклад призупинено — потрібна оплата (%s)."
+         ],
+         "Automatic translation is paused: monthly spending cap reached. It continues when the cap is raised, or when the cap resets.": [
+            "Автоматичний переклад призупинено: досягнуто ліміту місячних витрат. Він відновиться, коли ліміт буде збільшено або коли ліміт буде скинуто."
+         ],
+         "You have %1$s%2$s prepaid word in your WPML account%3$s. Assign these words to this site to resume automatic translation.": [
+            "У вашому акаунті WPML є %2$s%1$s%3$s передплачене слово. Призначте ці слова цьому сайту, щоб відновити автоматичний переклад.",
+            "У вашому акаунті WPML є %2$s%1$s%3$s передплачені слова. Призначте ці слова цьому сайту, щоб відновити автоматичний переклад.",
+            "У вашому акаунті WPML є %2$s%1$s%3$s передплачених слів. Призначте ці слова цьому сайту, щоб відновити автоматичний переклад."
+         ],
+         "Not enough prepaid words to continue automatic translation. Add more words to resume.": [
+            "Недостатньо передплачених слів для продовження автоматичного перекладу. Додайте більше слів, щоб відновити."
+         ],
+         "Assign words": [
+            "Призначити слова"
+         ],
+         "Get more words": [
+            "Отримати більше слів"
+         ],
+         "View": [
+            "Переглянути"
+         ],
+         "Edit": [
+            "Редагувати"
+         ],
+         "Edit note for the translators": [
+            "Редагувати примітку для перекладачів"
+         ],
+         "Add note for the translators": [
+            "Додати примітку для перекладачів"
+         ],
+         "Select %s": [
+            "Вибрати %s"
+         ],
+         "(no title)": [
+            "(без заголовка)"
+         ],
+         "Image": [
+            "Зображення"
+         ],
+         "%s Title": [
+            "%s: заголовок"
+         ],
+         "%s Date": [
+            "%s: дата"
+         ],
+         "Date / Status": [
+            "Дата / Статус"
+         ],
+         "Loading items...": [
+            "Завантаження елементів..."
+         ],
+         "This page is set to be %1$stranslated manually%2$s using the WordPress Editor": [
+            "Ця сторінка налаштована на %1$sручний переклад%2$s за допомогою редактора WordPress"
+         ],
+         "%1$d %2$s selected": [
+            "Вибрано %1$d %2$s"
+         ],
+         "items": [
+            "елементи"
+         ],
+         "Filtering is disabled to show all selected items": [
+            "Фільтрацію вимкнено, щоб показати всі вибрані елементи"
+         ],
+         "Apply filter": [
+            "Застосувати фільтр"
+         ],
+         "%1$d %2$s not showing": [
+            "%1$d %2$s не відображаються"
+         ],
+         "Show selected items": [
+            "Показати вибрані елементи"
+         ],
+         "Looking for more items...": [
+            "Пошук інших елементів..."
+         ],
+         " / page": [
+            " / сторінка"
+         ],
+         "Previous": [
+            "Назад"
+         ],
+         "Next": [
+            "Далі"
+         ],
+         "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
+            "Контент вашого сайту занадто великий для одного пакета перекладу. Використовуйте фільтри, щоб зменшити вибірку, а потім натисніть «вибрати все»."
+         ],
+         "The current filter captures too much content. Narrow it down to enable \"select all\" for translation.": [
+            "Поточний фільтр охоплює занадто багато контенту. Звузьте його, щоб увімкнути «вибрати все» для перекладу."
+         ],
+         "Select All": [
+            "Вибрати все"
+         ],
+         "All %d items matching criteria are selected": [
+            "Усі %d елементів, що відповідають критеріям, вибрано"
+         ],
+         "All %d items in this section are selected": [
+            "Усі %d елементів у цьому розділі вибрано"
+         ],
+         "You have too many items to send for translation at once. Apply a filter to narrow down the items to enable this option.": [
+            "У вас занадто багато елементів для одночасного надсилання на переклад. Застосуйте фільтр, щоб звузити список елементів та увімкнути цю опцію."
+         ],
+         "Clear selection": [
+            "Очистити вибір"
+         ],
+         "Select all items that match this search": [
+            "Вибрати всі елементи, що відповідають цьому пошуку"
+         ],
+         "Loading...": [
+            "Завантаження..."
+         ],
+         "Select all %ss": [
+            "Вибрати всі %s"
+         ],
+         "Save note": [
+            "Зберегти примітку"
+         ],
+         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
+            "Наступні цільові мови не підтримують автоматичний переклад: %s. <a>Зіставте з відомими мовами</a>, щоб увімкнути автоматичний переклад."
+         ],
+         "The site's default language %s doesn't support automatic translation.": [
+            "Мова сайту за замовчуванням %s не підтримує автоматичний переклад."
+         ],
+         "Some sections are hidden due to current filter settings or because they have no items. <show_all>Show all translation statuses</show_all>": [
+            "Деякі розділи приховано через поточні налаштування фільтра або через відсутність у них елементів. <show_all>Показати всі статуси перекладу</show_all>"
+         ],
+         "Step 1": [
+            "Крок 1"
+         ],
+         "Select items for translation": [
+            "Виберіть елементи для перекладу"
+         ],
+         "Clear filters": [
+            "Очистити фільтри"
+         ],
+         "WPML could not load these items from your site.": [
+            "WPML не вдалося завантажити ці елементи з вашого сайту."
+         ],
+         "Try again or reload the page. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses.": [
+            "Спробуйте ще раз або оновіть сторінку. Якщо це продовжує траплятися, перевірте журнал помилок PHP сайту на наявність виводу, який порушує відповіді WPML."
+         ],
+         "Try again": [
+            "Спробувати знову"
+         ],
+         "strings": [
+            "рядки"
+         ],
+         "WPML didn't find any %s matching your criteria.": [
+            "WPML не знайшов жодних %s, що відповідають вашим критеріям."
+         ],
+         "You have too many items selected to use this feature. Deselect some of the items to enable it.": [
+            "Ви вибрали занадто багато елементів, щоб використовувати цю функцію. Скасуйте вибір деяких елементів, щоб увімкнути її."
+         ],
+         "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can send this content now and it will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>.": [
+            "У <strong>місячному ліміті витрат</strong>, встановленому для <site>%2$s</site>, залишилося <strong>%1$s</strong> слів (уже використано <figure>%3$s</figure> з <figure>%4$s</figure>). Ви можете надіслати цей контент зараз, і він буде перекладатися, доки не буде досягнуто ліміту. Решта буде перекладена, коли ліміт буде збільшено або коли ліміт буде скинуто <strong>%5$s</strong>."
+         ],
+         "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can turn this on now and content will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>.": [
+            "У <strong>місячному ліміті витрат</strong>, встановленому для <site>%2$s</site>, залишилося <strong>%1$s</strong> слів (уже використано <figure>%3$s</figure> з <figure>%4$s</figure>). Ви можете ввімкнути це зараз, і контент буде перекладатися, доки не буде досягнуто ліміту. Решта буде перекладена, коли ліміт буде збільшено або коли ліміт буде скинуто <strong>%5$s</strong>."
+         ],
+         "Raise the cap": [
+            "Збільшити ліміт"
+         ],
+         "Only the account owner can do this.": [
+            "Це може зробити лише власник акаунта."
+         ],
+         "Show strings in:": [
+            "Показати рядки в:"
+         ],
+         "Display Columns": [
+            "Відображати стовпці"
+         ],
+         "Close modal": [
+            "Закрити модальне вікно"
+         ],
+         "Select visible columns": [
+            "Виберіть видимі стовпці"
+         ],
+         "String": [
+            "Рядок"
+         ],
+         "Name": [
+            "Назва"
+         ],
+         "Domain": [
+            "Домен"
+         ],
+         "Source": [
+            "Джерело"
+         ],
+         "Type": [
+            "Тип"
+         ],
+         "Apply": [
+            "Застосувати"
+         ],
+         "All domains": [
+            "Усі домени"
+         ],
+         "Domain:": [
+            "Домен:"
+         ],
+         "All sources": [
+            "Усі джерела"
+         ],
+         "Frontend (viewed)": [
+            "Фронтенд (переглянуто)"
+         ],
+         "Backend (viewed)": [
+            "Бекенд (переглянуто)"
+         ],
+         "Unknown": [
+            "Невідомо"
+         ],
+         "Source:": [
+            "Джерело:"
+         ],
+         "String or Name:": [
+            "Рядок або назва:"
+         ],
+         "Search string or a name": [
+            "Шукати рядок або назву"
+         ],
+         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
+            "Цей фільтр доступний, лише якщо джерело встановлено на «Фронтенд» або «Бекенд»."
+         ],
+         "front-end": [
+            "фронтенд"
+         ],
+         "back-end": [
+            "бекенд"
+         ],
+         "viewed": [
+            "переглянуто"
+         ],
+         "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
+            "Відкриває сторінку локалізації тем і плагінів, де ви можете просканувати свою тему та плагіни на наявність рядків, які ще не зареєстровані, і зробити їх доступними для перекладу тут."
+         ],
+         "Finding strings in themes and plugins": [
+            "Пошук рядків у темах і плагінах"
+         ],
+         "Strings in the theme and plugins": [
+            "Рядки в темі та плагінах"
+         ],
+         "Translate front-end texts you can customize from the WordPress admin like footer text, copyright notices, plugin options and settings, time format, widget texts, and more.": [
+            "Перекладайте тексти фронтенду, які можна налаштувати в адмінці WordPress, як-от текст футера, повідомлення про авторські права, опції та налаштування плагінів, формат часу, тексти віджетів тощо."
+         ],
+         "Translating Strings From Admin and Settings": [
+            "Переклад рядків з адмінки та налаштувань"
+         ],
+         "Translate texts in admin screens": [
+            "Перекласти тексти в екранах адмінки"
+         ],
+         "Translate User Meta Information": [
+            "Перекласти метаінформацію користувача"
+         ],
+         "Making User Meta Information Translatable": [
+            "Зробити метаінформацію користувача доступною для перекладу"
+         ],
+         "Translate user profile strings": [
+            "Перекласти рядки профілю користувача"
+         ],
+         "No strings have been registered for translation yet. Open your site's front-end (<a/>) and WPML will automatically detect the untranslated strings and list them here. ": [
+            "Жодних рядків ще не зареєстровано для перекладу. Відкрийте фронтенд вашого сайту (<a/>), і WPML автоматично виявить неперекладені рядки та перелічить їх тут. "
+         ],
+         "hide details": [
+            "приховати деталі"
+         ],
+         "more details": [
+            "більше деталей"
+         ],
+         "Still can't find the strings you're looking to translate? Add more strings for translation.": [
+            "Усе ще не можете знайти рядки, які хочете перекласти? Додайте більше рядків для перекладу."
+         ],
+         "Not seeing strings that you are looking for?": [
+            "Не бачите рядків, які шукаєте?"
+         ],
+         "Enable the autoregistration setting.": [
+            "Увімкніть налаштування автореєстрації."
+         ],
+         "Visit translations on the site's frontend for WPML to see which strings are missing translations. Visiting one language is enough: %s.": [
+            "Відвідайте переклади на фронтенді сайту, щоб WPML побачив, для яких рядків відсутні переклади. Достатньо відвідати одну мову: %s."
+         ],
+         "Alternatively, you can register strings manually.": [
+            "Або ви можете зареєструвати рядки вручну."
+         ],
+         "Registering new strings found on your site…": [
+            "Реєстрація нових рядків, знайдених на вашому сайті…"
+         ],
+         "Registering new strings is paused: there is not enough PHP memory to continue. Increase the memory limit or <retryQueue>try again</retryQueue>.": [
+            "Реєстрацію нових рядків призупинено: недостатньо пам’яті PHP для продовження. Збільште ліміт пам’яті або <retryQueue>спробуйте ще раз</retryQueue>."
+         ],
+         "Registering new strings was interrupted. <retryQueue>Try again</retryQueue>": [
+            "Реєстрацію нових рядків було перервано. <retryQueue>Спробуйте ще раз</retryQueue>"
+         ],
+         "New strings were registered while you were working. <updateStringsList>Update the list</updateStringsList>": [
+            "Поки ви працювали, було зареєстровано нові рядки. <updateStringsList>Оновити список</updateStringsList>"
+         ],
+         "<b>Translate Everything</b> translates only those strings which are registered in English language": [
+            "<b>Перекладати все</b> перекладає лише ті рядки, які зареєстровані англійською мовою"
+         ],
+         "Most strings from your plugins and theme are in English, so we’re showing them alongside your default language. Use the <b>Source Language</b> filter to view strings in a specific language.": [
+            "Більшість рядків із ваших плагінів і теми англійською мовою, тому ми показуємо їх поруч із вашою мовою за замовчуванням. Використовуйте фільтр <b>Мова оригіналу</b>, щоб переглянути рядки певною мовою."
+         ],
+         "You’re using <b>%s</b> to cache your site, which may prevent WPML from automatically registering new strings. To fix this, clear your page cache, then visit your translated pages again on the frontend to detect new strings.": [
+            "Ви використовуєте <b>%s</b> для кешування вашого сайту, що може заважати WPML автоматично реєструвати нові рядки. Щоб виправити це, очистіть кеш сторінок, а потім знову відвідайте ваші перекладені сторінки на фронтенді, щоб виявити нові рядки."
+         ],
+         "WPML can detect strings that appear on the site and list them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here only the strings that actually appear on the site, you need to enable this feature.": [
+            "WPML може виявляти рядки, які з’являються на сайті, і перелічувати їх тут. Ця функція допомагає вам ідентифікувати рядки, які фактично з’являються на сайті, і перекласти їх. Щоб бачити тут лише ті рядки, які фактично з’являються на сайті, вам потрібно ввімкнути цю функцію."
+         ],
+         "WPML detects strings that appear on the site and lists them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here all the strings in the site, you need to disable this feature.": [
+            "WPML виявляє рядки, які з’являються на сайті, і перелічує їх тут. Ця функція допомагає вам ідентифікувати рядки, які фактично з’являються на сайті, і перекласти їх. Щоб бачити тут усі рядки на сайті, вам потрібно вимкнути цю функцію."
+         ],
+         "Detect untranslated strings": [
+            "Виявляти неперекладені рядки"
+         ],
+         "WPML can detect untranslated strings and automatically register them for translation. This happens in real time as you or your visitors browse your website.": [
+            "WPML може виявляти неперекладені рядки та автоматично реєструвати їх для перекладу. Це відбувається в режимі реального часу, коли ви або ваші відвідувачі переглядаєте ваш вебсайт."
+         ],
+         "Automatically register untranslated strings": [
+            "Автоматично реєструвати неперекладені рядки"
+         ],
+         "Learn how to use auto-registration": [
+            "Дізнайтеся, як користуватися автореєстрацією"
+         ],
+         "recommended": [
+            "рекомендовано"
+         ],
+         "Also register strings from the website's back-end": [
+            "Також реєструвати рядки з бекенду вебсайту"
+         ],
+         "Save settings": [
+            "Зберегти налаштування"
+         ],
+         "Request failed because of the network error": [
+            "Запит не вдався через помилку мережі"
+         ],
+         "Enabled": [
+            "Увімкнено"
+         ],
+         "Disabled": [
+            "Вимкнено"
+         ],
+         "Modify": [
+            "Змінити"
+         ],
+         "You can only translate %1$s from the site's default language (%2$s).": [
+            "Ви можете перекладати %1$s лише з мови оригіналу сайту — (%2$s)."
+         ],
+         "Search taxonomy or a name": [
+            "Пошук таксономії або назви"
+         ],
+         "Filter by post type": [
+            "Фільтрувати за типом допису"
+         ],
+         "All post types": [
+            "Усі типи дописів"
+         ],
+         "%d Not-translatable taxonomy is hidden. Switch it to <i>Translatable</i> in <a>WPML → Settings</a> to include it here.": [
+            "%d таксономія, що не перекладається, прихована. Змініть її статус на <i>Перекладається</i> в <a>WPML → Налаштування</a>, щоб включити її сюди.",
+            "%d таксономії, що не перекладаються, приховані. Змініть їхній статус на <i>Перекладається</i> в <a>WPML → Налаштування</a>, щоб включити їх сюди.",
+            "%d таксономій, що не перекладаються, приховані. Змініть їхній статус на <i>Перекладається</i> в <a>WPML → Налаштування</a>, щоб включити їх сюди."
+         ],
+         "No translatable taxonomies match the current filters.": [
+            "Жодна таксономія для перекладу не відповідає поточним фільтрам."
+         ],
+         "Select all taxonomies": [
+            "Вибрати всі таксономії"
+         ],
+         "Sort by taxonomy": [
+            "Сортувати за таксономією"
+         ],
+         "Terms in": [
+            "Терміни в"
+         ],
+         "Post types": [
+            "Типи дописів"
+         ],
+         "Translated / Total terms": [
+            "Перекладено / Усього термінів"
+         ],
+         "translated": [
+            "перекладено"
+         ],
+         "translation in progress": [
+            "переклад у процесі"
+         ],
+         "preparing for translation": [
+            "підготовка до перекладу"
+         ],
+         "translation needs update": [
+            "переклад потребує оновлення"
+         ],
+         "translation stalled - the job never reached our translation system": [
+            "переклад зупинився — завдання так і не дійшло до нашої системи перекладу"
+         ],
+         "partially translated": [
+            "частково перекладено"
+         ],
+         "not translated": [
+            "не перекладено"
+         ],
+         "%1$s: %2$s": [
+            "%1$s: %2$s"
+         ],
+         "Open %s in the Taxonomy Translation tab": [
+            "Відкрити %s на вкладці «Переклад таксономій»"
+         ],
+         "Taxonomy labels and slug": [
+            "Ярлики та частини посилань таксономій"
+         ],
+         "WPML String Translation is not active.": [
+            "WPML String Translation не активовано."
+         ],
+         "Taxonomy labels and slugs are translated with <b>String Translation</b> — activate the plugin to translate them.": [
+            "Ярлики та частини посилань таксономій перекладаються за допомогою <b>String Translation</b> — активуйте плагін, щоб перекласти їх."
+         ],
+         "No taxonomy labels to translate.": [
+            "Немає назв таксономій для перекладу."
+         ],
+         "Select all taxonomy labels": [
+            "Вибрати всі назви таксономій"
+         ],
+         "Taxonomy labels": [
+            "Назви таксономій"
+         ],
+         "Select labels for %s": [
+            "Вибрати назви для %s"
+         ],
+         "Labels not detected by String Translation. Rescan needed.": [
+            "Назви не виявлені String Translation. Потрібне повторне сканування."
+         ],
+         "Labels not found": [
+            "Назви не знайдено"
+         ],
+         "Scanning…": [
+            "Сканування…"
+         ],
+         "Rescan": [
+            "Сканувати повторно"
+         ],
+         "%d Taxonomy selected": [
+            "Вибрано %d таксономію",
+            "Вибрано %d таксономії",
+            "Вибрано %d таксономій"
+         ],
+         "<b>Translate Everything Automatically</b> (TEA) is active.": [
+            "Режим <b>Автоматично перекладати все</b> (TEA) активний."
+         ],
+         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
+            "Нові та оновлені терміни в таксономіях, що перекладаються, додаються в чергу автоматично. Виберіть таксономії нижче, щоб надіслати разовий пакетний запит для всіх термінів, що залишилися неперекладеними."
+         ],
+         "Switch Now": [
+            "Перейти зараз"
+         ],
+         "Add site description": [
+            "Додати опис сайту"
+         ],
+         "Turn on now": [
+            "Увімкнути зараз"
+         ],
+         "Set up <b>Translate Everything</b>": [
+            "Налаштувати <b>автоматичний переклад усього</b>"
+         ],
+         "You’ve been translating with %s.": [
+            "Ви перекладали за допомогою %s."
+         ],
+         "Your current translations stay exactly as they are. The switch to PTC affects only new and changed content. To refresh an old translation with PTC, re-send it from the <b>Translation Dashboard</b>. This works even while automatic translation runs. It skips anything already translated.": [
+            "Ваші поточні переклади залишаться без змін. Перехід на PTC вплине лише на новий та змінений контент. Щоб оновити старий переклад за допомогою PTC, надішліть його повторно з <b>Панелі керування перекладами</b>. Це працює навіть під час виконання автоматичного перекладу. Система пропустить усе, що вже перекладено."
+         ],
+         "They stay as they are. Automatic translation only touches content that isn’t translated yet. WPML skips anything you’ve already translated. To refresh a page, re-send it from the <b>Translation Dashboard</b> anytime.": [
+            "Вони залишаться без змін. Автоматичний переклад стосується лише того контенту, який ще не перекладено. WPML пропускає все, що ви вже переклали. Щоб оновити сторінку, будь-коли надішліть її повторно з <b>Панелі керування перекладами</b>."
+         ],
+         "Add your site description and target audience": [
+            "Додайте опис вашого сайту та цільову аудиторію"
+         ],
+         "Save": [
+            "Зберегти"
+         ],
+         "Saving…": [
+            "Збереження…"
+         ],
+         "Your automatic translation pricing has been upgraded": [
+            "Ваш тариф на автоматичний переклад було оновлено"
+         ],
+         "Loading notice details…": [
+            "Завантаження деталей сповіщення…"
+         ],
+         "With WPML 5, automatic translation now costs once per page, per language. After that, edits that add words cost only the added words — edits that don’t grow the page are free. Rework copy, run A/B tests, refine wording. You’re already on PTC, with automatic translation on. There’s nothing to change.": [
+            "З WPML 5 автоматичний переклад тепер оплачується один раз за сторінку для кожної мови. Після цього редагування, які додають слова, коштують лише за додані слова — редагування, які не збільшують обсяг сторінки, безкоштовні. Переробляйте тексти, проводьте A/B тести, вдосконалюйте формулювання. Ви вже на PTC, автоматичний переклад увімкнено. Нічого змінювати не потрібно."
+         ],
+         "Got it": [
+            "Зрозуміло"
+         ],
+         "See your pricing": [
+            "Переглянути ціни"
+         ],
+         "You’re all set. The new pricing is active.": [
+            "Усе готово. Нові ціни діють."
+         ],
+         "Automatic translation now costs once per page, per language. Edits afterwards are free. New content stays translated as you publish.": [
+            "Автоматичний переклад тепер оплачується один раз за сторінку для кожної мови. Подальші редагування безкоштовні. Новий контент перекладається під час публікації."
+         ],
+         "What happens to my existing translations?": [
+            "Що станеться з моїми наявними перекладами?"
+         ],
+         "Switch to PTC for better translations and the new pricing": [
+            "Перейдіть на PTC для кращих перекладів та нових цін"
+         ],
+         "Pay once per page, then edit for free": [
+            "Платіть один раз за сторінку, а потім редагуйте безкоштовно"
+         ],
+         "You’re translating your whole site automatically with %s. The new pay-once pricing applies when you use PTC, our recommended AI engine.": [
+            "Ви автоматично перекладаєте весь свій сайт за допомогою %s. Нова ціна з одноразовою оплатою діє при використанні PTC — нашого рекомендованого ШІ-рушія."
+         ],
+         "WPML 5 brings a simpler, lower price for automatic translation, using <strong>Private Translation Cloud (PTC)</strong>, WPML’s own AI engine. Set it up to have WPML translate your whole site automatically.": [
+            "WPML 5 пропонує простішу та нижчу ціну на автоматичний переклад за допомогою <strong>Private Translation Cloud (PTC)</strong> — власного ШІ-рушія WPML. Налаштуйте його, щоб WPML автоматично перекладав увесь ваш сайт."
+         ],
+         "What you gain": [
+            "Що ви отримуєте"
+         ],
+         "Pay once per page, in each language.": [
+            "Платіть один раз за сторінку кожною мовою."
+         ],
+         "After that, only added words are charged.": [
+            "Після цього оплачуються лише додані слова."
+         ],
+         "Edit as much as you want.": [
+            "Редагуйте скільки завгодно."
+         ],
+         "A/B tests, copy changes, and rewrites cost only the words they add.": [
+            "A/B тести, зміни в текстах та переписування коштують лише за додані слова."
+         ],
+         "Translations in your voice.": [
+            "Переклади у вашому стилі."
+         ],
+         "PTC learns your terms and tone from your existing translations.": [
+            "PTC вивчає ваші терміни та тон із ваших наявних перекладів."
+         ],
+         "Questions? Tap to expand": [
+            "Запитання? Натисніть, щоб розгорнути"
+         ],
+         "Why is the pay-once pricing only for PTC?": [
+            "Чому оплата за сторінку доступна лише для PTC?"
+         ],
+         "PTC is WPML’s own AI engine. It reads the whole page, learns your terms and tone, and is backed by our quality guarantee, so we can price it once per page. DeepL, Google and Microsoft translate segment by segment and are priced per word, changes included.": [
+            "PTC — це власний ШІ-рушій WPML. Він аналізує всю сторінку, вивчає ваші терміни та тон і підкріплюється нашою гарантією якості, тому ми можемо встановити ціну за сторінку. DeepL, Google і Microsoft перекладають сегмент за сегментом, і оплата здійснюється за кожне слово, включаючи зміни."
+         ],
+         "How much will I pay?": [
+            "Скільки я буду платити?"
+         ],
+         "You’re on %s: per word, changes included. Switch to PTC to pay once per page, with free changes.": [
+            "Ви використовуєте %s: оплата за слово, зміни включені. Перейдіть на PTC, щоб платити один раз за сторінку з безкоштовними змінами."
+         ],
+         "On PTC, you pay once per page, in each language. After that, edits to that page are free. You pay again only if the page grows past what you first paid for. In short: you pay for new content, not for updates.": [
+            "З PTC ви платите один раз за сторінку кожною мовою. Після цього редагування цієї сторінки безкоштовні. Ви платите знову, лише якщо обсяг сторінки перевищить той, за який ви заплатили вперше. Коротко кажучи: ви платите за новий контент, а не за оновлення."
+         ],
+         "Yes, show me how": [
+            "Так, покажіть як"
+         ],
+         "Not interested": [
+            "Не цікавить"
+         ],
+         "Do these in order. If you turn on automatic translation before choosing PTC, WPML translates your whole site with the wrong engine. You’d then pay to redo that work.": [
+            "Виконуйте це по порядку. Якщо ви ввімкнете автоматичний переклад до вибору PTC, WPML перекладе весь ваш сайт неправильним рушієм. Тоді вам доведеться платити за переробку цієї роботи."
+         ],
+         "Do these in order. The engine change affects only new and changed content. Your current translations stay as they are.": [
+            "Виконуйте це по порядку. Зміна рушія впливає лише на новий та змінений контент. Ваші поточні переклади залишаться без змін."
+         ],
+         "Switch on the new pricing in %d step": [
+            "Увімкніть нові ціни за %d крок",
+            "Увімкніть нові ціни за %d кроки",
+            "Увімкніть нові ціни за %d кроків"
+         ],
+         "Done": [
+            "Готово"
+         ],
+         "Automatic translation is paused. Settle it in the <b>Translate Everything</b> box first.": [
+            "Автоматичний переклад призупинено. Спочатку владнайте це у вікні <b>Автоматично перекладати все</b>."
+         ],
+         "Do the step above first": [
+            "Спочатку виконайте крок вище"
+         ],
+         "Switch to the <b>Advanced Translation Editor</b>": [
+            "Перейти на <b>Advanced Translation Editor</b>"
+         ],
+         "Switch your engine to PTC": [
+            "Змінити рушій на PTC"
+         ],
+         "Turn on <b>Translate Everything Automatically</b>": [
+            "Увімкніть <b>автоматичний переклад усього</b>"
+         ],
+         "The Advanced Translation Editor is your editor now.": [
+            "Advanced Translation Editor тепер є вашим редактором."
+         ],
+         "You’re using the Classic Translation Editor, an old legacy tool. PTC and automatic translation run in the Advanced Translation Editor, which also gives you:": [
+            "Ви використовуєте Classic Translation Editor, старий застарілий інструмент. PTC та автоматичний переклад працюють в Advanced Translation Editor, який також надає вам:"
+         ],
+         "recommended: pay once per page. PTC needs a short description of your site; the next dialog asks for it.": [
+            "рекомендовано: оплата один раз за сторінку. PTC потрібен короткий опис вашого сайту; наступне діалогове вікно запитає його."
+         ],
+         "recommended: pay once per page": [
+            "рекомендовано: оплата один раз за сторінку"
+         ],
+         "Only you can describe your site. PTC uses this to translate in your voice. Enter it in AI Settings, then Save.": [
+            "Тільки ви можете описати свій сайт. PTC використовує це, щоб перекладати у вашому стилі. Введіть опис у налаштуваннях ШІ, а потім натисніть «Зберегти»."
+         ],
+         "Starts with your current engine, %s, priced per word. After step 1 it runs on PTC, pay once per page.": [
+            "Починається з вашого поточного рушія, %s, з оплатою за слово. Після кроку 1 він працюватиме на PTC з оплатою один раз за сторінку."
+         ],
+         "WPML translates your whole site. New content stays translated as you publish.": [
+            "WPML перекладає весь ваш сайт. Новий контент перекладається під час публікації."
+         ],
+         "Translation Memory": [
+            "Пам’ять перекладів"
+         ],
+         "HTML Protection": [
+            "Захист HTML"
+         ],
+         "Glossary": [
+            "Глосарій"
+         ],
+         "Spellchecker": [
+            "Перевірка орфографії"
+         ],
+         "AI Assistant": [
+            "AI-помічник"
+         ],
+         "Automatic Translation": [
+            "Автоматичний переклад"
+         ],
+         "<b>Translate Everything Automatically</b> is already on, with %s (per word).": [
+            "Функція <b>Перекладати все автоматично</b> вже увімкнена з %s (оплата за слово)."
+         ],
+         "Not now": [
+            "Не зараз"
+         ],
+         "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
+            "Помилка з’єднання. Будь ласка, зачекайте хвилину та оновіть сторінку. Якщо проблема не зникає, зверніться до служби підтримки WPML."
+         ],
+         "You don’t have enough prepaid words to translate this content.": [
+            "У вас недостатньо передплачених слів для перекладу цього контенту."
+         ],
+         "You have %1$s prepaid words — %2$s more are needed to translate this content": [
+            "У вас є %1$s передплачених слів — потрібно ще %2$s для перекладу цього контенту"
+         ],
+         "You’re missing %1$s prepaid words for the translation jobs in progress — %2$s are needed in total": [
+            "Вам бракує %1$s передплачених слів для завдань перекладу в процесі — усього потрібно %2$s"
+         ],
+         "Automatic translation costs:": [
+            "Вартість автоматичного перекладу:"
+         ],
+         "Words": [
+            "Слово",
+            "Слова",
+            "Слів"
+         ],
+         "Words to translate automatic": [
+            "Слів для автоматичного перекладу"
+         ],
+         "Words required:": [
+            "Необхідно слів:"
+         ],
+         "Pricing": [
+            "Ціни"
+         ],
+         "Your Automatic Translation Words": [
+            "Ваші слова для автоматичного перекладу"
+         ],
+         "To proceed with translation, activate <b>Pay-As-You-Go</b> or assign prepaid words.": [
+            "Щоб продовжити переклад, активуйте <b>Оплата в міру використання</b> або призначте передплачені слова."
+         ],
+         "<b>Pay-As-You-Go</b> activated": [
+            "<b>Оплата в міру використання</b> активована"
+         ],
+         "You can now continue translating your content automatically.": [
+            "Тепер ви можете продовжити автоматичний переклад вашого контенту."
+         ],
+         "%s word assigned to this site.": [
+            "Цьому сайту призначено %s слово.",
+            "Цьому сайту призначено %s слова.",
+            "Цьому сайту призначено %s слів."
+         ],
+         "Leave existing translations as they are": [
+            "Залишити наявні переклади як є"
+         ],
+         "Overwrite existing translations": [
+            "Перезаписати наявні переклади"
+         ],
+         "Some of the content you want to translate is already translated": [
+            "Частина контенту, який ви хочете перекласти, уже перекладена"
+         ],
+         "What do you want to do with the content that's already translated?": [
+            "Що ви хочете зробити з контентом, який уже перекладено?"
+         ],
+         "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
+            "Переклади від DeepL, Google Translate та Microsoft Translator рекомендовано перевірити перед публікацією."
+         ],
+         "Translations from PTC are publish-ready, so you can publish them without review.": [
+            "Переклади від PTC готові до публікації, тому ви можете публікувати їх без перевірки."
+         ],
+         "Suggested deadline:": [
+            "Рекомендований термін:"
+         ],
+         "Set a batch name and deadline": [
+            "Вкажіть назву пакета та термін виконання"
+         ],
+         "You can assign a custom name to this batch for easy tracking and suggest a deadline to clarify the priority for translators.": [
+            "Ви можете призначити власну назву цьому пакету для зручного відстеження та запропонувати термін виконання, щоб уточнити пріоритет для перекладачів."
+         ],
+         "Batch name:": [
+            "Назва пакета:"
+         ],
+         "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s translator</add_yourself> to the site.<br/> Add yourself as %2$s translator and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Щоб призначити себе перекладачем, спочатку потрібно <add_yourself>додати себе як перекладача мовою %1$s</add_yourself> на сайт.<br/> Додайте себе як перекладача мовою %2$s і натисніть <check_again>перевірити знову</check_again> або виберіть інший варіант перекладу."
+         ],
+         "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s to %2$s translator</add_yourself> to the site.<br/> Add yourself as %3$s to %4$s translator and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Щоб призначити себе перекладачем, спочатку потрібно <add_yourself>додати себе як перекладача з %1$s на %2$s</add_yourself> на сайт.<br/> Додайте себе як перекладача з %3$s на %4$s і натисніть <check_again>перевірити знову</check_again> або виберіть інший варіант перекладу."
+         ],
+         "Checking": [
+            "Перевірка"
+         ],
+         "In order to assign a translation service, you first need to <activate_ts>activate a translation service</activate_ts>.<br/>Activate a translation service and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Щоб призначити сервіс перекладу, спочатку потрібно <activate_ts>активувати сервіс перекладу</activate_ts>.<br/>Активуйте сервіс перекладу та натисніть <check_again>перевірити знову</check_again> або виберіть інший варіант перекладу."
+         ],
+         " Checking ": [
+            " Перевірка "
+         ],
+         "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Щоб перекладати автоматично, спочатку потрібно <enable_ate>увімкнути <b>Розширений редактор перекладів</b></enable_ate> WPML.<br/>Увімкніть <b>Розширений редактор перекладів</b> і натисніть <check_again>перевірити знову</check_again> або виберіть інший варіант перекладу."
+         ],
+         "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
+            "Вибраний контент було перекладено за допомогою <b>Classic Translation Editor</b>, і його неможливо надіслати на автоматичний переклад. Щоб дозволити це, увімкніть «Використовувати також для старих перекладів» на сторінці <wpmlSettingLink>Налаштування WPML</wpmlSettingLink>."
+         ],
+         "Some of the selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
+            "Частина вибраного контенту була перекладена за допомогою <b>Classic Translation Editor</b>, і її неможливо надіслати на автоматичний переклад. Щоб дозволити це, увімкніть «Використовувати також для старих перекладів» на сторінці <wpmlSettingLink>Налаштування WPML</wpmlSettingLink>."
+         ],
+         "Content that is already translated into this language will not be duplicated; its existing translation is kept.\nWhen duplicating content, please first duplicate parent pages to maintain the site's hierarchy.": [
+            "Контент, який уже перекладено цією мовою, не буде дублюватися; його наявний переклад буде збережено.\nПід час дублювання контенту спочатку дублюйте батьківські сторінки, щоб зберегти ієрархію сайту."
+         ],
+         "Some of the selected content is already being translated. This will cancel any in-progress translations.": [
+            "Частина вибраного контенту вже перекладається. Це скасує всі переклади в процесі."
+         ],
+         "The selected items were translated using the WordPress Editor and will be overwritten with automatic translations.": [
+            "Вибрані елементи були перекладені в редакторі WordPress і будуть перезаписані автоматичними перекладами."
+         ],
+         "Some of the selected content was translated using the WordPress Editor and will be overwritten.": [
+            "Частина вибраного контенту була перекладена в редакторі WordPress і буде перезаписана."
+         ],
+         "Translated content structure will change. The selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
+            "Структура перекладеного контенту зміниться. Вибрані елементи раніше були перекладені в редакторі WordPress. Коли WPML перекладе їх автоматично, структура перекладеного допису повернеться до відповідності оригіналу. Наявний перекладений текст усе одно буде використано як основу, щоб зберегти тон і термінологію."
+         ],
+         "Translated content structure will change. Some of the selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
+            "Структура перекладеного контенту зміниться. Частина вибраних елементів раніше була перекладена в редакторі WordPress. Коли WPML перекладе їх автоматично, структура перекладеного допису повернеться до відповідності оригіналу. Наявний перекладений текст усе одно буде використано як основу, щоб зберегти тон і термінологію."
+         ],
+         "In order to assign to a translator, you first need to <add_translators>add %1$s translators</add_translators> to the site.<br/> Add %2$s translators and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Щоб призначити перекладача, спочатку потрібно <add_translators>додати перекладачів мовою %1$s</add_translators> на сайт.<br/> Додайте перекладачів мовою %2$s і натисніть <check_again>перевірити знову</check_again> або виберіть інший варіант перекладу."
+         ],
+         "In order to assign to a translator, you first need to <add_translators>add %1$s to %2$s translators</add_translators> to the site.<br/> Add %3$s to %4$s translators and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Щоб призначити перекладача, спочатку потрібно <add_translators>додати перекладачів з %1$s на %2$s</add_translators> на сайт.<br/> Додайте перекладачів з %3$s на %4$s і натисніть <check_again>перевірити знову</check_again> або виберіть інший варіант перекладу."
+         ],
+         "Your site doesn't have any reviewers for %s. This means that you’re the only person who can review these translations.": [
+            "На вашому сайті немає рецензентів для %s. Це означає, що ви єдина особа, яка може перевірити ці переклади."
+         ],
+         "Your site doesn't have any reviewers yet. This means that you’re the only person who can review translations.": [
+            "На вашому сайті ще немає рецензентів. Це означає, що ви єдина особа, яка може перевіряти переклади."
+         ],
+         "If you want other people to review the translations, go to <a>Settings → Translators</a> and add translators. They will be able to both review and translate content for you.": [
+            "Якщо ви хочете, щоб інші люди перевіряли переклади, перейдіть у <a>Налаштування → Перекладачі</a> та додайте перекладачів. Вони зможуть як перевіряти, так і перекладати контент для вас."
+         ],
+         "Automatic translation is paused — payment required": [
+            "Автоматичний переклад призупинено — потрібна оплата"
+         ],
+         "A payment of %s could not be processed. Pay it in the <b>Translate Everything</b> box above to resume.": [
+            "Платіж у розмірі %s не вдалося обробити. Сплатіть його у вікні <b>Автоматично перекладати все</b> вище, щоб відновити роботу."
+         ],
+         "Automatic translation is paused: monthly spending cap reached": [
+            "Автоматичний переклад призупинено: досягнуто ліміту щомісячних витрат"
+         ],
+         "<site>%1$s</site> reached its monthly spending cap (<figure>%2$s</figure> of <figure>%3$s</figure> words used). Raise it above to continue.": [
+            "<site>%1$s</site> досяг ліміту щомісячних витрат (використано <figure>%2$s</figure> з <figure>%3$s</figure> слів). Збільште його вище, щоб продовжити."
+         ],
+         "WPML does not support duplicating strings. Your selection to duplicate strings to %1$s will be ignored if you proceed with the translation.": [
+            "WPML не підтримує дублювання рядків. Ваш вибір дублювати рядки на %1$s буде проігноровано, якщо ви продовжите переклад."
+         ],
+         "WPML does not support duplicating %1$s elements. Your selection to duplicate elements to %2$s will be ignored if you proceed with the translation.": [
+            "WPML не підтримує дублювання елементів %1$s. Ваш вибір дублювати елементи на %2$s буде проігноровано, якщо ви продовжите переклад."
+         ],
+         "WPML does not support duplicating %1$s elements and strings. Your selection to duplicate elements and strings to %2$s will be ignored if you proceed with the translation.": [
+            "WPML не підтримує дублювання елементів та рядків %1$s. Ваш вибір дублювати елементи та рядки на %2$s буде проігноровано, якщо ви продовжите переклад."
+         ],
+         "WPML does not support duplicating strings.": [
+            "WPML не підтримує дублювання рядків."
+         ],
+         "WPML does not support duplicating %1$s elements.": [
+            "WPML не підтримує дублювання елементів %1$s."
+         ],
+         "WPML does not support duplicating %1$s elements and strings.": [
+            "WPML не підтримує дублювання елементів та рядків %1$s."
+         ],
+         "WPML does not support duplicating taxonomies.": [
+            "WPML не підтримує дублювання таксономій."
+         ],
+         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
+            "WPML не підтримує дублювання таксономій. Ваш вибір дублювати таксономії на %1$s буде проігноровано, якщо ви продовжите переклад."
+         ],
+         "Finish setting up %s on your site": [
+            "Завершіть налаштування %s на вашому сайті"
+         ],
+         "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Вам потрібно автентифікувати %s, щоб надсилати їм контент на переклад.<br/>Перейдіть на <a>вкладку «Перекладачі»</a>, щоб завершити налаштування, і натисніть <check_again>перевірити знову</check_again> або виберіть інший варіант перекладу."
+         ],
+         "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
+            "Частина вибраного контенту має переклад, відкритий для перевірки. Повторне надсилання замінить цей переклад."
+         ],
+         "You selected multiple translation methods for content across different languages:": [
+            "Ви вибрали кілька методів перекладу для контенту різними мовами:"
+         ],
+         "Sent for translation": [
+            "Надіслано на переклад"
+         ],
+         "Some items were not sent for translation": [
+            "Деякі елементи не були надіслані на переклад"
+         ],
+         "Sending for translation failed": [
+            "Помилка надсилання на переклад"
+         ],
+         "WPML can't reach our translation system right now, so these items haven't been sent. Check the connection and retry.": [
+            "Зараз WPML не може з'єднатися з нашою системою перекладу, тому ці елементи не надіслано. Перевірте з'єднання та повторіть спробу."
+         ],
+         "WPML could not read the translation server's answer about these items. If you send them anyway and the server already has them, you may be charged for them twice.": [
+            "WPML не зміг прочитати відповідь сервера перекладу щодо цих елементів. Якщо ви все одно надішлете їх, а сервер їх уже має, з вас може бути стягнуто плату двічі."
+         ],
+         "Check connection and retry": [
+            "Перевірити з’єднання та спробувати знову"
+         ],
+         "Retry not-sent items": [
+            "Повторити для ненадісланих елементів"
+         ],
+         "Send anyway": [
+            "Все одно надіслати"
+         ],
+         "Close": [
+            "Закрити"
+         ],
+         "Continue sending": [
+            "Продовжити надсилання"
+         ],
+         "Ok": [
+            "Ок"
+         ],
+         "<s>1 item</s> is being translated automatically.": [
+            "<s>1 елемент</s> перекладається автоматично.",
+            "<s>%d елементи</s> перекладаються автоматично.",
+            "<s>%d елементів</s> перекладаються автоматично."
+         ],
+         "You can track their progress at the top of the page.": [
+            "Ви можете відстежувати їхній прогрес у верхній частині сторінки."
+         ],
+         "From now on, WPML will automatically translate new content on your site.": [
+            "Відтепер WPML автоматично перекладатиме новий контент на вашому сайті."
+         ],
+         "This number might vary because you enabled the <b>Translate Everything Automatically</b> Mode.": [
+            "Це число може відрізнятися, оскільки ви ввімкнули режим <b>Автоматично перекладати все</b>."
+         ],
+         "From now on, WPML will automatically translate your site's content.": [
+            "Відтепер WPML автоматично перекладатиме контент вашого сайту."
+         ],
+         "Automatic translations summary": [
+            "Підсумок автоматичних перекладів"
+         ],
+         "<s>1 item</s> has been successfully assigned to you! To check its status, please go to <s>Translation Tasks</s>. <translations_queue/>": [
+            "<s>1 елемент</s> успішно призначено вам! Щоб перевірити його статус, перейдіть до розділу <s>Завдання перекладу</s>. <translations_queue/>",
+            "<s>%d елементи</s> успішно призначено вам! Для оновлення статусу перейдіть до розділу <s>Завдання перекладу</s>. <translations_queue/>",
+            "<s>%d елементів</s> успішно призначено вам! Для оновлення статусу перейдіть до розділу <s>Завдання перекладу</s>. <translations_queue/>"
+         ],
+         "Currently logged in translator summary": [
+            "Підсумок для поточного перекладача"
+         ],
+         "Go to Translation Tasks": [
+            "Перейти до завдань перекладу"
+         ],
+         "<s>1 item</s> has been duplicated.": [
+            "<s>1 елемент</s> було дубльовано.",
+            "<s>%d елементи</s> було дубльовано.",
+            "<s>%d елементів</s> було дубльовано."
+         ],
+         "Duplication summary": [
+            "Підсумок дублювання"
+         ],
+         "Please try again in a few minutes. If the issue persists, <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, copy the technical details below and paste them into our Maiya agent for assistance.": [
+            "Будь ласка, спробуйте ще раз через кілька хвилин. Якщо проблема не зникає, <supportLink>відкрийте тікет у нашій гілці форуму (Maiya)</supportLink>, скопіюйте технічні деталі нижче та вставте їх нашому агенту Maiya для допомоги."
+         ],
+         "There was a problem sending your content for translation.": [
+            "Виникла проблема під час надсилання вашого контенту на переклад."
+         ],
+         "See technical details": [
+            "Переглянути технічні деталі"
+         ],
+         "Hide technical details": [
+            "Приховати технічні деталі"
+         ],
+         "Some of the selected strings are already registered or translated into %s. Since their source language matches the target language, they cannot be retranslated.": [
+            "Деякі з вибраних рядків уже зареєстровані або перекладені мовою %s. Оскільки їхня мова оригіналу збігається з мовою перекладу, їх неможливо перекласти повторно."
+         ],
+         "Some of the selected content has already been translated from %1$s to %2$s and cannot be re-translated from %3$s to %4$s.": [
+            "Частина вибраного контенту вже була перекладена з %1$s на %2$s і не може бути перекладена повторно з %3$s на %4$s."
+         ],
+         "Content already translated": [
+            "Контент уже перекладено"
+         ],
+         "Some of the selected content has a translation in progress, so it was not duplicated.": [
+            "Деякий вибраний контент має переклад у процесі, тому його не було дубльовано."
+         ],
+         "Content already being translated": [
+            "Контент уже перекладається"
+         ],
+         "WPML could not count the words of these items.": [
+            "WPML не зміг порахувати слова для цих елементів."
+         ],
+         "Some content couldn't be sent to translation.": [
+            "Деякий контент не вдалося надіслати на переклад."
+         ],
+         "WPML did not create translations for some languages because of the following reasons:": [
+            "WPML не створив переклади для деяких мов з таких причин:"
+         ],
+         "%s Flag": [
+            "Прапор %s"
+         ],
+         "<s>1 item</s> has been successfully sent to translators!": [
+            "<s>1 елемент</s> успішно надіслано перекладачам!",
+            "<s>%d елементи</s> успішно надіслано перекладачам!",
+            "<s>%d елементів</s> успішно надіслано перекладачам!"
+         ],
+         "Local translations summary": [
+            "Підсумок локальних перекладів"
+         ],
+         "You can check their status in WPML → Translation": [
+            "Ви можете перевірити їхній статус у WPML → Переклад"
+         ],
+         "Items not sent:": [
+            "Елементи не надіслано:"
+         ],
+         "%d item was sent for translation.": [
+            "%d елемент було надіслано на переклад.",
+            "%d елементи було надіслано на переклад.",
+            "%d елементів було надіслано на переклад."
+         ],
+         "%d item was not sent.": [
+            "%d елемент не було надіслано.",
+            "%d елементи не було надіслано.",
+            "%d елементів не було надіслано."
+         ],
+         "Reason: %s": [
+            "Причина: %s"
+         ],
+         "Items already sent will be translated and delivered normally.": [
+            "Уже надіслані елементи будуть перекладені та доставлені у звичайному режимі."
+         ],
+         "Continue to %s": [
+            "Продовжити до %s"
+         ],
+         "We were unable to send the following batches for professional translation:": [
+            "Нам не вдалося надіслати наступні пакети для професійного перекладу:"
+         ],
+         "<p><a><s>Contact WPML support for help</s></a></p>": [
+            "<p><a><s>Зверніться до служби підтримки WPML за допомогою</s></a></p>"
+         ],
+         "Translation Service": [
+            "Сервіс перекладу"
+         ],
+         "sending for professional translation..": [
+            "надсилання для професійного перекладу.."
+         ],
+         "<s>%1$d item</s> is being sent for translation to %2$s. Please continue to their site to start the translation.": [
+            "<s>%1$d елемент</s> надсилається на переклад до %2$s. Будь ласка, перейдіть на їхній сайт, щоб розпочати переклад.",
+            "<s>%1$d елементи</s> надсилаються на переклад до %2$s. Будь ласка, перейдіть на їхній сайт, щоб розпочати переклад.",
+            "<s>%1$d елементів</s> надсилаються на переклад до %2$s. Будь ласка, перейдіть на їхній сайт, щоб розпочати переклад."
+         ],
+         "Translation service translations summary": [
+            "Підсумок перекладів сервісу перекладу"
+         ],
+         "One or more assigned translators are invalid. The translator may have been removed or their language permissions changed.<br/> Review your settings on the <translators_page>Translators page</translators_page>.": [
+            "Один або кілька призначених перекладачів недійсні. Перекладача могло бути видалено або його дозволи на мови змінилися.<br/> Перевірте свої налаштування на <translators_page>сторінці перекладачів</translators_page>."
+         ],
+         "The selected translation service is no longer valid. It may have been changed, unauthenticated, or deactivated.<br/> Review your settings on the <translators_page>Translators page</translators_page>.": [
+            "Вибраний сервіс перекладу більше не є дійсним. Його могло бути змінено, він міг втратити автентифікацію або бути деактивованим.<br/> Перевірте свої налаштування на <translators_page>сторінці перекладачів</translators_page>."
+         ],
+         "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
+            "Поточний вибраний редактор перекладів не підтримує автоматичний переклад. Ви повинні ввімкнути <b>Розширений редактор перекладів</b>, щоб надсилати вміст для автоматичного перекладу.<br/> Перевірте свої налаштування на <wpml_settings>сторінці налаштувань WPML</wpml_settings>."
+         ],
+         "Validation error happened during send to translation.": [
+            "Під час надсилання на переклад сталася помилка валідації."
+         ],
+         "Translate and Duplicate": [
+            "Перекласти та дублювати"
+         ],
+         "Duplicate": [
+            "Дублювати"
+         ],
+         "Translate content": [
+            "Перекласти вміст"
+         ],
+         "Checking translation engine…": [
+            "Перевірка системи перекладу…"
+         ],
+         "Checking site context…": [
+            "Перевірка контексту сайту…"
+         ],
+         "Could not check the translation engine. Reload the page to try again.": [
+            "Не вдалося перевірити систему перекладу. Оновіть сторінку, щоб спробувати ще раз."
+         ],
+         "Automatic translation is paused until the failed payment is settled. Pay it in the Translate Everything box.": [
+            "Автоматичний переклад призупинено, доки не буде врегульовано невдалий платіж. Оплатіть його у вікні «Автоматично перекладати все»."
+         ],
+         "Please choose one of the available payment options.": [
+            "Будь ласка, виберіть один із доступних варіантів оплати."
+         ],
+         "Selected content is already translated": [
+            "Вибраний вміст уже перекладено"
+         ],
+         "Please select a review mode": [
+            "Будь ласка, виберіть режим перевірки"
+         ],
+         "Assign local translator or choose another option": [
+            "Призначте місцевого перекладача або виберіть інший варіант"
+         ],
+         "Assign yourself or choose another option": [
+            "Призначте себе або виберіть інший варіант"
+         ],
+         "Activate translation service or choose another option": [
+            "Активуйте сервіс перекладу або виберіть інший варіант"
+         ],
+         "Activate the Advanced Translation Editor or choose another option": [
+            "Активуйте Advanced Translation Editor або виберіть інший варіант"
+         ],
+         "Authenticate translation service or choose another option": [
+            "Авторизуйте сервіс перекладу або виберіть інший варіант"
+         ],
+         "Please provide context to enable translation": [
+            "Будь ласка, надайте контекст, щоб увімкнути переклад"
+         ],
+         "Keep this page open while WPML sends your content for translation. Leaving now stops the remaining items from being sent.": [
+            "Тримайте цю сторінку відкритою, поки WPML надсилає ваш контент на переклад. Якщо ви вийдете зараз, решту елементів не буде надіслано."
+         ],
+         "Sending content for translation": [
+            "Надсилання контенту на переклад"
+         ],
+         "<s>%1$s</s> cannot process more than <s>%2$d</s> jobs in a single batch. WPML will automatically split your jobs into separate batches to ensure an error-free delivery to <s>%3$s</s>. <br/><br/> Do you want to proceed?": [
+            "<s>%1$s</s> не може обробити більше ніж <s>%2$d</s> завдань в одному пакеті. WPML автоматично розділить ваші завдання на окремі пакети, щоб забезпечити безпомилкову доставку до <s>%3$s</s>. <br/><br/> Бажаєте продовжити?"
+         ],
+         "WPML will send jobs to %s in separate batches": [
+            "WPML надішле завдання до %s окремими пакетами"
+         ],
+         "Yes, send jobs in separate batches": [
+            "Так, надіслати завдання окремими пакетами"
+         ],
+         "No, I will split jobs myself": [
+            "Ні, я розділю завдання самостійно"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
+            "Деякі терміни таксономії ще не надіслано. Ті, що були надіслані, перекладаються — натисніть «Продовжити надсилання», щоб надіслати решту."
+         ],
+         "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
+            "Терміни таксономії ще не надіслано. Натисніть «Продовжити надсилання», щоб надіслати їх."
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
+            "Деякі терміни таксономії ще не надіслано. Ті, що були надіслані, перекладаються — спробуйте ще раз надіслати ненадіслані елементи, щоб відправити решту."
+         ],
+         "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
+            "Терміни таксономії ще не надіслано. Спробуйте ще раз надіслати ненадіслані елементи, щоб відправити їх."
+         ],
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
+            "Деякі терміни таксономії не були надіслані на переклад. Ті, що були надіслані, зараз перекладаються — надішліть решту знову, щоб завершити."
+         ],
+         "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
+            "WPML не вдалося надіслати терміни таксономії на переклад, тому жоден із них не був надісланий. Будь ласка, спробуйте ще раз."
+         ],
+         "This will translate only your future content": [
+            "Це перекладатиме лише ваш майбутній вміст"
+         ],
+         "This will translate your entire site": [
+            "Це перекладе весь ваш сайт"
+         ],
+         "Translate everything automatically from now on, without asking me.": [
+            "Відтепер автоматично перекладати все, не запитуючи мене."
+         ],
+         "Existing content": [
+            "Наявний вміст"
+         ],
+         "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
+            "Ви вибрали для перекладу рядки, які знаходяться в %1$s. Лише ці рядки будуть перекладені на %2$s."
+         ],
+         "You selected to translate strings that are in %1$s and %2$s. Only these strings will be translated to %3$s.": [
+            "Ви вибрали для перекладу рядки, які знаходяться в %1$s та %2$s. Лише ці рядки будуть перекладені на %3$s."
+         ],
+         "Source language": [
+            "Мова оригіналу"
+         ],
+         "Target language": [
+            "Мова перекладу"
+         ],
+         "Words to translate": [
+            "Слів для перекладу"
+         ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$sРазом:%2$s %3$s"
+         ],
+         "Translation service additional options": [
+            "Додаткові параметри сервісу перекладу"
+         ],
+         "Refresh": [
+            "Оновити"
+         ],
+         "Fetching translation service data...": [
+            "Отримання даних сервісу перекладу..."
+         ],
+         "-": [
+            "-"
+         ],
+         "Translate automatically": [
+            "Перекласти автоматично"
+         ],
+         "Translate myself": [
+            "Перекласти самостійно"
+         ],
+         "Assign a translator": [
+            "Призначити перекладача"
+         ],
+         "Assign translation service": [
+            "Призначити сервіс перекладу"
+         ],
+         "Do nothing": [
+            "Нічого не робити"
+         ],
+         "Please choose": [
+            "Будь ласка, виберіть"
+         ],
+         "Choose a translator": [
+            "Вибрати перекладача"
+         ],
+         "First available": [
+            "Перший доступний"
+         ],
+         "(Me)": [
+            "(я)"
+         ],
+         "Translation quality": [
+            "Якість перекладу"
+         ],
+         "Expand": [
+            "Розгорнути"
+         ],
+         "%1$s · %2$d": [
+            "%1$s · %2$d"
+         ],
+         "Mistakes visible": [
+            "Помітні помилки"
+         ],
+         "Minimize": [
+            "Згорнути"
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC перекладає з вищою якістю та надає результати, готові до публікації."
+         ],
+         "Step 2": [
+            "Крок 2"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "Для автоматичного перекладу всього сайту потрібно налаштувати переклад ШІ."
+         ],
+         "Set up AI translation": [
+            "Налаштувати переклад ШІ"
+         ],
+         "Keep a wp-admin window open until WPML finishes translating": [
+            "Тримайте вікно wp-admin відкритим, доки WPML не закінчить переклад"
+         ],
+         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
+            "Зазвичай WPML перекладає ваш вміст у фоновому режимі, і вам не потрібно залишатися в панелі керування WordPress. Однак WPML не може зв’язатися з цим сайтом, тому він отримує ваші переклади, поки вікно wp-admin відкрите."
+         ],
+         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
+            "Ви можете продовжувати працювати будь-де в панелі керування WordPress. Просто залиште одне вікно відкритим до завершення перекладу."
+         ],
+         "Next check for translations in %s.": [
+            "Наступна перевірка перекладів через %s."
+         ],
+         "Hide details": [
+            "Приховати деталі"
+         ],
+         "What could be blocking it, and how to fix it": [
+            "Що може блокувати це та як це виправити"
+         ],
+         "Check these on your site": [
+            "Перевірте це на своєму сайті"
+         ],
+         "The site might be on a private network, in staging, or only reachable through a VPN.": [
+            "Сайт може бути в приватній мережі, на стадії розробки або доступний лише через VPN."
+         ],
+         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
+            "Базова автентифікація HTTP або список дозволених IP-адрес можуть блокувати зовнішні запити."
+         ],
+         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
+            "Плагін безпеки, брандмауер або WAF можуть відхиляти запити від WPML."
+         ],
+         "The site might be in maintenance mode.": [
+            "Сайт може бути в режимі технічного обслуговування."
+         ],
+         "Already fixed this on your site?": [
+            "Уже виправили це на своєму сайті?"
+         ],
+         "Check again whether the site is reachable": [
+            "Перевірити ще раз, чи доступний сайт"
+         ],
+         "Checking…": [
+            "Перевірка…"
+         ],
+         "Check again": [
+            "Перевірити ще раз"
+         ],
+         "Still couldn't reach your site.": [
+            "Усе ще не вдалося зв’язатися з вашим сайтом."
+         ],
+         "Automatic translations completed": [
+            "Автоматичні переклади завершено"
+         ],
+         "<s>1 translation</s> has been successfully translated automatically": [
+            "<s>1 переклад</s> було успішно перекладено автоматично",
+            "<s>%d переклади</s> було успішно перекладено автоматично",
+            "<s>%d перекладів</s> було успішно перекладено автоматично"
+         ],
+         "Automatic jobs in progress": [
+            "Автоматичні завдання в процесі"
+         ],
+         "<s>%d automatic translation</s> is in progress": [
+            "<s>%d автоматичний переклад</s> у процесі",
+            "<s>%d автоматичні переклади</s> у процесі",
+            "<s>%d автоматичних перекладів</s> у процесі"
+         ],
+         "You can close this page. WPML keeps translating your site in the background, and you can come back any time to check progress.": [
+            "Ви можете закрити цю сторінку. WPML продовжує перекладати ваш сайт у фоновому режимі, і ви можете повернутися в будь-який час, щоб перевірити прогрес."
+         ],
+         "Your default language, %s, must be mapped to a supported language in order to use automatic translation": [
+            "Ваша мова за замовчуванням, %s, має бути зіставлена з підтримуваною мовою, щоб використовувати автоматичний переклад"
+         ],
+         "Map the language": [
+            "Зіставити мову"
+         ],
+         "%d second": [
+            "%d секунда",
+            "%d секунди",
+            "%d секунд"
+         ],
+         "%d minute": [
+            "%d хвилина",
+            "%d хвилини",
+            "%d хвилин"
+         ],
+         "%d hour": [
+            "%d година",
+            "%d години",
+            "%d годин"
+         ],
+         "%d day": [
+            "%d день",
+            "%d дні",
+            "%d днів"
+         ],
+         "%d translation": [
+            "%d переклад",
+            "%d переклади",
+            "%d перекладів"
+         ],
+         "checking now": [
+            "перевірка зараз"
+         ],
+         "next check in %s": [
+            "наступна перевірка через %s"
+         ],
+         "WPML stopped checking for delivered translations after repeated failures.": [
+            "WPML припинив перевірку наявності готових перекладів після кількох невдалих спроб."
+         ],
+         "Receiving translations: last received %1$s ago · %2$s": [
+            "Отримання перекладів: востаннє отримано %1$s тому · %2$s"
+         ],
+         "Receiving translations: last received %s ago": [
+            "Отримання перекладів: востаннє отримано %s тому"
+         ],
+         "Receiving translations: no translations received yet · %s": [
+            "Отримання перекладів: перекладів ще не отримано · %s"
+         ],
+         "Receiving translations: no translations received yet": [
+            "Отримання перекладів: перекладів ще не отримано"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
+            "Отримання перекладів: востаннє отримано %1$s тому · %2$s очікує · %3$s"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s waiting": [
+            "Отримання перекладів: востаннє отримано %1$s тому · %2$s очікує"
+         ],
+         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
+            "Отримання перекладів: перекладів ще не отримано · %1$s очікує · %2$s"
+         ],
+         "Receiving translations: no translations received yet · %s waiting": [
+            "Отримання перекладів: перекладів ще не отримано · %s очікує"
+         ],
+         "These translations are taking longer than they should to arrive.": [
+            "Ці переклади надходять довше, ніж мали б."
+         ],
+         "Picking up translations…": [
+            "Отримання перекладів…"
+         ],
+         "Pick up translations now": [
+            "Отримати переклади зараз"
+         ],
+         "%d translations ": [
+            "%d перекладів "
+         ],
+         "%d translation ": [
+            "%d переклад "
+         ],
+         "this includes translations from <b>Translate Everything Automatically</b>": [
+            "(це включає переклади з функції <b>Автоматично перекладати все</b>)"
+         ],
+         "are waiting for your review": [
+            "очікують на вашу перевірку"
+         ],
+         "is waiting for your review": [
+            "очікує на вашу перевірку"
+         ],
+         "Review Translations": [
+            "Перевірити переклади"
+         ],
+         "Translate existing content": [
+            "Перекласти наявний вміст"
+         ],
+         "Translate now": [
+            "Перекласти зараз"
+         ],
+         "Starting with version 4.7, WPML will also automatically translate texts (strings) coming from %s.": [
+            "Починаючи з версії 4.7, WPML також автоматично перекладатиме тексти (рядки), що надходять із %s."
+         ],
+         "WPML will not translate existing texts of this type but any new ones you create will be automatically translated. If you prefer, you can <button />.": [
+            "WPML не перекладатиме наявні тексти цього типу, але будь-які нові, які ви створите, будуть перекладені автоматично. Якщо хочете, ви можете <button />."
+         ],
+         "Starting with version 4.7, WPML will also automatically translate:": [
+            "Починаючи з версії 4.7, WPML також автоматично перекладатиме:"
+         ],
+         "Content set to \"use translation if available or fallback to default language\": %s.": [
+            "Вміст із налаштуванням «використовувати переклад, якщо він доступний, або повернутися до мови за замовчуванням»: %s."
+         ],
+         "Texts (strings) coming from: %s.": [
+            "Тексти (рядки), що надходять із: %s."
+         ],
+         "WPML will not translate existing content for these post types and texts but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
+            "WPML не перекладатиме наявний вміст для цих типів дописів і текстів, але будь-який новий вміст, який ви створите, буде перекладено автоматично. Якщо хочете, ви можете почати <button />."
+         ],
+         "WPML will not translate existing content for these post types but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
+            "WPML не перекладатиме наявний вміст для цих типів дописів, але будь-який новий вміст, який ви створите, буде перекладено автоматично. Якщо хочете, ви можете почати <button />."
+         ],
+         "start translating existing content now": [
+            "перекладати наявний вміст зараз"
+         ],
+         "New content is ready to translate": [
+            "Новий вміст готовий до перекладу"
+         ],
+         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "%s стали доступними для перекладу після того, як ви перевірили вартість перекладу, тому функція «Перекласти все» не включила їх. Перевірте вартість і включіть їх, щоб ваш сайт залишався повністю перекладеним."
+         ],
+         "Review cost and include": [
+            "Перевірити вартість і включити"
+         ],
+         "Learn more →": [
+            "Дізнатися більше →"
+         ],
+         "PTC can also translate your app's interface, not just your website.": [
+            "PTC також може перекладати інтерфейс вашого додатка, а не лише ваш вебсайт."
+         ],
+         "PTC can translate software with automatic QA and a money-back guarantee.": [
+            "PTC може перекладати програмне забезпечення з автоматичним контролем якості та гарантією повернення грошей."
+         ],
+         "PTC translates every string in context, so it fits your interface.": [
+            "PTC перекладає кожен рядок у контексті, тому він пасує вашому інтерфейсу."
+         ],
+         "PTC can translate your software right inside your Git workflow.": [
+            "PTC може перекладати ваше програмне забезпечення безпосередньо у вашому робочому процесі Git."
+         ],
+         "The following target languages do not support automatic translations: %s": [
+            "Наступні мови перекладу не підтримують автоматичний переклад: %s"
+         ],
+         "To enable automatic translation map them to known languages.": [
+            "Щоб увімкнути автоматичний переклад, зіставте їх із відомими мовами."
+         ],
+         "Map to known languages": [
+            "Зіставити з відомими мовами"
+         ],
+         "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
+            "Щоб отримати допомогу, будь ласка, <supportLink>відкрийте тікет у нашій гілці форуму (Maiya)</supportLink>, натисніть кнопку «Копіювати все», щоб отримати налагоджувальну інформацію, і «вставте» її нашому агенту Maiya. Якщо проблеми не зникнуть, скористайтеся <logsLink>інструментом журналів</logsLink>, щоб зібрати більше даних."
+         ],
+         "Copied!": [
+            "Скопійовано!"
+         ],
+         "Copy All": [
+            "Копіювати все"
+         ],
+         "Error type": [
+            "Тип помилки"
+         ],
+         "Error Message": [
+            "Повідомлення про помилку"
+         ],
+         "Job ID": [
+            "ID завдання"
+         ],
+         "ATE Job ID": [
+            "ID завдання ATE"
+         ],
+         "Original ID": [
+            "ID оригіналу"
+         ],
+         "Element ID": [
+            "ID елемента"
+         ],
+         "Copy to clipboard": [
+            "Копіювати в буфер обміну"
+         ],
+         "Hide errors details": [
+            "Приховати деталі помилок"
+         ],
+         "Show errors details": [
+            "Показати деталі помилок"
+         ],
+         "<strong>%d item</strong> couldn't be completed due to an unexpected error. Try resending it for translation. If the issue continues, <a>contact WPML support</a>.": [
+            "<strong>%d елемент</strong> не вдалося завершити через неочікувану помилку. Спробуйте надіслати його на переклад повторно. Якщо проблема не зникне, <a>зверніться до служби підтримки WPML</a>.",
+            "<strong>%d елементи</strong> не вдалося завершити через неочікувану помилку. Спробуйте надіслати їх на переклад повторно. Якщо проблема не зникне, <a>зверніться до служби підтримки WPML</a>.",
+            "<strong>%d елементів</strong> не вдалося завершити через неочікувану помилку. Спробуйте надіслати їх на переклад повторно. Якщо проблема не зникне, <a>зверніться до служби підтримки WPML</a>."
+         ],
+         "Cancelling %1$d/%2$d...": [
+            "Скасування %1$d/%2$d..."
+         ],
+         "Cancelling...": [
+            "Скасування..."
+         ],
+         "Discard jobs": [
+            "Відкинути завдання"
+         ],
+         "These items can't be resent because their source content is missing. Discard them instead.": [
+            "Ці елементи неможливо надіслати повторно, оскільки їхній вихідний вміст відсутній. Натомість відкиньте їх."
+         ],
+         "Resending %1$d/%2$d...": [
+            "Повторне надсилання %1$d/%2$d..."
+         ],
+         "Resending...": [
+            "Повторне надсилання..."
+         ],
+         "Resend": [
+            "Надіслати повторно"
+         ],
+         "Translation status details": [
+            "Деталі статусу перекладу"
+         ],
+         "Translation status": [
+            "Статус перекладу"
+         ],
+         "Before translating with PTC, please provide context about your website and target audience (one-time thing).": [
+            "Перед перекладом за допомогою PTC, будь ласка, надайте контекст про ваш вебсайт і цільову аудиторію (це робиться один раз)."
+         ],
+         "Provide Context": [
+            "Надати контекст"
+         ],
+         "Remaining time: <s>Less than 1 minute</s>": [
+            "Залишилося часу: <s>Менше 1 хвилини</s>"
+         ],
+         "Remaining time: <s>%d minute</s>": [
+            "Залишилося часу: <s>%d хвилина</s>",
+            "Залишилося часу: <s>%d хвилини</s>",
+            "Залишилося часу: <s>%d хвилин</s>"
+         ],
+         "Default language does not support automatic translations.": [
+            "Мова за замовчуванням не підтримує автоматичний переклад."
+         ],
+         "WPML could not check if your default language can be translated automatically.": [
+            "WPML не вдалося перевірити, чи можна перекладати вашу мову за замовчуванням автоматично."
+         ],
+         "WPML could not check if your default language can be translated automatically. Reload the page to try again.": [
+            "WPML не вдалося перевірити, чи можна перекладати вашу мову за замовчуванням автоматично. Оновіть сторінку, щоб повторити спробу."
+         ],
+         "Add your site description before you can turn this on.": [
+            "Додайте опис вашого сайту, перш ніж увімкнути це."
+         ],
+         "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
+            "Щоб активувати «Перекладати все автоматично», потрібно увімкнути Advanced Translation Editor."
+         ],
+         "Add it now": [
+            "Додати зараз"
+         ],
+         "It's too expensive": [
+            "Це занадто дорого"
+         ],
+         "The translation quality is not good enough": [
+            "Якість перекладу недостатньо хороша"
+         ],
+         "I'm switching to a different translation provider": [
+            "Я переходжу до іншого постачальника перекладів"
+         ],
+         "I'm experiencing technical issues": [
+            "У мене виникли технічні проблеми"
+         ],
+         "I want to control what gets translated manually": [
+            "Я хочу контролювати те, що перекладається вручну"
+         ],
+         "Other reason": [
+            "Інша причина"
+         ],
+         "Why are you turning off <b>Translate Everything Automatically</b>?": [
+            "Чому ви вимикаєте функцію <b>Автоматично перекладати все</b>?"
+         ],
+         "Your answer helps us improve WPML.": [
+            "Ваша відповідь допоможе нам покращити WPML."
+         ],
+         "Turn off": [
+            "Вимкнути"
+         ],
+         "Available": [
+            "Доступно"
+         ],
+         "Not available": [
+            "Недоступно"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "Розуміє тематику, аудиторію та тон вашого сайту"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "Якість, готова до публікації, підкріплена нашою гарантією"
+         ],
+         "Review before publishing": [
+            "Перевірка перед публікацією"
+         ],
+         "Pay once per page – only added words are charged": [
+            "Оплата один раз за сторінку – стягується плата лише за додані слова"
+         ],
+         "Per word, changes included": [
+            "За слово, зміни включені"
+         ],
+         "Your active engine": [
+            "Ваш активний рушій"
+         ],
+         "WPML's own AI engine": [
+            "Власний ШІ-рушій WPML"
+         ],
+         "Translate Everything Automatically": [
+            "Автоматично перекладати все"
+         ],
+         "Turn on with %s": [
+            "Увімкнути з %s"
+         ],
+         "Switching to PTC later applies to new and changed content. What %s translated stays as it is.": [
+            "Перехід на PTC пізніше застосовуватиметься до нового та зміненого контенту. Те, що переклав %s, залишиться без змін."
+         ],
+         "Translate your whole site quickly and conveniently.": [
+            "Перекладіть весь свій сайт швидко та зручно."
+         ],
+         "Translation updates cost only the added words.": [
+            "Оновлення перекладу коштує лише за додані слова."
+         ],
+         "Nothing is translated until you review the cost and confirm.": [
+            "Нічого не перекладається, поки ви не перевірите вартість і не підтвердите."
+         ],
+         "How to turn this on": [
+            "Як це увімкнути"
+         ],
+         "When you set this up": [
+            "Коли ви це налаштуєте"
+         ],
+         "Choose your engine: keep %s, priced per word, or switch to PTC to pay once per page.": [
+            "Виберіть рушій: залиште %s з оплатою за слово або перейдіть на PTC, щоб платити один раз за сторінку."
+         ],
+         "Review what gets translated and see the cost.": [
+            "Перевірте, що буде перекладено, і подивіться вартість."
+         ],
+         "WPML translates your site and keeps new content translated.": [
+            "WPML перекладає ваш сайт і підтримує переклад нового контенту."
+         ],
+         "Choose how to publish — with or without your review.": [
+            "Виберіть спосіб публікації — з вашою перевіркою чи без неї."
+         ],
+         "Content that becomes translatable later, for example products after the WooCommerce Multilingual setup, is offered to you before it is translated.": [
+            "Контент, який стає доступним для перекладу пізніше, наприклад товари після налаштування WooCommerce Multilingual, пропонується вам перед перекладом."
+         ],
+         "Switch to PTC instead": [
+            "Натомість перейти на PTC"
+         ],
+         "You're translating with %s: priced per word, and changes to translated pages are charged again. With PTC you pay once per page and changes are free.": [
+            "Ви перекладаєте за допомогою %s: оплата здійснюється за слово, а зміни на перекладених сторінках оплачуються знову. З PTC ви платите один раз за сторінку, а зміни безкоштовні."
+         ],
+         "at %s's per-word rate; changes to translated pages are charged again": [
+            "за тарифом %s за слово; зміни на перекладених сторінках оплачуються знову"
+         ],
+         "Prepaid words assigned": [
+            "Призначено передплачених слів"
+         ],
+         "You’re all set.": [
+            "Усе готово."
+         ],
+         "Click <b>Translate Everything Automatically</b> to start translating.": [
+            "Натисніть <b>Автоматично перекладати все</b>, щоб почати переклад."
+         ],
+         "Before translating everything": [
+            "Перед тим як перекладати все"
+         ],
+         "Go back": [
+            "Назад"
+         ],
+         "Continue anyway": [
+            "Усе одно продовжити"
+         ],
+         "WPML could not check with our translation system if your default language can be translated automatically.": [
+            "WPML не вдалося перевірити в нашій системі перекладу, чи можна перекладати вашу мову за замовчуванням автоматично."
+         ],
+         "Content to translate": [
+            "Контент для перекладу"
+         ],
+         "Publishing method": [
+            "Метод публікації"
+         ],
+         "Payment method": [
+            "Спосіб оплати"
+         ],
+         "Enable <b>Translate Everything Automatically</b>": [
+            "Увімкнути <b>автоматично перекладати все</b>"
+         ],
+         "Continue": [
+            "Продовжити"
+         ],
+         "Calculating words for translating existing content. Please wait...": [
+            "Розрахунок кількості слів для перекладу наявного контенту. Будь ласка, зачекайте..."
+         ],
+         "Set Up <b>Translate Everything Automatically</b>": [
+            "Налаштувати <b>автоматично перекладати все</b>"
+         ],
+         "Review your site content and get the translation cost based on what you choose to translate.": [
+            "Перевірте контент вашого сайту та отримайте вартість перекладу на основі того, що ви виберете для перекладу."
+         ],
+         "Select payment method": [
+            "Виберіть спосіб оплати"
+         ],
+         "Translate Everything Automatically - disabled": [
+            "Автоматично перекладати все — вимкнено"
+         ],
+         "Translate Everything Automatically - stopping": [
+            "Автоматично перекладати все — зупиняється"
+         ],
+         "<b>Translate Everything Automatically</b> is stopping": [
+            "<b>Автоматично перекладати все</b> зупиняється"
+         ],
+         "Translate Everything Automatically - paused": [
+            "Автоматично перекладати все — призупинено"
+         ],
+         "Turn off <b>Translate Everything Automatically</b>?": [
+            "Вимкнути <b>автоматично перекладати все</b>?"
+         ],
+         "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
+            "WPML припинить автоматично перекладати новий та відредагований контент. Уже отримані переклади залишаться без змін."
+         ],
+         "%d translation is still in progress. You will not be charged for it.": [
+            "%d переклад усе ще триває. Плата за нього не стягуватиметься.",
+            "%d переклади усе ще тривають. Плата за них не стягуватиметься.",
+            "%d перекладів усе ще тривають. Плата за них не стягуватиметься."
+         ],
+         "%d translation is currently in progress and will be cancelled.": [
+            "%d переклад зараз триває і буде скасований.",
+            "%d переклади зараз тривають і будуть скасовані.",
+            "%d перекладів зараз тривають і будуть скасовані."
+         ],
+         "You can adjust the content limits once Translate Everything finishes the current translation run.": [
+            "Ви зможете налаштувати обмеження контенту, коли функція «Перекласти все» завершить поточний цикл перекладу."
+         ],
+         "Adjust content limits": [
+            "Налаштувати обмеження контенту"
+         ],
+         "Adjust how far back automatic translations apply per content type.": [
+            "Налаштуйте, наскільки глибоко застосовувати автоматичні переклади для кожного типу контенту."
+         ],
+         "Every content type is fully translated, so there is nothing left to set a date for. You can still choose which types automatic translation covers from now on.": [
+            "Кожен тип контенту повністю перекладено, тому більше немає для чого встановлювати дату. Ви все ще можете вибрати, які типи автоматично перекладати відтепер."
+         ],
+         "Save changes": [
+            "Зберегти зміни"
+         ],
+         "Translate Everything options": [
+            "Параметри «Перекласти все»"
+         ],
+         "Turn off <b>Translate Everything</b>": [
+            "Вимкнути <b>перекладати все</b>"
+         ],
+         "Words this cycle": [
+            "Слів у цьому циклі"
+         ],
+         "%1$s prepaid words left, then billed as you go.": [
+            "Залишилося %1$s передплачених слів, далі — оплата за використання."
+         ],
+         "Words left": [
+            "Слів залишилося"
+         ],
+         "Preparing your translations — %d job queued so far...": [
+            "Підготовка ваших перекладів — у черзі вже %d завдання...",
+            "Підготовка ваших перекладів — у черзі вже %d завдання...",
+            "Підготовка ваших перекладів — у черзі вже %d завдань..."
+         ],
+         "Preparing content for translation...": [
+            "Підготовка контенту до перекладу..."
+         ],
+         "%d translation left in the queue...": [
+            "У черзі залишився %d переклад...",
+            "У черзі залишилося %d переклади...",
+            "У черзі залишилося %d перекладів..."
+         ],
+         "Finished — %1$d item couldn't be completed and %2$s are waiting for your approval": [
+            "Завершено — %1$d елемент не вдалося завершити, а %2$s очікують на ваше схвалення",
+            "Завершено — %1$d елементи не вдалося завершити, а %2$s очікують на ваше схвалення",
+            "Завершено — %1$d елементів не вдалося завершити, а %2$s очікують на ваше схвалення"
+         ],
+         "Finished — %d item couldn't be completed": [
+            "Завершено — %d елемент не вдалося завершити",
+            "Завершено — %d елементи не вдалося завершити",
+            "Завершено — %d елементів не вдалося завершити"
+         ],
+         "Finished translating your content, except %s waiting for your approval": [
+            "Завершено переклад вашого контенту, крім %s, що очікують на ваше схвалення"
+         ],
+         "Finished translating your content": [
+            "Завершено переклад вашого контенту"
+         ],
+         "Engine": [
+            "Двигун"
+         ],
+         "Quality": [
+            "Якість"
+         ],
+         "%1$d / 100 — %2$s": [
+            "%1$d / 100 — %2$s"
+         ],
+         "review before publishing recommended": [
+            "рекомендовано перевірити перед публікацією"
+         ],
+         "good enough to publish without review": [
+            "достатньо хороша для публікації без перевірки"
+         ],
+         "usable, but mistakes are visible": [
+            "придатна, але помилки помітні"
+         ],
+         "Per word, changes included. ": [
+            "За слово, зміни включені. "
+         ],
+         " to make changes free.": [
+            " щоб вносити зміни безкоштовно."
+         ],
+         "Pay once per page — only added words are charged.": [
+            "Платіть один раз за сторінку — оплачуються лише додані слова."
+         ],
+         "Status": [
+            "Статус"
+         ],
+         "Some items were translated using the <b>Classic Translation Editor</b> and cannot be sent for automatic translation. Please select these items and choose the option to translate them yourself.": [
+            "Деякі елементи були перекладені за допомогою <b>класичного редактора перекладів</b> і не можуть бути надіслані на автоматичний переклад. Будь ласка, виберіть ці елементи та оберіть варіант перекласти їх самостійно."
+         ],
+         "Translate Everything Automatically - enabled": [
+            "Автоматично перекладати все — увімкнено"
+         ],
+         "<b>Translate Everything Automatically</b> is enabled": [
+            "<b>Автоматично перекладати все</b> увімкнено"
+         ],
+         "<b>Translate Everything Automatically</b> is temporarily paused": [
+            "<b>Автоматично перекладати все</b> тимчасово призупинено"
+         ],
+         "Automatic translation is temporarily paused": [
+            "Автоматичний переклад тимчасово призупинено"
+         ],
+         "We noticed something unexpected in your recent translation activity and paused automatic translation on your account. Contact support and we’ll review it with you.": [
+            "Ми помітили дещо неочікуване у вашій нещодавній активності з перекладу та призупинили автоматичний переклад у вашому акаунті. Зверніться до служби підтримки, і ми розглянемо це разом із вами."
+         ],
+         "Contact support": [
+            "Зв’язатися з підтримкою"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — unpaid balance on a linked account": [
+            "<b>Перекладати все автоматично</b> призупинено — несплачений баланс на зв’язаному акаунті"
+         ],
+         "Automatic translation is paused — unpaid balance on a linked account": [
+            "Автоматичний переклад призупинено — несплачений баланс на зв’язаному акаунті"
+         ],
+         "There is an unpaid balance on another account linked to this billing e-mail. Settle it or <a>contact support</a>.": [
+            "На іншому акаунті, прив’язаному до цієї платіжної електронної адреси, є несплачений баланс. Погасіть його або <a>зверніться до служби підтримки</a>."
+         ],
+         "There is an unpaid balance on another account linked to this card. Settle it or <a>contact support</a>.": [
+            "На іншому акаунті, прив’язаному до цієї картки, є несплачений баланс. Погасіть його або <a>зверніться до служби підтримки</a>."
+         ],
+         "Go to billing": [
+            "Перейти до оплати"
+         ],
+         "Everything already translated stays live. You only pay for new translation.": [
+            "Усе вже перекладене залишається на сайті. Ви платите лише за нові переклади."
+         ],
+         "Cancel translation": [
+            "Скасувати переклад"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment pending": [
+            "Функцію <b>Translate Everything Automatically</b> призупинено — очікується оплата"
+         ],
+         "Automatic translation is paused — payment pending": [
+            "Автоматичний переклад призупинено — очікується оплата"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment required": [
+            "<b>Автоматично перекладати все</b> призупинено — потрібна оплата"
+         ],
+         "Automatic translation - payment required": [
+            "Автоматичний переклад — потрібна оплата"
+         ],
+         "<s>%d</s> translation is waiting for your Pay-As-You-Go payment.": [
+            "<s>%d</s> переклад очікує на вашу оплату в міру використання.",
+            "<s>%d</s> переклади очікують на вашу оплату в міру використання.",
+            "<s>%d</s> перекладів очікують на вашу оплату в міру використання."
+         ],
+         "We are charging your card. If the payment is declined, update your card.": [
+            "Ми стягуємо кошти з вашої картки. Якщо платіж буде відхилено, оновіть дані картки."
+         ],
+         "Translation resumes automatically once the payment goes through.": [
+            "Переклад відновиться автоматично, щойно пройде оплата."
+         ],
+         "<s>%d</s> translation is waiting for payment.": [
+            "<s>%d</s> переклад очікує на оплату.",
+            "<s>%d</s> переклади очікують на оплату.",
+            "<s>%d</s> перекладів очікують на оплату."
+         ],
+         "We could not process your <b>Pay-As-You-Go</b> payment of %s.": [
+            "Ми не змогли обробити ваш платіж <b>Оплата в міру використання</b> на суму %s."
+         ],
+         "We could not process the %s payment for your completed translations. Click \"Pay now\" to retry and continue using automatic translation.": [
+            "Ми не змогли обробити платіж %s за ваші завершені переклади. Натисніть «Оплатити зараз», щоб повторити спробу та продовжити використання автоматичного перекладу."
+         ],
+         "Update card": [
+            "Оновити картку"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment needed": [
+            "Функцію <b>Translate Everything Automatically</b> призупинено — потрібна оплата"
+         ],
+         "Automatic translation is paused — payment needed": [
+            "Автоматичний переклад призупинено — потрібна оплата"
+         ],
+         "<s>%d</s> translation is on hold until you choose how to pay for it.": [
+            "<s>%d</s> переклад призупинено, доки ви не виберете спосіб оплати.",
+            "<s>%d</s> переклади призупинено, доки ви не виберете спосіб оплати.",
+            "<s>%d</s> перекладів призупинено, доки ви не виберете спосіб оплати."
+         ],
+         "Choose a payment method": [
+            "Вибрати спосіб оплати"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — not enough words": [
+            "<b>Автоматично перекладати все</b> призупинено — недостатньо слів"
+         ],
+         "Automatic translation is paused — not enough words": [
+            "Автоматичний переклад призупинено — недостатньо слів"
+         ],
+         "<s>%d</s> translation is waiting for more words.": [
+            "<s>%d</s> переклад очікує на поповнення слів.",
+            "<s>%d</s> переклади очікують на поповнення слів.",
+            "<s>%d</s> перекладів очікують на поповнення слів."
+         ],
+         "You have %1$s%2$s prepaid translation word in your WPML account%3$s. Assign these words to this site to resume automatic translation.": [
+            "У вашому акаунті WPML є %1$s%2$s передплачене слово для перекладу%3$s. Призначте ці слова цьому сайту, щоб відновити автоматичний переклад.",
+            "У вашому акаунті WPML є %1$s%2$s передплачені слова для перекладу%3$s. Призначте ці слова цьому сайту, щоб відновити автоматичний переклад.",
+            "У вашому акаунті WPML є %1$s%2$s передплачених слів для перекладу%3$s. Призначте ці слова цьому сайту, щоб відновити автоматичний переклад."
+         ],
+         "Your prepaid translation words have run out. Already assigned words on your account? Refresh checks.": [
+            "Ваші передплачені слова для перекладу закінчилися. Уже призначили слова у своєму акаунті? Оновіть дані для перевірки."
+         ],
+         "Translation resumes automatically — the remaining %d translation completes on its own.": [
+            "Переклад відновлюється автоматично — решта %d переклад завершиться самостійно.",
+            "Переклад відновлюється автоматично — решта %d переклади завершаться самостійно.",
+            "Переклад відновлюється автоматично — решта %d перекладів завершаться самостійно."
+         ],
+         "Translation resumes automatically once more words are assigned.": [
+            "Переклад відновиться автоматично, щойно буде призначено більше слів."
+         ],
+         "Checking your word balance…": [
+            "Перевірка балансу слів…"
+         ],
+         "%s word added": [
+            "Додано %s слово",
+            "Додано %s слова",
+            "Додано %s слів"
+         ],
+         "resuming %s translation": [
+            "відновлення %s перекладу",
+            "відновлення %s перекладів",
+            "відновлення %s перекладів"
+         ],
+         "No new words found yet — translation stays paused until more words are assigned to this site.": [
+            "Нових слів поки не знайдено — переклад залишається призупиненим, доки для цього сайту не буде призначено більше слів."
+         ],
+         "<s>%d</s> translation is waiting for your review.": [
+            "<s>%d</s> переклад очікує на вашу перевірку.",
+            "<s>%d</s> переклади очікують на вашу перевірку.",
+            "<s>%d</s> перекладів очікують на вашу перевірку."
+         ],
+         "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
+            "<b>Автоматично перекладати все</b> призупинено: досягнуто ліміту місячних витрат"
+         ],
+         "<s>%d</s> translation is waiting for the cap to be raised.": [
+            "<s>%d</s> переклад очікує на збільшення ліміту.",
+            "<s>%d</s> переклади очікують на збільшення ліміту.",
+            "<s>%d</s> перекладів очікують на збільшення ліміту."
+         ],
+         "<site>%1$s</site> reached its <strong>monthly spending cap</strong> (<figure>%2$s</figure> of <figure>%3$s</figure> words used).": [
+            "<site>%1$s</site> досяг свого <strong>ліміту місячних витрат</strong> (використано <figure>%2$s</figure> з <figure>%3$s</figure> слів)."
+         ],
+         "Translation continues when the cap is raised, or when the cap resets on <strong>%s</strong>.": [
+            "Переклад продовжиться, коли ліміт буде збільшено або коли ліміт буде скинуто <strong>%s</strong>."
+         ],
+         "WPML is reconnecting to our translation system. <b>Translate Everything</b> continues on its own once it reconnects. Nothing is lost.": [
+            "WPML відновлює з'єднання з нашою системою перекладу. Режим <b>Перекладати все</b> автоматично продовжить роботу після підключення. Нічого не втрачено."
+         ],
+         "You don't need to do anything. WPML keeps trying in the background.": [
+            "Вам не потрібно нічого робити. WPML продовжує спроби у фоновому режимі."
+         ],
+         "Retry": [
+            "Повторити"
+         ],
+         "Retry now": [
+            "Повторити зараз"
+         ],
+         "WPML is reconnecting to our translation system.": [
+            "WPML відновлює з'єднання з нашою системою перекладу."
+         ],
+         "WPML is reconnecting to our translation system. You can turn on <b>Translate Everything</b> once it reconnects.": [
+            "WPML відновлює з'єднання з нашою системою перекладу. Ви зможете ввімкнути <b>«Перекладати все»</b> після відновлення з'єднання."
+         ],
+         "This item needs a translation update but can't be translated automatically because it was translated with the Classic Translation Editor.": [
+            "Цей елемент потребує оновлення перекладу, але не може бути перекладений автоматично, оскільки він був перекладений за допомогою класичного редактора перекладів."
+         ],
+         "This item needs update. Please, select the item and send for translation.": [
+            "Цей елемент потребує оновлення. Будь ласка, виберіть елемент і надішліть на переклад."
+         ],
+         "Translations completed with the Classic Translation Editor cannot be sent for automatic translation": [
+            "Переклади, виконані за допомогою класичного редактора перекладів, не можуть бути надіслані на автоматичний переклад"
+         ],
+         "automatic translation": [
+            "автоматичний переклад"
+         ],
+         "unassigned": [
+            "не призначено"
+         ],
+         "waiting for automatic translation": [
+            "очікує на автоматичний переклад"
+         ],
+         "waiting for translator": [
+            "очікує на перекладача"
+         ],
+         "in progress": [
+            "у процесі"
+         ],
+         "needs update": [
+            "потребує оновлення"
+         ],
+         "duplicate": [
+            "дублікат"
+         ],
+         "complete": [
+            "завершено"
+         ],
+         "needs review": [
+            "потребує перевірки"
+         ],
+         "translation failed - needs attention": [
+            "помилка перекладу — потребує уваги"
+         ],
+         "needs attention": [
+            "потребує уваги"
+         ],
+         "translation error": [
+            "помилка перекладу"
+         ],
+         "The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "Переклад мовою %s був створений або востаннє відредагований поза редактором перекладів WPML (наприклад, у редакторі WordPress). Коли ви перекладете його повторно, структура перекладеного допису буде оновлена відповідно до оригіналу, але WPML використає ваш наявний переклад як основу, щоб зберегти тон і термінологію."
+         ],
+         "This item needs a translation update. The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "Цей елемент потребує оновлення перекладу. Переклад мовою %s був створений або востаннє відредагований поза редактором перекладів WPML (наприклад, у редакторі WordPress). Коли ви перекладете його повторно, структура перекладеного допису буде оновлена відповідно до оригіналу, але WPML використає ваш наявний переклад як основу, щоб зберегти тон і термінологію."
+         ],
+         "This item hasn't been translated yet and is set to use the WordPress Editor.": [
+            "Цей елемент ще не перекладено, і він налаштований на використання редактора WordPress."
+         ],
+         "This item was translated using the WordPress Editor. Switching to the WPML's Translation Editor will overwrite the existing translation.": [
+            "Цей елемент був перекладений за допомогою редактора WordPress. Перехід до редактора перекладів WPML перезапише наявний переклад."
+         ],
+         "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
+            "Цей елемент потребує оновлення перекладу, але раніше був перекладений за допомогою редактора WordPress. Використання редактора перекладів WPML перезапише наявний переклад."
+         ],
+         "%1$s: %2$s%3$s": [
+            "%1$s: %2$s%3$s"
+         ],
+         "Could not fetch engines data": [
+            "Не вдалося отримати дані двигунів"
+         ],
+         "Error in updating since dates for types.": [
+            "Помилка під час оновлення дат «починаючи з» для типів."
+         ],
+         "Error in dismissing the offer to translate the new content types.": [
+            "Помилка під час відхилення пропозиції перекласти нові типи контенту."
+         ],
+         "Error in updating since date for type.": [
+            "Помилка під час оновлення дати «починаючи з» для типу."
+         ],
+         "Content to Translate": [
+            "Контент для перекладу"
+         ],
+         "Content type": [
+            "Тип контенту"
+         ],
+         "Include": [
+            "Включити"
+         ],
+         "These settings can be changed on the Translations dashboard.": [
+            "Ці налаштування можна змінити на панелі керування перекладами."
+         ],
+         "Items": [
+            "Елементи"
+         ],
+         "Word count": [
+            "Кількість слів"
+         ],
+         "Loading content to translate": [
+            "Завантаження контенту для перекладу"
+         ],
+         "Calculating… <s>less than 1 minute left.</s>": [
+            "Розрахунок… <s>залишилося менше 1 хвилини.</s>"
+         ],
+         "Calculating… <s>%d minute left.</s>": [
+            "Розрахунок… <s>%d хвилина залишилася.</s>",
+            "Розрахунок… <s>%d хвилини залишилося.</s>",
+            "Розрахунок… <s>%d хвилин залишилося.</s>"
+         ],
+         "Words needed to translate your existing content into the new languages: %s.": [
+            "Слів, необхідних для перекладу наявного контенту на нові мови: %s."
+         ],
+         "Words needed to translate your existing content into the new language.": [
+            "Слів, необхідних для перекладу наявного контенту на нову мову."
+         ],
+         "Based on the remaining untranslated content across all languages.": [
+            "На основі решти неперекладеного контенту всіма мовами."
+         ],
+         "Estimated from the selected source volume multiplied by the target languages.": [
+            "Оцінено на основі вибраного обсягу оригіналу, помноженого на цільові мови."
+         ],
+         "%1$s source words × %2$s language": [
+            "%1$s слово оригіналу × %2$s мова",
+            "%1$s слова оригіналу × %2$s мови",
+            "%1$s слів оригіналу × %2$s мов"
+         ],
+         "Already translated content": [
+            "Уже перекладений контент"
+         ],
+         "Documents you translated yourself stay exactly as you made them": [
+            "Документи, які ви переклали самостійно, залишаються саме такими, якими ви їх створили"
+         ],
+         "(%d document)": [
+            "(%d документ)",
+            "(%d документи)",
+            "(%d документів)"
+         ],
+         "View documents": [
+            "Переглянути документи"
+         ],
+         "%1$d of %2$d language will be translated automatically": [
+            "%1$d з %2$d мови буде перекладена автоматично",
+            "%1$d з %2$d мов будуть перекладені автоматично",
+            "%1$d з %2$d мов будуть перекладені автоматично"
+         ],
+         "Translated to %d language": [
+            "Перекладено на %d мову",
+            "Перекладено на %d мови",
+            "Перекладено на %d мов"
+         ],
+         "Add/remove languages": [
+            "Додати/видалити мови"
+         ],
+         "Percentages show how much of your selected content is already translated in each language.": [
+            "Відсотки показують, яка частина вибраного контенту вже перекладена кожною мовою."
+         ],
+         "Note: Content already translated into all languages is not included in this calculation.": [
+            "Примітка: контент, уже перекладений на всі мови, не входить у цей розрахунок."
+         ],
+         "Same as default": [
+            "Така ж, як за замовчуванням"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "Автоматичний переклад недоступний між %1$s та %2$s, оскільки вони розпізнаються як однакова мова."
+         ],
+         "Translation paused": [
+            "Переклад призупинено"
+         ],
+         "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor.": [
+            "WPML не створює нових перекладів мовою %s, тому цю мову не включено. Щоб включити її, натисніть «Відновити переклад» у рядку відповідної мови в редакторі мов."
+         ],
+         "Manual only": [
+            "Тільки вручну"
+         ],
+         "%s has no automatic-translation support. You can translate this content manually.": [
+            "%s не має підтримки автоматичного перекладу. Ви можете перекласти цей контент вручну."
+         ],
+         "Adjusted word rate (%s)": [
+            "Скоригований тариф за слово (%s)"
+         ],
+         "This adjusted word rate applies to legacy translation engines.": [
+            "Цей скоригований тариф за слово застосовується до застарілих двигунів перекладу."
+         ],
+         "Translation engine: <strong>%s</strong>": [
+            "Двигун перекладу: <strong>%s</strong>"
+         ],
+         "Legacy engine": [
+            "Застарілий двигун"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Застосовано застарілу ціну. %s — це застарілий двигун перекладу, який не рекомендується для нових сайтів і буде виведений з експлуатації. Наявні сайти зберігають для нього скоригований тариф за слово."
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
+            "Це те, що потрібно сьогодні для перекладу вашого поточного вмісту. Сюди не входять деякі тексти, додані іншими плагінами, як-от форми чи слайдери, які підраховуються після завершення налаштування. Рядки сайту з вашої теми та плагінів також підраховуються після налаштування і зазвичай додають кілька сотень слів. Після цього редагування безкоштовні. Ви платите знову лише за додані слова."
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Це те, що потрібно для перекладу вашого поточного контенту сьогодні. Сюди не входять деякі тексти, додані іншими плагінами, як-от форми або слайдери, які підраховуються після завершення налаштування. Рядки сайту з вашої теми та плагінів також підраховуються після налаштування і зазвичай додають кілька сотень слів. За тарифом %s за слово; зміни на перекладених сторінках оплачуються знову."
+         ],
+         "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
+            "Це те, що потрібно сьогодні для перекладу вашого поточного вмісту. Після цього редагування безкоштовні. Ви платите знову лише за додані слова."
+         ],
+         "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Це те, що потрібно для перекладу вашого поточного контенту сьогодні. За тарифом %s за слово; зміни на перекладених сторінках оплачуються знову."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
+            "Підраховуються сторінки, записи та товари разом із їхніми спеціальними полями, текстами конструктора сторінок і текстами медіафайлів, а також категорії, позначки й атрибути, які вони використовують."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
+            "Підраховуються сторінки, записи та товари разом із їхніми спеціальними полями, текстами конструктора сторінок і текстами медіафайлів, категорії, позначки й атрибути, які вони використовують, а також рядки сайту. Термін підраховується в кожному елементі, де він використовується, і ще раз окремо, оскільки він надсилається на переклад в обох випадках."
+         ],
+         "Total items": [
+            "Усього елементів"
+         ],
+         "Total source words": [
+            "Усього слів оригіналу"
+         ],
+         "Showing %1$d–%2$d of %3$d types.": [
+            "Показано %1$d–%2$d з %3$d типів."
+         ],
+         "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated.": [
+            "Усі поточні %1$s перекладені на всі мови.<br>Нові %2$s або правки будуть перекладені автоматично."
+         ],
+         "All %s": [
+            "Усі %s"
+         ],
+         "For translated types": [
+            "Для перекладених типів"
+         ],
+         "None": [
+            "Немає"
+         ],
+         "Since %s": [
+            "З %s"
+         ],
+         "Since specific date": [
+            "З конкретної дати"
+         ],
+         "<b>Pay-As-You-Go</b> is active on this site.": [
+            "На цьому сайті активна <b>Оплата в міру використання</b>."
+         ],
+         "<b>%s words</b> are on this site. Continue.": [
+            "На цьому сайті є <b>%s слів</b>. Продовжити."
+         ],
+         "Your site will be translated right after the setup.": [
+            "Ваш сайт буде перекладено одразу після налаштування."
+         ],
+         "To use prepaid words, register WPML on this site.": [
+            "Щоб використовувати передплачені слова, зареєструйте WPML на цьому сайті."
+         ],
+         "We could not reach our translation system.": [
+            "Не вдалося з'єднатися з нашою системою перекладу."
+         ],
+         "This site is not registered with a WPML account, so prepaid words are not available.": [
+            "Цей сайт не зареєстровано в акаунті WPML, тому передплачені слова недоступні."
+         ],
+         "We could not read your WPML account.": [
+            "Нам не вдалося прочитати ваш акаунт WPML."
+         ],
+         "%s more words are needed to translate your site.": [
+            "Для перекладу вашого сайту потрібно ще %s слів."
+         ],
+         "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>.": [
+            "Призначте передплачені слова зі свого акаунта WPML цьому сайту, щоб запустити функцію <b>Перекладати все автоматично</b>."
+         ],
+         "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>.": [
+            "Призначте слова, які у вас уже є, і купіть решту або активуйте <b>Оплату в міру використання</b>."
+         ],
+         "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
+            "Щоб запустити функцію <b>Перекладати все автоматично</b>, активуйте <b>Оплату в міру використання</b> або купіть передплачені слова."
+         ],
+         "Error in fetching currently logged in translator": [
+            "Помилка під час отримання поточного авторизованого перекладача"
+         ],
+         "Error in fetching local translators": [
+            "Помилка під час отримання локальних перекладачів"
+         ],
+         "usage ledger": [
+            "журнал використання"
+         ],
+         "Cancelled. %1$d translation was in progress; its %2$s words are back on your account. Details:": [
+            "Скасовано. %1$d переклад був у процесі; його %2$s слів повернуто на ваш акаунт. Деталі:",
+            "Скасовано. %1$d переклади були в процесі; їхні %2$s слів повернуто на ваш акаунт. Деталі:",
+            "Скасовано. %1$d перекладів були в процесі; їхні %2$s слів повернуто на ваш акаунт. Деталі:"
+         ],
+         "Cancelled. We asked to return the words for %d translation in progress; the usage ledger shows it once confirmed.": [
+            "Скасовано. Ми надіслали запит на повернення слів для %d перекладу в процесі; журнал використання відобразить це після підтвердження.",
+            "Скасовано. Ми надіслали запит на повернення слів для %d перекладів у процесі; журнал використання відобразить їх після підтвердження.",
+            "Скасовано. Ми надіслали запит на повернення слів для %d перекладів у процесі; журнал використання відобразить їх після підтвердження."
+         ],
+         "Published": [
+            "Опубліковано"
+         ],
+         "Draft": [
+            "Чернетка"
+         ],
+         "Trash": [
+            "Кошик"
+         ],
+         "Pending": [
+            "Очікує на розгляд"
+         ],
+         "Private": [
+            "Приватний"
+         ],
+         "Future": [
+            "Заплановано"
+         ],
+         "Auto Draft": [
+            "Авточернетка"
+         ],
+         "External": [
+            "Зовнішній"
+         ],
+         "Pay now": [
+            "Оплатити зараз"
+         ],
+         "%1$sCheck pricing%2$s.": [
+            "%1$sПеревірити ціни%2$s."
+         ],
+         "Lowest cost per word": [
+            "Найнижча вартість за слово"
+         ],
+         "Pay only for what you use": [
+            "Платіть лише за те, що використовуєте"
+         ],
+         "Never run out. Translation never stops.": [
+            "Вони ніколи не закінчаться. Переклад ніколи не зупиняється."
+         ],
+         "The first 500 words each month are free": [
+            "Перші 500 слів щомісяця безкоштовні"
+         ],
+         "Pay-As-You-Go": [
+            "Оплата в міру використання"
+         ],
+         "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate.": [
+            "Активуйте <b>Оплату в міру використання</b>, щоб перекладати автоматично. <b>Оплата в міру використання</b> стягує плату за слова, які ви перекладаєте."
+         ],
+         "Activating <b>Pay-As-You-Go</b>…": [
+            "Активація <b>Оплати в міру використання</b>…"
+         ],
+         "Continue in the new tab": [
+            "Продовжити в новій вкладці"
+         ],
+         "Activate <b>Pay-As-You-Go</b>": [
+            "Активувати <b>Оплата в міру використання</b>"
+         ],
+         "<b>Pay-As-You-Go</b> is not active yet.": [
+            "<b>Оплата в міру використання</b> ще не активна."
+         ],
+         "Already using <b>Pay-As-You-Go</b> on another site?": [
+            "Уже використовуєте <b>Оплата в міру використання</b> на іншому сайті?"
+         ],
+         "Connect this site to it": [
+            "Під’єднати цей сайт до нього"
+         ],
+         "Activate Pay-As-You-Go": [
+            "Активувати Оплату в міру використання"
+         ],
+         "Connect your sites to share translation memory, glossary and word quota.": [
+            "Під’єднайте свої сайти, щоб спільно використовувати пам’ять перекладів, глосарій та квоту слів."
+         ],
+         "Learn more": [
+            "Дізнатися більше"
+         ],
+         "Copy your migration code:": [
+            "Скопіюйте ваш код міграції:"
+         ],
+         "Loading…": [
+            "Завантаження…"
+         ],
+         "Log into a site with an active automatic translation account.": [
+            "Увійдіть на сайт з активним акаунтом автоматичного перекладу."
+         ],
+         "Go to \"WPML\" → \"Translation Dashboard\".": [
+            "Перейдіть у «WPML» → «Панель керування»."
+         ],
+         "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
+            "На вкладці «Payment & Maintenance» перейдіть до «Connected sites»."
+         ],
+         "Click \"Enter the connection key of another site\" to finish connecting your sites.": [
+            "Натисніть «Enter the connection key of another site», щоб завершити під’єднання ваших сайтів."
+         ],
+         "Buy and assign words": [
+            "Купити та призначити слова"
+         ],
+         "Refresh to assign words": [
+            "Оновити, щоб призначити слова"
+         ],
+         "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site.": [
+            "Купіть %1$sпередплачений пакет%2$s принаймні на %3$s%4$s слів%5$s та призначте їх цьому сайту."
+         ],
+         "This amount will cover translation of all your current content.": [
+            "Цієї кількості вистачить для перекладу всього вашого поточного контенту."
+         ],
+         "Assign %1$s%2$s words%3$s to this site.": [
+            "Призначити %1$s%2$s слів%3$s цьому сайту."
+         ],
+         "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s.": [
+            "Призначте свої %1$s%2$s слів%3$s і купіть ще %4$s%5$s%6$s."
+         ],
+         "Buy %1$s%2$s words%3$s for this site.": [
+            "Купити %1$s%2$s слів%3$s для цього сайту."
+         ],
+         "Assign at least %1$s%2$s words%3$s to this site to continue.": [
+            "Призначте принаймні %1$s%2$s слів%3$s цьому сайту, щоб продовжити."
+         ],
+         "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount.": [
+            "Призначте слова зі свого акаунта WPML і купіть додатковий %1$sпередплачений пакет%2$s принаймні на %3$s%4$s слів%5$s, щоб покрити решту суми."
+         ],
+         "Prepaid words": [
+            "Передплачені слова"
+         ],
+         "There are %1$s%2$s words%3$s on your WPML account.": [
+            "У вашому акаунті WPML є %1$s%2$s слів%3$s."
+         ],
+         "There are %1$s%2$s available on your WPML account.%3$s": [
+            "На вашому акаунті WPML доступно %1$s%2$s.%3$s"
+         ],
+         "(Only the WPML account owner can do this.)": [
+            "(Це може зробити лише власник акаунта WPML.)"
+         ],
+         "Checking for new words...": [
+            "Перевірка нових слів..."
+         ],
+         "Still not enough words. Refresh again in %d seconds.": [
+            "Слів усе ще недостатньо. Оновіть ще раз через %d сек."
+         ],
+         "Already assigned?": [
+            "Уже призначено?"
+         ],
+         "Collapse": [
+            "Згорнути"
+         ],
+         "Obvious mistakes": [
+            "Очевидні помилки"
+         ],
+         "Ready to publish": [
+            "Готово до публікації"
+         ],
+         "Your engine": [
+            "Ваш рушій"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Якість перекладу (шкала 50-100): %1$s має %2$d балів, %3$s має %4$d балів."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Оцінки базуються на внутрішньому дослідженні якості перекладу MQM від WPML."
+         ],
+         "Select an item": [
+            "Виберіть елемент"
+         ],
+         "Open dropdown": [
+            "Відкрити випадаючий список"
+         ],
+         "Reset": [
+            "Скинути"
+         ],
+         "Search": [
+            "Пошук"
+         ],
+         "No items found": [
+            "Елементів не знайдено"
+         ],
+         "%1$s Flag": [
+            "Прапор: %1$s"
+         ],
+         "Recommended": [
+            "Рекомендовано"
+         ],
+         "- Select a review mode -": [
+            "- Виберіть режим перевірки -"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "Що ви хотіли б зробити, коли WPML завершить автоматичний переклад вашого контенту?"
+         ],
+         "What would you like to do after WPML finishes translating your content automatically?": [
+            "Що ви хотіли б зробити після того, як WPML завершить автоматичний переклад вашого контенту?"
+         ],
+         "Publish without review": [
+            "Публікувати без перевірки"
+         ],
+         "WPML publishes translations immediately, skipping the review process.": [
+            "WPML негайно публікує переклади, пропускаючи процес перевірки."
+         ],
+         "Wait for review": [
+            "Чекати на перевірку"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "Для DeepL, Google та Microsoft ми рекомендуємо перевірку людиною, щоб підтвердити їхню правильність. PTC забезпечує переклади Better Than Human Translations, які розуміють контекст, тому ви можете впевнено пропустити процес перевірки."
+         ],
+         "WPML keeps translations unpublished, so you can review them first.": [
+            "WPML залишає переклади неопублікованими, щоб ви могли спочатку їх перевірити."
+         ],
+         "Your translators review and approve translations before publishing.": [
+            "Ваші перекладачі перевіряють і схвалюють переклади перед публікацією."
+         ],
+         "Publish and mark for review": [
+            "Публікувати та позначати для перевірки"
+         ],
+         "WPML publishes translations immediately but flags them for you to check at your convenience.": [
+            "WPML негайно публікує переклади, але позначає їх, щоб ви могли перевірити їх у зручний час."
+         ],
+         "WPML publishes translations immediately but flags them for translators to review later.": [
+            "WPML негайно публікує переклади, але позначає їх для перевірки перекладачами пізніше."
+         ],
+         "PTC provides Better Than Human Translations that rarely need improvements, so you can confidently skip the review process.": [
+            "PTC забезпечує переклади Better Than Human Translations, які рідко потребують покращень, тому ви можете впевнено пропустити процес перевірки."
+         ]
+      }
+   }
+}

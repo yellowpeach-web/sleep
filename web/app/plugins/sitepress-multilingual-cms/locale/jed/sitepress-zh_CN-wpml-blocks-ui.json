@@ -4,7 +4,8 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "no"
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "zh_CN"
          },
          "Advanced": [
             "高级"
@@ -13,34 +14,34 @@
             "HTML 锚点"
          ],
          "Add a shortcut to this block when loading the page using the “#anchor” URL.": [
-            "使用“#anchor” URL 加载页面时，向此块添加一个捷径。"
+            "使用 “#anchor” URL 加载页面时，为此区块添加快捷方式。"
          ],
          "Additional CSS class(es)": [
-            "额外 CSS 类"
+            "额外的 CSS 类"
          ],
          "Separate multiple classes with spaces.": [
-            "用空格分隔多个类。"
+            "使用空格分隔多个类。"
          ],
          "Color": [
             "颜色"
          ],
          "px": [
-            ""
+            "px"
          ],
          "%": [
-            ""
+            "%"
          ],
          "Dimensions": [
             "尺寸"
          ],
          "BLOCK": [
-            "块"
+            "区块"
          ],
          "Block margin": [
-            "块外边距"
+            "区块外边距"
          ],
          "Block padding": [
-            "块内边距"
+            "区块内边距"
          ],
          "LANGUAGE": [
             "语言"
@@ -55,34 +56,40 @@
             "显示"
          ],
          "Show flag": [
-            "显示国旗"
+            "显示旗帜"
          ],
          "Show language name": [
             "显示语言名称"
          ],
          "Display language name in": [
-            "显示语言名称"
+            "语言名称显示为"
          ],
          "Style": [
             "样式"
          ],
          "Flag settings": [
-            "国旗设置"
+            "旗帜设置"
          ],
          "Width": [
             "宽度"
          ],
          "Height": [
-            "高"
+            "高度"
          ],
          "Spacing": [
             "间距"
          ],
+         "Switch to %s": [
+            "切换到 %s"
+         ],
+         "Available languages": [
+            "可用语言"
+         ],
          "Allow wrapping to multiple lines": [
-            "允许换行到多行"
+            "允许折行到多行"
          ],
          "Open on click": [
-            "点击打开"
+            "点击时打开"
          ],
          "Show arrow": [
             "显示箭头"
@@ -91,13 +98,19 @@
             "布局"
          ],
          "Justification": [
-            "调整"
+            "对齐方式"
          ],
          "Orientation": [
             "方向"
          ],
+         "Language Switcher": [
+            "语言切换器"
+         ],
+         "Language switcher, press tab to navigate to other languages": [
+            "语言切换器，按 Tab 键导航到其他语言"
+         ],
          "Typography": [
-            "版式"
+            "排版"
          ],
          "Background": [
             "背景"
@@ -115,34 +128,34 @@
             "当前语言背景"
          ],
          "Full name": [
-            ""
+            "全称"
          ],
          "Code": [
             "代码"
          ],
          "Justify items left": [
-            ""
+            "项目左对齐"
          ],
          "Justify items center": [
-            ""
+            "项目居中对齐"
          ],
          "Justify items right": [
-            ""
+            "项目右对齐"
          ],
          "Justify items space between": [
-            ""
+            "项目两端对齐"
          ],
          "Horizontal": [
-            ""
+            "水平"
          ],
          "Vertical": [
-            ""
+            "垂直"
          ],
          "Normal": [
             "常规"
          ],
          "Medium": [
-            "中"
+            "中等"
          ],
          "Large": [
             "大"
@@ -151,13 +164,13 @@
             "特大"
          ],
          "Ab": [
-            "Ab"
+            "文"
          ],
          "AB": [
-            "AB"
+            "文"
          ],
          "ab": [
-            "ab"
+            "文"
          ],
          "Small": [
             "小"
@@ -165,20 +178,14 @@
          "Displays the WPML Language Switcher.": [
             "显示 WPML 语言切换器。"
          ],
-         "Language Switcher": [
-            "语言切换器"
-         ],
          "displays the WPML Language Switcher": [
             "显示 WPML 语言切换器"
-         ],
-         "Displays the WPML Language Switcher. <br/> Learn <a>how to translate this block</a>.": [
-            ""
          ],
          "Navigation Language Switcher": [
             "导航语言切换器"
          ],
          "Reset all": [
-            "重置全部"
+            "全部重置"
          ]
       }
    }

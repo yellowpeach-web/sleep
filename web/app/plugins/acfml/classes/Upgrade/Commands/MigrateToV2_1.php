@@ -14,12 +14,8 @@ class MigrateToV2_1 implements Command {
 
 	const STATUS_DONE = 'done';
 
-	// Our integration runs at acf/init:1 and objects are registered at acf/init:5:
-	// we need to include our callbacks in the middle.
 	const INIT_PRIORITY = 2;
 
-	// Our translations run at registration hooks with priority 10:
-	// we should register here earlier.
 	const REGISTRATIONM_PRIORITY = 9;
 
 	public static function run() {
@@ -31,12 +27,6 @@ class MigrateToV2_1 implements Command {
 
 					Hooks::onFilter( 'acf/post_type/registration_args', self::REGISTRATIONM_PRIORITY, 2 )
 						->then( spreadArgs(
-							/**
-							 * @param  array $args
-							 * @param  array $data
-							 *
-							 * @return array
-							 */
 							function( $args, $data ) use ( $translator ) {
 								$translator->registerCpt( $data );
 								return $args;
@@ -44,12 +34,6 @@ class MigrateToV2_1 implements Command {
 						) );
 					Hooks::onFilter( 'acf/taxonomy/registration_args', self::REGISTRATIONM_PRIORITY, 2 )
 						->then( spreadArgs(
-							/**
-							 * @param  array $args
-							 * @param  array $data
-							 *
-							 * @return array
-							 */
 							function( $args, $data ) use ( $translator ) {
 								$translator->registerTaxonomy( $data );
 								return $args;
@@ -57,11 +41,6 @@ class MigrateToV2_1 implements Command {
 						) );
 					Hooks::onFilter( 'acf/validate_options_page', self::REGISTRATIONM_PRIORITY )
 						->then( spreadArgs(
-							/**
-							 * @param  array $data
-							 *
-							 * @return array
-							 */
 							function( $data ) use ( $translator ) {
 								$translator->registerOptionsPage( $data );
 								return $data;
@@ -73,9 +52,6 @@ class MigrateToV2_1 implements Command {
 			} );
 	}
 
-	/**
-	 * @return bool
-	 */
 	public static function isStActivated() {
 		return defined( 'WPML_ST_VERSION' );
 	}

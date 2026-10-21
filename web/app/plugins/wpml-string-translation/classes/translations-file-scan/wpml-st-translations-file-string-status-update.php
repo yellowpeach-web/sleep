@@ -1,16 +1,10 @@
 <?php
 
 class WPML_ST_Translations_File_String_Status_Update {
-	/** @var int */
 	private $number_of_secondary_languages;
 
-	/** @var wpdb */
 	private $wpdb;
 
-	/**
-	 * @param int  $number_of_secondary_languages
-	 * @param wpdb $wpdb
-	 */
 	public function __construct( $number_of_secondary_languages, wpdb $wpdb ) {
 		$this->number_of_secondary_languages = $number_of_secondary_languages;
 		$this->wpdb                          = $wpdb;
@@ -25,30 +19,26 @@ class WPML_ST_Translations_File_String_Status_Update {
 			return;
 		}
 
-		$sql = "
-			UPDATE {$this->wpdb->prefix}icl_strings s
-			SET s.status = CASE (
-			   SELECT COUNT(t.id) FROM {$this->wpdb->prefix}icl_string_translations t 
-			   WHERE t.string_id = s.id AND (t.status = %d OR t.mo_string IS NOT NULL)  
-			  )
-			  WHEN %d THEN %d
-			  WHEN 0 THEN %d 
-			  ELSE %d 
-			  END
-				  
-			WHERE s.context = %s
-		";
-
-		$sql = $this->wpdb->prepare(
-			$sql,
-			ICL_TM_COMPLETE,
-			$this->number_of_secondary_languages,
-			ICL_TM_COMPLETE,
-			ICL_TM_NOT_TRANSLATED,
-			ICL_TM_IN_PROGRESS,
-			$file->get_domain()
+		$wpdb = $this->wpdb;
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}icl_strings s
+				SET s.status = CASE (
+				   SELECT COUNT(t.id) FROM {$wpdb->prefix}icl_string_translations t
+				   WHERE t.string_id = s.id AND (t.status = %d OR t.mo_string IS NOT NULL)
+				  )
+				  WHEN %d THEN %d
+				  WHEN 0 THEN %d
+				  ELSE %d
+				  END
+				WHERE s.context = %s",
+				ICL_TM_COMPLETE,
+				$this->number_of_secondary_languages,
+				ICL_TM_COMPLETE,
+				ICL_TM_NOT_TRANSLATED,
+				ICL_TM_IN_PROGRESS,
+				$file->get_domain()
+			)
 		);
-
-		$this->wpdb->query( $sql );
 	}
 }

@@ -3,53 +3,251 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "he_IL"
          },
-         "You can choose which posts to translate from the <strong>Translation Management Dashboard</strong>.": [
-            "תוכל לבחור איזה פוסטים לתרגם מ<strong>לוח הבקרה של ניהול התרגום</strong>."
-         ],
-         "Yes, translate <b>existing</b> and <b>future</b> content automatically": [
-            "כן, תרגם תוכן <b>קיים</b> ו<b>עתידי</b> באופן אוטומטי"
-         ],
-         "Yes, but only translate <b>future</b> content automatically": [
-            "כן, אבל תרגם רק תוכן <b>עתידי</b> באופן אוטומטי"
-         ],
-         "Yes, translate <b>future</b> content automatically": [
-            "כן, תרגם תוכן <b>עתידי</b> באופן אוטומטי"
-         ],
-         "No, I want to translate some of these posts, but not all": [
-            "לא, אני רוצה לתרגם חלק מהפוסטים האלו, אבל לא את כולם."
+         "%1$s and %2$s": [
+            "%1$s ו-%2$s"
          ],
          "You must use the Advanced Translation Editor if you want to translate your content automatically.": [
-            "יש להשתמש ב'עורך התרגום המתקדם' אם אתה רוצה לתרגם את התוכן שלך באופן אוטומטי."
+            "עליך להשתמש בעורך התרגום המתקדם אם ברצונך לתרגם את התוכן שלך אוטומטית."
          ],
          "Synchronize translators and translation managers with ATE": [
             "סנכרן מתרגמים ומנהלי תרגום עם ATE"
          ],
-         "Please try again in a few minutes. If the problem persists, please contact %sWPML support%s.": [
-            "נסה שוב עוד מספר דקות. אם הבעיה ממשיכה, צור קשר עם %sהתמיכה של WPML%s."
+         "Please try again in a few minutes. If the problem persists, please contact %1$sWPML support%2$s.": [
+            "אנא נסה שוב בעוד מספר דקות. אם הבעיה נמשכת, פנה אל %1$sתמיכת WPML%2$s."
          ],
-         "Are you OK with paying for this?": [
-            "האם אתה מסכים לשלם עבור זה?"
+         "The number of translated terms carrying %s could not be counted.": [
+            "לא ניתן היה לספור את מספר המונחים המתורגמים המכילים את %s."
+         ],
+         "There are no translated terms carrying %s yet that need translating again. The change applies to new translations.": [
+            "עדיין אין מונחים מתורגמים המכילים את %s שצריכים תרגום מחדש. השינוי יחול על תרגומים חדשים."
+         ],
+         "%1$s translated term carries %2$s — only new translations are affected.": [
+            "מונח מתורגם %1$s מכיל את %2$s — רק תרגומים חדשים יושפעו.",
+            "%1$s מונחים מתורגמים מכילים את %2$s — רק תרגומים חדשים יושפעו."
+         ],
+         "The number of translated posts carrying %s could not be counted.": [
+            "לא ניתן היה לספור את מספר הפוסטים המתורגמים המכילים את %s."
+         ],
+         "There are no translated posts carrying %s yet that need translating again. The change applies to new translations.": [
+            "עדיין אין פוסטים מתורגמים המכילים את %s שצריכים תרגום מחדש. השינוי יחול על תרגומים חדשים."
+         ],
+         "%1$s translated post carries %2$s — it will be marked as needing a translation update.": [
+            "פוסט מתורגם %1$s מכיל את %2$s — הוא יסומן כזקוק לעדכון תרגום.",
+            "%1$s פוסטים מתורגמים מכילים את %2$s — הם יסומנו כזקוקים לעדכון תרגום."
+         ],
+         "%1$s translated post carries %2$s — its translation will show the original's value from now on.": [
+            "פוסט מתורגם %1$s מכיל את %2$s — התרגום שלו יציג את הערך של המקור מעתה והלאה.",
+            "%1$s פוסטים מתורגמים מכילים את %2$s — התרגומים שלהם יציגו את הערך של המקור מעתה והלאה."
+         ],
+         "%1$s translated post carries %2$s — translations without a value get the original's once.": [
+            "פוסט מתורגם %1$s מכיל את %2$s — תרגומים ללא ערך יקבלו את ערך המקור פעם אחת.",
+            "%1$s פוסטים מתורגמים מכילים את %2$s — תרגומים ללא ערך יקבלו את ערך המקור פעם אחת."
+         ],
+         "%1$s translated post carries %2$s — it is no longer translated and what its translations hold stays as it is.": [
+            "פוסט מתורגם %1$s מכיל את %2$s — הוא כבר לא מתורגם ומה שהתרגומים שלו מכילים יישאר כפי שהוא.",
+            "%1$s פוסטים מתורגמים מכילים את %2$s — הם כבר לא מתורגמים ומה שהתרגומים שלהם מכילים יישאר כפי שהוא."
+         ],
+         "Review these translation setting changes": [
+            "סקירת השינויים בהגדרות התרגום"
          ],
          "Cancel": [
             "ביטול"
          ],
-         "Make translatable": [
-            "הפוך לברי-תרגום"
+         "Save changes": [
+            "שמור שינויים"
+         ],
+         "Also update the existing posts now": [
+            "עדכן גם את הפוסטים הקיימים כעת"
+         ],
+         "Also update the %s existing post now": [
+            "עדכן גם את הפוסט הקיים %s כעת",
+            "עדכן גם את %s הפוסטים הקיימים כעת"
+         ],
+         "Only apply to new translations": [
+            "החל רק על תרגומים חדשים"
+         ],
+         "Once saved, WPML automatically sends new and updated posts with this field to translation. This may use translation words.": [
+            "לאחר השמירה, WPML ישלח אוטומטית פוסטים חדשים ומעודכנים עם שדה זה לתרגום. פעולה זו עשויה לצרוך מילים לתרגום.",
+            "לאחר השמירה, WPML ישלח אוטומטית פוסטים חדשים ומעודכנים עם שדות אלו לתרגום. פעולה זו עשויה לצרוך מילים לתרגום."
+         ],
+         "Once saved, WPML automatically sends new and updated terms with this key to translation. This may use translation words.": [
+            "לאחר השמירה, WPML ישלח אוטומטית מונחים חדשים ומעודכנים עם מפתח זה לתרגום. פעולה זו עשויה לצרוך מילים לתרגום.",
+            "לאחר השמירה, WPML ישלח אוטומטית מונחים חדשים ומעודכנים עם מפתחות אלו לתרגום. פעולה זו עשויה לצרוך מילים לתרגום."
+         ],
+         "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "בכל מקרה ההעדפה החדשה תישמר. בבחירה ב-\"החל רק על תרגומים חדשים\", כל תרגום קיים יישאר בדיוק כפי שהוא."
+         ],
+         "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
+            "שדה מותאם אישית %1$s הפך לניתן לתרגום מחוץ למסך זה: %2$s. החלט מה יקרה לתרגומים שכבר קיימים.",
+            "%1$s שדות מותאמים אישית הפכו לניתנים לתרגום מחוץ למסך זה: %2$s. החלט מה יקרה לתרגומים שכבר קיימים."
+         ],
+         "Review this field": [
+            "סקירת שדה זה",
+            "סקירת שדות אלו"
          ],
          "Save": [
-            "שמור"
+            "שמירה"
          ],
-         "Please confirm this translation setting": [
-            "אשר זאת בהגדרת התרגום"
+         "Calculate Costs": [
+            "חשב עלויות"
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate the %1$d existing item.": [
-            "האתר שלך מוגדר לתרגום אוטומטי של כל התוכן. כאשר תהפוך את <PostTypesNames /> לבר-תרגום, WPML יתרגם באופן אוטומטי את הפריט ה-%1$d הקיים.",
-            "האתר שלך מוגדר לתרגום אוטומטי של כל התוכן. כאשר תהפוך את <PostTypesNames /> לבר-תרגום, WPML יתרגם באופן אוטומטי את %1$d הפריטים הקיימים."
+         "WPML will automatically translate %1$s into %2$s.": [
+            "WPML יתרגם אוטומטית %1$s ל-%2$s."
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate all future content.": [
-            "האתר שלך מוגדר לתרגום אוטומטי של כל התוכן. כשתהפוך את <PostTypesNames /> לבר-תרגום, WPML יתרגם באופן אוטומטי את כל התוכן העתידי."
+         "Automatic translation uses translation words.": [
+            "תרגום אוטומטי משתמש במילים לתרגום."
+         ],
+         "Are you OK with this?": [
+            "האם זה מקובל עליך?"
+         ],
+         "Are you sure you want to change the translation option?": [
+            "האם אתה בטוח שברצונך לשנות את אפשרות התרגום?"
+         ],
+         "Yes, continue": [
+            "כן, המשך"
+         ],
+         "No, go back": [
+            "לא, חזור"
+         ],
+         "%d term": [
+            "%d מונח",
+            "%d מונחים"
+         ],
+         "%d language": [
+            "%d שפה",
+            "%d שפות"
+         ],
+         "%s will be translated.": [
+            "%s יתורגמו."
+         ],
+         "Change the URLs of existing translations?": [
+            "לשנות את כתובות ה-URL של תרגומים קיימים?"
+         ],
+         "Counting the existing translations this affects… %1$s of %2$s posts.": [
+            "סופר את התרגומים הקיימים שמושפעים מכך... %1$s מתוך %2$s פוסטים."
+         ],
+         "Counting the existing translations this affects…": [
+            "סופר את התרגומים הקיימים שמושפעים מכך..."
+         ],
+         "Also update the %s existing translation now — its URL changes": [
+            "עדכן גם את התרגום הקיים %s כעת — כתובת ה-URL שלו תשתנה",
+            "עדכן גם את %s התרגומים הקיימים כעת — כתובות ה-URL שלהם ישתנו"
+         ],
+         "Either way the setting is saved. With \"Only apply to new translations\" every existing translation keeps its slug.": [
+            "בכל מקרה ההגדרה תישמר. בבחירה ב-\"החל רק על תרגומים חדשים\", כל תרגום קיים ישמור על ה-slug שלו."
+         ],
+         "No existing translation gets a different URL from this option. It does not apply to new translations either. None of your active languages has \"Encode URL\" turned on.": [
+            "שום תרגום קיים לא יקבל כתובת URL שונה מאפשרות זו. היא גם אינה חלה על תרגומים חדשים. באף אחת מהשפות הפעילות שלך האפשרות ”קידוד כתובת URL“ אינה מופעלת."
+         ],
+         "No existing translation gets a different URL from this option. It applies to new translations.": [
+            "אף תרגום קיים לא יקבל כתובת URL שונה מאופציה זו. היא חלה על תרגומים חדשים."
+         ],
+         "%s existing translation in a language with encoded URLs would get the original's slug.": [
+            "%s תרגום קיים בשפה עם כתובות URL מקודדות יקבל את מזהה הכתובת של המקור.",
+            "%s תרגומים קיימים בשפות עם כתובות URL מקודדות יקבלו את ה-slug של המקור."
+         ],
+         "%s existing translation would get a slug regenerated from its title.": [
+            "עבור תרגום קיים %s ייווצר מחדש ה-slug מהכותרת שלו.",
+            "עבור %s תרגומים קיימים ייווצרו מחדש ה-slugs מהכותרות שלהם."
+         ],
+         "This changes the URL of %s published translation. Links to it from your other translations are updated. Search engines and links from elsewhere keep the old address until you redirect it.": [
+            "פעולה זו משנה את כתובת ה-URL של תרגום %s שפורסם. קישורים אליו מתרגומים אחרים שלך יעודכנו. מנועי חיפוש וקישורים ממקומות אחרים ישמרו על הכתובת הישנה עד שתבצע הפניה מחדש.",
+            "פעולה זו משנה את כתובות ה-URL של %s תרגומים שפורסמו. קישורים אליהם מתרגומים אחרים שלך יעודכנו. מנועי חיפוש וקישורים ממקומות אחרים ישמרו על הכתובות הישנות עד שתבצע הפניה מחדש."
+         ],
+         "Retry": [
+            "נסה שוב"
+         ],
+         "Updating %1$s of %2$s translation…": [
+            "מעדכן %1$s מתוך %2$s תרגומים...",
+            "מעדכן %1$s מתוך %2$s תרגומים..."
+         ],
+         "Updating %1$s of %2$s posts…": [
+            "מעדכן %1$s מתוך %2$s פוסטים..."
+         ],
+         "%1$s %2$s updated.": [
+            "%1$s %2$s עודכנו."
+         ],
+         "%s post updated.": [
+            "פוסט %s עודכן.",
+            "%s פוסטים עודכנו."
+         ],
+         "%s marked as needing a translation update.": [
+            "%s סומנו כזקוקים לעדכון תרגום."
+         ],
+         "%1$s sent to translation and %2$s outside Translate Everything's range marked for later.": [
+            "%1$s נשלחו לתרגום ו-%2$s מחוץ לטווח של 'תרגם הכל אוטומטית' סומנו למועד מאוחר יותר."
+         ],
+         "%s sent to translation.": [
+            "%s נשלחו לתרגום."
+         ],
+         "Nothing was sent. %s outside Translate Everything's range marked for later.": [
+            "דבר לא נשלח. %s מחוץ לטווח של 'תרגם הכל אוטומטית' סומנו למועד מאוחר יותר."
+         ],
+         "Nothing was sent.": [
+            "דבר לא נשלח."
+         ],
+         "%s in a language Translate Everything does not send marked for later.": [
+            "%s בשפה ש-'תרגם הכל אוטומטית' לא שולח סומנו למועד מאוחר יותר."
+         ],
+         "The URL of %s translation was updated.": [
+            "כתובת ה-URL של תרגום %s עודכנה.",
+            "כתובות ה-URL של %s תרגומים עודכנו."
+         ],
+         "No URL was changed.": [
+            "אף כתובת URL לא שונתה."
+         ],
+         "%s translation no longer needed a change.": [
+            "עבור תרגום %s כבר לא היה צורך בשינוי.",
+            "עבור %s תרגומים כבר לא היה צורך בשינוי."
+         ],
+         "The update continues in the background. The admin bar shows its progress.": [
+            "העדכון ממשיך ברקע. סרגל הניהול מציג את התקדמותו."
+         ],
+         "Counting the words this sends…": [
+            "סופר את המילים שפעולה זו שולחת..."
+         ],
+         "Counting the words this sends… %1$s of %2$s posts.": [
+            "סופר את המילים שפעולה זו שולחת... %1$s מתוך %2$s פוסטים."
+         ],
+         "The number of words this sends could not be estimated. The Translation Dashboard shows the cost once the posts are queued.": [
+            "לא ניתן היה להעריך את מספר המילים שפעולה זו שולחת. לוח בקרת התרגום יציג את העלות לאחר שהפוסטים יוכנסו לתור."
+         ],
+         "This sends %s word of content that could not be priced. The Translation Dashboard shows the cost once the posts are queued.": [
+            "פעולה זו שולחת %s מילה של תוכן שלא ניתן היה לתמחר. לוח בקרת התרגום יציג את העלות לאחר שהפוסטים יוכנסו לתור.",
+            "פעולה זו שולחת %s מילים של תוכן שלא ניתן היה לתמחר. לוח בקרת התרגום יציג את העלות לאחר שהפוסטים יוכנסו לתור."
+         ],
+         "Sending it again to %2$s languages uses about %1$s word.": [
+            "שליחתו שוב ל-%2$s שפות צורכת כ-%1$s מילה.",
+            "שליחתו שוב ל-%2$s שפות צורכת כ-%1$s מילים."
+         ],
+         "Sending them again to %2$s languages uses about %1$s word.": [
+            "שליחתם שוב ל-%2$s שפות צורכת כ-%1$s מילים.",
+            "שליחתם שוב ל-%2$s שפות צורכת כ-%1$s מילים."
+         ],
+         "Sending it again uses about %s word.": [
+            "שליחתו שוב צורכת כ־%s מילה.",
+            "שליחתו שוב צורכת כ-%s מילים."
+         ],
+         "Sending them again uses about %s word.": [
+            "שליחתם שוב צורכת כ־%s מילה.",
+            "שליחתם שוב צורכת כ-%s מילים."
+         ],
+         "%s of the posts is outside Translate Everything's range: its translations will be marked without being sent.": [
+            "%s מהפוסטים נמצא מחוץ לטווח של 'תרגם הכל': התרגומים שלו יסומנו מבלי להישלח.",
+            "%s מהפוסטים נמצאים מחוץ לטווח של 'תרגם הכל אוטומטית': התרגומים שלהם יסומנו מבלי להישלח."
+         ],
+         "Your choice for the existing translations was not recorded.": [
+            "הבחירה שלך עבור התרגומים הקיימים לא נרשמה."
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "מערכת התרגום שלנו לא קיבלה את הבקשה הזו (היא ענתה %d). המתן דקה ונסה שוב, וצור קשר עם התמיכה של WPML אם הבעיה נמשכת."
+         ],
+         "several post types listed\u0004%1$s %2$s updated.": [
+            "%1$s %2$s עודכנו."
          ]
       }
    }

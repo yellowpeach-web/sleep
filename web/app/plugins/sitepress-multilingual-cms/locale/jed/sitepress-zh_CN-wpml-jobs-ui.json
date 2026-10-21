@@ -4,28 +4,23 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "no"
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "zh_CN"
          },
-         "Draft — Pending review": [
-            "草稿 — 等候审阅"
-         ],
-         "Complete": [
-            "完成"
-         ],
-         "Insufficient funds": [
-            "资金不足"
+         "%1$s and %2$s": [
+            "%1$s 和 %2$s"
          ],
          "Start batch sync": [
             "开始批量同步"
          ],
          "Cancel job": [
-            "取消工作"
+            "取消作业"
          ],
          "Continue reviewing": [
-            "继续审校"
+            "继续审核"
          ],
          "Start downloading XLIFF file": [
-            "开始下载XLIFF文件"
+            "开始下载 XLIFF 文件"
          ],
          "Edit": [
             "编辑"
@@ -33,8 +28,14 @@
          "Get translation": [
             "获取翻译"
          ],
+         "Edit Translation": [
+            "编辑翻译"
+         ],
+         "Continue Translating": [
+            "继续翻译"
+         ],
          "Resign": [
-            "辞职"
+            "放弃任务"
          ],
          "Review": [
             "审核"
@@ -45,26 +46,29 @@
          "Take and Translate": [
             "接手并翻译"
          ],
+         "This job was created by Translate Everything and cannot be cancelled on its own. To stop it, turn off Translate Everything from the Translation Dashboard.": [
+            "此作业由“自动翻译所有内容”创建，无法单独取消。要停止该作业，请在“翻译仪表板”中关闭“自动翻译所有内容”。"
+         ],
          "View": [
             "查看"
          ],
-         "Delete Translations": [
-            "删除翻译"
-         ],
-         "Keep Translations as Draft": [
-            "将译文保留为草稿"
-         ],
          "Never mind. I want to review these translations.": [
-            "没关系。我会审阅这些翻译。"
+            "没关系。我想审核这些翻译。"
          ],
          "Cancel": [
             "取消"
          ],
          "This will remove the selected jobs from the Translations Queue without publishing them. What would you like to do with the translations?": [
-            "这将从翻译队列中删除选定的工作，而不会发布它们。您想如何处理这些翻译？"
+            "这将从翻译队列中删除选定的作业，且不发布它们。您想如何处理这些翻译？"
          ],
          "Cancel Translation Review": [
-            "取消翻译审阅"
+            "取消翻译审核"
+         ],
+         "Delete Translations": [
+            "删除翻译"
+         ],
+         "Keep Translations as Draft": [
+            "将翻译保留为草稿"
          ],
          "Bulk actions": [
             "批量操作"
@@ -73,43 +77,73 @@
             "应用"
          ],
          "Actions applied to multiple translation jobs can take a few seconds. Please do not leave the page.": [
-            "应用于多个翻译工作的操作可能需要几秒钟。请不要离开页面。"
+            "对多个翻译作业应用操作可能需要几秒钟。请不要离开页面。"
          ],
          "Actions applied to multiple translation jobs can take a few minutes. Please do not leave the page.": [
-            "应用于多个翻译工作的操作可能需要几分钟。请不要离开页面。"
+            "对多个翻译作业应用操作可能需要几分钟。请不要离开页面。"
          ],
          "Select translator": [
-            "选择翻译"
+            "选择译员"
          ],
          "Assign": [
             "分配"
          ],
-         "In progress": [
-            "进行中"
+         "Cancelled": [
+            "已取消"
          ],
-         "Translation ready to download": [
-            "翻译已备妥下载"
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "自动翻译多次失败，WPML 已停止重试。请从翻译仪表板重送或放弃该作业，或在此处取消。"
          ],
-         "Completed": [
-            "已完成"
-         ],
-         "Published — Pending review": [
-            "已发布 — 待审核"
-         ],
-         "Published — Review in progress": [
-            "已发布 — 审校中"
-         ],
-         "Draft — Review in progress": [
-            "草稿 — 审校中"
+         "Needs translation": [
+            "需要翻译"
          ],
          "Needs update": [
             "需要更新"
          ],
-         "Cancelled": [
-            "已取消"
+         "Translation ready to download": [
+            "翻译已准备好下载"
          ],
-         "Needs translation": [
-            "需要翻译"
+         "Completed": [
+            "已完成"
+         ],
+         "Failed - needs attention": [
+            "失败 - 需要关注"
+         ],
+         "%s terms are published immediately because they don't support draft mode.": [
+            "%s 项会立即发布，因为它们不支持草稿模式。"
+         ],
+         "%s are immediately published because they don't support draft mode.": [
+            "%s 会立即发布，因为它们不支持草稿模式。"
+         ],
+         "Published — Pending review": [
+            "已发布 — 待审核"
+         ],
+         "Draft — Pending review": [
+            "草稿 — 待审核"
+         ],
+         "Review in progress": [
+            "审核中"
+         ],
+         "Published — Review in progress": [
+            "已发布 — 审核中"
+         ],
+         "Draft — Review in progress": [
+            "草稿 — 审核中"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "正在等待您的现收现付付款"
+         ],
+         "Waiting for payment": [
+            "等待付款"
+         ],
+         "Insufficient funds": [
+            "余额不足"
+         ],
+         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
+            "自动翻译因临时错误已暂停，并将自动重试 — 无需执行任何操作。如果状态在大约 30 分钟内没有变化，请联系 WPML 支持。"
+         ],
+         "In progress": [
+            "进行中"
          ],
          "View original": [
             "查看原文"
@@ -121,16 +155,19 @@
             "自动翻译"
          ],
          "TP ID: %d": [
-            "TP ID：%d"
+            "TP ID: %d"
          ],
          "Reset": [
             "重置"
          ],
          "Filter": [
-            "过滤器"
+            "筛选"
          ],
-         "ID (%s)": [
-            "ID (%s)"
+         "Reference ID (%s)": [
+            "参考 ID (%s)"
+         ],
+         "Job ID (%s)": [
+            "作业 ID (%s)"
          ],
          "Title (%s)": [
             "标题 (%s)"
@@ -148,34 +185,34 @@
             "状态 (%s)"
          ],
          "Translated by (%s)": [
-            "译员 (%s)"
+            "翻译者 (%s)"
          ],
          "Sent date (%s)": [
             "发送日期 (%s)"
          ],
          "Deadline (%s)": [
-            "最后期限 (%s)"
+            "截止日期 (%s)"
          ],
          "Clear all filters": [
-            "清除所有过滤器"
+            "清除所有筛选器"
          ],
          "Any Translation Service": [
             "任何翻译服务"
          ],
          "Any WordPress Translator": [
-            "任何WordPress译员"
+            "任何 WordPress 译员"
          ],
          "From": [
             "从"
          ],
          "To": [
-            "至"
+            "到"
          ],
          "Anyone": [
             "任何人"
          ],
          "Include jobs from translation services": [
-            "包括来自翻译服务的工作"
+            "包括来自翻译服务的作业"
          ],
          "All types": [
             "所有类型"
@@ -183,11 +220,14 @@
          "Select visible columns": [
             "选择可见列"
          ],
+         "No Data": [
+            "无数据"
+         ],
          "Sort descending": [
-            "降序"
+            "降序排列"
          ],
          "Sort ascending": [
-            "升序"
+            "升序排列"
          ],
          "Cancel sorting": [
             "取消排序"
@@ -196,22 +236,22 @@
             "批量操作正在运行..."
          ],
          "Export all jobs to XLIFF 1.0": [
-            "将所有工作导出至XLIFF 1.0"
+            "将所有作业导出为 XLIFF 1.0"
          ],
          "Export all filtered jobs to XLIFF 1.0": [
-            "将所有过滤的工作导出至XLIFF 1.0"
+            "将所有筛选出的作业导出为 XLIFF 1.0"
          ],
          "Export all jobs to XLIFF 1.1": [
-            "将所有工作导出至XLIFF 1.1"
+            "将所有作业导出为 XLIFF 1.1"
          ],
          "Export all filtered jobs to XLIFF 1.1": [
-            "将所有过滤的工作导出至XLIFF 1.1"
+            "将所有筛选出的作业导出为 XLIFF 1.1"
          ],
          "Export all jobs to XLIFF 1.2": [
-            "将所有工作导出至XLIFF 1.2"
+            "将所有作业导出为 XLIFF 1.2"
          ],
          "Export all filtered jobs to XLIFF 1.2": [
-            "将所有过滤的工作导出至XLIFF 1.2"
+            "将所有筛选出的作业导出为 XLIFF 1.2"
          ],
          "Export": [
             "导出"
@@ -235,10 +275,16 @@
             "操作"
          ],
          "Batch name": [
-            "批量名称"
+            "批次名称"
          ],
          "Filter by %s": [
             "按 %s 筛选"
+         ],
+         "WPML's id for this translation. It stays the same when the job is sent again.": [
+            "WPML 对此翻译的 ID。重新发送作业时，它保持不变。"
+         ],
+         "The number in exported XLIFF file names. It changes when the job is sent again.": [
+            "导出的 XLIFF 文件名中的数字。重新发送作业时，它会更改。"
          ],
          "Title": [
             "标题"
@@ -247,19 +293,31 @@
             "批准翻译审核"
          ],
          "Cancel jobs": [
-            "取消工作"
+            "取消作业"
          ],
          "Cancel translation reviews": [
             "取消翻译审核"
          ],
          "Export to XLIFF %s": [
-            "导出至XLIFF %s"
+            "导出到 XLIFF %s"
          ],
          "Get translations": [
             "获取翻译"
          ],
          "This action does not apply to any of the selected translation jobs": [
-            "此操作不适用于任何选定的翻译工作"
+            "此操作不适用于任何选定的翻译作业"
+         ],
+         "%d translation is still in progress. You will not be charged for it.": [
+            "%d 个翻译仍在进行中。您不会被收取费用。"
+         ],
+         "usage ledger": [
+            "使用分类账"
+         ],
+         "Cancelled. %1$d translation was in progress; its %2$s words are back on your account. Details:": [
+            "已取消。%1$d 个翻译正在进行中；其 %2$s 字数已退回到您的账户。详情："
+         ],
+         "Cancelled. We asked to return the words for %d translation in progress; the usage ledger shows it once confirmed.": [
+            "已取消。我们已请求退回 %d 个正在进行的翻译的字数；确认后，使用分类账将显示它们。"
          ],
          "Translations have been downloaded": [
             "翻译已下载"
@@ -273,47 +331,77 @@
          "Translation could not be downloaded": [
             "无法下载翻译"
          ],
+         "paused after repeated failures, will be retried automatically — %s": [
+            "在重复失败后暂停，将自动重试 — %s"
+         ],
+         "%d translation could not be downloaded": [
+            "%d 个翻译无法下载"
+         ],
+         "%d translation has been downloaded": [
+            "%d 个翻译已下载"
+         ],
+         "No valid jobs selected to approve translations reviews!": [
+            "未选择有效的作业来批准翻译审核！"
+         ],
+         "%1$s (%2$s)": [
+            "%1$s (%2$s)"
+         ],
+         "%s was not approved because it is still open for editing.": [
+            "%s 未获批准，因为它们仍处于可编辑状态。"
+         ],
+         "Approving it now would publish the translation without the edits.": [
+            "现在批准它们将在不包含修改的情况下发布翻译。"
+         ],
+         "Click Continue reviewing, finish the edits and click Complete in the editor.": [
+            "点击“继续审核”，完成修改，然后在编辑器中点击“完成”。"
+         ],
+         "Then approve the translation here.": [
+            "然后在此处批准翻译。"
+         ],
+         "If the editor does not open, send the content to translation again from the Translation Dashboard.": [
+            "如果编辑器未打开，请从“翻译仪表板”再次将内容发送至翻译。"
+         ],
          "Approving translations reviews failed!": [
             "批准翻译审核失败！"
          ],
          "Failed approving translations for the following posts: ": [
-            "未能批准以下文章的翻译："
+            "批准以下文章的翻译失败： "
          ],
          "Translations reviews approved successfully!": [
-            "翻译审核成功批准！"
-         ],
-         "No valid jobs selected to approve translations reviews!": [
-            "未选择有效的工作来批准翻译审核！"
+            "翻译审核已成功批准！"
          ],
          "The translator has been assigned to the job": [
-            "译员已被分配到该工作"
+            "译员已分配到该作业"
          ],
          "The translator could not be assigned to the job": [
-            "无法将译员分配到该工作"
+            "无法将译员分配到该作业"
          ],
          "The jobs have been cancelled": [
-            "工作已被取消"
+            "作业已取消"
          ],
          "The job has been cancelled": [
-            "工作已被取消"
+            "作业已取消"
          ],
          "The jobs could not be cancelled": [
-            "无法取消工作"
+            "无法取消作业"
          ],
          "The job could not be cancelled": [
-            "无法取消工作"
+            "无法取消作业"
          ],
          "Translation reviews have been canceled": [
-            "翻译审核已被取消"
+            "翻译审核已取消"
          ],
          "Translation review has been canceled": [
-            "翻译审核已被取消"
+            "翻译审核已取消"
          ],
          "Translation reviews could not be canceled": [
             "无法取消翻译审核"
          ],
          "Translation review could not be canceled": [
             "无法取消翻译审核"
+         ],
+         "Translated by": [
+            "翻译者"
          ],
          "Sent on": [
             "发送于"
@@ -327,8 +415,11 @@
          "Pending review": [
             "待审核"
          ],
-         "ID": [
-            "ID"
+         "Reference ID": [
+            "参考 ID"
+         ],
+         "Job ID": [
+            "作业 ID"
          ],
          "Type": [
             "类型"
@@ -336,69 +427,74 @@
          "Languages": [
             "语言"
          ],
-         "Translated by": [
-            "译者："
-         ],
          "Download XLIFF file couldn't be finished": [
-            "无法完成下载XLIFF文件"
+            "无法完成 XLIFF 文件下载"
          ],
          "Could not load jobs for export": [
-            "无法加载要导出的工作"
+            "无法加载要导出的作业"
          ],
          "The export to XLIFF failed": [
-            "导出至XLIFF失败"
+            "导出到 XLIFF 失败"
          ],
          "Imported %d jobs": [
-            "已导入%d个工作"
+            "已导入 %d 个作业"
          ],
          "Imported one job": [
-            "已导入一个工作"
+            "已导入一个作业"
          ],
          "Could not import any job": [
-            "无法导入任何工作"
+            "无法导入任何作业"
          ],
          "Import failed!": [
             "导入失败！"
          ],
          "Loading translations queue": [
-            "加载翻译队列"
+            "正在加载翻译队列"
          ],
          "Loading translation jobs": [
-            "加载翻译工作"
+            "正在加载翻译作业"
          ],
          "Jobs could not be loaded": [
-            "无法加载工作"
+            "无法加载作业"
+         ],
+         "This translator cannot translate this language pair.": [
+            "此译员无法翻译此语言对。"
+         ],
+         "This translator is no longer available. Reload the page and choose a translator again.": [
+            "此译员不再可用。请刷新页面并重新选择译员。"
          ],
          "Specify some jobs to resign": [
-            "指定一些要退出的工作"
+            "请指定要放弃的作业"
          ],
          "We could not resign jobs: %s": [
-            "我们不能退出工作： %s"
+            "我们无法放弃作业：%s"
          ],
          "Resigned from jobs": [
-            "已退出工作"
+            "已放弃作业"
          ],
          "Resigned from job": [
-            "已退出工作"
+            "已放弃作业"
          ],
          "Failed to resign from jobs": [
-            "未能退出工作"
+            "放弃作业失败"
          ],
          "The Advanced Editor jobs synchronization has failed": [
-            "高级编辑器工作同步失败"
+            "高级编辑器作业同步失败"
          ],
          "Synchronization with the Professional Translation service has failed": [
-            "与专业翻译服务同步失败"
+            "与专业翻译服务的同步失败"
          ],
-         "%d translation has been downloaded": [
-            "",
-            "%d translations have been downloaded"
+         "%d batches are still being processed by the translation service. Check again in a few minutes.": [
+            "%d 个批次仍在由翻译服务处理。请几分钟后再检查。"
          ],
          "Batch sync finished successfully!": [
-            "批量同步成功完成！"
+            "批次同步成功完成！"
          ],
          "Batch sync couldn't be finished": [
-            "无法完成批量同步"
+            "无法完成批次同步"
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "我们的翻译系统未接受此请求（其返回了 %d）。请稍等片刻后重试，如果问题仍然存在，请联系 WPML 支持。"
          ]
       }
    }

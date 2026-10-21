@@ -2,20 +2,15 @@
 
 abstract class WPML_Admin_Text_Functionality {
 
+	const TRANSLATABLE_NAMES_SETTING    = '_icl_admin_option_names';
+	const TRANSLATABLE_ID_NAMES_SETTING = '_icl_admin_option_id_names';
+	const CONFIGURED_NAMES_SETTING      = '_wpml_admin_option_names_from_config';
+	const CONFIGURED_ID_NAMES_SETTING   = '_wpml_admin_option_id_names_from_config';
+
 	final public function is_blacklisted( $option_name ) {
 		global $wp_taxonomies;
 
 		$black_list = array_fill_keys(
-			/**
-			 * Manipulate the list of blacklisted options.
-			 *
-			 * The options in this array should not be translated for different reasons. This filter
-			 * allows other plugins to avoid certain options from being translated.
-			 *
-			 * @since 3.2.3
-			 *
-			 * @param string[] $options
-			 */
 			apply_filters( 'wpml_st_blacklisted_options', [
 				'active_plugins',
 				'wp_user_roles',
@@ -39,11 +34,13 @@ abstract class WPML_Admin_Text_Functionality {
 				'wpml_config_index',
 				'wpml_config_index_updated',
 				'wpml_config_files_arr',
-				'icl_admin_messages',
 				'wpml-package-translation-db-updates-run',
 				'wpml_media',
 				'wpml_ta_settings',
-				'_icl_admin_option_names',
+				self::TRANSLATABLE_NAMES_SETTING,
+				self::TRANSLATABLE_ID_NAMES_SETTING,
+				self::CONFIGURED_NAMES_SETTING,
+				self::CONFIGURED_ID_NAMES_SETTING,
 				'_icl_cache',
 				'icl_sitepress_version',
 				'rewrite_rules',
@@ -93,7 +90,6 @@ abstract class WPML_Admin_Text_Functionality {
 				'WPLANG',
 				'wp_icl_translators_cached',
 				'cron',
-				'_transient_WPML_ST_MO_Downloader_lang_map',
 				'icl_translation_jobs_basket',
 			] ),
 			1
@@ -135,12 +131,6 @@ abstract class WPML_Admin_Text_Functionality {
 		return isset( $arr ) ? $arr : false;
 	}
 
-	/**
-	 * @param string $key     Name of option to retrieve. Expected to not be SQL-escaped.
-	 * @param mixed  $default Value to return in case the string does not exists.
-	 *
-	 * @return mixed Value set for the option.
-	 */
 	public function get_option_without_filtering( $key, $default = false ) {
 		global $wpdb;
 

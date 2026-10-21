@@ -3,53 +3,225 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "ja"
          },
-         "You can choose which posts to translate from the <strong>Translation Management Dashboard</strong>.": [
-            "<strong>Translation Management ダッシュボード</strong>から翻訳する投稿を選択できます。"
-         ],
-         "Yes, translate <b>existing</b> and <b>future</b> content automatically": [
-            "はい、<b>既存</b>と<b>将来</b>のコンテンツを自動翻訳してください"
-         ],
-         "Yes, but only translate <b>future</b> content automatically": [
-            "はい、ただし<b>将来</b>のコンテンツのみ自動翻訳してください"
-         ],
-         "Yes, translate <b>future</b> content automatically": [
-            "はい、<b>将来</b>のコンテンツを自動翻訳してください"
-         ],
-         "No, I want to translate some of these posts, but not all": [
-            "いいえ、投稿の一部は翻訳しますが、全ては翻訳しません"
+         "%1$s and %2$s": [
+            "%1$s および %2$s"
          ],
          "You must use the Advanced Translation Editor if you want to translate your content automatically.": [
-            "コンテンツを自動翻訳するには、アドバンス翻訳エディターを使用する必要があります。"
+            "コンテンツを自動的に翻訳するには、高度な翻訳エディタを使用する必要があります。"
          ],
          "Synchronize translators and translation managers with ATE": [
-            "ATEで翻訳者と翻訳マネジャーを同期"
+            "翻訳者と翻訳マネージャーを ATE と同期する"
          ],
-         "Please try again in a few minutes. If the problem persists, please contact %sWPML support%s.": [
-            "数分後に再度お試しください。問題が続くようなら、%sWPMLサポート%sにお問い合わせください。"
+         "Please try again in a few minutes. If the problem persists, please contact %1$sWPML support%2$s.": [
+            "数分後にもう一度お試しください。問題が解決しない場合は、%1$sWPML サポート%2$sまでご連絡ください。"
          ],
-         "Are you OK with paying for this?": [
-            "この購入を続けますか？"
+         "The number of translated terms carrying %s could not be counted.": [
+            "%s を含む翻訳済みタームの数をカウントできませんでした。"
+         ],
+         "There are no translated terms carrying %s yet that need translating again. The change applies to new translations.": [
+            "再翻訳が必要な %s を含む翻訳済みタームはまだありません。変更は新しい翻訳に適用されます。"
+         ],
+         "%1$s translated term carries %2$s — only new translations are affected.": [
+            "%1$s 件の翻訳済みタームに %2$s が含まれています。新しい翻訳のみが影響を受けます。"
+         ],
+         "The number of translated posts carrying %s could not be counted.": [
+            "%s を含む翻訳済み投稿の数をカウントできませんでした。"
+         ],
+         "There are no translated posts carrying %s yet that need translating again. The change applies to new translations.": [
+            "再翻訳が必要な %s を含む翻訳済み投稿はまだありません。変更は新しい翻訳に適用されます。"
+         ],
+         "%1$s translated post carries %2$s — it will be marked as needing a translation update.": [
+            "%1$s 件の翻訳済み投稿に %2$s が含まれています。これらは翻訳の更新が必要としてマークされます。"
+         ],
+         "%1$s translated post carries %2$s — its translation will show the original's value from now on.": [
+            "%1$s 件の翻訳済み投稿に %2$s が含まれています。今後、それらの翻訳にはオリジナルの値が表示されます。"
+         ],
+         "%1$s translated post carries %2$s — translations without a value get the original's once.": [
+            "%1$s 件の翻訳済み投稿に %2$s が含まれています。値のない翻訳には、一度だけオリジナルの値がコピーされます。"
+         ],
+         "%1$s translated post carries %2$s — it is no longer translated and what its translations hold stays as it is.": [
+            "%1$s 件の翻訳済み投稿に %2$s が含まれています。これらは今後翻訳されず、現在の翻訳内容はそのまま維持されます。"
+         ],
+         "Review these translation setting changes": [
+            "これらの翻訳設定の変更を確認する"
          ],
          "Cancel": [
             "キャンセル"
          ],
-         "Make translatable": [
-            "翻訳可能にする"
+         "Save changes": [
+            "変更を保存"
+         ],
+         "Also update the existing posts now": [
+            "既存の投稿も今すぐ更新する"
+         ],
+         "Also update the %s existing post now": [
+            "既存の %s 件の投稿も今すぐ更新する"
+         ],
+         "Only apply to new translations": [
+            "新しい翻訳にのみ適用する"
+         ],
+         "Once saved, WPML automatically sends new and updated posts with this field to translation. This may use translation words.": [
+            "保存すると、WPML はこれらのフィールドを含む新規および更新された投稿を自動的に翻訳へ送信します。これには翻訳単語が使用される場合があります。"
+         ],
+         "Once saved, WPML automatically sends new and updated terms with this key to translation. This may use translation words.": [
+            "保存すると、WPML はこれらのキーを含む新規および更新されたタームを自動的に翻訳へ送信します。これには翻訳単語が使用される場合があります。"
+         ],
+         "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "どちらの場合も、新しい設定は保存されます。「新しい翻訳にのみ適用する」を選択した場合、既存の翻訳はすべてそのまま維持されます。"
+         ],
+         "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
+            "この画面以外で %1$s 件のカスタムフィールドが翻訳可能になりました： %2$s。既存の翻訳をどうするか決定してください。"
+         ],
+         "Review this field": [
+            "これらのフィールドを確認"
          ],
          "Save": [
             "保存"
          ],
-         "Please confirm this translation setting": [
-            "この翻訳設定を確認してください"
+         "Calculate Costs": [
+            "コストを計算する"
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate the %1$d existing item.": [
-            "あなたのサイトは全てのコンテンツを自動翻訳するように設定されています。<PostTypesNames /> を翻訳可能にするとき、WPMLは %1$d 既存アイテムを自動翻訳します。",
-            "あなたのサイトは全てのコンテンツを自動翻訳するように設定されています。<PostTypesNames /> を翻訳可能にするとき、WPMLは %1$d 既存アイテムを自動翻訳します。"
+         "WPML will automatically translate %1$s into %2$s.": [
+            "WPML は %1$s を %2$s に自動翻訳します。"
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate all future content.": [
-            "あなたのサイトは全てのコンテンツを自動翻訳するように設定されています。<PostTypesNames /> を翻訳可能にするとき、WPMLは将来の全てのアイテムを自動翻訳します。"
+         "Automatic translation uses translation words.": [
+            "自動翻訳には翻訳単語を使用します。"
+         ],
+         "Are you OK with this?": [
+            "よろしいですか？"
+         ],
+         "Are you sure you want to change the translation option?": [
+            "翻訳オプションを変更してもよろしいですか？"
+         ],
+         "Yes, continue": [
+            "はい、続行する"
+         ],
+         "No, go back": [
+            "いいえ、戻る"
+         ],
+         "%d term": [
+            "%d 個のターム"
+         ],
+         "%d language": [
+            "%d 言語"
+         ],
+         "%s will be translated.": [
+            "%s が翻訳されます。"
+         ],
+         "Change the URLs of existing translations?": [
+            "既存の翻訳の URL を変更しますか？"
+         ],
+         "Counting the existing translations this affects… %1$s of %2$s posts.": [
+            "影響を受ける既存の翻訳をカウントしています… %2$s 投稿中 %1$s 投稿。"
+         ],
+         "Counting the existing translations this affects…": [
+            "影響を受ける既存の翻訳をカウントしています…"
+         ],
+         "Also update the %s existing translation now — its URL changes": [
+            "既存の %s 件の翻訳も今すぐ更新する（URL が変更されます）"
+         ],
+         "Either way the setting is saved. With \"Only apply to new translations\" every existing translation keeps its slug.": [
+            "どちらの場合も、設定は保存されます。「新しい翻訳にのみ適用する」を選択した場合、既存の翻訳はすべて現在のスラッグを保持します。"
+         ],
+         "No existing translation gets a different URL from this option. It does not apply to new translations either. None of your active languages has \"Encode URL\" turned on.": [
+            "このオプションによって既存の翻訳の URL が変更されることはありません。また、新しい翻訳にも適用されません。有効な言語の中に「URL をエンコード」がオンになっている言語はありません。"
+         ],
+         "No existing translation gets a different URL from this option. It applies to new translations.": [
+            "このオプションによって既存の翻訳の URL が変更されることはありません。新しい翻訳に適用されます。"
+         ],
+         "%s existing translation in a language with encoded URLs would get the original's slug.": [
+            "URL がエンコードされている言語の既存の翻訳 %s 件のスラッグが、オリジナルのものになります。"
+         ],
+         "%s existing translation would get a slug regenerated from its title.": [
+            "既存の翻訳 %s 件のスラッグがタイトルから再生成されます。"
+         ],
+         "This changes the URL of %s published translation. Links to it from your other translations are updated. Search engines and links from elsewhere keep the old address until you redirect it.": [
+            "これにより、公開済みの翻訳 %s 件の URL が変更されます。他の翻訳からのリンクは更新されます。検索エンジンや外部からのリンクは、リダイレクトを設定するまで古いアドレスのままになります。"
+         ],
+         "Retry": [
+            "再試行"
+         ],
+         "Updating %1$s of %2$s translation…": [
+            "%2$s 件中 %1$s 件の翻訳を更新中…"
+         ],
+         "Updating %1$s of %2$s posts…": [
+            "%2$s 件中 %1$s 件の投稿を更新中…"
+         ],
+         "%1$s %2$s updated.": [
+            "%1$s 件の %2$s を更新しました。"
+         ],
+         "%s post updated.": [
+            "%s 件の投稿を更新しました。"
+         ],
+         "%s marked as needing a translation update.": [
+            "%s 件を翻訳の更新が必要としてマークしました。"
+         ],
+         "%1$s sent to translation and %2$s outside Translate Everything's range marked for later.": [
+            "%1$s 件を翻訳に送信しました。「すべてを翻訳する」の範囲外である %2$s 件は後で処理するためにマークされました。"
+         ],
+         "%s sent to translation.": [
+            "%s 件を翻訳に送信しました。"
+         ],
+         "Nothing was sent. %s outside Translate Everything's range marked for later.": [
+            "送信されたものはありません。「すべてを翻訳する」の範囲外である %s 件は後で処理するためにマークされました。"
+         ],
+         "Nothing was sent.": [
+            "送信されたものはありません。"
+         ],
+         "%s in a language Translate Everything does not send marked for later.": [
+            "「すべてを翻訳する」が送信しない言語の %s 件を、後で処理するためにマークしました。"
+         ],
+         "The URL of %s translation was updated.": [
+            "%s 件の翻訳の URL が更新されました。"
+         ],
+         "No URL was changed.": [
+            "変更された URL はありません。"
+         ],
+         "%s translation no longer needed a change.": [
+            "%s 件の翻訳は変更が不要になりました。"
+         ],
+         "The update continues in the background. The admin bar shows its progress.": [
+            "更新はバックグラウンドで続行されます。進行状況は管理バーに表示されます。"
+         ],
+         "Counting the words this sends…": [
+            "送信される単語数をカウントしています…"
+         ],
+         "Counting the words this sends… %1$s of %2$s posts.": [
+            "送信される単語数をカウントしています… %2$s 投稿中 %1$s 投稿。"
+         ],
+         "The number of words this sends could not be estimated. The Translation Dashboard shows the cost once the posts are queued.": [
+            "送信される単語数を見積もることができませんでした。投稿がキューに入ると、翻訳ダッシュボードにコストが表示されます。"
+         ],
+         "This sends %s word of content that could not be priced. The Translation Dashboard shows the cost once the posts are queued.": [
+            "価格を算出できないコンテンツが %s 単語送信されます。投稿がキューに入ると、翻訳ダッシュボードにコストが表示されます。"
+         ],
+         "Sending it again to %2$s languages uses about %1$s word.": [
+            "%2$s 言語に再送信するには、約 %1$s 単語を使用します。"
+         ],
+         "Sending them again to %2$s languages uses about %1$s word.": [
+            "%2$s 言語に再送信するには、約 %1$s 単語を使用します。"
+         ],
+         "Sending it again uses about %s word.": [
+            "再送信には約 %s 単語を使用します。"
+         ],
+         "Sending them again uses about %s word.": [
+            "再送信には約 %s 単語を使用します。"
+         ],
+         "%s of the posts is outside Translate Everything's range: its translations will be marked without being sent.": [
+            "投稿のうち %s 件が「すべてを翻訳する」の範囲外です。それらの翻訳は送信されずにマークのみされます。"
+         ],
+         "Your choice for the existing translations was not recorded.": [
+            "既存の翻訳に関する選択内容が記録されませんでした。"
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "翻訳システムはこのリクエストを受け付けませんでした（応答：%d）。しばらく待ってからもう一度お試しください。問題が解決しない場合は、WPMLのサポートにお問い合わせください。"
+         ],
+         "several post types listed\u0004%1$s %2$s updated.": [
+            "%1$s 件の %2$s を更新しました。"
          ]
       }
    }

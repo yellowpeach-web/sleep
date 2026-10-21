@@ -4,91 +4,251 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "zh_TW"
          },
-         "Translation Memory was successfully copied to Advanced Translation Editor.": [
-            ""
+         "Select %s": [
+            "選擇 %s"
+         ],
+         "From:": [
+            "來源："
+         ],
+         "--Choose language--": [
+            "--選擇語言--"
+         ],
+         "to:": [
+            "至："
+         ],
+         "Set language pair(s) for Translator %s:": [
+            "為翻譯人員 %s 設定語言對："
+         ],
+         "+ Add more language pairs for this translator": [
+            "+ 為此翻譯人員新增更多語言對"
+         ],
+         "<b>Translation Memory</b> was successfully copied to Advanced Translation Editor.": [
+            "<b>翻譯記憶</b>已成功複製到進階翻譯編輯器。"
          ],
          "Deactivate ICanLocalize.com as Translation Service on this site": [
-            ""
+            "在此網站停用 ICanLocalize.com 作為翻譯服務"
          ],
-         "Missing a translator? Or were new jobs since the last copy of the Translation Memory?": [
-            ""
+         "Missing a translator? Or were new jobs since the last copy of the <b>Translation Memory</b>?": [
+            "找不到翻譯人員？或是自上次複製<b>翻譯記憶</b>後有新的翻譯工作？"
          ],
          "Enter here your ICanLocalize authentication details.": [
-            ""
+            "在此輸入您的 ICanLocalize 驗證詳細資訊。"
          ],
          "API Token:": [
-            ""
+            "API 金鑰："
          ],
          "Please enter valid value for ICL token.": [
-            ""
+            "請輸入有效的 ICL 金鑰值。"
          ],
          "Enter ICL API token here": [
-            ""
+            "在此輸入 ICL API 金鑰"
          ],
          "Submit": [
-            ""
+            "提交"
          ],
          "Sign up": [
-            ""
+            "註冊"
          ],
          "to ICanLocalize to receive your API token.": [
-            ""
+            "至 ICanLocalize 以取得您的 API 金鑰。"
          ],
          "Already have an account? Login and": [
-            ""
+            "已經有帳戶了？登入並"
          ],
          "get your token.": [
-            ""
+            "取得您的金鑰。"
          ],
-         "Copy new Translation Memory to Advanced Translation Memory": [
-            ""
+         "Copy new <b>Translation Memory</b> to Advanced Translation Memory": [
+            "複製新的<b>翻譯記憶</b>到進階翻譯記憶"
          ],
          "Import translation memory": [
-            ""
+            "匯入翻譯記憶"
          ],
          "ICanLocalize is already deactivated on this site": [
-            ""
+            "ICanLocalize 已在此網站停用"
          ],
-         "You can still import Translators or Copy Translation Memory to Advanced Translator Editor": [
-            ""
+         "You can still import Translators or Copy <b>Translation Memory</b> to Advanced Translator Editor": [
+            "您仍可以匯入翻譯人員或複製<b>翻譯記憶</b>到進階翻譯編輯器"
          ],
-         "Move from ICanLocalize.com to Advanced Translation Editor": [
-            ""
+         "Move from ICanLocalize.com to <b>Advanced Translation Editor</b>": [
+            "從 ICanLocalize.com 遷移至<b>進階翻譯編輯器</b>"
          ],
          "Import translators": [
-            ""
+            "匯入翻譯人員"
          ],
          "Come back": [
-            ""
+            "返回"
+         ],
+         "Cancel": [
+            "取消"
+         ],
+         "Save": [
+            "儲存"
+         ],
+         "Name": [
+            "名稱"
+         ],
+         "Language Pairs": [
+            "語言對"
          ],
          "Not supported pairs:": [
-            ""
+            "不支援的語言組："
          ],
          "ICanLocalize.com deactivated": [
-            ""
+            "ICanLocalize.com 已停用"
          ],
          "Translate memory is imported": [
-            ""
+            "翻譯記憶已匯入"
          ],
          "There is no translators in ICL": [
-            ""
+            "ICL 中沒有翻譯人員"
          ],
          "Translators saved": [
-            ""
+            "翻譯人員已儲存"
+         ],
+         "%s file upload failed.": [
+            "%s 檔案上傳失敗。"
+         ],
+         "Flag": [
+            "國旗"
+         ],
+         "Flag file": [
+            "國旗檔案"
+         ],
+         "You just added %s language. Next, select it as the site's default language or a translation language.": [
+            "您剛新增了 %s 語言。接下來，請將其選取為網站的預設語言或翻譯語言。"
+         ],
+         "Language added": [
+            "語言已新增"
+         ],
+         "The value \"%s\" already exists": [
+            "數值「%s」已存在"
+         ],
+         "Add a new language": [
+            "新增語言"
+         ],
+         "Create a country-specific language by choosing the general language from the list below. Then, choose the country it should be localized for.": [
+            "從下方清單中選擇一般語言來建立特定國家的語言。接著，選擇其應本地化的國家。"
+         ],
+         "By choosing a combination that already exists in the database, WPML can help fill out the necessary fields. Read more about <AddingACustomLanguageLink />.": [
+            "透過選擇資料庫中已存在的組合，WPML 可以協助填寫必要的欄位。閱讀更多關於 <AddingACustomLanguageLink /> 的資訊。"
+         ],
+         "Cannot find?": [
+            "找不到？"
+         ],
+         "Click here": [
+            "按一下這裡"
+         ],
+         "The wrong format. It may contain only small letters and \"-\". E.g: \"fr\" , \"pt-br\", \"zh-hans\"": [
+            "格式錯誤。僅能包含小寫字母與「-」。例如：「fr」、「pt-br」、「zh-hans」"
+         ],
+         "Language": [
+            "語言"
+         ],
+         "Location": [
+            "位置"
+         ],
+         "Code": [
+            "代碼"
          ],
          "Flags must be:": [
-            ""
+            "國旗必須為："
+         ],
+         "Automatic Translation will use the default behavior for this language": [
+            "自動翻譯將對此語言使用預設行為"
+         ],
+         "Language mapping": [
+            "語言對應"
+         ],
+         "Use Automatic Translation default behavior": [
+            "使用自動翻譯預設行為"
          ],
          "PNG, SVG, or JPG files": [
-            ""
+            "PNG、SVG 或 JPG 檔案"
+         ],
+         "Default locale": [
+            "預設地區設定"
+         ],
+         "The wrong format. It may contain only small letters and \"_\". E.g: \"de\" , \"de_DE\", \"zh_Hant_TW\"": [
+            "格式錯誤。僅能包含小寫字母與「_」。例如：「de」、「de_DE」、「zh_Hant_TW」"
+         ],
+         "hreflang": [
+            "hreflang"
          ],
          "18 x 12 pixels": [
-            ""
+            "18 x 12 像素"
          ],
-         "Read more about ": [
-            ""
+         "Encode url?": [
+            "編碼 URL？"
+         ],
+         "NO": [
+            "否"
+         ],
+         "YES": [
+            "是"
+         ],
+         " (required)": [
+            " (必填)"
+         ],
+         "The name of your language as it will appear on your site's language switcher.": [
+            "您的語言名稱，將顯示在網站的語言切換器上。"
+         ],
+         "Please fill in the field": [
+            "請填寫此欄位"
+         ],
+         "A unique value that identifies the language in the database and URL. Once saved, the language code cannot be changed.": [
+            "在資料庫與 URL 中識別該語言的唯一值。儲存後，語言代碼即無法更改。"
+         ],
+         "Save language": [
+            "儲存語言"
+         ],
+         "If your custom language is similar to an existing language, you can use the existing language's spellcheck and automatic translation. For example, if your custom language is Swiss-German, you can map to German as the language to use for spellcheck and automatic translation. If you don't map your custom language to an existing language, spellcheck and automatic translation features will be unavailable in that language.": [
+            "如果您的自訂語言與現有語言相似，您可以使用現有語言的拼字檢查與自動翻譯。例如，如果您的自訂語言是瑞士德語，您可以對應到德語，以便將其用於拼字檢查與自動翻譯。如果您未將自訂語言對應到現有語言，則該語言將無法使用拼字檢查與自動翻譯功能。"
+         ],
+         "The value WPML checks when loading translations from MO and PO files. The default locale is included in the filenames in your /wp-content/languages/ folder in your WordPress setup.": [
+            "WPML 從 MO 與 PO 檔案載入翻譯時檢查的數值。預設地區設定包含在 WordPress 安裝中 /wp-content/languages/ 資料夾內的檔案名稱中。"
+         ],
+         "Google uses the hreflang attribute to direct users to sites in their relevant language and location. Examples:": [
+            "Google 使用 hreflang 屬性將使用者引導至其相關語言與位置的網站。範例："
+         ],
+         "All English-speaking users: en": [
+            "所有英語使用者：en"
+         ],
+         "English for UK users: en-gb": [
+            "英國英語使用者：en-gb"
+         ],
+         "English for US users: en-us": [
+            "美國英語使用者：en-us"
+         ],
+         "Determines if URLs in this language are encoded or use ASCII characters (if unsure, leave it as \"No\").": [
+            "決定此語言的 URL 是否編碼或使用 ASCII 字元 (若不確定，請保留為「否」)。"
+         ],
+         "adding a custom language": [
+            "新增自訂語言"
+         ],
+         "What are the languages of your site?": [
+            "您的網站使用哪些語言？"
+         ],
+         "Default language": [
+            "預設語言"
+         ],
+         "What is the current language of your website?": [
+            "您網站目前的語言為何？"
+         ],
+         "Translation languages": [
+            "翻譯語言"
+         ],
+         "Which languages do you want to translate your site into?": [
+            "您想將網站翻譯成哪些語言？"
+         ],
+         "If you cannot find languages that you need in the list,": [
+            "如果您在清單中找不到所需的語言，"
+         ],
+         "create a custom language": [
+            "建立自訂語言"
          ]
       }
    }

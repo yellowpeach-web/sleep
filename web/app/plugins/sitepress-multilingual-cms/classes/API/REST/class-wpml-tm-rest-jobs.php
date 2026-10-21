@@ -1,70 +1,33 @@
 <?php
-/**
- * WPML_TM_REST_Jobs class file.
- *
- * @package wpml-translation-management
- */
 
+use WPML\Core\Component\Translation\Application\Service\AutomaticJobsCancellation\ReleaseLedger;
 use WPML\FP\Obj;
 use WPML\FP\Fns;
 use WPML\FP\Maybe;
 use WPML\LIB\WP\User;
+use WPML\TM\ATE\Release\InFlightChargedJobs;
 use WPML\TM\ATE\Review\Cancel;
+use WPML\TM\Jobs\Authorization\JobAuthorization;
+use WPML\TM\Jobs\JobLog;
+use WPML\Translation\CancelJobsServiceFactory;
 use function WPML\FP\pipe;
 use function WPML\FP\partial;
 use function WPML\FP\invoke;
 use function WPML\FP\curryN;
 
-/**
- * Class WPML_TM_REST_Jobs
- */
 class WPML_TM_REST_Jobs extends WPML_REST_Base {
 	const CAPABILITY = 'translate';
 
-	/**
-	 * Jobs repository
-	 *
-	 * @var WPML_TM_Jobs_Repository
-	 */
 	private $jobs_repository;
 
-	/**
-	 * Rest jobs criteria parser
-	 *
-	 * @var WPML_TM_Rest_Jobs_Criteria_Parser
-	 */
 	private $criteria_parser;
 
-	/**
-	 * View model
-	 *
-	 * @var WPML_TM_Rest_Jobs_View_Model
-	 */
 	private $view_model;
 
-	/**
-	 * Update jobs synchronisation
-	 *
-	 * @var WPML_TP_Sync_Update_Job
-	 */
 	private $update_jobs;
 
-	/**
-	 * Last picked up jobs
-	 *
-	 * @var WPML_TM_Last_Picked_Up $wpml_tm_last_picked_up
-	 */
 	private $wpml_tm_last_picked_up;
 
-	/**
-	 * WPML_TM_REST_Jobs constructor.
-	 *
-	 * @param WPML_TM_Jobs_Repository           $jobs_repository        Jobs repository.
-	 * @param WPML_TM_Rest_Jobs_Criteria_Parser $criteria_parser        Rest jobs criteria parser.
-	 * @param WPML_TM_Rest_Jobs_View_Model      $view_model             View model.
-	 * @param WPML_TP_Sync_Update_Job           $update_jobs            Update jobs synchronisation.
-	 * @param WPML_TM_Last_Picked_Up            $wpml_tm_last_picked_up Last picked up jobs.
-	 */
 	public function __construct(
 		WPML_TM_Jobs_Repository $jobs_repository,
 		WPML_TM_Rest_Jobs_Criteria_Parser $criteria_parser,
@@ -82,16 +45,10 @@ class WPML_TM_REST_Jobs extends WPML_REST_Base {
 	}
 
 
-	/**
-	 * Add hooks
-	 */
 	public function add_hooks() {
 		$this->register_routes();
 	}
 
-	/**
-	 * Register routes
-	 */
 	public function register_routes() {
 		parent::register_route(
 			'/jobs',
@@ -109,6 +66,10 @@ class WPML_TM_REST_Jobs extends WPML_REST_Base {
 						'sanitize_callback' => array( 'WPML_REST_Arguments_Sanitation', 'string' ),
 					),
 					'id'              => array(
+						'type'              => 'integer',
+						'sanitize_callback' => array( 'WPML_REST_Arguments_Sanitation', 'integer' ),
+					),
+					'job_id'          => array(
 						'type'              => 'integer',
 						'sanitize_callback' => array( 'WPML_REST_Arguments_Sanitation', 'integer' ),
 					),
@@ -198,15 +159,32 @@ class WPML_TM_REST_Jobs extends WPML_REST_Base {
 				'callback' => array( $this, 'cancel_jobs' ),
 			)
 		);
+
+		parent::register_route(
+			'/jobs/in-flight-charged',
+			array(
+				'methods'  => 'POST',
+				'callback' => array( $this, 'in_flight_charged_jobs' ),
+			)
+		);
 	}
 
-	/**
-	 * Get jobs
-	 *
-	 * @param WP_REST_Request $request REST request.
-	 *
-	 * @return array|WP_Error
-	 */
+	public function in_flight_charged_jobs( WP_REST_Request $request ) {
+		$params = $request->get_json_params();
+		$jobIds = is_array( $params ) && isset( $params['jobIds'] ) && is_array( $params['jobIds'] )
+			? $params['jobIds']
+			: array();
+
+		$counts = InFlightChargedJobs::forJobIds( $jobIds );
+
+		return array_merge(
+			$counts,
+			array(
+				'jobs' => InFlightChargedJobs::countForCopy( $counts ),
+			)
+		);
+	}
+
 	public function get_jobs( WP_REST_Request $request ) {
 		try {
 			$criteria = $this->criteria_parser->build_criteria( $request );
@@ -214,59 +192,55 @@ class WPML_TM_REST_Jobs extends WPML_REST_Base {
 			$model = $this->view_model->build(
 				$this->jobs_repository->get( $criteria ),
 				$this->jobs_repository->get_count( $criteria ),
-				$criteria
+				$criteria,
+				(string) $request->get_param( 'pageName' )
 			);
 
 			$model['last_picked_up_date'] = $this->wpml_tm_last_picked_up->get();
 
 			return $model;
 		} catch ( Exception $e ) {
-			return new WP_Error( 500, $e->getMessage() );
+			return \WPML\WordPress\ClientSafeError::wpError( 'TM jobs list', $e );
 		}
 	}
 
-	/**
-	 * Assign job.
-	 *
-	 * @param WP_REST_Request $request REST request.
-	 *
-	 * @return array
-	 * @throws \InvalidArgumentException Exception on error.
-	 */
 	public function assign_job( WP_REST_Request $request ) {
-		/**
-		 * It can be job_id from icl_translate_job or id from icl_string_translations
-		 *
-		 * @var int $job_id
-		 */
 		$job_id       = $request->get_param( 'jobId' );
 		$job_type     = $request->get_param( 'type' ) ? $request->get_param( 'type' ) : WPML_TM_Job_Entity::POST_TYPE;
+		$translatorId = $request->get_param( 'translatorId' );
+
+		if ( ! JobAuthorization::currentUserCanAssignJob( $job_id, $translatorId, $job_type ) ) {
+			return [ 'assigned' => false ];
+		}
 
 		$assignJob = curryN( 4, 'wpml_tm_assign_translation_job');
 
-		return Maybe::of( $request->get_param( 'translatorId' ) )
+		return Maybe::of( $translatorId )
 		                     ->filter( User::get() )
 		                     ->map( $assignJob( $job_id, Fns::__, 'local', $job_type ) )
 		                     ->map( Obj::objOf( 'assigned' ) )
 		                     ->getOrElse( null );
 	}
 
-	/**
-	 * Cancel job
-	 *
-	 * @param WP_REST_Request $request REST request.
-	 *
-	 * @return array|WP_Error
-	 */
+	protected function translationRecord() {
+		return new \WPML\TM\Jobs\TranslationRecord();
+	}
+
 	public function cancel_jobs( WP_REST_Request $request ) {
+		$rawParams = $request->get_json_params();
+
+		JobLog::maybeInitRequest();
+		JobLog::createNewGroup(
+			JobLog::GROUP_ID_JOB_LIFECYCLE,
+			'Cancel jobs (admin)',
+			[ 'requested_jobs' => $rawParams ]
+		);
+
 		try {
-			// $validateParameter :: [id, type] -> bool
 			$validateParameter = pipe( Obj::prop( 'type' ), [ \WPML_TM_Job_Entity::class, 'is_type_valid' ] );
 
-			// $getJob :: [id, type] -> \WPML_TM_Job_Entity
 			$getJob = Fns::converge( [ $this->jobs_repository, 'get_job' ], [ Obj::prop( 'id' ), Obj::prop( 'type' ) ] );
 
-			// $jobEntityToArray :: \WPML_TM_Job_Entity -> [id, type]
 			$jobEntityToArray = function ( \WPML_TM_Job_Entity $job ) {
 				return [
 					'id'   => $job->get_id(),
@@ -274,39 +248,80 @@ class WPML_TM_REST_Jobs extends WPML_REST_Base {
 				];
 			};
 
-			$jobs = \wpml_collect( $request->get_json_params() )
+			$jobs = \wpml_collect( $rawParams )
 				->filter( $validateParameter )
 				->map( $getJob )
 				->filter()
-				->map( Fns::tap( invoke( 'set_status' )->with( ICL_TM_NOT_TRANSLATED ) ) )
-				->map( Fns::tap( [ $this->update_jobs, 'update_state' ] ) );
+				->filter( function ( $job ) {
+					return $job instanceof WPML_TM_Post_Job_Entity;
+				} )
+				->filter( function ( \WPML_TM_Job_Entity $job ) {
+					return JobAuthorization::currentUserOwnsJob( $job->get_translate_job_id(), $job->get_type() );
+				} )
+				->filter( function ( \WPML_TM_Job_Entity $job ) {
+					return ! ( $job instanceof WPML_TM_Post_Job_Entity && $job->is_created_by_translate_everything() );
+				} );
 
-			do_action( 'wpml_tm_jobs_cancelled', $jobs->toArray() );
+			$jobIds = $jobs->map( invoke( 'get_translate_job_id' ) )->values()->toArray();
 
-			return $jobs->map( $jobEntityToArray )->values()->toArray();
+			$jobInfoList = array_map(
+				function ( $id ) {
+					return [ 'job_id' => $id ];
+				},
+				$jobIds
+			);
+
+			JobLog::add( 'cancel_jobs_resolved', [
+				'requested_count' => is_array( $rawParams ) ? count( $rawParams ) : 0,
+				'resolved_count'  => $jobs->count(),
+				'jobs'            => $jobInfoList,
+			] );
+
+			$releaseMark = ReleaseLedger::instance()->mark();
+
+			$record = $this->translationRecord();
+			$jobIds = array_values(
+				array_filter(
+					$jobIds,
+					function ( $jobId ) use ( $record ) {
+						return ! $record->closeOpenOfRecord( (int) $jobId, 0, true );
+					}
+				)
+			);
+
+			$cancelJobsService = CancelJobsServiceFactory::create();
+			$result            = $cancelJobsService->cancelJobs( $jobIds, true );
+
+			JobLog::add( 'cancel_jobs_service_done', [
+				'jobs'   => $jobInfoList,
+				'result' => $result,
+			] );
+
+
+			JobLog::add( 'cancel_jobs_completed', [
+				'cancelled_count' => $jobs->count(),
+			] );
+
+			return [
+				'jobs'    => $jobs->map( $jobEntityToArray )->values()->toArray(),
+				'release' => ReleaseLedger::instance()->summaryFrom( $releaseMark )->toArray(),
+			];
 		} catch ( Exception $e ) {
-			return new WP_Error( 500, $e->getMessage() );
+			JobLog::addError( 'cancel_jobs_failed', [
+				'error' => $e->getMessage(),
+				'file'  => $e->getFile(),
+				'line'  => $e->getLine(),
+			] );
+			return \WPML\WordPress\ClientSafeError::wpError( 'TM cancel jobs', $e );
+		} finally {
+			JobLog::finishCurrentGroup();
 		}
 	}
 
-	/**
-	 * Get allowed capabilities
-	 *
-	 * @param WP_REST_Request $request REST request.
-	 *
-	 * @return array|string
-	 */
 	public function get_allowed_capabilities( WP_REST_Request $request ) {
 		return [ User::CAP_ADMINISTRATOR, User::CAP_MANAGE_TRANSLATIONS, User::CAP_TRANSLATE ];
 	}
 
-	/**
-	 * Validate sorting
-	 *
-	 * @param mixed $sorting Sorting parameters.
-	 *
-	 * @return bool
-	 */
 	public function validate_sorting( $sorting ) {
 		if ( ! is_array( $sorting ) ) {
 			return false;
@@ -314,6 +329,10 @@ class WPML_TM_REST_Jobs extends WPML_REST_Base {
 
 		try {
 			foreach ( $sorting as $column => $asc_or_desc ) {
+				if ( ! WPML_TM_Rest_Jobs_Columns::is_sortable( $column ) ) {
+					return false;
+				}
+
 				new WPML_TM_Jobs_Sorting_Param( $column, $asc_or_desc );
 			}
 		} catch ( Exception $e ) {
@@ -323,13 +342,6 @@ class WPML_TM_REST_Jobs extends WPML_REST_Base {
 		return true;
 	}
 
-	/**
-	 * Validate job
-	 *
-	 * @param mixed $job Job.
-	 *
-	 * @return bool
-	 */
 	private function validate_job( $job ) {
 		return is_array( $job ) && isset( $job['id'] ) && isset( $job['type'] ) && \WPML_TM_Job_Entity::is_type_valid( $job['type'] );
 	}

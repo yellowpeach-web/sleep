@@ -5,32 +5,32 @@ class WPML_Page_Builders_Media_Shortcodes {
 	const TYPE_URL = 'media-url';
 	const TYPE_IDS = 'media-ids';
 
-	/** @var WPML_Page_Builders_Media_Translate $media_translate */
 	private $media_translate;
 
-	/** @var string $target_lang */
 	private $target_lang;
 
-	/** @var string $source_lang */
 	private $source_lang;
 
-	/** @var array $config */
 	private $config;
 
-	public function __construct( WPML_Page_Builders_Media_Translate $media_translate, array $config ) {
+	private $tag_name;
+
+	public function __construct( IWPML_PB_Media_Find_And_Translate $media_translate, array $config ) {
 		$this->media_translate = $media_translate;
 		$this->config          = $config;
 	}
 
-	/**
-	 * @param string $content
-	 *
-	 * @return string
-	 */
-	public function translate( $content )  {
+	public function translate( $content ) {
+		$urls = $this->extract_media_urls_from_content( $content );
+		if ( ! empty( $urls ) ) {
+			$this->media_translate->prefetch_media_urls( $urls, $this->source_lang );
+		}
+
 		foreach ( $this->config as $shortcode ) {
 			$shortcode = $this->sanitize_shortcode( $shortcode );
 			$tag_name  = isset( $shortcode['tag']['name'] ) ? $shortcode['tag']['name'] : '';
+
+			$this->tag_name = $tag_name;
 
 			if ( ! empty( $shortcode['attributes'] ) ) {
 				$content = $this->translate_attributes( $content, $tag_name, $shortcode['attributes'] );
@@ -44,11 +44,55 @@ class WPML_Page_Builders_Media_Shortcodes {
 		return $content;
 	}
 
-	/**
-	 * @param string $content
-	 *
-	 * @return bool
-	 */
+	private function extract_media_urls_from_content( $content ) {
+		$urls = array();
+
+		foreach ( $this->config as $shortcode ) {
+			$shortcode = $this->sanitize_shortcode( $shortcode );
+			$tag_name  = isset( $shortcode['tag']['name'] ) ? $shortcode['tag']['name'] : '';
+
+			if ( ! $tag_name ) {
+				continue;
+			}
+
+			if ( ! empty( $shortcode['attributes'] ) ) {
+				$urls = array_merge( $urls, $this->extract_urls_from_shortcode_attributes( $content, $tag_name, $shortcode['attributes'] ) );
+			}
+
+			if ( ! empty( $shortcode['content'] ) && isset( $shortcode['content']['type'] ) && self::TYPE_URL === $shortcode['content']['type'] ) {
+				$urls = array_merge( $urls, $this->extract_urls_from_shortcode_content( $content, $tag_name ) );
+			}
+		}
+
+		return array_values( array_unique( array_filter( $urls ) ) );
+	}
+
+	private function extract_urls_from_shortcode_attributes( $content, $tag_name, array $attributes ) {
+		$urls = array();
+
+		foreach ( $attributes as $attribute => $data ) {
+			$type = isset( $data['type'] ) ? $data['type'] : '';
+			if ( self::TYPE_URL !== $type ) {
+				continue;
+			}
+			$pattern = $this->get_attribute_pattern( $tag_name, $attribute );
+			if ( preg_match_all( $pattern, $content, $matches ) && ! empty( $matches[2] ) ) {
+				$urls = array_merge( $urls, $matches[2] );
+			}
+		}
+
+		return $urls;
+	}
+
+	private function extract_urls_from_shortcode_content( $content, $tag_name ) {
+		$pattern = $this->get_content_pattern( $tag_name );
+		if ( preg_match_all( $pattern, $content, $matches ) ) {
+			return array_map( 'trim', $matches[2] );
+		}
+
+		return array();
+	}
+
 	public function has_media_shortcode( $content ) {
 		if ( false === strpos( $content, '[' ) ) {
 			return false;
@@ -66,11 +110,6 @@ class WPML_Page_Builders_Media_Shortcodes {
 		return false;
 	}
 
-	/**
-	 * @param array $shortcode
-	 *
-	 * @return array
-	 */
 	private function sanitize_shortcode( array $shortcode ) {
 		$defaults = array(
 			'attributes' => null,
@@ -79,66 +118,49 @@ class WPML_Page_Builders_Media_Shortcodes {
 		return array_merge( $defaults, $shortcode );
 	}
 
-	/**
-	 * @param string $content
-	 * @param string $tag
-	 * @param array  $attributes
-	 *
-	 * @return string
-	 */
+	private function get_attribute_pattern( $tag, $attribute ) {
+		return '/(\[' . preg_quote( $tag, '/' ) . '(?: [^\]]* | )' . preg_quote( $attribute, '/' ) . '=(?:"|\'))([^"\']*)/';
+	}
+
+	private function get_content_pattern( $tag ) {
+		return '/(\[(?:' . preg_quote( $tag, '/' ) . ')[^\]]*\])([^\[]+)/';
+	}
+
 	private function translate_attributes( $content, $tag, array $attributes ) {
 		foreach ( $attributes as $attribute => $data ) {
-			$pattern = '/(\[' . $tag . '(?: [^\]]* | )' . $attribute . '=(?:"|\'))([^"\']*)/';
+			$pattern = $this->get_attribute_pattern( $tag, $attribute );
 			$type    = isset( $data['type'] ) ? $data['type'] : '';
-			$content = preg_replace_callback( $pattern, array( $this, $this->get_callback( $type ) ), $content );
+			$content = preg_replace_callback( $pattern, $this->get_callback( $type ), $content );
 		}
 
 		return $content;
 	}
 
-	/**
-	 * @param string $content
-	 * @param string $tag
-	 * @param array  $data
-	 *
-	 * @return string
-	 */
 	private function translate_content( $content, $tag, array $data ) {
-		$pattern = '/(\[(?:' . $tag . ')[^\]]*\])([^\[]+)/';
+		$pattern = $this->get_content_pattern( $tag );
 		$type    = isset( $data['type'] ) ? $data['type'] : '';
-		return preg_replace_callback( $pattern, array( $this, $this->get_callback( $type ) ), $content );
+		return preg_replace_callback( $pattern, $this->get_callback( $type ), $content );
 	}
 
-	/**
-	 * @param string $type
-	 *
-	 * @return string
-	 */
 	private function get_callback( $type ) {
 		if ( self::TYPE_URL === $type ) {
-			return 'replace_url_callback';
+			return [ $this, 'replace_url_callback' ];
 		}
 
-		return 'replace_ids_callback';
+		return [ $this, 'replace_ids_callback' ];
 	}
 
-	/**
-	 * @param array $matches
-	 *
-	 * @return string
-	 */
 	private function replace_url_callback( array $matches ) {
-		$translated_url = $this->media_translate->translate_image_url( $matches[2], $this->target_lang, $this->source_lang );
+		$translated_url = $this->media_translate->translate_image_url( $matches[2], $this->target_lang, $this->source_lang, $this->tag_name );
 
 		return $matches[1] . $translated_url;
 	}
 
-	/**
-	 * @param array $matches
-	 *
-	 * @return string
-	 */
 	private function replace_ids_callback( array $matches ) {
+		if ( ! \WPML\PB\Media\MediaIds::isList( $matches[2] ) ) {
+			return $matches[0];
+		}
+
 		$ids = explode( ',', $matches[2] );
 
 		foreach ( $ids as &$id ) {
@@ -148,23 +170,17 @@ class WPML_Page_Builders_Media_Shortcodes {
 		return $matches[1] . implode( ',', $ids );
 	}
 
-	/**
-	 * @param string $target_lang
-	 *
-	 * @return self
-	 */
 	public function set_target_lang( $target_lang ) {
 		$this->target_lang = $target_lang;
 		return $this;
 	}
 
-	/**
-	 * @param string $source_lang
-	 *
-	 * @return self
-	 */
 	public function set_source_lang( $source_lang ) {
 		$this->source_lang = $source_lang;
 		return $this;
+	}
+
+	public function get_media() {
+		return $this->media_translate->get_used_media_in_post();
 	}
 }

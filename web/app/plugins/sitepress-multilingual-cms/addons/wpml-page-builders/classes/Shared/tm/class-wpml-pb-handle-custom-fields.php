@@ -1,6 +1,6 @@
 <?php
 
-class WPML_PB_Handle_Custom_Fields {
+class WPML_PB_Handle_Custom_Fields implements IWPML_Action {
 
 	protected $data_settings;
 
@@ -16,13 +16,11 @@ class WPML_PB_Handle_Custom_Fields {
 		), 10, 2 );
 	}
 
-	/**
-	 * @param bool $is_page_builder_page
-	 * @param WP_Post $post
-	 *
-	 * @return bool
-	 */
-	public function is_page_builder_page_filter( $is_page_builder_page, WP_Post $post ) {
+	public function is_page_builder_page_filter( $is_page_builder_page, $post = null ) {
+		if ( ! $post instanceof WP_Post ) {
+			return $is_page_builder_page;
+		}
+
 		if ( $this->data_settings->is_handling_post( $post->ID ) ) {
 			$is_page_builder_page = true;
 		}
@@ -30,10 +28,6 @@ class WPML_PB_Handle_Custom_Fields {
 		return $is_page_builder_page;
 	}
 
-	/**
-	 * @param int $new_post_id
-	 * @param int $original_post_id
-	 */
 	public function copy_custom_fields( $new_post_id, $original_post_id ) {
 		$fields = array_merge( $this->data_settings->get_fields_to_copy(), $this->data_settings->get_fields_to_save() );
 
@@ -42,11 +36,6 @@ class WPML_PB_Handle_Custom_Fields {
 		}
 	}
 
-	/**
-	 * @param int $new_post_id
-	 * @param int $original_post_id
-	 * @param string $field
-	 */
 	public static function copy_field( $new_post_id, $original_post_id, $field ) {
 		$original_field = get_post_meta( $original_post_id, $field, true );
 		if ( $original_field ) {
@@ -54,11 +43,6 @@ class WPML_PB_Handle_Custom_Fields {
 		}
 	}
 
-	/**
-	 * @param mixed $data
-	 *
-	 * @return mixed string
-	 */
 	public static function slash_json( $data ) {
 		if ( ! is_string( $data ) ) {
 			return $data;

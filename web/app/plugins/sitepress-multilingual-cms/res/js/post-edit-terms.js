@@ -1,4 +1,4 @@
-/*globals jQuery, WPML_core, ajaxurl, icl_post_edit_messages */
+/*globals jQuery, WPML_core, ajaxurl, icl_post_edit_messages, wp */
 (function () {
     'use strict';
 
@@ -40,6 +40,18 @@
 		}
 	});
 
+	/**
+	 * The title of the post being edited: the classic editor's #title input, or the
+	 * block editor's store, which renders no such input.
+	 */
+	function postEditTitle() {
+		var title = jQuery('#title').val();
+		if (!title && window.wp && wp.data && wp.data.select && wp.data.select('core/editor')) {
+			title = wp.data.select('core/editor').getEditedPostAttribute('title');
+		}
+		return title || '';
+	}
+
 	function iclGetSwitchLanguageConfirmation() {
 		var lang_switch_confirm_html;
 		var defer = jQuery.Deferred();
@@ -51,7 +63,7 @@
 		lang_switch_confirm_html += '</div>';
 
 		// make sure the title is html entities encoded.
-		var post_name = WPML_core.htmlentities(jQuery('#title').val());
+		var post_name = WPML_core.htmlentities(postEditTitle());
 		if (post_name.length == 0) {
 			post_name = icl_post_edit_messages.empty_post_title;
 		}
@@ -64,6 +76,9 @@
         jQuery(lang_switch_confirm_html).dialog({
             modal: true,
             width: 'auto',
+            classes: {
+              "ui-dialog": "wpml-confirm-lang-switch"
+            },
             buttons: [
 				{
 					text : icl_post_edit_messages.ok_button_label,

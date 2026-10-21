@@ -1,14 +1,6 @@
 <?php
 
-/**
- * @author OnTheGo Systems
- */
 class WPML_TM_AJAX {
-	/**
-	 * @param string $action
-	 *
-	 * @return bool
-	 */
 	protected function is_valid_request( $action = '' ) {
 		if ( ! $action ) {
 			$action = array_key_exists( 'action', $_POST ) ? $_POST['action'] : '';
@@ -20,7 +12,7 @@ class WPML_TM_AJAX {
 			wp_send_json_error(
 				__(
 					'You have attempted to submit data in a not legit way.',
-					'wpml-translation-management'
+					'sitepress'
 				)
 			);
 

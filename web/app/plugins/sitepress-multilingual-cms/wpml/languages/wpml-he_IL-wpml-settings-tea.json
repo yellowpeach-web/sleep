@@ -1,0 +1,399 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "he_IL"
+         },
+         "Error in updating since dates for types.": [
+            "שגיאה בעדכון תאריכי ה-'מאז' עבור סוגים."
+         ],
+         "Error in fetching untranslated types count": [
+            "שגיאה באחזור ספירת סוגים שלא תורגמו"
+         ],
+         "Error in updating since date for type.": [
+            "שגיאה בעדכון תאריך ה-'מאז' עבור סוג."
+         ],
+         "Content to translate": [
+            "תוכן לתרגום"
+         ],
+         "Content to Translate": [
+            "תוכן לתרגום"
+         ],
+         "Content type": [
+            "סוג תוכן"
+         ],
+         "Include": [
+            "כלול"
+         ],
+         "These settings can be changed on the Translations dashboard.": [
+            "ניתן לשנות הגדרות אלה בלוח בקרת התרגום."
+         ],
+         "Items": [
+            "פריטים"
+         ],
+         "Word count": [
+            "ספירת מילים"
+         ],
+         "Loading content to translate": [
+            "טוען תוכן לתרגום"
+         ],
+         "Words to translate": [
+            "מילים לתרגום"
+         ],
+         "Calculating… <s>less than 1 minute left.</s>": [
+            "מחשב... <s>נותרה פחות מדקה אחת.</s>"
+         ],
+         "Calculating… <s>%d minute left.</s>": [
+            "מחשב... <s>נותרה %d דקה.</s>",
+            "מחשב... <s>נותרו %d דקות.</s>"
+         ],
+         "Words needed to translate your existing content into the new languages: %s.": [
+            "מילים הדרושות לתרגום התוכן הקיים שלך לשפות החדשות: %s."
+         ],
+         "Words needed to translate your existing content into the new language.": [
+            "מילים הדרושות לתרגום התוכן הקיים שלך לשפה החדשה."
+         ],
+         "Based on the remaining untranslated content across all languages.": [
+            "מבוסס על התוכן שנותר ללא תרגום בכל השפות."
+         ],
+         "Estimated from the selected source volume multiplied by the target languages.": [
+            "מוערך לפי נפח המקור שנבחר כפול שפות היעד."
+         ],
+         "%1$s source words × %2$s language": [
+            "%1$s מילים במקור × %2$s שפה",
+            "%1$s מילים במקור × %2$s שפות"
+         ],
+         "Already translated content": [
+            "תוכן שכבר תורגם"
+         ],
+         "Words required:": [
+            "מילים דרושות:"
+         ],
+         "Words": [
+            "מילים"
+         ],
+         "Documents you translated yourself stay exactly as you made them": [
+            "מסמכים שתרגמת בעצמך יישארו בדיוק כפי שיצרת אותם"
+         ],
+         "(%d document)": [
+            "(%d מסמך)",
+            "(%d מסמכים)"
+         ],
+         "View documents": [
+            "הצג מסמכים"
+         ],
+         "%1$d of %2$d language will be translated automatically": [
+            "%1$d מתוך %2$d שפה תתורגם אוטומטית",
+            "%1$d מתוך %2$d שפות יתורגמו אוטומטית"
+         ],
+         "Translated to %d language": [
+            "תורגם ל-%d שפה",
+            "תורגם ל-%d שפות"
+         ],
+         "Add/remove languages": [
+            "הוסף/הסר שפות"
+         ],
+         "Percentages show how much of your selected content is already translated in each language.": [
+            "האחוזים מראים כמה מהתוכן שבחרת כבר תורגם בכל שפה."
+         ],
+         "Note: Content already translated into all languages is not included in this calculation.": [
+            "הערה: תוכן שכבר תורגם לכל השפות אינו כלול בחישוב זה."
+         ],
+         "Same as default": [
+            "זהה לברירת המחדל"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "תרגום אוטומטי אינו זמין בין %1$s לבין %2$s מכיוון שהן מזוהות כאותה שפה."
+         ],
+         "Translation paused": [
+            "התרגום הושהה"
+         ],
+         "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor.": [
+            "‏WPML אינו יוצר תרגומי %s חדשים, ולכן שפה זו אינה נכללת. כדי לכלול אותה, השתמש באפשרות ”המשך תרגום“ בשורה של השפה בעורך השפות."
+         ],
+         "Manual only": [
+            "ידני בלבד"
+         ],
+         "%s has no automatic-translation support. You can translate this content manually.": [
+            "ל-%s אין תמיכה בתרגום אוטומטי. תוכל לתרגם תוכן זה ידנית."
+         ],
+         "Adjusted word rate (%s)": [
+            "תעריף מילים מותאם (%s)"
+         ],
+         "This adjusted word rate applies to legacy translation engines.": [
+            "תעריף מילים מותאם זה חל על מנועי תרגום מדור קודם."
+         ],
+         "Translation engine: <strong>%s</strong>": [
+            "מנוע תרגום: <strong>%s</strong>"
+         ],
+         "Legacy engine": [
+            "מנוע מדור קודם"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "הוחל תמחור מדור קודם. %s הוא מנוע תרגום מדור קודם, אינו מומלץ לאתרים חדשים ויוצא משימוש בעתיד. אתרים קיימים שומרים עבורו על תעריף מילים מותאם."
+         ],
+         "Switch to PTC": [
+            "מעבר ל־PTC"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
+            "זה מה שנדרש כיום לצורך תרגום התוכן הנוכחי שלך. הנתון אינו כולל טקסטים מסוימים שנוספו על ידי תוספים אחרים, כגון טפסים או מצגות (sliders), הנספרים לאחר השלמת ההגדרה. מחרוזות אתר מתבנית העיצוב שלך ומתוספים נספרות אף הן לאחר ההגדרה ובדרך כלל מוסיפות כמה מאות מילים. לאחר מכן, עריכות אינן כרוכות בתשלום. תשלם שוב רק עבור מילים שתוסיף."
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
+            "זה מה שדרוש היום לתרגום התוכן הנוכחי שלך. זה לא כולל טקסטים מסוימים שנוספו על ידי תוספים אחרים, כגון טפסים או סליידרים, שנספרים לאחר השלמת ההגדרה. מחרוזות אתר מתבנית העיצוב ומהתוספים שלך נספרות גם הן לאחר ההגדרה ובדרך כלל מוסיפות כמה מאות מילים. לפי התעריף למילה של %s; שינויים בדפים מתורגמים יחויבו שוב."
+         ],
+         "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
+            "זה מה שנדרש כיום לצורך תרגום התוכן הנוכחי שלך. לאחר מכן, עריכות אינן כרוכות בתשלום. תשלם שוב רק עבור מילים שתוסיף."
+         ],
+         "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again.": [
+            "זה מה שדרוש היום לתרגום התוכן הנוכחי שלך. לפי התעריף למילה של %s; שינויים בדפים מתורגמים יחויבו שוב."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
+            "הספירה כוללת עמודים, פוסטים ומוצרים יחד עם השדות המותאמים אישית שלהם, טקסטים של בוני עמודים וטקסטים של מדיה, וכן את הקטגוריות, התגים והמאפיינים שבהם הם משתמשים."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
+            "הספירה כוללת עמודים, פוסטים ומוצרים יחד עם השדות המותאמים אישית שלהם, טקסטים של בוני עמודים וטקסטים של מדיה, את הקטגוריות, התגים והמאפיינים שבהם הם משתמשים, ומחרוזות אתר. מונח נספר בכל פריט שמשתמש בו ופעם אחת בפני עצמו, מכיוון שהוא נשלח לתרגום בשני האופנים."
+         ],
+         "Total items": [
+            "סה\"כ פריטים"
+         ],
+         "Total source words": [
+            "סה\"כ מילים במקור"
+         ],
+         "Previous": [
+            "הקודם"
+         ],
+         "Next": [
+            "הבא"
+         ],
+         "Showing %1$d–%2$d of %3$d types.": [
+            "מציג %1$d–%2$d מתוך %3$d סוגים."
+         ],
+         "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated.": [
+            "כל ה-%1$s הנוכחיים מתורגמים לכל השפות.<br>%2$s חדשים או עריכות יתורגמו אוטומטית."
+         ],
+         "All %s": [
+            "כל ה-%s"
+         ],
+         "For translated types": [
+            "עבור סוגים מתורגמים"
+         ],
+         "None": [
+            "ללא"
+         ],
+         "Since %s": [
+            "מאז %s"
+         ],
+         "Since specific date": [
+            "מאז תאריך ספציפי"
+         ],
+         "<b>Pay-As-You-Go</b> is active on this site.": [
+            "‏<b>תשלום לפי שימוש</b> פעיל באתר זה."
+         ],
+         "<b>%s words</b> are on this site. Continue.": [
+            "‏<b>%s מילים</b> נמצאות באתר זה. המשך."
+         ],
+         "Your site will be translated right after the setup.": [
+            "האתר שלך יתורגם מיד לאחר ההגדרה."
+         ],
+         "To use prepaid words, register WPML on this site.": [
+            "כדי להשתמש במילים בתשלום מראש, רשום את WPML באתר זה."
+         ],
+         "Checking…": [
+            "בודק..."
+         ],
+         "Retry": [
+            "נסה שוב"
+         ],
+         "We could not reach our translation system.": [
+            "לא הצלחנו ליצור קשר עם מערכת התרגום שלנו."
+         ],
+         "This site is not registered with a WPML account, so prepaid words are not available.": [
+            "אתר זה אינו רשום עם חשבון WPML, לכן מילים בתשלום מראש אינן זמינות."
+         ],
+         "We could not read your WPML account.": [
+            "לא הצלחנו לקרוא את חשבון ה-WPML שלך."
+         ],
+         "%s more words are needed to translate your site.": [
+            "דרושות עוד %s מילים כדי לתרגם את האתר שלך."
+         ],
+         "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>.": [
+            "הקצה מילים בתשלום מראש מחשבון ה-WPML שלך לאתר זה כדי להתחיל ב<b>תרגם הכל אוטומטית</b>."
+         ],
+         "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>.": [
+            "הקצה את המילים שכבר יש לך וקנה את השאר, או הפעל <b>תשלום לפי שימוש</b>."
+         ],
+         "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
+            "כדי להתחיל ב<b>תרגם הכל אוטומטית</b>, הפעל <b>תשלום לפי שימוש</b> או קנה מילים בתשלום מראש."
+         ],
+         "Translation started": [
+            "התרגום התחיל"
+         ],
+         "Your content is being sent for automatic translation. Follow its progress on the Translations page.": [
+            "התוכן שלך נשלח לתרגום אוטומטי. עקוב אחר ההתקדמות בדף התרגומים."
+         ],
+         "Close": [
+            "סגור"
+         ],
+         "Preparing…": [
+            "מכין..."
+         ],
+         "Go to Translations": [
+            "עבור אל תרגומים"
+         ],
+         "Adjust content limits for <b>Translate Everything</b>": [
+            "התאמת מגבלות תוכן עבור <b>תרגם הכל</b>"
+         ],
+         "Review the cost and adjust how far back automatic translation applies per content type.": [
+            "סקור את העלות והתאם כמה אחורה יחול התרגום האוטומטי לכל סוג תוכן."
+         ],
+         "This amount will cover translating your existing content into the new language.": [
+            "סכום זה יכסה את תרגום התוכן הקיים שלך לשפה החדשה.",
+            "סכום זה יכסה את תרגום התוכן הקיים שלך לשפות החדשות."
+         ],
+         "Choose how to pay for the translation": [
+            "בחר כיצד לשלם עבור התרגום"
+         ],
+         "WPML could not calculate the word count. You can add the language without a cost estimate.": [
+            "WPML לא הצליח לחשב את ספירת המילים. תוכל להוסיף את השפה ללא הערכת עלות."
+         ],
+         "Cancel": [
+            "בטל"
+         ],
+         "Save changes": [
+            "שמור שינויים"
+         ],
+         "You can adjust the content limits once Translate Everything finishes the current translation run.": [
+            "תוכל להתאים את מגבלות התוכן ברגע ש-'תרגם הכל' יסיים את סבב התרגום הנוכחי."
+         ],
+         "%1$sCheck pricing%2$s.": [
+            "%1$sבדוק תמחור%2$s."
+         ],
+         "Lowest cost per word": [
+            "העלות הנמוכה ביותר למילה"
+         ],
+         "Pay only for what you use": [
+            "שלם רק על מה שאתה משתמש"
+         ],
+         "Never run out. Translation never stops.": [
+            "לעולם לא נגמר. התרגום אף פעם לא עוצר."
+         ],
+         "The first 500 words each month are free": [
+            "500 המילים הראשונות בכל חודש הן בחינם"
+         ],
+         "Pay-As-You-Go": [
+            "תשלום לפי שימוש"
+         ],
+         "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate.": [
+            "הפעל <b>תשלום לפי שימוש</b> כדי לתרגם אוטומטית. <b>תשלום לפי שימוש</b> מחייב אותך על המילים שאתה מתרגם."
+         ],
+         "Activating <b>Pay-As-You-Go</b>…": [
+            "מפעיל <b>תשלום לפי שימוש</b>..."
+         ],
+         "Continue in the new tab": [
+            "המשך בלשונית החדשה"
+         ],
+         "Activate <b>Pay-As-You-Go</b>": [
+            "הפעל את ה<b>תשלום לפי שימוש</b>"
+         ],
+         "<b>Pay-As-You-Go</b> is not active yet.": [
+            "‏<b>תשלום לפי שימוש</b> עדיין אינו פעיל."
+         ],
+         "Refresh": [
+            "רענן"
+         ],
+         "Already using <b>Pay-As-You-Go</b> on another site?": [
+            "כבר משתמש ב<b>תשלום לפי שימוש</b> באתר אחר?"
+         ],
+         "Connect this site to it": [
+            "חבר אתר זה אליו"
+         ],
+         "Activate Pay-As-You-Go": [
+            "הפעל תשלום לפי שימוש"
+         ],
+         "Connect your sites to share translation memory, glossary and word quota.": [
+            "חבר את האתרים שלך כדי לשתף זיכרון תרגום, מילון מונחים ומכסת מילים."
+         ],
+         "Learn more": [
+            "למידע נוסף"
+         ],
+         "Copy your migration code:": [
+            "העתק את קוד ההגירה שלך:"
+         ],
+         "Loading…": [
+            "טוען..."
+         ],
+         "Copied!": [
+            "הועתק!"
+         ],
+         "Log into a site with an active automatic translation account.": [
+            "התחבר לאתר עם חשבון תרגום אוטומטי פעיל."
+         ],
+         "Go to \"WPML\" → \"Translation Dashboard\".": [
+            "עבור אל ”WPML“ ← ”לוח בקרת תרגום“."
+         ],
+         "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
+            "בלשונית ”Payment & Maintenance“, עבור אל ”Connected sites“."
+         ],
+         "Click \"Enter the connection key of another site\" to finish connecting your sites.": [
+            "לחץ על ”Enter the connection key of another site“ כדי לסיים את חיבור האתרים שלך."
+         ],
+         "Assign words": [
+            "הקצה מילים"
+         ],
+         "Buy and assign words": [
+            "קנה והקצה מילים"
+         ],
+         "Refresh to assign words": [
+            "רענן כדי להקצות מילים"
+         ],
+         "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site.": [
+            "קנה %1$sחבילה בתשלום מראש%2$s עם לפחות %3$s%4$s מילים%5$s והקצה אותן לאתר זה."
+         ],
+         "This amount will cover translation of all your current content.": [
+            "סכום זה יכסה את תרגום כל התוכן הנוכחי שלך."
+         ],
+         "Assign %1$s%2$s words%3$s to this site.": [
+            "הקצה %1$s%2$s מילים%3$s לאתר זה."
+         ],
+         "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s.": [
+            "הקצה את %1$s%2$s המילים%3$s שלך וקנה עוד %4$s%5$s%6$s."
+         ],
+         "Buy %1$s%2$s words%3$s for this site.": [
+            "קנה %1$s%2$s מילים%3$s עבור אתר זה."
+         ],
+         "Assign at least %1$s%2$s words%3$s to this site to continue.": [
+            "הקצה לפחות %1$s%2$s מילים%3$s לאתר זה כדי להמשיך."
+         ],
+         "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount.": [
+            "הקצה מילים מחשבון ה-WPML שלך וקנה %1$sחבילה בתשלום מראש%2$s נוספת עם לפחות %3$s%4$s מילים%5$s כדי לכסות את היתרה."
+         ],
+         "Prepaid words": [
+            "מילים בתשלום מראש"
+         ],
+         "There are %1$s%2$s words%3$s on your WPML account.": [
+            "ישנן %1$s%2$s מילים%3$s בחשבון ה-WPML שלך."
+         ],
+         "There are %1$s%2$s available on your WPML account.%3$s": [
+            "יש %1$s%2$s זמינות בחשבון ה-WPML שלך.%3$s"
+         ],
+         "(Only the WPML account owner can do this.)": [
+            "(רק בעל חשבון ה-WPML יכול לבצע זאת.)"
+         ],
+         "Checking for new words...": [
+            "בודק אם יש מילים חדשות..."
+         ],
+         "Still not enough words. Refresh again in %d seconds.": [
+            "עדיין אין מספיק מילים. רענן שוב בעוד %d שניות."
+         ],
+         "Already assigned?": [
+            "כבר הוקצו?"
+         ],
+         "Close modal": [
+            "סגור מודל"
+         ]
+      }
+   }
+}

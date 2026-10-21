@@ -3,25 +3,21 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "el"
          },
-         "Draft — Pending review": [
-            "Πρόχειρο — Αναμένει επιμέλεια"
-         ],
-         "Complete": [
-            "Ολοκληρώθηκε"
-         ],
-         "Insufficient funds": [
-            "Ανεπαρκή χρήματα"
+         "%1$s and %2$s": [
+            "%1$s και %2$s"
          ],
          "Start batch sync": [
-            "Έναρξη μαζικού συγχρονισμού"
+            "Έναρξη συγχρονισμού παρτίδας"
          ],
          "Cancel job": [
             "Ακύρωση εργασίας"
          ],
          "Continue reviewing": [
-            "Συνέχεια αναθεώρησης"
+            "Συνέχιση επιθεώρησης"
          ],
          "Start downloading XLIFF file": [
             "Έναρξη λήψης αρχείου XLIFF"
@@ -32,38 +28,47 @@
          "Get translation": [
             "Λήψη μετάφρασης"
          ],
+         "Edit Translation": [
+            "Επεξεργασία μετάφρασης"
+         ],
+         "Continue Translating": [
+            "Συνέχιση μετάφρασης"
+         ],
          "Resign": [
             "Παραίτηση"
          ],
          "Review": [
-            "Κριτική"
+            "Επιθεώρηση"
          ],
          "Translate": [
             "Μετάφραση"
          ],
          "Take and Translate": [
-            "Αποδοχή και Μετάφραση"
+            "Ανάληψη και μετάφραση"
+         ],
+         "This job was created by Translate Everything and cannot be cancelled on its own. To stop it, turn off Translate Everything from the Translation Dashboard.": [
+            "Αυτή η εργασία δημιουργήθηκε από το Translate Everything και δεν μπορεί να ακυρωθεί μεμονωμένα. Για να τη διακόψετε, απενεργοποιήστε το Translate Everything από τον Πίνακα ελέγχου μετάφρασης."
          ],
          "View": [
             "Προβολή"
          ],
-         "Delete Translations": [
-            "Διαγραφή μεταφράσεων"
-         ],
-         "Keep Translations as Draft": [
-            "Διατήρηση μεταφράσεων ως πρόχειρα"
-         ],
          "Never mind. I want to review these translations.": [
-            "Θέλω να επιμεληθώ αυτές τις μεταφράσεις."
+            "Δεν πειράζει. Θέλω να επιθεωρήσω αυτές τις μεταφράσεις."
          ],
          "Cancel": [
             "Ακύρωση"
          ],
          "This will remove the selected jobs from the Translations Queue without publishing them. What would you like to do with the translations?": [
-            "Έτσι θα αφαιρεθούν οι επιλεγμένες εργασίες από την Ουρά μεταφράσεων, χωρίς να δημοσιευτούν. Τι θέλετε να κάνετε με τις μεταφράσεις;"
+            "Αυτή η ενέργεια θα αφαιρέσει τις επιλεγμένες εργασίες από την ουρά μεταφράσεων χωρίς να τις δημοσιεύσει. Τι θα θέλατε να κάνετε με τις μεταφράσεις;"
          ],
          "Cancel Translation Review": [
-            "Ακύρωση επιμέλειας μεταφράσεων"
+            "Ακύρωση επιθεώρησης μετάφρασης"
+         ],
+         "Delete Translations": [
+            "Διαγραφή μεταφράσεων"
+         ],
+         "Keep Translations as Draft": [
+            "Διατήρηση μεταφράσεων ως προσχέδια"
          ],
          "Bulk actions": [
             "Μαζικές ενέργειες"
@@ -72,10 +77,10 @@
             "Εφαρμογή"
          ],
          "Actions applied to multiple translation jobs can take a few seconds. Please do not leave the page.": [
-            "Ενέργειες που εφαρμόστηκαν σε πολλαπλές εργασίες μετάφρασης μπορούν να διαρκέσουν μερικά δευτερόλεπτα. Μη φύγετε από τη σελίδα."
+            "Οι ενέργειες που εφαρμόζονται σε πολλαπλές εργασίες μετάφρασης μπορεί να διαρκέσουν μερικά δευτερόλεπτα. Παρακαλούμε μην απομακρυνθείτε από τη σελίδα."
          ],
          "Actions applied to multiple translation jobs can take a few minutes. Please do not leave the page.": [
-            "Ενέργειες που εφαρμόστηκαν σε πολλαπλές εργασίες μετάφρασης μπορεί να διαρκέσουν μερικά λεπτά. Μη φύγετε από τη σελίδα."
+            "Οι ενέργειες που εφαρμόζονται σε πολλαπλές εργασίες μετάφρασης μπορεί να διαρκέσουν μερικά λεπτά. Παρακαλούμε μην απομακρυνθείτε από τη σελίδα."
          ],
          "Select translator": [
             "Επιλογή μεταφραστή"
@@ -83,35 +88,65 @@
          "Assign": [
             "Ανάθεση"
          ],
-         "In progress": [
-            "Σε εξέλιξη"
-         ],
-         "Translation ready to download": [
-            "Μετάφραση έτοιμη για λήψη"
-         ],
-         "Completed": [
-            "Ολοκληρώθηκε"
-         ],
-         "Published — Pending review": [
-            "Δημοσιευμένο — Εκκρεμεί αναθεώρηση"
-         ],
-         "Published — Review in progress": [
-            "Δημοσιευμένο — Αναθεώρηση σε εξέλιξη"
-         ],
-         "Draft — Review in progress": [
-            "Πρόχειρο — Αναθεώρηση σε εξέλιξη"
-         ],
-         "Needs update": [
-            "Απαιτείται ενημέρωση"
-         ],
          "Cancelled": [
             "Ακυρώθηκε"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "Η αυτόματη μετάφραση απέτυχε επανειλημμένα και το WPML σταμάτησε τις προσπάθειες. Στείλτε ξανά ή απορρίψτε την εργασία από τον Πίνακα ελέγχου μετάφρασης ή ακυρώστε την εδώ."
          ],
          "Needs translation": [
             "Χρειάζεται μετάφραση"
          ],
+         "Needs update": [
+            "Χρειάζεται ενημέρωση"
+         ],
+         "Translation ready to download": [
+            "Η μετάφραση είναι έτοιμη για λήψη"
+         ],
+         "Completed": [
+            "Ολοκληρωμένο"
+         ],
+         "Failed - needs attention": [
+            "Αποτυχία - απαιτείται προσοχή"
+         ],
+         "%s terms are published immediately because they don't support draft mode.": [
+            "Οι όροι %s δημοσιεύονται αμέσως επειδή δεν υποστηρίζουν τη λειτουργία προσχεδίου."
+         ],
+         "%s are immediately published because they don't support draft mode.": [
+            "Τα %s δημοσιεύονται αμέσως επειδή δεν υποστηρίζουν τη λειτουργία προσχεδίου."
+         ],
+         "Published — Pending review": [
+            "Δημοσιεύτηκε — Εκκρεμεί επιθεώρηση"
+         ],
+         "Draft — Pending review": [
+            "Προσχέδιο — Εκκρεμεί επιθεώρηση"
+         ],
+         "Review in progress": [
+            "Επιθεώρηση σε εξέλιξη"
+         ],
+         "Published — Review in progress": [
+            "Δημοσιεύτηκε — Επιθεώρηση σε εξέλιξη"
+         ],
+         "Draft — Review in progress": [
+            "Προσχέδιο — Επιθεώρηση σε εξέλιξη"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "Αναμονή για την πληρωμή σας με Χρέωση βάσει χρήσης"
+         ],
+         "Waiting for payment": [
+            "Αναμονή για πληρωμή"
+         ],
+         "Insufficient funds": [
+            "Ανεπαρκές υπόλοιπο"
+         ],
+         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
+            "Η αυτόματη μετάφραση διακόπηκε λόγω προσωρινού σφάλματος και θα γίνει αυτόματη επανάληψη — δεν απαιτείται καμία ενέργεια. Εάν η κατάσταση δεν αλλάξει σε περίπου 30 λεπτά, επικοινωνήστε με την υποστήριξη του WPML."
+         ],
+         "In progress": [
+            "Σε εξέλιξη"
+         ],
          "View original": [
-            "Προβολή αρχικού κειμένου"
+            "Προβολή πρωτοτύπου"
          ],
          "(no title)": [
             "(χωρίς τίτλο)"
@@ -120,16 +155,19 @@
             "Αυτόματη μετάφραση"
          ],
          "TP ID: %d": [
-            "TP ID: %d"
+            "ID TP: %d"
          ],
          "Reset": [
             "Επαναφορά"
          ],
          "Filter": [
-            "Φιλτράρισμα"
+            "Φίλτρο"
          ],
-         "ID (%s)": [
-            "Ταυτότητα (%s)"
+         "Reference ID (%s)": [
+            "ID αναφοράς (%s)"
+         ],
+         "Job ID (%s)": [
+            "ID εργασίας (%s)"
          ],
          "Title (%s)": [
             "Τίτλος (%s)"
@@ -141,7 +179,7 @@
             "Γλώσσα (%s)"
          ],
          "Batch name (%s)": [
-            "Όνομα δέσμης (%s)"
+            "Όνομα παρτίδας (%s)"
          ],
          "Status (%s)": [
             "Κατάσταση (%s)"
@@ -156,31 +194,34 @@
             "Προθεσμία (%s)"
          ],
          "Clear all filters": [
-            "Απαλοιφή όλων των φίλτρων"
+            "Καθαρισμός όλων των φίλτρων"
          ],
          "Any Translation Service": [
-            "Οποιαδήποτε Μεταφραστική Υπηρεσία"
+            "Οποιαδήποτε μεταφραστική υπηρεσία"
          ],
          "Any WordPress Translator": [
-            "Οποιοσδήποτε Μεταφραστής WordPress"
+            "Οποιοσδήποτε μεταφραστής WordPress"
          ],
          "From": [
             "Από"
          ],
          "To": [
-            "Σε"
+            "Προς"
          ],
          "Anyone": [
             "Οποιοσδήποτε"
          ],
          "Include jobs from translation services": [
-            "Να συμπεριλαμβάνονται εργασίες από υπηρεσίες μετάφρασης"
+            "Συμπερίληψη εργασιών από μεταφραστικές υπηρεσίες"
          ],
          "All types": [
             "Όλοι οι τύποι"
          ],
          "Select visible columns": [
             "Επιλογή ορατών στηλών"
+         ],
+         "No Data": [
+            "Δεν υπάρχουν δεδομένα"
          ],
          "Sort descending": [
             "Φθίνουσα ταξινόμηση"
@@ -222,34 +263,40 @@
             ".xliff .zip"
          ],
          "Importing": [
-            "Εισαγωγή..."
+            "Εισαγωγή"
          ],
          "Import": [
             "Εισαγωγή"
          ],
          "Import / Export XLIFF": [
-            "Εισαγωγή / εξαγωγή XLIFF"
+            "Εισαγωγή / Εξαγωγή XLIFF"
          ],
          "Actions": [
             "Ενέργειες"
          ],
          "Batch name": [
-            "Όνομα δέσμης"
+            "Όνομα παρτίδας"
          ],
          "Filter by %s": [
             "Φιλτράρισμα κατά %s"
+         ],
+         "WPML's id for this translation. It stays the same when the job is sent again.": [
+            "Το ID του WPML για αυτή τη μετάφραση. Παραμένει το ίδιο όταν η εργασία αποστέλλεται ξανά."
+         ],
+         "The number in exported XLIFF file names. It changes when the job is sent again.": [
+            "Ο αριθμός στα ονόματα των αρχείων XLIFF που εξάγονται. Αλλάζει όταν η εργασία αποστέλλεται ξανά."
          ],
          "Title": [
             "Τίτλος"
          ],
          "Approve translation reviews": [
-            "Έγκριση αναθεωρήσεων μετάφρασης"
+            "Έγκριση επιθεωρήσεων μετάφρασης"
          ],
          "Cancel jobs": [
             "Ακύρωση εργασιών"
          ],
          "Cancel translation reviews": [
-            "Ακύρωση αναθεωρήσεων μετάφρασης"
+            "Ακύρωση επιθεωρήσεων μετάφρασης"
          ],
          "Export to XLIFF %s": [
             "Εξαγωγή σε XLIFF %s"
@@ -258,64 +305,114 @@
             "Λήψη μεταφράσεων"
          ],
          "This action does not apply to any of the selected translation jobs": [
-            "Αυτή η ενέργεια δεν ισχύει σε οποιαδήποτε από τις επιλεγμένες εργασίες μετάφρασης"
+            "Αυτή η ενέργεια δεν ισχύει για καμία από τις επιλεγμένες εργασίες μετάφρασης"
+         ],
+         "%d translation is still in progress. You will not be charged for it.": [
+            "%d μετάφραση είναι ακόμη σε εξέλιξη. Δεν θα χρεωθείτε για αυτήν.",
+            "%d μεταφράσεις είναι ακόμη σε εξέλιξη. Δεν θα χρεωθείτε για αυτές."
+         ],
+         "usage ledger": [
+            "καθολικό χρήσης"
+         ],
+         "Cancelled. %1$d translation was in progress; its %2$s words are back on your account. Details:": [
+            "Ακυρώθηκε. %1$d μετάφραση ήταν σε εξέλιξη. Οι %2$s λέξεις της επέστρεψαν στον λογαριασμό σας. Λεπτομέρειες:",
+            "Ακυρώθηκαν. %1$d μεταφράσεις ήταν σε εξέλιξη. Οι %2$s λέξεις τους επέστρεψαν στον λογαριασμό σας. Λεπτομέρειες:"
+         ],
+         "Cancelled. We asked to return the words for %d translation in progress; the usage ledger shows it once confirmed.": [
+            "Ακυρώθηκε. Ζητήσαμε την επιστροφή των λέξεων για %d μετάφραση σε εξέλιξη. Το καθολικό χρήσης θα τις εμφανίσει μόλις επιβεβαιωθούν.",
+            "Ακυρώθηκαν. Ζητήσαμε την επιστροφή των λέξεων για %d μεταφράσεις σε εξέλιξη. Το καθολικό χρήσης θα τις εμφανίσει μόλις επιβεβαιωθούν."
          ],
          "Translations have been downloaded": [
-            "Έγινε λήψη των μεταφράσεων"
+            "Οι μεταφράσεις έχουν ληφθεί"
          ],
          "Translation has been downloaded": [
-            "Έγινε λήψη της μετάφρασης"
+            "Η μετάφραση έχει ληφθεί"
          ],
          "Translations could not be downloaded": [
-            "Αδυναμία λήψης των μεταφράσεων"
+            "Δεν ήταν δυνατή η λήψη των μεταφράσεων"
          ],
          "Translation could not be downloaded": [
-            "Αδυναμία λήψης της μετάφρασης"
+            "Δεν ήταν δυνατή η λήψη της μετάφρασης"
          ],
-         "Approving translations reviews failed!": [
-            "Αποτυχία έγκρισης αναθεωρήσεων μεταφράσεων!"
+         "paused after repeated failures, will be retried automatically — %s": [
+            "σε παύση μετά από επανειλημμένες αποτυχίες, θα γίνει αυτόματη επανάληψη — %s"
          ],
-         "Failed approving translations for the following posts: ": [
-            "Αποτυχία έγκρισης μεταφράσεων για τις ακόλουθες δημοσιεύσεις:"
+         "%d translation could not be downloaded": [
+            "Δεν ήταν δυνατή η λήψη %d μετάφρασης",
+            "Δεν ήταν δυνατή η λήψη %d μεταφράσεων"
          ],
-         "Translations reviews approved successfully!": [
-            "Επιτυχής έγκριση αναθεωρήσεων μεταφράσεων!"
+         "%d translation has been downloaded": [
+            "%d μετάφραση έχει ληφθεί",
+            "%d μεταφράσεις έχουν ληφθεί"
          ],
          "No valid jobs selected to approve translations reviews!": [
-            "Δεν επιλέχθηκαν έγκυρες εργασίες για έγκριση αναθεωρήσεων μεταφράσεων!"
+            "Δεν επιλέχθηκαν έγκυρες εργασίες για έγκριση επιθεωρήσεων μετάφρασης!"
+         ],
+         "%1$s (%2$s)": [
+            "%1$s (%2$s)"
+         ],
+         "%s was not approved because it is still open for editing.": [
+            "Η μετάφραση %s δεν εγκρίθηκε επειδή είναι ακόμα ανοιχτή για επεξεργασία.",
+            "Οι μεταφράσεις %s δεν εγκρίθηκαν επειδή είναι ακόμα ανοιχτές για επεξεργασία."
+         ],
+         "Approving it now would publish the translation without the edits.": [
+            "Αν την εγκρίνετε τώρα, η μετάφραση θα δημοσιευτεί χωρίς τις αλλαγές.",
+            "Αν τις εγκρίνετε τώρα, οι μεταφράσεις θα δημοσιευτούν χωρίς τις αλλαγές."
+         ],
+         "Click Continue reviewing, finish the edits and click Complete in the editor.": [
+            "Κάντε κλικ στο «Συνέχιση επιθεώρησης», ολοκληρώστε τις αλλαγές και κάντε κλικ στο «Ολοκλήρωση» στο πρόγραμμα επεξεργασίας."
+         ],
+         "Then approve the translation here.": [
+            "Στη συνέχεια, εγκρίνετε τη μετάφραση εδώ.",
+            "Στη συνέχεια, εγκρίνετε τις μεταφράσεις εδώ."
+         ],
+         "If the editor does not open, send the content to translation again from the Translation Dashboard.": [
+            "Εάν το πρόγραμμα επεξεργασίας δεν ανοίγει, στείλτε ξανά το περιεχόμενο για μετάφραση από τον Πίνακα ελέγχου μετάφρασης."
+         ],
+         "Approving translations reviews failed!": [
+            "Η έγκριση των επιθεωρήσεων μετάφρασης απέτυχε!"
+         ],
+         "Failed approving translations for the following posts: ": [
+            "Αποτυχία έγκρισης μεταφράσεων για τα ακόλουθα άρθρα: "
+         ],
+         "Translations reviews approved successfully!": [
+            "Οι επιθεωρήσεις μετάφρασης εγκρίθηκαν με επιτυχία!"
          ],
          "The translator has been assigned to the job": [
-            "Η εργασία ανατέθηκε στον μεταφραστή"
+            "Ο μεταφραστής ανατέθηκε στην εργασία"
          ],
          "The translator could not be assigned to the job": [
-            "Η εργασία δεν μπόρεσε να ανατεθεί στον μεταφραστή"
+            "Δεν ήταν δυνατή η ανάθεση του μεταφραστή στην εργασία"
          ],
          "The jobs have been cancelled": [
-            "Οι εργασίες ακυρώθηκαν"
+            "Οι εργασίες έχουν ακυρωθεί"
          ],
          "The job has been cancelled": [
-            "Η εργασία ακυρώθηκε"
+            "Η εργασία έχει ακυρωθεί"
          ],
          "The jobs could not be cancelled": [
-            "Οι εργασίες δεν μπόρεσαν να ακυρωθούν"
+            "Δεν ήταν δυνατή η ακύρωση των εργασιών"
          ],
          "The job could not be cancelled": [
-            "Η εργασία δεν μπόρεσε να ακυρωθεί"
+            "Δεν ήταν δυνατή η ακύρωση της εργασίας"
          ],
          "Translation reviews have been canceled": [
-            "Οι αναθεωρήσεις μετάφρασης ακυρώθηκαν"
+            "Οι επιθεωρήσεις μετάφρασης έχουν ακυρωθεί"
          ],
          "Translation review has been canceled": [
-            "Η αναθεώρηση μετάφρασης ακυρώθηκε"
+            "Η επιθεώρηση μετάφρασης έχει ακυρωθεί"
          ],
          "Translation reviews could not be canceled": [
-            "Οι αναθεωρήσεις μετάφρασης δεν μπόρεσαν να ακυρωθούν"
+            "Δεν ήταν δυνατή η ακύρωση των επιθεωρήσεων μετάφρασης"
          ],
          "Translation review could not be canceled": [
-            "Η αναθεώρηση μετάφρασης δεν μπόρεσε να ακυρωθεί"
+            "Δεν ήταν δυνατή η ακύρωση της επιθεώρησης μετάφρασης"
+         ],
+         "Translated by": [
+            "Μεταφράστηκε από"
          ],
          "Sent on": [
-            "Στάλθηκε στις"
+            "Απεστάλη στις"
          ],
          "Deadline": [
             "Προθεσμία"
@@ -324,10 +421,13 @@
             "Κατάσταση"
          ],
          "Pending review": [
-            "Εκκρεμεί αναθεώρηση"
+            "Εκκρεμεί επιθεώρηση"
          ],
-         "ID": [
-            "Αναγνωριστικό"
+         "Reference ID": [
+            "ID αναφοράς"
+         ],
+         "Job ID": [
+            "ID εργασίας"
          ],
          "Type": [
             "Τύπος"
@@ -335,29 +435,26 @@
          "Languages": [
             "Γλώσσες"
          ],
-         "Translated by": [
-            "Μεταφράστηκε από"
-         ],
          "Download XLIFF file couldn't be finished": [
-            "Η λήψη του αρχείου XLIFF δεν μπόρεσε να ολοκληρωθεί"
+            "Η λήψη του αρχείου XLIFF δεν ήταν δυνατό να ολοκληρωθεί"
          ],
          "Could not load jobs for export": [
-            "Αδυναμία φόρτωσης εργασιών για εξαγωγή"
+            "Δεν ήταν δυνατή η φόρτωση των εργασιών για εξαγωγή"
          ],
          "The export to XLIFF failed": [
-            "Αποτυχία εξαγωγής σε XLIFF"
+            "Η εξαγωγή σε XLIFF απέτυχε"
          ],
          "Imported %d jobs": [
-            "Εισάχθηκαν %d εργασίες"
+            "Εισήχθησαν %d εργασίες"
          ],
          "Imported one job": [
-            "Εισάχθηκε μία εργασία"
+            "Εισήχθη μία εργασία"
          ],
          "Could not import any job": [
-            "Αδυναμία εισαγωγής οποιασδήποτε εργασίας"
+            "Δεν ήταν δυνατή η εισαγωγή καμίας εργασίας"
          ],
          "Import failed!": [
-            "Αποτυχία εισαγωγής!"
+            "Η εισαγωγή απέτυχε!"
          ],
          "Loading translations queue": [
             "Φόρτωση ουράς μεταφράσεων"
@@ -366,38 +463,46 @@
             "Φόρτωση εργασιών μετάφρασης"
          ],
          "Jobs could not be loaded": [
-            "Αδυναμία φόρτωσης εργασιών"
+            "Δεν ήταν δυνατή η φόρτωση των εργασιών"
+         ],
+         "This translator cannot translate this language pair.": [
+            "Αυτός ο μεταφραστής δεν μπορεί να μεταφράσει αυτό το ζεύγος γλωσσών."
+         ],
+         "This translator is no longer available. Reload the page and choose a translator again.": [
+            "Αυτός ο μεταφραστής δεν είναι πλέον διαθέσιμος. Ανανεώστε τη σελίδα και επιλέξτε ξανά έναν μεταφραστή."
          ],
          "Specify some jobs to resign": [
-            "Καθορίστε κάποιες εργασίες για κλείσιμο"
+            "Προσδιορίστε ορισμένες εργασίες για παραίτηση"
          ],
          "We could not resign jobs: %s": [
-            "Δεν μπορέσαμε να κλείσουμε τις εργασίες: %s"
+            "Δεν ήταν δυνατή η παραίτηση από τις εργασίες: %s"
          ],
          "Resigned from jobs": [
-            "Παραίτηση από εργασίες"
+            "Υποβλήθηκε παραίτηση από τις εργασίες"
          ],
          "Resigned from job": [
-            "Παραίτηση από εργασία"
+            "Υποβλήθηκε παραίτηση από την εργασία"
          ],
          "Failed to resign from jobs": [
-            "Αποτυχία παραίτησης από εργασίες"
+            "Αποτυχία παραίτησης από τις εργασίες"
          ],
          "The Advanced Editor jobs synchronization has failed": [
-            "Αποτυχία συγχρονισμού εργασιών του Προηγμένου Επεξεργαστή"
+            "Ο συγχρονισμός εργασιών του Προηγμένου προγράμματος επεξεργασίας απέτυχε"
          ],
          "Synchronization with the Professional Translation service has failed": [
-            "Αποτυχία συγχρονισμού με την υπηρεσία Επαγγελματικής Μετάφρασης"
+            "Ο συγχρονισμός με την επαγγελματική μεταφραστική υπηρεσία απέτυχε"
          ],
-         "%d translation has been downloaded": [
-            "Έγινε λήψη της %d μετάφρασης",
-            "Έγινε λήψη των %d μεταφράσεων"
+         "%d batches are still being processed by the translation service. Check again in a few minutes.": [
+            "%d παρτίδες βρίσκονται ακόμη υπό επεξεργασία από τη μεταφραστική υπηρεσία. Ελέγξτε ξανά σε λίγα λεπτά."
          ],
          "Batch sync finished successfully!": [
-            "Επιτυχής ολοκλήρωση του μαζικού συγχρονισμού!"
+            "Ο συγχρονισμός παρτίδας ολοκληρώθηκε με επιτυχία!"
          ],
          "Batch sync couldn't be finished": [
-            "Αποτυχία ολοκλήρωσης του μαζικού συγχρονισμού"
+            "Ο συγχρονισμός παρτίδας δεν ήταν δυνατό να ολοκληρωθεί"
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "Το μεταφραστικό μας σύστημα δεν αποδέχτηκε αυτό το αίτημα (απάντησε %d). Περιμένετε ένα λεπτό και δοκιμάστε ξανά, και επικοινωνήστε με την υποστήριξη του WPML εάν το πρόβλημα συνεχιστεί."
          ]
       }
    }

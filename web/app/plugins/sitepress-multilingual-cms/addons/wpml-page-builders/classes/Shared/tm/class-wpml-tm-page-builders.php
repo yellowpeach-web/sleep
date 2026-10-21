@@ -1,43 +1,50 @@
 <?php
 
+use WPML\FP\Obj;
+use WPML\FP\Str;
+use WPML\PB\TranslationJob\Groups;
+use WPML\PB\TranslationJob\LabelResolver;
+use WPML\PB\TranslationJob\Labels;
+
 class WPML_TM_Page_Builders {
 	const PACKAGE_TYPE_EXTERNAL = 'external';
-	const TRANSLATION_COMPLETE = 10;
+	const TRANSLATION_COMPLETE  = 10;
 
-	const FIELD_STYLE_AREA = 'AREA';
+	const FIELD_STYLE_AREA   = 'AREA';
 	const FIELD_STYLE_VISUAL = 'VISUAL';
-	const FIELD_STYLE_LINK = 'LINK';
+	const FIELD_STYLE_LINK   = 'LINK';
 
-	/** @var SitePress $sitepress */
+	const TOP_LEVEL_GROUP_ID          = 'Main_Content-0';
+	const TOP_LEVEL_GROUP_DESCRIPTION = 'Main Content';
+
 	private $sitepress;
 
-	/** @var \WPML_PB_Integration|null */
 	private $wpmlPbIntegration;
 
-	/**
-	 * @param SitePress $sitepress
-	 * @param WPML_PB_Integration|null $wpmlPbIntegration
-	 */
-	public function __construct( SitePress $sitepress, \WPML_PB_Integration $wpmlPbIntegration = null  ) {
-		$this->sitepress = $sitepress;
-		$this->wpmlPbIntegration = $wpmlPbIntegration;
+	private $attachments = [];
+
+	private $labelResolver;
+
+	private $elementTranslations;
+
+	private $packageKinds = [];
+
+	public function __construct(
+		SitePress $sitepress,
+		?\WPML_PB_Integration $wpmlPbIntegration = null,
+		?\WPML_TM_Element_Translations $elementTranslations = null
+	) {
+		$this->sitepress           = $sitepress;
+		$this->wpmlPbIntegration   = $wpmlPbIntegration;
+		$this->elementTranslations = $elementTranslations;
 	}
 
-	/**
-	 * Filter translation job data.
-	 *
-	 * @param array $translation_package Translation package.
-	 * @param mixed $post                Post.
-	 * @param bool  $isOriginal          If it's used as original post.
-	 *
-	 * @return array
-	 */
 	public function translation_job_data_filter( array $translation_package, $post, $isOriginal = false ) {
 		if ( self::PACKAGE_TYPE_EXTERNAL !== $translation_package['type'] && isset( $post->ID ) ) {
 
-			$post_element        = new WPML_Post_Element( $post->ID, $this->sitepress );
-			$source_post_id      = $post->ID;
-			$job_lang_from       = $post_element->get_language_code();
+			$post_element   = new WPML_Post_Element( $post->ID, $this->sitepress );
+			$source_post_id = $post->ID;
+			$job_lang_from  = $post_element->get_language_code();
 
 			if ( ! $post_element->is_root_source() && $isOriginal && WPML_PB_Last_Translation_Edit_Mode::is_native_editor( $post->ID ) ) {
 				$this->getWpmlPbIntegration()->register_all_strings_for_translation( $post, true );
@@ -60,44 +67,30 @@ class WPML_TM_Page_Builders {
 
 				foreach ( $string_packages as $package_id => $string_package ) {
 
-					/**
-					 * String package.
-					 *
-					 * @var WPML_Package $string_package
-					 */
 					$strings             = $string_package->get_package_strings();
-					$string_translations = array();
+					$string_translations = [];
 
 					if ( $job_source_is_not_post_source ) {
-						$string_translations = $string_package->get_translated_strings( array() );
+						$string_translations = $string_package->get_translated_strings( [] );
 					}
 
 					foreach ( $strings as $string ) {
 
-						if ( self::FIELD_STYLE_LINK !== $string->type ) {
-							$string_value = $string->value;
+						$string_value = $string_translations[ $string->name ][ $job_lang_from ]['value'] ?? $string->value;
 
-							if ( isset( $string_translations[ $string->name ][ $job_lang_from ]['value'] ) ) {
-								$string_value = $string_translations[ $string->name ][ $job_lang_from ]['value'];
-							}
+						$field_name = WPML_TM_Page_Builders_Field_Wrapper::generate_field_slug(
+							$package_id,
+							$string->id
+						);
 
-							$field_name = WPML_TM_Page_Builders_Field_Wrapper::generate_field_slug(
-								$package_id,
-								$string->id
-							);
-
-							$translation_package['contents'][ $field_name ] = array(
-								'translate' => 1,
-								// phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-								'data'      => base64_encode( $string_value ),
-								// phpcs:enable
-								'wrap_tag'  => WPML_TM_Page_Builders_Field_Wrapper::get_wrap_tag( $string ),
-								'format'    => 'base64',
-							);
-						}
+						$translation_package['contents'][ $field_name ] = [
+							'translate' => 1,
+							'data'      => base64_encode( $string_value ),
+							'wrap_tag'  => WPML_TM_Page_Builders_Field_Wrapper::get_wrap_tag( $string ),
+							'format'    => 'base64',
+						];
 
 						$translation_package['contents']['body']['translate'] = 0;
-
 					}
 				}
 			}
@@ -106,11 +99,6 @@ class WPML_TM_Page_Builders {
 		return $translation_package;
 	}
 
-	/**
-	 * @param int      $new_element_id
-	 * @param array    $fields
-	 * @param stdClass $job
-	 */
 	public function pro_translation_completed_action( $new_element_id, array $fields, stdClass $job ) {
 		if ( 'post' !== $job->element_type_prefix ) {
 			return;
@@ -118,8 +106,8 @@ class WPML_TM_Page_Builders {
 
 		foreach ( $fields as $field_id => $field ) {
 			$field_slug = isset( $field['field_type'] ) ? $field['field_type'] : $field_id;
-			$wrapper = $this->create_field_wrapper( $field_slug );
-			$string_id = $wrapper->get_string_id();
+			$wrapper    = $this->create_field_wrapper( $field_slug );
+			$string_id  = $wrapper->get_string_id();
 
 			if ( $string_id ) {
 				do_action(
@@ -137,23 +125,45 @@ class WPML_TM_Page_Builders {
 		do_action( 'wpml_pb_finished_adding_string_translations', $new_element_id, $job->original_doc_id, $fields );
 	}
 
-	/**
-	 * Adjust translation fields.
-	 *
-	 * @param array    $fields Translation fields.
-	 * @param stdClass $job    Translation job.
-	 *
-	 * @return array
-	 */
-	public function adjust_translation_fields_filter( array $fields, $job ) {
+	public function adjust_translation_fields_filter( array $fields ) {
 		foreach ( $fields as &$field ) {
-			$wrapper      = $this->create_field_wrapper( $field['field_type'] );
-			$type         = $wrapper->get_string_type();
-			$string_title = $wrapper->get_string_title();
+			$widget_block_label_data = $this->get_block_widget_title_and_group( $field['title_fallback'] ?? '' );
 
-			if ( $string_title ) {
-				$field['title'] = $string_title;
+			if ( ! empty( $widget_block_label_data['title'] ) ) {
+				$field['title'] = $widget_block_label_data['title'];
+				$field['group'] = $widget_block_label_data['group'];
+				continue;
 			}
+
+			$wrapper = $this->create_field_wrapper( $field['field_type'] );
+			$type    = $wrapper->get_string_type();
+			$title   = $wrapper->get_string_title();
+
+			if ( $title ) {
+				$field['title'] = $title;
+			}
+
+			$string_package_id = $wrapper->get_package_id();
+
+			if ( $string_package_id && isset( $field['title'] ) && Groups::isGroupLabel( $field['title'] ) ) {
+				$label = $this->get_label_resolver()->resolve(
+					$field['title'],
+					function () use ( $wrapper, $string_package_id ) {
+						return $this->get_package_kind( $wrapper, $string_package_id );
+					}
+				);
+
+				$field['title'] = $label['title'];
+				$field['group'] = [ self::TOP_LEVEL_GROUP_ID => self::TOP_LEVEL_GROUP_DESCRIPTION ];
+				foreach ( $label['groups'] as $group => $groupLabel ) {
+					$field['group'][ $group ] = $groupLabel;
+				}
+
+				$groupIds = array_keys( $label['groups'] );
+				$field    = $this->set_image_url( $field, (string) end( $groupIds ) );
+			}
+
+			$field = $this->group_media_texts( $field );
 
 			if ( isset( $field['field_wrap_tag'] ) && $field['field_wrap_tag'] ) {
 				$field['title'] = isset( $field['title'] ) ? $field['title'] : '';
@@ -179,14 +189,101 @@ class WPML_TM_Page_Builders {
 		return $fields;
 	}
 
-	/**
-	 * @param array $layout
-	 *
-	 * @return array
-	 */
+	private function get_block_widget_title_and_group( $title ) {
+		if ( Groups::isGroupLabel( $title ) && $this->containsBlockElement( $title ) ) {
+			list( $groups, $raw_title ) = Groups::parseGroupLabel( $title );
+
+			$clean_title = Labels::convertToHuman( $raw_title );
+			$group_data  = [
+				self::TOP_LEVEL_GROUP_ID => self::TOP_LEVEL_GROUP_DESCRIPTION,
+			];
+			foreach ( $groups as $group ) {
+				$group_data[ $group ] = Labels::convertToHuman( $group );
+			}
+
+			return [
+				'title' => $clean_title,
+				'group' => $group_data,
+			];
+		}
+
+		return false;
+	}
+
+	private function containsBlockElement( $title ) {
+		return (bool) preg_match( '/block-\d+/', $title );
+	}
+
+	private function set_image_url( $field, $innerMostGroup ) {
+		$patterns = array_unique( apply_filters( 'wpml_pb_image_module_patterns', [] ) );
+
+		foreach ( $patterns as $pattern ) {
+			if ( preg_match( $pattern, $innerMostGroup, $matches ) ) {
+				$url = wp_get_attachment_url( (int) $matches[1] );
+				if ( $url ) {
+					$field['image'] = $url;
+
+					$this->attachments[ $matches[1] ] = $field;
+				}
+				break;
+			}
+		}
+
+		return $field;
+	}
+
+	public function group_media_texts( $field ) {
+		$fieldType = Obj::propOr( '', 'field_type', $field );
+		$matches   = Str::match( '/^media_(\d+)_\w+$/', $fieldType );
+		if ( isset( $matches[1] ) ) {
+			$attachmentId = $matches[1];
+			if ( isset( $this->attachments[ $attachmentId ]['image'] ) ) {
+				$field['image'] = $this->attachments[ $attachmentId ]['image'];
+				$field['group'] = $this->attachments[ $attachmentId ]['group'];
+			} else {
+				$url = wp_get_attachment_url( $attachmentId );
+				if ( $url ) {
+					$field['image'] = $url;
+					$field['group'] = [
+						self::TOP_LEVEL_GROUP_ID => self::TOP_LEVEL_GROUP_DESCRIPTION,
+						'media_' . $attachmentId => 'Media',
+					];
+				}
+			}
+		}
+
+		return $field;
+	}
+
+	public function xliffUnitPlaceholdersFilter( array $patterns, $element ) {
+		$placeholderPatterns = apply_filters( 'wpml_pb_string_placeholder_patterns', [] );
+
+		if ( ! $placeholderPatterns ) {
+			return $patterns;
+		}
+
+		$name = $this->create_field_wrapper( $element->field_type )->getStringName();
+
+		if ( ! $name ) {
+			return $patterns;
+		}
+
+		foreach ( $placeholderPatterns as $namePattern => $placeholders ) {
+			if ( preg_match( $namePattern, $name ) ) {
+				$patterns = array_merge( $patterns, (array) $placeholders );
+			}
+		}
+
+		return $patterns;
+	}
+
+	public function adjust_translation_job_filter( $elements ) {
+		return Groups::flattenHierarchy( $elements );
+	}
+
 	public function job_layout_filter( array $layout ) {
 
-		$string_groups       = array();
+		$string_groups = [];
 
 		foreach ( $layout as $k => $field ) {
 			$wrapper = $this->create_field_wrapper( $field );
@@ -197,66 +294,69 @@ class WPML_TM_Page_Builders {
 		}
 
 		foreach ( $string_groups as $string_package_id => $fields ) {
-			$string_package = apply_filters( 'wpml_st_get_string_package', false, $string_package_id );
+			$string_package = apply_filters( 'wpml_st_get_string_package', null, $string_package_id );
 
-			$section = array(
+			$section  = [
 				'field_type'    => 'tm-section',
 				'title'         => isset( $string_package->title ) ? $string_package->title : '',
 				'fields'        => $fields,
 				'empty'         => false,
 				'empty_message' => '',
 				'sub_title'     => '',
-			);
+			];
 			$layout[] = $section;
 		}
 
 		return array_values( $layout );
 	}
 
-	/**
-	 * @param string $link
-	 * @param int    $post_id
-	 * @param string $lang
-	 * @param int    $trid
-	 *
-	 * @return string
-	 */
 	public function link_to_translation_filter( $link, $post_id, $lang, $trid ) {
-		/* @var WPML_TM_Translation_Status $wpml_tm_translation_status */
-		global $wpml_tm_translation_status;
-
-		$status = $wpml_tm_translation_status->filter_translation_status( null, $trid, $lang );
-
-		if ( $link && ICL_TM_NEEDS_UPDATE === $status ) {
-			$args = array(
+		if ( $link && $trid && $this->getElementTranslations()->is_update_needed( $trid, $lang ) ) {
+			$args = [
 				'update_needed' => 1,
 				'trid'          => $trid,
 				'language_code' => $lang,
-			);
+			];
 
-			$link = add_query_arg( $args, $link	);
+			$link = add_query_arg( $args, $link );
 		}
 
 		return $link;
 	}
 
-	/**
-	 * @param string $field_slug
-	 *
-	 * @return WPML_TM_Page_Builders_Field_Wrapper
-	 */
+	protected function get_label_resolver() {
+		if ( ! $this->labelResolver ) {
+			$this->labelResolver = new LabelResolver();
+		}
+
+		return $this->labelResolver;
+	}
+
+	private function get_package_kind( WPML_TM_Page_Builders_Field_Wrapper $wrapper, $packageId ) {
+		if ( ! array_key_exists( $packageId, $this->packageKinds ) ) {
+			$package = $wrapper->get_package();
+
+			$this->packageKinds[ $packageId ] = is_object( $package ) && isset( $package->kind_slug ) ? (string) $package->kind_slug : null;
+		}
+
+		return $this->packageKinds[ $packageId ];
+	}
+
 	public function create_field_wrapper( $field_slug ) {
 		return new WPML_TM_Page_Builders_Field_Wrapper( $field_slug );
 	}
 
-	/**
-	 * @return \WPML_PB_Integration
-	 *
-	 */
 	private function getWpmlPbIntegration() {
 		if ( null === $this->wpmlPbIntegration ) {
 			$this->wpmlPbIntegration = \WPML\Container\make( \WPML_PB_Integration::class );
 		}
 		return $this->wpmlPbIntegration;
+	}
+
+	private function getElementTranslations() {
+		if ( null === $this->elementTranslations ) {
+			$this->elementTranslations = wpml_tm_load_element_translations();
+		}
+		return $this->elementTranslations;
 	}
 }

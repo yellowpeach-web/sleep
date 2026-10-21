@@ -3,79 +3,484 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/js/components/translate-everything/ConfirmNewTranslatablePostTypeDialog.js:23
-msgid ""
-"You can choose which posts to translate from the <strong>Translation "
-"Management Dashboard</strong>."
+#: src/js/ate/shared/listOf.js:29
+#. A list of names (custom fields, post types) in a sentence: "a, b and c". %1$s: all but the last, already joined with commas, %2$s: the last one.
+msgid "%1$s and %2$s"
 msgstr ""
 
-#: src/js/components/translate-everything/ConfirmNewTranslatablePostTypeDialog.js:57
-msgid "Yes, translate <b>existing</b> and <b>future</b> content automatically"
-msgstr ""
-
-#: src/js/components/translate-everything/ConfirmNewTranslatablePostTypeDialog.js:72
-msgid "Yes, but only translate <b>future</b> content automatically"
-msgstr ""
-
-#: src/js/components/translate-everything/ConfirmNewTranslatablePostTypeDialog.js:73
-msgid "Yes, translate <b>future</b> content automatically"
-msgstr ""
-
-#: src/js/components/translate-everything/ConfirmNewTranslatablePostTypeDialog.js:85
-msgid "No, I want to translate some of these posts, but not all"
-msgstr ""
-
-#: src/js/settings/UI/TranslationMethod.js:54
+#: src/js/settings/UI/TranslationMethod.js:47
 msgid ""
 "You must use the Advanced Translation Editor if you want to translate your "
 "content automatically."
 msgstr ""
 
-#: src/js/settings/UI/Troubleshooting.js:26
+#: src/js/settings/UI/Troubleshooting.js:29
 msgid "Synchronize translators and translation managers with ATE"
 msgstr ""
 
-#: src/js/settings/UI/Troubleshooting.js:36
+#: src/js/settings/UI/Troubleshooting.js:42
+#. Hint under an error on the troubleshooting page. %1$s: opening link tag, %2$s: closing link tag; the words between them become the link.
 msgid ""
 "Please try again in a few minutes. If the problem persists, please contact "
-"%sWPML support%s."
+"%1$sWPML support%2$s."
 msgstr ""
 
-#: src/js/settings/components/ConfirmNewTranslatablePostType.js:103
-msgid "Are you OK with paying for this?"
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:205
+#. Line in the term-meta preference-change dialog when the translated terms carrying the key could not be counted (the count request failed). %s: the key name, or the names as one list ("a, b and c").
+msgid "The number of translated terms carrying %s could not be counted."
 msgstr ""
 
-#: src/js/settings/components/ConfirmNewTranslatablePostType.js:105
-msgid "Cancel"
-msgstr ""
-
-#: src/js/settings/components/ConfirmNewTranslatablePostType.js:106
-msgid "Make translatable"
-msgstr ""
-
-#: src/js/settings/components/ConfirmNewTranslatablePostType.js:119
-msgid "Save"
-msgstr ""
-
-#: src/js/settings/components/ConfirmNewTranslatablePostType.js:88
-msgid "Please confirm this translation setting"
-msgstr ""
-
-#: src/js/settings/components/ConfirmNewTranslatablePostType.js:91
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:212
+#. Line in the term-meta preference-change dialog for a key no translated term carries yet; the dialog then offers no choice and the change applies to new translations. %s: the key name, or the names as one list ("a, b and c").
 msgid ""
-"Your site is set to translate all content automatically. When you make "
-"<PostTypesNames /> translatable, WPML will automatically translate the %1$d "
-"existing item."
-msgid_plural ""
-"Your site is set to translate all content automatically. When you make "
-"<PostTypesNames /> translatable, WPML will automatically translate the %1$d "
-"existing items."
+"There are no translated terms carrying %s yet that need translating again. "
+"The change applies to new translations."
+msgstr ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:218
+#. Line in the term-meta preference-change dialog. %1$s: the number of translated terms carrying the key (formatted), %2$s: the key name, or the names as one list ("a, b and c"). Existing translations are not updated from that screen.
+msgid "%1$s translated term carries %2$s — only new translations are affected."
+msgid_plural "%1$s translated terms carry %2$s — only new translations are affected."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/js/settings/components/ConfirmNewTranslatablePostType.js:97
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:233
+#. Line in the preference-change dialog when the translated posts carrying the field could not be counted (the count request failed); the dialog then offers both choices without a number. %s: the field name, or the names as one list ("a, b and c").
+msgid "The number of translated posts carrying %s could not be counted."
+msgstr ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:240
+#. Line in the preference-change dialog for a field no translated post carries yet; the dialog then offers no choice and the change applies to new translations. %s: the field name, or the names as one list ("a, b and c").
 msgid ""
-"Your site is set to translate all content automatically. When you make "
-"<PostTypesNames /> translatable, WPML will automatically translate all "
-"future content."
+"There are no translated posts carrying %s yet that need translating again. "
+"The change applies to new translations."
+msgstr ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:249
+#. Line in the preference-change dialog: a field now translated. %1$s: the number of translated posts carrying it (formatted), %2$s: the field name, or the names as one list ("a, b and c").
+msgid ""
+"%1$s translated post carries %2$s — it will be marked as needing a "
+"translation update."
+msgid_plural ""
+"%1$s translated posts carry %2$s — they will be marked as needing a "
+"translation update."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:261
+#. Line in the preference-change dialog: a field now copied. %1$s: the number of translated posts carrying it (formatted), %2$s: the field name, or the names as one list ("a, b and c").
+msgid ""
+"%1$s translated post carries %2$s — its translation will show the "
+"original's value from now on."
+msgid_plural ""
+"%1$s translated posts carry %2$s — their translations will show the "
+"original's value from now on."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:273
+#. Line in the preference-change dialog: a field now copied once. %1$s: the number of translated posts carrying it (formatted), %2$s: the field name, or the names as one list ("a, b and c").
+msgid ""
+"%1$s translated post carries %2$s — translations without a value get the "
+"original's once."
+msgid_plural ""
+"%1$s translated posts carry %2$s — translations without a value get the "
+"original's once."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:285
+#. Line in the preference-change dialog: a field no longer translated. %1$s: the number of translated posts carrying it (formatted), %2$s: the field name, or the names as one list ("a, b and c").
+msgid ""
+"%1$s translated post carries %2$s — it is no longer translated and what its "
+"translations hold stays as it is."
+msgid_plural ""
+"%1$s translated posts carry %2$s — they are no longer translated and what "
+"their translations hold stays as it is."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:543
+#. Title of the dialog that lists what a change to the custom-field translation preferences does to existing translations.
+msgid "Review these translation setting changes"
+msgstr ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:544
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:219
+#. Button that closes a confirmation dialog without saving; verb, imperative.
+msgid "Cancel"
+msgstr ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:545
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:220
+#. Label of the button that saves the Page URL setting after the client has chosen whether existing translations are rewritten; verb, imperative.
+msgid "Save changes"
+msgstr ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:568
+#. Choice in the preference-change dialog when the number of translated posts the change touches could not be counted.
+msgid "Also update the existing posts now"
+msgstr ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:571
+#. Choice in the preference-change dialog. %s: the number of translated posts the change touches, formatted.
+msgid "Also update the %s existing post now"
+msgid_plural "Also update the %s existing posts now"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:574
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:245
+#. Choice in the Page URL confirmation: leave existing translations as they are.
+msgid "Only apply to new translations"
+msgstr ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:578
+#. Line in the preference-change dialog when one or more fields move to Translate with Translate Everything on and no translated post carries them yet. The number is how many fields move: singular for one, plural for two or more.
+msgid ""
+"Once saved, WPML automatically sends new and updated posts with this field "
+"to translation. This may use translation words."
+msgid_plural ""
+"Once saved, WPML automatically sends new and updated posts with these "
+"fields to translation. This may use translation words."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:581
+#. Line in the term-meta preference-change dialog when one or more keys move to Translate with Translate Everything on; existing translations are not updated from that screen, so this is the whole effect. The number is how many keys move: singular for one, plural for two or more.
+msgid ""
+"Once saved, WPML automatically sends new and updated terms with this key to "
+"translation. This may use translation words."
+msgid_plural ""
+"Once saved, WPML automatically sends new and updated terms with these keys "
+"to translation. This may use translation words."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:584
+#. Closing line of the preference-change dialog.
+msgid ""
+"Either way the new preference is saved. With \"Only apply to new "
+"translations\" every existing translation stays exactly as it is."
+msgstr ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:597
+#. Notice above the custom-fields table. %1$s: how many fields (formatted), %2$s: their names, already written as one list ("a, b and c").
+msgid ""
+"%1$s custom field became translatable outside this screen: %2$s. Decide "
+"what happens to the translations that already exist."
+msgid_plural ""
+"%1$s custom fields became translatable outside this screen: %2$s. Decide "
+"what happens to the translations that already exist."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:608
+#. Button in the notice above the custom-fields table; opens the confirmation for the field(s) that became translatable outside the screen. Verb, imperative. The number is how many fields the notice lists: singular for one, plural for two or more.
+msgid "Review this field"
+msgid_plural "Review these fields"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:621
+#: src/js/settings/components/ConfirmNewTranslatablePostType.js:66
+#: src/js/settings/components/ConfirmNewTranslatableTaxonomy.js:217
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:258
+#. Button label that saves what was entered in the form or dialog; verb, imperative.
+msgid "Save"
+msgstr ""
+
+#: src/js/settings/components/ConfirmNewTranslatablePostType.js:66
+#. Button label that works out what translating the newly enabled content will cost; verb, imperative.
+msgid "Calculate Costs"
+msgstr ""
+
+#: src/js/settings/components/ConfirmNewTranslatableTaxonomy.js:102
+#. Line in the dialog that confirms making taxonomies translatable. %1$s: the number of terms, already written out as "5 terms"; %2$s: the number of languages, already written out as "3 languages".
+msgid "WPML will automatically translate %1$s into %2$s."
+msgstr ""
+
+#: src/js/settings/components/ConfirmNewTranslatableTaxonomy.js:108
+msgid "Automatic translation uses translation words."
+msgstr ""
+
+#: src/js/settings/components/ConfirmNewTranslatableTaxonomy.js:208
+msgid "Are you OK with this?"
+msgstr ""
+
+#: src/js/settings/components/ConfirmNewTranslatableTaxonomy.js:223
+msgid "Are you sure you want to change the translation option?"
+msgstr ""
+
+#: src/js/settings/components/ConfirmNewTranslatableTaxonomy.js:225
+#. Label of the button that confirms the change in a settings dialog; verb, imperative.
+msgid "Yes, continue"
+msgstr ""
+
+#: src/js/settings/components/ConfirmNewTranslatableTaxonomy.js:226
+msgid "No, go back"
+msgstr ""
+
+#: src/js/settings/components/ConfirmNewTranslatableTaxonomy.js:72
+#. How much content will be translated, used inside "WPML will automatically translate 5 terms into 3 languages." %d: the number of taxonomy terms, such as categories or tags.
+msgid "%d term"
+msgid_plural "%d terms"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmNewTranslatableTaxonomy.js:78
+#. How many languages the content will be translated into, used inside "WPML will automatically translate 5 terms into 3 languages." %d: the number of languages.
+msgid "%d language"
+msgid_plural "%d languages"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmNewTranslatableTaxonomy.js:96
+#. Line in the dialog that confirms making taxonomies translatable. %s: the names of those taxonomies, separated by commas.
+msgid "%s will be translated."
+msgstr ""
+
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:218
+#. Title of the dialog shown before a Page URL option that rewrites slugs is saved.
+msgid "Change the URLs of existing translations?"
+msgstr ""
+
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:225
+#. Line in the Page URL confirmation while a large site's translations are counted in the background. %1$s: posts counted so far, %2$s: posts in total, both formatted.
+msgid "Counting the existing translations this affects… %1$s of %2$s posts."
+msgstr ""
+
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:229
+#. Line in the Page URL confirmation while the affected translations are counted.
+msgid "Counting the existing translations this affects…"
+msgstr ""
+
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:242
+#. Choice in the Page URL confirmation for an option that rewrites slugs. %s: the number of existing translations whose URL changes, formatted.
+msgid "Also update the %s existing translation now — its URL changes"
+msgid_plural "Also update the %s existing translations now — their URLs change"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:248
+#. Closing line of the Page URL confirmation.
+msgid ""
+"Either way the setting is saved. With \"Only apply to new translations\" "
+"every existing translation keeps its slug."
+msgstr ""
+
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:69
+#. Line in the Page URL confirmation when the option "Copy the original slug for languages with encoded URLs" is chosen and no active language has "Encode URL" turned on. "Encode URL" is the name of a field in the Languages editor; use the same words as that field.
+msgid ""
+"No existing translation gets a different URL from this option. It does not "
+"apply to new translations either. None of your active languages has "
+"\"Encode URL\" turned on."
+msgstr ""
+
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:75
+#. Line in the Page URL confirmation when no existing translation's URL would change.
+msgid ""
+"No existing translation gets a different URL from this option. It applies "
+"to new translations."
+msgstr ""
+
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:82
+#. Line in the Page URL confirmation. %s: the number of existing translations in encoded-URL languages whose slug would become the original's, formatted.
+msgid ""
+"%s existing translation in a language with encoded URLs would get the "
+"original's slug."
+msgid_plural ""
+"%s existing translations in languages with encoded URLs would get the "
+"original's slug."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:84
+#. Line in the Page URL confirmation. %s: the number of existing translations whose slug would be regenerated from their title, formatted.
+msgid "%s existing translation would get a slug regenerated from its title."
+msgid_plural "%s existing translations would get slugs regenerated from their titles."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmPageUrlTranslate.js:89
+#. Warning in the Page URL confirmation. %s: the number of published translations whose URL changes, formatted. WPML rewrites the links the site's own translations hold to the moved URL; what it cannot reach is named.
+msgid ""
+"This changes the URL of %s published translation. Links to it from your "
+"other translations are updated. Search engines and links from elsewhere "
+"keep the old address until you redirect it."
+msgid_plural ""
+"This changes the URLs of %s published translations. Links to them from your "
+"other translations are updated. Search engines and links from elsewhere "
+"keep the old addresses until you redirect them."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/reapply.js:100
+#. Button beside the line that says the client's answer was not recorded; sends the same answer again. Verb, imperative.
+msgid "Retry"
+msgstr ""
+
+#: src/js/settings/components/reapply.js:166
+#. Progress line under the Page URL section while the URLs of existing translations are rewritten. %1$s: translations done so far, %2$s: translations in total (picks the singular/plural form), both formatted.
+msgid "Updating %1$s of %2$s translation…"
+msgid_plural "Updating %1$s of %2$s translations…"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/reapply.js:173
+#. Progress line under the custom-field settings table while existing posts are updated. %1$s: posts done so far, %2$s: posts in total, both formatted.
+msgid "Updating %1$s of %2$s posts…"
+msgstr ""
+
+#: src/js/settings/components/reapply.js:204
+#. Summary line after existing posts of one type were updated for a preference change. %1$s: the number of posts, formatted, %2$s: what the post type calls itself, singular or plural to match ("7 books updated.").
+msgid "%1$s %2$s updated."
+msgstr ""
+
+#: src/js/settings/components/reapply.js:219
+#. Summary line after existing posts were updated for a preference change. %s: the number of posts, formatted.
+msgid "%s post updated."
+msgid_plural "%s posts updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/reapply.js:240
+#. Second line of the summary after existing posts were updated, with automatic translation off. %s: how many posts were marked as needing a translation update, formatted.
+msgid "%s marked as needing a translation update."
+msgstr ""
+
+#: src/js/settings/components/reapply.js:253
+#. Second line of the summary after existing posts were updated, with automatic translation on. %1$s: how many posts were sent to translation, %2$s: how many were marked but held because they are outside Translate Everything's range, both formatted.
+msgid ""
+"%1$s sent to translation and %2$s outside Translate Everything's range "
+"marked for later."
+msgstr ""
+
+#: src/js/settings/components/reapply.js:260
+#. Second line of the summary after existing posts were updated, with automatic translation on. %s: how many posts were sent to translation, formatted.
+msgid "%s sent to translation."
+msgstr ""
+
+#: src/js/settings/components/reapply.js:266
+#. Second line of the summary after existing posts were updated, with automatic translation on, when every marked post was held. %s: how many posts were marked but held because they are outside Translate Everything's range, formatted.
+msgid "Nothing was sent. %s outside Translate Everything's range marked for later."
+msgstr ""
+
+#: src/js/settings/components/reapply.js:270
+#. Second line of the summary after existing posts were updated, with automatic translation on, when no marked post could be sent.
+msgid "Nothing was sent."
+msgstr ""
+
+#: src/js/settings/components/reapply.js:275
+#. Line of the summary after existing posts were updated. %s: how many posts were marked but held because none of their languages is one Translate Everything sends, formatted.
+msgid "%s in a language Translate Everything does not send marked for later."
+msgstr ""
+
+#: src/js/settings/components/reapply.js:296
+#. Summary line after the URLs of existing translations were rewritten for a changed Page URL setting. %s: the number of translations whose URL changed, formatted.
+msgid "The URL of %s translation was updated."
+msgid_plural "The URLs of %s translations were updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/reapply.js:299
+#. Summary line after a Page URL rewrite that found no URL left to change.
+msgid "No URL was changed."
+msgstr ""
+
+#: src/js/settings/components/reapply.js:303
+#. Second line of the summary after a Page URL rewrite. %s: how many of the translations the dialog counted no longer needed a change when their turn came (their URL was already what the option gives, or the translation was gone), formatted.
+msgid "%s translation no longer needed a change."
+msgid_plural "%s translations no longer needed a change."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/reapply.js:319
+#. Line shown when the update of existing posts continues elsewhere (another tab or the admin bar's progress notification).
+msgid "The update continues in the background. The admin bar shows its progress."
+msgstr ""
+
+#: src/js/settings/components/reapply.js:402
+#. Line in the preference-change dialog while the number of words the change sends is being counted.
+msgid "Counting the words this sends…"
+msgstr ""
+
+#: src/js/settings/components/reapply.js:407
+#. Line in the preference-change dialog while a large site's words are counted in the background. %1$s: posts counted so far, %2$s: posts in total, both formatted.
+msgid "Counting the words this sends… %1$s of %2$s posts."
+msgstr ""
+
+#: src/js/settings/components/reapply.js:413
+#. Line in the preference-change dialog when the number of words the change sends could not be counted (too many posts, or the calculator failed).
+msgid ""
+"The number of words this sends could not be estimated. The Translation "
+"Dashboard shows the cost once the posts are queued."
+msgstr ""
+
+#: src/js/settings/components/reapply.js:419
+#. Line in the preference-change dialog when the price per word could not be read. %s: the number of words in the content that would be sent, formatted.
+msgid ""
+"This sends %s word of content that could not be priced. The Translation "
+"Dashboard shows the cost once the posts are queued."
+msgid_plural ""
+"This sends %s words of content that could not be priced. The Translation "
+"Dashboard shows the cost once the posts are queued."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/reapply.js:441
+#. Line in the preference-change dialog when ONE post is affected ("it" is that post): the words from the site's balance that re-sending its existing translations into two or more languages uses. %1$s: the number of words, formatted (picks the singular/plural form), %2$s: the number of languages (two or more), formatted.
+msgid "Sending it again to %2$s languages uses about %1$s word."
+msgid_plural "Sending it again to %2$s languages uses about %1$s words."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/reapply.js:447
+#. Line in the preference-change dialog when TWO OR MORE posts are affected ("them" is those posts): the words from the site's balance that re-sending their existing translations into two or more languages uses. %1$s: the number of words, formatted (picks the singular/plural form), %2$s: the number of languages (two or more), formatted.
+msgid "Sending them again to %2$s languages uses about %1$s word."
+msgid_plural "Sending them again to %2$s languages uses about %1$s words."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/reapply.js:455
+#. Line in the preference-change dialog when ONE post is affected ("it" is that post): the words from the site's balance that re-sending its existing translations uses (one language, or the languages not known). %s: the number of words, formatted (picks the singular/plural form).
+msgid "Sending it again uses about %s word."
+msgid_plural "Sending it again uses about %s words."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/reapply.js:460
+#. Line in the preference-change dialog when TWO OR MORE posts are affected ("them" is those posts): the words from the site's balance that re-sending their existing translations uses (one language, or the languages not known). %s: the number of words, formatted (picks the singular/plural form).
+msgid "Sending them again uses about %s word."
+msgid_plural "Sending them again uses about %s words."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/reapply.js:472
+#. Sentence of the cost line in the preference-change dialog. %s: the number of affected posts whose translations are outside Translate Everything's range, formatted.
+msgid ""
+"%s of the posts is outside Translate Everything's range: its translations "
+"will be marked without being sent."
+msgid_plural ""
+"%s of the posts are outside Translate Everything's range: their "
+"translations will be marked without being sent."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/reapply.js:97
+#. Line under the Save of the settings screen when the client's answer about the existing translations (update them now, or only new translations) could not be recorded; a Retry button follows it.
+msgid "Your choice for the existing translations was not recorded."
+msgstr ""
+
+#: src/js/shared/Request.js:39
+#. Shown when our translation system (WPML's own) refused a request. %d: the HTTP status it answered with.
+msgid ""
+"Our translation system did not accept this request (it answered %d). Wait a "
+"minute and try again, and contact WPML support if it keeps happening."
+msgstr ""
+
+#: src/js/settings/components/reapply.js:212
+#. Summary line after existing posts of several types were updated for a preference change. %1$s: the number of posts, formatted, %2$s: the post types listed, plural ("7 books and events updated."). The same words as the one-type line, kept apart so the list can take its own word order.
+msgctxt "several post types listed"
+msgid "%1$s %2$s updated."
 msgstr ""

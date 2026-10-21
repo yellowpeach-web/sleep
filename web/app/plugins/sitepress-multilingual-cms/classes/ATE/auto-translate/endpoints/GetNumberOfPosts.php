@@ -8,10 +8,16 @@ use WPML\Collect\Support\Collection;
 class GetNumberOfPosts {
 
 	public function run( Collection $data, \wpdb $wpdb ) {
-		$postIn = wpml_prepare_in( $data->get( 'postTypes', PostTypes::getAutomaticTranslatable() ) );
+		$postTypes = array_values( (array) $data->get( 'postTypes', PostTypes::getAutomaticTranslatable() ) );
+		if ( ! $postTypes ) {
+			return 0;
+		}
 
 		return $wpdb->get_var(
-			"SELECT COUNT(id) FROM {$wpdb->posts} WHERE post_type IN ({$postIn}) AND post_status='publish'"
+			$wpdb->prepare(
+				"SELECT COUNT(id) FROM {$wpdb->posts} WHERE post_type IN (" . implode( ', ', array_fill( 0, count( $postTypes ), '%s' ) ) . ") AND post_status='publish'",
+				$postTypes
+			)
 		);
 	}
 }

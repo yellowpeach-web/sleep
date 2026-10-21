@@ -1,0 +1,524 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-15T11:55:11+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: wpml\n"
+
+msgid "Error in updating since dates for types."
+msgstr ""
+
+msgid "Error in fetching untranslated types count"
+msgstr ""
+
+msgid "Error in updating since date for type."
+msgstr ""
+
+msgid "Content to translate"
+msgstr ""
+
+#. translators: Heading above the word-count table WPML shows before translating everything automatically.
+msgid "Content to Translate"
+msgstr ""
+
+#. translators: Column heading in the word-count table; the column names the kind of content each row is about.
+msgid "Content type"
+msgstr ""
+
+#. translators: Column heading in the word-count table; the column holds the tick box that decides whether that content is translated. Verb, imperative.
+msgid "Include"
+msgstr ""
+
+#. translators: Tooltip in the word-count table, shown when the tick boxes cannot be changed here. "Translations dashboard" is another WPML screen; translate it the same way there.
+msgid "These settings can be changed on the Translations dashboard."
+msgstr ""
+
+#. translators: Column heading in the word-count table; the column holds how many documents of that kind there are. Plural noun.
+msgid "Items"
+msgstr ""
+
+#. translators: Column heading in the word-count table; the column holds how many words that content adds up to.
+msgid "Word count"
+msgstr ""
+
+msgid "Loading content to translate"
+msgstr ""
+
+msgid "Words to translate"
+msgstr ""
+
+#. translators: Shown next to a spinner while WPML counts the words, when less than a minute is left. The <s> tags make the time bold; keep them around it.
+msgid "Calculating… <s>less than 1 minute left.</s>"
+msgstr ""
+
+#. translators: Shown next to a spinner while WPML counts the words. %d: how many minutes are left. The <s> tags make the time bold; keep them around it.
+#, js-format
+msgid "Calculating… <s>%d minute left.</s>"
+msgid_plural "Calculating… <s>%d minutes left.</s>"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line under the word-count total. %s: a comma-separated list of the new language names, e.g. "Greek, Dutch".
+#, js-format
+msgid "Words needed to translate your existing content into the new languages: %s."
+msgstr ""
+
+#. translators: Line under the word-count total, used when only one language is being added.
+msgid "Words needed to translate your existing content into the new language."
+msgstr ""
+
+msgid "Based on the remaining untranslated content across all languages."
+msgstr ""
+
+msgid "Estimated from the selected source volume multiplied by the target languages."
+msgstr ""
+
+#. translators: Sum shown under the word-count table. %1$s: how many words the source content has, %2$s: how many languages it is translated into. The × is a multiplication sign.
+#, js-format
+msgid "%1$s source words × %2$s language"
+msgid_plural "%1$s source words × %2$s languages"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Already translated content"
+msgstr ""
+
+#. translators: Label of the total row in the cost table on the WPML translation dashboard; the number of words follows in the next cell. Keep the colon.
+msgid "Words required:"
+msgstr ""
+
+#. translators: Unit written after a number on the WPML translation dashboard, as in "1,200 Words". English uses the same word for one and for many; use whatever forms your language needs.
+msgid "Words"
+msgstr ""
+
+msgid "Documents you translated yourself stay exactly as you made them"
+msgstr ""
+
+#. translators: Added to that note under the word-count table. %d: how many documents are left as they are. Keep the brackets; a full stop follows.
+#, js-format
+msgid "(%d document)"
+msgid_plural "(%d documents)"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Text of the link at the end of that note; it lists the documents. Verb, imperative.
+msgid "View documents"
+msgstr ""
+
+#. translators: Heading of the language list under the word-count table. %1$d: how many languages are translated automatically, %2$d: how many there are altogether.
+#, js-format
+msgid "%1$d of %2$d language will be translated automatically"
+msgid_plural "%1$d of %2$d languages will be translated automatically"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Heading of the language list under the word-count table, used when every language is translated automatically. %d: how many languages there are.
+#, js-format
+msgid "Translated to %d language"
+msgid_plural "Translated to %d languages"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Add/remove languages"
+msgstr ""
+
+msgid "Percentages show how much of your selected content is already translated in each language."
+msgstr ""
+
+msgid "Note: Content already translated into all languages is not included in this calculation."
+msgstr ""
+
+#. translators: Marks a language WPML does not translate into because it is the same as the site's default language. Used as a pill in the Languages editor and as a tag under the word-count table.
+msgid "Same as default"
+msgstr ""
+
+#. translators: Tooltip of the "Same as default" tag under the word-count table. %1$s: the site's default language, %2$s: the language that is left out.
+#, js-format
+msgid "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language."
+msgstr ""
+
+#. translators: Tag under the word-count table marking a language whose translation the site owner paused, so Translate Everything leaves it out of the estimate.
+msgid "Translation paused"
+msgstr ""
+
+#. translators: Tooltip of the "Translation paused" tag under the word-count table. %s: the language name. "Resume translating" is a control in the WPML Languages editor; translate it the same way there.
+#, js-format
+msgid "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor."
+msgstr ""
+
+#. translators: Tag under the word-count table marking a language automatic translation cannot handle, so it has to be translated by a person.
+msgid "Manual only"
+msgstr ""
+
+#. translators: Tooltip of the "Manual only" tag under the word-count table. %s: the language name.
+#, js-format
+msgid "%s has no automatic-translation support. You can translate this content manually."
+msgstr ""
+
+#. translators: Row label in the cost table. %s: the name of the translation engine the site uses, e.g. "DeepL".
+#, js-format
+msgid "Adjusted word rate (%s)"
+msgstr ""
+
+#. translators: Tooltip next to the adjusted word rate row in the cost table. "Legacy" means the older engines, as opposed to WPML's own.
+msgid "This adjusted word rate applies to legacy translation engines."
+msgstr ""
+
+#. translators: Line under the word-count table. %s: the name of the translation engine the site uses, e.g. "DeepL". The <strong> tags make the name bold; keep them around it.
+#, js-format
+msgid "Translation engine: <strong>%s</strong>"
+msgstr ""
+
+#. translators: Badge next to the engine name under the word-count table; it marks one of the older engines WPML still supports but no longer recommends.
+msgid "Legacy engine"
+msgstr ""
+
+#. translators: Warning under the word-count table. %s: the name of the translation engine the site uses, e.g. "DeepL". "Legacy" means one of the older engines.
+#, js-format
+msgid "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it."
+msgstr ""
+
+#. translators: Label of the button, and of the notice heading, that switch the site's automatic translation engine to Private Translation Cloud (PTC). Verb, imperative. PTC is a product name; keep it.
+msgid "Switch to PTC"
+msgstr ""
+
+#. translators: Note under the word-count table; "This" is the total above it and "It" is that same total.
+msgid "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add."
+msgstr ""
+
+#. translators: Note under the word-count table; "This" is the total above it and "It" is that same total. %s: the translation engine the site uses, for example "DeepL".
+#, js-format
+msgid "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again."
+msgstr ""
+
+#. translators: Note under the word-count table; "This" is the total above it.
+msgid "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add."
+msgstr ""
+
+#. translators: Note under the word-count table; "This" is the total above it. %s: the translation engine the site uses, for example "DeepL".
+#, js-format
+msgid "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again."
+msgstr ""
+
+#. translators: Second note under the word-count table; "It" is the total above it.
+msgid "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use."
+msgstr ""
+
+#. translators: Second note under the word-count table; "It" is the total above it. A term is a category, a tag or a product attribute.
+msgid "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways."
+msgstr ""
+
+#. translators: Label under the running total in the word-count table; the number is written above it.
+msgid "Total items"
+msgstr ""
+
+msgid "Total source words"
+msgstr ""
+
+#. translators: Used on WPML's paged lists for the control that goes back one page: the visible button label, and the accessible label (screen readers) of the back arrow.
+msgid "Previous"
+msgstr ""
+
+#. translators: Used on WPML's paged lists for the control that goes forward one page: the visible button label, and the accessible label (screen readers) of the forward arrow.
+msgid "Next"
+msgstr ""
+
+#. translators: Range line under the word-count table. %1$d: the first row shown, %2$d: the last row shown, %3$d: how many kinds of content there are altogether.
+#, js-format
+msgid "Showing %1$d–%2$d of %3$d types."
+msgstr ""
+
+#. translators: Tooltip on a row of the word-count table that has nothing left to translate. %1$s and %2$s are the same content type name in lower case, e.g. "pages". Keep the <br> where the line should break.
+#, js-format
+msgid "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated."
+msgstr ""
+
+#. translators: Option in the Include dropdown of the word-count table. %s: the content type name in lower case, e.g. "pages".
+#, js-format
+msgid "All %s"
+msgstr ""
+
+#. translators: Shown in the Include column of the word-count table for taxonomy terms: they follow whatever the translated content types do.
+msgid "For translated types"
+msgstr ""
+
+#. translators: Option in the Include dropdown of the word-count table: nothing of this kind is translated.
+msgid "None"
+msgstr ""
+
+#. translators: Shown in the Include column of the word-count table when only newer content counts. %s: a date, e.g. "2026-01-31".
+#, js-format
+msgid "Since %s"
+msgstr ""
+
+#. translators: Option in the Include dropdown of the word-count table: only content newer than a date the reader picks.
+msgid "Since specific date"
+msgstr ""
+
+#. translators: Line shown on the payment step once Pay-As-You-Go is active on the site. Keep the bold markers.
+msgid "<b>Pay-As-You-Go</b> is active on this site."
+msgstr ""
+
+#. translators: Line shown on the payment step once the words are on the site. %s: how many words are on it now, written with thousands separators. Keep the bold markers.
+#, js-format
+msgid "<b>%s words</b> are on this site. Continue."
+msgstr ""
+
+msgid "Your site will be translated right after the setup."
+msgstr ""
+
+#. translators: Line under the payment cards for a site that is not registered with a WPML account. Verb, imperative.
+msgid "To use prepaid words, register WPML on this site."
+msgstr ""
+
+#. translators: Button label while WPML runs a check again (whether the translation service can be reached, or the account on the payment step); it replaces the button's own label while the check runs. Keep the ellipsis.
+msgid "Checking…"
+msgstr ""
+
+#. translators: Button label that runs the failed request again: the connection check, or reading the account on the payment step. Verb, imperative.
+msgid "Retry"
+msgstr ""
+
+msgid "We could not reach our translation system."
+msgstr ""
+
+msgid "This site is not registered with a WPML account, so prepaid words are not available."
+msgstr ""
+
+msgid "We could not read your WPML account."
+msgstr ""
+
+#. translators: Title of the payment step. %s: how many more words the site needs, written with thousands separators.
+#, js-format
+msgid "%s more words are needed to translate your site."
+msgstr ""
+
+#. translators: Line of the payment step when the WPML account already holds enough words, so the one thing left is to give them to this site. Verb, imperative. Keep the bold markers.
+msgid "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>."
+msgstr ""
+
+#. translators: Line of the payment step when the WPML account holds some of the words needed but not all of them. Verb, imperative. Keep the bold markers.
+msgid "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>."
+msgstr ""
+
+#. translators: Line of the payment step when the WPML account holds no words at all, so both doors buy. Verb, imperative. Keep the bold markers.
+msgid "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words."
+msgstr ""
+
+#. translators: Heading of the dialog shown after automatic translation has been started.
+msgid "Translation started"
+msgstr ""
+
+#. translators: Line of the dialog shown after automatic translation has been started. "Translations" is the name of a WPML screen; translate it the same way there.
+msgid "Your content is being sent for automatic translation. Follow its progress on the Translations page."
+msgstr ""
+
+#. translators: Button label that closes a dialog, used across WPML's screens. Verb, imperative.
+msgid "Close"
+msgstr ""
+
+#. translators: Button label while the content is still being queued; it replaces "Go to Translations" on the same button. Keep the ellipsis.
+msgid "Preparing…"
+msgstr ""
+
+#. translators: Button label that opens WPML's Translations screen. Verb, imperative; "Translations" is the name of that screen, translate it the same way there.
+msgid "Go to Translations"
+msgstr ""
+
+msgid "Adjust content limits for <b>Translate Everything</b>"
+msgstr ""
+
+msgid "Review the cost and adjust how far back automatic translation applies per content type."
+msgstr ""
+
+msgid "This amount will cover translating your existing content into the new language."
+msgid_plural "This amount will cover translating your existing content into the new languages."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Choose how to pay for the translation"
+msgstr ""
+
+#. translators: Notice under the word-count table of the cost estimate dialog, shown when the item scan failed or found no content types; the client may still add the language.
+msgid "WPML could not calculate the word count. You can add the language without a cost estimate."
+msgstr ""
+
+#. translators: Button label that closes a dialog or a box without applying anything, used across WPML's screens. Verb, imperative, not the status of a cancelled job.
+msgid "Cancel"
+msgstr ""
+
+#. translators: Button label that saves what was edited in a dialog, used across WPML's screens. Verb, imperative.
+msgid "Save changes"
+msgstr ""
+
+msgid "You can adjust the content limits once Translate Everything finishes the current translation run."
+msgstr ""
+
+#. translators: Text of the link to WPML's pricing page, in the payment card. %1$s: opening link tag, %2$s: closing link tag. Verb, imperative; keep the full stop outside the link.
+#, js-format
+msgid "%1$sCheck pricing%2$s."
+msgstr ""
+
+msgid "Lowest cost per word"
+msgstr ""
+
+msgid "Pay only for what you use"
+msgstr ""
+
+msgid "Never run out. Translation never stops."
+msgstr ""
+
+msgid "The first 500 words each month are free"
+msgstr ""
+
+msgid "Pay-As-You-Go"
+msgstr ""
+
+msgid "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate."
+msgstr ""
+
+#. translators: Button label on the Pay-As-You-Go card while WPML waits for the subscription it has just been told about to exist. Present participle; keep the ellipsis and the bold markers.
+msgid "Activating <b>Pay-As-You-Go</b>…"
+msgstr ""
+
+#. translators: Button label on the Pay-As-You-Go card after the dialog could not open and the flow moved to a new browser tab. Verb, imperative.
+msgid "Continue in the new tab"
+msgstr ""
+
+msgid "Activate <b>Pay-As-You-Go</b>"
+msgstr ""
+
+#. translators: Line on the Pay-As-You-Go card when the subscription still does not exist a minute after the client finished paying. Keep the bold markers; "Refresh" is the link that follows.
+msgid "<b>Pay-As-You-Go</b> is not active yet."
+msgstr ""
+
+#. translators: Button label that fetches the current data again, used across WPML's screens. Verb, imperative.
+msgid "Refresh"
+msgstr ""
+
+msgid "Already using <b>Pay-As-You-Go</b> on another site?"
+msgstr ""
+
+msgid "Connect this site to it"
+msgstr ""
+
+msgid "Activate Pay-As-You-Go"
+msgstr ""
+
+msgid "Connect your sites to share translation memory, glossary and word quota."
+msgstr ""
+
+#. translators: Text of a link to WPML's documentation. Verb, imperative.
+msgid "Learn more"
+msgstr ""
+
+msgid "Copy your migration code:"
+msgstr ""
+
+#. translators: Stands in for the migration code in the payment card while it is being fetched. Keep the ellipsis.
+msgid "Loading…"
+msgstr ""
+
+msgid "Copied!"
+msgstr ""
+
+#. translators: Second step of the list in the payment card. Verb, imperative.
+msgid "Log into a site with an active automatic translation account."
+msgstr ""
+
+#. translators: Third step of the list in the payment card. Verb, imperative; the words in quotation marks are the names of WPML menu items, so translate them the way they are translated in the menu.
+msgid "Go to \"WPML\" → \"Translation Dashboard\"."
+msgstr ""
+
+#. translators: Fourth step of the list in the payment card. Verb, imperative; the words in quotation marks are the names of tabs on wpml.org, so translate them the way they appear there.
+msgid "In the \"Payment & Maintenance\" tab, go to \"Connected sites\"."
+msgstr ""
+
+#. translators: Last step of the list in the payment card. Verb, imperative; the words in quotation marks are the label of a button on wpml.org, so translate them the way it appears there.
+msgid "Click \"Enter the connection key of another site\" to finish connecting your sites."
+msgstr ""
+
+#. translators: Button label that gives this site words the WPML account already holds: in the prepaid-words card, and in the box and tooltip about paused automatic translation on the WPML translation dashboard. Verb, imperative.
+msgid "Assign words"
+msgstr ""
+
+#. translators: Button label in the prepaid-words card that buys words and gives them to this site. Verb, imperative.
+msgid "Buy and assign words"
+msgstr ""
+
+#. translators: Button label in the prepaid-words card, shown while WPML is still fetching the account link. Verb, imperative.
+msgid "Refresh to assign words"
+msgstr ""
+
+#. translators: Line of the prepaid-words card. %1$s: opening link tag to the prepaid packages page, %2$s: its closing tag, %3$s: opening bold tag, %4$s: how many words are needed, %5$s: closing bold tag. Verb, imperative.
+#, js-format
+msgid "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site."
+msgstr ""
+
+#. translators: Sentence added to the prepaid-words card when the words on offer cover the whole site.
+msgid "This amount will cover translation of all your current content."
+msgstr ""
+
+#. translators: Line of the prepaid-words card when the account holds enough. %1$s: opening bold tag, %2$s: how many words to assign, %3$s: closing bold tag. Verb, imperative.
+#, js-format
+msgid "Assign %1$s%2$s words%3$s to this site."
+msgstr ""
+
+#. translators: Line of the prepaid-words card when the account holds part of what is missing. %1$s: opening bold tag, %2$s: how many words the account holds, %3$s: closing bold tag, %4$s: opening bold tag, %5$s: how many more to buy, %6$s: closing bold tag. Verb, imperative.
+#, js-format
+msgid "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s."
+msgstr ""
+
+#. translators: Line of the prepaid-words card when the account holds nothing. %1$s: opening bold tag, %2$s: how many words to buy, %3$s: closing bold tag. Verb, imperative.
+#, js-format
+msgid "Buy %1$s%2$s words%3$s for this site."
+msgstr ""
+
+#. translators: Line of the prepaid-words card when the account already has enough words. %1$s: opening bold tag, %2$s: how many words are needed, %3$s: closing bold tag. Verb, imperative.
+#, js-format
+msgid "Assign at least %1$s%2$s words%3$s to this site to continue."
+msgstr ""
+
+#. translators: Line of the prepaid-words card when the account has some words but not enough. %1$s: opening link tag to the prepaid packages page, %2$s: its closing tag, %3$s: opening bold tag, %4$s: how many more words are needed, %5$s: closing bold tag.
+#, js-format
+msgid "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount."
+msgstr ""
+
+#. translators: Title of the payment card that pays for translation with words bought in advance.
+msgid "Prepaid words"
+msgstr ""
+
+#. translators: Line of the prepaid-words card. %1$s: opening bold tag, %2$s: how many words the account holds, %3$s: closing bold tag.
+#, js-format
+msgid "There are %1$s%2$s words%3$s on your WPML account."
+msgstr ""
+
+#. translators: Line of the prepaid-words card. %1$s: opening bold tag, %2$s: how many words the account holds, %3$s: closing bold tag.
+#, js-format
+msgid "There are %1$s%2$s available on your WPML account.%3$s"
+msgstr ""
+
+msgid "(Only the WPML account owner can do this.)"
+msgstr ""
+
+msgid "Checking for new words..."
+msgstr ""
+
+#. translators: Line of the prepaid-words card after a check that found nothing new. %d: how many seconds before the check can be run again.
+#, js-format
+msgid "Still not enough words. Refresh again in %d seconds."
+msgstr ""
+
+msgid "Already assigned?"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the X button that closes a dialog, on the WPML translation dashboard. Verb, imperative.
+msgid "Close modal"
+msgstr ""

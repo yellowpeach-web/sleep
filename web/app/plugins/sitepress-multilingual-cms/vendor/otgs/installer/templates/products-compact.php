@@ -9,7 +9,6 @@ if(empty($args['repository']) || empty($args['package']) || empty($args['product
 $product = false;
 foreach($this->settings['repositories'][$repository_id]['data']['packages'] as $package_idx => $package){
 
-    //pre 1.3 backwardds compatibility
     if(!isset($package['id'])){
         $package['id'] = sanitize_title_with_dashes($package['name']);
     }
@@ -110,6 +109,9 @@ if(!isset($args['product_name'])) $args['product_name'] = $product['name'];
     <?php endif; ?>
 
     <center>
+    <?php if ( WP_Installer::site_key_belongs_to_network( $repository_id ) ) : ?>
+        <p><?php echo WP_Installer::network_site_key_notice(); ?></p>
+    <?php else : ?>
     <a class="remove_site_key_js" href="#" data-repository=<?php echo $repository_id ?>
         data-confirmation="<?php esc_attr_e('Are you sure you want to remove this site key?', 'installer') ?>"
         data-nonce="<?php echo wp_create_nonce('remove_site_key_' . $repository_id) ?>"
@@ -121,6 +123,7 @@ if(!isset($args['product_name'])) $args['product_name'] = $product['name'];
         >
             <?php printf(__("Remove current site key (%s)", 'installer'), $site_key) ?>
     </a>
+    <?php endif; ?>
     </center>
     <br />
 
@@ -139,7 +142,6 @@ if( isset( $args[ 'name' ] ) ):
 
 <?php endif; ?>
 <?php
-// compatibility for installer 1.1
 elseif( isset( $args[ 'support_link' ] ) ): ?>
     <p><?php echo $args[ 'support_link' ]; ?></p>
 <?php endif; ?>

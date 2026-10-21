@@ -8,7 +8,7 @@ class WPML_Translate_Independently {
 
 	public function init() {
 		add_action( 'wpml_scripts_setup', array( $this, 'localize_scripts' ), PHP_INT_MAX );
-		add_action( 'wp_ajax_check_duplicate', array( $this, 'wpml_translate_independently' ) );
+		\WPML\Request\Adapter\Ajax::register( 'check_duplicate', \WPML\Request\Policy\Policy::capability( 'edit_posts', \WPML\Request\Policy\Authenticity::actionNonce( 'icl_check_duplicates', 'icl_duplciate_nonce' ) ), array( $this, 'wpml_translate_independently' ) );
 		add_filter( 'tiny_mce_before_init', array( $this, 'add_tiny_mce_change_detection' ), 999, 1 );
 	}
 
@@ -16,7 +16,7 @@ class WPML_Translate_Independently {
 		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : null;
 		$nonce   = isset( $_POST['icl_duplciate_nonce'] ) ? sanitize_text_field( $_POST['icl_duplciate_nonce'] ) : '';
 
-		if ( wp_verify_nonce( $nonce, 'icl_check_duplicates' ) || null === $post_id ) {
+		if ( $post_id && wp_verify_nonce( $nonce, 'icl_check_duplicates' ) && current_user_can( 'edit_post', $post_id ) ) {
 			if ( delete_post_meta( $post_id, '_icl_lang_duplicate_of' ) ) {
 				wp_send_json_success( true );
 			} else {
@@ -45,13 +45,6 @@ class WPML_Translate_Independently {
 		wp_localize_script( 'sitepress-post-edit', 'icl_duplicate_data', $duplicate_data );
 	}
 
-	/**
-	 * Add callback to detect post editor change.
-	 *
-	 * @param  array $initArray
-	 *
-	 * @return array
-	 */
 	public function add_tiny_mce_change_detection( $initArray ) {
 		$initArray['setup'] = 'function(ed) {
                   ed.on(\'change\', function() {

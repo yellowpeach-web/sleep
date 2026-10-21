@@ -2,22 +2,18 @@
 
 namespace WPML\PB\Elementor\Config\DynamicElements;
 
-use WPML\FP\Logic;
 use WPML\FP\Obj;
-use WPML\FP\Relation;
+use WPML\PB\Elementor\Helper\Path;
 
 class FormPopup {
 
-	/**
-	 * @return array
-	 */
 	public static function get() {
 		$popupIdPath = [ 'settings', 'popup_action_popup_id' ];
 
-		$isFormWithPopup = Logic::allPass( [
-			Relation::propEq( 'widgetType', 'form' ),
-			Obj::path( $popupIdPath ),
-		] );
+		$isFormWithPopup = function ( $item ) use ( $popupIdPath ) {
+			return Path::prop( 'widgetType', $item ) === 'form'
+				&& Path::get( $popupIdPath, $item );
+		};
 
 		$popupIdLens = Obj::lensPath( $popupIdPath );
 

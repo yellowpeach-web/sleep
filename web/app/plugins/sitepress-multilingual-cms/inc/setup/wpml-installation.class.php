@@ -1,5 +1,7 @@
 <?php
 
+use WPML\Core\SharedKernel\Component\Language\Domain\LanguageCode;
+
 class WPML_Installation extends WPML_WPDB_And_SP_User {
 
 	const WPML_START_VERSION_KEY = 'wpml_start_version';
@@ -9,10 +11,10 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 	}
 
 	function go_to_setup1() {
-		// Reverse $this->prepopulate_translations()
-		$this->wpdb->query( "TRUNCATE TABLE {$this->wpdb->prefix}icl_translations" );
+		$wpdb = $this->wpdb;
 
-		// Unset or reset sitepress settings
+		$this->truncate_translation_records();
+
 		$settings = $this->sitepress->get_settings();
 
 		unset(
@@ -26,28 +28,21 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 		$GLOBALS['sitepress_settings']['existing_content_language_verified'] = $settings['existing_content_language_verified'];
 		update_option( 'icl_sitepress_settings', $settings );
 
-		// Reverse $this->maybe_set_locale()
-		$this->wpdb->query( "TRUNCATE TABLE {$this->wpdb->prefix}icl_locale_map" );
+		$this->wpdb->query( "TRUNCATE TABLE {$wpdb->prefix}icl_locale_map" );
 
-		// Make sure no language is active
 		$this->wpdb->update( $this->wpdb->prefix . 'icl_languages', array( 'active' => 0 ), array( 'active' => 1 ) );
 	}
 
-	/**
-	 * Sets the locale in the icl_locale_map if it has not yet been set
-	 *
-	 * @param string $initial_language_code
-	 */
 	private function maybe_set_locale( $initial_language_code ) {
-		$q          = "SELECT code FROM {$this->wpdb->prefix}icl_locale_map WHERE code=%s";
-		$q_prepared = $this->wpdb->prepare( $q, $initial_language_code );
-		if ( ! $this->wpdb->get_var( $q_prepared ) ) {
-			$q              = "SELECT default_locale FROM {$this->wpdb->prefix}icl_languages WHERE code=%s";
-			$q_prepared     = $this->wpdb->prepare( $q, $initial_language_code );
-			$default_locale = $this->wpdb->get_var( $q_prepared );
+		$wpdb = $this->wpdb;
+
+		if ( ! $wpdb->get_var( $wpdb->prepare( "SELECT code FROM {$wpdb->prefix}icl_locale_map WHERE code=%s", $initial_language_code ) ) ) {
+			$default_locale = $wpdb->get_var(
+				$wpdb->prepare( "SELECT default_locale FROM {$wpdb->prefix}icl_languages WHERE code=%s", $initial_language_code )
+			);
 			if ( $default_locale ) {
-				$this->wpdb->insert(
-					$this->wpdb->prefix . 'icl_locale_map',
+				$wpdb->insert(
+					$wpdb->prefix . 'icl_locale_map',
 					array( 'code' => $initial_language_code, 'locale' => $default_locale )
 				);
 
@@ -60,23 +55,27 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 	}
 
 	public function set_active_languages( $arr ) {
+		$wpdb = $this->wpdb;
+
 		$tmp = $this->sanitize_language_input( $arr );
 		if ( (bool) $tmp === false ) {
 			return false;
 		}
 
 		foreach ( $tmp as $code ) {
-			$default_locale_prepared = $this->wpdb->prepare(
-				"SELECT default_locale FROM {$this->wpdb->prefix}icl_languages WHERE code= %s LIMIT 1",
-				$code
-			);
-			$default_locale          = $this->wpdb->get_var( $default_locale_prepared );
-			if ( $default_locale ) {
-				$code_exists_prepared = $this->wpdb->prepare(
-					"SELECT code FROM {$this->wpdb->prefix}icl_locale_map WHERE code = %s LIMIT 1",
+			$default_locale = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT default_locale FROM {$wpdb->prefix}icl_languages WHERE code= %s LIMIT 1",
 					$code
+				)
+			);
+			if ( $default_locale ) {
+				$code_exists = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT code FROM {$wpdb->prefix}icl_locale_map WHERE code = %s LIMIT 1",
+						$code
+					)
 				);
-				$code_exists          = $this->wpdb->get_var( $code_exists_prepared );
 				if ( $code_exists ) {
 					$this->wpdb->update(
 						$this->wpdb->prefix . 'icl_locale_map',
@@ -93,19 +92,39 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 			SitePress_Setup::insert_default_category( $code );
 		}
 
-		$this->wpdb->query(
-			"UPDATE {$this->wpdb->prefix}icl_languages SET active = 1 WHERE code IN (" . wpml_prepare_in( $tmp ) . " ) "
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}icl_languages SET active = 1 WHERE code IN (" . implode( ', ', array_fill( 0, count( $tmp ), '%s' ) ) . ')',
+				...$tmp
+			)
 		);
-		$this->wpdb->query(
-			"UPDATE {$this->wpdb->prefix}icl_languages SET active = 0 WHERE code NOT IN (" . wpml_prepare_in( $tmp ) . " ) "
+
+		if ( $this->has_language_column( 'display_code' ) ) {
+			$this->wpdb->query(
+				"UPDATE {$this->wpdb->prefix}icl_languages SET display_code = code WHERE display_code IS NULL AND active = 1 AND code IN (" . wpml_prepare_in( $tmp ) . " ) "
+			);
+		}
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}icl_languages SET active = 0 WHERE code NOT IN (" . implode( ', ', array_fill( 0, count( $tmp ), '%s' ) ) . ')',
+				...$tmp
+			)
 		);
+
+		if ( class_exists( \WPML\LanguageEditor\LanguageNames::class ) ) {
+			foreach ( $tmp as $code ) {
+				\WPML\LanguageEditor\LanguageNames::seedNewLanguage( $code );
+			}
+		}
+
 		$this->updated_active_languages();
 
 		return true;
 	}
 
 	private function sanitize_language_input( $lang_codes ) {
-		$languages       = $this->sitepress->get_languages( false, false, true );
+		$languages       = array_fill_keys( $this->sitepress->get_supported_language_codes( true ), true );
 		$sanitized_codes = array();
 		$lang_codes      = array_filter( array_unique( $lang_codes ) );
 		foreach ( $lang_codes as $code ) {
@@ -147,10 +166,12 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 
 	private function updated_active_languages() {
 		wp_cache_init();
+		wpml_reload_active_languages_setting( true );
+
 		icl_cache_clear();
+		WPML_Query_Utils::flush_archive_language_sets();
 		$this->refresh_active_lang_cache( wpml_get_setting_filter( false, 'default_language' ), true );
 		$this->update_languages_order();
-		wpml_reload_active_languages_setting( true );
 		$active_langs = $this->sitepress->get_active_languages( true );
 		$this->maybe_move_setup( 3 );
 		if ( count( $active_langs ) > 1 ) {
@@ -185,21 +206,19 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 		}
 
 		$GLOBALS['wp_locale'] = new WP_Locale();
-		$GLOBALS['locale'] = $this->sitepress->get_locale( $admin_language );
+		$admin_locale = $this->sitepress->get_locale( $admin_language );
+		if ( false !== $admin_locale ) {
+			$GLOBALS['locale'] = $admin_locale;
+		}
 
 		do_action( 'icl_initial_language_set' );
 	}
 
-	/**
-	 * @param string $initial_language_code
-	 *
-	 * @return string
-	 */
 	private function get_admin_language( $initial_language_code ) {
 		$user_locale = get_user_meta( get_current_user_id(), 'locale', true );
 
 		if ( $user_locale ) {
-			$lang = $this->sitepress->get_language_code_from_locale( $user_locale );
+			$lang = $this->sitepress->get_language_code_from_locale( $user_locale, false );
 
 			if ( $lang ) {
 				return $lang;
@@ -211,18 +230,20 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 	}
 
 	private function set_initial_default_category( $initial_lang ) {
+		$wpdb = $this->wpdb;
+
 		$blog_default_cat        = get_option( 'default_category' );
-		$blog_default_cat_tax_id = $this->wpdb->get_var(
-			$this->wpdb->prepare(
+		$blog_default_cat_tax_id = $wpdb->get_var(
+			$wpdb->prepare(
 				"	SELECT term_taxonomy_id
-	                FROM {$this->wpdb->term_taxonomy}
+	                FROM {$wpdb->term_taxonomy}
 	                WHERE term_id=%d
 	                  AND taxonomy='category'",
 				$blog_default_cat
 			)
 		);
 
-		if ($initial_lang !== 'en') {
+		if ( ! LanguageCode::isEnglish( $initial_lang ) ) {
 			$this->rename_default_category_of_initial_language( $initial_lang, $blog_default_cat );
 		}
 
@@ -233,6 +254,7 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 	private function rename_default_category_of_initial_language( $initial_lang, $category_id ) {
 		global $sitepress;
 		$sitepress->switch_locale( $initial_lang );
+		/* translators: The name WordPress gives its default category. WPML uses it when it makes that category in a new language, so use the same wording WordPress itself uses in your language. */
 		$tr_cat = __( 'Uncategorized', 'sitepress' );
 		$tr_cat = $tr_cat === 'Uncategorized' ? 'Uncategorized @' . $initial_lang : $tr_cat;
 		$sitepress->switch_locale();
@@ -243,16 +265,14 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 		) );
 	}
 
-	/**
-	 * @param string $display_language
-	 * @param bool   $active_only
-	 * @param bool   $major_first
-	 * @param string $order_by
-	 *
-	 * @return array<string,\stdClass>
-	 */
 	public function refresh_active_lang_cache( $display_language, $active_only = false, $major_first = false,  $order_by = 'english_name' ) {
-		$active_snippet     = $active_only ? " l.active = 1 AND " : "";
+		if ( ! \WPML\Language\WpmlPresence::onCurrentBlog() ) {
+			return array();
+		}
+
+		$active_snippet     = $active_only ? 'WHERE l.active = 1' : '';
+		$country_column      = $this->has_language_column( 'country' ) ? 'l.country,' : 'NULL AS country,';
+		$display_code_column = $this->has_language_column( 'display_code' ) ? 'l.display_code,' : '';
 		$res_query
 							= "
             SELECT
@@ -265,26 +285,45 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
               default_locale,
               encode_url,
               tag,
+              {$country_column}
+              {$display_code_column}
               lt.name AS display_name
 			FROM {$this->wpdb->prefix}icl_languages l
-			JOIN {$this->wpdb->prefix}icl_languages_translations nt
+			LEFT OUTER JOIN {$this->wpdb->prefix}icl_languages_translations nt
 			  ON ( nt.language_code = l.code AND nt.display_language_code = l.code )
-            LEFT OUTER JOIN {$this->wpdb->prefix}icl_languages_translations lt ON l.code=lt.language_code
-			WHERE {$active_snippet}
-			  ( lt.display_language_code = %s
+            LEFT OUTER JOIN {$this->wpdb->prefix}icl_languages_translations lt
+			  ON ( l.code = lt.language_code
+			  AND ( lt.display_language_code = %s
 			  OR (lt.display_language_code = 'en'
 			    AND NOT EXISTS ( SELECT *
 			          FROM {$this->wpdb->prefix}icl_languages_translations ls
 			          WHERE ls.language_code = l.code
-			            AND ls.display_language_code = %s ) ) )
+			            AND ls.display_language_code = %s ) ) ) )
+			{$active_snippet}
             GROUP BY l.code";
 
+
+		$allowed_order_by = array(
+			'active',
+			'code',
+			'country',
+			'default_locale',
+			'display_code',
+			'display_name',
+			'encode_url',
+			'english_name',
+			'id',
+			'major',
+			'native_name',
+			'tag',
+		);
+		$order_by         = in_array( $order_by, $allowed_order_by, true ) ? $order_by : 'english_name';
 
 		$order_by_fields = array();
 		if ( $major_first ) {
 			$order_by_fields[] = 'major DESC';
 		}
-		$order_by_fields[] = ( $order_by ? $order_by : 'english_name' ) . ' ASC';
+		$order_by_fields[] = $order_by . ' ASC';
 
 		$res_query .= PHP_EOL . 'ORDER BY ' . implode( ', ', $order_by_fields );
 
@@ -292,8 +331,11 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 		$res                = $this->wpdb->get_results( $res_query_prepared, ARRAY_A );
 		$languages          = array();
 
-		$icl_cache = $this->sitepress->get_language_name_cache();
+		$icl_cache = \WPML\Language\ActiveLanguagesReadModel::cache();
 		foreach ( (array) $res as $r ) {
+			$r['display_name'] = $this->resolve_language_name( $r, $display_language, $r['display_name'] );
+			$r['native_name']  = $this->resolve_language_name( $r, $r['code'], $r['native_name'] );
+
 			$languages[ $r[ 'code' ] ] = $r;
 			$icl_cache->set( 'language_details_' . $r['code'] . $display_language, $r );
 		}
@@ -305,36 +347,67 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 		}
 
 		$icl_cache->save_cache_if_required();
-		
+
 		return $languages;
 	}
 
-	private function update_languages_order() {
-		$needs_update  = false;
-		$current_order = $this->sitepress->get_setting( 'languages_order', array() );
-		if ( ! is_array( $current_order ) ) {
-			$current_order = array();
+	private function resolve_language_name( array $row, $display_code, $stored ) {
+		if ( null !== $stored && '' !== $stored ) {
+			return (string) $stored;
 		}
-		$languages = $this->sitepress->get_languages( false, false, true );
-		$new_order = $current_order;
-		foreach ( $languages as $language_code => $language ) {
-			if ( ! in_array( $language_code, $new_order ) && '1' === $language['active'] ) {
-				$new_order[]  = $language_code;
-				$needs_update = true;
-			}
-			if ( in_array( $language_code, $new_order ) && '1' !== $language['active'] ) {
-				$new_order    = array_diff( $new_order, array( $language_code ) );
-				$needs_update = true;
+
+		$code = isset( $row['code'] ) ? (string) $row['code'] : '';
+
+		$native = isset( $row['native_name'] ) ? (string) $row['native_name'] : '';
+		if ( '' !== $native ) {
+			return $native;
+		}
+
+		if ( class_exists( '\WPML\LanguageEditor\LanguageNames' ) ) {
+			$catalogue = \WPML\LanguageEditor\LanguageNames::nameFor( $code, (string) $display_code );
+			if ( null !== $catalogue && '' !== $catalogue ) {
+				return (string) $catalogue;
 			}
 		}
 
-		if ( $needs_update ) {
-			$new_order = array_values( $new_order );
-			$this->sitepress->set_setting( 'languages_order', $new_order, true );
+		$english = isset( $row['english_name'] ) ? (string) $row['english_name'] : '';
+
+		return '' !== $english ? $english : $code;
+	}
+
+	private function has_language_column( $column ) {
+		$wpdb = $this->wpdb;
+
+		static $columns = array();
+
+		$key = $wpdb->prefix . '|' . $column;
+
+		if ( ! array_key_exists( $key, $columns ) ) {
+			$columns[ $key ] = (bool) $wpdb->get_var(
+				$wpdb->prepare(
+					"SHOW COLUMNS FROM `{$wpdb->prefix}icl_languages` LIKE %s",
+					$column
+				)
+			);
 		}
+
+		return $columns[ $key ];
+	}
+
+	private function update_languages_order() {
+		\WPML\LanguageEditor\LanguagesOrder::sync( $this->sitepress );
+	}
+
+	private function truncate_translation_records() {
+		$this->wpdb->query( "TRUNCATE TABLE {$this->wpdb->prefix}icl_translations" );
+		$this->wpdb->query( "TRUNCATE TABLE {$this->wpdb->prefix}icl_translation_status" );
+		$this->wpdb->query( "TRUNCATE TABLE {$this->wpdb->prefix}icl_translate_job" );
+		$this->wpdb->query( "TRUNCATE TABLE {$this->wpdb->prefix}icl_translate" );
 	}
 
 	private function prepopulate_translations( $lang ) {
+		$wpdb = $this->wpdb;
+
 		$existing_lang_verified = icl_get_setting( 'existing_content_language_verified' );
 		if ( ! empty( $existing_lang_verified ) ) {
 			return;
@@ -342,11 +415,10 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 
 		icl_cache_clear();
 
-		// case of icl_sitepress_settings accidentally lost
-		// if there's at least one translation do not initialize the languages for elements
-		$one_translation = $this->wpdb->get_var(
-			$this->wpdb->prepare(
-				"SELECT translation_id FROM {$this->wpdb->prefix}icl_translations WHERE language_code<>%s",
+		$one_translation = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT translation_id FROM {$wpdb->prefix}icl_translations
+				 WHERE language_code<>%s AND source_language_code IS NOT NULL",
 				$lang
 			)
 		);
@@ -354,107 +426,54 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 			return;
 		}
 
-		$this->wpdb->query( "TRUNCATE TABLE {$this->wpdb->prefix}icl_translations" );
-		$this->wpdb->query(
-			$this->wpdb->prepare(
+		$this->truncate_translation_records();
+		$wpdb->query(
+			$wpdb->prepare(
 				"
-			INSERT INTO {$this->wpdb->prefix}icl_translations(element_type, element_id, trid, language_code, source_language_code)
-			SELECT CONCAT('post_',post_type), ID, ID, %s, NULL FROM {$this->wpdb->posts} WHERE post_status IN ('draft', 'publish','schedule','future','private', 'pending')
+			INSERT INTO {$wpdb->prefix}icl_translations(element_type, element_id, trid, language_code, source_language_code)
+			SELECT CONCAT('post_',post_type), ID, ID, %s, NULL FROM {$wpdb->posts} WHERE post_status IN ('draft', 'publish','schedule','future','private', 'pending', 'trash')
 			",
 				$lang
 			)
 		);
 
-		$maxtrid = 1 + (int) $this->wpdb->get_var( "SELECT MAX(trid) FROM {$this->wpdb->prefix}icl_translations" );
+		$maxtrid = 1 + (int) $this->wpdb->get_var( "SELECT MAX(trid) FROM {$wpdb->prefix}icl_translations" );
 
 		global $wp_taxonomies;
 		$taxonomies = array_keys( (array) $wp_taxonomies );
 		foreach ( $taxonomies as $tax ) {
-			$element_type   = 'tax_' . $tax;
-			$insert_query
-							= "
-				INSERT INTO {$this->wpdb->prefix}icl_translations(element_type, element_id, trid, language_code, source_language_code)
-				SELECT %s, term_taxonomy_id, %d+term_taxonomy_id, %s, NULL FROM {$this->wpdb->term_taxonomy} WHERE taxonomy = %s
-				";
-			$insert_prepare = $this->wpdb->prepare( $insert_query, array( $element_type, $maxtrid, $lang, $tax ) );
-			$this->wpdb->query( $insert_prepare );
-			$maxtrid = 1 + (int) $this->wpdb->get_var( "SELECT MAX(trid) FROM {$this->wpdb->prefix}icl_translations" );
+			$element_type = 'tax_' . $tax;
+			$wpdb->query(
+				$wpdb->prepare(
+					"
+					INSERT INTO {$wpdb->prefix}icl_translations(element_type, element_id, trid, language_code, source_language_code)
+					SELECT %s, term_taxonomy_id, %d+term_taxonomy_id, %s, NULL FROM {$wpdb->term_taxonomy} WHERE taxonomy = %s
+					",
+					$element_type,
+					$maxtrid,
+					$lang,
+					$tax
+				)
+			);
+			$maxtrid = 1 + (int) $this->wpdb->get_var( "SELECT MAX(trid) FROM {$wpdb->prefix}icl_translations" );
 		}
 
-		$this->wpdb->query(
-			$this->wpdb->prepare(
+		$wpdb->query(
+			$wpdb->prepare(
 				"
-			INSERT INTO {$this->wpdb->prefix}icl_translations(element_type, element_id, trid, language_code, source_language_code)
-			SELECT 'comment', comment_ID, {$maxtrid}+comment_ID, %s, NULL FROM {$this->wpdb->comments}
+			INSERT INTO {$wpdb->prefix}icl_translations(element_type, element_id, trid, language_code, source_language_code)
+			SELECT 'comment', comment_ID, %d+comment_ID, %s, NULL FROM {$wpdb->comments}
 			",
+				$maxtrid,
 				$lang
 			)
 		);
+
+		delete_option( \WPML\Comments\Counts\Store::OPTION );
 	}
 
 	public function update_active_language( $lang ) {
 		$this->wpdb->update( $this->wpdb->prefix . 'icl_languages', array( 'active' => '1' ), array( 'code' => $lang ) );
-	}
-
-	function reset_language_data() {
-		global $sitepress, $wpdb;
-
-		$active = $this->wpdb->get_col( "SELECT code FROM {$this->wpdb->prefix}icl_languages WHERE active = 1" );
-		$this->wpdb->query( "TRUNCATE TABLE `{$this->wpdb->prefix}icl_languages`" );
-		SitePress_Setup::fill_languages();
-		$this->wpdb->query( "TRUNCATE TABLE `{$this->wpdb->prefix}icl_languages_translations`" );
-		SitePress_Setup::fill_languages_translations();
-		$this->wpdb->query( "TRUNCATE TABLE `{$this->wpdb->prefix}icl_flags`" );
-		SitePress_Setup::fill_flags();
-
-		//restore active
-		$this->wpdb->query(
-			"UPDATE {$this->wpdb->prefix}icl_languages SET active=1 WHERE code IN(" . wpml_prepare_in( $active ) . ")"
-		);
-
-		$this->wpdb->update( $this->wpdb->prefix . 'icl_flags', array( 'from_template' => 0 ), null );
-
-		$codes = $this->wpdb->get_col( "SELECT code FROM {$this->wpdb->prefix}icl_languages" );
-		foreach ( $codes as $code ) {
-			if ( ! $code || $this->wpdb->get_var(
-					$this->wpdb->prepare( "SELECT lang_code FROM {$this->wpdb->prefix}icl_flags WHERE lang_code = %s", $code )
-				)
-			) {
-				continue;
-			}
-
-			$file = wpml_get_flag_file_name( $code );
-
-			$this->wpdb->insert(
-				$this->wpdb->prefix . 'icl_flags',
-				array( 'lang_code' => $code, 'flag' => $file, 'from_template' => 0 )
-			);
-		}
-
-		$last_default_language = $this->sitepress !== null ? $this->sitepress->get_default_language() : 'en';
-		if ( ! in_array( $last_default_language, $codes ) ) {
-			$last_active_languages = $this->sitepress->get_active_languages();
-			foreach ( $last_active_languages as $code => $last_active_language ) {
-				if ( in_array( $code, $codes ) ) {
-					$this->sitepress->set_default_language( $code );
-					break;
-				}
-			}
-		}
-
-		$language_pair_records = new WPML_Language_Pair_Records( $wpdb, new WPML_Language_Records( $wpdb ) );
-
-		$users = get_users( [ 'fields' => [ 'ID' ] ] );
-
-		foreach ( $users as $user ) {
-			$language_pair_records->remove_invalid_language_pairs( $user->ID );
-		}
-
-		icl_cache_clear();
-
-		$sitepress->get_translations_cache()->clear();
-		$sitepress->clear_flags_cache();
-		$sitepress->get_language_name_cache()->clear();
 	}
 
 }

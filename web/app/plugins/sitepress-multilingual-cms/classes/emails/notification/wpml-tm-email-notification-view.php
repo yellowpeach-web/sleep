@@ -4,12 +4,6 @@ class WPML_TM_Email_Notification_View extends WPML_TM_Email_View {
 
 	const PROMOTE_TRANSLATION_SERVICES_TEMPLATE = 'notification/promote-translation-services.twig';
 
-	/**
-	 * @param array  $model
-	 * @param string $template
-	 *
-	 * @return string
-	 */
 	public function render_model( array $model, $template ) {
 		if ( isset( $model['casual_name'] ) && $model['casual_name'] ) {
 			$content = $this->render_casual_header( $model['casual_name'] );
@@ -23,21 +17,16 @@ class WPML_TM_Email_Notification_View extends WPML_TM_Email_View {
 		return $content;
 	}
 
-	/**
-	 * @param array $model
-	 *
-	 * @return string
-	 */
 	private function render_promote_translation_services( array $model ) {
 		$content = '';
 
 		if ( isset( $model['promote_translation_services'] ) && $model['promote_translation_services'] ) {
-			$translation_services_url = esc_url( admin_url( 'admin.php?page=' . WPML_TM_FOLDER . '/menu/main.php&sm=translators' ) );
+			$translation_services_url = esc_url( admin_url( 'admin.php?page=' . WPML_TM_FOLDER . '/menu/settings&section=translators' ) );
 
 			/* translators: Promote translation services: %s replaced by "professional translation services integrated with WPML" */
-			$promoteA = esc_html_x( 'Need faster translation work? Try one of the %s.', 'Promote translation services: %s replaced by "professional translation services integrated with WPML"', 'wpml-translation-management' );
-			/* translators: Promote translation services: Promote translation services: used to build a link to the translation services page */
-			$promoteB = esc_html_x( 'professional translation services integrated with WPML', 'Promote translation services: used to build a link to the translation services page', 'wpml-translation-management' );
+			$promoteA = esc_html_x( 'Need faster translation work? Try one of the %s.', 'Promote translation services: %s replaced by "professional translation services integrated with WPML"', 'sitepress' );
+			/* translators: Link text inside a sentence of the email WPML sends about translation work. It starts in lower case because it sits inside the sentence. */
+			$promoteB = esc_html_x( 'professional translation services integrated with WPML', 'Promote translation services: used to build a link to the translation services page', 'sitepress' );
 
 			$promote_model['message'] = sprintf( $promoteA, '<a href="' . $translation_services_url . '">' . $promoteB . '</a>' );
 
@@ -47,16 +36,16 @@ class WPML_TM_Email_Notification_View extends WPML_TM_Email_View {
 		return $content;
 	}
 
-	/** @return string */
 	private function render_footer() {
-		$notifications_url  = esc_url( admin_url( 'admin.php?page=' . WPML_TM_FOLDER . WPML_Translation_Management::PAGE_SLUG_SETTINGS . '&sm=notifications' ) );
-		$notifications_text = esc_html__( 'WPML Notification Settings', 'wpml-translation-management' );
+		$notifications_url  = esc_url( admin_url( 'admin.php?page=' . WPML_TM_FOLDER . WPML_Translation_Management::PAGE_SLUG_SETTINGS . '&section=translators&flash=translation-notifications' ) );
+		$notifications_text = esc_html__( 'WPML Notification Settings', 'sitepress' );
 		$notifications_link = '<a href="' . $notifications_url . '" style="color: #ffffff;">' . $notifications_text . '</a>';
 
 		$bottom_text = sprintf(
+			/* translators: Last line of the email WPML sends about translation work. %s: a link, already wrapped in its tags, that opens the site. */
 			esc_html__(
 				'To stop receiving notifications, log-in to %s and change your preferences.',
-				'wpml-translation-management'
+				'sitepress'
 			),
 			$notifications_link
 		);

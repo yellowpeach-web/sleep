@@ -4,6 +4,7 @@ msgstr ""
 "X-Generator: babel-plugin-makepot\n"
 
 #: src/js/troubleshooting/cancelJobs/CancelJobs.js:17
+#. Shown while WPML is counting the translation jobs it is about to cancel, on the troubleshooting page.
 msgid "Preparing..."
 msgstr ""
 
@@ -35,6 +36,66 @@ msgstr ""
 msgid "Update domain name in language switcher settings"
 msgstr ""
 
+#: src/js/troubleshooting/optimizeDbTables/components/DiskSpaceDisclaimerAlert.js:7
+msgid "Disclaimer: MySQL Disk Space"
+msgstr ""
+
+#: src/js/troubleshooting/optimizeDbTables/components/DiskSpaceDisclaimerAlert.js:8
+msgid ""
+"Cleaning and compressing the wp_icl_translate and wp_icl_translation_status "
+"tables reduces its data size, but does not automatically free up disk space "
+"in MySQL. To reclaim disk space, a table rebuild is required—a risky "
+"operation not performed automatically by this tool."
+msgstr ""
+
+#: src/js/troubleshooting/optimizeDbTables/components/OptimizeDbTables.js:38
+msgid "Optimize translation tables"
+msgstr ""
+
+#: src/js/troubleshooting/optimizeDbTables/components/OptimizeDbTables.js:47
+msgid "Previous State Migration"
+msgstr ""
+
+#: src/js/troubleshooting/optimizeDbTables/components/OptimizeDbTables.js:58
+msgid "Translation Elements Migration"
+msgstr ""
+
+#: src/js/troubleshooting/optimizeDbTables/components/OptimizeDbTables.js:64
+#. Label before the count of items already handled, on the troubleshooting page; an adjective describing the items, not a command.
+msgid "Processed"
+msgstr ""
+
+#: src/js/troubleshooting/optimizeDbTables/components/OptimizeDbTables.js:72
+#. Title of an error message box.
+msgid "Error"
+msgstr ""
+
+#: src/js/troubleshooting/optimizeDbTables/components/OptimizeDbTables.js:82
+#. Title of the message shown when optimizing the database tables has finished.
+msgid "Success"
+msgstr ""
+
+#: src/js/troubleshooting/optimizeDbTables/components/OptimizeDbTables.js:83
+msgid "Database tables optimization completed successfully."
+msgstr ""
+
+#: src/js/troubleshooting/optimizeDbTables/components/ResourceWarningAlert.js:7
+#. Title of the warning shown before the database tables are optimized.
+msgid "Warning"
+msgstr ""
+
+#: src/js/troubleshooting/optimizeDbTables/components/ResourceWarningAlert.js:8
+#. Warning shown before the database tables are optimized. "This process" is that optimization.
+msgid ""
+"This process is resource-intensive and may take a significant amount of "
+"time. It is recommended to run this optimization during periods of low "
+"traffic."
+msgstr ""
+
+#: src/js/troubleshooting/optimizeDbTables/index.js:16
+msgid "Database Tables Optimization"
+msgstr ""
+
 #: src/js/troubleshooting/refreshLicense/RefreshLicense.js:14
 msgid "Refresh license data to recognise license update"
 msgstr ""
@@ -42,3 +103,51 @@ msgstr ""
 #: src/js/troubleshooting/refreshLicense/useRefreshLicense.js:36
 msgid "WPML License has been refreshed"
 msgstr ""
+
+#: src/js/troubleshooting/retryStuckJobs/RetryStuckJobs.js:12
+msgid "Translate Everything Automatically is not active."
+msgstr ""
+
+#: src/js/troubleshooting/retryStuckJobs/RetryStuckJobs.js:50
+msgid "Retry stuck automatic translations"
+msgstr ""
+
+#: src/js/troubleshooting/retryStuckJobs/RetryStuckJobs.js:56
+msgid ""
+"Resends translation jobs that couldn't be processed due to a temporary "
+"issue while <b>Translate Everything Automatically</b> was active."
+msgstr ""
+
+#: src/js/troubleshooting/retryStuckJobs/Utils/getStatusMessage.js:13
+msgid "Checking for stuck translation jobs..."
+msgstr ""
+
+#: src/js/troubleshooting/retryStuckJobs/Utils/getStatusMessage.js:17
+#. Progress message on the troubleshooting page while stuck translations are being looked for. %s: the number found so far.
+msgid "Processing... %s stuck translation found so far"
+msgid_plural "Processing... %s stuck translations found so far"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/troubleshooting/retryStuckJobs/Utils/getStatusMessage.js:29
+msgid ""
+"Something went wrong while checking for stuck translation jobs. Please "
+"<a>contact WPML support</a>."
+msgstr ""
+
+#: src/js/troubleshooting/retryStuckJobs/Utils/getStatusMessage.js:41
+msgid "No stuck translation jobs found."
+msgstr ""
+
+#: src/js/troubleshooting/retryStuckJobs/Utils/getStatusMessage.js:46
+#. Result message on the troubleshooting page. %s: the number of stuck translation jobs found. Keep the line break and the <b> tags around the name of the screen.
+msgid ""
+"%s stuck translation job found. WPML will translate it automatically in the "
+"background.\n"
+"You can check the progress in the <b>Translation Dashboard</b>."
+msgid_plural ""
+"%s stuck translation jobs found. WPML will translate them automatically in "
+"the background.\n"
+"You can check their progress in the <b>Translation Dashboard</b>."
+msgstr[0] ""
+msgstr[1] ""

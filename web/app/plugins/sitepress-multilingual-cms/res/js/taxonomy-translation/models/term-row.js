@@ -41,13 +41,27 @@
 			return res;
 		},
 
+		/**
+		 * A trid is an IDENTITY, never a number. It can exceed 2^53 on sites
+		 * whose AUTO_INCREMENT has been inflated (WPvivid staging does this as
+		 * a matter of course), and above that a JS number cannot hold it
+		 * exactly. It is compared and keyed as a string here so two distinct
+		 * groups can never round onto the same model (wpmldev-5066).
+		 *
+		 * @param {*} value
+		 * @returns {string}
+		 */
+		normalizeTrid: function (value) {
+			return (value === null || value === undefined || value === false) ? "" : String(value);
+		},
+
 		add: function (term) {
 
 			if (!this.get("trid") && term.get("trid")) {
-				this.set("trid", term.get("trid"), {silent: true});
+				this.set("trid", this.normalizeTrid(term.get("trid")), {silent: true});
 			}
 
-			if (term.get("trid") == this.get("trid") && term.get("language_code") && term.get("name")) {
+			if (this.normalizeTrid(term.get("trid")) === this.normalizeTrid(this.get("trid")) && term.get("language_code") && term.get("name")) {
 				var terms = this.get("terms");
 				terms[term.get("language_code")] = term;
 				this.set("terms", terms, {silent: true});

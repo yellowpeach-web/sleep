@@ -1,0 +1,1573 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "pt_BR"
+         },
+         "You have unsaved language changes from a previous session.": [
+            "Você tem alterações de idioma não salvas de uma sessão anterior."
+         ],
+         "Restore changes": [
+            "Restaurar alterações"
+         ],
+         "Discard": [
+            "Descartar"
+         ],
+         "Unsaved language changes from a previous session could not be restored, because the site’s languages changed after they were made. Those changes were discarded.": [
+            "As alterações de idioma não salvas de uma sessão anterior não puderam ser restauradas porque os idiomas do site mudaram depois que elas foram feitas. Essas alterações foram descartadas."
+         ],
+         "Dismiss": [
+            "Dispensar"
+         ],
+         "Impact on existing content": [
+            "Impacto no conteúdo existente"
+         ],
+         "Checking which content will be affected…": [
+            "Verificando qual conteúdo será afetado…"
+         ],
+         "We couldn’t estimate the impact. You can still apply the change; content will be updated during the save.": [
+            "Não conseguimos estimar o impacto. Você ainda pode aplicar a alteração; o conteúdo será atualizado durante o salvamento."
+         ],
+         "Try again": [
+            "Tentar novamente"
+         ],
+         "No existing content needs updating.": [
+            "Nenhum conteúdo existente precisa de atualização."
+         ],
+         "%d post will be updated.": [
+            "%d post será atualizado.",
+            "%d posts serão atualizados."
+         ],
+         "%d link will be adjusted.": [
+            "%d link será ajustado.",
+            "%d links serão ajustados."
+         ],
+         "%d translated string will be re-keyed.": [
+            "%d string traduzida terá a chave alterada.",
+            "%d strings traduzidas terão as chaves alteradas."
+         ],
+         "Finish the change to %s": [
+            "Concluir a alteração para %s"
+         ],
+         "What changes automatically": [
+            "O que muda automaticamente"
+         ],
+         "The language’s country becomes %s.": [
+            "O país do idioma passa a ser %s."
+         ],
+         "Automatic translation will be re-mapped to the new regional variant. Existing translations stay as they are.": [
+            "A tradução automática será remapeada para a nova variante regional. As traduções existentes permanecem como estão."
+         ],
+         "Automatic translation will now target the new regional variant. Existing translations stay as they are.": [
+            "A tradução automática agora terá como alvo a nova variante regional. As traduções existentes permanecem como estão."
+         ],
+         "The hreflang tag becomes %s.": [
+            "A tag hreflang passa a ser %s."
+         ],
+         "Also update these?": [
+            "Atualizar estes também?"
+         ],
+         "Riskier change": [
+            "Alteração mais arriscada"
+         ],
+         "Cancel": [
+            "Cancelar"
+         ],
+         "Apply": [
+            "Aplicar"
+         ],
+         "Anything whose translation group already has a version in %s stays where it is.": [
+            "Tudo o que o grupo de tradução já tiver uma versão em %s continua onde está."
+         ],
+         "You have %1$d %2$s page from a language you removed. Bring it here?": [
+            "Você tem %1$d página em %2$s de um idioma que você removeu. Trazer para cá?",
+            "Você tem %1$d páginas em %2$s de um idioma que você removeu. Trazer para cá?"
+         ],
+         "I understand these items are not %1$s and will be re-labelled as %2$s.": [
+            "Eu entendo que estes itens não são %1$s e serão rotulados novamente como %2$s."
+         ],
+         "Re-labels them as %s, keeping their connections to your other languages.": [
+            "Rotula-os novamente como %s, mantendo suas conexões com seus outros idiomas."
+         ],
+         "Content from a language you removed": [
+            "Conteúdo de um idioma que você removeu"
+         ],
+         "Choose what to bring here": [
+            "Escolha o que trazer para cá"
+         ],
+         "Apply changes": [
+            "Aplicar alterações"
+         ],
+         "These changes are applied when you click Save.": [
+            "Essas alterações são aplicadas quando você clica em Salvar."
+         ],
+         "Change the WordPress locale %1$s → %2$s": [
+            "Alterar o locale do WordPress %1$s → %2$s"
+         ],
+         "WordPress uses this to load admin language packs and plugin / theme translations.": [
+            "O WordPress usa isso para carregar pacotes de idiomas de administração e traduções de plugins / temas."
+         ],
+         "Already used by %s.": [
+            "Já usado por %s."
+         ],
+         "Change the language code in URLs %1$s → %2$s": [
+            "Alterar o código do idioma nas URLs %1$s → %2$s"
+         ],
+         "Renames the language code. Existing %s URLs in search engines, bookmarks and external links become 404s unless redirects are set up.": [
+            "Renomeia o código do idioma. URLs %s existentes em mecanismos de busca, favoritos e links externos se tornarão 404s, a menos que redirecionamentos sejam configurados."
+         ],
+         "Use the flag of %s": [
+            "Usar a bandeira de %s"
+         ],
+         "You picked the current flag yourself, so WPML keeps it unless you ask.": [
+            "Você mesmo escolheu a bandeira atual, então o WPML a manterá, a menos que você peça."
+         ],
+         "The flag shown in language switchers and in the admin.": [
+            "A bandeira exibida nos seletores de idiomas e na administração."
+         ],
+         "Rename the language %1$s → %2$s": [
+            "Renomear o idioma %1$s → %2$s"
+         ],
+         "Updates the name in every language of the admin. Labels you edited yourself are kept.": [
+            "Atualiza o nome em todos os idiomas da administração. Os rótulos que você mesmo editou são mantidos."
+         ],
+         "Change the hreflang tag %1$s → %2$s": [
+            "Alterar a tag hreflang %1$s → %2$s"
+         ],
+         "You customised this tag, so WPML keeps it unless you ask. Search engines read it to serve the right regional version.": [
+            "Você personalizou esta tag, então o WPML a manterá, a menos que você peça. Os mecanismos de busca a leem para exibir a versão regional correta."
+         ],
+         "What should happen to %s?": [
+            "O que deve acontecer com %s?"
+         ],
+         "Pick the outcome you want. Nothing happens until you confirm below.": [
+            "Escolha o resultado desejado. Nada acontece até que você confirme abaixo."
+         ],
+         "Checking for translated content…": [
+            "Verificando conteúdo traduzido…"
+         ],
+         "What should happen to this language": [
+            "O que deve acontecer com este idioma"
+         ],
+         "Which content types": [
+            "Quais tipos de conteúdo"
+         ],
+         "%1$s — %2$d item": [
+            "%1$s — %2$d item",
+            "%1$s — %2$d itens"
+         ],
+         "Pages and posts": [
+            "Páginas e posts"
+         ],
+         "Products": [
+            "Produtos"
+         ],
+         "Categories and tags": [
+            "Categorias e tags"
+         ],
+         "Images": [
+            "Imagens"
+         ],
+         "Menus": [
+            "Menus"
+         ],
+         "Delete them permanently now — this cannot be undone": [
+            "Excluí-los permanentemente agora — isso não pode ser desfeito"
+         ],
+         "Categories, tags and menus have no WordPress Trash, so those are deleted right away either way.": [
+            "Categorias, tags e menus não têm lixeira no WordPress, portanto, são excluídos imediatamente de qualquer forma."
+         ],
+         "Your site’s setting “when deleting a post, delete its translations too” is on. We will not apply it here, so nothing in %s is deleted.": [
+            "A configuração do seu site “ao excluir um post, excluir suas traduções também” está ativada. Não a aplicaremos aqui, portanto, nada em %s é excluído."
+         ],
+         ", ": [
+            ", "
+         ],
+         "your other languages": [
+            "seus outros idiomas"
+         ],
+         "%s’s string translations are deleted with it.": [
+            "As traduções de strings de %s são excluídas com ele."
+         ],
+         "Its queued translation jobs are cancelled without charge; any already in progress are stopped, and the words already sent are still charged.": [
+            "Seus trabalhos de tradução na fila são cancelados sem cobrança; quaisquer outros já em andamento são interrompidos, e as palavras já enviadas ainda são cobradas."
+         ],
+         "Move this content into": [
+            "Mover este conteúdo para"
+         ],
+         "Choose a language…": [
+            "Escolha um idioma…"
+         ],
+         "Same language": [
+            "Mesmo idioma"
+         ],
+         "A different language": [
+            "Um idioma diferente"
+         ],
+         "I understand these items are not %s and will be re-labelled as the language I pick.": [
+            "Eu entendo que estes itens não são %s e serão rotulados novamente como o idioma que eu escolher."
+         ],
+         "%s is taken off the site when you save, and its content is moved straight after — nothing is deleted either way.": [
+            "%s é retirado do site quando você salva, e seu conteúdo é movido logo em seguida — nada é excluído de qualquer forma."
+         ],
+         "WPML could not stop translating into %s. Nothing was changed — try again, or pick another goal.": [
+            "O WPML não pôde interromper a tradução para %s. Nada foi alterado — tente novamente ou escolha outro objetivo."
+         ],
+         "Review %d item": [
+            "Revisar %d item",
+            "Revisar %d itens"
+         ],
+         "Stop translating into %s": [
+            "Parar de traduzir para %s"
+         ],
+         "Move %1$d item into %2$s": [
+            "Mover %1$d item para %2$s",
+            "Mover %1$d itens para %2$s"
+         ],
+         "Move %d item": [
+            "Mover %d item",
+            "Mover %d itens"
+         ],
+         "Move %d item to the Trash": [
+            "Mover %d item para a lixeira",
+            "Mover %d itens para a lixeira"
+         ],
+         "Delete %d item permanently": [
+            "Excluir %d item permanentemente",
+            "Excluir %d itens permanentemente"
+         ],
+         "Remove language — nothing is deleted": [
+            "Remover idioma — nada é excluído"
+         ],
+         "What would be removed": [
+            "O que seria removido"
+         ],
+         "Hide the list": [
+            "Ocultar a lista"
+         ],
+         "Reading the list…": [
+            "Lendo a lista…"
+         ],
+         "We couldn’t read the list of items. The counts above still stand, and you can go ahead or close this dialog.": [
+            "Não conseguimos ler a lista de itens. As contagens acima ainda valem, e você pode prosseguir ou fechar este diálogo."
+         ],
+         "%1$s — %2$s (#%3$d)": [
+            "%1$s — %2$s (#%3$d)"
+         ],
+         "Nothing is selected right now.": [
+            "Nada está selecionado no momento."
+         ],
+         "Showing %1$d–%2$d of %3$d item": [
+            "Exibindo %1$d–%2$d de %3$d item",
+            "Exibindo %1$d–%2$d de %3$d itens"
+         ],
+         "Previous": [
+            "Anterior"
+         ],
+         "Next": [
+            "Próximo"
+         ],
+         "%s is off your site, but its content could not be moved. Nothing was deleted — the content is listed under Removed languages, where you can move it from.": [
+            "%s está fora do seu site, mas seu conteúdo não pôde ser movido. Nada foi excluído — o conteúdo está listado em Idiomas removidos, de onde você pode movê-lo."
+         ],
+         "Done": [
+            "Concluído"
+         ],
+         "%s stays on your site. Its pages keep their addresses and their search rankings, and the language switcher keeps offering it.": [
+            "%s permanece no seu site. Suas páginas mantêm seus endereços e seus rankings de busca, e o seletor de idiomas continua a oferecê-lo."
+         ],
+         "WPML has stopped creating new %s translations. To start again, use “Resume translating” on the language’s row.": [
+            "O WPML parou de criar novas traduções para %s. Para começar novamente, use “Retomar tradução” na linha do idioma."
+         ],
+         "%1$s is off your site. Nothing was deleted: its addresses now redirect to your %2$s pages, and every item it holds is still in your database and in your admin lists.": [
+            "%1$s está fora do seu site. Nada foi excluído: seus endereços agora redirecionam para suas páginas em %2$s, e cada item que ele contém ainda está no seu banco de dados e nas suas listas de administração."
+         ],
+         "To bring %s back, add it again — or use “Put back” under Removed languages, below.": [
+            "Para trazer %s de volta, adicione-o novamente — ou use “Colocar de volta” em Idiomas removidos, abaixo."
+         ],
+         "To bring %s back, add it again as a custom language with the same code — its content is still here.": [
+            "Para trazer %s de volta, adicione-o novamente como um idioma personalizado com o mesmo código — seu conteúdo ainda está aqui."
+         ],
+         "To bring %s back, add it again from the language picker — it asks which country the content belongs to, and the content is still here.": [
+            "Para trazer %s de volta, adicione-o novamente a partir do seletor de idiomas — ele perguntará a qual país o conteúdo pertence, e o conteúdo ainda está aqui."
+         ],
+         "They stay in your Trash until %s.": [
+            "Eles permanecem na sua lixeira até %s."
+         ],
+         "The deletion of %s’s content finished. WPML could not read back a record of what it removed.": [
+            "A exclusão do conteúdo de %s foi concluída. O WPML não pôde ler um registro do que removeu."
+         ],
+         "Close": [
+            "Fechar"
+         ],
+         "Unavailable until WPML can count this language’s content.": [
+            "Indisponível até que o WPML possa contar o conteúdo deste idioma."
+         ],
+         "If your site uses one domain per language, that language’s domain is not redirected: while it still points at this site it answers in your site’s default language at the same addresses.": [
+            "Se o seu site usa um domínio por idioma, o domínio desse idioma não é redirecionado: enquanto ele ainda apontar para este site, ele responderá no idioma padrão do seu site nos mesmos endereços."
+         ],
+         "The listed items are removed, along with their translation records, their string translations and their translation jobs.": [
+            "Os itens listados são removidos, juntamente com seus registros de tradução, suas traduções de strings e seus trabalhos de tradução."
+         ],
+         "The listed items are removed, along with their translation records, their string translations and their %d translation job.": [
+            "Os itens listados são removidos, juntamente com seus registros de tradução, suas traduções de strings e seu %d trabalho de tradução.",
+            "Os itens listados são removidos, juntamente com seus registros de tradução, suas traduções de strings e seus %d trabalhos de tradução."
+         ],
+         "We couldn’t check for translated content. You can still remove the language; its translations are kept. Deleting its content and moving it into another language both need that count, so those two goals are unavailable.": [
+            "Não conseguimos verificar o conteúdo traduzido. Você ainda pode remover o idioma; suas traduções serão mantidas. Excluir seu conteúdo e movê-lo para outro idioma precisam dessa contagem, portanto, esses dois objetivos estão indisponíveis."
+         ],
+         "This can be undone.": [
+            "Isso pode ser desfeito."
+         ],
+         "Stop translating into %s, keep its content online.": [
+            "Parar de traduzir para %s, manter o conteúdo online."
+         ],
+         "Your %1$s content stays published at its current addresses and keeps its search rankings. The language switcher keeps offering %1$s.": [
+            "Seu conteúdo em %1$s continua publicado nos endereços atuais e mantém o ranqueamento de busca. O seletor de idiomas continua oferecendo %1$s."
+         ],
+         "Your %1$d %2$s item stays published at its current address and keeps its search ranking. The language switcher keeps offering %2$s.": [
+            "Seu %1$d item em %2$s continua publicado no endereço atual e mantém o ranqueamento de busca. O seletor de idiomas continua oferecendo %2$s.",
+            "Seus %1$d itens em %2$s continuam publicados nos endereços atuais e mantêm o ranqueamento de busca. O seletor de idiomas continua oferecendo %2$s."
+         ],
+         "Translations are already paused for this language — nothing more changes.": [
+            "As traduções já estão pausadas para este idioma — nada mais muda."
+         ],
+         "WPML stops creating new translations.": [
+            "O WPML para de criar novas traduções."
+         ],
+         "Nothing is deleted": [
+            "Nada é excluído"
+         ],
+         "Take %s off the site, but keep everything in case we come back.": [
+            "Tirar %s do site, mas manter tudo caso voltemos."
+         ],
+         "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. Everything %1$s holds stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was.": [
+            "Os visitantes param de ver %1$s; seus endereços redirecionam para suas páginas em %2$s para que nada retorne um 404. Tudo o que %1$s contém permanece no seu banco de dados e nas suas listas de administração, e adicionar %1$s novamente o traz de volta exatamente como era."
+         ],
+         "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. The %3$d item stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was.": [
+            "Os visitantes param de ver %1$s; seus endereços redirecionam para suas páginas em %2$s para que nada retorne um 404. O %3$d item permanece no seu banco de dados e nas suas listas de administração, e adicionar %1$s novamente o traz de volta exatamente como era.",
+            "Os visitantes param de ver %1$s; seus endereços redirecionam para suas páginas em %2$s para que nada retorne um 404. Os %3$d itens permanecem no seu banco de dados e nas suas listas de administração, e adicionar %1$s novamente os traz de volta exatamente como eram."
+         ],
+         "Reversible": [
+            "Reversível"
+         ],
+         "Take %s off the site and delete its content.": [
+            "Tirar %s do site e excluir seu conteúdo."
+         ],
+         "Originals in other languages are untouched. Image files stay on disk.": [
+            "Originais em outros idiomas não são tocados. Arquivos de imagem permanecem no disco."
+         ],
+         "Only reversible if the Trash route is chosen": [
+            "Apenas reversível se a opção da lixeira for escolhida"
+         ],
+         "Not reversible — this site has the Trash disabled": [
+            "Não reversível — este site tem a lixeira desativada"
+         ],
+         "This can only be undone when the items go to the Trash.": [
+            "Isso só pode ser desfeito quando os itens vão para a lixeira."
+         ],
+         "This site has the Trash disabled, so deleting this content cannot be undone.": [
+            "Este site tem a lixeira desativada, portanto, a exclusão deste conteúdo não pode ser desfeita."
+         ],
+         "Move this language’s content into another language.": [
+            "Mover o conteúdo deste idioma para outro idioma."
+         ],
+         "Reassigns this language’s items to a language you pick, keeping their connections to the other languages. For renaming and merging, not retiring.": [
+            "Reatribui os itens deste idioma a um idioma que você escolher, mantendo suas conexões com os outros idiomas. Para renomear e mesclar, não para desativar."
+         ],
+         "Reassigns the %d item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring.": [
+            "Reatribui o %d item a um idioma que você escolher, mantendo sua conexão com os outros idiomas. Para renomear e mesclar, não para desativar.",
+            "Reatribui os %d itens a um idioma que você escolher, mantendo suas conexões com os outros idiomas. Para renomear e mesclar, não para desativar."
+         ],
+         "The content is kept, but the move cannot be undone.": [
+            "O conteúdo é mantido, mas a mudança não pode ser desfeita."
+         ],
+         "There is no other active language on this site to move the content into.": [
+            "Não há outro idioma ativo neste site para o qual mover o conteúdo."
+         ],
+         "You have existing content in %s": [
+            "Você tem conteúdo existente em %s"
+         ],
+         "This site has %1$d items in %2$s from before. What should happen to them?": [
+            "Este site tem %1$d itens em %2$s de antes. O que deve acontecer com eles?"
+         ],
+         "Bring back my content as %1$s (%2$s).": [
+            "Trazer meu conteúdo de volta como %1$s ((%2$s))."
+         ],
+         "The language keeps its original code (%s). There is no automatic way back.": [
+            "O idioma mantém seu código original (%s). Não há um caminho de volta automático."
+         ],
+         "Start fresh and keep the old content separate.": [
+            "Começar do zero e manter o conteúdo antigo separado."
+         ],
+         "You can attach the old content to the new language later from WPML → Support.": [
+            "Você pode anexar o conteúdo antigo ao novo idioma mais tarde em WPML → Suporte."
+         ],
+         "Never mind": [
+            "Deixa para lá"
+         ],
+         "Add language": [
+            "Adicionar idioma"
+         ],
+         "How much would a new language cost?": [
+            "Quanto custaria um novo idioma?"
+         ],
+         "Pick a language to see how many words your content has and what translating them would cost.": [
+            "Escolha um idioma para ver quantas palavras seu conteúdo tem e quanto custaria traduzi-las."
+         ],
+         "These costs apply once you use automatic translation for the new language.": [
+            "Esses custos se aplicam assim que você usar a tradução automática para o novo idioma."
+         ],
+         "No languages are available to estimate. Every language automatic translation supports is already on your site.": [
+            "Não há idiomas disponíveis para estimativa. Todos os idiomas que a tradução automática suporta já estão no seu site."
+         ],
+         "Language": [
+            "Idioma"
+         ],
+         "Select a language…": [
+            "Selecione um idioma…"
+         ],
+         "Show cost": [
+            "Mostrar custo"
+         ],
+         "Add a custom language": [
+            "Adicionar um idioma personalizado"
+         ],
+         "Use this only for non-standard dialects or local variants that aren't in the language list.": [
+            "Use isso apenas para dialetos não padronizados ou variantes locais que não estão na lista de idiomas."
+         ],
+         "Most users don't need a custom language. Most variants (e.g., Mexican Spanish, Brazilian Portuguese) already exist in the language list above. Use this form only for genuine custom language variants.": [
+            "A maioria dos usuários não precisa de um idioma personalizado. A maioria das variantes (por exemplo, espanhol mexicano, português brasileiro) já existe na lista de idiomas acima. Use este formulário apenas para variantes de idiomas genuinamente personalizadas."
+         ],
+         "Variant name": [
+            "Nome da variante"
+         ],
+         "e.g., Andalusian": [
+            "ex: andaluz"
+         ],
+         "“%s” is already the name of one of your languages. Choose a different name, or rename that language first.": [
+            "“%s” já é o nome de um dos seus idiomas. Escolha um nome diferente ou renomeie esse idioma primeiro."
+         ],
+         "“%s” is available in the language list. We recommend adding it with Search and add a language. Continue only if you need your own variant.": [
+            "“%s” está disponível na lista de idiomas. Recomendamos adicioná-lo com Pesquisar e adicionar um idioma. Continue apenas se precisar de sua própria variante."
+         ],
+         "Default locale": [
+            "Locale padrão"
+         ],
+         "Code": [
+            "Código"
+         ],
+         "pms or es-an": [
+            "pms ou es-an"
+         ],
+         "Once defined, this cannot be changed.": [
+            "Uma vez definido, isso não pode ser alterado."
+         ],
+         "hreflang": [
+            "hreflang"
+         ],
+         "WPML no longer lists “%s”, so you can add it here as a custom language. We filled in its usual settings.": [
+            "O WPML não lista mais “%s”, portanto, você pode adicioná-lo aqui como um idioma personalizado. Preenchemos as configurações habituais dele."
+         ],
+         "Flag": [
+            "Bandeira"
+         ],
+         "Uploading…": [
+            "Enviando…"
+         ],
+         "Upload SVG…": [
+            "Enviar SVG…"
+         ],
+         "Upload a custom flag (SVG)": [
+            "Enviar uma bandeira personalizada (SVG)"
+         ],
+         "The flag could not be uploaded.": [
+            "A bandeira não pôde ser enviada."
+         ],
+         "SVG recommended for crisp display.": [
+            "SVG recomendado para uma exibição nítida."
+         ],
+         "Encode URL?": [
+            "Codificar URL?"
+         ],
+         "No": [
+            "Não"
+         ],
+         "Yes": [
+            "Sim"
+         ],
+         "Map to a supported language (recommended)": [
+            "Mapear para um idioma suportado (recomendado)"
+         ],
+         "— Match automatically —": [
+            "— Corresponder automaticamente —"
+         ],
+         "The locale “%s” isn’t valid. Use letters, numbers and underscores only, like es_ES.": [
+            "O locale “%s” não é válido. Use apenas letras, números e sublinhados, como es_ES."
+         ],
+         "The hreflang “%1$s” is too long. Use at most %2$d characters.": [
+            "O hreflang “%1$s” é muito longo. Use no máximo %2$d caracteres."
+         ],
+         "The language code “%1$s” is too long. Use at most %2$d characters.": [
+            "O código do idioma “%1$s” é muito longo. Use no máximo %2$d caracteres."
+         ],
+         "The language code “%1$s” isn’t valid. Use letters, numbers, hyphens and underscores — up to %2$d characters.": [
+            "O código do idioma “%1$s” não é válido. Use letras, números, hifens e sublinhados — até %2$d caracteres."
+         ],
+         "“%s” is already a supported language. Add it from Search instead of creating a custom variant.": [
+            "“%s” já é um idioma suportado. Adicione-o a partir da Pesquisa em vez de criar uma variante personalizada."
+         ],
+         "This language code is already used by “%s”. Choose a different one.": [
+            "Este código de idioma já é usado por “%s”. Escolha um diferente."
+         ],
+         "Enter a name for this language.": [
+            "Insira um nome para este idioma."
+         ],
+         "Enter a locale.": [
+            "Insira um locale."
+         ],
+         "Enter a language code.": [
+            "Insira um código de idioma."
+         ],
+         "Edit labels for %s": [
+            "Editar rótulos para %s"
+         ],
+         "Set how the “%s” language is named in each of your site languages. Names are prefilled. Edit any to override.": [
+            "Defina como o idioma “%s” é nomeado em cada um dos idiomas do seu site. Os nomes são pré-preenchidos. Edite qualquer um para substituir."
+         ],
+         "Loading names…": [
+            "Carregando nomes…"
+         ],
+         "this language": [
+            "este idioma"
+         ],
+         "Save labels": [
+            "Salvar rótulos"
+         ],
+         "Your server cannot convert international domain names. Enter the xn-- form of %s.": [
+            "Seu servidor não consegue converter nomes de domínio internacionais. Insira a forma xn-- de %s."
+         ],
+         "The domain you have entered is invalid.": [
+            "O domínio inserido é inválido."
+         ],
+         "Set a domain for %s": [
+            "Definir um domínio para %s"
+         ],
+         "Set a domain for each new language": [
+            "Definir um domínio para cada novo idioma"
+         ],
+         "Your site uses a different domain per language. %s is no longer the default language, so it needs a domain of its own. Until it has one, its pages cannot be reached.": [
+            "Seu site usa um domínio diferente por idioma. %s não é mais o idioma padrão, por isso precisa de um domínio próprio. Até que tenha um, suas páginas não poderão ser acessadas."
+         ],
+         "Your site uses a different domain per language, so %s needs a domain of its own before it can be visited.": [
+            "Seu site usa um domínio diferente por idioma, portanto, %s precisa de um domínio próprio antes de poder ser visitado."
+         ],
+         "Your site uses a different domain per language, so each new language needs a domain of its own before it can be visited.": [
+            "Seu site usa um domínio diferente por idioma, portanto, cada novo idioma precisa de um domínio próprio antes de poder ser visitado."
+         ],
+         "This is the site address.": [
+            "Este é o endereço do site."
+         ],
+         "Change it in Settings → General.": [
+            "Altere-o em Configurações → Geral."
+         ],
+         "Valid": [
+            "Válido"
+         ],
+         "Blocked by a firewall or CDN": [
+            "Bloqueado por um firewall ou CDN"
+         ],
+         "Not valid": [
+            "Não é válido"
+         ],
+         "Validate on save": [
+            "Validar ao salvar"
+         ],
+         "This domain is already used by another language or by the site itself.": [
+            "Este domínio já está sendo usado por outro idioma ou pelo próprio site."
+         ],
+         "Enter the domain this language will be served from.": [
+            "Insira o domínio a partir do qual este idioma será servido."
+         ],
+         "%s will serve this language.": [
+            "%s servirá este idioma."
+         ],
+         "If it shows your site, you can save it anyway.": [
+            "Se ele exibir o seu site, você poderá salvar mesmo assim."
+         ],
+         "Two languages cannot use the same domain: %s is already used. Give each language its own domain.": [
+            "Dois idiomas não podem usar o mesmo domínio: %s já está em uso. Dê a cada idioma seu próprio domínio."
+         ],
+         "%s loads, but a firewall or CDN blocked WPML's check.": [
+            "%s carrega, mas um firewall ou CDN bloqueou a verificação do WPML."
+         ],
+         "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
+            "O domínio não pôde ser validado: %s. Verifique se ele aponta para este site ou desmarque “Validar ao salvar” para salvá-lo de qualquer maneira."
+         ],
+         "Save anyway": [
+            "Salvar mesmo assim"
+         ],
+         "Save": [
+            "Salvar"
+         ],
+         "0 languages — nothing to reset here": [
+            "0 idiomas — nada para redefinir aqui"
+         ],
+         "Reset language defaults": [
+            "Redefinir padrões de idioma"
+         ],
+         "WPML couldn’t finish checking your languages.": [
+            "O WPML não conseguiu terminar de verificar seus idiomas."
+         ],
+         "This says nothing about your languages — the check stopped before it could compare them all. Nothing has been changed.": [
+            "Isso não diz nada sobre seus idiomas — a verificação parou antes de conseguir comparar todos. Nada foi alterado."
+         ],
+         "All your languages already use WPML’s catalogue defaults.": [
+            "Todos os seus idiomas já usam os padrões do catálogo do WPML."
+         ],
+         "Flags, label translations and WordPress locales all match — there is nothing to reset.": [
+            "Bandeiras, traduções de rótulos e localidades do WordPress coincidem — não há nada para redefinir."
+         ],
+         "These languages no longer match WPML’s language catalogue. Put back:": [
+            "Estes idiomas não coincidem mais com o catálogo de idiomas do WPML. Restaurar:"
+         ],
+         "Flags": [
+            "Bandeiras"
+         ],
+         "%d language using a flag that is not the catalogue default": [
+            "%d idioma usando uma bandeira que não é a padrão do catálogo",
+            "%d idiomas usando uma bandeira que não é a padrão do catálogo"
+         ],
+         "Labels and their translations": [
+            "Rótulos e suas traduções"
+         ],
+         "%1$s, %2$s": [
+            "%1$s, %2$s"
+         ],
+         "%d language": [
+            "%d idioma",
+            "%d idiomas"
+         ],
+         "%d display language": [
+            "%d idioma de exibição",
+            "%d idiomas de exibição"
+         ],
+         "%d edited": [
+            "%d editado",
+            "%d editados"
+         ],
+         "%d missing": [
+            "%d ausente",
+            "%d ausentes"
+         ],
+         "%1$s of %2$s": [
+            "%1$s de %2$s"
+         ],
+         "hide": [
+            "ocultar"
+         ],
+         "show": [
+            "mostrar"
+         ],
+         "missing": [
+            "ausente"
+         ],
+         "+ %d more": [
+            "+ %d mais",
+            "+ %d mais"
+         ],
+         "WP Locale": [
+            "Localidade do WP"
+         ],
+         "%d language whose locale does not match its country": [
+            "%d idioma cuja localidade não coincide com seu país",
+            "%d idiomas cuja localidade não coincide com seu país"
+         ],
+         "Only the groups you tick are changed. Everything else is left exactly as it is.": [
+            "Apenas os grupos que você marcar serão alterados. Todo o resto será deixado exatamente como está."
+         ],
+         "The check stopped before it could compare everything, so there may be more than this.": [
+            "A verificação parou antes de conseguir comparar tudo, então pode haver mais do que isso."
+         ],
+         "Resetting…": [
+            "Redefinindo…"
+         ],
+         "Reset selected": [
+            "Redefinir selecionados"
+         ],
+         "Language Code": [
+            "Código do idioma"
+         ],
+         "Country": [
+            "País"
+         ],
+         "Locale": [
+            "Locale"
+         ],
+         "Update the URL code for %s?": [
+            "Atualizar o código da URL para %s?"
+         ],
+         "Confirm language changes": [
+            "Confirmar alterações de idioma"
+         ],
+         "Checking what needs updating…": [
+            "Verificando o que precisa de atualização…"
+         ],
+         "We couldn’t check the impact. You can still save — content is updated during the save.": [
+            "Não conseguimos verificar o impacto. Você ainda pode salvar — o conteúdo é atualizado durante o salvamento."
+         ],
+         "What happens": [
+            "O que acontece"
+         ],
+         "%d link on your site is updated to the new address.": [
+            "%d link no seu site é atualizado para o novo endereço.",
+            "%d links no seu site são atualizados para o novo endereço."
+         ],
+         "Old URLs are not redirected automatically. If you need them to keep working, set up the redirects yourself.": [
+            "URLs antigas não são redirecionadas automaticamente. Se você precisar que elas continuem funcionando, configure os redirecionamentos você mesmo."
+         ],
+         "This updates your language settings; existing content isn’t rewritten.": [
+            "Isso atualiza suas configurações de idioma; o conteúdo existente não é reescrito."
+         ],
+         "Your translations and strings are unchanged.": [
+            "Suas traduções e strings permanecem inalteradas."
+         ],
+         "Update": [
+            "Atualizar"
+         ],
+         "Save changes": [
+            "Salvar alterações"
+         ],
+         "Do you want to set the locale?": [
+            "Você deseja definir o locale?"
+         ],
+         "WPML uses the locale to download the right WordPress language pack, so setting it switches the admin, theme and plugin texts to that language pack.": [
+            "O WPML usa o locale para baixar o pacote de idiomas correto do WordPress, portanto, defini-lo muda os textos do painel, do tema e dos plugins para esse pacote de idiomas."
+         ],
+         "Yes, set the locale": [
+            "Sim, definir o locale"
+         ],
+         "Are you sure you want to edit the language code?": [
+            "Tem certeza de que deseja editar o código do idioma?"
+         ],
+         "URLs containing it change — WPML fixes linked URLs after saving.": [
+            "As URLs que o contêm serão alteradas — o WPML corrige as URLs vinculadas após salvar."
+         ],
+         "External links / bookmarks to the old URL break unless redirected.": [
+            "Links externos / favoritos para a URL antiga deixarão de funcionar, a menos que sejam redirecionados."
+         ],
+         "Yes, edit the code": [
+            "Sim, editar o código"
+         ],
+         "Are you sure you want to edit the country?": [
+            "Tem certeza de que deseja editar o país?"
+         ],
+         "It may also change the locale (if the new country has a WordPress.org locale).": [
+            "Isso também pode alterar o locale (se o novo país tiver um locale do WordPress.org)."
+         ],
+         "It affects ATE automatic-translation mapping.": [
+            "Isso afeta o mapeamento de tradução automática do ATE."
+         ],
+         "Yes, edit the country": [
+            "Sim, editar o país"
+         ],
+         "Are you sure you want to edit the locale?": [
+            "Tem certeza de que deseja editar o locale?"
+         ],
+         "WPML uses the locale to download the right WordPress language pack, so changing it switches the admin, theme and plugin texts to the new language pack.": [
+            "O WPML usa o locale para baixar o pacote de idiomas correto do WordPress, portanto, alterá-lo muda os textos do painel, do tema e dos plugins para o novo pacote de idiomas."
+         ],
+         "Yes, edit the locale": [
+            "Sim, editar o locale"
+         ],
+         "Step %1$d of %2$d — updating %3$s": [
+            "Etapa %1$d de %2$d — atualizando %3$s"
+         ],
+         "Step %1$d of %2$d": [
+            "Etapa %1$d de %2$d"
+         ],
+         "%1$d of %2$d item": [
+            "%1$d de %2$d item",
+            "%1$d de %2$d itens"
+         ],
+         "%d%%": [
+            "%d%%"
+         ],
+         "%d item could not be updated:": [
+            "%d item não pôde ser atualizado:",
+            "%d itens não puderam ser atualizados:"
+         ],
+         "You can retry the save from the Languages page, or fix these items manually.": [
+            "Você pode tentar salvar novamente na página de Idiomas ou corrigir esses itens manualmente."
+         ],
+         "Some changes could not be applied": [
+            "Algumas alterações não puderam ser aplicadas"
+         ],
+         "Language changes saved with some skipped items": [
+            "Alterações de idioma salvas com alguns itens ignorados"
+         ],
+         "Language changes saved": [
+            "Alterações de idioma salvas"
+         ],
+         "Updating content": [
+            "Atualizando conteúdo"
+         ],
+         "Keep this tab open until the process finishes. Closing it will pause the save.": [
+            "Mantenha esta aba aberta até que o processo termine. Fechá-la pausará o salvamento."
+         ],
+         "%d item was skipped so far:": [
+            "%d item foi ignorado até agora:",
+            "%d itens foram ignorados até agora:"
+         ],
+         "%1$s — %2$s (%3$s)": [
+            "%1$s — %2$s ((%3$s))"
+         ],
+         "Most language changes were applied. Some items could not be updated and were skipped.": [
+            "A maioria das alterações de idioma foi aplicada. Alguns itens não puderam ser atualizados e foram ignorados."
+         ],
+         "All language changes were applied.": [
+            "Todas as alterações de idioma foram aplicadas."
+         ],
+         "The save could not finish. Your existing content was not fully updated — review the languages page and try again.": [
+            "O salvamento não pôde ser concluído. Seu conteúdo existente não foi totalmente atualizado — revise a página de idiomas e tente novamente."
+         ],
+         "Don't close this tab until the process finishes.": [
+            "Não feche esta aba até que o processo termine."
+         ],
+         "Content update was paused": [
+            "A atualização do conteúdo foi pausada"
+         ],
+         "Resume to finish saving your language changes.": [
+            "Retome para terminar de salvar suas alterações de idioma."
+         ],
+         "Resume saving": [
+            "Retomar salvamento"
+         ],
+         "Estimating time left…": [
+            "Estimando tempo restante…"
+         ],
+         "About %d second left": [
+            "Cerca de %d segundo restante",
+            "Cerca de %d segundos restantes"
+         ],
+         "About %d minute left": [
+            "Cerca de %d minuto restante",
+            "Cerca de %d minutos restantes"
+         ],
+         "Automatic translation for %1$s could not be re-mapped to %2$s. Change the country again later to retry.": [
+            "A tradução automática para %1$s não pôde ser mapeada novamente para %2$s. Altere o país novamente mais tarde para tentar de novo."
+         ],
+         "Automatic translation for %1$s could not be re-mapped. Change the country again later to retry.": [
+            "A tradução automática para %1$s não pôde ser mapeada novamente. Altere o país novamente mais tarde para tentar de novo."
+         ],
+         "Automatic translation for %1$s already targeted %2$s; nothing was re-mapped.": [
+            "A tradução automática para %1$s já tinha como alvo %2$s; nada foi mapeado novamente."
+         ],
+         "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country. Your current mapping was kept.": [
+            "A tradução automática não está disponível para %2$s. Para traduzir %1$s automaticamente, escolha um país que a tradução automática suporte em Editar → País. Seu mapeamento atual foi mantido."
+         ],
+         "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country.": [
+            "A tradução automática não está disponível para %2$s. Para traduzir %1$s automaticamente, escolha um país que a tradução automática suporte em Editar → País."
+         ],
+         "Automatic translation for %1$s was not re-mapped: %2$s.": [
+            "A tradução automática para %1$s não foi mapeada novamente: %2$s."
+         ],
+         "Automatic translation for %1$s now targets %2$s.": [
+            "A tradução automática para %1$s agora tem como alvo %2$s."
+         ],
+         "“%s” is already an active language.": [
+            "“%s” já é um idioma ativo."
+         ],
+         "That language is already active.": [
+            "Esse idioma já está ativo."
+         ],
+         "%s needs a domain of its own before this can be saved. Set one in the URL format section.": [
+            "%s precisa de um domínio próprio antes que isso possa ser salvo. Defina um na seção de formato de URL."
+         ],
+         "Every language that is not the default needs a domain of its own before this can be saved. Set it in the URL format section.": [
+            "Todos os idiomas que não forem o padrão precisam de um domínio próprio antes que isso possa ser salvo. Defina-o na seção de formato de URL."
+         ],
+         "The language code “%s” is already in use. Choose a different one.": [
+            "O código de idioma “%s” já está em uso. Escolha um diferente."
+         ],
+         "That language code is already in use. Choose a different one.": [
+            "Esse código de idioma já está em uso. Escolha um diferente."
+         ],
+         "That language code isn’t valid. Use letters, numbers, hyphens and underscores — up to %d characters.": [
+            "Esse código de idioma não é válido. Use letras, números, hifens e sublinhados — até %d caracteres."
+         ],
+         "That language code is too long. Use at most %d characters.": [
+            "Esse código de idioma é muito longo. Use no máximo %d caracteres."
+         ],
+         "That locale isn’t valid. Use letters, numbers and underscores only, like es_ES.": [
+            "Esse locale não é válido. Use apenas letras, números e sublinhados, como es_ES."
+         ],
+         "That hreflang is too long. Use at most %d characters.": [
+            "Esse hreflang é muito longo. Use no máximo %d caracteres."
+         ],
+         "Another active language already uses the identity “%s”.": [
+            "Outro idioma ativo já usa a identidade “%s”."
+         ],
+         "Another active language already has this identity.": [
+            "Outro idioma ativo já possui esta identidade."
+         ],
+         "WPML no longer offers this language and country. Languages you have already added keep working.": [
+            "O WPML não oferece mais este idioma e país. Os idiomas que você já adicionou continuam funcionando."
+         ],
+         "You can still add it with “add a custom language”, using the same code.": [
+            "Você ainda pode adicioná-lo com “adicionar um idioma personalizado”, usando o mesmo código."
+         ],
+         "That flag is not available for this language. Choose one of the offered flags or upload a custom SVG.": [
+            "Essa bandeira não está disponível para este idioma. Escolha uma das bandeiras oferecidas ou envie um SVG personalizado."
+         ],
+         "That name is already used by one of your languages. Choose a different name.": [
+            "Esse nome já é usado por um de seus idiomas. Escolha um nome diferente."
+         ],
+         "That language code is already a supported language. Add it from Search instead of creating a custom variant.": [
+            "Esse código de idioma já é um idioma suportado. Adicione-o pela Pesquisa em vez de criar uma variante personalizada."
+         ],
+         "“%s” is the code of a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first.": [
+            "“%s” é o código de um idioma que você mesmo criou e depois removeu. Adicione-o novamente como um idioma personalizado para trazê-lo de volta ou exclua-o primeiro do painel de Idiomas removidos."
+         ],
+         "That code belongs to a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first.": [
+            "Esse código pertence a um idioma que você mesmo criou e depois removeu. Adicione-o novamente como um idioma personalizado para trazê-lo de volta ou exclua-o primeiro do painel de Idiomas removidos."
+         ],
+         "Enter a locale for this language.": [
+            "Insira um locale para este idioma."
+         ],
+         "Select a country for this language before saving.": [
+            "Selecione um país para este idioma antes de salvar."
+         ],
+         "This language can’t be used with that country.": [
+            "Este idioma não pode ser usado com esse país."
+         ],
+         "“%s” isn’t in the language catalogue. Pick it from the list, or add it as a custom language.": [
+            "“%s” não está no catálogo de idiomas. Escolha-o na lista ou adicione-o como um idioma personalizado."
+         ],
+         "This language isn’t in the language catalogue. Pick it from the list, or add it as a custom language.": [
+            "Este idioma não está no catálogo de idiomas. Escolha-o na lista ou adicione-o como um idioma personalizado."
+         ],
+         "The default language cannot be a language that is being removed.": [
+            "O idioma padrão não pode ser um idioma que está sendo removido."
+         ],
+         "Before “%s” can be saved, choose whether to bring back the content this site has from before in that language or to start fresh.": [
+            "Antes que “%s” possa ser salvo, escolha se deseja recuperar o conteúdo anterior deste site nesse idioma ou começar do zero."
+         ],
+         "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
+            "Antes que este idioma possa ser salvo, escolha se deseja recuperar o conteúdo anterior deste site nele ou começar do zero."
+         ],
+         "You don’t have permission to change languages.": [
+            "Você não tem permissão para alterar idiomas."
+         ],
+         "“%s” couldn’t be added. Please try again.": [
+            "“%s” não pôde ser adicionado. Tente novamente."
+         ],
+         "The language couldn’t be added. Please try again.": [
+            "O idioma não pôde ser adicionado. Tente novamente."
+         ],
+         "Couldn’t save the language settings.": [
+            "Não foi possível salvar as configurações de idioma."
+         ],
+         "One language": [
+            "Um idioma"
+         ],
+         "%1$s: no WordPress language pack exists for %2$s, so the locale was saved without translation files.": [
+            "%1$s: não existe pacote de idiomas do WordPress para %2$s, portanto o locale foi salvo sem arquivos de tradução."
+         ],
+         "%1$s: the WordPress language pack for %2$s could not be requested, so the locale was saved without translation files.": [
+            "%1$s: o pacote de idiomas do WordPress para %2$s não pôde ser solicitado, portanto o locale foi salvo sem arquivos de tradução."
+         ],
+         "%1$s: the WordPress language pack for %2$s could not be downloaded, so the locale was saved without translation files.": [
+            "%1$s: o pacote de idiomas do WordPress para %2$s não pôde ser baixado, portanto o locale foi salvo sem arquivos de tradução."
+         ],
+         "%1$s: the links in post %2$s did not match the old language code and were left as they were.": [
+            "%1$s: os links no post %2$s não correspondiam ao código de idioma antigo e foram deixados como estavam."
+         ],
+         "%1$s: the links in post %2$s could not be rewritten.": [
+            "%1$s: os links no post %2$s não puderam ser reescritos."
+         ],
+         "%1$s: some translation jobs could not be cancelled.": [
+            "%1$s: alguns trabalhos de tradução não puderam ser cancelados."
+         ],
+         "%1$s: one step of the save kept failing and was skipped.": [
+            "%1$s: uma etapa do salvamento continuou falhando e foi ignorada."
+         ],
+         "%1$s: one item could not be updated (%2$s).": [
+            "%1$s: um item não pôde ser atualizado (%2$s)."
+         ],
+         "Is this a right-to-left language?": [
+            "Este é um idioma da direita para a esquerda?"
+         ],
+         "WPML lays out the admin and the site for this language from right to left, like Arabic or Hebrew.": [
+            "O WPML organiza o painel e o site para este idioma da direita para a esquerda, como o árabe ou o hebraico."
+         ],
+         "Reading direction": [
+            "Direção da leitura"
+         ],
+         "Left-to-right": [
+            "Da esquerda para a direita"
+         ],
+         "Right-to-left": [
+            "Da direita para a esquerda"
+         ],
+         "Let WPML decide": [
+            "Deixar o WPML decidir"
+         ],
+         "If you cannot find your language in the list, <a>add a custom language</a>.": [
+            "Se você não encontrar seu idioma na lista, <a>adicione um idioma personalizado</a>."
+         ],
+         "Default language": [
+            "Idioma padrão"
+         ],
+         "What is the current language of your website?": [
+            "Qual é o idioma atual do seu site?"
+         ],
+         "Translation languages": [
+            "Idiomas de tradução"
+         ],
+         "Which languages do you want to translate your site into?": [
+            "Para quais idiomas você deseja traduzir seu site?"
+         ],
+         "Click the lock to set the locale": [
+            "Clique no cadeado para definir o locale"
+         ],
+         "Not set": [
+            "Não definido"
+         ],
+         "Unlock this field": [
+            "Desbloquear este campo"
+         ],
+         "Recommended not to change. Click to unlock.": [
+            "Recomendado não alterar. Clique para desbloquear."
+         ],
+         "Uploading flag…": [
+            "Enviando bandeira…"
+         ],
+         "Display Code": [
+            "Código de exibição"
+         ],
+         "Stored code: %s": [
+            "Código armazenado: %s"
+         ],
+         "Encode URL": [
+            "Codificar URL"
+         ],
+         "Encode non-Latin characters": [
+            "Codificar caracteres não latinos"
+         ],
+         "Mapping": [
+            "Mapeamento"
+         ],
+         "This language is recognized as the same as your site’s default language, so it can’t be translated automatically. To carry your content over, duplicate it instead.": [
+            "Este idioma é reconhecido como o mesmo que o idioma padrão do seu site, portanto não pode ser traduzido automaticamente. Para transferir seu conteúdo, duplique-o."
+         ],
+         "How to Duplicate and Copy Content in WPML": [
+            "Como duplicar e copiar conteúdo no WPML"
+         ],
+         "Edit language labels…": [
+            "Editar rótulos de idioma…"
+         ],
+         "The default language can’t be removed.": [
+            "O idioma padrão não pode ser removido."
+         ],
+         "Delete language": [
+            "Excluir idioma"
+         ],
+         "Type to search all languages…": [
+            "Digite para pesquisar todos os idiomas…"
+         ],
+         "Unsaved changes": [
+            "Alterações não salvas"
+         ],
+         "Custom": [
+            "Personalizado"
+         ],
+         "This language stays on your site and keeps serving its pages. WPML is not creating new translations into it.": [
+            "Este idioma permanece no seu site e continua servindo suas páginas. O WPML não está criando novas traduções para ele."
+         ],
+         "Translation paused": [
+            "Tradução pausada"
+         ],
+         "This language isn’t supported by the automatic translation engine, so its content must be translated manually.": [
+            "Este idioma não é suportado pelo mecanismo de tradução automática, portanto seu conteúdo deve ser traduzido manualmente."
+         ],
+         "Same as default": [
+            "Igual ao padrão"
+         ],
+         "Manual translation only": [
+            "Apenas tradução manual"
+         ],
+         "This custom language uses the code of a language WPML offers. To translate it automatically, map it to a language.": [
+            "Este idioma personalizado usa o código de um idioma oferecido pelo WPML. Para traduzi-lo automaticamente, mapeie-o para um idioma."
+         ],
+         "Needs a mapping": [
+            "Precisa de mapeamento"
+         ],
+         "Default": [
+            "Padrão"
+         ],
+         "Set as default": [
+            "Definir como padrão"
+         ],
+         "Resume translating": [
+            "Retomar tradução"
+         ],
+         "Hide": [
+            "Ocultar"
+         ],
+         "The default language can’t be hidden.": [
+            "O idioma padrão não pode ser ocultado."
+         ],
+         "Completely hide content in this language from visitors and search engines, but keep it visible to yourself. Useful for reviewing translations that are still in progress.": [
+            "Ocultar completamente o conteúdo neste idioma de visitantes e mecanismos de busca, mas mantê-lo visível para você. Útil para revisar traduções que ainda estão em andamento."
+         ],
+         "Hide this language from visitors and search engines.": [
+            "Ocultar este idioma de visitantes e mecanismos de busca."
+         ],
+         "Edit the language code": [
+            "Editar o código do idioma"
+         ],
+         "Used to build this language’s page URLs (e.g. /en/).": [
+            "Usado para construir as URLs das páginas deste idioma (ex: /en/)."
+         ],
+         "Remove language": [
+            "Remover idioma"
+         ],
+         "Undo": [
+            "Desfazer"
+         ],
+         "Collapse ▴": [
+            "Recolher ▴"
+         ],
+         "Edit ▾": [
+            "Editar ▾"
+         ],
+         "Recognized as the same language as the default": [
+            "Reconhecido como o mesmo idioma que o padrão"
+         ],
+         "%s (Regional)": [
+            "%s (regional)"
+         ],
+         "%s is no longer in this list. Use “add a custom language” below to add it.": [
+            "%s não está mais nesta lista. Use “adicionar um idioma personalizado” abaixo para adicioná-lo."
+         ],
+         "Search and add a language…": [
+            "Pesquisar e adicionar um idioma…"
+         ],
+         "Search and add a language": [
+            "Pesquisar e adicionar um idioma"
+         ],
+         "Regional": [
+            "Regional"
+         ],
+         "International": [
+            "Internacional"
+         ],
+         "This language has a single fixed country.": [
+            "Este idioma possui um único país fixo."
+         ],
+         "Select a country…": [
+            "Selecionar um país…"
+         ],
+         "Default language (currently %s)": [
+            "Idioma padrão (atualmente %s)"
+         ],
+         "Flag of %s": [
+            "Bandeira de %s"
+         ],
+         "Current flag": [
+            "Bandeira atual"
+         ],
+         "Custom flag": [
+            "Bandeira personalizada"
+         ],
+         "Neutral globe": [
+            "Globo neutro"
+         ],
+         "Country code as the flag": [
+            "Código do país como bandeira"
+         ],
+         "Language flag": [
+            "Bandeira do idioma"
+         ],
+         "Choose a flag…": [
+            "Escolher uma bandeira…"
+         ],
+         "Countries": [
+            "Países"
+         ],
+         "Regions": [
+            "Regiões"
+         ],
+         "Languages": [
+            "Idiomas"
+         ],
+         "Organisations": [
+            "Organizações"
+         ],
+         "Upload a custom SVG…": [
+            "Enviar um SVG personalizado…"
+         ],
+         "Match automatically": [
+            "Corresponder automaticamente"
+         ],
+         "Map to a supported language": [
+            "Mapear para um idioma suportado"
+         ],
+         "Choose a language to map to…": [
+            "Escolha um idioma para mapear…"
+         ],
+         "No matches": [
+            "Nenhuma correspondência"
+         ],
+         "The items you include below are removed, along with their translation records. Originals in your other languages are untouched, and image files stay on disk. Comments on these posts are deleted with them. Nothing in %s’s sibling languages is deleted.": [
+            "Os itens que você incluir abaixo serão removidos, junto com seus registros de tradução. Os originais em seus outros idiomas não serão tocados e os arquivos de imagem permanecerão no disco. Os comentários nesses posts serão excluídos com eles. Nada nos idiomas irmãos de %s será excluído."
+         ],
+         "Skip them, move everything else.": [
+            "Pular eles, mover todo o resto."
+         ],
+         "%1$d item that already has a %3$s version stays under %2$s. You can deal with it separately.": [
+            "%1$d item que já tem uma versão em %3$s permanece em %2$s. Você pode lidar com isso separadamente.",
+            "%1$d itens que já têm uma versão em %3$s permanecem em %2$s. Você pode lidar com eles separadamente."
+         ],
+         "Merge them into the %s ones.": [
+            "Mesclar eles com os de %s."
+         ],
+         "Duplicate terms are removed": [
+            "Termos duplicados são removidos"
+         ],
+         "Objects and settings move onto the existing version; the duplicate is deleted. Nothing in the target language is deleted.": [
+            "Objetos e configurações movem para a versão existente; o duplicado é apagado. Nada no idioma de destino é apagado."
+         ],
+         "What should happen to the items already in %s?": [
+            "O que deve acontecer com os itens que já estão em %s?"
+         ],
+         "%1$d item from %2$s already has a version in the language you picked. Pick the outcome you want.": [
+            "%1$d item de %2$s já tem uma versão no idioma que você escolheu. Escolha o resultado que você quer.",
+            "%1$d itens de %2$s já têm uma versão no idioma que você escolheu. Escolha o resultado que você quer."
+         ],
+         "What should happen to the colliding items": [
+            "O que deve acontecer com os itens conflitantes"
+         ],
+         "Move into %s": [
+            "Mover para %s"
+         ],
+         "Reassigns the %1$d %2$s item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring.": [
+            "Reatribui o %1$d item de %2$s a um idioma que você escolher, mantendo suas conexões com os outros idiomas. Para renomear e mesclar, não para desativar.",
+            "Reatribui os %1$d itens de %2$s a um idioma que você escolher, mantendo suas conexões com os outros idiomas. Para renomear e mesclar, não para desativar."
+         ],
+         "Only the content moves. Per-language settings other plugins keep — for example which currencies WooCommerce Multilingual offers in a language — stay under the old language code and are not carried over.": [
+            "Apenas o conteúdo é movido. Configurações por idioma que outros plugins mantêm — por exemplo, quais moedas o WooCommerce Multilingual oferece em um idioma — permanecem sob o código de idioma antigo e não são transferidas."
+         ],
+         "Moved from %1$s into %2$s.": [
+            "Movido de %1$s para %2$s."
+         ],
+         "%d content item moved": [
+            "%d item de conteúdo movido",
+            "%d itens de conteúdo movidos"
+         ],
+         "%d link to the original language updated": [
+            "%d link para o idioma original atualizado",
+            "%d links para o idioma original atualizados"
+         ],
+         "%d string translation moved": [
+            "%d tradução de string movida",
+            "%d traduções de strings movidas"
+         ],
+         "%d string moved": [
+            "%d string movida",
+            "%d strings movidas"
+         ],
+         "%1$d item stayed behind: its translation group already has a %2$s version. It is still listed under %3$s in Removed languages.": [
+            "%1$d item ficou para trás: seu grupo de tradução já possui uma versão em %2$s. Ele ainda está listado sob %3$s em Idiomas removidos.",
+            "%1$d itens ficaram para trás: seus grupos de tradução já possuem uma versão em %2$s. Eles ainda estão listados sob %3$s em Idiomas removidos."
+         ],
+         "%1$d duplicate term merged into the %2$s version and removed.": [
+            "%1$d termo duplicado mesclado na versão de %2$s e removido.",
+            "%1$d termos duplicados mesclados na versão de %2$s e removidos."
+         ],
+         "%1$d item became its own document in %2$s.": [
+            "%1$d item se tornou seu próprio documento em %2$s.",
+            "%1$d itens se tornaram seus próprios documentos em %2$s."
+         ],
+         "%1$d item of a kind this tool does not move or merge is still under %2$s.": [
+            "%1$d item de um tipo que esta ferramenta não move ou mescla ainda está em %2$s.",
+            "%1$d itens de um tipo que esta ferramenta não move ou mescla ainda estão em %2$s."
+         ],
+         "What the deletion removed from %s": [
+            "O que a exclusão removeu de %s"
+         ],
+         "The items that have a Trash are in it. Categories, tags and menus have no WordPress Trash, so those were deleted right away.": [
+            "Os itens que possuem uma Lixeira estão nela. Categorias, tags e menus não possuem Lixeira no WordPress, portanto foram excluídos imediatamente."
+         ],
+         "This site has the Trash disabled, so the item it removed was deleted permanently — there is nothing to restore.": [
+            "Este site está com a Lixeira desativada, portanto o item removido foi excluído permanentemente — não há nada para restaurar.",
+            "Este site está com a Lixeira desativada, portanto os itens removidos foram excluídos permanentemente — não há nada para restaurar."
+         ],
+         "Nothing was left to remove.": [
+            "Não restou nada para remover."
+         ],
+         "String translations": [
+            "Traduções de strings"
+         ],
+         "Translation jobs": [
+            "Trabalhos de tradução"
+         ],
+         "%1$d removed · %2$d kept · %3$d skipped": [
+            "%1$d removidos · %2$d mantidos · %3$d ignorados"
+         ],
+         "Skipped because: %s": [
+            "Ignorado porque: %s"
+         ],
+         "No translation jobs needed cancelling.": [
+            "Nenhum trabalho de tradução precisou ser cancelado."
+         ],
+         "%d translation job was cancelled without charge.": [
+            "%d trabalho de tradução foi cancelado sem cobrança.",
+            "%d trabalhos de tradução foram cancelados sem cobrança."
+         ],
+         "%d job was stopped mid-work — the words already sent are still charged.": [
+            "%d trabalho foi interrompido no meio — as palavras já enviadas ainda são cobradas.",
+            "%d trabalhos foram interrompidos no meio — as palavras já enviadas ainda são cobradas."
+         ],
+         "%d more skipped item is counted above but not listed.": [
+            "Mais %d item ignorado é contado acima, mas não listado.",
+            "Mais %d itens ignorados são contados acima, mas não listados."
+         ],
+         "Removed %s": [
+            "Removido em %s"
+         ],
+         "Removal date not recorded": [
+            "Data de remoção não registrada"
+         ],
+         "%d item still here": [
+            "%d item ainda aqui",
+            "%d itens ainda aqui"
+         ],
+         "You created this language yourself, so it cannot be put back from here. Add it again as a custom language with the same code and its content comes back with it.": [
+            "Você mesmo criou este idioma, portanto ele não pode ser colocado de volta por aqui. Adicione-o novamente como um idioma personalizado com o mesmo código e seu conteúdo voltará com ele."
+         ],
+         "This language has no country on record. Add it back from the language picker, which asks which country the content belongs to.": [
+            "Este idioma não possui país registrado. Adicione-o de volta pelo seletor de idiomas, que perguntará a qual país o conteúdo pertence."
+         ],
+         "This language is not in WPML’s language list, so it cannot be added back from here.": [
+            "Este idioma não está na lista de idiomas do WPML, portanto não pode ser adicionado de volta por aqui."
+         ],
+         "Added back — press Save": [
+            "Adicionado de volta — pressione Salvar"
+         ],
+         "Put back": [
+            "Colocar de volta"
+         ],
+         "Move": [
+            "Mover"
+         ],
+         "Delete": [
+            "Excluir"
+         ],
+         "Removed languages": [
+            "Idiomas removidos"
+         ],
+         "These languages are off your site but still hold content. Removing a language keeps what it holds — from here you can put a language back, move its content into another language, or delete that content for good.": [
+            "Estes idiomas estão fora do seu site, mas ainda possuem conteúdo. Remover um idioma mantém o que ele contém — a partir daqui você pode colocar um idioma de volta, mover seu conteúdo para outro idioma ou excluir esse conteúdo permanentemente."
+         ],
+         "No language is left holding content. %s is now empty.": [
+            "Nenhum idioma ficou com conteúdo. %s está agora vazio."
+         ],
+         "You do not have permission to move a language’s content.": [
+            "Você não tem permissão para mover o conteúdo de um idioma."
+         ],
+         "Pick the language to move this content into, then try again.": [
+            "Escolha o idioma para o qual mover este conteúdo e tente novamente."
+         ],
+         "That is the same language. Pick a different one to move the content into.": [
+            "Este é o mesmo idioma. Escolha um diferente para mover o conteúdo."
+         ],
+         "%s is back on your site, so there is nothing to move. Refresh the list.": [
+            "%s está de volta ao seu site, então não há nada para mover. Atualize a lista."
+         ],
+         "%s no longer holds any content. Refresh the list.": [
+            "%s não possui mais nenhum conteúdo. Atualize a lista."
+         ],
+         "%s is not one of your site’s active languages. Pick another one.": [
+            "%s não é um dos idiomas ativos do seu site. Escolha outro."
+         ],
+         "Moving content into a different language needs the confirmation below.": [
+            "Mover conteúdo para um idioma diferente precisa da confirmação abaixo."
+         ],
+         "WPML could not move this content (%s).": [
+            "O WPML não pôde mover este conteúdo (%s)."
+         ],
+         "Move them to the Trash — you have %d day to change your mind": [
+            "Mover para a lixeira — você tem %d dia para mudar de ideia",
+            "Mover para a lixeira — você tem %d dias para mudar de ideia"
+         ],
+         "Delete permanently — this site has the Trash disabled": [
+            "Excluir permanentemente — este site está com a lixeira desativada"
+         ],
+         "Trash first, or delete now": [
+            "Mover para a lixeira primeiro ou excluir agora"
+         ],
+         "How to delete": [
+            "Como excluir"
+         ],
+         "Items already in the Trash are left where they are.": [
+            "Itens que já estão na lixeira são deixados onde estão."
+         ],
+         "Loading languages": [
+            "Carregando idiomas"
+         ],
+         "The name of this language variant as it appears in the language switcher.": [
+            "O nome desta variante de idioma como aparece no seletor de idiomas."
+         ],
+         "Sets the regional variant of the language. Automatic Translation uses this to produce more accurate translations.": [
+            "Define a variante regional do idioma. A tradução automática usa isso para produzir traduções mais precisas."
+         ],
+         "The flag shown next to this language in the front-end language switcher.": [
+            "A bandeira exibida ao lado deste idioma no seletor de idiomas do frontend."
+         ],
+         "The WordPress locale, for example en_US. WordPress uses it to load the matching theme and plugin translation files.": [
+            "O locale do WordPress, por exemplo en_US. O WordPress o usa para carregar os arquivos de tradução de temas e plugins correspondentes."
+         ],
+         "Used to build this language’s page URLs, for example /en/.": [
+            "Usado para construir as URLs das páginas deste idioma, por exemplo /en/."
+         ],
+         "The hreflang value added to the page HTML. Search engines use it to serve the correct language or regional version.": [
+            "O valor hreflang adicionado ao HTML da página. Os mecanismos de busca o usam para exibir o idioma ou a versão regional correta."
+         ],
+         "Determines whether non-Latin characters in URLs are encoded. Leave it off unless your CDN, server, or redirects require ASCII-only URLs.": [
+            "Determina se caracteres não latinos nas URLs são codificados. Deixe desativado, a menos que seu CDN, servidor ou redirecionamentos exijam URLs apenas em ASCII."
+         ],
+         "Maps this custom language variant to a supported language so automatic translation engines can translate it. Choose “Match automatically” to let WPML find the closest supported language itself.": [
+            "Mapeia esta variante de idioma personalizada para um idioma compatível para que os mecanismos de tradução automática possam traduzi-la. Escolha “Corresponder automaticamente” para deixar o WPML encontrar o idioma compatível mais próximo."
+         ],
+         "Only SVG flags can be uploaded.": [
+            "Apenas bandeiras em SVG podem ser enviadas."
+         ],
+         "The flag is too large. Maximum size is %s.": [
+            "A bandeira é muito grande. O tamanho máximo é %s."
+         ],
+         "The file could not be read.": [
+            "O arquivo não pôde ser lido."
+         ],
+         "The flag could not be saved. Please try again.": [
+            "A bandeira não pôde ser salva. Tente novamente."
+         ],
+         "%1$s is already active, set to %2$s. Change its country instead of adding it again.": [
+            "%1$s já está ativo, definido como %2$s. Altere seu país em vez de adicioná-lo novamente."
+         ],
+         "%1$s is already active. Change its country instead of adding it again.": [
+            "%1$s já está ativo. Altere seu país em vez de adicioná-lo novamente."
+         ],
+         "WPML couldn’t apply the change it detected for %1$s: %2$s still has an unsaved change. Save or revert it first.": [
+            "O WPML não pôde aplicar a alteração detectada para %1$s: %2$s ainda tem uma alteração não salva. Salve ou reverta-a primeiro."
+         ],
+         "Copied to clipboard.": [
+            "Copiado para a área de transferência."
+         ],
+         "An earlier language save is paused. Resume or dismiss it first, then save this change.": [
+            "Um salvamento de idioma anterior está pausado. Retome ou descarte-o primeiro e, em seguida, salve esta alteração."
+         ],
+         "WPML is still finishing an earlier language save. Wait for it to finish, then apply this change.": [
+            "O WPML ainda está concluindo um salvamento de idioma anterior. Aguarde a conclusão e aplique esta alteração."
+         ],
+         "Language settings saved.": [
+            "Configurações de idioma salvas."
+         ],
+         "No changes to save.": [
+            "Nenhuma alteração para salvar."
+         ],
+         "Couldn’t check your languages against WPML’s catalogue.": [
+            "Não foi possível verificar seus idiomas em relação ao catálogo do WPML."
+         ],
+         "Reset done. %d more language still differs from WPML’s catalogue — open Reset language defaults again to put it back.": [
+            "Redefinição concluída. Mais %d idioma ainda difere do catálogo do WPML — abra Redefinir padrões de idioma novamente para restaurá-lo.",
+            "Redefinição concluída. Mais %d idiomas ainda diferem do catálogo do WPML — abra Redefinir padrões de idioma novamente para restaurá-los."
+         ],
+         "Your languages are back on WPML’s catalogue defaults.": [
+            "Seus idiomas voltaram aos padrões do catálogo do WPML."
+         ],
+         "Couldn’t reset the language defaults.": [
+            "Não foi possível redefinir os padrões de idioma."
+         ],
+         "%1$s \"%2$s\" is already used by %3$s.": [
+            "%1$s “%2$s” já é usado por %3$s."
+         ],
+         "The country of a saved language can’t be changed right now — the background save this needs is switched off on this site.": [
+            "O país de um idioma salvo não pode ser alterado agora — o salvamento em segundo plano necessário para isso está desativado neste site."
+         ],
+         "Cost to translate your content into %s": [
+            "Custo para traduzir seu conteúdo para %s"
+         ],
+         "Cost to translate your content into the new languages": [
+            "Custo para traduzir seu conteúdo para os novos idiomas"
+         ],
+         "Add this language": [
+            "Adicionar este idioma"
+         ],
+         "Costs are based on your current content settings. Adjust them from the Translations dashboard.": [
+            "Os custos são baseados nas suas configurações de conteúdo atuais. Ajuste-os no painel de traduções."
+         ],
+         "Manage and Hide Site Languages": [
+            "Gerenciar e ocultar idiomas do site"
+         ],
+         "Add, remove, configure, and hide your site’s translation languages. Click Edit on any row to edit its country, flag, codes, mapping, and visibility.": [
+            "Adicione, remova, configure e oculte os idiomas de tradução do seu site. Clique em Editar em qualquer linha para editar seu país, bandeira, códigos, mapeamento e visibilidade."
+         ],
+         "WPML couldn’t communicate with our translation system. You can still edit and save your languages. Please contact support if the problem persists.": [
+            "O WPML não conseguiu se comunicar com nosso sistema de tradução. Você ainda pode editar e salvar seus idiomas. Entre em contato com o suporte se o problema persistir."
+         ],
+         "Please <support>contact our support</support> and provide the error details below.": [
+            "Por favor, <support>entre em contato com nosso suporte</support> e forneça os detalhes do erro abaixo."
+         ],
+         "Show more": [
+            "Exibir mais"
+         ],
+         "Show less": [
+            "Exibir menos"
+         ],
+         "Copy error details": [
+            "Copiar detalhes do erro"
+         ],
+         "Copy": [
+            "Copiar"
+         ],
+         "Click to copy": [
+            "Clique para copiar"
+         ],
+         "Reset language defaults…": [
+            "Redefinir padrões de idioma…"
+         ],
+         "Saving…": [
+            "Salvando…"
+         ],
+         "Calculate Costs": [
+            "Calcular custos"
+         ],
+         "Content brought into the language you added": [
+            "Conteúdo trazido para o idioma que você adicionou"
+         ],
+         "The language was added. Its content did not move.": [
+            "O idioma foi adicionado. Seu conteúdo não foi movido."
+         ],
+         "Verifying automatic translation compatibility": [
+            "Verificando a compatibilidade da tradução automática"
+         ],
+         "Updating language presets…": [
+            "Atualizando predefinições de idioma…"
+         ],
+         "Language changes saved.": [
+            "Alterações de idioma salvas."
+         ],
+         "Apply and save": [
+            "Aplicar e salvar"
+         ],
+         "Close modal": [
+            "Fechar modal"
+         ]
+      }
+   }
+}

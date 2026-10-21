@@ -19,17 +19,10 @@ class OptionPageHooks implements \IWPML_Backend_Action {
 	const HOOK_PRIORITY_BEFORE = 9;
 	const HOOK_PRIORITY_AFTER  = 11;
 
-	/**
-	 * @var Strategy
-	 */
 	private $shuffled;
 
-	/**
-	 * @var CheckboxCondition
-	 */
 	private $checkboxCondition;
 
-	/** @var string|null */
 	private $optionsPageId;
 
 	public function __construct(
@@ -40,11 +33,7 @@ class OptionPageHooks implements \IWPML_Backend_Action {
 		$this->checkboxCondition = $checkboxCondition;
 	}
 
-	/**
-	 * @return null|string
-	 */
 	private function getId() {
-		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification,WordPress.VIP.SuperGlobalInputUsage.AccessDetected
 		$pageSlug = Sanitize::stringProp( 'page', $_REQUEST );
 		if ( ! $pageSlug ) {
 			return null;
@@ -53,9 +42,6 @@ class OptionPageHooks implements \IWPML_Backend_Action {
 		return is_array( $page ) ? Obj::prop( 'post_id', $page ) : null;
 	}
 
-	/**
-	 * @return void
-	 */
 	public function add_hooks() {
 		$this->optionsPageId = $this->getId();
 		if ( ! $this->optionsPageId ) {

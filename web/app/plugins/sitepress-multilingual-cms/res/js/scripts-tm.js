@@ -8,9 +8,6 @@ var WPML_TM = WPML_TM || {};
 
     jQuery(function () {
 
-
-        jQuery(document).on('change', '.icl_tj_select_translator select', icl_tm_assign_translator);
-
         // Translator notes - translation dashboard - start
         jQuery('.icl_tn_link').click(function () {
             jQuery('.icl_post_note:visible').slideUp();
@@ -37,43 +34,21 @@ var WPML_TM = WPML_TM || {};
             note_div.slideUp();
         });
 
-        jQuery('.icl_tn_save').click(function () {
-            var anchor = jQuery(this);
-            anchor.closest('table').find('input').prop('disabled', true);
-            var tn_post_id = anchor.closest('table').find('.icl_tn_post_id').val();
-            var note = jQuery('#post_note_' + tn_post_id).val();
-
-            jQuery.ajax({
-                type: "POST",
-                url: icl_ajx_url,
-                data: "icl_ajx_action=save_translator_note&note=" + note + '&post_id=' + tn_post_id + '&_icl_nonce=' + jQuery('#_icl_nonce_stn_').val(),
-                success: function () {
-                    anchor.closest('table').find('input').prop('disabled', false);
-                    anchor.closest('table').parent().slideUp();
-                    var note_icon = jQuery('#icl_tn_link_' + tn_post_id).find('i');
-                    if (anchor.closest('table').prev().val()) {
-                        note_icon.removeClass('otgs-ico-note-add-o').addClass('otgs-ico-note-edit-o');
-                    } else {
-                        note_icon.removeClass('otgs-ico-note-edit-o').addClass('otgs-ico-note-add-o');
-                    }
-                }
-            });
-
-        });
+        // wpmldev-7978: the `save_translator_note` ajax emitter was removed —
+        // no server-side handler for that legacy `icl_ajx_action` branch has
+        // existed in the product for a long time and no screen renders the
+        // `.icl_tn_save` control any more. Translator notes are saved with the
+        // post itself (`icl_tn_note`, see wpml-admin-post-actions.class.php).
         // Translator notes - translation dashboard - end
 
-        // MC Setup
+        // MC Setup — mirrored by res/js/translation-options.js for licenses
+        // without TM (wpmldev-8391); keep both lists in sync.
         jQuery('#icl_doc_translation_method').submit(iclSaveForm);
         jQuery('#icl_page_sync_options').submit(iclSaveForm);
         jQuery('form[name="icl_custom_tax_sync_options"]').submit(iclSaveForm);
         jQuery('form[name="icl_custom_posts_sync_options"]').submit(iclSaveForm);
         jQuery('form[name="icl_cf_translation"]').submit(iclSaveForm);
         jQuery('form[name="icl_tcf_translation"]').submit(iclSaveForm);
-        jQuery('form[name="wpml-old-jobs-editor"]').submit(iclSaveForm);
-
-        var icl_translation_jobs_basket = jQuery('#icl-translation-jobs-basket');
-        icl_translation_jobs_basket.find('th :checkbox').change(iclTmSelectAllJobsBasket);
-        icl_translation_jobs_basket.find('td :checkbox').change(iclTmUpdateJobsSelectionBasket);
 
         jQuery('#icl_tm_jobs_dup_submit').click(function () {
             return confirm(jQuery(this).next().html());
@@ -88,38 +63,12 @@ var WPML_TM = WPML_TM || {};
 
         // --- End: XLIFF form handler ---
 
-        // Make the number in the translation basket tab flash.
-        var translation_basket_flash = function (count) {
-
-            var basket_count = jQuery('#wpml-basket-items');
-            var basket_tab = basket_count.parent();
-
-            if (basket_count.length && count) {
-                count--;
-
-                var originalBackgroundColor = basket_tab.css('background-color');
-                var originalColor = basket_tab.css('color');
-
-                flash_animate_element(basket_tab, '#0085ba', '#ffffff');
-                if (count) {
-                    flash_animate_element(basket_tab, originalBackgroundColor, originalColor);
-                }
-
-                translation_basket_flash(count);
-
-            }
-        };
-
-        var flash_animate_element = function (element, backgroundColor, color) {
-            element.animate({opacity: 1}, 500, function () {
-                    element.css({backgroundColor: backgroundColor, color: color});
-                }
-            );
-        };
-
-        if (location.href.indexOf("main.php&sm=basket") == -1 ) {
-            translation_basket_flash (3);
+        // --- Start: Notifications form handler ---
+        if (jQuery('#translation-notifications-form').length) {
+            jQuery(document).off('submit', '#translation-notifications-form');
+            jQuery(document).on('submit', '#translation-notifications-form', icl_save_notification_settings);
         }
+        // --- End: Notifications form handler ---
     });
 
     function icl_xliff_set_newlines(e) {
@@ -163,58 +112,7 @@ var WPML_TM = WPML_TM || {};
         return false;
     }
 
-    function icl_tm_assign_translator() {
-        var this_translator = jQuery(this);
-        var translator_id = this_translator.val();
-        var icl_tj_select_translator = this_translator.closest('.icl_tj_select_translator');
-        var translation_controls = icl_tj_select_translator.find('.icl_tj_select_translator_controls');
-        var job_id = translation_controls.attr('id').replace(/^icl_tj_tc_/, '');
-        translation_controls.show();
-        translation_controls.find('.icl_tj_cancel').click(function () {
-            this_translator.val(jQuery('#icl_tj_ov_' + job_id).val());
-            translation_controls.hide();
-        });
-        var jobType = jQuery('#icl_tj_ty_' + job_id).val();
-        translation_controls.find('.icl_tj_ok').off().click(function () {
-            icl_tm_assign_translator_request(job_id, translator_id, this_translator, jobType);
-        });
-
-    }
-
-    function icl_tm_assign_translator_request(job_id, translator_id, select, jobType) {
-        var translation_controls = select.closest('.icl_tj_select_translator').find('.icl_tj_select_translator_controls');
-        select.prop('disabled', true);
-        translation_controls.find('.icl_tj_cancel, .icl_tj_ok').prop('disabled', true);
-        var td_wrapper = select.parent().parent();
-
-        var ajaxLoader = jQuery( icl_ajxloaderimg ).insertBefore( translation_controls.find( '.icl_tj_ok' ) );
-
-        jQuery.ajax({
-            type: "POST",
-            url: icl_ajx_url,
-            dataType: 'json',
-            data: 'icl_ajx_action=assign_translator&job_id=' + job_id + '&translator_id=' + translator_id + '&job_type=' + jobType + '&_icl_nonce=' + jQuery('#_icl_nonce_at').val(),
-            success: function (msg) {
-                if (!msg.error) {
-                    translation_controls.hide();
-                    /** @namespace msg.service */
-                    if (msg.service !== 'local') {
-                        td_wrapper.html(msg.message);
-                    }
-                }
-                select.prop('disabled', false);
-                translation_controls.find('.icl_tj_cancel, .icl_tj_ok').prop('disabled', false);
-                ajaxLoader.remove();
-                translation_controls.hide();
-
-
-            }
-        });
-
-        return false;
-    }
-
-    function icl_tm_set_pickup_method(e) {
+    function icl_save_notification_settings(e) {
         e.preventDefault();
 
         var form = jQuery(this);
@@ -225,15 +123,18 @@ var WPML_TM = WPML_TM || {};
 
         jQuery.ajax({
             type: "POST",
-            url: icl_ajx_url,
+            url: ajaxurl,
             dataType: 'json',
-            data: 'icl_ajx_action=set_pickup_mode&' + form.serialize(),
+            data: form.serialize() + '&action=save_notification_settings',
             success: function (msg) {
-                if ( msg.success ) {
-                    icl_translations_pickup_box_populate();
+                if (msg && msg.success) {
+                    fadeInAjxResp('#icl_ajx_response_notifications', icl_ajx_saved);
                 } else {
-                    fadeInAjxResp( '#icl_ajx_response_tpm', msg.data.message, true );
+                    fadeInAjxResp('#icl_ajx_response_notifications', icl_ajx_error, true);
                 }
+            },
+            error: function () {
+                fadeInAjxResp('#icl_ajx_response_notifications', icl_ajx_error, true);
             },
             complete: function () {
                 ajaxLoader.remove();
@@ -242,36 +143,6 @@ var WPML_TM = WPML_TM || {};
         });
 
         return false;
-    }
-
-    function iclTmSelectAllJobsBasket(caller) {
-        jQuery('#icl-translation-jobs-basket').find(':checkbox').prop('checked', jQuery(caller).prop('checked'));
-        jQuery('#icl-tm-jobs-cancel-but').prop('disabled', !jQuery(caller).prop('checked'));
-    }
-
-    function updateTMSelectAllCheckbox(tableSelector) {
-        jQuery(tableSelector).find('td.js-check-all :checkbox').prop(
-            'checked',
-            !jQuery(tableSelector).find('.js-wpml-job-row :checkbox:not(:checked)').length
-        );
-    }
-    function updateJobCheckboxes(table_selector) {
-        var job_parent = jQuery(table_selector);
-
-        jQuery('#icl-tm-jobs-cancel-but').prop('disabled', job_parent.find(':checkbox:checked').length === 0);
-        if (job_parent.find(':checkbox:checked').length > 0) {
-            var checked_items = job_parent.find('th :checkbox');
-            if (job_parent.find('td :checkbox:checked').length === job_parent.find('td :checkbox').length) {
-                checked_items.prop('checked', true);
-            } else {
-                checked_items.prop('checked', false);
-            }
-        }
-    }
-
-    function iclTmUpdateJobsSelectionBasket() {
-        iclTmSelectAllJobsBasket(this);
-        updateJobCheckboxes('#icl-translation-jobs-basket');
     }
 
     if (typeof String.prototype.startsWith !== 'function') {
@@ -291,11 +162,16 @@ var WPML_TM = WPML_TM || {};
     $(function () {
         $('#translation-notifications').on('change', 'input', function (e) {
             var input = $(e.target);
-            var child = $('[name="' + input.data('child') + '"]');
-
-            if (child.length) {
-                child.prop('disabled', !input.is(":checked"));
-            }
+						var children = [];
+						if ( input.data('child') ) {
+							children = input.data('child').split('||');
+						}
+						for (var i = 0; i < children.length; i++) {
+							var child = $('[name="' + children[i] + '"]');
+							if ( child.length ) {
+									child.prop('disabled', !input.is(":checked"));
+							}
+						}
 
         });
     });

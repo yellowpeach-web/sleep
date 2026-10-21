@@ -36,16 +36,30 @@ class WPML_Term_Language_Filter extends WPML_Language_Filter_Bar {
 	}
 
 	protected function get_count_data( $taxonomy ) {
-		$res_query = "	SELECT language_code, COUNT(tm.term_id) AS c
-						FROM {$this->wpdb->prefix}icl_translations t
-						JOIN {$this->wpdb->term_taxonomy} tt
-							ON t.element_id = tt.term_taxonomy_id
-							AND t.element_type = CONCAT('tax_', tt.taxonomy)
-						JOIN {$this->wpdb->terms} tm
-							ON tt.term_id = tm.term_id
-						WHERE tt.taxonomy = %s
-						" . $this->extra_conditions_snippet();
+		$wpdb = $this->wpdb;
 
-		return $this->wpdb->get_results( $this->wpdb->prepare( $res_query, $taxonomy ) );
+		if ( empty( $this->active_languages ) ) {
+			return array();
+		}
+
+		$languages = array_keys( $this->active_languages );
+
+		$language_snippet = apply_filters(
+			'wpml_language_filter_extra_conditions_snippet',
+			"AND t.language_code IN (" . implode( ', ', array_fill( 0, count( $languages ), '%s' ) ) . ") GROUP BY t.language_code"
+		);
+
+		$sql = "SELECT t.language_code, COUNT(tm.term_id) AS c
+				 FROM {$wpdb->prefix}icl_translations t
+				 JOIN {$wpdb->term_taxonomy} tt
+					ON t.element_id = tt.term_taxonomy_id
+					AND t.element_type = CONCAT('tax_', tt.taxonomy)
+				 JOIN {$wpdb->terms} tm ON tt.term_id = tm.term_id
+				 WHERE tt.taxonomy = %s
+					{$language_snippet}";
+
+		return $wpdb->get_results(
+			$wpdb->prepare( $sql, array_merge( array( $taxonomy ), $languages ) )
+		);
 	}
 }

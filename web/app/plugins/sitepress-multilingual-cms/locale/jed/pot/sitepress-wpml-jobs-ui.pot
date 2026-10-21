@@ -3,18 +3,9 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/js/ate/status-icons/TranslationQueue.js:46
-#: src/js/jobs/components/Cells/StatusCell.js:22
-msgid "Draft — Pending review"
-msgstr ""
-
-#: src/js/ate/status-icons/TranslationQueue.js:49
-msgid "Complete"
-msgstr ""
-
-#: src/js/ate/status-icons/TranslationQueue.js:60
-#: src/js/jobs/components/Cells/StatusCell.js:32
-msgid "Insufficient funds"
+#: src/js/ate/shared/listOf.js:29
+#. A list of names (custom fields, post types) in a sentence: "a, b and c". %1$s: all but the last, already joined with commas, %2$s: the last one.
+msgid "%1$s and %2$s"
 msgstr ""
 
 #: src/js/jobs/components/Actions/BatchSync.js:39
@@ -22,10 +13,12 @@ msgid "Start batch sync"
 msgstr ""
 
 #: src/js/jobs/components/Actions/Cancel.js:35
+#. Tooltip of the icon that cancels one translation job in the jobs table; verb, imperative.
 msgid "Cancel job"
 msgstr ""
 
-#: src/js/jobs/components/Actions/ContinieReview.js:44
+#: src/js/jobs/components/Actions/ContinieReview.js:53
+#. Button label that opens a translation for reviewing again; verb, imperative.
 msgid "Continue reviewing"
 msgstr ""
 
@@ -33,23 +26,39 @@ msgstr ""
 msgid "Start downloading XLIFF file"
 msgstr ""
 
-#: src/js/jobs/components/Actions/Edit.js:38
+#: src/js/jobs/components/Actions/Edit.js:25
+#. Button label that opens a translation for editing: verb, imperative, not the noun "an edit".
 msgid "Edit"
 msgstr ""
 
 #: src/js/jobs/components/Actions/GetTranslation.js:31
+#. Tooltip of the icon that downloads the finished translation of one job; verb, imperative.
 msgid "Get translation"
 msgstr ""
 
-#: src/js/jobs/components/Actions/Resign.js:35
+#: src/js/jobs/components/Actions/JobListActions.js:133
+#. Tooltip and screen-reader label of the edit icon in the jobs table, on a translation that is already complete: verb, imperative.
+msgid "Edit Translation"
+msgstr ""
+
+#: src/js/jobs/components/Actions/JobListActions.js:148
+#. Tooltip and screen-reader label of the edit icon in the jobs table, on a translation that is still unfinished: verb, imperative.
+msgid "Continue Translating"
+msgstr ""
+
+#: src/js/jobs/components/Actions/Resign.js:42
+#. Button label that gives a translation job back so somebody else can take it: verb, imperative, not the noun "a resignation".
 msgid "Resign"
 msgstr ""
 
-#: src/js/jobs/components/Actions/Review.js:46
+#: src/js/jobs/components/Actions/Review.js:58
+#: src/js/jobs/components/Actions/ReviewInATE.js:35
+#. Button label that opens a finished translation for reviewing: verb, imperative, not the noun "a review".
 msgid "Review"
 msgstr ""
 
 #: src/js/jobs/components/Actions/TakeAndTranslate.js:33
+#. Button label that opens the translation editor for a job the current user already holds: verb, imperative.
 msgid "Translate"
 msgstr ""
 
@@ -57,43 +66,57 @@ msgstr ""
 msgid "Take and Translate"
 msgstr ""
 
+#: src/js/jobs/components/Actions/TranslateEverythingHint.js:11
+#. Tooltip in the Actions column of the jobs table on a job that Translate Everything created, where the Cancel job icon is not offered.
+msgid ""
+"This job was created by Translate Everything and cannot be cancelled on its "
+"own. To stop it, turn off Translate Everything from the Translation "
+"Dashboard."
+msgstr ""
+
 #: src/js/jobs/components/Actions/View.js:22
+#. Button label that opens the translated page: verb, imperative, not the noun "a view".
 msgid "View"
 msgstr ""
 
-#: src/js/jobs/components/BulkActions/Actions/AbortReviewsDialog.js:48
-msgid "Delete Translations"
-msgstr ""
-
-#: src/js/jobs/components/BulkActions/Actions/AbortReviewsDialog.js:56
-msgid "Keep Translations as Draft"
-msgstr ""
-
-#: src/js/jobs/components/BulkActions/Actions/AbortReviewsDialog.js:63
+#: src/js/jobs/components/BulkActions/Actions/AbortReviewsDialog.js:105
 msgid "Never mind. I want to review these translations."
 msgstr ""
 
-#: src/js/jobs/components/BulkActions/Actions/AbortReviewsDialog.js:74
+#: src/js/jobs/components/BulkActions/Actions/AbortReviewsDialog.js:116
 #: src/js/jobs/components/Filters/ActionFilters.js:60
+#. Button label that closes a dialog or clears a filter without applying it: verb, imperative, not the noun "a cancellation".
 msgid "Cancel"
 msgstr ""
 
-#: src/js/jobs/components/BulkActions/Actions/AbortReviewsDialog.js:80
+#: src/js/jobs/components/BulkActions/Actions/AbortReviewsDialog.js:125
+#. Question in the dialog that appears when the selected translations are taken out of the queue before they were reviewed. "This" is that action.
 msgid ""
 "This will remove the selected jobs from the Translations Queue without "
 "publishing them. What would you like to do with the translations?"
 msgstr ""
 
-#: src/js/jobs/components/BulkActions/Actions/AbortReviewsDialog.js:84
+#: src/js/jobs/components/BulkActions/Actions/AbortReviewsDialog.js:135
 msgid "Cancel Translation Review"
 msgstr ""
 
+#: src/js/jobs/components/BulkActions/Actions/AbortReviewsDialog.js:90
+#. Label of the button that throws the translations away, in the dialog that takes jobs out of the queue; verb, imperative.
+msgid "Delete Translations"
+msgstr ""
+
+#: src/js/jobs/components/BulkActions/Actions/AbortReviewsDialog.js:98
+msgid "Keep Translations as Draft"
+msgstr ""
+
 #: src/js/jobs/components/BulkActions/BulkActions.js:39
+#. Shown in the dropdown of actions that work on every selected job, before an action has been picked.
 msgid "Bulk actions"
 msgstr ""
 
 #: src/js/jobs/components/BulkActions/BulkActions.js:81
 #: src/js/jobs/components/Filters/ActionFilters.js:61
+#. Button label that runs the action picked in the dropdown beside it, or applies the filter; verb, imperative.
 msgid "Apply"
 msgstr ""
 
@@ -110,139 +133,223 @@ msgid ""
 msgstr ""
 
 #: src/js/jobs/components/Cells/AssignTranslator.js:35
+#. Shown in the dropdown that gives a job to a translator, before a translator has been picked; verb, imperative.
 msgid "Select translator"
 msgstr ""
 
 #: src/js/jobs/components/Cells/AssignTranslator.js:41
+#. Tooltip of the button that gives the job to the picked translator; verb, imperative.
 msgid "Assign"
 msgstr ""
 
 #: src/js/jobs/components/Cells/StatusCell.js:10
-#: src/js/jobs/model/store/columnsManagement.js:46
-msgid "In progress"
+#. Status of a translation job in the jobs table: the job was cancelled. An adjective describing the job, not the verb.
+msgid "Cancelled"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:104
+#. Tooltip beside the "Failed - needs attention" status of a translation job in the jobs table.
+msgid ""
+"Automatic translation failed repeatedly and WPML stopped retrying. Resend "
+"or discard the job from the Translation Dashboard, or cancel it here."
 msgstr ""
 
 #: src/js/jobs/components/Cells/StatusCell.js:11
+#: src/js/jobs/model/store/columnsManagement.js:56
+#. Status of a translation job, shown in the jobs table and offered in its status filter: nobody has translated it yet.
+msgid "Needs translation"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:117
+#: src/js/jobs/model/store/columnsManagement.js:48
+#. Status of a translation job, shown in the jobs table and offered in its status filter: the original has changed, so the translation has to be redone.
+msgid "Needs update"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:14
 #: src/js/jobs/model/store/columnsManagement.js:23
 msgid "Translation ready to download"
 msgstr ""
 
-#: src/js/jobs/components/Cells/StatusCell.js:12
-#: src/js/jobs/model/store/columnsManagement.js:38
+#: src/js/jobs/components/Cells/StatusCell.js:15
+#: src/js/jobs/model/store/columnsManagement.js:44
+#. Status of a translation job, shown in the jobs table and offered in its status filter: the translation is finished. An adjective describing the job, not the verb.
 msgid "Completed"
 msgstr ""
 
-#: src/js/jobs/components/Cells/StatusCell.js:21
+#: src/js/jobs/components/Cells/StatusCell.js:17
+#: src/js/jobs/model/store/columnsManagement.js:37
+#. Status of a translation job, shown in the jobs table and offered in its status filter: automatic translation failed for good and the job needs the site owner's attention.
+msgid "Failed - needs attention"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:30
+#. Tooltip beside the status of a translation job on a taxonomy term. %s: the name of the taxonomy, in the singular, for example "Category" or "Tag".
+msgid "%s terms are published immediately because they don't support draft mode."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:31
+#. Tooltip beside the status of a translation job. %s: the name of the kind of content, in the plural, for example "WP Forms" or "ACF Field Groups".
+msgid "%s are immediately published because they don't support draft mode."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:43
 msgid "Published — Pending review"
 msgstr ""
 
-#: src/js/jobs/components/Cells/StatusCell.js:27
+#: src/js/jobs/components/Cells/StatusCell.js:44
+msgid "Draft — Pending review"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:49
+msgid "Review in progress"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:52
 msgid "Published — Review in progress"
 msgstr ""
 
-#: src/js/jobs/components/Cells/StatusCell.js:28
+#: src/js/jobs/components/Cells/StatusCell.js:53
 msgid "Draft — Review in progress"
 msgstr ""
 
-#: src/js/jobs/components/Cells/StatusCell.js:38
-#: src/js/jobs/model/store/columnsManagement.js:42
-msgid "Needs update"
+#: src/js/jobs/components/Cells/StatusCell.js:61
+#. Tooltip beside the "In progress" status of a translation job in the jobs table: the job waits for the site's Pay-As-You-Go payment to go through. Pay-As-You-Go is the name of a payment plan.
+msgid "Waiting for your Pay-As-You-Go payment"
 msgstr ""
 
-#: src/js/jobs/components/Cells/StatusCell.js:8
-msgid "Cancelled"
+#: src/js/jobs/components/Cells/StatusCell.js:79
+#. Status of a translation job in the jobs table on a Pay-As-You-Go account: the automatic payment for it was declined and the job waits until the site owner pays.
+msgid "Waiting for payment"
 msgstr ""
 
-#: src/js/jobs/components/Cells/StatusCell.js:9
-#: src/js/jobs/model/store/columnsManagement.js:50
-msgid "Needs translation"
+#: src/js/jobs/components/Cells/StatusCell.js:83
+#. Status of a translation job in the jobs table: there are not enough translation words left to translate it.
+msgid "Insufficient funds"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:90
+msgid ""
+"Automatic translation was paused by a temporary error and retries "
+"automatically — no action needed. If the status has not changed in about 30 "
+"minutes, contact WPML support."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:92
+#: src/js/jobs/model/store/columnsManagement.js:52
+#. Status of a translation job, shown in the jobs table and offered in its status filter: it is being translated right now.
+msgid "In progress"
 msgstr ""
 
 #: src/js/jobs/components/Cells/TitleCell.js:14
+#. Link under the title in the jobs table that opens the original content; verb, imperative.
 msgid "View original"
 msgstr ""
 
 #: src/js/jobs/components/Cells/TitleCell.js:9
+#: src/js/jobs/model/store/applyTranslations.js:38
+#. Shown in place of the title of a page or post that has no title.
 msgid "(no title)"
 msgstr ""
 
 #: src/js/jobs/components/Cells/TranslatorCell.js:21
-#: src/js/jobs/components/Filters/FiltersList.js:63
+#: src/js/jobs/components/Filters/FiltersList.js:64
 #: src/js/jobs/components/Filters/TranslatedBy.js:32
+#. Shown in the "Translated by" column of the jobs table, and offered in its filter, when the content was translated automatically.
 msgid "Automatic translation"
 msgstr ""
 
 #: src/js/jobs/components/Cells/TranslatorCell.js:42
+#. The translation service's own reference number for a batch, shown beside the service name in the jobs table. %d: that number.
 msgid "TP ID: %d"
 msgstr ""
 
 #: src/js/jobs/components/Filters/Buttons.js:8
+#. Button label that clears the filter without applying it: verb, imperative, not the noun "a reset".
 msgid "Reset"
 msgstr ""
 
 #: src/js/jobs/components/Filters/Buttons.js:9
+#. Button label that applies the filter: verb, imperative, not the noun "a filter".
 msgid "Filter"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:103
-msgid "ID (%s)"
+#: src/js/jobs/components/Filters/FiltersList.js:104
+#. Tag showing an active filter on the jobs table. %s: the reference number that was filtered for.
+msgid "Reference ID (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:105
+#: src/js/jobs/components/Filters/FiltersList.js:106
+#. Tag showing an active filter on the jobs table. %s: the job number that was filtered for.
+msgid "Job ID (%s)"
+msgstr ""
+
+#: src/js/jobs/components/Filters/FiltersList.js:108
+#. Tag showing an active filter on the jobs table. %s: the words the titles were filtered for.
 msgid "Title (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:107
+#: src/js/jobs/components/Filters/FiltersList.js:110
+#. Tag showing an active filter on the jobs table. %s: the name of the kind of content that was filtered for.
 msgid "Type (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:109
+#: src/js/jobs/components/Filters/FiltersList.js:112
+#. Tag showing an active filter on the jobs table. %s: the languages that were filtered for, written as "From: <language> To: <languages>".
 msgid "Language (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:111
+#: src/js/jobs/components/Filters/FiltersList.js:114
+#. Tag showing an active filter on the jobs table. %s: the batch name that was filtered for.
 msgid "Batch name (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:113
+#: src/js/jobs/components/Filters/FiltersList.js:116
+#. Tag showing an active filter on the jobs table. %s: the statuses that were filtered for, separated by commas.
 msgid "Status (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:115
+#: src/js/jobs/components/Filters/FiltersList.js:118
+#. Tag showing an active filter on the jobs table. %s: who the jobs were filtered by, for example a translator's name or "Automatic translation".
 msgid "Translated by (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:117
+#: src/js/jobs/components/Filters/FiltersList.js:120
+#. Tag showing an active filter on the jobs table. %s: the range of dates that was filtered for, written as "<from> - <to>".
 msgid "Sent date (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:119
+#: src/js/jobs/components/Filters/FiltersList.js:122
+#. Tag showing an active filter on the jobs table. %s: the range of dates that was filtered for, written as "<from> - <to>".
 msgid "Deadline (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:159
+#: src/js/jobs/components/Filters/FiltersList.js:162
 msgid "Clear all filters"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:55
+#: src/js/jobs/components/Filters/FiltersList.js:56
 #: src/js/jobs/components/Filters/TranslatedBy.js:37
 msgid "Any Translation Service"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:59
+#: src/js/jobs/components/Filters/FiltersList.js:60
 #: src/js/jobs/components/Filters/TranslatedBy.js:42
 msgid "Any WordPress Translator"
 msgstr ""
 
-#: src/js/jobs/components/Filters/Languages.js:72
+#: src/js/jobs/components/Filters/Languages.js:77
+#. Label of the dropdown that filters the jobs table by the language the content is translated from.
 msgid "From"
 msgstr ""
 
-#: src/js/jobs/components/Filters/Languages.js:84
+#: src/js/jobs/components/Filters/Languages.js:89
+#. Label of the dropdown that filters the jobs table by the languages the content is translated into.
 msgid "To"
 msgstr ""
 
 #: src/js/jobs/components/Filters/TranslatedBy.js:28
+#. Option in the "Translated by" filter of the jobs table: do not narrow the list down to one translator or service.
 msgid "Anyone"
 msgstr ""
 
@@ -251,6 +358,7 @@ msgid "Include jobs from translation services"
 msgstr ""
 
 #: src/js/jobs/components/Filters/TypeFilter.js:33
+#. Option in the content type filter of the jobs table: do not narrow the list down to one kind of content.
 msgid "All types"
 msgstr ""
 
@@ -258,19 +366,27 @@ msgstr ""
 msgid "Select visible columns"
 msgstr ""
 
-#: src/js/jobs/components/Table.js:128
+#: src/js/jobs/components/Table.js:124
+#. Shown in place of the jobs table when no job matches.
+msgid "No Data"
+msgstr ""
+
+#: src/js/jobs/components/Table.js:125
+#. Tooltip of a column heading in a table: verb, imperative (sort the rows from the highest value down).
 msgid "Sort descending"
 msgstr ""
 
-#: src/js/jobs/components/Table.js:129
+#: src/js/jobs/components/Table.js:126
+#. Tooltip of a column heading in a table: verb, imperative (sort the rows from the lowest value up).
 msgid "Sort ascending"
 msgstr ""
 
-#: src/js/jobs/components/Table.js:130
+#: src/js/jobs/components/Table.js:127
+#. Tooltip of a column heading in a table: verb, imperative (stop sorting by this column).
 msgid "Cancel sorting"
 msgstr ""
 
-#: src/js/jobs/components/Table.js:97
+#: src/js/jobs/components/Table.js:93
 msgid "The bulk action is running..."
 msgstr ""
 
@@ -299,22 +415,27 @@ msgid "Export all filtered jobs to XLIFF 1.2"
 msgstr ""
 
 #: src/js/jobs/components/XliffBox/Export.js:81
+#. Button label that downloads the selected jobs as XLIFF files: verb, imperative, not the noun "an export".
 msgid "Export"
 msgstr ""
 
 #: src/js/jobs/components/XliffBox/Import.js:38
+#. Button label that opens the file picker for the XLIFF file to be imported; verb, imperative.
 msgid "Select File"
 msgstr ""
 
 #: src/js/jobs/components/XliffBox/Import.js:39
+#. The file name endings that may be uploaded, shown in small print on the file picker button. Keep them exactly as they are.
 msgid ".xliff .zip"
 msgstr ""
 
 #: src/js/jobs/components/XliffBox/Import.js:52
+#. Button label shown while the uploaded XLIFF file is being read.
 msgid "Importing"
 msgstr ""
 
 #: src/js/jobs/components/XliffBox/Import.js:53
+#. Button label that uploads the picked XLIFF file: verb, imperative, not the noun "an import".
 msgid "Import"
 msgstr ""
 
@@ -323,20 +444,38 @@ msgid "Import / Export XLIFF"
 msgstr ""
 
 #: src/js/jobs/components/actionColumn.js:13
+#. Heading of the last column of the jobs table, which holds the buttons that act on each job.
 msgid "Actions"
 msgstr ""
 
-#: src/js/jobs/components/columns.js:113
-#: src/js/jobs/model/store/columnsManagement.js:90
+#: src/js/jobs/components/columns.js:125
+#: src/js/jobs/model/store/columnsManagement.js:102
+#. Heading of the jobs table column that holds the name of the batch a job was sent in, also used as the label of that column's search box.
 msgid "Batch name"
 msgstr ""
 
-#: src/js/jobs/components/columns.js:184
+#: src/js/jobs/components/columns.js:205
+#. Tooltip of the filter icon in a column heading of the jobs table. %s: the name of that column, in small letters.
 msgid "Filter by %s"
 msgstr ""
 
+#: src/js/jobs/components/columns.js:56
+#. Tooltip of the "Reference ID" column heading in the jobs table. "It" is the reference number.
+msgid ""
+"WPML's id for this translation. It stays the same when the job is sent "
+"again."
+msgstr ""
+
 #: src/js/jobs/components/columns.js:66
-#: src/js/jobs/model/store/columnsManagement.js:71
+#. Tooltip of the "Job ID" column heading in the jobs table. "It" is the job number.
+msgid ""
+"The number in exported XLIFF file names. It changes when the job is sent "
+"again."
+msgstr ""
+
+#: src/js/jobs/components/columns.js:78
+#: src/js/jobs/model/store/columnsManagement.js:83
+#. Heading of the jobs table column that holds the title of the content, also used as the label of that column's search box.
 msgid "Title"
 msgstr ""
 
@@ -345,18 +484,21 @@ msgid "Approve translation reviews"
 msgstr ""
 
 #: src/js/jobs/hooks/BulkActions/useCreateCancelAction.js:20
+#. Name of the action that cancels every selected translation job; verb, imperative.
 msgid "Cancel jobs"
 msgstr ""
 
-#: src/js/jobs/hooks/BulkActions/useCreateCancelTranslationReviewsAction.js:16
+#: src/js/jobs/hooks/BulkActions/useCreateCancelTranslationReviewsAction.js:17
 msgid "Cancel translation reviews"
 msgstr ""
 
 #: src/js/jobs/hooks/BulkActions/useCreateExportXLIFFAction.js:12
+#. Name of the action that downloads the selected jobs as XLIFF files. %s: the XLIFF version number, such as "1.2".
 msgid "Export to XLIFF %s"
 msgstr ""
 
 #: src/js/jobs/hooks/BulkActions/useGetTranslationsAction.js:13
+#. Name of the action that downloads the finished translations of every selected job; verb, imperative.
 msgid "Get translations"
 msgstr ""
 
@@ -364,36 +506,128 @@ msgstr ""
 msgid "This action does not apply to any of the selected translation jobs"
 msgstr ""
 
-#: src/js/jobs/model/store/applyTranslations.js:30
+#: src/js/jobs/model/releaseNotice.js:110
+#. Line in the dialog that confirms cancelling jobs. %d: the number of translations that are still being translated.
+msgid "%d translation is still in progress. You will not be charged for it."
+msgid_plural "%d translations are still in progress. You will not be charged for them."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/jobs/model/releaseNotice.js:33
+#. Link inside the sentence about returned translation words; it opens the list of translation words used on the account.
+msgid "usage ledger"
+msgstr ""
+
+#: src/js/jobs/model/releaseNotice.js:50
+#. Message shown after cancelling jobs. %1$d: the number of translations that were in progress, %2$s: the number of translation words returned, already written out. A link follows.
+msgid ""
+"Cancelled. %1$d translation was in progress; its %2$s words are back on "
+"your account. Details:"
+msgid_plural ""
+"Cancelled. %1$d translations were in progress; their %2$s words are back on "
+"your account. Details:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/jobs/model/releaseNotice.js:63
+#. Message shown after cancelling jobs while the returned words are not confirmed yet. %d: the number of translations that were in progress.
+msgid ""
+"Cancelled. We asked to return the words for %d translation in progress; the "
+"usage ledger shows it once confirmed."
+msgid_plural ""
+"Cancelled. We asked to return the words for %d translations in progress; "
+"the usage ledger shows them once confirmed."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/jobs/model/store/applyTranslations.js:110
 msgid "Translations have been downloaded"
 msgstr ""
 
-#: src/js/jobs/model/store/applyTranslations.js:31
+#: src/js/jobs/model/store/applyTranslations.js:111
 msgid "Translation has been downloaded"
 msgstr ""
 
-#: src/js/jobs/model/store/applyTranslations.js:36
+#: src/js/jobs/model/store/applyTranslations.js:119
 msgid "Translations could not be downloaded"
 msgstr ""
 
-#: src/js/jobs/model/store/applyTranslations.js:37
+#: src/js/jobs/model/store/applyTranslations.js:120
 msgid "Translation could not be downloaded"
 msgstr ""
 
-#: src/js/jobs/model/store/approveTranslationsReviews.js:10
+#: src/js/jobs/model/store/applyTranslations.js:46
+#. Reason shown after the title of a translation that could not be downloaded. %s: the reason reported for the failure.
+msgid "paused after repeated failures, will be retried automatically — %s"
+msgstr ""
+
+#: src/js/jobs/model/store/applyTranslations.js:77
+#. Message shown after downloading translations. %d: the number of translations that failed.
+msgid "%d translation could not be downloaded"
+msgid_plural "%d translations could not be downloaded"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/jobs/model/store/applyTranslations.js:94
+#. Message shown after downloading translations. %d: the number of translations that arrived.
+msgid "%d translation has been downloaded"
+msgid_plural "%d translations have been downloaded"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/jobs/model/store/approveTranslationsReviews.js:104
+msgid "No valid jobs selected to approve translations reviews!"
+msgstr ""
+
+#: src/js/jobs/model/store/approveTranslationsReviews.js:23
+#. One translation in a list of translations that were not approved. %1$s: the title of the content, %2$s: the language of the translation.
+msgid "%1$s (%2$s)"
+msgstr ""
+
+#: src/js/jobs/model/store/approveTranslationsReviews.js:30
+#. Notice on the Translation Tasks screen after "Approve translation reviews". %s: the translations, as a list of "title (language)".
+msgid "%s was not approved because it is still open for editing."
+msgid_plural "%s were not approved because they are still open for editing."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/jobs/model/store/approveTranslationsReviews.js:35
+#. Notice on the Translation Tasks screen, after the sentence that says translations open for editing were not approved.
+msgid "Approving it now would publish the translation without the edits."
+msgid_plural "Approving them now would publish the translations without the edits."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/jobs/model/store/approveTranslationsReviews.js:37
+#. Notice on the Translation Tasks screen. "Continue reviewing" is the button on the translation's row, "Complete" the button in the translation editor.
+msgid "Click Continue reviewing, finish the edits and click Complete in the editor."
+msgstr ""
+
+#: src/js/jobs/model/store/approveTranslationsReviews.js:39
+#. Notice on the Translation Tasks screen, after the steps that finish an edit in the translation editor.
+msgid "Then approve the translation here."
+msgid_plural "Then approve the translations here."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/jobs/model/store/approveTranslationsReviews.js:41
+#. Notice on the Translation Tasks screen. "Translation Dashboard" is the WPML screen where content is sent to translation.
+msgid ""
+"If the editor does not open, send the content to translation again from the "
+"Translation Dashboard."
+msgstr ""
+
+#: src/js/jobs/model/store/approveTranslationsReviews.js:49
 msgid "Approving translations reviews failed!"
 msgstr ""
 
-#: src/js/jobs/model/store/approveTranslationsReviews.js:38
+#: src/js/jobs/model/store/approveTranslationsReviews.js:85
+#. Start of an error message; the titles and languages of the pages that failed are added after it.
 msgid "Failed approving translations for the following posts: "
 msgstr ""
 
-#: src/js/jobs/model/store/approveTranslationsReviews.js:51
+#: src/js/jobs/model/store/approveTranslationsReviews.js:98
 msgid "Translations reviews approved successfully!"
-msgstr ""
-
-#: src/js/jobs/model/store/approveTranslationsReviews.js:57
-msgid "No valid jobs selected to approve translations reviews!"
 msgstr ""
 
 #: src/js/jobs/model/store/assignTranslator.js:17
@@ -401,72 +635,85 @@ msgid "The translator has been assigned to the job"
 msgstr ""
 
 #: src/js/jobs/model/store/assignTranslator.js:22
-#: src/js/jobs/model/store/openEditor.js:29
+#: src/js/jobs/model/store/openEditor.js:51
 msgid "The translator could not be assigned to the job"
 msgstr ""
 
-#: src/js/jobs/model/store/cancelJobs.js:22
+#: src/js/jobs/model/store/cancelJobs.js:34
 msgid "The jobs have been cancelled"
 msgstr ""
 
-#: src/js/jobs/model/store/cancelJobs.js:23
+#: src/js/jobs/model/store/cancelJobs.js:35
 msgid "The job has been cancelled"
 msgstr ""
 
-#: src/js/jobs/model/store/cancelJobs.js:30
+#: src/js/jobs/model/store/cancelJobs.js:47
 msgid "The jobs could not be cancelled"
 msgstr ""
 
-#: src/js/jobs/model/store/cancelJobs.js:31
+#: src/js/jobs/model/store/cancelJobs.js:48
 msgid "The job could not be cancelled"
 msgstr ""
 
-#: src/js/jobs/model/store/cancelTranslationReviews.js:26
+#: src/js/jobs/model/store/cancelTranslationReviews.js:39
 msgid "Translation reviews have been canceled"
 msgstr ""
 
-#: src/js/jobs/model/store/cancelTranslationReviews.js:27
+#: src/js/jobs/model/store/cancelTranslationReviews.js:40
 msgid "Translation review has been canceled"
 msgstr ""
 
-#: src/js/jobs/model/store/cancelTranslationReviews.js:33
+#: src/js/jobs/model/store/cancelTranslationReviews.js:51
 msgid "Translation reviews could not be canceled"
 msgstr ""
 
-#: src/js/jobs/model/store/cancelTranslationReviews.js:34
+#: src/js/jobs/model/store/cancelTranslationReviews.js:52
 msgid "Translation review could not be canceled"
 msgstr ""
 
-#: src/js/jobs/model/store/columnsManagement.js:106
+#: src/js/jobs/model/store/columnsManagement.js:111
+#. Heading of the jobs table column that names who translated the content; each row holds a translator, a service, or "Automatic translation".
+msgid "Translated by"
+msgstr ""
+
+#: src/js/jobs/model/store/columnsManagement.js:118
+#. Heading of the jobs table column that holds the date the job was sent for translation.
 msgid "Sent on"
 msgstr ""
 
-#: src/js/jobs/model/store/columnsManagement.js:114
+#: src/js/jobs/model/store/columnsManagement.js:126
+#. Heading of the jobs table column that holds the date the translation is due.
 msgid "Deadline"
 msgstr ""
 
-#: src/js/jobs/model/store/columnsManagement.js:121
+#: src/js/jobs/model/store/columnsManagement.js:133
+#. Heading of the jobs table column that holds the state of each translation job.
 msgid "Status"
 msgstr ""
 
-#: src/js/jobs/model/store/columnsManagement.js:54
+#: src/js/jobs/model/store/columnsManagement.js:60
+#. Status of a translation job offered in the status filter of the jobs table: the translation is finished and waiting to be reviewed.
 msgid "Pending review"
 msgstr ""
 
-#: src/js/jobs/model/store/columnsManagement.js:65
-msgid "ID"
+#: src/js/jobs/model/store/columnsManagement.js:71
+#. Heading of the jobs table column that holds WPML's own number for the translation.
+msgid "Reference ID"
 msgstr ""
 
 #: src/js/jobs/model/store/columnsManagement.js:77
+#. Heading of the jobs table column that holds the number used in exported XLIFF file names.
+msgid "Job ID"
+msgstr ""
+
+#: src/js/jobs/model/store/columnsManagement.js:89
+#. Heading of the jobs table column that says what kind of content each job is: a noun (the kind of content), not the verb "to type".
 msgid "Type"
 msgstr ""
 
-#: src/js/jobs/model/store/columnsManagement.js:83
+#: src/js/jobs/model/store/columnsManagement.js:95
+#. Heading of the jobs table column that holds the language pair, and the name of the setup wizard step where the languages are chosen.
 msgid "Languages"
-msgstr ""
-
-#: src/js/jobs/model/store/columnsManagement.js:99
-msgid "Translated by"
 msgstr ""
 
 #: src/js/jobs/model/store/downloadXliff.js:11
@@ -481,55 +728,69 @@ msgstr ""
 msgid "The export to XLIFF failed"
 msgstr ""
 
-#: src/js/jobs/model/store/importXLIFF.js:26
+#: src/js/jobs/model/store/importXLIFF.js:32
+#. Message shown after XLIFF files have been imported. %d: the number of translation jobs that were imported.
 msgid "Imported %d jobs"
 msgstr ""
 
-#: src/js/jobs/model/store/importXLIFF.js:27
+#: src/js/jobs/model/store/importXLIFF.js:33
 msgid "Imported one job"
 msgstr ""
 
-#: src/js/jobs/model/store/importXLIFF.js:41
+#: src/js/jobs/model/store/importXLIFF.js:44
 msgid "Could not import any job"
 msgstr ""
 
-#: src/js/jobs/model/store/importXLIFF.js:45
+#: src/js/jobs/model/store/importXLIFF.js:61
+#. Title of the error message shown when an XLIFF file could not be imported.
 msgid "Import failed!"
 msgstr ""
 
-#: src/js/jobs/model/store/jobs.js:18
+#: src/js/jobs/model/store/jobs.js:25
 msgid "Loading translations queue"
 msgstr ""
 
-#: src/js/jobs/model/store/jobs.js:19
+#: src/js/jobs/model/store/jobs.js:26
 msgid "Loading translation jobs"
 msgstr ""
 
-#: src/js/jobs/model/store/jobs.js:82
+#: src/js/jobs/model/store/jobs.js:90
+#. Error shown in place of the jobs table when the list of translation jobs could not be read.
 msgid "Jobs could not be loaded"
+msgstr ""
+
+#: src/js/jobs/model/store/openEditor.js:24
+msgid "This translator cannot translate this language pair."
+msgstr ""
+
+#: src/js/jobs/model/store/openEditor.js:25
+msgid ""
+"This translator is no longer available. Reload the page and choose a "
+"translator again."
 msgstr ""
 
 #: src/js/jobs/model/store/resign.js:12
 msgid "Specify some jobs to resign"
 msgstr ""
 
-#: src/js/jobs/model/store/resign.js:22
+#: src/js/jobs/model/store/resign.js:34
+#. Error shown when translation jobs could not be given back. %s: the job numbers, separated by commas.
 msgid "We could not resign jobs: %s"
 msgstr ""
 
-#: src/js/jobs/model/store/resign.js:34
+#: src/js/jobs/model/store/resign.js:45
 msgid "Resigned from jobs"
 msgstr ""
 
-#: src/js/jobs/model/store/resign.js:35
+#: src/js/jobs/model/store/resign.js:46
 msgid "Resigned from job"
 msgstr ""
 
-#: src/js/jobs/model/store/resign.js:39
+#: src/js/jobs/model/store/resign.js:52
 msgid "Failed to resign from jobs"
 msgstr ""
 
-#: src/js/jobs/model/store/synchronizeATEJobs.js:28
+#: src/js/jobs/model/store/synchronizeATEJobs.js:48
 msgid "The Advanced Editor jobs synchronization has failed"
 msgstr ""
 
@@ -537,16 +798,26 @@ msgstr ""
 msgid "Synchronization with the Professional Translation service has failed"
 msgstr ""
 
-#: src/js/jobs/model/store/translationBatchSync.js:68
-msgid "%d translation has been downloaded"
-msgid_plural "%d translations have been downloaded"
-msgstr[0] ""
-msgstr[1] ""
+#: src/js/jobs/model/store/translationBatchSync.js:109
+#. Warning shown after checking on the translations sent to a translation service. %d: the number of batches still being worked on.
+msgid ""
+"%d batches are still being processed by the translation service. Check "
+"again in a few minutes."
+msgstr ""
 
-#: src/js/jobs/model/store/translationBatchSync.js:83
+#: src/js/jobs/model/store/translationBatchSync.js:116
+#. Message shown when checking on the translations sent to a translation service has finished with nothing left over.
 msgid "Batch sync finished successfully!"
 msgstr ""
 
-#: src/js/jobs/model/store/translationBatchSync.js:88
+#: src/js/jobs/model/store/translationBatchSync.js:122
+#. Error shown when checking on the translations sent to a translation service could not be completed.
 msgid "Batch sync couldn't be finished"
+msgstr ""
+
+#: src/js/shared/Request.js:39
+#. Shown when our translation system (WPML's own) refused a request. %d: the HTTP status it answered with.
+msgid ""
+"Our translation system did not accept this request (it answered %d). Wait a "
+"minute and try again, and contact WPML support if it keeps happening."
 msgstr ""

@@ -7,20 +7,10 @@ use WPML\FP\Obj;
 
 class OptionsPageHooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
 
-	/**
-	 * @var Factory $factory
-	 */
 	private $factory;
 
-	/**
-	 * @var Translator $translator
-	 */
 	private $translator;
 
-	/**
-	 * @param Factory    $factory
-	 * @param Translator $translator
-	 */
 	public function __construct( Factory $factory, Translator $translator ) {
 		$this->factory    = $factory;
 		$this->translator = $translator;
@@ -33,27 +23,14 @@ class OptionsPageHooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action,
 		add_action( 'acf/delete_ui_options_page', [ $this, 'delete' ] );
 	}
 
-	/**
-	 * @param array $optionsPageData
-	 */
 	public function register( $optionsPageData ) {
 		$this->translator->registerOptionsPage( $optionsPageData );
 	}
 
-	/**
-	 * @param  array $optionsPageData
-	 *
-	 * @return array
-	 */
-	public function translate( $optionsPageData ) { // phpcs:disable WordPress.WP.I18n
+	public function translate( $optionsPageData ) {
 		return $this->translator->translateOptionsPage( $optionsPageData );
 	}
 
-	/**
-	 * @param  array $optionsPageData
-	 *
-	 * @return array
-	 */
 	public function translateMenuItems( $optionsPageData ) {
 		if ( ! doing_action( 'admin_menu' ) ) {
 			return $optionsPageData;
@@ -74,9 +51,6 @@ class OptionsPageHooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action,
 		);
 	}
 
-	/**
-	 * @param array $optionsPageData
-	 */
 	public function delete( $optionsPageData ) {
 		$this->factory->createPackage( $optionsPageData['menu_slug'], Package::OPTION_PAGE_PACKAGE_KIND_SLUG )->delete();
 	}

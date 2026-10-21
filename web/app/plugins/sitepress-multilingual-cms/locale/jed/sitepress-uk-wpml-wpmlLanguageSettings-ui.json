@@ -4,10 +4,26 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "uk"
          },
+         "Choose the image file type for flags": [
+            "Виберіть тип файлу зображення для прапорів"
+         ],
+         "This option affects only the built-in WPML flags, not the custom uploaded ones.": [
+            "Цей параметр впливає лише на вбудовані прапори WPML, а не на власні завантажені."
+         ],
+         "%s format": [
+            "Формат %s"
+         ],
          "Save": [
             "Зберегти"
+         ],
+         "The new format has been saved.": [
+            "Новий формат збережено."
+         ],
+         "Failed to save the new format": [
+            "Не вдалося зберегти новий формат"
          ]
       }
    }

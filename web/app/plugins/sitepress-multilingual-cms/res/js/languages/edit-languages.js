@@ -24,14 +24,4 @@ jQuery(function () {
         jQuery(this).closest('ul').find('.wpml-edit-languages-flag-upload-wrapper').hide();
         jQuery(this).closest('ul').find('.wpml-edit-languages-flag-wpml-wrapper').show();
     });
-
-    jQuery('select.icl_edit_languages_mapping').change( function(event) {
-        jQuery(this).parent().find('option[value="0"]').remove();
-
-        if (this.value == -1) {
-            jQuery(this).parent().find('.notice-info').show();
-        } else {
-            jQuery(this).parent().find('.notice-info').hide();
-        }
-    });
 });

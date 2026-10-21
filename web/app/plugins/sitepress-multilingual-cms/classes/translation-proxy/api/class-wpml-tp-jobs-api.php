@@ -1,17 +1,9 @@
 <?php
 
-use WPML\FP\Obj;
-
 class WPML_TP_Jobs_API extends WPML_TP_API {
 
 	const CHUNK_SIZE = 100;
 
-	/**
-	 * @param int[] $tp_job_ids
-	 *
-	 * @return WPML_TP_Job_Status[]
-	 * @throws WPML_TP_API_Exception
-	 */
 	public function get_jobs_statuses( array $tp_job_ids ) {
 		$this->log( 'Get jobs status', $tp_job_ids );
 
@@ -29,6 +21,7 @@ class WPML_TP_Jobs_API extends WPML_TP_API {
 
 	private function get_chunk_of_job_statuses( $tp_job_ids ) {
 		$request = new WPML_TP_API_Request( '/jobs.json' );
+		$request->set_timeout( \WPML\TM\TranslationProxy\SendTuning::receiveCallTimeoutSeconds() );
 		$request->set_params(
 			array(
 				'filter'    => array(
@@ -42,13 +35,6 @@ class WPML_TP_Jobs_API extends WPML_TP_API {
 		return $this->client->send_request( $request );
 	}
 
-	/**
-	 * @param array $cms_ids
-	 * @param bool  $archived
-	 *
-	 * @return array|mixed|stdClass|string
-	 * @throws WPML_TP_API_Exception
-	 */
 	public function get_jobs_per_cms_ids( array $cms_ids, $archived = false ) {
 		$request = new WPML_TP_API_Request( '/jobs.json' );
 
@@ -67,13 +53,6 @@ class WPML_TP_Jobs_API extends WPML_TP_API {
 		return $this->client->send_request( $request );
 	}
 
-	/**
-	 * @param WPML_TM_Job_Entity $job
-	 * @param string             $state
-	 * @param string             $post_url
-	 *
-	 * @throws WPML_TP_API_Exception
-	 */
 	public function update_job_state(
 		WPML_TM_Job_Entity $job,
 		$state = WPML_TP_Job_States::DELIVERED,
@@ -92,6 +71,7 @@ class WPML_TP_Jobs_API extends WPML_TP_API {
 		}
 
 		$request = new WPML_TP_API_Request( '/jobs/{job_id}.json' );
+		$request->set_timeout( \WPML\TM\TranslationProxy\SendTuning::receiveCallTimeoutSeconds() );
 		$request->set_params( $params );
 		$request->set_method( 'PUT' );
 
@@ -111,14 +91,11 @@ class WPML_TP_Jobs_API extends WPML_TP_API {
 		);
 	}
 
-	/**
-	 * @return WPML_TP_Job_Status[]
-	 * @throws WPML_TP_API_Exception
-	 */
 	public function get_revised_jobs() {
 		$this->log( 'Get revised jobs' );
 
 		$request = new WPML_TP_API_Request( '/jobs.json' );
+		$request->set_timeout( \WPML\TM\TranslationProxy\SendTuning::receiveCallTimeoutSeconds() );
 		$request->set_params(
 			array(
 				'filter'    => array(
@@ -135,28 +112,4 @@ class WPML_TP_Jobs_API extends WPML_TP_API {
 		return array_map( array( $this, 'build_job_status' ), $result );
 	}
 
-	/**
-	 * @param int $tp_job_id
-	 *
-	 * @return string
-	 * @throws WPML_TP_API_Exception When response is incorrect.
-	 */
-	public function get_translated_xliff_download_url( $tp_job_id ) {
-		$request = new WPML_TP_API_Request( '/jobs.json' );
-
-		$params = [
-			'filter'    => [
-				'job_ids' => $tp_job_id,
-			],
-			'accesskey' => $this->project->get_access_key(),
-		];
-		$request->set_params( $params );
-
-		$result = $this->client->send_request( $request );
-		if ( ! $result || ! is_array( $result ) || 0 === count( $result ) || ! is_object( $result[0] ) ) {
-			throw new WPML_TP_API_Exception( 'XLIFF download link could not be fetched for tp_job: ' . $tp_job_id, $request );
-		}
-
-		return Obj::propOr( '', 'translated_xliff_download_url', $result[0] );
-	}
 }

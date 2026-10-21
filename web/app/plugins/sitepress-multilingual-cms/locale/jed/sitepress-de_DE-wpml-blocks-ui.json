@@ -3,7 +3,9 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "de_DE"
          },
          "Advanced": [
             "Erweitert"
@@ -12,40 +14,46 @@
             "HTML-Anker"
          ],
          "Add a shortcut to this block when loading the page using the “#anchor” URL.": [
-            "Fügen Sie eine Verknüpfung zu diesem Block hinzu, wenn Sie die Seite mit der „#anchor“-URL laden."
+            "Füge eine Verknüpfung zu diesem Block hinzu, wenn die Seite über die URL „#anchor“ geladen wird."
          ],
          "Additional CSS class(es)": [
             "Zusätzliche CSS-Klasse(n)"
          ],
          "Separate multiple classes with spaces.": [
-            "Trennen Sie mehrere Klassen durch Leerzeichen."
+            "Trenne mehrere Klassen durch Leerzeichen."
          ],
          "Color": [
             "Farbe"
          ],
+         "px": [
+            "px"
+         ],
+         "%": [
+            "%"
+         ],
          "Dimensions": [
-            "Maße"
+            "Dimensionen"
          ],
          "BLOCK": [
-            "Block"
+            "BLOCK"
          ],
          "Block margin": [
-            "Blockrand"
+            "Block-Außenabstand"
          ],
          "Block padding": [
-            "Block-Abstand"
+            "Block-Innenabstand"
          ],
          "LANGUAGE": [
-            "Sprache"
+            "SPRACHE"
          ],
          "Language spacing": [
-            "Leerzeichen"
-         ],
-         "Language padding": [
             "Sprachabstand"
          ],
+         "Language padding": [
+            "Sprach-Innenabstand"
+         ],
          "Display": [
-            "Anzeigen"
+            "Anzeige"
          ],
          "Show flag": [
             "Flagge anzeigen"
@@ -54,7 +62,7 @@
             "Sprachname anzeigen"
          ],
          "Display language name in": [
-            "Sprachname anzeigen in"
+            "Sprachnamen anzeigen in"
          ],
          "Style": [
             "Stil"
@@ -71,11 +79,17 @@
          "Spacing": [
             "Abstand"
          ],
+         "Switch to %s": [
+            "Zu %s wechseln"
+         ],
+         "Available languages": [
+            "Verfügbare Sprachen"
+         ],
          "Allow wrapping to multiple lines": [
-            "Umbruch auf mehrere Zeilen zulassen"
+            "Zeilenumbruch zulassen"
          ],
          "Open on click": [
-            "Beim Anklicken öffnen"
+            "Beim Klicken öffnen"
          ],
          "Show arrow": [
             "Pfeil anzeigen"
@@ -84,28 +98,34 @@
             "Layout"
          ],
          "Justification": [
-            "Rechtfertigung"
+            "Ausrichtung"
          ],
          "Orientation": [
             "Ausrichtung"
          ],
+         "Language Switcher": [
+            "Sprachumschalter"
+         ],
+         "Language switcher, press tab to navigate to other languages": [
+            "Sprachumschalter, drücke die Tab-Taste, um zu anderen Sprachen zu navigieren"
+         ],
          "Typography": [
-            "Typographie"
+            "Typografie"
          ],
          "Background": [
             "Hintergrund"
          ],
          "Language Text": [
-            "Sprachtext"
+            "Sprach-Text"
          ],
          "Language Background": [
-            "Sprachhintergrund"
+            "Sprach-Hintergrund"
          ],
          "Current language text": [
-            "Aktueller Sprachtext"
+            "Text der aktuellen Sprache"
          ],
          "Current language background": [
-            "Aktueller Sprachhintergrund"
+            "Hintergrund der aktuellen Sprache"
          ],
          "Full name": [
             "Vollständiger Name"
@@ -114,16 +134,16 @@
             "Code"
          ],
          "Justify items left": [
-            "Elemente links ausrichten"
+            "Elemente linksbündig ausrichten"
          ],
          "Justify items center": [
-            "Elemente in der Mitte ausrichten"
+            "Elemente zentriert ausrichten"
          ],
          "Justify items right": [
-            "Elemente rechts ausrichten"
+            "Elemente rechtsbündig ausrichten"
          ],
          "Justify items space between": [
-            "Elemente mit Leerzeichen ausrichten"
+            "Elemente mit Abstand dazwischen ausrichten"
          ],
          "Horizontal": [
             "Horizontal"
@@ -141,7 +161,16 @@
             "Groß"
          ],
          "X-Large": [
-            "Sehr groß"
+            "Extra groß"
+         ],
+         "Ab": [
+            "Ab"
+         ],
+         "AB": [
+            "AB"
+         ],
+         "ab": [
+            "ab"
          ],
          "Small": [
             "Klein"
@@ -149,17 +178,11 @@
          "Displays the WPML Language Switcher.": [
             "Zeigt den WPML-Sprachumschalter an."
          ],
-         "Language Switcher": [
-            "Sprachumschalter"
-         ],
          "displays the WPML Language Switcher": [
-            "Zeigt den WPML-Sprachumschalter an."
-         ],
-         "Displays the WPML Language Switcher. <br/> Learn <a>how to translate this block</a>.": [
-            "Zeigt den WPML-Sprachumschalter an. <br/> Erfahren Sie, <a>wie Sie diesen Block übersetzen</a>."
+            "zeigt den WPML-Sprachumschalter an"
          ],
          "Navigation Language Switcher": [
-            "Umschalter für Navigationssprache"
+            "Navigations-Sprachumschalter"
          ],
          "Reset all": [
             "Alles zurücksetzen"

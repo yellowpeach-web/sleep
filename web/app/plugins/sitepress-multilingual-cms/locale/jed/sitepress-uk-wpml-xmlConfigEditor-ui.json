@@ -4,10 +4,11 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "uk"
          },
          "The wpml-config.xml file in the root folder of your theme and plugins tells WPML which content is translatable. You can override these settings with your own custom settings by adding them below.": [
-            "Файл wpml-config.xml у кореневій папці вашої теми та плагінів вказує WPML на вміст, який можна перекласти. Ці налаштування можна замінити своїми, додавши їх нижче."
+            "Файл wpml-config.xml у кореневій папці вашої теми та плагінів повідомляє WPML, який вміст доступний для перекладу. Ви можете перевизначити ці налаштування власними, додавши їх нижче."
          ],
          "Read more about language configuration files.": [
             "Докладніше про файли конфігурації мов."
@@ -18,14 +19,20 @@
          "Error": [
             "Помилка"
          ],
+         "Configuration saved.": [
+            "Конфігурацію збережено."
+         ],
+         "Could not save the configuration — please retry.": [
+            "Не вдалося зберегти конфігурацію — спробуйте ще раз."
+         ],
          "Shortcuts": [
-            "Сполучення клавіш"
+            "Гарячі клавіші"
          ],
          "Fold/Unfold code": [
-            "Згорнути/Розгорнути код"
+            "Згорнути/розгорнути код"
          ],
          "Auto format": [
-            "Автоформат"
+            "Автоформатування"
          ]
       }
    }

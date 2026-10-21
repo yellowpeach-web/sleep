@@ -1,6 +1,6 @@
 <?php
 
-class WPML_TM_Serialized_Custom_Field_Package_Handler_Factory implements IWPML_Backend_Action_Loader {
+class WPML_TM_Serialized_Custom_Field_Package_Handler_Factory implements IWPML_Backend_Action_Loader, IWPML_REST_Action_Loader {
 
 	public function create() {
 

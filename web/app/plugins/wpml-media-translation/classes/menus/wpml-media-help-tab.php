@@ -16,25 +16,40 @@ class WPML_Media_Help_Tab implements IWPML_Action {
 			$current_screen->add_help_tab(
 				array(
 					'id'      => 'wpml-media-translation',
+					/* translators: Title of the help tab on the Media Translation page. */
 					'title'   => esc_html__( 'Translating Media', 'wpml-media' ),
 					'content' =>
 						 '<p>' . esc_html__( 'There are two ways for you to translate Media:', 'wpml-media' ) . '</p>' .
 						 '<ul>' .
 						'<li>' . sprintf(
+							/* translators: Line in the help tab on the Media Translation page. %s: the name of the WPML page that holds the media dashboard. */
 							esc_html__( 'Use the dashboard on the %s page to translate your images and other media files.', 'wpml-media' ),
 							$media_translation_dashboard
 						) . '</li>' .
 						'<li>' . sprintf(
+							/* translators: Line in the help tab on the Media Translation page. %s: the name of the WPML Translation Management page. */
 							esc_html__( 'Use the dashboard on the %s page to send pages that contain media, for translation.', 'wpml-media' ),
 							$wpml_translation_dashboard
 						) . '</li>' .
 						 '</ul>' .
-						 '</ul>' .
-						 '<a href="https://wpml.org/documentation/getting-started-guide/media-translation/?utm_source=plugin&utm_medium=gui&utm_campaign=wpmlmedia">' . esc_html__( 'Learn more about WPML Media Translation', 'wpml-media' ) . '</a>',
+						 '<a href="' . esc_url( $this->get_documentation_url() ) . '">' . wpml_bold_names( __( 'Learn more about WPML Media Translation', 'wpml-media' ) ) . '</a>',
 				)
 			);
 		}
 
+	}
+
+	private function get_documentation_url() {
+		$url = 'https://wpml.org/documentation/translating-your-contents/media/';
+
+		if ( class_exists( '\WPML\OutboundLinks\OutboundLinks' ) ) {
+			return \WPML\OutboundLinks\OutboundLinks::to(
+				$url,
+				array( 'medium' => 'settings', 'campaign' => 'media-translation' )
+			);
+		}
+
+		return $url;
 	}
 
 	private function is_media_related_screen( $current_screen ) {

@@ -7,21 +7,19 @@ use WPML\LIB\WP\Hooks as WPHooks;
 
 class UI {
 
-	public static function add_hooks( callable $getModel, $isSTPage ) {
+	public static function add_hooks( callable $getModel ) {
 		WPHooks::onAction( 'admin_enqueue_scripts' )
 			->then( $getModel )
 			->then( [ self::class, 'localize' ] )
 			->then( Resources::enqueueApp( 'mo-scan' ) );
 
-		if ( ! $isSTPage ) {
-			WPHooks::onAction( [ 'admin_notices', 'network_admin_notices' ] )
-				->then( [ self::class, 'add_admin_notice' ] );
-		}
+		WPHooks::onAction( 'admin_footer' )
+			->then( [ self::class, 'render_prompt_mount' ] );
 	}
 
-	public static function add_admin_notice() {
+	public static function render_prompt_mount() {
 		?>
-		<div id="wpml-mo-scan-st-page"></div>
+		<div id="wpml-mo-scan-st-page-pregenerate"></div>
 		<?php
 	}
 

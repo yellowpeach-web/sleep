@@ -1,0 +1,3394 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-19T08:43:07+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: wpml\n"
+
+#. translators: Radio button label in the dialog that chooses which untranslated strings WPML registers automatically, on the Strings tab of the WPML translation dashboard.
+msgid "Untranslated strings that I encounter on front-end while logged in"
+msgstr ""
+
+msgid "Untranslated strings that all front-end users encounter"
+msgstr ""
+
+msgid "Disable auto-registration of strings"
+msgstr ""
+
+#. translators: Option in the dropdown that filters strings by where they come from, on the Strings tab of the WPML translation dashboard. Plural noun.
+msgid "Plugins"
+msgstr ""
+
+#. translators: Option in the dropdown that filters strings by where they come from, on the Strings tab of the WPML translation dashboard. Plural noun.
+msgid "Themes"
+msgstr ""
+
+#. translators: Option in the dropdown that filters strings by where they come from, on the Strings tab of the WPML translation dashboard. It means strings that belong to WordPress itself; keep the product name.
+msgid "WordPress"
+msgstr ""
+
+#. translators: Option in the dropdown that filters strings by where they come from, on the Strings tab of the WPML translation dashboard. It means every other source.
+msgid "Other"
+msgstr ""
+
+#. translators: Names one content type waiting to be included in automatic translation, on the WPML translation dashboard, as in "Products (60 items)". %1$s: the content type's plural name, %2$d: how many items of it are not translated yet.
+#, js-format
+msgid "%1$s (%2$d item)"
+msgid_plural "%1$s (%2$d items)"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Error message on the WPML translation dashboard after cancelling translation jobs. %1$d: how many items were cancelled, %2$d: how many were asked for, %3$d: how many failed.
+#, js-format
+msgid "We cancelled %1$d of %2$d items, but %3$d failed. Please reload the page and try again."
+msgstr ""
+
+#. translators: Error message on the WPML translation dashboard after resending translation jobs. %1$d: how many items were resent, %2$d: how many were asked for, %3$d: how many failed.
+#, js-format
+msgid "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again."
+msgstr ""
+
+msgid "Error in fetching default translation batch name"
+msgstr ""
+
+msgid "Error in fetching translation editor type."
+msgstr ""
+
+msgid "Error in fetching untranslated types count"
+msgstr ""
+
+msgid "Error in fetching remote translation service data."
+msgstr ""
+
+#. translators: Error message shown on the WPML translation dashboard when the items chosen cannot be sent for translation.
+msgid "Validation failed"
+msgstr ""
+
+#. translators: An entry in the list of items that were not sent for translation, on the WPML translation dashboard: the labels (Singular, Plural) and slug of a taxonomy. %s: the taxonomy's name, e.g. "Categories".
+#, js-format
+msgid "%s: labels and slug"
+msgstr ""
+
+#. translators: An entry in the list of items that were not sent for translation, on the WPML translation dashboard: a taxonomy term. %1$s: the term's name. %2$s: its taxonomy's name, e.g. "Categories".
+#, js-format
+msgid "%1$s (%2$s)"
+msgstr ""
+
+msgid "Translation jobs couldn’t be cancelled"
+msgstr ""
+
+msgid "Reload the page and try again."
+msgstr ""
+
+msgid "All unfinished translation jobs were cancelled"
+msgstr ""
+
+#. translators: Heading of the message shown when the WPML translation dashboard stopped working because of an error.
+msgid "WPML could not display the Translations dashboard."
+msgstr ""
+
+#. translators: Advice under the message shown when the WPML translation dashboard stopped working because of an error.
+msgid "Reload the page to try again. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses, and the browser console for details."
+msgstr ""
+
+msgid "Please wait until download finishes"
+msgstr ""
+
+msgid "You need to wait 5 minutes after the last check"
+msgstr ""
+
+msgid "Check status and get translations"
+msgstr ""
+
+#. translators: Summary line on the WPML translation dashboard after downloading translations. %d: how many translations could not be applied to the site.
+#, js-format
+msgid "%d translation could not be applied."
+msgid_plural "%d translations could not be applied."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Sentence that follows the count of translations that could not be applied, on the WPML translation dashboard; "Some" is some of those translations.
+msgid "Some were paused after repeated failures and will be retried automatically."
+msgstr ""
+
+#. translators: Sentence that follows the count of translations that could not be applied, on the WPML translation dashboard; "They" is those translations.
+msgid "They are still waiting and will be tried again on the next download."
+msgstr ""
+
+#. translators: Bold label that introduces the result of the last translation download, on the WPML translation dashboard. Keep the colon and the trailing space; the status text follows it.
+msgid "Status: "
+msgstr ""
+
+#. translators: Label on the WPML translation dashboard; a number follows it directly. Keep the colon and the trailing space.
+msgid "Downloaded jobs: "
+msgstr ""
+
+#. translators: Label on the WPML translation dashboard; a number follows it directly. Keep the colon and the trailing space.
+msgid "Cancelled jobs: "
+msgstr ""
+
+#. translators: Second half of the line "Status: none of your translation jobs have been completed" on the WPML translation dashboard. It follows the bold "Status: " label, so it starts in lower case.
+msgid "none of your translation jobs have been completed"
+msgstr ""
+
+msgid "The download did not finish, so some translations may still be waiting. Please try again."
+msgstr ""
+
+#. translators: Summary line on the WPML translation dashboard after downloading translations. %d: how many batches the translation service is still working on.
+#, js-format
+msgid "%d batches are still being processed by the translation service. Check again in a few minutes."
+msgstr ""
+
+msgid "Checking translation jobs status. Please don't close this page!"
+msgstr ""
+
+#. translators: Status line on the WPML translation dashboard. %d: the number of translation jobs sent out. The <strong> tags make the count and its noun bold; keep them around the same words.
+#, js-format
+msgid "<strong>%d translation job</strong> has been sent to remote translators"
+msgid_plural "<strong>%d translation jobs</strong> have been sent to remote translators"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Small status line on the WPML translation dashboard. %s: the date and time WPML last checked for finished translations, in the site's own format.
+#, js-format
+msgid "Last check: %s"
+msgstr ""
+
+#. translators: Small status line on the WPML translation dashboard, used when WPML has never checked for finished translations yet.
+msgid "Last check: Never"
+msgstr ""
+
+msgid "Switch to Private Translation Cloud (PTC)"
+msgstr ""
+
+#. translators: Label of the button, and of the notice heading, that switch the site's automatic translation engine to Private Translation Cloud (PTC). Verb, imperative. PTC is a product name; keep it.
+msgid "Switch to PTC"
+msgstr ""
+
+#. translators: Button label while the switch to the new translation engine is running; it replaces "Switch to PTC" on the same button. Keep the ellipsis.
+msgid "Switching…"
+msgstr ""
+
+msgid "Translation engine controls couldn't load. Reload the page and try again."
+msgstr ""
+
+msgid "We couldn't confirm the switch. Try again, or reload to see the current engine."
+msgstr ""
+
+msgid "Loading translation engine settings…"
+msgstr ""
+
+msgid "Fill in your site context above before switching to PTC."
+msgstr ""
+
+#. translators: Button label in the dialog that switches the translation engine, shown when it could not load. Verb, imperative: it reloads the browser page.
+msgid "Reload page"
+msgstr ""
+
+#. translators: First half of a line at the bottom of the WPML translation dashboard; the "Apply filters" link follows it. Keep the trailing space.
+msgid "Filtering is disabled to show all selected items. "
+msgstr ""
+
+#. translators: Link text at the bottom of the WPML translation dashboard that turns the filters back on. Verb, imperative.
+msgid "Apply filters"
+msgstr ""
+
+#. translators: Counter at the bottom of the WPML translation dashboard. %d: how many content items are ticked for translation.
+#, js-format
+msgid "%d item selected"
+msgid_plural "%d items selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Follows the count of selected items at the bottom of the WPML translation dashboard. %d: how many words those items add up to. Keep the brackets.
+#, js-format
+msgid "(%d words to translate)"
+msgstr ""
+
+#. translators: Line at the bottom of the WPML translation dashboard. %s: how many selected items the current filter hides.
+#, js-format
+msgid "%s item not showing."
+msgid_plural "%s items not showing."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Show all selected items"
+msgstr ""
+
+#. translators: Used in two places on the WPML translation dashboard for the same action: the title of its second step, and the label of the button that sends the ticked content for translation. Verb, imperative.
+msgid "Translate your content"
+msgstr ""
+
+msgid "Unselect all"
+msgstr ""
+
+#. translators: Label of the language dropdown that picks the language content is translated from, on the WPML translation dashboard. Keep the colon.
+msgid "Source Language:"
+msgstr ""
+
+#. translators: Label of the language dropdown that picks the language content is translated into, on the WPML translation dashboard. It reads as the continuation of "Source Language: ... translated to: ...", so it starts in lower case. Keep the colon.
+msgid "translated to:"
+msgstr ""
+
+#. translators: Button label that applies the filters on the WPML translation dashboard. Verb, imperative, not the noun for a filter.
+msgid "Filter"
+msgstr ""
+
+#. translators: Title of the dialog that confirms a change of the source language filter on the WPML translation dashboard. %1$s: the language filtered by until now, %2$s: the language being picked.
+#, js-format
+msgid "You are about to change the source language filter from %1$s to %2$s"
+msgstr ""
+
+msgid "Updating the source language filter will clear the items you've selected for translation. Are you sure you want to continue?"
+msgstr ""
+
+msgid "Change source language"
+msgstr ""
+
+#. translators: Button label that closes a dialog or a box without applying anything, used across WPML's screens. Verb, imperative, not the status of a cancelled job.
+msgid "Cancel"
+msgstr ""
+
+msgid "Filter by publication status"
+msgstr ""
+
+#. translators: Option in the dropdown that filters content by publication status, on the WPML translation dashboard. It means no filtering at all.
+msgid "All Statuses"
+msgstr ""
+
+#. translators: Option in the dropdown that picks the language content is translated into, on the WPML translation dashboard. It means every language.
+msgid "All languages"
+msgstr ""
+
+msgid "All translation statuses"
+msgstr ""
+
+#. translators: Option in the dropdown that filters content by translation status, on the WPML translation dashboard. It means content whose translation is not finished.
+msgid "Not completed"
+msgstr ""
+
+#. translators: Option in the dropdown that filters content by translation status, on the WPML translation dashboard. It means content whose original changed after it was translated.
+msgid "Needs updating"
+msgstr ""
+
+#. translators: Option in the dropdown that filters content by translation status, on the WPML translation dashboard. It means content that is being translated right now.
+msgid "Translation in progress"
+msgstr ""
+
+#. translators: Option in the dropdown that filters content by translation status, on the WPML translation dashboard. It means content that is fully translated.
+msgid "Translation complete"
+msgstr ""
+
+msgid "Filter by translation status"
+msgstr ""
+
+#. translators: Heading above the filters at the top of the WPML translation dashboard.
+msgid "Global Filter"
+msgstr ""
+
+#. translators: One entry in the dropdown that filters content by its parent page, on the WPML translation dashboard. %1$s: the path of the parent page, %2$d: its numeric identifier. "ID" is shown to the user.
+#, js-format
+msgid "%1$s (ID: %2$d)"
+msgstr ""
+
+#. translators: Label of the field that filters content by its parent page, on the WPML translation dashboard. Keep the colon.
+msgid "Parent:"
+msgstr ""
+
+#. translators: Placeholder text in the field that searches for a parent page, on the WPML translation dashboard. "ID" is the page's numeric identifier.
+msgid "Search parent by title, path, or ID"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the chosen parent page in the filter, on the WPML translation dashboard. %s: the parent page's title and identifier.
+#, js-format
+msgid "Parent: %s"
+msgstr ""
+
+#. translators: Placeholder text in the field that searches for a taxonomy term, on the WPML translation dashboard. %s: the language name terms are searched in.
+#, js-format
+msgid "Search by term title in %s"
+msgstr ""
+
+#. translators: Option in the dropdown that picks a taxonomy on the WPML translation dashboard. It means every taxonomy.
+msgid "All taxonomies"
+msgstr ""
+
+#. translators: Text shown on the WPML translation dashboard while the list of taxonomies is being fetched. Three dots are added after it in code.
+msgid "Loading"
+msgstr ""
+
+#. translators: Label of the field that filters content by taxonomy term, on the WPML translation dashboard. Keep the colon.
+msgid "Taxonomy Term:"
+msgstr ""
+
+#. translators: Text shown on the WPML translation dashboard while the terms of the chosen taxonomy are being fetched. Three dots are added after it in code.
+msgid "Loading terms"
+msgstr ""
+
+msgid "No terms found"
+msgstr ""
+
+#. translators: Label of the text field that filters the list by title, on the WPML translation dashboard. Keep the colon.
+msgid "Filter by:"
+msgstr ""
+
+#. translators: Used in two places on the WPML translation dashboard: the placeholder text in the field that filters by title, and the heading of the Title column. Noun.
+msgid "Title"
+msgstr ""
+
+#. translators: Title of the tooltip that explains why automatic translation stopped, on the WPML translation dashboard. %s: the amount owed, with its currency.
+#, js-format
+msgid "Automatic translation is paused — payment required (%s)."
+msgstr ""
+
+#. translators: Title of the tooltip that explains why automatic translation stopped, on the WPML translation dashboard; "It" is automatic translation.
+msgid "Automatic translation is paused: monthly spending cap reached. It continues when the cap is raised, or when the cap resets."
+msgstr ""
+
+#. translators: Title of the tooltip that explains why automatic translation stopped, on the WPML translation dashboard. %1$s: opening bold tag, %2$s: the number of prepaid words in the account, %3$s: closing bold tag.
+#, js-format
+msgid "You have %1$s%2$s prepaid word in your WPML account%3$s. Assign these words to this site to resume automatic translation."
+msgid_plural "You have %1$s%2$s prepaid words in your WPML account%3$s. Assign these words to this site to resume automatic translation."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Title of the tooltip that explains why automatic translation stopped, on the WPML translation dashboard, when the account has no prepaid words left.
+msgid "Not enough prepaid words to continue automatic translation. Add more words to resume."
+msgstr ""
+
+#. translators: Button label that gives this site words the WPML account already holds: in the prepaid-words card, and in the box and tooltip about paused automatic translation on the WPML translation dashboard. Verb, imperative.
+msgid "Assign words"
+msgstr ""
+
+#. translators: Button label in the box that says automatic translation is paused, on the WPML translation dashboard; it opens the page where more words are bought. Verb, imperative.
+msgid "Get more words"
+msgstr ""
+
+#. translators: Link text under a row of the content table on the WPML translation dashboard; it opens the page on the site. Verb, imperative.
+msgid "View"
+msgstr ""
+
+#. translators: Link text under a row of the content table on the WPML translation dashboard; it opens the page in the WordPress editor. Verb, imperative.
+msgid "Edit"
+msgstr ""
+
+msgid "Edit note for the translators"
+msgstr ""
+
+msgid "Add note for the translators"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the tick box on a row of the content table, on the WPML translation dashboard. %s: the title of that item. Verb, imperative.
+#, js-format
+msgid "Select %s"
+msgstr ""
+
+#. translators: Shown in the Title column of the content table on the WPML translation dashboard when the item has no title. Keep the brackets and the lower case.
+msgid "(no title)"
+msgstr ""
+
+#. translators: Column heading in the content table on the WPML translation dashboard; the column holds the item's featured image.
+msgid "Image"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the link that sorts the content table by title, on the WPML translation dashboard. %s: the name of the section, e.g. "Posts".
+#, js-format
+msgid "%s Title"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the link that sorts the content table by date, on the WPML translation dashboard. %s: the name of the section, e.g. "Posts".
+#, js-format
+msgid "%s Date"
+msgstr ""
+
+#. translators: Column heading in the content table on the WPML translation dashboard; the column shows each item's date and its publication status. Clicking it sorts the table.
+msgid "Date / Status"
+msgstr ""
+
+#. translators: Text shown while the content table is being fetched, on the WPML translation dashboard. Keep the three dots.
+msgid "Loading items..."
+msgstr ""
+
+#. translators: Tooltip on a row that cannot be selected, on the WPML translation dashboard. %1$s: opening link tag, %2$s: closing link tag; they turn "translated manually" into a link to the documentation.
+#, js-format
+msgid "This page is set to be %1$stranslated manually%2$s using the WordPress Editor"
+msgstr ""
+
+#. translators: Counter above a content table on the WPML translation dashboard. %1$d: how many items are ticked, %2$s: the name of the content type, singular or plural to match the number, e.g. "post" or "posts".
+#, js-format
+msgid "%1$d %2$s selected"
+msgstr ""
+
+#. translators: Stands in for the name of a content type on the WPML translation dashboard when the type has no name of its own. Plural noun, lower case, used inside other sentences.
+msgid "items"
+msgstr ""
+
+msgid "Filtering is disabled to show all selected items"
+msgstr ""
+
+#. translators: Link text above a content table on the WPML translation dashboard that turns the filter back on. Verb, imperative.
+msgid "Apply filter"
+msgstr ""
+
+#. translators: Line above a content table on the WPML translation dashboard. %1$d: how many ticked items the filter hides, %2$s: the name of the content type, singular or plural to match the number, e.g. "post" or "posts".
+#, js-format
+msgid "%1$d %2$s not showing"
+msgstr ""
+
+msgid "Show selected items"
+msgstr ""
+
+msgid "Looking for more items..."
+msgstr ""
+
+#. translators: Option in the dropdown that chooses how many rows a page of the table shows, on the WPML translation dashboard. A number is written directly before it, as in "20 / page". Keep the leading space.
+msgid " / page"
+msgstr ""
+
+#. translators: Used on WPML's paged lists for the control that goes back one page: the visible button label, and the accessible label (screen readers) of the back arrow.
+msgid "Previous"
+msgstr ""
+
+#. translators: Used on WPML's paged lists for the control that goes forward one page: the visible button label, and the accessible label (screen readers) of the forward arrow.
+msgid "Next"
+msgstr ""
+
+msgid "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\"."
+msgstr ""
+
+msgid "The current filter captures too much content. Narrow it down to enable \"select all\" for translation."
+msgstr ""
+
+#. translators: Button label at the top of the WPML translation dashboard that ticks every item in every section. Verb, imperative.
+msgid "Select All"
+msgstr ""
+
+#. translators: Line above a content table on the WPML translation dashboard. %d: how many items match the current filter and are now ticked.
+#, js-format
+msgid "All %d items matching criteria are selected"
+msgstr ""
+
+#. translators: Line above a content table on the WPML translation dashboard. %d: how many items this section holds, all of them now ticked.
+#, js-format
+msgid "All %d items in this section are selected"
+msgstr ""
+
+msgid "You have too many items to send for translation at once. Apply a filter to narrow down the items to enable this option."
+msgstr ""
+
+#. translators: Text button above a content table on the WPML translation dashboard that unticks everything. Verb, imperative.
+msgid "Clear selection"
+msgstr ""
+
+#. translators: Text button above a content table on the WPML translation dashboard that ticks every item the current filter finds. Verb, imperative.
+msgid "Select all items that match this search"
+msgstr ""
+
+#. translators: Text shown on WPML's screens while something is still being fetched or applied. Keep the three dots.
+msgid "Loading..."
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the tick box in the table heading, on the WPML translation dashboard. %s: the singular name of the content type; the "s" written after it makes the English plural, so build the plural the way your language does.
+#, js-format
+msgid "Select all %ss"
+msgstr ""
+
+#. translators: Button label in the box where a note for the translators is written, on the WPML translation dashboard. Verb, imperative.
+msgid "Save note"
+msgstr ""
+
+#. translators: Notice on the WPML translation dashboard. %s: a comma-separated list of language names. The <a> tags turn "Map to known languages" into a link to the language editor; keep them around text that reads as a link.
+#, js-format
+msgid "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation."
+msgstr ""
+
+#. translators: Notice on the WPML translation dashboard. %s: the name of the site's default language.
+#, js-format
+msgid "The site's default language %s doesn't support automatic translation."
+msgstr ""
+
+msgid "Some sections are hidden due to current filter settings or because they have no items. <show_all>Show all translation statuses</show_all>"
+msgstr ""
+
+#. translators: Small heading numbering the first step of the WPML translation dashboard; the step's own title follows it.
+msgid "Step 1"
+msgstr ""
+
+#. translators: Title of the first step of the WPML translation dashboard, next to the words "Step 1". Verb, imperative.
+msgid "Select items for translation"
+msgstr ""
+
+#. translators: Button label that empties every filter on the WPML translation dashboard. Verb, imperative.
+msgid "Clear filters"
+msgstr ""
+
+msgid "WPML could not load these items from your site."
+msgstr ""
+
+msgid "Try again or reload the page. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses."
+msgstr ""
+
+#. translators: Button label that runs the action again after it failed, used across WPML's screens. Verb, imperative.
+msgid "Try again"
+msgstr ""
+
+#. translators: The word that fills the blank in "WPML didn't find any ... matching your criteria." on the WPML translation dashboard. Plural noun, lower case.
+msgid "strings"
+msgstr ""
+
+#. translators: Message shown in place of an empty content table on the WPML translation dashboard. %s: the plural name of what was searched for, e.g. "posts" or "strings".
+#, js-format
+msgid "WPML didn't find any %s matching your criteria."
+msgstr ""
+
+msgid "You have too many items selected to use this feature. Deselect some of the items to enable it."
+msgstr ""
+
+#. translators: Notice shown before content is sent for translation, on the WPML translation dashboard. %1$s: words left within the monthly spending cap, %2$s: the site's host name, %3$s: words used so far, %4$s: the cap in words, %5$s: the date the cap resets, e.g. "1 September". The <strong>, <site> and <figure> tags style the text; keep them around the same words.
+#, js-format
+msgid "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can send this content now and it will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>."
+msgstr ""
+
+#. translators: Notice shown before automatic translation is turned on, on the WPML translation dashboard. %1$s: words left within the monthly spending cap, %2$s: the site's host name, %3$s: words used so far, %4$s: the cap in words, %5$s: the date the cap resets, e.g. "1 September". The <strong>, <site> and <figure> tags style the text; keep them around the same words.
+#, js-format
+msgid "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can turn this on now and content will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>."
+msgstr ""
+
+msgid "Raise the cap"
+msgstr ""
+
+msgid "Only the account owner can do this."
+msgstr ""
+
+#. translators: Label of the dropdown that picks which strings are listed, on the Strings tab of the WPML translation dashboard; the dropdown's options, such as "Themes", finish the sentence. Keep the colon.
+msgid "Show strings in:"
+msgstr ""
+
+#. translators: Button label above the strings table on the WPML translation dashboard; it opens a dialog for choosing which columns are shown. Verb plus noun, imperative.
+msgid "Display Columns"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the X button that closes a dialog, on the WPML translation dashboard. Verb, imperative.
+msgid "Close modal"
+msgstr ""
+
+#. translators: Heading of the dialog for choosing which columns the strings table shows, on the WPML translation dashboard.
+msgid "Select visible columns"
+msgstr ""
+
+#. translators: Name of a column of the strings table on the WPML translation dashboard, used both as the heading and as a tick box in the dialog that chooses columns. This column holds the string's own text. Noun.
+msgid "String"
+msgstr ""
+
+#. translators: Name of a column of the strings table on the WPML translation dashboard, used both as the heading and as a tick box in the dialog that chooses columns. This column holds the name the string is registered under. Noun.
+msgid "Name"
+msgstr ""
+
+#. translators: Name of a column of the strings table on the WPML translation dashboard, used both as the heading and as a tick box in the dialog that chooses columns. This column holds the text domain the string belongs to. Noun.
+msgid "Domain"
+msgstr ""
+
+#. translators: Name of a column of the strings table on the WPML translation dashboard, used both as the heading and as a tick box in the dialog that chooses columns. This column says where the string was seen. Noun.
+msgid "Source"
+msgstr ""
+
+#. translators: Name of a column of the strings table on the WPML translation dashboard, used both as the heading and as a tick box in the dialog that chooses columns. This column says whether the string comes from a plugin, a theme or WordPress. Noun.
+msgid "Type"
+msgstr ""
+
+#. translators: Button label that puts the choices in a dialog into effect, used across WPML's screens. Verb, imperative.
+msgid "Apply"
+msgstr ""
+
+#. translators: Option in the dropdown that filters strings by text domain, on the WPML translation dashboard. It means every domain.
+msgid "All domains"
+msgstr ""
+
+#. translators: Label of the dropdown that filters strings by text domain, on the WPML translation dashboard. Keep the colon.
+msgid "Domain:"
+msgstr ""
+
+#. translators: Option in the dropdown that filters strings by where they were seen, on the WPML translation dashboard. It means every source.
+msgid "All sources"
+msgstr ""
+
+#. translators: Option in the dropdown that filters strings by where they were seen, on the WPML translation dashboard. It means strings seen on the public side of the site.
+msgid "Frontend (viewed)"
+msgstr ""
+
+#. translators: Option in the dropdown that filters strings by where they were seen, on the WPML translation dashboard. It means strings seen in the WordPress admin.
+msgid "Backend (viewed)"
+msgstr ""
+
+#. translators: Option in the dropdown that filters strings by where they were seen, on the WPML translation dashboard. It means strings WPML has not seen anywhere yet.
+msgid "Unknown"
+msgstr ""
+
+#. translators: Label of the dropdown that filters strings by where they were seen, on the WPML translation dashboard. Keep the colon.
+msgid "Source:"
+msgstr ""
+
+msgid "String or Name:"
+msgstr ""
+
+msgid "Search string or a name"
+msgstr ""
+
+msgid "This filter is available only if source is set to \"Frontend\" or \"Backend\"."
+msgstr ""
+
+#. translators: Says where a string was seen, in the Source column of the strings table on the WPML translation dashboard. The word "viewed" is written after it, giving "front-end viewed". Lower case.
+msgid "front-end"
+msgstr ""
+
+#. translators: Says where a string was seen, in the Source column of the strings table on the WPML translation dashboard. The word "viewed" is written after it, giving "back-end viewed". Lower case.
+msgid "back-end"
+msgstr ""
+
+#. translators: Second half of "front-end viewed" or "back-end viewed" in the Source column of the strings table on the WPML translation dashboard. It is highlighted, so it is a separate text. Lower case.
+msgid "viewed"
+msgstr ""
+
+msgid "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here."
+msgstr ""
+
+msgid "Finding strings in themes and plugins"
+msgstr ""
+
+msgid "Strings in the theme and plugins"
+msgstr ""
+
+msgid "Translate front-end texts you can customize from the WordPress admin like footer text, copyright notices, plugin options and settings, time format, widget texts, and more."
+msgstr ""
+
+msgid "Translating Strings From Admin and Settings"
+msgstr ""
+
+msgid "Translate texts in admin screens"
+msgstr ""
+
+msgid "Translate User Meta Information"
+msgstr ""
+
+msgid "Making User Meta Information Translatable"
+msgstr ""
+
+msgid "Translate user profile strings"
+msgstr ""
+
+#. translators: Message shown in place of an empty strings table on the WPML translation dashboard. The <a/> tag is replaced by a comma-separated list of links, one per language; keep it inside the brackets. Keep the trailing space: more text follows.
+msgid "No strings have been registered for translation yet. Open your site's front-end (<a/>) and WPML will automatically detect the untranslated strings and list them here. "
+msgstr ""
+
+msgid "hide details"
+msgstr ""
+
+#. translators: Text of the link that folds away the extra explanation under an empty strings table, on the WPML translation dashboard. Verb, imperative, lower case.
+msgid "more details"
+msgstr ""
+
+msgid "Still can't find the strings you're looking to translate? Add more strings for translation."
+msgstr ""
+
+msgid "Not seeing strings that you are looking for?"
+msgstr ""
+
+msgid "Enable the autoregistration setting."
+msgstr ""
+
+#. translators: Help text under an empty strings table on the WPML translation dashboard. %s: a comma-separated list of links, one per language, of up to three names followed by "...".
+#, js-format
+msgid "Visit translations on the site's frontend for WPML to see which strings are missing translations. Visiting one language is enough: %s."
+msgstr ""
+
+msgid "Alternatively, you can register strings manually."
+msgstr ""
+
+msgid "Registering new strings found on your site…"
+msgstr ""
+
+msgid "Registering new strings is paused: there is not enough PHP memory to continue. Increase the memory limit or <retryQueue>try again</retryQueue>."
+msgstr ""
+
+msgid "Registering new strings was interrupted. <retryQueue>Try again</retryQueue>"
+msgstr ""
+
+msgid "New strings were registered while you were working. <updateStringsList>Update the list</updateStringsList>"
+msgstr ""
+
+msgid "<b>Translate Everything</b> translates only those strings which are registered in English language"
+msgstr ""
+
+msgid "Most strings from your plugins and theme are in English, so we’re showing them alongside your default language. Use the <b>Source Language</b> filter to view strings in a specific language."
+msgstr ""
+
+#. translators: Notice above the strings table on the WPML translation dashboard. %s: the name of the caching plugin the site runs. The <b> tags make that name bold; keep them around it.
+#, js-format
+msgid "You’re using <b>%s</b> to cache your site, which may prevent WPML from automatically registering new strings. To fix this, clear your page cache, then visit your translated pages again on the frontend to detect new strings."
+msgstr ""
+
+msgid "WPML can detect strings that appear on the site and list them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here only the strings that actually appear on the site, you need to enable this feature."
+msgstr ""
+
+msgid "WPML detects strings that appear on the site and lists them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here all the strings in the site, you need to disable this feature."
+msgstr ""
+
+msgid "Detect untranslated strings"
+msgstr ""
+
+#. translators: Explanation at the top of the dialog that sets how strings are registered automatically, on the WPML translation dashboard; "This" is that automatic registering.
+msgid "WPML can detect untranslated strings and automatically register them for translation. This happens in real time as you or your visitors browse your website."
+msgstr ""
+
+msgid "Automatically register untranslated strings"
+msgstr ""
+
+msgid "Learn how to use auto-registration"
+msgstr ""
+
+msgid "recommended"
+msgstr ""
+
+#. translators: Label of the tick box in the dialog that sets how strings are registered automatically, on the WPML translation dashboard.
+msgid "Also register strings from the website's back-end"
+msgstr ""
+
+#. translators: Button label that saves the settings in a WPML dialog. Verb, imperative.
+msgid "Save settings"
+msgstr ""
+
+#. translators: Shown next to "Automatically register strings" on the WPML translation dashboard when the setting could not be read.
+msgid "Request failed because of the network error"
+msgstr ""
+
+#. translators: Status of the "Automatically register strings" setting on the WPML translation dashboard. It says the setting is on.
+msgid "Enabled"
+msgstr ""
+
+#. translators: Status of the "Automatically register strings" setting on the WPML translation dashboard. It says the setting is off.
+msgid "Disabled"
+msgstr ""
+
+#. translators: Text button next to the "Automatically register strings" status on the WPML translation dashboard that opens its settings. Verb, imperative; brackets are added around it in code.
+msgid "Modify"
+msgstr ""
+
+#. translators: Warning above a content table on the WPML translation dashboard. %1$s: the plural name of the content type, e.g. "packages", %2$s: the name of the site's default language.
+#, js-format
+msgid "You can only translate %1$s from the site's default language (%2$s)."
+msgstr ""
+
+msgid "Search taxonomy or a name"
+msgstr ""
+
+msgid "Filter by post type"
+msgstr ""
+
+msgid "All post types"
+msgstr ""
+
+#. translators: Note under the taxonomies table on the WPML translation dashboard. %d: how many taxonomies are hidden because they are set to "Not translatable". The <i> tags italicise the setting's name and the <a> tags link to the settings page; keep them around the same words.
+#, js-format
+msgid "%d Not-translatable taxonomy is hidden. Switch it to <i>Translatable</i> in <a>WPML → Settings</a> to include it here."
+msgid_plural "%d Not-translatable taxonomies are hidden. Switch them to <i>Translatable</i> in <a>WPML → Settings</a> to include them here."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "No translatable taxonomies match the current filters."
+msgstr ""
+
+msgid "Select all taxonomies"
+msgstr ""
+
+msgid "Sort by taxonomy"
+msgstr ""
+
+#. translators: Column heading in the taxonomies table on the WPML translation dashboard. Each cell under it holds a taxonomy name, so heading and cell read together as "Terms in Categories". Clicking it sorts the table.
+msgid "Terms in"
+msgstr ""
+
+#. translators: Column heading in the taxonomies table on the WPML translation dashboard; the column lists the content types each taxonomy is used on.
+msgid "Post types"
+msgstr ""
+
+msgid "Translated / Total terms"
+msgstr ""
+
+#. translators: Translation status in the tooltip of a language icon in the taxonomies table on the WPML translation dashboard. It is written after the language name, as in "Spanish: translated". Lower case.
+msgid "translated"
+msgstr ""
+
+#. translators: Translation status in the tooltip of a language icon in the taxonomies table on the WPML translation dashboard. It is written after the language name, as in "Spanish: translation in progress". Lower case.
+msgid "translation in progress"
+msgstr ""
+
+#. translators: Translation status written after a language name in a tooltip on the WPML translation dashboard, as in "Spanish: preparing for translation": the job is queued but not sent yet. Lower case.
+msgid "preparing for translation"
+msgstr ""
+
+#. translators: Translation status in the tooltip of a language icon in the taxonomies table on the WPML translation dashboard. It is written after the language name, as in "Spanish: translation needs update", and means the original changed after it was translated. Lower case.
+msgid "translation needs update"
+msgstr ""
+
+#. translators: Translation status in the tooltip of a language icon in the taxonomies table on the WPML translation dashboard. It is written after the language name, as in "Spanish: translation stalled - ...". Lower case.
+msgid "translation stalled - the job never reached our translation system"
+msgstr ""
+
+#. translators: Translation status in the tooltip of a language icon in the taxonomies table on the WPML translation dashboard. It is written after the language name, as in "Spanish: partially translated", and means some terms are translated and some are not. Lower case.
+msgid "partially translated"
+msgstr ""
+
+#. translators: Translation status written after a language name in a tooltip on the WPML translation dashboard, as in "Spanish: not translated". Lower case.
+msgid "not translated"
+msgstr ""
+
+#. translators: Tooltip of a language icon in the taxonomies table on the WPML translation dashboard, as in "Spanish: not translated". %1$s: the language name, %2$s: the translation status.
+#, js-format
+msgid "%1$s: %2$s"
+msgstr ""
+
+#. translators: Tooltip of the link next to a taxonomy name on the WPML translation dashboard; the link opens WPML's taxonomy translation screen. %s: the name of the taxonomy.
+#, js-format
+msgid "Open %s in the Taxonomy Translation tab"
+msgstr ""
+
+msgid "Taxonomy labels and slug"
+msgstr ""
+
+msgid "WPML String Translation is not active."
+msgstr ""
+
+msgid "Taxonomy labels and slugs are translated with <b>String Translation</b> — activate the plugin to translate them."
+msgstr ""
+
+msgid "No taxonomy labels to translate."
+msgstr ""
+
+msgid "Select all taxonomy labels"
+msgstr ""
+
+#. translators: Column heading in the table of taxonomy labels on the WPML translation dashboard; a taxonomy label is a word such as "Categories" that WordPress shows for a taxonomy.
+msgid "Taxonomy labels"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the tick box on a row of the taxonomy labels table, on the WPML translation dashboard. %s: the name of the taxonomy. Verb, imperative.
+#, js-format
+msgid "Select labels for %s"
+msgstr ""
+
+msgid "Labels not detected by String Translation. Rescan needed."
+msgstr ""
+
+msgid "Labels not found"
+msgstr ""
+
+#. translators: Button label while WPML looks again for a taxonomy's labels, on the WPML translation dashboard; it replaces "Rescan" on the same button. Keep the ellipsis.
+msgid "Scanning…"
+msgstr ""
+
+#. translators: Button label that makes WPML look again for a taxonomy's labels, on the WPML translation dashboard. Verb, imperative.
+msgid "Rescan"
+msgstr ""
+
+#. translators: Counter under the taxonomies table on the WPML translation dashboard. %d: how many taxonomies are ticked.
+#, js-format
+msgid "%d Taxonomy selected"
+msgid_plural "%d Taxonomies selected"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "<b>Translate Everything Automatically</b> (TEA) is active."
+msgstr ""
+
+msgid "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms."
+msgstr ""
+
+#. translators: Button label in the admin notice that turns the Advanced Translation Editor on. Verb, imperative.
+msgid "Switch Now"
+msgstr ""
+
+msgid "Add site description"
+msgstr ""
+
+#. translators: Button label of the "Turn on Translate Everything Automatically" step in a notice on the WPML translation dashboard. Verb, imperative.
+msgid "Turn on now"
+msgstr ""
+
+msgid "Set up <b>Translate Everything</b>"
+msgstr ""
+
+#. translators: First sentence of an answer in a notice on the WPML translation dashboard. %s: the name of the translation engine the site uses now, e.g. "DeepL".
+#, js-format
+msgid "You’ve been translating with %s."
+msgstr ""
+
+#. translators: Answer to "What happens to my existing translations?" in a notice on the WPML translation dashboard. "This" is re-sending a page, "It" is automatic translation. The <b> tags make the screen name bold; keep them around it.
+msgid "Your current translations stay exactly as they are. The switch to PTC affects only new and changed content. To refresh an old translation with PTC, re-send it from the <b>Translation Dashboard</b>. This works even while automatic translation runs. It skips anything already translated."
+msgstr ""
+
+#. translators: Answer to "What happens to my existing translations?" in a notice on the WPML translation dashboard; "They" is those existing translations. The <b> tags make the screen name bold; keep them around it.
+msgid "They stay as they are. Automatic translation only touches content that isn’t translated yet. WPML skips anything you’ve already translated. To refresh a page, re-send it from the <b>Translation Dashboard</b> anytime."
+msgstr ""
+
+msgid "Add your site description and target audience"
+msgstr ""
+
+#. translators: Button label that saves what is on the screen, used across WPML's screens. Verb, imperative.
+msgid "Save"
+msgstr ""
+
+#. translators: Button label while a save is running; it replaces "Save" on the same button. Keep the ellipsis.
+msgid "Saving…"
+msgstr ""
+
+msgid "Your automatic translation pricing has been upgraded"
+msgstr ""
+
+msgid "Loading notice details…"
+msgstr ""
+
+msgid "With WPML 5, automatic translation now costs once per page, per language. After that, edits that add words cost only the added words — edits that don’t grow the page are free. Rework copy, run A/B tests, refine wording. You’re already on PTC, with automatic translation on. There’s nothing to change."
+msgstr ""
+
+#. translators: Button label that closes a notice on the WPML translation dashboard once it has been read. Short acknowledgement, not a command to the reader.
+msgid "Got it"
+msgstr ""
+
+msgid "See your pricing"
+msgstr ""
+
+msgid "You’re all set. The new pricing is active."
+msgstr ""
+
+msgid "Automatic translation now costs once per page, per language. Edits afterwards are free. New content stays translated as you publish."
+msgstr ""
+
+msgid "What happens to my existing translations?"
+msgstr ""
+
+msgid "Switch to PTC for better translations and the new pricing"
+msgstr ""
+
+msgid "Pay once per page, then edit for free"
+msgstr ""
+
+#. translators: Opening line of a notice on the WPML translation dashboard. %s: the name of the translation engine the site uses now, e.g. "DeepL".
+#, js-format
+msgid "You’re translating your whole site automatically with %s. The new pay-once pricing applies when you use PTC, our recommended AI engine."
+msgstr ""
+
+msgid "WPML 5 brings a simpler, lower price for automatic translation, using <strong>Private Translation Cloud (PTC)</strong>, WPML’s own AI engine. Set it up to have WPML translate your whole site automatically."
+msgstr ""
+
+msgid "What you gain"
+msgstr ""
+
+msgid "Pay once per page, in each language."
+msgstr ""
+
+msgid "After that, only added words are charged."
+msgstr ""
+
+msgid "Edit as much as you want."
+msgstr ""
+
+msgid "A/B tests, copy changes, and rewrites cost only the words they add."
+msgstr ""
+
+msgid "Translations in your voice."
+msgstr ""
+
+msgid "PTC learns your terms and tone from your existing translations."
+msgstr ""
+
+msgid "Questions? Tap to expand"
+msgstr ""
+
+#. translators: Question that opens an answer in a notice on the WPML translation dashboard. PTC is a product name; keep it.
+msgid "Why is the pay-once pricing only for PTC?"
+msgstr ""
+
+#. translators: Answer to "Why is the pay-once pricing only for PTC?" in a notice on the WPML translation dashboard. "It" is PTC. DeepL, Google, Microsoft and PTC are product names.
+msgid "PTC is WPML’s own AI engine. It reads the whole page, learns your terms and tone, and is backed by our quality guarantee, so we can price it once per page. DeepL, Google and Microsoft translate segment by segment and are priced per word, changes included."
+msgstr ""
+
+msgid "How much will I pay?"
+msgstr ""
+
+#. translators: Answer about pricing in a notice on the WPML translation dashboard, on a site whose engine is not PTC. %s: the name of that engine, e.g. "DeepL". PTC is a product name.
+#, js-format
+msgid "You’re on %s: per word, changes included. Switch to PTC to pay once per page, with free changes."
+msgstr ""
+
+msgid "On PTC, you pay once per page, in each language. After that, edits to that page are free. You pay again only if the page grows past what you first paid for. In short: you pay for new content, not for updates."
+msgstr ""
+
+msgid "Yes, show me how"
+msgstr ""
+
+#. translators: Button label that dismisses the pricing notice on the WPML translation dashboard for good. Adjective phrase about the reader, not a command.
+msgid "Not interested"
+msgstr ""
+
+msgid "Do these in order. If you turn on automatic translation before choosing PTC, WPML translates your whole site with the wrong engine. You’d then pay to redo that work."
+msgstr ""
+
+msgid "Do these in order. The engine change affects only new and changed content. Your current translations stay as they are."
+msgstr ""
+
+#. translators: Heading of the pricing notice on the WPML translation dashboard. %d: how many steps the list below it holds.
+#, js-format
+msgid "Switch on the new pricing in %d step"
+msgid_plural "Switch on the new pricing in %d steps"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Used in two places on WPML's screens: the heading of the dialog that reports a finished action, and the marker on a step that is already done. It means "finished", not a command.
+msgid "Done"
+msgstr ""
+
+msgid "Automatic translation is paused. Settle it in the <b>Translate Everything</b> box first."
+msgstr ""
+
+msgid "Do the step above first"
+msgstr ""
+
+msgid "Switch to the <b>Advanced Translation Editor</b>"
+msgstr ""
+
+#. translators: Title of the step, in a notice on the WPML translation dashboard, that moves the site to WPML's own AI engine. PTC is a product name; keep it.
+msgid "Switch your engine to PTC"
+msgstr ""
+
+msgid "Turn on <b>Translate Everything Automatically</b>"
+msgstr ""
+
+msgid "The Advanced Translation Editor is your editor now."
+msgstr ""
+
+msgid "You’re using the Classic Translation Editor, an old legacy tool. PTC and automatic translation run in the Advanced Translation Editor, which also gives you:"
+msgstr ""
+
+msgid "recommended: pay once per page. PTC needs a short description of your site; the next dialog asks for it."
+msgstr ""
+
+#. translators: Sub-line of the "Switch your engine to PTC" step in a notice on the WPML translation dashboard. Lower case on purpose: it continues the step's title.
+msgid "recommended: pay once per page"
+msgstr ""
+
+msgid "Only you can describe your site. PTC uses this to translate in your voice. Enter it in AI Settings, then Save."
+msgstr ""
+
+#. translators: Sub-line of the "Turn on Translate Everything Automatically" step in a notice on the WPML translation dashboard, on a site whose engine is not PTC yet. %s: the name of that engine, e.g. "DeepL". Step 1 is the engine step above it.
+#, js-format
+msgid "Starts with your current engine, %s, priced per word. After step 1 it runs on PTC, pay once per page."
+msgstr ""
+
+msgid "WPML translates your whole site. New content stays translated as you publish."
+msgstr ""
+
+#. translators: One feature in the list in the admin notice about the Advanced Translation Editor: the store of earlier translations WPML reuses.
+msgid "Translation Memory"
+msgstr ""
+
+#. translators: One feature in the list in the admin notice about the Advanced Translation Editor: it keeps the page's HTML markup safe while translating.
+msgid "HTML Protection"
+msgstr ""
+
+#. translators: One feature in the list in the admin notice about the Advanced Translation Editor: the list of terms that are always translated the same way.
+msgid "Glossary"
+msgstr ""
+
+#. translators: One feature in the list in the admin notice about the Advanced Translation Editor: it checks the spelling of translations.
+msgid "Spellchecker"
+msgstr ""
+
+#. translators: One feature in the list in the admin notice about the Advanced Translation Editor: help from artificial intelligence while translating.
+msgid "AI Assistant"
+msgstr ""
+
+#. translators: One feature in the list in the admin notice about the Advanced Translation Editor: translation done by machine rather than by a person.
+msgid "Automatic Translation"
+msgstr ""
+
+#. translators: Line under the checklist in a notice on the WPML translation dashboard, on a site that already translates everything automatically with an engine that is not PTC. %s: the name of that engine, e.g. "DeepL". The <b> tags make the feature name bold; keep them around it.
+#, js-format
+msgid "<b>Translate Everything Automatically</b> is already on, with %s (per word)."
+msgstr ""
+
+#. translators: Label of the link or button that dismisses a notice on the WPML translation dashboard for now, without deciding anything. The notice can come back later.
+msgid "Not now"
+msgstr ""
+
+msgid "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support."
+msgstr ""
+
+#. translators: Title of the warning shown when the site has no prepaid words left, on the WPML translation dashboard.
+msgid "You don’t have enough prepaid words to translate this content."
+msgstr ""
+
+#. translators: Title of the warning about prepaid words on the WPML translation dashboard. %1$s: how many words the site has, %2$s: how many more it needs. Both are written with thousands separators.
+#, js-format
+msgid "You have %1$s prepaid words — %2$s more are needed to translate this content"
+msgstr ""
+
+#. translators: Title of the warning about prepaid words on the WPML translation dashboard. %1$s: how many words are missing, %2$s: how many are needed altogether. Both are written with thousands separators.
+#, js-format
+msgid "You’re missing %1$s prepaid words for the translation jobs in progress — %2$s are needed in total"
+msgstr ""
+
+msgid "Automatic translation costs:"
+msgstr ""
+
+#. translators: Unit written after a number on the WPML translation dashboard, as in "1,200 Words". English uses the same word for one and for many; use whatever forms your language needs.
+msgid "Words"
+msgid_plural "Words"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Words to translate automatic"
+msgstr ""
+
+#. translators: Label of the total row in the cost table on the WPML translation dashboard; the number of words follows in the next cell. Keep the colon.
+msgid "Words required:"
+msgstr ""
+
+#. translators: Used on the WPML translation dashboard both as the label of the pricing row in the automatic translation box and as the text of the link to WPML's pricing page. Noun.
+msgid "Pricing"
+msgstr ""
+
+msgid "Your Automatic Translation Words"
+msgstr ""
+
+msgid "To proceed with translation, activate <b>Pay-As-You-Go</b> or assign prepaid words."
+msgstr ""
+
+msgid "<b>Pay-As-You-Go</b> activated"
+msgstr ""
+
+msgid "You can now continue translating your content automatically."
+msgstr ""
+
+#. translators: Title of the notice shown after prepaid words are added to the site, on the WPML translation dashboard. %s: how many WORDS were added (not credits), written with thousands separators.
+#, js-format
+msgid "%s word assigned to this site."
+msgid_plural "%s words assigned to this site."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Leave existing translations as they are"
+msgstr ""
+
+msgid "Overwrite existing translations"
+msgstr ""
+
+msgid "Some of the content you want to translate is already translated"
+msgstr ""
+
+msgid "What do you want to do with the content that's already translated?"
+msgstr ""
+
+msgid "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing."
+msgstr ""
+
+msgid "Translations from PTC are publish-ready, so you can publish them without review."
+msgstr ""
+
+#. translators: Label of the date field that proposes when the translation should be ready, on the WPML translation dashboard. Keep the colon.
+msgid "Suggested deadline:"
+msgstr ""
+
+msgid "Set a batch name and deadline"
+msgstr ""
+
+msgid "You can assign a custom name to this batch for easy tracking and suggest a deadline to clarify the priority for translators."
+msgstr ""
+
+#. translators: Label of the field that names the group of content being sent for translation, on the WPML translation dashboard. Keep the colon.
+msgid "Batch name:"
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %1$s and %2$s: the same language name, e.g. "Spanish". The <add_yourself> and <check_again> tags turn the words between them into links; keep them around text that reads as a link, and keep <br/> where the line should break.
+#, js-format
+msgid "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s translator</add_yourself> to the site.<br/> Add yourself as %2$s translator and click <check_again>check again</check_again> or choose a different translation option."
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %1$s and %3$s: the source language names, %2$s and %4$s: the target language name. The <add_yourself> and <check_again> tags turn the words between them into links; keep <br/> where the line should break.
+#, js-format
+msgid "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s to %2$s translator</add_yourself> to the site.<br/> Add yourself as %3$s to %4$s translator and click <check_again>check again</check_again> or choose a different translation option."
+msgstr ""
+
+msgid "Checking"
+msgstr ""
+
+msgid "In order to assign a translation service, you first need to <activate_ts>activate a translation service</activate_ts>.<br/>Activate a translation service and click <check_again>check again</check_again> or choose a different translation option."
+msgstr ""
+
+msgid " Checking "
+msgstr ""
+
+msgid "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option."
+msgstr ""
+
+msgid "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page."
+msgstr ""
+
+msgid "Some of the selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page."
+msgstr ""
+
+#. translators: Shown on the WPML translation dashboard when Duplicate is chosen for a language in which some of the selected content is already translated.
+msgid ""
+"Content that is already translated into this language will not be duplicated; its existing translation is kept.\n"
+"When duplicating content, please first duplicate parent pages to maintain the site's hierarchy."
+msgstr ""
+
+#. translators: Notice on the WPML translation dashboard; "This" is sending the selected content for translation again.
+msgid "Some of the selected content is already being translated. This will cancel any in-progress translations."
+msgstr ""
+
+msgid "The selected items were translated using the WordPress Editor and will be overwritten with automatic translations."
+msgstr ""
+
+msgid "Some of the selected content was translated using the WordPress Editor and will be overwritten."
+msgstr ""
+
+msgid "Translated content structure will change. The selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved."
+msgstr ""
+
+msgid "Translated content structure will change. Some of the selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved."
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %1$s and %2$s: the same language name, e.g. "Spanish". The <add_translators> and <check_again> tags turn the words between them into links; keep <br/> where the line should break.
+#, js-format
+msgid "In order to assign to a translator, you first need to <add_translators>add %1$s translators</add_translators> to the site.<br/> Add %2$s translators and click <check_again>check again</check_again> or choose a different translation option."
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %1$s and %3$s: the source language names, %2$s and %4$s: the target language name. The <add_translators> and <check_again> tags turn the words between them into links; keep <br/> where the line should break.
+#, js-format
+msgid "In order to assign to a translator, you first need to <add_translators>add %1$s to %2$s translators</add_translators> to the site.<br/> Add %3$s to %4$s translators and click <check_again>check again</check_again> or choose a different translation option."
+msgstr ""
+
+#. translators: Notice on the WPML translation dashboard; "This" is having no reviewers. %s: one language name or a list of them.
+#, js-format
+msgid "Your site doesn't have any reviewers for %s. This means that you’re the only person who can review these translations."
+msgstr ""
+
+#. translators: Notice on the WPML translation dashboard; "This" is having no reviewers.
+msgid "Your site doesn't have any reviewers yet. This means that you’re the only person who can review translations."
+msgstr ""
+
+#. translators: Notice on the WPML translation dashboard; "They" is the translators the reader would add. The <a> tags turn the screen name into a link; keep them around it.
+msgid "If you want other people to review the translations, go to <a>Settings → Translators</a> and add translators. They will be able to both review and translate content for you."
+msgstr ""
+
+msgid "Automatic translation is paused — payment required"
+msgstr ""
+
+#. translators: Error message on the WPML translation dashboard. %s: the amount owed, with its currency. The <b> tags make the name of the box bold; keep them around that name.
+#, js-format
+msgid "A payment of %s could not be processed. Pay it in the <b>Translate Everything</b> box above to resume."
+msgstr ""
+
+msgid "Automatic translation is paused: monthly spending cap reached"
+msgstr ""
+
+#. translators: Error message on the WPML translation dashboard. %1$s: the site's host name, %2$s: words used so far, %3$s: the monthly cap in words. The <site> and <figure> tags style those values; keep them around the same values.
+#, js-format
+msgid "<site>%1$s</site> reached its monthly spending cap (<figure>%2$s</figure> of <figure>%3$s</figure> words used). Raise it above to continue."
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %1$s: a list of language names joined with "and".
+#, js-format
+msgid "WPML does not support duplicating strings. Your selection to duplicate strings to %1$s will be ignored if you proceed with the translation."
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %1$s: a list of the names of the selected content groups, %2$s: a list of language names joined with "and".
+#, js-format
+msgid "WPML does not support duplicating %1$s elements. Your selection to duplicate elements to %2$s will be ignored if you proceed with the translation."
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %1$s: a list of the names of the selected content groups, %2$s: a list of language names joined with "and".
+#, js-format
+msgid "WPML does not support duplicating %1$s elements and strings. Your selection to duplicate elements and strings to %2$s will be ignored if you proceed with the translation."
+msgstr ""
+
+msgid "WPML does not support duplicating strings."
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %1$s: a list of the names of the selected content groups.
+#, js-format
+msgid "WPML does not support duplicating %1$s elements."
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %1$s: a list of the names of the selected content groups.
+#, js-format
+msgid "WPML does not support duplicating %1$s elements and strings."
+msgstr ""
+
+msgid "WPML does not support duplicating taxonomies."
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %1$s: a list of language names joined with "and".
+#, js-format
+msgid "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation."
+msgstr ""
+
+#. translators: Title of a warning on the WPML translation dashboard. %s: the name of the translation service the site uses. Verb, imperative.
+#, js-format
+msgid "Finish setting up %s on your site"
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %s: the name of the translation service. The <a> and <check_again> tags turn the words between them into links; keep <br/> where the line should break.
+#, js-format
+msgid "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option."
+msgstr ""
+
+#. translators: Notice on the WPML translation dashboard, shown before sending content whose translation is open for review in the translation editor; "Sending it again" is sending the selected content for translation.
+msgid "Some of the selected content has a translation open for review. Sending it again will replace that translation."
+msgstr ""
+
+msgid "You selected multiple translation methods for content across different languages:"
+msgstr ""
+
+msgid "Sent for translation"
+msgstr ""
+
+msgid "Some items were not sent for translation"
+msgstr ""
+
+msgid "Sending for translation failed"
+msgstr ""
+
+#. translators: Message in the dialog that reports what was sent for translation, on the WPML translation dashboard, shown when our translation system can't be reached: it explains why the not-sent items haven't gone and points at the button below.
+msgid "WPML can't reach our translation system right now, so these items haven't been sent. Check the connection and retry."
+msgstr ""
+
+#. translators: Message in the dialog that reports what was sent for translation, on the WPML translation dashboard: WPML asked the translation server several times whether it already has these items and could not read its answer; it offers to send them anyway, at the risk of paying twice.
+msgid "WPML could not read the translation server's answer about these items. If you send them anyway and the server already has them, you may be charged for them twice."
+msgstr ""
+
+#. translators: Button in the dialog that reports what was sent for translation, on the WPML translation dashboard, shown while the automatic translation service is unreachable: it sends the not-sent items again at once, and that attempt is the connection check. Verb, imperative.
+msgid "Check connection and retry"
+msgstr ""
+
+#. translators: Button label in the dialog that reports what was sent for translation, on the WPML translation dashboard. It sends the items that failed once more. Verb, imperative.
+msgid "Retry not-sent items"
+msgstr ""
+
+#. translators: Button label in the dialog that reports what was sent for translation, on the WPML translation dashboard: it sends the items whose answer from the translation server could not be read, without asking it again. Verb, imperative.
+msgid "Send anyway"
+msgstr ""
+
+#. translators: Button label that closes a dialog, used across WPML's screens. Verb, imperative.
+msgid "Close"
+msgstr ""
+
+#. translators: Button label in the dialog that reports what was sent for translation, on the WPML translation dashboard, shown when a send of taxonomy terms stopped before the end: it carries on sending from where it stopped. Verb, imperative.
+msgid "Continue sending"
+msgstr ""
+
+#. translators: Button label that acknowledges and closes the dialog reporting what was sent for translation, on the WPML translation dashboard.
+msgid "Ok"
+msgstr ""
+
+#. translators: Line of the summary shown after content was sent for translation, on the WPML translation dashboard. %d: how many items are being translated. The <s> tags make the count bold; keep them around it. The singular form spells the number out.
+msgid "<s>1 item</s> is being translated automatically."
+msgid_plural "<s>%d items</s> are being translated automatically."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "You can track their progress at the top of the page."
+msgstr ""
+
+msgid "From now on, WPML will automatically translate new content on your site."
+msgstr ""
+
+msgid "This number might vary because you enabled the <b>Translate Everything Automatically</b> Mode."
+msgstr ""
+
+msgid "From now on, WPML will automatically translate your site's content."
+msgstr ""
+
+msgid "Automatic translations summary"
+msgstr ""
+
+#. translators: Line of the summary shown after content was assigned to the person who is reading it, on the WPML translation dashboard. %d: how many items. The <s> tags make the count and the screen name bold; "Translation Tasks" is the name of a screen in the WPML menu. The singular form spells the number out.
+msgid "<s>1 item</s> has been successfully assigned to you! To check its status, please go to <s>Translation Tasks</s>. <translations_queue/>"
+msgid_plural "<s>%d items</s> have been successfully assigned to you! For status updates, please go to <s>Translation Tasks</s>. <translations_queue/>"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Currently logged in translator summary"
+msgstr ""
+
+msgid "Go to Translation Tasks"
+msgstr ""
+
+#. translators: Line in the dialog that reports what was sent for translation, on the WPML translation dashboard. %d: how many items were duplicated instead of translated; the singular form spells the number out as "1". The <s> tags make that part bold; keep them around it.
+msgid "<s>1 item</s> has been duplicated."
+msgid_plural "<s>%d items</s> have been duplicated."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Accessible label (screen readers) of the paragraph reporting how many items were duplicated, in the dialog on the WPML translation dashboard.
+msgid "Duplication summary"
+msgstr ""
+
+msgid "Please try again in a few minutes. If the issue persists, <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, copy the technical details below and paste them into our Maiya agent for assistance."
+msgstr ""
+
+msgid "There was a problem sending your content for translation."
+msgstr ""
+
+msgid "See technical details"
+msgstr ""
+
+msgid "Hide technical details"
+msgstr ""
+
+#. translators: Reason listed in the dialog that reports what was sent for translation, on the WPML translation dashboard. %s: the target language name.
+#, js-format
+msgid "Some of the selected strings are already registered or translated into %s. Since their source language matches the target language, they cannot be retranslated."
+msgstr ""
+
+#. translators: Reason listed in the dialog that reports what was sent for translation, on the WPML translation dashboard. %1$s and %4$s: the target language name, %2$s and %3$s: the source language name.
+#, js-format
+msgid "Some of the selected content has already been translated from %1$s to %2$s and cannot be re-translated from %3$s to %4$s."
+msgstr ""
+
+msgid "Content already translated"
+msgstr ""
+
+#. translators: Reason listed in the dialog that reports what was sent for translation, on the WPML translation dashboard. Shown when Duplicate was chosen for content whose translation is waiting for a translator or in progress.
+msgid "Some of the selected content has a translation in progress, so it was not duplicated."
+msgstr ""
+
+#. translators: Reason listed in the dialog that reports what was sent for translation, on the WPML translation dashboard: the item was not sent again because it is already being translated, or its translation is being reviewed.
+msgid "Content already being translated"
+msgstr ""
+
+#. translators: Reason listed in the dialog that reports what was sent for translation, on the WPML translation dashboard: these items were not sent because WPML could not count their words.
+msgid "WPML could not count the words of these items."
+msgstr ""
+
+msgid "Some content couldn't be sent to translation."
+msgstr ""
+
+msgid "WPML did not create translations for some languages because of the following reasons:"
+msgstr ""
+
+#. translators: Alternative text of a flag image on the WPML translation dashboard, read out when the image cannot be shown. %s: the language name.
+#, js-format
+msgid "%s Flag"
+msgstr ""
+
+#. translators: Line of the summary shown after content was sent to the site's own translators, on the WPML translation dashboard. %d: how many items were sent. The <s> tags make the count bold; keep them around it. The singular form spells the number out.
+msgid "<s>1 item</s> has been successfully sent to translators!"
+msgid_plural "<s>%d items</s> have been successfully sent to translators!"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Local translations summary"
+msgstr ""
+
+msgid "You can check their status in WPML → Translation"
+msgstr ""
+
+#. translators: Heading above the list of items that could not be sent, in the dialog that reports what was sent for translation. Keep the colon.
+msgid "Items not sent:"
+msgstr ""
+
+#. translators: Line in the dialog that reports what was sent for translation, on the WPML translation dashboard. %d: how many items were sent.
+#, js-format
+msgid "%d item was sent for translation."
+msgid_plural "%d items were sent for translation."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line in the dialog that reports what was sent for translation, on the WPML translation dashboard. %d: how many items could not be sent.
+#, js-format
+msgid "%d item was not sent."
+msgid_plural "%d items were not sent."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line in the dialog that reports what was sent for translation, on the WPML translation dashboard. %s: the error the server returned, in English. Keep the colon.
+#, js-format
+msgid "Reason: %s"
+msgstr ""
+
+msgid "Items already sent will be translated and delivered normally."
+msgstr ""
+
+#. translators: Text of the link that opens the translation service's own site, in the dialog on the WPML translation dashboard. %s: the name of that service.
+#, js-format
+msgid "Continue to %s"
+msgstr ""
+
+msgid "We were unable to send the following batches for professional translation:"
+msgstr ""
+
+msgid "<p><a><s>Contact WPML support for help</s></a></p>"
+msgstr ""
+
+#. translators: Stands in for the name of the translation service on the WPML translation dashboard when its name is not known. Noun.
+msgid "Translation Service"
+msgstr ""
+
+msgid "sending for professional translation.."
+msgstr ""
+
+#. translators: Line in the dialog that reports what was sent for translation, on the WPML translation dashboard. %1$d: how many items are on their way, %2$s: the name of the translation service. The <s> tags make the count bold; keep them around it.
+#, js-format
+msgid "<s>%1$d item</s> is being sent for translation to %2$s. Please continue to their site to start the translation."
+msgid_plural "<s>%1$d items</s> are being sent for translation to %2$s. Please continue to their site to start the translation."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Translation service translations summary"
+msgstr ""
+
+msgid "One or more assigned translators are invalid. The translator may have been removed or their language permissions changed.<br/> Review your settings on the <translators_page>Translators page</translators_page>."
+msgstr ""
+
+#. translators: Error listed in the dialog that reports what was sent for translation, on the WPML translation dashboard; "It" is the translation service. The <translators_page> tags turn the screen name into a link; keep <br/> where the line should break.
+msgid "The selected translation service is no longer valid. It may have been changed, unauthenticated, or deactivated.<br/> Review your settings on the <translators_page>Translators page</translators_page>."
+msgstr ""
+
+msgid "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>."
+msgstr ""
+
+msgid "Validation error happened during send to translation."
+msgstr ""
+
+msgid "Translate and Duplicate"
+msgstr ""
+
+#. translators: Used in two places on the WPML translation dashboard: the option in the dropdown that chooses what to do with the content, and the label of the button that carries it out. Verb, imperative: it copies the original into the other language instead of translating it.
+msgid "Duplicate"
+msgstr ""
+
+#. translators: Label of the button at the bottom of the WPML translation dashboard that sends the ticked content for translation. Verb, imperative.
+msgid "Translate content"
+msgstr ""
+
+msgid "Checking translation engine…"
+msgstr ""
+
+msgid "Checking site context…"
+msgstr ""
+
+msgid "Could not check the translation engine. Reload the page to try again."
+msgstr ""
+
+msgid "Automatic translation is paused until the failed payment is settled. Pay it in the Translate Everything box."
+msgstr ""
+
+msgid "Please choose one of the available payment options."
+msgstr ""
+
+msgid "Selected content is already translated"
+msgstr ""
+
+msgid "Please select a review mode"
+msgstr ""
+
+msgid "Assign local translator or choose another option"
+msgstr ""
+
+msgid "Assign yourself or choose another option"
+msgstr ""
+
+msgid "Activate translation service or choose another option"
+msgstr ""
+
+msgid "Activate the Advanced Translation Editor or choose another option"
+msgstr ""
+
+msgid "Authenticate translation service or choose another option"
+msgstr ""
+
+msgid "Please provide context to enable translation"
+msgstr ""
+
+msgid "Keep this page open while WPML sends your content for translation. Leaving now stops the remaining items from being sent."
+msgstr ""
+
+msgid "Sending content for translation"
+msgstr ""
+
+#. translators: Text of the dialog that asks whether to send the content in several batches, on the WPML translation dashboard. %1$s and %3$s: the name of the translation service, %2$d: how many jobs it accepts at once. The <s> tags make those parts bold.
+#, js-format
+msgid "<s>%1$s</s> cannot process more than <s>%2$d</s> jobs in a single batch. WPML will automatically split your jobs into separate batches to ensure an error-free delivery to <s>%3$s</s>. <br/><br/> Do you want to proceed?"
+msgstr ""
+
+#. translators: Title of the dialog that asks whether to send the content in several batches, on the WPML translation dashboard. %s: the name of the translation service.
+#, js-format
+msgid "WPML will send jobs to %s in separate batches"
+msgstr ""
+
+msgid "Yes, send jobs in separate batches"
+msgstr ""
+
+msgid "No, I will split jobs myself"
+msgstr ""
+
+#. translators: Message shown after the WPML translation dashboard's send stops before all the selected taxonomy terms were sent, when it can carry on from where it stopped. "Continue sending" is the label of the button below it.
+msgid "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest."
+msgstr ""
+
+#. translators: Message shown after the WPML translation dashboard's send stops before any of the selected taxonomy terms were sent, when it can carry on from where it stopped. "Continue sending" is the label of the button below it.
+msgid "The taxonomy terms have not been sent yet. Click Continue sending to send them."
+msgstr ""
+
+#. translators: Message shown after the WPML translation dashboard's send stops before all the selected taxonomy terms were sent, when the button below can retry them. "Retry the not-sent items" refers to that button.
+msgid "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest."
+msgstr ""
+
+#. translators: Message shown after the WPML translation dashboard's send stops before any of the selected taxonomy terms were sent, when the button below can retry them. "Retry the not-sent items" refers to that button.
+msgid "The taxonomy terms have not been sent yet. Retry the not-sent items to send them."
+msgstr ""
+
+#. translators: Error shown after the WPML translation dashboard's send finishes, when some of the taxonomy terms in the selection were sent and the rest were not.
+msgid "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish."
+msgstr ""
+
+#. translators: Error shown after the WPML translation dashboard's send finishes, when the taxonomy terms in the selection could not be sent at all.
+msgid "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again."
+msgstr ""
+
+#. translators: Sentence under the automatic translation setting on the WPML translation dashboard; "This" is that setting. A "(modify)" link is added after it.
+msgid "This will translate only your future content"
+msgstr ""
+
+#. translators: Sentence under the automatic translation setting on the WPML translation dashboard; "This" is that setting. A "(modify)" link is added after it.
+msgid "This will translate your entire site"
+msgstr ""
+
+msgid "Translate everything automatically from now on, without asking me."
+msgstr ""
+
+msgid "Existing content"
+msgstr ""
+
+#. translators: Note above the language table on the WPML translation dashboard. %1$s: the language the selected strings are written in, %2$s: the language they will be translated into.
+#, js-format
+msgid "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s."
+msgstr ""
+
+#. translators: Note above the language table on the WPML translation dashboard. %1$s: the first language names, joined by commas, %2$s: the last of them, %3$s: the language they will be translated into.
+#, js-format
+msgid "You selected to translate strings that are in %1$s and %2$s. Only these strings will be translated to %3$s."
+msgstr ""
+
+#. translators: Column heading in the language table on the WPML translation dashboard; the column names the language content is translated from.
+msgid "Source language"
+msgstr ""
+
+#. translators: Column heading in the language table on the WPML translation dashboard; the column names the language content is translated into.
+msgid "Target language"
+msgstr ""
+
+msgid "Words to translate"
+msgstr ""
+
+#. translators: Total row under the language table on the WPML translation dashboard. %1$s: opening tag around the word "Total:", %2$s: its closing tag, %3$s: the number of words, written with thousands separators.
+#, js-format
+msgid "%1$sTotal:%2$s %3$s"
+msgstr ""
+
+msgid "Translation service additional options"
+msgstr ""
+
+#. translators: Button label that fetches the current data again, used across WPML's screens. Verb, imperative.
+msgid "Refresh"
+msgstr ""
+
+msgid "Fetching translation service data..."
+msgstr ""
+
+#. translators: Option in the dropdown that chooses what to do with the content, on the WPML translation dashboard. A single dash, meaning nothing has been chosen yet; leave it as a dash.
+msgid "-"
+msgstr ""
+
+#. translators: Option in the dropdown that chooses what to do with the content, on the WPML translation dashboard. Verb, imperative.
+msgid "Translate automatically"
+msgstr ""
+
+#. translators: Option in the dropdown that chooses what to do with the content, on the WPML translation dashboard. Verb, imperative: the person reading translates it in person.
+msgid "Translate myself"
+msgstr ""
+
+msgid "Assign a translator"
+msgstr ""
+
+msgid "Assign translation service"
+msgstr ""
+
+#. translators: Option in the dropdown that chooses what to do with the content, on the WPML translation dashboard. Verb, imperative: it leaves the content alone.
+msgid "Do nothing"
+msgstr ""
+
+#. translators: Option in the dropdown that chooses what to do with the content, on the WPML translation dashboard. It asks the reader to pick one of the other options.
+msgid "Please choose"
+msgstr ""
+
+msgid "Choose a translator"
+msgstr ""
+
+#. translators: Option in the dropdown that picks a translator, on the WPML translation dashboard. It means whichever translator takes the job first.
+msgid "First available"
+msgstr ""
+
+#. translators: Written after a translator's name in the dropdown that picks a translator, on the WPML translation dashboard, when that translator is the person reading. Keep the brackets.
+msgid "(Me)"
+msgstr ""
+
+#. translators: Heading of the card about translation quality on the WPML translation dashboard.
+msgid "Translation quality"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the button that opens a folded card or section back up. Verb, imperative.
+msgid "Expand"
+msgstr ""
+
+#. translators: Shown on the folded translation quality card on the WPML translation dashboard. %1$s: the name of the translation engine, %2$d: its quality score. The middle dot separates them.
+#, js-format
+msgid "%1$s · %2$d"
+msgstr ""
+
+#. translators: Words for a band of translation quality: they label the middle of the quality scale and the warning pill on the quality card. The translation is usable but its mistakes can be seen.
+msgid "Mistakes visible"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the button that folds a card away, on the WPML translation dashboard. Verb, imperative.
+msgid "Minimize"
+msgstr ""
+
+msgid "PTC translates at higher quality and gives you publish-ready results."
+msgstr ""
+
+#. translators: Small heading numbering the second step of the WPML translation dashboard; the step's own title follows it.
+msgid "Step 2"
+msgstr ""
+
+msgid "Full-site automatic translation needs AI translation set up."
+msgstr ""
+
+msgid "Set up AI translation"
+msgstr ""
+
+msgid "Keep a wp-admin window open until WPML finishes translating"
+msgstr ""
+
+msgid "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open."
+msgstr ""
+
+msgid "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes."
+msgstr ""
+
+#. translators: Line in the notice about an unreachable translation service, on the WPML translation dashboard. %s: how long until the next check, e.g. "1 minute".
+#, js-format
+msgid "Next check for translations in %s."
+msgstr ""
+
+#. translators: Button label that folds away the explanation in a notice on the WPML translation dashboard. Verb, imperative.
+msgid "Hide details"
+msgstr ""
+
+#. translators: Button label that opens the explanation in a notice on the WPML translation dashboard; "it" is the translation service the site cannot reach.
+msgid "What could be blocking it, and how to fix it"
+msgstr ""
+
+msgid "Check these on your site"
+msgstr ""
+
+msgid "The site might be on a private network, in staging, or only reachable through a VPN."
+msgstr ""
+
+msgid "HTTP basic authentication or an IP allowlist might be blocking outside requests."
+msgstr ""
+
+msgid "A security plugin, firewall, or WAF might be rejecting requests from WPML."
+msgstr ""
+
+msgid "The site might be in maintenance mode."
+msgstr ""
+
+msgid "Already fixed this on your site?"
+msgstr ""
+
+msgid "Check again whether the site is reachable"
+msgstr ""
+
+#. translators: Button label while WPML runs a check again (whether the translation service can be reached, or the account on the payment step); it replaces the button's own label while the check runs. Keep the ellipsis.
+msgid "Checking…"
+msgstr ""
+
+#. translators: Button label that makes WPML check again whether the translation service can be reached, on the WPML translation dashboard. Verb, imperative.
+msgid "Check again"
+msgstr ""
+
+msgid "Still couldn't reach your site."
+msgstr ""
+
+msgid "Automatic translations completed"
+msgstr ""
+
+#. translators: Line of the message shown when automatic translation has finished, on the WPML translation dashboard. %d: how many translations arrived. The <s> tags make the count bold; keep them around it. The singular form spells the number out.
+msgid "<s>1 translation</s> has been successfully translated automatically"
+msgid_plural "<s>%d translations</s> have been successfully translated automatically"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Automatic jobs in progress"
+msgstr ""
+
+#. translators: Status banner on the WPML translation dashboard. %d: how many pages are being translated automatically right now. The <s> tags make that part bold; keep them around it.
+#, js-format
+msgid "<s>%d automatic translation</s> is in progress"
+msgid_plural "<s>%d automatic translations</s> are in progress"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "You can close this page. WPML keeps translating your site in the background, and you can come back any time to check progress."
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %s: the name of the site's default language.
+#, js-format
+msgid "Your default language, %s, must be mapped to a supported language in order to use automatic translation"
+msgstr ""
+
+msgid "Map the language"
+msgstr ""
+
+#. translators: A length of time shown in the translation status on the WPML translation dashboard, as in "in 30 seconds". %d: the number of seconds.
+#, js-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: A length of time shown in the translation status on the WPML translation dashboard, as in "in 5 minutes". %d: the number of minutes.
+#, js-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: A length of time shown in the translation status on the WPML translation dashboard, as in "in 2 hours". %d: the number of hours.
+#, js-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: A length of time shown in the translation status on the WPML translation dashboard, as in "in 3 days". %d: the number of days.
+#, js-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: A count of translations that is dropped into the delivery status line on the WPML translation dashboard, as in "3 translations waiting". %d: the number of translations.
+#, js-format
+msgid "%d translation"
+msgid_plural "%d translations"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Last part of the delivery status line on the WPML translation dashboard, used when WPML is fetching translations right now. Lower case: it follows a middle dot in the same line.
+msgid "checking now"
+msgstr ""
+
+#. translators: Last part of the delivery status line on the WPML translation dashboard. %s: how long until the next check, e.g. "5 minutes". Lower case: it follows a middle dot in the same line.
+#, js-format
+msgid "next check in %s"
+msgstr ""
+
+#. translators: Delivery status line on the WPML translation dashboard, used when the page stopped asking the site whether translations arrived, because those requests kept failing. A "Pick up translations now" button follows it.
+msgid "WPML stopped checking for delivered translations after repeated failures."
+msgstr ""
+
+#. translators: Delivery status line on the WPML translation dashboard, used when nothing is waiting. %1$s: how long ago the last translation arrived, e.g. "5 minutes", %2$s: "next check in 5 minutes" or "checking now".
+#, js-format
+msgid "Receiving translations: last received %1$s ago · %2$s"
+msgstr ""
+
+#. translators: Delivery status line on the WPML translation dashboard, used when nothing is waiting and no next check is armed. %s: how long ago the last translation arrived, e.g. "5 minutes".
+#, js-format
+msgid "Receiving translations: last received %s ago"
+msgstr ""
+
+#. translators: Delivery status line on the WPML translation dashboard, used when nothing has arrived yet and nothing is waiting. %s: "next check in 5 minutes" or "checking now".
+#, js-format
+msgid "Receiving translations: no translations received yet · %s"
+msgstr ""
+
+#. translators: Delivery status line on the WPML translation dashboard, used when nothing has arrived yet, nothing is waiting and no next check is armed.
+msgid "Receiving translations: no translations received yet"
+msgstr ""
+
+#. translators: Delivery status line on the WPML translation dashboard. %1$s: how long ago the last translation arrived, e.g. "5 minutes", %2$s: a count of translations, e.g. "3 translations", %3$s: "next check in 5 minutes" or "checking now".
+#, js-format
+msgid "Receiving translations: last received %1$s ago · %2$s waiting · %3$s"
+msgstr ""
+
+#. translators: Delivery status line on the WPML translation dashboard. %1$s: how long ago the last translation arrived, e.g. "5 minutes", %2$s: a count of translations, e.g. "3 translations".
+#, js-format
+msgid "Receiving translations: last received %1$s ago · %2$s waiting"
+msgstr ""
+
+#. translators: Delivery status line on the WPML translation dashboard. %1$s: a count of translations, e.g. "3 translations", %2$s: "next check in 5 minutes" or "checking now".
+#, js-format
+msgid "Receiving translations: no translations received yet · %1$s waiting · %2$s"
+msgstr ""
+
+#. translators: Delivery status line on the WPML translation dashboard. %s: a count of translations, e.g. "3 translations".
+#, js-format
+msgid "Receiving translations: no translations received yet · %s waiting"
+msgstr ""
+
+msgid "These translations are taking longer than they should to arrive."
+msgstr ""
+
+msgid "Picking up translations…"
+msgstr ""
+
+msgid "Pick up translations now"
+msgstr ""
+
+#. translators: Bold opening of a banner on the WPML translation dashboard; "are waiting for your review" follows it. %d: how many translations are waiting. Keep the trailing space.
+#, js-format
+msgid "%d translations "
+msgstr ""
+
+#. translators: Bold opening of a banner on the WPML translation dashboard, used when there is exactly one; "is waiting for your review" follows it. %d: the number, always 1. Keep the trailing space.
+#, js-format
+msgid "%d translation "
+msgstr ""
+
+#. translators: Added in brackets at the end of the banner about translations waiting for review, on the WPML translation dashboard; "this" is that set of translations. It sits inside the sentence, so it starts in lower case. The <b> tags make the feature name bold; keep them around it.
+msgid "this includes translations from <b>Translate Everything Automatically</b>"
+msgstr ""
+
+#. translators: Second half of "3 translations are waiting for your review" in a banner on the WPML translation dashboard. The bold count comes before it, so it starts in lower case.
+msgid "are waiting for your review"
+msgstr ""
+
+#. translators: Second half of "1 translation is waiting for your review" in a banner on the WPML translation dashboard. The bold count comes before it, so it starts in lower case.
+msgid "is waiting for your review"
+msgstr ""
+
+#. translators: Button label that opens the queue of translations waiting to be reviewed, on the WPML translation dashboard. Verb, imperative.
+msgid "Review Translations"
+msgstr ""
+
+#. translators: Heading of the dialog that offers to translate the content the site already has, on the WPML translation dashboard. Verb, imperative.
+msgid "Translate existing content"
+msgstr ""
+
+#. translators: Button label that starts translating the content the site already has, on the WPML translation dashboard. Verb, imperative.
+msgid "Translate now"
+msgstr ""
+
+#. translators: Notice heading on the WPML translation dashboard. %s: a comma-separated list of the names of the plugins or themes those texts come from. "4.7" is a WPML version number.
+#, js-format
+msgid "Starting with version 4.7, WPML will also automatically translate texts (strings) coming from %s."
+msgstr ""
+
+msgid "WPML will not translate existing texts of this type but any new ones you create will be automatically translated. If you prefer, you can <button />."
+msgstr ""
+
+msgid "Starting with version 4.7, WPML will also automatically translate:"
+msgstr ""
+
+#. translators: One item of a list in a notice on the WPML translation dashboard. %s: a comma-separated list of content type names. The quoted phrase is the name of a WPML setting.
+#, js-format
+msgid "Content set to \"use translation if available or fallback to default language\": %s."
+msgstr ""
+
+#. translators: One item of a list in a notice on the WPML translation dashboard. %s: a comma-separated list of the names of the plugins or themes those texts come from.
+#, js-format
+msgid "Texts (strings) coming from: %s."
+msgstr ""
+
+msgid "WPML will not translate existing content for these post types and texts but any new content you create will be automatically translated. If you prefer, you can start <button />."
+msgstr ""
+
+msgid "WPML will not translate existing content for these post types but any new content you create will be automatically translated. If you prefer, you can start <button />."
+msgstr ""
+
+#. translators: Text of a link inside a sentence in a notice on the WPML translation dashboard, so it starts in lower case. Verb, imperative.
+msgid "start translating existing content now"
+msgstr ""
+
+#. translators: Heading of the banner on the WPML translation dashboard that offers to translate a content type WPML held back, for example products after the WooCommerce Multilingual setup.
+msgid "New content is ready to translate"
+msgstr ""
+
+#. translators: Banner on the WPML translation dashboard, offering to translate content types that WPML held back because they became translatable after the reader approved the cost. %s: the content type names with their item counts, for example "Products (60 items)".
+#, js-format
+msgid "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated."
+msgstr ""
+
+#. translators: Button label on the WPML translation dashboard that opens the cost calculator so the reader can add the held-back content to automatic translation. Verb, imperative.
+msgid "Review cost and include"
+msgstr ""
+
+#. translators: Text of the link at the end of a promotional line on the WPML translation dashboard. Verb, imperative; keep the arrow at the end.
+msgid "Learn more →"
+msgstr ""
+
+msgid "PTC can also translate your app's interface, not just your website."
+msgstr ""
+
+msgid "PTC can translate software with automatic QA and a money-back guarantee."
+msgstr ""
+
+msgid "PTC translates every string in context, so it fits your interface."
+msgstr ""
+
+msgid "PTC can translate your software right inside your Git workflow."
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %s: a comma-separated list of language names.
+#, js-format
+msgid "The following target languages do not support automatic translations: %s"
+msgstr ""
+
+msgid "To enable automatic translation map them to known languages."
+msgstr ""
+
+msgid "Map to known languages"
+msgstr ""
+
+msgid "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data."
+msgstr ""
+
+#. translators: Replaces the copy icon for a moment after something has been copied to the clipboard. Past participle, and keep the exclamation mark.
+msgid "Copied!"
+msgstr ""
+
+msgid "Copy All"
+msgstr ""
+
+#. translators: Column heading in the table of failed translation jobs on the WPML translation dashboard; the column names the kind of error.
+msgid "Error type"
+msgstr ""
+
+#. translators: Column heading in the table of failed translation jobs on the WPML translation dashboard; the column holds the text of the error.
+msgid "Error Message"
+msgstr ""
+
+#. translators: Column heading in the table of failed translation jobs on the WPML translation dashboard; the column holds the job's number. "ID" is an identifier a support engineer asks for.
+msgid "Job ID"
+msgstr ""
+
+#. translators: Column heading in the table of failed translation jobs on the WPML translation dashboard; the column holds the job's number in the translation editor. ATE is the Advanced Translation Editor, a WPML product name; "ID" is an identifier a support engineer asks for.
+msgid "ATE Job ID"
+msgstr ""
+
+#. translators: Column heading in the table of failed translation jobs on the WPML translation dashboard; the column holds the number of the original document. "ID" is an identifier a support engineer asks for.
+msgid "Original ID"
+msgstr ""
+
+#. translators: Column heading in the table of failed translation jobs on the WPML translation dashboard; the column holds the number of the content item. "ID" is an identifier a support engineer asks for.
+msgid "Element ID"
+msgstr ""
+
+#. translators: Tooltip of the icon that copies one row of error details, on the WPML translation dashboard. Verb, imperative.
+msgid "Copy to clipboard"
+msgstr ""
+
+msgid "Hide errors details"
+msgstr ""
+
+msgid "Show errors details"
+msgstr ""
+
+#. translators: Warning on the WPML translation dashboard. %d: how many items failed. The <strong> tags make the count bold and the <a> tags link to WPML support; keep them around the same words.
+#, js-format
+msgid "<strong>%d item</strong> couldn't be completed due to an unexpected error. Try resending it for translation. If the issue continues, <a>contact WPML support</a>."
+msgid_plural "<strong>%d items</strong> couldn't be completed due to an unexpected error. Try resending them for translation. If the issue continues, <a>contact WPML support</a>."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Button label while the failed translation jobs are being thrown away, on the WPML translation dashboard. %1$d: how many are done, %2$d: how many there are altogether. Keep the three dots.
+#, js-format
+msgid "Cancelling %1$d/%2$d..."
+msgstr ""
+
+#. translators: Button label while the failed translation jobs are being thrown away, on the WPML translation dashboard. Keep the three dots.
+msgid "Cancelling..."
+msgstr ""
+
+#. translators: Button label in the warning about failed translation jobs on the WPML translation dashboard; it throws those jobs away. Verb, imperative.
+msgid "Discard jobs"
+msgstr ""
+
+msgid "These items can't be resent because their source content is missing. Discard them instead."
+msgstr ""
+
+#. translators: Button label while the failed translation jobs are being sent again, on the WPML translation dashboard. %1$d: how many are done, %2$d: how many there are altogether. Keep the three dots.
+#, js-format
+msgid "Resending %1$d/%2$d..."
+msgstr ""
+
+#. translators: Button label while the failed translation jobs are being sent again, on the WPML translation dashboard. Keep the three dots.
+msgid "Resending..."
+msgstr ""
+
+#. translators: Button label in the warning about failed translation jobs on the WPML translation dashboard; it sends those jobs again. Verb, imperative.
+msgid "Resend"
+msgstr ""
+
+#. translators: Accessible name (screen readers) of the box that holds the lasting translation messages on the WPML translation dashboard.
+msgid "Translation status details"
+msgstr ""
+
+#. translators: Used twice for the same box of translation messages on the WPML translation dashboard: as its heading and as its accessible name (screen readers). Noun phrase.
+msgid "Translation status"
+msgstr ""
+
+msgid "Before translating with PTC, please provide context about your website and target audience (one-time thing)."
+msgstr ""
+
+#. translators: Button label on the WPML translation dashboard; it opens the form where the site is described for the translation engine. Verb, imperative.
+msgid "Provide Context"
+msgstr ""
+
+msgid "Remaining time: <s>Less than 1 minute</s>"
+msgstr ""
+
+#. translators: Status line on the WPML translation dashboard. %d: how many minutes are left. The <s> tags make the duration bold; keep them around it.
+#, js-format
+msgid "Remaining time: <s>%d minute</s>"
+msgid_plural "Remaining time: <s>%d minutes</s>"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Default language does not support automatic translations."
+msgstr ""
+
+msgid "WPML could not check if your default language can be translated automatically."
+msgstr ""
+
+msgid "WPML could not check if your default language can be translated automatically. Reload the page to try again."
+msgstr ""
+
+msgid "Add your site description before you can turn this on."
+msgstr ""
+
+msgid "You must enable the Advanced Translation Editor to activate Translate Everything Automatically."
+msgstr ""
+
+#. translators: Link in the tooltip on the disabled "Set up Translate Everything" button; it opens the form where the site description is entered. Verb, imperative.
+msgid "Add it now"
+msgstr ""
+
+#. translators: Radio button in the dialog that asks why automatic translation is being turned off, on the WPML translation dashboard; "It" is automatic translation.
+msgid "It's too expensive"
+msgstr ""
+
+msgid "The translation quality is not good enough"
+msgstr ""
+
+msgid "I'm switching to a different translation provider"
+msgstr ""
+
+msgid "I'm experiencing technical issues"
+msgstr ""
+
+msgid "I want to control what gets translated manually"
+msgstr ""
+
+#. translators: Radio button in the dialog that asks why automatic translation is being turned off, on the WPML translation dashboard; it opens a free-text field.
+msgid "Other reason"
+msgstr ""
+
+msgid "Why are you turning off <b>Translate Everything Automatically</b>?"
+msgstr ""
+
+msgid "Your answer helps us improve WPML."
+msgstr ""
+
+#. translators: Button label that confirms turning automatic translation off, on the WPML translation dashboard. Verb, imperative.
+msgid "Turn off"
+msgstr ""
+
+msgid "Available"
+msgstr ""
+
+msgid "Not available"
+msgstr ""
+
+#. translators: Row of the engine comparison table on the WPML translation dashboard, about the engine reading the site's own context.
+msgid "Understands your site's topic, audience and tone"
+msgstr ""
+
+#. translators: Row of the engine comparison table on the WPML translation dashboard, about translation quality.
+msgid "Publish-ready quality, backed by our guarantee"
+msgstr ""
+
+#. translators: Answer in the engine comparison table: with this engine the client has to read the translations before they go live.
+msgid "Review before publishing"
+msgstr ""
+
+#. translators: Row of the engine comparison table on the WPML translation dashboard, about what a translation costs. Keep the dash.
+msgid "Pay once per page – only added words are charged"
+msgstr ""
+
+#. translators: Answer in the engine comparison table: this engine charges for every word it translates, including the words of a page that is translated again after an edit.
+msgid "Per word, changes included"
+msgstr ""
+
+#. translators: Subline under the left column of the engine comparison table. That column is the engine the site translates with today.
+msgid "Your active engine"
+msgstr ""
+
+#. translators: Subline under the PTC column of the engine comparison table. It names what PTC is.
+msgid "WPML's own AI engine"
+msgstr ""
+
+msgid "Translate Everything Automatically"
+msgstr ""
+
+#. translators: Label of the button that turns Translate Everything Automatically on with the engine the site already uses. %s: the engine's name, for example "DeepL". Verb, imperative.
+#, js-format
+msgid "Turn on with %s"
+msgstr ""
+
+#. translators: Line under the engine comparison table on the WPML translation dashboard. %s: the engine the site translates with today, for example "DeepL".
+#, js-format
+msgid "Switching to PTC later applies to new and changed content. What %s translated stays as it is."
+msgstr ""
+
+msgid "Translate your whole site quickly and conveniently."
+msgstr ""
+
+msgid "Translation updates cost only the added words."
+msgstr ""
+
+msgid "Nothing is translated until you review the cost and confirm."
+msgstr ""
+
+msgid "How to turn this on"
+msgstr ""
+
+msgid "When you set this up"
+msgstr ""
+
+#. translators: First step of the walkthrough beside the automatic translation box on the WPML translation dashboard. %s: the engine the site translates with today, for example "DeepL".
+#, js-format
+msgid "Choose your engine: keep %s, priced per word, or switch to PTC to pay once per page."
+msgstr ""
+
+msgid "Review what gets translated and see the cost."
+msgstr ""
+
+msgid "WPML translates your site and keeps new content translated."
+msgstr ""
+
+msgid "Choose how to publish — with or without your review."
+msgstr ""
+
+msgid "Content that becomes translatable later, for example products after the WooCommerce Multilingual setup, is offered to you before it is translated."
+msgstr ""
+
+#. translators: Link in the dialog that sets up automatic translation of the whole site; it switches the site's engine to Private Translation Cloud (PTC) without leaving the dialog. Verb, imperative. PTC is a product name; keep it.
+msgid "Switch to PTC instead"
+msgstr ""
+
+#. translators: Line in the dialog that sets up automatic translation of the whole site, shown when the site translates with DeepL, Google Translate or Microsoft Translator. %s: that engine's name. PTC is a product name; keep it.
+#, js-format
+msgid "You're translating with %s: priced per word, and changes to translated pages are charged again. With PTC you pay once per page and changes are free."
+msgstr ""
+
+#. translators: Sub-line under the figure on the payment step of the dialog that sets up automatic translation of the whole site. %s: the engine's name, for example "DeepL". It continues the line above it, so it starts in lower case.
+#, js-format
+msgid "at %s's per-word rate; changes to translated pages are charged again"
+msgstr ""
+
+msgid "Prepaid words assigned"
+msgstr ""
+
+msgid "You’re all set."
+msgstr ""
+
+msgid "Click <b>Translate Everything Automatically</b> to start translating."
+msgstr ""
+
+msgid "Before translating everything"
+msgstr ""
+
+#. translators: Button label that returns to the previous step of a dialog, on the WPML translation dashboard. Verb, imperative.
+msgid "Go back"
+msgstr ""
+
+#. translators: Button label that goes on despite the warnings listed above it, in the dialog that turns automatic translation on. Verb, imperative.
+msgid "Continue anyway"
+msgstr ""
+
+msgid "WPML could not check with our translation system if your default language can be translated automatically."
+msgstr ""
+
+#. translators: Title of the first step of the dialog that turns automatic translation on, on the WPML translation dashboard. Noun phrase.
+msgid "Content to translate"
+msgstr ""
+
+#. translators: Title of the step of the dialog that chooses whether translations are published straight away or reviewed first, on the WPML translation dashboard. Noun phrase.
+msgid "Publishing method"
+msgstr ""
+
+#. translators: Title of the step of the dialog that chooses how automatic translation is paid for, on the WPML translation dashboard. Noun phrase.
+msgid "Payment method"
+msgstr ""
+
+msgid "Enable <b>Translate Everything Automatically</b>"
+msgstr ""
+
+#. translators: Button label that moves on to the next step of a dialog, or confirms and goes ahead, used across WPML's screens. Verb, imperative.
+msgid "Continue"
+msgstr ""
+
+msgid "Calculating words for translating existing content. Please wait..."
+msgstr ""
+
+msgid "Set Up <b>Translate Everything Automatically</b>"
+msgstr ""
+
+msgid "Review your site content and get the translation cost based on what you choose to translate."
+msgstr ""
+
+msgid "Select payment method"
+msgstr ""
+
+msgid "Translate Everything Automatically - disabled"
+msgstr ""
+
+msgid "Translate Everything Automatically - stopping"
+msgstr ""
+
+msgid "<b>Translate Everything Automatically</b> is stopping"
+msgstr ""
+
+msgid "Translate Everything Automatically - paused"
+msgstr ""
+
+msgid "Turn off <b>Translate Everything Automatically</b>?"
+msgstr ""
+
+msgid "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are."
+msgstr ""
+
+#. translators: Line in the dialog that confirms turning automatic translation off, on the WPML translation dashboard. %d: how many translations are still running.
+#, js-format
+msgid "%d translation is still in progress. You will not be charged for it."
+msgid_plural "%d translations are still in progress. You will not be charged for them."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line in the dialog that confirms turning automatic translation off, on the WPML translation dashboard. %d: how many translations are still running.
+#, js-format
+msgid "%d translation is currently in progress and will be cancelled."
+msgid_plural "%d translations are currently in progress and will be cancelled."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "You can adjust the content limits once Translate Everything finishes the current translation run."
+msgstr ""
+
+#. translators: Used in two places on the WPML translation dashboard for the same action: the heading of the dialog that changes which content automatic translation covers, and the menu item that opens it. Verb, imperative.
+msgid "Adjust content limits"
+msgstr ""
+
+msgid "Adjust how far back automatic translations apply per content type."
+msgstr ""
+
+msgid "Every content type is fully translated, so there is nothing left to set a date for. You can still choose which types automatic translation covers from now on."
+msgstr ""
+
+#. translators: Button label that saves what was edited in a dialog, used across WPML's screens. Verb, imperative.
+msgid "Save changes"
+msgstr ""
+
+msgid "Translate Everything options"
+msgstr ""
+
+msgid "Turn off <b>Translate Everything</b>"
+msgstr ""
+
+#. translators: Label of the row in the automatic translation box that shows how many words this billing cycle has used.
+msgid "Words this cycle"
+msgstr ""
+
+#. translators: Value of the words row in the automatic translation box on the WPML translation dashboard. %1$s: how many prepaid words are left, written with thousands separators.
+#, js-format
+msgid "%1$s prepaid words left, then billed as you go."
+msgstr ""
+
+#. translators: Label of the row in the automatic translation box that shows how many prepaid words the site still has.
+msgid "Words left"
+msgstr ""
+
+#. translators: Status line in the automatic translation box on the WPML translation dashboard. %d: how many translation jobs have been queued so far; the number rises while queueing. Keep the three dots.
+#, js-format
+msgid "Preparing your translations — %d job queued so far..."
+msgid_plural "Preparing your translations — %d jobs queued so far..."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Status line in the automatic translation box on the WPML translation dashboard, shown before any job has been queued. Keep the three dots.
+msgid "Preparing content for translation..."
+msgstr ""
+
+#. translators: Status line in the automatic translation box on the WPML translation dashboard. %d: how many translations are still waiting; the number falls. Keep the three dots.
+#, js-format
+msgid "%d translation left in the queue..."
+msgid_plural "%d translations left in the queue..."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Status line in the automatic translation box on the WPML translation dashboard: the queue is drained, some items failed for good, and some content types still wait for the reader's approval. %1$d: how many items failed, %2$s: the waiting content types with their item counts, for example "Products (60 items)".
+#, js-format
+msgid "Finished — %1$d item couldn't be completed and %2$s are waiting for your approval"
+msgid_plural "Finished — %1$d items couldn't be completed and %2$s are waiting for your approval"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Status line in the automatic translation box on the WPML translation dashboard: the queue is drained and some items failed for good, with nothing waiting for approval. %d: how many items could not be completed.
+#, js-format
+msgid "Finished — %d item couldn't be completed"
+msgid_plural "Finished — %d items couldn't be completed"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Status line in the automatic translation box on the WPML translation dashboard, when everything is translated except content types the reader has not approved yet. %s: those content types with their item counts, for example "Products (60 items)".
+#, js-format
+msgid "Finished translating your content, except %s waiting for your approval"
+msgstr ""
+
+msgid "Finished translating your content"
+msgstr ""
+
+#. translators: Label of the row in the automatic translation box that names the translation engine in use.
+msgid "Engine"
+msgstr ""
+
+#. translators: Label of the row in the automatic translation box that gives the engine's translation quality.
+msgid "Quality"
+msgstr ""
+
+#. translators: Quality line in the automatic translation box on the WPML translation dashboard. %1$d: the engine's score out of 100, %2$s: what that score means in words.
+#, js-format
+msgid "%1$d / 100 — %2$s"
+msgstr ""
+
+#. translators: Second half of the quality line in the automatic translation box, as in "77 / 100 — review before publishing recommended". It follows a dash, so it starts in lower case.
+msgid "review before publishing recommended"
+msgstr ""
+
+#. translators: Second half of the quality line in the automatic translation box, as in "90 / 100 — good enough to publish without review". It follows a dash, so it starts in lower case.
+msgid "good enough to publish without review"
+msgstr ""
+
+#. translators: Second half of the quality line in the automatic translation box, as in "75 / 100 — usable, but mistakes are visible". It follows a dash, so it starts in lower case.
+msgid "usable, but mistakes are visible"
+msgstr ""
+
+msgid "Per word, changes included. "
+msgstr ""
+
+msgid " to make changes free."
+msgstr ""
+
+#. translators: Pricing line in the automatic translation box on the WPML translation dashboard, shown when the site is on the engine with the pay-once pricing.
+msgid "Pay once per page — only added words are charged."
+msgstr ""
+
+#. translators: Label of the row in the automatic translation box that says how far the translation has got. Noun.
+msgid "Status"
+msgstr ""
+
+msgid "Some items were translated using the <b>Classic Translation Editor</b> and cannot be sent for automatic translation. Please select these items and choose the option to translate them yourself."
+msgstr ""
+
+msgid "Translate Everything Automatically - enabled"
+msgstr ""
+
+msgid "<b>Translate Everything Automatically</b> is enabled"
+msgstr ""
+
+msgid "<b>Translate Everything Automatically</b> is temporarily paused"
+msgstr ""
+
+msgid "Automatic translation is temporarily paused"
+msgstr ""
+
+msgid "We noticed something unexpected in your recent translation activity and paused automatic translation on your account. Contact support and we’ll review it with you."
+msgstr ""
+
+#. translators: Button label in the box that says automatic translation is paused, on the WPML translation dashboard; it opens WPML support. Verb, imperative.
+msgid "Contact support"
+msgstr ""
+
+#. translators: Heading of the box that says automatic translation is paused, on the WPML translation dashboard: another account linked to this one owes money. The <b> tags make the feature name bold; keep them around it.
+msgid "<b>Translate Everything Automatically</b> is paused — unpaid balance on a linked account"
+msgstr ""
+
+#. translators: Heading of the box that says automatic translation is paused, on the WPML translation dashboard: another account linked to this one owes money.
+msgid "Automatic translation is paused — unpaid balance on a linked account"
+msgstr ""
+
+#. translators: Line in the box that says automatic translation is paused, on the WPML translation dashboard: another account that uses the same billing e-mail address owes money. The <a> tags make "contact support" a link to WPML support; keep them around it.
+msgid "There is an unpaid balance on another account linked to this billing e-mail. Settle it or <a>contact support</a>."
+msgstr ""
+
+#. translators: Line in the box that says automatic translation is paused, on the WPML translation dashboard: another account that uses the same payment card owes money. The <a> tags make "contact support" a link to WPML support; keep them around it.
+msgid "There is an unpaid balance on another account linked to this card. Settle it or <a>contact support</a>."
+msgstr ""
+
+#. translators: Button label in the box that says automatic translation is paused, on the WPML translation dashboard; it opens the "AI Translation: billing and usage" page of this site, where the unpaid balance is shown and settled. Verb, imperative.
+msgid "Go to billing"
+msgstr ""
+
+msgid "Everything already translated stays live. You only pay for new translation."
+msgstr ""
+
+#. translators: Button label in the box that says automatic translation is paused, on the WPML translation dashboard; it stops the translations that are waiting. Verb, imperative.
+msgid "Cancel translation"
+msgstr ""
+
+#. translators: Heading of the box that says automatic translation is paused, on the WPML translation dashboard: the site's Pay-As-You-Go card is being charged and the charge has not gone through yet. The <b> tags make the feature name bold; keep them around it.
+msgid "<b>Translate Everything Automatically</b> is paused — payment pending"
+msgstr ""
+
+#. translators: Heading of the box that says automatic translation is paused, on the WPML translation dashboard: the site's Pay-As-You-Go card is being charged and the charge has not gone through yet.
+msgid "Automatic translation is paused — payment pending"
+msgstr ""
+
+msgid "<b>Translate Everything Automatically</b> is paused — payment required"
+msgstr ""
+
+msgid "Automatic translation - payment required"
+msgstr ""
+
+#. translators: Line in the box that says automatic translation is paused, on the WPML translation dashboard: the site's Pay-As-You-Go card is being charged. %d: how many translations are held back. Pay-As-You-Go is the name of a payment plan. The <s> tags make the count bold; keep them around it.
+#, js-format
+msgid "<s>%d</s> translation is waiting for your Pay-As-You-Go payment."
+msgid_plural "<s>%d</s> translations are waiting for your Pay-As-You-Go payment."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Two sentences in the box that says automatic translation is paused, on the WPML translation dashboard: the site's Pay-As-You-Go card is being charged. "Update card" is the label of a button on the same screen - keep "card" the same word there.
+msgid "We are charging your card. If the payment is declined, update your card."
+msgstr ""
+
+msgid "Translation resumes automatically once the payment goes through."
+msgstr ""
+
+#. translators: Line in the box that says automatic translation is paused for payment, on the WPML translation dashboard. %d: how many translations are held back. The <s> tags make the count bold; keep them around it.
+#, js-format
+msgid "<s>%d</s> translation is waiting for payment."
+msgid_plural "<s>%d</s> translations are waiting for payment."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line in the box that says automatic translation is paused for payment, on the WPML translation dashboard. %s: the amount owed, with its currency. Pay-As-You-Go is the name of a payment plan; the <b> tags make it bold.
+#, js-format
+msgid "We could not process your <b>Pay-As-You-Go</b> payment of %s."
+msgstr ""
+
+#. translators: Line in the box that says automatic translation is paused for payment, on the WPML translation dashboard. %s: the amount owed, with its currency. "Pay now" is the label of a button on the same screen; translate it the same way there.
+#, js-format
+msgid "We could not process the %s payment for your completed translations. Click \"Pay now\" to retry and continue using automatic translation."
+msgstr ""
+
+#. translators: Button label in the box that says automatic translation is paused, on the WPML translation dashboard; it opens the account page where the Pay-As-You-Go card can be changed. Verb, imperative.
+msgid "Update card"
+msgstr ""
+
+#. translators: Heading of the box that says automatic translation is paused, on the WPML translation dashboard: translations are held until the site owner chooses how to pay for them. The <b> tags make the feature name bold; keep them around it.
+msgid "<b>Translate Everything Automatically</b> is paused — payment needed"
+msgstr ""
+
+#. translators: Heading of the box that says automatic translation is paused, on the WPML translation dashboard: translations are held until the site owner chooses how to pay for them.
+msgid "Automatic translation is paused — payment needed"
+msgstr ""
+
+#. translators: Line in the box that says automatic translation is paused, on the WPML translation dashboard: the translations wait until the site owner chooses how to pay for them. %d: how many translations are held back. The <s> tags make the count bold; keep them around it.
+#, js-format
+msgid "<s>%d</s> translation is on hold until you choose how to pay for it."
+msgid_plural "<s>%d</s> translations are on hold until you choose how to pay for them."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Button label in the box that says automatic translation is paused, on the WPML translation dashboard; it opens the account page where the site owner picks how to pay (turn on pay as you go with a card, or assign prepaid words). Verb, imperative.
+msgid "Choose a payment method"
+msgstr ""
+
+msgid "<b>Translate Everything Automatically</b> is paused — not enough words"
+msgstr ""
+
+msgid "Automatic translation is paused — not enough words"
+msgstr ""
+
+#. translators: Line in the box that says automatic translation is paused, on the WPML translation dashboard. %d: how many translations are held back. The <s> tags make the count bold; keep them around it.
+#, js-format
+msgid "<s>%d</s> translation is waiting for more words."
+msgid_plural "<s>%d</s> translations are waiting for more words."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line in the box that says automatic translation is paused, on the WPML translation dashboard. %1$s: opening bold tag, %2$s: the number of prepaid words in the account, %3$s: closing bold tag.
+#, js-format
+msgid "You have %1$s%2$s prepaid translation word in your WPML account%3$s. Assign these words to this site to resume automatic translation."
+msgid_plural "You have %1$s%2$s prepaid translation words in your WPML account%3$s. Assign these words to this site to resume automatic translation."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line in the box that says automatic translation is paused, on the WPML translation dashboard, when the account has no words left. "Refresh" is the label of a button on the same box; translate it the same way there.
+msgid "Your prepaid translation words have run out. Already assigned words on your account? Refresh checks."
+msgstr ""
+
+#. translators: Line in the box that says automatic translation is paused, on the WPML translation dashboard. %d: how many translations are held back.
+#, js-format
+msgid "Translation resumes automatically — the remaining %d translation completes on its own."
+msgid_plural "Translation resumes automatically — the remaining %d translations complete on their own."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Translation resumes automatically once more words are assigned."
+msgstr ""
+
+#. translators: Shown in the box that says automatic translation is paused, on the WPML translation dashboard, while WPML checks how many words the account has. Keep the ellipsis.
+msgid "Checking your word balance…"
+msgstr ""
+
+#. translators: First half of a line such as "500 words added — resuming 3 translations" on the WPML translation dashboard. %s: how many words were added, written with thousands separators.
+#, js-format
+msgid "%s word added"
+msgid_plural "%s words added"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Second half of a line such as "500 words added — resuming 3 translations" on the WPML translation dashboard. %s: how many translations start again. It follows a dash, so it starts in lower case.
+#, js-format
+msgid "resuming %s translation"
+msgid_plural "resuming %s translations"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Shown in the box that says automatic translation is paused, on the WPML translation dashboard, after a check that found no new words.
+msgid "No new words found yet — translation stays paused until more words are assigned to this site."
+msgstr ""
+
+#. translators: Line in the box about automatic translation on the WPML translation dashboard. %d: how many translations are waiting to be reviewed. The <s> tags make the count bold; keep them around it.
+#, js-format
+msgid "<s>%d</s> translation is waiting for your review."
+msgid_plural "<s>%d</s> translations are waiting for your review."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached"
+msgstr ""
+
+#. translators: Line in the box that says automatic translation is paused, on the WPML translation dashboard. %d: how many translations are held back. The <s> tags make the count bold; keep them around it.
+#, js-format
+msgid "<s>%d</s> translation is waiting for the cap to be raised."
+msgid_plural "<s>%d</s> translations are waiting for the cap to be raised."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line in the box that says automatic translation is paused, on the WPML translation dashboard. %1$s: the site's host name, %2$s: words used so far, %3$s: the monthly cap in words. The <site>, <strong> and <figure> tags style those parts; keep them around the same words.
+#, js-format
+msgid "<site>%1$s</site> reached its <strong>monthly spending cap</strong> (<figure>%2$s</figure> of <figure>%3$s</figure> words used)."
+msgstr ""
+
+#. translators: Line in the box that says automatic translation is paused, on the WPML translation dashboard. %s: the date the monthly cap resets, e.g. "1 September". The <strong> tags make the date bold; keep them around it.
+#, js-format
+msgid "Translation continues when the cap is raised, or when the cap resets on <strong>%s</strong>."
+msgstr ""
+
+#. translators: Line in the Translate Everything box on the WPML translation dashboard while WPML reconnects to its translation system, with Translate Everything turned on.
+msgid "WPML is reconnecting to our translation system. <b>Translate Everything</b> continues on its own once it reconnects. Nothing is lost."
+msgstr ""
+
+msgid "You don't need to do anything. WPML keeps trying in the background."
+msgstr ""
+
+#. translators: Button label that runs the failed request again: the connection check, or reading the account on the payment step. Verb, imperative.
+msgid "Retry"
+msgstr ""
+
+#. translators: Button in a notice about the translation server being unreachable: try the connection again straight away.
+msgid "Retry now"
+msgstr ""
+
+msgid "WPML is reconnecting to our translation system."
+msgstr ""
+
+#. translators: Line in the Translate Everything area of the WPML translation dashboard, under the disabled button that sets it up, while WPML reconnects to its translation system.
+msgid "WPML is reconnecting to our translation system. You can turn on <b>Translate Everything</b> once it reconnects."
+msgstr ""
+
+msgid "This item needs a translation update but can't be translated automatically because it was translated with the Classic Translation Editor."
+msgstr ""
+
+msgid "This item needs update. Please, select the item and send for translation."
+msgstr ""
+
+msgid "Translations completed with the Classic Translation Editor cannot be sent for automatic translation"
+msgstr ""
+
+#. translators: Says who is translating, at the end of a tooltip on the WPML translation dashboard, as in "Spanish: in progress by automatic translation". Lower case.
+msgid "automatic translation"
+msgstr ""
+
+#. translators: Stands in for a translator's name at the end of a tooltip on the WPML translation dashboard when no translator has taken the job. Lower case.
+msgid "unassigned"
+msgstr ""
+
+#. translators: Translation status written after a language name in a tooltip on the WPML translation dashboard, as in "Spanish: waiting for automatic translation". Lower case.
+msgid "waiting for automatic translation"
+msgstr ""
+
+#. translators: Translation status written after a language name in a tooltip on the WPML translation dashboard, as in "Spanish: waiting for translator". Lower case.
+msgid "waiting for translator"
+msgstr ""
+
+#. translators: Translation status written after a language name in a tooltip on the WPML translation dashboard, as in "Spanish: in progress". Lower case.
+msgid "in progress"
+msgstr ""
+
+#. translators: Translation status written after a language name in a tooltip on the WPML translation dashboard, as in "Spanish: needs update": the original changed after it was translated. Lower case.
+msgid "needs update"
+msgstr ""
+
+#. translators: Translation status written after a language name in a tooltip on the WPML translation dashboard, as in "Spanish: duplicate": the page is a copy of the original, not a translation. Noun, lower case.
+msgid "duplicate"
+msgstr ""
+
+#. translators: Translation status written after a language name in a tooltip on the WPML translation dashboard, as in "Spanish: complete". Adjective, lower case.
+msgid "complete"
+msgstr ""
+
+#. translators: Translation status written after a language name in a tooltip on the WPML translation dashboard, as in "Spanish: needs review". Lower case.
+msgid "needs review"
+msgstr ""
+
+#. translators: Translation status written after a language name in a tooltip on the WPML translation dashboard, as in "Spanish: translation failed - needs attention": automatic translation gave up on the job. Lower case.
+msgid "translation failed - needs attention"
+msgstr ""
+
+#. translators: Translation status written after a language name in a tooltip on the WPML translation dashboard, as in "Spanish: needs attention". Lower case.
+msgid "needs attention"
+msgstr ""
+
+#. translators: Translation status written after a language name in a tooltip on the WPML translation dashboard, as in "Spanish: translation error". Lower case.
+msgid "translation error"
+msgstr ""
+
+#. translators: Tooltip of a language icon on the WPML translation dashboard. %s: the language the item was translated into, e.g. "German".
+#, js-format
+msgid "The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved."
+msgstr ""
+
+#. translators: Tooltip of a language icon on the WPML translation dashboard. %s: the language the item was translated into, e.g. "German".
+#, js-format
+msgid "This item needs a translation update. The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved."
+msgstr ""
+
+msgid "This item hasn't been translated yet and is set to use the WordPress Editor."
+msgstr ""
+
+msgid "This item was translated using the WordPress Editor. Switching to the WPML's Translation Editor will overwrite the existing translation."
+msgstr ""
+
+msgid "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation."
+msgstr ""
+
+#. translators: Tooltip of a language icon on the WPML translation dashboard, as in "English: in progress by John". %1$s: the language name, %2$s: the translation status, %3$s: who is translating, or empty.
+#, js-format
+msgid "%1$s: %2$s%3$s"
+msgstr ""
+
+msgid "Could not fetch engines data"
+msgstr ""
+
+msgid "Error in updating since dates for types."
+msgstr ""
+
+msgid "Error in dismissing the offer to translate the new content types."
+msgstr ""
+
+msgid "Error in updating since date for type."
+msgstr ""
+
+#. translators: Heading above the word-count table WPML shows before translating everything automatically.
+msgid "Content to Translate"
+msgstr ""
+
+#. translators: Column heading in the word-count table; the column names the kind of content each row is about.
+msgid "Content type"
+msgstr ""
+
+#. translators: Column heading in the word-count table; the column holds the tick box that decides whether that content is translated. Verb, imperative.
+msgid "Include"
+msgstr ""
+
+#. translators: Tooltip in the word-count table, shown when the tick boxes cannot be changed here. "Translations dashboard" is another WPML screen; translate it the same way there.
+msgid "These settings can be changed on the Translations dashboard."
+msgstr ""
+
+#. translators: Column heading in the word-count table; the column holds how many documents of that kind there are. Plural noun.
+msgid "Items"
+msgstr ""
+
+#. translators: Column heading in the word-count table; the column holds how many words that content adds up to.
+msgid "Word count"
+msgstr ""
+
+msgid "Loading content to translate"
+msgstr ""
+
+#. translators: Shown next to a spinner while WPML counts the words, when less than a minute is left. The <s> tags make the time bold; keep them around it.
+msgid "Calculating… <s>less than 1 minute left.</s>"
+msgstr ""
+
+#. translators: Shown next to a spinner while WPML counts the words. %d: how many minutes are left. The <s> tags make the time bold; keep them around it.
+#, js-format
+msgid "Calculating… <s>%d minute left.</s>"
+msgid_plural "Calculating… <s>%d minutes left.</s>"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line under the word-count total. %s: a comma-separated list of the new language names, e.g. "Greek, Dutch".
+#, js-format
+msgid "Words needed to translate your existing content into the new languages: %s."
+msgstr ""
+
+#. translators: Line under the word-count total, used when only one language is being added.
+msgid "Words needed to translate your existing content into the new language."
+msgstr ""
+
+msgid "Based on the remaining untranslated content across all languages."
+msgstr ""
+
+msgid "Estimated from the selected source volume multiplied by the target languages."
+msgstr ""
+
+#. translators: Sum shown under the word-count table. %1$s: how many words the source content has, %2$s: how many languages it is translated into. The × is a multiplication sign.
+#, js-format
+msgid "%1$s source words × %2$s language"
+msgid_plural "%1$s source words × %2$s languages"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Already translated content"
+msgstr ""
+
+msgid "Documents you translated yourself stay exactly as you made them"
+msgstr ""
+
+#. translators: Added to that note under the word-count table. %d: how many documents are left as they are. Keep the brackets; a full stop follows.
+#, js-format
+msgid "(%d document)"
+msgid_plural "(%d documents)"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Text of the link at the end of that note; it lists the documents. Verb, imperative.
+msgid "View documents"
+msgstr ""
+
+#. translators: Heading of the language list under the word-count table. %1$d: how many languages are translated automatically, %2$d: how many there are altogether.
+#, js-format
+msgid "%1$d of %2$d language will be translated automatically"
+msgid_plural "%1$d of %2$d languages will be translated automatically"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Heading of the language list under the word-count table, used when every language is translated automatically. %d: how many languages there are.
+#, js-format
+msgid "Translated to %d language"
+msgid_plural "Translated to %d languages"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Add/remove languages"
+msgstr ""
+
+msgid "Percentages show how much of your selected content is already translated in each language."
+msgstr ""
+
+msgid "Note: Content already translated into all languages is not included in this calculation."
+msgstr ""
+
+#. translators: Marks a language WPML does not translate into because it is the same as the site's default language. Used as a pill in the Languages editor and as a tag under the word-count table.
+msgid "Same as default"
+msgstr ""
+
+#. translators: Tooltip of the "Same as default" tag under the word-count table. %1$s: the site's default language, %2$s: the language that is left out.
+#, js-format
+msgid "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language."
+msgstr ""
+
+#. translators: Tag under the word-count table marking a language whose translation the site owner paused, so Translate Everything leaves it out of the estimate.
+msgid "Translation paused"
+msgstr ""
+
+#. translators: Tooltip of the "Translation paused" tag under the word-count table. %s: the language name. "Resume translating" is a control in the WPML Languages editor; translate it the same way there.
+#, js-format
+msgid "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor."
+msgstr ""
+
+#. translators: Tag under the word-count table marking a language automatic translation cannot handle, so it has to be translated by a person.
+msgid "Manual only"
+msgstr ""
+
+#. translators: Tooltip of the "Manual only" tag under the word-count table. %s: the language name.
+#, js-format
+msgid "%s has no automatic-translation support. You can translate this content manually."
+msgstr ""
+
+#. translators: Row label in the cost table. %s: the name of the translation engine the site uses, e.g. "DeepL".
+#, js-format
+msgid "Adjusted word rate (%s)"
+msgstr ""
+
+#. translators: Tooltip next to the adjusted word rate row in the cost table. "Legacy" means the older engines, as opposed to WPML's own.
+msgid "This adjusted word rate applies to legacy translation engines."
+msgstr ""
+
+#. translators: Line under the word-count table. %s: the name of the translation engine the site uses, e.g. "DeepL". The <strong> tags make the name bold; keep them around it.
+#, js-format
+msgid "Translation engine: <strong>%s</strong>"
+msgstr ""
+
+#. translators: Badge next to the engine name under the word-count table; it marks one of the older engines WPML still supports but no longer recommends.
+msgid "Legacy engine"
+msgstr ""
+
+#. translators: Warning under the word-count table. %s: the name of the translation engine the site uses, e.g. "DeepL". "Legacy" means one of the older engines.
+#, js-format
+msgid "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it."
+msgstr ""
+
+#. translators: Note under the word-count table; "This" is the total above it and "It" is that same total.
+msgid "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add."
+msgstr ""
+
+#. translators: Note under the word-count table; "This" is the total above it and "It" is that same total. %s: the translation engine the site uses, for example "DeepL".
+#, js-format
+msgid "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again."
+msgstr ""
+
+#. translators: Note under the word-count table; "This" is the total above it.
+msgid "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add."
+msgstr ""
+
+#. translators: Note under the word-count table; "This" is the total above it. %s: the translation engine the site uses, for example "DeepL".
+#, js-format
+msgid "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again."
+msgstr ""
+
+#. translators: Second note under the word-count table; "It" is the total above it.
+msgid "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use."
+msgstr ""
+
+#. translators: Second note under the word-count table; "It" is the total above it. A term is a category, a tag or a product attribute.
+msgid "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways."
+msgstr ""
+
+#. translators: Label under the running total in the word-count table; the number is written above it.
+msgid "Total items"
+msgstr ""
+
+msgid "Total source words"
+msgstr ""
+
+#. translators: Range line under the word-count table. %1$d: the first row shown, %2$d: the last row shown, %3$d: how many kinds of content there are altogether.
+#, js-format
+msgid "Showing %1$d–%2$d of %3$d types."
+msgstr ""
+
+#. translators: Tooltip on a row of the word-count table that has nothing left to translate. %1$s and %2$s are the same content type name in lower case, e.g. "pages". Keep the <br> where the line should break.
+#, js-format
+msgid "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated."
+msgstr ""
+
+#. translators: Option in the Include dropdown of the word-count table. %s: the content type name in lower case, e.g. "pages".
+#, js-format
+msgid "All %s"
+msgstr ""
+
+#. translators: Shown in the Include column of the word-count table for taxonomy terms: they follow whatever the translated content types do.
+msgid "For translated types"
+msgstr ""
+
+#. translators: Option in the Include dropdown of the word-count table: nothing of this kind is translated.
+msgid "None"
+msgstr ""
+
+#. translators: Shown in the Include column of the word-count table when only newer content counts. %s: a date, e.g. "2026-01-31".
+#, js-format
+msgid "Since %s"
+msgstr ""
+
+#. translators: Option in the Include dropdown of the word-count table: only content newer than a date the reader picks.
+msgid "Since specific date"
+msgstr ""
+
+#. translators: Line shown on the payment step once Pay-As-You-Go is active on the site. Keep the bold markers.
+msgid "<b>Pay-As-You-Go</b> is active on this site."
+msgstr ""
+
+#. translators: Line shown on the payment step once the words are on the site. %s: how many words are on it now, written with thousands separators. Keep the bold markers.
+#, js-format
+msgid "<b>%s words</b> are on this site. Continue."
+msgstr ""
+
+msgid "Your site will be translated right after the setup."
+msgstr ""
+
+#. translators: Line under the payment cards for a site that is not registered with a WPML account. Verb, imperative.
+msgid "To use prepaid words, register WPML on this site."
+msgstr ""
+
+msgid "We could not reach our translation system."
+msgstr ""
+
+msgid "This site is not registered with a WPML account, so prepaid words are not available."
+msgstr ""
+
+msgid "We could not read your WPML account."
+msgstr ""
+
+#. translators: Title of the payment step. %s: how many more words the site needs, written with thousands separators.
+#, js-format
+msgid "%s more words are needed to translate your site."
+msgstr ""
+
+#. translators: Line of the payment step when the WPML account already holds enough words, so the one thing left is to give them to this site. Verb, imperative. Keep the bold markers.
+msgid "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>."
+msgstr ""
+
+#. translators: Line of the payment step when the WPML account holds some of the words needed but not all of them. Verb, imperative. Keep the bold markers.
+msgid "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>."
+msgstr ""
+
+#. translators: Line of the payment step when the WPML account holds no words at all, so both doors buy. Verb, imperative. Keep the bold markers.
+msgid "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words."
+msgstr ""
+
+msgid "Error in fetching currently logged in translator"
+msgstr ""
+
+msgid "Error in fetching local translators"
+msgstr ""
+
+#. translators: Text of the link to the account's word ledger on wpml.org. It sits inside a sentence, so it starts in lower case.
+msgid "usage ledger"
+msgstr ""
+
+#. translators: Sentence shown after translations are cancelled. %1$d: how many translations were running, %2$s: how many words went back to the account. "Details:" introduces the link that follows; keep the colon.
+#, js-format
+msgid "Cancelled. %1$d translation was in progress; its %2$s words are back on your account. Details:"
+msgid_plural "Cancelled. %1$d translations were in progress; their %2$s words are back on your account. Details:"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Sentence shown after translations are cancelled, when the words are not back yet. %d: how many translations were running. "usage ledger" is the link text on the same line; translate both the same way.
+#, js-format
+msgid "Cancelled. We asked to return the words for %d translation in progress; the usage ledger shows it once confirmed."
+msgid_plural "Cancelled. We asked to return the words for %d translations in progress; the usage ledger shows them once confirmed."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Publication status of a document, as WordPress names it, shown in WPML's content tables. Past participle.
+msgid "Published"
+msgstr ""
+
+#. translators: Publication status of a document, as WordPress names it, shown in WPML's content tables: written but not published. Noun.
+msgid "Draft"
+msgstr ""
+
+#. translators: Publication status of a document, as WordPress names it, shown in WPML's content tables: thrown away but not yet gone. Noun.
+msgid "Trash"
+msgstr ""
+
+#. translators: Publication status of a document, as WordPress names it, shown in WPML's content tables: waiting for review. Adjective.
+msgid "Pending"
+msgstr ""
+
+#. translators: Publication status of a document, as WordPress names it, shown in WPML's content tables: only logged-in editors can see it. Adjective.
+msgid "Private"
+msgstr ""
+
+#. translators: Publication status of a document, as WordPress names it, shown in WPML's content tables: set to publish at a later date. Adjective.
+msgid "Future"
+msgstr ""
+
+#. translators: Publication status of a document, as WordPress names it, shown in WPML's content tables: a draft WordPress created by itself. Noun phrase.
+msgid "Auto Draft"
+msgstr ""
+
+#. translators: Publication status of a document in WPML's content tables: the item lives outside WordPress's own posts. Adjective.
+msgid "External"
+msgstr ""
+
+#. translators: Button label that settles the amount owed for automatic translation. Verb, imperative; other WPML texts quote it as "Pay now", so translate it the same way there.
+msgid "Pay now"
+msgstr ""
+
+#. translators: Text of the link to WPML's pricing page, in the payment card. %1$s: opening link tag, %2$s: closing link tag. Verb, imperative; keep the full stop outside the link.
+#, js-format
+msgid "%1$sCheck pricing%2$s."
+msgstr ""
+
+msgid "Lowest cost per word"
+msgstr ""
+
+msgid "Pay only for what you use"
+msgstr ""
+
+msgid "Never run out. Translation never stops."
+msgstr ""
+
+msgid "The first 500 words each month are free"
+msgstr ""
+
+msgid "Pay-As-You-Go"
+msgstr ""
+
+msgid "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate."
+msgstr ""
+
+#. translators: Button label on the Pay-As-You-Go card while WPML waits for the subscription it has just been told about to exist. Present participle; keep the ellipsis and the bold markers.
+msgid "Activating <b>Pay-As-You-Go</b>…"
+msgstr ""
+
+#. translators: Button label on the Pay-As-You-Go card after the dialog could not open and the flow moved to a new browser tab. Verb, imperative.
+msgid "Continue in the new tab"
+msgstr ""
+
+msgid "Activate <b>Pay-As-You-Go</b>"
+msgstr ""
+
+#. translators: Line on the Pay-As-You-Go card when the subscription still does not exist a minute after the client finished paying. Keep the bold markers; "Refresh" is the link that follows.
+msgid "<b>Pay-As-You-Go</b> is not active yet."
+msgstr ""
+
+msgid "Already using <b>Pay-As-You-Go</b> on another site?"
+msgstr ""
+
+msgid "Connect this site to it"
+msgstr ""
+
+msgid "Activate Pay-As-You-Go"
+msgstr ""
+
+msgid "Connect your sites to share translation memory, glossary and word quota."
+msgstr ""
+
+#. translators: Text of a link to WPML's documentation. Verb, imperative.
+msgid "Learn more"
+msgstr ""
+
+msgid "Copy your migration code:"
+msgstr ""
+
+#. translators: Stands in for the migration code in the payment card while it is being fetched. Keep the ellipsis.
+msgid "Loading…"
+msgstr ""
+
+#. translators: Second step of the list in the payment card. Verb, imperative.
+msgid "Log into a site with an active automatic translation account."
+msgstr ""
+
+#. translators: Third step of the list in the payment card. Verb, imperative; the words in quotation marks are the names of WPML menu items, so translate them the way they are translated in the menu.
+msgid "Go to \"WPML\" → \"Translation Dashboard\"."
+msgstr ""
+
+#. translators: Fourth step of the list in the payment card. Verb, imperative; the words in quotation marks are the names of tabs on wpml.org, so translate them the way they appear there.
+msgid "In the \"Payment & Maintenance\" tab, go to \"Connected sites\"."
+msgstr ""
+
+#. translators: Last step of the list in the payment card. Verb, imperative; the words in quotation marks are the label of a button on wpml.org, so translate them the way it appears there.
+msgid "Click \"Enter the connection key of another site\" to finish connecting your sites."
+msgstr ""
+
+#. translators: Button label in the prepaid-words card that buys words and gives them to this site. Verb, imperative.
+msgid "Buy and assign words"
+msgstr ""
+
+#. translators: Button label in the prepaid-words card, shown while WPML is still fetching the account link. Verb, imperative.
+msgid "Refresh to assign words"
+msgstr ""
+
+#. translators: Line of the prepaid-words card. %1$s: opening link tag to the prepaid packages page, %2$s: its closing tag, %3$s: opening bold tag, %4$s: how many words are needed, %5$s: closing bold tag. Verb, imperative.
+#, js-format
+msgid "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site."
+msgstr ""
+
+#. translators: Sentence added to the prepaid-words card when the words on offer cover the whole site.
+msgid "This amount will cover translation of all your current content."
+msgstr ""
+
+#. translators: Line of the prepaid-words card when the account holds enough. %1$s: opening bold tag, %2$s: how many words to assign, %3$s: closing bold tag. Verb, imperative.
+#, js-format
+msgid "Assign %1$s%2$s words%3$s to this site."
+msgstr ""
+
+#. translators: Line of the prepaid-words card when the account holds part of what is missing. %1$s: opening bold tag, %2$s: how many words the account holds, %3$s: closing bold tag, %4$s: opening bold tag, %5$s: how many more to buy, %6$s: closing bold tag. Verb, imperative.
+#, js-format
+msgid "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s."
+msgstr ""
+
+#. translators: Line of the prepaid-words card when the account holds nothing. %1$s: opening bold tag, %2$s: how many words to buy, %3$s: closing bold tag. Verb, imperative.
+#, js-format
+msgid "Buy %1$s%2$s words%3$s for this site."
+msgstr ""
+
+#. translators: Line of the prepaid-words card when the account already has enough words. %1$s: opening bold tag, %2$s: how many words are needed, %3$s: closing bold tag. Verb, imperative.
+#, js-format
+msgid "Assign at least %1$s%2$s words%3$s to this site to continue."
+msgstr ""
+
+#. translators: Line of the prepaid-words card when the account has some words but not enough. %1$s: opening link tag to the prepaid packages page, %2$s: its closing tag, %3$s: opening bold tag, %4$s: how many more words are needed, %5$s: closing bold tag.
+#, js-format
+msgid "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount."
+msgstr ""
+
+#. translators: Title of the payment card that pays for translation with words bought in advance.
+msgid "Prepaid words"
+msgstr ""
+
+#. translators: Line of the prepaid-words card. %1$s: opening bold tag, %2$s: how many words the account holds, %3$s: closing bold tag.
+#, js-format
+msgid "There are %1$s%2$s words%3$s on your WPML account."
+msgstr ""
+
+#. translators: Line of the prepaid-words card. %1$s: opening bold tag, %2$s: how many words the account holds, %3$s: closing bold tag.
+#, js-format
+msgid "There are %1$s%2$s available on your WPML account.%3$s"
+msgstr ""
+
+msgid "(Only the WPML account owner can do this.)"
+msgstr ""
+
+msgid "Checking for new words..."
+msgstr ""
+
+#. translators: Line of the prepaid-words card after a check that found nothing new. %d: how many seconds before the check can be run again.
+#, js-format
+msgid "Still not enough words. Refresh again in %d seconds."
+msgstr ""
+
+msgid "Already assigned?"
+msgstr ""
+
+msgid "Collapse"
+msgstr ""
+
+#. translators: Words for a band of the translation quality scale, at the low end: the translation has mistakes anyone would notice.
+msgid "Obvious mistakes"
+msgstr ""
+
+#. translators: Words for a band of the translation quality scale, at the high end: the translation is good enough to publish as it is.
+msgid "Ready to publish"
+msgstr ""
+
+#. translators: Tag on the quality scale marking the engine the site uses now.
+msgid "Your engine"
+msgstr ""
+
+#. translators: The short name of WPML's own AI translation engine, shown on its own or in bold inside a sentence. It is a product name; keep it as it is.
+msgid "PTC"
+msgstr ""
+
+#. translators: Read out to screen readers in place of the quality scale. %1$s: the name of the engine the site uses, %2$d: its score, %3$s: the name of WPML's own engine, %4$d: its score.
+#, js-format
+msgid "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d."
+msgstr ""
+
+msgid "Scores based on WPML's internal MQM translation quality study."
+msgstr ""
+
+msgid "Select an item"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the arrow that opens a dropdown. Verb, imperative.
+msgid "Open dropdown"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the X that clears what is chosen in a dropdown. Verb, imperative.
+msgid "Reset"
+msgstr ""
+
+#. translators: Placeholder text in the search field inside a dropdown, when the screen gives it no wording of its own. Verb, imperative.
+msgid "Search"
+msgstr ""
+
+#. translators: Shown in place of the list inside a dropdown when the search finds nothing.
+msgid "No items found"
+msgstr ""
+
+#. translators: Tooltip and alternative text of a flag picture in WPML's content tables. %1$s: the language name, giving e.g. "English Flag".
+#, js-format
+msgid "%1$s Flag"
+msgstr ""
+
+#. translators: Tooltip marking the suggested option in the dropdown that chooses how translations are reviewed. Past participle.
+msgid "Recommended"
+msgstr ""
+
+#. translators: Placeholder text of the dropdown that chooses how translations are reviewed, before anything is chosen. Verb, imperative; keep the dashes.
+msgid "- Select a review mode -"
+msgstr ""
+
+msgid "What would you like to do when WPML finishes translating your content automatically?"
+msgstr ""
+
+msgid "What would you like to do after WPML finishes translating your content automatically?"
+msgstr ""
+
+msgid "Publish without review"
+msgstr ""
+
+msgid "WPML publishes translations immediately, skipping the review process."
+msgstr ""
+
+msgid "Wait for review"
+msgstr ""
+
+msgid "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process."
+msgstr ""
+
+msgid "WPML keeps translations unpublished, so you can review them first."
+msgstr ""
+
+msgid "Your translators review and approve translations before publishing."
+msgstr ""
+
+msgid "Publish and mark for review"
+msgstr ""
+
+msgid "WPML publishes translations immediately but flags them for you to check at your convenience."
+msgstr ""
+
+msgid "WPML publishes translations immediately but flags them for translators to review later."
+msgstr ""
+
+#. translators: Tooltip explaining why skipping the review is suggested. PTC is the name of WPML's own AI translation engine; keep it.
+msgid "PTC provides Better Than Human Translations that rarely need improvements, so you can confidently skip the review process."
+msgstr ""

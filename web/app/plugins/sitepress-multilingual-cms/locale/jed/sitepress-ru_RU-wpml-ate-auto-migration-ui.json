@@ -1,0 +1,183 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "ru_RU"
+         },
+         "WPML detected that the alias domain feature was incorrectly configured and has been automatically reset. The alias domain feature is designed only for cases where two domains point to the same WordPress installation. See the details below for the current state of your site.": [
+            "WPML обнаружил, что функция домена-псевдонима была настроена неправильно и была автоматически сброшена. Функция домена-псевдонима предназначена только для случаев, когда два домена указывают на одну и ту же установку WordPress. См. подробности ниже о текущем состоянии вашего сайта."
+         ],
+         "Connect this site to the original?": [
+            "Подключить этот сайт к исходному?"
+         ],
+         "If you connect, this site will re-attach to ": [
+            "Если вы подключитесь, этот сайт снова будет привязан к "
+         ],
+         ". Specifically:": [
+            ". А именно:"
+         ],
+         "share billing and translation words": [
+            "использовать общую оплату и слова для перевода"
+         ],
+         " with the original site again. This site won’t need its own subscription or PAYG plan.": [
+            " с исходным сайтом. Этому сайту не понадобится собственная подписка или план оплаты по мере использования."
+         ],
+         "It will ": [
+            "Он будет "
+         ],
+         "regain access to the shared translation memory": [
+            "вновь иметь доступ к общей памяти переводов"
+         ],
+         ". New translations created on either site become reusable on the other.": [
+            ". Новые переводы, созданные на любом из сайтов, можно будет использовать на другом."
+         ],
+         "The original site at ": [
+            "Исходный сайт по адресу "
+         ],
+         " is not affected.": [
+            " не затронут."
+         ],
+         "Do you want to connect this site?": [
+            "Вы хотите подключить этот сайт?"
+         ],
+         "No, keep independent": [
+            "Нет, оставить независимым"
+         ],
+         "Connecting…": [
+            "Подключение…"
+         ],
+         "Yes, connect": [
+            "Да, подключить"
+         ],
+         "This subsite has its own translation account": [
+            "У этого подсайта свой аккаунт для перевода"
+         ],
+         "It does not share translation credits, translation memory or glossary with the main site. To share them, connect this subsite to the main site's account.": [
+            "Он не использует общие кредиты на перевод, память переводов или глоссарий с основным сайтом. Чтобы сделать их общими, подключите этот подсайт к аккаунту основного сайта."
+         ],
+         "How to connect a site": [
+            "Как подключить сайт"
+         ],
+         "Site disconnected": [
+            "Сайт отключен"
+         ],
+         "Site copy connected": [
+            "Копия сайта подключена"
+         ],
+         "Register this site": [
+            "Зарегистрировать этот сайт"
+         ],
+         "Register this site copy": [
+            "Зарегистрировать эту копию сайта"
+         ],
+         "This site is now running from a new URL.": [
+            "Этот сайт теперь работает по новому URL-адресу."
+         ],
+         "This site is now <strong>independent</strong>. It no longer shares billing, translation words, or translation memory with <code>%s</code>. The original site is unaffected.": [
+            "Этот сайт теперь является <strong>независимым</strong>. Он больше не использует общую оплату, слова для перевода или память переводов с <code>%s</code>. Исходный сайт это не затронуло."
+         ],
+         "This site is connected to your original at <code>%s</code>. It shares the same <strong>billing, translation words, and translation memory</strong> — nothing changes there.": [
+            "Этот сайт подключен к вашему исходному сайту <code>%s</code>. Он использует те же <strong>оплату, слова для перевода и память переводов</strong> — здесь ничего не меняется."
+         ],
+         "Disconnect this site": [
+            "Отключить этот сайт"
+         ],
+         "Disconnect failed. Please try again later.": [
+            "Ошибка отключения. Пожалуйста, попробуйте позже."
+         ],
+         "Disconnect this site from the original?": [
+            "Отключить этот сайт от исходного?"
+         ],
+         "If you disconnect, this site will become independent from ": [
+            "Если вы отключитесь, этот сайт станет независимым от "
+         ],
+         "stop sharing billing and translation words": [
+            "перестанет использовать общую оплату и слова для перевода"
+         ],
+         " with the original site. This site will need its own subscription or PAYG plan to use automatic translation.": [
+            " с исходным сайтом. Этому сайту понадобится собственная подписка или план оплаты по мере использования для автоматического перевода."
+         ],
+         "no longer access the shared translation memory": [
+            "больше не будет иметь доступа к общей памяти переводов"
+         ],
+         ". Existing translations stay on each site, but new translations won’t be shared.": [
+            ". Существующие переводы останутся на каждом сайте, но новые переводы не будут общими."
+         ],
+         "Do you want to disconnect this site?": [
+            "Вы хотите отключить этот сайт?"
+         ],
+         "No, keep connected": [
+            "Нет, оставить подключенным"
+         ],
+         "Disconnecting…": [
+            "Отключение…"
+         ],
+         "Yes, disconnect": [
+            "Да, отключить"
+         ],
+         "Dismiss this notice": [
+            "Скрыть это уведомление"
+         ],
+         "This site is independent": [
+            "Этот сайт независим"
+         ],
+         "This site is now <strong>connected</strong> to <code>%s</code>. It shares the same billing, translation words, and translation memory as the original site.": [
+            "Этот сайт теперь <strong>подключен</strong> к <code>%s</code>. Он использует ту же оплату, слова для перевода и память переводов, что и исходный сайт."
+         ],
+         "This site is independent of <code>%s</code>. It does not share billing, translation words, or translation memory with the original site.": [
+            "Этот сайт не зависит от <code>%s</code>. Он не использует общую оплату, слова для перевода или память переводов с исходным сайтом."
+         ],
+         "Connect this site to the original": [
+            "Подключить этот сайт к исходному"
+         ],
+         "Connect failed. Please try again later.": [
+            "Ошибка подключения. Пожалуйста, попробуйте позже."
+         ],
+         "Site address updated": [
+            "Адрес сайта обновлен"
+         ],
+         "This site moved from <code>%s</code>. It keeps its <strong>translations, billing, translation words and translation memory</strong>.": [
+            "Этот сайт перемещен с <code>%s</code>. Он сохраняет свои <strong>переводы, оплату, слова для перевода и память переводов</strong>."
+         ],
+         "Because this site lives at a new URL, please register a new site key to keep using WPML features like automatic translation and plugin updates. Your existing content and translations are safe.": [
+            "Поскольку этот сайт находится по новому URL-адресу, зарегистрируйте новый ключ сайта, чтобы продолжать использовать функции WPML, такие как автоматический перевод и обновление плагинов. Ваш существующий контент и переводы в безопасности."
+         ],
+         "Tip:": [
+            "Совет:"
+         ],
+         "production and development sites have separate site key quotas, so getting a key for this copy won’t reduce what’s available for your production site.": [
+            "рабочие сайты и сайты разработки имеют отдельные квоты ключей сайта, поэтому получение ключа для этой копии не уменьшит количество доступных ключей для вашего рабочего сайта."
+         ],
+         "Connecting this subsite to the main site's account…": [
+            "Подключение этого подсайта к аккаунту основного сайта…"
+         ],
+         "Retry now": [
+            "Повторить сейчас"
+         ],
+         "Use a separate account for this subsite": [
+            "Использовать отдельный аккаунт для этого подсайта"
+         ],
+         "Get a key for this site": [
+            "Получить ключ для этого сайта"
+         ],
+         "Site key:": [
+            "Ключ сайта:"
+         ],
+         "Enter your site key here": [
+            "Введите ключ сайта здесь"
+         ],
+         "Registering...": [
+            "Регистрация..."
+         ],
+         "Register": [
+            "Зарегистрировать"
+         ],
+         "Registration failed. Please try again.": [
+            "Ошибка регистрации. Пожалуйста, попробуйте еще раз."
+         ]
+      }
+   }
+}

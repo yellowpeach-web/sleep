@@ -2,101 +2,41 @@
 
 use WPML\API\Sanitize;
 
-/**
- * @author OnTheGo Systems
- */
 class WPML_Languages_AJAX {
 	private $sitepress;
 	private $default_language;
 
-	/**
-	 * WPML_Languages_AJAX constructor.
-	 *
-	 * @param SitePress $sitepress
-	 */
 	public function __construct( SitePress $sitepress ) {
 		$this->sitepress        = $sitepress;
 		$this->default_language = $this->sitepress->get_default_language();
 	}
 
 	public function ajax_hooks() {
-		add_action( 'wp_ajax_wpml_set_active_languages', array( $this, 'set_active_languages_action' ) );
-		add_action( 'wp_ajax_wpml_set_default_language', array( $this, 'set_default_language_action' ) );
+		\WPML\Request\Adapter\Ajax::register( 'wpml_set_default_language', \WPML\Request\Policy\Policy::capability( 'manage_options', \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_set_default_language', 'nonce' ) ), array( $this, 'set_default_language_action' ) );
 	}
 
 	private function validate_ajax_action() {
 		$action = Sanitize::stringProp( 'action', $_POST );
 		$nonce  = Sanitize::stringProp( 'nonce', $_POST );
 
-		return $action && $nonce && wp_verify_nonce( $nonce, $action );
+		return $action && $nonce && wp_verify_nonce( $nonce, $action ) && current_user_can( 'manage_options' );
 	}
 
-	public function set_active_languages_action() {
-		$failed = true;
-
-		$response = array();
-		if ( $this->validate_ajax_action() ) {
-			$old_active_languages       = $this->sitepress->get_active_languages();
-			$old_active_languages_count = count( (array) $old_active_languages );
-			$lang_codes                 = filter_var( $_POST['languages'], FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY );
-			$setup_instance             = wpml_get_setup_instance();
-			if ( $lang_codes && $setup_instance->set_active_languages( $lang_codes ) ) {
-				$active_languages = $this->sitepress->get_active_languages();
-				$html_response    = '';
-
-				foreach ( (array) $active_languages as $lang ) {
-					$is_default     = ( $this->default_language === $lang['code'] );
-					$html_response .= '<li ';
-					if ( $is_default ) {
-						$html_response .= 'class="default_language"';
-					}
-					$html_response .= '><label><input type="radio" name="default_language" value="' . $lang['code'] . '" ';
-					if ( $is_default ) {
-						$html_response .= 'checked="checked"';
-					}
-					$html_response .= '>' . $lang['display_name'];
-					if ( $is_default ) {
-						$html_response .= ' (' . __( 'default', 'sitepress' ) . ')';
-					}
-					$html_response               .= '</label></li>';
-					$response['enabledLanguages'] = $html_response;
-				}
-
-				$response['noLanguages'] = 1;
-				if ( ( count( $lang_codes ) > 1 ) || ( $old_active_languages_count > 1 && count( $lang_codes ) < 2 ) ) {
-					$response['noLanguages'] = 0;
-				}
-				$updated_active_languages = $this->sitepress->get_active_languages();
-				if ( $updated_active_languages ) {
-					$wpml_localization = new WPML_Download_Localization( $updated_active_languages, $this->default_language );
-					$wpml_localization->download_language_packs();
-
-					$wpml_languages_notices = new WPML_Languages_Notices( wpml_get_admin_notices() );
-					$wpml_languages_notices->maybe_create_notice_missing_menu_items( count( $lang_codes ) );
-					$wpml_languages_notices->missing_languages( $wpml_localization->get_not_founds() );
-
-					if ( \WPML\Setup\Option::isTMAllowed() && $this->sitepress->is_setup_complete() ) {
-						WPML_TM_Translation_Priorities::insert_missing_default_terms();
-					}
-				}
-				$failed = false;
-			}
-
-			icl_cache_clear();
-
-			/** @deprecated Use `wpml_update_active_languages` instead */
-			do_action( 'icl_update_active_languages' );
-			do_action( 'wpml_update_active_languages', $old_active_languages );
+	private function reject_unrecoverable_settings_mutation() {
+		if ( ! \WPML\Setup\Initializer::settingsAreUnrecoverable() ) {
+			return false;
 		}
 
-		if ( $failed ) {
-			wp_send_json_error( $response );
-		} else {
-			wp_send_json_success( $response );
-		}
+		wp_send_json_error( \WPML\Setup\Initializer::getSettingsRecoveryError() );
+
+		return true;
 	}
 
 	public function set_default_language_action() {
+		if ( $this->reject_unrecoverable_settings_mutation() ) {
+			return;
+		}
+
 		$failed   = true;
 		$response = array();
 
@@ -116,6 +56,15 @@ class WPML_Languages_AJAX {
 				if ( 1 === $status ) {
 					$response['message'] = __( 'WordPress language file (.mo) is missing. Keeping existing display language.', 'sitepress' );
 				}
+				if ( false === $status ) {
+					$response['message'] = sprintf(
+						/* translators: %s: the name of the language that is the default now. */
+						__( 'Set a domain for %s in the URL format section first: in "A different domain per language" every language that is not the default needs one.', 'sitepress' ),
+						isset( $active_languages[ $previous_default ]['display_name'] ) ? $active_languages[ $previous_default ]['display_name'] : $previous_default
+					);
+				}
+
+				( new WPML_WP_Cache( WPML_URL_Cached_Converter::CACHE_GROUP ) )->flush_group_cache();
 			}
 		}
 

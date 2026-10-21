@@ -2,6 +2,7 @@
 
 namespace WPML\BrowserLanguageRedirect;
 
+use WPML\Core\WP\App\Resources as AppResources;
 use WPML\LIB\WP\App\Resources;
 use WPML\LIB\WP\Nonce;
 
@@ -14,23 +15,24 @@ class Dialog implements \IWPML_Backend_Action {
 	public function add_hooks() {
 		add_action( 'admin_notices', [ $this, 'print_dialog_container' ] );
 		add_action( 'admin_head', [ $this, 'enqueue_res' ] );
-		add_action( 'wp_ajax_' . self::ACCEPT_ACTION, [ $this, 'accept' ] );
+		\WPML\Request\Adapter\Ajax::register( self::ACCEPT_ACTION, \WPML\Request\Policy\Policy::authenticated( \WPML\Request\Policy\Authenticity::actionNonce( self::NONCE_KEY, 'nonce' ), 'records that the caller accepted the browser-redirect dialog (own user meta)' ), [ $this, 'accept' ] );
 	}
 
 	public function enqueue_res() {
 		if ( $this->should_print_dialog() ) {
-			Resources::enqueue(
+			Resources::enqueueWithDeps(
 				'browser-language-redirect-dialog',
 				ICL_PLUGIN_URL,
 				WPML_PLUGIN_PATH,
-				ICL_SITEPRESS_VERSION,
+				ICL_SITEPRESS_SCRIPT_VERSION,
 				null,
 				[
 					'name' => 'wpmlBrowserLanguageRedirectDialog',
 					'data' => [
 						'endpoint' => self::ACCEPT_ACTION,
 					],
-				]
+				],
+				[ AppResources::vendorAsDependency() ]
 			);
 		}
 	}
@@ -44,7 +46,8 @@ class Dialog implements \IWPML_Backend_Action {
 	}
 
 	public function accept() {
-		if ( Nonce::verify( self::NONCE_KEY, wpml_collect( $_POST ) ) ) {
+		$verified = Nonce::verify( self::NONCE_KEY, wpml_collect( $_POST ) )->getOrElse( null );
+		if ( null !== $verified ) {
 			update_user_meta( get_current_user_id(), self::USER_META, self::ACCEPTED );
 		}
 	}

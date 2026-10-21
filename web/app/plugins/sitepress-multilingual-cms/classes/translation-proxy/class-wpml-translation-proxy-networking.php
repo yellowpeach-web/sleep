@@ -4,10 +4,8 @@ class WPML_Translation_Proxy_Networking {
 
 	const API_VERSION = 1.1;
 
-	/** @var WP_Http $http */
 	private $http;
 
-	/** @var WPML_TP_Lock $tp_lock */
 	private $tp_lock;
 
 	public function __construct( WP_Http $http, WPML_TP_Lock $tp_lock ) {
@@ -15,17 +13,6 @@ class WPML_Translation_Proxy_Networking {
 		$this->tp_lock = $tp_lock;
 	}
 
-	/**
-	 * @param string    $url
-	 * @param array     $params
-	 * @param string    $method
-	 * @param bool|true $has_return_value
-	 * @param bool|true $json_response
-	 * @param bool|true $has_api_response
-	 *
-	 * @return array|mixed|stdClass|string
-	 * @throws WPMLTranslationProxyApiException
-	 */
 	public function send_request(
 		$url,
 		$params = array(),
@@ -106,16 +93,6 @@ class WPML_Translation_Proxy_Networking {
 		return TranslationProxy_Api::proxy_request( '/projects/{project_id}/extra_fields.json', $params );
 	}
 
-	/**
-	 * @param string $url
-	 * @param array  $params
-	 * @param string $method
-	 * @param bool   $has_return_value
-	 *
-	 * @throws \WPMLTranslationProxyApiException
-	 *
-	 * @return array
-	 */
 	private function call_remote_api(
 		$url,
 		$params,
@@ -123,10 +100,35 @@ class WPML_Translation_Proxy_Networking {
 		$has_return_value = true
 	) {
 		$context  = $this->filter_request_params( $params, $method );
+		$started  = microtime( true );
 		$response = $this->http->request( $url, $context );
-		if ( ( $has_return_value && (bool) $response === false )
+
+		$failed = ( $has_return_value && (bool) $response === false )
 			 || is_wp_error( $response )
-			 || ( isset( $response['response']['code'] ) && $response['response']['code'] > 400 ) ) {
+			 || ( isset( $response['response']['code'] ) && $response['response']['code'] > 400 );
+
+		if ( \WPML\TM\Jobs\JobLog::canLog() ) {
+			$is_response_array = is_array( $response );
+
+			$call_data = array(
+				'method'         => $method,
+				'endpoint'       => (string) wpml_parse_url( $url, PHP_URL_PATH ),
+				'http_status'    => $is_response_array && isset( $response['response']['code'] ) ? (int) $response['response']['code'] : 0,
+				'duration_ms'    => (int) round( ( microtime( true ) - $started ) * 1000 ),
+				'response_bytes' => $is_response_array && isset( $response['body'] ) && is_string( $response['body'] ) ? strlen( $response['body'] ) : 0,
+			);
+
+			if ( $failed ) {
+				$call_data['error'] = is_wp_error( $response )
+					? $response->get_error_message()
+					: 'HTTP failure';
+				\WPML\TM\Jobs\JobLog::addError( 'tp_api_call_failed', $call_data );
+			} else {
+				\WPML\TM\Jobs\JobLog::add( 'tp_api_call', $call_data );
+			}
+		}
+
+		if ( $failed ) {
 			throw new WPMLTranslationProxyApiException(
 				$this->get_exception_message(
 					$url,
@@ -164,12 +166,6 @@ class WPML_Translation_Proxy_Networking {
 			   . '`';
 	}
 
-	/**
-	 * @param array  $params request parameters
-	 * @param string $method HTTP request method
-	 *
-	 * @return array
-	 */
 	private function filter_request_params( $params, $method ) {
 		$request_filter = new WPML_TP_HTTP_Request_Filter();
 
@@ -178,8 +174,7 @@ class WPML_Translation_Proxy_Networking {
 				'method'    => $method,
 				'body'      => $params,
 				'sslverify' => true,
-				'timeout'   => 60,
-
+				'timeout'   => \WPML\TM\TranslationProxy\SendTuning::sendCallTimeoutSeconds(),
 			)
 		);
 	}

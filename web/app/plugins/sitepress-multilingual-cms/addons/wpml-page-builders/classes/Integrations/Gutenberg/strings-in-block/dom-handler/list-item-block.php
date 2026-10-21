@@ -5,12 +5,18 @@ namespace WPML\PB\Gutenberg\StringsInBlock\DOMHandler;
 class ListItemBlock extends StandardBlock {
 
 
-	/**
-	 * @inheritDoc
-	 */
 	public function applyStringTranslations( \WP_Block_Parser_Block $block, \DOMNode $element, $translation, $originalValue = null) {
-		// For List item elements that contain child nodes, we will just replace the translation from the original text.
 		if ( $element instanceof \DOMElement && $element->childNodes->length > 0 ) {
+			if ( $this->registersAsText( $element ) ) {
+				return $this->replaceTextInListItem(
+					$block,
+					$this->getTextMarkupPairs(
+						$originalValue ?: $element->nodeValue,
+						$this->getTranslationAsText( $element, $translation )
+					)
+				);
+			}
+
 			$originalValueVariations = $this->getOriginalVariationsForBrAndImgTags( $originalValue );
 
 			$block->innerHTML = str_replace( $originalValueVariations, $translation, $block->innerHTML );
@@ -25,14 +31,31 @@ class ListItemBlock extends StandardBlock {
 		return parent::applyStringTranslations( $block, $element, $translation, $originalValue );
 	}
 
-	/**
-	 * This will provide an array of possible searches to apply the translation.
-	 * It will make both versions of self-closing tags (with or without slash).
-	 *
-	 * @param string $originalValue
-	 *
-	 * @return array
-	 */
+	private function replaceTextInListItem( \WP_Block_Parser_Block $block, array $pairs ) {
+		foreach ( $pairs as list( $original, $translation ) ) {
+			$found = false !== strpos( (string) $block->innerHTML, $original );
+
+			foreach ( $block->innerContent as $inner_content ) {
+				$found = $found || ( $inner_content && false !== strpos( $inner_content, $original ) );
+			}
+
+			if ( ! $found ) {
+				continue;
+			}
+
+			$block->innerHTML = str_replace( $original, $translation, $block->innerHTML );
+			foreach ( $block->innerContent as &$inner_content ) {
+				if ( $inner_content ) {
+					$inner_content = str_replace( $original, $translation, $inner_content );
+				}
+			}
+
+			return $block;
+		}
+
+		return $block;
+	}
+
 	private function getOriginalVariationsForBrAndImgTags( $originalValue ) {
 		$extractInsideBrOrImgTagsPattern = '/<(br[^>\/\s]*|img[^>]*[^>\/\s])(?:\s*\/)?\s*>/';
 
@@ -43,8 +66,8 @@ class ListItemBlock extends StandardBlock {
 				array_filter(
 					[
 						$originalValue,
-						preg_replace( $extractInsideBrOrImgTagsPattern, '<${1}/>', $originalValue ), // With self-closing tags.
-						preg_replace( $extractInsideBrOrImgTagsPattern, '<${1}>', $originalValue ), // With no-self-closing tags.
+						preg_replace( $extractInsideBrOrImgTagsPattern, '<${1}/>', $originalValue ),
+						preg_replace( $extractInsideBrOrImgTagsPattern, '<${1}>', $originalValue ),
 					]
 				)
 			);

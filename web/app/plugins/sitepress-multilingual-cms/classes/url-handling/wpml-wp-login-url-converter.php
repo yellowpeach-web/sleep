@@ -3,7 +3,6 @@
 namespace WPML\UrlHandling;
 
 use WPML\API\Sanitize;
-use WPML\Element\API\Languages;
 use WPML\FP\Obj;
 use WPML\FP\Relation;
 use WPML\FP\Str;
@@ -16,16 +15,10 @@ class WPLoginUrlConverter implements \IWPML_Action {
 
 	private $rewrite_rule_not_found;
 
-	/** @var \WPML_URL_Converter $url_converter */
 	private $url_converter;
 
-	/** @var \SitePress $sitepress */
 	private $sitepress;
 
-	/**
-	 * @param \WPML_URL_Converter $url_converter
-	 * @param \SitePress          $sitepress
-	 */
 	public function __construct( $sitepress, $url_converter ) {
 		$this->rewrite_rule_not_found = false;
 		$this->url_converter          = $url_converter;
@@ -67,12 +60,6 @@ class WPLoginUrlConverter implements \IWPML_Action {
 		}
 	}
 
-	/**
-	 * Converts the logout URL to be translated.
-	 *
-	 * @param string $url
-	 * @return string
-	 */
 	public function convert_user_logout_url( $url ) {
 		$current_user_id = User::getCurrentId();
 		if ( $current_user_id ) {
@@ -91,7 +78,6 @@ class WPLoginUrlConverter implements \IWPML_Action {
 
 	public function redirect_to_login_url_with_lang() {
 		$sitePath              = Obj::propOr( '', 'path', parse_url( site_url() ) );
-		/** @var string $requestUriWithoutPath */
 		$requestUriWithoutPath = Str::trimPrefix( (string) $sitePath, (string) $_SERVER['REQUEST_URI'] );
 
 		$converted_url = site_url( $requestUriWithoutPath, 'login' );
@@ -107,22 +93,23 @@ class WPLoginUrlConverter implements \IWPML_Action {
 	public function generate_rewrite_rules() {
 		global $wp_rewrite;
 
-		$language_rules = wpml_collect( Languages::getActive() )->mapWithKeys(
-			function ( $lang ) {
-				return [ $lang['code'] . '/wp-login.php' => 'wp-login.php' ];
+		$language_rules = wpml_collect( $this->get_url_language_codes() )->mapWithKeys(
+			function ( $url_code ) {
+				return [ $url_code . '/wp-login.php' => 'wp-login.php' ];
 			}
 		);
 
 		$wp_rewrite->non_wp_rules = array_merge( $language_rules->toArray(), $wp_rewrite->non_wp_rules );
 	}
 
-	/**
-	 * Converts the redirected string if it's the default one.
-	 *
-	 * @param string $redirect_to
-	 * @param string $requested_redirect_to
-	 * @return string
-	 */
+	private function get_url_language_codes() {
+		$codes = array_map( 'strval', array_keys( (array) $this->sitepress->get_languages( false, true ) ) );
+
+		$map = apply_filters( 'wpml_language_codes_map', array_combine( $codes, $codes ) );
+
+		return array_values( $map );
+	}
+
 	public function convert_default_redirect_url( $redirect_to, $requested_redirect_to ) {
 		if ( '' === $requested_redirect_to ) {
 			return $this->convert_url( $redirect_to );
@@ -155,9 +142,39 @@ class WPLoginUrlConverter implements \IWPML_Action {
 	public function site_url( $url, $path, $scheme ) {
 		if ( $scheme === 'login_post' || $scheme === 'login' || $this->should_convert_url_for_multisite( $url ) ) {
 			$url = $this->convert_url( $url );
+
+			if ( $this->is_password_reset_request() && $this->is_on_wp_login_page() && $this->is_wp_login_url( $url ) ) {
+				$url = $this->keep_path_of_current_request( $url );
+			}
 		}
 
 		return $url;
+	}
+
+	private function is_password_reset_request() {
+		return in_array( Obj::prop( 'action', $_GET ), [ 'rp', 'resetpass' ], true );
+	}
+
+	private function is_on_wp_login_page() {
+		return Str::includes( 'wp-login.php', (string) Obj::propOr( '', 'REQUEST_URI', $_SERVER ) );
+	}
+
+	private function keep_path_of_current_request( $url ) {
+		if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
+			return $url;
+		}
+
+		$url_parts = wpml_parse_url( $url );
+		if ( ! isset( $url_parts['path'] ) ) {
+			return $url;
+		}
+
+		$request_path = (string) strtok( (string) $_SERVER['REQUEST_URI'], '?' );
+		if ( '' === $request_path || $request_path === $url_parts['path'] ) {
+			return $url;
+		}
+
+		return str_replace( $url_parts['path'], $request_path, $url );
 	}
 
 	public function convert_url( $url ) {
@@ -191,10 +208,6 @@ class WPLoginUrlConverter implements \IWPML_Action {
 		return $query_vars;
 	}
 
-	/**
-	 * @param bool $validateOrRollback - If true, it will be validated that the translated Login URL is accessible or rollback.
-	 * @return void
-	 */
 	public static function enable( $validateOrRollback = false ) {
 		self::saveState( true, $validateOrRollback );
 	}
@@ -203,18 +216,10 @@ class WPLoginUrlConverter implements \IWPML_Action {
 		self::saveState( false );
 	}
 
-	/**
-	 * @return bool
-	 */
 	public static function isEnabled() {
 		return Option::getOr( self::SETTINGS_KEY, false );
 	}
 
-	/**
-	 * @param bool $state
-	 * @param bool $validate - if true, will validate the change or undo it.
-	 *
-	 */
 	public static function saveState( $state, $validate = false ) {
 		Option::update( self::SETTINGS_KEY, $state );
 		WPLoginUrlConverterRules::markRulesForUpdating( $validate );

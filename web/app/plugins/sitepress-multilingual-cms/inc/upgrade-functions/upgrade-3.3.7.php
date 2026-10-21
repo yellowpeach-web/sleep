@@ -1,26 +1,19 @@
 <?php
-/**
- * @package wpml-core
- */
 
 global $wpdb;
 
 $current_table = 'icl_languages';
-$sql           = "ALTER TABLE {$wpdb->prefix}icl_languages MODIFY default_locale varchar(35), MODIFY tag varchar(35);";
-$result        = $wpdb->query( $sql );
+$result        = $wpdb->query( "ALTER TABLE {$wpdb->prefix}icl_languages MODIFY default_locale varchar(35), MODIFY tag varchar(35);" );
 if ( false !== $result ) {
 	$current_table = 'icl_locale_map';
-	$sql           = "ALTER TABLE {$wpdb->prefix}icl_locale_map MODIFY locale varchar(35);";
-	$result        = $wpdb->query( $sql );
+	$result        = $wpdb->query( "ALTER TABLE {$wpdb->prefix}icl_locale_map MODIFY locale varchar(35);" );
 }
 
 function update_seo_settings() {
 	global $wpdb;
 
-	$sql                = "SELECT option_value FROM {$wpdb->options} WHERE option_name = %s;";
-	$sql_prepared       = $wpdb->prepare( $sql, array( 'icl_sitepress_settings' ) );
-	$data               = $wpdb->get_var( $sql_prepared );
-	$sitepress_settings = unserialize( $data );
+	$data               = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name = %s;", array( 'icl_sitepress_settings' ) ) );
+	$sitepress_settings = unserialize( $data, array( 'allowed_classes' => array( 'stdClass', 'WPML_TP_Service' ) ) );
 
 	$settings_updated = false;
 	if ( ! array_key_exists( 'seo', $sitepress_settings ) ) {

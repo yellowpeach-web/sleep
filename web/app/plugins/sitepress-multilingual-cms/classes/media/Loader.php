@@ -11,11 +11,12 @@ use WPML\Media\Translate\Endpoint\DuplicateFeaturedImages;
 use WPML\Media\Translate\Endpoint\FinishMediaTranslation;
 use WPML\Media\Translate\Endpoint\PrepareForTranslation;
 use WPML\Media\Translate\Endpoint\TranslateExistingMedia;
+use WPML\Troubleshooting\ResetWindow;
 
 class Loader implements \IWPML_Backend_Action {
 
 	public function add_hooks() {
-		if ( ! Option::isSetupFinished() ) {
+		if ( ! Option::isSetupFinished() && ! ResetWindow::isResetPage() ) {
 			Hooks::onAction( 'wp_loaded' )
 			     ->then( [ self::class, 'getData' ] )
 			     ->then( Resources::enqueueApp( 'media-setup' ) );

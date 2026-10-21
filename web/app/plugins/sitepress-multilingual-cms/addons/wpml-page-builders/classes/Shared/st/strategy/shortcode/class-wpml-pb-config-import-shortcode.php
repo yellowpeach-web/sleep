@@ -10,10 +10,21 @@ class WPML_PB_Config_Import_Shortcode {
 	const PB_MEDIA_SHORTCODE_SETTING = 'wpml_pb_media_shortcode';
 	const PB_IDS_SHORTCODE_SETTING   = 'wpml_pb_ids_shortcode';
 
+	const HAS_SHORTCODE_SETTINGS_FLAG = 'wpml_pb_has_shortcode_settings';
+
 	const TYPE_POST_IDS     = 'post-ids';
 	const TYPE_TAXONOMY_IDS = 'taxonomy-ids';
 
-	/** @var  WPML_ST_Settings $st_settings */
+	const WILDCARD_TYPE    = 'type';
+	const WILDCARD_REGEX   = 'regex';
+	const WILDCARD_EXCLUDE = 'exclude';
+
+	const NAME_BOUNDARY = '(?<![\w-])';
+
+	const GROUP_ATTRIBUTE = 'attribute';
+	const GROUP_NAME      = 'name';
+	const GROUP_IDS       = 'ids';
+
 	private $st_settings;
 
 	public function __construct( WPML_ST_Settings $st_settings ) {
@@ -32,7 +43,6 @@ class WPML_PB_Config_Import_Shortcode {
 		return $config_data;
 	}
 
-	/** @param array $config_data */
 	private function update_shortcodes_config( $config_data ) {
 		$old_shortcode_data = $this->get_settings();
 
@@ -86,10 +96,10 @@ class WPML_PB_Config_Import_Shortcode {
 
 		if ( $shortcode_data != $old_shortcode_data ) {
 			$this->st_settings->update_setting( self::PB_SHORTCODE_SETTING, $shortcode_data, true );
+			update_option( self::HAS_SHORTCODE_SETTINGS_FLAG, empty( $shortcode_data ) ? 0 : 1, true );
 		}
 	}
 
-	/** @param array $config_data */
 	private function update_media_shortcodes_config( $config_data ) {
 		$old_shortcodes_data = $this->get_media_settings();
 		$shortcodes_data     = array();
@@ -139,7 +149,6 @@ class WPML_PB_Config_Import_Shortcode {
 		}
 	}
 
-	/** @param array $config_data */
 	private function update_ids_shortcodes_config( $config_data ) {
 		$old_shortcodes_data = $this->get_id_settings();
 		$shortcodes_data     = [];
@@ -159,17 +168,22 @@ class WPML_PB_Config_Import_Shortcode {
 						}
 
 						if ( ! empty( $attribute['value'] ) ) {
-							$attributes[ $attribute['value'] ] = ConvertIdsHelper::selectElementType(
+							$type = ConvertIdsHelper::selectElementType(
 								Obj::path( [ 'attr','sub-type' ], $attribute ),
 								Obj::path( [ 'attr','type' ], $attribute )
 							);
+
+							$attributes[ $attribute['value'] ] = $this->is_wildcard_name( $attribute['value'] )
+								? $this->get_wildcard_setting( $attribute, $type )
+								: $type;
 						}
 					}
 				}
 
 				if ( $attributes ) {
 					$tag_name                     = $data['tag']['value'];
-					$shortcodes_data[ $tag_name ] = $attributes;
+					$earlier                      = isset( $shortcodes_data[ $tag_name ] ) ? $shortcodes_data[ $tag_name ] : [];
+					$shortcodes_data[ $tag_name ] = array_merge( $earlier, $attributes );
 				}
 			}
 		}
@@ -179,21 +193,11 @@ class WPML_PB_Config_Import_Shortcode {
 		}
 	}
 
-	/**
-	 * @param array $attribute
-	 *
-	 * @return bool
-	 */
 	private function is_string_attribute( array $attribute ) {
 		return ! $this->is_id_attribute( $attribute )
 		       && ! $this->is_media_attribute( $attribute );
 	}
 
-	/**
-	 * @param array $attribute
-	 *
-	 * @return bool
-	 */
 	private function is_id_attribute( array $attribute ) {
 		return ConvertIdsHelper::isValidType( Obj::path( [ 'attr', 'type' ], $attribute ) );
 	}
@@ -206,6 +210,23 @@ class WPML_PB_Config_Import_Shortcode {
 
 		return isset( $attribute['attr']['type'] )
 		       && in_array( $attribute['attr']['type'], $media_attribute_types, true );
+	}
+
+	private function is_wildcard_name( string $name ): bool {
+		return false !== strpos( $name, '*' );
+	}
+
+	private function get_wildcard_setting( array $attribute, string $type ): array {
+		$name    = str_replace( '\\*', '[\w-]+', preg_quote( $attribute['value'], '/' ) );
+		$exclude = explode( ',', (string) Obj::path( [ 'attr', 'exclude' ], $attribute ) );
+		$regex   = '/' . self::NAME_BOUNDARY . '(?<' . self::GROUP_ATTRIBUTE . '>(?<' . self::GROUP_NAME . '>' . $name . ')=[\"\']{1})'
+			. '(?<' . self::GROUP_IDS . '>[^\"\']+)/';
+
+		return [
+			self::WILDCARD_TYPE    => $type,
+			self::WILDCARD_REGEX   => $regex,
+			self::WILDCARD_EXCLUDE => array_values( array_filter( array_map( 'trim', $exclude ), 'strlen' ) ),
+		];
 	}
 
 	private function convert_single_attribute_to_multiple_format( array $attribute ) {
@@ -224,16 +245,16 @@ class WPML_PB_Config_Import_Shortcode {
 		return get_option( self::PB_MEDIA_SHORTCODE_SETTING, array() );
 	}
 
-	/**
-	 * @return array
-	 */
 	public function get_id_settings() {
 		return get_option( self::PB_IDS_SHORTCODE_SETTING, [] );
 	}
 
 	public function has_settings() {
-		$settings = $this->get_settings();
+		$flag = get_option( self::HAS_SHORTCODE_SETTINGS_FLAG, null );
+		if ( null !== $flag ) {
+			return (bool) $flag;
+		}
 
-		return ! empty( $settings );
+		return ! empty( $this->get_settings() );
 	}
 }

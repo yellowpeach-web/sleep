@@ -3,16 +3,13 @@
 namespace WPML\PB\Elementor\Config\DynamicElements;
 
 use WPML\FP\Obj;
-use WPML\FP\Relation;
+use WPML\PB\Elementor\Helper\Path;
 use function WPML\FP\compose;
 
 class MegaMenu {
 
-	/**
-	 * @return array
-	 */
 	public static function get() {
-		$isMenuItem = Relation::propEq( 'widgetType', 'mega-menu' );
+		$isMenuItem = Path::propEq( 'widgetType', 'mega-menu' );
 
 		$itemLinkLens = compose(
 			Obj::lensProp( 'settings' ),

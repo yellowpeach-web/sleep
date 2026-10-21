@@ -108,7 +108,8 @@ class WPML_TM_Job_Layout {
 		if ( count( $this->custom_fields ) ) {
 			$data           = array(
 				'field_type'    => 'tm-section',
-				'title'         => __( 'Custom Fields', 'wpml-translation-management' ),
+				/* translators: Heading of the group of extra fields in the translation editor. */
+				'title'         => __( 'Custom Fields', 'sitepress' ),
 				'fields'        => $this->custom_fields,
 				'empty'         => false,
 				'empty_message' => '',
@@ -119,14 +120,16 @@ class WPML_TM_Job_Layout {
 	}
 
 	private function append_terms() {
+		$wpdb = $this->wpdb;
 
 		if ( count( $this->terms ) ) {
 			$taxonomy_fields = [];
 
 			foreach ( $this->terms as $term ) {
 				$term_id  = FieldId::get_term_id( $term );
-				$query    = $this->wpdb->prepare( "SELECT taxonomy FROM {$this->wpdb->term_taxonomy} WHERE term_taxonomy_id = %d", $term_id );
-				$taxonomy = $this->wpdb->get_var( $query );
+				$taxonomy = $wpdb->get_var(
+					$wpdb->prepare( "SELECT taxonomy FROM {$wpdb->term_taxonomy} WHERE term_taxonomy_id = %d", $term_id )
+				);
 				if ( ! isset( $taxonomy_fields[ $taxonomy ] ) ) {
 					$taxonomy_fields[ $taxonomy ] = [];
 				}
@@ -141,7 +144,7 @@ class WPML_TM_Job_Layout {
 					'fields'        => $fields,
 					'empty'         => false,
 					'empty_message' => '',
-					'sub_title'     => __( 'Changes in these translations will affect terms in general! (Not only for this post)', 'wpml-translation-management' ),
+					'sub_title'     => __( 'Changes in these translations will affect terms in general! (Not only for this post)', 'sitepress' ),
 				);
 				$this->layout[] = $data;
 			}

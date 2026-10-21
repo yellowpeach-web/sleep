@@ -9,20 +9,17 @@ use WPML\ST\TranslationFile\StringEntity;
 use function wpml_collect;
 
 class Generator {
-	/** @var MOFactory */
 	private $moFactory;
 
 	public function __construct( MOFactory $moFactory ) {
 		$this->moFactory = $moFactory;
 	}
 
-	/**
-	 * @param StringEntity[] $entries
-	 *
-	 * @return string
-	 */
-	public function getContent( array $entries ) {
+	public function getContent( array $entries, $pluralForms = null ) {
 		$mo = $this->moFactory->createNewInstance();
+		if ( $pluralForms ) {
+			$mo->set_header( 'Plural-Forms', $pluralForms );
+		}
 		wpml_collect( $entries )
 			->reduce( [ $this, 'createMOFormatEntities' ], wpml_collect( [] ) )
 			->filter( function( array $entry ) { return ! empty($entry['singular']); } )
@@ -42,12 +39,6 @@ class Generator {
 		return $mo_content;
 	}
 
-	/**
-	 * @param Collection   $carry
-	 * @param StringEntity $entry
-	 *
-	 * @return Collection
-	 */
 	public function createMOFormatEntities( $carry, StringEntity $entry ) {
 		$carry->push( $this->mapStringEntityToMOFormatUsing( $entry, 'original' ) );
 
@@ -58,12 +49,6 @@ class Generator {
 		return $carry;
 	}
 
-	/**
-	 * @param StringEntity $entry
-	 * @param string       $singularField
-	 *
-	 * @return array
-	 */
 	private function mapStringEntityToMOFormatUsing( StringEntity $entry, $singularField ) {
 		return [
 			'singular'     => $entry->{'get_' . $singularField}(),

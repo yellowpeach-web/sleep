@@ -1,15 +1,10 @@
 <?php
 
+use WPML\Core\WP\App\Resources;
 use \WPML\FP\Obj;
 use WPML\LIB\WP\Option as Option;
 use WPML\LIB\WP\User;
 
-/**
- * This code is inspired by WPML Widgets (https://wordpress.org/plugins/wpml-widgets/),
- * created by Jeroen Sormani
- *
- * @author OnTheGo Systems
- */
 class WPML_Widgets_Support_Backend implements IWPML_Action {
 	const NONCE = 'wpml-language-nonce';
 	const NONCE_LEGACY_WIDGET = 'wpml_change_selected_language_for_legacy_widget';
@@ -17,12 +12,6 @@ class WPML_Widgets_Support_Backend implements IWPML_Action {
 	private $active_languages;
 	private $template_service;
 
-	/**
-	 * WPML_Widgets constructor.
-	 *
-	 * @param array                  $active_languages
-	 * @param IWPML_Template_Service $template_service
-	 */
 	public function __construct( array $active_languages, IWPML_Template_Service $template_service ) {
 		$this->active_languages = $active_languages;
 		$this->template_service = $template_service;
@@ -32,7 +21,7 @@ class WPML_Widgets_Support_Backend implements IWPML_Action {
 		add_action( 'in_widget_form', array( $this, 'language_selector' ), 10, 3 );
 		add_filter( 'widget_update_callback', array( $this, 'update' ), 10, 4 );
 		if ( User::getCurrent() && User::getCurrent()->has_cap('wpml_manage_languages') ) {
-			add_action( 'wp_ajax_wpml_change_selected_language_for_legacy_widget', array( $this, 'set_selected_language_for_legacy_widget' ) );
+			\WPML\Request\Adapter\Ajax::register( 'wpml_change_selected_language_for_legacy_widget', \WPML\Request\Policy\Policy::capability( 'wpml_manage_languages', \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_change_selected_language_for_legacy_widget', 'nonce' ) ), array( $this, 'set_selected_language_for_legacy_widget' ) );
 		}
 		if ( $this->is_widgets_page() ) {
 			add_action('enqueue_block_editor_assets', array($this, 'enqueue_scripts'));
@@ -40,7 +29,7 @@ class WPML_Widgets_Support_Backend implements IWPML_Action {
 	}
 
 	public function enqueue_scripts() {
-		wp_register_script( 'widgets-language-switcher-script', ICL_PLUGIN_URL . '/dist/js/widgets-language-switcher/app.js', array( 'wp-block-editor' ) );
+		wp_register_script( 'widgets-language-switcher-script', ICL_PLUGIN_URL . '/dist/js/widgets-language-switcher/app.js', array( 'wp-block-editor', Resources::vendorAsDependency() ), ICL_SITEPRESS_SCRIPT_VERSION );
 		wp_localize_script(
 			'widgets-language-switcher-script',
 			'wpml_active_and_selected_languages',
@@ -53,19 +42,7 @@ class WPML_Widgets_Support_Backend implements IWPML_Action {
 		wp_enqueue_script( 'widgets-language-switcher-script' );
 	}
 
-	/**
-	 * @param WP_Widget|null $widget
-	 * @param string|null    $form
-	 * @param array          $instance
-	 */
 	public function language_selector( $widget, $form, $instance ) {
-		/**
-		 * This allows to disable the display of the language selector on a widget form.
-		 *
-		 * @since 4.5.3
-		 *
-		 * @param bool $is_disabled If display should be disabled (default: false)
-		 */
 		if ( apply_filters( 'wpml_widget_language_selector_disable', false ) ) {
 			return;
 		}
@@ -73,6 +50,7 @@ class WPML_Widgets_Support_Backend implements IWPML_Action {
 		$languages        = $this->active_languages;
 		$languages['all'] = array(
 			'code'        => 'all',
+			/* translators: First option in the language dropdown of the widgets screen: the widget is shown in every language. */
 			'native_name' => __( 'All Languages', 'sitepress' ),
 		);
 
@@ -88,14 +66,6 @@ class WPML_Widgets_Support_Backend implements IWPML_Action {
 		echo $this->template_service->show( $model, 'language-selector.twig' );
 	}
 
-	/**
-	 * @param array     $instance
-	 * @param array     $new_instance
-	 * @param array     $old_instance
-	 * @param WP_Widget $widget_instance
-	 *
-	 * @return array
-	 */
 	public function update( $instance, $new_instance, $old_instance, $widget_instance ) {
 		if (wp_verify_nonce( Obj::prop( 'wpml-language-nonce', $_POST ), self::NONCE ) ) {
 			$new_language = filter_var( Obj::prop('wpml_language', $_POST), FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_NULL_ON_FAILURE );
@@ -103,6 +73,18 @@ class WPML_Widgets_Support_Backend implements IWPML_Action {
 			if ( 'all' === $new_language || array_key_exists( $new_language, $this->active_languages ) ) {
 				$instance['wpml_language'] = $new_language;
 			}
+		}
+
+		return $this->preserve_stored_language( $instance, $old_instance );
+	}
+
+	private function preserve_stored_language( $instance, $old_instance ) {
+		if ( ! is_array( $instance ) || isset( $instance['wpml_language'] ) ) {
+			return $instance;
+		}
+
+		if ( is_array( $old_instance ) && isset( $old_instance['wpml_language'] ) ) {
+			$instance['wpml_language'] = $old_instance['wpml_language'];
 		}
 
 		return $instance;
@@ -149,6 +131,7 @@ class WPML_Widgets_Support_Backend implements IWPML_Action {
 
 			Option::update( $widget_option_name, $widgets_by_type );
 		} else {
+			/* translators: Error message returned when a request from the browser cannot be trusted and is turned away. */
 			wp_send_json_error( esc_html__( 'Invalid request!', 'sitepress' ) );
 		}
 	}

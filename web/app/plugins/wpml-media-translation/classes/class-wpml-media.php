@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class WPML_Media
- */
 class WPML_Media implements IWPML_Action {
 	const SETUP_RUN     = 'setup_run';
 	const SETUP_STARTED = 'setup_started';
@@ -16,41 +13,20 @@ class WPML_Media implements IWPML_Action {
 			'custom_fields' => true,
 			'strings'       => true,
 		),
-		'wpml_media_2_3_migration' => true,
 		self::SETUP_RUN            => false,
 	);
 
 	public $languages;
 	public $parents;
 	public $unattached;
-	/**
-	 * @var wpdb
-	 */
 	private $wpdb;
 
-	/**
-	 * @var SitePress
-	 */
 	private $sitepress;
 
-	/**
-	 * @var WPML_Media_Menus_Factory
-	 */
 	private $menus_factory;
 
-	/**
-	 * @var WPML_Media_Image_Translate
-	 */
 	private $image_translator;
 
-	/**
-	 * WPML_Media constructor.
-	 *
-	 * @param SitePress                  $sitepress
-	 * @param wpdb                       $wpdb
-	 * @param WPML_Media_Menus_Factory   $menus_factory
-	 * @param WPML_Media_Image_Translate $image_translator
-	 */
 	public function __construct( SitePress $sitepress, wpdb $wpdb, WPML_Media_Menus_Factory $menus_factory, WPML_Media_Image_Translate $image_translator ) {
 		$this->sitepress        = $sitepress;
 		$this->wpdb             = $wpdb;
@@ -60,6 +36,7 @@ class WPML_Media implements IWPML_Action {
 
 	public function add_hooks() {
 		add_action( 'wpml_loaded', array( $this, 'loaded' ), 2 );
+		add_action( 'init', array( $this, 'plugin_localization' ) );
 	}
 
 	public static function has_settings() {
@@ -72,10 +49,9 @@ class WPML_Media implements IWPML_Action {
 			return null;
 		}
 
-		$this->plugin_localization();
 
 		if ( is_admin() ) {
-			WPML_Media_Upgrade::run();
+			add_action( 'admin_init', array( 'WPML_Media_Upgrade', 'run' ) );
 		}
 
 		self::init_settings();
@@ -86,7 +62,7 @@ class WPML_Media implements IWPML_Action {
 
 		$this->languages = null;
 
-		if ( $this->is_admin_or_xmlrpc() && ! $this->is_uploading_plugin_or_theme() ) {
+		if ( $this->is_admin_or_xmlrpc() ) {
 
 			add_action( 'wpml_admin_menu_configure', array( $this, 'menu' ) );
 
@@ -96,17 +72,16 @@ class WPML_Media implements IWPML_Action {
 					add_action( 'pre_get_posts', array( $this, 'filter_media_upload_items' ), 10, 1 );
 				}
 
-				if ( $pagenow == 'media.php' ) {
-					add_action( 'admin_footer', array( $this, 'media_language_options' ) );
-				}
 
-				add_action( 'wp_ajax_wpml_media_scan_prepare', array( $this, 'batch_scan_prepare' ) );
-
-				add_action( 'wp_ajax_find_posts', array( $this, 'find_posts_filter' ), 0 );
+				\WPML\Request\Adapter\Ajax::listen(
+					'find_posts',
+					array( $this, 'find_posts_filter' ),
+					'WordPress core find_posts (media modal): adds a pre_get_posts language filter only; core verifies its own nonce and edit_posts',
+					0
+				);
 			}
 		} else {
 			if ( WPML_LANGUAGE_NEGOTIATION_TYPE_DOMAIN === (int) $sitepress_settings['language_negotiation_type'] ) {
-				// Translate media url when in front-end and only when using custom domain
 				add_filter( 'wp_get_attachment_url', array( $this, 'wp_get_attachment_url' ), 10, 2 );
 			}
 		}
@@ -120,22 +95,10 @@ class WPML_Media implements IWPML_Action {
 		return null;
 	}
 
-	/**
-	 * @param int         $id
-	 * @param string|null $lang
-	 *
-	 * @return int
-	 */
 	public function convertId( $id, $lang = null ) {
 		return $this->sitepress->get_object_id( $id, 'attachment', true, $lang );
 	}
 
-	/**
-	 * @param string      $url
-	 * @param string|null $lang
-	 *
-	 * @return string
-	 */
 	public function convertUrl( $url, $lang = null ) {
 		if ( ! $lang ) {
 			$lang = $this->sitepress->get_current_language();
@@ -153,19 +116,10 @@ class WPML_Media implements IWPML_Action {
 		return $is_admin || $is_xmlrpc;
 	}
 
-	function is_uploading_plugin_or_theme() {
-		global $action;
-
-		return ( isset( $action ) && ( $action == 'upload-plugin' || $action == 'upload-theme' ) );
-	}
-
-	function plugin_localization() {
+	public function plugin_localization() {
 		load_plugin_textdomain( 'wpml-media', false, WPML_MEDIA_FOLDER . '/locale' );
 	}
 
-	/**
-	 *    Needed by class init and by all static methods that use self::$settings
-	 */
 	public static function init_settings() {
 		if ( ! self::$settings ) {
 			self::$settings = get_option( self::$settings_option_key, array() );
@@ -206,18 +160,6 @@ class WPML_Media implements IWPML_Action {
 		return update_option( self::$settings_option_key, self::$settings );
 	}
 
-	function batch_scan_prepare() {
-		global $wpdb;
-
-		$response = array();
-		$wpdb->delete( $wpdb->postmeta, array( 'meta_key' => 'wpml_media_processed' ) );
-
-		$response['message'] = __( 'Started...', 'wpml-media' );
-
-		echo wp_json_encode( $response );
-		exit;
-	}
-
 	static function is_valid_post_type( $post_type ) {
 		global $wp_post_types;
 
@@ -235,43 +177,6 @@ class WPML_Media implements IWPML_Action {
 		$query->query_vars['suppress_filters'] = 0;
 	}
 
-	function media_language_options() {
-		global $sitepress;
-		$att_id       = filter_input( INPUT_GET, 'attachment_id', FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE );
-		$translations = $sitepress->get_element_translations( $att_id, 'post_attachment' );
-		$current_lang = '';
-		foreach ( $translations as $lang => $id ) {
-			if ( $id == $att_id ) {
-				$current_lang = $lang;
-				unset( $translations[ $lang ] );
-				break;
-			}
-		}
-
-		$active_languages = icl_get_languages( 'orderby=id&order=asc&skip_missing=0' );
-		$lang_links       = '';
-
-		if ( $current_lang ) {
-
-			$lang_links = '<strong>' . $active_languages[ $current_lang ]['native_name'] . '</strong>';
-
-		}
-
-		foreach ( $translations as $lang => $id ) {
-			$lang_links .= ' | <a href="' . admin_url( 'media.php?attachment_id=' . $id . '&action=edit' ) . '">' . $active_languages[ $lang ]['native_name'] . '</a>';
-		}
-
-		echo '<div id="icl_lang_options" style="display:none">' . $lang_links . '</div>';
-	}
-
-	/**
-	 * Synchronizes _wpml_media_* meta fields with all translations
-	 *
-	 * @param int          $meta_id
-	 * @param int          $object_id
-	 * @param string       $meta_key
-	 * @param string|mixed $meta_value
-	 */
 	function updated_postmeta( $meta_id, $object_id, $meta_key, $meta_value ) {
 		if ( in_array( $meta_key, array( '_wpml_media_duplicate', '_wpml_media_featured' ) ) ) {
 			global $sitepress;
@@ -289,10 +194,6 @@ class WPML_Media implements IWPML_Action {
 		}
 	}
 
-	/**
-	 * Add a filter to fix the links for attachments in the language switcher so
-	 * they point to the corresponding pages in different languages.
-	 */
 	function filter_link( $url, $lang_info ) {
 		return $url;
 	}
@@ -308,7 +209,6 @@ class WPML_Media implements IWPML_Action {
 
 		if ( is_attachment() && ! $doing_it ) {
 			$doing_it = true;
-			// Always include missing languages.
 			$w_active_languages = icl_get_languages( 'skip_missing=0' );
 			$doing_it           = false;
 		}
@@ -321,28 +221,30 @@ class WPML_Media implements IWPML_Action {
 
 			global $wpdb;
 
-			$thumbnail_prepared = $wpdb->prepare(
-				"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = %s",
-				array(
-					$object_id,
-					$meta_key,
-				)
-			);
-			$thumbnail          = $wpdb->get_var( $thumbnail_prepared );
-
-			if ( $thumbnail == null ) {
-				// see if it's available in the original language.
-
-				$post_type_prepared = $wpdb->prepare( "SELECT post_type FROM {$wpdb->posts} WHERE ID = %d", array( $object_id ) );
-				$post_type          = $wpdb->get_var( $post_type_prepared );
-				$trid_prepared      = $wpdb->prepare(
-					"SELECT trid, source_language_code FROM {$wpdb->prefix}icl_translations WHERE element_id=%d AND element_type = %s",
+			$thumbnail = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = %s",
 					array(
 						$object_id,
-						'post_' . $post_type,
+						$meta_key,
+					)
+				)
+			);
+
+			if ( $thumbnail == null ) {
+
+				$post_type = $wpdb->get_var(
+					$wpdb->prepare( "SELECT post_type FROM {$wpdb->posts} WHERE ID = %d", array( $object_id ) )
+				);
+				$trid      = $wpdb->get_row(
+					$wpdb->prepare(
+						"SELECT trid, source_language_code FROM {$wpdb->prefix}icl_translations WHERE element_id=%d AND element_type = %s",
+						array(
+							$object_id,
+							'post_' . $post_type,
+						)
 					)
 				);
-				$trid               = $wpdb->get_row( $trid_prepared );
 				if ( $trid ) {
 
 					global $sitepress;
@@ -350,15 +252,15 @@ class WPML_Media implements IWPML_Action {
 					$translations = $sitepress->get_element_translations( $trid->trid, 'post_' . $post_type );
 					if ( isset( $translations[ $trid->source_language_code ] ) ) {
 						$translation = $translations[ $trid->source_language_code ];
-						// see if the original has a thumbnail.
-						$thumbnail_prepared = $wpdb->prepare(
-							"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = %s",
-							array(
-								$translation->element_id,
-								$meta_key,
+						$thumbnail = $wpdb->get_var(
+							$wpdb->prepare(
+								"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = %s",
+								array(
+									$translation->element_id,
+									$meta_key,
+								)
 							)
 						);
-						$thumbnail          = $wpdb->get_var( $thumbnail_prepared );
 						if ( $thumbnail ) {
 							$value = $thumbnail;
 						}
@@ -372,20 +274,18 @@ class WPML_Media implements IWPML_Action {
 		return $value;
 	}
 
-	/**
-	 * @param string $menu_id
-	 */
 	public function menu( $menu_id ) {
 		if ( 'WPML' !== $menu_id ) {
 			return;
 		}
 
+		/* translators: Name of the Media Translation page in the WPML menu, and the heading at the top of that page. */
 		$menu_label         = __( 'Media Translation', 'wpml-media' );
 		$menu               = array();
 		$menu['order']      = 600;
 		$menu['page_title'] = $menu_label;
 		$menu['menu_title'] = $menu_label;
-		$menu['capability'] = 'edit_others_posts';
+		$menu['capability'] = WPML_Media::has_setup_run() ? 'edit_others_posts' : 'manage_options';
 		$menu['menu_slug']  = 'wpml-media';
 		$menu['function']   = array( $this, 'menu_content' );
 
@@ -397,12 +297,6 @@ class WPML_Media implements IWPML_Action {
 		$menus->display();
 	}
 
-	/**
-	 * @param $ids
-	 * @param $target_language
-	 *
-	 * @return array|string
-	 */
 	public function translate_attachment_ids( $ids, $target_language ) {
 		global $sitepress;
 		$return_string = false;
@@ -414,10 +308,8 @@ class WPML_Media implements IWPML_Action {
 		$translated_ids = array();
 		if ( ! empty( $attachment_ids ) ) {
 			foreach ( $attachment_ids as $attachment_id ) {
-				// Fallback to the original ID
 				$translated_id = $attachment_id;
 
-				// Find the ID translation
 				$trid = $sitepress->get_element_trid( $attachment_id, 'post_attachment' );
 				if ( $trid ) {
 					$id_translations = $sitepress->get_element_translations( $trid, 'post_attachment', false, true );
@@ -441,26 +333,23 @@ class WPML_Media implements IWPML_Action {
 
 	}
 
-	/**
-	 * Update query for media-upload.php page.
-	 *
-	 * @param object $query WP_Query
-	 */
 	public function filter_media_upload_items( $query ) {
 		$current_lang = $this->sitepress->get_current_language();
 		$ids          = icl_cache_get( '_media_upload_attachments' . $current_lang );
 
 		if ( false === $ids ) {
-			$tbl      = $this->wpdb->prefix . 'icl_translations';
-			$db_query = "
-				SELECT posts.ID
-				FROM {$this->wpdb->posts} as posts, $tbl as icl_translations
-				WHERE posts.post_type = 'attachment'
-				AND icl_translations.element_id = posts.ID
-				AND icl_translations.language_code = %s
-				";
-
-			$posts = $this->wpdb->get_results( $this->wpdb->prepare( $db_query, $current_lang ) );
+			$wpdb = $this->wpdb;
+			$posts = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT posts.ID
+					FROM {$wpdb->posts} as posts, {$wpdb->prefix}icl_translations as icl_translations
+					WHERE posts.post_type = 'attachment'
+					AND icl_translations.element_id = posts.ID
+					AND icl_translations.element_type = 'post_attachment'
+					AND icl_translations.language_code = %s",
+					$current_lang
+				)
+			);
 			$ids   = array();
 			if ( ! empty( $posts ) ) {
 				foreach ( $posts as $post ) {

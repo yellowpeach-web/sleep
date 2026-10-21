@@ -13,10 +13,8 @@ class PreloadThemeMoFile implements \IWPML_Action {
 	const SETTING_ENABLED = 1;
 	const SETTING_ENABLED_FOR_LOAD_TEXT_DOMAIN = 2;
 
-	/** @var \SitePress */
 	private $sitepress;
 
-	/** @var \wpdb */
 	private $wpdb;
 
 	public function __construct( \SitePress $sitepress, \wpdb $wpdb ) {
@@ -34,38 +32,31 @@ class PreloadThemeMoFile implements \IWPML_Action {
 		$isEnabled = $loadTextDomainSetting === static::SETTING_ENABLED;
 
 		if ( $loadTextDomainSetting === static::SETTING_ENABLED_FOR_LOAD_TEXT_DOMAIN ) {
-			/** @var AutoRegisterSettings $autoStrings */
 			$autoStrings = make( AutoRegisterSettings::class );
 			$isEnabled = $autoStrings->isEnabled();
 		}
 
 		if ( $isEnabled && $domains->count() ) {
-			$this->getMOFilesByDomainsAndLocale( $domains, get_locale() )->map( function ( $fileResult ) {
-				load_textdomain( $fileResult->domain, $fileResult->file_path );
+			$this->getMOFilesByDomainsAndLocale( $domains, determine_locale() )->map( function ( $fileResult ) {
+				load_textdomain( $fileResult->domain, \WPML_ST_Translations_File_Entry::resolve_stored_path( $fileResult->file_path ) );
 			} );
 		}
 	}
 
-	/**
-	 * @param Collection<string> $domains
-	 * @param string $locale
-	 *
-	 * @return Collection
-	 */
 	private function getMOFilesByDomainsAndLocale( $domains, $locale ) {
-		$domainsClause   = wpml_prepare_in( $domains->toArray(), '%s' );
-		$sql = "
-			SELECT file_path, domain
-			FROM {$this->wpdb->prefix}icl_mo_files_domains
-			WHERE domain IN ({$domainsClause}) AND file_path REGEXP %s
-		";
+		$wpdb         = $this->wpdb;
+		$domainValues = $domains->toArray();
+		$values       = array_merge( $domainValues, [ '((\\/|-)' . $locale . '(\\.|-))+' ] );
 
-		/** @var string $sql */
-		$sql = $this->wpdb->prepare(
-			$sql,
-			'((\\/|-)' . $locale . '(\\.|-))+'
+		return \wpml_collect(
+			$wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT file_path, domain
+					FROM {$wpdb->prefix}icl_mo_files_domains
+					WHERE domain IN (" . implode( ', ', array_fill( 0, count( $domainValues ), '%s' ) ) . ') AND file_path REGEXP %s',
+					$values
+				)
+			)
 		);
-
-		return \wpml_collect( $this->wpdb->get_results( $sql ) );
 	}
 }

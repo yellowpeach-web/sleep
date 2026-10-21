@@ -4,10 +4,80 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "uk"
          },
+         "Sending for translation": [
+            "Надсилання на переклад"
+         ],
+         "The translation could not be started because the server did not answer.": [
+            "Не вдалося розпочати переклад, оскільки сервер не відповів."
+         ],
+         "This translation cannot be opened right now.": [
+            "Зараз неможливо відкрити цей переклад."
+         ],
+         "Refresh this page": [
+            "Оновити цю сторінку"
+         ],
+         "Translation Dashboard": [
+            "Панель керування перекладами"
+         ],
+         "WPML Translation Editor": [
+            "Редактор перекладів WPML"
+         ],
+         "WordPress Editor": [
+            "Редактор WordPress"
+         ],
+         "The WordPress Editor doesn't offer Automatic Translation, <b>Translation Memory</b> and other features that make translation easier.": [
+            "Редактор WordPress не пропонує автоматичний переклад, <b>пам’ять перекладів</b> та інші функції, які полегшують переклад."
+         ],
+         "Also, switching back to WPML's Translation Editor later will require re-translating content that you translated with the WordPress editor.": [
+            "Крім того, повернення до редактора перекладів WPML пізніше вимагатиме повторного перекладу вмісту, який ви переклали за допомогою редактора WordPress."
+         ],
+         "This translation was previously created in the WordPress editor. When you switch to WPML Translation Editor, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "Цей переклад раніше був створений у редакторі WordPress. Коли ви перейдете до редактора перекладів WPML, структура перекладеного допису буде оновлена відповідно до оригіналу, але WPML використовуватиме ваш наявний переклад як основу, щоб зберегти тон і термінологію."
+         ],
+         "This will overwrite content you translated with the WordPress Editor. If you switch now, you'll have to translate selected content again.": [
+            "Це перезапише вміст, який ви переклали за допомогою редактора WordPress. Якщо ви перейдете зараз, вам доведеться знову перекладати вибраний вміст."
+         ],
+         "I understand, switch to the WordPress Editor": [
+            "Я розумію, перейти до редактора WordPress"
+         ],
+         "I understand, switch to %s": [
+            "Я розумію, перейти до %s"
+         ],
+         "I understand, switch to <b>Translation Dashboard</b>": [
+            "Я розумію, перейти до <b>панелі керування перекладами</b>"
+         ],
+         "You are about to translate with the %s": [
+            "Ви збираєтеся перекладати за допомогою %s"
+         ],
+         "Translate with the WordPress Editor if you need different designs per language or if the content isn't compatible with WPML's Translation Editor.": [
+            "Перекладайте за допомогою редактора WordPress, якщо вам потрібен різний дизайн для кожної мови або якщо вміст несумісний із редактором перекладів WPML."
+         ],
+         "What do you want to translate?": [
+            "Що ви хочете перекласти?"
+         ],
+         "Apply": [
+            "Застосувати"
+         ],
          "Cancel": [
             "Скасувати"
+         ],
+         "Only this %s": [
+            "Тільки цей %s"
+         ],
+         "Recommended": [
+            "Рекомендовано"
+         ],
+         "All %s": [
+            "Усі %s"
+         ],
+         "All the site's content": [
+            "Увесь вміст сайту"
+         ],
+         "Translate items in batch after reviewing the cost of AI translation": [
+            "Перекладати елементи пакетом після перевірки вартості перекладу ШІ"
          ]
       }
    }

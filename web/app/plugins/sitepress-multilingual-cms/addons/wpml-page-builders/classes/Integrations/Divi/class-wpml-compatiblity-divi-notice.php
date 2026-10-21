@@ -11,30 +11,21 @@ class WPML_Compatibility_Divi_Notice extends WPML_Notice {
 		$this->set_css_class_types( 'warning' );
 	}
 
-	/**
-	 * @return string
-	 */
 	private function get_message() {
+		/* translators: Part 1 of 2 of the admin notice shown when the Divi theme is active and translations are made in the WordPress editor rather than WPML's. The two parts are joined into one paragraph, in this order, with a space between them. */
 		$msg = esc_html_x(
 			'You are using DIVI theme, and you have chosen to use the standard editor for translating content.',
-			'Use Translation Editor notice 1/3',
+			'Use Translation Editor notice 1/2',
 			'sitepress'
 		);
 
-		$msg .= ' ' . esc_html_x(
-			'Some functionalities may not work properly. We encourage you to switch to use the Translation Editor.',
-			'Use Translation Editor notice 2/3',
-			'sitepress'
-		);
-
-		$msg .= ' ' . sprintf(
-			/* translators: %s will be replaced with a URL. */
-			esc_html_x(
-				'You can find more information here: %s',
-				'Use Translation Editor notice 2/3',
+		$msg .= ' ' . \WPML\PB\Helper\BoldNames::render(
+			/* translators: Part 2 of 2 of that Divi notice, joined after part 1 with a space. Keep the bold tags around the name of WPML's own editing screen. */
+			_x(
+				'Some functionalities may not work properly. We encourage you to switch to use the <b>Translation Editor</b>.',
+				'Use Translation Editor notice 2/2',
 				'sitepress'
-			),
-			'<a href="https://wpml.org/errata/some-internal-taxonomies-will-be-missing-when-you-translate-divi-layouts/?utm_source=plugin&utm_medium=gui&utm_campaign=wpmlcore">Some internal taxonomies will be missing when you translate Divi layouts</a>'
+			)
 		);
 
 		return $msg;

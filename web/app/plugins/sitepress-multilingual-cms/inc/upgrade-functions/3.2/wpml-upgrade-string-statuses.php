@@ -38,8 +38,7 @@ function update_string_statuses() {
 			'status'   => 11,
 		)
 	);
-	$sql = "ALTER TABLE `{$wpdb->prefix}icl_string_translations` CHANGE batch_id batch_id int DEFAULT 0 NOT NULL;";
-	$wpdb->query( $sql );
+	$wpdb->query( "ALTER TABLE `{$wpdb->prefix}icl_string_translations` CHANGE batch_id batch_id int DEFAULT 0 NOT NULL;" );
 
 }
 

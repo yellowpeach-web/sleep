@@ -4,17 +4,10 @@ namespace WPML\TM\Menu\TranslationServices\Troubleshooting;
 
 class RefreshServices {
 
-	const TEMPLATE    = 'refresh-services.twig';
 	const AJAX_ACTION = 'wpml_tm_refresh_services';
 
-	/**
-	 * @var \IWPML_Template_Service
-	 */
 	private $template;
 
-	/**
-	 * @var \WPML_TP_API_Services
-	 */
 	private $tp_services;
 
 	public function __construct( \IWPML_Template_Service $template, \WPML_TP_API_Services $tp_services ) {
@@ -23,31 +16,20 @@ class RefreshServices {
 	}
 
 	public function add_hooks() {
-		add_action( 'after_setup_complete_troubleshooting_functions', array( $this, 'render' ), 1 );
-		add_action( 'wp_ajax_' . self::AJAX_ACTION, array( $this, 'refresh_services_ajax_handler' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-	}
-
-	public function render() {
-		echo $this->template->show( $this->get_model(), self::TEMPLATE );
-	}
-
-	/**
-	 * @return array
-	 */
-	private function get_model() {
-		return array(
-			'button_text' => __( 'Refresh Translation Services', 'wpml-translation-management' ),
-			'nonce'       => wp_create_nonce( self::AJAX_ACTION ),
-		);
+		\WPML\Request\Adapter\Ajax::register( self::AJAX_ACTION, \WPML\Request\Policy\Policy::capability( 'manage_translations', \WPML\Request\Policy\Authenticity::actionNonce( self::AJAX_ACTION, 'nonce' ) ), array( $this, 'refresh_services_ajax_handler' ) );
 	}
 
 	public function refresh_services_ajax_handler() {
+		if ( \WPML\Setup\Initializer::rejectSettingsMutationAjax() ) {
+			return;
+		}
+
 		if ( $this->is_valid_request() ) {
 			if ( $this->refresh_services() ) {
 				wp_send_json_success(
 					array(
-						'message' => __( 'Services Refreshed.', 'wpml-translation-management' ),
+						/* translators: Message shown after the list of translation services was read again. */
+						'message' => __( 'Services Refreshed.', 'sitepress' ),
 					)
 				);
 			} else {
@@ -56,7 +38,7 @@ class RefreshServices {
 						'message' => __(
 							'WPML cannot load the list of translation services. This can be a connection problem. Please wait a minute and reload this page.
  If the problem continues, please contact WPML support.',
-							'wpml-translation-management'
+							'sitepress'
 						),
 					)
 				);
@@ -64,15 +46,13 @@ class RefreshServices {
 		} else {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Invalid Request.', 'wpml-translation-management' ),
+					/* translators: Error message returned when a request from the browser cannot be trusted and is turned away. */
+					'message' => __( 'Invalid Request.', 'sitepress' ),
 				)
 			);
 		}
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function refresh_services() {
 		return $this->tp_services->refresh_cache() && $this->refresh_active_service();
 	}
@@ -81,26 +61,14 @@ class RefreshServices {
 		$active_service = $this->tp_services->get_active();
 
 		if ( $active_service ) {
-			$active_service = (object) (array) $active_service; // Cast to stdClass
+			$active_service = (object) (array) $active_service;
 			\TranslationProxy::build_and_store_active_translation_service( $active_service, $active_service->custom_fields_data );
 		}
 
 		return true;
 	}
 
-	/**
-	 * @return bool
-	 */
 	private function is_valid_request() {
 		return isset( $_POST['nonce'] ) && wp_verify_nonce( $_POST['nonce'], self::AJAX_ACTION );
-	}
-
-	public function enqueue_scripts() {
-		wp_enqueue_script(
-			'wpml-tm-refresh-services',
-			WPML_TM_URL . '/res/js/refresh-services.js',
-			array(),
-			ICL_SITEPRESS_VERSION
-		);
 	}
 }

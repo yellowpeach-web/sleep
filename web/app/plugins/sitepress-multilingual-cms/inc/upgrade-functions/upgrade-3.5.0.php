@@ -10,8 +10,6 @@ function update_icl_strings_charset_and_collations() {
 		$collate .= 'COLLATE ' . $wpdb->collate;
 	}
 
-	$sql_template = "ALTER TABLE `{$wpdb->prefix}icl_strings` MODIFY `%s` VARCHAR(%d) {$charset} {$collate}";
-
 	$fields = array(
 		'name'                    => WPML_STRING_TABLE_NAME_CONTEXT_LENGTH,
 		'context'                 => WPML_STRING_TABLE_NAME_CONTEXT_LENGTH,
@@ -19,9 +17,15 @@ function update_icl_strings_charset_and_collations() {
 	);
 
 	foreach ( $fields as $field => $size ) {
-		$sql = sprintf( $sql_template, $field, $size );
-
-		if ( $wpdb->query( $sql ) === false ) {
+		if ( $wpdb->query(
+			sprintf(
+				"ALTER TABLE `{$wpdb->prefix}icl_strings` MODIFY `%s` VARCHAR(%d) %s %s",
+				esc_sql( $field ),
+				absint( $size ),
+				esc_sql( $charset ),
+				esc_sql( $collate )
+			)
+		) === false ) {
 			throw new Exception( $wpdb->last_error );
 		}
 	}

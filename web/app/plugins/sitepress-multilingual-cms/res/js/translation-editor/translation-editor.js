@@ -1,5 +1,5 @@
 /*jshint browser:true, devel:true */
-/*global _, jQuery, ajaxurl, icl_ajx_url, icl_ajxloaderimg, wpActiveEditor, tinyMCE,
+/*global _, jQuery, ajaxurl, icl_ajxloaderimg, wpActiveEditor, tinyMCE,
  tinymce, iclSaveForm,
  tmEditorStrings, WPML_TM.editorFooterView, WPML_TM.editorHeaderView,
  WpmlTmEditorMainView,

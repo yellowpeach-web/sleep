@@ -13,23 +13,23 @@ class Editor implements \IWPML_Frontend_Action {
 
 	public function add_hooks() {
 		Hooks::onFilter( 'wpml_pb_is_editing_translation_with_native_editor', 10, 2 )
-			->then( spreadArgs( function( $isTranslationWithNativeEditor, $translatedPostId ) {
-				return $isTranslationWithNativeEditor
-					|| (
+			->then(
+				spreadArgs(
+					function( $isTranslationWithNativeEditor, $translatedPostId ) {
+						return $isTranslationWithNativeEditor
+						|| (
 							Str::includes( 'themeco/data/save', Obj::prop( 'REQUEST_URI', $_SERVER ) )
 							&& self::getEditedId() === $translatedPostId
-				       );
-			} ) );
+						  );
+					}
+				)
+			);
+
+		Hooks::onAction( 'cs_content' )
+			->then( [ $this, 'maybeDisplayModalPageBuilderWarning' ] );
 	}
 
-	/**
-	 * @return int|null
-	 */
 	private static function getEditedId() {
-		/**
-		 * @see \Cornerstone_Routing::process_params
-		 * $decodeCornerstoneData :: string -> array
-		 */
 		$decodeCornerstoneData = function( $data ) {
 			$request = Obj::prop( 'request', $data );
 
@@ -49,5 +49,11 @@ class Editor implements \IWPML_Frontend_Action {
 			->map( $getId )
 			->map( Cast::toInt() )
 			->getOrElse( null );
+	}
+
+	public function maybeDisplayModalPageBuilderWarning() {
+		if ( is_user_logged_in() && get_the_ID() ) {
+			do_action( 'wpml_maybe_display_modal_page_builder_warning', get_the_ID(), 'Cornerstone' );
+		}
 	}
 }

@@ -1,0 +1,237 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-12T13:42:26+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: wpml\n"
+
+#. translators: Status of a document, shown in brackets after a language name in the content deletion dialog, as in "German (published)". Lower case, inside a sentence.
+msgid "published"
+msgstr ""
+
+#. translators: Status of a document, shown in brackets after a language name in the content deletion dialog, as in "German (draft)". Lower case, inside a sentence.
+msgid "draft"
+msgstr ""
+
+#. translators: Status of a document waiting for review, shown in brackets after a language name in the content deletion dialog. Lower case, inside a sentence.
+msgid "pending review"
+msgstr ""
+
+#. translators: Status of a document set to publish at a future date, shown in brackets after a language name in the content deletion dialog. Lower case, inside a sentence.
+msgid "scheduled"
+msgstr ""
+
+#. translators: Status of a document only logged-in editors can see, shown in brackets after a language name in the content deletion dialog. Lower case, inside a sentence.
+msgid "private"
+msgstr ""
+
+#. translators: Status of a document that was moved to the Trash, shown in brackets after a language name in the content deletion dialog, as in "German (in the Trash)".
+msgid "in the Trash"
+msgstr ""
+
+#. translators: Joins a list of language names in the content deletion dialog. %1$s: the language names before the last one, already joined by commas, %2$s: the last language name.
+#, js-format
+msgid "%1$s and %2$s"
+msgstr ""
+
+#. translators: Separator between names in a list, as in "German, Spanish and French". Keep the trailing space.
+msgid ", "
+msgstr ""
+
+msgid "Each one comes back with the status it had before."
+msgstr ""
+
+#. translators: Sentence added under the question in the content deletion dialog when restoring. %d: how many documents one restore brings back at a time.
+#, js-format
+msgid "WPML brings back %d at a time — run Restore again for the rest."
+msgstr ""
+
+#. translators: Explanation under a choice in the content deletion dialog. %1$s: a list of language names, %2$s: one language name, %3$s: the content type, singular, e.g. "page".
+#, js-format
+msgid "%1$s stay online. The %2$s %3$s becomes the one the others are translated from, because it is first in your language order — choose a different one."
+msgstr ""
+
+#. translators: Explanation under a choice in the content deletion dialog. %1$s: a list of language names, %2$s: one language name, %3$s: the content type, singular, e.g. "page".
+#, js-format
+msgid "%1$s stay online. The %2$s %3$s becomes the one the others are translated from."
+msgstr ""
+
+#. translators: Explanation under a choice in the content deletion dialog. %s: a list of language names.
+#, js-format
+msgid "%s stay online."
+msgstr ""
+
+#. translators: Question at the top of the content deletion dialog when content is being restored from the Trash. %1$s: the content type, singular, e.g. "page", %2$d: how many other documents went to the Trash with it.
+#, js-format
+msgid "This %1$s went to the Trash with %2$d other. What should come back?"
+msgid_plural "This %1$s went to the Trash with %2$d others. What should come back?"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line at the top of the content deletion dialog naming the document being deleted. %1$s: the language name, %2$s: the title of the document.
+#, js-format
+msgid "This is the %1$s translation of '%2$s'."
+msgstr ""
+
+#. translators: Line at the top of the content deletion dialog naming the document being deleted. %s: the language name.
+#, js-format
+msgid "This is the %s translation."
+msgstr ""
+
+#. translators: Question at the top of the content deletion dialog for a menu. %s: a list of the language names the menu exists in.
+#, js-format
+msgid "This menu exists in %s. What should happen to them?"
+msgstr ""
+
+#. translators: Question at the top of the content deletion dialog, used when every translation is published. %1$s: the content type, singular, e.g. "page", %2$d: the number of translations, %3$s: a list of language names.
+#, js-format
+msgid "This %1$s has %2$d translation — %3$s, all published. What should happen to them?"
+msgid_plural "This %1$s has %2$d translations — %3$s, all published. What should happen to them?"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Question at the top of the content deletion dialog. %1$s: the content type, singular, e.g. "page", %2$d: the number of translations, %3$s: a list of language names, each followed by its status in brackets when the statuses differ.
+#, js-format
+msgid "This %1$s has %2$d translation — %3$s. What should happen to them?"
+msgid_plural "This %1$s has %2$d translations — %3$s. What should happen to them?"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Label of a choice in the content deletion dialog when restoring. %1$s: the content type, singular, e.g. "page", %2$d: how many other documents went to the Trash with it.
+#, js-format
+msgid "This %1$s and the %2$d other that went to the Trash with it"
+msgid_plural "This %1$s and the %2$d others that went to the Trash with it"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Label of a choice in the content deletion dialog when restoring. %s: the content type, singular, e.g. "page".
+#, js-format
+msgid "Only this %s"
+msgstr ""
+
+#. translators: Explanation under a choice in the content deletion dialog. %d: how many documents stay in the Trash; the singular form has no number in it.
+msgid "The other one stays in the Trash."
+msgid_plural "The other %d stay in the Trash."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Label of a choice in the content deletion dialog. Verb, imperative; "them" is the translations of the document being deleted.
+msgid "Delete them permanently too"
+msgstr ""
+
+#. translators: Label of a choice in the content deletion dialog. Verb, imperative; "them" is the translations of the document being moved to the Trash.
+msgid "Trash them too"
+msgstr ""
+
+#. translators: Explanation under a choice in the content deletion dialog. %1$d: the number of documents, %2$s: the content type, plural, e.g. "pages".
+#, js-format
+msgid "All %1$d %2$s leave the site together."
+msgstr ""
+
+#. translators: Explanation under a choice in the content deletion dialog. %1$d: the number of documents, %2$s: the content type, plural, e.g. "pages".
+#, js-format
+msgid "All %1$d %2$s leave the site together. Restoring any one of them brings back the whole set."
+msgstr ""
+
+#. translators: Label of a choice in the content deletion dialog. %1$s: the language name, %2$s: the content type, singular, e.g. "page".
+#, js-format
+msgid "Only this %1$s %2$s"
+msgstr ""
+
+#. translators: Label of a choice in the content deletion dialog. Verb, imperative. %d: the number of translation jobs still running for this content.
+#, js-format
+msgid "Delete them all permanently and cancel the %d translation job in progress"
+msgid_plural "Delete them all permanently and cancel the %d translation jobs in progress"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Label of a choice in the content deletion dialog. Verb, imperative. %d: the number of translation jobs still running for this content.
+#, js-format
+msgid "Trash them all and cancel the %d translation job in progress"
+msgid_plural "Trash them all and cancel the %d translation jobs in progress"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Stops work already under way. Words already sent are still charged."
+msgstr ""
+
+#. translators: Badge on a choice in the content deletion dialog. %s: the number of words already sent for translation, written with thousands separators.
+#, js-format
+msgid "%s word already charged"
+msgid_plural "%s words already charged"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Label of a choice in the content deletion dialog. %1$s: the language name, %2$s: the content type, singular, e.g. "page".
+#, js-format
+msgid "Only the %1$s %2$s"
+msgstr ""
+
+#. translators: Explanation under a choice in the content deletion dialog. %s: a list of language names.
+#, js-format
+msgid "%s stay exactly as they are."
+msgstr ""
+
+#. translators: Label of a choice in the content deletion dialog. %s: the language name of the original document.
+#, js-format
+msgid "The %s original and all its translations"
+msgstr ""
+
+#. translators: Explanation under a choice in the content deletion dialog. %1$d: the number of documents, %2$s: the content type, plural, e.g. "pages".
+#, js-format
+msgid "All %1$d %2$s are deleted permanently. This is a bigger action than the one you started — we ask every time."
+msgstr ""
+
+#. translators: Explanation under a choice in the content deletion dialog. %1$d: the number of documents, %2$s: the content type, plural, e.g. "pages".
+#, js-format
+msgid "All %1$d %2$s go to the Trash. This is a bigger action than the one you started — we ask every time."
+msgstr ""
+
+#. translators: Label of the checkbox at the bottom of the content deletion dialog. %s: a content type as the settings table names it, e.g. "Pages and posts".
+#, js-format
+msgid "Do this for %s from now on, and stop asking"
+msgstr ""
+
+msgid "Image files on disk are kept when other copies share them."
+msgstr ""
+
+#. translators: Note in the content deletion dialog; "This" is the document being deleted, and "it" is that same document.
+msgid "This is a duplicate, kept in step with its original. Deleting it permanently removes it for good — duplication does not bring it back."
+msgstr ""
+
+#. translators: Note in the content deletion dialog; "This" is the document being moved to the Trash, and "it" is that same document.
+msgid "This is a duplicate, kept in step with its original. Saving that original brings it back out of the Trash — delete it permanently to remove it for good."
+msgstr ""
+
+#. translators: Accessible name (screen readers) of the content deletion dialog when it deletes content for good. Verb, imperative.
+msgid "Delete permanently"
+msgstr ""
+
+msgid "Restore from the Trash"
+msgstr ""
+
+msgid "Move to Trash"
+msgstr ""
+
+#. translators: Button label that moves on to the next step of a dialog, or confirms and goes ahead, used across WPML's screens. Verb, imperative.
+msgid "Continue"
+msgstr ""
+
+#. translators: Button label that closes a dialog or a box without applying anything, used across WPML's screens. Verb, imperative, not the status of a cancelled job.
+msgid "Cancel"
+msgstr ""
+
+#. translators: the accessible name of the dialog.
+msgid "Choose a different one"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the X button that closes a dialog, on the WPML translation dashboard. Verb, imperative.
+msgid "Close modal"
+msgstr ""

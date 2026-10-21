@@ -14,10 +14,8 @@ class DomainsLocalesMapper {
 	const ALIAS_STRINGS             = 's';
 	const ALIAS_STRING_TRANSLATIONS = 'st';
 
-	/** @var wpdb $wpdb */
 	private $wpdb;
 
-	/** @var WPML_Locale $locale */
 	private $locale;
 
 	public function __construct( wpdb $wpdb, WPML_Locale $locale ) {
@@ -25,30 +23,14 @@ class DomainsLocalesMapper {
 		$this->locale = $locale;
 	}
 
-	/**
-	 * @param array $string_translation_ids
-	 *
-	 * @return Collection of objects with properties `domain` and `locale`
-	 */
 	public function get_from_translation_ids( array $string_translation_ids ) {
-		return $this->get_results_where( self::ALIAS_STRING_TRANSLATIONS, $string_translation_ids );
+		return $this->map_rows( $this->rows_by_translation_ids( $string_translation_ids ) );
 	}
 
-	/**
-	 * @param array $string_ids
-	 *
-	 * @return Collection of objects with properties `domain` and `locale`
-	 */
 	public function get_from_string_ids( array $string_ids ) {
-		return $this->get_results_where( self::ALIAS_STRINGS, $string_ids );
+		return $this->map_rows( $this->rows_by_string_ids( $string_ids ) );
 	}
 
-	/**
-	 * @param  callable $getActiveLanguages
-	 * @param  string   $domain
-	 *
-	 * @return array
-	 */
 	public function get_from_domain( callable $getActiveLanguages, $domain ) {
 		$createEntity = function ( $locale ) use ( $domain ) {
 			return (object) [
@@ -57,39 +39,88 @@ class DomainsLocalesMapper {
 			];
 		};
 
-		/** @var array $defaultLocaleList */
 		$defaultLocaleList = Lst::pluck( 'default_locale', $getActiveLanguages() );
 		return Fns::map( $createEntity, Obj::values( $defaultLocaleList ) );
 	}
 
-	/**
-	 * @param string $table_alias
-	 * @param array  $ids
-	 *
-	 * @return Collection
-	 */
-	private function get_results_where( $table_alias, array $ids ) {
-		$results = [];
-		if ( array_filter( $ids ) ) {
-			$results = $this->wpdb->get_results(
-				"
-    			SELECT DISTINCT
-    				s.context AS domain,
-    				st.language
-    			FROM {$this->wpdb->prefix}icl_string_translations AS " . self::ALIAS_STRING_TRANSLATIONS . "
-    			JOIN {$this->wpdb->prefix}icl_strings AS " . self::ALIAS_STRINGS . " ON s.id = st.string_id
-    			WHERE $table_alias.id IN(" . wpml_prepare_in( $ids ) . ')
-    		'
-			);
+	private function rows_by_translation_ids( array $ids ) {
+		$wpdb = $this->wpdb;
+		$ids  = $this->numeric_ids( $ids );
+
+		if ( ! $ids ) {
+			return [];
 		}
 
-		return wpml_collect( $results )->map(
-			function( $row ) {
-				return (object) [
-					'domain' => $row->domain,
-					'locale' => $this->locale->get_locale( $row->language ),
-				];
-			}
+		return (array) $this->wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT DISTINCT
+					s.context AS domain,
+					s.name AS name,
+					s.value AS value,
+					st.language
+				FROM {$wpdb->prefix}icl_string_translations AS st
+				JOIN {$wpdb->prefix}icl_strings AS s ON s.id = st.string_id
+				WHERE st.id IN(" . implode( ', ', array_fill( 0, count( $ids ), '%d' ) ) . ')',
+				$ids
+			)
 		);
+	}
+
+	private function rows_by_string_ids( array $ids ) {
+		$wpdb = $this->wpdb;
+		$ids  = $this->numeric_ids( $ids );
+
+		if ( ! $ids ) {
+			return [];
+		}
+
+		return (array) $this->wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT DISTINCT
+					s.context AS domain,
+					s.name AS name,
+					s.value AS value,
+					st.language
+				FROM {$wpdb->prefix}icl_string_translations AS st
+				JOIN {$wpdb->prefix}icl_strings AS s ON s.id = st.string_id
+				WHERE s.id IN(" . implode( ', ', array_fill( 0, count( $ids ), '%d' ) ) . ')',
+				$ids
+			)
+		);
+	}
+
+	private function numeric_ids( array $ids ) {
+		return array_values( array_filter( array_map( 'intval', $ids ) ) );
+	}
+
+	private function map_rows( array $results ) {
+		return wpml_collect( $results )->flatMap(
+			function( $row ) {
+				$locale   = $this->locale->get_locale( $row->language );
+				$entities = [
+					(object) [
+						'domain' => $row->domain,
+						'locale' => $locale,
+					],
+				];
+
+				if ( 'wordpress' === strtolower( (string) $row->domain ) && md5( (string) $row->value ) === $row->name ) {
+					$entities[] = (object) [
+						'domain' => 'default',
+						'locale' => $locale,
+					];
+				}
+
+				return $entities;
+			}
+		)->filter(
+			function( $entry ) {
+				return false !== $entry->locale;
+			}
+		)->unique( [ self::class, 'entityKey' ] )->values();
+	}
+
+	public static function entityKey( $entity ) {
+		return strtolower( (string) $entity->domain ) . "\0" . $entity->locale;
 	}
 }

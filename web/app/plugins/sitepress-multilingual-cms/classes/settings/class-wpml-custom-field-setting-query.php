@@ -2,31 +2,22 @@
 
 class WPML_Custom_Field_Setting_Query {
 
-	/** @var wpdb $wpdb */
 	private $wpdb;
 
-	/** @var array $excluded_keys */
 	private $excluded_keys;
 
-	/** @var string $table */
 	private $table;
 
-	/**
-	 * @param wpdb   $wpdb
-	 * @param array  $excluded_keys
-	 * @param string $table
-	 */
 	public function __construct( wpdb $wpdb, array $excluded_keys, $table ) {
+		if ( ! is_string( $table ) || ! preg_match( '/^[A-Za-z0-9_]+$/', $table ) ) {
+			throw new InvalidArgumentException( 'Invalid metadata table name.' );
+		}
+
 		$this->wpdb          = $wpdb;
 		$this->excluded_keys = $excluded_keys;
 		$this->table         = $table;
 	}
 
-	/**
-	 * @param array $args
-	 *
-	 * @return array
-	 */
 	public function get( array $args ) {
 		$args = array_merge(
 			array(
@@ -34,70 +25,57 @@ class WPML_Custom_Field_Setting_Query {
 				'hide_system_fields' => false,
 				'items_per_page'     => null,
 				'page'               => null,
+				'one_more'           => false,
 			),
 			$args
 		);
 
-		$where  = ' WHERE 1=1';
-		$where .= $this->add_AND_excluded_fields_condition();
-		$where .= $this->add_AND_search_condition( $args['search'] );
-		$where .= $this->add_AND_system_fields_condition( $args['hide_system_fields'] );
+		$values = array();
+		$where = " WHERE 1=1 AND meta_key IS NOT NULL AND meta_key <> ''";
 
-		$limit_offset = $this->get_limit_offset( $args );
+		if ( $this->excluded_keys ) {
+			$where .= ' AND meta_key NOT IN('
+				. implode( ', ', array_fill( 0, count( $this->excluded_keys ), '%s' ) )
+				. ')';
+			$values = array_merge( $values, array_values( $this->excluded_keys ) );
+		}
 
-		$query = "SELECT DISTINCT meta_key FROM {$this->table}"
-			. $where
-			. ' ORDER BY meta_id ASC '
-			. $limit_offset;
+		if ( $args['search'] ) {
+			$where   .= ' AND meta_key LIKE %s';
+			$values[] = '%' . $this->wpdb->esc_like( $args['search'] ) . '%';
+		}
+
+		if ( $args['hide_system_fields'] ) {
+			$where   .= ' AND meta_key NOT LIKE %s';
+			$values[] = $this->wpdb->esc_like( '_' ) . '%';
+		}
+
+		$query = sprintf(
+			'SELECT DISTINCT meta_key FROM %s%s ORDER BY meta_key ASC %s',
+			$this->table,
+			$where,
+			$this->get_limit_offset( $args )
+		);
+
+		if ( $values ) {
+			$query = $this->wpdb->prepare( $query, $values );
+		}
 
 		return $this->wpdb->get_col( $query );
 	}
 
-	/**
-	 * @return string
-	 */
-	private function add_AND_excluded_fields_condition() {
-		if ( $this->excluded_keys ) {
-			return ' AND meta_key NOT IN(' . wpml_prepare_in( $this->excluded_keys ) . ')';
-		}
-
-		return '';
-	}
-
-	/**
-	 * @param string $search
-	 *
-	 * @return string
-	 */
-	private function add_AND_search_condition( $search ) {
-		return $search ? $this->wpdb->prepare( " AND meta_key LIKE '%s'", '%' . $search . '%' ) : '';
-	}
-
-	/**
-	 * @param bool $hide_system_fields
-	 *
-	 * @return string
-	 */
-	private function add_AND_system_fields_condition( $hide_system_fields ) {
-		return $hide_system_fields ? " AND meta_key NOT LIKE '\_%'" : '';
-	}
-
-	/**
-	 * @param array $args
-	 *
-	 * @return string
-	 */
 	private function get_limit_offset( array $args ) {
 		$limit_offset = '';
 
 		if ( $args['items_per_page'] && 0 < (int) $args['page'] ) {
 			$limit_offset = $this->wpdb->prepare(
 				' LIMIT %d OFFSET %d',
-				$args['items_per_page'],
-				( $args['page'] - 1 ) * ( $args['items_per_page'] - 1 )
+				$args['items_per_page'] + ( $args['one_more'] ? 1 : 0 ),
+				( $args['page'] - 1 ) * $args['items_per_page']
 			);
 		}
 
 		return $limit_offset;
 	}
+
 }

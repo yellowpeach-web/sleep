@@ -1,19 +1,7 @@
 <?php
-/**
- * WPML_Term_Filters class file.
- *
- * @package    WPML\Core
- * @subpackage taxonomy-term-translation
- */
 
-/**
- * Class WPML_Term_Filters
- */
 class WPML_Term_Filters extends WPML_WPDB_And_SP_User {
 
-	/**
-	 * Init class.
-	 */
 	public function init() {
 		$taxonomies = get_taxonomies();
 
@@ -24,21 +12,14 @@ class WPML_Term_Filters extends WPML_WPDB_And_SP_User {
 		add_action( 'registered_taxonomy', [ $this, 'registered_taxonomy' ], 10, 3 );
 	}
 
-	/**
-	 * @param string       $taxonomy        Taxonomy slug.
-	 * @param array|string $object_type     Object type or array of object types.
-	 * @param array        $taxonomy_object Array of taxonomy registration arguments.
-	 */
 	public function registered_taxonomy( $taxonomy, $object_type, $taxonomy_object ) {
 		$this->add_hooks_to_translated_taxonomy( $taxonomy );
 	}
 
-	/**
-	 * @param string $taxonomy Taxonomy slug.
-	 */
 	private function add_hooks_to_translated_taxonomy( $taxonomy ) {
 		if ( is_taxonomy_translated( $taxonomy ) ) {
 			add_filter( "pre_option_{$taxonomy}_children", [ $this, 'pre_option_tax_children' ], 10, 0 );
+			add_filter( "default_option_{$taxonomy}_children", [ $this, 'default_option_tax_children' ], 10, 1 );
 			add_action( "create_{$taxonomy}", [ $this, 'update_tax_children_option' ], 10, 0 );
 			add_action( "edit_{$taxonomy}", [ $this, 'update_tax_children_option' ], 10, 0 );
 		}
@@ -51,10 +32,10 @@ class WPML_Term_Filters extends WPML_WPDB_And_SP_User {
 		$language_codes[] = 'all';
 		$taxonomy         = str_replace( array( 'create_', 'edit_' ), '', current_action() );
 		$taxonomy         = isset( $wp_taxonomies[ $taxonomy ] ) ? $taxonomy : $taxonomy_input;
+		$hierarchies = $this->get_tax_hier_arrays( $taxonomy, $language_codes );
 		foreach ( $language_codes as $lang ) {
-			$tax_children = $this->get_tax_hier_array( $taxonomy, $lang );
-			$option_key   = "{$taxonomy}_children_{$lang}";
-			update_option( $option_key, $tax_children );
+			$option_key = "{$taxonomy}_children_{$lang}";
+			update_option( $option_key, $hierarchies[ $lang ] );
 		}
 	}
 
@@ -71,21 +52,36 @@ class WPML_Term_Filters extends WPML_WPDB_And_SP_User {
 		return ! empty( $tax_children ) ? $tax_children : false;
 	}
 
-	/**
-	 * @param string $taxonomy
-	 * @param string $lang_code
-	 *
-	 * @return array
-	 */
+	public function default_option_tax_children( $default ) {
+		static $building = array();
+
+		$taxonomy = (string) substr( current_filter(), strlen( 'default_option_' ), - strlen( '_children' ) );
+		if ( ! empty( $building[ $taxonomy ] ) || ! is_taxonomy_hierarchical( $taxonomy ) ) {
+			return $default;
+		}
+
+		$building[ $taxonomy ] = true;
+		try {
+			$children = $this->get_tax_hier_array( $taxonomy, 'all' );
+			add_option( "{$taxonomy}_children", $children );
+		} finally {
+			unset( $building[ $taxonomy ] );
+		}
+
+		return $children;
+	}
+
 	public function get_tax_hier_array( $taxonomy, $lang_code ) {
+		$wpdb = $this->wpdb;
+
 		$hierarchy = array();
 
 		if ( $lang_code != 'all' ) {
-			$terms = $this->wpdb->get_results(
-				$this->wpdb->prepare(
+			$terms = $wpdb->get_results(
+				$wpdb->prepare(
 					"SELECT term_id, parent
-					 FROM {$this->wpdb->term_taxonomy} tt
-					 JOIN {$this->wpdb->prefix}icl_translations iclt
+					 FROM {$wpdb->term_taxonomy} tt
+					 JOIN {$wpdb->prefix}icl_translations iclt
 					  ON tt.term_taxonomy_id = iclt.element_id
 					 WHERE tt.parent > 0
 					  AND tt.taxonomy = %s
@@ -98,10 +94,10 @@ class WPML_Term_Filters extends WPML_WPDB_And_SP_User {
 				)
 			);
 		} else {
-			$terms = $this->wpdb->get_results(
-				$this->wpdb->prepare(
+			$terms = $wpdb->get_results(
+				$wpdb->prepare(
 					"SELECT term_id, parent
-					 FROM {$this->wpdb->term_taxonomy} tt
+					 FROM {$wpdb->term_taxonomy} tt
 					 WHERE tt.parent > 0
 					  AND tt.taxonomy = %s
 					 ORDER BY term_id",
@@ -118,5 +114,41 @@ class WPML_Term_Filters extends WPML_WPDB_And_SP_User {
 		}
 
 		return $hierarchy;
+	}
+
+	public function get_tax_hier_arrays( $taxonomy, array $language_codes ) {
+		$wpdb = $this->wpdb;
+
+		$hierarchies = array_fill_keys( $language_codes, array() );
+		$with_all    = isset( $hierarchies['all'] );
+		$in_all      = array();
+
+		$terms = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT tt.term_taxonomy_id, tt.term_id, tt.parent, iclt.language_code
+				 FROM {$wpdb->term_taxonomy} tt
+				 LEFT JOIN {$wpdb->prefix}icl_translations iclt
+				  ON tt.term_taxonomy_id = iclt.element_id
+				  AND iclt.element_type = %s
+				 WHERE tt.parent > 0
+				  AND tt.taxonomy = %s
+				 ORDER BY tt.term_id",
+				'tax_' . $taxonomy,
+				$taxonomy
+			)
+		);
+
+		foreach ( $terms as $term ) {
+			if ( $with_all && ! isset( $in_all[ $term->term_taxonomy_id ] ) ) {
+				$in_all[ $term->term_taxonomy_id ]     = true;
+				$hierarchies['all'][ $term->parent ][] = $term->term_id;
+			}
+
+			if ( null !== $term->language_code && 'all' !== $term->language_code && isset( $hierarchies[ $term->language_code ] ) ) {
+				$hierarchies[ $term->language_code ][ $term->parent ][] = $term->term_id;
+			}
+		}
+
+		return $hierarchies;
 	}
 }

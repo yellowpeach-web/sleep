@@ -2,89 +2,75 @@
 
 abstract class WPML_Display_As_Translated_Query {
 
-	/** @var wpdb $wpdb */
+	const COLUMN_REFERENCE_PATTERN = '/^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)?$/';
+
 	protected $wpdb;
 
-	/** @var string $icl_translation_table_alias */
 	protected $icl_translation_table_alias;
 
-	/**
-	 * WPML_Display_As_Translated_Query constructor.
-	 *
-	 * @param wpdb $wpdb
-	 */
 	public function __construct( wpdb $wpdb, $icl_translation_table_alias = 'wpml_translations' ) {
-		$this->wpdb                        = $wpdb;
-		$this->icl_translation_table_alias = $icl_translation_table_alias;
+		$this->wpdb = $wpdb;
+		$this->icl_translation_table_alias = in_array( $icl_translation_table_alias, [ 'wpml_translations', 'icl_t' ], true )
+			? $icl_translation_table_alias
+			: 'wpml_translations';
 	}
 
-	/**
-	 * @return string
-	 */
 	public function get_icl_translations_table_alias() {
 		return is_string( $this->icl_translation_table_alias ) && ! empty( $this->icl_translation_table_alias )
 			? $this->icl_translation_table_alias
 			: 'wpml_translations';
 	}
 
-	/**
-	 * @param string $current_language
-	 * @param string $fallback_language
-	 * @param array  $content_types
-	 * @param bool   $skip_content_type_check Ignore $content_types if true.
-	 *
-	 * @return string
-	 */
 	public function get_language_snippet( $current_language, $fallback_language, $content_types, $skip_content_type_check = false ) {
+		return $this->get_language_snippet_for_expression(
+			(string) $this->wpdb->prepare( '%s', $current_language ),
+			$fallback_language,
+			$content_types,
+			$skip_content_type_check
+		);
+	}
+
+	public function get_language_snippet_for_column( $language_column, $fallback_language, $content_types, $skip_content_type_check = false ) {
+		if ( ! preg_match( self::COLUMN_REFERENCE_PATTERN, $language_column ) ) {
+			throw new InvalidArgumentException( 'Expected a plain column reference, got: ' . esc_html( $language_column ) );
+		}
+
+		return $this->get_language_snippet_for_expression( $language_column, $fallback_language, $content_types, $skip_content_type_check );
+	}
+
+	private function get_language_snippet_for_expression( $language_expression, $fallback_language, $content_types, $skip_content_type_check = false ) {
 		if ( ! $fallback_language || ( ! $skip_content_type_check && ! $content_types ) ) {
 			return '0';
 		}
 
 		$content_types_query = $skip_content_type_check ? '' : 'AND ' . $this->get_content_types_query( $content_types );
 
-		$sub_query_no_translation            = $this->get_query_for_no_translation( $current_language );
-		$sub_query_translation_not_published = $this->get_query_for_translation_not_published( $current_language );
+		$sub_query_no_translation            = $this->get_query_for_no_translation( $language_expression );
+		$sub_query_translation_not_published = $this->get_query_for_translation_not_published( $language_expression );
 
-		return $this->wpdb->prepare(
-			"(
-					{$this->icl_translation_table_alias}.language_code = %s
+		$language_condition = 'icl_t' === $this->icl_translation_table_alias
+			? $this->wpdb->prepare( 'icl_t.language_code = %s', $fallback_language )
+			: $this->wpdb->prepare( 'wpml_translations.language_code = %s', $fallback_language );
+
+		return "(
+					{$language_condition}
 					{$content_types_query}
-					AND ( ( {$sub_query_no_translation} ) OR ( {$sub_query_translation_not_published} ) ) 
-				)",
-			$fallback_language
-		);
+					AND ( ( {$sub_query_no_translation} ) OR ( {$sub_query_translation_not_published} ) )
+				)";
 	}
 
-	/**
-	 * @param string $language
-	 *
-	 * @return string
-	 */
-	private function get_query_for_no_translation( $language ) {
-		return $this->wpdb->prepare(
-			"
+	private function get_query_for_no_translation( $language_expression ) {
+		return "
 			( SELECT COUNT(element_id)
 			  FROM {$this->wpdb->prefix}icl_translations
 			  WHERE trid = {$this->icl_translation_table_alias}.trid
-			  AND language_code = %s
+			  AND language_code = {$language_expression}
 			) = 0
-			",
-			$language
-		);
+			";
 	}
 
-	/**
-	 * @param array $content_types
-	 *
-	 * @return string
-	 */
 	abstract protected function get_content_types_query( $content_types );
 
-	/**
-	 * @param string $language
-	 *
-	 * @return string
-	 */
-	abstract protected function get_query_for_translation_not_published( $language );
+	abstract protected function get_query_for_translation_not_published( $language_expression );
 
 }

@@ -3,43 +3,51 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);",
+            "lang": "ar"
          },
+         "Select %s": [
+            "حدد %s"
+         ],
          "From:": [
             "من:"
          ],
          "--Choose language--": [
-            "--اختيار اللغة--"
+            "--اختر اللغة--"
          ],
          "to:": [
             "إلى:"
          ],
          "Set language pair(s) for Translator %s:": [
-            "تعيين زوج (أزواج) اللغة إلى المترجم %s:"
+            "تعيين أزواج اللغات للمترجم %s:"
          ],
          "+ Add more language pairs for this translator": [
-            "+ إضافة المزيد من أزواج اللغة لهذا المترجم"
+            "+ إضافة المزيد من أزواج اللغات لهذا المترجم"
          ],
          "First Name": [
             "الاسم الأول"
          ],
          "Last Name": [
-            "الاسم الأخير"
+            "اسم العائلة"
          ],
          "Role": [
-            "المهمة"
+            "الدور"
          ],
          "(required)": [
             "(مطلوب)"
          ],
+         "Select a role for the user": [
+            "حدد دورًا للمستخدم"
+         ],
          "Make sure that you have provided a correct email address e.g. name@domain.com": [
-            "تأكد من إدخالك لعنوان بريد إلكتروني صحيح، مثل name@domain.com"
+            "تأكد من تقديم عنوان بريد إلكتروني صحيح، مثل name@domain.com"
          ],
          "This field is required": [
             "هذا الحقل مطلوب"
          ],
          "A translator can be any WordPress role.": [
-            "يمكن للمترجم تنفيذ أي مهمة من مهام WordPress."
+            "يمكن للمترجم أن يكون بأي دور من أدوار WordPress."
          ],
          "Username": [
             "اسم المستخدم"
@@ -47,32 +55,41 @@
          "Email": [
             "البريد الإلكتروني"
          ],
-         "Search": [
-            "بحث"
+         "Search by name, username or email": [
+            "البحث بالاسم أو اسم المستخدم أو البريد الإلكتروني"
          ],
-         "user": [
-            "مستخدم"
-         ],
-         "Editor": [
-            "المحرر"
-         ],
-         "Select an existing %s and set as Translation Manager": [
-            "اختر %s حالي وقم بتعيينه كمدير للترجمة"
-         ],
-         "Create a new %s and set as Translation Manager": [
-            "أنشئ %s جديدًا وقم بتعيينه كمدير للترجمة"
+         "Your site has a large number of users, please enter the exact username or email address.": [
+            "يحتوي موقعك على عدد كبير من المستخدمين، يرجى إدخال اسم المستخدم أو عنوان البريد الإلكتروني بدقة."
          ],
          "Cancel": [
             "إلغاء"
          ],
          "Add Translation Manager": [
-            "إضافة مدير للترجمة"
+            "أضف مدير ترجمة"
+         ],
+         "user": [
+            "مستخدم"
+         ],
+         "Editor": [
+            "محرر"
+         ],
+         "Select an existing user and set them as Translation Manager": [
+            "حدد مستخدمًا حاليًا وعينه كمدير ترجمة"
+         ],
+         "Create a new user and set them as Translation Manager": [
+            "أنشئ مستخدمًا جديدًا وعينه كمدير ترجمة"
          ],
          "Add a Translation Manager": [
-            "إضافة مدير ترجمة"
+            "أضف مدير ترجمة"
+         ],
+         "Select an existing user and set as Translator": [
+            "حدد مستخدمًا حاليًا وعينه كمترجم"
+         ],
+         "Create a new user and set as Translator": [
+            "أنشئ مستخدمًا جديدًا وعينه كمترجم"
          ],
          "Set language pair(s)": [
-            "تعيين زوج (أزواج) اللغة"
+            "تعيين أزواج اللغات"
          ],
          "Previous": [
             "السابق"
@@ -81,61 +98,61 @@
             "حفظ"
          ],
          "Add a Translator": [
-            "إضافة مترجم"
-         ],
-         "Select an existing user and set as Translator": [
-            "تحديد مستخدم حالي وتعيينه كمترجم"
-         ],
-         "Create a new user and set as Translator": [
-            "إنشاء مستخدم جديد وتعيينه كمترجم"
+            "أضف مترجمًا"
          ],
          "Edit language pair(s) for translator": [
-            "تحرير زوج (أزواج) اللغة للمترجم"
+            "تعديل أزواج اللغات للمترجم"
          ],
          "Name": [
             "الاسم"
          ],
          "Language Pairs": [
-            "أزواج اللغة"
+            "أزواج اللغات"
          ],
          "You can translate to and from all languages": [
-            "يمكنك الترجمة إلى ومن جميع اللغات"
+            "يمكنك الترجمة من وإلى جميع اللغات"
+         ],
+         "Edit language pair(s)": [
+            "تعديل أزواج اللغات"
+         ],
+         "Delete language pair(s)": [
+            "حذف أزواج اللغات"
          ],
          "%s file upload failed.": [
-            "فشل رفع الملف %s."
+            "فشل رفع ملف %s."
          ],
          "Flag": [
-            "راية"
+            "العلم"
          ],
          "Flag file": [
             "ملف العلم"
          ],
-         "You just added  language. Next, select it as the site's default language or a translation language.": [
-            "لقد أضفت لغة للتو. بعد ذلك، قم بتحديدها كاللغة الافتراضية للموقع أو كلغة ترجمة."
+         "You just added %s language. Next, select it as the site's default language or a translation language.": [
+            "لقد أضفت للتو لغة %s. بعد ذلك، حددها كلغة افتراضية للموقع أو لغة ترجمة."
          ],
          "Language added": [
             "تمت إضافة اللغة"
          ],
          "The value \"%s\" already exists": [
-            "القيمة \"%s\" موجودة بالفعل"
+            "القيمة ”%s“ موجودة بالفعل"
          ],
          "Add a new language": [
             "إضافة لغة جديدة"
          ],
          "Create a country-specific language by choosing the general language from the list below. Then, choose the country it should be localized for.": [
-            "أنشئ لغة محددة لبلد معين عن طريق اختيار اللغة العامة من القائمة أدناه. وبعد ذلك، قم باختيار البلد التي يجب توطينها إليها."
+            "أنشئ لغة خاصة ببلد معين عن طريق اختيار اللغة العامة من القائمة أدناه. ثم اختر البلد الذي يجب تعريبها له."
          ],
          "By choosing a combination that already exists in the database, WPML can help fill out the necessary fields. Read more about <AddingACustomLanguageLink />.": [
-            "باختيارك لتوليفة موجودة بالفعل في قاعدة البيانات، سيكون بمقدور WPML مساعدتك في تعبئة الحقول الضرورية. اقرأ المزيد عن <AddingACustomLanguageLink />."
+            "من خلال اختيار تركيبة موجودة بالفعل في قاعدة البيانات، يمكن لـ WPML المساعدة في ملء الحقول اللازمة. اقرأ المزيد حول <AddingACustomLanguageLink />."
          ],
          "Cannot find?": [
-            "ألا يمكنك العثور عليه؟"
+            "لا تجدها؟"
          ],
          "Click here": [
             "انقر هنا"
          ],
          "The wrong format. It may contain only small letters and \"-\". E.g: \"fr\" , \"pt-br\", \"zh-hans\"": [
-            "التنسيق خاطئ. يمكنه أن يحتوي على أحرف صغيرة و\"-\" فقط. على سبيل المثال: \"fr\" , \"pt-br\", \"zh-hans\""
+            "تنسيق خاطئ. قد يحتوي فقط على أحرف صغيرة وعلامة ”-“. مثال: ”fr“ ، ”pt-br“ ، ”zh-hans“"
          ],
          "Language": [
             "اللغة"
@@ -146,29 +163,35 @@
          "Code": [
             "الكود"
          ],
-         "The language will not be supported by automatic translations": [
-            "لن تكون اللغة مدعومة بالترجمات الآلية"
+         "Flags must be:": [
+            "يجب أن تكون الأعلام:"
+         ],
+         "Automatic Translation will use the default behavior for this language": [
+            "ستستخدم الترجمة التلقائية السلوك الافتراضي لهذه اللغة"
          ],
          "Language mapping": [
-            "تخطيط اللغة"
+            "ربط اللغة"
          ],
-         "Don't map this language": [
-            "عدم تعيين هذه اللغة"
+         "Use Automatic Translation default behavior": [
+            "استخدام السلوك الافتراضي للترجمة التلقائية"
+         ],
+         "PNG, SVG, or JPG files": [
+            "ملفات PNG أو SVG أو JPG"
          ],
          "Default locale": [
-            "الموضع الأساسي"
+            "المحلية الافتراضية"
          ],
          "The wrong format. It may contain only small letters and \"_\". E.g: \"de\" , \"de_DE\", \"zh_Hant_TW\"": [
-            "التنسيق خاطئ. يمكنه أن يحتوي على أحرف صغيرة و\"_\" فقط. على سبيل المثال: \"de\" , \"de_DE\", \"zh_Hant_TW\""
+            "تنسيق خاطئ. قد يحتوي فقط على أحرف صغيرة وعلامة ”_“. مثال: ”de“ ، ”de_DE“ ، ”zh_Hant_TW“"
          ],
          "hreflang": [
             "hreflang"
          ],
-         "Encode url?": [
-            "أتود تشفير مسار الإنترنت؟"
+         "18 x 12 pixels": [
+            "18 × 12 بكسل"
          ],
-         "Flags must be:": [
-            "الأعلام يجب أن تكون:"
+         "Encode url?": [
+            "ترميز عنوان url؟"
          ],
          "NO": [
             "لا"
@@ -177,91 +200,91 @@
             "نعم"
          ],
          " (required)": [
-            "(مطلوب)"
+            " (مطلوب)"
+         ],
+         "The name of your language as it will appear on your site's language switcher.": [
+            "اسم لغتك كما سيظهر في مبدل لغة موقعك."
          ],
          "Please fill in the field": [
-            "يُرجى تعبئة الحقل"
+            "يرجى ملء الحقل"
          ],
-         "PNG, SVG, or JPG files": [
-            "ملفات بتنسيق PNG، أو SVG، أو JPG"
+         "A unique value that identifies the language in the database and URL. Once saved, the language code cannot be changed.": [
+            "قيمة فريدة تحدد اللغة في قاعدة البيانات وعنوان URL. بمجرد الحفظ، لا يمكن تغيير كود اللغة."
          ],
          "Save language": [
             "حفظ اللغة"
          ],
-         "18 x 12 pixels": [
-            "18 × 12 بكسل"
-         ],
-         "Read more about ": [
-            "قراءة المزيد عن"
-         ],
-         "The name of your language as it will appear on your site's language switcher.": [
-            "اسم لغتك كما سيظهر على محوّل اللغة بموقعك."
-         ],
-         "A unique value that identifies the language in the database and URL. Once saved, the language code cannot be changed.": [
-            "قيمة مميزة تحدد اللغة في قاعدة البيانات ومسار الإنترنت. بمجرد حفظ رمز اللغة، لن يمكنك تغييره."
-         ],
          "If your custom language is similar to an existing language, you can use the existing language's spellcheck and automatic translation. For example, if your custom language is Swiss-German, you can map to German as the language to use for spellcheck and automatic translation. If you don't map your custom language to an existing language, spellcheck and automatic translation features will be unavailable in that language.": [
-            "إذا كانت لغتك المخصصة مشابهة للغة الحالية، يمكنك استخدام التدقيق اللغوي والترجمة الآلية للغة الحالية. على سبيل المثال، إذا كانت لغتك المخصصة هي اللغة الألمانية السويسرية، يمكنك تعيينها إلى الألمانية كلغة التدقيق اللغوي والترجمة الآلية للمستخدم. إذا لم تقم بتعيين لغتك المخصصة إلى لغة حالية، لن تكون خصائص التدقيق اللغوي والترجمة الآلية متاحة بهذه اللغة."
+            "إذا كانت لغتك المخصصة مشابهة للغة موجودة، يمكنك استخدام التدقيق الإملائي والترجمة التلقائية للغة الموجودة. على سبيل المثال، إذا كانت لغتك المخصصة هي الألمانية السويسرية، يمكنك ربطها بالألمانية كلغة لاستخدامها في التدقيق الإملائي والترجمة التلقائية. إذا لم تقم بربط لغتك المخصصة بلغة موجودة، فلن تتوفر ميزات التدقيق الإملائي والترجمة التلقائية بتلك اللغة."
          ],
          "The value WPML checks when loading translations from MO and PO files. The default locale is included in the filenames in your /wp-content/languages/ folder in your WordPress setup.": [
-            "القيمة التي يقوم WPML بمراجعتها عند تحميل الترجمات من ملفات MO وPO. الإعدادات المحلية الافتراضية تكون مدرجة في أسماء الملفات في مجلد /wp-content/languages/ في إعداد WordPress الخاص بك."
+            "القيمة التي يتحقق منها WPML عند تحميل الترجمات من ملفات MO وPO. يتم تضمين المحلية الافتراضية في أسماء الملفات في مجلد /wp-content/languages/ في تثبيت WordPress الخاص بك."
          ],
          "Google uses the hreflang attribute to direct users to sites in their relevant language and location. Examples:": [
-            "يستخدم جوجل السمة hreflang لإعادة توجيه المستخدمين إلى المواقع بلغتهم وموقعهم. الأمثلة:"
+            "تستخدم Google سمة hreflang لتوجيه المستخدمين إلى المواقع بلغتهم وموقعهم ذي الصلة. أمثلة:"
          ],
          "All English-speaking users: en": [
-            "كل المستخدمين المتحدثين للغة الإنجليزية: en"
+            "جميع المستخدمين المتحدثين بالإنجليزية: en"
          ],
          "English for UK users: en-gb": [
-            "اللغة الإنجليزية للمستخدمين من المملكة المتحدة: en-gb"
+            "الإنجليزية للمستخدمين في المملكة المتحدة: en-gb"
          ],
          "English for US users: en-us": [
-            "اللغة الإنجليزية للمستخدمين من الولايات المتحدة: en-us"
+            "الإنجليزية للمستخدمين في الولايات المتحدة: en-us"
          ],
          "Determines if URLs in this language are encoded or use ASCII characters (if unsure, leave it as \"No\").": [
-            "يحدد ما إذا كان سيتم تشفير مسارات الإنترنت بهذه اللغة أو استخدام رموز ASCII (إذا كنت غير متأكد، اترك الخيار كـ \"لا\")."
+            "يحدد ما إذا كانت عناوين URL بهذه اللغة مشفرة أو تستخدم أحرف ASCII (إذا لم تكن متأكدًا، فاتركها ”لا“)."
          ],
          "adding a custom language": [
             "إضافة لغة مخصصة"
+         ],
+         "What are the languages of your site?": [
+            "ما هي لغات موقعك؟"
          ],
          "Default language": [
             "اللغة الافتراضية"
          ],
          "What is the current language of your website?": [
-            "ما هي اللغة الحالية لموقعك الإلكتروني؟"
+            "ما هي اللغة الحالية لموقعك؟"
          ],
          "Translation languages": [
             "لغات الترجمة"
          ],
          "Which languages do you want to translate your site into?": [
-            "ما هي اللغات التي ترغب في ترجمة موقعك إليها؟"
+            "ما هي اللغات التي تريد ترجمة موقعك إليها؟"
          ],
-         "If you cannot find languages that you need in the list": [
-            "إن لم تستطع العثور على اللغات التي تحتاج إليها في القائمة"
+         "If you cannot find languages that you need in the list,": [
+            "إذا لم تتمكن من العثور على اللغات التي تحتاجها في القائمة،"
          ],
          "create a custom language": [
-            "إنشاء لغة مخصصة"
+            "أنشئ لغة مخصصة"
          ],
-         "What are the languages of your site?": [
-            "ما هي لغات موقعك؟"
-         ],
-         "You can add a dedicated person to oversee everything translation-related on your site. %sTranslation Managers%s can add new local translators or professional translation services, create and assign translation jobs, review completed translations, and change translation-related settings.": [
-            "يمكنك تخصيص شخص معين لمراقبة كل شيء مرتبط بترجمة موقعك. %sمديرو الترجمة%s يمكنهم إضافة مترجمين محليين جدد أو خدمات ترجمة احترافية جديدة، وإنشاء مهام الترجمة وتعيينها، ومراجعة الترجمات المستكملة، وتغيير الإعدادات المرتبطة بالترجمة."
+         "You can add a dedicated person to oversee everything translation-related on your site. Translation Managers can add new local translators or professional translation services, create and assign translation jobs, review completed translations, and change translation-related settings.": [
+            "يمكنك إضافة شخص مخصص للإشراف على كل ما يتعلق بالترجمة في موقعك. يمكن لمديري الترجمة إضافة مترجمين محليين جدد أو خدمات ترجمة احترافية، وإنشاء وظائف الترجمة وتعيينها، ومراجعة الترجمات المكتملة، وتغيير الإعدادات المتعلقة بالترجمة."
          ],
          "Translation Managers": [
             "مديرو الترجمة"
          ],
          "Note: All Administrators are automatically given Translation Manager privileges.": [
-            "ملاحظة: يتم منح المديرين امتيازات مدير الترجمة بشكل تلقائي."
+            "ملاحظة: يتم منح جميع المسؤولين امتيازات مدير الترجمة تلقائيًا."
          ],
-         "%sLocal translators%s are users of your site that can log in and add, edit, and review your site's translations. Add a translator and their associated translation pairs to assign them translation jobs.": [
-            "%sالمترجمون المحليون%s عبارة عن مستخدم للموقع يمكنك تسجيل الدخول وإضافة الترجمات لموقعك وتحريرها ومراجعتها. أضف المترجمين وأزواج الترجمة الخاصة بهم لتعيين مهام الترجمة إليهم."
+         "%1$sLocal translators%2$s are users of your site that can log in and add, edit, and review your site's translations. Add a translator and their associated translation pairs to assign them translation jobs.": [
+            "%1$sالمترجمون المحليون%2$s هم مستخدمون لموقعك يمكنهم تسجيل الدخول وإضافة ترجمات موقعك وتعديلها ومراجعتها. أضف مترجمًا وأزواج الترجمة المرتبطة به لتعيين وظائف الترجمة له."
          ],
-         "You can %shire an experienced translator%s to review your automatic translations for perfect quality.": [
-            "يمكنك %sتعيين مترجم محترف%s لمراجعة محتواك المترجم آليًا للحصول على أفضل جودة."
+         "You can %1$shire an experienced translator%2$s to review your automatic translations for perfect quality.": [
+            "يمكنك %1$sاستئجار مترجم خبير%2$s لمراجعة ترجماتك التلقائية للحصول على جودة مثالية."
          ],
          "Translators": [
             "المترجمون"
+         ],
+         "Can't find a specific translator?": [
+            "لا يمكنك العثور على مترجم معين؟"
+         ],
+         "Refreshing…": [
+            "جاري التحديث…"
+         ],
+         "Refresh list now.": [
+            "تحديث القائمة الآن."
          ]
       }
    }

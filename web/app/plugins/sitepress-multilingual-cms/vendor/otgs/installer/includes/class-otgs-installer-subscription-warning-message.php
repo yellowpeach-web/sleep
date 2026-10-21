@@ -25,9 +25,9 @@ class Subscription_Warning_Message {
 		$subscriptionData = Obj::prop( 'data', $subscription );
 		$repositoryData   = Obj::path( [ 'repositories', $repositoryId, 'data' ], $this->settings );
 		$product          = Obj::prop( 'product-name', $repositoryData);
-		$repositoryURL    = Obj::prop( 'url', $repositoryData ) . '/account/?utm_source=plugin&utm_medium=gui&utm_campaign=installer&utm_term=expiring-soon';
+		$repositoryURL    = AppPage::url( Obj::prop( 'url', $repositoryData ), 'account' ) . '?utm_source=plugin&utm_medium=gui&utm_campaign=installer&utm_term=expiring-soon';
 
-		$subscriptionId        = $subscriptionId ?: Obj::propOr( 'subscription_type', $subscriptionData );
+		$subscriptionId        = $subscriptionId ?: Obj::prop( 'subscription_type', $subscriptionData );
 		$expires               = Obj::prop( 'expires', $subscriptionData );
 		$doesntHaveAutoRenewal = isset( $subscriptionData ) && Obj::has( 'hasAutoRenewal', $subscriptionData ) && Obj::prop( 'hasAutoRenewal', $subscriptionData ) === false;
 
@@ -39,9 +39,8 @@ class Subscription_Warning_Message {
 		if ( $this->wpInstaller->repository_has_valid_subscription( $repositoryId ) && ! $neverExpires ) {
 			$subscriptionExpirationPath = [ 'subscriptions_meta', 'expiration', $subscriptionId ];
 
-			// Returns true if warning property length > 0 and false otherwise
-			$warningPropertyLength = function ( $propertyName ) use ( $repositoryData, $subscriptionExpirationPath ) {
-				if ( Obj::hasPath( $subscriptionExpirationPath, $repositoryData ) ) {
+			$warningPropertyLength = function ( $propertyName ) use ( $repositoryData, $subscriptionId, $subscriptionExpirationPath ) {
+				if ( $subscriptionId && Obj::hasPath( $subscriptionExpirationPath, $repositoryData ) ) {
 					$warningPropertyPath = array_merge( $subscriptionExpirationPath, [ $propertyName ] );
 
 					$warningPropertyPathLength = pipe( Obj::path( $warningPropertyPath ), Str::len() );
@@ -59,7 +58,6 @@ class Subscription_Warning_Message {
 				$daysWarning   = Obj::path( array_merge( $subscriptionExpirationPath, [ 'days_warning' ] ), $repositoryData );
 				$customMessage = Obj::path( array_merge( $subscriptionExpirationPath, [ 'warning_message' ] ), $repositoryData );
 			} else {
-				// defaults
 				$daysWarning = 30;
 
 				$customMessage = "<a style='margin-left:0px;' href='{$repositoryURL}' target='_blank'>" . __( 'Renew today', 'installer' ) . '</a>' . ' ' . __( 'to protect your site from breaking changes in future WordPress releases.', 'installer' ) . '<br>';

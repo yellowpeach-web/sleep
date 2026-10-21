@@ -4,22 +4,16 @@ class WPML_Languages_Notices {
 	const NOTICE_ID_MISSING_MENU_ITEMS           = 'wpml-missing-menu-items';
 	const NOTICE_GROUP                           = 'wpml-core';
 	const NOTICE_ID_MISSING_DOWNLOADED_LANGUAGES = 'wpml-missing-downloaded-languages';
-	/** @var WPML_Notices */
 	private $admin_notices;
 	private $translations = array();
 
-	/**
-	 * WPML_Languages_Notices constructor.
-	 *
-	 * @param WPML_Notices $admin_notices
-	 */
 	public function __construct( WPML_Notices $admin_notices ) {
 		$this->admin_notices = $admin_notices;
 	}
 
 	function maybe_create_notice_missing_menu_items( $languages_count ) {
 		if ( 1 === $languages_count ) {
-			$text   = __( 'You need to configure at least one more language in order to access "Theme and plugins localization" and "Media translation".', 'sitepress' );
+			$text   = __( 'You need to configure at least one more language in order to access "Theme and plugins localization" and "Media Translation" screens.', 'sitepress' );
 			$notice = new WPML_Notice( self::NOTICE_ID_MISSING_MENU_ITEMS, $text, self::NOTICE_GROUP );
 			$notice->set_css_class_types( 'info' );
 			$notice->set_dismissible( true );
@@ -32,6 +26,7 @@ class WPML_Languages_Notices {
 	public function missing_languages( $not_found_languages ) {
 		$list_items = array();
 		if ( $not_found_languages ) {
+			/* translators: One line of a notice listing languages whose WordPress language file may be wrong. %1$s: the name of the language, %2$s: the code it uses now, %3$s: the codes WPML suggests instead. */
 			$list_item_pattern = __( '%1$s (current locale: %2$s) - suggested locale(s): %3$s', 'sitepress' );
 
 			foreach ( (array) $not_found_languages as $not_found_language ) {
@@ -59,27 +54,31 @@ class WPML_Languages_Notices {
 			$text .= '</li>';
 			$text .= '</ul>';
 
-			$languages_edit_url   = admin_url( 'admin.php?page=' . WPML_PLUGIN_FOLDER . '/menu/languages.php&trop=1' );
+			$languages_edit_url   = admin_url( 'admin.php?page=' . WPML_TM_FOLDER . '/menu/settings&section=languages' );
 			$languages_edit_link  = '<a href="' . $languages_edit_url . '">';
-			$languages_edit_link .= __( 'Edit Languages', 'sitepress' );
+			/* translators: Link text that opens the Languages settings screen. It is the path through the menu, so keep the arrow and translate the two names as they appear in the menu. */
+			$languages_edit_link .= __( 'Settings → Languages', 'sitepress' );
 			$languages_edit_link .= '</a>';
 
 			$text .= '<p>';
-			$text .= sprintf( __( 'To fix, open "%s" and set the "default locale" values as shown above.', 'sitepress' ), $languages_edit_link );
+			/* translators: %s is a link to the WPML Settings → Languages screen */
+			$text .= sprintf( __( 'To fix, open %s, edit each language above and set its Locale as shown.', 'sitepress' ), $languages_edit_link );
 			$text .= '</p>';
 
 			$notice = new WPML_Notice( self::NOTICE_ID_MISSING_DOWNLOADED_LANGUAGES, $text, self::NOTICE_GROUP );
 			$notice->set_css_class_types( 'warning' );
-			$notice->add_display_callback( array( $this, 'is_not_languages_edit_page' ) );
+			$notice->add_display_callback( array( __CLASS__, 'is_not_languages_edit_page' ) );
 			$notice->set_dismissible( true );
-			$this->admin_notices->add_notice( $notice, true );
+			$this->admin_notices->add_notice( $notice );
 		} else {
 			$this->admin_notices->remove_notice( self::NOTICE_GROUP, self::NOTICE_ID_MISSING_DOWNLOADED_LANGUAGES );
 		}
 	}
 
-	public function is_not_languages_edit_page() {
-		$result = isset( $_GET['page'], $_GET['trop'] ) && WPML_PLUGIN_FOLDER . '/menu/languages.php' === $_GET['page'] && 1 === (int) $_GET['trop'];
+	public static function is_not_languages_edit_page() {
+		$result = isset( $_GET['page'], $_GET['section'] )
+			&& WPML_TM_FOLDER . '/menu/settings' === $_GET['page']
+			&& 'languages' === $_GET['section'];
 
 		return ! $result;
 	}
@@ -90,7 +89,7 @@ class WPML_Languages_Notices {
 			if ( ! $this->translations ) {
 				$api = translations_api( 'core', array( 'version' => $GLOBALS['wp_version'] ) );
 
-				if ( ! is_wp_error( $api ) ) {
+				if ( ! is_wp_error( $api ) && is_array( $api ) && isset( $api['translations'] ) ) {
 					$this->translations = $api['translations'];
 				}
 			}
@@ -108,37 +107,42 @@ class WPML_Languages_Notices {
 		return $suggestions;
 	}
 
-	/**
-	 * @param string $language_attribute
-	 * @param array  $language
-	 * @param array  $translation
-	 *
-	 * @return string|null
-	 */
 	private function find_matching_attribute( $language_attribute, array $language, array $translation ) {
-		if ( $translation && $language[ $language_attribute ] ) {
-			$attribute_value = $language[ $language_attribute ];
-			$attribute_value = str_replace( '-', '_', $attribute_value );
-			$attribute_value = strtolower( $attribute_value );
-			$iso_1           = $iso_2 = '';
+		if ( $translation && ! empty( $language[ $language_attribute ] ) ) {
+			return $this->matches_translation_iso( $language[ $language_attribute ], $translation )
+				? $translation['language']
+				: null;
+		}
 
-			if ( array_key_exists( 1, $translation['iso'] ) ) {
-				$iso_1 = strtolower( $translation['iso'][1] );
-			}
-			if ( array_key_exists( 2, $translation['iso'] ) ) {
-				$iso_2 = strtolower( $translation['iso'][2] );
-			}
+		return null;
+	}
 
-			if ( $iso_1 === $attribute_value ) {
-				return $translation['language'];
+	private function find_matching_catalogue( array $language, array $translation ) {
+		if ( ! $translation
+			|| empty( $language['code'] )
+			|| ! class_exists( '\WPML\LanguageEditor\LanguageCodeResolution' )
+		) {
+			return null;
+		}
+
+		$resolved = \WPML\LanguageEditor\LanguageCodeResolution::resolve( $language['code'] );
+		if ( null === $resolved ) {
+			return null;
+		}
+
+		$candidates = array();
+		if ( ! empty( $resolved['wp_code'] ) ) {
+			$candidates[] = (string) $resolved['wp_code'];
+		}
+		if ( '' !== (string) $resolved['language'] ) {
+			$candidates[] = (string) $resolved['language'];
+			if ( null !== $resolved['country'] ) {
+				$candidates[] = $resolved['language'] . '_' . $resolved['country'];
 			}
-			if ( $iso_2 === $attribute_value ) {
-				return $translation['language'];
-			}
-			if ( $iso_1 . '_' . $iso_2 === $attribute_value ) {
-				return $translation['language'];
-			}
-			if ( $iso_2 . '_' . $iso_1 === $attribute_value ) {
+		}
+
+		foreach ( $candidates as $candidate ) {
+			if ( $this->matches_translation_iso( $candidate, $translation ) ) {
 				return $translation['language'];
 			}
 		}
@@ -146,18 +150,27 @@ class WPML_Languages_Notices {
 		return null;
 	}
 
-	/**
-	 * @param array $language
-	 * @param array $translation
-	 *
-	 * @return null|string
-	 */
+	private function matches_translation_iso( $value, array $translation ) {
+		$value = strtolower( str_replace( '-', '_', (string) $value ) );
+		if ( '' === $value || ! isset( $translation['iso'] ) || ! is_array( $translation['iso'] ) ) {
+			return false;
+		}
+
+		$iso_1 = array_key_exists( 1, $translation['iso'] ) ? strtolower( (string) $translation['iso'][1] ) : '';
+		$iso_2 = array_key_exists( 2, $translation['iso'] ) ? strtolower( (string) $translation['iso'][2] ) : '';
+
+		return $iso_1 === $value
+			|| $iso_2 === $value
+			|| $iso_1 . '_' . $iso_2 === $value
+			|| $iso_2 . '_' . $iso_1 === $value;
+	}
+
 	private function get_matching_language( array $language, array $translation ) {
 		$default_locale = $this->find_matching_attribute( 'default_locale', $language, $translation );
 		if ( ! $default_locale ) {
 			$default_locale = $this->find_matching_attribute( 'tag', $language, $translation );
 			if ( ! $default_locale ) {
-				$default_locale = $this->find_matching_attribute( 'code', $language, $translation );
+				$default_locale = $this->find_matching_catalogue( $language, $translation );
 			}
 		}
 

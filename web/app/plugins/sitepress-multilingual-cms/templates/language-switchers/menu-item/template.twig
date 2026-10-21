@@ -7,7 +7,7 @@
 
 
 {%- if native_name -%}
-    <span class="{{ css_classes_native }}" lang="{{ code }}">{{ native_name }}</span>
+    <span class="{{ css_classes_native }}" lang="{{ hreflang }}">{{ native_name }}</span>
 {%- endif -%}
 
 {%- if display_name and (display_name != native_name) -%}

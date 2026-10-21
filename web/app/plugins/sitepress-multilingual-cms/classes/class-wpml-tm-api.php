@@ -1,39 +1,35 @@
 <?php
 
+require_once __DIR__ . '/../inc/constants-since-5-0.php';
+
 use WPML\TM\ATE\Review\ReviewStatus;
 use WPML\FP\Obj;
 
 class WPML_TM_API {
 
-	/** @var TranslationManagement */
 	private $TranslationManagement;
 
-	/** @var WPML_TM_Blog_Translators $blog_translators */
 	private $blog_translators;
-	/**
-	 * @var mixed[]
-	 */
 	private $translation_statuses;
 
-	/**
-	 * WPML_TM_API constructor.
-	 *
-	 * @param WPML_TM_Blog_Translators $blog_translators
-	 * @param TranslationManagement    $TranslationManagement
-	 */
 	public function __construct( &$blog_translators, &$TranslationManagement ) {
 		$this->blog_translators      = &$blog_translators;
 		$this->TranslationManagement = &$TranslationManagement;
 
 		$this->translation_statuses = [
-			ICL_TM_NOT_TRANSLATED         => __( 'Not translated', 'wpml-translation-management' ),
-			ICL_TM_WAITING_FOR_TRANSLATOR => __( 'Waiting for translator', 'wpml-translation-management' ),
-			ICL_TM_IN_BASKET              => __( 'In basket', 'wpml-translation-management' ),
-			ICL_TM_IN_PROGRESS            => __( 'In progress', 'wpml-translation-management' ),
-			ICL_TM_DUPLICATE              => __( 'Duplicate', 'wpml-translation-management' ),
-			ICL_TM_COMPLETE               => __( 'Complete', 'wpml-translation-management' ),
-			ICL_TM_NEEDS_UPDATE           => __( 'needs update', 'wpml-translation-management' ),
-			ICL_TM_ATE_NEEDS_RETRY        => __( 'In progress (connecting)', 'wpml-translation-management' ),
+			/* translators: Status of a piece of content: it has no translation in that language yet. */
+			ICL_TM_NOT_TRANSLATED         => __( 'Not translated', 'sitepress' ),
+			ICL_TM_WAITING_FOR_TRANSLATOR => __( 'Waiting for translator', 'sitepress' ),
+			/* translators: Status of a translation: it is being made right now. */
+			ICL_TM_IN_PROGRESS            => __( 'In progress', 'sitepress' ),
+			/* translators: Status of a translation: it is a copy of the original that WPML keeps in step, not a translation of its own. Noun. */
+			ICL_TM_DUPLICATE              => _x( 'Duplicate', 'status of a translation', 'sitepress' ),
+			/* translators: Status of a translation: it is finished. Adjective, not an instruction to finish it. */
+			ICL_TM_COMPLETE               => __( 'Complete', 'sitepress' ),
+			/* translators: Status of a translation: the original changed since, so the translation has to be gone over again. Written in lower case as the code shows it. */
+			ICL_TM_NEEDS_UPDATE           => __( 'needs update', 'sitepress' ),
+			ICL_TM_ATE_NEEDS_RETRY        => __( 'In progress (connecting)', 'sitepress' ),
+			ICL_TM_ATE_UNSOLVABLE         => __( 'Failed - needs attention', 'sitepress' ),
 		];
 	}
 
@@ -47,13 +43,6 @@ class WPML_TM_API {
 		add_action( 'wpml_edit_translator', array( $this, 'edit_translator_action' ), 10, 2 );
 	}
 
-	/**
-	 * @param bool        $default
-	 * @param int|WP_User $user
-	 * @param array       $args
-	 *
-	 * @return bool
-	 */
 	public function is_translator_filter( $default, $user, $args ) {
 		$result  = $default;
 		$user_id = $this->get_user_id( $user );
@@ -71,10 +60,6 @@ class WPML_TM_API {
 		}
 	}
 
-	/**
-	 * @param int   $user_id
-	 * @param array $language_pairs
-	 */
 	private function edit_translator( $user_id, $language_pairs ) {
 		global $wpdb;
 
@@ -102,11 +87,6 @@ class WPML_TM_API {
 		return $result;
 	}
 
-	/**
-	 * @param $user
-	 *
-	 * @return int
-	 */
 	private function get_user_id( $user ) {
 		$user_id = $user;
 

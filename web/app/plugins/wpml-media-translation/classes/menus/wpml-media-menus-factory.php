@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class WPML_Media_Menus_Factory
- */
 class WPML_Media_Menus_Factory {
 
 	public function create() {

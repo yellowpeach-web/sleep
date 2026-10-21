@@ -1,40 +1,63 @@
 <?php
 
-use WPML\Setup\Option;
+use WPML\Plugins;
+use WPML\Posts\ListScreenRows;
 
 class WPML_Posts_Listing_Page {
 	public function __construct() {
 		global $pagenow;
 
-		if ( ! Option::isTMAllowed() ) {
-			// Blog License. No extra preload required as Review is not available.
+		if ( ! Plugins::isTMLoadedForRequest() ) {
+			// Blog License. No extra preload required as Review is not
 			return;
 		}
 
 		if ( 'edit.php' !== $pagenow ) {
-			// Don't initalize on other pages than the post listing page.
 			return;
 		}
 
-		// Hook to 'wp' to work on the main query result (list of posts).
 		add_action( 'wp', [ $this, 'pre_populate_caches' ] );
 	}
 
 	public function pre_populate_caches() {
-		global $wp_query, $wpml_post_translations;
+		global $wp_query;
 
-		if ( count( $wp_query->posts ) === 0 ) {
+		if ( ! $wp_query->posts ) {
+			return;
+		}
+
+		if ( ListScreenRows::arePartial( $wp_query->posts ) ) {
+			add_action( 'the_post', [ $this, 'pre_populate_screen_caches' ] );
+
+			return;
+		}
+
+		$this->preload( $wp_query->posts );
+	}
+
+	public function pre_populate_screen_caches() {
+		global $wp_query;
+
+		remove_action( 'the_post', [ $this, 'pre_populate_screen_caches' ] );
+
+		if ( is_array( $wp_query->posts ) ) {
+			$this->preload( ListScreenRows::of( $wp_query->posts ) );
+		}
+	}
+
+	private function preload( array $posts ) {
+		global $wpml_post_translations;
+
+		if ( ! $posts ) {
 			return;
 		}
 
 		$post_ids = array_map( function( $post ) {
 			return $post->ID;
-		}, $wp_query->posts );
+		}, $posts );
 
-		// Get and cache all trids for the listed posts.
 		$wpml_post_translations->prefetch_ids( $post_ids );
 
-		// Get and cache all translations for the listed posts.
 		$wpml_tm_element_translations = wpml_tm_load_element_translations();
 		$wpml_tm_element_translations->init_jobs( $wpml_post_translations->get_trids() );
 	}

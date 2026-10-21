@@ -3,38 +3,49 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/js/components/language/LanguagePairs.js:57
+#: src/js/components/language/LanguagePairs.js:111
+#. Text read out by screen readers for the checkbox of one target language. %s: the name of that language.
+msgid "Select %s"
+msgstr ""
+
+#: src/js/components/language/LanguagePairs.js:77
+#. Label of the dropdown that picks the language a translator translates from; the languages they translate into sit under the label "to:".
 msgid "From:"
 msgstr ""
 
-#: src/js/components/language/LanguagePairs.js:69
+#: src/js/components/language/LanguagePairs.js:87
+#. Shown in the language dropdown before a language has been picked.
 msgid "--Choose language--"
 msgstr ""
 
-#: src/js/components/language/LanguagePairs.js:81
+#: src/js/components/language/LanguagePairs.js:99
+#. Label of the checkboxes that pick the languages a translator translates into; it follows the label "From:" and is deliberately written in small letters.
 msgid "to:"
 msgstr ""
 
-#: src/js/components/language/SelectLanguagePairs.js:39
+#: src/js/components/language/SelectLanguagePairs.js:40
+#. Heading over the language pairs of one translator. %s: the name of the translator.
 msgid "Set language pair(s) for Translator %s:"
 msgstr ""
 
-#: src/js/components/language/SelectLanguagePairs.js:64
+#: src/js/components/language/SelectLanguagePairs.js:70
 msgid "+ Add more language pairs for this translator"
 msgstr ""
 
-#: src/js/icl-to-ate-migration/components/DeactivateICL.js:19
-msgid "Translation Memory was successfully copied to Advanced Translation Editor."
+#: src/js/icl-to-ate-migration/components/DeactivateICL.js:21
+msgid ""
+"<b>Translation Memory</b> was successfully copied to Advanced Translation "
+"Editor."
 msgstr ""
 
-#: src/js/icl-to-ate-migration/components/DeactivateICL.js:30
+#: src/js/icl-to-ate-migration/components/DeactivateICL.js:32
 msgid "Deactivate ICanLocalize.com as Translation Service on this site"
 msgstr ""
 
-#: src/js/icl-to-ate-migration/components/DeactivateICL.js:35
+#: src/js/icl-to-ate-migration/components/DeactivateICL.js:38
 msgid ""
 "Missing a translator? Or were new jobs since the last copy of the "
-"Translation Memory?"
+"<b>Translation Memory</b>?"
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/ICLToken.js:25
@@ -42,6 +53,7 @@ msgid "Enter here your ICanLocalize authentication details."
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/ICLToken.js:33
+#. Label of the field where the ICanLocalize API token is typed, on the ICanLocalize migration screen.
 msgid "API Token:"
 msgstr ""
 
@@ -54,72 +66,83 @@ msgid "Enter ICL API token here"
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/ICLToken.js:62
+#. Button label that sends the ICanLocalize API token; verb, imperative.
 msgid "Submit"
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/ICLToken.js:78
+#. Link text that opens the ICanLocalize registration page; verb, imperative. The sentence goes on with "to ICanLocalize to receive your API token."
 msgid "Sign up"
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/ICLToken.js:84
+#. End of the sentence that starts with the link "Sign up": "Sign up to ICanLocalize to receive your API token."
 msgid "to ICanLocalize to receive your API token."
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/ICLToken.js:91
+#. Start of the sentence finished by the link "get your token.": "Already have an account? Login and get your token."
 msgid "Already have an account? Login and"
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/ICLToken.js:98
+#. Link text that ends the sentence "Already have an account? Login and get your token."
 msgid "get your token."
 msgstr ""
 
-#: src/js/icl-to-ate-migration/components/Memory/BottomLink.js:16
-msgid "Copy new Translation Memory to Advanced Translation Memory"
+#: src/js/icl-to-ate-migration/components/Memory/BottomLink.js:17
+msgid "Copy new <b>Translation Memory</b> to Advanced Translation Memory"
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/Memory/MainButton.js:16
 msgid "Import translation memory"
 msgstr ""
 
-#: src/js/icl-to-ate-migration/components/MigrationContainer.js:21
+#: src/js/icl-to-ate-migration/components/MigrationContainer.js:22
 msgid "ICanLocalize is already deactivated on this site"
 msgstr ""
 
-#: src/js/icl-to-ate-migration/components/MigrationContainer.js:22
+#: src/js/icl-to-ate-migration/components/MigrationContainer.js:24
 msgid ""
-"You can still import Translators or Copy Translation Memory to Advanced "
-"Translator Editor"
+"You can still import Translators or Copy <b>Translation Memory</b> to "
+"Advanced Translator Editor"
 msgstr ""
 
-#: src/js/icl-to-ate-migration/components/MigrationContainer.js:27
-msgid "Move from ICanLocalize.com to Advanced Translation Editor"
+#: src/js/icl-to-ate-migration/components/MigrationContainer.js:29
+msgid "Move from ICanLocalize.com to <b>Advanced Translation Editor</b>"
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/Translators/BottomLink.js:17
 #: src/js/icl-to-ate-migration/components/Translators/Button.js:21
 #: src/js/icl-to-ate-migration/components/Translators/Modal.js:27
+#. The same imperative in three places on the ICanLocalize migration screen: the title of the dialog that imports translators, the button that opens it, and the link that does the same.
 msgid "Import translators"
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/Translators/EditLanguages.js:53
+#. Button label that returns from one translator's languages to the list of translators; verb, imperative.
 msgid "Come back"
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/Translators/Modal.js:36
-#: src/js/setup/components/Steps/AddLanguagesModal.js:496
+#: src/js/setup/components/Steps/AddLanguagesModal.js:504
+#. Button label that closes a dialog or clears a filter without applying it: verb, imperative, not the noun "a cancellation".
 msgid "Cancel"
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/Translators/Modal.js:40
+#. Button label that saves what was entered in the form or dialog; verb, imperative.
 msgid "Save"
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/Translators/TranslatorsTable.js:47
-#: src/js/setup/components/Steps/AddLanguagesModal.js:346
+#: src/js/setup/components/Steps/AddLanguagesModal.js:355
+#. Column heading and field label for the name of a person, a language or a translation service: a noun (the name), not the verb "to name".
 msgid "Name"
 msgstr ""
 
 #: src/js/icl-to-ate-migration/components/Translators/TranslatorsTable.js:59
+#. Heading of the table column that lists the pairs of languages each translator translates between.
 msgid "Language Pairs"
 msgstr ""
 
@@ -140,157 +163,175 @@ msgid "There is no translators in ICL"
 msgstr ""
 
 #: src/js/icl-to-ate-migration/model/translators.js:45
+#. Message shown after the imported translators have been saved.
 msgid "Translators saved"
 msgstr ""
 
 #: src/js/setup/components/Steps/AddLanguages/Flag.js:48
+#. Error shown when a flag image could not be uploaded. %s: the name of the file.
 msgid "%s file upload failed."
 msgstr ""
 
 #: src/js/setup/components/Steps/AddLanguages/Flag.js:69
+#. Label of the field that uploads a flag image for a language. "Flag" is the little picture of a flag, not the verb "to flag".
 msgid "Flag"
 msgstr ""
 
 #: src/js/setup/components/Steps/AddLanguages/Flag.js:87
+#. Button label that opens the file picker for the flag image. "Flag" is the little picture of a flag, not the verb "to flag".
 msgid "Flag file"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:160
+#: src/js/setup/components/Steps/AddLanguagesModal.js:166
+#. Message shown after a language has been added. %s: the name of the new language.
 msgid ""
-"You just added  language. Next, select it as the site's default language or "
-"a translation language."
+"You just added %s language. Next, select it as the site's default language "
+"or a translation language."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:162
+#: src/js/setup/components/Steps/AddLanguagesModal.js:170
+#. Short confirmation shown after a new language has been added in the setup wizard.
 msgid "Language added"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:192
+#: src/js/setup/components/Steps/AddLanguagesModal.js:200
+#. Error under a field of the add-language form when another language already uses the same value. %s: what was typed in the field.
 msgid "The value \"%s\" already exists"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:215
+#: src/js/setup/components/Steps/AddLanguagesModal.js:223
 msgid "Add a new language"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:224
+#: src/js/setup/components/Steps/AddLanguagesModal.js:232
 msgid ""
 "Create a country-specific language by choosing the general language from "
 "the list below. Then, choose the country it should be localized for."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:229
+#: src/js/setup/components/Steps/AddLanguagesModal.js:237
 msgid ""
 "By choosing a combination that already exists in the database, WPML can "
 "help fill out the necessary fields. Read more about "
 "<AddingACustomLanguageLink />."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:242
+#: src/js/setup/components/Steps/AddLanguagesModal.js:250
+#. Question in small print under the language dropdown, followed by the link "Click here" for entering a language by hand.
 msgid "Cannot find?"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:244
+#: src/js/setup/components/Steps/AddLanguagesModal.js:252
+#. Link after the question "Cannot find?" in the add-language dialog; verb, imperative.
 msgid "Click here"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:300
+#: src/js/setup/components/Steps/AddLanguagesModal.js:308
+#. Error under the language code field of the add-language form. "It" is the language code. Keep the examples as they are.
 msgid ""
 "The wrong format. It may contain only small letters and \"-\". E.g: \"fr\" "
 ", \"pt-br\", \"zh-hans\""
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:308
+#: src/js/setup/components/Steps/AddLanguagesModal.js:316
+#. Label of the dropdown that picks the language, in the dialog that adds a language.
 msgid "Language"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:331
+#: src/js/setup/components/Steps/AddLanguagesModal.js:340
+#. Label of the dropdown that picks the country or region of the language, in the dialog that adds a language.
 msgid "Location"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:360
+#: src/js/setup/components/Steps/AddLanguagesModal.js:369
+#. The short code of a language, such as "en" or "pt-br". Used as an option in the Language Switcher block settings and as a field label in the dialog that adds a language.
 msgid "Code"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:374
-msgid "The language will not be supported by automatic translations"
+#: src/js/setup/components/Steps/AddLanguagesModal.js:38
+msgid "Flags must be:"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:392
+#: src/js/setup/components/Steps/AddLanguagesModal.js:383
+msgid "Automatic Translation will use the default behavior for this language"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:400
+#. Label of the field that says which supported language a custom language is translated as, in the dialog that adds a language.
 msgid "Language mapping"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:404
-msgid "Don't map this language"
+#: src/js/setup/components/Steps/AddLanguagesModal.js:412
+msgid "Use Automatic Translation default behavior"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:418
+#: src/js/setup/components/Steps/AddLanguagesModal.js:42
+msgid "PNG, SVG, or JPG files"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:426
+#. Label of the field that holds the WordPress locale of the language, such as "de_DE", in the dialog that adds a language.
 msgid "Default locale"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:423
+#: src/js/setup/components/Steps/AddLanguagesModal.js:431
+#. Error under the default locale field of the add-language form. "It" is the locale. Keep the examples as they are.
 msgid ""
 "The wrong format. It may contain only small letters and \"_\". E.g: \"de\" "
 ", \"de_DE\", \"zh_Hant_TW\""
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:435
+#: src/js/setup/components/Steps/AddLanguagesModal.js:443
+#. Label of the field that holds the hreflang value search engines read, in the dialog that adds a language. The name of an HTML attribute: keep it as it is.
 msgid "hreflang"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:449
-msgid "Encode url?"
-msgstr ""
-
 #: src/js/setup/components/Steps/AddLanguagesModal.js:45
-msgid "Flags must be:"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:453
-msgid "NO"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:454
-msgid "YES"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:460
-msgid " (required)"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:483
-msgid "Please fill in the field"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:49
-msgid "PNG, SVG, or JPG files"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:501
-msgid "Save language"
-msgstr ""
-
-#: src/js/setup/components/Steps/AddLanguagesModal.js:52
 msgid "18 x 12 pixels"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:55
-msgid "Read more about "
+#: src/js/setup/components/Steps/AddLanguagesModal.js:457
+#. Label of the dropdown that says whether the language part of the web address should be encoded, in the dialog that adds a language.
+msgid "Encode url?"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:60
+#: src/js/setup/components/Steps/AddLanguagesModal.js:461
+#. Option in the "Encode url?" dropdown of the dialog that adds a language. Shown in capitals.
+msgid "NO"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:462
+#. Option in the "Encode url?" dropdown of the dialog that adds a language. Shown in capitals.
+msgid "YES"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:468
+#. Added after the label of a field that has to be filled in, for example "Name (required)". Keep the space at the start.
+msgid " (required)"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:49
 msgid ""
 "The name of your language as it will appear on your site's language "
 "switcher."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:61
+#: src/js/setup/components/Steps/AddLanguagesModal.js:491
+msgid "Please fill in the field"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:50
 msgid ""
 "A unique value that identifies the language in the database and URL. Once "
 "saved, the language code cannot be changed."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:62
+#: src/js/setup/components/Steps/AddLanguagesModal.js:509
+#. Button label that saves the new language in the dialog that adds a language; verb, imperative.
+msgid "Save language"
+msgstr ""
+
+#: src/js/setup/components/Steps/AddLanguagesModal.js:51
 msgid ""
 "If your custom language is similar to an existing language, you can use the "
 "existing language's spellcheck and automatic translation. For example, if "
@@ -300,65 +341,69 @@ msgid ""
 "translation features will be unavailable in that language."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:66
+#: src/js/setup/components/Steps/AddLanguagesModal.js:55
 msgid ""
 "The value WPML checks when loading translations from MO and PO files. The "
 "default locale is included in the filenames in your /wp-content/languages/ "
 "folder in your WordPress setup."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:69
+#: src/js/setup/components/Steps/AddLanguagesModal.js:58
 msgid ""
 "Google uses the hreflang attribute to direct users to sites in their "
 "relevant language and location. Examples:"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:71
+#: src/js/setup/components/Steps/AddLanguagesModal.js:60
 msgid "All English-speaking users: en"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:72
+#: src/js/setup/components/Steps/AddLanguagesModal.js:61
 msgid "English for UK users: en-gb"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:73
+#: src/js/setup/components/Steps/AddLanguagesModal.js:62
 msgid "English for US users: en-us"
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:81
+#: src/js/setup/components/Steps/AddLanguagesModal.js:70
 msgid ""
 "Determines if URLs in this language are encoded or use ASCII characters (if "
 "unsure, leave it as \"No\")."
 msgstr ""
 
-#: src/js/setup/components/Steps/AddLanguagesModal.js:98
+#: src/js/setup/components/Steps/AddLanguagesModal.js:87
+#. Link that ends the sentence "Read more about adding a custom language." in the dialog that adds a language.
 msgid "adding a custom language"
 msgstr ""
 
-#: src/js/setup/components/Steps/Languages.js:102
+#: src/js/setup/components/Steps/Languages.js:162
+msgid "What are the languages of your site?"
+msgstr ""
+
+#: src/js/setup/components/Steps/Languages.js:172
+#. Heading over the dropdown that picks the language the site is written in, in the setup wizard.
 msgid "Default language"
 msgstr ""
 
-#: src/js/setup/components/Steps/Languages.js:104
+#: src/js/setup/components/Steps/Languages.js:174
 msgid "What is the current language of your website?"
 msgstr ""
 
-#: src/js/setup/components/Steps/Languages.js:115
+#: src/js/setup/components/Steps/Languages.js:185
+#. Heading over the dropdown that picks the languages the site is translated into, in the setup wizard.
 msgid "Translation languages"
 msgstr ""
 
-#: src/js/setup/components/Steps/Languages.js:117
+#: src/js/setup/components/Steps/Languages.js:187
 msgid "Which languages do you want to translate your site into?"
 msgstr ""
 
-#: src/js/setup/components/Steps/Languages.js:132
-msgid "If you cannot find languages that you need in the list"
+#: src/js/setup/components/Steps/Languages.js:201
+msgid "If you cannot find languages that you need in the list,"
 msgstr ""
 
-#: src/js/setup/components/Steps/Languages.js:133
+#: src/js/setup/components/Steps/Languages.js:202
+#. Link that ends the sentence "If you cannot find languages that you need in the list, create a custom language."
 msgid "create a custom language"
-msgstr ""
-
-#: src/js/setup/components/Steps/Languages.js:92
-msgid "What are the languages of your site?"
 msgstr ""

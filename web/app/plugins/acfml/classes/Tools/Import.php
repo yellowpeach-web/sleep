@@ -7,11 +7,6 @@ class Import extends Transfer implements \IWPML_Backend_Action, \IWPML_Frontend_
 		add_action( 'acf/import_field_group', [ $this, 'setLanguage' ] );
 	}
 	
-	/**
-	 * @param array $fieldGroup
-	 *
-	 * @return void
-	 */
 	public function setLanguage( $fieldGroup ) {
 		if ( $this->isGroupTranslatable() && isset( $fieldGroup[ self::LANGUAGE_PROPERTY ], $fieldGroup[ 'ID' ] ) ) {
 			$type = 'post_' . self::FIELD_GROUP_POST_TYPE;

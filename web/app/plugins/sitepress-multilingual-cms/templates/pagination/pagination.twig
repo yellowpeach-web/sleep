@@ -1,10 +1,10 @@
 {% if pagination_model.total_items %}
 
-    <h2 class="screen-reader-text">{{ pagination_model.strings.list_navigation }}</h2>
+    <h2 class="screen-reader-text">{{ pagination_model.strings.listNavigation }}</h2>
 
     <div class="tablenav-pages clearfix">
 
-        <span class="displaying-num">{{ pagination_model.total_items_text }}</span>
+        <span class="displaying-num">{{ pagination_model.strings.totalItemsText }}</span>
 
         {% if pagination_model.total_items > pagination_model.pagination.get_items_per_page %}
 
@@ -14,7 +14,7 @@
             with {
             'url': pagination_model.pagination.get_first_page_url,
             'class': 'first-page',
-            'label': pagination_model.strings.first_page,
+            'label': pagination_model.strings.firstPage,
             }
             %}
 
@@ -22,13 +22,13 @@
             with {
             'url': pagination_model.pagination.get_previous_page_url,
             'class': 'previous-page',
-            'label': pagination_model.strings.previous_page,
+            'label': pagination_model.strings.previousPage,
             }
             %}
 
             <span class="paging-input">
                 {% if nav_location == 'top' %}
-                    <label for="current-page-selector-{{ nav_location }}" class="screen-reader-text">{{ pagination_model.strings.current_page }}</label>
+                    <label for="current-page-selector-{{ nav_location }}" class="screen-reader-text">{{ pagination_model.strings.currentPage }}</label>
                     <input class="current-page" id="current-page-selector-{{ nav_location }}" type="text" name="paged"
                            value="{{ pagination_model.pagination.get_current_page }}" size="{{ pagination_model.pagination.get_total_pages|length }}" aria-describedby="table-paging">
                     <span class="tablenav-paging-text"> {{ pagination_model.strings.of }} <span class="total-pages">{{ pagination_model.pagination.get_total_pages }}</span></span>
@@ -43,7 +43,7 @@
             with {
             'url': pagination_model.pagination.get_next_page_url,
             'class': 'next-page',
-            'label': pagination_model.strings.next_page,
+            'label': pagination_model.strings.nextPage,
             }
             %}
 
@@ -52,7 +52,7 @@
             with {
             'url': pagination_model.pagination.get_last_page_url,
             'class': 'last-page',
-            'label': pagination_model.strings.last_page,
+            'label': pagination_model.strings.lastPage,
             }
             %}
 

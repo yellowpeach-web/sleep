@@ -2,14 +2,8 @@
 
 class WPML_Media_Populate_Media_Strings_Translations implements IWPML_Action {
 
-	/**
-	 * @var WPML_Translation_Element_Factory
-	 */
 	private $translation_element_factory;
 
-	/**
-	 * @var WPML_Element_Translation_Package
-	 */
 	private $translation_package;
 
 	public function __construct(
@@ -26,49 +20,49 @@ class WPML_Media_Populate_Media_Strings_Translations implements IWPML_Action {
 
 	public function populate( $prev_translation, $package, $lang ) {
 
-		if ( ! $prev_translation ) {
-			foreach ( $package['contents'] as $field => $data ) {
-				if ( $media_field = $this->is_media_field( $field ) ) {
+		foreach ( $package['contents'] as $field => $data ) {
+			if ( $media_field = $this->is_media_field( $field ) ) {
 
-					$attachment             = $this->translation_element_factory->create( $media_field['id'], 'post' );
-					$attachment_translation = $attachment->get_translation( $lang );
+				if ( isset( $prev_translation[ $field ] ) && '' !== $prev_translation[ $field ]->get_translation() ) {
+					continue;
+				}
 
-					if ( $attachment_translation ) {
-						$original_id    = (int) $media_field['id'];
-						$translation_id = $attachment_translation->get_id();
+				$attachment             = $this->translation_element_factory->create( $media_field['id'], 'post' );
+				$attachment_translation = $attachment->get_translation( $lang );
 
-						switch ( $media_field['field'] ) {
-							case 'title':
-								$translated_value = $this->get_post_field( 'post_title', $original_id, $translation_id );
-								break;
-							case 'caption':
-								$translated_value = $this->get_post_field( 'post_excerpt', $original_id, $translation_id );
-								break;
-							case 'description':
-								$translated_value = $this->get_post_field( 'post_content', $original_id, $translation_id );
-								break;
-							case 'alt_text':
-								$translated_value = get_post_meta( $translation_id, '_wp_attachment_image_alt', true );
-								if ( ! $translated_value ) {
-									$translated_value = get_post_meta( $original_id, '_wp_attachment_image_alt', true );
-								}
-								break;
-							default:
-								$translated_value = false;
+				if ( $attachment_translation ) {
+					$original_id    = (int) $media_field['id'];
+					$translation_id = $attachment_translation->get_id();
 
-						}
+					switch ( $media_field['field'] ) {
+						case 'title':
+							$translated_value = $this->get_post_field( 'post_title', $original_id, $translation_id );
+							break;
+						case 'caption':
+							$translated_value = $this->get_post_field( 'post_excerpt', $original_id, $translation_id );
+							break;
+						case 'description':
+							$translated_value = $this->get_post_field( 'post_content', $original_id, $translation_id );
+							break;
+						case 'alt_text':
+							$translated_value = get_post_meta( $translation_id, '_wp_attachment_image_alt', true );
+							if ( ! $translated_value ) {
+								$translated_value = get_post_meta( $original_id, '_wp_attachment_image_alt', true );
+							}
+							break;
+						default:
+							$translated_value = false;
 
-						if ( $translated_value ) {
-							$prev_translation[ $field ] = wpml_tm_create_translated_field(
-								'', $this->translation_package->encode_field_data( $translated_value ), true
-							);
-						}
 					}
 
+					if ( $translated_value ) {
+						$prev_translation[ $field ] = wpml_tm_create_translated_field(
+							'', $this->translation_package->encode_field_data( $translated_value ), true
+						);
+					}
 				}
+
 			}
-
-
 		}
 
 		return $prev_translation;
@@ -85,13 +79,6 @@ class WPML_Media_Populate_Media_Strings_Translations implements IWPML_Action {
 		return $media_field;
 	}
 
-	/**
-	 * @param string $field
-	 * @param int    $original_id
-	 * @param int    $translation_id
-	 *
-	 * @return string
-	 */
 	private function get_post_field( $field, $original_id, $translation_id ) {
 		$value = get_post_field( $field, $translation_id );
 

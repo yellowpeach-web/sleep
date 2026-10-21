@@ -2,48 +2,46 @@
 
 class OTGS_Installer_Upgrade_Response {
 
-	/**
-	 * @var array
-	 */
-	private $plugins;
+	private $_plugins;
 
-	/**
-	 * @var OTGS_Installer_Repositories
-	 */
+	private $plugin_finder;
+
 	private $repositories;
 
-	/**
-	 * @var OTGS_Installer_Source_Factory
-	 */
 	private $source_factory;
 
-	/**
-	 * @var OTGS_Installer_Package_Product_Finder
-	 */
 	private $product_finder;
 
-	public function __construct( array $plugins, OTGS_Installer_Repositories $repositories, OTGS_Installer_Source_Factory $source_factory, OTGS_Installer_Package_Product_Finder $product_finder ) {
-		$this->plugins        = $plugins;
+	public function __construct( OTGS_Installer_Plugin_Finder $plugin_finder, OTGS_Installer_Repositories $repositories, OTGS_Installer_Source_Factory $source_factory, OTGS_Installer_Package_Product_Finder $product_finder ) {
+		$this->plugin_finder  = $plugin_finder;
 		$this->repositories   = $repositories;
 		$this->source_factory = $source_factory;
 		$this->product_finder = $product_finder;
 	}
 
 	public function add_hooks() {
-		if ( defined( 'DOING_AJAX' ) && isset( $_POST['action'] ) && 'installer_download_plugin' === $_POST['action'] ) {
+		if ( $this->is_download_request() ) {
 			add_filter( 'site_transient_update_plugins', array( $this, 'modify_upgrade_response' ) );
 		}
 
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'modify_upgrade_response' ) );
 	}
 
-	/**
-	 * @param stdClass|null $update_plugins
-	 * @return mixed
-	 */
+	private function is_download_request() {
+		return defined( 'DOING_AJAX' ) && isset( $_POST['action'] ) && 'installer_download_plugin' === $_POST['action'];
+	}
+
+	private function plugins() {
+	  	if ( null === $this->_plugins ) {
+			$this->_plugins = $this->plugin_finder->get_all();
+		}
+
+		return $this->_plugins;
+	}
+
 	public function modify_upgrade_response( $update_plugins ) {
 		if ( isset( $update_plugins ) && is_object( $update_plugins ) ) {
-			foreach ( $this->plugins as $plugin ) {
+			foreach ( $this->plugins() as $plugin ) {
 				$repository   = $this->repositories->get( $plugin->get_repo() );
 				$subscription = $repository->get_subscription();
 
@@ -52,6 +50,8 @@ class OTGS_Installer_Upgrade_Response {
 					'slug'          => $plugin->get_slug(),
 					'plugin'        => $plugin->get_id(),
 					'new_version'   => $plugin->get_version(),
+					'requires'      => $plugin->get_requires(),
+					'requires_php'  => $plugin->get_requires_php(),
 				];
 
 				if ( $this->should_skip_upgrade_process( $plugin, $update_plugins, $repository ) ) {
@@ -61,7 +61,7 @@ class OTGS_Installer_Upgrade_Response {
 
 				$response->upgrade_notice = '';
 				$response->url            = $plugin->get_url();
-				$response->tested         = $plugin->get_tested();
+				$response->tested         = OTGS_Installer_Tested_Version::for_site( $plugin->get_tested() );
 
 				if ( $subscription->get_site_key() ) {
 					$response->package = $this->append_site_key_to_download_url(
@@ -85,7 +85,9 @@ class OTGS_Installer_Upgrade_Response {
 	private function should_skip_upgrade_process( OTGS_Installer_Plugin $plugin, $update_plugins, OTGS_Installer_Repository $repository ) {
 		$has_wp_org_update = isset( $update_plugins->response[ $plugin->get_id() ] );
 		$subscription      = $repository->get_subscription();
-		$needs_upgrade     = $plugin->get_installed_version() && version_compare( $plugin->get_version(), $plugin->get_installed_version(), '>' ) || ! empty( $_POST['reset_to_channel'] );
+		$needs_upgrade     = $plugin->get_installed_version() && version_compare( $plugin->get_version(), $plugin->get_installed_version(), '>' )
+			|| ( ! empty( $_POST['reset_to_channel'] ) && $this->is_read_for_download() )
+			|| $this->is_download_back_to_production( $plugin );
 
 		if ( ! $needs_upgrade ) {
 			return true;
@@ -114,6 +116,17 @@ class OTGS_Installer_Upgrade_Response {
 		}
 
 		return false;
+	}
+
+	private function is_download_back_to_production( OTGS_Installer_Plugin $plugin ) {
+		return WP_Installer_Channels::CHANNEL_PRODUCTION === $plugin->get_channel()
+			&& $plugin->get_installed_version()
+			&& version_compare( $plugin->get_installed_version(), $plugin->get_version(), '>' )
+			&& $this->is_read_for_download();
+	}
+
+	private function is_read_for_download() {
+		return $this->is_download_request() && 'site_transient_update_plugins' === current_filter();
 	}
 
 	private function is_plugin_registered_on_external_repo( OTGS_Installer_Plugin $plugin ) {

@@ -1,0 +1,393 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "ja"
+         },
+         "Error in updating since dates for types.": [
+            "タイプごとの日付以降の更新中にエラーが発生しました。"
+         ],
+         "Error in fetching untranslated types count": [
+            "未翻訳のタイプ数の取得中にエラーが発生しました"
+         ],
+         "Error in updating since date for type.": [
+            "タイプごとの日付以降の更新中にエラーが発生しました。"
+         ],
+         "Content to translate": [
+            "翻訳するコンテンツ"
+         ],
+         "Content to Translate": [
+            "翻訳するコンテンツ"
+         ],
+         "Content type": [
+            "コンテンツタイプ"
+         ],
+         "Include": [
+            "含める"
+         ],
+         "These settings can be changed on the Translations dashboard.": [
+            "これらの設定は翻訳ダッシュボードで変更できます。"
+         ],
+         "Items": [
+            "アイテム"
+         ],
+         "Word count": [
+            "単語数"
+         ],
+         "Loading content to translate": [
+            "翻訳するコンテンツを読み込み中"
+         ],
+         "Words to translate": [
+            "翻訳する単語"
+         ],
+         "Calculating… <s>less than 1 minute left.</s>": [
+            "計算中… <s>残り1分未満です。</s>"
+         ],
+         "Calculating… <s>%d minute left.</s>": [
+            "計算中… <s>残り %d 分です。</s>"
+         ],
+         "Words needed to translate your existing content into the new languages: %s.": [
+            "既存のコンテンツを新しい言語に翻訳するために必要な単語数： %s。"
+         ],
+         "Words needed to translate your existing content into the new language.": [
+            "既存のコンテンツを新しい言語に翻訳するために必要な単語数。"
+         ],
+         "Based on the remaining untranslated content across all languages.": [
+            "すべての言語における残りの未翻訳コンテンツに基づいています。"
+         ],
+         "Estimated from the selected source volume multiplied by the target languages.": [
+            "選択されたソースのボリュームにターゲット言語の数を掛けて推定されます。"
+         ],
+         "%1$s source words × %2$s language": [
+            "%1$s ソース単語 × %2$s 言語"
+         ],
+         "Already translated content": [
+            "翻訳済みコンテンツ"
+         ],
+         "Words required:": [
+            "必要な単語数："
+         ],
+         "Words": [
+            "単語"
+         ],
+         "Documents you translated yourself stay exactly as you made them": [
+            "自分で翻訳したドキュメントは、作成したままの状態が維持されます"
+         ],
+         "(%d document)": [
+            "（%d 個のドキュメント）"
+         ],
+         "View documents": [
+            "ドキュメントを表示"
+         ],
+         "%1$d of %2$d language will be translated automatically": [
+            "%2$d 言語中 %1$d 言語が自動的に翻訳されます"
+         ],
+         "Translated to %d language": [
+            "%d 言語に翻訳済み"
+         ],
+         "Add/remove languages": [
+            "言語を追加/削除"
+         ],
+         "Percentages show how much of your selected content is already translated in each language.": [
+            "パーセンテージは、選択したコンテンツのうち、各言語ですでに翻訳されている割合を示します。"
+         ],
+         "Note: Content already translated into all languages is not included in this calculation.": [
+            "注意：すべての言語ですでに翻訳されているコンテンツは、この計算には含まれません。"
+         ],
+         "Same as default": [
+            "デフォルトと同じ"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "%1$s と %2$s は同じ言語として認識されているため、自動翻訳は利用できません。"
+         ],
+         "Translation paused": [
+            "翻訳を一時停止中"
+         ],
+         "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor.": [
+            "WPML は新しい %s の翻訳を作成していないため、この言語は含まれていません。これを含めるには、言語エディタのその言語の行で「翻訳を再開」を使用してください。"
+         ],
+         "Manual only": [
+            "手動のみ"
+         ],
+         "%s has no automatic-translation support. You can translate this content manually.": [
+            "%s は自動翻訳をサポートしていません。このコンテンツは手動で翻訳できます。"
+         ],
+         "Adjusted word rate (%s)": [
+            "調整後の単語レート (%s)"
+         ],
+         "This adjusted word rate applies to legacy translation engines.": [
+            "この調整後の単語レートは、レガシー翻訳エンジンに適用されます。"
+         ],
+         "Translation engine: <strong>%s</strong>": [
+            "翻訳エンジン： <strong>%s</strong>"
+         ],
+         "Legacy engine": [
+            "レガシーエンジン"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "レガシー料金が適用されました。 %s はレガシー翻訳エンジンであり、新しいサイトには推奨されず、今後廃止される予定です。既存のサイトでは、引き続き調整後の単語レートが適用されます。"
+         ],
+         "Switch to PTC": [
+            "PTC に切り替える"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
+            "これは、現在のコンテンツの翻訳に本日必要な分量です。フォームやスライダーなど、他のプラグインによって追加された一部のテキストは含まれておらず、セットアップ完了後にカウントされます。テーマやプラグインのサイト文字列もセットアップ後にカウントされ、通常は数百単語ほど追加されます。その後、編集は無料です。追加した単語に対してのみ、再度支払いが発生します。"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
+            "これは、現在のコンテンツを翻訳するために今日必要な分量です。フォームやスライダーなど、他のプラグインによって追加された一部のテキストは含まれておらず、これらはセットアップ完了後にカウントされます。テーマやプラグインからのサイト文字列もセットアップ後にカウントされ、通常は数百単語が追加されます。%s の単語単位の料金が適用されます。翻訳済みページの変更には再度料金が発生します。"
+         ],
+         "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
+            "これは、現在のコンテンツの翻訳に本日必要な分量です。その後、編集は無料です。追加した単語に対してのみ、再度支払いが発生します。"
+         ],
+         "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again.": [
+            "これは、現在のコンテンツを翻訳するために今日必要な分量です。%s の単語単位の料金が適用されます。翻訳済みページの変更には再度料金が発生します。"
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
+            "これには、固定ページ、投稿、商品（カスタムフィールド、ページビルダーのテキスト、メディアテキストを含む）と、それらに使用されているカテゴリー、タグ、属性がカウントされます。"
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
+            "これには、固定ページ、投稿、商品（カスタムフィールド、ページビルダーのテキスト、メディアテキストを含む）、それらに使用されているカテゴリー、タグ、属性、およびサイトの文字列がカウントされます。タームは翻訳のために両方の方法で送信されるため、それを使用するすべての項目でカウントされるほか、単体でも1回カウントされます。"
+         ],
+         "Total items": [
+            "アイテム合計"
+         ],
+         "Total source words": [
+            "ソース単語の合計"
+         ],
+         "Previous": [
+            "前へ"
+         ],
+         "Next": [
+            "次へ"
+         ],
+         "Showing %1$d–%2$d of %3$d types.": [
+            "%3$d 種類中 %1$d–%2$d 種類のタイプを表示しています。"
+         ],
+         "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated.": [
+            "現在のすべての %1$s はすべての言語に翻訳されています。<br>新しい %2$s や編集内容は自動的に翻訳されます。"
+         ],
+         "All %s": [
+            "すべての %s"
+         ],
+         "For translated types": [
+            "翻訳されたタイプ用"
+         ],
+         "None": [
+            "なし"
+         ],
+         "Since %s": [
+            "%s 以降"
+         ],
+         "Since specific date": [
+            "特定の日付以降"
+         ],
+         "<b>Pay-As-You-Go</b> is active on this site.": [
+            "このサイトでは <b>従量課金制</b> が有効です。"
+         ],
+         "<b>%s words</b> are on this site. Continue.": [
+            "このサイトには <b>%s 単語</b> あります。続行します。"
+         ],
+         "Your site will be translated right after the setup.": [
+            "セットアップ後すぐにサイトが翻訳されます。"
+         ],
+         "To use prepaid words, register WPML on this site.": [
+            "プリペイド単語を使用するには、このサイトで WPML を登録してください。"
+         ],
+         "Checking…": [
+            "確認中…"
+         ],
+         "Retry": [
+            "再試行"
+         ],
+         "We could not reach our translation system.": [
+            "翻訳システムに接続できませんでした。"
+         ],
+         "This site is not registered with a WPML account, so prepaid words are not available.": [
+            "このサイトは WPML アカウントに登録されていないため、プリペイド単語は利用できません。"
+         ],
+         "We could not read your WPML account.": [
+            "WPML アカウントを読み取ることができませんでした。"
+         ],
+         "%s more words are needed to translate your site.": [
+            "サイトを翻訳するには、あと %s 単語必要です。"
+         ],
+         "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>.": [
+            "WPML アカウントからこのサイトにプリペイド単語を割り当てて、<b>すべてを自動翻訳する</b> を開始してください。"
+         ],
+         "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>.": [
+            "すでにお持ちの単語を割り当てて残りを購入するか、<b>従量課金制</b> を有効にしてください。"
+         ],
+         "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
+            "<b>すべてを自動翻訳する</b> を開始するには、<b>従量課金制</b> を有効にするか、プリペイド単語を購入してください。"
+         ],
+         "Translation started": [
+            "翻訳を開始しました"
+         ],
+         "Your content is being sent for automatic translation. Follow its progress on the Translations page.": [
+            "コンテンツを自動翻訳に送信しています。進行状況は翻訳ページで確認できます。"
+         ],
+         "Close": [
+            "閉じる"
+         ],
+         "Preparing…": [
+            "準備中…"
+         ],
+         "Go to Translations": [
+            "翻訳へ移動"
+         ],
+         "Adjust content limits for <b>Translate Everything</b>": [
+            "<b>すべてを翻訳する</b>のコンテンツ制限を調整する"
+         ],
+         "Review the cost and adjust how far back automatic translation applies per content type.": [
+            "コストを確認し、コンテンツタイプごとに自動翻訳をどこまで遡って適用するかを調整します。"
+         ],
+         "This amount will cover translating your existing content into the new language.": [
+            "この量は、既存のコンテンツを新しい言語に翻訳することをカバーします。"
+         ],
+         "Choose how to pay for the translation": [
+            "支払い方法を選択する"
+         ],
+         "WPML could not calculate the word count. You can add the language without a cost estimate.": [
+            "WPML は単語数を計算できませんでした。見積もりなしで言語を追加できます。"
+         ],
+         "Cancel": [
+            "キャンセル"
+         ],
+         "Save changes": [
+            "変更を保存"
+         ],
+         "You can adjust the content limits once Translate Everything finishes the current translation run.": [
+            "「すべてを翻訳する」の現在の翻訳実行が終了すると、コンテンツ制限を調整できます。"
+         ],
+         "%1$sCheck pricing%2$s.": [
+            "%1$s料金を確認%2$s。"
+         ],
+         "Lowest cost per word": [
+            "1単語あたりの最低コスト"
+         ],
+         "Pay only for what you use": [
+            "使用した分だけ支払い"
+         ],
+         "Never run out. Translation never stops.": [
+            "不足することはありません。翻訳が止まることはありません。"
+         ],
+         "The first 500 words each month are free": [
+            "毎月最初の500単語は無料です"
+         ],
+         "Pay-As-You-Go": [
+            "従量課金制"
+         ],
+         "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate.": [
+            "自動翻訳を行うには <b>従量課金制</b> を有効にしてください。<b>従量課金制</b> では、翻訳した単語数に応じて料金が発生します。"
+         ],
+         "Activating <b>Pay-As-You-Go</b>…": [
+            "<b>従量課金制</b> を有効化中…"
+         ],
+         "Continue in the new tab": [
+            "新しいタブで続行"
+         ],
+         "Activate <b>Pay-As-You-Go</b>": [
+            "<b>従量課金制</b>を有効にする"
+         ],
+         "<b>Pay-As-You-Go</b> is not active yet.": [
+            "<b>従量課金制</b> はまだ有効ではありません。"
+         ],
+         "Refresh": [
+            "更新"
+         ],
+         "Already using <b>Pay-As-You-Go</b> on another site?": [
+            "他のサイトですでに<b>従量課金制</b>を使用していますか？"
+         ],
+         "Connect this site to it": [
+            "このサイトを接続する"
+         ],
+         "Activate Pay-As-You-Go": [
+            "従量課金制を有効にする"
+         ],
+         "Connect your sites to share translation memory, glossary and word quota.": [
+            "サイトを接続して、翻訳メモリ、用語集、単語枠を共有します。"
+         ],
+         "Learn more": [
+            "詳細はこちら"
+         ],
+         "Copy your migration code:": [
+            "マイグレーションコードをコピー："
+         ],
+         "Loading…": [
+            "読み込み中…"
+         ],
+         "Copied!": [
+            "コピーしました！"
+         ],
+         "Log into a site with an active automatic translation account.": [
+            "有効な自動翻訳アカウントを持つサイトにログインします。"
+         ],
+         "Go to \"WPML\" → \"Translation Dashboard\".": [
+            "「WPML」→「翻訳ダッシュボード」に移動します。"
+         ],
+         "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
+            "「支払いとメンテナンス」タブで「接続済みサイト」に移動します。"
+         ],
+         "Click \"Enter the connection key of another site\" to finish connecting your sites.": [
+            "「別のサイトの接続キーを入力」をクリックして、サイトの接続を完了します。"
+         ],
+         "Assign words": [
+            "単語を割り当てる"
+         ],
+         "Buy and assign words": [
+            "単語を購入して割り当てる"
+         ],
+         "Refresh to assign words": [
+            "更新して単語を割り当てる"
+         ],
+         "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site.": [
+            "少なくとも %3$s%4$s 単語%5$s を含む %1$sプリペイドパッケージ%2$s を購入し、このサイトに割り当ててください。"
+         ],
+         "This amount will cover translation of all your current content.": [
+            "この量は、現在のすべてのコンテンツの翻訳をカバーします。"
+         ],
+         "Assign %1$s%2$s words%3$s to this site.": [
+            "このサイトに %1$s%2$s 単語%3$s を割り当てます。"
+         ],
+         "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s.": [
+            "お持ちの %1$s%2$s 単語%3$s を割り当て、さらに %4$s%5$s 単語%6$s を購入します。"
+         ],
+         "Buy %1$s%2$s words%3$s for this site.": [
+            "このサイト用に %1$s%2$s 単語%3$s を購入します。"
+         ],
+         "Assign at least %1$s%2$s words%3$s to this site to continue.": [
+            "続行するには、少なくとも %1$s%2$s 単語%3$s をこのサイトに割り当ててください。"
+         ],
+         "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount.": [
+            "WPML アカウントから単語を割り当て、残りの量をカバーするために少なくとも %3$s%4$s 単語%5$s を含む追加の %1$sプリペイドパッケージ%2$s を購入してください。"
+         ],
+         "Prepaid words": [
+            "プリペイド単語"
+         ],
+         "There are %1$s%2$s words%3$s on your WPML account.": [
+            "WPML アカウントに %1$s%2$s 単語%3$s あります。"
+         ],
+         "There are %1$s%2$s available on your WPML account.%3$s": [
+            "WPML アカウントに %1$s%2$s 個の利用可能な単語があります。%3$s"
+         ],
+         "(Only the WPML account owner can do this.)": [
+            "（WPML アカウントの所有者のみがこれを行えます。）"
+         ],
+         "Checking for new words...": [
+            "新しい単語を確認中..."
+         ],
+         "Still not enough words. Refresh again in %d seconds.": [
+            "まだ単語が足りません。 %d 秒後に再度更新してください。"
+         ],
+         "Already assigned?": [
+            "すでに割り当て済みですか？"
+         ],
+         "Close modal": [
+            "モーダルを閉じる"
+         ]
+      }
+   }
+}

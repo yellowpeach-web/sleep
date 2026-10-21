@@ -4,22 +4,21 @@ class WPML_Upgrade_Chinese_Flags implements IWPML_Upgrade_Command {
 
 	private $wpdb;
 
-	/**
-	 * WPML_Upgrade_Chinese_Flags constructor.
-	 *
-	 * @param array $args {
-	 *                    'wpdb' => @type wpdb
-	 *                    }
-	 */
 	public function __construct( array $args ) {
 		$this->wpdb = $args['wpdb'];
 	}
 
 	public function run() {
 		$codes = array( 'zh-hans', 'zh-hant' );
+		$wpdb  = $this->wpdb;
+		$flags = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT id, lang_code, flag FROM {$wpdb->prefix}icl_flags WHERE lang_code IN (" . implode( ', ', array_fill( 0, count( $codes ), '%s' ) ) . ')',
+				$codes
+			)
+		);
 
-		$flags_query = 'SELECT id, lang_code, flag FROM ' . $this->wpdb->prefix . 'icl_flags WHERE lang_code IN (' . wpml_prepare_in( $codes ) . ')';
-		$flags       = $this->wpdb->get_results( $flags_query );
+		$written = 0;
 
 		if ( $flags ) {
 			foreach ( $flags as $flag ) {
@@ -33,18 +32,18 @@ class WPML_Upgrade_Chinese_Flags implements IWPML_Upgrade_Command {
 						array( '%s' ),
 						array( '%d' )
 					);
+					++$written;
 				}
 			}
+		}
+
+		if ( $written ) {
+			WPML_Flags::invalidate();
 		}
 
 		return true;
 	}
 
-	/**
-	 * @param \stdClass $flag
-	 *
-	 * @return bool
-	 */
 	protected function must_update( $flag ) {
 		return $flag->flag === $flag->lang_code . '.png';
 	}

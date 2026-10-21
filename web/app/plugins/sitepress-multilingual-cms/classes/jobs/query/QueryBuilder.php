@@ -9,37 +9,24 @@ use \WPML_TM_Jobs_Date_Range;
 use \InvalidArgumentException;
 
 class QueryBuilder {
-	/** @var wpdb */
 	private $wpdb;
 
-	/** @var LimitQueryHelper */
 	protected $limit_helper;
 
-	/** @var OrderQueryHelper */
 	protected $order_helper;
 
-	/** @var array */
 	private $columns = array();
 
-	/** @var string */
 	private $from;
 
-	/** @var array */
 	private $joins = array();
 
-	/** @var array */
 	private $where = array();
 
-	/** @var string */
 	private $order;
 
-	/** @var string */
 	private $limit;
 
-	/**
-	 * @param LimitQueryHelper $limit_helper
-	 * @param OrderQueryHelper $order_helper
-	 */
 	public function __construct(
 		LimitQueryHelper $limit_helper,
 		OrderQueryHelper $order_helper
@@ -51,76 +38,49 @@ class QueryBuilder {
 		$this->order_helper = $order_helper;
 	}
 
-	/**
-	 * @param array $columns
-	 *
-	 * @return self
-	 */
 	public function set_columns( array $columns ) {
 		$this->columns = $columns;
 
 		return $this;
 	}
 
-	/**
-	 * @param $column
-	 *
-	 * @return self
-	 */
 	public function add_column( $column ) {
 		$this->columns[] = $column;
 
 		return $this;
 	}
 
-	/**
-	 * @param string $from
-	 *
-	 * @return self
-	 */
 	public function set_from( $from ) {
 		$this->from = $from;
 
 		return $this;
 	}
 
-	/**
-	 * @param $join
-	 *
-	 * @return self
-	 */
 	public function add_join( $join ) {
 		$this->joins[] = $join;
 
 		return $this;
 	}
 
-	/**
-	 * @param                            $column
-	 * @param WPML_TM_Jobs_Search_Params $params
-	 *
-	 * @return self
-	 */
 	public function set_status_filter( $column, WPML_TM_Jobs_Search_Params $params ) {
 		if ( $params->get_status() ) {
-			$statuses      = wpml_prepare_in( $params->get_status(), '%d' );
-			$this->where[] = sprintf( $column . ' IN (%s)', $statuses );
+			$this->assert_allowed_filter_column( $column );
+			$statuses      = array_values( (array) $params->get_status() );
+			$this->where[] = $this->wpdb->prepare(
+				esc_sql( $column ) . ' IN (' . implode( ', ', array_fill( 0, count( $statuses ), '%d' ) ) . ')',
+				$statuses
+			);
 		}
 
 		return $this;
 	}
 
-	/**
-	 * @param string     $column
-	 * @param array|null $values
-	 *
-	 * @return $this
-	 */
 	public function set_multi_value_text_filter( $column, $values ) {
 		if ( $values ) {
+			$this->assert_allowed_filter_column( $column );
 			$where = \wpml_collect( $values )->map(
 				function ( $value ) use ( $column ) {
-					return $this->wpdb->prepare( "{$column} LIKE %s", '%' . $value . '%' );
+					return $this->wpdb->prepare( esc_sql( $column ) . ' LIKE %s', '%' . $value . '%' );
 				}
 			)->toArray();
 
@@ -130,32 +90,22 @@ class QueryBuilder {
 		return $this;
 	}
 
-	/**
-	 * @param                            $column
-	 * @param WPML_TM_Jobs_Search_Params $params
-	 *
-	 * @return $this
-	 */
 	public function set_source_language( $column, WPML_TM_Jobs_Search_Params $params ) {
 		if ( $params->get_source_language() ) {
-			$this->where[] = $this->wpdb->prepare( "{$column} = %s", $params->get_source_language() );
+			$this->assert_allowed_filter_column( $column );
+			$this->where[] = $this->wpdb->prepare( esc_sql( $column ) . ' = %s', $params->get_source_language() );
 		}
 
 		return $this;
 	}
 
-	/**
-	 * @param                            $column
-	 * @param WPML_TM_Jobs_Search_Params $params
-	 *
-	 * @return $this
-	 */
 	public function set_target_language( $column, WPML_TM_Jobs_Search_Params $params ) {
 		if ( $params->get_target_language() ) {
-			$this->where[] = sprintf(
-				'%s IN (%s)',
-				$column,
-				wpml_prepare_in( $params->get_target_language() )
+			$this->assert_allowed_filter_column( $column );
+			$languages     = array_values( (array) $params->get_target_language() );
+			$this->where[] = $this->wpdb->prepare(
+				esc_sql( $column ) . ' IN (' . implode( ', ', array_fill( 0, count( $languages ), '%s' ) ) . ')',
+				$languages
 			);
 		}
 
@@ -169,13 +119,15 @@ class QueryBuilder {
 	) {
 		if ( $params->get_scope() !== WPML_TM_Jobs_Search_Params::SCOPE_ALL && $params->get_translated_by() ) {
 			if ( $params->get_scope() === WPML_TM_Jobs_Search_Params::SCOPE_LOCAL ) {
+				$this->assert_allowed_filter_column( $local_translator_column );
 				$this->where[] = $this->wpdb->prepare(
-					"{$local_translator_column} = %d",
+					esc_sql( $local_translator_column ) . ' = %d',
 					$params->get_translated_by()
 				);
 			} else {
+				$this->assert_allowed_filter_column( $translation_service_column );
 				$this->where[] = $this->wpdb->prepare(
-					"{$translation_service_column} = %d",
+					esc_sql( $translation_service_column ) . ' = %d',
 					$params->get_translated_by()
 				);
 			}
@@ -184,32 +136,53 @@ class QueryBuilder {
 		return $this;
 	}
 
-	/**
-	 * @param string    $column
-	 * @param int|int[] $value
-	 *
-	 * @return $this
-	 */
+	private function assert_allowed_filter_column( $column ) {
+		$allowed = array(
+			'posts.post_title',
+			'terms.name',
+			'string_packages.title',
+			'translation_batches.batch_name',
+			'batches.batch_name',
+			'translations.source_language_code',
+			'translations.language_code',
+			'translate_job.translator_id',
+			'translation_status.translation_service',
+			'translation_status.status',
+			'translation_status.timestamp',
+			'translation_status.rid',
+			'translation_status.tp_id',
+			'translate_job.job_id',
+			'translate_job.deadline_date',
+			'translate_job.completed_date',
+			'original_translations.element_id',
+		);
+
+		if ( ! in_array( $column, $allowed, true ) ) {
+			throw new \InvalidArgumentException( 'Unsupported jobs filter column.' );
+		}
+	}
+
 	public function set_numeric_value_filter( $column, $value ) {
 		if ( $value ) {
+			$this->assert_allowed_filter_column( $column );
 			if ( is_array( $value ) ) {
-				$this->where[] = sprintf( "{$column} IN(%s)", wpml_prepare_in( $value, '%d' ) );
+				$values        = array_values( $value );
+				$this->where[] = $this->wpdb->prepare(
+					esc_sql( $column ) . ' IN(' . implode( ', ', array_fill( 0, count( $values ), '%d' ) ) . ')',
+					$values
+				);
 			} else {
-				$this->where[] = sprintf( "{$column} = %d", $value );
+				$this->where[] = $this->wpdb->prepare( esc_sql( $column ) . ' = %d', $value );
 			}
 		}
 
 		return $this;
 	}
 
-	/**
-	 * @param                            $column
-	 * @param WPML_TM_Jobs_Search_Params $params
-	 *
-	 * @return $this
-	 */
 	public function set_tp_id_filter( $column, WPML_TM_Jobs_Search_Params $params ) {
 		if ( $params->get_tp_id() ) {
+			$this->assert_allowed_filter_column( $column );
+			$column = esc_sql( $column );
 			$where  = array();
 			$tp_ids = $params->get_tp_id();
 			if ( in_array( null, $tp_ids, true ) ) {
@@ -227,21 +200,17 @@ class QueryBuilder {
 		return $this;
 	}
 
-	/**
-	 * @param string                  $column
-	 * @param WPML_TM_Jobs_Date_Range $date_range
-	 *
-	 * @return self
-	 */
 	public function set_date_range( $column, WPML_TM_Jobs_Date_Range $date_range ) {
+		$this->assert_allowed_filter_column( $column );
+		$column    = esc_sql( $column );
 		$sql_parts = array();
 
 		if ( $date_range->get_begin() ) {
-			$sql_parts[] = $this->wpdb->prepare( $column . ' >= %s', $date_range->get_begin()->format( 'Y-m-d' ) );
+			$sql_parts[] = $this->wpdb->prepare( esc_sql( $column ) . ' >= %s', $date_range->get_begin()->format( 'Y-m-d' ) );
 		}
 		if ( $date_range->get_end() ) {
 			$sql_parts[] = $this->wpdb->prepare(
-				$column . ' <= %s',
+				esc_sql( $column ) . ' <= %s',
 				$date_range->get_end()->format( 'Y-m-d 23:59:59' )
 			);
 		}
@@ -297,9 +266,6 @@ class QueryBuilder {
 		);
 	}
 
-	/**
-	 * @param bool $automatic
-	 */
 	public function set_automatic( $automatic = true ) {
 		$this->add_AND_where_condition(
 			$this->wpdb->prepare(
@@ -309,9 +275,6 @@ class QueryBuilder {
 		);
 	}
 
-	/**
-	 * @param int $maxAteSyncCount
-	 */
 	public function set_max_ate_sync_count( $maxAteSyncCount ) {
 		$this->add_AND_where_condition(
 			$this->wpdb->prepare(
@@ -325,16 +288,11 @@ class QueryBuilder {
 		$this->add_AND_where_condition(
 			$this->wpdb->prepare(
 				'translation_status.status != %s',
-				\WPML_TM_ATE_API::SHOULD_HIDE_STATUS
+				ICL_TM_ATE_CANCELLED
 			)
 		);
 	}
 
-	/**
-	 * @param string|void $where
-	 *
-	 * @return self
-	 */
 	public function add_AND_where_condition( $where ) {
 		if ( $where ) {
 			$this->where[] = $where;
@@ -343,22 +301,12 @@ class QueryBuilder {
 		return $this;
 	}
 
-	/**
-	 * @param WPML_TM_Jobs_Search_Params $params
-	 *
-	 * @return self
-	 */
 	public function set_order( WPML_TM_Jobs_Search_Params $params ) {
 		$this->order = $this->order_helper->get_order( $params );
 
 		return $this;
 	}
 
-	/**
-	 * @param WPML_TM_Jobs_Search_Params $params
-	 *
-	 * @return self
-	 */
 	public function set_limit( WPML_TM_Jobs_Search_Params $params ) {
 		$this->limit = $this->limit_helper->get_limit( $params );
 

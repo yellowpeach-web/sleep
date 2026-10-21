@@ -4,22 +4,26 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "zh_TW"
          },
+         "Select %s": [
+            "選取 %s"
+         ],
          "From:": [
-            "從："
+            "來源："
          ],
          "--Choose language--": [
-            " - 選擇語言 - "
+            "--選擇語言--"
          ],
          "to:": [
-            "到："
+            "目標："
          ],
          "Set language pair(s) for Translator %s:": [
-            "為譯員%s設定語言對："
+            "為翻譯人員 %s 設定語言配對："
          ],
          "+ Add more language pairs for this translator": [
-            "+為此譯員新增更多語言對"
+            "+ 為此翻譯人員新增更多語言配對"
          ],
          "First Name": [
             "名字"
@@ -31,16 +35,19 @@
             "角色"
          ],
          "(required)": [
-            "（必須）"
+            "(必填)"
+         ],
+         "Select a role for the user": [
+            "為使用者選取角色"
          ],
          "Make sure that you have provided a correct email address e.g. name@domain.com": [
-            "確保您提供了正確的電子郵件地址，例如name@domain.com"
+            "請確保您提供了正確的電子郵件地址，例如 name@domain.com"
          ],
          "This field is required": [
-            "此欄位是必填欄"
+            "此欄位為必填"
          ],
          "A translator can be any WordPress role.": [
-            "譯員可以是任何WordPress角色。"
+            "翻譯人員可以是任何 WordPress 角色。"
          ],
          "Username": [
             "使用者名稱"
@@ -48,20 +55,11 @@
          "Email": [
             "電子郵件"
          ],
-         "Search": [
-            "搜尋"
+         "Search by name, username or email": [
+            "按名稱、使用者名稱或電子郵件搜尋"
          ],
-         "user": [
-            "使用者"
-         ],
-         "Editor": [
-            "編輯器"
-         ],
-         "Select an existing %s and set as Translation Manager": [
-            "選擇現有%s並設定為翻譯經理"
-         ],
-         "Create a new %s and set as Translation Manager": [
-            "建立新的%s並設定為翻譯經理"
+         "Your site has a large number of users, please enter the exact username or email address.": [
+            "您的網站有大量使用者，請輸入確切的使用者名稱或電子郵件地址。"
          ],
          "Cancel": [
             "取消"
@@ -69,101 +67,131 @@
          "Add Translation Manager": [
             "新增翻譯經理"
          ],
-         "Set language pair(s)": [
-            "設定語言對"
+         "user": [
+            "使用者"
          ],
-         "Previous": [
-            "上一頁"
+         "Editor": [
+            "編輯"
          ],
-         "Save": [
-            "保存"
+         "Select an existing user and set them as Translation Manager": [
+            "選取現有使用者並將其設為翻譯經理"
          ],
-         "Add a Translator": [
-            "新增譯員"
+         "Create a new user and set them as Translation Manager": [
+            "建立新使用者並將其設為翻譯經理"
+         ],
+         "Add a Translation Manager": [
+            "新增翻譯經理"
          ],
          "Select an existing user and set as Translator": [
-            "選擇一個現有使用者，並設定為翻譯"
+            "選取現有使用者並設為翻譯人員"
          ],
          "Create a new user and set as Translator": [
-            "建立一個新使用者，並設定為翻譯"
+            "建立新使用者並設為翻譯人員"
+         ],
+         "Set language pair(s)": [
+            "設定語言配對"
+         ],
+         "Previous": [
+            "上一步"
+         ],
+         "Save": [
+            "儲存"
+         ],
+         "Add a Translator": [
+            "新增翻譯人員"
          ],
          "Edit language pair(s) for translator": [
-            "編輯翻譯的語言對"
+            "編輯翻譯人員的語言配對"
          ],
          "Name": [
             "名稱"
          ],
          "Language Pairs": [
-            "語言對"
+            "語言配對"
          ],
          "You can translate to and from all languages": [
-            "您可以翻譯所有語言"
+            "您可以翻譯所有語言的往返內容"
+         ],
+         "Edit language pair(s)": [
+            "編輯語言配對"
+         ],
+         "Delete language pair(s)": [
+            "刪除語言配對"
          ],
          "%s file upload failed.": [
-            "%s檔案上載失敗。"
+            "%s 檔案上傳失敗。"
          ],
          "Flag": [
             "國旗"
          ],
          "Flag file": [
-            "旗幟檔案"
+            "國旗檔案"
          ],
-         "You just added  language. Next, select it as the site's default language or a translation language.": [
-            "您剛剛新增了語言。接下來，選擇它作為網站的預設語言或翻譯語言。"
+         "You just added %s language. Next, select it as the site's default language or a translation language.": [
+            "您剛剛新增了 %s 語言。接下來，請將其選取為網站的預設語言或翻譯語言。"
          ],
          "Language added": [
-            "已新增語言"
+            "語言已新增"
          ],
          "The value \"%s\" already exists": [
-            "值\"%s\"已存在"
+            "數值「%s」已存在"
          ],
          "Add a new language": [
             "新增語言"
          ],
          "Create a country-specific language by choosing the general language from the list below. Then, choose the country it should be localized for.": [
-            "從以下清單中選擇通用語言，建立特定於國家/地區的語言。然後，選擇應該為其在地化的國家/地區。"
+            "從下方清單中選擇一般語言來建立特定國家的語言。然後，選擇應為其進行地區設定的國家。"
          ],
          "By choosing a combination that already exists in the database, WPML can help fill out the necessary fields. Read more about <AddingACustomLanguageLink />.": [
-            "透過選擇資料庫中已經存在的組合，WPML可以幫助填寫必要的欄位。進一步瞭解<AddingACustomLanguageLink />。"
+            "透過選擇資料庫中已存在的組合，WPML 可以協助填寫必要的欄位。閱讀更多關於 <AddingACustomLanguageLink /> 的資訊。"
          ],
          "Cannot find?": [
             "找不到？"
          ],
          "Click here": [
-            "按這裡"
+            "按一下這裡"
          ],
          "The wrong format. It may contain only small letters and \"-\". E.g: \"fr\" , \"pt-br\", \"zh-hans\"": [
-            "格式錯誤。它只能包含小寫字母和 \"-\"。例如\"fr\"、 \"pt-br\"、\"zh-hans\""
+            "格式錯誤。它只能包含小寫字母和「-」。例如：「fr」、「pt-br」、「zh-hans」"
          ],
          "Language": [
             "語言"
          ],
          "Location": [
-            "地點"
+            "位置"
          ],
          "Code": [
             "代碼"
          ],
-         "The language will not be supported by automatic translations": [
-            "自動翻譯將不支援該語言"
+         "Flags must be:": [
+            "國旗必須為："
+         ],
+         "Automatic Translation will use the default behavior for this language": [
+            "自動翻譯將對此語言使用預設行為"
          ],
          "Language mapping": [
             "語言對應"
          ],
-         "Don't map this language": [
-            "不要對應此語言"
+         "Use Automatic Translation default behavior": [
+            "使用自動翻譯預設行為"
+         ],
+         "PNG, SVG, or JPG files": [
+            "PNG、SVG 或 JPG 檔案"
          ],
          "Default locale": [
-            "預設的區域設定"
+            "預設地區設定"
          ],
          "The wrong format. It may contain only small letters and \"_\". E.g: \"de\" , \"de_DE\", \"zh_Hant_TW\"": [
-            "格式錯誤。它只能包含小寫字母和 \"_\"。例如\"de\"、\"de_DE\"、\"zh_Hant_TW\""
+            "格式錯誤。它只能包含小寫字母和「_」。例如：「de」、「de_DE」、「zh_Hant_TW」"
          ],
          "hreflang": [
             "hreflang"
          ],
+         "18 x 12 pixels": [
+            "18 x 12 像素"
+         ],
          "Encode url?": [
-            "編碼url？"
+            "編碼 URL？"
          ],
          "NO": [
             "否"
@@ -172,79 +200,91 @@
             "是"
          ],
          " (required)": [
-            "（必須）"
+            " (必填)"
+         ],
+         "The name of your language as it will appear on your site's language switcher.": [
+            "您的語言名稱，將顯示在您網站的語言切換器上。"
          ],
          "Please fill in the field": [
             "請填寫此欄位"
          ],
+         "A unique value that identifies the language in the database and URL. Once saved, the language code cannot be changed.": [
+            "在資料庫和 URL 中識別語言的唯一值。一旦儲存，語言代碼即無法更改。"
+         ],
          "Save language": [
             "儲存語言"
          ],
-         "The name of your language as it will appear on your site's language switcher.": [
-            "將在網站語言切換器上顯示的語言名稱。"
-         ],
-         "A unique value that identifies the language in the database and URL. Once saved, the language code cannot be changed.": [
-            "資料庫和URL中標識語言的唯一值。語言程式碼儲存後無法變更。"
-         ],
          "If your custom language is similar to an existing language, you can use the existing language's spellcheck and automatic translation. For example, if your custom language is Swiss-German, you can map to German as the language to use for spellcheck and automatic translation. If you don't map your custom language to an existing language, spellcheck and automatic translation features will be unavailable in that language.": [
-            "如果您的自訂語言與現有語言相似，則可以使用現有語言的拼字檢查和自動翻譯。例如，如果您的自訂語言是瑞士德文，則可以對應到德文作為拼字檢查和自動翻譯使用的語言。如果不將自訂語言對應到現有語言，則拼字檢查和自動翻譯功能將不可用在該語言中。"
+            "如果您的自訂語言與現有語言相似，您可以使用現有語言的拼字檢查和自動翻譯。例如，如果您的自訂語言是瑞士德語，您可以對應到德語，作為拼字檢查和自動翻譯使用的語言。如果您不將自訂語言對應到現有語言，則該語言將無法使用拼字檢查和自動翻譯功能。"
          ],
          "The value WPML checks when loading translations from MO and PO files. The default locale is included in the filenames in your /wp-content/languages/ folder in your WordPress setup.": [
-            "從MO和PO檔案載入翻譯時，WPML會檢查該值。預設區域設定包含在WordPress設定中 /wp-content/languages/ folder的檔名中。"
+            "WPML 從 MO 和 PO 檔案載入翻譯時檢查的數值。預設地區設定包含在您 WordPress 安裝設定中 /wp-content/languages/ 資料夾內的檔案名稱中。"
          ],
          "Google uses the hreflang attribute to direct users to sites in their relevant language and location. Examples:": [
-            "谷歌使用hreflang屬性將使用者引導到使用其相關語言和位置的網站。範例："
+            "Google 使用 hreflang 屬性將使用者引導至其相關語言和位置的網站。範例："
          ],
          "All English-speaking users: en": [
-            "所有講英文的使用者：en"
+            "所有英語使用者：en"
          ],
          "English for UK users: en-gb": [
-            "英國使用者英文：en-gb"
+            "英國英語使用者：en-gb"
          ],
          "English for US users: en-us": [
-            "美國使用者英文：en-us"
+            "美國英語使用者：en-us"
          ],
          "Determines if URLs in this language are encoded or use ASCII characters (if unsure, leave it as \"No\").": [
-            "確定此語言中的URL是否已編碼或使用ASCII字元（如果不確定，請將其保留為\"否\"）。"
+            "決定此語言的 URL 是經過編碼還是使用 ASCII 字元 (如果不確定，請保留為「否」)。"
          ],
          "adding a custom language": [
             "新增自訂語言"
+         ],
+         "What are the languages of your site?": [
+            "您網站的語言為何？"
          ],
          "Default language": [
             "預設語言"
          ],
          "What is the current language of your website?": [
-            "您網站的當前語言是什麼？"
+            "您網站目前的語言為何？"
          ],
          "Translation languages": [
             "翻譯語言"
          ],
          "Which languages do you want to translate your site into?": [
-            "您希望將網站翻譯成哪些語言？"
+            "您想將網站翻譯成哪些語言？"
          ],
-         "If you cannot find languages that you need in the list": [
-            "如果在清單中找不到所需的語言"
+         "If you cannot find languages that you need in the list,": [
+            "如果您在清單中找不到所需的語言，"
          ],
          "create a custom language": [
             "建立自訂語言"
          ],
-         "What are the languages of your site?": [
-            "您的網站使用什麼語言？"
-         ],
-         "You can add a dedicated person to oversee everything translation-related on your site. %sTranslation Managers%s can add new local translators or professional translation services, create and assign translation jobs, review completed translations, and change translation-related settings.": [
-            "可以增加一個專門人員來監督網站上所有翻譯相關事項。%s翻譯經理%s可以新增本機譯員或專業翻譯服務，建立和分配翻譯工作，檢視已完成的翻譯，以及變更與翻譯相關的設定。"
+         "You can add a dedicated person to oversee everything translation-related on your site. Translation Managers can add new local translators or professional translation services, create and assign translation jobs, review completed translations, and change translation-related settings.": [
+            "您可以新增專人來監督網站上所有與翻譯相關的事務。翻譯經理可以新增本地翻譯人員或專業翻譯服務、建立並指派翻譯工作、審核已完成的翻譯，以及更改翻譯相關設定。"
          ],
          "Translation Managers": [
-            "翻譯管理員"
+            "翻譯經理"
          ],
          "Note: All Administrators are automatically given Translation Manager privileges.": [
-            "注意：所有管理員都自動獲得翻譯經理權限。"
+            "注意：所有管理員都會自動獲得翻譯經理權限。"
          ],
-         "%sLocal translators%s are users of your site that can log in and add, edit, and review your site's translations. Add a translator and their associated translation pairs to assign them translation jobs.": [
-            "%s本機譯員%s是您網站的使用者，他們可以登入、新增、編輯和檢視網站的翻譯。新增譯員及其關聯的翻譯語言對，以便為其分配翻譯工作。"
+         "%1$sLocal translators%2$s are users of your site that can log in and add, edit, and review your site's translations. Add a translator and their associated translation pairs to assign them translation jobs.": [
+            "%1$s本地翻譯人員%2$s 是您網站的使用者，他們可以登入並新增、編輯和審核您網站的翻譯。新增翻譯人員及其關聯的翻譯配對以指派翻譯工作給他們。"
+         ],
+         "You can %1$shire an experienced translator%2$s to review your automatic translations for perfect quality.": [
+            "您可以 %1$s聘請經驗豐富的翻譯人員%2$s 來審核您的自動翻譯，以獲得完美的品質。"
          ],
          "Translators": [
-            "譯員"
+            "翻譯人員"
+         ],
+         "Can't find a specific translator?": [
+            "找不到特定的翻譯人員？"
+         ],
+         "Refreshing…": [
+            "正在重新整理…"
+         ],
+         "Refresh list now.": [
+            "立即重新整理清單。"
          ]
       }
    }

@@ -4,19 +4,12 @@ namespace WPML\Notices\ExportImport;
 
 class Notice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 
-	// Cascade of priorities before 10.
-	// 7: WPML.
-	// 8: WCML.
-	// 9: WPML Export and Import.
 	const PRIORITY       = 7;
 	const GROUP          = 'wpml-import-notices';
 	const NOTICE_CLASSES = [
 		'wpml-import-notice',
 		'wpml-import-notice-from-wpml',
 	];
-
-	const WPML_IMPORT_URL = 'https://wpml.org/documentation/related-projects/wpml-export-and-import/?utm_source=plugin&utm_medium=gui&utm_campaign=wpml-export-import&utm_term=admin-notice';
-	const WCML_URL        = 'https://wpml.org/documentation/related-projects/woocommerce-multilingual/?utm_source=plugin&utm_medium=gui&utm_campaign=wcml&utm_term=admin-notice';
 
 	const EXPORT_NOTICES = [
 		'wordpress-export'        => '/export.php',
@@ -31,7 +24,6 @@ class Notice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		'woocommerce-import'      => '/edit.php?post_type=product&page=product_importer',
 	];
 
-	/** @var \WPML_Notices $notices */
 	private $wpmlNotices;
 
 	public function __construct( \WPML_Notices $wpmlNotices ) {
@@ -40,7 +32,6 @@ class Notice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 
 	public function add_hooks() {
 		if ( defined( 'WPML_IMPORT_VERSION' ) ) {
-			// WPML Export and Import will take care of this.
 			return;
 		}
 
@@ -71,11 +62,6 @@ class Notice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		} );
 	}
 
-	/**
-	 * @param string $id
-	 * @param string $path
-	 * @param string $message
-	 */
 	private function maybeAddNotice( $id, $path, $message ) {
 		if ( ! self::isOnPage( $path ) ) {
 			return;
@@ -89,7 +75,7 @@ class Notice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		$notice->set_css_classes( self::NOTICE_CLASSES );
 		$notice->add_display_callback( [ \WPML\Notices\ExportImport\Notice::class, 'isOnMigrationPages' ] );
 		$notice->set_dismissible( true );
-		$this->wpmlNotices->add_notice( $notice, true );
+		$this->wpmlNotices->add_notice( $notice );
 	}
 
 	public function enforceNoticeStyle() {
@@ -115,11 +101,6 @@ class Notice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		</style>';
 	}
 
-	/**
-	 * @param  string $path
-	 *
-	 * @return bool
-	 */
 	private static function isOnPage( $path ) {
 		if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
 			return false;
@@ -139,9 +120,6 @@ class Notice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		return false;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public static function isOnMigrationPages() {
 		$exportNotices = self::EXPORT_NOTICES;
 		$importNotices = self::IMPORT_NOTICES;
@@ -155,11 +133,6 @@ class Notice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		return false;
 	}
 
-	/**
-	 * @param  string $id
-	 *
-	 * @return bool
-	 */
 	private function isNoticeForShop( $id ) {
 		if ( in_array( $id, [ 'woocommerce-export', 'woocommerce-import' ] ) ) {
 			return true;
@@ -176,11 +149,6 @@ class Notice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		return false;
 	}
 
-	/**
-	 * @param  string $id
-	 *
-	 * @return string
-	 */
 	private function getExportMessage( $id ) {
 		if ( $this->isNoticeForShop( $id ) ) {
 			return $this->getShopExportMessage();
@@ -192,9 +160,6 @@ class Notice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		);
 	}
 
-	/**
-	 * @return string
-	 */
 	private function getShopExportMessage() {
 		return sprintf(
 			/* translators: %s is a set of one or two links. */
@@ -203,11 +168,6 @@ class Notice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		);
 	}
 
-	/**
-	 * @param  string $id
-	 *
-	 * @return string
-	 */
 	private function getImportMessage( $id ) {
 		if ( $this->isNoticeForShop( $id ) ) {
 			return $this->getShopImportMessage();
@@ -219,49 +179,50 @@ class Notice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		);
 	}
 
-	/**
-	 * @return string
-	 */
 	private function getShopImportMessage() {
 		return sprintf(
-			/* translators: %1$s and %2$s are both links. */
+			/* translators: Notice offering to bring translations over from another site. %1$s: a link, already wrapped in its tags, whose text is "WooCommerce Multilingual", %2$s: a link whose text is the name of the WPML import add-on. */
 			__( 'Looking to import your multilingual shop? With %1$s and %2$s in both your original and new site, you can export and import your translations automatically.', 'sitepress' ),
 			$this->getWcmlLink(),
 			$this->getWpmlImportLink()
 		);
 	}
 
-	/**
-	 * @return string
-	 */
 	private function getWpmlImportLink() {
-		$url   = self::WPML_IMPORT_URL;
+		$url   = \WPML\OutboundLinks\OutboundLinks::to(
+			'https://wpml.org/documentation/wpml-core-and-add-on-plugins/wpml-export-and-import/',
+			array(
+				'medium'   => 'notice',
+				'campaign' => 'export-import',
+			)
+		);
 		$title = __( 'WPML Export and Import', 'sitepress' );
 		return '<a class="wpml-external-link" href="' . esc_url( $url ) . '" title="' . esc_attr( $title ) . '" target="_blank">'
 			. esc_html( $title )
 			. '</a>';
 	}
 
-	/**
-	 * @return string
-	 */
 	private function getWcmlLink() {
-		$url   = self::WCML_URL;
+		$url   = \WPML\OutboundLinks\OutboundLinks::to(
+			'https://wpml.org/documentation/wpml-core-and-add-on-plugins/woocommerce-multilingual/',
+			array(
+				'medium'   => 'notice',
+				'campaign' => 'export-import',
+			)
+		);
+		/* translators: The name of the WooCommerce Multilingual add-on. It is a product name and stays as it is. */
 		$title = __( 'WooCommerce Multilingual', 'sitepress' );
 		return '<a class="wpml-external-link" href="' . esc_url( $url ) . '" title="' . esc_attr( $title ) . '" target="_blank">'
 			. esc_html( $title )
 			. '</a>';
 	}
 
-	/**
-	 * @return string
-	 */
 	private function getShopLink() {
 		if ( defined( 'WCML_VERSION' ) ) {
 			return $this->getWpmlImportLink();
 		}
 		return sprintf(
-			/* translators: %1$s and %2$s are links. */
+			/* translators: Joins the names of two add-ons in a notice, as in "WooCommerce Multilingual and WPML Export and Import". %1$s and %2$s: those two names, each already wrapped in a link tag. */
 			__( '%1$s and %2$s', 'sitepress' ),
 			$this->getWcmlLink(),
 			$this->getWpmlImportLink()

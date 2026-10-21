@@ -1,13 +1,7 @@
 <?php
 
-/**
- * Class WPML_Media_Post_Images_Translation_Factory
- */
 class WPML_Media_Post_Images_Translation_Factory implements IWPML_REST_Action_Loader, IWPML_Backend_Action_Loader  {
 
-	/**
-	 * @return IWPML_Action|null|WPML_Media_Post_Images_Translation
-	 */
 	public function create() {
 		global $wpdb, $sitepress;
 

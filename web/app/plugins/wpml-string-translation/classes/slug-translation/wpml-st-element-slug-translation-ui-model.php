@@ -2,19 +2,14 @@
 
 class WPML_ST_Element_Slug_Translation_UI_Model {
 
-	/** @var SitePress $sitepress */
 	private $sitepress;
 
-	/** @var WPML_ST_Slug_Translation_Settings $settings */
 	private $settings;
 
-	/** @var WPML_Slug_Translation_Records $slug_records */
 	private $slug_records;
 
-	/** @var WPML_Element_Sync_Settings $sync_settings */
 	private $sync_settings;
 
-	/** @var WPML_Simple_Language_Selector $lang_selector */
 	private $lang_selector;
 
 	public function __construct(
@@ -31,12 +26,6 @@ class WPML_ST_Element_Slug_Translation_UI_Model {
 		$this->lang_selector     = $lang_selector;
 	}
 
-	/**
-	 * @param string                   $type_name
-	 * @param WP_Post_Type|WP_Taxonomy $custom_type
-	 *
-	 * @return null|array
-	 */
 	public function get( $type_name, $custom_type ) {
 		$has_rewrite_slug   = isset( $custom_type->rewrite['slug'] ) && $custom_type->rewrite['slug'];
 		$is_translated_mode = $this->sync_settings->is_sync( $type_name );
@@ -51,8 +40,10 @@ class WPML_ST_Element_Slug_Translation_UI_Model {
 
 		$model = array(
 			'strings' => array(
+				/* translators: Text above the table of slugs on the WPML settings page. %s: the name of the content type, for example "Posts" or "Products". */
 				'toggle_slugs_table' => sprintf( __( 'Set different slugs in different languages for %s.', 'wpml-string-translation' ), $custom_type->labels->name ),
 				'slug_status_incomplete' => __( "Not marked as 'complete'. Press 'Save' to enable.", 'wpml-string-translation' ),
+				/* translators: Marks the row of the original language in the table of slugs on the WPML settings page. */
 				'original_label' => __( '(original)', 'wpml-string-translation' ),
 			),
 			'css_class_wrapper' => 	$is_translated_mode ? '' : 'hidden',
@@ -63,6 +54,7 @@ class WPML_ST_Element_Slug_Translation_UI_Model {
 
 		if ( $is_slug_translated && ! $original_slug_and_lang->is_registered ) {
 			$model['has_missing_translations_message'] = sprintf(
+				/* translators: Warning above the table of slugs on the WPML settings page. %s: the name of the content type, for example "Posts" or "Products". */
 				esc_html__(
 					'%s slugs are set to be translated, but they are missing their translation',
 					'wpml-string-translation'
@@ -96,6 +88,7 @@ class WPML_ST_Element_Slug_Translation_UI_Model {
 						'echo'               => false,
 						'class'              => 'js-translate-slug-original',
 						'data'               => array( 'slug' => $slug->value ),
+						'languages'          => $languages,
 					)
 				);
 			}
@@ -106,12 +99,6 @@ class WPML_ST_Element_Slug_Translation_UI_Model {
 		return $model;
 	}
 
-	/**
-	 * @param string                   $type_name
-	 * @param WP_Post_Type|WP_Taxonomy $custom_type
-	 *
-	 * @return stdClass
-	 */
 	private function get_original_slug_and_lang( $type_name, $custom_type ) {
 		$original_slug_and_lang = $this->slug_records->get_original_slug_and_lang( $type_name );
 
@@ -128,11 +115,6 @@ class WPML_ST_Element_Slug_Translation_UI_Model {
 		return $original_slug_and_lang;
 	}
 
-	/**
-	 * @param string $type_name
-	 *
-	 * @return array
-	 */
 	private function get_translations( $type_name ) {
 		$translations = array();
 		$rows         = $this->slug_records->get_element_slug_translations( $type_name, false );
@@ -147,17 +129,18 @@ class WPML_ST_Element_Slug_Translation_UI_Model {
 		return $translations;
 	}
 
-	/**
-	 * @param string $string_lang
-	 *
-	 * @return array
-	 */
 	private function get_languages( $string_lang ) {
 		$languages = $this->sitepress->get_active_languages();
 
 		if ( ! in_array( $string_lang, array_keys( $languages ) ) ) {
-			$all_languages             = $this->sitepress->get_languages();
-			$languages[ $string_lang ] = $all_languages[ $string_lang ];
+			$all_languages = $this->sitepress->get_languages();
+
+			$languages[ $string_lang ] = isset( $all_languages[ $string_lang ] )
+				? $all_languages[ $string_lang ]
+				: array(
+					'code'         => $string_lang,
+					'display_name' => $string_lang,
+				);
 		}
 
 		return $languages;

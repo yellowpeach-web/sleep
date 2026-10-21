@@ -2,6 +2,10 @@
 
 namespace OTGS\Installer\AdminNotices\Notices;
 
+use OTGS\Installer\AdminNotices\Dismissed;
+use OTGS\Installer\AppPage;
+use OTGS\Installer\OutboundLink;
+
 class Texts {
 
 	protected static $repo;
@@ -12,6 +16,7 @@ class Texts {
 	protected static $supportLink;
 	protected static $publishLink;
 	protected static $learnMoreDevKeysLink;
+	protected static $renewPath;
 
 	public static function notRegistered() {
 		// translators: %s Product name
@@ -22,6 +27,15 @@ class Texts {
 		            self::getDismissHTML( Account::NOT_REGISTERED );
 
 		return self::insideDiv( 'register', $headingHTML . $bodyHTML );
+	}
+
+	public static function invalidSiteKey() {
+		$headingHTML = self::getHeadingHTML( __( 'Your site key is no longer valid.', 'installer' ) );
+		// translators: %s Product name
+		$bodyHTML = self::getBodyHTML( __( 'Please register a new key to continue receiving updates for %s.', 'installer' ) ) .
+		            self::inButtonAreaHTML( self::getInvalidSiteKeyButtons() );
+
+		return self::insideDiv( 'invalid-site-key', $headingHTML . $bodyHTML );
 	}
 
 	public static function expired() {
@@ -62,16 +76,51 @@ class Texts {
 	}
 
 	public static function refunded() {
-		// translators: %s Product name
-		$headingHTML = self::getHeadingHTML( __( 'Remember to remove %s from this website', 'installer' ) );
-		// translators: %s Product name
-		$body = self::getBodyHTML( __( 'This site is using the %s plugin, which has not been paid for. After receiving a refund, you should remove this plugin from your sites. Using unregistered plugins means you are not receiving stability and security updates and will ultimately lead to problems running the site.', 'installer' ) ) .
-		        self::inButtonAreaHTML( self::getRefundedButtons() );
+		$model = static::buildRefundedModel();
 
-		return self::insideDiv( 'refund', $headingHTML . $body );
+		$classes = implode( ' ', [
+			'notice',
+			'otgs-installer-notice',
+			'otgs-installer-notice-' . esc_attr( static::$repo ),
+			'otgs-installer-notice-refund',
+			'otgs-installer-notice-refund--cards',
+			'otgs-installer-expired',
+		] );
+
+		ob_start();
+		\OTGS\Installer\Templates\Repository\Refunded::renderContent( $model );
+		$html = ob_get_clean();
+
+		return '<div class="' . $classes . '">' . $html . '</div>';
+	}
+
+	protected static function buildRefundedModel() {
+		$repo    = static::$repo;
+		$install = \WP_Installer::instance();
+
+		return (object) [
+			'productName'                 => static::$product,
+			'repoId'                      => $repo,
+			'siteUrl'                     => home_url(),
+			'productUrl'                  => static::$productURL,
+			'siteKeysManagementUrl'       => $install->get_product_data( $repo, 'site_keys_management_url' ),
+			'updateSiteKeyNonce'          => wp_create_nonce( 'update_site_key_' . $repo ),
+			'saveSiteKeyNonce'            => wp_create_nonce( 'save_site_key_' . $repo ),
+			'removeSiteKeyNonce'          => wp_create_nonce( 'remove_site_key_' . $repo ),
+			'findAccountNonce'            => wp_create_nonce( 'find_account_' . $repo ),
+			'siteKey'                     => \WP_Installer_API::get_site_key( $repo ),
+			'endUserRenewalUrl'           => $install->get_end_user_renewal_url( $repo ),
+			'expired'                     => true,
+			'shouldDisplayUnregisterLink' => true,
+		];
 	}
 
 	public static function connectionIssues() {
+		$problem = \OTGS\Installer\Settings::products_feed_problem( static::$repo );
+		if ( $problem && \OTGS_Installer_Products_Feed_Problem::KIND_CONNECTION !== $problem['kind'] ) {
+			return self::productsListProblem( $problem );
+		}
+
 		// translators: %1$s Product name %2$s host name (ex. wpml.org)
 		$headingHTML = self::getConnectionIssueHeadingHTML( __( '%1$s plugin cannot connect to %2$s', 'installer' ) );
 
@@ -89,6 +138,61 @@ class Texts {
 		return self::insideDiv( 'connection-issues', $headingHTML . $body );
 	}
 
+	public static function unregisterPending() {
+		// translators: %1$s Product name %2$s host name (ex. wpml.org)
+		$headingHTML = self::getConnectionIssueHeadingHTML( __( '%1$s could not tell %2$s that this site was unregistered', 'installer' ) );
+
+		$body = '<p>' . esc_html( \OTGS_Installer_Site_Key_Remove_Service::pending_sentence( static::$product, static::$apiHost ) ) . '</p>' .
+		        self::inLinksAreaHTML(
+			        __( 'Need help?', 'installer' ),
+			        // translators: %1$s is `communication error details` %2$s is ex. wpml.org technical support
+			        __( 'See the %1$s and let us know in %2$s.', 'installer' ),
+			        self::getCommunicationDetailsLinkHTML( __( 'communication error details', 'installer' ) ),
+			        // translators: %s is host name (ex. wpml.org)
+			        self::getSupportLinkHTML( __( '%s technical support', 'installer' ) )
+		        );
+
+		return self::insideDiv( 'connection-issues', $headingHTML . $body );
+	}
+
+	private static function productsListProblem( array $problem ) {
+		// translators: %1$s Product name %2$s host name (ex. wpml.org)
+		$headingHTML = self::getConnectionIssueHeadingHTML( __( '%1$s cannot read the list of products from %2$s', 'installer' ) );
+
+		if ( \OTGS_Installer_Products_Feed_Problem::KIND_HTTP === $problem['kind'] ) {
+			// translators: %1$s host name (ex. wpml.org) %2$s an HTTP status code (ex. 404)
+			$what = sprintf( __( '%1$s answered with an error (HTTP %2$s) instead of the list of products.', 'installer' ), static::$apiHost, $problem['detail'] );
+		} else {
+			// translators: %1$s host name (ex. wpml.org) %2$s what the answer was instead (ex. an empty answer)
+			$what = sprintf( __( '%1$s answered, but not with a list of products (%2$s).', 'installer' ), static::$apiHost, self::describeBodyDefect( $problem['detail'] ) );
+		}
+		// translators: %1$s Product name
+		$keeps = sprintf( __( '%1$s keeps the products it already knew, so nothing is lost. This is usually temporary: check for updates again in a while.', 'installer' ), static::$product );
+
+		$body = '<p>' . esc_html( $what . ' ' . $keeps ) . '</p>' .
+		        self::inLinksAreaHTML(
+			        __( 'Need help?', 'installer' ),
+			        // translators: %1$s is `communication error details` %2$s is ex. wpml.org technical support
+			        __( 'See the %1$s and let us know in %2$s.', 'installer' ),
+			        self::getCommunicationDetailsLinkHTML( __( 'communication error details', 'installer' ) ),
+			        // translators: %s is host name (ex. wpml.org)
+			        self::getSupportLinkHTML( __( '%s technical support', 'installer' ) )
+		        );
+
+		return self::insideDiv( 'connection-issues', $headingHTML . $body );
+	}
+
+	private static function describeBodyDefect( $detail ) {
+		switch ( $detail ) {
+			case \OTGS_Installer_Products_Feed_Problem::BODY_EMPTY:
+				return __( 'an empty answer', 'installer' );
+			case \OTGS_Installer_Products_Feed_Problem::BODY_NOT_JSON:
+				return __( 'an answer that is not JSON', 'installer' );
+			default:
+				return __( 'a document that does not describe products', 'installer' );
+		}
+	}
+
 	public static function pluginActivatedRecommendation( $parameters ) {
 		$heading_html = self::getHeadingHTML( $parameters['recommendation_notification'] );
 
@@ -104,12 +208,6 @@ class Texts {
 		return self::insideDiv( 'plugin-recommendation', $heading_html . $body_html );
 	}
 
-	/**
-	 * @param string $type The type is used as a suffix of the `otgs-installer-notice-` CSS class.
-	 * @param string $html An unescaped HTML string but with escaped data (e.g. attributes, URLs, or strings in the HTML produced from any input).
-	 *
-	 * @return string
-	 */
 	protected static function insideDiv( $type, $html ) {
 		$classes = [
 			'notice',
@@ -118,7 +216,7 @@ class Texts {
 			'otgs-installer-notice-' . esc_attr( $type ),
 		];
 
-		$notDismissable = [ 'refund', 'connection-issues', 'development' ];
+		$notDismissable = [ 'refund', 'connection-issues', 'development', 'invalid-site-key' ];
 		if ( ! in_array( $type, $notDismissable ) ) {
 			$classes[] = 'otgs-is-dismissible';
 		}
@@ -139,9 +237,6 @@ class Texts {
 		       self::getRecommendationDismissHTML( $dismiss, $parameters );
 	}
 
-	/**
-	 * @return string
-	 */
 	protected static function getNotRegisteredButtons() {
 		$registerUrl = \WP_Installer::menu_url();
 		$register    = __( 'Register', 'installer' );
@@ -151,91 +246,65 @@ class Texts {
 		       self::getStagingButtonHTML( $stagingSite );
 	}
 
-	/**
-	 * @return string
-	 */
+	protected static function getInvalidSiteKeyButtons() {
+		return self::getPrimaryButtonHTML( \WP_Installer::menu_url(), __( 'Register a new key', 'installer' ) );
+	}
+
 	protected static function getExpiredButtons() {
-		$checkOrderStatusUrl = \WP_Installer::menu_url() . '&validate_repository=' . static::$repo;
+		$checkOrderStatusUrl = wp_nonce_url( \WP_Installer::menu_url() . '&validate_repository=' . static::$repo, 'validate_repository_' . static::$repo );
 		$accountButton       = sprintf( __( 'Purchase %s', 'installer' ), static::$product );
 		$checkButton         = __( 'Check my order status', 'installer' );
 		$statusText          = __( 'Got renewal already?', 'installer' );
-		$productUrl          = \WP_Installer::instance()->get_product_data( static::$repo, 'url' );
 
-		return self::getPrimaryButtonHTML( $productUrl . '/purchase/?utm_source=plugin&utm_medium=gui&utm_campaign=installer&utm_term=expired-over-30-days', $accountButton ) .
+		return self::getPrimaryButtonHTML( static::getPurchaseUrl(), $accountButton ) .
 		       self::getStatusHTML( $statusText ) .
 		       self::getRefreshButtonHTML( $checkOrderStatusUrl, $checkButton );
 	}
 
-	/**
-	 * @return string
-	 */
 	protected static function getInGraceButtons() {
-		$checkOrderStatusUrl = \WP_Installer::menu_url() . '&validate_repository=' . static::$repo;
+		$checkOrderStatusUrl = wp_nonce_url( \WP_Installer::menu_url() . '&validate_repository=' . static::$repo, 'validate_repository_' . static::$repo );
 		$accountButton       = __( 'Renew your account', 'installer' );
 		$checkButton         = __( 'Check my order status', 'installer' );
 		$statusText          = __( 'Got renewal already?', 'installer' );
-		$productUrl          = \WP_Installer::instance()->get_product_data( static::$repo, 'url' );
 
-		return self::getPrimaryButtonHTML( $productUrl . '/account/?utm_source=plugin&utm_medium=gui&utm_campaign=installer&utm_term=expired-within-30-days', $accountButton ) .
+		return self::getPrimaryButtonHTML( static::getRenewUrl(), $accountButton ) .
 		    self::getStatusHTML( $statusText ) .
 		    self::getRefreshButtonHTML( $checkOrderStatusUrl, $checkButton );
     }
 
-	/**
-	 * @return string
-	 */
-	private static function getRefundedButtons() {
-		$checkOrderStatusUrl = \WP_Installer::menu_url() . '&validate_repository=' . static::$repo;
-		$checkButton         = __( 'Check my order status', 'installer' );
-		$status              = __( 'Bought again?', 'installer' );
+	public static function getPurchaseUrl() {
+		$productUrl = \WP_Installer::instance()->get_product_data( static::$repo, 'url' );
 
-		return self::getStatusHTML( $status ) .
-		       self::getPrimaryButtonHTML( $checkOrderStatusUrl, $checkButton );
+		return AppPage::url( $productUrl, 'purchase' ) . '?utm_source=plugin&utm_medium=gui&utm_campaign=installer&utm_term=expired-over-30-days';
 	}
 
-	/**
-	 * @param string $notice_type The method takes care of escaping the string.
-	 *
-	 * @return string
-	 */
+	public static function getRenewUrl() {
+		$productUrl = \WP_Installer::instance()->get_product_data( static::$repo, 'url' );
+
+		return AppPage::url( $productUrl, static::$renewPath ) . '?utm_source=plugin&utm_medium=gui&utm_campaign=installer&utm_term=expired-within-30-days';
+	}
+
 	protected static function getDismissHTML( $notice_type ) {
 		return '<span class="installer-dismiss-nag notice-dismiss" ' . self::getDismissedAttributes( $notice_type ) . '>'
 		       . '<span class="screen-reader-text">' . esc_html__( 'Dismiss', 'installer' ) . '</span></span>';
 	}
 
-	/**
-	 * @param string $notice_type The method takes care of escaping the string.
-	 *
-	 * @return string
-	 */
 	private static function getDismissedAttributes( $notice_type, $noticeId = null ) {
 		$dismissedAttributes = 'data-repository="' . esc_attr( static::$repo ) . '" data-notice-type="' . esc_attr( $notice_type ) . '"';
+		$dismissedAttributes .= ' data-nonce="' . esc_attr( wp_create_nonce( Dismissed::NONCE_ACTION ) ) . '"';
 		if ( $noticeId ) {
-			$dismissedAttributes .= '" data-notice-plugin-slug="' . esc_attr( $noticeId ) . '"';
+			$dismissedAttributes .= ' data-notice-plugin-slug="' . esc_attr( $noticeId ) . '"';
 		}
 
 		return $dismissedAttributes;
 	}
 
-	/**
-	 * @param string $url The method takes care of escaping the string.
-	 * @param string $text The method takes care of escaping the string.
-	 *
-	 * @return string
-	 */
 	protected static function getPrimaryButtonHTML( $url, $text ) {
 		return '<a class="otgs-installer-notice-status-item otgs-installer-notice-status-item-btn" href="' . esc_url( $url ) . '">' . esc_html( $text ) . '</a>';
 	}
 
-	/**
-	 * @param string $text The method takes care of escaping the string.
-	 * @param array $parameters
-	 *
-	 * @return string
-	 */
 	protected static function getRecommendationInstallButtonHTML( $text, $parameters ) {
 
-		/** @phpstan-ignore-next-line  */
 		return wp_nonce_field( 'recommendation_success_nonce', 'recommendation_success_nonce', false ) .
 			'<input type="hidden" id="originalPluginData" value="' . base64_encode( (string) json_encode( [
 				'slug'          => $parameters['glue_check_slug'],
@@ -244,50 +313,24 @@ class Texts {
 			'<button class="js-install-recommended otgs-installer-notice-status-item otgs-installer-notice-status-item-btn" value="' . base64_encode( (string) json_encode( $parameters['download_data'] ) ) . '">' . esc_html( $text ) . '</button><span class="spinner"></span>';
 	}
 
-	/**
-	 * @param string $url The method takes care of escaping the string.
-	 * @param string $text The method takes care of escaping the string.
-	 *
-	 * @return string
-	 */
 	protected static function getRefreshButtonHTML( $url, $text ) {
 		return '<a class="otgs-installer-notice-status-item otgs-installer-notice-status-item-link otgs-installer-notice-status-item-link-refresh" href="' . esc_url( $url ) . '">' . esc_html( $text ) . '</a>';
 	}
 
-	/**
-	 * @param string $text The method takes care of escaping the string.
-	 *
-	 * @return string
-	 */
 	protected static function getStatusHTML( $text ) {
 		return '<p class="otgs-installer-notice-status-item">' . esc_html( $text ) . '</p>';
 	}
 
-	/**
-	 * @param string $text The method takes care of escaping the string.
-	 *
-	 * @return string
-	 */
 	protected static function getRecommendationDismissHTML( $text, $parameters ) {
 		return '<a class="installer-dismiss-nag otgs-installer-notice-status-item-link" ' . self::getDismissedAttributes( Recommendation::PLUGIN_ACTIVATED, $parameters['glue_check_slug'] ) . ' href="#">'
 		       . esc_html( $text ) . '</a>';
 	}
 
-	/**
-	 * @param string $html An unescaped HTML string but with escaped data (e.g. attributes, URLs, or strings in the HTML produced from any input).
-	 *
-	 * @return string
-	 */
 	private static function inButtonAreaHTML( $html ) {
 		return '<div class="otgs-installer-notice-status">' . $html . '</div>';
 
 	}
 
-	/**
-	 * @param string $text
-	 *
-	 * @return string
-	 */
 	private static function inLinksAreaHTML( $title, $text, $communicationDetails, $supportLink ) {
 		return '<div class="otgs-installer-notice-status">
 					<p class="otgs-installer-notice-status-item">' . esc_html( $title ) . '</p>
@@ -295,67 +338,38 @@ class Texts {
 				</div>';
 	}
 
-	/**
-	 * @param string $text The method takes care of escaping the string.
-	 *                      If the string contains a placeholder, it will be replaced with the value of `static::$product`.
-	 *
-	 * @return string
-	 */
 	protected static function getHeadingHTML( $text ) {
 		return '<h2>' . esc_html( sprintf( $text, static::$product ) ) . '</h2>';
 	}
 
-	/**
-	 * @param string $text
-	 *
-	 * @return string
-	 */
 	protected static function getConnectionIssueHeadingHTML( $text ) {
 		return '<h2>' . esc_html( sprintf( $text, static::$product, static::$apiHost ) ) . '</h2>';
 	}
 
-	/**
-	 * @param string $text The method takes care of escaping the string.
-	 *                      If the string contains a placeholder, it will be replaced with the value of `static::$product`.
-	 *
-	 * @return string
-	 */
 	protected static function getBodyHTML( $text ) {
 		return '<p>' . esc_html( sprintf( $text, static::$product ) ) . '</p>';
 	}
 
-	/**
-	 * @param string $text The method takes care of escaping the string.
-	 *                      If the string contains a placeholder, it will be replaced with the value of `static::$product`.
-	 *
-	 * @return string
-	 */
 	protected static function getConnectionIssueBodyHTML( $text ) {
 		return '<p>' . esc_html( sprintf( $text, static::$product, static::$apiHost ) ) . '</p>';
 	}
 
-	/**
-	 * @param string $text The method takes care of escaping the string.
-	 *
-	 * @return string
-	 */
 	private static function getStagingButtonHTML( $text ) {
 		return '<a class="otgs-installer-notice-status-item otgs-installer-notice-status-item-link installer-dismiss-nag" ' . self::getDismissedAttributes( Account::NOT_REGISTERED ) . '>' . esc_html( $text ) . '</a>';
 	}
 
 	private static function getCommunicationDetailsLinkHTML( $text ) {
-		return '<a href="' . esc_url( admin_url( static::$communicationDetailsLink ) ) . '">' . esc_html( $text ) . '</a>';
+		return '<a href="' . esc_url( admin_url( static::communicationDetailsLink() ) ) . '">' . esc_html( $text ) . '</a>';
+	}
+
+	protected static function communicationDetailsLink() {
+		return static::$communicationDetailsLink;
 	}
 
 	private static function getSupportLinkHTML( $text ) {
 		return '<a href="' . esc_url( static::$supportLink ) . '">' . esc_html( sprintf( $text, static::$product ) ) . '</a>';
 	}
 
-	/**
-	 * @param string $text
-	 *
-	 * @return string
-	 */
 	private static function getPublishLinkHTML( $text ) {
 		$publishLink = static::$publishLink . \WP_Installer::instance()->get_site_key( static::$repo );
 
@@ -363,7 +377,10 @@ class Texts {
 	}
 
 	private static function getLearnMoveDevKeysLinkHTML( $text ) {
-		return self::makeLink( static::$learnMoreDevKeysLink, $text );
+		return self::makeLink(
+			OutboundLink::to( static::$learnMoreDevKeysLink, [ 'medium' => 'notice', 'campaign' => 'account' ] ),
+			$text
+		);
 	}
 
 	private static function makeLink( $url, $text ) {

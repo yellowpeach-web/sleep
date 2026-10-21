@@ -2,10 +2,8 @@
 
 class WPML_ST_Upgrade_Migrate_Originals implements IWPML_St_Upgrade_Command {
 
-	/** @var wpdb $wpdb */
 	private $wpdb;
 
-	/** @var SitePress sitepress */
 	private $sitepress;
 
 	private $translations   = array();
@@ -42,7 +40,7 @@ class WPML_ST_Upgrade_Migrate_Originals implements IWPML_St_Upgrade_Command {
 				<p>
 					<?php esc_html_e( "WPML needs to update the database. This update will help improve WPML's performance when fetching translated strings.", 'wpml-string-translation' ); ?>
 					<br /><br />
-					<button class="wpml-st-upgrade-migrate-originals"><?php esc_html_e( 'Update Now', 'wpml-string-translation' ); ?></button> <span class="spinner" style="float: none"></span>
+					<button class="wpml-st-upgrade-migrate-originals"><?php /* translators: Button label in the notice that asks the user to let WPML update its database tables. Verb, imperative. */ esc_html_e( 'Update Now', 'wpml-string-translation' ); ?></button> <span class="spinner" style="float: none"></span>
 				</p>
 				<?php wp_nonce_field( 'wpml-st-upgrade-migrate-originals-nonce', 'wpml-st-upgrade-migrate-originals-nonce' ); ?>
 			</div>
@@ -50,7 +48,7 @@ class WPML_ST_Upgrade_Migrate_Originals implements IWPML_St_Upgrade_Command {
 				<p>
 					<?php esc_html_e( 'The database has been updated.', 'wpml-string-translation' ); ?>
 					<br /><br />
-					<button class="wpml-st-upgrade-migrate-originals-close"><?php esc_html_e( 'Close', 'wpml-string-translation' ); ?></button>
+					<button class="wpml-st-upgrade-migrate-originals-close"><?php /* translators: Button label that closes a notice or a dialog on the String Translation page. Verb, imperative, not the adjective "near". */ esc_html_e( 'Close', 'wpml-string-translation' ); ?></button>
 				</p>
 				<?php wp_nonce_field( 'wpml-st-upgrade-migrate-originals-nonce', 'wpml-st-upgrade-migrate-originals-nonce' ); ?>
 			</div>
@@ -95,33 +93,34 @@ class WPML_ST_Upgrade_Migrate_Originals implements IWPML_St_Upgrade_Command {
 
 
 	private function is_migration_required() {
-		$query = "
-					SELECT id
-					FROM {$this->wpdb->prefix}icl_strings
-					WHERE context LIKE 'plugin %' OR context LIKE 'theme %'
-					LIMIT 1";
-		$found = $this->wpdb->get_var( $query );
+		$wpdb  = $this->wpdb;
+		$found = $wpdb->get_var(
+			"SELECT id
+			FROM {$wpdb->prefix}icl_strings
+			WHERE context LIKE 'plugin %' OR context LIKE 'theme %'
+			LIMIT 1"
+		);
 		return $found > 0;
 	}
 
 	private function get_strings_without_translations() {
 
 		foreach ( $this->active_languages as $lang ) {
-			$res_args = array( $lang, $lang );
-
-			$res_query                     = "
-								SELECT
-									s.value,
-									s.id
-								FROM {$this->wpdb->prefix}icl_strings s
-								WHERE s.id NOT IN (
-									SELECT st.string_id FROM {$this->wpdb->prefix}icl_string_translations st
-									WHERE st.language=%s
-									)
-								AND s.language!=%s
-								";
-			$res_prepare                   = $this->wpdb->prepare( $res_query, $res_args );
-			$this->not_translated[ $lang ] = $this->wpdb->get_results( $res_prepare, ARRAY_A );
+			$wpdb                          = $this->wpdb;
+			$this->not_translated[ $lang ] = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT s.value, s.id
+					FROM {$wpdb->prefix}icl_strings s
+					WHERE s.id NOT IN (
+						SELECT st.string_id FROM {$wpdb->prefix}icl_string_translations st
+						WHERE st.language=%s
+					)
+					AND s.language!=%s",
+					$lang,
+					$lang
+				),
+				ARRAY_A
+			);
 		}
 
 	}
@@ -129,19 +128,19 @@ class WPML_ST_Upgrade_Migrate_Originals implements IWPML_St_Upgrade_Command {
 	private function get_originals_with_translations() {
 
 		foreach ( $this->active_languages as $lang ) {
-			$res_args = array( ICL_TM_COMPLETE, $lang );
-
-			$res_query   = "
-								SELECT
-									st.value AS tra,
-									s.value AS org
-								FROM {$this->wpdb->prefix}icl_strings s
-								LEFT JOIN {$this->wpdb->prefix}icl_string_translations st
-									ON s.id=st.string_id
-								WHERE st.status=%d AND st.language=%s
-								";
-			$res_prepare = $this->wpdb->prepare( $res_query, $res_args );
-			$result      = $this->wpdb->get_results( $res_prepare, ARRAY_A );
+			$wpdb   = $this->wpdb;
+			$result = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT st.value AS tra, s.value AS org
+					FROM {$wpdb->prefix}icl_strings s
+					LEFT JOIN {$wpdb->prefix}icl_string_translations st
+						ON s.id=st.string_id
+					WHERE st.status=%d AND st.language=%s",
+					ICL_TM_COMPLETE,
+					$lang
+				),
+				ARRAY_A
+			);
 			$strings     = array();
 			foreach ( $result as $string ) {
 				$strings[ $string['org'] ] = $string['tra'];
@@ -164,4 +163,3 @@ class WPML_ST_Upgrade_Migrate_Originals implements IWPML_St_Upgrade_Command {
 	}
 
 }
-

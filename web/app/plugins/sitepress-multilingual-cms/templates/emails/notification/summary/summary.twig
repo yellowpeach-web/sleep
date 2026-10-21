@@ -23,8 +23,8 @@
 
         {% for job in jobs.completed %}
             <tr style="font-size: 12px;">
-                <td style="{{ css_border_right ~ css_border_left ~ css_border_bottom ~ css_vertical_align }}"><a href="{{ job.original_page.url }}">{{ job.original_page.title }}</a></td>
-                <td style="{{ css_border_right ~ css_border_bottom ~ css_vertical_align }}"><a href="{{ job.translated_page.url }}">{{ job.translated_page.title }}</a></td>
+                <td style="{{ css_border_right ~ css_border_left ~ css_border_bottom ~ css_vertical_align }}">{% if job.original_page.url %}<a href="{{ job.original_page.url }}">{{ job.original_page.title }}</a>{% else %}{{ job.original_page.title }}{% endif %}</td>
+                <td style="{{ css_border_right ~ css_border_bottom ~ css_vertical_align }}">{% if job.translated_page.url %}<a href="{{ job.translated_page.url }}">{{ job.translated_page.title }}</a>{% else %}{{ job.translated_page.title }}{% endif %}</td>
                 <td style="{{ css_border_right ~ css_border_bottom ~ css_vertical_align }}">{{ job.translator }}</td>
                 <td style="{{ css_border_right ~ css_border_bottom ~ css_vertical_align }}">{{ job.completed_date }}</td>
                 <td style="{{ css_border_right ~ css_border_bottom ~ css_vertical_align }} {% if job.overdue %}color: #CC0000;{% endif %}">{{ job.deadline ? job.deadline : strings.undefined }}</td>

@@ -1,70 +1,83 @@
 <?php
 
+use WPML\MediaTranslation\MediaField;
+
 class WPML_Media_Save_Translation implements IWPML_Action {
 
-	/**
-	 * @var SitePress
-	 */
 	private $sitepress;
-	/**
-	 * @var wpdb
-	 */
 	private $wpdb;
-	/**
-	 * @var WPML_Media_File_Factory
-	 */
 	private $media_file_factory;
-	/**
-	 * @var array
-	 */
 	private $post_data;
-	/**
-	 * @var WPML_Translation_Element_Factory
-	 */
 	private $translation_element_factory;
 
+	private $media_field;
 
-	/**
-	 * WPML_Media_Save_Translation constructor.
-	 *
-	 * @param SitePress                        $sitepress
-	 * @param wpdb                             $wpdb
-	 * @param WPML_Media_File_Factory          $media_file_factory
-	 * @param WPML_Translation_Element_Factory $translation_element_factory
-	 */
-	public function __construct( SitePress $sitepress, wpdb $wpdb, WPML_Media_File_Factory $media_file_factory, WPML_Translation_Element_Factory $translation_element_factory ) {
+	public function __construct(
+		SitePress $sitepress,
+		wpdb $wpdb,
+		WPML_Media_File_Factory $media_file_factory,
+		WPML_Translation_Element_Factory $translation_element_factory,
+		?MediaField $media_field = null
+	) {
 		$this->sitepress                   = $sitepress;
 		$this->wpdb                        = $wpdb;
 		$this->media_file_factory          = $media_file_factory;
 		$this->translation_element_factory = $translation_element_factory;
+		$this->media_field                 = null !== $media_field ? $media_field : new MediaField();
 	}
 
 	public function add_hooks() {
-		add_action( 'wp_ajax_wpml_media_save_translation', array( $this, 'save_media_translation' ) );
+		\WPML\Request\Adapter\Ajax::register( 'wpml_media_save_translation', \WPML\Request\Policy\Policy::capability( [ 'upload_files', 'edit_posts' ], \WPML\Request\Policy\Authenticity::actionNonce( 'media-translation', 'wpnonce' ) ), array( $this, 'save_media_translation' ) );
 	}
 
 	public function save_media_translation() {
 
 		if ( wp_verify_nonce( $_POST['wpnonce'], 'media-translation' ) ) {
+
 			$post_array['ID']       = (int) $_POST['translated-attachment-id'];
 			$original_attachment_id = (int) $_POST['original-attachment-id'];
 			$translated_language    = sanitize_text_field( $_POST['translated-language'] );
 
+			if ( ! current_user_can( 'edit_post', (int) $original_attachment_id ) ) {
+				wp_send_json_error( array( 'error' => __( 'You are not allowed to edit this item.', 'wpml-media' ) ) );
+				return;
+			}
+
+			if ( (int) $post_array['ID'] ) {
+				$target_id = (int) $post_array['ID'];
+
+				if ( 'attachment' !== get_post_type( $target_id ) || ! current_user_can( 'edit_post', $target_id ) ) {
+					wp_send_json_error( array( 'error' => __( 'You are not allowed to edit this item.', 'wpml-media' ) ) );
+					return;
+				}
+
+				$original_trid = $this->sitepress->get_element_trid( (int) $original_attachment_id, 'post_attachment' );
+				$target_trid   = $this->sitepress->get_element_trid( $target_id, 'post_attachment' );
+				if ( ! $original_trid || (int) $original_trid !== (int) $target_trid ) {
+					wp_send_json_error( array( 'error' => __( 'You are not allowed to edit this item.', 'wpml-media' ) ) );
+					return;
+				}
+			}
+
 			if ( isset( $_POST['translation']['title'] ) ) {
-				$post_array['post_title'] = sanitize_text_field( $_POST['translation']['title'] );
+				$post_array['post_title'] = $_POST['translation']['title'];
 			}
 			if ( isset( $_POST['translation']['caption'] ) ) {
-				$post_array['post_excerpt'] = sanitize_text_field( $_POST['translation']['caption'] );
+				$post_array['post_excerpt'] = $_POST['translation']['caption'];
 			}
 			if ( isset( $_POST['translation']['description'] ) ) {
-				$post_array['post_content'] = sanitize_text_field( $_POST['translation']['description'] );
+				$post_array['post_content'] = $_POST['translation']['description'];
+			}
+
+			if ( $this->should_restore_media() ) {
+				$post_array['post_mime_type'] = get_post_field( 'post_mime_type', $original_attachment_id );
 			}
 
 			if ( $post_array['ID'] ) {
 				$attachment_id = wp_update_post( $post_array );
 
 				if ( $this->should_restore_media() ) {
-					$this->restore_media_file( $attachment_id, $original_attachment_id, $translated_language );
+					$this->restore_media_file( $attachment_id, $original_attachment_id );
 				}
 			} else {
 
@@ -82,18 +95,16 @@ class WPML_Media_Save_Translation implements IWPML_Action {
 					$this->get_post_lang_value()
 				);
 
+				( new WPML_WP_Cache( WPML_ELEMENT_TRANSLATIONS_CACHE_GROUP ) )->flush_group_cache();
+
 				if ( ! $this->has_media_upload() ) {
 					$this->copy_attached_file_info_from_original( $attachment_id, $original_attachment_id );
 				}
 
-				$this->mark_media_as_not_translated( $attachment_id, $translated_language );
-
 			}
-			$translation_status = WPML_Media_Translation_Status::NEEDS_MEDIA_TRANSLATION;
 
 			if ( $this->has_media_upload() ) {
 				$this->update_media_file( $attachment_id, $original_attachment_id, $translated_language );
-				$translation_status = WPML_Media_Translation_Status::TRANSLATED;
 			}
 
 			if ( isset( $_POST['translation']['alt-text'] ) ) {
@@ -102,6 +113,31 @@ class WPML_Media_Save_Translation implements IWPML_Action {
 					'_wp_attachment_image_alt',
 					sanitize_text_field( $_POST['translation']['alt-text'] )
 				);
+			}
+
+			if ( ! empty( $_POST['translation']['custom-field'] )
+				&& is_array( $_POST['translation']['custom-field'] )
+			) {
+				$translation_fields = $_POST['translation']['custom-field'];
+				foreach ( $translation_fields as $meta_key => $meta_value ) {
+					$meta_key = $this->media_field->getFieldId( $meta_key );
+					delete_post_meta( $attachment_id, $meta_key );
+				}
+
+				foreach ( $translation_fields as $meta_key => $meta_value ) {
+					$meta_key = $this->media_field->getFieldId( $meta_key );
+					if ( strpos( $meta_value, "\n" ) !== false || strpos( $meta_value, "\r\n" ) !== false ) {
+						$sanitized = sanitize_textarea_field( $meta_value );
+					} else {
+						$sanitized = sanitize_text_field( $meta_value );
+					}
+
+					add_post_meta(
+						$attachment_id,
+						$meta_key,
+						$sanitized
+					);
+				}
 			}
 
 			if ( 0 === strpos( get_post_field( 'post_mime_type', $original_attachment_id ), 'image/' ) ) {
@@ -135,12 +171,15 @@ class WPML_Media_Save_Translation implements IWPML_Action {
 			$response = array(
 				'attachment_id' => $attachment_id,
 				'thumb'         => $media_file_is_translated ? $translated_thumb : false,
-				'status'        => $translation_status,
+				'status'        => $media_file_is_translated
+					? WPML_Media_Translation_Status::TRANSLATED
+					: WPML_Media_Translation_Status::NEEDS_MEDIA_TRANSLATION,
 				'usage'         => $posts_list,
 			);
 
 			wp_send_json_success( $response );
 		} else {
+			/* translators: Error message on the Media Translation page when the security check of a request fails. */
 			wp_send_json_error( array( 'error' => __( 'Invalid nonce', 'wpml-media' ) ) );
 		}
 	}
@@ -153,12 +192,6 @@ class WPML_Media_Save_Translation implements IWPML_Action {
 		return ! empty( $_POST['restore-media'] );
 	}
 
-	/**
-	 * @param int   $original_attachment_id
-	 * @param array $post_array
-	 *
-	 * @return int
-	 */
 	private function create_attachment_translation( $original_attachment_id, $post_array ) {
 
 		$post_element = $this->translation_element_factory->create( $original_attachment_id, 'post' );
@@ -192,13 +225,12 @@ class WPML_Media_Save_Translation implements IWPML_Action {
 		return $this->post_data['post_icl_language'];
 	}
 
-	private function restore_media_file( $attachment_id, $original_attachment_id, $language ) {
+	private function restore_media_file( $attachment_id, $original_attachment_id ) {
 
 		$media_file = $this->media_file_factory->create( $attachment_id );
 		$media_file->delete();
 
 		$this->copy_attached_file_info_from_original( $attachment_id, $original_attachment_id );
-		$this->mark_media_as_not_translated( $original_attachment_id, $language );
 	}
 
 	private function copy_attached_file_info_from_original( $attachment_id, $original_attachment_id ) {
@@ -215,30 +247,9 @@ class WPML_Media_Save_Translation implements IWPML_Action {
 			);
 		}
 
-		/**
-		 * Fires after attachment post meta is copied
-		 *
-		 * @since 4.1.0
-		 *
-		 * @param int $original_attachment_id The ID of the source/original attachment.
-		 * @param int $attachment_id          The ID of the duplicated attachment.
-		 */
 		do_action( 'wpml_after_copy_attached_file_postmeta', $original_attachment_id, $attachment_id );
 	}
 
-	private function mark_media_as_not_translated( $attachment_id, $language ) {
-		update_post_meta( $attachment_id, WPML_Media_Translation_Status::STATUS_PREFIX . $language, WPML_Media_Translation_Status::NEEDS_MEDIA_TRANSLATION );
-	}
-
-	private function mark_media_as_translated( $attachment_id, $language ) {
-		update_post_meta( $attachment_id, WPML_Media_Translation_Status::STATUS_PREFIX . $language, WPML_Media_Translation_Status::TRANSLATED );
-	}
-
-	/**
-	 * @param array $file
-	 *
-	 * @return array
-	 */
 	private function get_attachment_post_data( $file ) {
 		$postarr = array(
 			'post_mime_type'    => $file['type'],
@@ -258,58 +269,42 @@ class WPML_Media_Save_Translation implements IWPML_Action {
 
 			$file = $media_file_upload['upload'];
 
-			// delete previous media file + sizes.
+			if ( ! empty( $media_file_upload['thumb'] ) ) {
+				WPML_Media_Attachment_Image_Update::delete_staged_file( $media_file_upload['thumb'] );
+			}
+
 			$media_file = $this->media_file_factory->create( $attachment_id );
 			$media_file->delete();
 
-			// Saving the GUID of media before updating it so it can be used in WPML_Media_Translated_Images_Update::replace_images_with_translations
-			// The reason for that is the update function in line 270 here is running before replace_images_with_translations.,
-			// So when replace_images_with_translations tries to get attachment ID of media with its GUID from DB it fails.,
-			// and this is causing media update in post fails if it's done more than one time.
+			delete_post_meta( $attachment_id, '_wp_attachment_backup_sizes' );
+
 			$_POST['pre-update-translated-media-guid'] = get_post_field( 'guid', $attachment_id );
+
+			$pre_update_metadata                        = wp_get_attachment_metadata( $attachment_id );
+			$_POST['pre-update-translated-media-sizes'] = isset( $pre_update_metadata['sizes'] ) && is_array( $pre_update_metadata['sizes'] )
+				? array_map(
+					function ( $size ) {
+						return isset( $size['file'] ) ? $size['file'] : '';
+					},
+					$pre_update_metadata['sizes']
+				)
+				: [];
 
 			$post_data = $this->get_attachment_post_data( $file );
 			$this->wpdb->update( $this->wpdb->posts, $post_data, array( 'ID' => $attachment_id ) );
 			update_attached_file( $attachment_id, $file['file'] );
 
-			/**
-			 * Fires after attached file is updated
-			 *
-			 * @since 4.1.0
-			 *
-			 * @param int $attachment_id The ID of uploaded attachment.
-			 * @param array $file {
-			 *     Uploaded file data.
-			 *
-			 *     @type string file Absolute path to file.
-			 *
-			 *     @type string url File URL.
-			 *
-			 *     @type string type File type.
-			 * }
-			 * @param string $translated_language_code Attachment language code.
-			 */
+			clean_post_cache( $attachment_id );
+
 			do_action( 'wpml_updated_attached_file', $attachment_id, $file, $translated_language_code );
 
 			$attachment_metadata = wp_generate_attachment_metadata( $attachment_id, $file['file'] );
 
-			$current_attachment_metadata = wp_get_attachment_metadata( $attachment_id );
-
-			if ( $current_attachment_metadata && isset( $current_attachment_metadata['sizes'] ) ) {
-				$attachment_metadata['sizes'] = $current_attachment_metadata['sizes'];
-			}
-
 			wp_update_attachment_metadata( $attachment_id, $attachment_metadata );
 
-			if ( 'application/pdf' === $file['type'] ) {
-				wp_delete_file( $media_file_upload['thumb'] );
-			}
-
-			$this->mark_media_as_translated( $original_attachment_id, $translated_language_code );
 			do_action( 'wpml_added_media_file_translation', $original_attachment_id, $file, $translated_language_code );
 
 			delete_transient( $transient_key );
 		}
 	}
-
 }

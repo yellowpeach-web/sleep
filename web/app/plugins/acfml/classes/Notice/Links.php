@@ -7,22 +7,12 @@ use WPML\FP\Str;
 
 class Links {
 
-	// ACFML
-	const DOC_ACFML_MAIN             = 'https://wpml.org/documentation/related-projects/translate-sites-built-with-acf/';
-	const DOC_ACFML_EXPERT           = 'https://wpml.org/documentation/related-projects/translate-sites-built-with-acf/expert-translation-option/';
-	const DOC_ACFML_TRANSLATE_LABELS = 'https://wpml.org/documentation/related-projects/translate-sites-built-with-acf/translating-acf-field-labels-with-wpml/';
+	const DOC_ACFML_MAIN             = 'https://wpml.org/documentation/translating-your-contents/acf/';
 
-	// General
 	const DOC_DIFFERENT_TRANSLATION_EDITORS = 'https://wpml.org/documentation/translating-your-contents/using-different-translation-editors-for-different-pages/';
-	const DOC_TRANSLATE_POST_TYPE           = 'https://wpml.org/documentation/getting-started-guide/translating-custom-posts/';
+	const DOC_TRANSLATE_POST_TYPE           = 'https://wpml.org/documentation/getting-started-guide/translating-custom-fields/';
 	const FAQ_INSTALL_ST                    = 'https://wpml.org/faq/how-to-add-string-translation-to-your-site/';
 
-	/**
-	 * @param string $link   Link.
-	 * @param array  $params UTM parameters.
-	 *
-	 * @return string
-	 */
 	private static function generate( $link, $params = [] ) {
 		$anchor = Obj::prop( 'anchor', $params );
 
@@ -40,69 +30,33 @@ class Links {
 		return add_query_arg( $utmTags, $anchor ? $link . '#' . $anchor : $link );
 	}
 
-	/**
-	 * @param array $params
-	 *
-	 * @return string
-	 */
 	public static function getAcfmlMainDoc( $params = [] ) {
 		return self::generate( self::DOC_ACFML_MAIN, $params );
 	}
 
-	/**
-	 * @param array $params
-	 *
-	 * @return string
-	 */
 	public static function getAcfmlMainModeTranslationDoc( $params = [] ) {
 		return self::getAcfmlMainDoc( array_merge( $params, [ 'anchor' => 'using-same-fields-across-languages' ] ) );
 	}
 
-	/**
-	 * @param array $params
-	 *
-	 * @return string
-	 */
 	public static function getAcfmlMainModeLocalizationDoc( $params = [] ) {
 		return self::getAcfmlMainDoc( array_merge( $params, [ 'anchor' => 'using-different-fields-across-languages' ] ) );
 	}
 
-	/**
-	 * @param array $params
-	 *
-	 * @return string
-	 */
 	public static function getAcfmlExpertDoc( $params = [] ) {
-		return self::generate( self::DOC_ACFML_EXPERT, $params );
+		return self::getAcfmlMainDoc( array_merge( $params, [ 'anchor' => 'expert-mode' ] ) );
 	}
-	/**
-	 * @param string $anchor
-	 *
-	 * @return string
-	 */
 	public static function getAcfmlTranslateLabels( $anchor = '' ) {
-		return self::generate( self::DOC_ACFML_TRANSLATE_LABELS, [ 'anchor' => $anchor ] );
+		return self::generate( self::DOC_ACFML_MAIN, [ 'anchor' => $anchor ] );
 	}
 
-	/**
-	 * @param array $params
-	 *
-	 * @return string
-	 */
 	public static function getDifferentTranslationEditorsDoc( $params = [] ) {
 		return self::generate( self::DOC_DIFFERENT_TRANSLATION_EDITORS, $params );
 	}
 
-	/**
-	 * @return string
-	 */
 	public static function getFaqInstallST() {
 		return self::generate( self::FAQ_INSTALL_ST );
 	}
 
-	/**
-	 * @return string
-	 */
 	public static function getDocTranslatePostType() {
 		return self::generate( self::DOC_TRANSLATE_POST_TYPE );
 	}

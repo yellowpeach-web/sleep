@@ -1,13 +1,14 @@
 <div class="icl-tt-tools tablenav top clearfix">
 	<% if ( mode === "translate" ) { %>
-		<%= WPML_core[ "templates/taxonomy-translation/status-trans-select.html" ]( { taxonomy: taxonomy } ) %>
-		<label for="in-lang" id="in-lang-label" class="hidden"><%=labels.in%></label>
-			<select name="language" id="in-lang" class="hidden">
-				<option value="all"><%= labels.anyLang %></option>
-				<% _.each(langs, function( lang, code ) { %>
-					<option value="<%= code %>"><%= lang.label %></option>
+		<%= WPML_core[ "templates/taxonomy-translation/status-trans-select.html" ]( { taxonomy: taxonomy, langs: langs, showLanguage: false, untranslated: false, language: "all" } ) %>
+		<% if ( taxonomy.hierarchical ) { %>
+			<select name="child_of" id="child_of" class="postform">
+				<option value="-1" selected="selected">&mdash; <%= labels.selectParent %> &mdash;</option>
+				<% _.each( parents, function( parent, term_id ) { %>
+					<option value="<%= term_id %>"><%- parent %></option>
 				<% }); %>
 			</select>
+		<% } %>
 		<div class="alignright">
 			<input type="text" name="search" id="tax-search" placeholder="<%= labels.searchPlaceHolder %>" value="">
 		</div>

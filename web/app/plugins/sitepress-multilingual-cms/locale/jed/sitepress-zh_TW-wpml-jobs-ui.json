@@ -4,55 +4,497 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "zh_TW"
          },
-         "Draft — Pending review": [
-            "草稿 — 等候審閱"
+         "%1$s and %2$s": [
+            "%1$s 和 %2$s"
          ],
-         "Complete": [
-            "完成"
+         "Start batch sync": [
+            "開始批次同步"
          ],
-         "Insufficient funds": [
-            "資金不足"
+         "Cancel job": [
+            "取消工作"
+         ],
+         "Continue reviewing": [
+            "繼續審閱"
+         ],
+         "Start downloading XLIFF file": [
+            "開始下載 XLIFF 檔案"
          ],
          "Edit": [
             "編輯"
          ],
+         "Get translation": [
+            "取得翻譯"
+         ],
+         "Edit Translation": [
+            "編輯翻譯"
+         ],
+         "Continue Translating": [
+            "繼續翻譯"
+         ],
          "Resign": [
-            "辭職"
+            "放棄"
          ],
          "Review": [
-            "審核"
+            "審閱"
          ],
          "Translate": [
             "翻譯"
          ],
+         "Take and Translate": [
+            "接手並翻譯"
+         ],
+         "This job was created by Translate Everything and cannot be cancelled on its own. To stop it, turn off Translate Everything from the Translation Dashboard.": [
+            "此工作是由 Translate Everything 建立，無法單獨取消。若要停止此工作，請從翻譯儀表板關閉 Translate Everything。"
+         ],
          "View": [
-            "查看"
-         ],
-         "Delete Translations": [
-            "移除翻譯"
-         ],
-         "Keep Translations as Draft": [
-            "將譯文保留為草稿"
+            "檢視"
          ],
          "Never mind. I want to review these translations.": [
-            "沒關係。我會審閱這些翻譯。"
+            "沒關係。我想審閱這些翻譯。"
          ],
          "Cancel": [
             "取消"
          ],
          "This will remove the selected jobs from the Translations Queue without publishing them. What would you like to do with the translations?": [
-            "這將從翻譯佇列中移除選定的工作，而不會發佈它們。您想如何處理這些翻譯？"
+            "這將從翻譯佇列中移除選取的工作，且不會發佈。您想如何處理這些翻譯？"
          ],
          "Cancel Translation Review": [
             "取消翻譯審閱"
          ],
+         "Delete Translations": [
+            "刪除翻譯"
+         ],
+         "Keep Translations as Draft": [
+            "將翻譯保留為草稿"
+         ],
+         "Bulk actions": [
+            "批次操作"
+         ],
+         "Apply": [
+            "套用"
+         ],
+         "Actions applied to multiple translation jobs can take a few seconds. Please do not leave the page.": [
+            "套用至多個翻譯工作的操作可能需要幾秒鐘。請勿離開此頁面。"
+         ],
+         "Actions applied to multiple translation jobs can take a few minutes. Please do not leave the page.": [
+            "套用至多個翻譯工作的操作可能需要幾分鐘。請勿離開此頁面。"
+         ],
+         "Select translator": [
+            "選取翻譯人員"
+         ],
+         "Assign": [
+            "指派"
+         ],
+         "Cancelled": [
+            "已取消"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "自動翻譯重複失敗，WPML 已停止重試。請從翻譯儀表板重新傳送或捨棄該工作，或在此處取消。"
+         ],
+         "Needs translation": [
+            "需要翻譯"
+         ],
+         "Needs update": [
+            "需要更新"
+         ],
+         "Translation ready to download": [
+            "翻譯已準備好下載"
+         ],
+         "Completed": [
+            "已完成"
+         ],
+         "Failed - needs attention": [
+            "失敗 - 需要注意"
+         ],
+         "%s terms are published immediately because they don't support draft mode.": [
+            "%s 項目會立即發佈，因為它們不支援草稿模式。"
+         ],
+         "%s are immediately published because they don't support draft mode.": [
+            "%s 會立即發佈，因為它們不支援草稿模式。"
+         ],
+         "Published — Pending review": [
+            "已發佈 — 待審閱"
+         ],
+         "Draft — Pending review": [
+            "草稿 — 待審閱"
+         ],
+         "Review in progress": [
+            "審閱中"
+         ],
+         "Published — Review in progress": [
+            "已發佈 — 審閱中"
+         ],
+         "Draft — Review in progress": [
+            "草稿 — 審閱中"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "正在等待您的隨用隨付付款"
+         ],
+         "Waiting for payment": [
+            "等待付款"
+         ],
+         "Insufficient funds": [
+            "餘額不足"
+         ],
+         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
+            "自動翻譯因暫時性錯誤而暫停，並將自動重試 — 無需採取任何行動。如果狀態在約 30 分鐘內沒有改變，請聯絡 WPML 支援。"
+         ],
+         "In progress": [
+            "進行中"
+         ],
+         "View original": [
+            "檢視原文"
+         ],
+         "(no title)": [
+            "(無標題)"
+         ],
+         "Automatic translation": [
+            "自動翻譯"
+         ],
+         "TP ID: %d": [
+            "TP ID: %d"
+         ],
+         "Reset": [
+            "重設"
+         ],
+         "Filter": [
+            "篩選"
+         ],
+         "Reference ID (%s)": [
+            "參考 ID (%s)"
+         ],
+         "Job ID (%s)": [
+            "工作 ID (%s)"
+         ],
+         "Title (%s)": [
+            "標題 (%s)"
+         ],
+         "Type (%s)": [
+            "類型 (%s)"
+         ],
+         "Language (%s)": [
+            "語言 (%s)"
+         ],
+         "Batch name (%s)": [
+            "批次名稱 (%s)"
+         ],
+         "Status (%s)": [
+            "狀態 (%s)"
+         ],
+         "Translated by (%s)": [
+            "翻譯者 (%s)"
+         ],
+         "Sent date (%s)": [
+            "傳送日期 (%s)"
+         ],
+         "Deadline (%s)": [
+            "截止日期 (%s)"
+         ],
+         "Clear all filters": [
+            "清除所有篩選條件"
+         ],
+         "Any Translation Service": [
+            "任何翻譯服務"
+         ],
+         "Any WordPress Translator": [
+            "任何 WordPress 翻譯人員"
+         ],
+         "From": [
+            "從"
+         ],
+         "To": [
+            "至"
+         ],
+         "Anyone": [
+            "任何人"
+         ],
+         "Include jobs from translation services": [
+            "包含來自翻譯服務的工作"
+         ],
+         "All types": [
+            "所有類型"
+         ],
+         "Select visible columns": [
+            "選取可見欄位"
+         ],
+         "No Data": [
+            "無資料"
+         ],
+         "Sort descending": [
+            "遞減排序"
+         ],
+         "Sort ascending": [
+            "遞增排序"
+         ],
+         "Cancel sorting": [
+            "取消排序"
+         ],
+         "The bulk action is running...": [
+            "批次操作執行中..."
+         ],
+         "Export all jobs to XLIFF 1.0": [
+            "匯出所有工作至 XLIFF 1.0"
+         ],
+         "Export all filtered jobs to XLIFF 1.0": [
+            "匯出所有篩選後的工作至 XLIFF 1.0"
+         ],
+         "Export all jobs to XLIFF 1.1": [
+            "匯出所有工作至 XLIFF 1.1"
+         ],
+         "Export all filtered jobs to XLIFF 1.1": [
+            "匯出所有篩選後的工作至 XLIFF 1.1"
+         ],
+         "Export all jobs to XLIFF 1.2": [
+            "匯出所有工作至 XLIFF 1.2"
+         ],
+         "Export all filtered jobs to XLIFF 1.2": [
+            "匯出所有篩選後的工作至 XLIFF 1.2"
+         ],
+         "Export": [
+            "匯出"
+         ],
+         "Select File": [
+            "選取檔案"
+         ],
+         ".xliff .zip": [
+            ".xliff .zip"
+         ],
+         "Importing": [
+            "匯入中"
+         ],
+         "Import": [
+            "匯入"
+         ],
+         "Import / Export XLIFF": [
+            "匯入 / 匯出 XLIFF"
+         ],
+         "Actions": [
+            "操作"
+         ],
+         "Batch name": [
+            "批次名稱"
+         ],
+         "Filter by %s": [
+            "依 %s 篩選"
+         ],
+         "WPML's id for this translation. It stays the same when the job is sent again.": [
+            "WPML 對此翻譯的 ID。重新傳送工作時，此 ID 保持不變。"
+         ],
+         "The number in exported XLIFF file names. It changes when the job is sent again.": [
+            "匯出的 XLIFF 檔案名稱中的編號。重新傳送工作時，此編號會改變。"
+         ],
+         "Title": [
+            "標題"
+         ],
+         "Approve translation reviews": [
+            "核准翻譯審閱"
+         ],
+         "Cancel jobs": [
+            "取消工作"
+         ],
+         "Cancel translation reviews": [
+            "取消翻譯審閱"
+         ],
+         "Export to XLIFF %s": [
+            "匯出至 XLIFF %s"
+         ],
+         "Get translations": [
+            "取得翻譯"
+         ],
+         "This action does not apply to any of the selected translation jobs": [
+            "此操作不適用於任何選取的翻譯工作"
+         ],
+         "%d translation is still in progress. You will not be charged for it.": [
+            "%d 個翻譯仍在進行中。您不會被收取費用。"
+         ],
+         "usage ledger": [
+            "使用紀錄"
+         ],
+         "Cancelled. %1$d translation was in progress; its %2$s words are back on your account. Details:": [
+            "已取消。%1$d 個翻譯原本在進行中；其 %2$s 個字數已退回您的帳戶。詳細資訊："
+         ],
+         "Cancelled. We asked to return the words for %d translation in progress; the usage ledger shows it once confirmed.": [
+            "已取消。我們已要求退回 %d 個進行中翻譯的字數；確認後將顯示在使用紀錄中。"
+         ],
+         "Translations have been downloaded": [
+            "翻譯已下載"
+         ],
+         "Translation has been downloaded": [
+            "翻譯已下載"
+         ],
+         "Translations could not be downloaded": [
+            "無法下載翻譯"
+         ],
+         "Translation could not be downloaded": [
+            "無法下載翻譯"
+         ],
+         "paused after repeated failures, will be retried automatically — %s": [
+            "在重複失敗後暫停，將自動重試 — %s"
+         ],
+         "%d translation could not be downloaded": [
+            "%d 個翻譯無法下載"
+         ],
+         "%d translation has been downloaded": [
+            "%d 個翻譯已下載"
+         ],
+         "No valid jobs selected to approve translations reviews!": [
+            "未選取有效的工作來核准翻譯審閱！"
+         ],
+         "%1$s (%2$s)": [
+            "%1$s (%2$s)"
+         ],
+         "%s was not approved because it is still open for editing.": [
+            "%s 未獲核准，因為它們仍處於編輯狀態。"
+         ],
+         "Approving it now would publish the translation without the edits.": [
+            "現在核准將會直接發佈未經編輯修改的翻譯。"
+         ],
+         "Click Continue reviewing, finish the edits and click Complete in the editor.": [
+            "按一下「繼續審閱」，完成編輯後在編輯器中按一下「完成」。"
+         ],
+         "Then approve the translation here.": [
+            "然後在此處核准翻譯。"
+         ],
+         "If the editor does not open, send the content to translation again from the Translation Dashboard.": [
+            "如果編輯器未開啟，請從翻譯儀表板重新傳送內容以進行翻譯。"
+         ],
+         "Approving translations reviews failed!": [
+            "核准翻譯審閱失敗！"
+         ],
+         "Failed approving translations for the following posts: ": [
+            "核准以下文章的翻譯失敗： "
+         ],
+         "Translations reviews approved successfully!": [
+            "翻譯審閱核准成功！"
+         ],
+         "The translator has been assigned to the job": [
+            "翻譯人員已指派至該工作"
+         ],
+         "The translator could not be assigned to the job": [
+            "無法將翻譯人員指派至該工作"
+         ],
+         "The jobs have been cancelled": [
+            "工作已取消"
+         ],
+         "The job has been cancelled": [
+            "工作已取消"
+         ],
+         "The jobs could not be cancelled": [
+            "無法取消工作"
+         ],
+         "The job could not be cancelled": [
+            "無法取消工作"
+         ],
+         "Translation reviews have been canceled": [
+            "翻譯審閱已取消"
+         ],
+         "Translation review has been canceled": [
+            "翻譯審閱已取消"
+         ],
+         "Translation reviews could not be canceled": [
+            "無法取消翻譯審閱"
+         ],
+         "Translation review could not be canceled": [
+            "無法取消翻譯審閱"
+         ],
+         "Translated by": [
+            "翻譯者"
+         ],
+         "Sent on": [
+            "傳送於"
+         ],
+         "Deadline": [
+            "截止日期"
+         ],
+         "Status": [
+            "狀態"
+         ],
          "Pending review": [
-            "待審核"
+            "待審閱"
+         ],
+         "Reference ID": [
+            "參考 ID"
+         ],
+         "Job ID": [
+            "工作 ID"
+         ],
+         "Type": [
+            "類型"
          ],
          "Languages": [
             "語言"
+         ],
+         "Download XLIFF file couldn't be finished": [
+            "無法完成下載 XLIFF 檔案"
+         ],
+         "Could not load jobs for export": [
+            "無法載入工作以進行匯出"
+         ],
+         "The export to XLIFF failed": [
+            "匯出至 XLIFF 失敗"
+         ],
+         "Imported %d jobs": [
+            "已匯入 %d 個工作"
+         ],
+         "Imported one job": [
+            "已匯入一個工作"
+         ],
+         "Could not import any job": [
+            "無法匯入任何工作"
+         ],
+         "Import failed!": [
+            "匯入失敗！"
+         ],
+         "Loading translations queue": [
+            "正在載入翻譯佇列"
+         ],
+         "Loading translation jobs": [
+            "正在載入翻譯工作"
+         ],
+         "Jobs could not be loaded": [
+            "無法載入工作"
+         ],
+         "This translator cannot translate this language pair.": [
+            "此翻譯人員無法翻譯此語言對。"
+         ],
+         "This translator is no longer available. Reload the page and choose a translator again.": [
+            "此翻譯人員已不再可用。請重新整理頁面並重新選擇翻譯人員。"
+         ],
+         "Specify some jobs to resign": [
+            "請指定要放棄的工作"
+         ],
+         "We could not resign jobs: %s": [
+            "我們無法放棄工作：%s"
+         ],
+         "Resigned from jobs": [
+            "已放棄工作"
+         ],
+         "Resigned from job": [
+            "已放棄工作"
+         ],
+         "Failed to resign from jobs": [
+            "放棄工作失敗"
+         ],
+         "The Advanced Editor jobs synchronization has failed": [
+            "進階編輯器工作同步失敗"
+         ],
+         "Synchronization with the Professional Translation service has failed": [
+            "與專業翻譯服務的同步失敗"
+         ],
+         "%d batches are still being processed by the translation service. Check again in a few minutes.": [
+            "%d 個批次仍由翻譯服務處理中。請在幾分鐘後再次檢查。"
+         ],
+         "Batch sync finished successfully!": [
+            "批次同步成功完成！"
+         ],
+         "Batch sync couldn't be finished": [
+            "無法完成批次同步"
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "我們的翻譯系統未接受此請求（其回應為 %d）。請稍候片刻再重試，若問題持續發生，請聯絡 WPML 支援團隊。"
          ]
       }
    }

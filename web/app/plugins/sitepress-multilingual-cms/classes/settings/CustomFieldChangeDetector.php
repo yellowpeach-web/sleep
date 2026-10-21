@@ -2,7 +2,7 @@
 
 namespace WPML\TM\Settings;
 
-use WPML\Core\BackgroundTask\Service\BackgroundTaskService;
+use WPML\Infrastructure\WordPress\Component\CustomFieldPreferences\ContainerFreeServices;
 use WPML\FP\Lst;
 use WPML\LIB\WP\Hooks;
 use WPML\WP\OptionManager;
@@ -11,22 +11,28 @@ use function WPML\Container\make;
 class CustomFieldChangeDetector implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 	const PREVIOUS_SETTING = 'previous-custom-fields-to-translate';
 	const DETECTED_SETTING = 'detected-custom-fields-to-translate';
+	const RECHECK_SECONDS  = 86400;
 
-	/** @var BackgroundTaskService */
-	private $backgroundTaskService;
+	const PENDING_CACHE = 'wpml_tm_pending_rulings';
 
-	/**
-	 * @param BackgroundTaskService $backgroundTaskService
-	 */
-	public function __construct( BackgroundTaskService $backgroundTaskService ) {
-		$this->backgroundTaskService = $backgroundTaskService;
-	}
+	const PENDING_CACHE_SECONDS = 3600;
+
 
 	public function add_hooks() {
 		Hooks::onAction( 'wpml_after_tm_loaded', 1 )
-		     ->then( [ self::class, 'getNew' ] )
-		     ->then( [ self::class, 'notify' ] )
-		     ->then( [ self::class, 'updatePrevious' ] );
+		     ->then( [ self::class, 'detectIfDue' ] );
+	}
+
+	public static function detectIfDue() {
+		$signal = ContainerFreeServices::changeSignal();
+		if ( ! $signal->isCheckDue( self::RECHECK_SECONDS ) ) {
+			return;
+		}
+
+		self::notify( self::getNew() );
+		self::updatePrevious();
+
+		$signal->markChecked();
 	}
 
 	public static function getNew() {
@@ -41,6 +47,9 @@ class CustomFieldChangeDetector implements \IWPML_Backend_Action, \IWPML_DIC_Act
 	}
 
 	public static function notify( array $newFields ) {
+		$newFields = self::withoutConsented( $newFields );
+		$newFields = self::carriedByTranslatedPosts( $newFields );
+
 		if ( count( $newFields ) ) {
 			OptionManager::update(
 				'TM',
@@ -48,6 +57,16 @@ class CustomFieldChangeDetector implements \IWPML_Backend_Action, \IWPML_DIC_Act
 				Lst::concat( self::getDetected(), $newFields )
 			);
 		}
+	}
+
+	private static function withoutConsented( array $fields ) {
+		if ( ! count( $fields ) ) {
+			return $fields;
+		}
+
+		$consented = PreferenceReapplyConsent::consume( $fields );
+
+		return $consented ? array_values( array_diff( $fields, $consented ) ) : $fields;
 	}
 
 	public static function remove( array $fields ) {
@@ -68,25 +87,70 @@ class CustomFieldChangeDetector implements \IWPML_Backend_Action, \IWPML_DIC_Act
 		return OptionManager::getOr( [], 'TM', self::DETECTED_SETTING );
 	}
 
+	public static function pending() {
+		$detected = array_values( array_unique( array_map( 'strval', (array) self::getDetected() ) ) );
+		if ( ! $detected ) {
+			return [];
+		}
+
+		$kept = get_option( self::PENDING_CACHE );
+		if (
+			is_array( $kept )
+			&& isset( $kept['detected'], $kept['carried'], $kept['at'] )
+			&& $kept['detected'] === $detected
+			&& time() - (int) $kept['at'] < self::PENDING_CACHE_SECONDS
+		) {
+			return array_values( (array) $kept['carried'] );
+		}
+
+		$carried = self::carriedByTranslatedPosts( $detected );
+		update_option(
+			self::PENDING_CACHE,
+			[
+				'detected' => $detected,
+				'carried'  => $carried,
+				'at'       => time(),
+			],
+			true
+		);
+
+		return $carried;
+	}
+
+	public static function onPostMetaWritten( $metaIds, $objectId, $metaKey ) {
+		$kept = get_option( self::PENDING_CACHE );
+		if ( is_array( $kept ) && isset( $kept['detected'] ) && in_array( (string) $metaKey, (array) $kept['detected'], true ) ) {
+			delete_option( self::PENDING_CACHE );
+		}
+	}
+
+	public static function forgetPending() {
+		if ( false !== get_option( self::PENDING_CACHE ) ) {
+			delete_option( self::PENDING_CACHE );
+		}
+	}
+
+	private static function carriedByTranslatedPosts( array $fields ) {
+		if ( ! count( $fields ) ) {
+			return $fields;
+		}
+
+		$affected = make( AffectedPostsQuery::class );
+
+		return array_values(
+			array_filter(
+				$fields,
+				function ( $field ) use ( $affected ) {
+					return $affected->countAffected( [ (string) $field ] ) > 0;
+				}
+			)
+		);
+	}
+
 	public function processNewFields() {
-		$newFields = self::getDetected();
-		if ( count( $newFields ) > 0 ) {
-			$newFields = array_unique( $newFields );
-
-			/** @var ProcessNewTranslatableFields $backroundTaskEndpoint */
-			$backroundTaskEndpoint = make( ProcessNewTranslatableFields::class );
-
-			$payload = wpml_collect( [ 'newFields' => $newFields ] );
-
-			if ( $backroundTaskEndpoint->getTotalRecords( $payload ) ) {
-				// We could do some optimization to avoid running again after consecutive changes on same field.
-				// But currently, it's more consistent to enqueue a new task every time, since there may be cases
-				// when the user is running a task affecting some custom field for long time, and wants to update again
-				// and ghet the posts re-processed.
-				$this->backgroundTaskService->add( $backroundTaskEndpoint, $payload );
-			}
-
-			self::remove( $newFields );
+		$consented = PreferenceReapplyConsent::consume( self::getDetected() );
+		if ( $consented ) {
+			self::remove( $consented );
 		}
 	}
 }

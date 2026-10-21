@@ -13,14 +13,13 @@ use function WPML\FP\pipe;
 
 class RemoveTranslator extends Remove {
 
-	/**
-	 * @inheritDoc
-	 */
 	public function run( Collection $data ) {
-		// $removeLanguagePairs :: WP_user -> WP_user
+		if ( ! current_user_can( 'manage_translations' ) && ! current_user_can( 'manage_options' ) ) {
+			return Either::left( __( 'You are not allowed to remove translators.', 'sitepress' ) );
+		}
+
 		$removeLanguagePairs = Fns::tap( pipe( Obj::prop( 'ID' ), [ make( \WPML_Language_Pair_Records::class ), 'remove_all' ] ) );
 
-		// $resignFromUnfinishedJobs :: WP_user -> WP_user
 		$resignFromUnfinishedJobs = Fns::tap( [ make( \TranslationManagement::class ), 'resign_translator_from_unfinished_jobs' ] );
 
 		$runParentRemove = function() use ( $data ) {
@@ -37,7 +36,6 @@ class RemoveTranslator extends Remove {
 		             	$runParentRemove
 		             )
 		             ->map( function( $result ) {
-		             	do_action( 'wpml_udpate_translator' );
 		             	do_action( 'wpml_tm_ate_synchronize_translators' );
 		             	return $result;
 		             } );

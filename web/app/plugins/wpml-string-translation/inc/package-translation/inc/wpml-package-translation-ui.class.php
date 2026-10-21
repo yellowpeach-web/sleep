@@ -6,6 +6,9 @@ class WPML_Package_Translation_UI {
 
 	const MENU_SLUG = 'wpml-package-management';
 
+	const SUPPORT_PAGE_SLUG     = 'sitepress-multilingual-cms/menu/support.php';
+	const SUPPORT_TOOL_PACKAGES = 'packages';
+
 	public function __construct() {
 		add_action( 'wpml_loaded', array( $this, 'loaded' ), $this->load_priority );
 	}
@@ -40,14 +43,10 @@ class WPML_Package_Translation_UI {
 		}
 	}
 
-	/**
-	 * @param string $menu_id
-	 */
 	public function menu( $menu_id ) {
 		if ( 'WPML' !== $menu_id || ! defined( 'ICL_PLUGIN_PATH' ) ) {
 			return;
 		}
-		/** @var SitePress|null $sitepress */
 		global $sitepress;
 		if ( ! isset( $sitepress ) || ( method_exists( $sitepress, 'get_setting' ) && ! $sitepress->get_setting( 'setup_complete' ) ) ) {
 			return;
@@ -62,7 +61,9 @@ class WPML_Package_Translation_UI {
 		if ( current_user_can( 'wpml_manage_string_translation' ) ) {
 			$menu               = array();
 			$menu['order']      = 1300;
+			/* translators: Name of the Packages page in the WPML menu, and the heading of that page. Noun, plural. */
 			$menu['page_title'] = __( 'Packages', 'wpml-string-translation' );
+			/* translators: Name of the Packages page in the WPML menu, and the heading of that page. Noun, plural. */
 			$menu['menu_title'] = __( 'Packages', 'wpml-string-translation' );
 			$menu['capability'] = 'wpml_manage_string_translation';
 			$menu['menu_slug']  = self::MENU_SLUG;
@@ -81,8 +82,24 @@ class WPML_Package_Translation_UI {
 	}
 
 	function admin_enqueue_scripts( $hook ) {
-		if ( get_plugin_page_hookname( self::MENU_SLUG, $this->menu_root ) === $hook ) {
+		if (
+			$this->is_packages_management_screen()
+			|| $this->is_support_packages_screen()
+		) {
 			wp_enqueue_script( 'wpml-package-trans-man-script' );
 		}
+	}
+
+	private function is_packages_management_screen() {
+		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+
+		return self::MENU_SLUG === $page;
+	}
+
+	private function is_support_packages_screen() {
+		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+		$tool = isset( $_GET['tool'] ) ? sanitize_text_field( wp_unslash( $_GET['tool'] ) ) : '';
+
+		return self::SUPPORT_PAGE_SLUG === $page && self::SUPPORT_TOOL_PACKAGES === $tool;
 	}
 }

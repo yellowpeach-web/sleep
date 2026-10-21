@@ -3,37 +3,45 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "nl_NL"
          },
          "Advanced": [
             "Geavanceerd"
          ],
          "HTML anchor": [
-            "HTML anker"
+            "HTML-anker"
          ],
          "Add a shortcut to this block when loading the page using the “#anchor” URL.": [
-            "Voeg een snelkoppeling aan dit blok toe bij het laden van de pagina met de \"#anchor\" URL."
+            "Voeg een snelkoppeling naar dit blok toe bij het laden van de pagina via de “#anchor”-URL."
          ],
          "Additional CSS class(es)": [
-            "Toegevoegde CSS klasse(n)"
+            "Extra CSS-class(es)"
          ],
          "Separate multiple classes with spaces.": [
-            "Scheid meerdere klassen met spaties."
+            "Scheid meerdere classes met spaties."
          ],
          "Color": [
             "Kleur"
+         ],
+         "px": [
+            "px"
+         ],
+         "%": [
+            "%"
          ],
          "Dimensions": [
             "Afmetingen"
          ],
          "BLOCK": [
-            "Block"
+            "BLOK"
          ],
          "Block margin": [
             "Blokmarge"
          ],
          "Block padding": [
-            "Blokvulling"
+            "Blokpadding"
          ],
          "LANGUAGE": [
             "TAAL"
@@ -42,16 +50,16 @@
             "Taalafstand"
          ],
          "Language padding": [
-            "Taal opvulling"
+            "Taalpadding"
          ],
          "Display": [
-            "Weergeven"
+            "Weergave"
          ],
          "Show flag": [
-            "Vlag tonen"
+            "Vlag weergeven"
          ],
          "Show language name": [
-            "Taalnaam tonen"
+            "Taalnaam weergeven"
          ],
          "Display language name in": [
             "Taalnaam weergeven in"
@@ -60,7 +68,7 @@
             "Stijl"
          ],
          "Flag settings": [
-            "Vlag instellingen"
+            "Vlaginstellingen"
          ],
          "Width": [
             "Breedte"
@@ -69,13 +77,19 @@
             "Hoogte"
          ],
          "Spacing": [
-            "Spatiëring"
+            "Afstand"
+         ],
+         "Switch to %s": [
+            "Overschakelen naar %s"
+         ],
+         "Available languages": [
+            "Beschikbare talen"
          ],
          "Allow wrapping to multiple lines": [
-            "Terugloop naar meerdere regels toestaan"
+            "Omloop naar meerdere regels toestaan"
          ],
          "Open on click": [
-            "Openen met een klik"
+            "Openen bij klikken"
          ],
          "Show arrow": [
             "Pijl weergeven"
@@ -84,10 +98,16 @@
             "Layout"
          ],
          "Justification": [
-            "Verantwoording"
+            "Uitlijning"
          ],
          "Orientation": [
             "Oriëntatie"
+         ],
+         "Language Switcher": [
+            "Taalschakelaar"
+         ],
+         "Language switcher, press tab to navigate to other languages": [
+            "Taalschakelaar, druk op tab om naar andere talen te navigeren"
          ],
          "Typography": [
             "Typografie"
@@ -96,16 +116,16 @@
             "Achtergrond"
          ],
          "Language Text": [
-            "Tekst taal"
+            "Taaltekst"
          ],
          "Language Background": [
-            "Taal achtergrond"
+            "Taalachtergrond"
          ],
          "Current language text": [
-            "Huidige taaltekst"
+            "Tekst huidige taal"
          ],
          "Current language background": [
-            "Huidige taalachtergrond"
+            "Achtergrond huidige taal"
          ],
          "Full name": [
             "Volledige naam"
@@ -114,16 +134,16 @@
             "Code"
          ],
          "Justify items left": [
-            "Rechtvaardig items links"
+            "Items links uitlijnen"
          ],
          "Justify items center": [
-            "Rechtvaardig items midden"
+            "Items centreren"
          ],
          "Justify items right": [
-            "Rechtvaardig items rechts"
+            "Items rechts uitlijnen"
          ],
          "Justify items space between": [
-            "Rechtvaardig items met tussenruimte"
+            "Items spreiden"
          ],
          "Horizontal": [
             "Horizontaal"
@@ -135,13 +155,22 @@
             "Normaal"
          ],
          "Medium": [
-            "Middelgroot"
+            "Gemiddeld"
          ],
          "Large": [
             "Groot"
          ],
          "X-Large": [
-            "Zeer groot"
+            "Extra groot"
+         ],
+         "Ab": [
+            "Ab"
+         ],
+         "AB": [
+            "AB"
+         ],
+         "ab": [
+            "ab"
          ],
          "Small": [
             "Klein"
@@ -149,17 +178,11 @@
          "Displays the WPML Language Switcher.": [
             "Geeft de WPML-taalschakelaar weer."
          ],
-         "Language Switcher": [
-            "Taalschakelaar"
-         ],
          "displays the WPML Language Switcher": [
-            "geeft de WPML Taalschakelaar weer"
-         ],
-         "Displays the WPML Language Switcher. <br/> Learn <a>how to translate this block</a>.": [
-            "Toont de WPML taalswitcher. <br/> Leer <a>hoe dit blok te vertalen</a>."
+            "geeft de WPML-taalschakelaar weer"
          ],
          "Navigation Language Switcher": [
-            "Navigatie Taal Schakelaar"
+            "Navigatie-taalschakelaar"
          ],
          "Reset all": [
             "Alles opnieuw instellen"

@@ -1,0 +1,1527 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "vi"
+         },
+         "You have unsaved language changes from a previous session.": [
+            "Bạn có các thay đổi ngôn ngữ chưa lưu từ một phiên làm việc trước đó."
+         ],
+         "Restore changes": [
+            "Khôi phục các thay đổi"
+         ],
+         "Discard": [
+            "Hủy bỏ"
+         ],
+         "Unsaved language changes from a previous session could not be restored, because the site’s languages changed after they were made. Those changes were discarded.": [
+            "Không thể khôi phục các thay đổi ngôn ngữ chưa lưu từ phiên làm việc trước đó vì các ngôn ngữ của trang web đã thay đổi sau khi các thay đổi đó được thực hiện. Những thay đổi đó đã bị hủy bỏ."
+         ],
+         "Dismiss": [
+            "Bỏ qua"
+         ],
+         "Impact on existing content": [
+            "Tác động đến nội dung hiện có"
+         ],
+         "Checking which content will be affected…": [
+            "Đang kiểm tra nội dung nào sẽ bị ảnh hưởng…"
+         ],
+         "We couldn’t estimate the impact. You can still apply the change; content will be updated during the save.": [
+            "Chúng tôi không thể ước tính tác động. Bạn vẫn có thể áp dụng thay đổi; nội dung sẽ được cập nhật trong quá trình lưu."
+         ],
+         "Try again": [
+            "Thử lại"
+         ],
+         "No existing content needs updating.": [
+            "Không có nội dung hiện có nào cần cập nhật."
+         ],
+         "%d post will be updated.": [
+            "%d bài viết sẽ được cập nhật."
+         ],
+         "%d link will be adjusted.": [
+            "%d liên kết sẽ được điều chỉnh."
+         ],
+         "%d translated string will be re-keyed.": [
+            "%d chuỗi đã dịch sẽ được tạo khóa lại."
+         ],
+         "Finish the change to %s": [
+            "Hoàn tất việc thay đổi thành %s"
+         ],
+         "What changes automatically": [
+            "Những gì thay đổi tự động"
+         ],
+         "The language’s country becomes %s.": [
+            "Quốc gia của ngôn ngữ trở thành %s."
+         ],
+         "Automatic translation will be re-mapped to the new regional variant. Existing translations stay as they are.": [
+            "Bản dịch tự động sẽ được ánh xạ lại theo biến thể khu vực mới. Các bản dịch hiện có vẫn giữ nguyên."
+         ],
+         "Automatic translation will now target the new regional variant. Existing translations stay as they are.": [
+            "Bản dịch tự động bây giờ sẽ nhắm mục tiêu vào biến thể khu vực mới. Các bản dịch hiện có vẫn giữ nguyên."
+         ],
+         "The hreflang tag becomes %s.": [
+            "Thẻ hreflang trở thành %s."
+         ],
+         "Also update these?": [
+            "Cũng cập nhật những mục này?"
+         ],
+         "Riskier change": [
+            "Thay đổi rủi ro hơn"
+         ],
+         "Cancel": [
+            "Hủy"
+         ],
+         "Apply": [
+            "Áp dụng"
+         ],
+         "Anything whose translation group already has a version in %s stays where it is.": [
+            "Bất kỳ nội dung nào có nhóm dịch thuật đã có phiên bản bằng %s sẽ được giữ nguyên vị trí."
+         ],
+         "You have %1$d %2$s page from a language you removed. Bring it here?": [
+            "Bạn có %1$d trang %2$s từ một ngôn ngữ bạn đã gỡ bỏ. Mang chúng đến đây?"
+         ],
+         "I understand these items are not %1$s and will be re-labelled as %2$s.": [
+            "Tôi hiểu rằng những mục này không phải là %1$s và sẽ được gắn nhãn lại thành %2$s."
+         ],
+         "Re-labels them as %s, keeping their connections to your other languages.": [
+            "Gắn nhãn lại chúng thành %s, giữ nguyên các kết nối của chúng với các ngôn ngữ khác của bạn."
+         ],
+         "Content from a language you removed": [
+            "Nội dung từ một ngôn ngữ bạn đã xóa"
+         ],
+         "Choose what to bring here": [
+            "Chọn nội dung cần mang đến đây"
+         ],
+         "Apply changes": [
+            "Áp dụng thay đổi"
+         ],
+         "These changes are applied when you click Save.": [
+            "Các thay đổi này được áp dụng khi bạn nhấp vào Lưu."
+         ],
+         "Change the WordPress locale %1$s → %2$s": [
+            "Thay đổi locale WordPress %1$s → %2$s"
+         ],
+         "WordPress uses this to load admin language packs and plugin / theme translations.": [
+            "WordPress sử dụng thông tin này để tải các gói ngôn ngữ quản trị và các bản dịch plugin / giao diện."
+         ],
+         "Already used by %s.": [
+            "Đã được sử dụng bởi %s."
+         ],
+         "Change the language code in URLs %1$s → %2$s": [
+            "Thay đổi mã ngôn ngữ trong URL %1$s → %2$s"
+         ],
+         "Renames the language code. Existing %s URLs in search engines, bookmarks and external links become 404s unless redirects are set up.": [
+            "Đổi tên mã ngôn ngữ. Các URL %s hiện có trong các công cụ tìm kiếm, dấu trang và liên kết bên ngoài sẽ trở thành lỗi 404 trừ khi các chuyển hướng được thiết lập."
+         ],
+         "Use the flag of %s": [
+            "Sử dụng cờ của %s"
+         ],
+         "You picked the current flag yourself, so WPML keeps it unless you ask.": [
+            "Bạn đã tự chọn cờ hiện tại, vì vậy WPML sẽ giữ nguyên trừ khi bạn yêu cầu."
+         ],
+         "The flag shown in language switchers and in the admin.": [
+            "Cờ được hiển thị trong bộ chuyển đổi ngôn ngữ và trong quản trị."
+         ],
+         "Rename the language %1$s → %2$s": [
+            "Đổi tên ngôn ngữ %1$s → %2$s"
+         ],
+         "Updates the name in every language of the admin. Labels you edited yourself are kept.": [
+            "Cập nhật tên trong mọi ngôn ngữ của quản trị. Các nhãn bạn tự chỉnh sửa sẽ được giữ nguyên."
+         ],
+         "Change the hreflang tag %1$s → %2$s": [
+            "Thay đổi thẻ hreflang %1$s → %2$s"
+         ],
+         "You customised this tag, so WPML keeps it unless you ask. Search engines read it to serve the right regional version.": [
+            "Bạn đã tùy chỉnh thẻ này, vì vậy WPML sẽ giữ nguyên trừ khi bạn yêu cầu. Các công cụ tìm kiếm đọc thẻ này để cung cấp phiên bản khu vực phù hợp."
+         ],
+         "What should happen to %s?": [
+            "Điều gì sẽ xảy ra với %s?"
+         ],
+         "Pick the outcome you want. Nothing happens until you confirm below.": [
+            "Chọn kết quả bạn muốn. Sẽ không có gì xảy ra cho đến khi bạn xác nhận bên dưới."
+         ],
+         "Checking for translated content…": [
+            "Đang kiểm tra nội dung đã dịch…"
+         ],
+         "What should happen to this language": [
+            "Điều gì sẽ xảy ra với ngôn ngữ này"
+         ],
+         "Which content types": [
+            "Các loại nội dung"
+         ],
+         "%1$s — %2$d item": [
+            "%1$s — %2$d mục"
+         ],
+         "Pages and posts": [
+            "Trang và bài viết"
+         ],
+         "Products": [
+            "Sản phẩm"
+         ],
+         "Categories and tags": [
+            "Chuyên mục và thẻ"
+         ],
+         "Images": [
+            "Hình ảnh"
+         ],
+         "Menus": [
+            "Menu"
+         ],
+         "Delete them permanently now — this cannot be undone": [
+            "Xóa chúng vĩnh viễn ngay bây giờ — hành động này không thể hoàn tác"
+         ],
+         "Categories, tags and menus have no WordPress Trash, so those are deleted right away either way.": [
+            "Chuyên mục, thẻ và menu không có Thùng rác WordPress, vì vậy những mục đó sẽ bị xóa ngay lập tức dù chọn cách nào."
+         ],
+         "Your site’s setting “when deleting a post, delete its translations too” is on. We will not apply it here, so nothing in %s is deleted.": [
+            "Cài đặt trang web của bạn “khi xóa một bài viết, cũng xóa các bản dịch của nó” đang bật. Chúng tôi sẽ không áp dụng cài đặt đó ở đây, vì vậy không có gì trong %s bị xóa."
+         ],
+         ", ": [
+            ", "
+         ],
+         "your other languages": [
+            "các ngôn ngữ khác của bạn"
+         ],
+         "%s’s string translations are deleted with it.": [
+            "Các bản dịch chuỗi của %s sẽ bị xóa cùng với nó."
+         ],
+         "Its queued translation jobs are cancelled without charge; any already in progress are stopped, and the words already sent are still charged.": [
+            "Các công việc dịch thuật đang chờ trong hàng đợi của nó sẽ bị hủy mà không tính phí; bất kỳ công việc nào đang tiến hành sẽ bị dừng lại, và những từ đã gửi vẫn sẽ bị tính phí."
+         ],
+         "Move this content into": [
+            "Chuyển nội dung này vào"
+         ],
+         "Choose a language…": [
+            "Chọn một ngôn ngữ…"
+         ],
+         "Same language": [
+            "Cùng ngôn ngữ"
+         ],
+         "A different language": [
+            "Một ngôn ngữ khác"
+         ],
+         "I understand these items are not %s and will be re-labelled as the language I pick.": [
+            "Tôi hiểu rằng những mục này không phải là %s và sẽ được gắn nhãn lại theo ngôn ngữ tôi chọn."
+         ],
+         "%s is taken off the site when you save, and its content is moved straight after — nothing is deleted either way.": [
+            "%s sẽ được gỡ bỏ khỏi trang web khi bạn lưu, và nội dung của nó sẽ được chuyển đi ngay sau đó — không có gì bị xóa dù chọn cách nào."
+         ],
+         "WPML could not stop translating into %s. Nothing was changed — try again, or pick another goal.": [
+            "WPML không thể dừng việc dịch sang %s. Không có gì thay đổi — hãy thử lại hoặc chọn một mục tiêu khác."
+         ],
+         "Review %d item": [
+            "Đánh giá %d mục"
+         ],
+         "Stop translating into %s": [
+            "Dừng dịch sang %s"
+         ],
+         "Move %1$d item into %2$s": [
+            "Chuyển %1$d mục vào %2$s"
+         ],
+         "Move %d item": [
+            "Chuyển %d mục"
+         ],
+         "Move %d item to the Trash": [
+            "Chuyển %d mục vào Thùng rác"
+         ],
+         "Delete %d item permanently": [
+            "Xóa vĩnh viễn %d mục"
+         ],
+         "Remove language — nothing is deleted": [
+            "Gỡ bỏ ngôn ngữ — không có gì bị xóa"
+         ],
+         "What would be removed": [
+            "Những gì sẽ bị gỡ bỏ"
+         ],
+         "Hide the list": [
+            "Ẩn danh sách"
+         ],
+         "Reading the list…": [
+            "Đang đọc danh sách…"
+         ],
+         "We couldn’t read the list of items. The counts above still stand, and you can go ahead or close this dialog.": [
+            "Chúng tôi không thể đọc danh sách các mục. Các số lượng ở trên vẫn giữ nguyên, và bạn có thể tiếp tục hoặc đóng hộp thoại này."
+         ],
+         "%1$s — %2$s (#%3$d)": [
+            "%1$s — %2$s (#%3$d)"
+         ],
+         "Nothing is selected right now.": [
+            "Hiện tại không có gì được chọn."
+         ],
+         "Showing %1$d–%2$d of %3$d item": [
+            "Đang hiển thị %1$d–%2$d trong tổng số %3$d mục"
+         ],
+         "Previous": [
+            "Trước"
+         ],
+         "Next": [
+            "Tiếp theo"
+         ],
+         "%s is off your site, but its content could not be moved. Nothing was deleted — the content is listed under Removed languages, where you can move it from.": [
+            "%s đã được gỡ khỏi trang web của bạn, nhưng nội dung của nó không thể chuyển đi. Không có gì bị xóa — nội dung được liệt kê trong phần Ngôn ngữ đã gỡ bỏ, nơi bạn có thể chuyển nó đi."
+         ],
+         "Done": [
+            "Đã hoàn thành"
+         ],
+         "%s stays on your site. Its pages keep their addresses and their search rankings, and the language switcher keeps offering it.": [
+            "%s vẫn ở trên trang web của bạn. Các trang của nó giữ nguyên địa chỉ và thứ hạng tìm kiếm, và bộ chuyển đổi ngôn ngữ vẫn tiếp tục hiển thị nó."
+         ],
+         "WPML has stopped creating new %s translations. To start again, use “Resume translating” on the language’s row.": [
+            "WPML đã ngừng tạo các bản dịch %s mới. Để bắt đầu lại, hãy sử dụng “Tiếp tục dịch” trên hàng của ngôn ngữ đó."
+         ],
+         "%1$s is off your site. Nothing was deleted: its addresses now redirect to your %2$s pages, and every item it holds is still in your database and in your admin lists.": [
+            "%1$s đã được gỡ khỏi trang web của bạn. Không có gì bị xóa: các địa chỉ của nó hiện chuyển hướng đến các trang %2$s của bạn, và mọi mục nó nắm giữ vẫn còn trong cơ sở dữ liệu và trong danh sách quản trị của bạn."
+         ],
+         "To bring %s back, add it again — or use “Put back” under Removed languages, below.": [
+            "Để mang %s trở lại, hãy thêm lại nó — hoặc sử dụng “Đặt lại” trong phần Ngôn ngữ đã gỡ bỏ bên dưới."
+         ],
+         "To bring %s back, add it again as a custom language with the same code — its content is still here.": [
+            "Để mang %s trở lại, hãy thêm lại nó dưới dạng ngôn ngữ tùy chỉnh với cùng một mã — nội dung của nó vẫn còn ở đây."
+         ],
+         "To bring %s back, add it again from the language picker — it asks which country the content belongs to, and the content is still here.": [
+            "Để mang %s trở lại, hãy thêm lại nó từ trình chọn ngôn ngữ — nó sẽ hỏi nội dung thuộc về quốc gia nào, và nội dung vẫn còn ở đây."
+         ],
+         "They stay in your Trash until %s.": [
+            "Chúng sẽ ở trong Thùng rác của bạn cho đến ngày %s."
+         ],
+         "The deletion of %s’s content finished. WPML could not read back a record of what it removed.": [
+            "Việc xóa nội dung của %s đã hoàn tất. WPML không thể đọc lại bản ghi về những gì nó đã gỡ bỏ."
+         ],
+         "Close": [
+            "Đóng"
+         ],
+         "Unavailable until WPML can count this language’s content.": [
+            "Không khả dụng cho đến khi WPML có thể đếm được nội dung của ngôn ngữ này."
+         ],
+         "If your site uses one domain per language, that language’s domain is not redirected: while it still points at this site it answers in your site’s default language at the same addresses.": [
+            "Nếu trang web của bạn sử dụng một tên miền cho mỗi ngôn ngữ, tên miền của ngôn ngữ đó sẽ không được chuyển hướng: trong khi nó vẫn trỏ về trang web này, nó sẽ trả lời bằng ngôn ngữ mặc định của trang web tại cùng các địa chỉ đó."
+         ],
+         "The listed items are removed, along with their translation records, their string translations and their translation jobs.": [
+            "Các mục được liệt kê sẽ bị gỡ bỏ, cùng với các bản ghi dịch thuật, các bản dịch chuỗi và các công việc dịch thuật của chúng."
+         ],
+         "The listed items are removed, along with their translation records, their string translations and their %d translation job.": [
+            "Các mục được liệt kê sẽ bị gỡ bỏ, cùng với các bản ghi dịch thuật, các bản dịch chuỗi và %d công việc dịch thuật của chúng."
+         ],
+         "We couldn’t check for translated content. You can still remove the language; its translations are kept. Deleting its content and moving it into another language both need that count, so those two goals are unavailable.": [
+            "Chúng tôi không thể kiểm tra nội dung đã dịch. Bạn vẫn có thể gỡ bỏ ngôn ngữ; các bản dịch của nó sẽ được giữ lại. Việc xóa nội dung và chuyển nó sang ngôn ngữ khác đều cần số lượng đó, vì vậy hai mục tiêu đó không khả dụng."
+         ],
+         "This can be undone.": [
+            "Hành động này có thể hoàn tác."
+         ],
+         "Stop translating into %s, keep its content online.": [
+            "Ngừng dịch sang %s, giữ nội dung trực tuyến."
+         ],
+         "Your %1$s content stays published at its current addresses and keeps its search rankings. The language switcher keeps offering %1$s.": [
+            "Nội dung %1$s của bạn vẫn được xuất bản tại các địa chỉ hiện tại và giữ nguyên thứ hạng tìm kiếm. Bộ chuyển đổi ngôn ngữ vẫn tiếp tục cung cấp %1$s."
+         ],
+         "Your %1$d %2$s item stays published at its current address and keeps its search ranking. The language switcher keeps offering %2$s.": [
+            "%1$d mục %2$s của bạn vẫn được xuất bản tại các địa chỉ hiện tại và giữ nguyên thứ hạng tìm kiếm. Bộ chuyển đổi ngôn ngữ vẫn tiếp tục cung cấp %2$s."
+         ],
+         "Translations are already paused for this language — nothing more changes.": [
+            "Các bản dịch đã được tạm dừng cho ngôn ngữ này — không có gì thay đổi thêm."
+         ],
+         "WPML stops creating new translations.": [
+            "WPML ngừng tạo các bản dịch mới."
+         ],
+         "Nothing is deleted": [
+            "Không có gì bị xóa"
+         ],
+         "Take %s off the site, but keep everything in case we come back.": [
+            "Gỡ %s khỏi trang web, nhưng giữ lại mọi thứ trong trường hợp chúng ta quay lại."
+         ],
+         "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. Everything %1$s holds stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was.": [
+            "Khách truy cập sẽ không còn thấy %1$s; các địa chỉ của nó chuyển hướng đến các trang %2$s của bạn để không có gì trả về lỗi 404. Mọi thứ %1$s nắm giữ vẫn còn trong cơ sở dữ liệu và trong danh sách quản trị của bạn, và việc thêm lại %1$s sẽ mang nó trở lại chính xác như trước."
+         ],
+         "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. The %3$d item stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was.": [
+            "Khách truy cập sẽ không còn thấy %1$s; các địa chỉ của nó chuyển hướng đến các trang %2$s của bạn để không có gì trả về lỗi 404. %3$d mục vẫn còn trong cơ sở dữ liệu và trong danh sách quản trị của bạn, và việc thêm lại %1$s sẽ mang chúng trở lại chính xác như trước."
+         ],
+         "Reversible": [
+            "Có thể đảo ngược"
+         ],
+         "Take %s off the site and delete its content.": [
+            "Gỡ %s khỏi trang web và xóa nội dung của nó."
+         ],
+         "Originals in other languages are untouched. Image files stay on disk.": [
+            "Các bản gốc ở các ngôn ngữ khác không bị ảnh hưởng. Các tệp hình ảnh vẫn còn trên đĩa."
+         ],
+         "Only reversible if the Trash route is chosen": [
+            "Chỉ có thể đảo ngược nếu chọn phương thức Thùng rác"
+         ],
+         "Not reversible — this site has the Trash disabled": [
+            "Không thể đảo ngược — trang web này đã tắt Thùng rác"
+         ],
+         "This can only be undone when the items go to the Trash.": [
+            "Hành động này chỉ có thể được hoàn tác khi các mục được đưa vào Thùng rác."
+         ],
+         "This site has the Trash disabled, so deleting this content cannot be undone.": [
+            "Trang web này đã tắt Thùng rác, vì vậy việc xóa nội dung này không thể hoàn tác."
+         ],
+         "Move this language’s content into another language.": [
+            "Chuyển nội dung của ngôn ngữ này sang một ngôn ngữ khác."
+         ],
+         "Reassigns this language’s items to a language you pick, keeping their connections to the other languages. For renaming and merging, not retiring.": [
+            "Gán lại các mục của ngôn ngữ này cho một ngôn ngữ bạn chọn, giữ nguyên các kết nối của chúng với các ngôn ngữ khác. Dùng để đổi tên và hợp nhất, không phải để ngừng sử dụng."
+         ],
+         "Reassigns the %d item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring.": [
+            "Gán lại %d mục cho một ngôn ngữ bạn chọn, giữ nguyên các kết nối của chúng với các ngôn ngữ khác. Dùng để đổi tên và hợp nhất, không phải để ngừng sử dụng."
+         ],
+         "The content is kept, but the move cannot be undone.": [
+            "Nội dung được giữ lại, nhưng việc chuyển đi không thể hoàn tác."
+         ],
+         "There is no other active language on this site to move the content into.": [
+            "Không có ngôn ngữ hoạt động nào khác trên trang web này để chuyển nội dung vào."
+         ],
+         "You have existing content in %s": [
+            "Bạn có nội dung hiện có trong %s"
+         ],
+         "This site has %1$d items in %2$s from before. What should happen to them?": [
+            "Trang web này có %1$d mục trong %2$s từ trước. Điều gì sẽ xảy ra với chúng?"
+         ],
+         "Bring back my content as %1$s (%2$s).": [
+            "Mang nội dung của tôi trở lại dưới dạng %1$s (%2$s)."
+         ],
+         "The language keeps its original code (%s). There is no automatic way back.": [
+            "Ngôn ngữ giữ nguyên mã gốc (%s). Không có cách nào để quay lại tự động."
+         ],
+         "Start fresh and keep the old content separate.": [
+            "Bắt đầu mới và giữ nội dung cũ riêng biệt."
+         ],
+         "You can attach the old content to the new language later from WPML → Support.": [
+            "Bạn có thể đính kèm nội dung cũ vào ngôn ngữ mới sau này từ WPML → Hỗ trợ."
+         ],
+         "Never mind": [
+            "Đừng bận tâm"
+         ],
+         "Add language": [
+            "Thêm ngôn ngữ"
+         ],
+         "How much would a new language cost?": [
+            "Một ngôn ngữ mới sẽ tốn bao nhiêu chi phí?"
+         ],
+         "Pick a language to see how many words your content has and what translating them would cost.": [
+            "Chọn một ngôn ngữ để xem nội dung của bạn có bao nhiêu từ và chi phí dịch chúng là bao nhiêu."
+         ],
+         "These costs apply once you use automatic translation for the new language.": [
+            "Các chi phí này được áp dụng khi bạn sử dụng dịch tự động cho ngôn ngữ mới."
+         ],
+         "No languages are available to estimate. Every language automatic translation supports is already on your site.": [
+            "Không có ngôn ngữ nào khả dụng để ước tính. Mọi ngôn ngữ mà dịch tự động hỗ trợ đều đã có trên trang web của bạn."
+         ],
+         "Language": [
+            "Ngôn ngữ"
+         ],
+         "Select a language…": [
+            "Chọn một ngôn ngữ…"
+         ],
+         "Show cost": [
+            "Hiển thị chi phí"
+         ],
+         "Add a custom language": [
+            "Thêm một ngôn ngữ tùy chỉnh"
+         ],
+         "Use this only for non-standard dialects or local variants that aren't in the language list.": [
+            "Chỉ sử dụng tùy chọn này cho các phương ngữ không chuẩn hoặc các biến thể địa phương không có trong danh sách ngôn ngữ."
+         ],
+         "Most users don't need a custom language. Most variants (e.g., Mexican Spanish, Brazilian Portuguese) already exist in the language list above. Use this form only for genuine custom language variants.": [
+            "Hầu hết người dùng không cần ngôn ngữ tùy chỉnh. Hầu hết các biến thể (ví dụ: Tiếng Tây Ban Nha Mexico, Tiếng Bồ Đào Nha Brazil) đã tồn tại trong danh sách ngôn ngữ ở trên. Chỉ sử dụng biểu mẫu này cho các biến thể ngôn ngữ tùy chỉnh thực sự."
+         ],
+         "Variant name": [
+            "Tên biến thể"
+         ],
+         "e.g., Andalusian": [
+            "ví dụ: Tiếng Andalucia"
+         ],
+         "“%s” is already the name of one of your languages. Choose a different name, or rename that language first.": [
+            "“%s” đã là tên của một trong các ngôn ngữ của bạn. Hãy chọn một tên khác, hoặc đổi tên ngôn ngữ đó trước."
+         ],
+         "“%s” is available in the language list. We recommend adding it with Search and add a language. Continue only if you need your own variant.": [
+            "“%s” đã có sẵn trong danh sách ngôn ngữ. Chúng tôi khuyên bạn nên thêm nó bằng Tìm kiếm và thêm ngôn ngữ. Chỉ tiếp tục nếu bạn cần biến thể của riêng mình."
+         ],
+         "Default locale": [
+            "Locale mặc định"
+         ],
+         "Code": [
+            "Mã"
+         ],
+         "pms or es-an": [
+            "pms hoặc es-an"
+         ],
+         "Once defined, this cannot be changed.": [
+            "Một khi đã xác định, mã này không thể thay đổi."
+         ],
+         "hreflang": [
+            "hreflang"
+         ],
+         "WPML no longer lists “%s”, so you can add it here as a custom language. We filled in its usual settings.": [
+            "WPML không còn liệt kê “%s”, vì vậy bạn có thể thêm ngôn ngữ này tại đây dưới dạng ngôn ngữ tùy chỉnh. Chúng tôi đã điền các cài đặt thông thường của ngôn ngữ này."
+         ],
+         "Flag": [
+            "Cờ"
+         ],
+         "Uploading…": [
+            "Đang tải lên…"
+         ],
+         "Upload SVG…": [
+            "Tải lên SVG…"
+         ],
+         "Upload a custom flag (SVG)": [
+            "Tải lên một cờ tùy chỉnh (SVG)"
+         ],
+         "The flag could not be uploaded.": [
+            "Không thể tải lên cờ."
+         ],
+         "SVG recommended for crisp display.": [
+            "Khuyên dùng SVG để hiển thị sắc nét."
+         ],
+         "Encode URL?": [
+            "Mã hóa URL?"
+         ],
+         "No": [
+            "Không"
+         ],
+         "Yes": [
+            "Có"
+         ],
+         "Map to a supported language (recommended)": [
+            "Ánh xạ tới một ngôn ngữ được hỗ trợ (khuyên dùng)"
+         ],
+         "— Match automatically —": [
+            "— Khớp tự động —"
+         ],
+         "The locale “%s” isn’t valid. Use letters, numbers and underscores only, like es_ES.": [
+            "Locale “%s” không hợp lệ. Chỉ sử dụng chữ cái, số và dấu gạch dưới, như es_ES."
+         ],
+         "The hreflang “%1$s” is too long. Use at most %2$d characters.": [
+            "Thẻ hreflang “%1$s” quá dài. Sử dụng tối đa %2$d ký tự."
+         ],
+         "The language code “%1$s” is too long. Use at most %2$d characters.": [
+            "Mã ngôn ngữ “%1$s” quá dài. Sử dụng tối đa %2$d ký tự."
+         ],
+         "The language code “%1$s” isn’t valid. Use letters, numbers, hyphens and underscores — up to %2$d characters.": [
+            "Mã ngôn ngữ “%1$s” không hợp lệ. Sử dụng chữ cái, số, dấu gạch ngang và dấu gạch dưới — tối đa %2$d ký tự."
+         ],
+         "“%s” is already a supported language. Add it from Search instead of creating a custom variant.": [
+            "“%s” đã là một ngôn ngữ được hỗ trợ. Hãy thêm nó từ Tìm kiếm thay vì tạo một biến thể tùy chỉnh."
+         ],
+         "This language code is already used by “%s”. Choose a different one.": [
+            "Mã ngôn ngữ này đã được sử dụng bởi “%s”. Hãy chọn một mã khác."
+         ],
+         "Enter a name for this language.": [
+            "Nhập tên cho ngôn ngữ này."
+         ],
+         "Enter a locale.": [
+            "Nhập một locale."
+         ],
+         "Enter a language code.": [
+            "Nhập một mã ngôn ngữ."
+         ],
+         "Edit labels for %s": [
+            "Chỉnh sửa nhãn cho %s"
+         ],
+         "Set how the “%s” language is named in each of your site languages. Names are prefilled. Edit any to override.": [
+            "Thiết lập cách ngôn ngữ “%s” được đặt tên trong mỗi ngôn ngữ trên trang web của bạn. Các tên đã được điền sẵn. Chỉnh sửa bất kỳ tên nào để ghi đè."
+         ],
+         "Loading names…": [
+            "Đang tải tên…"
+         ],
+         "this language": [
+            "ngôn ngữ này"
+         ],
+         "Save labels": [
+            "Lưu nhãn"
+         ],
+         "Your server cannot convert international domain names. Enter the xn-- form of %s.": [
+            "Máy chủ của bạn không thể chuyển đổi tên miền quốc tế. Hãy nhập dạng xn-- của %s."
+         ],
+         "The domain you have entered is invalid.": [
+            "Tên miền bạn đã nhập không hợp lệ."
+         ],
+         "Set a domain for %s": [
+            "Thiết lập một tên miền cho %s"
+         ],
+         "Set a domain for each new language": [
+            "Thiết lập một tên miền cho mỗi ngôn ngữ mới"
+         ],
+         "Your site uses a different domain per language. %s is no longer the default language, so it needs a domain of its own. Until it has one, its pages cannot be reached.": [
+            "Trang web của bạn sử dụng một tên miền khác nhau cho mỗi ngôn ngữ. %s không còn là ngôn ngữ mặc định, vì vậy nó cần một tên miền riêng. Cho đến khi có tên miền, các trang của ngôn ngữ này sẽ không thể truy cập được."
+         ],
+         "Your site uses a different domain per language, so %s needs a domain of its own before it can be visited.": [
+            "Trang web của bạn sử dụng một tên miền khác nhau cho mỗi ngôn ngữ, vì vậy %s cần một tên miền riêng trước khi có thể truy cập."
+         ],
+         "Your site uses a different domain per language, so each new language needs a domain of its own before it can be visited.": [
+            "Trang web của bạn sử dụng một tên miền khác nhau cho mỗi ngôn ngữ, vì vậy mỗi ngôn ngữ mới cần một tên miền riêng trước khi có thể truy cập."
+         ],
+         "This is the site address.": [
+            "Đây là địa chỉ trang web."
+         ],
+         "Change it in Settings → General.": [
+            "Thay đổi trong Cài đặt → Tổng quan."
+         ],
+         "Valid": [
+            "Hợp lệ"
+         ],
+         "Blocked by a firewall or CDN": [
+            "Bị chặn bởi tường lửa hoặc CDN"
+         ],
+         "Not valid": [
+            "Không hợp lệ"
+         ],
+         "Validate on save": [
+            "Xác thực khi lưu"
+         ],
+         "This domain is already used by another language or by the site itself.": [
+            "Tên miền này đã được sử dụng bởi một ngôn ngữ khác hoặc bởi chính trang web."
+         ],
+         "Enter the domain this language will be served from.": [
+            "Nhập tên miền mà ngôn ngữ này sẽ được cung cấp."
+         ],
+         "%s will serve this language.": [
+            "%s sẽ cung cấp ngôn ngữ này."
+         ],
+         "If it shows your site, you can save it anyway.": [
+            "Nếu nó hiển thị trang web của bạn, bạn vẫn có thể lưu lại."
+         ],
+         "Two languages cannot use the same domain: %s is already used. Give each language its own domain.": [
+            "Hai ngôn ngữ không thể sử dụng cùng một tên miền: %s đã được sử dụng. Hãy cung cấp cho mỗi ngôn ngữ một tên miền riêng."
+         ],
+         "%s loads, but a firewall or CDN blocked WPML's check.": [
+            "%s tải được, nhưng tường lửa hoặc CDN đã chặn kiểm tra của WPML."
+         ],
+         "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
+            "Không thể xác thực tên miền: %s. Hãy kiểm tra xem nó có trỏ đến trang web này không, hoặc bỏ chọn “Xác thực khi lưu” để vẫn lưu tên miền đó."
+         ],
+         "Save anyway": [
+            "Vẫn lưu"
+         ],
+         "Save": [
+            "Lưu"
+         ],
+         "0 languages — nothing to reset here": [
+            "0 ngôn ngữ — không có gì để đặt lại ở đây"
+         ],
+         "Reset language defaults": [
+            "Đặt lại mặc định ngôn ngữ"
+         ],
+         "WPML couldn’t finish checking your languages.": [
+            "WPML không thể hoàn tất việc kiểm tra các ngôn ngữ của bạn."
+         ],
+         "This says nothing about your languages — the check stopped before it could compare them all. Nothing has been changed.": [
+            "Điều này không nói lên điều gì về các ngôn ngữ của bạn — quá trình kiểm tra đã dừng lại trước khi có thể so sánh tất cả. Không có gì thay đổi."
+         ],
+         "All your languages already use WPML’s catalogue defaults.": [
+            "Tất cả các ngôn ngữ của bạn đã sử dụng các giá trị mặc định trong danh mục của WPML."
+         ],
+         "Flags, label translations and WordPress locales all match — there is nothing to reset.": [
+            "Cờ, bản dịch nhãn và ngôn ngữ WordPress đều khớp — không có gì để đặt lại."
+         ],
+         "These languages no longer match WPML’s language catalogue. Put back:": [
+            "Các ngôn ngữ này không còn khớp với danh mục ngôn ngữ của WPML. Đưa trở lại:"
+         ],
+         "Flags": [
+            "Cờ"
+         ],
+         "%d language using a flag that is not the catalogue default": [
+            "%d ngôn ngữ đang sử dụng cờ không phải là mặc định của danh mục"
+         ],
+         "Labels and their translations": [
+            "Nhãn và bản dịch của chúng"
+         ],
+         "%1$s, %2$s": [
+            "%1$s, %2$s"
+         ],
+         "%d language": [
+            "%d ngôn ngữ"
+         ],
+         "%d display language": [
+            "%d ngôn ngữ hiển thị"
+         ],
+         "%d edited": [
+            "%d đã chỉnh sửa"
+         ],
+         "%d missing": [
+            "%d bị thiếu"
+         ],
+         "%1$s of %2$s": [
+            "%1$s trên %2$s"
+         ],
+         "hide": [
+            "ẩn"
+         ],
+         "show": [
+            "hiển thị"
+         ],
+         "missing": [
+            "thiếu"
+         ],
+         "+ %d more": [
+            "+ thêm %d"
+         ],
+         "WP Locale": [
+            "WP locale"
+         ],
+         "%d language whose locale does not match its country": [
+            "%d ngôn ngữ có locale không khớp với quốc gia"
+         ],
+         "Only the groups you tick are changed. Everything else is left exactly as it is.": [
+            "Chỉ những nhóm bạn đánh dấu mới bị thay đổi. Mọi thứ khác đều được giữ nguyên như hiện tại."
+         ],
+         "The check stopped before it could compare everything, so there may be more than this.": [
+            "Quá trình kiểm tra đã dừng lại trước khi có thể so sánh mọi thứ, vì vậy có thể còn nhiều hơn thế này."
+         ],
+         "Resetting…": [
+            "Đang đặt lại…"
+         ],
+         "Reset selected": [
+            "Đặt lại các mục đã chọn"
+         ],
+         "Language Code": [
+            "Mã ngôn ngữ"
+         ],
+         "Country": [
+            "Quốc gia"
+         ],
+         "Locale": [
+            "Locale"
+         ],
+         "Update the URL code for %s?": [
+            "Cập nhật mã URL cho %s?"
+         ],
+         "Confirm language changes": [
+            "Xác nhận các thay đổi ngôn ngữ"
+         ],
+         "Checking what needs updating…": [
+            "Đang kiểm tra những gì cần cập nhật…"
+         ],
+         "We couldn’t check the impact. You can still save — content is updated during the save.": [
+            "Chúng tôi không thể kiểm tra tác động. Bạn vẫn có thể lưu — nội dung sẽ được cập nhật trong quá trình lưu."
+         ],
+         "What happens": [
+            "Điều gì xảy ra"
+         ],
+         "%d link on your site is updated to the new address.": [
+            "%d liên kết trên trang web của bạn được cập nhật theo địa chỉ mới."
+         ],
+         "Old URLs are not redirected automatically. If you need them to keep working, set up the redirects yourself.": [
+            "Các URL cũ không được chuyển hướng tự động. Nếu bạn cần chúng tiếp tục hoạt động, hãy tự thiết lập các chuyển hướng."
+         ],
+         "This updates your language settings; existing content isn’t rewritten.": [
+            "Hành động này cập nhật các cài đặt ngôn ngữ của bạn; nội dung hiện có không bị viết lại."
+         ],
+         "Your translations and strings are unchanged.": [
+            "Các bản dịch và chuỗi của bạn không thay đổi."
+         ],
+         "Update": [
+            "Cập nhật"
+         ],
+         "Save changes": [
+            "Lưu thay đổi"
+         ],
+         "Do you want to set the locale?": [
+            "Bạn có muốn thiết lập locale không?"
+         ],
+         "WPML uses the locale to download the right WordPress language pack, so setting it switches the admin, theme and plugin texts to that language pack.": [
+            "WPML sử dụng locale để tải xuống gói ngôn ngữ WordPress phù hợp, vì vậy việc thiết lập nó sẽ chuyển các văn bản quản trị, giao diện và plugin sang gói ngôn ngữ đó."
+         ],
+         "Yes, set the locale": [
+            "Có, thiết lập locale"
+         ],
+         "Are you sure you want to edit the language code?": [
+            "Bạn có chắc chắn muốn chỉnh sửa mã ngôn ngữ không?"
+         ],
+         "URLs containing it change — WPML fixes linked URLs after saving.": [
+            "Các URL chứa mã này sẽ thay đổi — WPML sẽ sửa các URL được liên kết sau khi lưu."
+         ],
+         "External links / bookmarks to the old URL break unless redirected.": [
+            "Các liên kết bên ngoài / dấu trang đến URL cũ sẽ bị hỏng trừ khi được chuyển hướng."
+         ],
+         "Yes, edit the code": [
+            "Có, chỉnh sửa mã"
+         ],
+         "Are you sure you want to edit the country?": [
+            "Bạn có chắc chắn muốn chỉnh sửa quốc gia không?"
+         ],
+         "It may also change the locale (if the new country has a WordPress.org locale).": [
+            "Nó cũng có thể thay đổi locale (nếu quốc gia mới có locale trên WordPress.org)."
+         ],
+         "It affects ATE automatic-translation mapping.": [
+            "Nó ảnh hưởng đến việc ánh xạ dịch tự động ATE."
+         ],
+         "Yes, edit the country": [
+            "Có, chỉnh sửa quốc gia"
+         ],
+         "Are you sure you want to edit the locale?": [
+            "Bạn có chắc chắn muốn chỉnh sửa locale không?"
+         ],
+         "WPML uses the locale to download the right WordPress language pack, so changing it switches the admin, theme and plugin texts to the new language pack.": [
+            "WPML sử dụng locale để tải xuống gói ngôn ngữ WordPress phù hợp, vì vậy việc thay đổi nó sẽ chuyển các văn bản quản trị, giao diện và plugin sang gói ngôn ngữ mới."
+         ],
+         "Yes, edit the locale": [
+            "Có, chỉnh sửa locale"
+         ],
+         "Step %1$d of %2$d — updating %3$s": [
+            "Bước %1$d/%2$d — đang cập nhật %3$s"
+         ],
+         "Step %1$d of %2$d": [
+            "Bước %1$d/%2$d"
+         ],
+         "%1$d of %2$d item": [
+            "%1$d/%2$d mục"
+         ],
+         "%d%%": [
+            "%d%%"
+         ],
+         "%d item could not be updated:": [
+            "%d mục không thể được cập nhật:"
+         ],
+         "You can retry the save from the Languages page, or fix these items manually.": [
+            "Bạn có thể thử lưu lại từ trang Ngôn ngữ, hoặc sửa các mục này một cách thủ công."
+         ],
+         "Some changes could not be applied": [
+            "Một số thay đổi không thể được áp dụng"
+         ],
+         "Language changes saved with some skipped items": [
+            "Các thay đổi ngôn ngữ đã được lưu với một số mục bị bỏ qua"
+         ],
+         "Language changes saved": [
+            "Các thay đổi ngôn ngữ đã được lưu"
+         ],
+         "Updating content": [
+            "Đang cập nhật nội dung"
+         ],
+         "Keep this tab open until the process finishes. Closing it will pause the save.": [
+            "Giữ tab này mở cho đến khi quá trình kết thúc. Việc đóng tab sẽ tạm dừng quá trình lưu."
+         ],
+         "%d item was skipped so far:": [
+            "%d mục đã bị bỏ qua cho đến nay:"
+         ],
+         "%1$s — %2$s (%3$s)": [
+            "%1$s — %2$s (%3$s)"
+         ],
+         "Most language changes were applied. Some items could not be updated and were skipped.": [
+            "Hầu hết các thay đổi ngôn ngữ đã được áp dụng. Một số mục không thể cập nhật và đã bị bỏ qua."
+         ],
+         "All language changes were applied.": [
+            "Tất cả các thay đổi ngôn ngữ đã được áp dụng."
+         ],
+         "The save could not finish. Your existing content was not fully updated — review the languages page and try again.": [
+            "Quá trình lưu không thể hoàn tất. Nội dung hiện tại của bạn chưa được cập nhật đầy đủ — hãy xem lại trang ngôn ngữ và thử lại."
+         ],
+         "Don't close this tab until the process finishes.": [
+            "Đừng đóng tab này cho đến khi quá trình kết thúc."
+         ],
+         "Content update was paused": [
+            "Cập nhật nội dung đã bị tạm dừng"
+         ],
+         "Resume to finish saving your language changes.": [
+            "Tiếp tục để hoàn tất việc lưu các thay đổi ngôn ngữ của bạn."
+         ],
+         "Resume saving": [
+            "Tiếp tục lưu"
+         ],
+         "Estimating time left…": [
+            "Đang ước tính thời gian còn lại…"
+         ],
+         "About %d second left": [
+            "Còn khoảng %d giây"
+         ],
+         "About %d minute left": [
+            "Còn khoảng %d phút"
+         ],
+         "Automatic translation for %1$s could not be re-mapped to %2$s. Change the country again later to retry.": [
+            "Bản dịch tự động cho %1$s không thể được ánh xạ lại sang %2$s. Hãy thay đổi lại quốc gia sau để thử lại."
+         ],
+         "Automatic translation for %1$s could not be re-mapped. Change the country again later to retry.": [
+            "Bản dịch tự động cho %1$s không thể được ánh xạ lại. Hãy thay đổi lại quốc gia sau để thử lại."
+         ],
+         "Automatic translation for %1$s already targeted %2$s; nothing was re-mapped.": [
+            "Bản dịch tự động cho %1$s đã nhắm mục tiêu đến %2$s; không có gì được ánh xạ lại."
+         ],
+         "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country. Your current mapping was kept.": [
+            "Dịch tự động không khả dụng cho %2$s. Để dịch %1$s tự động, hãy chọn một quốc gia mà dịch tự động hỗ trợ trong mục Chỉnh sửa → Quốc gia. Ánh xạ hiện tại của bạn đã được giữ lại."
+         ],
+         "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country.": [
+            "Dịch tự động không khả dụng cho %2$s. Để dịch %1$s tự động, hãy chọn một quốc gia mà dịch tự động hỗ trợ trong mục Chỉnh sửa → Quốc gia."
+         ],
+         "Automatic translation for %1$s was not re-mapped: %2$s.": [
+            "Bản dịch tự động cho %1$s không được ánh xạ lại: %2$s."
+         ],
+         "Automatic translation for %1$s now targets %2$s.": [
+            "Bản dịch tự động cho %1$s hiện nhắm mục tiêu đến %2$s."
+         ],
+         "“%s” is already an active language.": [
+            "“%s” đã là một ngôn ngữ đang hoạt động."
+         ],
+         "That language is already active.": [
+            "Ngôn ngữ đó đã hoạt động."
+         ],
+         "%s needs a domain of its own before this can be saved. Set one in the URL format section.": [
+            "%s cần một tên miền riêng trước khi có thể lưu. Hãy thiết lập trong phần định dạng URL."
+         ],
+         "Every language that is not the default needs a domain of its own before this can be saved. Set it in the URL format section.": [
+            "Mọi ngôn ngữ không phải là mặc định đều cần một tên miền riêng trước khi có thể lưu. Hãy thiết lập trong phần định dạng URL."
+         ],
+         "The language code “%s” is already in use. Choose a different one.": [
+            "Mã ngôn ngữ “%s” đã được sử dụng. Hãy chọn một mã khác."
+         ],
+         "That language code is already in use. Choose a different one.": [
+            "Mã ngôn ngữ đó đã được sử dụng. Hãy chọn một mã khác."
+         ],
+         "That language code isn’t valid. Use letters, numbers, hyphens and underscores — up to %d characters.": [
+            "Mã ngôn ngữ đó không hợp lệ. Sử dụng chữ cái, số, dấu gạch ngang và dấu gạch dưới — tối đa %d ký tự."
+         ],
+         "That language code is too long. Use at most %d characters.": [
+            "Mã ngôn ngữ đó quá dài. Sử dụng tối đa %d ký tự."
+         ],
+         "That locale isn’t valid. Use letters, numbers and underscores only, like es_ES.": [
+            "Locale đó không hợp lệ. Chỉ sử dụng chữ cái, số và dấu gạch dưới, ví dụ như es_ES."
+         ],
+         "That hreflang is too long. Use at most %d characters.": [
+            "Thẻ hreflang đó quá dài. Sử dụng tối đa %d ký tự."
+         ],
+         "Another active language already uses the identity “%s”.": [
+            "Một ngôn ngữ đang hoạt động khác đã sử dụng định danh “%s”."
+         ],
+         "Another active language already has this identity.": [
+            "Một ngôn ngữ đang hoạt động khác đã có định danh này."
+         ],
+         "WPML no longer offers this language and country. Languages you have already added keep working.": [
+            "WPML không còn cung cấp ngôn ngữ và quốc gia này nữa. Các ngôn ngữ bạn đã thêm vẫn tiếp tục hoạt động."
+         ],
+         "You can still add it with “add a custom language”, using the same code.": [
+            "Bạn vẫn có thể thêm nó bằng “thêm ngôn ngữ tùy chỉnh”, sử dụng cùng một mã."
+         ],
+         "That flag is not available for this language. Choose one of the offered flags or upload a custom SVG.": [
+            "Cờ đó không khả dụng cho ngôn ngữ này. Hãy chọn một trong các cờ được cung cấp hoặc tải lên một tệp SVG tùy chỉnh."
+         ],
+         "That name is already used by one of your languages. Choose a different name.": [
+            "Tên đó đã được sử dụng bởi một trong các ngôn ngữ của bạn. Hãy chọn một tên khác."
+         ],
+         "That language code is already a supported language. Add it from Search instead of creating a custom variant.": [
+            "Mã ngôn ngữ đó đã là một ngôn ngữ được hỗ trợ. Hãy thêm nó từ Tìm kiếm thay vì tạo một biến thể tùy chỉnh."
+         ],
+         "“%s” is the code of a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first.": [
+            "“%s” là mã của một ngôn ngữ bạn đã tự tạo và sau đó đã xóa. Hãy thêm lại nó dưới dạng ngôn ngữ tùy chỉnh để khôi phục, hoặc xóa nó khỏi bảng Ngôn ngữ đã xóa trước."
+         ],
+         "That code belongs to a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first.": [
+            "Mã đó thuộc về một ngôn ngữ bạn đã tự tạo và sau đó đã xóa. Hãy thêm lại nó dưới dạng ngôn ngữ tùy chỉnh để khôi phục, hoặc xóa nó khỏi bảng Ngôn ngữ đã xóa trước."
+         ],
+         "Enter a locale for this language.": [
+            "Nhập một locale cho ngôn ngữ này."
+         ],
+         "Select a country for this language before saving.": [
+            "Chọn một quốc gia cho ngôn ngữ này trước khi lưu."
+         ],
+         "This language can’t be used with that country.": [
+            "Ngôn ngữ này không thể được sử dụng với quốc gia đó."
+         ],
+         "“%s” isn’t in the language catalogue. Pick it from the list, or add it as a custom language.": [
+            "“%s” không có trong danh mục ngôn ngữ. Hãy chọn nó từ danh sách, hoặc thêm nó dưới dạng ngôn ngữ tùy chỉnh."
+         ],
+         "This language isn’t in the language catalogue. Pick it from the list, or add it as a custom language.": [
+            "Ngôn ngữ này không có trong danh mục ngôn ngữ. Hãy chọn nó từ danh sách, hoặc thêm nó dưới dạng ngôn ngữ tùy chỉnh."
+         ],
+         "The default language cannot be a language that is being removed.": [
+            "Ngôn ngữ mặc định không thể là ngôn ngữ đang bị xóa."
+         ],
+         "Before “%s” can be saved, choose whether to bring back the content this site has from before in that language or to start fresh.": [
+            "Trước khi có thể lưu “%s”, hãy chọn khôi phục nội dung trước đây của trang web bằng ngôn ngữ đó hoặc bắt đầu lại từ đầu."
+         ],
+         "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
+            "Trước khi có thể lưu ngôn ngữ này, hãy chọn khôi phục nội dung trước đây của trang web bằng ngôn ngữ đó hoặc bắt đầu lại từ đầu."
+         ],
+         "You don’t have permission to change languages.": [
+            "Bạn không có quyền thay đổi ngôn ngữ."
+         ],
+         "“%s” couldn’t be added. Please try again.": [
+            "Không thể thêm “%s”. Vui lòng thử lại."
+         ],
+         "The language couldn’t be added. Please try again.": [
+            "Không thể thêm ngôn ngữ. Vui lòng thử lại."
+         ],
+         "Couldn’t save the language settings.": [
+            "Không thể lưu cài đặt ngôn ngữ."
+         ],
+         "One language": [
+            "Một ngôn ngữ"
+         ],
+         "%1$s: no WordPress language pack exists for %2$s, so the locale was saved without translation files.": [
+            "%1$s: không có gói ngôn ngữ WordPress nào cho %2$s, vì vậy locale đã được lưu mà không có các tệp dịch."
+         ],
+         "%1$s: the WordPress language pack for %2$s could not be requested, so the locale was saved without translation files.": [
+            "%1$s: không thể yêu cầu gói ngôn ngữ WordPress cho %2$s, vì vậy locale đã được lưu mà không có các tệp dịch."
+         ],
+         "%1$s: the WordPress language pack for %2$s could not be downloaded, so the locale was saved without translation files.": [
+            "%1$s: không thể tải xuống gói ngôn ngữ WordPress cho %2$s, vì vậy locale đã được lưu mà không có các tệp dịch."
+         ],
+         "%1$s: the links in post %2$s did not match the old language code and were left as they were.": [
+            "%1$s: các liên kết trong bài viết %2$s không khớp với mã ngôn ngữ cũ và đã được giữ nguyên."
+         ],
+         "%1$s: the links in post %2$s could not be rewritten.": [
+            "%1$s: không thể viết lại các liên kết trong bài viết %2$s."
+         ],
+         "%1$s: some translation jobs could not be cancelled.": [
+            "%1$s: một số công việc dịch thuật không thể hủy bỏ."
+         ],
+         "%1$s: one step of the save kept failing and was skipped.": [
+            "%1$s: một bước lưu liên tục thất bại và đã bị bỏ qua."
+         ],
+         "%1$s: one item could not be updated (%2$s).": [
+            "%1$s: một mục không thể được cập nhật (%2$s)."
+         ],
+         "Is this a right-to-left language?": [
+            "Đây có phải là ngôn ngữ viết từ phải sang trái không?"
+         ],
+         "WPML lays out the admin and the site for this language from right to left, like Arabic or Hebrew.": [
+            "WPML bố trí trang quản trị và trang web cho ngôn ngữ này từ phải sang trái, giống như tiếng Ả Rập hoặc tiếng Do Thái."
+         ],
+         "Reading direction": [
+            "Hướng đọc"
+         ],
+         "Left-to-right": [
+            "Từ trái sang phải"
+         ],
+         "Right-to-left": [
+            "Từ phải sang trái"
+         ],
+         "Let WPML decide": [
+            "Để WPML quyết định"
+         ],
+         "If you cannot find your language in the list, <a>add a custom language</a>.": [
+            "Nếu bạn không thể tìm thấy ngôn ngữ của mình trong danh sách, hãy <a>thêm một ngôn ngữ tùy chỉnh</a>."
+         ],
+         "Default language": [
+            "Ngôn ngữ mặc định"
+         ],
+         "What is the current language of your website?": [
+            "Ngôn ngữ hiện tại của trang web của bạn là gì?"
+         ],
+         "Translation languages": [
+            "Ngôn ngữ dịch"
+         ],
+         "Which languages do you want to translate your site into?": [
+            "Bạn muốn dịch trang web của mình sang những ngôn ngữ nào?"
+         ],
+         "Click the lock to set the locale": [
+            "Nhấp vào ổ khóa để thiết lập locale"
+         ],
+         "Not set": [
+            "Chưa thiết lập"
+         ],
+         "Unlock this field": [
+            "Mở khóa trường này"
+         ],
+         "Recommended not to change. Click to unlock.": [
+            "Khuyến nghị không nên thay đổi. Nhấp để mở khóa."
+         ],
+         "Uploading flag…": [
+            "Đang tải lên cờ…"
+         ],
+         "Display Code": [
+            "Mã hiển thị"
+         ],
+         "Stored code: %s": [
+            "Mã được lưu trữ: %s"
+         ],
+         "Encode URL": [
+            "Mã hóa URL"
+         ],
+         "Encode non-Latin characters": [
+            "Mã hóa các ký tự không thuộc hệ Latin"
+         ],
+         "Mapping": [
+            "Ánh xạ"
+         ],
+         "This language is recognized as the same as your site’s default language, so it can’t be translated automatically. To carry your content over, duplicate it instead.": [
+            "Ngôn ngữ này được nhận dạng là giống với ngôn ngữ mặc định của trang web, vì vậy nó không thể được dịch tự động. Để chuyển nội dung của bạn sang, hãy nhân bản nó."
+         ],
+         "How to Duplicate and Copy Content in WPML": [
+            "Cách nhân bản và sao chép nội dung trong WPML"
+         ],
+         "Edit language labels…": [
+            "Chỉnh sửa nhãn ngôn ngữ…"
+         ],
+         "The default language can’t be removed.": [
+            "Không thể xóa ngôn ngữ mặc định."
+         ],
+         "Delete language": [
+            "Xóa ngôn ngữ"
+         ],
+         "Type to search all languages…": [
+            "Nhập để tìm kiếm tất cả các ngôn ngữ…"
+         ],
+         "Unsaved changes": [
+            "Thay đổi chưa lưu"
+         ],
+         "Custom": [
+            "Tùy chỉnh"
+         ],
+         "This language stays on your site and keeps serving its pages. WPML is not creating new translations into it.": [
+            "Ngôn ngữ này vẫn ở trên trang web của bạn và tiếp tục phục vụ các trang của nó. WPML không tạo các bản dịch mới sang ngôn ngữ này."
+         ],
+         "Translation paused": [
+            "Đã tạm dừng dịch"
+         ],
+         "This language isn’t supported by the automatic translation engine, so its content must be translated manually.": [
+            "Ngôn ngữ này không được hỗ trợ bởi công cụ dịch tự động, vì vậy nội dung của nó phải được dịch thủ công."
+         ],
+         "Same as default": [
+            "Giống như mặc định"
+         ],
+         "Manual translation only": [
+            "Chỉ dịch thủ công"
+         ],
+         "This custom language uses the code of a language WPML offers. To translate it automatically, map it to a language.": [
+            "Ngôn ngữ tùy chỉnh này sử dụng mã của một ngôn ngữ mà WPML cung cấp. Để dịch tự động ngôn ngữ này, hãy ánh xạ nó với một ngôn ngữ."
+         ],
+         "Needs a mapping": [
+            "Cần ánh xạ"
+         ],
+         "Default": [
+            "Mặc định"
+         ],
+         "Set as default": [
+            "Đặt làm mặc định"
+         ],
+         "Resume translating": [
+            "Tiếp tục dịch"
+         ],
+         "Hide": [
+            "Ẩn"
+         ],
+         "The default language can’t be hidden.": [
+            "Không thể ẩn ngôn ngữ mặc định."
+         ],
+         "Completely hide content in this language from visitors and search engines, but keep it visible to yourself. Useful for reviewing translations that are still in progress.": [
+            "Ẩn hoàn toàn nội dung bằng ngôn ngữ này đối với khách truy cập và công cụ tìm kiếm, nhưng vẫn hiển thị với chính bạn. Hữu ích cho việc xem lại các bản dịch vẫn đang trong quá trình thực hiện."
+         ],
+         "Hide this language from visitors and search engines.": [
+            "Ẩn ngôn ngữ này đối với khách truy cập và công cụ tìm kiếm."
+         ],
+         "Edit the language code": [
+            "Chỉnh sửa mã ngôn ngữ"
+         ],
+         "Used to build this language’s page URLs (e.g. /en/).": [
+            "Được sử dụng để xây dựng các URL trang của ngôn ngữ này (ví dụ: /vi/)."
+         ],
+         "Remove language": [
+            "Xóa ngôn ngữ"
+         ],
+         "Undo": [
+            "Hoàn tác"
+         ],
+         "Collapse ▴": [
+            "Thu gọn ▴"
+         ],
+         "Edit ▾": [
+            "Chỉnh sửa ▾"
+         ],
+         "Recognized as the same language as the default": [
+            "Được nhận diện là cùng ngôn ngữ với ngôn ngữ mặc định"
+         ],
+         "%s (Regional)": [
+            "%s (vùng)"
+         ],
+         "%s is no longer in this list. Use “add a custom language” below to add it.": [
+            "%s không còn trong danh sách này nữa. Sử dụng “thêm ngôn ngữ tùy chỉnh” bên dưới để thêm."
+         ],
+         "Search and add a language…": [
+            "Tìm kiếm và thêm một ngôn ngữ…"
+         ],
+         "Search and add a language": [
+            "Tìm kiếm và thêm một ngôn ngữ"
+         ],
+         "Regional": [
+            "Vùng"
+         ],
+         "International": [
+            "Quốc tế"
+         ],
+         "This language has a single fixed country.": [
+            "Ngôn ngữ này có một quốc gia cố định duy nhất."
+         ],
+         "Select a country…": [
+            "Chọn một quốc gia…"
+         ],
+         "Default language (currently %s)": [
+            "Ngôn ngữ mặc định (hiện tại là %s)"
+         ],
+         "Flag of %s": [
+            "Cờ của %s"
+         ],
+         "Current flag": [
+            "Cờ hiện tại"
+         ],
+         "Custom flag": [
+            "Cờ tùy chỉnh"
+         ],
+         "Neutral globe": [
+            "Quả địa cầu trung tính"
+         ],
+         "Country code as the flag": [
+            "Mã quốc gia làm cờ"
+         ],
+         "Language flag": [
+            "Cờ ngôn ngữ"
+         ],
+         "Choose a flag…": [
+            "Chọn một cờ…"
+         ],
+         "Countries": [
+            "Quốc gia"
+         ],
+         "Regions": [
+            "Vùng"
+         ],
+         "Languages": [
+            "Ngôn ngữ"
+         ],
+         "Organisations": [
+            "Tổ chức"
+         ],
+         "Upload a custom SVG…": [
+            "Tải lên một tệp SVG tùy chỉnh…"
+         ],
+         "Match automatically": [
+            "Khớp tự động"
+         ],
+         "Map to a supported language": [
+            "Ánh xạ tới một ngôn ngữ được hỗ trợ"
+         ],
+         "Choose a language to map to…": [
+            "Chọn một ngôn ngữ để ánh xạ tới…"
+         ],
+         "No matches": [
+            "Không tìm thấy kết quả"
+         ],
+         "The items you include below are removed, along with their translation records. Originals in your other languages are untouched, and image files stay on disk. Comments on these posts are deleted with them. Nothing in %s’s sibling languages is deleted.": [
+            "Các mục bạn bao gồm bên dưới sẽ bị xóa, cùng với các hồ sơ dịch thuật của chúng. Bản gốc trong các ngôn ngữ khác của bạn không bị ảnh hưởng và các tệp hình ảnh vẫn còn trên đĩa. Các bình luận trên những bài viết này sẽ bị xóa cùng với chúng. Không có gì trong các ngôn ngữ anh em của %s bị xóa."
+         ],
+         "Skip them, move everything else.": [
+            "Bỏ qua chúng, di chuyển mọi thứ khác."
+         ],
+         "%1$d item that already has a %3$s version stays under %2$s. You can deal with it separately.": [
+            "%1$d mục đã có phiên bản %3$s sẽ vẫn nằm dưới %2$s. Bạn có thể xử lý chúng riêng biệt."
+         ],
+         "Merge them into the %s ones.": [
+            "Hợp nhất chúng vào các mục %s."
+         ],
+         "Duplicate terms are removed": [
+            "Các thuật ngữ trùng lặp đã được gỡ bỏ"
+         ],
+         "Objects and settings move onto the existing version; the duplicate is deleted. Nothing in the target language is deleted.": [
+            "Các đối tượng và cài đặt sẽ chuyển sang phiên bản hiện có; bản sao sẽ bị xóa. Không có gì trong ngôn ngữ đích bị xóa."
+         ],
+         "What should happen to the items already in %s?": [
+            "Điều gì sẽ xảy ra với các mục đã có trong %s?"
+         ],
+         "%1$d item from %2$s already has a version in the language you picked. Pick the outcome you want.": [
+            "%1$d mục từ %2$s đã có một phiên bản trong ngôn ngữ bạn đã chọn. Hãy chọn kết quả bạn muốn."
+         ],
+         "What should happen to the colliding items": [
+            "Điều gì sẽ xảy ra với các mục bị xung đột"
+         ],
+         "Move into %s": [
+            "Di chuyển vào %s"
+         ],
+         "Reassigns the %1$d %2$s item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring.": [
+            "Gán lại %1$d mục %2$s cho một ngôn ngữ bạn chọn, giữ nguyên các kết nối của chúng với các ngôn ngữ khác. Dùng để đổi tên và hợp nhất, không phải để loại bỏ."
+         ],
+         "Only the content moves. Per-language settings other plugins keep — for example which currencies WooCommerce Multilingual offers in a language — stay under the old language code and are not carried over.": [
+            "Chỉ nội dung được di chuyển. Các cài đặt theo từng ngôn ngữ mà các plugin khác lưu giữ — ví dụ như các loại tiền tệ mà WooCommerce Multilingual cung cấp trong một ngôn ngữ — sẽ vẫn nằm dưới mã ngôn ngữ cũ và không được chuyển sang."
+         ],
+         "Moved from %1$s into %2$s.": [
+            "Đã chuyển từ %1$s sang %2$s."
+         ],
+         "%d content item moved": [
+            "Đã chuyển %d mục nội dung"
+         ],
+         "%d link to the original language updated": [
+            "Đã cập nhật %d liên kết đến ngôn ngữ gốc"
+         ],
+         "%d string translation moved": [
+            "Đã chuyển %d bản dịch chuỗi"
+         ],
+         "%d string moved": [
+            "Đã chuyển %d chuỗi"
+         ],
+         "%1$d item stayed behind: its translation group already has a %2$s version. It is still listed under %3$s in Removed languages.": [
+            "%1$d mục được giữ lại: nhóm dịch thuật của chúng đã có phiên bản %2$s. Chúng vẫn được liệt kê dưới %3$s trong Ngôn ngữ đã xóa."
+         ],
+         "%1$d duplicate term merged into the %2$s version and removed.": [
+            "%1$d thuật ngữ trùng lặp đã được hợp nhất vào phiên bản %2$s và bị gỡ bỏ."
+         ],
+         "%1$d item became its own document in %2$s.": [
+            "%1$d mục đã trở thành tài liệu riêng của chúng trong %2$s."
+         ],
+         "%1$d item of a kind this tool does not move or merge is still under %2$s.": [
+            "%1$d mục thuộc loại mà công cụ này không di chuyển hoặc hợp nhất vẫn nằm dưới %2$s."
+         ],
+         "What the deletion removed from %s": [
+            "Những gì việc xóa đã loại bỏ khỏi %s"
+         ],
+         "The items that have a Trash are in it. Categories, tags and menus have no WordPress Trash, so those were deleted right away.": [
+            "Các mục có Thùng rác hiện đang nằm trong đó. Chuyên mục, thẻ và menu không có Thùng rác WordPress, vì vậy những mục đó đã bị xóa ngay lập tức."
+         ],
+         "This site has the Trash disabled, so the item it removed was deleted permanently — there is nothing to restore.": [
+            "Trang web này đã tắt Thùng rác, vì vậy các mục bị loại bỏ đã bị xóa vĩnh viễn — không có gì để khôi phục."
+         ],
+         "Nothing was left to remove.": [
+            "Không còn gì để xóa."
+         ],
+         "String translations": [
+            "Bản dịch chuỗi"
+         ],
+         "Translation jobs": [
+            "Công việc dịch thuật"
+         ],
+         "%1$d removed · %2$d kept · %3$d skipped": [
+            "%1$d đã xóa · %2$d đã giữ · %3$d đã bỏ qua"
+         ],
+         "Skipped because: %s": [
+            "Bị bỏ qua vì: %s"
+         ],
+         "No translation jobs needed cancelling.": [
+            "Không có công việc dịch thuật nào cần hủy bỏ."
+         ],
+         "%d translation job was cancelled without charge.": [
+            "Đã hủy %d công việc dịch thuật mà không tính phí."
+         ],
+         "%d job was stopped mid-work — the words already sent are still charged.": [
+            "Đã dừng %d công việc khi đang thực hiện — các từ đã gửi vẫn bị tính phí."
+         ],
+         "%d more skipped item is counted above but not listed.": [
+            "Thêm %d mục bị bỏ qua được tính ở trên nhưng không được liệt kê."
+         ],
+         "Removed %s": [
+            "Đã xóa %s"
+         ],
+         "Removal date not recorded": [
+            "Ngày xóa không được ghi lại"
+         ],
+         "%d item still here": [
+            "Vẫn còn %d mục ở đây"
+         ],
+         "You created this language yourself, so it cannot be put back from here. Add it again as a custom language with the same code and its content comes back with it.": [
+            "Bạn đã tự tạo ngôn ngữ này, vì vậy không thể khôi phục nó từ đây. Hãy thêm lại nó dưới dạng ngôn ngữ tùy chỉnh với cùng một mã và nội dung của nó sẽ quay trở lại cùng với nó."
+         ],
+         "This language has no country on record. Add it back from the language picker, which asks which country the content belongs to.": [
+            "Ngôn ngữ này không có quốc gia trong hồ sơ. Hãy thêm lại nó từ bộ chọn ngôn ngữ, nơi sẽ hỏi nội dung thuộc về quốc gia nào."
+         ],
+         "This language is not in WPML’s language list, so it cannot be added back from here.": [
+            "Ngôn ngữ này không có trong danh sách ngôn ngữ của WPML, vì vậy không thể thêm lại từ đây."
+         ],
+         "Added back — press Save": [
+            "Đã thêm lại — nhấn Lưu"
+         ],
+         "Put back": [
+            "Khôi phục"
+         ],
+         "Move": [
+            "Chuyển"
+         ],
+         "Delete": [
+            "Xóa"
+         ],
+         "Removed languages": [
+            "Ngôn ngữ đã xóa"
+         ],
+         "These languages are off your site but still hold content. Removing a language keeps what it holds — from here you can put a language back, move its content into another language, or delete that content for good.": [
+            "Các ngôn ngữ này đã bị loại khỏi trang web của bạn nhưng vẫn còn giữ nội dung. Việc xóa một ngôn ngữ sẽ giữ lại những gì nó đang giữ — từ đây bạn có thể khôi phục một ngôn ngữ, chuyển nội dung của nó sang một ngôn ngữ khác hoặc xóa vĩnh viễn nội dung đó."
+         ],
+         "No language is left holding content. %s is now empty.": [
+            "Không còn ngôn ngữ nào giữ nội dung. %s hiện đang trống."
+         ],
+         "You do not have permission to move a language’s content.": [
+            "Bạn không có quyền chuyển nội dung của một ngôn ngữ."
+         ],
+         "Pick the language to move this content into, then try again.": [
+            "Chọn ngôn ngữ để chuyển nội dung này vào, sau đó thử lại."
+         ],
+         "That is the same language. Pick a different one to move the content into.": [
+            "Đó là cùng một ngôn ngữ. Hãy chọn một ngôn ngữ khác để chuyển nội dung vào."
+         ],
+         "%s is back on your site, so there is nothing to move. Refresh the list.": [
+            "%s đã quay trở lại trang web của bạn, vì vậy không có gì để chuyển. Hãy làm mới danh sách."
+         ],
+         "%s no longer holds any content. Refresh the list.": [
+            "%s không còn giữ bất kỳ nội dung nào. Hãy làm mới danh sách."
+         ],
+         "%s is not one of your site’s active languages. Pick another one.": [
+            "%s không phải là một trong các ngôn ngữ đang hoạt động trên trang web của bạn. Hãy chọn một ngôn ngữ khác."
+         ],
+         "Moving content into a different language needs the confirmation below.": [
+            "Việc chuyển nội dung sang một ngôn ngữ khác cần có sự xác nhận bên dưới."
+         ],
+         "WPML could not move this content (%s).": [
+            "WPML không thể chuyển nội dung này (%s)."
+         ],
+         "Move them to the Trash — you have %d day to change your mind": [
+            "Chuyển chúng vào Thùng rác — bạn có %d ngày để thay đổi quyết định"
+         ],
+         "Delete permanently — this site has the Trash disabled": [
+            "Xóa vĩnh viễn — trang web này đã tắt Thùng rác"
+         ],
+         "Trash first, or delete now": [
+            "Cho vào Thùng rác trước, hoặc xóa ngay bây giờ"
+         ],
+         "How to delete": [
+            "Cách xóa"
+         ],
+         "Items already in the Trash are left where they are.": [
+            "Các mục đã có trong Thùng rác sẽ được giữ nguyên vị trí."
+         ],
+         "Loading languages": [
+            "Đang tải các ngôn ngữ"
+         ],
+         "The name of this language variant as it appears in the language switcher.": [
+            "Tên của biến thể ngôn ngữ này như nó xuất hiện trong bộ chuyển đổi ngôn ngữ."
+         ],
+         "Sets the regional variant of the language. Automatic Translation uses this to produce more accurate translations.": [
+            "Thiết lập biến thể vùng của ngôn ngữ. Dịch tự động sử dụng thông tin này để tạo ra các bản dịch chính xác hơn."
+         ],
+         "The flag shown next to this language in the front-end language switcher.": [
+            "Cờ hiển thị bên cạnh ngôn ngữ này trong bộ chuyển đổi ngôn ngữ ở frontend."
+         ],
+         "The WordPress locale, for example en_US. WordPress uses it to load the matching theme and plugin translation files.": [
+            "Locale WordPress, ví dụ en_US. WordPress sử dụng nó để tải các tệp dịch giao diện và plugin tương ứng."
+         ],
+         "Used to build this language’s page URLs, for example /en/.": [
+            "Được sử dụng để xây dựng các URL trang của ngôn ngữ này, ví dụ /en/."
+         ],
+         "The hreflang value added to the page HTML. Search engines use it to serve the correct language or regional version.": [
+            "Giá trị hreflang được thêm vào HTML của trang. Các công cụ tìm kiếm sử dụng nó để phục vụ đúng ngôn ngữ hoặc phiên bản vùng."
+         ],
+         "Determines whether non-Latin characters in URLs are encoded. Leave it off unless your CDN, server, or redirects require ASCII-only URLs.": [
+            "Xác định xem các ký tự không thuộc hệ Latin trong URL có được mã hóa hay không. Hãy tắt nó trừ khi CDN, máy chủ hoặc các chuyển hướng của bạn yêu cầu URL chỉ chứa ký tự ASCII."
+         ],
+         "Maps this custom language variant to a supported language so automatic translation engines can translate it. Choose “Match automatically” to let WPML find the closest supported language itself.": [
+            "Ánh xạ biến thể ngôn ngữ tùy chỉnh này tới một ngôn ngữ được hỗ trợ để các công cụ dịch tự động có thể dịch nó. Chọn “Khớp tự động” để WPML tự tìm ngôn ngữ được hỗ trợ gần nhất."
+         ],
+         "Only SVG flags can be uploaded.": [
+            "Chỉ có thể tải lên các cờ SVG."
+         ],
+         "The flag is too large. Maximum size is %s.": [
+            "Cờ quá lớn. Kích thước tối đa là %s."
+         ],
+         "The file could not be read.": [
+            "Không thể đọc tệp."
+         ],
+         "The flag could not be saved. Please try again.": [
+            "Không thể lưu cờ. Vui lòng thử lại."
+         ],
+         "%1$s is already active, set to %2$s. Change its country instead of adding it again.": [
+            "%1$s đã hoạt động, được đặt thành %2$s. Hãy thay đổi quốc gia của nó thay vì thêm lại."
+         ],
+         "%1$s is already active. Change its country instead of adding it again.": [
+            "%1$s đã hoạt động. Hãy thay đổi quốc gia của nó thay vì thêm lại."
+         ],
+         "WPML couldn’t apply the change it detected for %1$s: %2$s still has an unsaved change. Save or revert it first.": [
+            "WPML không thể áp dụng thay đổi mà nó phát hiện cho %1$s: %2$s vẫn còn một thay đổi chưa lưu. Hãy lưu hoặc hoàn tác nó trước."
+         ],
+         "Copied to clipboard.": [
+            "Đã sao chép vào khay nhớ tạm."
+         ],
+         "An earlier language save is paused. Resume or dismiss it first, then save this change.": [
+            "Một lần lưu ngôn ngữ trước đó đang bị tạm dừng. Hãy tiếp tục hoặc hủy bỏ nó trước, sau đó mới lưu thay đổi này."
+         ],
+         "WPML is still finishing an earlier language save. Wait for it to finish, then apply this change.": [
+            "WPML vẫn đang hoàn tất việc lưu ngôn ngữ trước đó. Vui lòng đợi quá trình này kết thúc, sau đó mới áp dụng thay đổi này."
+         ],
+         "Language settings saved.": [
+            "Đã lưu cài đặt ngôn ngữ."
+         ],
+         "No changes to save.": [
+            "Không có thay đổi nào để lưu."
+         ],
+         "Couldn’t check your languages against WPML’s catalogue.": [
+            "Không thể kiểm tra các ngôn ngữ của bạn so với danh mục của WPML."
+         ],
+         "Reset done. %d more language still differs from WPML’s catalogue — open Reset language defaults again to put it back.": [
+            "Đã đặt lại xong. Còn %d ngôn ngữ nữa vẫn khác với danh mục của WPML — hãy mở lại Đặt lại mặc định ngôn ngữ để đưa chúng trở lại."
+         ],
+         "Your languages are back on WPML’s catalogue defaults.": [
+            "Các ngôn ngữ của bạn đã trở lại mặc định trong danh mục của WPML."
+         ],
+         "Couldn’t reset the language defaults.": [
+            "Không thể đặt lại các mặc định ngôn ngữ."
+         ],
+         "%1$s \"%2$s\" is already used by %3$s.": [
+            "%1$s “%2$s” đã được sử dụng bởi %3$s."
+         ],
+         "The country of a saved language can’t be changed right now — the background save this needs is switched off on this site.": [
+            "Hiện tại không thể thay đổi quốc gia của một ngôn ngữ đã lưu — tính năng lưu chạy ngầm cần thiết cho việc này đã bị tắt trên trang web này."
+         ],
+         "Cost to translate your content into %s": [
+            "Chi phí để dịch nội dung của bạn sang %s"
+         ],
+         "Cost to translate your content into the new languages": [
+            "Chi phí để dịch nội dung của bạn sang các ngôn ngữ mới"
+         ],
+         "Add this language": [
+            "Thêm ngôn ngữ này"
+         ],
+         "Costs are based on your current content settings. Adjust them from the Translations dashboard.": [
+            "Chi phí dựa trên cài đặt nội dung hiện tại của bạn. Hãy điều chỉnh chúng từ bảng điều khiển dịch thuật."
+         ],
+         "Manage and Hide Site Languages": [
+            "Quản lý và ẩn ngôn ngữ trang web"
+         ],
+         "Add, remove, configure, and hide your site’s translation languages. Click Edit on any row to edit its country, flag, codes, mapping, and visibility.": [
+            "Thêm, xóa, cấu hình và ẩn các ngôn ngữ dịch thuật trên trang web của bạn. Nhấp vào Chỉnh sửa trên bất kỳ hàng nào để sửa quốc gia, cờ, mã, ánh xạ và khả năng hiển thị của ngôn ngữ đó."
+         ],
+         "WPML couldn’t communicate with our translation system. You can still edit and save your languages. Please contact support if the problem persists.": [
+            "WPML không thể kết nối với hệ thống dịch thuật của chúng tôi. Bạn vẫn có thể chỉnh sửa và lưu các ngôn ngữ của mình. Vui lòng liên hệ với bộ phận hỗ trợ nếu sự cố vẫn tiếp diễn."
+         ],
+         "Please <support>contact our support</support> and provide the error details below.": [
+            "Vui lòng <support>liên hệ với bộ phận hỗ trợ của chúng tôi</support> và cung cấp chi tiết lỗi bên dưới."
+         ],
+         "Show more": [
+            "Hiển thị thêm"
+         ],
+         "Show less": [
+            "Hiển thị bớt"
+         ],
+         "Copy error details": [
+            "Sao chép chi tiết lỗi"
+         ],
+         "Copy": [
+            "Sao chép"
+         ],
+         "Click to copy": [
+            "Nhấp để sao chép"
+         ],
+         "Reset language defaults…": [
+            "Đặt lại mặc định ngôn ngữ…"
+         ],
+         "Saving…": [
+            "Đang lưu…"
+         ],
+         "Calculate Costs": [
+            "Tính toán chi phí"
+         ],
+         "Content brought into the language you added": [
+            "Nội dung được đưa vào ngôn ngữ bạn vừa thêm"
+         ],
+         "The language was added. Its content did not move.": [
+            "Ngôn ngữ đã được thêm. Nội dung của nó không thay đổi."
+         ],
+         "Verifying automatic translation compatibility": [
+            "Đang xác minh khả năng tương thích của dịch tự động"
+         ],
+         "Updating language presets…": [
+            "Đang cập nhật các thiết lập ngôn ngữ…"
+         ],
+         "Language changes saved.": [
+            "Đã lưu các thay đổi ngôn ngữ."
+         ],
+         "Apply and save": [
+            "Áp dụng và lưu"
+         ],
+         "Close modal": [
+            "Đóng cửa sổ"
+         ]
+      }
+   }
+}

@@ -63,9 +63,17 @@
 				};
 			}
 
+			// Use allLanguages as the authoritative source, falling back to
+			// activeLanguages for any code that the all-languages cache may have missed.
+			var langs = Object.assign(
+				{},
+				TaxonomyTranslation.data.activeLanguages,
+				TaxonomyTranslation.data.allLanguages
+			);
+
 			this.$el.html(
 				self.template({
-					langs: TaxonomyTranslation.data.allLanguages,
+					langs: langs,
 					lang: self.lang,
 					source_lang: self.model.get('stDefaultLang'),
 					originalLabels: originalLabels,

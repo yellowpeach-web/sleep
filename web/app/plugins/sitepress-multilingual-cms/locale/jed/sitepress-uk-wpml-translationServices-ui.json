@@ -4,22 +4,26 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "uk"
          },
          "Connect this site to your %s account": [
-            "Підключіть цей веб-сайт до свого облікового запису %s"
+            "Під’єднайте цей сайт до вашого акаунту %s"
          ],
          "Error": [
             "Помилка"
          ],
          "« Use a different Translation Service": [
-            "« Використовувати іншу службу перекладу"
+            "« Використати інший сервіс перекладу"
          ],
          "Authenticate": [
-            "Авторизувати"
+            "Автентифікувати"
          ],
          "Visit <link_to_service /> to request an API Token. This token allows WPML to connect to <service_name /> to send and receive jobs.": [
-            "Перейдіть в <link_to_service />, щоб зробити запит на API-ключ. Він дає змогу WPML підключатися до <service_name />, щоб надсилати та отримувати замовлення."
+            "Відвідайте <link_to_service />, щоб отримати токен API. Цей токен дозволяє WPML під’єднуватися до <service_name />, щоб надсилати та отримувати завдання."
+         ],
+         "Search translation services": [
+            "Пошук сервісів перекладу"
          ],
          "Search": [
             "Пошук"
@@ -28,7 +32,16 @@
             "Налаштування"
          ],
          "It’s not currently possible to connect a translation service when WPML is set to translate your site’s content automatically. To use a translation service, please change your translation mode on the <LinkToSettingsPage /> page.": [
-            "Зараз неможливо підключити службу перекладу, якщо WPML налаштований на автоматичний переклад вмісту вашого веб-сайту. Щоб використовувати службу перекладу, змініть режим перекладу на сторінці <LinkToSettingsPage />."
+            "Наразі неможливо під’єднати сервіс перекладу, коли у WPML вибрано режим автоматичного перекладу вмісту вашого сайту. Щоб скористатися сервісом перекладу, змініть режим перекладу на сторінці <LinkToSettingsPage />."
+         ],
+         "Sort descending": [
+            "Сортувати за спаданням"
+         ],
+         "Sort ascending": [
+            "Сортувати за зростанням"
+         ],
+         "Cancel sorting": [
+            "Скасувати сортування"
          ],
          "Documentation": [
             "Документація"
@@ -37,7 +50,7 @@
             "Активувати"
          ],
          "Name": [
-            "Ім'я"
+            "Назва"
          ],
          "Description": [
             "Опис"

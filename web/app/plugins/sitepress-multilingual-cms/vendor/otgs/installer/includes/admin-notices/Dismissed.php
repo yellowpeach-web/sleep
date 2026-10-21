@@ -6,28 +6,17 @@ use OTGS\Installer\FP\Obj;
 
 class Dismissed {
 	const STORE_KEY = 'dismissed';
+	const NONCE_ACTION = 'otgs_installer_dismiss_nag';
 
-	/**
-	 * @param array $dismissedNotices
-	 * @param string $repo
-	 * @param string $id
-	 *
-	 * @return bool
-	 */
 	public static function isDismissed( array $dismissedNotices, $repo, $id ) {
 		return isset( $dismissedNotices['repo'][ $repo ][ $id ] );
 	}
 
-	/**
-	 * @param string $plugin_slug
-	 * @param bool $network
-	 * @return void
-	 */
 	public static function dismissNoticeOnPluginActivation( $plugin_slug, $network ) {
 		$repositoryRecommendations = Obj::propOr([], 'repo', apply_filters( 'otgs_installer_admin_notices', [] ) );
 
 		$isPluginRecommendation = function( $plugin_attrs ) use ( $plugin_slug ) {
-			return '' == $plugin_slug || strpos( $plugin_slug, $plugin_attrs['glue_plugin_slug'] ) !== false;
+			return '' === $plugin_slug || strpos( $plugin_slug, $plugin_attrs['glue_plugin_slug'] ) !== false;
 		};
 		foreach( $repositoryRecommendations as $repository => $notices ) {
 			if ( ! isset( $notices['plugin-activated'] ) ) {
@@ -41,12 +30,6 @@ class Dismissed {
 		}
 	}
 
-	/**
-	 * @param array $dismissedNotices
-	 * @param callable $timeOut - int -> string -> string -> bool
-	 *
-	 * @return mixed
-	 */
 	public static function clearExpired( array $dismissedNotices, callable $timeOut ) {
 		if ( isset( $dismissedNotices['repo'] ) ) {
 
@@ -63,17 +46,35 @@ class Dismissed {
 	}
 
 	public static function dismissNotice() {
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( $_POST['nonce'] ) : '';
+
+		if ( ! current_user_can( 'manage_options' ) || ! wp_verify_nonce( $nonce, self::NONCE_ACTION ) ) {
+			wp_send_json_error(
+				[ 'error' => __( 'You are not allowed to dismiss this notice.', 'installer' ) ],
+				403
+			);
+			return;
+		}
+
 		$rawData = filter_var_array( $_POST, [
 			'repository'       => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'noticeType'       => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 			'noticePluginSlug' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 		] );
 
-		self::dismissNoticeByTypeAndRepository(
+		$dismissed = self::dismissNoticeByTypeAndRepository(
 			Obj::propOr('', 'repository', $rawData ),
 			Obj::propOr('', 'noticeType', $rawData ),
 			Obj::propOr('', 'noticePluginSlug', $rawData )
 		);
+
+		if ( ! $dismissed ) {
+			wp_send_json_error(
+				[ 'error' => __( 'Unknown notice type.', 'installer' ) ],
+				400
+			);
+			return;
+		}
 
 		wp_send_json_success( [] );
 	}
@@ -83,14 +84,12 @@ class Dismissed {
 		return $dismissed;
 	}
 
-	/**
-	 * @param string $dismissRepository
-	 * @param string $dismissNoticeType
-	 * @param string $dismissNoticePluginSlug
-	 * @return void
-	 */
 	private static function dismissNoticeByTypeAndRepository($dismissRepository, $dismissNoticeType, $dismissNoticePluginSlug) {
 		$dismissions = apply_filters('otgs_installer_admin_notices_dismissions', []);
+
+		if ( ! isset( $dismissions[ $dismissNoticeType ] ) || ! is_callable( $dismissions[ $dismissNoticeType ] ) ) {
+			return false;
+		}
 
 		$store = new Store();
 
@@ -105,6 +104,8 @@ class Dismissed {
 		$dismissed = $dismissions[$dismissNoticeType]($dismissed, $data);
 
 		$store->save(self::STORE_KEY, $dismissed);
+
+		return true;
 	}
 
 }

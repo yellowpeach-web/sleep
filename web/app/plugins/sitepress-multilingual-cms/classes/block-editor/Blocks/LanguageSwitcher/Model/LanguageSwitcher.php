@@ -9,46 +9,37 @@ use function WPML\FP\pipe;
 
 class LanguageSwitcher {
 
-	/** @var LanguageItem[] */
 	private $languageItems;
 
-	/** @var string */
 	private $currentLanguageCode;
 
-	/**
-	 * @param string $currentLanguageItem
-	 * @param LanguageItem[] $languageItems
-	 */
-	public function __construct( $currentLanguageCode, array $languageItems )
+	private $hasAlternatives;
+
+	public function __construct( $currentLanguageCode, array $languageItems, $hasAlternatives = null )
 	{
 		$this->currentLanguageCode = $currentLanguageCode;
 		$this->languageItems = $languageItems;
+		$this->hasAlternatives = null === $hasAlternatives ? null : (bool) $hasAlternatives;
 	}
 
-	/**
-	 * @return LanguageItem[]
-	 */
 	public function getLanguageItems() {
 		return $this->languageItems;
 	}
 
-	/**
-	 * @return null|LanguageItem
-	 */
 	public function getCurrentLanguageItem() {
 		return Lst::find(pipe(invoke('getCode'), Relation::equals($this->currentLanguageCode)), $this->languageItems);
 	}
 
-	/**
-	 * @return LanguageItem[]
-	 */
 	public function getAlternativeLanguageItems() {
 		return Fns::reject(pipe(invoke('getCode'), Relation::equals($this->currentLanguageCode)), $this->languageItems);
 	}
 
-	/**
-	 * @return string
-	 */
+	public function hasAlternatives() {
+		return null === $this->hasAlternatives
+			? [] !== $this->getAlternativeLanguageItems()
+			: $this->hasAlternatives;
+	}
+
 	public function getCurrentLanguageCode() {
 		return $this->currentLanguageCode;
 	}

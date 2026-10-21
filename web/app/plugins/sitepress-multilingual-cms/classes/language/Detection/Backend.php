@@ -10,25 +10,21 @@ use WPML\FP\Relation;
 use function WPML\FP\System\filterVar;
 use function \WPML\FP\partialRight;
 
-/**
- * Class WPML_Backend_Request
- *
- * @package    wpml-core
- * @subpackage wpml-requests
- */
 class Backend extends \WPML_Request {
-	/**
-	 * Determines the requested language in the WP Admin backend from URI, $_POST, $_GET and cookies.
-	 *
-	 * @return string The requested language code.
-	 */
 	public function get_requested_lang() {
+		$language = $this->get_requested_lang_from_params();
+
+		return null !== $language ? $language : $this->get_cookie_lang();
+	}
+
+	public function get_requested_lang_from_params() {
 		$findFromSystemVars = Fns::until(
 			Logic::isNotNull(),
 			[
 				$this->getForPage(),
 				$this->getFromParam( [ 'get', 'lang' ], true ),
 				$this->getFromParam( [ 'post', 'icl_post_language' ], false ),
+				$this->getEditedPostLanguage(),
 				$this->getPostElementLanguage(),
 			]
 		);
@@ -40,11 +36,7 @@ class Backend extends \WPML_Request {
 			]
 		)
 					->map( $findFromSystemVars )
-					->getOrElse(
-						function () {
-							return $this->get_cookie_lang();
-						}
-					);
+					->getOrElse( null );
 	}
 
 	private function getForPage() {
@@ -59,12 +51,12 @@ class Backend extends \WPML_Request {
 
 	private function getFromParam( $path, $allowAllValue ) {
 		return function ( $system ) use ( $path, $allowAllValue ) {
-			/**  @var \WPML_Language_Resolution $wpml_language_resolution */
 			global $wpml_language_resolution;
 
 			return Maybe::of( $system )
 						->map( Obj::path( $path ) )
 						->map( filterVar( FILTER_SANITIZE_FULL_SPECIAL_CHARS ) )
+						->map( [ '\\WPML\\Language\\ActiveLanguagesReadModel', 'canonical' ] )
 						->filter( partialRight( [ $wpml_language_resolution, 'is_language_active' ], $allowAllValue ) )
 						->getOrElse( null );
 		};
@@ -72,13 +64,30 @@ class Backend extends \WPML_Request {
 
 	private function getPostElementLanguage() {
 		return function ( $system ) {
-			/** @var \WPML_Post_Translation $wpml_post_translations */
 			global $wpml_post_translations;
 
 			return Maybe::of( $system )
 						->map( Obj::path( [ 'get', 'p' ] ) )
 						->filter( Relation::gt( Fns::__, 0 ) )
 						->map( [ $wpml_post_translations, 'get_element_lang_code' ] )
+						->getOrElse( null );
+		};
+	}
+
+	private function getEditedPostLanguage() {
+		return function ( $system ) {
+			global $wpml_post_translations, $wpml_language_resolution, $pagenow;
+
+			if ( 'post.php' !== $pagenow || 'edit' !== Obj::path( [ 'get', 'action' ], $system ) ) {
+				return null;
+			}
+
+			return Maybe::of( $system )
+						->map( Obj::path( [ 'get', 'post' ] ) )
+						->map( filterVar( FILTER_VALIDATE_INT ) )
+						->filter( Relation::gt( Fns::__, 0 ) )
+						->map( [ $wpml_post_translations, 'get_element_lang_code' ] )
+						->filter( partialRight( [ $wpml_language_resolution, 'is_language_active' ], false ) )
 						->getOrElse( null );
 		};
 	}

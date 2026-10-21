@@ -37,6 +37,7 @@
 				{
 					taxLabel    : taxLabels[labelLang],
 					flag        : TaxonomyTranslation.data.allLanguages[labelLang].flag,
+					flagAlt     : TaxonomyTranslation.data.allLanguages[labelLang].label,
 					langSelector: langSelector
 				}
 			);
@@ -44,8 +45,30 @@
 			html += '<td class="wpml-col-languages">';
 			
 			_.each(langs, function(lang, code) {
-				if( ! taxLabels[lang] ) {
+				if( taxLabels[lang] && taxLabels[lang].inProgress ) {
+					html += WPML_core[ 'templates/taxonomy-translation/label-in-progress.html' ](
+						{
+							taxonomy: taxonomy,
+							lang    : lang,
+							langs   : TaxonomyTranslation.data.activeLanguages
+						}
+					);
+				} else if( ! taxLabels[lang] || ( ! taxLabels[lang].original && ! taxLabels[lang].hasTranslation ) ) {
+					// hasTranslation is set only when a real String Translation
+					// translation exists. Presence of taxLabels[lang] alone is not
+					// enough: a language with no translation still arrives as an
+					// empty array (truthy in JS), and the label values fall back to
+					// the WordPress .mo string, so both used to render as
+					// "translated" with an edit pencil (wpmldev-7318).
 					html += WPML_core[ 'templates/taxonomy-translation/not-translated-label.html' ](
+						{
+							taxonomy: taxonomy,
+							lang    : lang,
+							langs   : TaxonomyTranslation.data.activeLanguages
+						}
+					);
+				} else if( taxLabels[lang].needsUpdate && ! taxLabels[lang].original ) {
+					html += WPML_core[ 'templates/taxonomy-translation/label-needs-update.html' ](
 						{
 							taxonomy: taxonomy,
 							lang    : lang,
@@ -84,9 +107,10 @@
 
 			e.preventDefault();
 
-			var link = e.target.closest( '.icl_tt_label' ),
-				id = jQuery( link ).attr( 'id' ),
-				lang = id.split( '_' ).pop();
+			var link     = e.target.closest( '.icl_tt_label' ),
+				id       = jQuery( link ).attr( 'id' ),
+				taxonomy = this.model.get( 'taxonomy' ),
+				lang     = id.slice( taxonomy.length + 1 );
 
 			if (TaxonomyTranslation.classes.labelPopUpView && typeof TaxonomyTranslation.classes.labelPopUpView !== 'undefined') {
 				TaxonomyTranslation.classes.labelPopUpView.close();

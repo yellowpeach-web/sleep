@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class WPML_Media_Factory
- */
 class WPML_Media_Factory implements IWPML_Frontend_Action_Loader, IWPML_Backend_Action_Loader {
 
 	public function create() {

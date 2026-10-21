@@ -1,3 +1,8 @@
+> **Before you generate anything: [what a translator is given](../../docs/i18n.md).**
+> Every short text names its role and where it is shown, every placeholder is
+> named in order, and two placeholders in one text are numbered. That page is the
+> review rule, and three gates enforce it.
+
 # 1. Preparation
 
 1. Run `npm install`.

@@ -14,6 +14,7 @@ class WPML_Post_Status extends WPML_WPDB_User {
 
 	public function needs_update( $post_id ) {
 		global $wpml_post_translations, $wpml_cache_factory;
+		$wpdb = $this->wpdb;
 
 		if ( !isset( $this->needs_update[ $post_id ] ) ) {
 			$this->maybe_preload();
@@ -24,11 +25,11 @@ class WPML_Post_Status extends WPML_WPDB_User {
 			$found = false;
 			$results = $cache->get( $trid, $found );
 			if ( ! $found ) {
-				$results = $this->wpdb->get_results(
-					$this->wpdb->prepare(
+				$results = $wpdb->get_results(
+					$wpdb->prepare(
 						"SELECT ts.needs_update, it.language_code
-	                     FROM {$this->wpdb->prefix}icl_translation_status ts
-			             JOIN {$this->wpdb->prefix}icl_translations it
+	                     FROM {$wpdb->prefix}icl_translation_status ts
+			             JOIN {$wpdb->prefix}icl_translations it
 							ON it.translation_id = ts.translation_id
 						 WHERE it.trid = %d",
 						$trid
@@ -55,25 +56,25 @@ class WPML_Post_Status extends WPML_WPDB_User {
 
 	private function maybe_preload() {
 		global $wpml_post_translations, $wpml_cache_factory;
+		$wpdb = $this->wpdb;
 
 		if ( ! $this->preload_done ) {
 
 			$trids = $wpml_post_translations->get_trids();
-			$trids = implode( ',', $trids );
 
 			if ( $trids ) {
 
 				$cache = $wpml_cache_factory->get( 'WPML_Post_Status::needs_update' );
 
-				$results = $this->wpdb->get_results(
+				$results = $wpdb->get_results(
 					"SELECT ts.needs_update, it.language_code, it.trid
-					FROM {$this->wpdb->prefix}icl_translation_status ts
-					JOIN {$this->wpdb->prefix}icl_translations it
+					FROM {$wpdb->prefix}icl_translation_status ts
+					JOIN {$wpdb->prefix}icl_translations it
 					ON it.translation_id = ts.translation_id
-					WHERE it.trid IN ( {$trids} )"
+					WHERE it.trid IN ( " . implode( ', ', esc_sql( array_map( 'intval', (array) $trids ) ) ) . ' )'
 				);
 
-				$groups = array();
+				$groups = array_fill_keys( array_map( 'intval', (array) $trids ), array() );
 				foreach ( $results as $result ) {
 					if ( ! isset( $groups[ $result->trid ] ) ) {
 						$groups[ $result->trid ] = array();
@@ -97,13 +98,14 @@ class WPML_Post_Status extends WPML_WPDB_User {
 
 	public function set_update_status( $post_id, $update ) {
 		global $wpml_post_translations;
+		$wpdb = $this->wpdb;
 
 		$update = (bool) $update;
-		$translation_id = $this->wpdb->get_var (
-			$this->wpdb->prepare (
+		$translation_id = $wpdb->get_var (
+			$wpdb->prepare (
 				"SELECT ts.translation_id
-                     FROM {$this->wpdb->prefix}icl_translations it
-		             JOIN {$this->wpdb->prefix}icl_translation_status ts
+	                     FROM {$wpdb->prefix}icl_translations it
+		             JOIN {$wpdb->prefix}icl_translation_status ts
 						ON it.translation_id = ts.translation_id
 					 WHERE it.trid = %d AND it.language_code = %s",
 				$wpml_post_translations->get_element_trid ( $post_id ),
@@ -112,8 +114,8 @@ class WPML_Post_Status extends WPML_WPDB_User {
 		);
 
 		if ( $translation_id ) {
-			$res = $this->wpdb->update (
-				$this->wpdb->prefix . 'icl_translation_status',
+			$res = $wpdb->update (
+				$wpdb->prefix . 'icl_translation_status',
 				array( 'needs_update' => $update ),
 				array( 'translation_id' => $translation_id )
 			);
@@ -132,26 +134,20 @@ class WPML_Post_Status extends WPML_WPDB_User {
 		return isset( $res );
 	}
 
-	/**
-	 * @param int $post_id
-	 * @param int $status
-	 *
-	 * @return bool
-	 */
 	public function set_status( $post_id, $status ) {
 		global $wpml_post_translations;
+		$wpdb = $this->wpdb;
 
 		if ( ! $post_id ) {
 			throw new InvalidArgumentException(
 				'Tried to set status' . $status . ' for falsy post_id ' . serialize( $post_id ) );
 		}
 
-		/** @var \stdClass $translation_id */
-		$translation_id = $this->wpdb->get_row (
-			$this->wpdb->prepare (
+		$translation_id = $wpdb->get_row (
+			$wpdb->prepare (
 				"SELECT it.translation_id AS transid, ts.translation_id AS status_id
-                     FROM {$this->wpdb->prefix}icl_translations it
-		             LEFT JOIN {$this->wpdb->prefix}icl_translation_status ts
+	                     FROM {$wpdb->prefix}icl_translations it
+		             LEFT JOIN {$wpdb->prefix}icl_translation_status ts
 						ON it.translation_id = ts.translation_id
 					 WHERE it.trid = %d AND it.language_code = %s
 					 LIMIT 1",
@@ -160,16 +156,20 @@ class WPML_Post_Status extends WPML_WPDB_User {
 			)
 		);
 
+		if ( ! $translation_id ) {
+			return false;
+		}
+
 		if ( $translation_id->status_id && $translation_id->transid ) {
-			$res                      = $this->wpdb->update (
-				$this->wpdb->prefix . 'icl_translation_status',
+			$res                      = $wpdb->update (
+				$wpdb->prefix . 'icl_translation_status',
 				array( 'status' => $status ),
 				array( 'translation_id' => $translation_id->transid )
 			);
 			$this->status[ $post_id ] = $status;
 		} else {
-			$res = $this->wpdb->insert (
-				$this->wpdb->prefix . 'icl_translation_status',
+			$res = $wpdb->insert (
+				$wpdb->prefix . 'icl_translation_status',
 				array( 'status' => $status, 'translation_id' => $translation_id->transid )
 			);
 		}

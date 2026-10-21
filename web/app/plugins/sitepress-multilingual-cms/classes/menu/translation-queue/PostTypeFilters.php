@@ -5,12 +5,8 @@ namespace WPML\TM\Menu\TranslationQueue;
 use WPML\FP\Obj;
 
 class PostTypeFilters {
-	/** @var \WPML_TM_Jobs_Repository */
 	private $jobsRepository;
 
-	/**
-	 * @param \WPML_TM_Jobs_Repository $jobsRepository
-	 */
 	public function __construct( \WPML_TM_Jobs_Repository $jobsRepository ) {
 		$this->jobsRepository = $jobsRepository;
 	}
@@ -31,6 +27,7 @@ class PostTypeFilters {
 
 		$post_types = $sitepress->get_translatable_documents( true );
 		$post_types = apply_filters( 'wpml_get_translatable_types', $post_types );
+		$post_types = apply_filters( 'wpml_translation_queue_post_types_filter', $post_types );
 		$output     = [];
 
 		foreach ( $job_types as $job_type ) {
@@ -47,7 +44,14 @@ class PostTypeFilters {
 
 				case 'st-batch':
 					$type = 'strings';
-					$name = __( 'Strings', 'wpml-translation-management' );
+					/* translators: Name of a kind of content in the translation screens: the single texts of the site, as opposed to posts and pages. Plural noun. */
+					$name = __( 'Strings', 'sitepress' );
+					break;
+
+				case 'tax':
+					$type     = substr( $type, 4 );
+					$taxonomy = get_taxonomy( $type );
+					$name     = $taxonomy && isset( $taxonomy->labels->singular_name ) ? (string) $taxonomy->labels->singular_name : $type;
 					break;
 			}
 
@@ -58,12 +62,6 @@ class PostTypeFilters {
 		return $output;
 	}
 
-	/**
-	 * @param \WPML_TM_Jobs_Search_Params $searchParams
-	 * @param array $filters
-	 *
-	 * @return \WPML_TM_Jobs_Search_Params
-	 */
 	private function addFilteringConditions( \WPML_TM_Jobs_Search_Params $searchParams, array $filters ) {
 		global $wpdb;
 

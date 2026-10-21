@@ -9,15 +9,23 @@ WPML_Core.SimpleLanguageSelector = function () {
         });
     };
 
-    var add_flags = function ( state ) {
-        if (!state.id) { return state.text; }
+    var escape_html = function ( value ) {
+        return String( value )
+            .replace( /&/g, '&amp;' )
+            .replace( /"/g, '&quot;' )
+            .replace( /</g, '&lt;' )
+            .replace( />/g, '&gt;' );
+    };
 
-        var text = state.text;
+    var add_flags = function ( state ) {
+        if (!state.id) { return escape_html( state.text ); }
+
+        var text = escape_html( state.text );
         if (jQuery(state.element).data('status') == 'active' ) {
             text = '<strong>&nbsp;' + text + '</strong>';
         }
 
-        return '<img width="18" height="12" src="' + jQuery(state.element).data('flag_url') + '"/> ' + text;
+        return '<img width="18" height="12" src="' + escape_html( jQuery(state.element).data('flag_url') ) + '"/> ' + text;
     };
 
     self.initialize_select2 = function () {

@@ -4,16 +4,12 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 
 	const LINK_CSS_CLASS = 'wpml-ls-link';
 
-	/* @var WPML_LS_Settings $settings */
 	private $settings;
 
-	/* @var WPML_Mobile_Detect $mobile_detect */
 	private $mobile_detect;
 
-	/* @var bool $is_touch_screen */
 	private $is_touch_screen = false;
 
-	/* @var string $css_prefix */
 	private $css_prefix;
 
 	private $allowed_vars = [
@@ -22,10 +18,15 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 		'css_classes'            => 'string',
 		'css_classes_link'       => 'string',
 		'backward_compatibility' => 'array',
+		'ls_aria_label'          => 'string',
+		'dropdown_ls_aria_label'   => 'string',
+		'dropdown_click_ls_aria_label' => 'string',
+		'has_alternatives'       => 'bool',
 	];
 
 	private $allowed_language_vars = [
 		'code'                   => 'string',
+		'hreflang'               => 'string',
 		'url'                    => 'string',
 		'flag_url'               => 'string',
 		'flag_title'             => 'string',
@@ -40,45 +41,47 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 		'backward_compatibility' => 'array',
 		'flag_width'             => 'int',
 		'flag_height'            => 'int',
+		'menu_item_label'        => 'string',
 	];
 
-	/**
-	 * WPML_Language_Switcher_Render_Model constructor.
-	 *
-	 * @param WPML_LS_Settings $settings
-	 * @param SitePress        $sitepress
-	 * @param string           $css_prefix
-	 */
 	public function __construct( $settings, $sitepress, $css_prefix ) {
 		$this->settings   = $settings;
 		$this->css_prefix = $css_prefix;
 		parent::__construct( $sitepress );
 	}
 
-	/**
-	 * @param WPML_LS_Slot $slot
-	 * @param array        $template_data
-	 *
-	 * @return array
-	 */
 	public function get( $slot, $template_data = [] ) {
 		$vars = [];
 
 		$vars['current_language_code'] = $this->sitepress->get_current_language();
 		$vars['languages']             = $this->get_language_items( $slot, $template_data );
-		$vars['css_classes']           = $this->get_slot_css_classes( $slot );
+		$vars['has_alternatives']      = $this->has_alternatives( $vars['languages'] );
+		$vars['css_classes']           = $this->get_wrapper_css_classes( $slot );
 		$vars['css_classes_link']      = self::LINK_CSS_CLASS;
+		/* translators: Screen reader name of the language switcher on the site, and the name of the language switcher widget. */
+		$vars['ls_aria_label']         = __( 'Language Switcher', 'sitepress' );
+		$vars['dropdown_ls_aria_label']  = __( 'Language switcher, press tab to navigate to other languages', 'sitepress' );
+		$vars['dropdown_click_ls_aria_label'] = __( 'Language switcher, click to open then tab to navigate', 'sitepress' );
 
 		$vars = $this->add_backward_compatibility_to_wrapper( $vars, $slot );
 
 		return $this->sanitize_vars( $vars, $this->allowed_vars );
 	}
 
-	/**
-	 * @param WPML_LS_Slot $slot
-	 *
-	 * @return string
-	 */
+	private function has_alternatives( array $languages ) {
+		foreach ( $languages as $language ) {
+			if ( empty( $language['is_current'] ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public function get_wrapper_css_classes( $slot ) {
+		return $this->add_backward_compatibility_to_wrapper_classes( $this->get_slot_css_classes( $slot ), $slot );
+	}
+
 	public function get_slot_css_classes( $slot ) {
 		$classes = [ $this->get_slot_css_main_class( $slot->group(), $slot->slug() ) ];
 
@@ -90,43 +93,24 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 
 		$classes = $this->add_user_agent_touch_device_classes( $classes );
 
-		/**
-		 * Filter the css classes for the language switcher wrapper
-		 * The wrapper is not available for menus
-		 *
-		 * @param array $classes
-		 */
 		$classes = apply_filters( 'wpml_ls_model_css_classes', $classes );
 
 		return implode( ' ', $classes );
 	}
 
-	/**
-	 * @param string $group
-	 * @param string $slug
-	 *
-	 * @return string
-	 */
 	public function get_slot_css_main_class( $group, $slug ) {
 		return $this->css_prefix . $group . '-' . $slug;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function get_css_prefix() {
 		return $this->css_prefix;
 	}
 
-	/**
-	 * @param WPML_LS_Slot $slot
-	 * @param array        $template_data
-	 *
-	 * @return array
-	 */
 	private function get_language_items( $slot, $template_data ) {
 		$ret = [];
 
+		$is_root_request  = WPML_Root_Page::is_configured_root_request();
+		$current_language = $is_root_request ? null : $this->sitepress->get_current_language();
 
 		$get_ls_args = [
 			'skip_missing' => ! $this->settings->get_setting( 'link_empty' ),
@@ -134,7 +118,7 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 
 		if ( $slot->is_post_translations() ) {
 			$get_ls_args['skip_missing'] = true;
-		} elseif ( ( WPML_Root_Page::uses_html_root() || WPML_Root_Page::get_root_id() ) && WPML_Root_Page::is_current_request_root() ) {
+		} elseif ( $is_root_request ) {
 			$get_ls_args['skip_missing'] = false;
 		}
 
@@ -146,17 +130,20 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 
 		if ( $languages ) {
 
+			$has_other_language = (bool) array_diff( array_keys( $languages ), [ (string) $current_language ] );
+
 			foreach ( $languages as $code => $data ) {
 
-				$is_current_language = $code === $this->sitepress->get_current_language();
+				$is_current_language = null !== $current_language && $code === $current_language;
 
 				if ( ! $slot->get( 'display_link_for_current_lang' ) && $is_current_language ) {
 					continue;
 				}
 
 				$ret[ $code ] = [
-					'code' => $code,
-					'url'  => $data['url'],
+					'code'     => $code,
+					'hreflang' => \WPML\Languages\HreflangTag::forLanguage( (array) $data ) ?: $code,
+					'url'      => $data['url'],
 				];
 
 				if ( $flag_width ) {
@@ -166,15 +153,8 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 					$ret[ $code ]['flag_height'] = $flag_height;
 				}
 
-				/* @deprecated Use 'wpml_ls_language_url' instead */
 				$ret[ $code ]['url'] = apply_filters( 'WPML_filter_link', $ret[ $code ]['url'], $data );
 
-				/**
-				 * This filter allows to change the URL for each languages links in the switcher
-				 *
-				 * @param string $ret  [ $code ]['url'] The language URL to be filtered
-				 * @param array  $data The language information
-				 */
 				$ret[ $code ]['url'] = apply_filters( 'wpml_ls_language_url', $ret[ $code ]['url'], $data );
 
 				$ret[ $code ]['url'] = $this->sitepress->get_wp_api()->is_admin() ? '#' : $ret[ $code ]['url'];
@@ -198,6 +178,19 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 					$ret[ $code ]['display_name'] = $data['translated_name'];
 				}
 
+				$language_name = WPML_LS_Language_Name::compose(
+					$data['native_name'],
+					$data['translated_name'],
+					(bool) $display_native,
+					(bool) $display_name
+				);
+
+				$ret[ $code ]['menu_item_label'] = sprintf(
+					/* translators: Screen reader name of an item of the language switcher. %s: the name of the language it switches to. */
+					__( 'Switch to %s', 'sitepress' ),
+					$language_name
+				);
+
 				if ( $is_current_language ) {
 					$ret[ $code ]['is_current'] = true;
 					array_push( $css_classes, $this->css_prefix . 'current-language' );
@@ -205,9 +198,9 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 
 				if ( $slot->is_menu() ) {
 					$ret[ $code ]['db_id']            = $this->get_menu_item_id( $code, $slot );
-					$ret[ $code ]['menu_item_parent'] = $slot->get( 'is_hierarchical' ) && ! $is_current_language && $slot->get( 'display_link_for_current_lang' )
-							? $this->get_menu_item_id( $this->sitepress->get_current_language(), $slot ) : 0;
-					$ret[ $code ]['is_parent']        = $slot->get( 'is_hierarchical' ) && $is_current_language;
+					$ret[ $code ]['menu_item_parent'] = $slot->get( 'is_hierarchical' ) && null !== $current_language && ! $is_current_language && $slot->get( 'display_link_for_current_lang' )
+							? $this->get_menu_item_id( $current_language, $slot ) : 0;
+					$ret[ $code ]['is_parent']        = $slot->get( 'is_hierarchical' ) && $is_current_language && $has_other_language;
 
 					array_unshift( $css_classes, 'menu-item' );
 					array_push( $css_classes, $this->css_prefix . 'menu-item' );
@@ -228,11 +221,6 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 
 				$lang = $this->add_backward_compatibility_to_languages( $lang, $slot );
 
-				/**
-				 * Filter the css classes for each language item
-				 *
-				 * @param array $lang ['css_classes']
-				 */
 				$lang['css_classes'] = apply_filters( 'wpml_ls_model_language_css_classes', $lang['css_classes'] );
 
 				$lang['css_classes'] = implode( ' ', $lang['css_classes'] );
@@ -246,12 +234,6 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 		return $ret;
 	}
 
-	/**
-	 * @param string $url
-	 * @param array  $template_data
-	 *
-	 * @return string
-	 */
 	private function filter_flag_url( $url, $template_data = [] ) {
 		$wp_upload_dir   = wp_upload_dir();
 		$has_custom_flag = strpos( $url, $wp_upload_dir['baseurl'] . '/flags/' ) === 0 ? true : false;
@@ -261,19 +243,13 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 
 			if ( isset( $template_data['flag_extension'] ) ) {
 				$old_ext = pathinfo( $url, PATHINFO_EXTENSION );
-				$url     = preg_replace( '#' . $old_ext . '$#', $template_data['flag_extension'], $url, 1 );
+				$url     = preg_replace( '#' . preg_quote( $old_ext, '#' ) . '$#', $template_data['flag_extension'], $url, 1 );
 			}
 		}
 
 		return $url;
 	}
 
-	/**
-	 * @param WPML_LS_Slot $slot
-	 * @param string       $code
-	 *
-	 * @return array
-	 */
 	private function get_language_css_classes( $slot, $code ) {
 		return [
 			$this->css_prefix . 'slot-' . $slot->slug(),
@@ -282,11 +258,6 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 		];
 	}
 
-	/**
-	 * @param array $classes
-	 *
-	 * @return array
-	 */
 	private function add_user_agent_touch_device_classes( $classes ) {
 
 		if ( is_null( $this->mobile_detect ) ) {
@@ -302,29 +273,14 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 		return $classes;
 	}
 
-	/**
-	 * @return bool
-	 */
 	private function needs_backward_compatibility() {
 		return (bool) $this->settings->get_setting( 'migrated' );
 	}
 
-	/**
-	 * @param string       $code
-	 * @param WPML_LS_Slot $slot
-	 *
-	 * @return string
-	 */
 	private function get_menu_item_id( $code, $slot ) {
 		return $this->css_prefix . $slot->slug() . '-' . $code;
 	}
 
-	/**
-	 * @param array $vars
-	 * @param array $allowed_vars
-	 *
-	 * @return array
-	 */
 	private function sanitize_vars( $vars, $allowed_vars ) {
 		$sanitized = [];
 
@@ -357,12 +313,6 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 		return $sanitized;
 	}
 
-	/**
-	 * @param array        $lang
-	 * @param WPML_LS_Slot $slot
-	 *
-	 * @return array
-	 */
 	private function add_backward_compatibility_to_languages( $lang, $slot ) {
 
 		if ( $this->needs_backward_compatibility() ) {
@@ -404,12 +354,6 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 		return $lang;
 	}
 
-	/**
-	 * @param array        $vars
-	 * @param WPML_LS_Slot $slot
-	 *
-	 * @return mixed
-	 */
 	private function add_backward_compatibility_to_wrapper( $vars, $slot ) {
 
 		if ( $this->needs_backward_compatibility() ) {
@@ -420,12 +364,6 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 					 || $this->is_legacy_template( $slot->template(), 'list-horizontal' )
 				) {
 					$vars['backward_compatibility']['css_id'] = 'lang_sel_list';
-
-					if ( $this->is_legacy_template( $slot->template(), 'list-horizontal' ) ) {
-						$vars['css_classes'] = 'lang_sel_list_horizontal ' . $vars['css_classes'];
-					} else {
-						$vars['css_classes'] = 'lang_sel_list_vertical ' . $vars['css_classes'];
-					}
 				}
 
 				if ( $this->is_legacy_template( $slot->template(), 'dropdown' ) ) {
@@ -435,10 +373,6 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 				if ( $this->is_legacy_template( $slot->template(), 'dropdown-click' ) ) {
 					$vars['backward_compatibility']['css_id'] = 'lang_sel_click';
 				}
-			}
-
-			if ( $slot->is_post_translations() ) {
-				$vars['css_classes'] = 'icl_post_in_other_langs ' . $vars['css_classes'];
 			}
 
 			if ( $slot->is_footer() ) {
@@ -454,12 +388,32 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 		return $vars;
 	}
 
-	/**
-	 * @param string      $template_slug
-	 * @param string|null $type
-	 *
-	 * @return bool
-	 */
+	private function add_backward_compatibility_to_wrapper_classes( $css_classes, $slot ) {
+
+		if ( ! $this->needs_backward_compatibility() ) {
+			return $css_classes;
+		}
+
+		if ( $slot->is_sidebar() || $slot->is_shortcode_actions() ) {
+
+			if ( $this->is_legacy_template( $slot->template(), 'list-vertical' )
+				 || $this->is_legacy_template( $slot->template(), 'list-horizontal' )
+			) {
+				if ( $this->is_legacy_template( $slot->template(), 'list-horizontal' ) ) {
+					$css_classes = 'lang_sel_list_horizontal ' . $css_classes;
+				} else {
+					$css_classes = 'lang_sel_list_vertical ' . $css_classes;
+				}
+			}
+		}
+
+		if ( $slot->is_post_translations() ) {
+			$css_classes = 'icl_post_in_other_langs ' . $css_classes;
+		}
+
+		return $css_classes;
+	}
+
 	private function is_legacy_template( $template_slug, $type = null ) {
 		$templates = $this->settings->get_core_templates();
 		$ret       = in_array( $template_slug, $templates, true );

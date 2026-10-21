@@ -2,7 +2,9 @@
 /* global ajaxurl */
 
 ( function ( $ ) {
-  const self = this
+  'use strict'
+
+  const self = {}
 
   const init = function () {
     self.nonce = $( '[name=wpml-translate-link-targets]' ).val()

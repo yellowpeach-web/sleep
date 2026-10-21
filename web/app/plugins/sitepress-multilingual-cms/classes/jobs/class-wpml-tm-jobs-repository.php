@@ -4,20 +4,14 @@ use \WPML\TM\Jobs\Query\Query;
 use WPML\FP\Fns;
 
 class WPML_TM_Jobs_Repository {
-	/** @var wpdb */
+	const TAXONOMY_LABEL_BATCH_NAME_PREFIX = 'translate everything|taxonomy-label|';
+
 	private $wpdb;
 
-	/** @var Query */
 	private $query_builder;
 
-	/** @var WPML_TM_Job_Elements_Repository */
 	private $elements_repository;
 
-	/**
-	 * @param wpdb                            $wpdb
-	 * @param Query              $query_builder
-	 * @param WPML_TM_Job_Elements_Repository $elements_repository
-	 */
 	public function __construct(
 		wpdb $wpdb,
 		Query $query_builder,
@@ -28,17 +22,14 @@ class WPML_TM_Jobs_Repository {
 		$this->elements_repository = $elements_repository;
 	}
 
-	/**
-	 * @param WPML_TM_Jobs_Search_Params $params
-	 *
-	 * @return WPML_TM_Jobs_Collection|array
-	 */
 	public function get( WPML_TM_Jobs_Search_Params $params ) {
+		$query = $this->query_builder->get_data_query( $params );
+
 		if ( $params->get_columns_to_select() ) {
-			return $this->wpdb->get_results( $this->query_builder->get_data_query( $params ) );
+			return $this->wpdb->get_results( $query );
 		}
 
-		$results = $this->wpdb->get_results( $this->query_builder->get_data_query( $params ) );
+		$results = $this->wpdb->get_results( $query );
 		return is_array( $results )
 			? new WPML_TM_Jobs_Collection( array_map(
 				array( $this, 'build_job_entity' ),
@@ -47,13 +38,6 @@ class WPML_TM_Jobs_Repository {
 			: new WPML_TM_Jobs_Collection( [] );
 	}
 
-	/**
-	 * @param WPML_TM_Jobs_Search_Params $params
-	 *
-	 * @throws \InvalidArgumentException When get_columns_to_select() is used. In that case use get().
-	 *
-	 * @return WPML_TM_Jobs_Collection
-	 */
 	public function get_collection( WPML_TM_Jobs_Search_Params $params ) {
 		if ( $params->get_columns_to_select() ) {
 			throw new \InvalidArgumentException( 'Not valid with get_columns_to_select().' );
@@ -62,47 +46,41 @@ class WPML_TM_Jobs_Repository {
 		return $this->get( $params );
 	}
 
-	/**
-	 * @param array $ateJobIds
-	 *
-	 * @return bool
-	 */
 	public function increment_ate_sync_count( array $ateJobIds ) {
 		if ( empty( $ateJobIds ) ) {
 			return true;
 		} else {
-			$query = sprintf(
-				'UPDATE %sicl_translate_job SET ate_sync_count=ate_sync_count+1 WHERE editor_job_id IN( %s )',
-				$this->wpdb->prefix,
-				wpml_prepare_in( $ateJobIds )
-			);
+			$wpdb      = $this->wpdb;
+			$ateJobIds = array_map( 'intval', $ateJobIds );
 
-			return (bool) $this->wpdb->query( $query );
+			return (bool) $wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->prefix}icl_translate_job SET ate_sync_count=ate_sync_count+1 WHERE editor_job_id IN( " . implode( ', ', array_fill( 0, count( $ateJobIds ), '%d' ) ) . ' )',
+					$ateJobIds
+				)
+			);
 		}
 	}
 
-	/**
-	 * @param WPML_TM_Jobs_Search_Params $params
-	 *
-	 * @return int
-	 */
 	public function get_count( WPML_TM_Jobs_Search_Params $params ) {
-		return (int) $this->wpdb->get_var( $this->query_builder->get_count_query( $params ) );
+		$query = $this->query_builder->get_count_query( $params );
+
+		return (int) $this->wpdb->get_var( $query );
 	}
 
-	/**
-	 * @param int    $local_job_id
-	 * @param string $job_type
-	 *
-	 * @throws InvalidArgumentException
-	 * @return WPML_TM_Job_Entity|false
-	 */
+	public function exists( WPML_TM_Jobs_Search_Params $params ) {
+		$query = $this->query_builder->get_exists_query( $params );
+
+		return (bool) $this->wpdb->get_var( $query );
+	}
+
 	public function get_job( $local_job_id, $job_type ) {
 		$params = new WPML_TM_Jobs_Search_Params();
 		$params->set_local_job_id( $local_job_id );
 		$params->set_job_types( $job_type );
 
-		$data = $this->wpdb->get_row( $this->query_builder->get_data_query( $params ) );
+		$query = $this->query_builder->get_data_query( $params );
+		$data = $this->wpdb->get_row( $query );
 		if ( is_object( $data )  ) {
 			$data = $this->build_job_entity( $data );
 		}
@@ -110,13 +88,8 @@ class WPML_TM_Jobs_Repository {
 		return $data;
 	}
 
-	/**
-	 * @param object $raw_data
-	 *
-	 * @return WPML_TM_Job_Entity
-	 */
 	private function build_job_entity( $raw_data ) {
-		$types = [ WPML_TM_Job_Entity::POST_TYPE, WPML_TM_Job_Entity::PACKAGE_TYPE, WPML_TM_Job_Entity::STRING_BATCH ];
+		$types = [ WPML_TM_Job_Entity::POST_TYPE, WPML_TM_Job_Entity::PACKAGE_TYPE, WPML_TM_Job_Entity::STRING_BATCH, WPML_TM_Job_Entity::TAXONOMY_TYPE ];
 		$batch = new WPML_TM_Jobs_Batch( $raw_data->local_batch_id, $raw_data->batch_name, $raw_data->tp_batch_id );
 
 		if ( in_array( $raw_data->type, $types, true ) ) {
@@ -133,6 +106,7 @@ class WPML_TM_Jobs_Repository {
 			$job->set_completed_date( $raw_data->completed_date ? new DateTime( $raw_data->completed_date ) : null );
 			$job->set_editor_job_id( $raw_data->editor_job_id );
 			$job->set_automatic( $raw_data->automatic );
+			$job->set_created_by_translate_everything( isset( $raw_data->created_by_translate_everything ) ? $raw_data->created_by_translate_everything : false );
 			$job->set_review_status( $raw_data->review_status );
 			$job->set_trid( $raw_data->trid );
 			$job->set_element_type( $raw_data->element_type );
@@ -162,18 +136,46 @@ class WPML_TM_Jobs_Repository {
 		$job->set_ts_status( $raw_data->ts_status );
 		$job->set_needs_update( $raw_data->needs_update );
 		$job->set_has_completed_translation( $raw_data->has_completed_translation );
-		$job->set_title( $raw_data->title );
+		$job->set_title( $this->get_job_title( $raw_data ) );
 
 		return $job;
 	}
 
-	/**
-	 * @param object $raw_data
-	 *
-	 * @return DateTime|null
-	 */
+	private function get_job_title( $raw_data ) {
+		if (
+			WPML_TM_Job_Entity::STRING_BATCH === $raw_data->type
+			&& 0 === strpos( (string) $raw_data->title, self::TAXONOMY_LABEL_BATCH_NAME_PREFIX )
+		) {
+			$labels = $this->get_taxonomy_label_batch_title( (int) $raw_data->original_element_id );
+			if ( '' !== $labels ) {
+				return $labels;
+			}
+		}
+
+		return $raw_data->title;
+	}
+
+	private function get_taxonomy_label_batch_title( $batch_id ) {
+		$wpdb   = $this->wpdb;
+		$values = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT strings.value
+				FROM {$wpdb->prefix}icl_string_batches string_batches
+				INNER JOIN {$wpdb->prefix}icl_strings strings
+					ON strings.id = string_batches.string_id
+				WHERE string_batches.batch_id = %d
+				ORDER BY string_batches.id ASC",
+				$batch_id
+			)
+		);
+
+		$values = array_values( array_unique( array_filter( array_map( 'trim', (array) $values ) ) ) );
+
+		return implode( ', ', $values );
+	}
+
 	private function get_deadline( $raw_data ) {
-		if ( $raw_data->deadline_date && '0000-00-00 00:00:00' !== $raw_data->deadline_date ) {
+		if ( WPML_TM_Job_Deadline::is_set( $raw_data->deadline_date ) ) {
 			return new DateTime( $raw_data->deadline_date );
 		}
 

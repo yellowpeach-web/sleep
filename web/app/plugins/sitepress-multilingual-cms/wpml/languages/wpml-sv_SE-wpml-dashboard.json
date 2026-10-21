@@ -1,0 +1,2663 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "sv_SE"
+         },
+         "Untranslated strings that I encounter on front-end while logged in": [
+            "Oöversatta strängar som jag stöter på i webbplatsens publika del när jag är inloggad"
+         ],
+         "Untranslated strings that all front-end users encounter": [
+            "Oöversatta strängar som alla besökare på webbplatsens publika del stöter på"
+         ],
+         "Disable auto-registration of strings": [
+            "Inaktivera autoregistrering av strängar"
+         ],
+         "Plugins": [
+            "Tillägg"
+         ],
+         "Themes": [
+            "Teman"
+         ],
+         "WordPress": [
+            "WordPress"
+         ],
+         "Other": [
+            "Övrigt"
+         ],
+         "%1$s (%2$d item)": [
+            "%1$s (%2$d objekt)",
+            "%1$s (%2$d objekt)"
+         ],
+         "We cancelled %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
+            "Vi avbröt %1$d av %2$d objekt, men %3$d misslyckades. Ladda om sidan och försök igen."
+         ],
+         "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
+            "Vi skickade om %1$d av %2$d objekt, men %3$d misslyckades. Ladda om sidan och försök igen."
+         ],
+         "Error in fetching default translation batch name": [
+            "Fel vid hämtning av standardnamn för översättningsbatch"
+         ],
+         "Error in fetching translation editor type.": [
+            "Fel vid hämtning av typ av översättningsredigerare."
+         ],
+         "Error in fetching untranslated types count": [
+            "Fel vid hämtning av antal oöversatta typer"
+         ],
+         "Error in fetching remote translation service data.": [
+            "Fel vid hämtning av data för extern översättningstjänst."
+         ],
+         "Validation failed": [
+            "Valideringen misslyckades"
+         ],
+         "%s: labels and slug": [
+            "%s: etiketter och slug"
+         ],
+         "%1$s (%2$s)": [
+            "%1$s (%2$s)"
+         ],
+         "Translation jobs couldn’t be cancelled": [
+            "Översättningsjobben kunde inte avbrytas"
+         ],
+         "Reload the page and try again.": [
+            "Ladda om sidan och försök igen."
+         ],
+         "All unfinished translation jobs were cancelled": [
+            "Alla oavslutade översättningsjobb avbröts"
+         ],
+         "WPML could not display the Translations dashboard.": [
+            "WPML kunde inte visa översättningspanelen."
+         ],
+         "Reload the page to try again. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses, and the browser console for details.": [
+            "Ladda om sidan för att försöka igen. Om detta fortsätter att hända, kontrollera webbplatsens PHP-fellogg efter utdata som bryter WPML:s svar, samt webbläsarkonsolen för mer information."
+         ],
+         "Please wait until download finishes": [
+            "Vänta tills nedladdningen är klar"
+         ],
+         "You need to wait 5 minutes after the last check": [
+            "Du måste vänta 5 minuter efter den senaste kontrollen"
+         ],
+         "Check status and get translations": [
+            "Kontrollera status och hämta översättningar"
+         ],
+         "%d translation could not be applied.": [
+            "%d översättning kunde inte tillämpas.",
+            "%d översättningar kunde inte tillämpas."
+         ],
+         "Some were paused after repeated failures and will be retried automatically.": [
+            "Vissa pausades efter upprepade fel och kommer att försöka igen automatiskt."
+         ],
+         "They are still waiting and will be tried again on the next download.": [
+            "De väntar fortfarande och kommer att försöka igen vid nästa nedladdning."
+         ],
+         "Status: ": [
+            "Status: "
+         ],
+         "Downloaded jobs: ": [
+            "Nedladdade jobb: "
+         ],
+         "Cancelled jobs: ": [
+            "Avbrutna jobb: "
+         ],
+         "none of your translation jobs have been completed": [
+            "inga av dina översättningsjobb har slutförts"
+         ],
+         "The download did not finish, so some translations may still be waiting. Please try again.": [
+            "Nedladdningen slutfördes inte, så vissa översättningar kan fortfarande vänta. Försök igen."
+         ],
+         "%d batches are still being processed by the translation service. Check again in a few minutes.": [
+            "%d batchar bearbetas fortfarande av översättningstjänsten. Kontrollera igen om några minuter."
+         ],
+         "Checking translation jobs status. Please don't close this page!": [
+            "Kontrollerar status för översättningsjobb. Stäng inte denna sida!"
+         ],
+         "<strong>%d translation job</strong> has been sent to remote translators": [
+            "<strong>%d översättningsjobb</strong> har skickats till externa översättare",
+            "<strong>%d översättningsjobb</strong> har skickats till externa översättare"
+         ],
+         "Last check: %s": [
+            "Senaste kontrollen: %s"
+         ],
+         "Last check: Never": [
+            "Senaste kontrollen: Aldrig"
+         ],
+         "Switch to Private Translation Cloud (PTC)": [
+            "Växla till Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "Växla till PTC"
+         ],
+         "Switching…": [
+            "Växlar…"
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Inställningar för översättningsmotor kunde inte laddas. Ladda om sidan och försök igen."
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "Vi kunde inte bekräfta växlingen. Försök igen, eller ladda om för att se aktuell motor."
+         ],
+         "Loading translation engine settings…": [
+            "Laddar inställningar för översättningsmotor…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "Fyll i ditt webbplatssammanhang ovan innan du växlar till PTC."
+         ],
+         "Reload page": [
+            "Ladda om sidan"
+         ],
+         "Filtering is disabled to show all selected items. ": [
+            "Filtrering är inaktiverad för att visa alla valda objekt. "
+         ],
+         "Apply filters": [
+            "Använd filter"
+         ],
+         "%d item selected": [
+            "%d objekt markerat",
+            "%d objekt markerade"
+         ],
+         "(%d words to translate)": [
+            "(%d ord att översätta)"
+         ],
+         "%s item not showing.": [
+            "%s objekt visas inte.",
+            "%s objekt visas inte."
+         ],
+         "Show all selected items": [
+            "Visa alla valda objekt"
+         ],
+         "Translate your content": [
+            "Översätt ditt innehåll"
+         ],
+         "Unselect all": [
+            "Avmarkera alla"
+         ],
+         "Source Language:": [
+            "Källspråk:"
+         ],
+         "translated to:": [
+            "översatt till:"
+         ],
+         "Filter": [
+            "Filtrera"
+         ],
+         "You are about to change the source language filter from %1$s to %2$s": [
+            "Du håller på att ändra källspråksfiltret från %1$s till %2$s"
+         ],
+         "Updating the source language filter will clear the items you've selected for translation. Are you sure you want to continue?": [
+            "Om du uppdaterar källspråksfiltret kommer de objekt du valt för översättning att rensas. Är du säker på att du vill fortsätta?"
+         ],
+         "Change source language": [
+            "Ändra källspråk"
+         ],
+         "Cancel": [
+            "Avbryt"
+         ],
+         "Filter by publication status": [
+            "Filtrera efter publiceringsstatus"
+         ],
+         "All Statuses": [
+            "Alla statusar"
+         ],
+         "All languages": [
+            "Alla språk"
+         ],
+         "All translation statuses": [
+            "Alla översättningsstatusar"
+         ],
+         "Not completed": [
+            "Ej slutförd"
+         ],
+         "Needs updating": [
+            "Behöver uppdateras"
+         ],
+         "Translation in progress": [
+            "Översättning pågår"
+         ],
+         "Translation complete": [
+            "Översättning klar"
+         ],
+         "Filter by translation status": [
+            "Filtrera efter översättningsstatus"
+         ],
+         "Global Filter": [
+            "Globalt filter"
+         ],
+         "%1$s (ID: %2$d)": [
+            "%1$s (ID: %2$d)"
+         ],
+         "Parent:": [
+            "Förälder:"
+         ],
+         "Search parent by title, path, or ID": [
+            "Sök förälder efter titel, sökväg eller ID"
+         ],
+         "Parent: %s": [
+            "Förälder: %s"
+         ],
+         "Search by term title in %s": [
+            "Sök efter termtitel i %s"
+         ],
+         "All taxonomies": [
+            "Alla taxonomier"
+         ],
+         "Loading": [
+            "Laddar"
+         ],
+         "Taxonomy Term:": [
+            "Taxonomiterm:"
+         ],
+         "Loading terms": [
+            "Laddar termer"
+         ],
+         "No terms found": [
+            "Inga termer hittades"
+         ],
+         "Filter by:": [
+            "Filtrera efter:"
+         ],
+         "Title": [
+            "Titel"
+         ],
+         "Automatic translation is paused — payment required (%s).": [
+            "Automatisk översättning är pausad — betalning krävs (%s)."
+         ],
+         "Automatic translation is paused: monthly spending cap reached. It continues when the cap is raised, or when the cap resets.": [
+            "Automatisk översättning är pausad: månatligt utgiftstak har nåtts. Den fortsätter när taket höjs eller när taket återställs."
+         ],
+         "You have %1$s%2$s prepaid word in your WPML account%3$s. Assign these words to this site to resume automatic translation.": [
+            "Du har %1$s%2$s förbetalt ord i ditt WPML-konto%3$s. Tilldela dessa ord till denna webbplats för att återuppta automatisk översättning.",
+            "Du har %1$s%2$s förbetalda ord i ditt WPML-konto%3$s. Tilldela dessa ord till denna webbplats för att återuppta automatisk översättning."
+         ],
+         "Not enough prepaid words to continue automatic translation. Add more words to resume.": [
+            "Inte tillräckligt med förbetalda ord för att fortsätta automatisk översättning. Lägg till fler ord för att återuppta."
+         ],
+         "Assign words": [
+            "Tilldela ord"
+         ],
+         "Get more words": [
+            "Hämta fler ord"
+         ],
+         "View": [
+            "Visa"
+         ],
+         "Edit": [
+            "Redigera"
+         ],
+         "Edit note for the translators": [
+            "Redigera anteckning för översättarna"
+         ],
+         "Add note for the translators": [
+            "Lägg till anteckning för översättarna"
+         ],
+         "Select %s": [
+            "Välj %s"
+         ],
+         "(no title)": [
+            "(ingen titel)"
+         ],
+         "Image": [
+            "Bild"
+         ],
+         "%s Title": [
+            "%s titel"
+         ],
+         "%s Date": [
+            "%s datum"
+         ],
+         "Date / Status": [
+            "Datum / Status"
+         ],
+         "Loading items...": [
+            "Laddar objekt..."
+         ],
+         "This page is set to be %1$stranslated manually%2$s using the WordPress Editor": [
+            "Denna sida är inställd på att %1$söversättas manuellt%2$s med WordPress-redigeraren"
+         ],
+         "%1$d %2$s selected": [
+            "%1$d %2$s valda"
+         ],
+         "items": [
+            "objekt"
+         ],
+         "Filtering is disabled to show all selected items": [
+            "Filtrering är inaktiverad för att visa alla valda objekt"
+         ],
+         "Apply filter": [
+            "Använd filter"
+         ],
+         "%1$d %2$s not showing": [
+            "%1$d %2$s visas inte"
+         ],
+         "Show selected items": [
+            "Visa valda objekt"
+         ],
+         "Looking for more items...": [
+            "Letar efter fler objekt..."
+         ],
+         " / page": [
+            " / sida"
+         ],
+         "Previous": [
+            "Föregående"
+         ],
+         "Next": [
+            "Nästa"
+         ],
+         "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
+            "Din webbplats innehåll är för omfattande för en enda översättningsbatch. Använd filter för att minska urvalet och välj sedan ”markera alla”."
+         ],
+         "The current filter captures too much content. Narrow it down to enable \"select all\" for translation.": [
+            "Det aktuella filtret fångar upp för mycket innehåll. Begränsa det för att kunna använda ”markera alla” för översättning."
+         ],
+         "Select All": [
+            "Markera alla"
+         ],
+         "All %d items matching criteria are selected": [
+            "Alla %d objekt som matchar kriterierna är markerade"
+         ],
+         "All %d items in this section are selected": [
+            "Alla %d objekt i denna sektion är markerade"
+         ],
+         "You have too many items to send for translation at once. Apply a filter to narrow down the items to enable this option.": [
+            "Du har för många objekt för att skicka till översättning samtidigt. Använd ett filter för att begränsa antalet objekt för att aktivera detta alternativ."
+         ],
+         "Clear selection": [
+            "Rensa markering"
+         ],
+         "Select all items that match this search": [
+            "Markera alla objekt som matchar denna sökning"
+         ],
+         "Loading...": [
+            "Laddar..."
+         ],
+         "Select all %ss": [
+            "Markera alla %s"
+         ],
+         "Save note": [
+            "Spara anteckning"
+         ],
+         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
+            "Följande målspråk stödjer inte automatisk översättning: %s. <a>Koppla till kända språk</a> för att aktivera automatisk översättning."
+         ],
+         "The site's default language %s doesn't support automatic translation.": [
+            "Webbplatsens standardspråk %s stödjer inte automatisk översättning."
+         ],
+         "Some sections are hidden due to current filter settings or because they have no items. <show_all>Show all translation statuses</show_all>": [
+            "Vissa sektioner är dolda på grund av nuvarande filterinställningar eller för att de inte innehåller några objekt. <show_all>Visa alla översättningsstatusar</show_all>"
+         ],
+         "Step 1": [
+            "Steg 1"
+         ],
+         "Select items for translation": [
+            "Välj objekt för översättning"
+         ],
+         "Clear filters": [
+            "Rensa filter"
+         ],
+         "WPML could not load these items from your site.": [
+            "WPML kunde inte ladda dessa objekt från din webbplats."
+         ],
+         "Try again or reload the page. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses.": [
+            "Försök igen eller ladda om sidan. Om detta fortsätter att hända, kontrollera webbplatsens PHP-fellogg efter utdata som bryter WPML:s svar."
+         ],
+         "Try again": [
+            "Försök igen"
+         ],
+         "strings": [
+            "strängar"
+         ],
+         "WPML didn't find any %s matching your criteria.": [
+            "WPML hittade inga %s som matchar dina kriterier."
+         ],
+         "You have too many items selected to use this feature. Deselect some of the items to enable it.": [
+            "Du har för många objekt markerade för att använda denna funktion. Avmarkera några av objekten för att aktivera den."
+         ],
+         "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can send this content now and it will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>.": [
+            "<strong>%1$s</strong> ord återstår av det <strong>månatliga utgiftstaket</strong> för <site>%2$s</site> (<figure>%3$s</figure> av <figure>%4$s</figure> har redan använts). Du kan skicka detta innehåll nu så kommer det att översättas tills taket nås. Resten följer när taket höjs eller när taket återställs den <strong>%5$s</strong>."
+         ],
+         "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can turn this on now and content will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>.": [
+            "<strong>%1$s</strong> ord återstår av det <strong>månatliga utgiftstaket</strong> för <site>%2$s</site> (<figure>%3$s</figure> av <figure>%4$s</figure> har redan använts). Du kan aktivera detta nu så kommer innehåll att översättas tills taket nås. Resten följer när taket höjs eller när taket återställs den <strong>%5$s</strong>."
+         ],
+         "Raise the cap": [
+            "Höj taket"
+         ],
+         "Only the account owner can do this.": [
+            "Endast kontoägaren kan göra detta."
+         ],
+         "Show strings in:": [
+            "Visa strängar i:"
+         ],
+         "Display Columns": [
+            "Visa kolumner"
+         ],
+         "Close modal": [
+            "Stäng modal"
+         ],
+         "Select visible columns": [
+            "Välj synliga kolumner"
+         ],
+         "String": [
+            "Sträng"
+         ],
+         "Name": [
+            "Namn"
+         ],
+         "Domain": [
+            "Domän"
+         ],
+         "Source": [
+            "Källa"
+         ],
+         "Type": [
+            "Typ"
+         ],
+         "Apply": [
+            "Använd"
+         ],
+         "All domains": [
+            "Alla domäner"
+         ],
+         "Domain:": [
+            "Domän:"
+         ],
+         "All sources": [
+            "Alla källor"
+         ],
+         "Frontend (viewed)": [
+            "Webbplatsens publika del (visad)"
+         ],
+         "Backend (viewed)": [
+            "Adminpanel (visad)"
+         ],
+         "Unknown": [
+            "Okänd"
+         ],
+         "Source:": [
+            "Källa:"
+         ],
+         "String or Name:": [
+            "Sträng eller namn:"
+         ],
+         "Search string or a name": [
+            "Sök sträng eller ett namn"
+         ],
+         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
+            "Detta filter är endast tillgängligt om källan är inställd på ”Webbplatsens publika del” eller ”Adminpanel”."
+         ],
+         "front-end": [
+            "webbplatsens publika del"
+         ],
+         "back-end": [
+            "adminpanel"
+         ],
+         "viewed": [
+            "visad"
+         ],
+         "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
+            "Öppnar sidan för lokalisering av teman och tillägg, där du kan skanna ditt tema och dina tillägg efter strängar som ännu inte är registrerade och göra dem tillgängliga för översättning här."
+         ],
+         "Finding strings in themes and plugins": [
+            "Hitta strängar i teman och tillägg"
+         ],
+         "Strings in the theme and plugins": [
+            "Strängar i temat och tillägg"
+         ],
+         "Translate front-end texts you can customize from the WordPress admin like footer text, copyright notices, plugin options and settings, time format, widget texts, and more.": [
+            "Översätt texter på webbplatsens publika del som du kan anpassa från WordPress admin, som sidfots-text, upphovsrättsmeddelanden, tilläggsalternativ och inställningar, tidsformat, widget-texter med mera."
+         ],
+         "Translating Strings From Admin and Settings": [
+            "Översätta strängar från admin och inställningar"
+         ],
+         "Translate texts in admin screens": [
+            "Översätt texter i adminpaneler"
+         ],
+         "Translate User Meta Information": [
+            "Översätt användarmetainformation"
+         ],
+         "Making User Meta Information Translatable": [
+            "Gör användarmetainformation översättningsbar"
+         ],
+         "Translate user profile strings": [
+            "Översätt strängar för användarprofiler"
+         ],
+         "No strings have been registered for translation yet. Open your site's front-end (<a/>) and WPML will automatically detect the untranslated strings and list them here. ": [
+            "Inga strängar har registrerats för översättning ännu. Öppna din webbplats publika del (<a/>) så kommer WPML automatiskt att upptäcka de oöversatta strängarna och lista dem här. "
+         ],
+         "hide details": [
+            "dölj detaljer"
+         ],
+         "more details": [
+            "mer detaljer"
+         ],
+         "Still can't find the strings you're looking to translate? Add more strings for translation.": [
+            "Hittar du fortfarande inte strängarna du vill översätta? Lägg till fler strängar för översättning."
+         ],
+         "Not seeing strings that you are looking for?": [
+            "Ser du inte strängarna du letar efter?"
+         ],
+         "Enable the autoregistration setting.": [
+            "Aktivera inställningen för autoregistrering."
+         ],
+         "Visit translations on the site's frontend for WPML to see which strings are missing translations. Visiting one language is enough: %s.": [
+            "Besök översättningar på webbplatsens publika del för att WPML ska se vilka strängar som saknar översättning. Det räcker att besöka ett språk: %s."
+         ],
+         "Alternatively, you can register strings manually.": [
+            "Alternativt kan du registrera strängar manuellt."
+         ],
+         "Registering new strings found on your site…": [
+            "Registrerar nya strängar som hittats på din webbplats…"
+         ],
+         "Registering new strings is paused: there is not enough PHP memory to continue. Increase the memory limit or <retryQueue>try again</retryQueue>.": [
+            "Registrering av nya strängar är pausad: det finns inte tillräckligt med PHP-minne för att fortsätta. Öka minnesgränsen eller <retryQueue>försök igen</retryQueue>."
+         ],
+         "Registering new strings was interrupted. <retryQueue>Try again</retryQueue>": [
+            "Registrering av nya strängar avbröts. <retryQueue>Försök igen</retryQueue>"
+         ],
+         "New strings were registered while you were working. <updateStringsList>Update the list</updateStringsList>": [
+            "Nya strängar registrerades medan du arbetade. <updateStringsList>Uppdatera listan</updateStringsList>"
+         ],
+         "<b>Translate Everything</b> translates only those strings which are registered in English language": [
+            "<b>Översätt allt</b> översätter endast de strängar som är registrerade på engelska"
+         ],
+         "Most strings from your plugins and theme are in English, so we’re showing them alongside your default language. Use the <b>Source Language</b> filter to view strings in a specific language.": [
+            "De flesta strängar från dina tillägg och ditt tema är på engelska, så vi visar dem tillsammans med ditt standardspråk. Använd filtret <b>Källspråk</b> för att visa strängar på ett specifikt språk."
+         ],
+         "You’re using <b>%s</b> to cache your site, which may prevent WPML from automatically registering new strings. To fix this, clear your page cache, then visit your translated pages again on the frontend to detect new strings.": [
+            "Du använder <b>%s</b> för att cacha din webbplats, vilket kan förhindra WPML från att automatiskt registrera nya strängar. För att åtgärda detta, rensa din sidcache och besök sedan dina översatta sidor igen på webbplatsens publika del för att upptäcka nya strängar."
+         ],
+         "WPML can detect strings that appear on the site and list them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here only the strings that actually appear on the site, you need to enable this feature.": [
+            "WPML kan upptäcka strängar som visas på webbplatsen och lista dem här. Denna funktion hjälper dig att identifiera de strängar som faktiskt visas på webbplatsen och översätta dem. För att bara se de strängar som faktiskt visas på webbplatsen här behöver du aktivera denna funktion."
+         ],
+         "WPML detects strings that appear on the site and lists them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here all the strings in the site, you need to disable this feature.": [
+            "WPML upptäcker strängar som visas på webbplatsen och listar dem här. Denna funktion hjälper dig att identifiera de strängar som faktiskt visas på webbplatsen och översätta dem. För att se alla strängar på webbplatsen här behöver du inaktivera denna funktion."
+         ],
+         "Detect untranslated strings": [
+            "Upptäck oöversatta strängar"
+         ],
+         "WPML can detect untranslated strings and automatically register them for translation. This happens in real time as you or your visitors browse your website.": [
+            "WPML kan upptäcka oöversatta strängar och automatiskt registrera dem för översättning. Detta sker i realtid när du eller dina besökare surfar på din webbplats."
+         ],
+         "Automatically register untranslated strings": [
+            "Registrera oöversatta strängar automatiskt"
+         ],
+         "Learn how to use auto-registration": [
+            "Lär dig hur du använder autoregistrering"
+         ],
+         "recommended": [
+            "rekommenderas"
+         ],
+         "Also register strings from the website's back-end": [
+            "Registrera även strängar från webbplatsens adminpanel"
+         ],
+         "Save settings": [
+            "Spara inställningar"
+         ],
+         "Request failed because of the network error": [
+            "Begäran misslyckades på grund av nätverksfel"
+         ],
+         "Enabled": [
+            "Aktiverad"
+         ],
+         "Disabled": [
+            "Inaktiverad"
+         ],
+         "Modify": [
+            "Ändra"
+         ],
+         "You can only translate %1$s from the site's default language (%2$s).": [
+            "Du kan bara översätta %1$s från webbplatsens standardspråk (%2$s)."
+         ],
+         "Search taxonomy or a name": [
+            "Sök taxonomi eller ett namn"
+         ],
+         "Filter by post type": [
+            "Filtrera efter inläggstyp"
+         ],
+         "All post types": [
+            "Alla inläggstyper"
+         ],
+         "%d Not-translatable taxonomy is hidden. Switch it to <i>Translatable</i> in <a>WPML → Settings</a> to include it here.": [
+            "%d icke översättningsbar taxonomi är dold. Ändra den till <i>Översättningsbar</i> i <a>WPML → Inställningar</a> för att inkludera den här.",
+            "%d icke översättningsbara taxonomier är dolda. Ändra dem till <i>Översättningsbara</i> i <a>WPML → Inställningar</a> för att inkludera dem här."
+         ],
+         "No translatable taxonomies match the current filters.": [
+            "Inga översättningsbara taxonomier matchar de nuvarande filtren."
+         ],
+         "Select all taxonomies": [
+            "Välj alla taxonomier"
+         ],
+         "Sort by taxonomy": [
+            "Sortera efter taxonomi"
+         ],
+         "Terms in": [
+            "Termer i"
+         ],
+         "Post types": [
+            "Inläggstyper"
+         ],
+         "Translated / Total terms": [
+            "Översatta / Totalt antal termer"
+         ],
+         "translated": [
+            "översatt"
+         ],
+         "translation in progress": [
+            "översättning pågår"
+         ],
+         "preparing for translation": [
+            "förbereder för översättning"
+         ],
+         "translation needs update": [
+            "översättning behöver uppdateras"
+         ],
+         "translation stalled - the job never reached our translation system": [
+            "översättningen har avstannat – jobbet nådde aldrig vårt översättningssystem"
+         ],
+         "partially translated": [
+            "delvis översatt"
+         ],
+         "not translated": [
+            "inte översatt"
+         ],
+         "%1$s: %2$s": [
+            "%1$s: %2$s"
+         ],
+         "Open %s in the Taxonomy Translation tab": [
+            "Öppna %s i fliken Taxonomiöversättning"
+         ],
+         "Taxonomy labels and slug": [
+            "Taxonomietiketter och slug"
+         ],
+         "WPML String Translation is not active.": [
+            "WPML String Translation är inte aktivt."
+         ],
+         "Taxonomy labels and slugs are translated with <b>String Translation</b> — activate the plugin to translate them.": [
+            "Taxonomietiketter och sluggar översätts med <b>String Translation</b> – aktivera tillägget för att översätta dem."
+         ],
+         "No taxonomy labels to translate.": [
+            "Inga taxonomietiketter att översätta."
+         ],
+         "Select all taxonomy labels": [
+            "Välj alla taxonomietiketter"
+         ],
+         "Taxonomy labels": [
+            "Taxonomietiketter"
+         ],
+         "Select labels for %s": [
+            "Välj etiketter för %s"
+         ],
+         "Labels not detected by String Translation. Rescan needed.": [
+            "Etiketter upptäcktes inte av String Translation. Omskanning behövs."
+         ],
+         "Labels not found": [
+            "Etiketter hittades inte"
+         ],
+         "Scanning…": [
+            "Skannar…"
+         ],
+         "Rescan": [
+            "Skanna igen"
+         ],
+         "%d Taxonomy selected": [
+            "%d taxonomi vald",
+            "%d taxonomier valda"
+         ],
+         "<b>Translate Everything Automatically</b> (TEA) is active.": [
+            "<b>Översätt allt automatiskt</b> (TEA) är aktivt."
+         ],
+         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
+            "Nya och uppdaterade termer i översättningsbara taxonomier köas automatiskt. Välj taxonomier nedan för att skicka ett engångsjobb för eventuella återstående oöversatta termer."
+         ],
+         "Switch Now": [
+            "Byt nu"
+         ],
+         "Add site description": [
+            "Lägg till webbplatsbeskrivning"
+         ],
+         "Turn on now": [
+            "Slå på nu"
+         ],
+         "Set up <b>Translate Everything</b>": [
+            "Konfigurera <b>översätt allt</b>"
+         ],
+         "You’ve been translating with %s.": [
+            "Du har översatt med %s."
+         ],
+         "Your current translations stay exactly as they are. The switch to PTC affects only new and changed content. To refresh an old translation with PTC, re-send it from the <b>Translation Dashboard</b>. This works even while automatic translation runs. It skips anything already translated.": [
+            "Dina nuvarande översättningar förblir exakt som de är. Bytet till PTC påverkar endast nytt och ändrat innehåll. För att uppdatera en gammal översättning med PTC, skicka om den från <b>översättningspanelen</b>. Detta fungerar även medan automatisk översättning körs. Den hoppar över allt som redan är översatt."
+         ],
+         "They stay as they are. Automatic translation only touches content that isn’t translated yet. WPML skips anything you’ve already translated. To refresh a page, re-send it from the <b>Translation Dashboard</b> anytime.": [
+            "De förblir som de är. Automatisk översättning rör endast innehåll som inte är översatt ännu. WPML hoppar över allt du redan har översatt. För att uppdatera en sida kan du när som helst skicka om den från <b>översättningspanelen</b>."
+         ],
+         "Add your site description and target audience": [
+            "Lägg till din webbplatsbeskrivning och målgrupp"
+         ],
+         "Save": [
+            "Spara"
+         ],
+         "Saving…": [
+            "Sparar…"
+         ],
+         "Your automatic translation pricing has been upgraded": [
+            "Din prissättning för automatisk översättning har uppgraderats"
+         ],
+         "Loading notice details…": [
+            "Laddar meddelandeuppgifter…"
+         ],
+         "With WPML 5, automatic translation now costs once per page, per language. After that, edits that add words cost only the added words — edits that don’t grow the page are free. Rework copy, run A/B tests, refine wording. You’re already on PTC, with automatic translation on. There’s nothing to change.": [
+            "Med WPML 5 kostar automatisk översättning nu en gång per sida, per språk. Därefter kostar redigeringar som lägger till ord endast de tillagda orden – redigeringar som inte gör sidan större är gratis. Arbeta om texter, kör A/B-tester, finjustera formuleringar. Du använder redan PTC, med automatisk översättning aktiverad. Det finns inget att ändra."
+         ],
+         "Got it": [
+            "Uppfattat"
+         ],
+         "See your pricing": [
+            "Se din prissättning"
+         ],
+         "You’re all set. The new pricing is active.": [
+            "Allt är klart. Den nya prissättningen är aktiv."
+         ],
+         "Automatic translation now costs once per page, per language. Edits afterwards are free. New content stays translated as you publish.": [
+            "Automatisk översättning kostar nu en gång per sida, per språk. Redigeringar efteråt är gratis. Nytt innehåll förblir översatt när du publicerar."
+         ],
+         "What happens to my existing translations?": [
+            "Vad händer med mina befintliga översättningar?"
+         ],
+         "Switch to PTC for better translations and the new pricing": [
+            "Byt till PTC för bättre översättningar och den nya prissättningen"
+         ],
+         "Pay once per page, then edit for free": [
+            "Betala en gång per sida, redigera sedan gratis"
+         ],
+         "You’re translating your whole site automatically with %s. The new pay-once pricing applies when you use PTC, our recommended AI engine.": [
+            "Du översätter hela din webbplats automatiskt med %s. Den nya betala-en-gång-prissättningen gäller när du använder PTC, vår rekommenderade AI-motor."
+         ],
+         "WPML 5 brings a simpler, lower price for automatic translation, using <strong>Private Translation Cloud (PTC)</strong>, WPML’s own AI engine. Set it up to have WPML translate your whole site automatically.": [
+            "WPML 5 ger ett enklare och lägre pris för automatisk översättning med <strong>Private Translation Cloud (PTC)</strong>, WPML:s egen AI-motor. Konfigurera den för att låta WPML översätta hela din webbplats automatiskt."
+         ],
+         "What you gain": [
+            "Vad du vinner"
+         ],
+         "Pay once per page, in each language.": [
+            "Betala en gång per sida, på varje språk."
+         ],
+         "After that, only added words are charged.": [
+            "Därefter debiteras endast tillagda ord."
+         ],
+         "Edit as much as you want.": [
+            "Redigera så mycket du vill."
+         ],
+         "A/B tests, copy changes, and rewrites cost only the words they add.": [
+            "A/B-tester, ändringar i texter och omskrivningar kostar bara de ord de lägger till."
+         ],
+         "Translations in your voice.": [
+            "Översättningar med din röst."
+         ],
+         "PTC learns your terms and tone from your existing translations.": [
+            "PTC lär sig dina termer och din ton från dina befintliga översättningar."
+         ],
+         "Questions? Tap to expand": [
+            "Frågor? Klicka för att expandera"
+         ],
+         "Why is the pay-once pricing only for PTC?": [
+            "Varför gäller betala en gång-prissättningen endast för PTC?"
+         ],
+         "PTC is WPML’s own AI engine. It reads the whole page, learns your terms and tone, and is backed by our quality guarantee, so we can price it once per page. DeepL, Google and Microsoft translate segment by segment and are priced per word, changes included.": [
+            "PTC är WPML:s egen AI-motor. Den läser hela sidan, lär sig dina termer och din ton, och backas upp av vår kvalitetsgaranti, så att vi kan prissätta den en gång per sida. DeepL, Google och Microsoft översätter segment för segment och prissätts per ord, ändringar inkluderade."
+         ],
+         "How much will I pay?": [
+            "Hur mycket kommer jag att betala?"
+         ],
+         "You’re on %s: per word, changes included. Switch to PTC to pay once per page, with free changes.": [
+            "Du använder %s: per ord, ändringar inkluderade. Växla till PTC för att betala en gång per sida, med kostnadsfria ändringar."
+         ],
+         "On PTC, you pay once per page, in each language. After that, edits to that page are free. You pay again only if the page grows past what you first paid for. In short: you pay for new content, not for updates.": [
+            "Med PTC betalar du en gång per sida, på varje språk. Därefter är redigeringar på den sidan gratis. Du betalar igen endast om sidan växer mer än vad du först betalade för. Kort sagt: du betalar för nytt innehåll, inte för uppdateringar."
+         ],
+         "Yes, show me how": [
+            "Ja, visa mig hur"
+         ],
+         "Not interested": [
+            "Inte intresserad"
+         ],
+         "Do these in order. If you turn on automatic translation before choosing PTC, WPML translates your whole site with the wrong engine. You’d then pay to redo that work.": [
+            "Gör dessa i ordning. Om du slår på automatisk översättning innan du väljer PTC, översätter WPML hela din webbplats med fel motor. Du skulle då få betala för att göra om det arbetet."
+         ],
+         "Do these in order. The engine change affects only new and changed content. Your current translations stay as they are.": [
+            "Gör dessa i ordning. Ändringen av motor påverkar endast nytt och ändrat innehåll. Dina nuvarande översättningar förblir som de är."
+         ],
+         "Switch on the new pricing in %d step": [
+            "Slå på den nya prissättningen i %d steg",
+            "Slå på den nya prissättningen i %d steg"
+         ],
+         "Done": [
+            "Klar"
+         ],
+         "Automatic translation is paused. Settle it in the <b>Translate Everything</b> box first.": [
+            "Automatisk översättning är pausad. Hantera det i rutan <b>Översätt allt</b> först."
+         ],
+         "Do the step above first": [
+            "Gör steget ovan först"
+         ],
+         "Switch to the <b>Advanced Translation Editor</b>": [
+            "Byt till <b>Advanced Translation Editor</b>"
+         ],
+         "Switch your engine to PTC": [
+            "Byt motor till PTC"
+         ],
+         "Turn on <b>Translate Everything Automatically</b>": [
+            "Slå på <b>översätt allt automatiskt</b>"
+         ],
+         "The Advanced Translation Editor is your editor now.": [
+            "Advanced Translation Editor är nu din redigerare."
+         ],
+         "You’re using the Classic Translation Editor, an old legacy tool. PTC and automatic translation run in the Advanced Translation Editor, which also gives you:": [
+            "Du använder Classic Translation Editor, ett gammalt föråldrat verktyg. PTC och automatisk översättning körs i Advanced Translation Editor, som även ger dig:"
+         ],
+         "recommended: pay once per page. PTC needs a short description of your site; the next dialog asks for it.": [
+            "rekommenderas: betala en gång per sida. PTC behöver en kort beskrivning av din webbplats; nästa dialogruta ber om den."
+         ],
+         "recommended: pay once per page": [
+            "rekommenderas: betala en gång per sida"
+         ],
+         "Only you can describe your site. PTC uses this to translate in your voice. Enter it in AI Settings, then Save.": [
+            "Bara du kan beskriva din webbplats. PTC använder detta för att översätta med din röst. Ange det i AI-inställningar och spara sedan."
+         ],
+         "Starts with your current engine, %s, priced per word. After step 1 it runs on PTC, pay once per page.": [
+            "Börjar med din nuvarande motor, %s, prissatt per ord. Efter steg 1 körs den på PTC, betala en gång per sida."
+         ],
+         "WPML translates your whole site. New content stays translated as you publish.": [
+            "WPML översätter hela din webbplats. Nytt innehåll förblir översatt när du publicerar."
+         ],
+         "Translation Memory": [
+            "Översättningsminne"
+         ],
+         "HTML Protection": [
+            "HTML-skydd"
+         ],
+         "Glossary": [
+            "Ordlista"
+         ],
+         "Spellchecker": [
+            "Stavningskontroll"
+         ],
+         "AI Assistant": [
+            "AI-assistent"
+         ],
+         "Automatic Translation": [
+            "Automatisk översättning"
+         ],
+         "<b>Translate Everything Automatically</b> is already on, with %s (per word).": [
+            "<b>Översätt allt automatiskt</b> är redan på, med %s (per ord)."
+         ],
+         "Not now": [
+            "Inte nu"
+         ],
+         "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
+            "Anslutningsfel. Vänta en minut och ladda om sidan. Om problemet kvarstår, kontakta WPML-supporten."
+         ],
+         "You don’t have enough prepaid words to translate this content.": [
+            "Du har inte tillräckligt med förbetalda ord för att översätta detta innehåll."
+         ],
+         "You have %1$s prepaid words — %2$s more are needed to translate this content": [
+            "Du har %1$s förbetalda ord – %2$s till behövs för att översätta detta innehåll"
+         ],
+         "You’re missing %1$s prepaid words for the translation jobs in progress — %2$s are needed in total": [
+            "Du saknar %1$s förbetalda ord för de pågående översättningsjobben – %2$s behövs totalt"
+         ],
+         "Automatic translation costs:": [
+            "Kostnad för automatisk översättning:"
+         ],
+         "Words": [
+            "Ord",
+            "Ord"
+         ],
+         "Words to translate automatic": [
+            "Ord att översätta automatiskt"
+         ],
+         "Words required:": [
+            "Ord som krävs:"
+         ],
+         "Pricing": [
+            "Prissättning"
+         ],
+         "Your Automatic Translation Words": [
+            "Dina ord för automatisk översättning"
+         ],
+         "To proceed with translation, activate <b>Pay-As-You-Go</b> or assign prepaid words.": [
+            "För att fortsätta med översättningen, aktivera <b>Användningsbaserad debitering</b> eller tilldela förbetalda ord."
+         ],
+         "<b>Pay-As-You-Go</b> activated": [
+            "<b>Användningsbaserad debitering</b> aktiverat"
+         ],
+         "You can now continue translating your content automatically.": [
+            "Du kan nu fortsätta att översätta ditt innehåll automatiskt."
+         ],
+         "%s word assigned to this site.": [
+            "%s ord tilldelat till denna webbplats.",
+            "%s ord tilldelade till denna webbplats."
+         ],
+         "Leave existing translations as they are": [
+            "Lämna befintliga översättningar som de är"
+         ],
+         "Overwrite existing translations": [
+            "Skriv över befintliga översättningar"
+         ],
+         "Some of the content you want to translate is already translated": [
+            "En del av innehållet du vill översätta är redan översatt"
+         ],
+         "What do you want to do with the content that's already translated?": [
+            "Vad vill du göra med det innehåll som redan är översatt?"
+         ],
+         "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
+            "Översättningar från DeepL, Google Translate och Microsoft Translator bör granskas före publicering."
+         ],
+         "Translations from PTC are publish-ready, so you can publish them without review.": [
+            "Översättningar från PTC är redo att publiceras, så du kan publicera dem utan granskning."
+         ],
+         "Suggested deadline:": [
+            "Föreslagen tidsfrist:"
+         ],
+         "Set a batch name and deadline": [
+            "Ange ett batchnamn och en tidsfrist"
+         ],
+         "You can assign a custom name to this batch for easy tracking and suggest a deadline to clarify the priority for translators.": [
+            "Du kan tilldela ett anpassat namn till denna batch för enkel spårning och föreslå en tidsfrist för att klargöra prioriteten för översättare."
+         ],
+         "Batch name:": [
+            "Batchnamn:"
+         ],
+         "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s translator</add_yourself> to the site.<br/> Add yourself as %2$s translator and click <check_again>check again</check_again> or choose a different translation option.": [
+            "För att kunna tilldela dig själv som översättare måste du först <add_yourself>lägga till dig själv som översättare för %1$s</add_yourself> på webbplatsen.<br/> Lägg till dig själv som översättare för %2$s och klicka på <check_again>kontrollera igen</check_again> eller välj ett annat översättningsalternativ."
+         ],
+         "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s to %2$s translator</add_yourself> to the site.<br/> Add yourself as %3$s to %4$s translator and click <check_again>check again</check_again> or choose a different translation option.": [
+            "För att kunna tilldela dig själv som översättare måste du först <add_yourself>lägga till dig själv som översättare från %1$s till %2$s</add_yourself> på webbplatsen.<br/> Lägg till dig själv som översättare från %3$s till %4$s och klicka på <check_again>kontrollera igen</check_again> eller välj ett annat översättningsalternativ."
+         ],
+         "Checking": [
+            "Kontrollerar"
+         ],
+         "In order to assign a translation service, you first need to <activate_ts>activate a translation service</activate_ts>.<br/>Activate a translation service and click <check_again>check again</check_again> or choose a different translation option.": [
+            "För att kunna tilldela en översättningstjänst måste du först <activate_ts>aktivera en översättningstjänst</activate_ts>.<br/>Aktivera en översättningstjänst och klicka på <check_again>kontrollera igen</check_again> eller välj ett annat översättningsalternativ."
+         ],
+         " Checking ": [
+            " Kontrollerar "
+         ],
+         "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
+            "För att kunna översätta automatiskt måste du först <enable_ate>aktivera WPML:s <b>avancerade översättningsredigerare</b></enable_ate>.<br/>Aktivera den <b>avancerade översättningsredigeraren</b> och klicka på <check_again>kontrollera igen</check_again> eller välj ett annat översättningsalternativ."
+         ],
+         "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
+            "Valt innehåll översattes med <b>Classic Translation Editor</b> och kan inte skickas för automatisk översättning. För att tillåta detta, aktivera ”Använd även för gamla översättningar” på sidan <wpmlSettingLink>WPML-inställningar</wpmlSettingLink>."
+         ],
+         "Some of the selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
+            "En del av det valda innehållet översattes med <b>Classic Translation Editor</b> och kan inte skickas för automatisk översättning. För att tillåta detta, aktivera ”Använd även för gamla översättningar” på sidan <wpmlSettingLink>WPML-inställningar</wpmlSettingLink>."
+         ],
+         "Content that is already translated into this language will not be duplicated; its existing translation is kept.\nWhen duplicating content, please first duplicate parent pages to maintain the site's hierarchy.": [
+            "Innehåll som redan är översatt till det här språket kommer inte att dupliceras; dess befintliga översättning behålls.\nNär du duplicerar innehåll bör du först duplicera föräldrasidor för att bibehålla webbplatsens hierarki."
+         ],
+         "Some of the selected content is already being translated. This will cancel any in-progress translations.": [
+            "En del av det valda innehållet håller redan på att översättas. Detta kommer att avbryta alla pågående översättningar."
+         ],
+         "The selected items were translated using the WordPress Editor and will be overwritten with automatic translations.": [
+            "De valda objekten översattes med WordPress-redigeraren och kommer att skrivas över med automatiska översättningar."
+         ],
+         "Some of the selected content was translated using the WordPress Editor and will be overwritten.": [
+            "En del av det valda innehållet översattes med WordPress-redigeraren och kommer att skrivas över."
+         ],
+         "Translated content structure will change. The selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
+            "Strukturen för översatt innehåll kommer att ändras. De valda objekten översattes tidigare i WordPress-redigeraren. När WPML översätter dem automatiskt kommer strukturen på det översatta inlägget att återgå till att matcha originalinnehållet. Befintlig översatt text kommer fortfarande att användas som bas så att ton och terminologi bevaras."
+         ],
+         "Translated content structure will change. Some of the selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
+            "Strukturen för översatt innehåll kommer att ändras. Några av de valda objekten översattes tidigare i WordPress-redigeraren. När WPML översätter dem automatiskt kommer strukturen på det översatta inlägget att återgå till att matcha originalinnehållet. Befintlig översatt text kommer fortfarande att användas som bas så att ton och terminologi bevaras."
+         ],
+         "In order to assign to a translator, you first need to <add_translators>add %1$s translators</add_translators> to the site.<br/> Add %2$s translators and click <check_again>check again</check_again> or choose a different translation option.": [
+            "För att kunna tilldela en översättare måste du först <add_translators>lägga till översättare för %1$s</add_translators> på webbplatsen.<br/> Lägg till översättare för %2$s och klicka på <check_again>kontrollera igen</check_again> eller välj ett annat översättningsalternativ."
+         ],
+         "In order to assign to a translator, you first need to <add_translators>add %1$s to %2$s translators</add_translators> to the site.<br/> Add %3$s to %4$s translators and click <check_again>check again</check_again> or choose a different translation option.": [
+            "För att kunna tilldela en översättare måste du först <add_translators>lägga till översättare från %1$s till %2$s</add_translators> på webbplatsen.<br/> Lägg till översättare från %3$s till %4$s och klicka på <check_again>kontrollera igen</check_again> eller välj ett annat översättningsalternativ."
+         ],
+         "Your site doesn't have any reviewers for %s. This means that you’re the only person who can review these translations.": [
+            "Din webbplats har inga granskare för %s. Detta innebär att du är den enda personen som kan granska dessa översättningar."
+         ],
+         "Your site doesn't have any reviewers yet. This means that you’re the only person who can review translations.": [
+            "Din webbplats har inga granskare än. Detta innebär att du är den enda personen som kan granska översättningar."
+         ],
+         "If you want other people to review the translations, go to <a>Settings → Translators</a> and add translators. They will be able to both review and translate content for you.": [
+            "Om du vill att andra ska granska översättningarna, gå till <a>Inställningar → Översättare</a> och lägg till översättare. De kommer att kunna både granska och översätta innehåll åt dig."
+         ],
+         "Automatic translation is paused — payment required": [
+            "Automatisk översättning är pausad – betalning krävs"
+         ],
+         "A payment of %s could not be processed. Pay it in the <b>Translate Everything</b> box above to resume.": [
+            "En betalning på %s kunde inte behandlas. Betala den i rutan <b>Översätt allt</b> ovan för att fortsätta."
+         ],
+         "Automatic translation is paused: monthly spending cap reached": [
+            "Automatisk översättning är pausad: månatlig utgiftsgräns har nåtts"
+         ],
+         "<site>%1$s</site> reached its monthly spending cap (<figure>%2$s</figure> of <figure>%3$s</figure> words used). Raise it above to continue.": [
+            "<site>%1$s</site> har nått sin månatliga utgiftsgräns (<figure>%2$s</figure> av <figure>%3$s</figure> ord använda). Höj den ovan för att fortsätta."
+         ],
+         "WPML does not support duplicating strings. Your selection to duplicate strings to %1$s will be ignored if you proceed with the translation.": [
+            "WPML stödjer inte duplicering av strängar. Ditt val att duplicera strängar till %1$s kommer att ignoreras om du fortsätter med översättningen."
+         ],
+         "WPML does not support duplicating %1$s elements. Your selection to duplicate elements to %2$s will be ignored if you proceed with the translation.": [
+            "WPML stödjer inte duplicering av %1$s-element. Ditt val att duplicera element till %2$s kommer att ignoreras om du fortsätter med översättningen."
+         ],
+         "WPML does not support duplicating %1$s elements and strings. Your selection to duplicate elements and strings to %2$s will be ignored if you proceed with the translation.": [
+            "WPML stödjer inte duplicering av %1$s-element och strängar. Ditt val att duplicera element och strängar till %2$s kommer att ignoreras om du fortsätter med översättningen."
+         ],
+         "WPML does not support duplicating strings.": [
+            "WPML stödjer inte duplicering av strängar."
+         ],
+         "WPML does not support duplicating %1$s elements.": [
+            "WPML stödjer inte duplicering av %1$s-element."
+         ],
+         "WPML does not support duplicating %1$s elements and strings.": [
+            "WPML stödjer inte duplicering av %1$s-element och strängar."
+         ],
+         "WPML does not support duplicating taxonomies.": [
+            "WPML stödjer inte duplicering av taxonomier."
+         ],
+         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
+            "WPML stödjer inte duplicering av taxonomier. Ditt val att duplicera taxonomier till %1$s kommer att ignoreras om du fortsätter med översättningen."
+         ],
+         "Finish setting up %s on your site": [
+            "Slutför konfigurationen av %s på din webbplats"
+         ],
+         "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Du behöver autentisera %s för att skicka innehåll till dem för översättning.<br/>Besök <a>fliken Översättare</a> för att slutföra konfigurationen och klicka på <check_again>kontrollera igen</check_again> eller välj ett annat översättningsalternativ."
+         ],
+         "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
+            "En del av det valda innehållet har en översättning öppen för granskning. Om du skickar det igen ersätts den översättningen."
+         ],
+         "You selected multiple translation methods for content across different languages:": [
+            "Du valde flera översättningsmetoder för innehåll på olika språk:"
+         ],
+         "Sent for translation": [
+            "Skickat för översättning"
+         ],
+         "Some items were not sent for translation": [
+            "Vissa objekt skickades inte för översättning"
+         ],
+         "Sending for translation failed": [
+            "Det gick inte att skicka för översättning"
+         ],
+         "WPML can't reach our translation system right now, so these items haven't been sent. Check the connection and retry.": [
+            "WPML kan inte nå vårt översättningssystem just nu, så dessa objekt har inte skickats. Kontrollera anslutningen och försök igen."
+         ],
+         "WPML could not read the translation server's answer about these items. If you send them anyway and the server already has them, you may be charged for them twice.": [
+            "WPML kunde inte läsa översättningsserverns svar om dessa objekt. Om du skickar dem ändå och servern redan har dem kan du komma att debiteras två gånger för dem."
+         ],
+         "Check connection and retry": [
+            "Kontrollera anslutningen och försök igen"
+         ],
+         "Retry not-sent items": [
+            "Försök skicka objekt som inte skickades igen"
+         ],
+         "Send anyway": [
+            "Skicka ändå"
+         ],
+         "Close": [
+            "Stäng"
+         ],
+         "Continue sending": [
+            "Fortsätt skicka"
+         ],
+         "Ok": [
+            "Ok"
+         ],
+         "<s>1 item</s> is being translated automatically.": [
+            "<s>1 objekt</s> översätts automatiskt.",
+            "<s>%d objekt</s> översätts automatiskt."
+         ],
+         "You can track their progress at the top of the page.": [
+            "Du kan följa deras framsteg högst upp på sidan."
+         ],
+         "From now on, WPML will automatically translate new content on your site.": [
+            "Från och med nu kommer WPML automatiskt att översätta nytt innehåll på din webbplats."
+         ],
+         "This number might vary because you enabled the <b>Translate Everything Automatically</b> Mode.": [
+            "Detta antal kan variera eftersom du har aktiverat läget <b>Översätt allt automatiskt</b>."
+         ],
+         "From now on, WPML will automatically translate your site's content.": [
+            "Från och med nu kommer WPML automatiskt att översätta din webbplats innehåll."
+         ],
+         "Automatic translations summary": [
+            "Sammanfattning av automatiska översättningar"
+         ],
+         "<s>1 item</s> has been successfully assigned to you! To check its status, please go to <s>Translation Tasks</s>. <translations_queue/>": [
+            "<s>1 objekt</s> har tilldelats dig! För att kontrollera dess status, gå till <s>Översättningsuppgifter</s>. <translations_queue/>",
+            "<s>%d objekt</s> har tilldelats dig! För statusuppdateringar, gå till <s>Översättningsuppgifter</s>. <translations_queue/>"
+         ],
+         "Currently logged in translator summary": [
+            "Sammanfattning för inloggad översättare"
+         ],
+         "Go to Translation Tasks": [
+            "Gå till översättningsuppgifter"
+         ],
+         "<s>1 item</s> has been duplicated.": [
+            "<s>1 objekt</s> har duplicerats.",
+            "<s>%d objekt</s> har duplicerats."
+         ],
+         "Duplication summary": [
+            "Sammanfattning av duplicering"
+         ],
+         "Please try again in a few minutes. If the issue persists, <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, copy the technical details below and paste them into our Maiya agent for assistance.": [
+            "Försök igen om några minuter. Om problemet kvarstår, <supportLink>öppna ett ärende i vår forumtråd (Maiya)</supportLink>, kopiera de tekniska detaljerna nedan och klistra in dem till vår Maiya-agent för hjälp."
+         ],
+         "There was a problem sending your content for translation.": [
+            "Det uppstod ett problem när ditt innehåll skulle skickas för översättning."
+         ],
+         "See technical details": [
+            "Visa tekniska detaljer"
+         ],
+         "Hide technical details": [
+            "Dölj tekniska detaljer"
+         ],
+         "Some of the selected strings are already registered or translated into %s. Since their source language matches the target language, they cannot be retranslated.": [
+            "Vissa av de valda strängarna är redan registrerade eller översatta till %s. Eftersom deras källspråk matchar målspråket kan de inte översättas igen."
+         ],
+         "Some of the selected content has already been translated from %1$s to %2$s and cannot be re-translated from %3$s to %4$s.": [
+            "En del av det valda innehållet har redan översatts från %1$s till %2$s och kan inte översättas igen från %3$s till %4$s."
+         ],
+         "Content already translated": [
+            "Innehållet är redan översatt"
+         ],
+         "Some of the selected content has a translation in progress, so it was not duplicated.": [
+            "Vissa delar av det valda innehållet har en pågående översättning, så det duplicerades inte."
+         ],
+         "Content already being translated": [
+            "Innehållet håller redan på att översättas"
+         ],
+         "WPML could not count the words of these items.": [
+            "WPML kunde inte räkna orden för dessa objekt."
+         ],
+         "Some content couldn't be sent to translation.": [
+            "Visst innehåll kunde inte skickas för översättning."
+         ],
+         "WPML did not create translations for some languages because of the following reasons:": [
+            "WPML skapade inte översättningar för vissa språk av följande skäl:"
+         ],
+         "%s Flag": [
+            "%s flagga"
+         ],
+         "<s>1 item</s> has been successfully sent to translators!": [
+            "<s>1 objekt</s> har skickats till översättare!",
+            "<s>%d objekt</s> har skickats till översättare!"
+         ],
+         "Local translations summary": [
+            "Sammanfattning av lokala översättningar"
+         ],
+         "You can check their status in WPML → Translation": [
+            "Du kan kontrollera deras status i WPML → Översättning"
+         ],
+         "Items not sent:": [
+            "Objekt som inte skickats:"
+         ],
+         "%d item was sent for translation.": [
+            "%d objekt skickades för översättning.",
+            "%d objekt skickades för översättning."
+         ],
+         "%d item was not sent.": [
+            "%d objekt skickades inte.",
+            "%d objekt skickades inte."
+         ],
+         "Reason: %s": [
+            "Orsak: %s"
+         ],
+         "Items already sent will be translated and delivered normally.": [
+            "Objekt som redan har skickats kommer att översättas och levereras som vanligt."
+         ],
+         "Continue to %s": [
+            "Fortsätt till %s"
+         ],
+         "We were unable to send the following batches for professional translation:": [
+            "Vi kunde inte skicka följande batcher för professionell översättning:"
+         ],
+         "<p><a><s>Contact WPML support for help</s></a></p>": [
+            "<p><a><s>Kontakta WPML-supporten för hjälp</s></a></p>"
+         ],
+         "Translation Service": [
+            "Översättningstjänst"
+         ],
+         "sending for professional translation..": [
+            "skickar för professionell översättning.."
+         ],
+         "<s>%1$d item</s> is being sent for translation to %2$s. Please continue to their site to start the translation.": [
+            "<s>%1$d objekt</s> skickas för översättning till %2$s. Fortsätt till deras webbplats för att påbörja översättningen.",
+            "<s>%1$d objekt</s> skickas för översättning till %2$s. Fortsätt till deras webbplats för att påbörja översättningen."
+         ],
+         "Translation service translations summary": [
+            "Sammanfattning av översättningar från översättningstjänst"
+         ],
+         "One or more assigned translators are invalid. The translator may have been removed or their language permissions changed.<br/> Review your settings on the <translators_page>Translators page</translators_page>.": [
+            "En eller flera tilldelade översättare är ogiltiga. Översättaren kan ha tagits bort eller så har deras språkbehörigheter ändrats.<br/> Granska dina inställningar på <translators_page>sidan Översättare</translators_page>."
+         ],
+         "The selected translation service is no longer valid. It may have been changed, unauthenticated, or deactivated.<br/> Review your settings on the <translators_page>Translators page</translators_page>.": [
+            "Den valda översättningstjänsten är inte längre giltig. Den kan ha ändrats, blivit oautentiserad eller inaktiverad.<br/> Granska dina inställningar på <translators_page>sidan för översättare</translators_page>."
+         ],
+         "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
+            "Den valda översättningsredigeraren stödjer inte automatisk översättning. Du måste aktivera den <b>avancerade översättningsredigeraren</b> för att skicka innehåll för automatisk översättning.<br/> Kontrollera dina inställningar på <wpml_settings>WPML:s inställningssida</wpml_settings>."
+         ],
+         "Validation error happened during send to translation.": [
+            "Ett valideringsfel uppstod när innehållet skulle skickas för översättning."
+         ],
+         "Translate and Duplicate": [
+            "Översätt och duplicera"
+         ],
+         "Duplicate": [
+            "Duplicera"
+         ],
+         "Translate content": [
+            "Översätt innehåll"
+         ],
+         "Checking translation engine…": [
+            "Kontrollerar översättningsmotor…"
+         ],
+         "Checking site context…": [
+            "Kontrollerar webbplatsens kontext…"
+         ],
+         "Could not check the translation engine. Reload the page to try again.": [
+            "Kunde inte kontrollera översättningsmotorn. Ladda om sidan för att försöka igen."
+         ],
+         "Automatic translation is paused until the failed payment is settled. Pay it in the Translate Everything box.": [
+            "Automatisk översättning är pausad tills den misslyckade betalningen är reglerad. Betala den i rutan Översätt allt."
+         ],
+         "Please choose one of the available payment options.": [
+            "Välj ett av de tillgängliga betalningsalternativen."
+         ],
+         "Selected content is already translated": [
+            "Valt innehåll är redan översatt"
+         ],
+         "Please select a review mode": [
+            "Välj ett granskningsläge"
+         ],
+         "Assign local translator or choose another option": [
+            "Tilldela en lokal översättare eller välj ett annat alternativ"
+         ],
+         "Assign yourself or choose another option": [
+            "Tilldela dig själv eller välj ett annat alternativ"
+         ],
+         "Activate translation service or choose another option": [
+            "Aktivera översättningstjänst eller välj ett annat alternativ"
+         ],
+         "Activate the Advanced Translation Editor or choose another option": [
+            "Aktivera Advanced Translation Editor eller välj ett annat alternativ"
+         ],
+         "Authenticate translation service or choose another option": [
+            "Autentisera översättningstjänst eller välj ett annat alternativ"
+         ],
+         "Please provide context to enable translation": [
+            "Ange kontext för att aktivera översättning"
+         ],
+         "Keep this page open while WPML sends your content for translation. Leaving now stops the remaining items from being sent.": [
+            "Håll den här sidan öppen medan WPML skickar ditt innehåll för översättning. Om du lämnar sidan nu stoppas resterande objekt från att skickas."
+         ],
+         "Sending content for translation": [
+            "Skickar innehåll för översättning"
+         ],
+         "<s>%1$s</s> cannot process more than <s>%2$d</s> jobs in a single batch. WPML will automatically split your jobs into separate batches to ensure an error-free delivery to <s>%3$s</s>. <br/><br/> Do you want to proceed?": [
+            "<s>%1$s</s> kan inte hantera fler än <s>%2$d</s> jobb i en enda batch. WPML kommer automatiskt att dela upp dina jobb i separata batcher för att säkerställa en felfri leverans till <s>%3$s</s>. <br/><br/> Vill du fortsätta?"
+         ],
+         "WPML will send jobs to %s in separate batches": [
+            "WPML kommer att skicka jobb till %s i separata batcher"
+         ],
+         "Yes, send jobs in separate batches": [
+            "Ja, skicka jobb i separata batcher"
+         ],
+         "No, I will split jobs myself": [
+            "Nej, jag delar upp jobben själv"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
+            "Vissa taxonomitermer har inte skickats ännu. De som skickades håller på att översättas – klicka på Fortsätt skicka för att skicka resten."
+         ],
+         "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
+            "Taxonomitermerna har inte skickats ännu. Klicka på Fortsätt skicka för att skicka dem."
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
+            "Vissa taxonomitermer har inte skickats ännu. De som skickades håller på att översättas – försök skicka de ej skickade objekten igen för att skicka resten."
+         ],
+         "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
+            "Taxonomitermerna har inte skickats ännu. Försök skicka de ej skickade objekten igen för att skicka dem."
+         ],
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
+            "Vissa taxonomitermer skickades inte för översättning. De som skickades håller på att översättas – skicka resten igen för att slutföra."
+         ],
+         "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
+            "WPML kunde inte skicka taxonomitermerna för översättning, så inga av dem skickades. Försök igen."
+         ],
+         "This will translate only your future content": [
+            "Detta kommer endast att översätta ditt framtida innehåll"
+         ],
+         "This will translate your entire site": [
+            "Detta kommer att översätta hela din webbplats"
+         ],
+         "Translate everything automatically from now on, without asking me.": [
+            "Översätt allt automatiskt från och med nu, utan att fråga mig."
+         ],
+         "Existing content": [
+            "Befintligt innehåll"
+         ],
+         "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
+            "Du har valt att översätta strängar som finns i %1$s. Endast dessa strängar kommer att översättas till %2$s."
+         ],
+         "You selected to translate strings that are in %1$s and %2$s. Only these strings will be translated to %3$s.": [
+            "Du har valt att översätta strängar som finns i %1$s och %2$s. Endast dessa strängar kommer att översättas till %3$s."
+         ],
+         "Source language": [
+            "Källspråk"
+         ],
+         "Target language": [
+            "Målspråk"
+         ],
+         "Words to translate": [
+            "Ord att översätta"
+         ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$sTotalt:%2$s %3$s"
+         ],
+         "Translation service additional options": [
+            "Ytterligare alternativ för översättningstjänst"
+         ],
+         "Refresh": [
+            "Uppdatera"
+         ],
+         "Fetching translation service data...": [
+            "Hämtar data från översättningstjänst..."
+         ],
+         "-": [
+            "-"
+         ],
+         "Translate automatically": [
+            "Översätt automatiskt"
+         ],
+         "Translate myself": [
+            "Översätt själv"
+         ],
+         "Assign a translator": [
+            "Tilldela en översättare"
+         ],
+         "Assign translation service": [
+            "Tilldela översättningstjänst"
+         ],
+         "Do nothing": [
+            "Gör ingenting"
+         ],
+         "Please choose": [
+            "Vänligen välj"
+         ],
+         "Choose a translator": [
+            "Välj en översättare"
+         ],
+         "First available": [
+            "Första tillgängliga"
+         ],
+         "(Me)": [
+            "(jag)"
+         ],
+         "Translation quality": [
+            "Översättningskvalitet"
+         ],
+         "Expand": [
+            "Expandera"
+         ],
+         "%1$s · %2$d": [
+            "%1$s · %2$d"
+         ],
+         "Mistakes visible": [
+            "Synliga misstag"
+         ],
+         "Minimize": [
+            "Minimera"
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC översätter med högre kvalitet och ger dig resultat som är redo att publiceras."
+         ],
+         "Step 2": [
+            "Steg 2"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "Full-site automatic translation needs AI translation set up."
+         ],
+         "Set up AI translation": [
+            "Konfigurera AI-översättning"
+         ],
+         "Keep a wp-admin window open until WPML finishes translating": [
+            "Håll ett wp-admin-fönster öppet tills WPML har översatt klart"
+         ],
+         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
+            "WPML översätter vanligtvis ditt innehåll i bakgrunden utan att du behöver vara kvar i WordPress adminpanel. WPML kan dock inte nå den här webbplatsen, så översättningarna hämtas medan ett wp-admin-fönster är öppet."
+         ],
+         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
+            "Du kan fortsätta arbeta var som helst i WordPress adminpanel. Lämna bara ett fönster öppet tills översättningen är klar."
+         ],
+         "Next check for translations in %s.": [
+            "Nästa kontroll efter översättningar om %s."
+         ],
+         "Hide details": [
+            "Dölj detaljer"
+         ],
+         "What could be blocking it, and how to fix it": [
+            "Vad som kan blockera det och hur man fixar det"
+         ],
+         "Check these on your site": [
+            "Kontrollera detta på din webbplats"
+         ],
+         "The site might be on a private network, in staging, or only reachable through a VPN.": [
+            "Webbplatsen kan vara på ett privat nätverk, i en staging-miljö eller endast nåbar via VPN."
+         ],
+         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
+            "HTTP Basic-autentisering eller en IP-vitlista kan blockera externa anrop."
+         ],
+         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
+            "Ett säkerhetstillägg, en brandvägg eller WAF kan avvisa anrop från WPML."
+         ],
+         "The site might be in maintenance mode.": [
+            "Webbplatsen kan vara i underhållsläge."
+         ],
+         "Already fixed this on your site?": [
+            "Har du redan fixat detta på din webbplats?"
+         ],
+         "Check again whether the site is reachable": [
+            "Kontrollera igen om webbplatsen är nåbar"
+         ],
+         "Checking…": [
+            "Kontrollerar…"
+         ],
+         "Check again": [
+            "Kontrollera igen"
+         ],
+         "Still couldn't reach your site.": [
+            "Kunde fortfarande inte nå din webbplats."
+         ],
+         "Automatic translations completed": [
+            "Automatiska översättningar klara"
+         ],
+         "<s>1 translation</s> has been successfully translated automatically": [
+            "<s>1 översättning</s> har översatts automatiskt",
+            "<s>%d översättningar</s> har översatts automatiskt"
+         ],
+         "Automatic jobs in progress": [
+            "Automatiska jobb pågår"
+         ],
+         "<s>%d automatic translation</s> is in progress": [
+            "<s>%d automatisk översättning</s> pågår",
+            "<s>%d automatiska översättningar</s> pågår"
+         ],
+         "You can close this page. WPML keeps translating your site in the background, and you can come back any time to check progress.": [
+            "Du kan stänga den här sidan. WPML fortsätter att översätta din webbplats i bakgrunden, och du kan komma tillbaka när som helst för att kontrollera framstegen."
+         ],
+         "Your default language, %s, must be mapped to a supported language in order to use automatic translation": [
+            "Ditt standardspråk, %s, måste kopplas till ett språk som stöds för att du ska kunna använda automatisk översättning"
+         ],
+         "Map the language": [
+            "Koppla språket"
+         ],
+         "%d second": [
+            "%d sekund",
+            "%d sekunder"
+         ],
+         "%d minute": [
+            "%d minut",
+            "%d minuter"
+         ],
+         "%d hour": [
+            "%d timme",
+            "%d timmar"
+         ],
+         "%d day": [
+            "%d dag",
+            "%d dagar"
+         ],
+         "%d translation": [
+            "%d översättning",
+            "%d översättningar"
+         ],
+         "checking now": [
+            "kontrollerar nu"
+         ],
+         "next check in %s": [
+            "nästa kontroll om %s"
+         ],
+         "WPML stopped checking for delivered translations after repeated failures.": [
+            "WPML slutade söka efter levererade översättningar efter upprepade fel."
+         ],
+         "Receiving translations: last received %1$s ago · %2$s": [
+            "Tar emot översättningar: senaste mottogs för %1$s sedan · %2$s"
+         ],
+         "Receiving translations: last received %s ago": [
+            "Tar emot översättningar: senaste mottogs för %s sedan"
+         ],
+         "Receiving translations: no translations received yet · %s": [
+            "Tar emot översättningar: inga översättningar har tagits emot än · %s"
+         ],
+         "Receiving translations: no translations received yet": [
+            "Tar emot översättningar: inga översättningar har tagits emot än"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
+            "Tar emot översättningar: senaste mottogs för %1$s sedan · %2$s väntar · %3$s"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s waiting": [
+            "Tar emot översättningar: senaste mottogs för %1$s sedan · %2$s väntar"
+         ],
+         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
+            "Tar emot översättningar: inga översättningar mottagna ännu · %1$s väntar · %2$s"
+         ],
+         "Receiving translations: no translations received yet · %s waiting": [
+            "Tar emot översättningar: inga översättningar mottagna ännu · %s väntar"
+         ],
+         "These translations are taking longer than they should to arrive.": [
+            "Dessa översättningar tar längre tid än de borde att anlända."
+         ],
+         "Picking up translations…": [
+            "Hämtar översättningar…"
+         ],
+         "Pick up translations now": [
+            "Hämta översättningar nu"
+         ],
+         "%d translations ": [
+            "%d översättningar "
+         ],
+         "%d translation ": [
+            "%d översättning "
+         ],
+         "this includes translations from <b>Translate Everything Automatically</b>": [
+            "detta inkluderar översättningar från <b>Översätt allt automatiskt</b>"
+         ],
+         "are waiting for your review": [
+            "väntar på din granskning"
+         ],
+         "is waiting for your review": [
+            "väntar på din granskning"
+         ],
+         "Review Translations": [
+            "Granska översättningar"
+         ],
+         "Translate existing content": [
+            "Översätt befintligt innehåll"
+         ],
+         "Translate now": [
+            "Översätt nu"
+         ],
+         "Starting with version 4.7, WPML will also automatically translate texts (strings) coming from %s.": [
+            "Från och med version 4.7 kommer WPML även att automatiskt översätta texter (strängar) från %s."
+         ],
+         "WPML will not translate existing texts of this type but any new ones you create will be automatically translated. If you prefer, you can <button />.": [
+            "WPML kommer inte att översätta befintliga texter av denna typ, men alla nya som du skapar kommer att översättas automatiskt. Om du föredrar det kan du <button />."
+         ],
+         "Starting with version 4.7, WPML will also automatically translate:": [
+            "Från och med version 4.7 kommer WPML även att automatiskt översätta:"
+         ],
+         "Content set to \"use translation if available or fallback to default language\": %s.": [
+            "Innehåll inställt på ”använd översättning om tillgänglig eller fall tillbaka på standardspråk”: %s."
+         ],
+         "Texts (strings) coming from: %s.": [
+            "Texter (strängar) från: %s."
+         ],
+         "WPML will not translate existing content for these post types and texts but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
+            "WPML kommer inte att översätta befintligt innehåll för dessa inläggstyper och texter, men allt nytt innehåll du skapar kommer att översättas automatiskt. Om du föredrar det kan du börja <button />."
+         ],
+         "WPML will not translate existing content for these post types but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
+            "WPML kommer inte att översätta befintligt innehåll för dessa inläggstyper, men allt nytt innehåll du skapar kommer att översättas automatiskt. Om du föredrar det kan du börja <button />."
+         ],
+         "start translating existing content now": [
+            "översätta befintligt innehåll nu"
+         ],
+         "New content is ready to translate": [
+            "Nytt innehåll är redo att översättas"
+         ],
+         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "%s blev översättningsbara efter att du granskat översättningskostnaden, så Översätt allt inkluderade dem inte. Granska kostnaden och inkludera dem för att hålla din webbplats helt översatt."
+         ],
+         "Review cost and include": [
+            "Granska kostnad och inkludera"
+         ],
+         "Learn more →": [
+            "Läs mer →"
+         ],
+         "PTC can also translate your app's interface, not just your website.": [
+            "PTC kan även översätta din applikations gränssnitt, inte bara din webbplats."
+         ],
+         "PTC can translate software with automatic QA and a money-back guarantee.": [
+            "PTC kan översätta programvara med automatisk QA och pengarna-tillbaka-garanti."
+         ],
+         "PTC translates every string in context, so it fits your interface.": [
+            "PTC översätter varje sträng i sitt sammanhang, så att den passar ditt gränssnitt."
+         ],
+         "PTC can translate your software right inside your Git workflow.": [
+            "PTC kan översätta din programvara direkt i ditt Git-arbetsflöde."
+         ],
+         "The following target languages do not support automatic translations: %s": [
+            "Följande målspråk stödjer inte automatiska översättningar: %s"
+         ],
+         "To enable automatic translation map them to known languages.": [
+            "För att aktivera automatisk översättning behöver du koppla dem till kända språk."
+         ],
+         "Map to known languages": [
+            "Koppla till kända språk"
+         ],
+         "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
+            "För att få hjälp, vänligen <supportLink>öppna ett ärende i vår forumtråd (Maiya)</supportLink>, klicka på knappen ”Kopiera alla” för att hämta felsökningsinformationen och ”klistra in” den till vår Maiya-agent. Om du fortfarande har problem kan du använda <logsLink>loggverktyget</logsLink> för att samla in mer data."
+         ],
+         "Copied!": [
+            "Kopierat!"
+         ],
+         "Copy All": [
+            "Kopiera alla"
+         ],
+         "Error type": [
+            "Feltyp"
+         ],
+         "Error Message": [
+            "Felmeddelande"
+         ],
+         "Job ID": [
+            "Jobb-ID"
+         ],
+         "ATE Job ID": [
+            "ATE-jobb-ID"
+         ],
+         "Original ID": [
+            "Original-ID"
+         ],
+         "Element ID": [
+            "Element-ID"
+         ],
+         "Copy to clipboard": [
+            "Kopiera till urklipp"
+         ],
+         "Hide errors details": [
+            "Dölj feldetaljer"
+         ],
+         "Show errors details": [
+            "Visa feldetaljer"
+         ],
+         "<strong>%d item</strong> couldn't be completed due to an unexpected error. Try resending it for translation. If the issue continues, <a>contact WPML support</a>.": [
+            "<strong>%d objekt</strong> kunde inte slutföras på grund av ett oväntat fel. Försök att skicka det för översättning igen. Om problemet kvarstår, <a>kontakta WPML-supporten</a>.",
+            "<strong>%d objekt</strong> kunde inte slutföras på grund av ett oväntat fel. Försök att skicka dem för översättning igen. Om problemet kvarstår, <a>kontakta WPML-supporten</a>."
+         ],
+         "Cancelling %1$d/%2$d...": [
+            "Avbryter %1$d/%2$d..."
+         ],
+         "Cancelling...": [
+            "Avbryter..."
+         ],
+         "Discard jobs": [
+            "Släng jobb"
+         ],
+         "These items can't be resent because their source content is missing. Discard them instead.": [
+            "Dessa objekt kan inte skickas igen eftersom deras källinnehåll saknas. Släng dem istället."
+         ],
+         "Resending %1$d/%2$d...": [
+            "Skickar igen %1$d/%2$d..."
+         ],
+         "Resending...": [
+            "Skickar igen..."
+         ],
+         "Resend": [
+            "Skicka igen"
+         ],
+         "Translation status details": [
+            "Detaljer för översättningsstatus"
+         ],
+         "Translation status": [
+            "Översättningsstatus"
+         ],
+         "Before translating with PTC, please provide context about your website and target audience (one-time thing).": [
+            "Innan du översätter med PTC, vänligen ange kontext om din webbplats och målgrupp (görs en gång)."
+         ],
+         "Provide Context": [
+            "Ange kontext"
+         ],
+         "Remaining time: <s>Less than 1 minute</s>": [
+            "Återstående tid: <s>Mindre än 1 minut</s>"
+         ],
+         "Remaining time: <s>%d minute</s>": [
+            "Återstående tid: <s>%d minut</s>",
+            "Återstående tid: <s>%d minuter</s>"
+         ],
+         "Default language does not support automatic translations.": [
+            "Standardspråket stödjer inte automatiska översättningar."
+         ],
+         "WPML could not check if your default language can be translated automatically.": [
+            "WPML kunde inte kontrollera om ditt standardspråk kan översättas automatiskt."
+         ],
+         "WPML could not check if your default language can be translated automatically. Reload the page to try again.": [
+            "WPML kunde inte kontrollera om ditt standardspråk kan översättas automatiskt. Läs in sidan igen för att försöka på nytt."
+         ],
+         "Add your site description before you can turn this on.": [
+            "Lägg till din webbplatsbeskrivning innan du kan slå på detta."
+         ],
+         "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
+            "Du måste aktivera Advanced Translation Editor för att aktivera Översätt allt automatiskt."
+         ],
+         "Add it now": [
+            "Lägg till den nu"
+         ],
+         "It's too expensive": [
+            "Det är för dyrt"
+         ],
+         "The translation quality is not good enough": [
+            "Översättningskvaliteten är inte tillräckligt bra"
+         ],
+         "I'm switching to a different translation provider": [
+            "Jag byter till en annan översättningsleverantör"
+         ],
+         "I'm experiencing technical issues": [
+            "Jag har tekniska problem"
+         ],
+         "I want to control what gets translated manually": [
+            "Jag vill kontrollera manuellt vad som översätts"
+         ],
+         "Other reason": [
+            "Annan anledning"
+         ],
+         "Why are you turning off <b>Translate Everything Automatically</b>?": [
+            "Varför stänger du av <b>Översätt allt automatiskt</b>?"
+         ],
+         "Your answer helps us improve WPML.": [
+            "Ditt svar hjälper oss att förbättra WPML."
+         ],
+         "Turn off": [
+            "Stäng av"
+         ],
+         "Available": [
+            "Tillgänglig"
+         ],
+         "Not available": [
+            "Inte tillgänglig"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "Förstår din webbplats ämne, målgrupp och ton"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "Kvalitet redo för publicering, backad av vår garanti"
+         ],
+         "Review before publishing": [
+            "Granska före publicering"
+         ],
+         "Pay once per page – only added words are charged": [
+            "Betala en gång per sida – endast tillagda ord debiteras"
+         ],
+         "Per word, changes included": [
+            "Per ord, ändringar inkluderade"
+         ],
+         "Your active engine": [
+            "Din aktiva motor"
+         ],
+         "WPML's own AI engine": [
+            "WPML:s egen AI-motor"
+         ],
+         "Translate Everything Automatically": [
+            "Översätt allt automatiskt"
+         ],
+         "Turn on with %s": [
+            "Slå på med %s"
+         ],
+         "Switching to PTC later applies to new and changed content. What %s translated stays as it is.": [
+            "Att byta till PTC senare gäller för nytt och ändrat innehåll. Det som %s har översatt förblir som det är."
+         ],
+         "Translate your whole site quickly and conveniently.": [
+            "Översätt hela din webbplats snabbt och smidigt."
+         ],
+         "Translation updates cost only the added words.": [
+            "Översättningsuppdateringar kostar endast för de tillagda orden."
+         ],
+         "Nothing is translated until you review the cost and confirm.": [
+            "Ingenting översätts förrän du har granskat kostnaden och bekräftat."
+         ],
+         "How to turn this on": [
+            "Hur man aktiverar detta"
+         ],
+         "When you set this up": [
+            "När du konfigurerar detta"
+         ],
+         "Choose your engine: keep %s, priced per word, or switch to PTC to pay once per page.": [
+            "Välj din motor: behåll %s, prissatt per ord, eller byt till PTC för att betala en gång per sida."
+         ],
+         "Review what gets translated and see the cost.": [
+            "Granska vad som översätts och se kostnaden."
+         ],
+         "WPML translates your site and keeps new content translated.": [
+            "WPML översätter din webbplats och håller nytt innehåll översatt."
+         ],
+         "Choose how to publish — with or without your review.": [
+            "Välj hur du vill publicera — med eller utan din granskning."
+         ],
+         "Content that becomes translatable later, for example products after the WooCommerce Multilingual setup, is offered to you before it is translated.": [
+            "Innehåll som blir översättningsbart senare, till exempel produkter efter installation av WooCommerce Multilingual, erbjuds dig innan det översätts."
+         ],
+         "Switch to PTC instead": [
+            "Byt till PTC istället"
+         ],
+         "You're translating with %s: priced per word, and changes to translated pages are charged again. With PTC you pay once per page and changes are free.": [
+            "Du översätter med %s: prissatt per ord, och ändringar på översatta sidor debiteras igen. Med PTC betalar du en gång per sida och ändringar är kostnadsfria."
+         ],
+         "at %s's per-word rate; changes to translated pages are charged again": [
+            "till %s:s ordtaxa; ändringar på översatta sidor debiteras igen"
+         ],
+         "Prepaid words assigned": [
+            "Förbetalda ord tilldelade"
+         ],
+         "You’re all set.": [
+            "Allt är klart."
+         ],
+         "Click <b>Translate Everything Automatically</b> to start translating.": [
+            "Klicka på <b>Översätt allt automatiskt</b> för att börja översätta."
+         ],
+         "Before translating everything": [
+            "Innan allt översätts"
+         ],
+         "Go back": [
+            "Gå tillbaka"
+         ],
+         "Continue anyway": [
+            "Fortsätt ändå"
+         ],
+         "WPML could not check with our translation system if your default language can be translated automatically.": [
+            "WPML kunde inte kontrollera med vårt översättningssystem om ditt standardspråk kan översättas automatiskt."
+         ],
+         "Content to translate": [
+            "Innehåll att översätta"
+         ],
+         "Publishing method": [
+            "Publiceringsmetod"
+         ],
+         "Payment method": [
+            "Betalningsmetod"
+         ],
+         "Enable <b>Translate Everything Automatically</b>": [
+            "Aktivera <b>översätt allt automatiskt</b>"
+         ],
+         "Continue": [
+            "Fortsätt"
+         ],
+         "Calculating words for translating existing content. Please wait...": [
+            "Beräknar ord för att översätta befintligt innehåll. Vänta..."
+         ],
+         "Set Up <b>Translate Everything Automatically</b>": [
+            "Konfigurera <b>översätt allt automatiskt</b>"
+         ],
+         "Review your site content and get the translation cost based on what you choose to translate.": [
+            "Granska ditt webbplatsinnehåll och få översättningskostnaden baserat på vad du väljer att översätta."
+         ],
+         "Select payment method": [
+            "Välj betalningsmetod"
+         ],
+         "Translate Everything Automatically - disabled": [
+            "Översätt allt automatiskt – inaktiverat"
+         ],
+         "Translate Everything Automatically - stopping": [
+            "Översätt allt automatiskt – stoppar"
+         ],
+         "<b>Translate Everything Automatically</b> is stopping": [
+            "<b>Översätt allt automatiskt</b> stoppas"
+         ],
+         "Translate Everything Automatically - paused": [
+            "Översätt allt automatiskt – pausat"
+         ],
+         "Turn off <b>Translate Everything Automatically</b>?": [
+            "Vill du stänga av <b>översätt allt automatiskt</b>?"
+         ],
+         "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
+            "WPML kommer att sluta översätta nytt och redigerat innehåll automatiskt. Översättningar som redan levererats förblir som de är."
+         ],
+         "%d translation is still in progress. You will not be charged for it.": [
+            "%d översättning pågår fortfarande. Du kommer inte att debiteras för den.",
+            "%d översättningar pågår fortfarande. Du kommer inte att debiteras för dem."
+         ],
+         "%d translation is currently in progress and will be cancelled.": [
+            "%d översättning pågår för närvarande och kommer att avbrytas.",
+            "%d översättningar pågår för närvarande och kommer att avbrytas."
+         ],
+         "You can adjust the content limits once Translate Everything finishes the current translation run.": [
+            "Du kan justera innehållsgränserna när Översätt allt är klar med den nuvarande översättningskörningen."
+         ],
+         "Adjust content limits": [
+            "Justera innehållsgränser"
+         ],
+         "Adjust how far back automatic translations apply per content type.": [
+            "Justera hur långt tillbaka automatiska översättningar gäller per innehållstyp."
+         ],
+         "Every content type is fully translated, so there is nothing left to set a date for. You can still choose which types automatic translation covers from now on.": [
+            "Varje innehållstyp är helt översatt, så det finns inget kvar att ställa in ett datum för. Du kan fortfarande välja vilka typer automatisk översättning ska täcka från och med nu."
+         ],
+         "Save changes": [
+            "Spara ändringar"
+         ],
+         "Translate Everything options": [
+            "Alternativ för Översätt allt"
+         ],
+         "Turn off <b>Translate Everything</b>": [
+            "Stäng av <b>översätt allt</b>"
+         ],
+         "Words this cycle": [
+            "Ord denna cykel"
+         ],
+         "%1$s prepaid words left, then billed as you go.": [
+            "%1$s förbetalda ord kvar, därefter debiteras du enligt Pay-As-You-Go."
+         ],
+         "Words left": [
+            "Ord kvar"
+         ],
+         "Preparing your translations — %d job queued so far...": [
+            "Förbereder dina översättningar — %d jobb köat hittills...",
+            "Förbereder dina översättningar — %d jobb köade hittills..."
+         ],
+         "Preparing content for translation...": [
+            "Förbereder innehåll för översättning..."
+         ],
+         "%d translation left in the queue...": [
+            "%d översättning kvar i kön...",
+            "%d översättningar kvar i kön..."
+         ],
+         "Finished — %1$d item couldn't be completed and %2$s are waiting for your approval": [
+            "Färdig — %1$d objekt kunde inte slutföras och %2$s väntar på ditt godkännande",
+            "Färdig — %1$d objekt kunde inte slutföras och %2$s väntar på ditt godkännande"
+         ],
+         "Finished — %d item couldn't be completed": [
+            "Färdig — %d objekt kunde inte slutföras",
+            "Färdig — %d objekt kunde inte slutföras"
+         ],
+         "Finished translating your content, except %s waiting for your approval": [
+            "Färdig med att översätta ditt innehåll, förutom %s som väntar på ditt godkännande"
+         ],
+         "Finished translating your content": [
+            "Färdig med att översätta ditt innehåll"
+         ],
+         "Engine": [
+            "Motor"
+         ],
+         "Quality": [
+            "Kvalitet"
+         ],
+         "%1$d / 100 — %2$s": [
+            "%1$d / 100 — %2$s"
+         ],
+         "review before publishing recommended": [
+            "granskning före publicering rekommenderas"
+         ],
+         "good enough to publish without review": [
+            "tillräckligt bra för att publiceras utan granskning"
+         ],
+         "usable, but mistakes are visible": [
+            "användbar, men fel är synliga"
+         ],
+         "Per word, changes included. ": [
+            "Per ord, ändringar inkluderade. "
+         ],
+         " to make changes free.": [
+            " för att göra ändringar kostnadsfria."
+         ],
+         "Pay once per page — only added words are charged.": [
+            "Betala en gång per sida — endast tillagda ord debiteras."
+         ],
+         "Status": [
+            "Status"
+         ],
+         "Some items were translated using the <b>Classic Translation Editor</b> and cannot be sent for automatic translation. Please select these items and choose the option to translate them yourself.": [
+            "Vissa objekt översattes med <b>Classic Translation Editor</b> och kan inte skickas för automatisk översättning. Välj dessa objekt och välj alternativet att översätta dem själv."
+         ],
+         "Translate Everything Automatically - enabled": [
+            "Översätt allt automatiskt – aktiverat"
+         ],
+         "<b>Translate Everything Automatically</b> is enabled": [
+            "<b>Översätt allt automatiskt</b> är aktiverat"
+         ],
+         "<b>Translate Everything Automatically</b> is temporarily paused": [
+            "<b>Översätt allt automatiskt</b> är tillfälligt pausat"
+         ],
+         "Automatic translation is temporarily paused": [
+            "Automatisk översättning är tillfälligt pausad"
+         ],
+         "We noticed something unexpected in your recent translation activity and paused automatic translation on your account. Contact support and we’ll review it with you.": [
+            "Vi märkte något oväntat i din senaste översättningsaktivitet och pausade automatisk översättning på ditt konto. Kontakta supporten så granskar vi det tillsammans med dig."
+         ],
+         "Contact support": [
+            "Kontakta support"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — unpaid balance on a linked account": [
+            "<b>Översätt allt automatiskt</b> har pausats – obetalat saldo på ett kopplat konto"
+         ],
+         "Automatic translation is paused — unpaid balance on a linked account": [
+            "Automatisk översättning har pausats – obetalat saldo på ett kopplat konto"
+         ],
+         "There is an unpaid balance on another account linked to this billing e-mail. Settle it or <a>contact support</a>.": [
+            "Det finns ett obetalat saldo på ett annat konto kopplat till denna faktura-e-post. Reglera det eller <a>kontakta support</a>."
+         ],
+         "There is an unpaid balance on another account linked to this card. Settle it or <a>contact support</a>.": [
+            "Det finns ett obetalat saldo på ett annat konto kopplat till detta kort. Reglera det eller <a>kontakta support</a>."
+         ],
+         "Go to billing": [
+            "Gå till fakturering"
+         ],
+         "Everything already translated stays live. You only pay for new translation.": [
+            "Allt som redan är översatt förblir publikt. Du betalar endast för nya översättningar."
+         ],
+         "Cancel translation": [
+            "Avbryt översättning"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment pending": [
+            "<b>Translate Everything Automatically</b> är pausad — betalning pågår"
+         ],
+         "Automatic translation is paused — payment pending": [
+            "Automatisk översättning är pausad — betalning pågår"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment required": [
+            "<b>Översätt allt automatiskt</b> är pausad — betalning krävs"
+         ],
+         "Automatic translation - payment required": [
+            "Automatisk översättning – betalning krävs"
+         ],
+         "<s>%d</s> translation is waiting for your Pay-As-You-Go payment.": [
+            "<s>%d</s> översättning väntar på din Användningsbaserad debitering-betalning.",
+            "<s>%d</s> översättningar väntar på din Användningsbaserad debitering-betalning."
+         ],
+         "We are charging your card. If the payment is declined, update your card.": [
+            "Vi debiterar ditt kort. Om betalningen avvisas, uppdatera ditt kort."
+         ],
+         "Translation resumes automatically once the payment goes through.": [
+            "Översättningen återupptas automatiskt när betalningen har gått igenom."
+         ],
+         "<s>%d</s> translation is waiting for payment.": [
+            "<s>%d</s> översättning väntar på betalning.",
+            "<s>%d</s> översättningar väntar på betalning."
+         ],
+         "We could not process your <b>Pay-As-You-Go</b> payment of %s.": [
+            "Vi kunde inte behandla din betalning för <b>Användningsbaserad debitering</b> på %s."
+         ],
+         "We could not process the %s payment for your completed translations. Click \"Pay now\" to retry and continue using automatic translation.": [
+            "Vi kunde inte behandla betalningen på %s för dina slutförda översättningar. Klicka på ”Betala nu” för att försöka igen och fortsätta använda automatisk översättning."
+         ],
+         "Update card": [
+            "Uppdatera kort"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment needed": [
+            "<b>Translate Everything Automatically</b> är pausad — betalning krävs"
+         ],
+         "Automatic translation is paused — payment needed": [
+            "Automatisk översättning är pausad — betalning krävs"
+         ],
+         "<s>%d</s> translation is on hold until you choose how to pay for it.": [
+            "<s>%d</s> översättning väntar tills du väljer hur du vill betala för den.",
+            "<s>%d</s> översättningar väntar tills du väljer hur du vill betala för dem."
+         ],
+         "Choose a payment method": [
+            "Välj ett betalsätt"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — not enough words": [
+            "<b>Översätt allt automatiskt</b> är pausad — inte tillräckligt med ord"
+         ],
+         "Automatic translation is paused — not enough words": [
+            "Automatisk översättning är pausad — inte tillräckligt med ord"
+         ],
+         "<s>%d</s> translation is waiting for more words.": [
+            "<s>%d</s> översättning väntar på fler ord.",
+            "<s>%d</s> översättningar väntar på fler ord."
+         ],
+         "You have %1$s%2$s prepaid translation word in your WPML account%3$s. Assign these words to this site to resume automatic translation.": [
+            "Du har %1$s%2$s förbetalt översättningsord på ditt WPML-konto%3$s. Tilldela detta ord till denna webbplats för att återuppta automatisk översättning.",
+            "Du har %1$s%2$s förbetalda översättningsord på ditt WPML-konto%3$s. Tilldela dessa ord till denna webbplats för att återuppta automatisk översättning."
+         ],
+         "Your prepaid translation words have run out. Already assigned words on your account? Refresh checks.": [
+            "Dina förbetalda översättningsord har tagit slut. Har du redan tilldelat ord på ditt konto? Uppdatera för att kontrollera."
+         ],
+         "Translation resumes automatically — the remaining %d translation completes on its own.": [
+            "Översättningen återupptas automatiskt — den återstående %d översättningen slutförs av sig själv.",
+            "Översättningen återupptas automatiskt — de återstående %d översättningarna slutförs av sig själva."
+         ],
+         "Translation resumes automatically once more words are assigned.": [
+            "Översättningen återupptas automatiskt när fler ord har tilldelats."
+         ],
+         "Checking your word balance…": [
+            "Kontrollerar ditt ordsaldo..."
+         ],
+         "%s word added": [
+            "%s ord tillagt",
+            "%s ord tillagda"
+         ],
+         "resuming %s translation": [
+            "återupptar %s översättning",
+            "återupptar %s översättningar"
+         ],
+         "No new words found yet — translation stays paused until more words are assigned to this site.": [
+            "Inga nya ord hittades ännu — översättningen förblir pausad tills fler ord tilldelas denna webbplats."
+         ],
+         "<s>%d</s> translation is waiting for your review.": [
+            "<s>%d</s> översättning väntar på din granskning.",
+            "<s>%d</s> översättningar väntar på din granskning."
+         ],
+         "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
+            "<b>Översätt allt automatiskt</b> är pausad: månatligt utgiftstak har nåtts"
+         ],
+         "<s>%d</s> translation is waiting for the cap to be raised.": [
+            "<s>%d</s> översättning väntar på att taket ska höjas.",
+            "<s>%d</s> översättningar väntar på att taket ska höjas."
+         ],
+         "<site>%1$s</site> reached its <strong>monthly spending cap</strong> (<figure>%2$s</figure> of <figure>%3$s</figure> words used).": [
+            "<site>%1$s</site> nådde sitt <strong>månatliga utgiftstak</strong> (<figure>%2$s</figure> av <figure>%3$s</figure> ord använda)."
+         ],
+         "Translation continues when the cap is raised, or when the cap resets on <strong>%s</strong>.": [
+            "Översättningen fortsätter när taket höjs, eller när taket återställs den <strong>%s</strong>."
+         ],
+         "WPML is reconnecting to our translation system. <b>Translate Everything</b> continues on its own once it reconnects. Nothing is lost.": [
+            "WPML återansluter till vårt översättningssystem. <b>Översätt allt automatiskt</b> fortsätter av sig självt när anslutningen återupprättas. Inget går förlorat."
+         ],
+         "You don't need to do anything. WPML keeps trying in the background.": [
+            "Du behöver inte göra någonting. WPML fortsätter försöka i bakgrunden."
+         ],
+         "Retry": [
+            "Försök igen"
+         ],
+         "Retry now": [
+            "Försök igen nu"
+         ],
+         "WPML is reconnecting to our translation system.": [
+            "WPML återansluter till vårt översättningssystem."
+         ],
+         "WPML is reconnecting to our translation system. You can turn on <b>Translate Everything</b> once it reconnects.": [
+            "WPML återansluter till vårt översättningssystem. Du kan aktivera <b>Översätt allt</b> så snart anslutningen återupprättats."
+         ],
+         "This item needs a translation update but can't be translated automatically because it was translated with the Classic Translation Editor.": [
+            "Det här objektet behöver en översättningsuppdatering men kan inte översättas automatiskt eftersom det översattes med Classic Translation Editor."
+         ],
+         "This item needs update. Please, select the item and send for translation.": [
+            "Det här objektet behöver uppdateras. Välj objektet och skicka det för översättning."
+         ],
+         "Translations completed with the Classic Translation Editor cannot be sent for automatic translation": [
+            "Översättningar som slutförts med Classic Translation Editor kan inte skickas för automatisk översättning"
+         ],
+         "automatic translation": [
+            "automatisk översättning"
+         ],
+         "unassigned": [
+            "ej tilldelad"
+         ],
+         "waiting for automatic translation": [
+            "väntar på automatisk översättning"
+         ],
+         "waiting for translator": [
+            "väntar på översättare"
+         ],
+         "in progress": [
+            "pågår"
+         ],
+         "needs update": [
+            "behöver uppdateras"
+         ],
+         "duplicate": [
+            "dubblett"
+         ],
+         "complete": [
+            "klar"
+         ],
+         "needs review": [
+            "behöver granskas"
+         ],
+         "translation failed - needs attention": [
+            "översättning misslyckades – kräver åtgärd"
+         ],
+         "needs attention": [
+            "kräver åtgärd"
+         ],
+         "translation error": [
+            "översättningsfel"
+         ],
+         "The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "Översättningen till %s skapades eller redigerades senast utanför WPML:s översättningsredigerare (till exempel i WordPress-redigeraren). När du översätter om den kommer strukturen på det översatta inlägget att uppdateras för att matcha originalet, men WPML kommer att använda din befintliga översättning som bas så att ton och terminologi bevaras."
+         ],
+         "This item needs a translation update. The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "Det här objektet behöver en översättningsuppdatering. Översättningen till %s skapades eller redigerades senast utanför WPML:s översättningsredigerare (till exempel i WordPress-redigeraren). När du översätter om den kommer strukturen på det översatta inlägget att uppdateras för att matcha originalet, men WPML kommer att använda din befintliga översättning som bas så att ton och terminologi bevaras."
+         ],
+         "This item hasn't been translated yet and is set to use the WordPress Editor.": [
+            "Det här objektet har inte översatts ännu och är inställt på att använda WordPress-redigeraren."
+         ],
+         "This item was translated using the WordPress Editor. Switching to the WPML's Translation Editor will overwrite the existing translation.": [
+            "Det här objektet översattes med WordPress-redigeraren. Om du byter till WPML:s översättningsredigerare kommer den befintliga översättningen att skrivas över."
+         ],
+         "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
+            "Det här objektet behöver en översättningsuppdatering men översattes tidigare med WordPress-redigeraren. Om du använder WPML:s översättningsredigerare kommer den befintliga översättningen att skrivas över."
+         ],
+         "%1$s: %2$s%3$s": [
+            "%1$s: %2$s%3$s"
+         ],
+         "Could not fetch engines data": [
+            "Kunde inte hämta data om motorer"
+         ],
+         "Error in updating since dates for types.": [
+            "Fel vid uppdatering av datum för typer."
+         ],
+         "Error in dismissing the offer to translate the new content types.": [
+            "Fel vid avvisande av erbjudandet att översätta de nya innehållstyperna."
+         ],
+         "Error in updating since date for type.": [
+            "Fel vid uppdatering av datum för typ."
+         ],
+         "Content to Translate": [
+            "Innehåll att översätta"
+         ],
+         "Content type": [
+            "Innehållstyp"
+         ],
+         "Include": [
+            "Inkludera"
+         ],
+         "These settings can be changed on the Translations dashboard.": [
+            "Dessa inställningar kan ändras i översättningspanelen."
+         ],
+         "Items": [
+            "Objekt"
+         ],
+         "Word count": [
+            "Antal ord"
+         ],
+         "Loading content to translate": [
+            "Laddar innehåll att översätta"
+         ],
+         "Calculating… <s>less than 1 minute left.</s>": [
+            "Beräknar... <s>mindre än 1 minut kvar.</s>"
+         ],
+         "Calculating… <s>%d minute left.</s>": [
+            "Beräknar... <s>%d minut kvar.</s>",
+            "Beräknar... <s>%d minuter kvar.</s>"
+         ],
+         "Words needed to translate your existing content into the new languages: %s.": [
+            "Ord som behövs för att översätta ditt befintliga innehåll till de nya språken: %s."
+         ],
+         "Words needed to translate your existing content into the new language.": [
+            "Ord som behövs för att översätta ditt befintliga innehåll till det nya språket."
+         ],
+         "Based on the remaining untranslated content across all languages.": [
+            "Baserat på återstående oöversatt innehåll på alla språk."
+         ],
+         "Estimated from the selected source volume multiplied by the target languages.": [
+            "Uppskattat från den valda källvolymen multiplicerat med målspråken."
+         ],
+         "%1$s source words × %2$s language": [
+            "%1$s källord × %2$s språk",
+            "%1$s källord × %2$s språk"
+         ],
+         "Already translated content": [
+            "Redan översatt innehåll"
+         ],
+         "Documents you translated yourself stay exactly as you made them": [
+            "Dokument som du har översatt själv förblir exakt som du skapade dem"
+         ],
+         "(%d document)": [
+            "(%d dokument)",
+            "(%d dokument)"
+         ],
+         "View documents": [
+            "Visa dokument"
+         ],
+         "%1$d of %2$d language will be translated automatically": [
+            "%1$d av %2$d språk kommer att översättas automatiskt",
+            "%1$d av %2$d språk kommer att översättas automatiskt"
+         ],
+         "Translated to %d language": [
+            "Översatt till %d språk",
+            "Översatt till %d språk"
+         ],
+         "Add/remove languages": [
+            "Lägg till/ta bort språk"
+         ],
+         "Percentages show how much of your selected content is already translated in each language.": [
+            "Procentandelen visar hur mycket av ditt valda innehåll som redan är översatt på varje språk."
+         ],
+         "Note: Content already translated into all languages is not included in this calculation.": [
+            "Obs! Innehåll som redan är översatt till alla språk ingår inte i denna beräkning."
+         ],
+         "Same as default": [
+            "Samma som standard"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "Automatisk översättning är inte tillgänglig mellan %1$s och %2$s eftersom de identifieras som samma språk."
+         ],
+         "Translation paused": [
+            "Översättning pausad"
+         ],
+         "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor.": [
+            "WPML skapar inte nya %s-översättningar, så det här språket inkluderas inte. Om du vill inkludera det använder du ”Återuppta översättning” på språkets rad i språkredigeraren."
+         ],
+         "Manual only": [
+            "Endast manuellt"
+         ],
+         "%s has no automatic-translation support. You can translate this content manually.": [
+            "%s har inget stöd för automatisk översättning. Du kan översätta detta innehåll manuellt."
+         ],
+         "Adjusted word rate (%s)": [
+            "Justerad ordtaxa (%s)"
+         ],
+         "This adjusted word rate applies to legacy translation engines.": [
+            "Denna justerade ordtaxa gäller för äldre översättningsmotorer."
+         ],
+         "Translation engine: <strong>%s</strong>": [
+            "Översättningsmotor: <strong>%s</strong>"
+         ],
+         "Legacy engine": [
+            "Äldre motor"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Äldre prissättning tillämpas. %s är en äldre översättningsmotor som inte rekommenderas för nya webbplatser och som kommer att fasas ut. Befintliga webbplatser behåller en justerad ordtaxa för den."
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
+            "Detta är vad som krävs för att översätta ditt nuvarande innehåll idag. Det inkluderar inte vissa texter som lagts till av andra tillägg, såsom formulär eller bildspel/sliders, vilka räknas efter att konfigurationen är klar. Webbplatssträngar från ditt tema och tillägg räknas också efter konfigurationen och lägger vanligtvis till flera hundra ord. Därefter är redigeringar kostnadsfria. Du betalar först igen för ord du lägger till."
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Detta är vad som krävs för att översätta ditt nuvarande innehåll idag. Det inkluderar inte vissa texter som lagts till av andra tillägg, såsom formulär eller sliders, vilka räknas efter att konfigurationen är klar. Strängar från ditt tema och dina tillägg räknas också efter konfigurationen och lägger vanligtvis till flera hundra ord. Till %s:s ordtaxa; ändringar på översatta sidor debiteras igen."
+         ],
+         "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
+            "Detta är vad som krävs för att översätta ditt nuvarande innehåll idag. Därefter är redigeringar kostnadsfria. Du betalar först igen för ord du lägger till."
+         ],
+         "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Detta är vad som krävs för att översätta ditt nuvarande innehåll idag. Till %s:s ordtaxa; ändringar på översatta sidor debiteras igen."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
+            "Den räknar sidor, inlägg och produkter med deras anpassade fält, sidbyggartexter och medietexter, samt kategorierna, taggarna och attributen de använder."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
+            "Den räknar sidor, inlägg och produkter med deras anpassade fält, sidbyggartexter och medietexter, kategorierna, taggarna och attributen de använder, samt webbplatsens strängar. En term räknas i varje objekt som använder den och en gång för sig själv, eftersom den skickas för översättning på båda sätten."
+         ],
+         "Total items": [
+            "Totalt antal objekt"
+         ],
+         "Total source words": [
+            "Totalt antal källord"
+         ],
+         "Showing %1$d–%2$d of %3$d types.": [
+            "Visar %1$d–%2$d av %3$d typer."
+         ],
+         "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated.": [
+            "Alla nuvarande %1$s är översatta till alla språk.<br>Nya %2$s eller redigeringar kommer att översättas automatiskt."
+         ],
+         "All %s": [
+            "Alla %s"
+         ],
+         "For translated types": [
+            "För översatta typer"
+         ],
+         "None": [
+            "Inga"
+         ],
+         "Since %s": [
+            "Sedan %s"
+         ],
+         "Since specific date": [
+            "Sedan specifikt datum"
+         ],
+         "<b>Pay-As-You-Go</b> is active on this site.": [
+            "<b>Användningsbaserad debitering</b> är aktiv på denna webbplats."
+         ],
+         "<b>%s words</b> are on this site. Continue.": [
+            "<b>%s ord</b> finns på denna webbplats. Fortsätt."
+         ],
+         "Your site will be translated right after the setup.": [
+            "Din webbplats kommer att översättas direkt efter konfigurationen."
+         ],
+         "To use prepaid words, register WPML on this site.": [
+            "För att använda förbetalda ord måste du registrera WPML på denna webbplats."
+         ],
+         "We could not reach our translation system.": [
+            "Vi kunde inte nå vårt översättningssystem."
+         ],
+         "This site is not registered with a WPML account, so prepaid words are not available.": [
+            "Denna webbplats är inte registrerad med ett WPML-konto, så förbetalda ord är inte tillgängliga."
+         ],
+         "We could not read your WPML account.": [
+            "Vi kunde inte läsa ditt WPML-konto."
+         ],
+         "%s more words are needed to translate your site.": [
+            "Det behövs %s fler ord för att översätta din webbplats."
+         ],
+         "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>.": [
+            "Tilldela förbetalda ord från ditt WPML-konto till denna webbplats för att starta <b>Översätt allt automatiskt</b>."
+         ],
+         "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>.": [
+            "Tilldela de ord du redan har och köp resten, eller aktivera <b>Användningsbaserad debitering</b>."
+         ],
+         "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
+            "För att starta <b>Översätt allt automatiskt</b>, aktivera <b>Användningsbaserad debitering</b> eller köp förbetalda ord."
+         ],
+         "Error in fetching currently logged in translator": [
+            "Fel vid hämtning av inloggad översättare"
+         ],
+         "Error in fetching local translators": [
+            "Fel vid hämtning av lokala översättare"
+         ],
+         "usage ledger": [
+            "användningslogg"
+         ],
+         "Cancelled. %1$d translation was in progress; its %2$s words are back on your account. Details:": [
+            "Avbruten. %1$d översättning pågick; dess %2$s ord är tillbaka på ditt konto. Detaljer:",
+            "Avbrutna. %1$d översättningar pågick; deras %2$s ord är tillbaka på ditt konto. Detaljer:"
+         ],
+         "Cancelled. We asked to return the words for %d translation in progress; the usage ledger shows it once confirmed.": [
+            "Avbruten. Vi har begärt att få tillbaka orden för %d pågående översättning; användningsloggen visar det när det har bekräftats.",
+            "Avbrutna. Vi har begärt att få tillbaka orden för %d pågående översättningar; användningsloggen visar dem när de har bekräftats."
+         ],
+         "Published": [
+            "Publicerad"
+         ],
+         "Draft": [
+            "Utkast"
+         ],
+         "Trash": [
+            "Papperskorg"
+         ],
+         "Pending": [
+            "Väntar"
+         ],
+         "Private": [
+            "Privat"
+         ],
+         "Future": [
+            "Framtida"
+         ],
+         "Auto Draft": [
+            "Automatiskt utkast"
+         ],
+         "External": [
+            "Extern"
+         ],
+         "Pay now": [
+            "Betala nu"
+         ],
+         "%1$sCheck pricing%2$s.": [
+            "%1$sSe prissättning%2$s."
+         ],
+         "Lowest cost per word": [
+            "Lägsta kostnad per ord"
+         ],
+         "Pay only for what you use": [
+            "Betala endast för det du använder"
+         ],
+         "Never run out. Translation never stops.": [
+            "Få aldrig slut på ord. Översättningen stannar aldrig."
+         ],
+         "The first 500 words each month are free": [
+            "De första 500 orden varje månad är gratis"
+         ],
+         "Pay-As-You-Go": [
+            "Användningsbaserad debitering"
+         ],
+         "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate.": [
+            "Aktivera <b>Användningsbaserad debitering</b> för att översätta automatiskt. <b>Användningsbaserad debitering</b> debiterar dig för de ord du översätter."
+         ],
+         "Activating <b>Pay-As-You-Go</b>…": [
+            "Aktiverar <b>Användningsbaserad debitering</b>…"
+         ],
+         "Continue in the new tab": [
+            "Fortsätt i den nya fliken"
+         ],
+         "Activate <b>Pay-As-You-Go</b>": [
+            "Aktivera <b>Användningsbaserad debitering</b>"
+         ],
+         "<b>Pay-As-You-Go</b> is not active yet.": [
+            "<b>Användningsbaserad debitering</b> är inte aktiv ännu."
+         ],
+         "Already using <b>Pay-As-You-Go</b> on another site?": [
+            "Använder du redan <b>Användningsbaserad debitering</b> på en annan webbplats?"
+         ],
+         "Connect this site to it": [
+            "Anslut denna webbplats till det"
+         ],
+         "Activate Pay-As-You-Go": [
+            "Aktivera Användningsbaserad debitering"
+         ],
+         "Connect your sites to share translation memory, glossary and word quota.": [
+            "Anslut dina webbplatser för att dela översättningsminne, ordlista och ordkvot."
+         ],
+         "Learn more": [
+            "Läs mer"
+         ],
+         "Copy your migration code:": [
+            "Kopiera din migreringskod:"
+         ],
+         "Loading…": [
+            "Laddar…"
+         ],
+         "Log into a site with an active automatic translation account.": [
+            "Logga in på en webbplats med ett aktivt konto för automatisk översättning."
+         ],
+         "Go to \"WPML\" → \"Translation Dashboard\".": [
+            "Gå till ”WPML” → ”Översättningspanel”."
+         ],
+         "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
+            "Gå till fliken ”Payment & Maintenance” och sedan till ”Connected sites”."
+         ],
+         "Click \"Enter the connection key of another site\" to finish connecting your sites.": [
+            "Klicka på ”Enter the connection key of another site” för att slutföra anslutningen av dina webbplatser."
+         ],
+         "Buy and assign words": [
+            "Köp och tilldela ord"
+         ],
+         "Refresh to assign words": [
+            "Uppdatera för att tilldela ord"
+         ],
+         "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site.": [
+            "Köp ett %1$sförbetalt paket%2$s med minst %3$s%4$s ord%5$s och tilldela dem till denna webbplats."
+         ],
+         "This amount will cover translation of all your current content.": [
+            "Detta belopp kommer att täcka översättning av allt ditt nuvarande innehåll."
+         ],
+         "Assign %1$s%2$s words%3$s to this site.": [
+            "Tilldela %1$s%2$s ord%3$s till denna webbplats."
+         ],
+         "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s.": [
+            "Tilldela dina %1$s%2$s ord%3$s och köp %4$s%5$s till%6$s."
+         ],
+         "Buy %1$s%2$s words%3$s for this site.": [
+            "Köp %1$s%2$s ord%3$s till denna webbplats."
+         ],
+         "Assign at least %1$s%2$s words%3$s to this site to continue.": [
+            "Tilldela minst %1$s%2$s ord%3$s till denna webbplats för att fortsätta."
+         ],
+         "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount.": [
+            "Tilldela ord från WPML-kontot och köp ett ytterligare %1$sförbetalt paket%2$s med minst %3$s%4$s ord%5$s för att täcka det återstående beloppet."
+         ],
+         "Prepaid words": [
+            "Förbetalda ord"
+         ],
+         "There are %1$s%2$s words%3$s on your WPML account.": [
+            "Det finns %1$s%2$s ord%3$s på ditt WPML-konto."
+         ],
+         "There are %1$s%2$s available on your WPML account.%3$s": [
+            "Det finns %1$s%2$s tillgängliga på ditt WPML-konto%3$s"
+         ],
+         "(Only the WPML account owner can do this.)": [
+            "(Endast ägaren av WPML-kontot kan göra detta.)"
+         ],
+         "Checking for new words...": [
+            "Letar efter nya ord..."
+         ],
+         "Still not enough words. Refresh again in %d seconds.": [
+            "Fortfarande inte tillräckligt med ord. Uppdatera igen om %d sekunder."
+         ],
+         "Already assigned?": [
+            "Redan tilldelad?"
+         ],
+         "Collapse": [
+            "Fäll ihop"
+         ],
+         "Obvious mistakes": [
+            "Uppenbara misstag"
+         ],
+         "Ready to publish": [
+            "Klar att publicera"
+         ],
+         "Your engine": [
+            "Din motor"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Översättningskvalitet (skala 50–100): %1$s får %2$d poäng, %3$s får %4$d poäng."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Poängen baseras på WPML:s interna MQM-studie om översättningskvalitet."
+         ],
+         "Select an item": [
+            "Välj ett objekt"
+         ],
+         "Open dropdown": [
+            "Öppna rullgardinsmeny"
+         ],
+         "Reset": [
+            "Återställ"
+         ],
+         "Search": [
+            "Sök"
+         ],
+         "No items found": [
+            "Inga objekt hittades"
+         ],
+         "%1$s Flag": [
+            "%1$s flagga"
+         ],
+         "Recommended": [
+            "Rekommenderas"
+         ],
+         "- Select a review mode -": [
+            "- Välj ett granskningsläge -"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "Vad vill du göra när WPML har översatt ditt innehåll automatiskt?"
+         ],
+         "What would you like to do after WPML finishes translating your content automatically?": [
+            "Vad vill du göra efter att WPML har översatt ditt innehåll automatiskt?"
+         ],
+         "Publish without review": [
+            "Publicera utan granskning"
+         ],
+         "WPML publishes translations immediately, skipping the review process.": [
+            "WPML publicerar översättningar omedelbart och hoppar över granskningsprocessen."
+         ],
+         "Wait for review": [
+            "Vänta på granskning"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "För DeepL, Google och Microsoft rekommenderar vi en mänsklig granskning för att bekräfta att de är korrekta. PTC tillhandahåller Better Than Human Translations som förstår sammanhanget, så du kan tryggt hoppa över granskningsprocessen."
+         ],
+         "WPML keeps translations unpublished, so you can review them first.": [
+            "WPML håller översättningar opublicerade så att du kan granska dem först."
+         ],
+         "Your translators review and approve translations before publishing.": [
+            "Dina översättare granskar och godkänner översättningar innan de publiceras."
+         ],
+         "Publish and mark for review": [
+            "Publicera och markera för granskning"
+         ],
+         "WPML publishes translations immediately but flags them for you to check at your convenience.": [
+            "WPML publicerar översättningar omedelbart men flaggar dem så att du kan kontrollera dem när det passar dig."
+         ],
+         "WPML publishes translations immediately but flags them for translators to review later.": [
+            "WPML publicerar översättningar omedelbart men flaggar dem så att översättare kan granska dem senare."
+         ],
+         "PTC provides Better Than Human Translations that rarely need improvements, so you can confidently skip the review process.": [
+            "PTC tillhandahåller Better Than Human Translations som sällan behöver förbättras, så du kan tryggt hoppa över granskningsprocessen."
+         ]
+      }
+   }
+}

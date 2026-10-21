@@ -1,0 +1,92 @@
+# Copyright (C) 2026 OnTheGoSystems
+# This file is distributed under the same license as the WPML SEO plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: WPML SEO 5.2.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-seo-multilingual\n"
+"Last-Translator: PTC (Private Translation Cloud)\n"
+"Language-Team: Hebrew\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-20 07:34+0000\n"
+"PO-Revision-Date: 2026-10-20 07:34+0000\n"
+"X-Generator: PTC (Private Translation Cloud)\n"
+"X-Domain: wp-seo-multilingual\n"
+"Language: he_IL\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Plugin Name of the plugin
+#: plugin.php
+msgid "WPML SEO"
+msgstr "WPML SEO"
+
+#. Plugin URI of the plugin
+#: plugin.php
+msgid "https://wpml.org/documentation/wpml-core-and-add-on-plugins/wpml-seo/"
+msgstr "https://wpml.org/documentation/wpml-core-and-add-on-plugins/wpml-seo/"
+
+#. Description of the plugin
+#: plugin.php
+msgid "Multilingual support for popular SEO plugins"
+msgstr "תמיכה רב-לשונית בתוספי SEO פופולריים"
+
+#. Author of the plugin
+#: plugin.php
+msgid "OnTheGoSystems"
+msgstr "OnTheGoSystems"
+
+#. Author URI of the plugin
+#: plugin.php
+msgid "http://www.onthegosystems.com/"
+msgstr "http://www.onthegosystems.com/"
+
+#. translators: Heading of the notice shown on the WordPress dashboard and plugins screen after WPML stopped adding hreflang tags to the page head. "Hreflang" is an HTML attribute name and stays in English.
+#: classes/Shared/HeadLangsNoticeHooks.php:79
+msgid "Hreflang tags moved to your sitemap"
+msgstr "תגי hreflang הועברו למפת האתר שלך"
+
+#. translators: Text of the "Hreflang tags moved to your sitemap" notice. "<head>" is the name of an HTML section and must stay exactly as it is.
+#: classes/Shared/HeadLangsNoticeHooks.php:80
+msgid "To improve SEO and avoid duplicate hreflang data, WPML now adds hreflang tags only to your sitemap. We have disabled the hreflang tags in your page's <head> section."
+msgstr "כדי לשפר את ה-SEO ולמנוע כפילות של נתוני hreflang,‏ WPML מוסיף כעת תגי hreflang רק למפת האתר שלך. ביטלנו את תגי ה-hreflang במקטע ה-<head> של העמוד שלך."
+
+#. translators: Last line of the "Hreflang tags moved to your sitemap" notice. %1$s: opening link tag, %2$s: closing link tag. The words between them are a path through the WordPress admin and should read as those screens are named in this language. "<head>" is the name of an HTML section and stays as it is.
+#: classes/Shared/HeadLangsNoticeHooks.php:84
+#, php-format
+msgid "If you prefer to keep them in the <head>, you can re-enable this option in %1$sWPML → Settings → URLs and SEO%2$s."
+msgstr "אם אתה מעדיף להשאיר אותם ב-<head>, תוכל להפעיל מחדש את האפשרות הזו ב-%1$sWPML ← הגדרות ← כתובות URL ו-SEO%2$s."
+
+#. translators: Heading of the box on the Yoast SEO settings screen that lists one sitemap per language. A noun phrase, not an instruction.
+#: classes/YoastSEO/Sitemap/PerLanguageSitemapsNotice.php:167
+msgid "Sitemaps for each language"
+msgstr "מפות אתר לכל שפה"
+
+#. translators: Text inside the "Sitemaps for each language" box on the Yoast SEO settings screen, above the list of addresses. "Google Search Console" is a product name and stays in English.
+#: classes/YoastSEO/Sitemap/PerLanguageSitemapsNotice.php:171
+msgid "Each language runs on its own domain, so each one has its own sitemap. Submit all of them to Google Search Console."
+msgstr "כל שפה פועלת בדומיין משלה, ולכן לכל אחת מהן יש מפת אתר משלה. שלחו את כולן ל-Google Search Console."
+
+#. translators: Label shown on a Yoast SEO field on the term editing screen when WPML supplies the translation and the field is read-only.
+#: classes/YoastSEO/Terms/Meta/AdminScreenHooks.php:149
+msgid "Translated by WPML"
+msgstr "תורגם על ידי WPML"
+
+#. translators: Explanation under that label. "Edit anyway" is the button below it, so translate the two the same way. "WPML String Translation" is a product name and stays in English.
+#: classes/YoastSEO/Terms/Meta/AdminScreenHooks.php:150
+msgid "This field shows the translation that WPML String Translation serves. Click \"Edit anyway\" to override it."
+msgstr "שדה זה מציג את התרגום ש-WPML String Translation מספק. לחץ על ”עריכה בכל זאת“ כדי לדרוס אותו."
+
+#. translators: Button beside a read-only Yoast SEO field on the term editing screen; it unlocks the field for typing. Verb, imperative. The explanation above quotes it, so translate the two the same way.
+#: classes/YoastSEO/Terms/Meta/AdminScreenHooks.php:151
+msgid "Edit anyway"
+msgstr "עריכה בכל זאת"
+
+#. translators: Explanation shown on a Yoast SEO field on the term editing screen once the user has typed over WPML's translation; "it" is the field's text.
+#: classes/YoastSEO/Terms/Meta/AdminScreenHooks.php:152
+msgid "Your text overrides the WPML translation. Leave the field empty to let WPML translate it."
+msgstr "הטקסט שלך דורס את התרגום של WPML. השאר את השדה ריק כדי לאפשר ל-WPML לתרגם אותו."
+
+#: classes/YoastSEO/Terms/Meta/DashboardHooks.php:30
+msgid "This section has the Yoast SEO texts of your categories, tags and other taxonomy terms."
+msgstr "חלק זה מכיל את הטקסטים של Yoast SEO עבור הקטגוריות, התגיות ומונחי טקסונומיה אחרים שלך."

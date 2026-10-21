@@ -1,32 +1,17 @@
 <?php
 
-/**
- * Class WPML_Media_Post_Batch_Url_Translation
- */
 class WPML_Media_Post_Batch_Url_Translation extends WPML_Media_Batch_Url_Translation implements IWPML_Action {
 
 	const AJAX_ACTION = 'wpml_media_translate_media_url_in_posts';
 
-	/**
-	 * @var WPML_Media_Post_Images_Translation
-	 */
 	private $post_image_translation;
 
-	/**
-	 * WPML_Media_Post_Batch_Url_Translation constructor.
-	 *
-	 * @param WPML_Media_Post_Images_Translation $post_image_translation
-	 * @param wpdb $wpdb
-	 */
 	public function __construct( WPML_Media_Post_Images_Translation $post_image_translation, wpdb $wpdb ) {
 		parent::__construct( $wpdb );
 		$this->post_image_translation = $post_image_translation;
 		$this->wpdb                   = $wpdb;
 	}
 
-	/**
-	 * @return string
-	 */
 	protected function get_ajax_action() {
 		return self::AJAX_ACTION;
 	}
@@ -35,16 +20,14 @@ class WPML_Media_Post_Batch_Url_Translation extends WPML_Media_Batch_Url_Transla
 		return isset( $_POST['action'] ) && self::AJAX_ACTION === $_POST['action'];
 	}
 
-	/**
-	 * @param int $number_of_posts_left
-	 *
-	 * @return string
-	 */
 	protected function get_response_message( $number_of_posts_left ) {
 		return sprintf(
+			/* translators: Progress message on the Media Translation page while media addresses inside translated posts are being updated. %s: either the number of items still left or the word for "done!". */
 			__( 'Translating media urls in post translations: %s', 'wpml-media' ),
 			$number_of_posts_left > 0 ?
+				/* translators: Second half of the progress message on the Media Translation page, for example "Translating media urls in post translations: 12 left". %d: the number of items still to process. */
 				sprintf( __( '%d left', 'wpml-media' ), $number_of_posts_left ) :
+				/* translators: Second half of the progress message on the Media Translation page, shown in place of the count once everything has been processed, for example "Translating media urls in post translations: done!". */
 				__( 'done!', 'wpml-media' )
 		);
 	}
@@ -52,25 +35,30 @@ class WPML_Media_Post_Batch_Url_Translation extends WPML_Media_Batch_Url_Transla
 	protected function get_ajax_error_message() {
 		return array(
 			'key'   => 'wpml_media_batch_urls_update_errors_posts',
+			/* translators: Error message on the Media Translation page when updating media addresses inside posts fails. %s: the reason the server gave. */
 			'value' => esc_js( __( 'Translating media urls in posts translations failed: Please try again (%s)', 'wpml-media' ) )
 		);
 	}
 
-	/**
-	 * @param int $offset
-	 *
-	 * @return int
-	 */
 	protected function process_batch( $offset ) {
+		$wpdb = $this->wpdb;
+		$offset = (int) $offset;
+		$post_element_type_like = 'post\_%';
 
-		$posts = $this->wpdb->get_col( "
-			SELECT SQL_CALC_FOUND_ROWS element_id AS id 
-			FROM {$this->wpdb->prefix}icl_translations 
-			WHERE element_type LIKE 'post_%' 
-				AND element_type <> 'post_attachment' 
-				AND source_language_code IS NULL
-			ORDER BY element_id ASC
-			LIMIT {$offset}, " . self::BATCH_SIZE );
+		$posts = $this->wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT SQL_CALC_FOUND_ROWS element_id AS id
+				FROM {$wpdb->prefix}icl_translations
+				WHERE element_type LIKE %s
+					AND element_type <> 'post_attachment'
+					AND source_language_code IS NULL
+				ORDER BY element_id ASC
+				LIMIT %d, %d",
+				$post_element_type_like,
+				$offset,
+				self::BATCH_SIZE
+			)
+		);
 
 		$number_of_all_posts = (int) $this->wpdb->get_var( "SELECT FOUND_ROWS()" );
 
@@ -82,29 +70,37 @@ class WPML_Media_Post_Batch_Url_Translation extends WPML_Media_Batch_Url_Transla
 	}
 
 	protected function process_batch_for_selected_media( $offset, $attachment_id ) {
-		$media_url = wpml_like_escape( wp_get_attachment_url( $attachment_id ) );
-		if ( ! $media_url ) {
+		$wpdb                   = $this->wpdb;
+		$offset                 = (int) $offset;
+		$post_element_type_like = 'post\_%';
+
+		$url_patterns = $this->get_media_url_like_patterns( $attachment_id );
+		if ( ! $url_patterns ) {
 			return 0;
 		}
-		preg_match( "/(.+)\.([a-z]+)$/", $media_url, $match );
-		$media_url_no_extension = wpml_like_escape( $match[1] );
-		$extension              = wpml_like_escape( $match[2] );
 
 		$batch_size = $this->get_batch_size( parent::BATCH_SIZE_FACTOR_SPECIFIC_MEDIA );
 
-		$posts      = $this->wpdb->get_col( "
-			SELECT SQL_CALC_FOUND_ROWS element_id AS id 
-			FROM {$this->wpdb->prefix}icl_translations t
-			JOIN {$this->wpdb->posts} p ON t.element_id = p.ID
-			WHERE element_type LIKE 'post_%' 
-				AND element_type <> 'post_attachment' 
-				AND source_language_code IS NULL
-				AND (
-					post_content LIKE '%{$media_url}%' OR 
-					post_content LIKE '%{$media_url_no_extension}-%x%.{$extension}%'
-				) 
-			ORDER BY element_id ASC
-			LIMIT {$offset}, " . $batch_size );
+		$posts = $this->wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT SQL_CALC_FOUND_ROWS element_id AS id
+				FROM {$wpdb->prefix}icl_translations t
+				JOIN {$wpdb->posts} p ON t.element_id = p.ID
+				WHERE element_type LIKE %s
+					AND element_type <> 'post_attachment'
+					AND source_language_code IS NULL
+					AND (post_content LIKE %s OR post_content LIKE %s OR post_content LIKE %s OR post_content LIKE %s)
+				ORDER BY element_id ASC
+				LIMIT %d, %d",
+				$post_element_type_like,
+				$url_patterns[0],
+				$url_patterns[1],
+				$url_patterns[2],
+				$url_patterns[3],
+				$offset,
+				$batch_size
+			)
+		);
 
 		$number_of_all_posts = (int) $this->wpdb->get_var( "SELECT FOUND_ROWS()" );
 

@@ -1,0 +1,373 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "uk"
+         },
+         "Error in updating since dates for types.": [
+            "Помилка оновлення дат «з моменту» для типів."
+         ],
+         "Error in fetching untranslated types count": [
+            "Помилка отримання кількості неперекладених типів"
+         ],
+         "Error persisting the offered type since dates.": [
+            "Помилка збереження запропонованих дат «з моменту» для типу."
+         ],
+         "Error in updating since date for type.": [
+            "Помилка оновлення дати «з моменту» для типу."
+         ],
+         "Content to translate": [
+            "Контент для перекладу"
+         ],
+         "Content to Translate": [
+            "Контент для перекладу"
+         ],
+         "Content type": [
+            "Тип контенту"
+         ],
+         "Include": [
+            "Включити"
+         ],
+         "These settings can be changed on the Translations dashboard.": [
+            "Ці налаштування можна змінити на панелі керування перекладами."
+         ],
+         "Items": [
+            "Елементи"
+         ],
+         "Word count": [
+            "Кількість слів"
+         ],
+         "Loading content to translate": [
+            "Завантаження контенту для перекладу"
+         ],
+         "Words to translate": [
+            "Слова для перекладу"
+         ],
+         "Calculating… <s>less than 1 minute left.</s>": [
+            "Обчислення… <s>залишилося менше 1 хвилини.</s>"
+         ],
+         "Calculating… <s>%d minute left.</s>": [
+            "Обчислення… <s>залишилася %d хвилина.</s>",
+            "Обчислення… <s>залишилося %d хвилини.</s>",
+            "Обчислення… <s>залишилося %d хвилин.</s>"
+         ],
+         "Words needed to translate your existing content into the new languages: %s.": [
+            "Слів, необхідних для перекладу вашого наявного контенту на нові мови: %s."
+         ],
+         "Words needed to translate your existing content into the new language.": [
+            "Слів, необхідних для перекладу вашого наявного контенту на нову мову."
+         ],
+         "Based on the remaining untranslated content across all languages.": [
+            "На основі решти неперекладеного контенту всіма мовами."
+         ],
+         "Estimated from the selected source volume multiplied by the target languages.": [
+            "Оцінено на основі вибраного обсягу джерела, помноженого на цільові мови."
+         ],
+         "%1$s source words × %2$s language": [
+            "%1$s слово оригіналу × %2$s мова",
+            "%1$s слова оригіналу × %2$s мови",
+            "%1$s слів оригіналу × %2$s мов"
+         ],
+         "Already translated content": [
+            "Уже перекладений контент"
+         ],
+         "Words required:": [
+            "Необхідно слів:"
+         ],
+         "Words": [
+            "Слова"
+         ],
+         "Documents you translated yourself stay exactly as you made them": [
+            "Документи, які ви переклали самостійно, залишаться саме такими, якими ви їх створили"
+         ],
+         "(%d document)": [
+            "(%d документ)",
+            "(%d документи)",
+            "(%d документів)"
+         ],
+         "View documents": [
+            "Переглянути документи"
+         ],
+         "%1$d of %2$d language will be translated automatically": [
+            "%1$d з %2$d мови буде перекладена автоматично",
+            "%1$d з %2$d мов будуть перекладені автоматично",
+            "%1$d з %2$d мов будуть перекладені автоматично"
+         ],
+         "Translated to %d language": [
+            "Перекладено на %d мову",
+            "Перекладено на %d мови",
+            "Перекладено на %d мов"
+         ],
+         "Add/remove languages": [
+            "Додати/видалити мови"
+         ],
+         "Percentages show how much of your selected content is already translated in each language.": [
+            "Відсотки показують, яка частина вибраного контенту вже перекладена кожною мовою."
+         ],
+         "Note: Content already translated into all languages is not included in this calculation.": [
+            "Примітка: контент, уже перекладений на всі мови, не включається в цей розрахунок."
+         ],
+         "Same as default": [
+            "Така ж, як стандартна"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "Автоматичний переклад недоступний між %1$s та %2$s, оскільки вони розпізнаються як однакова мова."
+         ],
+         "Translation paused": [
+            "Переклад призупинено"
+         ],
+         "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor.": [
+            "WPML не створює нових перекладів мовою «%s», тому цю мову не включено. Щоб включити її, скористайтеся дією «Відновити переклад» у рядку відповідної мови в редакторі мов."
+         ],
+         "Manual only": [
+            "Тільки вручну"
+         ],
+         "%s has no automatic-translation support. You can translate this content manually.": [
+            "%s не підтримує автоматичний переклад. Ви можете перекласти цей контент вручну."
+         ],
+         "Adjusted word rate (%s)": [
+            "Скоригований тариф за слово (%s)"
+         ],
+         "This adjusted word rate applies to legacy translation engines.": [
+            "Цей скоригований тариф за слово застосовується до застарілих систем перекладу."
+         ],
+         "Translation engine: <strong>%s</strong>": [
+            "Система перекладу: <strong>%s</strong>"
+         ],
+         "Legacy engine": [
+            "Застаріла система"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Застосовано застарілу модель ціноутворення. %s — це застаріла система перекладу, яка не рекомендується для нових сайтів і незабаром буде виведена з експлуатації. Для наявних сайтів для неї зберігається скоригований тариф за слово."
+         ],
+         "Switch to PTC": [
+            "Перейти на PTC"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
+            "Це те, що потрібно для перекладу вашого поточного вмісту сьогодні. Сюди не входять деякі тексти, додані іншими плагінами, як-от форми чи слайдери, які підраховуються після завершення налаштування. Рядки сайту з вашої теми та плагінів також підраховуються після налаштування і зазвичай додають кількасот слів. Після цього редагування безкоштовні. Ви платите знову лише за додані слова."
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Це те, що потрібно для перекладу вашого поточного контенту сьогодні. Сюди не входять деякі тексти, додані іншими плагінами, як-от форми або слайдери, які підраховуються після завершення налаштування. Рядки сайту з вашої теми та плагінів також підраховуються після налаштування і зазвичай додають кілька сотень слів. За тарифом %s за слово; зміни на перекладених сторінках оплачуються повторно."
+         ],
+         "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
+            "Це те, що потрібно для перекладу вашого поточного вмісту сьогодні. Після цього редагування безкоштовні. Ви платите знову лише за додані слова."
+         ],
+         "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Це те, що потрібно для перекладу вашого поточного контенту сьогодні. За тарифом %s за слово; зміни на перекладених сторінках оплачуються повторно."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
+            "Враховуються сторінки, записи та товари разом із їхніми настроюваними полями, текстами конструктора сторінок і медіатекстами, а також категорії, позначки та атрибути, які вони використовують."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
+            "Враховуються сторінки, записи та товари разом із їхніми настроюваними полями, текстами конструктора сторінок і медіатекстами, категорії, позначки та атрибути, які вони використовують, а також рядки сайту. Термін підраховується в кожному елементі, де він використовується, і окремо ще один раз, оскільки він надсилається на переклад в обох випадках."
+         ],
+         "Total items": [
+            "Усього елементів"
+         ],
+         "Total source words": [
+            "Усього слів оригіналу"
+         ],
+         "Previous": [
+            "Попередня"
+         ],
+         "Next": [
+            "Наступна"
+         ],
+         "Showing %1$d–%2$d of %3$d types.": [
+            "Відображення %1$d–%2$d з %3$d типів."
+         ],
+         "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated.": [
+            "Усі поточні %1$s перекладені на всі мови.<br>Нові %2$s або правки будуть перекладені автоматично."
+         ],
+         "All %s": [
+            "Усі %s"
+         ],
+         "For translated types": [
+            "Для перекладених типів"
+         ],
+         "None": [
+            "Немає"
+         ],
+         "Since %s": [
+            "З %s"
+         ],
+         "Since specific date": [
+            "З конкретної дати"
+         ],
+         "<b>Pay-As-You-Go</b> is active on this site.": [
+            "<b>Оплата в міру використання</b> активна на цьому сайті."
+         ],
+         "<b>%s words</b> are on this site. Continue.": [
+            "На цьому сайті є <b>%s слів</b>. Продовжити."
+         ],
+         "Your site will be translated right after the setup.": [
+            "Ваш сайт буде перекладено відразу після налаштування."
+         ],
+         "To use prepaid words, register WPML on this site.": [
+            "Щоб використовувати передплачені слова, зареєструйте WPML на цьому сайті."
+         ],
+         "Checking…": [
+            "Перевірка…"
+         ],
+         "Retry": [
+            "Повторити"
+         ],
+         "We could not reach our translation system.": [
+            "Не вдалося зв'язатися з нашою системою перекладу."
+         ],
+         "This site is not registered with a WPML account, so prepaid words are not available.": [
+            "Цей сайт не зареєстрований в акаунті WPML, тому передплачені слова недоступні."
+         ],
+         "We could not read your WPML account.": [
+            "Ми не змогли зчитати ваш акаунт WPML."
+         ],
+         "%s more words are needed to translate your site.": [
+            "Для перекладу вашого сайту потрібно ще %s слів."
+         ],
+         "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>.": [
+            "Призначте передплачені слова зі свого акаунта WPML цьому сайту, щоб запустити <b>Translate Everything Automatically</b>."
+         ],
+         "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>.": [
+            "Призначте слова, які у вас вже є, і купіть решту або активуйте <b>Оплата в міру використання</b>."
+         ],
+         "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
+            "Щоб запустити <b>Translate Everything Automatically</b>, активуйте <b>Оплата в міру використання</b> або купіть передплачені слова."
+         ],
+         "Select payment method": [
+            "Виберіть спосіб оплати"
+         ],
+         "%1$sCheck pricing%2$s.": [
+            "%1$sПеревірити ціни%2$s."
+         ],
+         "Lowest cost per word": [
+            "Найнижча вартість за слово"
+         ],
+         "Pay only for what you use": [
+            "Платіть лише за те, що використовуєте"
+         ],
+         "Never run out. Translation never stops.": [
+            "Вони ніколи не закінчаться. Переклад ніколи не зупиняється."
+         ],
+         "The first 500 words each month are free": [
+            "Перші 500 слів щомісяця безкоштовні"
+         ],
+         "Pay-As-You-Go": [
+            "Оплата в міру використання"
+         ],
+         "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate.": [
+            "Активуйте <b>Оплата в міру використання</b>, щоб перекладати автоматично. <b>Оплата в міру використання</b> стягує плату за слова, які ви перекладаєте."
+         ],
+         "Activating <b>Pay-As-You-Go</b>…": [
+            "Активація <b>Оплата в міру використання</b>…"
+         ],
+         "Continue in the new tab": [
+            "Продовжити в новій вкладці"
+         ],
+         "Activate <b>Pay-As-You-Go</b>": [
+            "Активувати <b>Оплату в міру використання</b>"
+         ],
+         "<b>Pay-As-You-Go</b> is not active yet.": [
+            "<b>Оплата в міру використання</b> ще не активна."
+         ],
+         "Refresh": [
+            "Оновити"
+         ],
+         "Already using <b>Pay-As-You-Go</b> on another site?": [
+            "Уже використовуєте <b>Оплату в міру використання</b> на іншому сайті?"
+         ],
+         "Connect this site to it": [
+            "Під’єднати цей сайт до нього"
+         ],
+         "Activate Pay-As-You-Go": [
+            "Активувати Оплату в міру використання"
+         ],
+         "Cancel": [
+            "Скасувати"
+         ],
+         "Connect your sites to share translation memory, glossary and word quota.": [
+            "Під’єднайте свої сайти, щоб спільно використовувати пам’ять перекладів, глосарій та квоту слів."
+         ],
+         "Learn more": [
+            "Дізнатися більше"
+         ],
+         "Copy your migration code:": [
+            "Скопіюйте свій код міграції:"
+         ],
+         "Loading…": [
+            "Завантаження…"
+         ],
+         "Copied!": [
+            "Скопійовано!"
+         ],
+         "Log into a site with an active automatic translation account.": [
+            "Увійдіть на сайт з активним акаунтом автоматичного перекладу."
+         ],
+         "Go to \"WPML\" → \"Translation Dashboard\".": [
+            "Перейдіть у «WPML» → «Панель керування перекладами»."
+         ],
+         "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
+            "На вкладці «Payment & Maintenance» перейдіть до «Connected sites»."
+         ],
+         "Click \"Enter the connection key of another site\" to finish connecting your sites.": [
+            "Натисніть «Enter the connection key of another site», щоб завершити під’єднання ваших сайтів."
+         ],
+         "Assign words": [
+            "Призначити слова"
+         ],
+         "Buy and assign words": [
+            "Купити та призначити слова"
+         ],
+         "Refresh to assign words": [
+            "Оновити, щоб призначити слова"
+         ],
+         "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site.": [
+            "Купіть %1$sпередплачений пакет%2$s щонайменше на %3$s%4$s слів%5$s та призначте їх цьому сайту."
+         ],
+         "This amount will cover translation of all your current content.": [
+            "Ця кількість покриє переклад усього вашого поточного контенту."
+         ],
+         "Assign %1$s%2$s words%3$s to this site.": [
+            "Призначте %1$s%2$s слів%3$s цьому сайту."
+         ],
+         "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s.": [
+            "Призначте свої %1$s%2$s слів%3$s і купіть ще %4$s%5$s%6$s."
+         ],
+         "Buy %1$s%2$s words%3$s for this site.": [
+            "Купіть %1$s%2$s слів%3$s для цього сайту."
+         ],
+         "Assign at least %1$s%2$s words%3$s to this site to continue.": [
+            "Призначте цьому сайту щонайменше %1$s%2$s слів%3$s, щоб продовжити."
+         ],
+         "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount.": [
+            "Призначте слова зі свого акаунта WPML та купіть додатковий %1$sпередплачений пакет%2$s щонайменше на %3$s%4$s слів%5$s, щоб покрити решту."
+         ],
+         "Prepaid words": [
+            "Передплачені слова"
+         ],
+         "There are %1$s%2$s words%3$s on your WPML account.": [
+            "У вашому акаунті WPML є %1$s%2$s слів%3$s."
+         ],
+         "There are %1$s%2$s available on your WPML account.%3$s": [
+            "У вашому акаунті WPML доступно %1$s%2$s.%3$s"
+         ],
+         "(Only the WPML account owner can do this.)": [
+            "(Це може зробити лише власник акаунта WPML.)"
+         ],
+         "Checking for new words...": [
+            "Перевірка нових слів..."
+         ],
+         "Still not enough words. Refresh again in %d seconds.": [
+            "Слів усе ще недостатньо. Оновіть знову через %d сек."
+         ],
+         "Already assigned?": [
+            "Уже призначено?"
+         ],
+         "Close modal": [
+            "Закрити модальне вікно"
+         ]
+      }
+   }
+}

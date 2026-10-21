@@ -10,19 +10,14 @@ use WPML\FP\Either;
 use WPML\FP\Fns;
 use WPML\FP\Lst;
 use WPML\LIB\WP\Hooks;
+use WPML\LIB\WP\User;
 
 class BackgroundTaskLoader implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 
-	/** @var UpdateBackgroundTask $updateBackgroundTaskCommand */
 	private $updateBackgroundTaskCommand;
 
-	/** @var BackgroundTaskRepository $backgroundTaskRepository */
 	private $backgroundTaskRepository;
 
-	/**
-	 * @param UpdateBackgroundTask          $updateBackgroundTaskCommand
-	 * @param BackgroundTaskRepository      $backgroundTaskRepository
-	 */
 	public function __construct(
 		UpdateBackgroundTask $updateBackgroundTaskCommand,
 		BackgroundTaskRepository $backgroundTaskRepository
@@ -33,29 +28,43 @@ class BackgroundTaskLoader implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 
 
 	public function add_hooks() {
+		if ( wpml_is_ajax() ) {
+			return;
+		}
 		Hooks::onAction( 'wp_loaded' )
-		     ->then( function() {
-			     $tasks = $this->getSerializedTasks();
-			     Resources::enqueueGlobalVariable('wpml_background_tasks', [
-					 /** @phpstan-ignore-next-line */
-				     'endpoints' => array_merge( Lst::pluck('taskType', $tasks), [ BackgroundTaskLoader::class ] ),
-				     'tasks' => $tasks,
-			     ] );
-		     } );
+		     ->then( [ $this, 'enqueueTasksRegistry' ] );
 	}
 
-	/**
-	 * @param \WPML\Collect\Support\Collection $data
-	 */
+	public function enqueueTasksRegistry() {
+		if ( ! User::canManageTranslations() ) {
+			return;
+		}
+
+		$tasks = $this->getSerializedTasks();
+		Resources::enqueueGlobalVariable(
+			'wpml_background_tasks',
+			[
+				'endpoints' => array_merge( Lst::pluck( 'taskType', $tasks ), [ self::class ] ),
+				'tasks'     => $tasks,
+			]
+		);
+	}
+
 	public function run(
 		Collection $data
 	) {
-		$taskId = $data['taskId'];
-		$cmd    = $data['cmd'];
+		$taskId = isset( $data['taskId'] ) ? $data['taskId'] : null;
+		$cmd    = isset( $data['cmd'] ) ? $data['cmd'] : null;
+
+		if ( ! $taskId ) {
+			return [];
+		}
 
 		$task = $this->backgroundTaskRepository->getByTaskId( $taskId );
 
-		if ( 'stop' === $cmd ) {
+		if ( ! $task ) {
+			return Either::of( null );
+		} elseif ( 'stop' === $cmd ) {
 			$this->updateBackgroundTaskCommand->runStop( $task );
 		} elseif ( 'pause' === $cmd ) {
 			$this->updateBackgroundTaskCommand->saveStatusPaused( $task );
@@ -71,9 +80,6 @@ class BackgroundTaskLoader implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 	}
 
 
-	/**
-	 * @return array
-	 */
 	public function getSerializedTasks() {
 		return Fns::map(
 			function( $task ) {

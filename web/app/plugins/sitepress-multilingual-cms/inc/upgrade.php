@@ -19,6 +19,9 @@ add_action( 'plugins_loaded', 'icl_plugin_upgrade', 1 );
 
 function icl_plugin_upgrade() {
 	global $wpdb;
+	if ( WPML_Settings_Failsafe_Loader::isUnrecoverable() ) {
+		return;
+	}
 
 	$iclsettings = get_option( 'icl_sitepress_settings' );
 
@@ -74,7 +77,7 @@ function icl_plugin_upgrade() {
 			update_option( 'icl_sitepress_settings', $iclsettings );
 		}
 
-		$wpdb->query( "UPDATE {$wpdb->prefix}icl_translations SET element_type='tax_post_tag' WHERE element_type='tag'" ); // @since 3.1.5 - mysql_* function deprecated in php 5.5+
+		$wpdb->query( "UPDATE {$wpdb->prefix}icl_translations SET element_type='tax_post_tag' WHERE element_type='tag'" );
 		$wpdb->query( "UPDATE {$wpdb->prefix}icl_translations SET element_type='tax_category' WHERE element_type='category'" );
 	}
 
@@ -85,12 +88,14 @@ function icl_plugin_upgrade() {
 			$post_types[ $row->post_type ][] = $row->ID;
 		}
 		foreach ( $post_types as $type => $ids ) {
-			$q          = "UPDATE {$wpdb->prefix}icl_translations SET element_type=%s WHERE element_type='post' AND element_id IN(" . join( ',', $ids ) . ')';
-			$q_prepared = $wpdb->prepare( $q, 'post_' . $type );
-			$wpdb->query( $q_prepared );    // @since 3.1.5 - mysql_* function deprecated in php 5.5+
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->prefix}icl_translations SET element_type=%s WHERE element_type='post' AND element_id IN(" . esc_sql( implode( ',', array_map( 'absint', $ids ) ) ) . ')',
+					'post_' . $type
+				)
+			);
 		}
 
-		// fix categories & tags in icl_translations
 		$res = $wpdb->get_results( "SELECT term_taxonomy_id, taxonomy FROM {$wpdb->term_taxonomy}" );
 		foreach ( $res as $row ) {
 			$icltr = $wpdb->get_row(
@@ -105,18 +110,8 @@ function icl_plugin_upgrade() {
 		}
 	}
 
-	if ( get_option( 'icl_sitepress_version' ) && version_compare( get_option( 'icl_sitepress_version' ), '2.0.0', '<' ) ) {
-		include_once WPML_PLUGIN_PATH . '/inc/upgrade-functions/upgrade-2.0.0.php';
-
-		if ( empty( $iclsettings['migrated_2_0_0'] ) ) {
-			define( 'ICL_MULTI_STEP_UPGRADE', true );
-			return; // GET OUT AND DO NOT SET THE NEW VERSION
-		}
-	}
-
 	if ( get_option( 'icl_sitepress_version' ) && version_compare( get_option( 'icl_sitepress_version' ), '2.0.4', '<' ) ) {
-		$sql = "ALTER TABLE {$wpdb->prefix}icl_translation_status ADD COLUMN `_prevstate` longtext";
-		$wpdb->query( $sql );
+		$wpdb->query( "ALTER TABLE {$wpdb->prefix}icl_translation_status ADD COLUMN `_prevstate` longtext" );
 	}
 
 	$versions = array(
@@ -147,9 +142,6 @@ function icl_plugin_upgrade() {
 		icl_upgrade_version( $version );
 	}
 
-	// Forcing upgrade logic when ICL_SITEPRESS_DEV_VERSION is defined
-	// This allow to run the logic between different alpha/beta/RC versions
-	// since we are now storing only the formal version in the options
 	if ( defined( 'ICL_SITEPRESS_DEV_VERSION' ) ) {
 		icl_upgrade_version( ICL_SITEPRESS_DEV_VERSION, true );
 	}
@@ -189,6 +181,7 @@ function icl_plugin_too_old() {
 		<p>
 		<?php
 			printf(
+				/* translators: Notice shown when the site cannot be brought up to this version of WPML in one step. %1$s: the oldest version this one can be reached from, %2$s: the version the site is on now, %3$s: the address of the older version to install first, filling the link tag that is already in the text. */
 				__( '<strong>WPML notice:</strong> Upgrades to this version are only supported from versions %1$s and above. To upgrade from version %2$s, first, download <a%3$s>2.0.4</a>, do the DB upgrade and then go to this version.', 'sitepress' ),
 				'1.7.0',
 				get_option( 'icl_sitepress_version' ),
@@ -204,13 +197,17 @@ function icl_plugin_too_old() {
 function icl_table_column_exists( $table_name, $column_name ) {
 	global $wpdb;
 
-	$query         = '
-				SELECT count(*) FROM information_schema.COLUMNS
-				WHERE COLUMN_NAME = %s AND TABLE_NAME = %s AND TABLE_SCHEMA = %s
-				';
-	$args          = array( $column_name, $wpdb->prefix . $table_name, DB_NAME );
-	$sql           = $wpdb->prepare( $query, $args );
-	$column_exists = $wpdb->get_var( $sql );
+	$column_exists = $wpdb->get_var(
+		$wpdb->prepare(
+			'
+			SELECT count(*) FROM information_schema.COLUMNS
+			WHERE COLUMN_NAME = %s AND TABLE_NAME = %s AND TABLE_SCHEMA = %s
+			',
+			$column_name,
+			$wpdb->prefix . $table_name,
+			DB_NAME
+		)
+	);
 
 	return (bool) $column_exists;
 }
@@ -218,13 +215,17 @@ function icl_table_column_exists( $table_name, $column_name ) {
 function icl_table_index_exists( $table_name, $index_name ) {
 	global $wpdb;
 
-	$query         = '
-				SELECT count(*) FROM information_schema.STATISTICS
-				    WHERE INDEX_NAME = %s AND TABLE_NAME = %s AND TABLE_SCHEMA = %s;
-				';
-	$args          = array( $index_name, $wpdb->prefix . $table_name, DB_NAME );
-	$sql           = $wpdb->prepare( $query, $args );
-	$column_exists = $wpdb->get_var( $sql );
+	$column_exists = $wpdb->get_var(
+		$wpdb->prepare(
+			'
+			SELECT count(*) FROM information_schema.STATISTICS
+			WHERE INDEX_NAME = %s AND TABLE_NAME = %s AND TABLE_SCHEMA = %s;
+			',
+			$index_name,
+			$wpdb->prefix . $table_name,
+			DB_NAME
+		)
+	);
 
 	return (bool) $column_exists;
 }
@@ -234,12 +235,15 @@ function icl_alter_table_columns( $table_name, $column_definitions ) {
 
 	$result = false;
 
+	if ( ! icl_is_safe_sql_identifier( $table_name ) ) {
+		return $result;
+	}
+
 	if ( ! is_array( $column_definitions ) ) {
 		$column_definitions = array( $column_definitions );
 	}
 
-	$query = 'ALTER TABLE `' . $wpdb->prefix . $table_name . '` ';
-	$args  = array();
+	$args = array();
 
 	$counter = 0;
 
@@ -259,7 +263,14 @@ function icl_alter_table_columns( $table_name, $column_definitions ) {
 			);
 		}
 
-		if ( icl_array_has_required_keys( $column_definition, $required_keys ) ) {
+		if (
+			icl_array_has_required_keys( $column_definition, $required_keys )
+			&& in_array( $column_definition['action'], array( 'ADD', 'DROP', 'MODIFY', 'CHANGE' ), true )
+			&& icl_is_safe_sql_identifier( $column_definition['name'] )
+			&& ( ! isset( $column_definition['type'] ) || icl_is_safe_sql_type( $column_definition['type'] ) )
+			&& ( ! isset( $column_definition['charset'] ) || icl_is_safe_sql_identifier( $column_definition['charset'] ) )
+			&& ( ! isset( $column_definition['after'] ) || icl_is_safe_sql_identifier( $column_definition['after'] ) )
+		) {
 
 			if ( $counter > 0 ) {
 				$query_parts[] = ',';
@@ -290,13 +301,19 @@ function icl_alter_table_columns( $table_name, $column_definitions ) {
 	}
 
 	if ( $query_parts ) {
-		$query .= implode( ' ', $query_parts );
-		if ( sizeof( $args ) > 0 ) {
-			$sql = $wpdb->prepare( $query, $args );
-		} else {
-			$sql = $query;
+		if ( 1 === count( $args ) ) {
+			$query_around_default = explode( '%s', implode( ' ', $query_parts ), 2 );
+			$result = $wpdb->query(
+				$wpdb->prepare(
+					'ALTER TABLE `' . esc_sql( $wpdb->prefix . $table_name ) . '` ' . esc_sql( $query_around_default[0] ) . '%s' . esc_sql( $query_around_default[1] ),
+					$args[0]
+				)
+			);
+		} elseif ( empty( $args ) ) {
+			$result = $wpdb->query(
+				'ALTER TABLE `' . esc_sql( $wpdb->prefix . $table_name ) . '` ' . esc_sql( implode( ' ', $query_parts ) )
+			);
 		}
-		$result = $wpdb->query( $sql );
 	}
 
 	return $result;
@@ -305,10 +322,13 @@ function icl_alter_table_columns( $table_name, $column_definitions ) {
 function icl_drop_table_index( $table_name, $index_name ) {
 	global $wpdb;
 
-	$query  = 'ALTER TABLE `' . $wpdb->prefix . $table_name . '` ';
-	$query .= 'DROP INDEX `' . $index_name . '`;';
+	if ( ! icl_is_safe_sql_identifier( $table_name ) || ! icl_is_safe_sql_identifier( $index_name ) ) {
+		return false;
+	}
 
-	return $wpdb->query( $query );
+	return $wpdb->query(
+		'ALTER TABLE `' . esc_sql( $wpdb->prefix . $table_name ) . '` DROP INDEX `' . esc_sql( $index_name ) . '`;'
+	);
 }
 
 function icl_create_table_index( $table_name, $index_definition ) {
@@ -321,35 +341,42 @@ function icl_create_table_index( $table_name, $index_definition ) {
 		'columns',
 	);
 
-	if ( icl_array_has_required_keys( $index_definition, $required_keys ) && $index_definition['columns'] ) {
+	if (
+		icl_array_has_required_keys( $index_definition, $required_keys )
+		&& is_array( $index_definition['columns'] )
+		&& $index_definition['columns']
+		&& icl_is_safe_sql_identifier( $table_name )
+		&& icl_is_safe_sql_identifier( $index_definition['name'] )
+		&& ! array_diff( $index_definition['columns'], array_filter( $index_definition['columns'], 'icl_is_safe_sql_identifier' ) )
+	) {
+		$choice = isset( $index_definition['choice'] ) ? strtoupper( $index_definition['choice'] ) : '';
+		$type   = isset( $index_definition['type'] ) ? strtoupper( $index_definition['type'] ) : '';
 
-		$query  = 'ALTER TABLE `' . $wpdb->prefix . $table_name . '` ';
-		$query .= 'ADD ';
-
-		if ( isset( $index_definition['choice'] ) ) {
-			$query .= $index_definition['choice'] . ' ';
+		if ( ! in_array( $choice, array( '', 'UNIQUE', 'FULLTEXT', 'SPATIAL' ), true ) || ! in_array( $type, array( '', 'BTREE', 'HASH' ), true ) ) {
+			return false;
 		}
 
-		$query .= '`' . $index_definition['name'] . '` ';
-
-		$query .= '(`' . implode( '`, `', $index_definition['columns'] ) . '`) ';
-
-		if ( isset( $index_definition['type'] ) ) {
-			$query .= 'USING ' . $index_definition['type'] . ' ';
-		}
-
-		$result = $wpdb->query( $query );
+		$result = $wpdb->query(
+			'ALTER TABLE `' . esc_sql( $wpdb->prefix . $table_name ) . '` ADD '
+			. esc_sql( $choice ? $choice . ' ' : '' )
+			. '`' . esc_sql( $index_definition['name'] ) . '` '
+			. '(`' . esc_sql( implode( '`, `', $index_definition['columns'] ) ) . '`) '
+			. esc_sql( $type ? 'USING ' . $type : '' )
+		);
 	}
 
 	return $result;
 }
 
-/**
- * @param array<mixed>  $array
- * @param array<string> $required_keys
- *
- * @return bool
- */
+function icl_is_safe_sql_identifier( $identifier ) {
+	return is_string( $identifier ) && 1 === preg_match( '/\A[A-Za-z0-9_]+\z/D', $identifier );
+}
+
+function icl_is_safe_sql_type( $type ) {
+	return is_string( $type )
+		&& 1 === preg_match( '/\A[A-Za-z]+(?:\s+[A-Za-z]+)*(?:\(\s*\d+(?:\s*,\s*\d+)?\s*\))?(?:\s+UNSIGNED)?\z/iD', $type );
+}
+
 function icl_array_has_required_keys( $array, $required_keys ) {
 	return count( array_intersect_key( array_flip( $required_keys ), $array ) ) === count( $required_keys );
 }

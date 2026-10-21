@@ -3,7 +3,6 @@
 namespace ACFML\FieldGroup;
 
 use ACFML\Notice\Links;
-use WPML\FP\Fns;
 use WPML\FP\Logic;
 use WPML\FP\Obj;
 use WPML\FP\Relation;
@@ -15,16 +14,16 @@ class DetectNonTranslatableLocations {
 
 	const PROP_DISMISSED = 'dismissed';
 	const PROP_HASH      = 'hash';
-	const PROP_DETECTED  = 'detected';
 
-	const DETECTED_POST_TYPE = 'post';
-	const DETECTED_TAXONOMY  = 'taxonomy';
+	const DETECTED_POST_TYPE    = 'post';
+	const DETECTED_TAXONOMY     = 'taxonomy';
+	const DETECTED_OPTIONS_PAGE = 'options_page';
 
-	/**
-	 * @param array $fieldGroup
-	 *
-	 * @return void
-	 */
+	const LOCATION_PARAM_OPTIONS_PAGE = 'options_page';
+
+	const OPTIONS_PAGE_PURE  = 'pure';
+	const OPTIONS_PAGE_MIXED = 'mixed';
+
 	public function process( $fieldGroup ) {
 		$fieldGroupId = (int) Obj::prop( 'ID', $fieldGroup );
 		$locations    = (array) Obj::prop( 'location', $fieldGroup );
@@ -36,24 +35,16 @@ class DetectNonTranslatableLocations {
 				[
 					self::PROP_HASH      => $hash,
 					self::PROP_DISMISSED => false,
-					self::PROP_DETECTED  => $this->findNonTranslatableLocation( $locations ),
 				]
 			);
 		}
 	}
 
-	/**
-	 * As there are an infinite range of possibilities
-	 * for locations, we cannot detect all cases.
-	 *
-	 * We'll limit ourselves to positive comparisons,
-	 * and only for CPTs and taxonomies.
-	 *
-	 * @param array[] $locations
-	 *
-	 * @return null|string
-	 */
-	private function findNonTranslatableLocation( $locations ) {
+	public static function detect( array $locations ) {
+		if ( self::OPTIONS_PAGE_PURE === self::classifyOptionsPageLocations( $locations ) ) {
+			return self::DETECTED_OPTIONS_PAGE;
+		}
+
 		$isNotPositiveComparison = Logic::complement( Relation::propEq( 'operator', '==' ) );
 		$isPostType              = Relation::propEq( 'param', 'post_type' );
 		$isTaxonomy              = Relation::propEq( 'param', 'taxonomy' );
@@ -74,39 +65,58 @@ class DetectNonTranslatableLocations {
 		return null;
 	}
 
-	/**
-	 * @param int $fieldGroupId
-	 *
-	 * @return null|string
-	 */
-	public static function getDetectedType( $fieldGroupId ) {
-		$get = Obj::prop( Fns::__, self::getAll( $fieldGroupId ) );
+	public static function classifyOptionsPageLocations( $locations ) {
+		$isPositiveComparison = Relation::propEq( 'operator', '==' );
+		$isOptionsPage        = Relation::propEq( 'param', self::LOCATION_PARAM_OPTIONS_PAGE );
 
-		if ( $get( self::PROP_DISMISSED ) ) {
+		$totalGroups       = 0;
+		$optionsPageGroups = 0;
+
+		foreach ( (array) $locations as $locationGroup ) {
+			++$totalGroups;
+
+			foreach ( (array) $locationGroup as $location ) {
+				if ( $isPositiveComparison( $location ) && $isOptionsPage( $location ) ) {
+					++$optionsPageGroups;
+					break;
+				}
+			}
+		}
+
+		if ( ! $optionsPageGroups ) {
 			return null;
 		}
 
-		return $get( self::PROP_DETECTED );
+		return $optionsPageGroups === $totalGroups
+			? self::OPTIONS_PAGE_PURE
+			: self::OPTIONS_PAGE_MIXED;
 	}
 
-	/**
-	 * @param null|string $nonTranslatableType
-	 *
-	 * @return string
-	 */
+	public static function getDetectedType( $fieldGroupId, array $locations ) {
+		if ( Obj::prop( self::PROP_DISMISSED, self::getAll( $fieldGroupId ) ) ) {
+			return null;
+		}
+
+		return self::detect( $locations );
+	}
+
 	public static function getTitle( $nonTranslatableType ) {
 		return DetectNonTranslatableLocations::DETECTED_TAXONOMY === $nonTranslatableType
+			/* translators: Title of the notice on a field group whose taxonomy cannot be translated yet. Verb phrase, imperative. */
 			? esc_html__( 'Set translation preferences for the attached taxonomy', 'acfml' )
+			/* translators: Title of the notice on a field group whose post type cannot be translated yet. Verb phrase, imperative. */
 			: esc_html__( 'Set translation preferences for the attached post type', 'acfml' );
 	}
 
-	/**
-	 * @param null|string $nonTranslatableType
-	 *
-	 * @return string
-	 */
+	public static function getSettingsUrl( $nonTranslatableType ) {
+		$section = DetectNonTranslatableLocations::DETECTED_TAXONOMY === $nonTranslatableType ? 'taxonomies' : 'post-types';
+
+		return admin_url( 'admin.php?page=tm/menu/settings&section=' . $section );
+	}
+
 	public static function getDescription( $nonTranslatableType ) {
 		return DetectNonTranslatableLocations::DETECTED_TAXONOMY === $nonTranslatableType
+			/* translators: Body of the notice on a field group whose taxonomy cannot be translated yet. Keep the trailing space: a link follows on the same line. */
 			? esc_html__( 'If you want to translate your fields, go to the WPML Settings page and make the taxonomy attached to this field group translatable. ', 'acfml' )
 			: sprintf(
 				/* translators: %1$s and %2$s will wrap the string in a <a> link html tag */
@@ -116,40 +126,18 @@ class DetectNonTranslatableLocations {
 			);
 	}
 
-	/**
-	 * @param int $fieldGroupId
-	 *
-	 * @return void
-	 */
 	public static function dismiss( $fieldGroupId ) {
 		self::updateAll( $fieldGroupId, Obj::assoc( self::PROP_DISMISSED, true, self::getAll( $fieldGroupId ) ) );
 	}
 
-	/**
-	 * @param int    $fieldGroupId
-	 * @param string $prop
-	 *
-	 * @return mixed
-	 */
 	private static function get( $fieldGroupId, $prop ) {
 		return Obj::prop( $prop, self::getAll( $fieldGroupId ) );
 	}
 
-	/**
-	 * @param int $fieldGroupId
-	 *
-	 * @return array
-	 */
 	private static function getAll( $fieldGroupId ) {
 		return (array) Post::getMetaSingle( $fieldGroupId, self::KEY );
 	}
 
-	/**
-	 * @param int   $fieldGroupId
-	 * @param array $data
-	 *
-	 * @return void
-	 */
 	private static function updateAll( $fieldGroupId, $data ) {
 		Post::updateMeta( $fieldGroupId, self::KEY, $data );
 	}

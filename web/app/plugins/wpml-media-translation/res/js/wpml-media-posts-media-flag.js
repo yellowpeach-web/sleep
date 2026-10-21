@@ -76,7 +76,21 @@ jQuery(function ($) {
                 if (response.data.status) {
                     setStatus(response.data.status);
                 }
-                setInitialLanguage();
+                // Straight into the batch loop. There used to be an extra
+                // setInitialLanguage() call here that posted the SAME process
+                // action without an offset - a full batch whose progress line
+                // the browser then threw away, because it read
+                // response.data.message while the endpoint answers with
+                // response.data.status (wpmldev-7805 follow-up). It stayed
+                // invisible while the manual run always had several batches
+                // left: the batches after it reported through setHasMediaFlag()
+                // and its correct read. Since the idle-admin scan is capped to
+                // one batch per page view, an admin page opened before the
+                // Media tab already scans a batch in the background, so the
+                // manual run is often down to a SINGLE batch - the one whose
+                // percentage was dropped - and the button greyed out with no
+                // progress at all until the page reloaded.
+                setHasMediaFlag(0);
 			},
 			error: function (jqXHR, status, error) {
 				statusContainer.html(jqXHR.statusText || status || error);
@@ -98,32 +112,6 @@ jQuery(function ($) {
 			statusContainer.html('<pre>' + error.join('</pre><pre>') + '</pre>');
 		}
 	}
-
-    function setInitialLanguage() {
-        var data = {
-			action: processAction,
-			nonce: processNonce
-        };
-        $.ajax({
-            url: ajaxurl,
-            type: "POST",
-            dataType: "json",
-            data: data,
-            success: function (response) {
-				handleResponse(response);
-				if (!response.success) {
-					return;
-				}
-
-				var message = response.message ? response.message : response.data.message;
-				setStatus(message);
-				setHasMediaFlag(0);
-			},
-			error: function (jqXHR, status, error) {
-				statusContainer.html(jqXHR.statusText || status || error);
-			}
-        });
-    }
 
     function setHasMediaFlag(offset) {
         var data = {

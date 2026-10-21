@@ -4,10 +4,8 @@ class WPML_TM_Translation_Jobs_Fix_Summary {
 
 	const INVALID_JOBS_SYNCED_KEY = 'wpml_tm_migration_invalid_jobs_already_synced';
 
-	/** @var WPML_TM_Translation_Jobs_Fix_Summary_Notice  */
 	private $notice;
 
-	/** @var WPML_TM_Jobs_Migration_State */
 	private $migration_state;
 
 	public function __construct(
@@ -20,8 +18,12 @@ class WPML_TM_Translation_Jobs_Fix_Summary {
 
 	public function add_hooks() {
 		add_action( 'init', array( $this, 'display_summary' ) );
-		add_action(
-			'wp_ajax_' . WPML_TP_Sync_Ajax_Handler::AJAX_ACTION,
+		\WPML\Request\Adapter\Ajax::register(
+			WPML_TP_Sync_Ajax_Handler::AJAX_ACTION,
+			\WPML\Request\Policy\Policy::capability(
+				'manage_translations',
+				\WPML\Request\Policy\Authenticity::actionNonce( 'sync-job-states', 'nonce' )
+			),
 			array(
 				$this,
 				'mark_invalid_jobs_as_synced',

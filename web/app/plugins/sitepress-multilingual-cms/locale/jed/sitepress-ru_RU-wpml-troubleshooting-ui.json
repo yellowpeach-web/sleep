@@ -3,37 +3,103 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "ru_RU"
          },
          "Preparing...": [
             "Подготовка..."
          ],
          "All jobs have been cancelled": [
-            "Все задания отменены"
+            "Все задания были отменены"
          ],
          "There is no more jobs to cancel": [
             "Больше нет заданий для отмены"
          ],
          "The jobs cancellation has failed": [
-            "Отмена заданий не удалась"
+            "Не удалось отменить задания"
          ],
          "Cancel in-progress automatic jobs": [
-            "Отменить выполняемые автоматические задания"
+            "Отменить выполняемые автоматически задания"
          ],
          "Domain name has been updated": [
-            "Доменное имя изменилось"
+            "Доменное имя обновлено"
          ],
          "Domain name update has been failed": [
-            "Изменение доменного имени не выполнено"
+            "Не удалось обновить доменное имя"
          ],
          "Update domain name in language switcher settings": [
-            "Измените доменное имя в настройках переключателя языков"
+            "Обновить доменное имя в настройках переключателя языков"
+         ],
+         "Disclaimer: MySQL Disk Space": [
+            "Отказ от ответственности: дисковое пространство MySQL"
+         ],
+         "Cleaning and compressing the wp_icl_translate and wp_icl_translation_status tables reduces its data size, but does not automatically free up disk space in MySQL. To reclaim disk space, a table rebuild is required—a risky operation not performed automatically by this tool.": [
+            "Очистка и сжатие таблиц wp_icl_translate и wp_icl_translation_status уменьшает размер их данных, но не освобождает дисковое пространство в MySQL автоматически. Чтобы освободить место на диске, требуется перестроение таблиц — рискованная операция, которая не выполняется этим инструментом автоматически."
+         ],
+         "Optimize translation tables": [
+            "Оптимизировать таблицы перевода"
+         ],
+         "Previous State Migration": [
+            "Миграция предыдущего состояния"
+         ],
+         "Translation Elements Migration": [
+            "Миграция элементов перевода"
+         ],
+         "Processed": [
+            "Обработано"
+         ],
+         "Error": [
+            "Ошибка"
+         ],
+         "Success": [
+            "Успех"
+         ],
+         "Database tables optimization completed successfully.": [
+            "Оптимизация таблиц базы данных успешно завершена."
+         ],
+         "Warning": [
+            "Предупреждение"
+         ],
+         "This process is resource-intensive and may take a significant amount of time. It is recommended to run this optimization during periods of low traffic.": [
+            "Этот процесс ресурсозатратен и может занять значительное время. Рекомендуется запускать эту оптимизацию в периоды низкой посещаемости сайта."
+         ],
+         "Database Tables Optimization": [
+            "Оптимизация таблиц базы данных"
          ],
          "Refresh license data to recognise license update": [
-            "Обновите данные лицензии, чтобы распознать обновление лицензии"
+            "Обновить данные лицензии, чтобы распознать обновление лицензии"
          ],
          "WPML License has been refreshed": [
-            "Лицензия WPML обновлена"
+            "Лицензия WPML была обновлена"
+         ],
+         "Translate Everything Automatically is not active.": [
+            "Функция «Переводить все автоматически» не активна."
+         ],
+         "Retry stuck automatic translations": [
+            "Повторить застрявшие автоматические переводы"
+         ],
+         "Resends translation jobs that couldn't be processed due to a temporary issue while <b>Translate Everything Automatically</b> was active.": [
+            "Повторно отправляет задания на перевод, которые не удалось обработать из-за временной проблемы, возникшей, когда функция <b>Переводить все автоматически</b> была активна."
+         ],
+         "Checking for stuck translation jobs...": [
+            "Поиск застрявших заданий на перевод..."
+         ],
+         "Processing... %s stuck translation found so far": [
+            "Обработка... Пока найдено: %s застрявший перевод",
+            "Обработка... Пока найдено: %s застрявших перевода",
+            "Обработка... Пока найдено: %s застрявших переводов"
+         ],
+         "Something went wrong while checking for stuck translation jobs. Please <a>contact WPML support</a>.": [
+            "Что-то пошло не так при проверке застрявших заданий на перевод. Пожалуйста, <a>обратитесь в службу поддержки WPML</a>."
+         ],
+         "No stuck translation jobs found.": [
+            "Застрявших заданий на перевод не найдено."
+         ],
+         "%s stuck translation job found. WPML will translate it automatically in the background.\nYou can check the progress in the <b>Translation Dashboard</b>.": [
+            "Найдено застрявших заданий на перевод: %s. WPML переведет их автоматически в фоновом режиме.\nВы можете проверить прогресс в <b>Панели управления переводами</b>.",
+            "Найдено застрявших заданий на перевод: %s. WPML переведет их автоматически в фоновом режиме.\nВы можете проверить прогресс в <b>Панели управления переводами</b>.",
+            "Найдено застрявших заданий на перевод: %s. WPML переведет их автоматически в фоновом режиме.\nВы можете проверить прогресс в <b>Панели управления переводами</b>."
          ]
       }
    }

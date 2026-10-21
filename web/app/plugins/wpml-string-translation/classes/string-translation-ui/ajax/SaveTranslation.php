@@ -12,11 +12,15 @@ use WPML\ST\API\Fns as STAPI;
 class SaveTranslation implements IHandler {
 
 	public function run( Collection $data ) {
+		if ( ! current_user_can( 'wpml_manage_string_translation' ) && ! current_user_can( 'manage_translations' ) ) {
+			return Either::left( 'not allowed' );
+		}
+
 		$id          = Obj::prop( 'id', $data );
 		$translation = Obj::prop( 'translation', $data );
 		$lang        = Obj::prop( 'lang', $data );
 
-		if ( $id && $translation && $lang ) {
+		if ( $id && trim( $translation ?? '' ) !== '' && $lang ) {
 			return Either::of( STAPI::saveTranslation( $id, $lang, $translation, ICL_TM_COMPLETE ) );
 		} else {
 			return Either::left( 'invalid data' );

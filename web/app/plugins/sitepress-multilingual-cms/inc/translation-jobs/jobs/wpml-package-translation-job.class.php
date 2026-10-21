@@ -4,12 +4,10 @@ require_once WPML_TM_PATH . '/inc/translation-jobs/jobs/wpml-element-translation
 
 class WPML_Package_Translation_Job extends WPML_Element_Translation_Job {
 	public function get_original_document() {
-		return apply_filters(
-			'wpml_get_translatable_item',
-			null,
-			$this->get_original_element_id(),
-			'package'
-		);
+		$packageId = $this->get_original_element_id();
+		$package   = apply_filters( 'wpml_get_translatable_item', null, $packageId, 'package' );
+
+		return $package ?: TranslationManagement::get_string_package( $packageId );
 	}
 
 	public function get_url( $original = false ) {

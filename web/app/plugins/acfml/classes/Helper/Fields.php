@@ -8,23 +8,17 @@ use WPML\FP\Obj;
 class Fields {
 
 	const WRAPPER_FIELDS = [ 'repeater', 'flexible_content' ];
+	const LAYOUT_KEY         = 'acf_fc_layout';
+	const LAYOUT_META_SUFFIX = '_layout_meta';
+	const ROW_INDEX_PATTERN  = '_\d+_';
 
-	/**
-	 * @param array    $fields
-	 * @param callable $transformField
-	 * @param callable $transformLayout
-	 * @param string   $fieldBasePattern
-	 *
-	 * @return array
-	 */
 	public static function iterate( $fields, $transformField, $transformLayout, $fieldBasePattern = '' ) {
 		foreach ( $fields as &$field ) {
-			$fieldPattern = $fieldBasePattern . $field['name'];
+			$fieldPattern = $fieldBasePattern . preg_quote( $field['name'] );
 			$field        = $transformField( $field, $fieldPattern );
 
 			if ( isset( $field['sub_fields'] ) ) {
-				$fieldPatternSuffix  = 'group' === Obj::prop( 'type', $field ) ? '_' : '_\d+_';
-				$field['sub_fields'] = self::iterate( $field['sub_fields'], $transformField, $transformLayout, $fieldPattern . $fieldPatternSuffix );
+				$field['sub_fields'] = self::iterate( $field['sub_fields'], $transformField, $transformLayout, self::getSubfieldBasePattern( $field, $fieldPattern, $fieldBasePattern ) );
 			}
 
 			if ( isset( $field['layouts'] ) ) {
@@ -32,7 +26,7 @@ class Fields {
 					$layout = $transformLayout( $layout );
 
 					if ( isset( $layout['sub_fields'] ) ) {
-						$layout['sub_fields'] = self::iterate( $layout['sub_fields'], $transformField, $transformLayout, $fieldPattern . '_\d+_' );
+						$layout['sub_fields'] = self::iterate( $layout['sub_fields'], $transformField, $transformLayout, $fieldPattern . self::ROW_INDEX_PATTERN );
 					}
 				}
 			}
@@ -41,32 +35,65 @@ class Fields {
 		return $fields;
 	}
 
-	/**
-	 * @param array  $fields Array of fields.
-	 * @param string $type   Field type.
-	 *
-	 * @return bool
-	 */
-	public static function containsType( $fields, $type ) {
-		$isType = Relation::propEq( 'type', $type );
-		return (bool) wpml_collect( $fields )
-			->first( $isType );
+	private static function getSubfieldBasePattern( $field, $fieldPattern, $fieldBasePattern ) {
+		switch ( Obj::prop( 'type', $field ) ) {
+			case 'clone':
+				return $fieldBasePattern;
+			case 'group':
+				return $fieldPattern . '_';
+			default:
+				return $fieldPattern . self::ROW_INDEX_PATTERN;
+		}
 	}
 
-	/**
-	 * Checks if a field is a wrapper of other fields.
-	 *  - Repeater field has sub_fields.
-	 *  - Flexible content field has layouts, which also have sub_fields.
-	 *
-	 * @param array $field
-	 *
-	 * @return bool|callable
-	 */
+	public static function getFresh( array $fieldGroup ): array {
+		self::evictFromStore( acf_get_store( 'fields' ), $fieldGroup['ID'] );
+
+		return acf_get_fields( $fieldGroup );
+	}
+
+	private static function evictFromStore( $store, $parentId ) {
+		foreach ( acf_get_raw_fields( $parentId ) as $field ) {
+			if ( ! is_array( $field ) ) {
+				continue;
+			}
+
+			$store->remove( $field['key'] );
+			self::evictFromStore( $store, $field['ID'] );
+		}
+	}
+
+	public static function containsType( $fields, $type ) {
+		$isGroupContainingIt = function( $field ) use ( $type ) {
+			return Relation::propEq( 'type', 'group', $field )
+				&& self::containsType( (array) Obj::propOr( [], 'sub_fields', $field ), $type );
+		};
+
+		$isTypeOrGroupContainingIt = function( $field ) use ( $type, $isGroupContainingIt ) {
+			return Relation::propEq( 'type', $type, $field ) || $isGroupContainingIt( $field );
+		};
+
+		return (bool) wpml_collect( $fields )
+			->first( $isTypeOrGroupContainingIt );
+	}
+
 	public static function isWrapper( $field ) {
 		return in_array(
 			Obj::prop( 'type', $field ),
 			self::WRAPPER_FIELDS,
 			true
 		);
+	}
+
+	public static function isWrapperOrGroup( $field ) {
+		return in_array(
+			Obj::prop( 'type', $field ),
+			array_merge( [ 'group' ], self::WRAPPER_FIELDS ),
+			true
+		);
+	}
+
+	public static function getLayoutsByName( array $field ): array {
+		return array_column( (array) Obj::propOr( [], 'layouts', $field ), null, 'name' );
 	}
 }

@@ -1,0 +1,114 @@
+/**
+ * The per-language sitemap list on WPML -> Settings -> URLs and SEO.
+ *
+ * The panel carries its own layout, because it renders in either of two places:
+ * inside the page body on WPML Core's end-of-sections seam, where it wears
+ * Core's `.wpml-section` card, and in the admin notice area on a Core that has
+ * no seam, where it wears `.notice`. Everything below the wrapper is the same
+ * in both.
+ */
+
+.wpseoml-sitemaps {
+	padding: 0;
+}
+
+.wpseoml-sitemaps__disclosure {
+	padding: 12px;
+}
+
+.wpseoml-sitemaps__summary {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	list-style: none;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.4;
+	color: #1d2327;
+}
+
+.wpseoml-sitemaps__summary::-webkit-details-marker {
+	display: none;
+}
+
+.wpseoml-sitemaps__summary::before {
+	content: "";
+	flex: 0 0 auto;
+	width: 0;
+	height: 0;
+	margin-left: 2px;
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	border-left: 6px solid #646970;
+}
+
+.wpseoml-sitemaps__disclosure[open] > .wpseoml-sitemaps__summary::before {
+	margin-left: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 6px solid #646970;
+	border-bottom: 0;
+}
+
+.wpseoml-sitemaps__summary:focus-visible {
+	outline: 2px solid #2271b1;
+	outline-offset: 2px;
+}
+
+.wpseoml-sitemaps__count {
+	flex: 0 0 auto;
+	padding: 1px 8px;
+	border-radius: 9px;
+	background: #f0f0f1;
+	font-size: 12px;
+	font-weight: 600;
+	color: #50575e;
+}
+
+/* Open, the list itself says how many there are. */
+.wpseoml-sitemaps__disclosure[open] > .wpseoml-sitemaps__summary .wpseoml-sitemaps__count {
+	display: none;
+}
+
+.wpseoml-sitemaps__intro {
+	margin: 8px 0 12px 20px;
+	max-width: 62em;
+	color: #50575e;
+}
+
+/*
+ * No inner scroll area: every language has to be readable once the list is
+ * open, and a scroll box hides the ones below the fold without saying so.
+ */
+.wpseoml-sitemaps__list {
+	margin: 0 0 0 20px;
+	padding: 0;
+	list-style: none;
+}
+
+.wpseoml-sitemaps__item {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 4px 12px;
+	margin: 0;
+	padding: 5px 0;
+	border-top: 1px solid #f0f0f1;
+}
+
+.wpseoml-sitemaps__item:first-child {
+	border-top: 0;
+}
+
+.wpseoml-sitemaps__language {
+	flex: 0 0 11em;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.wpseoml-sitemaps__url {
+	flex: 1 1 20em;
+	min-width: 0;
+	overflow-wrap: anywhere;
+}

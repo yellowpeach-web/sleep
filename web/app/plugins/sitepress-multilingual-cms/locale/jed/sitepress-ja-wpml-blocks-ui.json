@@ -3,64 +3,72 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "ja"
          },
          "Advanced": [
-            "詳細"
+            "高度な設定"
          ],
          "HTML anchor": [
             "HTML アンカー"
          ],
          "Add a shortcut to this block when loading the page using the “#anchor” URL.": [
-            "「#anchor」URL を使用してページを読み込む際に、このブロックへのショートカットを追加します。"
+            "「#anchor」URLを使用してページを読み込む際、このブロックへのショートカットを追加します。"
          ],
          "Additional CSS class(es)": [
-            "追加 CSS クラス (複数可)"
+            "追加 CSS クラス"
          ],
          "Separate multiple classes with spaces.": [
-            "複数クラスの場合は、スペースで区切ります。"
+            "複数のクラスはスペースで区切ってください。"
          ],
          "Color": [
             "色"
          ],
+         "px": [
+            "px"
+         ],
+         "%": [
+            "%"
+         ],
          "Dimensions": [
-            "ディメンション"
+            "サイズ"
          ],
          "BLOCK": [
-            "Block"
+            "ブロック"
          ],
          "Block margin": [
-            "ブロック マージン"
+            "ブロックの外側の余白"
          ],
          "Block padding": [
-            "ブロック パディング"
+            "ブロックの内側の余白"
          ],
          "LANGUAGE": [
             "言語"
          ],
          "Language spacing": [
-            "言語スペーシング"
+            "言語間の間隔"
          ],
          "Language padding": [
-            "言語パディング"
+            "言語の内側の余白"
          ],
          "Display": [
             "表示"
          ],
          "Show flag": [
-            "フラグを表示する"
+            "国旗を表示する"
          ],
          "Show language name": [
             "言語名を表示する"
          ],
          "Display language name in": [
-            "言語名を表示:"
+            "言語名の表示言語："
          ],
          "Style": [
             "スタイル"
          ],
          "Flag settings": [
-            "フラグ設定"
+            "国旗の設定"
          ],
          "Width": [
             "幅"
@@ -69,7 +77,13 @@
             "高さ"
          ],
          "Spacing": [
-            "スペーシング"
+            "間隔"
+         ],
+         "Switch to %s": [
+            "%s に切り替える"
+         ],
+         "Available languages": [
+            "利用可能な言語"
          ],
          "Allow wrapping to multiple lines": [
             "複数行への折り返しを許可する"
@@ -84,46 +98,52 @@
             "レイアウト"
          ],
          "Justification": [
-            "ジャスティフィケーション"
+            "配置"
          ],
          "Orientation": [
-            "オリエンテーション"
+            "方向"
+         ],
+         "Language Switcher": [
+            "言語スイッチャー"
+         ],
+         "Language switcher, press tab to navigate to other languages": [
+            "言語スイッチャー。Tabキーを押して他の言語に移動します"
          ],
          "Typography": [
-            "タイポグラフィー"
+            "タイポグラフィ"
          ],
          "Background": [
             "背景"
          ],
          "Language Text": [
-            "言語テキスト"
+            "言語のテキスト"
          ],
          "Language Background": [
-            "言語バックグラウンド"
+            "言語の背景"
          ],
          "Current language text": [
-            "現在の言語テキスト"
+            "現在の言語のテキスト"
          ],
          "Current language background": [
-            "現在の言語バックグラウンド"
+            "現在の言語の背景"
          ],
          "Full name": [
-            "氏名"
+            "フルネーム"
          ],
          "Code": [
             "コード"
          ],
          "Justify items left": [
-            "アイテムを左寄せにする"
+            "左揃え"
          ],
          "Justify items center": [
-            "アイテムを中央寄せする"
+            "中央揃え"
          ],
          "Justify items right": [
-            "アイテムを右寄せにする"
+            "右揃え"
          ],
          "Justify items space between": [
-            "アイテムを両端揃えにする"
+            "均等割り付け"
          ],
          "Horizontal": [
             "水平"
@@ -132,7 +152,7 @@
             "垂直"
          ],
          "Normal": [
-            "普通"
+            "標準"
          ],
          "Medium": [
             "中"
@@ -141,37 +161,31 @@
             "大"
          ],
          "X-Large": [
-            "X-Large"
+            "特大"
          ],
          "Ab": [
-            "Ab"
+            "あア"
          ],
          "AB": [
-            "AB"
+            "あア"
          ],
          "ab": [
-            "ab"
+            "あア"
          ],
          "Small": [
             "小"
          ],
          "Displays the WPML Language Switcher.": [
-            "WPML 言語切り替え機能を表示します。"
-         ],
-         "Language Switcher": [
-            "言語切り替え機能"
+            "WPML 言語スイッチャーを表示します。"
          ],
          "displays the WPML Language Switcher": [
-            "WPML 言語切り替え機能を表示します"
-         ],
-         "Displays the WPML Language Switcher. <br/> Learn <a>how to translate this block</a>.": [
-            "WPML 言語スイッチャーを表示する。 <br/> このブロックの翻訳方法を <a>学ぶ</a>。"
+            "WPML 言語スイッチャーを表示します"
          ],
          "Navigation Language Switcher": [
-            "ナビゲーション言語切り替え機能"
+            "ナビゲーション言語スイッチャー"
          ],
          "Reset all": [
-            "すべてをリセット"
+            "すべてリセット"
          ]
       }
    }

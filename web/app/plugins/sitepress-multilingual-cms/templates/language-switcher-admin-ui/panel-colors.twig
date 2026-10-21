@@ -22,7 +22,7 @@
     <h4>{{ strings.color_picker.panel_title }}</h4>
 
     <label for="wpml-ls-{{ id }}-colorpicker-preset">{{ strings.color_picker.label_color_preset }}</label>
-    <select name="wpml-ls-{{ id }}-colorpicker-preset" class="js-wpml-ls-colorpicker-preset">
+    <select id="wpml-ls-{{ id }}-colorpicker-preset" class="js-wpml-ls-colorpicker-preset">
         <option value="">-- {{ strings.color_picker.select_option_choose }} --</option>
         {% for scheme_id, scheme in color_schemes %}
             <option value="{{ scheme_id }}">{{ scheme.label }}</option>
@@ -34,12 +34,12 @@
             <tr>
                 <td>
                 </td>
-                <th>{{ strings.color_picker.label_normal_scheme }}</th>
-                <th>{{ strings.color_picker.label_hover_scheme }}</th>
+                <th id="normal_color_scheme">{{ strings.color_picker.label_normal_scheme }}</th>
+                <th id="hover_color_scheme">{{ strings.color_picker.label_hover_scheme }}</th>
             </tr>
             {% for option in options %}
             <tr>
-                <td>{{ option.label }}</td>
+                <td id="color_label_{{ option.name }}">{{ option.label }}</td>
                 <td class="js-wpml-ls-colorpicker-wrapper">
                     {% if 'normal' in option.schemes %}
                         {% if name_base %}

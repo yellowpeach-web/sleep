@@ -2,7 +2,6 @@
 
 class WPML_TM_Serialized_Custom_Field_Package_Handler {
 
-	/** @var WPML_Custom_Field_Setting_Factory $custom_field_setting_factory */
 	private $custom_field_setting_factory;
 
 	public function __construct( WPML_Custom_Field_Setting_Factory $custom_field_setting_factory ) {
@@ -19,14 +18,16 @@ class WPML_TM_Serialized_Custom_Field_Package_Handler {
 			10,
 			2
 		);
+
+		add_filter(
+			'wpml_tm_adjust_translation_fields',
+			array(
+				$this,
+				'set_title_for_whitelisted_attributes',
+			)
+		);
 	}
 
-	/**
-	 * @param int    $translated
-	 * @param string $custom_field_job_type - e.g: field-my_custom_field-0-my_attribute.
-	 *
-	 * @return int
-	 */
 	public function translate_only_whitelisted_attributes( $translated, $custom_field_job_type ) {
 		if ( $translated ) {
 			list( $custom_field, $attributes ) = WPML_TM_Field_Type_Encoding::decode( $custom_field_job_type );
@@ -43,42 +44,64 @@ class WPML_TM_Serialized_Custom_Field_Package_Handler {
 		return $translated;
 	}
 
-	/**
-	 * Matches the attributes array to the whitelist array
-	 * The whitelist array has the attribute as the key to another array for sub keys
-	 * eg. array( 'attribute1' => array( 'subkey1' => array() ) )
-	 *
-	 * @param array $attributes - The attributes in the custom field.
-	 * @param array $whitelist - The whitelist attributes to match against.
-	 * @param int   $current_depth - The current depth in the attributes array.
-	 *
-	 * @return bool
-	 */
 	private function match_in_order( $attributes, $whitelist, $current_depth = 0 ) {
+		$current_attribute = $attributes[ $current_depth ];
+		$wildcard_match    = $this->match_with_wildcards( $current_attribute, array_keys( $whitelist ) );
+		if ( ! $wildcard_match ) {
+			return false;
+		}
+
+		$whitelist_entry = $whitelist[ $wildcard_match ];
+		if ( count( $attributes ) === $current_depth + 1 ) {
+			return $this->whitelists_value_at_own_level( (string) $wildcard_match, (string) $current_attribute, $whitelist_entry );
+		}
+
+		return $this->has_sub_keys( $whitelist_entry ) && $this->match_in_order( $attributes, $whitelist_entry, $current_depth + 1 );
+	}
+
+	private function whitelists_value_at_own_level( string $whitelist_key, string $attribute, $whitelist_entry ): bool {
+		return $whitelist_key === $attribute || ! $this->has_sub_keys( $whitelist_entry );
+	}
+
+	private function has_sub_keys( $whitelist_entry ): bool {
+		return is_array( $whitelist_entry ) && [] !== $whitelist_entry;
+	}
+
+	public function set_title_for_whitelisted_attributes( $fields ) {
+		foreach ( $fields as $index => $field ) {
+			list( $custom_field, $attributes ) = WPML_TM_Field_Type_Encoding::decode( $field['field_type'] );
+			if ( $custom_field && $attributes ) {
+				$settings             = $this->custom_field_setting_factory->post_meta_setting( $custom_field );
+				$attributes_whitelist = $settings->get_attributes_whitelist();
+
+				if ( $attributes_whitelist ) {
+					$title = $this->find_title_in_order( $attributes, $attributes_whitelist );
+					if ( '' !== $title ) {
+						$fields[ $index ]['title'] = $title;
+					}
+				}
+			}
+		}
+
+		return $fields;
+	}
+
+	private function find_title_in_order( $attributes, $whitelist, $current_depth = 0 ) {
 		$current_attribute = $attributes[ $current_depth ];
 		$wildcard_match    = $this->match_with_wildcards( $current_attribute, array_keys( $whitelist ) );
 		if ( $wildcard_match ) {
 			if ( count( $attributes ) === $current_depth + 1 ) {
-				return true;
+				$title = $whitelist[ $wildcard_match ] ?? '';
+
+				return is_string( $title ) ? $title : '';
 			} else {
-				return $this->match_in_order( $attributes, $whitelist[ $wildcard_match ], $current_depth + 1 );
+				return $this->find_title_in_order( $attributes, $whitelist[ $wildcard_match ], $current_depth + 1 );
 			}
 		}
 
-		return false;
+		return '';
 	}
 
-	/**
-	 * Matches the attribute to the whitelist array using wildcards.
-	 * Wildcards can only be used at the end of the string.
-	 * eg. 'title-*', 'data*', '*'
-	 * A '*' matches everything.
-	 *
-	 * @param string $attribute - the current attributes.
-	 * @param array  $whitelist - the whitelist to match against.
-	 *
-	 * @return string - Returns the whitelist string match.
-	 */
 	private function match_with_wildcards( $attribute, $whitelist ) {
 		foreach ( $whitelist as $white_value ) {
 			$asterisk_pos = strpos( $white_value, '*' );

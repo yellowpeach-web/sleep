@@ -4,43 +4,224 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "zh_TW"
          },
-         "You can choose which posts to translate from the <strong>Translation Management Dashboard</strong>.": [
-            "您可以從<strong>翻譯管理儀表板</strong>選擇要翻譯的文章。"
-         ],
-         "Yes, translate all of these posts automatically": [
-            "是，自動翻譯所有這些文章"
-         ],
-         "No, I want to translate some of these posts, but not all": [
-            "否，我想翻譯其中一些文章，但不是全部"
+         "%1$s and %2$s": [
+            "%1$s 與 %2$s"
          ],
          "You must use the Advanced Translation Editor if you want to translate your content automatically.": [
-            "如果要自動翻譯內容，必須使用進階翻譯編輯器。"
+            "如果您想要自動翻譯您的內容，則必須使用進階翻譯編輯器。"
          ],
          "Synchronize translators and translation managers with ATE": [
-            "與ATE同步譯員和翻譯經理"
+            "同步翻譯人員和翻譯經理至 ATE"
          ],
-         "Please try again in a few minutes. If the problem persists, please contact %sWPML support%s.": [
-            "請幾分鐘後再試。如果問題仍然存在，請聯絡%sWPML支援%s。"
+         "Please try again in a few minutes. If the problem persists, please contact %1$sWPML support%2$s.": [
+            "請在幾分鐘後再試一次。如果問題仍然存在，請聯絡 %1$sWPML 支援%2$s。"
          ],
-         "Save": [
-            "保存"
+         "The number of translated terms carrying %s could not be counted.": [
+            "無法計算帶有 %s 的已翻譯字詞數量。"
          ],
-         "Please confirm this translation setting": [
-            "請確認此翻譯設定"
+         "There are no translated terms carrying %s yet that need translating again. The change applies to new translations.": [
+            "目前尚無帶有 %s 且需要再次翻譯的已翻譯字詞。此變更將套用於新的翻譯。"
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate the <NumberOfItems /> existing items.": [
-            "您的網站設定為自動翻譯所有內容。當您使<PostTypesNames />可翻譯時，WPML將自動翻譯<NumberOfItems />個現有項目。"
+         "%1$s translated term carries %2$s — only new translations are affected.": [
+            "%1$s 個已翻譯字詞帶有 %2$s — 僅新的翻譯會受到影響。"
          ],
-         "Are you OK with paying for this?": [
-            "您可以付這筆錢嗎？"
+         "The number of translated posts carrying %s could not be counted.": [
+            "無法計算帶有 %s 的已翻譯文章數量。"
+         ],
+         "There are no translated posts carrying %s yet that need translating again. The change applies to new translations.": [
+            "目前尚無帶有 %s 且需要再次翻譯的已翻譯文章。此變更將套用於新的翻譯。"
+         ],
+         "%1$s translated post carries %2$s — it will be marked as needing a translation update.": [
+            "%1$s 篇文章帶有 %2$s — 它們將被標記為需要更新翻譯。"
+         ],
+         "%1$s translated post carries %2$s — its translation will show the original's value from now on.": [
+            "%1$s 篇文章帶有 %2$s — 從現在起，它們的翻譯將顯示原始文章的值。"
+         ],
+         "%1$s translated post carries %2$s — translations without a value get the original's once.": [
+            "%1$s 篇文章帶有 %2$s — 沒有值的翻譯將會獲得一次原始文章的值。"
+         ],
+         "%1$s translated post carries %2$s — it is no longer translated and what its translations hold stays as it is.": [
+            "%1$s 篇文章帶有 %2$s — 它們不再被翻譯，且其翻譯內容將保持原樣。"
+         ],
+         "Review these translation setting changes": [
+            "檢查這些翻譯設定變更"
          ],
          "Cancel": [
             "取消"
          ],
-         "Make translatable": [
-            "使可翻譯"
+         "Save changes": [
+            "儲存變更"
+         ],
+         "Also update the existing posts now": [
+            "現在也更新現有的文章"
+         ],
+         "Also update the %s existing post now": [
+            "現在也更新這 %s 篇現有的文章"
+         ],
+         "Only apply to new translations": [
+            "僅套用於新的翻譯"
+         ],
+         "Once saved, WPML automatically sends new and updated posts with this field to translation. This may use translation words.": [
+            "儲存後，WPML 會自動將帶有這些欄位的新文章和更新文章傳送至翻譯。這可能會使用翻譯字數。"
+         ],
+         "Once saved, WPML automatically sends new and updated terms with this key to translation. This may use translation words.": [
+            "儲存後，WPML 會自動將帶有這些鍵值的新字詞和更新字詞傳送至翻譯。這可能會使用翻譯字數。"
+         ],
+         "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "無論哪種方式，新偏好設定都會儲存。若選擇「僅套用於新翻譯」，則每個現有翻譯都將保持原樣。"
+         ],
+         "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
+            "%1$s 個自訂欄位在此畫面外變更為可翻譯：%2$s。請決定如何處理已存在的翻譯。"
+         ],
+         "Review this field": [
+            "檢查這些欄位"
+         ],
+         "Save": [
+            "儲存"
+         ],
+         "Calculate Costs": [
+            "計算費用"
+         ],
+         "WPML will automatically translate %1$s into %2$s.": [
+            "WPML 將自動將 %1$s 翻譯為 %2$s。"
+         ],
+         "Automatic translation uses translation words.": [
+            "自動翻譯會使用翻譯字數。"
+         ],
+         "Are you OK with this?": [
+            "您同意這樣做嗎？"
+         ],
+         "Are you sure you want to change the translation option?": [
+            "您確定要變更翻譯選項嗎？"
+         ],
+         "Yes, continue": [
+            "是，繼續"
+         ],
+         "No, go back": [
+            "不，返回"
+         ],
+         "%d term": [
+            "%d 個項目"
+         ],
+         "%d language": [
+            "%d 種語言"
+         ],
+         "%s will be translated.": [
+            "%s 將會被翻譯。"
+         ],
+         "Change the URLs of existing translations?": [
+            "要變更現有翻譯的 URL 嗎？"
+         ],
+         "Counting the existing translations this affects… %1$s of %2$s posts.": [
+            "正在計算受此影響的現有翻譯… %1$s / %2$s 篇文章。"
+         ],
+         "Counting the existing translations this affects…": [
+            "正在計算受此影響的現有翻譯…"
+         ],
+         "Also update the %s existing translation now — its URL changes": [
+            "現在也更新這 %s 個現有的翻譯 — 它們的 URL 將會變更"
+         ],
+         "Either way the setting is saved. With \"Only apply to new translations\" every existing translation keeps its slug.": [
+            "無論哪種方式，設定都會儲存。若選擇「僅套用於新翻譯」，則每個現有翻譯都將保留其代稱 (slug)。"
+         ],
+         "No existing translation gets a different URL from this option. It does not apply to new translations either. None of your active languages has \"Encode URL\" turned on.": [
+            "此選項不會讓任何現有翻譯變更 URL，也不適用於新翻譯。您的有效語言中沒有任何一個開啟「為 URL 編碼」。"
+         ],
+         "No existing translation gets a different URL from this option. It applies to new translations.": [
+            "此選項不會變更任何現有翻譯的 URL。它僅套用於新翻譯。"
+         ],
+         "%s existing translation in a language with encoded URLs would get the original's slug.": [
+            "%s 個使用編碼 URL 語言的現有翻譯將會取得原始文章的代稱 (slug)。"
+         ],
+         "%s existing translation would get a slug regenerated from its title.": [
+            "%s 個現有翻譯將根據其標題重新產生代稱 (slug)。"
+         ],
+         "This changes the URL of %s published translation. Links to it from your other translations are updated. Search engines and links from elsewhere keep the old address until you redirect it.": [
+            "這會變更 %s 個已發佈翻譯的 URL。來自您其他翻譯的連結將會更新。搜尋引擎和其他地方的連結將保留舊位址，直到您將其重新導向。"
+         ],
+         "Retry": [
+            "重試"
+         ],
+         "Updating %1$s of %2$s translation…": [
+            "正在更新 %1$s / %2$s 個翻譯…"
+         ],
+         "Updating %1$s of %2$s posts…": [
+            "正在更新 %1$s / %2$s 篇文章…"
+         ],
+         "%1$s %2$s updated.": [
+            "已更新 %1$s 個 %2$s。"
+         ],
+         "%s post updated.": [
+            "已更新 %s 篇文章。"
+         ],
+         "%s marked as needing a translation update.": [
+            "%s 個已標記為需要更新翻譯。"
+         ],
+         "%1$s sent to translation and %2$s outside Translate Everything's range marked for later.": [
+            "已傳送 %1$s 個至翻譯，另有 %2$s 個超出「自動翻譯一切」範圍的項目已標記供稍後處理。"
+         ],
+         "%s sent to translation.": [
+            "已傳送 %s 個至翻譯。"
+         ],
+         "Nothing was sent. %s outside Translate Everything's range marked for later.": [
+            "未傳送任何內容。%s 個超出「自動翻譯一切」範圍的項目已標記供稍後處理。"
+         ],
+         "Nothing was sent.": [
+            "未傳送任何內容。"
+         ],
+         "%s in a language Translate Everything does not send marked for later.": [
+            "%s 個處於「自動翻譯一切」不支援傳送之語言的項目已標記供稍後處理。"
+         ],
+         "The URL of %s translation was updated.": [
+            "已更新 %s 個翻譯的 URL。"
+         ],
+         "No URL was changed.": [
+            "未變更任何 URL。"
+         ],
+         "%s translation no longer needed a change.": [
+            "%s 個翻譯不再需要變更。"
+         ],
+         "The update continues in the background. The admin bar shows its progress.": [
+            "更新將在背景繼續進行。管理列會顯示其進度。"
+         ],
+         "Counting the words this sends…": [
+            "正在計算此動作傳送的字數…"
+         ],
+         "Counting the words this sends… %1$s of %2$s posts.": [
+            "正在計算此動作傳送的字數… %1$s / %2$s 篇文章。"
+         ],
+         "The number of words this sends could not be estimated. The Translation Dashboard shows the cost once the posts are queued.": [
+            "無法估算此動作傳送的字數。文章進入佇列後，翻譯面板將顯示費用。"
+         ],
+         "This sends %s word of content that could not be priced. The Translation Dashboard shows the cost once the posts are queued.": [
+            "這會傳送 %s 個無法計價的內容字數。文章進入佇列後，翻譯面板將顯示費用。"
+         ],
+         "Sending it again to %2$s languages uses about %1$s word.": [
+            "將其再次傳送至 %2$s 種語言約需使用 %1$s 個字數。"
+         ],
+         "Sending them again to %2$s languages uses about %1$s word.": [
+            "將它們再次傳送至 %2$s 種語言約需使用 %1$s 個字數。"
+         ],
+         "Sending it again uses about %s word.": [
+            "再次傳送約需使用 %s 個字數。"
+         ],
+         "Sending them again uses about %s word.": [
+            "再次傳送它們約需使用 %s 個字數。"
+         ],
+         "%s of the posts is outside Translate Everything's range: its translations will be marked without being sent.": [
+            "%s 篇文章超出「自動翻譯一切」的範圍：它們的翻譯將被標記但不會傳送。"
+         ],
+         "Your choice for the existing translations was not recorded.": [
+            "您的現有翻譯選擇未被記錄。"
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "我們的翻譯系統未接受此請求（其回應為 %d）。請稍候片刻再試一次，若問題持續發生，請聯絡 WPML 支援團隊。"
+         ],
+         "several post types listed\u0004%1$s %2$s updated.": [
+            "已更新 %1$s 個 %2$s。"
          ]
       }
    }

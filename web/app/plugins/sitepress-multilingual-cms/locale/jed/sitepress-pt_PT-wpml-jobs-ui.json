@@ -4,55 +4,505 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "pt_PT"
          },
-         "Draft — Pending review": [
-            "Rascunho — Revisão pendente"
+         "%1$s and %2$s": [
+            "%1$s e %2$s"
          ],
-         "Complete": [
-            "Completo"
+         "Start batch sync": [
+            "Iniciar sincronização de lote"
          ],
-         "Insufficient funds": [
-            "Fundos insuficientes"
+         "Cancel job": [
+            "Cancelar trabalho"
+         ],
+         "Continue reviewing": [
+            "Continuar a rever"
+         ],
+         "Start downloading XLIFF file": [
+            "Iniciar transferência do ficheiro XLIFF"
          ],
          "Edit": [
             "Editar"
          ],
+         "Get translation": [
+            "Obter tradução"
+         ],
+         "Edit Translation": [
+            "Editar tradução"
+         ],
+         "Continue Translating": [
+            "Continuar a traduzir"
+         ],
          "Resign": [
-            "Demitir-se"
+            "Desistir"
          ],
          "Review": [
-            "Revisão"
+            "Rever"
          ],
          "Translate": [
             "Traduzir"
          ],
+         "Take and Translate": [
+            "Assumir e traduzir"
+         ],
+         "This job was created by Translate Everything and cannot be cancelled on its own. To stop it, turn off Translate Everything from the Translation Dashboard.": [
+            "Este trabalho foi criado pelo Translate Everything e não pode ser cancelado individualmente. Para o parar, desative o Translate Everything no Painel de Tradução."
+         ],
          "View": [
-            "Visualizar"
-         ],
-         "Delete Translations": [
-            "Apagar Traduções"
-         ],
-         "Keep Translations as Draft": [
-            "Manter as Traduções como Rascunho"
+            "Ver"
          ],
          "Never mind. I want to review these translations.": [
-            "Não importa, pretendo rever essas traduções."
+            "Não importa. Quero rever estas traduções."
          ],
          "Cancel": [
             "Cancelar"
          ],
          "This will remove the selected jobs from the Translations Queue without publishing them. What would you like to do with the translations?": [
-            "Os trabalhos selecionados serão retirados da Fila de Traduções sem serem publicados. O que gostaria de fazer com as traduções?"
+            "Isto irá remover os trabalhos selecionados da Fila de Traduções sem os publicar. O que gostaria de fazer com as traduções?"
          ],
          "Cancel Translation Review": [
-            "Cancelar a Revisão da Tradução"
+            "Cancelar revisão da tradução"
+         ],
+         "Delete Translations": [
+            "Eliminar traduções"
+         ],
+         "Keep Translations as Draft": [
+            "Manter traduções como rascunho"
+         ],
+         "Bulk actions": [
+            "Ações em massa"
+         ],
+         "Apply": [
+            "Aplicar"
+         ],
+         "Actions applied to multiple translation jobs can take a few seconds. Please do not leave the page.": [
+            "As ações aplicadas a vários trabalhos de tradução podem demorar alguns segundos. Por favor, não saia da página."
+         ],
+         "Actions applied to multiple translation jobs can take a few minutes. Please do not leave the page.": [
+            "As ações aplicadas a vários trabalhos de tradução podem demorar alguns minutos. Por favor, não saia da página."
+         ],
+         "Select translator": [
+            "Selecionar tradutor"
+         ],
+         "Assign": [
+            "Atribuir"
+         ],
+         "Cancelled": [
+            "Cancelado"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "A tradução automática falhou repetidamente e o WPML parou de tentar. Reenvie ou descarte o trabalho a partir do Painel de Tradução, ou cancele-o aqui."
+         ],
+         "Needs translation": [
+            "Precisa de tradução"
+         ],
+         "Needs update": [
+            "Precisa de atualização"
+         ],
+         "Translation ready to download": [
+            "Tradução pronta para transferência"
+         ],
+         "Completed": [
+            "Concluído"
+         ],
+         "Failed - needs attention": [
+            "Falhou - requer atenção"
+         ],
+         "%s terms are published immediately because they don't support draft mode.": [
+            "%s termos são publicados imediatamente porque não suportam o modo de rascunho."
+         ],
+         "%s are immediately published because they don't support draft mode.": [
+            "%s são publicados imediatamente porque não suportam o modo de rascunho."
+         ],
+         "Published — Pending review": [
+            "Publicado — Revisão pendente"
+         ],
+         "Draft — Pending review": [
+            "Rascunho — Revisão pendente"
+         ],
+         "Review in progress": [
+            "Revisão em curso"
+         ],
+         "Published — Review in progress": [
+            "Publicado — Revisão em curso"
+         ],
+         "Draft — Review in progress": [
+            "Rascunho — Revisão em curso"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "A aguardar o seu pagamento por utilização"
+         ],
+         "Waiting for payment": [
+            "A aguardar pagamento"
+         ],
+         "Insufficient funds": [
+            "Fundos insuficientes"
+         ],
+         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
+            "A tradução automática foi pausada por um erro temporário e será tentada novamente de forma automática — não é necessária qualquer ação. Se o estado não mudar em cerca de 30 minutos, contacte o suporte do WPML."
+         ],
+         "In progress": [
+            "Em curso"
+         ],
+         "View original": [
+            "Ver original"
+         ],
+         "(no title)": [
+            "(sem título)"
+         ],
+         "Automatic translation": [
+            "Tradução automática"
+         ],
+         "TP ID: %d": [
+            "ID TP: %d"
+         ],
+         "Reset": [
+            "Repor"
+         ],
+         "Filter": [
+            "Filtrar"
+         ],
+         "Reference ID (%s)": [
+            "ID de referência (%s)"
+         ],
+         "Job ID (%s)": [
+            "ID do trabalho (%s)"
+         ],
+         "Title (%s)": [
+            "Título (%s)"
+         ],
+         "Type (%s)": [
+            "Tipo (%s)"
+         ],
+         "Language (%s)": [
+            "Idioma (%s)"
+         ],
+         "Batch name (%s)": [
+            "Nome do lote (%s)"
+         ],
+         "Status (%s)": [
+            "Estado (%s)"
+         ],
+         "Translated by (%s)": [
+            "Traduzido por (%s)"
+         ],
+         "Sent date (%s)": [
+            "Data de envio (%s)"
+         ],
+         "Deadline (%s)": [
+            "Prazo (%s)"
+         ],
+         "Clear all filters": [
+            "Limpar todos os filtros"
+         ],
+         "Any Translation Service": [
+            "Qualquer serviço de tradução"
+         ],
+         "Any WordPress Translator": [
+            "Qualquer tradutor de WordPress"
+         ],
+         "From": [
+            "De"
+         ],
+         "To": [
+            "Para"
+         ],
+         "Anyone": [
+            "Qualquer pessoa"
+         ],
+         "Include jobs from translation services": [
+            "Incluir trabalhos de serviços de tradução"
+         ],
+         "All types": [
+            "Todos os tipos"
+         ],
+         "Select visible columns": [
+            "Selecionar colunas visíveis"
+         ],
+         "No Data": [
+            "Sem dados"
+         ],
+         "Sort descending": [
+            "Ordenar por ordem decrescente"
+         ],
+         "Sort ascending": [
+            "Ordenar por ordem crescente"
+         ],
+         "Cancel sorting": [
+            "Cancelar ordenação"
+         ],
+         "The bulk action is running...": [
+            "A ação em massa está a ser executada..."
+         ],
+         "Export all jobs to XLIFF 1.0": [
+            "Exportar todos os trabalhos para XLIFF 1.0"
+         ],
+         "Export all filtered jobs to XLIFF 1.0": [
+            "Exportar todos os trabalhos filtrados para XLIFF 1.0"
+         ],
+         "Export all jobs to XLIFF 1.1": [
+            "Exportar todos os trabalhos para XLIFF 1.1"
+         ],
+         "Export all filtered jobs to XLIFF 1.1": [
+            "Exportar todos os trabalhos filtrados para XLIFF 1.1"
+         ],
+         "Export all jobs to XLIFF 1.2": [
+            "Exportar todos os trabalhos para XLIFF 1.2"
+         ],
+         "Export all filtered jobs to XLIFF 1.2": [
+            "Exportar todos os trabalhos filtrados para XLIFF 1.2"
+         ],
+         "Export": [
+            "Exportar"
+         ],
+         "Select File": [
+            "Selecionar ficheiro"
+         ],
+         ".xliff .zip": [
+            ".xliff .zip"
+         ],
+         "Importing": [
+            "A importar"
+         ],
+         "Import": [
+            "Importar"
+         ],
+         "Import / Export XLIFF": [
+            "Importar / Exportar XLIFF"
+         ],
+         "Actions": [
+            "Ações"
+         ],
+         "Batch name": [
+            "Nome do lote"
+         ],
+         "Filter by %s": [
+            "Filtrar por %s"
+         ],
+         "WPML's id for this translation. It stays the same when the job is sent again.": [
+            "ID de referência do WPML para esta tradução. Mantém-se igual quando o trabalho é enviado novamente."
+         ],
+         "The number in exported XLIFF file names. It changes when the job is sent again.": [
+            "O número nos nomes dos ficheiros XLIFF exportados. Muda quando o trabalho é enviado novamente."
+         ],
+         "Title": [
+            "Título"
+         ],
+         "Approve translation reviews": [
+            "Aprovar revisões de tradução"
+         ],
+         "Cancel jobs": [
+            "Cancelar trabalhos"
+         ],
+         "Cancel translation reviews": [
+            "Cancelar revisões de tradução"
+         ],
+         "Export to XLIFF %s": [
+            "Exportar para XLIFF %s"
+         ],
+         "Get translations": [
+            "Obter traduções"
+         ],
+         "This action does not apply to any of the selected translation jobs": [
+            "Esta ação não se aplica a nenhum dos trabalhos de tradução selecionados"
+         ],
+         "%d translation is still in progress. You will not be charged for it.": [
+            "%d tradução ainda está em curso. Não lhe será cobrada.",
+            "%d traduções ainda estão em curso. Não lhe serão cobradas."
+         ],
+         "usage ledger": [
+            "registo de utilização"
+         ],
+         "Cancelled. %1$d translation was in progress; its %2$s words are back on your account. Details:": [
+            "Cancelado. %1$d tradução estava em curso; as suas %2$s palavras estão de volta à sua conta. Detalhes:",
+            "Cancelado. %1$d traduções estavam em curso; as suas %2$s palavras estão de volta à sua conta. Detalhes:"
+         ],
+         "Cancelled. We asked to return the words for %d translation in progress; the usage ledger shows it once confirmed.": [
+            "Cancelado. Solicitámos a devolução das palavras para %d tradução em curso; o registo de utilização irá mostrá-la assim que for confirmada.",
+            "Cancelado. Solicitámos a devolução das palavras para %d traduções em curso; o registo de utilização irá mostrá-las assim que for confirmada."
+         ],
+         "Translations have been downloaded": [
+            "As traduções foram transferidas"
+         ],
+         "Translation has been downloaded": [
+            "A tradução foi transferida"
+         ],
+         "Translations could not be downloaded": [
+            "Não foi possível transferir as traduções"
+         ],
+         "Translation could not be downloaded": [
+            "Não foi possível transferir a tradução"
+         ],
+         "paused after repeated failures, will be retried automatically — %s": [
+            "pausado após falhas repetidas, será tentado novamente de forma automática — %s"
+         ],
+         "%d translation could not be downloaded": [
+            "Não foi possível transferir %d tradução",
+            "Não foi possível transferir %d traduções"
+         ],
+         "%d translation has been downloaded": [
+            "%d tradução foi transferida",
+            "%d traduções foram transferidas"
+         ],
+         "No valid jobs selected to approve translations reviews!": [
+            "Nenhum trabalho válido selecionado para aprovar revisões de traduções!"
+         ],
+         "%1$s (%2$s)": [
+            "%1$s (%2$s)"
+         ],
+         "%s was not approved because it is still open for editing.": [
+            "%s não foi aprovada porque ainda se encontra aberta para edição.",
+            "%s não foram aprovadas porque ainda se encontram abertas para edição."
+         ],
+         "Approving it now would publish the translation without the edits.": [
+            "Aprová-la agora publicaria a tradução sem as alterações efetuadas.",
+            "Aprová-las agora publicaria as traduções sem as alterações efetuadas."
+         ],
+         "Click Continue reviewing, finish the edits and click Complete in the editor.": [
+            "Clique em Continuar a rever, conclua as edições e clique em Concluir no editor."
+         ],
+         "Then approve the translation here.": [
+            "Depois, aprove a tradução aqui.",
+            "Depois, aprove as traduções aqui."
+         ],
+         "If the editor does not open, send the content to translation again from the Translation Dashboard.": [
+            "Se o editor não abrir, reenvie o conteúdo para tradução a partir do Painel de Tradução."
+         ],
+         "Approving translations reviews failed!": [
+            "A aprovação das revisões de traduções falhou!"
+         ],
+         "Failed approving translations for the following posts: ": [
+            "Falha ao aprovar as traduções para os seguintes artigos: "
+         ],
+         "Translations reviews approved successfully!": [
+            "Revisões de traduções aprovadas com sucesso!"
+         ],
+         "The translator has been assigned to the job": [
+            "O tradutor foi atribuído ao trabalho"
+         ],
+         "The translator could not be assigned to the job": [
+            "Não foi possível atribuir o tradutor ao trabalho"
+         ],
+         "The jobs have been cancelled": [
+            "Os trabalhos foram cancelados"
+         ],
+         "The job has been cancelled": [
+            "O trabalho foi cancelado"
+         ],
+         "The jobs could not be cancelled": [
+            "Não foi possível cancelar os trabalhos"
+         ],
+         "The job could not be cancelled": [
+            "Não foi possível cancelar o trabalho"
+         ],
+         "Translation reviews have been canceled": [
+            "As revisões de tradução foram canceladas"
+         ],
+         "Translation review has been canceled": [
+            "A revisão de tradução foi cancelada"
+         ],
+         "Translation reviews could not be canceled": [
+            "Não foi possível cancelar as revisões de tradução"
+         ],
+         "Translation review could not be canceled": [
+            "Não foi possível cancelar a revisão de tradução"
+         ],
+         "Translated by": [
+            "Traduzido por"
+         ],
+         "Sent on": [
+            "Enviado em"
+         ],
+         "Deadline": [
+            "Prazo"
+         ],
+         "Status": [
+            "Estado"
          ],
          "Pending review": [
             "Revisão pendente"
          ],
+         "Reference ID": [
+            "ID de referência"
+         ],
+         "Job ID": [
+            "ID do trabalho"
+         ],
+         "Type": [
+            "Tipo"
+         ],
          "Languages": [
-            "Línguas"
+            "Idiomas"
+         ],
+         "Download XLIFF file couldn't be finished": [
+            "Não foi possível concluir a transferência do ficheiro XLIFF"
+         ],
+         "Could not load jobs for export": [
+            "Não foi possível carregar os trabalhos para exportação"
+         ],
+         "The export to XLIFF failed": [
+            "A exportação para XLIFF falhou"
+         ],
+         "Imported %d jobs": [
+            "Importados %d trabalhos"
+         ],
+         "Imported one job": [
+            "Importado um trabalho"
+         ],
+         "Could not import any job": [
+            "Não foi possível importar nenhum trabalho"
+         ],
+         "Import failed!": [
+            "A importação falhou!"
+         ],
+         "Loading translations queue": [
+            "A carregar fila de traduções"
+         ],
+         "Loading translation jobs": [
+            "A carregar trabalhos de tradução"
+         ],
+         "Jobs could not be loaded": [
+            "Não foi possível carregar os trabalhos"
+         ],
+         "This translator cannot translate this language pair.": [
+            "Este tradutor não pode traduzir este par de idiomas."
+         ],
+         "This translator is no longer available. Reload the page and choose a translator again.": [
+            "Este tradutor já não está disponível. Recarregue a página e escolha novamente um tradutor."
+         ],
+         "Specify some jobs to resign": [
+            "Especifique alguns trabalhos para desistir"
+         ],
+         "We could not resign jobs: %s": [
+            "Não foi possível desistir dos trabalhos: %s"
+         ],
+         "Resigned from jobs": [
+            "Desistiu dos trabalhos"
+         ],
+         "Resigned from job": [
+            "Desistiu do trabalho"
+         ],
+         "Failed to resign from jobs": [
+            "Falha ao desistir dos trabalhos"
+         ],
+         "The Advanced Editor jobs synchronization has failed": [
+            "A sincronização de trabalhos do Advanced Editor falhou"
+         ],
+         "Synchronization with the Professional Translation service has failed": [
+            "A sincronização com o serviço de Tradução Profissional falhou"
+         ],
+         "%d batches are still being processed by the translation service. Check again in a few minutes.": [
+            "%d lotes ainda estão a ser processados pelo serviço de tradução. Verifique novamente em alguns minutos."
+         ],
+         "Batch sync finished successfully!": [
+            "Sincronização de lote concluída com sucesso!"
+         ],
+         "Batch sync couldn't be finished": [
+            "Não foi possível concluir a sincronização de lote"
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "O nosso sistema de tradução não aceitou este pedido (respondeu %d). Aguarde um minuto e tente novamente; contacte o suporte do WPML se o problema persistir."
          ]
       }
    }

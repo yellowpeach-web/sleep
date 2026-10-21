@@ -1,0 +1,59 @@
+@keyframes react-loading-skeleton {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.react-loading-skeleton {
+  --base-color: #ebebeb;
+  --highlight-color: #f5f5f5;
+  --animation-duration: 1.5s;
+  --animation-direction: normal;
+  --pseudo-element-display: block; /* Enable animation */
+
+  background-color: var(--base-color);
+
+  width: 100%;
+  border-radius: 0.25rem;
+  display: inline-flex;
+  line-height: 1;
+
+  position: relative;
+  user-select: none;
+  overflow: hidden;
+}
+
+.react-loading-skeleton::after {
+  content: ' ';
+  display: var(--pseudo-element-display);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-image: var(
+    --custom-highlight-background,
+    linear-gradient(
+      90deg,
+      var(--base-color) 0%,
+      var(--highlight-color) 50%,
+      var(--base-color) 100%
+    )
+  );
+  transform: translateX(-100%);
+
+  animation-name: react-loading-skeleton;
+  animation-direction: var(--animation-direction);
+  animation-duration: var(--animation-duration);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@media (prefers-reduced-motion) {
+  .react-loading-skeleton {
+    --pseudo-element-display: none; /* Disable animation */
+  }
+}
+
+.visually-hidden{width:1px;height:1px;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;position:absolute;white-space:nowrap}@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}.otgs-icon-spinner::before,.spinner{animation:spin 1.2s infinite linear;transform-origin:center}.otgs-icon-spinner::before{display:inline-block}.wpml-expandable-details{font-size:13px}.wpml-expandable-details summary{cursor:pointer;text-decoration:underline;list-style:none;color:#33879e}.wpml-expandable-details summary::marker,.wpml-expandable-details summary::-webkit-details-marker{display:none}.wpml-expandable-details summary .toggle-icon::before{font-size:12px;margin:0 8px;line-height:13px}.wpml-expandable-details .wpml-expandable-content{background:#ebf3f5;padding:16px;border-radius:2px;margin-top:8px}.wpml-expandable-details .wpml-expandable-content code{background:rgba(0,0,0,0);font-size:12px;color:#373737;padding:0;white-space:pre-wrap}

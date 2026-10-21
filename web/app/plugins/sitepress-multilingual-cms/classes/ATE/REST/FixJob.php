@@ -14,22 +14,15 @@ use WPML\FP\Obj;
 use WPML\TM\ATE\API\RequestException;
 use WPML\TM\ATE\Log\Entry;
 use WPML\TM\ATE\Log\EventsTypes;
+use WPML\Core\Security\ExecutionContext\ExecutionContextHolder;
+use WPML\TM\Jobs\Authorization\AuthorizedJobResolver;
 
 class FixJob extends Base {
 
-	/**
-	 * @var WPML_TM_ATE_Jobs
-	 */
 	private $ateJobs;
 
-	/**
-	 * @var WPML_TM_ATE_API
-	 */
 	private $ateApi;
 
-	/**
-	 * @var WPML_TM_Jobs_Repository
-	 */
 	private $jobsRepository;
 
 	const PARAM_ATE_JOB_ID = 'ateJobId';
@@ -43,9 +36,6 @@ class FixJob extends Base {
 		$this->jobsRepository = wpml_tm_get_jobs_repository();
 	}
 
-	/**
-	 * @return array
-	 */
 	public function get_routes() {
 		return [
 			[
@@ -58,11 +48,6 @@ class FixJob extends Base {
 			];
 	}
 
-	/**
-	 * @param WP_REST_Request $request
-	 *
-	 * @return array
-	 */
 	public function get_allowed_capabilities( WP_REST_Request $request ) {
 		return [
 			'manage_options',
@@ -71,15 +56,21 @@ class FixJob extends Base {
 		    ];
 	}
 
-	/**
-	 * @param WP_REST_Request $request
-	 *
-	 * @return bool[]
-	 */
 	public function fix_job( WP_REST_Request $request ) {
 		try {
 			$ateJobId = $request->get_param( self::PARAM_ATE_JOB_ID );
 			$wpmlJobId = $request->get_param( self::PARAM_WPML_JOB_ID );
+
+			$authorized = ( new AuthorizedJobResolver( $this->ateJobs ) )->byBoundPair(
+				ExecutionContextHolder::current(),
+				$wpmlJobId,
+				$ateJobId
+			);
+			if ( ! $authorized ) {
+				return [ 'completed' => false, 'error' => true ];
+			}
+			$ateJobId  = $authorized->ateId();
+			$wpmlJobId = $authorized->localId();
 
 			$processedJobResult = $this->process( $ateJobId, $wpmlJobId );
 
@@ -93,22 +84,20 @@ class FixJob extends Base {
 		return [ 'completed' => false, 'error' => false ];
 	}
 
-	/**
-	 * Processes the job status.
-	 *
-	 * @param $ateJobId
-	 * @param $wpmlJobId
-	 *
-	 * @return bool
-	 * @throws RequestException
-	 */
 	public function process( $ateJobId, $wpmlJobId ) {
-		$ateJob = $this->ateApi->get_job( $ateJobId )->$ateJobId;
+		$response = $this->ateApi->get_job( $ateJobId );
+
+		if ( is_wp_error( $response ) || ! isset( $response->{$ateJobId} ) ) {
+			$unknown_job_message = sprintf( 'ATE does not know job %s.', (string) $ateJobId );
+			throw new \Exception( esc_html( $unknown_job_message ) );
+		}
+
+		$ateJob   = $response->{$ateJobId};
 		$xliffUrl = Obj::prop('translated_xliff', $ateJob);
 
 		if ( $xliffUrl ) {
 			$xliffContent = $this->ateApi->get_remote_xliff_content( $xliffUrl, [ 'jobId' => $wpmlJobId, 'ateJobId' => $ateJobId ] );
-			$receivedWpmlJobId    = $this->ateJobs->apply( $xliffContent );
+			$receivedWpmlJobId = $this->ateJobs->apply( $xliffContent, (int) $wpmlJobId );
 
 			if ( $receivedWpmlJobId && intval( $receivedWpmlJobId ) !== intval( $wpmlJobId ) ) {
 				$error_message = sprintf( 'The received wpmlJobId (%s) does not match (%s).', $receivedWpmlJobId, $wpmlJobId );
@@ -123,10 +112,6 @@ class FixJob extends Base {
 		return false;
 	}
 
-	/**
-	 * @param \Exception $e
-	 * @param array|null  $job
-	 */
 	private function logException( \Exception $e, $job = null ) {
 		$entry              = new Entry();
 		$entry->description = $e->getMessage();

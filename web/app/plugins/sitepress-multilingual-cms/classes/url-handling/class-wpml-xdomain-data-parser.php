@@ -6,20 +6,11 @@ class WPML_XDomain_Data_Parser {
 
 	const SCRIPT_HANDLER = 'wpml-xdomain-data';
 
-	/**
-	 * @var array $settings
-	 */
 	private $settings;
 
 	private $encryptor;
 
 
-	/**
-	 * WPML_XDomain_Data_Parser constructor.
-	 *
-	 * @param array<string,mixed> $settings
-	 * @param \WPML_Data_Encryptor $encryptor
-	 */
 	public function __construct( &$settings, $encryptor ) {
 		$this->settings  = &$settings;
 		$this->encryptor = $encryptor;
@@ -33,9 +24,20 @@ class WPML_XDomain_Data_Parser {
 		}
 	}
 
+	public function remove_hooks() {
+		remove_filter( 'init', array( $this, 'init' ) );
+		remove_filter( 'wpml_get_cross_domain_language_data', array( $this, 'get_xdomain_data' ) );
+	}
+
 	public function init() {
-		add_action( 'wp_ajax_switching_language', array( $this, 'send_xdomain_language_data' ) );
-		add_action( 'wp_ajax_nopriv_switching_language', array( $this, 'send_xdomain_language_data' ) );
+		\WPML\Request\Adapter\Ajax::register(
+			'switching_language',
+			\WPML\Request\Policy\Policy::publicAccess(
+				'returns the encrypted cross-domain language payload for the requesting browser; read-only, no principal or object targeted',
+				\WPML\Request\Policy\Authenticity::actionNonce( 'wp_ajax_switching_language', '_nonce' )
+			),
+			array( $this, 'send_xdomain_language_data' )
+		);
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts_action' ), 100 );
 	}
 
@@ -45,13 +47,13 @@ class WPML_XDomain_Data_Parser {
 			$ls_parameters = WPML_Language_Switcher::parameters();
 
 			$js_xdomain_data = array(
-				'css_selector' => $ls_parameters['css_prefix'] . 'item',
-				'ajax_url'     => admin_url( 'admin-ajax.php' ),
-				'current_lang' => apply_filters( 'wpml_current_language', '' ),
-				'_nonce'       => wp_create_nonce( 'wp_ajax_switching_language' ),
+				'css_selector'     => $ls_parameters['css_prefix'] . 'item',
+				'ajax_url'         => admin_url( 'admin-ajax.php' ),
+				'current_language' => apply_filters( 'wpml_current_language', '' ),
+				'_nonce'           => wp_create_nonce( 'wp_ajax_switching_language' ),
 			);
 
-			wp_enqueue_script( self::SCRIPT_HANDLER, ICL_PLUGIN_URL . '/res/js/xdomain-data.js', array(), ICL_SITEPRESS_VERSION );
+			wp_enqueue_script( self::SCRIPT_HANDLER, ICL_PLUGIN_URL . '/res/js/xdomain-data.js', array(), ICL_SITEPRESS_SCRIPT_VERSION );
 			wp_script_add_data( self::SCRIPT_HANDLER, 'strategy', 'defer' );
 			wp_localize_script( self::SCRIPT_HANDLER, 'wpml_xdomain_data', $js_xdomain_data );
 		}
@@ -81,6 +83,7 @@ class WPML_XDomain_Data_Parser {
 		$nonce = isset( $_POST['_nonce'] ) ? sanitize_text_field( $_POST['_nonce'] ) : '';
 
 		if ( ! wp_verify_nonce( $nonce, 'wp_ajax_switching_language' ) ) {
+			/* translators: Error message returned when a request from the browser cannot be trusted and is turned away. */
 			wp_send_json_error( esc_html__( 'Invalid request!', 'sitepress' ), 400 );
 			return;
 		}

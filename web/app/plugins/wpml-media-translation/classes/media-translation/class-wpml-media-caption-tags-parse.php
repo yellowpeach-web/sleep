@@ -1,15 +1,7 @@
 <?php
 
-/**
- * Class WPML_Media_Caption_Tags_Parse
- */
 class WPML_Media_Caption_Tags_Parse {
 
-	/**
-	 * @param string $text
-	 *
-	 * @return array
-	 */
 	public function get_captions( $text ) {
 		$captions = array();
 

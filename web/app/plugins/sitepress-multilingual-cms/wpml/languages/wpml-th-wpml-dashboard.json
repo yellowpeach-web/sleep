@@ -1,0 +1,2613 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "th"
+         },
+         "Untranslated strings that I encounter on front-end while logged in": [
+            "สตริงที่ยังไม่ได้แปลที่ฉันพบในส่วนหน้าขณะที่เข้าสู่ระบบ"
+         ],
+         "Untranslated strings that all front-end users encounter": [
+            "สตริงที่ยังไม่ได้แปลที่ผู้ใช้ส่วนหน้าทุกคนพบ"
+         ],
+         "Disable auto-registration of strings": [
+            "ปิดการใช้งานการลงทะเบียนสตริงอัตโนมัติ"
+         ],
+         "Plugins": [
+            "ปลั๊กอิน"
+         ],
+         "Themes": [
+            "ธีม"
+         ],
+         "WordPress": [
+            "WordPress"
+         ],
+         "Other": [
+            "อื่น ๆ"
+         ],
+         "%1$s (%2$d item)": [
+            "%1$s (%2$d รายการ)"
+         ],
+         "We cancelled %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
+            "เรายกเลิกรายการ %1$d จาก %2$d รายการแล้ว แต่มี %3$d รายการที่ล้มเหลว โปรดโหลดหน้านี้ใหม่และลองอีกครั้ง"
+         ],
+         "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
+            "เราส่งรายการ %1$d จาก %2$d รายการอีกครั้งแล้ว แต่มี %3$d รายการที่ล้มเหลว โปรดโหลดหน้านี้ใหม่และลองอีกครั้ง"
+         ],
+         "Error in fetching default translation batch name": [
+            "เกิดข้อผิดพลาดในการดึงชื่อชุดการแปลเริ่มต้น"
+         ],
+         "Error in fetching translation editor type.": [
+            "เกิดข้อผิดพลาดในการดึงข้อมูลประเภทตัวแก้ไขการแปล"
+         ],
+         "Error in fetching untranslated types count": [
+            "เกิดข้อผิดพลาดในการดึงจำนวนประเภทที่ยังไม่ได้แปล"
+         ],
+         "Error in fetching remote translation service data.": [
+            "เกิดข้อผิดพลาดในการดึงข้อมูลบริการการแปลระยะไกล"
+         ],
+         "Validation failed": [
+            "การตรวจสอบความถูกต้องล้มเหลว"
+         ],
+         "%s: labels and slug": [
+            "%s: ป้ายกำกับและ Slug"
+         ],
+         "%1$s (%2$s)": [
+            "%1$s (%2$s)"
+         ],
+         "Translation jobs couldn’t be cancelled": [
+            "ไม่สามารถยกเลิกงานแปลได้"
+         ],
+         "Reload the page and try again.": [
+            "โหลดหน้านี้ใหม่และลองอีกครั้ง"
+         ],
+         "All unfinished translation jobs were cancelled": [
+            "งานแปลที่ยังไม่เสร็จทั้งหมดถูกยกเลิกแล้ว"
+         ],
+         "WPML could not display the Translations dashboard.": [
+            "WPML ไม่สามารถแสดงแดชบอร์ดการแปลได้"
+         ],
+         "Reload the page to try again. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses, and the browser console for details.": [
+            "โหลดหน้านี้ซ้ำเพื่อลองอีกครั้ง หากยังคงเกิดปัญหานี้ ให้ตรวจสอบบันทึกข้อผิดพลาด PHP ของไซต์เพื่อหาเอาต์พุตที่ขัดขวางการตอบสนองของ WPML และตรวจสอบคอนโซลของเบราว์เซอร์เพื่อดูรายละเอียด"
+         ],
+         "Please wait until download finishes": [
+            "โปรดรอจนกว่าการดาวน์โหลดจะเสร็จสิ้น"
+         ],
+         "You need to wait 5 minutes after the last check": [
+            "คุณต้องรอ 5 นาทีหลังจากการตรวจสอบครั้งล่าสุด"
+         ],
+         "Check status and get translations": [
+            "ตรวจสอบสถานะและรับการแปล"
+         ],
+         "%d translation could not be applied.": [
+            "ไม่สามารถใช้การแปล %d รายการได้"
+         ],
+         "Some were paused after repeated failures and will be retried automatically.": [
+            "บางรายการถูกระงับหลังจากล้มเหลวซ้ำ ๆ และจะมีการลองใหม่อัตโนมัติ"
+         ],
+         "They are still waiting and will be tried again on the next download.": [
+            "รายการเหล่านั้นยังคงรออยู่และจะมีการลองใหม่อีกครั้งในการดาวน์โหลดครั้งถัดไป"
+         ],
+         "Status: ": [
+            "สถานะ: "
+         ],
+         "Downloaded jobs: ": [
+            "งานที่ดาวน์โหลด: "
+         ],
+         "Cancelled jobs: ": [
+            "งานที่ยกเลิก: "
+         ],
+         "none of your translation jobs have been completed": [
+            "ยังไม่มีงานแปลของคุณที่เสร็จสมบูรณ์"
+         ],
+         "The download did not finish, so some translations may still be waiting. Please try again.": [
+            "การดาวน์โหลดไม่เสร็จสิ้น ดังนั้นการแปลบางรายการอาจยังคงรออยู่ โปรดลองอีกครั้ง"
+         ],
+         "%d batches are still being processed by the translation service. Check again in a few minutes.": [
+            "บริการการแปลยังคงดำเนินการอีก %d ชุด โปรดตรวจสอบอีกครั้งในอีกไม่กี่นาที"
+         ],
+         "Checking translation jobs status. Please don't close this page!": [
+            "กำลังตรวจสอบสถานะงานแปล โปรดอย่าปิดหน้านี้!"
+         ],
+         "<strong>%d translation job</strong> has been sent to remote translators": [
+            "ส่ง <strong>งานแปล %d งาน</strong> ไปยังนักแปลระยะไกลแล้ว"
+         ],
+         "Last check: %s": [
+            "ตรวจสอบล่าสุด: %s"
+         ],
+         "Last check: Never": [
+            "ตรวจสอบล่าสุด: ไม่เคย"
+         ],
+         "Switch to Private Translation Cloud (PTC)": [
+            "สลับเป็น Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "สลับเป็น PTC"
+         ],
+         "Switching…": [
+            "กำลังสลับ…"
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "ไม่สามารถโหลดส่วนควบคุมเอนจินการแปลได้ โปรดโหลดหน้านี้ใหม่และลองอีกครั้ง"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "เราไม่สามารถยืนยันการสลับได้ โปรดลองอีกครั้ง หรือโหลดหน้าใหม่เพื่อดูเอนจินปัจจุบัน"
+         ],
+         "Loading translation engine settings…": [
+            "กำลังโหลดการตั้งค่าเอนจินการแปล…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "กรอกบริบทของไซต์ของคุณด้านบนก่อนที่จะสลับเป็น PTC"
+         ],
+         "Reload page": [
+            "โหลดหน้าใหม่"
+         ],
+         "Filtering is disabled to show all selected items. ": [
+            "การกรองถูกปิดใช้งานเพื่อแสดงรายการที่เลือกทั้งหมด "
+         ],
+         "Apply filters": [
+            "ใช้ตัวกรอง"
+         ],
+         "%d item selected": [
+            "เลือกแล้ว %d รายการ"
+         ],
+         "(%d words to translate)": [
+            "(%d คำที่ต้องแปล)"
+         ],
+         "%s item not showing.": [
+            "ไม่แสดงรายการ %s รายการ"
+         ],
+         "Show all selected items": [
+            "แสดงรายการที่เลือกทั้งหมด"
+         ],
+         "Translate your content": [
+            "แปลเนื้อหาของคุณ"
+         ],
+         "Unselect all": [
+            "ยกเลิกการเลือกทั้งหมด"
+         ],
+         "Source Language:": [
+            "ภาษาต้นทาง:"
+         ],
+         "translated to:": [
+            "แปลเป็น:"
+         ],
+         "Filter": [
+            "ตัวกรอง"
+         ],
+         "You are about to change the source language filter from %1$s to %2$s": [
+            "คุณกำลังจะเปลี่ยนตัวกรองภาษาต้นทางจาก %1$s เป็น %2$s"
+         ],
+         "Updating the source language filter will clear the items you've selected for translation. Are you sure you want to continue?": [
+            "การอัปเดตตัวกรองภาษาต้นทางจะล้างรายการที่คุณเลือกไว้สำหรับการแปล คุณแน่ใจหรือไม่ว่าต้องการดำเนินการต่อ?"
+         ],
+         "Change source language": [
+            "เปลี่ยนภาษาต้นทาง"
+         ],
+         "Cancel": [
+            "ยกเลิก"
+         ],
+         "Filter by publication status": [
+            "กรองตามสถานะการเผยแพร่"
+         ],
+         "All Statuses": [
+            "ทุกสถานะ"
+         ],
+         "All languages": [
+            "ทุกภาษา"
+         ],
+         "All translation statuses": [
+            "สถานะการแปลทั้งหมด"
+         ],
+         "Not completed": [
+            "ยังไม่เสร็จสมบูรณ์"
+         ],
+         "Needs updating": [
+            "ต้องมีการอัปเดต"
+         ],
+         "Translation in progress": [
+            "กำลังดำเนินการแปล"
+         ],
+         "Translation complete": [
+            "การแปลเสร็จสมบูรณ์"
+         ],
+         "Filter by translation status": [
+            "กรองตามสถานะการแปล"
+         ],
+         "Global Filter": [
+            "ตัวกรองส่วนกลาง"
+         ],
+         "%1$s (ID: %2$d)": [
+            "%1$s (ID: %2$d)"
+         ],
+         "Parent:": [
+            "หน้าหลัก:"
+         ],
+         "Search parent by title, path, or ID": [
+            "ค้นหาหน้าหลักตามชื่อ, เส้นทาง หรือ ID"
+         ],
+         "Parent: %s": [
+            "หน้าหลัก: %s"
+         ],
+         "Search by term title in %s": [
+            "ค้นหาตามชื่อคำใน %s"
+         ],
+         "All taxonomies": [
+            "ทุกอนุกรมวิธาน"
+         ],
+         "Loading": [
+            "กำลังโหลด"
+         ],
+         "Taxonomy Term:": [
+            "คำในอนุกรมวิธาน:"
+         ],
+         "Loading terms": [
+            "กำลังโหลดคำ"
+         ],
+         "No terms found": [
+            "ไม่พบคำ"
+         ],
+         "Filter by:": [
+            "กรองโดย:"
+         ],
+         "Title": [
+            "ชื่อ"
+         ],
+         "Automatic translation is paused — payment required (%s).": [
+            "การแปลอัตโนมัติถูกระงับ — จำเป็นต้องชำระเงิน (%s)"
+         ],
+         "Automatic translation is paused: monthly spending cap reached. It continues when the cap is raised, or when the cap resets.": [
+            "การแปลอัตโนมัติถูกระงับ: ถึงวงเงินการใช้จ่ายรายเดือนแล้ว การแปลจะดำเนินการต่อเมื่อมีการเพิ่มวงเงิน หรือเมื่อมีการรีเซ็ตวงเงิน"
+         ],
+         "You have %1$s%2$s prepaid word in your WPML account%3$s. Assign these words to this site to resume automatic translation.": [
+            "คุณมีคำแบบชำระเงินล่วงหน้า %1$s%2$s คำในบัญชี WPML ของคุณ%3$s จัดสรรคำเหล่านี้ให้กับไซต์นี้เพื่อดำเนินการแปลอัตโนมัติต่อ"
+         ],
+         "Not enough prepaid words to continue automatic translation. Add more words to resume.": [
+            "จำนวนคำแบบชำระเงินล่วงหน้าไม่เพียงพอที่จะดำเนินการแปลอัตโนมัติต่อ โปรดเพิ่มคำเพื่อดำเนินการต่อ"
+         ],
+         "Assign words": [
+            "จัดสรรคำ"
+         ],
+         "Get more words": [
+            "รับคำเพิ่ม"
+         ],
+         "View": [
+            "ดู"
+         ],
+         "Edit": [
+            "แก้ไข"
+         ],
+         "Edit note for the translators": [
+            "แก้ไขบันทึกสำหรับนักแปล"
+         ],
+         "Add note for the translators": [
+            "เพิ่มบันทึกสำหรับนักแปล"
+         ],
+         "Select %s": [
+            "เลือก %s"
+         ],
+         "(no title)": [
+            "(ไม่มีชื่อ)"
+         ],
+         "Image": [
+            "รูปภาพ"
+         ],
+         "%s Title": [
+            "ชื่อ %s"
+         ],
+         "%s Date": [
+            "วันที่ %s"
+         ],
+         "Date / Status": [
+            "วันที่ / สถานะ"
+         ],
+         "Loading items...": [
+            "กำลังโหลดรายการ..."
+         ],
+         "This page is set to be %1$stranslated manually%2$s using the WordPress Editor": [
+            "หน้านี้ถูกตั้งค่าให้ %1$sแปลด้วยตนเอง%2$s โดยใช้ตัวแก้ไข WordPress"
+         ],
+         "%1$d %2$s selected": [
+            "เลือกแล้ว %1$d %2$s"
+         ],
+         "items": [
+            "รายการ"
+         ],
+         "Filtering is disabled to show all selected items": [
+            "การกรองถูกปิดใช้งานเพื่อแสดงรายการที่เลือกทั้งหมด"
+         ],
+         "Apply filter": [
+            "ใช้ตัวกรอง"
+         ],
+         "%1$d %2$s not showing": [
+            "ไม่แสดง %1$d %2$s"
+         ],
+         "Show selected items": [
+            "แสดงรายการที่เลือก"
+         ],
+         "Looking for more items...": [
+            "กำลังค้นหารายการเพิ่มเติม..."
+         ],
+         " / page": [
+            " / หน้า"
+         ],
+         "Previous": [
+            "ก่อนหน้า"
+         ],
+         "Next": [
+            "ถัดไป"
+         ],
+         "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
+            "เนื้อหาของไซต์ของคุณมีจำนวนมากเกินไปสำหรับชุดการแปลเดียว โปรดใช้ตัวกรองเพื่อลดจำนวนที่เลือก จากนั้นใช้ “เลือกทั้งหมด”"
+         ],
+         "The current filter captures too much content. Narrow it down to enable \"select all\" for translation.": [
+            "ตัวกรองปัจจุบันครอบคลุมเนื้อหามากเกินไป โปรดจำกัดให้แคบลงเพื่อเปิดใช้งาน “เลือกทั้งหมด” สำหรับการแปล"
+         ],
+         "Select All": [
+            "เลือกทั้งหมด"
+         ],
+         "All %d items matching criteria are selected": [
+            "เลือกรายการทั้งหมด %d รายการที่ตรงตามเงื่อนไขแล้ว"
+         ],
+         "All %d items in this section are selected": [
+            "เลือกรายการทั้งหมด %d รายการในส่วนนี้แล้ว"
+         ],
+         "You have too many items to send for translation at once. Apply a filter to narrow down the items to enable this option.": [
+            "คุณมีรายการที่จะส่งไปแปลพร้อมกันมากเกินไป โปรดใช้ตัวกรองเพื่อจำกัดรายการให้แคบลงเพื่อเปิดใช้งานตัวเลือกนี้"
+         ],
+         "Clear selection": [
+            "ล้างสิ่งที่เลือก"
+         ],
+         "Select all items that match this search": [
+            "เลือกรายการทั้งหมดที่ตรงกับการค้นหานี้"
+         ],
+         "Loading...": [
+            "กำลังโหลด..."
+         ],
+         "Select all %ss": [
+            "เลือก %s ทั้งหมด"
+         ],
+         "Save note": [
+            "บันทึกบันทึก"
+         ],
+         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
+            "ภาษาปลายทางต่อไปนี้ไม่รองรับการแปลอัตโนมัติ: %s <a>จับคู่กับภาษาที่รู้จัก</a> เพื่อเปิดใช้งานการแปลอัตโนมัติ"
+         ],
+         "The site's default language %s doesn't support automatic translation.": [
+            "ภาษาเริ่มต้นของไซต์ %s ไม่รองรับการแปลอัตโนมัติ"
+         ],
+         "Some sections are hidden due to current filter settings or because they have no items. <show_all>Show all translation statuses</show_all>": [
+            "บางส่วนถูกซ่อนไว้เนื่องจากการตั้งค่าตัวกรองปัจจุบันหรือเนื่องจากไม่มีรายการ <show_all>แสดงสถานะการแปลทั้งหมด</show_all>"
+         ],
+         "Step 1": [
+            "ขั้นตอนที่ 1"
+         ],
+         "Select items for translation": [
+            "เลือกรายการสำหรับการแปล"
+         ],
+         "Clear filters": [
+            "ล้างตัวกรอง"
+         ],
+         "WPML could not load these items from your site.": [
+            "WPML ไม่สามารถโหลดรายการเหล่านี้จากไซต์ของคุณได้"
+         ],
+         "Try again or reload the page. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses.": [
+            "ลองอีกครั้งหรือโหลดหน้านี้ซ้ำ หากยังคงเกิดปัญหานี้ ให้ตรวจสอบบันทึกข้อผิดพลาด PHP ของไซต์เพื่อหาเอาต์พุตที่ขัดขวางการตอบสนองของ WPML"
+         ],
+         "Try again": [
+            "ลองอีกครั้ง"
+         ],
+         "strings": [
+            "สตริง"
+         ],
+         "WPML didn't find any %s matching your criteria.": [
+            "WPML ไม่พบ %s ที่ตรงตามเงื่อนไขของคุณ"
+         ],
+         "You have too many items selected to use this feature. Deselect some of the items to enable it.": [
+            "คุณเลือกรายการมากเกินไปที่จะใช้ฟีเจอร์นี้ โปรดยกเลิกการเลือกบางรายการเพื่อเปิดใช้งาน"
+         ],
+         "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can send this content now and it will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>.": [
+            "เหลืออีก <strong>%1$s</strong> คำใน <strong>วงเงินการใช้จ่ายรายเดือน</strong> ที่ตั้งไว้สำหรับ <site>%2$s</site> (ใช้ไปแล้ว <figure>%3$s</figure> จาก <figure>%4$s</figure>) คุณสามารถส่งเนื้อหานี้ได้ทันทีและจะได้รับการแปลจนกว่าจะถึงวงเงิน ส่วนที่เหลือจะดำเนินการต่อเมื่อมีการเพิ่มวงเงิน หรือเมื่อมีการรีเซ็ตวงเงินในวันที่ <strong>%5$s</strong>"
+         ],
+         "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can turn this on now and content will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>.": [
+            "เหลืออีก <strong>%1$s</strong> คำใน <strong>วงเงินการใช้จ่ายรายเดือน</strong> ที่ตั้งไว้สำหรับ <site>%2$s</site> (ใช้ไปแล้ว <figure>%3$s</figure> จาก <figure>%4$s</figure>) คุณสามารถเปิดใช้งานตอนนี้และเนื้อหาจะได้รับการแปลจนกว่าจะถึงวงเงิน ส่วนที่เหลือจะดำเนินการต่อเมื่อมีการเพิ่มวงเงิน หรือเมื่อมีการรีเซ็ตวงเงินในวันที่ <strong>%5$s</strong>"
+         ],
+         "Raise the cap": [
+            "เพิ่มวงเงิน"
+         ],
+         "Only the account owner can do this.": [
+            "เจ้าของบัญชีเท่านั้นที่สามารถดำเนินการนี้ได้"
+         ],
+         "Show strings in:": [
+            "แสดงสตริงใน:"
+         ],
+         "Display Columns": [
+            "แสดงคอลัมน์"
+         ],
+         "Close modal": [
+            "ปิดหน้าต่าง"
+         ],
+         "Select visible columns": [
+            "เลือกคอลัมน์ที่ต้องการให้แสดง"
+         ],
+         "String": [
+            "สตริง"
+         ],
+         "Name": [
+            "ชื่อ"
+         ],
+         "Domain": [
+            "โดเมน"
+         ],
+         "Source": [
+            "แหล่งที่มา"
+         ],
+         "Type": [
+            "ประเภท"
+         ],
+         "Apply": [
+            "ใช้"
+         ],
+         "All domains": [
+            "ทุกโดเมน"
+         ],
+         "Domain:": [
+            "โดเมน:"
+         ],
+         "All sources": [
+            "แหล่งที่มาทั้งหมด"
+         ],
+         "Frontend (viewed)": [
+            "ส่วนหน้า (ที่ดู)"
+         ],
+         "Backend (viewed)": [
+            "ส่วนหลังบ้าน (ที่ดู)"
+         ],
+         "Unknown": [
+            "ไม่ทราบ"
+         ],
+         "Source:": [
+            "แหล่งที่มา:"
+         ],
+         "String or Name:": [
+            "สตริงหรือชื่อ:"
+         ],
+         "Search string or a name": [
+            "ค้นหาสตริงหรือชื่อ"
+         ],
+         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
+            "ตัวกรองนี้ใช้งานได้เฉพาะเมื่อตั้งค่าแหล่งที่มาเป็น “ส่วนหน้า” หรือ “ส่วนหลังบ้าน” เท่านั้น"
+         ],
+         "front-end": [
+            "ส่วนหน้า"
+         ],
+         "back-end": [
+            "ส่วนหลังบ้าน"
+         ],
+         "viewed": [
+            "ที่ดู"
+         ],
+         "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
+            "เปิดหน้าการแปลธีมและปลั๊กอิน ซึ่งคุณสามารถสแกนธีมและปลั๊กอินของคุณเพื่อหาสตริงที่ยังไม่ได้ลงทะเบียนและทำให้พร้อมสำหรับการแปลที่นี่"
+         ],
+         "Finding strings in themes and plugins": [
+            "การค้นหาสตริงในธีมและปลั๊กอิน"
+         ],
+         "Strings in the theme and plugins": [
+            "สตริงในธีมและปลั๊กอิน"
+         ],
+         "Translate front-end texts you can customize from the WordPress admin like footer text, copyright notices, plugin options and settings, time format, widget texts, and more.": [
+            "แปลข้อความส่วนหน้าที่คุณสามารถปรับแต่งได้จากส่วนผู้ดูแลระบบ WordPress เช่น ข้อความส่วนท้าย, ประกาศลิขสิทธิ์, ตัวเลือกและตั้งค่าปลั๊กอิน, รูปแบบเวลา, ข้อความวิดเจ็ต และอื่น ๆ"
+         ],
+         "Translating Strings From Admin and Settings": [
+            "การแปลสตริงจากส่วนผู้ดูแลระบบและการตั้งค่า"
+         ],
+         "Translate texts in admin screens": [
+            "แปลข้อความในหน้าผู้ดูแลระบบ"
+         ],
+         "Translate User Meta Information": [
+            "แปลข้อมูล User Meta"
+         ],
+         "Making User Meta Information Translatable": [
+            "การทำให้ข้อมูล User Meta สามารถแปลได้"
+         ],
+         "Translate user profile strings": [
+            "แปลสตริงโปรไฟล์ผู้ใช้"
+         ],
+         "No strings have been registered for translation yet. Open your site's front-end (<a/>) and WPML will automatically detect the untranslated strings and list them here. ": [
+            "ยังไม่มีการลงทะเบียนสตริงสำหรับการแปล โปรดเปิดส่วนหน้าของไซต์ของคุณ (<a/>) และ WPML จะตรวจจับสตริงที่ยังไม่ได้แปลโดยอัตโนมัติและแสดงรายการที่นี่ "
+         ],
+         "hide details": [
+            "ซ่อนรายละเอียด"
+         ],
+         "more details": [
+            "รายละเอียดเพิ่มเติม"
+         ],
+         "Still can't find the strings you're looking to translate? Add more strings for translation.": [
+            "ยังไม่พบสตริงที่คุณต้องการแปลใช่หรือไม่? เพิ่มสตริงเพิ่มเติมสำหรับการแปล"
+         ],
+         "Not seeing strings that you are looking for?": [
+            "ไม่เห็นสตริงที่คุณกำลังมองหาใช่หรือไม่?"
+         ],
+         "Enable the autoregistration setting.": [
+            "เปิดใช้งานการตั้งค่าการลงทะเบียนอัตโนมัติ"
+         ],
+         "Visit translations on the site's frontend for WPML to see which strings are missing translations. Visiting one language is enough: %s.": [
+            "ไปที่บทแปลในส่วนหน้าของไซต์เพื่อให้ WPML ตรวจสอบว่าสตริงใดที่ยังไม่มีบทแปล การไปที่ภาษาเดียวก็เพียงพอแล้ว: %s"
+         ],
+         "Alternatively, you can register strings manually.": [
+            "หรือคุณสามารถลงทะเบียนสตริงด้วยตนเอง"
+         ],
+         "Registering new strings found on your site…": [
+            "กำลังลงทะเบียนสตริงใหม่ที่พบบนไซต์ของคุณ…"
+         ],
+         "Registering new strings is paused: there is not enough PHP memory to continue. Increase the memory limit or <retryQueue>try again</retryQueue>.": [
+            "การลงทะเบียนสตริงใหม่ถูกระงับ: หน่วยความจำ PHP ไม่เพียงพอที่จะดำเนินการต่อ โปรดเพิ่มขีดจำกัดหน่วยความจำหรือ <retryQueue>ลองอีกครั้ง</retryQueue>"
+         ],
+         "Registering new strings was interrupted. <retryQueue>Try again</retryQueue>": [
+            "การลงทะเบียนสตริงใหม่ถูกขัดจังหวะ <retryQueue>ลองอีกครั้ง</retryQueue>"
+         ],
+         "New strings were registered while you were working. <updateStringsList>Update the list</updateStringsList>": [
+            "มีการลงทะเบียนสตริงใหม่ในขณะที่คุณกำลังทำงาน <updateStringsList>อัปเดตรายการ</updateStringsList>"
+         ],
+         "<b>Translate Everything</b> translates only those strings which are registered in English language": [
+            "<b>แปลทุกอย่าง</b> จะแปลเฉพาะสตริงที่ลงทะเบียนในภาษาอังกฤษเท่านั้น"
+         ],
+         "Most strings from your plugins and theme are in English, so we’re showing them alongside your default language. Use the <b>Source Language</b> filter to view strings in a specific language.": [
+            "สตริงส่วนใหญ่จากปลั๊กอินและธีมของคุณเป็นภาษาอังกฤษ ดังนั้นเราจึงแสดงสตริงเหล่านั้นควบคู่ไปกับภาษาเริ่มต้นของคุณ ใช้ตัวกรอง <b>ภาษาต้นทาง</b> เพื่อดูสตริงในภาษาที่ต้องการ"
+         ],
+         "You’re using <b>%s</b> to cache your site, which may prevent WPML from automatically registering new strings. To fix this, clear your page cache, then visit your translated pages again on the frontend to detect new strings.": [
+            "คุณกำลังใช้ <b>%s</b> เพื่อแคชไซต์ของคุณ ซึ่งอาจทำให้ WPML ไม่สามารถลงทะเบียนสตริงใหม่โดยอัตโนมัติได้ หากต้องการแก้ไขปัญหานี้ ให้ล้างแคชของหน้าเว็บ จากนั้นไปที่หน้าที่แปลแล้วในส่วนหน้าอีกครั้งเพื่อตรวจจับสตริงใหม่"
+         ],
+         "WPML can detect strings that appear on the site and list them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here only the strings that actually appear on the site, you need to enable this feature.": [
+            "WPML สามารถตรวจจับสตริงที่ปรากฏบนไซต์และแสดงรายการที่นี่ ฟีเจอร์นี้ช่วยให้คุณระบุสตริงที่ปรากฏบนไซต์จริง ๆ และแปลสตริงเหล่านั้น หากต้องการเห็นเฉพาะสตริงที่ปรากฏบนไซต์จริง ๆ ที่นี่ คุณต้องเปิดใช้งานฟีเจอร์นี้"
+         ],
+         "WPML detects strings that appear on the site and lists them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here all the strings in the site, you need to disable this feature.": [
+            "WPML ตรวจจับสตริงที่ปรากฏบนไซต์และแสดงรายการที่นี่ ฟีเจอร์นี้ช่วยให้คุณระบุสตริงที่ปรากฏบนไซต์จริง ๆ และแปลสตริงเหล่านั้น หากต้องการเห็นสตริงทั้งหมดในไซต์ที่นี่ คุณต้องปิดใช้งานฟีเจอร์นี้"
+         ],
+         "Detect untranslated strings": [
+            "ตรวจจับสตริงที่ยังไม่ได้แปล"
+         ],
+         "WPML can detect untranslated strings and automatically register them for translation. This happens in real time as you or your visitors browse your website.": [
+            "WPML สามารถตรวจจับสตริงที่ยังไม่ได้แปลและลงทะเบียนสำหรับการแปลโดยอัตโนมัติ สิ่งนี้จะเกิดขึ้นแบบเรียลไทม์เมื่อคุณหรือผู้เยี่ยมชมเรียกดูเว็บไซต์ของคุณ"
+         ],
+         "Automatically register untranslated strings": [
+            "ลงทะเบียนสตริงที่ยังไม่ได้แปลโดยอัตโนมัติ"
+         ],
+         "Learn how to use auto-registration": [
+            "เรียนรู้วิธีใช้การลงทะเบียนอัตโนมัติ"
+         ],
+         "recommended": [
+            "แนะนำ"
+         ],
+         "Also register strings from the website's back-end": [
+            "ลงทะเบียนสตริงจากส่วนหลังบ้านของเว็บไซต์ด้วย"
+         ],
+         "Save settings": [
+            "บันทึกการตั้งค่า"
+         ],
+         "Request failed because of the network error": [
+            "คำขอไม่สำเร็จเนื่องจากข้อผิดพลาดของเครือข่าย"
+         ],
+         "Enabled": [
+            "เปิดใช้งานแล้ว"
+         ],
+         "Disabled": [
+            "ปิดการใช้งานแล้ว"
+         ],
+         "Modify": [
+            "แก้ไข"
+         ],
+         "You can only translate %1$s from the site's default language (%2$s).": [
+            "คุณสามารถแปล %1$s จากภาษาเริ่มต้นของไซต์ (%2$s) ได้เท่านั้น"
+         ],
+         "Search taxonomy or a name": [
+            "ค้นหาอนุกรมวิธานหรือชื่อ"
+         ],
+         "Filter by post type": [
+            "กรองตามประเภทโพสต์"
+         ],
+         "All post types": [
+            "ทุกประเภทโพสต์"
+         ],
+         "%d Not-translatable taxonomy is hidden. Switch it to <i>Translatable</i> in <a>WPML → Settings</a> to include it here.": [
+            "อนุกรมวิธานที่แปลไม่ได้ %d รายการถูกซ่อนอยู่ สลับเป็น <i>แปลได้</i> ใน <a>WPML → การตั้งค่า</a> เพื่อรวมไว้ที่นี่"
+         ],
+         "No translatable taxonomies match the current filters.": [
+            "ไม่มีอนุกรมวิธานที่แปลได้ตรงกับตัวกรองปัจจุบัน"
+         ],
+         "Select all taxonomies": [
+            "เลือกอนุกรมวิธานทั้งหมด"
+         ],
+         "Sort by taxonomy": [
+            "เรียงตามอนุกรมวิธาน"
+         ],
+         "Terms in": [
+            "คำใน"
+         ],
+         "Post types": [
+            "ประเภทโพสต์"
+         ],
+         "Translated / Total terms": [
+            "แปลแล้ว / คำทั้งหมด"
+         ],
+         "translated": [
+            "แปลแล้ว"
+         ],
+         "translation in progress": [
+            "กำลังดำเนินการแปล"
+         ],
+         "preparing for translation": [
+            "กำลังเตรียมการแปล"
+         ],
+         "translation needs update": [
+            "การแปลต้องมีการอัปเดต"
+         ],
+         "translation stalled - the job never reached our translation system": [
+            "การแปลหยุดชะงัก - งานแปลไม่เคยไปถึงระบบการแปลของเรา"
+         ],
+         "partially translated": [
+            "แปลแล้วบางส่วน"
+         ],
+         "not translated": [
+            "ยังไม่ได้แปล"
+         ],
+         "%1$s: %2$s": [
+            "%1$s: %2$s"
+         ],
+         "Open %s in the Taxonomy Translation tab": [
+            "เปิด %s ในแท็บการแปลอนุกรมวิธาน"
+         ],
+         "Taxonomy labels and slug": [
+            "ป้ายกำกับและ Slug ของอนุกรมวิธาน"
+         ],
+         "WPML String Translation is not active.": [
+            "WPML String Translation ไม่ได้เปิดใช้งาน"
+         ],
+         "Taxonomy labels and slugs are translated with <b>String Translation</b> — activate the plugin to translate them.": [
+            "ป้ายกำกับและ Slug ของอนุกรมวิธานจะถูกแปลด้วย <b>การแปลสตริง</b> — โปรดเปิดใช้งานปลั๊กอินเพื่อแปลสิ่งเหล่านี้"
+         ],
+         "No taxonomy labels to translate.": [
+            "ไม่มีป้ายกำกับอนุกรมวิธานให้แปล"
+         ],
+         "Select all taxonomy labels": [
+            "เลือกป้ายกำกับอนุกรมวิธานทั้งหมด"
+         ],
+         "Taxonomy labels": [
+            "ป้ายกำกับอนุกรมวิธาน"
+         ],
+         "Select labels for %s": [
+            "เลือกป้ายกำกับสำหรับ %s"
+         ],
+         "Labels not detected by String Translation. Rescan needed.": [
+            "การแปลสตริงตรวจไม่พบป้ายกำกับ จำเป็นต้องสแกนใหม่"
+         ],
+         "Labels not found": [
+            "ไม่พบป้ายกำกับ"
+         ],
+         "Scanning…": [
+            "กำลังสแกน…"
+         ],
+         "Rescan": [
+            "สแกนใหม่"
+         ],
+         "%d Taxonomy selected": [
+            "เลือกแล้ว %d อนุกรมวิธาน"
+         ],
+         "<b>Translate Everything Automatically</b> (TEA) is active.": [
+            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> (TEA) เปิดใช้งานอยู่"
+         ],
+         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
+            "คำใหม่และคำที่อัปเดตในอนุกรมวิธานที่แปลได้จะถูกเพิ่มเข้าคิวโดยอัตโนมัติ เลือกอนุกรมวิธานด้านล่างเพื่อส่งงานแบบกลุ่มสำหรับคำที่เหลือที่ยังไม่ได้แปล"
+         ],
+         "Switch Now": [
+            "สลับตอนนี้"
+         ],
+         "Add site description": [
+            "เพิ่มคำอธิบายไซต์"
+         ],
+         "Turn on now": [
+            "เปิดใช้งานตอนนี้"
+         ],
+         "Set up <b>Translate Everything</b>": [
+            "ตั้งค่า <b>แปลทุกอย่าง</b>"
+         ],
+         "You’ve been translating with %s.": [
+            "คุณได้แปลด้วย %s"
+         ],
+         "Your current translations stay exactly as they are. The switch to PTC affects only new and changed content. To refresh an old translation with PTC, re-send it from the <b>Translation Dashboard</b>. This works even while automatic translation runs. It skips anything already translated.": [
+            "คำแปลปัจจุบันของคุณจะยังคงอยู่เหมือนเดิม การสลับไปใช้ PTC จะมีผลกับเนื้อหาใหม่และเนื้อหาที่เปลี่ยนแปลงเท่านั้น หากต้องการรีเฟรชคำแปลเก่าด้วย PTC ให้ส่งเนื้อหานั้นอีกครั้งจาก <b>แดชบอร์ดการแปล</b> ซึ่งสามารถทำได้แม้ในขณะที่การแปลอัตโนมัติกำลังทำงานอยู่ โดยระบบจะข้ามสิ่งที่แปลไปแล้ว"
+         ],
+         "They stay as they are. Automatic translation only touches content that isn’t translated yet. WPML skips anything you’ve already translated. To refresh a page, re-send it from the <b>Translation Dashboard</b> anytime.": [
+            "คำแปลเหล่านั้นจะยังคงอยู่เหมือนเดิม การแปลอัตโนมัติจะจัดการเฉพาะเนื้อหาที่ยังไม่ได้แปลเท่านั้น WPML จะข้ามสิ่งที่แปลไปแล้ว คุณสามารถรีเฟรชหน้าเว็บได้โดยการส่งหน้านั้นใหม่จาก <b>แดชบอร์ดการแปล</b> ได้ทุกเมื่อ"
+         ],
+         "Add your site description and target audience": [
+            "เพิ่มคำอธิบายไซต์และกลุ่มเป้าหมายของคุณ"
+         ],
+         "Save": [
+            "บันทึก"
+         ],
+         "Saving…": [
+            "กำลังบันทึก…"
+         ],
+         "Your automatic translation pricing has been upgraded": [
+            "ราคาการแปลอัตโนมัติของคุณได้รับการอัปเกรดแล้ว"
+         ],
+         "Loading notice details…": [
+            "กำลังโหลดรายละเอียดการแจ้งเตือน…"
+         ],
+         "With WPML 5, automatic translation now costs once per page, per language. After that, edits that add words cost only the added words — edits that don’t grow the page are free. Rework copy, run A/B tests, refine wording. You’re already on PTC, with automatic translation on. There’s nothing to change.": [
+            "ด้วย WPML 5 ตอนนี้การแปลอัตโนมัติจะมีค่าใช้จ่ายเพียงครั้งเดียวต่อหน้าต่อภาษา หลังจากนั้น การแก้ไขที่เพิ่มจำนวนคำจะมีค่าใช้จ่ายเฉพาะคำที่เพิ่มขึ้นเท่านั้น ส่วนการแก้ไขที่ไม่ได้ทำให้หน้ายาวขึ้นจะไม่มีค่าใช้จ่าย คุณสามารถปรับปรุงเนื้อหา รันการทดสอบ A/B หรือขัดเกลาสำนวนได้ตามต้องการ ตอนนี้คุณใช้งาน PTC และเปิดการแปลอัตโนมัติอยู่แล้ว จึงไม่มีอะไรต้องเปลี่ยนแปลง"
+         ],
+         "Got it": [
+            "รับทราบ"
+         ],
+         "See your pricing": [
+            "ดูราคาของคุณ"
+         ],
+         "You’re all set. The new pricing is active.": [
+            "คุณตั้งค่าเรียบร้อยแล้ว ราคาใหม่มีผลใช้งานแล้ว"
+         ],
+         "Automatic translation now costs once per page, per language. Edits afterwards are free. New content stays translated as you publish.": [
+            "ตอนนี้การแปลอัตโนมัติมีค่าใช้จ่ายเพียงครั้งเดียวต่อหน้าต่อภาษา การแก้ไขหลังจากนั้นจะไม่มีค่าใช้จ่าย เนื้อหาใหม่จะถูกแปลทันทีที่คุณเผยแพร่"
+         ],
+         "What happens to my existing translations?": [
+            "จะเกิดอะไรขึ้นกับคำแปลที่มีอยู่ของฉัน?"
+         ],
+         "Switch to PTC for better translations and the new pricing": [
+            "สลับเป็น PTC เพื่อการแปลที่ดีขึ้นและราคาใหม่"
+         ],
+         "Pay once per page, then edit for free": [
+            "จ่ายครั้งเดียวต่อหน้า แล้วแก้ไขได้ฟรี"
+         ],
+         "You’re translating your whole site automatically with %s. The new pay-once pricing applies when you use PTC, our recommended AI engine.": [
+            "คุณกำลังแปลทั้งไซต์โดยอัตโนมัติด้วย %s ราคาแบบจ่ายครั้งเดียวใหม่จะมีผลเมื่อคุณใช้ PTC ซึ่งเป็นเอนจิน AI ที่เราแนะนำ"
+         ],
+         "WPML 5 brings a simpler, lower price for automatic translation, using <strong>Private Translation Cloud (PTC)</strong>, WPML’s own AI engine. Set it up to have WPML translate your whole site automatically.": [
+            "WPML 5 มาพร้อมกับราคาการแปลอัตโนมัติที่ถูกลงและเรียบง่ายขึ้น โดยใช้ <strong>Private Translation Cloud (PTC)</strong> ซึ่งเป็นเอนจิน AI ของ WPML เอง ตั้งค่าเพื่อเริ่มให้ WPML แปลทั้งไซต์ของคุณโดยอัตโนมัติ"
+         ],
+         "What you gain": [
+            "สิ่งที่คุณจะได้รับ"
+         ],
+         "Pay once per page, in each language.": [
+            "จ่ายครั้งเดียวต่อหน้า ในแต่ละภาษา"
+         ],
+         "After that, only added words are charged.": [
+            "หลังจากนั้น จะเรียกเก็บเงินเฉพาะคำที่เพิ่มขึ้นเท่านั้น"
+         ],
+         "Edit as much as you want.": [
+            "แก้ไขได้มากเท่าที่ต้องการ"
+         ],
+         "A/B tests, copy changes, and rewrites cost only the words they add.": [
+            "การทดสอบ A/B การเปลี่ยนเนื้อหา และการเขียนใหม่จะมีค่าใช้จ่ายเฉพาะคำที่เพิ่มขึ้นเท่านั้น"
+         ],
+         "Translations in your voice.": [
+            "การแปลในสไตล์ของคุณเอง"
+         ],
+         "PTC learns your terms and tone from your existing translations.": [
+            "PTC เรียนรู้คำศัพท์และโทนเสียงของคุณจากคำแปลที่มีอยู่"
+         ],
+         "Questions? Tap to expand": [
+            "มีคำถาม? แตะเพื่อขยาย"
+         ],
+         "Why is the pay-once pricing only for PTC?": [
+            "ทำไมการจ่ายครั้งเดียวจึงมีให้เฉพาะ PTC?"
+         ],
+         "PTC is WPML’s own AI engine. It reads the whole page, learns your terms and tone, and is backed by our quality guarantee, so we can price it once per page. DeepL, Google and Microsoft translate segment by segment and are priced per word, changes included.": [
+            "PTC คือเอนจิน AI ของ WPML เอง โดยจะอ่านทั้งหน้า เรียนรู้คำศัพท์และโทนเสียงของคุณ และมีการรับประกันคุณภาพจากเรา เราจึงสามารถคิดราคาแบบจ่ายครั้งเดียวต่อหน้าได้ ส่วน DeepL, Google และ Microsoft จะแปลทีละส่วนและคิดราคาตามจำนวนคำ รวมถึงเมื่อมีการแก้ไขด้วย"
+         ],
+         "How much will I pay?": [
+            "ฉันต้องจ่ายเท่าไหร่?"
+         ],
+         "You’re on %s: per word, changes included. Switch to PTC to pay once per page, with free changes.": [
+            "คุณกำลังใช้ %s: คิดราคาตามจำนวนคำ รวมถึงเมื่อมีการแก้ไข สลับเป็น PTC เพื่อจ่ายครั้งเดียวต่อหน้า พร้อมแก้ไขฟรี"
+         ],
+         "On PTC, you pay once per page, in each language. After that, edits to that page are free. You pay again only if the page grows past what you first paid for. In short: you pay for new content, not for updates.": [
+            "สำหรับ PTC คุณจ่ายครั้งเดียวต่อหน้าในแต่ละภาษา หลังจากนั้นการแก้ไขหน้านั้นจะไม่มีค่าใช้จ่าย คุณจะจ่ายเพิ่มก็ต่อเมื่อหน้านั้นมีเนื้อหาเพิ่มขึ้นจากที่คุณจ่ายไปตอนแรก สรุปสั้น ๆ คือ คุณจ่ายสำหรับเนื้อหาใหม่ ไม่ใช่สำหรับการอัปเดต"
+         ],
+         "Yes, show me how": [
+            "ใช่ แสดงวิธีให้ฉันดู"
+         ],
+         "Not interested": [
+            "ไม่สนใจ"
+         ],
+         "Do these in order. If you turn on automatic translation before choosing PTC, WPML translates your whole site with the wrong engine. You’d then pay to redo that work.": [
+            "โปรดดำเนินการตามลำดับ หากคุณเปิดการแปลอัตโนมัติก่อนเลือก PTC WPML จะแปลทั้งไซต์ด้วยเอนจินที่ผิด และคุณจะต้องเสียเงินเพื่อทำงานนั้นใหม่"
+         ],
+         "Do these in order. The engine change affects only new and changed content. Your current translations stay as they are.": [
+            "โปรดดำเนินการตามลำดับ การเปลี่ยนเอนจินจะมีผลเฉพาะเนื้อหาใหม่และเนื้อหาที่เปลี่ยนแปลงเท่านั้น คำแปลปัจจุบันของคุณจะยังคงอยู่เหมือนเดิม"
+         ],
+         "Switch on the new pricing in %d step": [
+            "เปิดใช้งานราคาใหม่ใน %d ขั้นตอน"
+         ],
+         "Done": [
+            "เสร็จสิ้น"
+         ],
+         "Automatic translation is paused. Settle it in the <b>Translate Everything</b> box first.": [
+            "การแปลอัตโนมัติถูกระงับ โปรดจัดการในกล่อง <b>แปลทุกอย่าง</b> ก่อน"
+         ],
+         "Do the step above first": [
+            "โปรดทำขั้นตอนด้านบนก่อน"
+         ],
+         "Switch to the <b>Advanced Translation Editor</b>": [
+            "สลับเป็น <b>ตัวแก้ไขการแปลขั้นสูง</b>"
+         ],
+         "Switch your engine to PTC": [
+            "สลับเอนจินของคุณเป็น PTC"
+         ],
+         "Turn on <b>Translate Everything Automatically</b>": [
+            "เปิดใช้งาน <b>แปลทุกอย่างโดยอัตโนมัติ</b>"
+         ],
+         "The Advanced Translation Editor is your editor now.": [
+            "ตอนนี้ตัวแก้ไขการแปลขั้นสูงคือตัวแก้ไขของคุณแล้ว"
+         ],
+         "You’re using the Classic Translation Editor, an old legacy tool. PTC and automatic translation run in the Advanced Translation Editor, which also gives you:": [
+            "คุณกำลังใช้ตัวแก้ไขการแปลแบบคลาสสิก ซึ่งเป็นเครื่องมือรุ่นเก่า PTC และการแปลอัตโนมัติจะทำงานในตัวแก้ไขการแปลขั้นสูง ซึ่งยังมีฟีเจอร์ต่อไปนี้ให้คุณด้วย:"
+         ],
+         "recommended: pay once per page. PTC needs a short description of your site; the next dialog asks for it.": [
+            "แนะนำ: จ่ายครั้งเดียวต่อหน้า PTC ต้องการคำอธิบายสั้น ๆ เกี่ยวกับไซต์ของคุณ ซึ่งจะมีการถามในไดอะล็อกถัดไป"
+         ],
+         "recommended: pay once per page": [
+            "แนะนำ: จ่ายครั้งเดียวต่อหน้า"
+         ],
+         "Only you can describe your site. PTC uses this to translate in your voice. Enter it in AI Settings, then Save.": [
+            "มีเพียงคุณเท่านั้นที่สามารถอธิบายไซต์ของคุณได้ PTC จะใช้ข้อมูลนี้เพื่อแปลในสไตล์ของคุณ โปรดป้อนข้อมูลในการตั้งค่า AI แล้วกดบันทึก"
+         ],
+         "Starts with your current engine, %s, priced per word. After step 1 it runs on PTC, pay once per page.": [
+            "เริ่มต้นด้วยเอนจินปัจจุบันของคุณ %s ซึ่งคิดราคาตามจำนวนคำ หลังจากขั้นตอนที่ 1 จะรันบน PTC และจ่ายครั้งเดียวต่อหน้า"
+         ],
+         "WPML translates your whole site. New content stays translated as you publish.": [
+            "WPML แปลทั้งไซต์ของคุณ เนื้อหาใหม่จะถูกแปลทันทีที่คุณเผยแพร่"
+         ],
+         "Translation Memory": [
+            "หน่วยความจำการแปล"
+         ],
+         "HTML Protection": [
+            "การป้องกัน HTML"
+         ],
+         "Glossary": [
+            "อภิธานศัพท์"
+         ],
+         "Spellchecker": [
+            "ตัวสะกดคำ"
+         ],
+         "AI Assistant": [
+            "ผู้ช่วย AI"
+         ],
+         "Automatic Translation": [
+            "การแปลอัตโนมัติ"
+         ],
+         "<b>Translate Everything Automatically</b> is already on, with %s (per word).": [
+            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> เปิดใช้งานอยู่แล้ว โดยใช้ %s (คิดราคาตามจำนวนคำ)"
+         ],
+         "Not now": [
+            "ไม่ใช่ตอนนี้"
+         ],
+         "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
+            "เกิดข้อผิดพลาดในการเชื่อมต่อ โปรดรอสักครู่แล้วโหลดหน้านี้ใหม่ หากปัญหายังคงอยู่ โปรดติดต่อฝ่ายสนับสนุนของ WPML"
+         ],
+         "You don’t have enough prepaid words to translate this content.": [
+            "คุณมีจำนวนคำแบบชำระเงินล่วงหน้าไม่เพียงพอที่จะแปลเนื้อหานี้"
+         ],
+         "You have %1$s prepaid words — %2$s more are needed to translate this content": [
+            "คุณมีคำแบบชำระเงินล่วงหน้า %1$s คำ — ต้องการอีก %2$s คำเพื่อแปลเนื้อหานี้"
+         ],
+         "You’re missing %1$s prepaid words for the translation jobs in progress — %2$s are needed in total": [
+            "คุณขาดคำแบบชำระเงินล่วงหน้า %1$s คำสำหรับงานแปลที่กำลังดำเนินการ — ต้องการทั้งหมด %2$s คำ"
+         ],
+         "Automatic translation costs:": [
+            "ค่าใช้จ่ายการแปลอัตโนมัติ:"
+         ],
+         "Words": [
+            "คำ"
+         ],
+         "Words to translate automatic": [
+            "จำนวนคำที่จะแปลอัตโนมัติ"
+         ],
+         "Words required:": [
+            "จำนวนคำที่ต้องการ:"
+         ],
+         "Pricing": [
+            "ราคา"
+         ],
+         "Your Automatic Translation Words": [
+            "จำนวนคำการแปลอัตโนมัติของคุณ"
+         ],
+         "To proceed with translation, activate <b>Pay-As-You-Go</b> or assign prepaid words.": [
+            "หากต้องการดำเนินการแปลต่อ โปรดเปิดใช้งาน <b>จ่ายตามการใช้งานจริง</b> หรือจัดสรรคำแบบชำระเงินล่วงหน้า"
+         ],
+         "<b>Pay-As-You-Go</b> activated": [
+            "เปิดใช้งาน <b>จ่ายตามการใช้งานจริง</b> แล้ว"
+         ],
+         "You can now continue translating your content automatically.": [
+            "ตอนนี้คุณสามารถแปลเนื้อหาของคุณโดยอัตโนมัติต่อไปได้แล้ว"
+         ],
+         "%s word assigned to this site.": [
+            "จัดสรร %s คำให้กับไซต์นี้แล้ว"
+         ],
+         "Leave existing translations as they are": [
+            "คงคำแปลที่มีอยู่ไว้ตามเดิม"
+         ],
+         "Overwrite existing translations": [
+            "เขียนทับคำแปลที่มีอยู่"
+         ],
+         "Some of the content you want to translate is already translated": [
+            "เนื้อหาบางส่วนที่คุณต้องการแปลได้รับการแปลแล้ว"
+         ],
+         "What do you want to do with the content that's already translated?": [
+            "คุณต้องการทำอย่างไรกับเนื้อหาที่แปลแล้ว?"
+         ],
+         "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
+            "การแปลจาก DeepL, Google Translate และ Microsoft Translator ควรได้รับการรีวิวก่อนเผยแพร่"
+         ],
+         "Translations from PTC are publish-ready, so you can publish them without review.": [
+            "คำแปลจาก PTC พร้อมสำหรับการเผยแพร่แล้ว ดังนั้นคุณจึงสามารถเผยแพร่ได้โดยไม่ต้องรีวิว"
+         ],
+         "Suggested deadline:": [
+            "กำหนดส่งที่แนะนำ:"
+         ],
+         "Set a batch name and deadline": [
+            "ตั้งชื่อชุดและกำหนดส่ง"
+         ],
+         "You can assign a custom name to this batch for easy tracking and suggest a deadline to clarify the priority for translators.": [
+            "คุณสามารถตั้งชื่อที่กำหนดเองให้กับชุดงานนี้เพื่อให้ง่ายต่อการติดตาม และแนะนำกำหนดส่งเพื่อระบุลำดับความสำคัญให้นักแปลทราบ"
+         ],
+         "Batch name:": [
+            "ชื่อชุด:"
+         ],
+         "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s translator</add_yourself> to the site.<br/> Add yourself as %2$s translator and click <check_again>check again</check_again> or choose a different translation option.": [
+            "ในการมอบหมายงานให้ตัวคุณเองเป็นนักแปล ก่อนอื่นคุณต้อง <add_yourself>เพิ่มตัวคุณเองเป็นนักแปลภาษา %1$s</add_yourself> ในไซต์นี้<br/> เพิ่มตัวคุณเองเป็นนักแปลภาษา %2$s แล้วคลิก <check_again>ตรวจสอบอีกครั้ง</check_again> หรือเลือกตัวเลือกการแปลอื่น"
+         ],
+         "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s to %2$s translator</add_yourself> to the site.<br/> Add yourself as %3$s to %4$s translator and click <check_again>check again</check_again> or choose a different translation option.": [
+            "ในการมอบหมายงานให้ตัวคุณเองเป็นนักแปล ก่อนอื่นคุณต้อง <add_yourself>เพิ่มตัวคุณเองเป็นนักแปลจากภาษา %1$s เป็น %2$s</add_yourself> ในไซต์นี้<br/> เพิ่มตัวคุณเองเป็นนักแปลจากภาษา %3$s เป็น %4$s แล้วคลิก <check_again>ตรวจสอบอีกครั้ง</check_again> หรือเลือกตัวเลือกการแปลอื่น"
+         ],
+         "Checking": [
+            "กำลังตรวจสอบ"
+         ],
+         "In order to assign a translation service, you first need to <activate_ts>activate a translation service</activate_ts>.<br/>Activate a translation service and click <check_again>check again</check_again> or choose a different translation option.": [
+            "ในการมอบหมายบริการการแปล ก่อนอื่นคุณต้อง <activate_ts>เปิดใช้งานบริการการแปล</activate_ts><br/>เปิดใช้งานบริการการแปลแล้วคลิก <check_again>ตรวจสอบอีกครั้ง</check_again> หรือเลือกตัวเลือกการแปลอื่น"
+         ],
+         " Checking ": [
+            " กำลังตรวจสอบ "
+         ],
+         "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
+            "ในการแปลอัตโนมัติ ก่อนอื่นคุณต้อง <enable_ate>เปิดใช้งาน <b>ตัวแก้ไขการแปลขั้นสูง</b> ของ WPML</enable_ate><br/>เปิดใช้งาน <b>ตัวแก้ไขการแปลขั้นสูง</b> แล้วคลิก <check_again>ตรวจสอบอีกครั้ง</check_again> หรือเลือกตัวเลือกการแปลอื่น"
+         ],
+         "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
+            "เนื้อหาที่เลือกถูกแปลโดยใช้ <b>ตัวแก้ไขการแปลแบบคลาสสิก</b> และไม่สามารถส่งไปแปลอัตโนมัติได้ หากต้องการอนุญาตสิ่งนี้ โปรดเปิดใช้งาน \"ใช้สำหรับคำแปลเก่าด้วย\" ในหน้า <wpmlSettingLink>การตั้งค่า WPML</wpmlSettingLink>"
+         ],
+         "Some of the selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
+            "เนื้อหาบางส่วนที่เลือกถูกแปลโดยใช้ <b>ตัวแก้ไขการแปลแบบคลาสสิก</b> และไม่สามารถส่งไปแปลอัตโนมัติได้ หากต้องการอนุญาตสิ่งนี้ โปรดเปิดใช้งาน \"ใช้สำหรับคำแปลเก่าด้วย\" ในหน้า <wpmlSettingLink>การตั้งค่า WPML</wpmlSettingLink>"
+         ],
+         "Content that is already translated into this language will not be duplicated; its existing translation is kept.\nWhen duplicating content, please first duplicate parent pages to maintain the site's hierarchy.": [
+            "เนื้อหาที่แปลเป็นภาษานี้อยู่แล้วจะไม่ถูกทำสำเนา โดยจะคงการแปลที่มีอยู่ไว้\nเมื่อทำสำเนาเนื้อหา โปรดทำสำเนาหน้าหลักก่อนเพื่อรักษาลำดับชั้นของไซต์"
+         ],
+         "Some of the selected content is already being translated. This will cancel any in-progress translations.": [
+            "เนื้อหาบางส่วนที่เลือกกำลังถูกแปลอยู่ การดำเนินการนี้จะยกเลิกการแปลที่กำลังดำเนินการอยู่ทั้งหมด"
+         ],
+         "The selected items were translated using the WordPress Editor and will be overwritten with automatic translations.": [
+            "รายการที่เลือกถูกแปลโดยใช้ตัวแก้ไข WordPress และจะถูกเขียนทับด้วยการแปลอัตโนมัติ"
+         ],
+         "Some of the selected content was translated using the WordPress Editor and will be overwritten.": [
+            "เนื้อหาบางส่วนที่เลือกถูกแปลโดยใช้ตัวแก้ไข WordPress และจะถูกเขียนทับ"
+         ],
+         "Translated content structure will change. The selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
+            "โครงสร้างเนื้อหาที่แปลจะเปลี่ยนไป รายการที่เลือกเคยถูกแปลในตัวแก้ไข WordPress มาก่อน เมื่อ WPML แปลโดยอัตโนมัติ โครงสร้างของโพสต์ที่แปลจะกลับไปตรงกับเนื้อหาต้นฉบับ ข้อความที่แปลแล้วจะยังคงถูกใช้เป็นฐานเพื่อให้โทนเสียงและคำศัพท์ยังคงเดิม"
+         ],
+         "Translated content structure will change. Some of the selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
+            "โครงสร้างเนื้อหาที่แปลจะเปลี่ยนไป รายการบางส่วนที่เลือกเคยถูกแปลในตัวแก้ไข WordPress มาก่อน เมื่อ WPML แปลโดยอัตโนมัติ โครงสร้างของโพสต์ที่แปลจะกลับไปตรงกับเนื้อหาต้นฉบับ ข้อความที่แปลแล้วจะยังคงถูกใช้เป็นฐานเพื่อให้โทนเสียงและคำศัพท์ยังคงเดิม"
+         ],
+         "In order to assign to a translator, you first need to <add_translators>add %1$s translators</add_translators> to the site.<br/> Add %2$s translators and click <check_again>check again</check_again> or choose a different translation option.": [
+            "ในการมอบหมายงานให้นักแปล ก่อนอื่นคุณต้อง <add_translators>เพิ่มนักแปลภาษา %1$s</add_translators> ในไซต์นี้<br/> เพิ่มนักแปลภาษา %2$s แล้วคลิก <check_again>ตรวจสอบอีกครั้ง</check_again> หรือเลือกตัวเลือกการแปลอื่น"
+         ],
+         "In order to assign to a translator, you first need to <add_translators>add %1$s to %2$s translators</add_translators> to the site.<br/> Add %3$s to %4$s translators and click <check_again>check again</check_again> or choose a different translation option.": [
+            "ในการมอบหมายงานให้นักแปล ก่อนอื่นคุณต้อง <add_translators>เพิ่มนักแปลจากภาษา %1$s เป็น %2$s</add_translators> ในไซต์นี้<br/> เพิ่มนักแปลจากภาษา %3$s เป็น %4$s แล้วคลิก <check_again>ตรวจสอบอีกครั้ง</check_again> หรือเลือกตัวเลือกการแปลอื่น"
+         ],
+         "Your site doesn't have any reviewers for %s. This means that you’re the only person who can review these translations.": [
+            "ไซต์ของคุณไม่มีผู้รีวิวสำหรับภาษา %s ซึ่งหมายความว่าคุณเป็นเพียงคนเดียวที่สามารถรีวิวคำแปลเหล่านี้ได้"
+         ],
+         "Your site doesn't have any reviewers yet. This means that you’re the only person who can review translations.": [
+            "ไซต์ของคุณยังไม่มีผู้รีวิว ซึ่งหมายความว่าคุณเป็นเพียงคนเดียวที่สามารถรีวิวคำแปลได้"
+         ],
+         "If you want other people to review the translations, go to <a>Settings → Translators</a> and add translators. They will be able to both review and translate content for you.": [
+            "หากคุณต้องการให้ผู้อื่นรีวิวคำแปล ให้ไปที่ <a>การตั้งค่า → นักแปล</a> และเพิ่มนักแปล พวกเขาจะสามารถทั้งรีวิวและแปลเนื้อหาให้คุณได้"
+         ],
+         "Automatic translation is paused — payment required": [
+            "การแปลอัตโนมัติถูกระงับ — จำเป็นต้องชำระเงิน"
+         ],
+         "A payment of %s could not be processed. Pay it in the <b>Translate Everything</b> box above to resume.": [
+            "ไม่สามารถประมวลผลการชำระเงินจำนวน %s ได้ โปรดชำระเงินในกล่อง <b>แปลทุกอย่าง</b> ด้านบนเพื่อดำเนินการต่อ"
+         ],
+         "Automatic translation is paused: monthly spending cap reached": [
+            "การแปลอัตโนมัติถูกระงับ: ถึงวงเงินการใช้จ่ายรายเดือนแล้ว"
+         ],
+         "<site>%1$s</site> reached its monthly spending cap (<figure>%2$s</figure> of <figure>%3$s</figure> words used). Raise it above to continue.": [
+            "<site>%1$s</site> ถึงวงเงินการใช้จ่ายรายเดือนแล้ว (ใช้ไป <figure>%2$s</figure> จาก <figure>%3$s</figure> คำ) โปรดเพิ่มวงเงินด้านบนเพื่อดำเนินการต่อ"
+         ],
+         "WPML does not support duplicating strings. Your selection to duplicate strings to %1$s will be ignored if you proceed with the translation.": [
+            "WPML ไม่รองรับการทำสำเนาสตริง การเลือกทำสำเนาสตริงไปยัง %1$s จะถูกละเว้นหากคุณดำเนินการแปลต่อ"
+         ],
+         "WPML does not support duplicating %1$s elements. Your selection to duplicate elements to %2$s will be ignored if you proceed with the translation.": [
+            "WPML ไม่รองรับการทำสำเนาองค์ประกอบ %1$s สิ่งที่คุณเลือกเพื่อทำสำเนาองค์ประกอบไปยัง %2$s จะถูกละเว้นหากคุณดำเนินการแปลต่อ"
+         ],
+         "WPML does not support duplicating %1$s elements and strings. Your selection to duplicate elements and strings to %2$s will be ignored if you proceed with the translation.": [
+            "WPML ไม่รองรับการทำสำเนาองค์ประกอบและสตริง %1$s สิ่งที่คุณเลือกเพื่อทำสำเนาองค์ประกอบและสตริงไปยัง %2$s จะถูกละเว้นหากคุณดำเนินการแปลต่อ"
+         ],
+         "WPML does not support duplicating strings.": [
+            "WPML ไม่รองรับการทำสำเนาสตริง"
+         ],
+         "WPML does not support duplicating %1$s elements.": [
+            "WPML ไม่รองรับการทำสำเนาองค์ประกอบ %1$s"
+         ],
+         "WPML does not support duplicating %1$s elements and strings.": [
+            "WPML ไม่รองรับการทำสำเนาองค์ประกอบและสตริง %1$s"
+         ],
+         "WPML does not support duplicating taxonomies.": [
+            "WPML ไม่รองรับการทำสำเนาอนุกรมวิธาน"
+         ],
+         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
+            "WPML ไม่รองรับการทำสำเนาอนุกรมวิธาน สิ่งที่คุณเลือกเพื่อทำสำเนาอนุกรมวิธานไปยัง %1$s จะถูกละเว้นหากคุณดำเนินการแปลต่อ"
+         ],
+         "Finish setting up %s on your site": [
+            "ตั้งค่า %s บนไซต์ของคุณให้เสร็จสิ้น"
+         ],
+         "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
+            "คุณต้องยืนยันตัวตน %s เพื่อส่งเนื้อหาไปแปล<br/>ไปที่ <a>แท็บนักแปล</a> เพื่อตั้งค่าให้เสร็จสิ้น แล้วคลิก <check_again>ตรวจสอบอีกครั้ง</check_again> หรือเลือกตัวเลือกการแปลอื่น"
+         ],
+         "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
+            "เนื้อหาบางส่วนที่เลือกมีการแปลที่เปิดไว้เพื่อรีวิว การส่งอีกครั้งจะแทนที่การแปลนั้น"
+         ],
+         "You selected multiple translation methods for content across different languages:": [
+            "คุณเลือกวิธีการแปลหลายวิธีสำหรับเนื้อหาในภาษาต่าง ๆ:"
+         ],
+         "Sent for translation": [
+            "ส่งไปแปลแล้ว"
+         ],
+         "Some items were not sent for translation": [
+            "บางรายการไม่ได้ถูกส่งไปแปล"
+         ],
+         "Sending for translation failed": [
+            "การส่งไปแปลล้มเหลว"
+         ],
+         "WPML can't reach our translation system right now, so these items haven't been sent. Check the connection and retry.": [
+            "WPML ไม่สามารถเชื่อมต่อกับระบบการแปลของเราได้ในขณะนี้ รายการเหล่านี้จึงยังไม่ถูกส่ง โปรดตรวจสอบการเชื่อมต่อแล้วลองใหม่อีกครั้ง"
+         ],
+         "WPML could not read the translation server's answer about these items. If you send them anyway and the server already has them, you may be charged for them twice.": [
+            "WPML ไม่สามารถอ่านคำตอบของเซิร์ฟเวอร์การแปลเกี่ยวกับรายการเหล่านี้ได้ หากคุณยังคงส่งรายการดังกล่าวและเซิร์ฟเวอร์มีรายการเหล่านี้อยู่แล้ว คุณอาจถูกเรียกเก็บเงินซ้ำซ้อนได้"
+         ],
+         "Check connection and retry": [
+            "ตรวจสอบการเชื่อมต่อและลองใหม่"
+         ],
+         "Retry not-sent items": [
+            "ลองส่งรายการที่ยังไม่ได้ส่งอีกครั้ง"
+         ],
+         "Send anyway": [
+            "ส่งต่อไป"
+         ],
+         "Close": [
+            "ปิด"
+         ],
+         "Continue sending": [
+            "ดำเนินการส่งต่อ"
+         ],
+         "Ok": [
+            "ตกลง"
+         ],
+         "<s>1 item</s> is being translated automatically.": [
+            "กำลังแปล <s>%d รายการ</s> โดยอัตโนมัติ"
+         ],
+         "You can track their progress at the top of the page.": [
+            "คุณสามารถติดตามความคืบหน้าได้ที่ด้านบนของหน้า"
+         ],
+         "From now on, WPML will automatically translate new content on your site.": [
+            "นับจากนี้ WPML จะแปลเนื้อหาใหม่บนไซต์ของคุณโดยอัตโนมัติ"
+         ],
+         "This number might vary because you enabled the <b>Translate Everything Automatically</b> Mode.": [
+            "ตัวเลขนี้อาจแตกต่างกันไปเนื่องจากคุณเปิดใช้งานโหมด <b>แปลทุกอย่างโดยอัตโนมัติ</b>"
+         ],
+         "From now on, WPML will automatically translate your site's content.": [
+            "นับจากนี้ WPML จะแปลเนื้อหาของไซต์คุณโดยอัตโนมัติ"
+         ],
+         "Automatic translations summary": [
+            "สรุปการแปลอัตโนมัติ"
+         ],
+         "<s>1 item</s> has been successfully assigned to you! To check its status, please go to <s>Translation Tasks</s>. <translations_queue/>": [
+            "มอบหมาย <s>%d รายการ</s> ให้คุณเรียบร้อยแล้ว! สำหรับการอัปเดตสถานะ โปรดไปที่ <s>งานที่ต้องแปล</s> <translations_queue/>"
+         ],
+         "Currently logged in translator summary": [
+            "สรุปนักแปลที่เข้าสู่ระบบอยู่"
+         ],
+         "Go to Translation Tasks": [
+            "ไปที่งานที่ต้องแปล"
+         ],
+         "<s>1 item</s> has been duplicated.": [
+            "ทำสำเนา <s>%d รายการ</s> เรียบร้อยแล้ว"
+         ],
+         "Duplication summary": [
+            "สรุปการทำสำเนา"
+         ],
+         "Please try again in a few minutes. If the issue persists, <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, copy the technical details below and paste them into our Maiya agent for assistance.": [
+            "โปรดลองอีกครั้งในอีกไม่กี่นาที หากปัญหายังคงอยู่ <supportLink>โปรดเปิดตั๋วในฟอรัมของเรา (Maiya)</supportLink> คัดลอกรายละเอียดทางเทคนิคด้านล่างและส่งให้เจ้าหน้าที่ Maiya ของเราเพื่อขอความช่วยเหลือ"
+         ],
+         "There was a problem sending your content for translation.": [
+            "มีปัญหาในการส่งเนื้อหาของคุณไปแปล"
+         ],
+         "See technical details": [
+            "ดูรายละเอียดทางเทคนิค"
+         ],
+         "Hide technical details": [
+            "ซ่อนรายละเอียดทางเทคนิค"
+         ],
+         "Some of the selected strings are already registered or translated into %s. Since their source language matches the target language, they cannot be retranslated.": [
+            "สตริงบางส่วนที่เลือกได้รับการลงทะเบียนหรือแปลเป็นภาษา %s แล้ว เนื่องจากภาษาต้นฉบับตรงกับภาษาเป้าหมาย จึงไม่สามารถแปลซ้ำได้"
+         ],
+         "Some of the selected content has already been translated from %1$s to %2$s and cannot be re-translated from %3$s to %4$s.": [
+            "เนื้อหาบางส่วนที่เลือกได้รับการแปลจากภาษา %1$s เป็น %2$s แล้ว และไม่สามารถแปลซ้ำจากภาษา %3$s เป็น %4$s ได้"
+         ],
+         "Content already translated": [
+            "เนื้อหาถูกแปลแล้ว"
+         ],
+         "Some of the selected content has a translation in progress, so it was not duplicated.": [
+            "เนื้อหาที่เลือกบางส่วนกำลังอยู่ระหว่างการแปล จึงไม่ได้ถูกทำสำเนา"
+         ],
+         "Content already being translated": [
+            "เนื้อหาอยู่ระหว่างการแปลแล้ว"
+         ],
+         "WPML could not count the words of these items.": [
+            "WPML ไม่สามารถนับจำนวนคำของรายการเหล่านี้ได้"
+         ],
+         "Some content couldn't be sent to translation.": [
+            "เนื้อหาบางส่วนไม่สามารถส่งไปแปลได้"
+         ],
+         "WPML did not create translations for some languages because of the following reasons:": [
+            "WPML ไม่ได้สร้างคำแปลสำหรับบางภาษาเนื่องจากเหตุผลดังต่อไปนี้:"
+         ],
+         "%s Flag": [
+            "ธงภาษา %s"
+         ],
+         "<s>1 item</s> has been successfully sent to translators!": [
+            "ส่ง <s>%d รายการ</s> ให้นักแปลเรียบร้อยแล้ว!"
+         ],
+         "Local translations summary": [
+            "สรุปการแปลในเครื่อง"
+         ],
+         "You can check their status in WPML → Translation": [
+            "คุณสามารถตรวจสอบสถานะได้ที่ WPML → การแปล"
+         ],
+         "Items not sent:": [
+            "รายการที่ไม่ได้ส่ง:"
+         ],
+         "%d item was sent for translation.": [
+            "ส่ง %d รายการไปแปลแล้ว"
+         ],
+         "%d item was not sent.": [
+            "ไม่ได้ส่ง %d รายการ"
+         ],
+         "Reason: %s": [
+            "เหตุผล: %s"
+         ],
+         "Items already sent will be translated and delivered normally.": [
+            "รายการที่ส่งไปแล้วจะถูกแปลและส่งมอบตามปกติ"
+         ],
+         "Continue to %s": [
+            "ดำเนินการต่อที่ %s"
+         ],
+         "We were unable to send the following batches for professional translation:": [
+            "เราไม่สามารถส่งชุดงานต่อไปนี้ไปแปลระดับมืออาชีพได้:"
+         ],
+         "<p><a><s>Contact WPML support for help</s></a></p>": [
+            "<p><a><s>ติดต่อฝ่ายสนับสนุนของ WPML เพื่อขอความช่วยเหลือ</s></a></p>"
+         ],
+         "Translation Service": [
+            "บริการการแปล"
+         ],
+         "sending for professional translation..": [
+            "กำลังส่งไปแปลระดับมืออาชีพ.."
+         ],
+         "<s>%1$d item</s> is being sent for translation to %2$s. Please continue to their site to start the translation.": [
+            "กำลังส่ง <s>%1$d รายการ</s> ไปแปลที่ %2$s โปรดดำเนินการต่อที่ไซต์ของพวกเขาเพื่อเริ่มการแปล"
+         ],
+         "Translation service translations summary": [
+            "สรุปการแปลโดยบริการการแปล"
+         ],
+         "One or more assigned translators are invalid. The translator may have been removed or their language permissions changed.<br/> Review your settings on the <translators_page>Translators page</translators_page>.": [
+            "นักแปลที่ได้รับมอบหมายอย่างน้อยหนึ่งคนไม่ถูกต้อง นักแปลอาจถูกลบออกหรือสิทธิ์ด้านภาษาของพวกเขาเปลี่ยนไป<br/> ตรวจสอบการตั้งค่าของคุณใน <translators_page>หน้านักแปล</translators_page>"
+         ],
+         "The selected translation service is no longer valid. It may have been changed, unauthenticated, or deactivated.<br/> Review your settings on the <translators_page>Translators page</translators_page>.": [
+            "บริการการแปลที่เลือกไม่ถูกต้องอีกต่อไป อาจมีการเปลี่ยนแปลง ไม่ได้รับการยืนยันตัวตน หรือถูกปิดใช้งาน<br/> ตรวจสอบการตั้งค่าของคุณใน <translators_page>หน้านักแปล</translators_page>"
+         ],
+         "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
+            "ตัวแก้ไขการแปลที่เลือกอยู่ในปัจจุบันไม่รองรับการแปลอัตโนมัติ คุณต้องเปิดใช้งาน <b>ตัวแก้ไขการแปลขั้นสูง</b> เพื่อส่งเนื้อหาไปแปลอัตโนมัติ<br/> ตรวจสอบการตั้งค่าของคุณใน <wpml_settings>หน้าการตั้งค่า WPML</wpml_settings>"
+         ],
+         "Validation error happened during send to translation.": [
+            "เกิดข้อผิดพลาดในการตรวจสอบความถูกต้องระหว่างการส่งไปแปล"
+         ],
+         "Translate and Duplicate": [
+            "แปลและทำสำเนา"
+         ],
+         "Duplicate": [
+            "ทำสำเนา"
+         ],
+         "Translate content": [
+            "แปลเนื้อหา"
+         ],
+         "Checking translation engine…": [
+            "กำลังตรวจสอบเอนจินการแปล…"
+         ],
+         "Checking site context…": [
+            "กำลังตรวจสอบบริบทของไซต์…"
+         ],
+         "Could not check the translation engine. Reload the page to try again.": [
+            "ไม่สามารถตรวจสอบเอนจินการแปลได้ โปรดโหลดหน้าใหม่เพื่อลองอีกครั้ง"
+         ],
+         "Automatic translation is paused until the failed payment is settled. Pay it in the Translate Everything box.": [
+            "การแปลอัตโนมัติถูกระงับจนกว่าจะชำระเงินที่ล้มเหลวเรียบร้อยแล้ว โปรดชำระเงินในกล่องแปลทุกอย่าง"
+         ],
+         "Please choose one of the available payment options.": [
+            "โปรดเลือกหนึ่งในตัวเลือกการชำระเงินที่มีอยู่"
+         ],
+         "Selected content is already translated": [
+            "เนื้อหาที่เลือกถูกแปลแล้ว"
+         ],
+         "Please select a review mode": [
+            "โปรดเลือกโหมดการรีวิว"
+         ],
+         "Assign local translator or choose another option": [
+            "มอบหมายนักแปลในเครื่องหรือเลือกตัวเลือกอื่น"
+         ],
+         "Assign yourself or choose another option": [
+            "มอบหมายตัวคุณเองหรือเลือกตัวเลือกอื่น"
+         ],
+         "Activate translation service or choose another option": [
+            "เปิดใช้งานบริการการแปลหรือเลือกตัวเลือกอื่น"
+         ],
+         "Activate the Advanced Translation Editor or choose another option": [
+            "เปิดใช้งานตัวแก้ไขการแปลขั้นสูงหรือเลือกตัวเลือกอื่น"
+         ],
+         "Authenticate translation service or choose another option": [
+            "ยืนยันตัวตนบริการการแปลหรือเลือกตัวเลือกอื่น"
+         ],
+         "Please provide context to enable translation": [
+            "โปรดระบุบริบทเพื่อเปิดใช้งานการแปล"
+         ],
+         "Keep this page open while WPML sends your content for translation. Leaving now stops the remaining items from being sent.": [
+            "โปรดเปิดหน้านี้ค้างไว้ในขณะที่ WPML กำลังส่งเนื้อหาของคุณไปแปล การออกจากหน้านี้ตอนนี้จะทำให้รายการที่เหลือไม่ถูกส่ง"
+         ],
+         "Sending content for translation": [
+            "กำลังส่งเนื้อหาเพื่อการแปล"
+         ],
+         "<s>%1$s</s> cannot process more than <s>%2$d</s> jobs in a single batch. WPML will automatically split your jobs into separate batches to ensure an error-free delivery to <s>%3$s</s>. <br/><br/> Do you want to proceed?": [
+            "<s>%1$s</s> ไม่สามารถประมวลผลงานได้มากกว่า <s>%2$d</s> งานในชุดเดียว WPML จะแบ่งงานของคุณออกเป็นชุดแยกกันโดยอัตโนมัติเพื่อให้แน่ใจว่าการส่งมอบไปยัง <s>%3$s</s> จะไม่มีข้อผิดพลาด <br/><br/> คุณต้องการดำเนินการต่อหรือไม่?"
+         ],
+         "WPML will send jobs to %s in separate batches": [
+            "WPML จะส่งงานไปยัง %s ในชุดที่แยกกัน"
+         ],
+         "Yes, send jobs in separate batches": [
+            "ใช่ ส่งงานในชุดที่แยกกัน"
+         ],
+         "No, I will split jobs myself": [
+            "ไม่ ฉันจะแบ่งงานด้วยตัวเอง"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
+            "คำในอนุกรมวิธานบางคำยังไม่ได้ถูกส่ง ส่วนคำที่ส่งไปแล้วกำลังอยู่ระหว่างการแปล - คลิก ดำเนินการส่งต่อ เพื่อส่งส่วนที่เหลือ"
+         ],
+         "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
+            "ยังไม่ได้ส่งคำในอนุกรมวิธาน คลิก ดำเนินการส่งต่อ เพื่อส่งคำเหล่านั้น"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
+            "คำในอนุกรมวิธานบางคำยังไม่ได้ถูกส่ง ส่วนคำที่ส่งไปแล้วกำลังอยู่ระหว่างการแปล - ลองส่งรายการที่ยังไม่ได้ส่งใหม่อีกครั้งเพื่อส่งส่วนที่เหลือ"
+         ],
+         "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
+            "ยังไม่ได้ส่งคำในอนุกรมวิธาน ลองส่งรายการที่ยังไม่ได้ส่งใหม่อีกครั้งเพื่อส่งคำเหล่านั้น"
+         ],
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
+            "อนุกรมวิธานบางรายการไม่ได้ถูกส่งไปแปล รายการที่ส่งไปแล้วกำลังดำเนินการแปลอยู่ - โปรดส่งส่วนที่เหลืออีกครั้งเพื่อให้เสร็จสมบูรณ์"
+         ],
+         "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
+            "WPML ไม่สามารถส่งอนุกรมวิธานไปแปลได้ จึงไม่มีรายการใดถูกส่งไปเลย โปรดลองอีกครั้ง"
+         ],
+         "This will translate only your future content": [
+            "การดำเนินการนี้จะแปลเฉพาะเนื้อหาในอนาคตของคุณเท่านั้น"
+         ],
+         "This will translate your entire site": [
+            "การดำเนินการนี้จะแปลทั้งไซต์ของคุณ"
+         ],
+         "Translate everything automatically from now on, without asking me.": [
+            "แปลทุกอย่างโดยอัตโนมัติตั้งแต่ตอนนี้เป็นต้นไป โดยไม่ต้องถามฉัน"
+         ],
+         "Existing content": [
+            "เนื้อหาที่มีอยู่"
+         ],
+         "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
+            "คุณเลือกที่จะแปลสตริงที่อยู่ใน %1$s เฉพาะสตริงเหล่านี้เท่านั้นที่จะถูกแปลเป็น %2$s"
+         ],
+         "You selected to translate strings that are in %1$s and %2$s. Only these strings will be translated to %3$s.": [
+            "คุณเลือกที่จะแปลสตริงที่อยู่ใน %1$s และ %2$s เฉพาะสตริงเหล่านี้เท่านั้นที่จะถูกแปลเป็น %3$s"
+         ],
+         "Source language": [
+            "ภาษาต้นทาง"
+         ],
+         "Target language": [
+            "ภาษาเป้าหมาย"
+         ],
+         "Words to translate": [
+            "คำที่ต้องแปล"
+         ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$sรวม:%2$s %3$s"
+         ],
+         "Translation service additional options": [
+            "ตัวเลือกเพิ่มเติมของบริการการแปล"
+         ],
+         "Refresh": [
+            "รีเฟรช"
+         ],
+         "Fetching translation service data...": [
+            "กำลังดึงข้อมูลบริการการแปล..."
+         ],
+         "-": [
+            "-"
+         ],
+         "Translate automatically": [
+            "แปลอัตโนมัติ"
+         ],
+         "Translate myself": [
+            "แปลด้วยตัวเอง"
+         ],
+         "Assign a translator": [
+            "มอบหมายนักแปล"
+         ],
+         "Assign translation service": [
+            "มอบหมายบริการการแปล"
+         ],
+         "Do nothing": [
+            "ไม่ต้องดำเนินการใด ๆ"
+         ],
+         "Please choose": [
+            "โปรดเลือก"
+         ],
+         "Choose a translator": [
+            "เลือกนักแปล"
+         ],
+         "First available": [
+            "คนแรกที่ว่าง"
+         ],
+         "(Me)": [
+            "(ฉัน)"
+         ],
+         "Translation quality": [
+            "คุณภาพการแปล"
+         ],
+         "Expand": [
+            "ขยาย"
+         ],
+         "%1$s · %2$d": [
+            "%1$s · %2$d"
+         ],
+         "Mistakes visible": [
+            "มองเห็นข้อผิดพลาด"
+         ],
+         "Minimize": [
+            "ย่อ"
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC แปลด้วยคุณภาพที่สูงกว่าและให้ผลลัพธ์ที่พร้อมเผยแพร่"
+         ],
+         "Step 2": [
+            "ขั้นตอนที่ 2"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "การแปลอัตโนมัติทั้งไซต์จำเป็นต้องมีการตั้งค่าการแปลด้วย AI"
+         ],
+         "Set up AI translation": [
+            "ตั้งค่าการแปลด้วย AI"
+         ],
+         "Keep a wp-admin window open until WPML finishes translating": [
+            "เปิดหน้า wp-admin ค้างไว้จนกว่า WPML จะแปลเสร็จ"
+         ],
+         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
+            "โดยปกติ WPML จะแปลเนื้อหาของคุณในพื้นหลังโดยที่คุณไม่ต้องอยู่ในส่วนบริหารจัดการของ WordPress อย่างไรก็ตาม WPML ไม่สามารถเข้าถึงไซต์นี้ได้ ดังนั้นจึงจะรับคำแปลของคุณในขณะที่หน้า wp-admin เปิดอยู่"
+         ],
+         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
+            "คุณสามารถทำงานต่อที่ใดก็ได้ในส่วนบริหารจัดการของ WordPress เพียงแค่เปิดหน้าต่างทิ้งไว้หนึ่งหน้าต่างจนกว่าการแปลจะเสร็จสิ้น"
+         ],
+         "Next check for translations in %s.": [
+            "ตรวจสอบการแปลครั้งต่อไปใน %s"
+         ],
+         "Hide details": [
+            "ซ่อนรายละเอียด"
+         ],
+         "What could be blocking it, and how to fix it": [
+            "อะไรที่อาจขัดขวาง และวิธีแก้ไขปัญหานี้"
+         ],
+         "Check these on your site": [
+            "ตรวจสอบสิ่งเหล่านี้บนไซต์ของคุณ"
+         ],
+         "The site might be on a private network, in staging, or only reachable through a VPN.": [
+            "ไซต์อาจอยู่ในเครือข่ายส่วนตัว อยู่ในระหว่างการทดสอบ (staging) หรือเข้าถึงได้ผ่าน VPN เท่านั้น"
+         ],
+         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
+            "การตรวจสอบสิทธิ์ HTTP ขั้นพื้นฐานหรือรายการ IP ที่อนุญาตอาจกำลังบล็อกคำขอจากภายนอก"
+         ],
+         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
+            "ปลั๊กอินความปลอดภัย ไฟร์วอลล์ หรือ WAF อาจกำลังปฏิเสธคำขอจาก WPML"
+         ],
+         "The site might be in maintenance mode.": [
+            "ไซต์อาจอยู่ในโหมดบำรุงรักษา"
+         ],
+         "Already fixed this on your site?": [
+            "แก้ไขปัญหานี้บนไซต์ของคุณแล้วใช่หรือไม่?"
+         ],
+         "Check again whether the site is reachable": [
+            "ตรวจสอบอีกครั้งว่าไซต์สามารถเข้าถึงได้หรือไม่"
+         ],
+         "Checking…": [
+            "กำลังตรวจสอบ…"
+         ],
+         "Check again": [
+            "ตรวจสอบอีกครั้ง"
+         ],
+         "Still couldn't reach your site.": [
+            "ยังคงไม่สามารถเข้าถึงไซต์ของคุณได้"
+         ],
+         "Automatic translations completed": [
+            "การแปลอัตโนมัติเสร็จสมบูรณ์"
+         ],
+         "<s>1 translation</s> has been successfully translated automatically": [
+            "<s>%d การแปล</s> ได้รับการแปลโดยอัตโนมัติเรียบร้อยแล้ว"
+         ],
+         "Automatic jobs in progress": [
+            "งานอัตโนมัติที่กำลังดำเนินการ"
+         ],
+         "<s>%d automatic translation</s> is in progress": [
+            "<s>%d การแปลอัตโนมัติ</s> กำลังดำเนินการ"
+         ],
+         "You can close this page. WPML keeps translating your site in the background, and you can come back any time to check progress.": [
+            "คุณสามารถปิดหน้านี้ได้ WPML จะดำเนินการแปลไซต์ของคุณต่อไปในพื้นหลัง และคุณสามารถกลับมาตรวจสอบความคืบหน้าได้ทุกเมื่อ"
+         ],
+         "Your default language, %s, must be mapped to a supported language in order to use automatic translation": [
+            "ภาษาเริ่มต้นของคุณ %s จะต้องถูกจับคู่กับภาษาที่รองรับเพื่อที่จะใช้การแปลอัตโนมัติ"
+         ],
+         "Map the language": [
+            "จับคู่ภาษา"
+         ],
+         "%d second": [
+            "%d วินาที"
+         ],
+         "%d minute": [
+            "%d นาที"
+         ],
+         "%d hour": [
+            "%d ชั่วโมง"
+         ],
+         "%d day": [
+            "%d วัน"
+         ],
+         "%d translation": [
+            "%d การแปล"
+         ],
+         "checking now": [
+            "กำลังตรวจสอบตอนนี้"
+         ],
+         "next check in %s": [
+            "ตรวจสอบครั้งถัดไปใน %s"
+         ],
+         "WPML stopped checking for delivered translations after repeated failures.": [
+            "WPML หยุดตรวจสอบการแปลที่ส่งมอบแล้วหลังจากล้มเหลวหลายครั้ง"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s": [
+            "กำลังรับการแปล: ได้รับล่าสุดเมื่อ %1$s ที่แล้ว · %2$s"
+         ],
+         "Receiving translations: last received %s ago": [
+            "กำลังรับการแปล: ได้รับล่าสุดเมื่อ %s ที่แล้ว"
+         ],
+         "Receiving translations: no translations received yet · %s": [
+            "กำลังรับการแปล: ยังไม่ได้รับงานแปลใด ๆ · %s"
+         ],
+         "Receiving translations: no translations received yet": [
+            "กำลังรับการแปล: ยังไม่ได้รับงานแปลใด ๆ"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
+            "กำลังรับคำแปล: ได้รับล่าสุดเมื่อ %1$s ที่แล้ว · รออยู่ %2$s · %3$s"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s waiting": [
+            "กำลังรับคำแปล: ได้รับล่าสุดเมื่อ %1$s ที่แล้ว · รออยู่ %2$s"
+         ],
+         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
+            "กำลังรับคำแปล: ยังไม่ได้รับคำแปลใด ๆ · รออยู่ %1$s · %2$s"
+         ],
+         "Receiving translations: no translations received yet · %s waiting": [
+            "กำลังรับคำแปล: ยังไม่ได้รับคำแปลใด ๆ · รออยู่ %s"
+         ],
+         "These translations are taking longer than they should to arrive.": [
+            "คำแปลเหล่านี้ใช้เวลานานกว่าที่ควรจะเป็นในการส่งมาถึง"
+         ],
+         "Picking up translations…": [
+            "กำลังรับคำแปล…"
+         ],
+         "Pick up translations now": [
+            "รับคำแปลตอนนี้"
+         ],
+         "%d translations ": [
+            "การแปล %d รายการ "
+         ],
+         "%d translation ": [
+            "การแปล %d รายการ "
+         ],
+         "this includes translations from <b>Translate Everything Automatically</b>": [
+            "ซึ่งรวมถึงคำแปลจาก <b>แปลทุกอย่างโดยอัตโนมัติ</b>"
+         ],
+         "are waiting for your review": [
+            "กำลังรอการตรวจสอบจากคุณ"
+         ],
+         "is waiting for your review": [
+            "กำลังรอการตรวจสอบจากคุณ"
+         ],
+         "Review Translations": [
+            "รีวิวการแปล"
+         ],
+         "Translate existing content": [
+            "แปลเนื้อหาที่มีอยู่"
+         ],
+         "Translate now": [
+            "แปลตอนนี้"
+         ],
+         "Starting with version 4.7, WPML will also automatically translate texts (strings) coming from %s.": [
+            "ตั้งแต่เวอร์ชัน 4.7 เป็นต้นไป WPML จะแปลข้อความ (สตริง) ที่มาจาก %s โดยอัตโนมัติด้วย"
+         ],
+         "WPML will not translate existing texts of this type but any new ones you create will be automatically translated. If you prefer, you can <button />.": [
+            "WPML จะไม่แปลข้อความเดิมที่มีอยู่ของประเภทนี้ แต่ข้อความใหม่ที่คุณสร้างขึ้นจะถูกแปลโดยอัตโนมัติ หากคุณต้องการ คุณสามารถ <button />"
+         ],
+         "Starting with version 4.7, WPML will also automatically translate:": [
+            "ตั้งแต่เวอร์ชัน 4.7 เป็นต้นไป WPML จะแปลสิ่งต่อไปนี้โดยอัตโนมัติด้วย:"
+         ],
+         "Content set to \"use translation if available or fallback to default language\": %s.": [
+            "เนื้อหาที่ตั้งค่าเป็น “ใช้คำแปลหากมี หรือใช้ภาษาเริ่มต้นแทน”: %s"
+         ],
+         "Texts (strings) coming from: %s.": [
+            "ข้อความ (สตริง) ที่มาจาก: %s"
+         ],
+         "WPML will not translate existing content for these post types and texts but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
+            "WPML จะไม่แปลเนื้อหาเดิมที่มีอยู่สำหรับประเภทโพสต์และข้อความเหล่านี้ แต่เนื้อหาใหม่ที่คุณสร้างขึ้นจะถูกแปลโดยอัตโนมัติ หากคุณต้องการ คุณสามารถเริ่ม <button />"
+         ],
+         "WPML will not translate existing content for these post types but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
+            "WPML จะไม่แปลเนื้อหาเดิมที่มีอยู่สำหรับประเภทโพสต์เหล่านี้ แต่เนื้อหาใหม่ที่คุณสร้างขึ้นจะถูกแปลโดยอัตโนมัติ หากคุณต้องการ คุณสามารถเริ่ม <button />"
+         ],
+         "start translating existing content now": [
+            "เริ่มแปลเนื้อหาที่มีอยู่ตอนนี้"
+         ],
+         "New content is ready to translate": [
+            "เนื้อหาใหม่พร้อมสำหรับการแปลแล้ว"
+         ],
+         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "%s สามารถแปลได้หลังจากที่คุณตรวจสอบค่าใช้จ่ายในการแปลแล้ว ดังนั้น “แปลทุกอย่าง” จึงไม่ได้รวมรายการเหล่านี้ไว้ โปรดตรวจสอบค่าใช้จ่ายและรวมรายการเหล่านี้เพื่อให้ไซต์ของคุณได้รับการแปลอย่างสมบูรณ์"
+         ],
+         "Review cost and include": [
+            "ตรวจสอบค่าใช้จ่ายและรวมเข้าด้วยกัน"
+         ],
+         "Learn more →": [
+            "เรียนรู้เพิ่มเติม →"
+         ],
+         "PTC can also translate your app's interface, not just your website.": [
+            "PTC ยังสามารถแปลอินเทอร์เฟซของแอปของคุณได้ ไม่ใช่แค่เว็บไซต์ของคุณเท่านั้น"
+         ],
+         "PTC can translate software with automatic QA and a money-back guarantee.": [
+            "PTC สามารถแปลซอฟต์แวร์พร้อมการตรวจสอบคุณภาพ (QA) อัตโนมัติและการรับประกันคืนเงิน"
+         ],
+         "PTC translates every string in context, so it fits your interface.": [
+            "PTC แปลทุกสตริงตามบริบท เพื่อให้เหมาะสมกับอินเทอร์เฟซของคุณ"
+         ],
+         "PTC can translate your software right inside your Git workflow.": [
+            "PTC สามารถแปลซอฟต์แวร์ของคุณได้โดยตรงภายในเวิร์กโฟลว์ Git ของคุณ"
+         ],
+         "The following target languages do not support automatic translations: %s": [
+            "ภาษาเป้าหมายต่อไปนี้ไม่รองรับการแปลอัตโนมัติ: %s"
+         ],
+         "To enable automatic translation map them to known languages.": [
+            "หากต้องการเปิดใช้งานการแปลอัตโนมัติ โปรดจับคู่ภาษากับภาษาที่รู้จัก"
+         ],
+         "Map to known languages": [
+            "จับคู่กับภาษาที่รู้จัก"
+         ],
+         "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
+            "หากต้องการความช่วยเหลือ โปรด <supportLink>เปิดตั๋วใน Forum Thread (Maiya) ของเรา</supportLink> คลิกที่ปุ่ม “Copy All” เพื่อรับข้อมูลการดีบั๊กและ “วาง” ลงในเอเจนต์ Maiya ของเรา หากคุณยังคงประสบปัญหา ให้ใช้ <logsLink>เครื่องมือบันทึก</logsLink> เพื่อรวบรวมข้อมูลเพิ่มเติม"
+         ],
+         "Copied!": [
+            "คัดลอกแล้ว!"
+         ],
+         "Copy All": [
+            "คัดลอกทั้งหมด"
+         ],
+         "Error type": [
+            "ประเภทข้อผิดพลาด"
+         ],
+         "Error Message": [
+            "ข้อความแสดงข้อผิดพลาด"
+         ],
+         "Job ID": [
+            "ID งาน"
+         ],
+         "ATE Job ID": [
+            "ATE Job ID"
+         ],
+         "Original ID": [
+            "ID ต้นฉบับ"
+         ],
+         "Element ID": [
+            "ID องค์ประกอบ"
+         ],
+         "Copy to clipboard": [
+            "คัดลอกไปยังคลิปบอร์ด"
+         ],
+         "Hide errors details": [
+            "ซ่อนรายละเอียดข้อผิดพลาด"
+         ],
+         "Show errors details": [
+            "แสดงรายละเอียดข้อผิดพลาด"
+         ],
+         "<strong>%d item</strong> couldn't be completed due to an unexpected error. Try resending it for translation. If the issue continues, <a>contact WPML support</a>.": [
+            "<strong>%d รายการ</strong> ไม่สามารถดำเนินการให้เสร็จสิ้นได้เนื่องจากข้อผิดพลาดที่ไม่คาดคิด ลองส่งรายการเหล่านั้นไปแปลอีกครั้ง หากปัญหายังคงอยู่ <a>ติดต่อฝ่ายสนับสนุนของ WPML</a>"
+         ],
+         "Cancelling %1$d/%2$d...": [
+            "กำลังยกเลิก %1$d/%2$d..."
+         ],
+         "Cancelling...": [
+            "กำลังยกเลิก..."
+         ],
+         "Discard jobs": [
+            "ละทิ้งงาน"
+         ],
+         "These items can't be resent because their source content is missing. Discard them instead.": [
+            "รายการเหล่านี้ไม่สามารถส่งใหม่ได้เนื่องจากเนื้อหาต้นทางหายไป โปรดละทิ้งรายการเหล่านี้แทน"
+         ],
+         "Resending %1$d/%2$d...": [
+            "กำลังส่งใหม่ %1$d/%2$d..."
+         ],
+         "Resending...": [
+            "กำลังส่งใหม่..."
+         ],
+         "Resend": [
+            "ส่งใหม่"
+         ],
+         "Translation status details": [
+            "รายละเอียดสถานะการแปล"
+         ],
+         "Translation status": [
+            "สถานะการแปล"
+         ],
+         "Before translating with PTC, please provide context about your website and target audience (one-time thing).": [
+            "ก่อนที่จะแปลด้วย PTC โปรดระบุบริบทเกี่ยวกับเว็บไซต์และกลุ่มเป้าหมายของคุณ (ทำเพียงครั้งเดียว)"
+         ],
+         "Provide Context": [
+            "ระบุบริบท"
+         ],
+         "Remaining time: <s>Less than 1 minute</s>": [
+            "เวลาที่เหลือ: <s>น้อยกว่า 1 นาที</s>"
+         ],
+         "Remaining time: <s>%d minute</s>": [
+            "เวลาที่เหลือ: <s>%d นาที</s>"
+         ],
+         "Default language does not support automatic translations.": [
+            "ภาษาเริ่มต้นไม่รองรับการแปลอัตโนมัติ"
+         ],
+         "WPML could not check if your default language can be translated automatically.": [
+            "WPML ไม่สามารถตรวจสอบได้ว่าภาษาเริ่มต้นของคุณสามารถแปลโดยอัตโนมัติได้หรือไม่"
+         ],
+         "WPML could not check if your default language can be translated automatically. Reload the page to try again.": [
+            "WPML ไม่สามารถตรวจสอบได้ว่าภาษาเริ่มต้นของคุณสามารถแปลโดยอัตโนมัติได้หรือไม่ โหลดหน้านี้ซ้ำเพื่อลองอีกครั้ง"
+         ],
+         "Add your site description before you can turn this on.": [
+            "เพิ่มคำอธิบายไซต์ของคุณก่อนที่จะเปิดใช้งานสิ่งนี้"
+         ],
+         "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
+            "คุณต้องเปิดใช้งานตัวแก้ไขการแปลขั้นสูงเพื่อเปิดใช้งานแปลทุกอย่างโดยอัตโนมัติ"
+         ],
+         "Add it now": [
+            "เพิ่มตอนนี้"
+         ],
+         "It's too expensive": [
+            "ราคาแพงเกินไป"
+         ],
+         "The translation quality is not good enough": [
+            "คุณภาพการแปลไม่ดีพอ"
+         ],
+         "I'm switching to a different translation provider": [
+            "ฉันกำลังเปลี่ยนไปใช้ผู้ให้บริการการแปลรายอื่น"
+         ],
+         "I'm experiencing technical issues": [
+            "ฉันกำลังประสบปัญหาทางเทคนิค"
+         ],
+         "I want to control what gets translated manually": [
+            "ฉันต้องการควบคุมสิ่งที่ถูกแปลด้วยตนเอง"
+         ],
+         "Other reason": [
+            "เหตุผลอื่น ๆ"
+         ],
+         "Why are you turning off <b>Translate Everything Automatically</b>?": [
+            "ทำไมคุณถึงปิด <b>แปลทุกอย่างโดยอัตโนมัติ</b>?"
+         ],
+         "Your answer helps us improve WPML.": [
+            "คำตอบของคุณช่วยให้เราปรับปรุง WPML ได้"
+         ],
+         "Turn off": [
+            "ปิดการใช้งาน"
+         ],
+         "Available": [
+            "พร้อมใช้งาน"
+         ],
+         "Not available": [
+            "ไม่พร้อมใช้งาน"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "เข้าใจหัวข้อ กลุ่มเป้าหมาย และโทนเสียงของไซต์คุณ"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "คุณภาพพร้อมเผยแพร่ พร้อมการรับประกันจากเรา"
+         ],
+         "Review before publishing": [
+            "รีวิวก่อนเผยแพร่"
+         ],
+         "Pay once per page – only added words are charged": [
+            "จ่ายครั้งเดียวต่อหน้า – คิดค่าบริการเฉพาะคำที่เพิ่มใหม่เท่านั้น"
+         ],
+         "Per word, changes included": [
+            "คิดราคาตามจำนวนคำ รวมถึงเมื่อมีการแก้ไข"
+         ],
+         "Your active engine": [
+            "เอนจินที่คุณใช้งานอยู่"
+         ],
+         "WPML's own AI engine": [
+            "เอนจิน AI ของ WPML เอง"
+         ],
+         "Translate Everything Automatically": [
+            "แปลทุกอย่างโดยอัตโนมัติ"
+         ],
+         "Turn on with %s": [
+            "เปิดใช้งานด้วย %s"
+         ],
+         "Switching to PTC later applies to new and changed content. What %s translated stays as it is.": [
+            "การสลับเป็น PTC ในภายหลังจะมีผลกับเนื้อหาใหม่และเนื้อหาที่เปลี่ยนแปลง ส่วนสิ่งที่ %s แปลไว้แล้วจะคงเดิม"
+         ],
+         "Translate your whole site quickly and conveniently.": [
+            "แปลทั้งไซต์ของคุณอย่างรวดเร็วและสะดวกสบาย"
+         ],
+         "Translation updates cost only the added words.": [
+            "การอัปเดตคำแปลจะมีค่าใช้จ่ายเฉพาะคำที่เพิ่มเข้ามาเท่านั้น"
+         ],
+         "Nothing is translated until you review the cost and confirm.": [
+            "จะไม่มีการแปลใด ๆ จนกว่าคุณจะตรวจสอบค่าใช้จ่ายและยืนยัน"
+         ],
+         "How to turn this on": [
+            "วิธีเปิดใช้งานสิ่งนี้"
+         ],
+         "When you set this up": [
+            "เมื่อคุณตั้งค่าสิ่งนี้"
+         ],
+         "Choose your engine: keep %s, priced per word, or switch to PTC to pay once per page.": [
+            "เลือกเอนจินของคุณ: ใช้ %s ต่อไปโดยคิดราคาตามจำนวนคำ หรือสลับเป็น PTC เพื่อจ่ายครั้งเดียวต่อหน้า"
+         ],
+         "Review what gets translated and see the cost.": [
+            "ตรวจสอบสิ่งที่จะถูกแปลและดูค่าใช้จ่าย"
+         ],
+         "WPML translates your site and keeps new content translated.": [
+            "WPML แปลไซต์ของคุณและทำให้เนื้อหาใหม่ได้รับการแปลอยู่เสมอ"
+         ],
+         "Choose how to publish — with or without your review.": [
+            "เลือกวิธีเผยแพร่ — โดยจะรีวิวหรือไม่ก็ได้"
+         ],
+         "Content that becomes translatable later, for example products after the WooCommerce Multilingual setup, is offered to you before it is translated.": [
+            "เนื้อหาที่สามารถแปลได้ในภายหลัง เช่น ผลิตภัณฑ์หลังจากการตั้งค่า WooCommerce Multilingual จะถูกเสนอให้คุณก่อนที่จะถูกแปล"
+         ],
+         "Switch to PTC instead": [
+            "สลับเป็น PTC แทน"
+         ],
+         "You're translating with %s: priced per word, and changes to translated pages are charged again. With PTC you pay once per page and changes are free.": [
+            "คุณกำลังแปลด้วย %s: คิดราคาตามจำนวนคำ และจะมีการคิดค่าบริการอีกครั้งเมื่อมีการแก้ไขหน้าที่แปลแล้ว หากใช้ PTC คุณจะจ่ายครั้งเดียวต่อหน้าและแก้ไขได้ฟรี"
+         ],
+         "at %s's per-word rate; changes to translated pages are charged again": [
+            "ในอัตราต่อคำของ %s และจะมีการคิดค่าบริการอีกครั้งเมื่อมีการแก้ไขหน้าที่แปลแล้ว"
+         ],
+         "Prepaid words assigned": [
+            "คำแบบชำระเงินล่วงหน้าที่จัดสรรแล้ว"
+         ],
+         "You’re all set.": [
+            "คุณตั้งค่าทุกอย่างเรียบร้อยแล้ว"
+         ],
+         "Click <b>Translate Everything Automatically</b> to start translating.": [
+            "คลิก <b>แปลทุกอย่างโดยอัตโนมัติ</b> เพื่อเริ่มการแปล"
+         ],
+         "Before translating everything": [
+            "ก่อนที่จะแปลทุกอย่าง"
+         ],
+         "Go back": [
+            "กลับไป"
+         ],
+         "Continue anyway": [
+            "ดำเนินการต่อต่อไป"
+         ],
+         "WPML could not check with our translation system if your default language can be translated automatically.": [
+            "WPML ไม่สามารถตรวจสอบกับระบบการแปลของเราได้ว่าภาษาเริ่มต้นของคุณสามารถแปลโดยอัตโนมัติได้หรือไม่"
+         ],
+         "Content to translate": [
+            "เนื้อหาที่ต้องแปล"
+         ],
+         "Publishing method": [
+            "วิธีการเผยแพร่"
+         ],
+         "Payment method": [
+            "วิธีการชำระเงิน"
+         ],
+         "Enable <b>Translate Everything Automatically</b>": [
+            "เปิดใช้งาน <b>แปลทุกอย่างโดยอัตโนมัติ</b>"
+         ],
+         "Continue": [
+            "ดำเนินการต่อ"
+         ],
+         "Calculating words for translating existing content. Please wait...": [
+            "กำลังคำนวณจำนวนคำสำหรับการแปลเนื้อหาที่มีอยู่ โปรดรอสักครู่..."
+         ],
+         "Set Up <b>Translate Everything Automatically</b>": [
+            "ตั้งค่า <b>แปลทุกอย่างโดยอัตโนมัติ</b>"
+         ],
+         "Review your site content and get the translation cost based on what you choose to translate.": [
+            "ตรวจสอบเนื้อหาไซต์ของคุณและรับค่าใช้จ่ายในการแปลตามสิ่งที่คุณเลือกแปล"
+         ],
+         "Select payment method": [
+            "เลือกวิธีการชำระเงิน"
+         ],
+         "Translate Everything Automatically - disabled": [
+            "แปลทุกอย่างโดยอัตโนมัติ - ปิดใช้งานแล้ว"
+         ],
+         "Translate Everything Automatically - stopping": [
+            "แปลทุกอย่างโดยอัตโนมัติ - กำลังหยุด"
+         ],
+         "<b>Translate Everything Automatically</b> is stopping": [
+            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> กำลังหยุด"
+         ],
+         "Translate Everything Automatically - paused": [
+            "แปลทุกอย่างโดยอัตโนมัติ - หยุดชั่วคราว"
+         ],
+         "Turn off <b>Translate Everything Automatically</b>?": [
+            "ปิด <b>แปลทุกอย่างโดยอัตโนมัติ</b> หรือไม่?"
+         ],
+         "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
+            "WPML จะหยุดแปลเนื้อหาใหม่และเนื้อหาที่แก้ไขโดยอัตโนมัติ คำแปลที่ส่งมอบแล้วจะยังคงเป็นเหมือนเดิม"
+         ],
+         "%d translation is still in progress. You will not be charged for it.": [
+            "%d การแปลยังคงอยู่ในระหว่างดำเนินการ คุณจะไม่ถูกเรียกเก็บเงินสำหรับรายการเหล่านี้"
+         ],
+         "%d translation is currently in progress and will be cancelled.": [
+            "%d การแปลกำลังดำเนินการอยู่ในขณะนี้และจะถูกยกเลิก"
+         ],
+         "You can adjust the content limits once Translate Everything finishes the current translation run.": [
+            "คุณสามารถปรับขีดจำกัดเนื้อหาได้เมื่อ “แปลทุกอย่าง” เสร็จสิ้นการรันการแปลปัจจุบัน"
+         ],
+         "Adjust content limits": [
+            "ปรับขีดจำกัดเนื้อหา"
+         ],
+         "Adjust how far back automatic translations apply per content type.": [
+            "ปรับระยะเวลาย้อนหลังที่การแปลอัตโนมัติจะมีผลต่อประเภทเนื้อหา"
+         ],
+         "Every content type is fully translated, so there is nothing left to set a date for. You can still choose which types automatic translation covers from now on.": [
+            "ประเภทเนื้อหาทุกประเภทได้รับการแปลอย่างสมบูรณ์แล้ว จึงไม่มีอะไรเหลือให้ตั้งค่าวันที่ คุณยังคงสามารถเลือกประเภทเนื้อหาที่การแปลอัตโนมัติจะครอบคลุมตั้งแต่นี้เป็นต้นไปได้"
+         ],
+         "Save changes": [
+            "บันทึกการเปลี่ยนแปลง"
+         ],
+         "Translate Everything options": [
+            "ตัวเลือกแปลทุกอย่าง"
+         ],
+         "Turn off <b>Translate Everything</b>": [
+            "ปิด <b>แปลทุกอย่าง</b>"
+         ],
+         "Words this cycle": [
+            "คำในรอบนี้"
+         ],
+         "%1$s prepaid words left, then billed as you go.": [
+            "เหลือคำแบบชำระเงินล่วงหน้า %1$s คำ จากนั้นจะเรียกเก็บเงินตามการใช้งานจริง"
+         ],
+         "Words left": [
+            "คำที่เหลือ"
+         ],
+         "Preparing your translations — %d job queued so far...": [
+            "กำลังเตรียมคำแปลของคุณ — มีงาน %d งานที่เข้าคิวไว้จนถึงตอนนี้..."
+         ],
+         "Preparing content for translation...": [
+            "กำลังเตรียมเนื้อหาสำหรับการแปล..."
+         ],
+         "%d translation left in the queue...": [
+            "เหลือการแปล %d รายการในคิว..."
+         ],
+         "Finished — %1$d item couldn't be completed and %2$s are waiting for your approval": [
+            "เสร็จสิ้น — %1$d รายการไม่สามารถดำเนินการให้เสร็จสิ้นได้ และ %2$s กำลังรอการอนุมัติจากคุณ"
+         ],
+         "Finished — %d item couldn't be completed": [
+            "เสร็จสิ้น — %d รายการไม่สามารถดำเนินการให้เสร็จสิ้นได้"
+         ],
+         "Finished translating your content, except %s waiting for your approval": [
+            "แปลเนื้อหาของคุณเสร็จแล้ว ยกเว้น %s ที่รอการอนุมัติจากคุณ"
+         ],
+         "Finished translating your content": [
+            "แปลเนื้อหาของคุณเสร็จแล้ว"
+         ],
+         "Engine": [
+            "เอนจิน"
+         ],
+         "Quality": [
+            "คุณภาพ"
+         ],
+         "%1$d / 100 — %2$s": [
+            "%1$d / 100 — %2$s"
+         ],
+         "review before publishing recommended": [
+            "แนะนำให้รีวิวก่อนเผยแพร่"
+         ],
+         "good enough to publish without review": [
+            "ดีพอที่จะเผยแพร่โดยไม่ต้องรีวิว"
+         ],
+         "usable, but mistakes are visible": [
+            "ใช้งานได้ แต่ยังเห็นข้อผิดพลาดอยู่"
+         ],
+         "Per word, changes included. ": [
+            "คิดราคาตามจำนวนคำ รวมถึงเมื่อมีการแก้ไข "
+         ],
+         " to make changes free.": [
+            " เพื่อให้แก้ไขได้ฟรี"
+         ],
+         "Pay once per page — only added words are charged.": [
+            "จ่ายครั้งเดียวต่อหน้า — เรียกเก็บเงินเฉพาะคำที่เพิ่มเข้ามาเท่านั้น"
+         ],
+         "Status": [
+            "สถานะ"
+         ],
+         "Some items were translated using the <b>Classic Translation Editor</b> and cannot be sent for automatic translation. Please select these items and choose the option to translate them yourself.": [
+            "บางรายการถูกแปลโดยใช้ <b>ตัวแก้ไขการแปลแบบคลาสสิก</b> และไม่สามารถส่งไปแปลอัตโนมัติได้ โปรดเลือกรายการเหล่านี้และเลือกตัวเลือกเพื่อแปลด้วยตนเอง"
+         ],
+         "Translate Everything Automatically - enabled": [
+            "แปลทุกอย่างโดยอัตโนมัติ - เปิดใช้งานแล้ว"
+         ],
+         "<b>Translate Everything Automatically</b> is enabled": [
+            "เปิดใช้งาน <b>แปลทุกอย่างโดยอัตโนมัติ</b> แล้ว"
+         ],
+         "<b>Translate Everything Automatically</b> is temporarily paused": [
+            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> ถูกระงับชั่วคราว"
+         ],
+         "Automatic translation is temporarily paused": [
+            "การแปลอัตโนมัติถูกระงับชั่วคราว"
+         ],
+         "We noticed something unexpected in your recent translation activity and paused automatic translation on your account. Contact support and we’ll review it with you.": [
+            "เราพบสิ่งที่ไม่คาดคิดในกิจกรรมการแปลล่าสุดของคุณ และได้ระงับการแปลอัตโนมัติในบัญชีของคุณ โปรดติดต่อฝ่ายสนับสนุนและเราจะตรวจสอบร่วมกับคุณ"
+         ],
+         "Contact support": [
+            "ติดต่อฝ่ายสนับสนุน"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — unpaid balance on a linked account": [
+            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> ถูกหยุดชั่วคราว — มียอดค้างชำระในบัญชีที่เชื่อมโยง"
+         ],
+         "Automatic translation is paused — unpaid balance on a linked account": [
+            "การแปลอัตโนมัติถูกหยุดชั่วคราว — มียอดค้างชำระในบัญชีที่เชื่อมโยง"
+         ],
+         "There is an unpaid balance on another account linked to this billing e-mail. Settle it or <a>contact support</a>.": [
+            "มียอดค้างชำระในบัญชีอื่นที่เชื่อมโยงกับอีเมลเรียกเก็บเงินนี้ โปรดชำระยอดหรือ<a>ติดต่อฝ่ายสนับสนุน</a>"
+         ],
+         "There is an unpaid balance on another account linked to this card. Settle it or <a>contact support</a>.": [
+            "มียอดค้างชำระในบัญชีอื่นที่เชื่อมโยงกับบัตรนี้ โปรดชำระยอดหรือ<a>ติดต่อฝ่ายสนับสนุน</a>"
+         ],
+         "Go to billing": [
+            "ไปที่การเรียกเก็บเงิน"
+         ],
+         "Everything already translated stays live. You only pay for new translation.": [
+            "ทุกอย่างที่แปลไปแล้วจะยังคงออนไลน์อยู่ คุณจ่ายเฉพาะการแปลใหม่เท่านั้น"
+         ],
+         "Cancel translation": [
+            "ยกเลิกการแปล"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment pending": [
+            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> ถูกระงับ — อยู่ระหว่างรอการชำระเงิน"
+         ],
+         "Automatic translation is paused — payment pending": [
+            "การแปลอัตโนมัติถูกระงับ — อยู่ระหว่างรอการชำระเงิน"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment required": [
+            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> ถูกระงับ — จำเป็นต้องชำระเงิน"
+         ],
+         "Automatic translation - payment required": [
+            "การแปลอัตโนมัติ - จำเป็นต้องชำระเงิน"
+         ],
+         "<s>%d</s> translation is waiting for your Pay-As-You-Go payment.": [
+            "การแปล <s>%d</s> รายการกำลังรอการชำระเงินแบบจ่ายตามการใช้งานจริงของคุณ"
+         ],
+         "We are charging your card. If the payment is declined, update your card.": [
+            "เรากำลังเรียกเก็บเงินจากบัตรของคุณ หากการชำระเงินถูกปฏิเสธ โปรดอัปเดตบัตรของคุณ"
+         ],
+         "Translation resumes automatically once the payment goes through.": [
+            "การแปลจะดำเนินต่อโดยอัตโนมัติเมื่อการชำระเงินเสร็จสิ้น"
+         ],
+         "<s>%d</s> translation is waiting for payment.": [
+            "มีการแปล <s>%d</s> รายการที่กำลังรอการชำระเงิน"
+         ],
+         "We could not process your <b>Pay-As-You-Go</b> payment of %s.": [
+            "เราไม่สามารถดำเนินการชำระเงิน <b>จ่ายตามการใช้งานจริง</b> จำนวน %s ของคุณได้"
+         ],
+         "We could not process the %s payment for your completed translations. Click \"Pay now\" to retry and continue using automatic translation.": [
+            "เราไม่สามารถดำเนินการชำระเงินจำนวน %s สำหรับการแปลที่เสร็จสมบูรณ์ของคุณได้ คลิก “ชำระเงินตอนนี้” เพื่อลองใหม่และใช้งานการแปลอัตโนมัติต่อไป"
+         ],
+         "Update card": [
+            "อัปเดตบัตร"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment needed": [
+            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> ถูกระงับ — จำเป็นต้องชำระเงิน"
+         ],
+         "Automatic translation is paused — payment needed": [
+            "การแปลอัตโนมัติถูกระงับ — จำเป็นต้องชำระเงิน"
+         ],
+         "<s>%d</s> translation is on hold until you choose how to pay for it.": [
+            "การแปล <s>%d</s> รายการถูกระงับไว้จนกว่าคุณจะเลือกวิธีชำระเงิน"
+         ],
+         "Choose a payment method": [
+            "เลือกวิธีการชำระเงิน"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — not enough words": [
+            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> ถูกระงับ — จำนวนคำไม่เพียงพอ"
+         ],
+         "Automatic translation is paused — not enough words": [
+            "การแปลอัตโนมัติถูกระงับ — จำนวนคำไม่เพียงพอ"
+         ],
+         "<s>%d</s> translation is waiting for more words.": [
+            "มีการแปล <s>%d</s> รายการที่กำลังรอคำเพิ่มเติม"
+         ],
+         "You have %1$s%2$s prepaid translation word in your WPML account%3$s. Assign these words to this site to resume automatic translation.": [
+            "คุณมีคำสำหรับการแปลแบบชำระเงินล่วงหน้า %1$s%2$s คำ%3$s ในบัญชี WPML ของคุณ จัดสรรคำเหล่านี้ให้กับไซต์นี้เพื่อเริ่มการแปลอัตโนมัติอีกครั้ง"
+         ],
+         "Your prepaid translation words have run out. Already assigned words on your account? Refresh checks.": [
+            "คำแบบชำระเงินล่วงหน้าของคุณหมดแล้ว มีคำที่จัดสรรไว้ในบัญชีของคุณแล้วใช่หรือไม่? รีเฟรชเพื่อตรวจสอบ"
+         ],
+         "Translation resumes automatically — the remaining %d translation completes on its own.": [
+            "การแปลจะดำเนินต่อโดยอัตโนมัติ — การแปลที่เหลืออีก %d รายการจะเสร็จสมบูรณ์ด้วยตัวเอง"
+         ],
+         "Translation resumes automatically once more words are assigned.": [
+            "การแปลจะดำเนินต่อโดยอัตโนมัติเมื่อมีการจัดสรรคำเพิ่ม"
+         ],
+         "Checking your word balance…": [
+            "กำลังตรวจสอบยอดคงเหลือของคำ…"
+         ],
+         "%s word added": [
+            "เพิ่มแล้ว %s คำ"
+         ],
+         "resuming %s translation": [
+            "กำลังดำเนินการแปลต่อ %s รายการ"
+         ],
+         "No new words found yet — translation stays paused until more words are assigned to this site.": [
+            "ยังไม่พบคำใหม่ — การแปลจะยังคงระงับไว้จนกว่าจะมีการจัดสรรคำเพิ่มให้กับไซต์นี้"
+         ],
+         "<s>%d</s> translation is waiting for your review.": [
+            "มีการแปล <s>%d</s> รายการที่กำลังรอการรีวิวจากคุณ"
+         ],
+         "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
+            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> ถูกระงับ: ถึงวงเงินการใช้จ่ายรายเดือนแล้ว"
+         ],
+         "<s>%d</s> translation is waiting for the cap to be raised.": [
+            "มีการแปล <s>%d</s> รายการที่กำลังรอการเพิ่มวงเงิน"
+         ],
+         "<site>%1$s</site> reached its <strong>monthly spending cap</strong> (<figure>%2$s</figure> of <figure>%3$s</figure> words used).": [
+            "<site>%1$s</site> ถึง <strong>วงเงินการใช้จ่ายรายเดือน</strong> แล้ว (ใช้ไป <figure>%2$s</figure> จาก <figure>%3$s</figure> คำ)"
+         ],
+         "Translation continues when the cap is raised, or when the cap resets on <strong>%s</strong>.": [
+            "การแปลจะดำเนินต่อเมื่อมีการเพิ่มวงเงิน หรือเมื่อวงเงินรีเซ็ตในวันที่ <strong>%s</strong>"
+         ],
+         "WPML is reconnecting to our translation system. <b>Translate Everything</b> continues on its own once it reconnects. Nothing is lost.": [
+            "WPML กำลังเชื่อมต่อกับระบบการแปลของเราอีกครั้ง <b>แปลทุกอย่าง</b> จะดำเนินการต่อโดยอัตโนมัติเมื่อเชื่อมต่อใหม่ได้แล้ว โดยไม่มีข้อมูลใดสูญหาย"
+         ],
+         "You don't need to do anything. WPML keeps trying in the background.": [
+            "คุณไม่จำเป็นต้องดำเนินการใด ๆ WPML กำลังพยายามต่อไปในเบื้องหลัง"
+         ],
+         "Retry": [
+            "ลองใหม่"
+         ],
+         "Retry now": [
+            "ลองใหม่อีกครั้งตอนนี้"
+         ],
+         "WPML is reconnecting to our translation system.": [
+            "WPML กำลังเชื่อมต่อกับระบบการแปลของเราใหม่อีกครั้ง"
+         ],
+         "WPML is reconnecting to our translation system. You can turn on <b>Translate Everything</b> once it reconnects.": [
+            "WPML กำลังเชื่อมต่อกับระบบการแปลของเราใหม่อีกครั้ง คุณสามารถเปิด <b>แปลทุกอย่าง</b> ได้เมื่อเชื่อมต่อใหม่แล้ว"
+         ],
+         "This item needs a translation update but can't be translated automatically because it was translated with the Classic Translation Editor.": [
+            "รายการนี้ต้องมีการอัปเดตการแปล แต่ไม่สามารถแปลอัตโนมัติได้เนื่องจากเคยแปลด้วยตัวแก้ไขการแปลแบบคลาสสิก"
+         ],
+         "This item needs update. Please, select the item and send for translation.": [
+            "รายการนี้ต้องมีการอัปเดต โปรดเลือกรายการและส่งไปแปล"
+         ],
+         "Translations completed with the Classic Translation Editor cannot be sent for automatic translation": [
+            "การแปลที่เสร็จสมบูรณ์ด้วยตัวแก้ไขการแปลแบบคลาสสิกไม่สามารถส่งไปแปลอัตโนมัติได้"
+         ],
+         "automatic translation": [
+            "การแปลอัตโนมัติ"
+         ],
+         "unassigned": [
+            "ยังไม่ได้มอบหมาย"
+         ],
+         "waiting for automatic translation": [
+            "รอการแปลอัตโนมัติ"
+         ],
+         "waiting for translator": [
+            "รอนักแปล"
+         ],
+         "in progress": [
+            "กำลังดำเนินการ"
+         ],
+         "needs update": [
+            "ต้องมีการอัปเดต"
+         ],
+         "duplicate": [
+            "ทำสำเนา"
+         ],
+         "complete": [
+            "เสร็จสมบูรณ์"
+         ],
+         "needs review": [
+            "รอการตรวจสอบ"
+         ],
+         "translation failed - needs attention": [
+            "การแปลล้มเหลว - ต้องได้รับการดูแล"
+         ],
+         "needs attention": [
+            "ต้องได้รับการดูแล"
+         ],
+         "translation error": [
+            "ข้อผิดพลาดในการแปล"
+         ],
+         "The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "การแปล %s ถูกสร้างขึ้นหรือแก้ไขล่าสุดนอกตัวแก้ไขการแปล WPML (เช่น ในตัวแก้ไข WordPress) เมื่อคุณแปลใหม่ โครงสร้างของโพสต์ที่แปลจะถูกอัปเดตให้ตรงกับต้นฉบับ แต่ WPML จะใช้การแปลที่มีอยู่ของคุณเป็นฐานเพื่อให้โทนเสียงและคำศัพท์ยังคงเดิม"
+         ],
+         "This item needs a translation update. The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "รายการนี้ต้องมีการอัปเดตการแปล การแปล %s ถูกสร้างขึ้นหรือแก้ไขล่าสุดนอกตัวแก้ไขการแปล WPML (เช่น ในตัวแก้ไข WordPress) เมื่อคุณแปลใหม่ โครงสร้างของโพสต์ที่แปลจะถูกอัปเดตให้ตรงกับต้นฉบับ แต่ WPML จะใช้การแปลที่มีอยู่ของคุณเป็นฐานเพื่อให้โทนเสียงและคำศัพท์ยังคงเดิม"
+         ],
+         "This item hasn't been translated yet and is set to use the WordPress Editor.": [
+            "รายการนี้ยังไม่ได้ถูกแปลและถูกตั้งค่าให้ใช้ตัวแก้ไข WordPress"
+         ],
+         "This item was translated using the WordPress Editor. Switching to the WPML's Translation Editor will overwrite the existing translation.": [
+            "รายการนี้ถูกแปลโดยใช้ตัวแก้ไข WordPress การสลับไปใช้ตัวแก้ไขการแปลของ WPML จะเขียนทับการแปลที่มีอยู่"
+         ],
+         "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
+            "รายการนี้ต้องมีการอัปเดตการแปล แต่ก่อนหน้านี้ถูกแปลโดยใช้ตัวแก้ไข WordPress การใช้ตัวแก้ไขการแปลของ WPML จะเขียนทับการแปลที่มีอยู่"
+         ],
+         "%1$s: %2$s%3$s": [
+            "%1$s: %2$s%3$s"
+         ],
+         "Could not fetch engines data": [
+            "ไม่สามารถดึงข้อมูลเอนจินได้"
+         ],
+         "Error in updating since dates for types.": [
+            "เกิดข้อผิดพลาดในการอัปเดตวันที่ตั้งแต่สำหรับประเภทต่าง ๆ"
+         ],
+         "Error in dismissing the offer to translate the new content types.": [
+            "เกิดข้อผิดพลาดในการปิดการเสนอให้แปลประเภทเนื้อหาใหม่"
+         ],
+         "Error in updating since date for type.": [
+            "เกิดข้อผิดพลาดในการอัปเดตวันที่ตั้งแต่สำหรับประเภท"
+         ],
+         "Content to Translate": [
+            "เนื้อหาที่จะแปล"
+         ],
+         "Content type": [
+            "ประเภทเนื้อหา"
+         ],
+         "Include": [
+            "รวม"
+         ],
+         "These settings can be changed on the Translations dashboard.": [
+            "การตั้งค่าเหล่านี้สามารถเปลี่ยนแปลงได้ที่แดชบอร์ดการแปล"
+         ],
+         "Items": [
+            "รายการ"
+         ],
+         "Word count": [
+            "จำนวนคำ"
+         ],
+         "Loading content to translate": [
+            "กำลังโหลดเนื้อหาที่จะแปล"
+         ],
+         "Calculating… <s>less than 1 minute left.</s>": [
+            "กำลังคำนวณ… <s>เหลือเวลาอีกไม่ถึง 1 นาที</s>"
+         ],
+         "Calculating… <s>%d minute left.</s>": [
+            "กำลังคำนวณ… <s>เหลือเวลาอีก %d นาที</s>"
+         ],
+         "Words needed to translate your existing content into the new languages: %s.": [
+            "จำนวนคำที่ต้องใช้ในการแปลเนื้อหาที่มีอยู่ของคุณเป็นภาษาใหม่: %s"
+         ],
+         "Words needed to translate your existing content into the new language.": [
+            "จำนวนคำที่ต้องใช้ในการแปลเนื้อหาที่มีอยู่ของคุณเป็นภาษาใหม่"
+         ],
+         "Based on the remaining untranslated content across all languages.": [
+            "อ้างอิงจากเนื้อหาที่ยังไม่ได้แปลที่เหลืออยู่ในทุกภาษา"
+         ],
+         "Estimated from the selected source volume multiplied by the target languages.": [
+            "ประมาณการจากปริมาณต้นฉบับที่เลือกคูณด้วยภาษาเป้าหมาย"
+         ],
+         "%1$s source words × %2$s language": [
+            "%1$s คำต้นฉบับ × %2$s ภาษา"
+         ],
+         "Already translated content": [
+            "เนื้อหาที่แปลแล้ว"
+         ],
+         "Documents you translated yourself stay exactly as you made them": [
+            "เอกสารที่คุณแปลด้วยตัวเองจะยังคงเป็นไปตามที่คุณทำไว้"
+         ],
+         "(%d document)": [
+            "(%d เอกสาร)"
+         ],
+         "View documents": [
+            "ดูเอกสาร"
+         ],
+         "%1$d of %2$d language will be translated automatically": [
+            "%1$d จาก %2$d ภาษาจะถูกแปลโดยอัตโนมัติ"
+         ],
+         "Translated to %d language": [
+            "แปลเป็น %d ภาษาแล้ว"
+         ],
+         "Add/remove languages": [
+            "เพิ่ม/ลบภาษา"
+         ],
+         "Percentages show how much of your selected content is already translated in each language.": [
+            "เปอร์เซ็นต์แสดงจำนวนเนื้อหาที่คุณเลือกซึ่งได้รับการแปลแล้วในแต่ละภาษา"
+         ],
+         "Note: Content already translated into all languages is not included in this calculation.": [
+            "หมายเหตุ: เนื้อหาที่แปลเป็นทุกภาษาแล้วจะไม่ถูกรวมอยู่ในการคำนวณนี้"
+         ],
+         "Same as default": [
+            "เหมือนกับค่าเริ่มต้น"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "การแปลอัตโนมัติไม่สามารถใช้งานได้ระหว่าง %1$s และ %2$s เนื่องจากถูกระบุว่าเป็นภาษาเดียวกัน"
+         ],
+         "Translation paused": [
+            "หยุดการแปลชั่วคราว"
+         ],
+         "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor.": [
+            "WPML ไม่ได้สร้างการแปลภาษา %s ใหม่ ดังนั้นจึงไม่รวมภาษานี้ หากต้องการรวมภาษานี้ ให้ใช้ “ดำเนินการแปลต่อ” ในแถวของภาษาในตัวแก้ไขภาษา"
+         ],
+         "Manual only": [
+            "ด้วยตนเองเท่านั้น"
+         ],
+         "%s has no automatic-translation support. You can translate this content manually.": [
+            "%s ไม่รองรับการแปลอัตโนมัติ คุณสามารถแปลเนื้อหานี้ด้วยตนเอง"
+         ],
+         "Adjusted word rate (%s)": [
+            "อัตราคำที่ปรับแล้ว (%s)"
+         ],
+         "This adjusted word rate applies to legacy translation engines.": [
+            "อัตราคำที่ปรับแล้วนี้ใช้กับเอนจินการแปลรุ่นเก่า"
+         ],
+         "Translation engine: <strong>%s</strong>": [
+            "เอนจินการแปล: <strong>%s</strong>"
+         ],
+         "Legacy engine": [
+            "เอนจินรุ่นเก่า"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "มีการใช้ราคารุ่นเก่า %s เป็นเอนจินการแปลรุ่นเก่า ไม่แนะนำสำหรับไซต์ใหม่และจะถูกยกเลิกการใช้งาน ไซต์ที่มีอยู่จะยังคงใช้อัตราคำที่ปรับแล้วสำหรับเอนจินนี้"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
+            "นี่คือจำนวนคำที่จำเป็นสำหรับการแปลเนื้อหาปัจจุบันของคุณในวันนี้ ยอดนี้ยังไม่รวมข้อความบางส่วนที่เพิ่มโดยปลั๊กอินอื่น ๆ เช่น แบบฟอร์มหรือสไลเดอร์ ซึ่งจะถูกนับหลังจากตั้งค่าเสร็จสมบูรณ์ สตริงของไซต์จากธีมและปลั๊กอินของคุณจะถูกนับหลังจากการตั้งค่าเช่นกัน และโดยทั่วไปจะเพิ่มขึ้นอีกหลายร้อยคำ หลังจากนั้น การแก้ไขจะไม่มีค่าใช้จ่าย คุณจะจ่ายอีกครั้งเฉพาะคำที่คุณเพิ่มเท่านั้น"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
+            "นี่คือจำนวนคำที่จำเป็นสำหรับการแปลเนื้อหาปัจจุบันของคุณในวันนี้ ซึ่งยังไม่รวมข้อความบางส่วนที่เพิ่มโดยปลั๊กอินอื่น เช่น ฟอร์มหรือสไลเดอร์ ซึ่งจะถูกนับหลังจากตั้งค่าเสร็จสิ้น สตริงของไซต์จากธีมและปลั๊กอินของคุณจะถูกนับหลังจากตั้งค่าเช่นกัน และโดยปกติจะเพิ่มขึ้นอีกหลายร้อยคำ ในอัตราต่อคำของ %s และจะมีการคิดค่าบริการอีกครั้งเมื่อมีการแก้ไขหน้าที่แปลแล้ว"
+         ],
+         "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
+            "นี่คือจำนวนคำที่จำเป็นสำหรับการแปลเนื้อหาปัจจุบันของคุณในวันนี้ หลังจากนั้น การแก้ไขจะไม่มีค่าใช้จ่าย คุณจะจ่ายอีกครั้งเฉพาะคำที่คุณเพิ่มเท่านั้น"
+         ],
+         "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again.": [
+            "นี่คือจำนวนคำที่จำเป็นสำหรับการแปลเนื้อหาปัจจุบันของคุณในวันนี้ ในอัตราต่อคำของ %s และจะมีการคิดค่าบริการอีกครั้งเมื่อมีการแก้ไขหน้าที่แปลแล้ว"
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
+            "ระบบจะนับหน้า โพสต์ และสินค้าพร้อมด้วยฟิลด์ที่กำหนดเอง ข้อความของตัวสร้างหน้า และข้อความสื่อ รวมถึงหมวดหมู่ ป้ายกำกับ และแอตทริบิวต์ที่ใช้"
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
+            "ระบบจะนับหน้า โพสต์ และสินค้าพร้อมด้วยฟิลด์ที่กำหนดเอง ข้อความของตัวสร้างหน้า และข้อความสื่อ หมวดหมู่ ป้ายกำกับ และแอตทริบิวต์ที่ใช้ รวมถึงสตริงของไซต์ โดยจะนับคำศัพท์ในทุกรายการที่ใช้นั้นและนับแยกต่างหากอีกหนึ่งครั้ง เนื่องจากคำศัพท์จะถูกส่งไปแปลทั้งสองแบบ"
+         ],
+         "Total items": [
+            "รายการทั้งหมด"
+         ],
+         "Total source words": [
+            "จำนวนคำต้นฉบับทั้งหมด"
+         ],
+         "Showing %1$d–%2$d of %3$d types.": [
+            "กำลังแสดง %1$d–%2$d จากทั้งหมด %3$d ประเภท"
+         ],
+         "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated.": [
+            "%1$s ปัจจุบันทั้งหมดถูกแปลเป็นทุกภาษาแล้ว<br>%2$s ใหม่หรือการแก้ไขจะถูกแปลโดยอัตโนมัติ"
+         ],
+         "All %s": [
+            "%s ทั้งหมด"
+         ],
+         "For translated types": [
+            "สำหรับประเภทที่แปลแล้ว"
+         ],
+         "None": [
+            "ไม่มี"
+         ],
+         "Since %s": [
+            "ตั้งแต่ %s"
+         ],
+         "Since specific date": [
+            "ตั้งแต่วันที่ระบุ"
+         ],
+         "<b>Pay-As-You-Go</b> is active on this site.": [
+            "<b>จ่ายตามการใช้งานจริง</b> เปิดใช้งานอยู่บนไซต์นี้"
+         ],
+         "<b>%s words</b> are on this site. Continue.": [
+            "มี <b>%s คำ</b> อยู่บนไซต์นี้ ดำเนินการต่อ"
+         ],
+         "Your site will be translated right after the setup.": [
+            "ไซต์ของคุณจะถูกแปลทันทีหลังจากการตั้งค่า"
+         ],
+         "To use prepaid words, register WPML on this site.": [
+            "หากต้องการใช้คำแบบชำระเงินล่วงหน้า โปรดลงทะเบียน WPML บนไซต์นี้"
+         ],
+         "We could not reach our translation system.": [
+            "เราไม่สามารถเชื่อมต่อกับระบบการแปลของเราได้"
+         ],
+         "This site is not registered with a WPML account, so prepaid words are not available.": [
+            "ไซต์นี้ไม่ได้ลงทะเบียนด้วยบัญชี WPML ดังนั้นจึงไม่สามารถใช้คำแบบชำระเงินล่วงหน้าได้"
+         ],
+         "We could not read your WPML account.": [
+            "เราไม่สามารถอ่านบัญชี WPML ของคุณได้"
+         ],
+         "%s more words are needed to translate your site.": [
+            "ต้องการอีก %s คำ เพื่อแปลไซต์ของคุณ"
+         ],
+         "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>.": [
+            "จัดสรรคำแบบชำระเงินล่วงหน้าจากบัญชี WPML ของคุณให้กับไซต์นี้เพื่อเริ่ม <b>แปลทุกอย่างโดยอัตโนมัติ</b>"
+         ],
+         "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>.": [
+            "จัดสรรคำที่คุณมีอยู่แล้วและซื้อส่วนที่เหลือ หรือเปิดใช้งาน <b>จ่ายตามการใช้งานจริง</b>"
+         ],
+         "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
+            "หากต้องการเริ่ม <b>แปลทุกอย่างโดยอัตโนมัติ</b> โปรดเปิดใช้งาน <b>จ่ายตามการใช้งานจริง</b> หรือซื้อคำแบบชำระเงินล่วงหน้า"
+         ],
+         "Error in fetching currently logged in translator": [
+            "เกิดข้อผิดพลาดในการดึงข้อมูลนักแปลที่ล็อกอินอยู่"
+         ],
+         "Error in fetching local translators": [
+            "เกิดข้อผิดพลาดในการดึงข้อมูลนักแปลท้องถิ่น"
+         ],
+         "usage ledger": [
+            "บัญชีการใช้งาน"
+         ],
+         "Cancelled. %1$d translation was in progress; its %2$s words are back on your account. Details:": [
+            "ยกเลิกแล้ว มีการแปล %1$d รายการที่เคยอยู่ระหว่างดำเนินการ โดยคืนจำนวน %2$s คำกลับเข้าสู่บัญชีของคุณแล้ว รายละเอียด:"
+         ],
+         "Cancelled. We asked to return the words for %d translation in progress; the usage ledger shows it once confirmed.": [
+            "ยกเลิกแล้ว เราได้ร้องขอการคืนคำสำหรับการแปล %d รายการที่อยู่ระหว่างดำเนินการ บัญชีการใช้งานจะแสดงข้อมูลเหล่านี้เมื่อได้รับการยืนยันแล้ว"
+         ],
+         "Published": [
+            "เผยแพร่แล้ว"
+         ],
+         "Draft": [
+            "ฉบับร่าง"
+         ],
+         "Trash": [
+            "ถังขยะ"
+         ],
+         "Pending": [
+            "รอการตรวจสอบ"
+         ],
+         "Private": [
+            "ส่วนตัว"
+         ],
+         "Future": [
+            "ในอนาคต"
+         ],
+         "Auto Draft": [
+            "ฉบับร่างอัตโนมัติ"
+         ],
+         "External": [
+            "ภายนอก"
+         ],
+         "Pay now": [
+            "ชำระเงินตอนนี้"
+         ],
+         "%1$sCheck pricing%2$s.": [
+            "%1$sตรวจสอบราคา%2$s"
+         ],
+         "Lowest cost per word": [
+            "ราคาต่อคำต่ำที่สุด"
+         ],
+         "Pay only for what you use": [
+            "จ่ายเฉพาะสิ่งที่คุณใช้"
+         ],
+         "Never run out. Translation never stops.": [
+            "ไม่มีวันหมด การแปลไม่มีหยุดชะงัก"
+         ],
+         "The first 500 words each month are free": [
+            "500 คำแรกในแต่ละเดือนฟรี"
+         ],
+         "Pay-As-You-Go": [
+            "จ่ายตามการใช้งานจริง"
+         ],
+         "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate.": [
+            "เปิดใช้งาน <b>จ่ายตามการใช้งานจริง</b> เพื่อแปลโดยอัตโนมัติ <b>จ่ายตามการใช้งานจริง</b> จะเรียกเก็บเงินตามจำนวนคำที่คุณแปล"
+         ],
+         "Activating <b>Pay-As-You-Go</b>…": [
+            "กำลังเปิดใช้งาน <b>จ่ายตามการใช้งานจริง</b>…"
+         ],
+         "Continue in the new tab": [
+            "ดำเนินการต่อในแท็บใหม่"
+         ],
+         "Activate <b>Pay-As-You-Go</b>": [
+            "เปิดใช้งาน <b>จ่ายตามการใช้งานจริง</b>"
+         ],
+         "<b>Pay-As-You-Go</b> is not active yet.": [
+            "<b>จ่ายตามการใช้งานจริง</b> ยังไม่เปิดใช้งาน"
+         ],
+         "Already using <b>Pay-As-You-Go</b> on another site?": [
+            "มีการใช้งาน <b>จ่ายตามการใช้งานจริง</b> ในไซต์อื่นอยู่แล้วใช่หรือไม่?"
+         ],
+         "Connect this site to it": [
+            "เชื่อมต่อไซต์นี้เข้าด้วยกัน"
+         ],
+         "Activate Pay-As-You-Go": [
+            "เปิดใช้งานจ่ายตามการใช้งานจริง"
+         ],
+         "Connect your sites to share translation memory, glossary and word quota.": [
+            "เชื่อมต่อไซต์ของคุณเพื่อแชร์หน่วยความจำการแปล อภิธานศัพท์ และโควตาคำ"
+         ],
+         "Learn more": [
+            "เรียนรู้เพิ่มเติม"
+         ],
+         "Copy your migration code:": [
+            "คัดลอกรหัสการย้ายข้อมูลของคุณ:"
+         ],
+         "Loading…": [
+            "กำลังโหลด…"
+         ],
+         "Log into a site with an active automatic translation account.": [
+            "ล็อกอินเข้าสู่ไซต์ที่มีบัญชีการแปลอัตโนมัติที่ใช้งานอยู่"
+         ],
+         "Go to \"WPML\" → \"Translation Dashboard\".": [
+            "ไปที่ “WPML” → “แดชบอร์ดการแปล”"
+         ],
+         "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
+            "ในแท็บ “Payment & Maintenance” ไปที่ “Connected sites”"
+         ],
+         "Click \"Enter the connection key of another site\" to finish connecting your sites.": [
+            "คลิก “Enter the connection key of another site” เพื่อเสร็จสิ้นการเชื่อมต่อไซต์ของคุณ"
+         ],
+         "Buy and assign words": [
+            "ซื้อและจัดสรรคำ"
+         ],
+         "Refresh to assign words": [
+            "รีเฟรชเพื่อจัดสรรคำ"
+         ],
+         "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site.": [
+            "%1$sซื้อแพ็คเกจแบบชำระเงินล่วงหน้า%2$s ที่มีอย่างน้อย %3$s%4$s คำ%5$s และจัดสรรให้กับไซต์นี้"
+         ],
+         "This amount will cover translation of all your current content.": [
+            "จำนวนนี้จะครอบคลุมการแปลเนื้อหาปัจจุบันทั้งหมดของคุณ"
+         ],
+         "Assign %1$s%2$s words%3$s to this site.": [
+            "จัดสรร %1$s%2$s คำ%3$s ให้กับไซต์นี้"
+         ],
+         "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s.": [
+            "จัดสรร %1$s%2$s คำ%3$s ของคุณ และซื้อเพิ่มอีก %4$s%5$s คำ%6$s"
+         ],
+         "Buy %1$s%2$s words%3$s for this site.": [
+            "ซื้อ %1$s%2$s คำ%3$s สำหรับไซต์นี้"
+         ],
+         "Assign at least %1$s%2$s words%3$s to this site to continue.": [
+            "จัดสรรอย่างน้อย %1$s%2$s คำ%3$s ให้กับไซต์นี้เพื่อดำเนินการต่อ"
+         ],
+         "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount.": [
+            "จัดสรรคำจากบัญชี WPML ของคุณ และซื้อ%1$sแพ็คเกจแบบชำระเงินล่วงหน้า%2$sเพิ่มเติมที่มีอย่างน้อย %3$s%4$s คำ%5$s เพื่อครอบคลุมจำนวนที่เหลือ"
+         ],
+         "Prepaid words": [
+            "คำแบบชำระเงินล่วงหน้า"
+         ],
+         "There are %1$s%2$s words%3$s on your WPML account.": [
+            "มี %1$s%2$s คำ%3$s ในบัญชี WPML ของคุณ"
+         ],
+         "There are %1$s%2$s available on your WPML account.%3$s": [
+            "มี %1$s%2$s คำที่พร้อมใช้งานในบัญชี WPML ของคุณ%3$s"
+         ],
+         "(Only the WPML account owner can do this.)": [
+            "(เฉพาะเจ้าของบัญชี WPML เท่านั้นที่สามารถดำเนินการนี้ได้)"
+         ],
+         "Checking for new words...": [
+            "กำลังตรวจสอบคำใหม่..."
+         ],
+         "Still not enough words. Refresh again in %d seconds.": [
+            "คำยังไม่เพียงพอ รีเฟรชอีกครั้งใน %d วินาที"
+         ],
+         "Already assigned?": [
+            "จัดสรรแล้วใช่หรือไม่?"
+         ],
+         "Collapse": [
+            "ยุบ"
+         ],
+         "Obvious mistakes": [
+            "ข้อผิดพลาดที่ชัดเจน"
+         ],
+         "Ready to publish": [
+            "พร้อมเผยแพร่"
+         ],
+         "Your engine": [
+            "เอนจินของคุณ"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "คุณภาพการแปล (มาตราส่วน 50-100): %1$s ได้คะแนน %2$d, %3$s ได้คะแนน %4$d"
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "คะแนนอ้างอิงจากการศึกษาคุณภาพการแปล MQM ภายในของ WPML"
+         ],
+         "Select an item": [
+            "เลือกรายการ"
+         ],
+         "Open dropdown": [
+            "เปิดรายการดรอปดาวน์"
+         ],
+         "Reset": [
+            "รีเซ็ต"
+         ],
+         "Search": [
+            "ค้นหา"
+         ],
+         "No items found": [
+            "ไม่พบรายการ"
+         ],
+         "%1$s Flag": [
+            "ธง %1$s"
+         ],
+         "Recommended": [
+            "แนะนำ"
+         ],
+         "- Select a review mode -": [
+            "- เลือกโหมดการรีวิว -"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "คุณต้องการทำอย่างไรเมื่อ WPML แปลเนื้อหาของคุณโดยอัตโนมัติเสร็จสิ้น?"
+         ],
+         "What would you like to do after WPML finishes translating your content automatically?": [
+            "คุณต้องการทำอย่างไรหลังจาก WPML แปลเนื้อหาของคุณโดยอัตโนมัติเสร็จสิ้น?"
+         ],
+         "Publish without review": [
+            "เผยแพร่โดยไม่ต้องรีวิว"
+         ],
+         "WPML publishes translations immediately, skipping the review process.": [
+            "WPML จะเผยแพร่คำแปลทันที โดยข้ามขั้นตอนการรีวิว"
+         ],
+         "Wait for review": [
+            "รอการรีวิว"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "สำหรับ DeepL, Google และ Microsoft เราแนะนำให้มีการรีวิวโดยมนุษย์เพื่อยืนยันความถูกต้อง PTC ให้การแปลที่ดีกว่ามนุษย์ที่เข้าใจบริบท ดังนั้นคุณจึงสามารถข้ามขั้นตอนการรีวิวได้อย่างมั่นใจ"
+         ],
+         "WPML keeps translations unpublished, so you can review them first.": [
+            "WPML จะยังไม่เผยแพร่คำแปล เพื่อให้คุณสามารถรีวิวก่อนได้"
+         ],
+         "Your translators review and approve translations before publishing.": [
+            "นักแปลของคุณจะรีวิวและอนุมัติคำแปลก่อนเผยแพร่"
+         ],
+         "Publish and mark for review": [
+            "เผยแพร่และทำเครื่องหมายเพื่อรีวิว"
+         ],
+         "WPML publishes translations immediately but flags them for you to check at your convenience.": [
+            "WPML จะเผยแพร่คำแปลทันที แต่จะทำเครื่องหมายไว้เพื่อให้คุณตรวจสอบในภายหลังตามสะดวก"
+         ],
+         "WPML publishes translations immediately but flags them for translators to review later.": [
+            "WPML จะเผยแพร่คำแปลทันที แต่จะทำเครื่องหมายไว้ให้นักแปลรีวิวในภายหลัง"
+         ],
+         "PTC provides Better Than Human Translations that rarely need improvements, so you can confidently skip the review process.": [
+            "PTC ให้การแปลที่ดีกว่ามนุษย์ซึ่งแทบไม่ต้องปรับปรุงเลย ดังนั้นคุณจึงสามารถข้ามขั้นตอนการรีวิวได้อย่างมั่นใจ"
+         ]
+      }
+   }
+}

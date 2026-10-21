@@ -4,25 +4,26 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "no"
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "zh_CN"
          },
          "Accepted": [
             "已接受"
          ],
          "Approved!": [
-            "已核准！"
+            "已批准！"
          ],
          "Loading the next translation for review...": [
-            "正在加载下一个翻译以供审阅..."
+            "正在加载下一个待审核的翻译..."
          ],
          "Back": [
             "返回"
          ],
          "Turn off to not automatically load the next translation after finishing this review.": [
-            "关闭此选项可在完成此审阅后不自动加载下一个翻译。"
+            "关闭此选项后，完成本次审核将不会自动加载下一个翻译。"
          ],
          "Turn on to automatically load the next translation after finishing this  .": [
-            "开启可在完成后自动加载下一个翻译。"
+            "开启此选项后，完成本次审核将自动加载下一个翻译。"
          ],
          "Edit": [
             "编辑"
@@ -30,11 +31,8 @@
          "Edit translation": [
             "编辑翻译"
          ],
-         "Please wait, applying translation..": [
-            "请稍候，正在应用翻译.."
-         ],
          "Next review": [
-            "下一个审阅"
+            "下一个审核"
          ],
          "Publish this translation": [
             "发布此翻译"
@@ -45,11 +43,14 @@
          "Published!": [
             "已发布！"
          ],
-         "Someone is already reviewing this translation. Please try again later.": [
-            "已经有人在审阅此翻译。请稍后再试。"
+         "Please wait, applying translation..": [
+            "请稍候，正在应用翻译..."
          ],
          "There was an error in applying translation.": [
             "应用翻译时出错。"
+         ],
+         "Someone is already reviewing this translation. Please try again later.": [
+            "有人正在审核此翻译。请稍后再试。"
          ]
       }
    }

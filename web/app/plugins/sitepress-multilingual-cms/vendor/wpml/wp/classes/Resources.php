@@ -9,40 +9,34 @@ use WPML\LIB\WP\WordPress;
 
 class Resources {
 
-	/**
-	 * Enqueue a JavaScript application file from the dist directory.
-	 *
-	 * @param string        $app
-	 * @param string        $pluginBaseUrl
-	 * @param string        $pluginBasePath
-	 * @param string        $version
-	 * @param null|string   $domain
-	 * @param null|string[] $localize
-	 *
-	 * @return void
-	 */
 	public static function enqueue( $app, $pluginBaseUrl, $pluginBasePath, $version, $domain = null, $localize = null ) {
 		static::enqueueWithDeps( $app, $pluginBaseUrl, $pluginBasePath, $version, $domain, $localize, [] );
 	}
 
-	/**
-	 * Enqueue a JavaScript application file from the dist directory, with dependencies.
-	 *
-	 * @param string        $app
-	 * @param string        $pluginBaseUrl
-	 * @param string        $pluginBasePath
-	 * @param string        $version
-	 * @param null|string   $domain
-	 * @param null|string[] $localize
-	 * @param null|string[] $dependencies
-	 *
-	 * @return void
-	 */
 	public static function enqueueWithDeps( $app, $pluginBaseUrl, $pluginBasePath, $version, $domain = null, $localize = null, $dependencies = [] ) {
 		$handle = sprintf(
 			'wpml-%s-ui',
 			str_replace( '/', '_', $app )
 		);
+
+		$sharedStyleDependencies = [];
+		foreach ( self::vendorStyleChunks( $app, $pluginBasePath ) as $chunk ) {
+			$chunkHandle = sprintf( 'wpml-%s-%s', basename( $pluginBasePath ), $chunk );
+			wp_register_script(
+				$chunkHandle,
+				"$pluginBaseUrl/dist/js/$chunk/app.js",
+				[],
+				$version
+			);
+			wp_enqueue_style(
+				$chunkHandle,
+				"$pluginBaseUrl/dist/css/$chunk/styles.css",
+				[],
+				$version
+			);
+			$dependencies[]             = $chunkHandle;
+			$sharedStyleDependencies[] = $chunkHandle;
+		}
 
 		wp_register_script(
 			$handle,
@@ -76,7 +70,7 @@ class Resources {
 			wp_enqueue_style(
 				$handle,
 				"$pluginBaseUrl/dist/css/$app/styles.css",
-				[],
+				$sharedStyleDependencies,
 				$version
 			);
 		}
@@ -88,5 +82,19 @@ class Resources {
 
 			wp_set_script_translations( $handle, $domain, "$rootPath/locale/jed" );
 		}
+	}
+
+	public static function vendorStyleChunks( $app, $pluginBasePath ) {
+		$manifest = "$pluginBasePath/dist/css/vendor-styles.json";
+		if ( ! file_exists( $manifest ) ) {
+			return [];
+		}
+
+		$entries = json_decode( (string) file_get_contents( $manifest ), true );
+		$chunks  = is_array( $entries ) && isset( $entries[ $app ] ) && is_array( $entries[ $app ] )
+			? $entries[ $app ]
+			: [];
+
+		return array_values( array_filter( $chunks, 'is_string' ) );
 	}
 }

@@ -1,14 +1,7 @@
 <?php
-/**
- * @author OnTheGo Systems
- */
 class WPML_Support_Info {
-	/** @var wpdb */
 	private $wpdb;
 
-	/**
-	 * @param wpdb $wpdb
-	 */
 	public function __construct( wpdb $wpdb ) {
 		$this->wpdb = $wpdb;
 	}
@@ -31,7 +24,40 @@ class WPML_Support_Info {
 	}
 
 	public function get_php_memory_limit() {
-		return ini_get('memory_limit');
+		return $this->get_original_ini_get('memory_limit');
+	}
+
+	public function get_original_ini_get( string $key ) {
+		if ( ! function_exists( 'ini_get_all' ) ) {
+			return $this->read_original_ini_fallback( $key );
+		}
+
+		$array = ini_get_all();
+		if ( $array === false || ! isset( $array[ $key ] )
+		     || ! isset( $array[ $key ]['global_value'] )
+		) {
+			return false;
+		}
+
+		return $array[ $key ]['global_value'];
+	}
+
+	private function read_original_ini_fallback( $key ) {
+		if ( function_exists( 'get_cfg_var' ) ) {
+			$value = get_cfg_var( $key );
+			if ( is_string( $value ) && '' !== $value ) {
+				return $value;
+			}
+		}
+
+		if ( function_exists( 'ini_get' ) ) {
+			$value = ini_get( $key );
+			if ( is_string( $value ) && '' !== $value ) {
+				return $value;
+			}
+		}
+
+		return false;
 	}
 
 	public function get_memory_usage() {
@@ -59,7 +85,7 @@ class WPML_Support_Info {
 	}
 
 	public function is_memory_less_than( $reference, $memory ) {
-		if ( (int) $reference === - 1 ) {
+		if ( (int) $memory === - 1 ) {
 			return false;
 		}
 
@@ -77,7 +103,7 @@ class WPML_Support_Info {
 		return $this->wpdb->has_cap( 'utf8mb4' );
 	}
 
-	private function return_bytes( $val ) {
+	public function return_bytes( $val ) {
 		$val  = trim( $val );
 
 		$exponents = array(

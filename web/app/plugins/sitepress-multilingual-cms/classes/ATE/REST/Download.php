@@ -1,7 +1,4 @@
 <?php
-/**
- * @author OnTheGo Systems
- */
 
 namespace WPML\TM\ATE\REST;
 
@@ -23,9 +20,6 @@ use function WPML\Container\make;
 use function WPML\FP\pipe;
 
 class Download extends Base {
-	/**
-	 * @return array
-	 */
 	public function get_routes() {
 		return [
 			[
@@ -38,11 +32,6 @@ class Download extends Base {
 		];
 	}
 
-	/**
-	 * @param WP_REST_Request $request
-	 *
-	 * @return array
-	 */
 	public function get_allowed_capabilities( WP_REST_Request $request ) {
 		return [
 			'manage_options',
@@ -57,6 +46,29 @@ class Download extends Base {
 			return [];
 		}
 
-		return make( Process::class )->run( $request->get_param( 'jobs' ) )->all();
+		return make( Process::class )->run( $this->authorizeBatch( (array) $request->get_param( 'jobs' ) ) )->all();
+	}
+
+	private function authorizeBatch( array $jobs ) {
+		$resolver = \WPML\TM\Jobs\Authorization\AuthorizedJobResolver::make();
+		$context  = \WPML\Core\Security\ExecutionContext\ExecutionContextHolder::current();
+
+		$authorized = [];
+		foreach ( $jobs as $job ) {
+			$ateJobId      = (int) Obj::prop( 'ateJobId', $job );
+			$suppliedJobId = (int) Obj::prop( 'jobId', $job );
+
+			$resolved = $suppliedJobId
+				? $resolver->byBoundPair( $context, $suppliedJobId, $ateJobId )
+				: $resolver->byAteId( $context, $ateJobId );
+
+			if ( ! $resolved ) {
+				continue;
+			}
+
+			$authorized[] = Obj::assoc( 'jobId', $resolved->localId(), $job );
+		}
+
+		return $authorized;
 	}
 }

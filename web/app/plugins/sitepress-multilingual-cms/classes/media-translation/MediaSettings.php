@@ -12,7 +12,6 @@ class MediaSettings {
 			'custom_fields' => true,
 			'strings'       => true,
 		],
-		'wpml_media_2_3_migration' => true,
 		'setup_run'                => false,
 	];
 

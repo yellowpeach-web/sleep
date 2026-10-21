@@ -13,12 +13,6 @@ use function WPML\Container\make;
 
 class Factory implements \IWPML_Backend_Action_Loader, \IWPML_Frontend_Action_Loader {
 
-	/**
-	 * Create hooks.
-	 *
-	 * @return IWPML_Action[]
-	 * @throws \WPML\Auryn\InjectionException Auryn Exception.
-	 */
 	public function create() {
 		$manager = ManagerFactory::create();
 
@@ -48,6 +42,11 @@ class Factory implements \IWPML_Backend_Action_Loader, \IWPML_Frontend_Action_Lo
 			make( StringsLanguageChanged::class, [
 				':manager'               => $manager,
 				':getDomainsByStringIds' => DomainsRepository::getByStringIds(),
+			] ),
+			make( GetFilepathesForTranslationFiles::class ),
+			make( LanguageLocaleChanged::class, [
+				':manager'       => ManagerFactory::create(),
+				':scriptManager' => make( \WPML_ST_JED_File_Manager::class, [ ':builder' => make( \WPML_ST_JED_File_Builder::class ) ] ),
 			] ),
 		];
 	}

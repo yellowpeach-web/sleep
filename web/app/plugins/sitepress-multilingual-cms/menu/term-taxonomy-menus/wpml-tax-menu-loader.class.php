@@ -2,18 +2,10 @@
 
 class WPML_Tax_Menu_Loader {
 
-	/** @var SitePress $sitepress */
 	private $sitepress;
-	/** @var wpdb $wpdb */
 	public $wpdb;
-	/** @var string $taxonomy */
 	private $taxonomy;
 
-	/**
-	 * @param wpdb      $wpdb
-	 * @param SitePress $sitepress
-	 * @param string    $taxonomy
-	 */
 	public function __construct( $wpdb, $sitepress, $taxonomy ) {
 		$this->sitepress = $sitepress;
 		$this->wpdb      = $wpdb;
@@ -56,43 +48,44 @@ class WPML_Tax_Menu_Loader {
 		}
 	}
 
-	/**
-	 * Filters the display of the categories list in order to prevent the default category from being delete-able.
-	 * This is done by printing a hidden div containing a JSON encoded array with all category id's, the checkboxes of which are to be removed.
-	 */
 	public function category_display_action() {
-		/** @var WPML_Term_Translation $wpml_term_translations */
 		global $wpml_term_translations;
 
-		if ( ( $default_category_id = get_option( 'default_category' ) ) ) {
-			$default_cat_ids = array();
+		$default_categories = (array) $this->sitepress->get_setting( 'default_categories', array() );
+		$default_cat_ids    = array();
 
-			$translations = $wpml_term_translations->get_element_translations( $default_category_id );
-			foreach ( $translations as $lang => $translation ) {
-				$default_cat_ids [] = $wpml_term_translations->term_id_in( $default_category_id, $lang );
+		foreach ( $default_categories as $term_taxonomy_id ) {
+			$term_id = (int) $wpml_term_translations->adjust_term_id_for_ttid( (int) $term_taxonomy_id );
+			if ( $term_id && ! in_array( $term_id, $default_cat_ids, true ) ) {
+				$default_cat_ids[] = $term_id;
 			}
+		}
+
+		if ( $default_cat_ids ) {
 			echo '<div id="icl-default-category-ids" style="display: none;">'
 				 . wp_json_encode( $default_cat_ids ) . '</div>';
 		}
 	}
 
 	public function js_scripts_tags() {
-		wp_enqueue_script( 'sitepress-tags', ICL_PLUGIN_URL . '/res/js/tags.js', array(), ICL_SITEPRESS_VERSION );
+		wp_enqueue_script( 'sitepress-tags', ICL_PLUGIN_URL . '/res/js/tags.js', array( 'sitepress-scripts' ), ICL_SITEPRESS_SCRIPT_VERSION );
 	}
 
 	function wp_dropdown_cats_select_parent( $html, $args ) {
+		$wpdb = $this->wpdb;
+
 		if ( ( $trid = filter_input( INPUT_GET, 'trid', FILTER_SANITIZE_NUMBER_INT ) ) ) {
 			$element_type     = $taxonomy = isset( $args['taxonomy'] ) ? $args['taxonomy'] : 'post_tag';
 			$icl_element_type = 'tax_' . $element_type;
 			$source_lang      = isset( $_GET['source_lang'] )
 				? filter_input( INPUT_GET, 'source_lang', FILTER_SANITIZE_FULL_SPECIAL_CHARS )
 				: $this->sitepress->get_default_language();
-			$parent           = $this->wpdb->get_var(
-				$this->wpdb->prepare(
+			$parent           = $wpdb->get_var(
+				$wpdb->prepare(
 					"
 				SELECT parent
-				FROM {$this->wpdb->term_taxonomy} tt
-					JOIN {$this->wpdb->prefix}icl_translations tr ON tr.element_id=tt.term_taxonomy_id
+				FROM {$wpdb->term_taxonomy} tt
+					JOIN {$wpdb->prefix}icl_translations tr ON tr.element_id=tt.term_taxonomy_id
                     AND tr.element_type=%s AND tt.taxonomy=%s
 				WHERE trid=%d AND tr.language_code=%s
 			",
@@ -111,9 +104,6 @@ class WPML_Tax_Menu_Loader {
 		return $html;
 	}
 
-	/**
-	 * @param Object $term
-	 */
 	public function wpml_edit_term_form( $term ) {
 		include WPML_PLUGIN_PATH . '/menu/term-taxonomy-menus/taxonomy-menu.php';
 	}
@@ -129,19 +119,11 @@ class WPML_Tax_Menu_Loader {
 		if ( $name !== false ) {
 			$tax_name = apply_filters( 'the_category', $name );
 			// translators: %s is replaced by the name of the taxonomy.
-			echo '<div id="icl_tax_adding_notice" class="updated fade"><p>'
-				 . sprintf( esc_html__( 'Adding translation for: %s.', 'sitepress' ), $tax_name )
-				 . '</p></div>';
+			$notice = sprintf( esc_html__( 'Adding translation for: %s.', 'sitepress' ), $tax_name );
+			echo '<div id="icl_tax_adding_notice" class="updated fade"><p>' . esc_html( $notice ) . '</p></div>';
 		}
 	}
 
-	/**
-	 * If user perform bulk taxonomy deletion when displaying non-default
-	 * language taxonomies, after deletion should stay with same language
-	 *
-	 * @param string $location Url where browser will redirect.
-	 * @return string Url where browser will redirect.
-	 */
 	public function preserve_lang_param( $location ) {
 		global $wpml_url_converter;
 

@@ -4,16 +4,24 @@ namespace WPML\TM\ATE\AutoTranslate\Endpoint;
 
 use WPML\Ajax\IHandler;
 use WPML\Collect\Support\Collection;
-use WPML\FP\Either;
-use WPML\FP\Fns;
-use WPML\LIB\WP\Option;
+use WPML\Core\Component\ATE\Application\Service\CreditsService;
+use WPML\Core\Component\ATE\Domain\Credits\DebtorBlock;
 use WPML\TM\API\ATE\Account;
-use WPML\WP\OptionManager;
-use function WPML\Container\make;
 
 class GetCredits implements IHandler {
 
 	public function run( Collection $data ) {
-		return Account::getCredits();
+		$allowCached = (bool) $data->get( 'allowCached', false );
+
+		return Account::getCredits( $allowCached )->map( function( $credits ) {
+			global $wpml_dic;
+
+			$creditsService = $wpml_dic->make( CreditsService::class );
+
+			$credits['creditsInProgress'] = $creditsService->getCreditsInProgress()->getCount();
+			$credits['debtor_block'] = DebtorBlock::fromCredits( $credits );
+
+			return $credits;
+		} );
 	}
 }

@@ -3,53 +3,251 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "nl_NL"
          },
-         "You can choose which posts to translate from the <strong>Translation Management Dashboard</strong>.": [
-            "U kunt kiezen welke berichten vertaald moeten worden op het <strong>Translation Management-dashboard</strong>."
-         ],
-         "Yes, translate <b>existing</b> and <b>future</b> content automatically": [
-            "Ja, vertaal <b>bestaande</b> en <b>toekomstige</b> inhoud automatisch"
-         ],
-         "Yes, but only translate <b>future</b> content automatically": [
-            "Ja, maar vertaal alleen <b>toekomstige</b> inhoud automatisch"
-         ],
-         "Yes, translate <b>future</b> content automatically": [
-            "Ja, vertaal <b>toekomstige</b> inhoud automatisch"
-         ],
-         "No, I want to translate some of these posts, but not all": [
-            "Nee, ik wil sommige van deze berichten vertalen, maar niet alle"
+         "%1$s and %2$s": [
+            "%1$s en %2$s"
          ],
          "You must use the Advanced Translation Editor if you want to translate your content automatically.": [
-            "Je moet de Geavanceerde Vertaal Editor gebruiken als je je inhoud automatisch wilt laten vertalen."
+            "U moet de geavanceerde vertaal-editor gebruiken als u uw content automatisch wilt vertalen."
          ],
          "Synchronize translators and translation managers with ATE": [
-            "Synchroniseer vertalers en vertaalmanagers met ATE"
+            "Synchroniseer vertalers en vertaalbeheerders met ATE"
          ],
-         "Please try again in a few minutes. If the problem persists, please contact %sWPML support%s.": [
-            "Probeer het over een paar minuten nog eens. Als het probleem zich blijft voordoen, neem dan contact op met %sWPML support%s."
+         "Please try again in a few minutes. If the problem persists, please contact %1$sWPML support%2$s.": [
+            "Probeer het over een paar minuten opnieuw. Als het probleem aanhoudt, neem dan contact op met %1$sWPML-support%2$s."
          ],
-         "Are you OK with paying for this?": [
-            "Vind je het oké om hiervoor te betalen?"
+         "The number of translated terms carrying %s could not be counted.": [
+            "Het aantal vertaalde termen met %s kon niet worden geteld."
+         ],
+         "There are no translated terms carrying %s yet that need translating again. The change applies to new translations.": [
+            "Er zijn nog geen vertaalde termen met %s die opnieuw vertaald moeten worden. De wijziging is van toepassing op nieuwe vertalingen."
+         ],
+         "%1$s translated term carries %2$s — only new translations are affected.": [
+            "%1$s vertaalde term bevat %2$s — alleen nieuwe vertalingen worden beïnvloed.",
+            "%1$s vertaalde termen bevatten %2$s — alleen nieuwe vertalingen worden beïnvloed."
+         ],
+         "The number of translated posts carrying %s could not be counted.": [
+            "Het aantal vertaalde berichten met %s kon niet worden geteld."
+         ],
+         "There are no translated posts carrying %s yet that need translating again. The change applies to new translations.": [
+            "Er zijn nog geen vertaalde berichten met %s die opnieuw vertaald moeten worden. De wijziging is van toepassing op nieuwe vertalingen."
+         ],
+         "%1$s translated post carries %2$s — it will be marked as needing a translation update.": [
+            "%1$s vertaald bericht bevat %2$s — het zal worden gemarkeerd als 'moet worden bijgewerkt'.",
+            "%1$s vertaalde berichten bevatten %2$s — ze zullen worden gemarkeerd als 'moet worden bijgewerkt'."
+         ],
+         "%1$s translated post carries %2$s — its translation will show the original's value from now on.": [
+            "%1$s vertaald bericht bevat %2$s — de vertaling ervan toont vanaf nu de waarde van het origineel.",
+            "%1$s vertaalde berichten bevatten %2$s — hun vertalingen tonen vanaf nu de waarde van het origineel."
+         ],
+         "%1$s translated post carries %2$s — translations without a value get the original's once.": [
+            "%1$s vertaald bericht bevat %2$s — vertalingen zonder waarde krijgen eenmalig de waarde van het origineel.",
+            "%1$s vertaalde berichten bevatten %2$s — vertalingen zonder waarde krijgen eenmalig de waarde van het origineel."
+         ],
+         "%1$s translated post carries %2$s — it is no longer translated and what its translations hold stays as it is.": [
+            "%1$s vertaald bericht bevat %2$s — het wordt niet langer vertaald en de inhoud van de vertaling blijft ongewijzigd.",
+            "%1$s vertaalde berichten bevatten %2$s — ze worden niet langer vertaald en de inhoud van hun vertalingen blijft ongewijzigd."
+         ],
+         "Review these translation setting changes": [
+            "Controleer deze wijzigingen in de vertaalinstellingen"
          ],
          "Cancel": [
             "Annuleren"
          ],
-         "Make translatable": [
-            "Vertaalbaar maken"
+         "Save changes": [
+            "Wijzigingen opslaan"
+         ],
+         "Also update the existing posts now": [
+            "Ook de bestaande berichten nu bijwerken"
+         ],
+         "Also update the %s existing post now": [
+            "Ook het %s bestaande bericht nu bijwerken",
+            "Ook de %s bestaande berichten nu bijwerken"
+         ],
+         "Only apply to new translations": [
+            "Alleen toepassen op nieuwe vertalingen"
+         ],
+         "Once saved, WPML automatically sends new and updated posts with this field to translation. This may use translation words.": [
+            "Na het opslaan verzendt WPML automatisch nieuwe en bijgewerkte berichten met dit veld ter vertaling. Dit kan woorden kosten.",
+            "Na het opslaan verzendt WPML automatisch nieuwe en bijgewerkte berichten met deze velden ter vertaling. Dit kan woorden kosten."
+         ],
+         "Once saved, WPML automatically sends new and updated terms with this key to translation. This may use translation words.": [
+            "Na het opslaan verzendt WPML automatisch nieuwe en bijgewerkte termen met deze key ter vertaling. Dit kan woorden kosten.",
+            "Na het opslaan verzendt WPML automatisch nieuwe en bijgewerkte termen met deze keys ter vertaling. Dit kan woorden kosten."
+         ],
+         "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "In beide gevallen wordt de nieuwe voorkeur opgeslagen. Met “Alleen toepassen op nieuwe vertalingen” blijft elke bestaande vertaling precies zoals deze is."
+         ],
+         "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
+            "%1$s aangepast veld is buiten dit scherm om vertaalbaar geworden: %2$s. Bepaal wat er moet gebeuren met de vertalingen die al bestaan.",
+            "%1$s aangepaste velden zijn buiten dit scherm om vertaalbaar geworden: %2$s. Bepaal wat er moet gebeuren met de vertalingen die al bestaan."
+         ],
+         "Review this field": [
+            "Dit veld controleren",
+            "Deze velden controleren"
          ],
          "Save": [
             "Opslaan"
          ],
-         "Please confirm this translation setting": [
-            "Gelieve deze vertaalinstelling te bevestigen"
+         "Calculate Costs": [
+            "Kosten berekenen"
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate the %1$d existing item.": [
-            "Je site is ingesteld om alle inhoud automatisch te vertalen. Wanneer je <PostTypesNames /> vertaalbaar maakt, zal WPML automatisch het %1$d bestaande item vertalen.",
-            "Je site is ingesteld om alle inhoud automatisch te vertalen. Wanneer je <PostTypesNames /> vertaalbaar maakt, zal WPML automatisch de %1$d bestaande items vertalen."
+         "WPML will automatically translate %1$s into %2$s.": [
+            "WPML zal automatisch %1$s vertalen naar %2$s."
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate all future content.": [
-            "Je site is ingesteld om alle inhoud automatisch te vertalen. Wanneer je <PostTypesNames /> vertaalbaar maakt, zal WPML automatisch alle toekomstige inhoud vertalen."
+         "Automatic translation uses translation words.": [
+            "Automatische vertaling gebruikt vertaalwoorden."
+         ],
+         "Are you OK with this?": [
+            "Gaat u hiermee akkoord?"
+         ],
+         "Are you sure you want to change the translation option?": [
+            "Weet u zeker dat u de vertaaloptie wilt wijzigen?"
+         ],
+         "Yes, continue": [
+            "Ja, ga door"
+         ],
+         "No, go back": [
+            "Nee, ga terug"
+         ],
+         "%d term": [
+            "%d term",
+            "%d termen"
+         ],
+         "%d language": [
+            "%d taal",
+            "%d talen"
+         ],
+         "%s will be translated.": [
+            "%s zal worden vertaald."
+         ],
+         "Change the URLs of existing translations?": [
+            "De URL's van bestaande vertalingen wijzigen?"
+         ],
+         "Counting the existing translations this affects… %1$s of %2$s posts.": [
+            "Bestaande vertalingen die hierdoor worden beïnvloed tellen… %1$s van %2$s berichten."
+         ],
+         "Counting the existing translations this affects…": [
+            "Bestaande vertalingen die hierdoor worden beïnvloed tellen…"
+         ],
+         "Also update the %s existing translation now — its URL changes": [
+            "Ook de %s bestaande vertaling nu bijwerken — de URL ervan verandert",
+            "Ook de %s bestaande vertalingen nu bijwerken — hun URL's veranderen"
+         ],
+         "Either way the setting is saved. With \"Only apply to new translations\" every existing translation keeps its slug.": [
+            "In beide gevallen wordt de instelling opgeslagen. Met “Alleen toepassen op nieuwe vertalingen” behoudt elke bestaande vertaling zijn slug."
+         ],
+         "No existing translation gets a different URL from this option. It does not apply to new translations either. None of your active languages has \"Encode URL\" turned on.": [
+            "Geen enkele bestaande vertaling krijgt een andere URL door deze optie. Het is ook niet van toepassing op nieuwe vertalingen. Geen van uw actieve talen heeft “URL coderen” ingeschakeld."
+         ],
+         "No existing translation gets a different URL from this option. It applies to new translations.": [
+            "Geen enkele bestaande vertaling krijgt een andere URL door deze optie. Deze is van toepassing op nieuwe vertalingen."
+         ],
+         "%s existing translation in a language with encoded URLs would get the original's slug.": [
+            "%s bestaande vertaling in een taal met gecodeerde URL's zou de slug van het origineel krijgen.",
+            "%s bestaande vertalingen in talen met gecodeerde URL's zouden de slug van het origineel krijgen."
+         ],
+         "%s existing translation would get a slug regenerated from its title.": [
+            "%s bestaande vertaling krijgt een slug die opnieuw is gegenereerd op basis van de titel.",
+            "%s bestaande vertalingen krijgen slugs die opnieuw zijn gegenereerd op basis van hun titels."
+         ],
+         "This changes the URL of %s published translation. Links to it from your other translations are updated. Search engines and links from elsewhere keep the old address until you redirect it.": [
+            "Dit wijzigt de URL van %s gepubliceerde vertaling. Links hiernaar vanuit uw andere vertalingen worden bijgewerkt. Zoekmachines en links van elders behouden het oude adres totdat u het doorstuurt.",
+            "Dit wijzigt de URL's van %s gepubliceerde vertalingen. Links hiernaar vanuit uw andere vertalingen worden bijgewerkt. Zoekmachines en links van elders behouden de oude adressen totdat u ze doorstuurt."
+         ],
+         "Retry": [
+            "Opnieuw proberen"
+         ],
+         "Updating %1$s of %2$s translation…": [
+            "%1$s van %2$s vertaling bijwerken…",
+            "%1$s van %2$s vertalingen bijwerken…"
+         ],
+         "Updating %1$s of %2$s posts…": [
+            "%1$s van %2$s berichten bijwerken…"
+         ],
+         "%1$s %2$s updated.": [
+            "%1$s %2$s bijgewerkt."
+         ],
+         "%s post updated.": [
+            "%s bericht bijgewerkt.",
+            "%s berichten bijgewerkt."
+         ],
+         "%s marked as needing a translation update.": [
+            "%s gemarkeerd als 'moet worden bijgewerkt'."
+         ],
+         "%1$s sent to translation and %2$s outside Translate Everything's range marked for later.": [
+            "%1$s ter vertaling verzonden en %2$s buiten het bereik van Alles vertalen gemarkeerd voor later."
+         ],
+         "%s sent to translation.": [
+            "%s ter vertaling verzonden."
+         ],
+         "Nothing was sent. %s outside Translate Everything's range marked for later.": [
+            "Er is niets verzonden. %s buiten het bereik van Alles vertalen gemarkeerd voor later."
+         ],
+         "Nothing was sent.": [
+            "Er is niets verzonden."
+         ],
+         "%s in a language Translate Everything does not send marked for later.": [
+            "%s in een taal die Alles vertalen niet verzendt, gemarkeerd voor later."
+         ],
+         "The URL of %s translation was updated.": [
+            "De URL van %s vertaling is bijgewerkt.",
+            "De URL's van %s vertalingen zijn bijgewerkt."
+         ],
+         "No URL was changed.": [
+            "Er zijn geen URL's gewijzigd."
+         ],
+         "%s translation no longer needed a change.": [
+            "%s vertaling had geen wijziging meer nodig.",
+            "%s vertalingen hadden geen wijziging meer nodig."
+         ],
+         "The update continues in the background. The admin bar shows its progress.": [
+            "De update gaat verder op de achtergrond. De admin-balk toont de voortgang."
+         ],
+         "Counting the words this sends…": [
+            "De woorden die dit verzendt tellen…"
+         ],
+         "Counting the words this sends… %1$s of %2$s posts.": [
+            "De woorden die dit verzendt tellen… %1$s van %2$s berichten."
+         ],
+         "The number of words this sends could not be estimated. The Translation Dashboard shows the cost once the posts are queued.": [
+            "Het aantal woorden dat dit verzendt kon niet worden geschat. Het Vertaaldashboard toont de kosten zodra de berichten in de wachtrij staan."
+         ],
+         "This sends %s word of content that could not be priced. The Translation Dashboard shows the cost once the posts are queued.": [
+            "Dit verzendt %s woord aan inhoud waarvan de prijs niet kon worden bepaald. Het Vertaaldashboard toont de kosten zodra de berichten in de wachtrij staan.",
+            "Dit verzendt %s woorden aan inhoud waarvan de prijs niet kon worden bepaald. Het Vertaaldashboard toont de kosten zodra de berichten in de wachtrij staan."
+         ],
+         "Sending it again to %2$s languages uses about %1$s word.": [
+            "Het opnieuw verzenden naar %2$s talen kost ongeveer %1$s woord.",
+            "Het opnieuw verzenden naar %2$s talen kost ongeveer %1$s woorden."
+         ],
+         "Sending them again to %2$s languages uses about %1$s word.": [
+            "Het opnieuw verzenden naar %2$s talen kost ongeveer %1$s woord.",
+            "Het opnieuw verzenden naar %2$s talen kost ongeveer %1$s woorden."
+         ],
+         "Sending it again uses about %s word.": [
+            "Opnieuw verzenden kost ongeveer %s woord.",
+            "Opnieuw verzenden kost ongeveer %s woorden."
+         ],
+         "Sending them again uses about %s word.": [
+            "Opnieuw verzenden kost ongeveer %s woord.",
+            "Opnieuw verzenden kost ongeveer %s woorden."
+         ],
+         "%s of the posts is outside Translate Everything's range: its translations will be marked without being sent.": [
+            "%s van de berichten valt buiten het bereik van Alles vertalen: de vertalingen ervan worden gemarkeerd zonder te worden verzonden.",
+            "%s van de berichten vallen buiten het bereik van Alles vertalen: hun vertalingen worden gemarkeerd zonder te worden verzonden."
+         ],
+         "Your choice for the existing translations was not recorded.": [
+            "Uw keuze voor de bestaande vertalingen is niet opgeslagen."
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "Ons vertaalsysteem heeft dit verzoek niet geaccepteerd (het antwoord was %d). Wacht een minuut en probeer het opnieuw. Neem contact op met de WPML-support als dit blijft gebeuren."
+         ],
+         "several post types listed\u0004%1$s %2$s updated.": [
+            "%1$s %2$s bijgewerkt."
          ]
       }
    }

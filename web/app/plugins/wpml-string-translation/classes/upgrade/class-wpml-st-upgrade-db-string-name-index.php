@@ -1,33 +1,25 @@
 <?php
 
 class WPML_ST_Upgrade_DB_String_Name_Index implements IWPML_St_Upgrade_Command {
-	/** @var wpdb */
 	private $wpdb;
 
-	/**
-	 * @param wpdb $wpdb
-	 */
 	public function __construct( wpdb $wpdb ) {
 		$this->wpdb = $wpdb;
 	}
 
 	public function run() {
 		$result = true;
+		$wpdb   = $this->wpdb;
 
-		$table_name = $this->wpdb->prefix . 'icl_strings';
-		/** @var array<int, object> $results */
-		$results = $this->wpdb->get_results( "SHOW TABLES LIKE '{$table_name}'" );
+		$table_name = $wpdb->prefix . 'icl_strings';
+		$results = $wpdb->get_results( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) );
 		if ( 0 !== count( $results ) ) {
-			$sql = "SHOW KEYS FROM  {$table_name} WHERE Key_name='icl_strings_name'";
-			/** @var array<int, object> $results */
-			$results = $this->wpdb->get_results( $sql );
+			$results = $wpdb->get_results( "SHOW KEYS FROM {$wpdb->prefix}icl_strings WHERE Key_name='icl_strings_name'" );
 			if ( 0 === count( $results ) ) {
-				$sql = "
-				ALTER TABLE {$this->wpdb->prefix}icl_strings 
-				ADD INDEX `icl_strings_name` (`name` ASC);
-				";
-
-				$result = false !== $this->wpdb->query( $sql );
+				$result = false !== $wpdb->query(
+					"ALTER TABLE {$wpdb->prefix}icl_strings
+					ADD INDEX `icl_strings_name` (`name` ASC);"
+				);
 			}
 		}
 

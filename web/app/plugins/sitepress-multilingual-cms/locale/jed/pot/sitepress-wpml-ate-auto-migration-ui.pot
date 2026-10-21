@@ -1,0 +1,309 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"X-Generator: babel-plugin-makepot\n"
+
+#: src/js/ate-auto-migration/components/AliasDomainResetPrefix.js:12
+msgid ""
+"WPML detected that the alias domain feature was incorrectly configured and "
+"has been automatically reset. The alias domain feature is designed only for "
+"cases where two domains point to the same WordPress installation. See the "
+"details below for the current state of your site."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:37
+msgid "Connect this site to the original?"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:40
+#. Connect dialog for a copied site. Start of the sentence "If you connect, this site will re-attach to <web address>. Specifically:"; the address follows this text.
+msgid "If you connect, this site will re-attach to "
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:42
+#: src/js/ate-auto-migration/components/DisconnectModal.js:55
+#. End of the sentence that names the original site's web address, in both the connect and the disconnect dialog: "... re-attach to <web address>. Specifically:".
+msgid ". Specifically:"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:47
+#. Connect dialog, the bold middle of the bullet "It will share billing and translation words with the original site again."
+msgid "share billing and translation words"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:48
+#. Connect dialog, end of the bullet that starts "It will share billing and translation words".
+msgid ""
+" with the original site again. This site won’t need its own subscription or "
+"PAYG plan."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:51
+#: src/js/ate-auto-migration/components/DisconnectModal.js:64
+#. Start of each bullet in the connect and the disconnect dialog, for example "It will share billing and translation words with the original site again."; a bold phrase follows.
+msgid "It will "
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:52
+#. Connect dialog, the bold middle of the bullet "It will regain access to the shared translation memory."
+msgid "regain access to the shared translation memory"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:53
+#. Connect dialog, end of the bullet that starts "It will regain access to the shared translation memory".
+msgid ". New translations created on either site become reusable on the other."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:56
+#: src/js/ate-auto-migration/components/DisconnectModal.js:69
+#. Start of the last bullet in the connect and the disconnect dialog: "The original site at <web address> is not affected."; the address follows this text.
+msgid "The original site at "
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:58
+#: src/js/ate-auto-migration/components/DisconnectModal.js:71
+#. End of the bullet "The original site at <web address> is not affected.", in both the connect and the disconnect dialog.
+msgid " is not affected."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:62
+msgid "Do you want to connect this site?"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:72
+msgid "No, keep independent"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:81
+#. Label of the confirm button in the connect dialog while the site is being connected.
+msgid "Connecting…"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectModal.js:82
+#. Label of the button that confirms connecting this site to the site it was copied from; verb, imperative.
+msgid "Yes, connect"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectSuggestionNotice.js:19
+#. Heading of a notice on a subsite of a WordPress network.
+msgid "This subsite has its own translation account"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectSuggestionNotice.js:24
+#. Body of the notice on a subsite of a WordPress network that has its own automatic translation account; "the main site" is the network's main site. A link to the documentation follows.
+msgid ""
+"It does not share translation credits, translation memory or glossary with "
+"the main site. To share them, connect this subsite to the main site's "
+"account."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectSuggestionNotice.js:31
+#. Link to the documentation page that explains how to connect a site to another site's automatic translation account.
+msgid "How to connect a site"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectedNotice.js:12
+#. Title of the notice shown after this site has been disconnected from the site it was copied from.
+msgid "Site disconnected"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectedNotice.js:13
+#: src/js/ate-auto-migration/components/IndependentNotice.js:12
+msgid "Site copy connected"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectedNotice.js:14
+#: src/js/ate-auto-migration/components/IndependentNotice.js:15
+#: src/js/ate-auto-migration/components/MovedNotice.js:38
+msgid "Register this site"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectedNotice.js:15
+#: src/js/ate-auto-migration/components/IndependentNotice.js:14
+msgid "Register this site copy"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectedNotice.js:60
+#: src/js/ate-auto-migration/components/IndependentNotice.js:41
+#: src/js/ate-auto-migration/components/MovedNotice.js:39
+msgid "This site is now running from a new URL."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectedNotice.js:70
+#. Notice shown right after this site was disconnected from the site it was copied from. %s: web address of the original site. Keep the <strong> and <code> tags around the same words.
+msgid ""
+"This site is now <strong>independent</strong>. It no longer shares billing, "
+"translation words, or translation memory with <code>%s</code>. The original "
+"site is unaffected."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectedNotice.js:79
+#. Notice for a site copy that is still connected to the site it was copied from. %s: web address of the original site. Keep the <code> and <strong> tags around the same words.
+msgid ""
+"This site is connected to your original at <code>%s</code>. It shares the "
+"same <strong>billing, translation words, and translation memory</strong> — "
+"nothing changes there."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectedNotice.js:88
+msgid "Disconnect this site"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/ConnectedNotice.js:96
+msgid "Disconnect failed. Please try again later."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/DisconnectModal.js:50
+msgid "Disconnect this site from the original?"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/DisconnectModal.js:53
+#. Disconnect dialog for a copied site. Start of the sentence "If you disconnect, this site will become independent from <web address>. Specifically:"; the address follows.
+msgid "If you disconnect, this site will become independent from "
+msgstr ""
+
+#: src/js/ate-auto-migration/components/DisconnectModal.js:60
+#. Disconnect dialog, the bold middle of the bullet "It will stop sharing billing and translation words with the original site."
+msgid "stop sharing billing and translation words"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/DisconnectModal.js:61
+#. Disconnect dialog, end of the bullet that starts "It will stop sharing billing and translation words".
+msgid ""
+" with the original site. This site will need its own subscription or PAYG "
+"plan to use automatic translation."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/DisconnectModal.js:65
+#. Disconnect dialog, the bold middle of the bullet "It will no longer access the shared translation memory."
+msgid "no longer access the shared translation memory"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/DisconnectModal.js:66
+#. Disconnect dialog, end of the bullet that starts "It will no longer access the shared translation memory".
+msgid ""
+". Existing translations stay on each site, but new translations won’t be "
+"shared."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/DisconnectModal.js:75
+msgid "Do you want to disconnect this site?"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/DisconnectModal.js:85
+msgid "No, keep connected"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/DisconnectModal.js:94
+#. Label of the confirm button in the disconnect dialog while the site is being disconnected.
+msgid "Disconnecting…"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/DisconnectModal.js:95
+#. Label of the button that confirms disconnecting this site from the site it was copied from; verb, imperative.
+msgid "Yes, disconnect"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/DismissButton.js:8
+msgid "Dismiss this notice"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/IndependentNotice.js:13
+msgid "This site is independent"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/IndependentNotice.js:51
+#. Notice shown right after this site was connected to the site it was copied from. %s: web address of the original site. Keep the <strong> and <code> tags around the same words.
+msgid ""
+"This site is now <strong>connected</strong> to <code>%s</code>. It shares "
+"the same billing, translation words, and translation memory as the original "
+"site."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/IndependentNotice.js:60
+#. Notice for a site copy that does not share anything with the site it was copied from. %s: web address of the original site. Keep the <code> tags around it.
+msgid ""
+"This site is independent of <code>%s</code>. It does not share billing, "
+"translation words, or translation memory with the original site."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/IndependentNotice.js:71
+msgid "Connect this site to the original"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/IndependentNotice.js:81
+msgid "Connect failed. Please try again later."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/MovedNotice.js:37
+#. Title of the notice shown after WPML moved this site's translation account to the site's new address.
+msgid "Site address updated"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/MovedNotice.js:47
+#. Notice after a site moved to a new address and kept its own translation account. %s: the address the site moved from. Keep the <code> and <strong> tags around the same words.
+msgid ""
+"This site moved from <code>%s</code>. It keeps its <strong>translations, "
+"billing, translation words and translation memory</strong>."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/SitekeyBlock.js:30
+msgid ""
+"Because this site lives at a new URL, please register a new site key to "
+"keep using WPML features like automatic translation and plugin updates. "
+"Your existing content and translations are safe."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/SitekeyBlock.js:37
+#. Bold label that opens the tip line in the site key block of the copied-site notice; the tip itself follows.
+msgid "Tip:"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/SitekeyBlock.js:38
+#. The tip that follows the bold label "Tip:" in the site key block of the copied-site notice.
+msgid ""
+"production and development sites have separate site key quotas, so getting "
+"a key for this copy won’t reduce what’s available for your production site."
+msgstr ""
+
+#: src/js/ate-auto-migration/components/SubsiteAttachPending.js:35
+#. Line shown on a subsite of a WordPress network while WPML connects it to the automatic translation account of the network's main site. Keep the ellipsis.
+msgid "Connecting this subsite to the main site's account…"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/SubsiteAttachPending.js:38
+#. Button that makes WPML try again at once instead of waiting for the next automatic attempt. Verb, imperative.
+msgid "Retry now"
+msgstr ""
+
+#: src/js/ate-auto-migration/components/SubsiteAttachPending.js:44
+#. Button offered after the connection to the main site's account has failed for four hours: the subsite gets an automatic translation account of its own instead. Verb, imperative.
+msgid "Use a separate account for this subsite"
+msgstr ""
+
+#: src/js/notices-site-key/components/HelpLink.js:26
+msgid "Get a key for this site"
+msgstr ""
+
+#: src/js/notices-site-key/components/SiteKeyForm.js:30
+#. Label of the field where the site key is typed, in the notice that asks you to register the site.
+msgid "Site key:"
+msgstr ""
+
+#: src/js/notices-site-key/components/SiteKeyForm.js:41
+msgid "Enter your site key here"
+msgstr ""
+
+#: src/js/notices-site-key/components/SiteKeyForm.js:50
+#. Button label shown while the site key is being sent.
+msgid "Registering..."
+msgstr ""
+
+#: src/js/notices-site-key/components/SiteKeyForm.js:50
+#. Button label that sends the site key: verb, imperative, not the noun "a register".
+msgid "Register"
+msgstr ""
+
+#: src/js/notices-site-key/hooks/useRegisterSiteKey.js:54
+msgid "Registration failed. Please try again."
+msgstr ""

@@ -5,16 +5,10 @@ use \WPML\TM\Jobs\FieldId;
 class WPML_Translation_Editor_UI {
 	const MAX_ALLOWED_SINGLE_LINE_LENGTH = 50;
 
-	/** @var SitePress $sitepress */
 	private $sitepress;
-	/** @var WPDB $wpdb */
 	private $wpdb;
 
-	/** @var array */
 	private $all_translations;
-	/**
-	 * @var WPML_Translation_Editor
-	 */
 	private $editor_object;
 	private $job;
 	private $original_post;
@@ -23,17 +17,12 @@ class WPML_Translation_Editor_UI {
 	private $rtl_translation;
 	private $rtl_translation_attribute;
 	private $is_duplicate = false;
-	/**
-	 * @var TranslationManagement
-	 */
 	private $tm_instance;
 
-	/** @var WPML_Element_Translation_Job|WPML_External_Translation_Job */
 	private $job_instance;
 
 	private $job_factory;
 	private $job_layout;
-	/** @var array */
 	private $fields;
 
 	function __construct( wpdb $wpdb, SitePress $sitepress, TranslationManagement $iclTranslationManagement, WPML_Element_Translation_Job $job_instance, WPML_TM_Job_Action_Factory $job_factory, WPML_TM_Job_Layout $job_layout ) {
@@ -52,18 +41,8 @@ class WPML_Translation_Editor_UI {
 		add_action( 'admin_print_footer_scripts', [ $this, 'force_uncompressed_tinymce' ], 1 );
 	}
 
-	/**
-     * Force using uncompressed version tinymce which solves:
-     * https://onthegosystems.myjetbrains.com/youtrack/issue/wpmldev-191
-     *
-     * Seams the compressed and uncompressed have some difference, because even WP has a force_uncompressed_tinymce
-     * method, which is triggered whenever a custom theme on TinyMCE is used.
-     *
-	 * @return void
-	 */
     public function force_uncompressed_tinymce() {
         if( ! function_exists( 'wp_scripts' ) || ! function_exists( 'wp_register_tinymce_scripts' ) ) {
-            // WP is below 5.0.
             return;
         }
 
@@ -102,9 +81,6 @@ class WPML_Translation_Editor_UI {
 		<?php
 	}
 
-	/**
-	 * @return array
-	 */
 	private function init_rtl_settings() {
 		$this->rtl_original                  = $this->sitepress->is_rtl( $this->job->source_language_code );
 		$this->rtl_translation               = $this->sitepress->is_rtl( $this->job->language_code );
@@ -115,14 +91,11 @@ class WPML_Translation_Editor_UI {
 	}
 
 	private function init_original_post() {
-		// we do not need the original document of the job here
-		// but the document with the same trid and in the $this->job->source_language_code
 		$this->all_translations = $this->sitepress->get_element_translations( $this->job->trid, $this->job->original_post_type );
 		$this->original_post    = false;
 		foreach ( (array) $this->all_translations as $t ) {
 			if ( $t->language_code === $this->job->source_language_code ) {
 				$this->original_post = $this->tm_instance->get_post( $t->element_id, $this->job->element_type_prefix );
-				// if this fails for some reason use the original doc from which the trid originated
 				break;
 			}
 		}
@@ -158,7 +131,7 @@ class WPML_Translation_Editor_UI {
 		if ( ! empty( $_GET['return_url'] ) ) {
 			$model['return_url'] = filter_var( $_GET['return_url'], FILTER_SANITIZE_URL );
 		} else {
-			$model['return_url'] = 'admin.php?page=' . WPML_TM_FOLDER . '/menu/translations-queue.php';
+			$model['return_url'] = \WPML\TM\Menu\TranslationQueue\TranslationQueuePage::base();
 		}
 
 		$languages          = new WPML_Translation_Editor_Languages( $this->sitepress, $this->job );
@@ -200,11 +173,23 @@ class WPML_Translation_Editor_UI {
 		);
 
 		if ( count( $html_fields ) > 0 ) {
-			$link        = 'https://wpml.org/documentation/translating-your-contents/advanced-translation-editor/?utm_source=plugin&utm_medium=gui&utm_campaign=wpmltm#html-markers';
-			$notice_text = esc_html__( 'We see you\'re translating content that contains HTML. Switch to the Advanced Translation Editor to translate content without the risk of breaking your HTML code.', 'wpml-translation-management' );
-			echo '<div class="notice notice-info">
-					<p>' . $notice_text . ' <a href="' . $link . '" class="wpml-external-link" target="_blank" rel="noopener">' . esc_html__( 'Read more...', 'wpml-translation-management' ) . '</a></p>
-				</div>';
+			$link        = \WPML\OutboundLinks\OutboundLinks::to(
+				'https://wpml.org/documentation/translating-your-contents/advanced-translation-editor/#safe-html-editing',
+				array(
+					'medium'   => 'translation-editor',
+					'campaign' => 'translation-editor',
+				)
+			);
+			$notice_text = __( 'We see you\'re translating content that contains HTML. Switch to the <b>Advanced Translation Editor</b> to translate content without the risk of breaking your HTML code.', 'sitepress' );
+			echo wp_kses_post(
+				sprintf(
+					'<div class="notice notice-info"><p>%1$s <a href="%2$s" class="wpml-external-link" target="_blank" rel="noopener">%3$s</a></p></div>',
+					$notice_text,
+					esc_url( $link ),
+					/* translators: Link at the end of a shortened text that opens the whole of it. Verb phrase, imperative. */
+					esc_html__( 'Read more...', 'sitepress' )
+				)
+			);
 		}
 	}
 
@@ -219,9 +204,16 @@ class WPML_Translation_Editor_UI {
 		}
 
 		if ( $has_gutenberg_block ) {
+			$block_editor_url = \WPML\OutboundLinks\OutboundLinks::to(
+				'https://wpml.org/documentation/translating-your-contents/advanced-translation-editor/',
+				array(
+					'medium'   => 'translation-editor',
+					'campaign' => 'translation-editor',
+				)
+			);
 			echo '<div class="notice notice-info">
-					<p>' . esc_html__( 'This content came from the Block editor and you need to translate it carefully so that formatting is not broken.', 'wpml-translation-management' ) . '</p>
-					<p><a href="https://wpml.org/documentation/getting-started-guide/translating-content-created-using-gutenberg-editor/?utm_source=plugin&utm_medium=gui&utm_campaign=wpmltm" class="wpml-external-link" target="_blank" rel="noopener">' . esc_html__( 'Learn how to translate content that comes from Block editor', 'wpml-translation-management' ) . '</a></p>
+					<p>' . esc_html__( 'This content came from the Block editor and you need to translate it carefully so that formatting is not broken.', 'sitepress' ) . '</p>
+					<p><a href="' . esc_url( $block_editor_url ) . '" class="wpml-external-link" target="_blank" rel="noopener">' . esc_html__( 'Learn how to translate content that comes from Block editor', 'sitepress' ) . '</a></p>
 				</div>';
 		}
 	}
@@ -241,33 +233,33 @@ class WPML_Translation_Editor_UI {
 	private function output_copy_all_dialog() {
 		?>
 		<div id="wpml-translation-editor-copy-all-dialog" class="wpml-dialog" style="display:none"
-			 title="<?php echo esc_attr__( 'Copy all fields from original', 'wpml-translation-management' ); ?>">
+			 title="<?php echo esc_attr__( 'Copy all fields from original', 'sitepress' ); ?>">
 			<p class="wpml-dialog-cols-icon">
 				<i class="otgs-ico-copy wpml-dialog-icon-xl"></i>
 			</p>
 
 			<div class="wpml-dialog-cols-content">
 				<p>
-					<strong><?php echo esc_html__( 'Some fields in translation are already filled!', 'wpml-translation-management' ); ?></strong>
+					<strong><?php echo esc_html__( 'Some fields in translation are already filled!', 'sitepress' ); ?></strong>
 					<br/>
-					<?php echo esc_html__( 'You have two ways to copy content from the original language:', 'wpml-translation-management' ); ?>
+					<?php echo esc_html__( 'You have two ways to copy content from the original language:', 'sitepress' ); ?>
 				</p>
 				<ul>
-					<li><?php echo esc_html__( 'copy to empty fields only', 'wpml-translation-management' ); ?></li>
-					<li><?php echo esc_html__( 'copy and overwrite all fields', 'wpml-translation-management' ); ?></li>
+					<li><?php echo /* translators: Second line under a choice in the translation editor, explaining it: only the fields that are still empty are filled. It starts in lower case because it follows that choice. */ esc_html__( 'copy to empty fields only', 'sitepress' ); ?></li>
+					<li><?php echo /* translators: Second line under a choice in the translation editor, explaining it: every field is filled again, even one that already holds a translation. It starts in lower case because it follows that choice. */ esc_html__( 'copy and overwrite all fields', 'sitepress' ); ?></li>
 				</ul>
 			</div>
 
 			<div class="wpml-dialog-footer">
 				<div class="alignleft">
 					<button
-						class="cancel wpml-dialog-close-button js-copy-cancel"><?php echo esc_html__( 'Cancel', 'wpml-translation-management' ); ?></button>
+						class="cancel wpml-dialog-close-button js-copy-cancel"><?php echo /* translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation". */ esc_html__( 'Cancel', 'sitepress' ); ?></button>
 				</div>
 				<div class="alignright">
 					<button
-						class="button-secondary js-copy-not-translated"><?php echo esc_html__( 'Copy to empty fields only', 'wpml-translation-management' ); ?></button>
+						class="button-secondary js-copy-not-translated"><?php echo esc_html__( 'Copy to empty fields only', 'sitepress' ); ?></button>
 					<button
-						class="button-secondary js-copy-overwrite"><?php echo esc_html__( 'Copy & Overwrite all fields', 'wpml-translation-management' ); ?></button>
+						class="button-secondary js-copy-overwrite"><?php echo esc_html__( 'Copy & Overwrite all fields', 'sitepress' ); ?></button>
 				</div>
 			</div>
 
@@ -278,13 +270,13 @@ class WPML_Translation_Editor_UI {
 	private function output_edit_independently_dialog() {
 		?>
 		<div id="wpml-translation-editor-edit-independently-dialog" class="wpml-dialog" style="display:none"
-			 title="<?php echo esc_attr__( 'Edit independently', 'wpml-translation-management' ); ?>">
+			 title="<?php echo /* translators: Name of the button that stops keeping a document as a copy of the original, used as its tooltip. Verb phrase, imperative. */ esc_attr__( 'Edit independently', 'sitepress' ); ?>">
 			<p class="wpml-dialog-cols-icon">
 				<i class="otgs-ico-unlink wpml-dialog-icon-xl"></i>
 			</p>
 
 			<div class="wpml-dialog-cols-content">
-				<p><?php esc_html_e( 'This document is a duplicate of:', 'wpml-translation-management' ); ?>
+				<p><?php /* translators: Line in the translation editor above the name of the original document; that name follows the colon. */ esc_html_e( 'This document is a duplicate of:', 'sitepress' ); ?>
 					<span class="wpml-duplicated-post-title">
 							<img class="wpml-title-flag" src="<?php echo esc_attr( $this->sitepress->get_flag_url( $this->job->source_language_code ) ); ?>">
 						<?php echo esc_html( $this->job_instance->get_title() ); ?>
@@ -292,16 +284,17 @@ class WPML_Translation_Editor_UI {
 				</p>
 
 				<p>
-					<?php echo esc_html( sprintf( __( 'WPML will no longer synchronize this %s with the original content.', 'wpml-translation-management' ), $this->job_instance->get_type_title() ) ); ?>
+					<?php /* translators: %s: content type. */ ?>
+					<?php echo esc_html( sprintf( __( 'WPML will no longer synchronize this %s with the original content.', 'sitepress' ), $this->job_instance->get_type_title() ) ); ?>
 				</p>
 			</div>
 
 			<div class="wpml-dialog-footer">
 				<div class="alignleft">
-					<button class="cancel wpml-dialog-close-button js-edit-independently-cancel"><?php echo esc_html__( 'Cancel', 'wpml-translation-management' ); ?></button>
+					<button class="cancel wpml-dialog-close-button js-edit-independently-cancel"><?php echo /* translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation". */ esc_html__( 'Cancel', 'sitepress' ); ?></button>
 				</div>
 				<div class="alignright">
-					<button class="button-secondary js-edit-independently"><?php echo esc_html__( 'Edit independently', 'wpml-translation-management' ); ?></button>
+					<button class="button-secondary js-edit-independently"><?php echo /* translators: Name of the button that stops keeping a document as a copy of the original, used as its tooltip. Verb phrase, imperative. */ esc_html__( 'Edit independently', 'sitepress' ); ?></button>
 				</div>
 			</div>
 		</div>

@@ -2,234 +2,194 @@
 
 class WPML_ST_Bulk_Update_Strings_Status {
 
-	/** @var wpdb $wpdb */
 	private $wpdb;
 
-	/** @var array $active_lang_codes */
 	private $active_lang_codes;
 
 	public function __construct( wpdb $wpdb, array $active_lang_codes ) {
-		$this->wpdb              = $wpdb;
-		$this->active_lang_codes = $active_lang_codes;
+		$this->wpdb = $wpdb;
+		$this->active_lang_codes = \WPML\ST\TranslationPauseScope::translatable(
+			array_map( 'strval', $active_lang_codes )
+		);
 	}
 
-	/**
-	 * This bulk process was transposed from PHP code
-	 *
-	 * @see WPML_ST_String::update_status
-	 *
-	 * Important: The order we call each method is important because it reflects
-	 * the order of the conditions in WPML_ST_String::update_status. The updated IDs
-	 * will not be updated anymore in the subsequent calls.
-	 *
-	 * @return array updated IDs
-	 */
 	public function run() {
-		$updated_ids = $this->update_strings_with_no_translation();
-		$updated_ids = $this->update_strings_with_all_translations_not_translated( $updated_ids );
-		$updated_ids = $this->update_strings_with_one_translation_waiting_for_translator( $updated_ids );
-		$updated_ids = $this->update_strings_with_one_translation_needs_update( $updated_ids );
-		$updated_ids = $this->update_strings_with_less_translations_than_langs_and_one_translation_completed( $updated_ids );
-		$updated_ids = $this->update_strings_with_less_translations_than_langs_and_no_translation_completed( $updated_ids );
-		$updated_ids = $this->update_remaining_strings_with_one_not_translated( $updated_ids );
-		$updated_ids = $this->update_remaining_strings( $updated_ids );
-
-		return $updated_ids;
+		return $this->recompute( null, null );
 	}
 
-	/**
-	 * @return array
-	 */
-	private function update_strings_with_no_translation() {
-		$ids = $this->wpdb->get_col(
-			"SELECT DISTINCT s.id FROM {$this->wpdb->prefix}icl_strings AS s
-			 LEFT JOIN {$this->wpdb->prefix}icl_string_translations AS st ON st.string_id = s.id
-			 WHERE st.string_id IS NULL"
-		);
+	private function recompute( $from_id, $to_id ) {
+		$aggregates = $this->get_translation_aggregates_subquery( $from_id, $to_id );
+		$new_status = $this->get_new_status_snippet();
+		$where      = "s.status != ( {$new_status} )" . $this->get_heal_where_snippet( $from_id, $to_id );
 
-		$this->update_strings_status( $ids, ICL_TM_NOT_TRANSLATED );
+		$select_changed = "
+			SELECT s.id
+			FROM {$this->wpdb->prefix}icl_strings AS s
+			LEFT JOIN ( {$aggregates} ) AS agg ON agg.string_id = s.id
+			WHERE {$where}";
 
-		return $ids;
-	}
+		$changed_ids = $this->execute( $select_changed, 'col' );
 
-	/**
-	 * @param array $updated_ids
-	 *
-	 * @return array
-	 */
-	private function update_strings_with_all_translations_not_translated( array $updated_ids ) {
-		/** @var string $sql */
-		$sql = $this->wpdb->prepare( " AND (st.status != %d OR (st.mo_string != '' AND st.mo_string IS NOT NULL))", ICL_TM_NOT_TRANSLATED );
-		$subquery_not_exists = $this->get_translations_snippet() . $sql;
-
-		$ids = $this->wpdb->get_col(
-			"SELECT DISTINCT s.id FROM {$this->wpdb->prefix}icl_strings AS s
-			 WHERE NOT EXISTS(" . $subquery_not_exists . ')'
-				. $this->get_and_not_in_updated_snippet( $updated_ids )
-		);
-
-		$this->update_strings_status( $ids, ICL_TM_NOT_TRANSLATED );
-
-		return array_merge( $updated_ids, $ids );
-	}
-
-	/**
-	 * @param array $updated_ids
-	 *
-	 * @return array
-	 */
-	private function update_strings_with_one_translation_waiting_for_translator( array $updated_ids ) {
-		/** @var string $sql */
-		$sql = $this->wpdb->prepare( ' AND st.status = %d', ICL_TM_WAITING_FOR_TRANSLATOR );
-		$subquery = $this->get_translations_snippet() . $sql;
-
-		return $this->update_string_ids_if_subquery_exists( $subquery, $updated_ids, ICL_TM_WAITING_FOR_TRANSLATOR );
-	}
-
-	/**
-	 * @param array $updated_ids
-	 *
-	 * @return array
-	 */
-	private function update_strings_with_one_translation_needs_update( array $updated_ids ) {
-		/** @var string $sql */
-		$sql = $this->wpdb->prepare( ' AND st.status = %d', ICL_TM_NEEDS_UPDATE );
-		$subquery = $this->get_translations_snippet() . $sql;
-
-		return $this->update_string_ids_if_subquery_exists( $subquery, $updated_ids, ICL_TM_NEEDS_UPDATE );
-	}
-
-	/**
-	 * @param array $updated_ids
-	 *
-	 * @return array
-	 */
-	private function update_strings_with_less_translations_than_langs_and_one_translation_completed( array $updated_ids ) {
-		/** @var string $sql */
-		$sql = $this->wpdb->prepare( " AND (st.status = %d OR (st.mo_string != '' AND st.mo_string IS NOT NULL))", ICL_TM_COMPLETE );
-		$subquery = $this->get_translations_snippet() . $sql . $this->get_and_translations_less_than_secondary_languages_snippet();
-
-		return $this->update_string_ids_if_subquery_exists( $subquery, $updated_ids, ICL_STRING_TRANSLATION_PARTIAL );
-	}
-
-	/**
-	 * @param array $updated_ids
-	 *
-	 * @return array
-	 */
-	private function update_strings_with_less_translations_than_langs_and_no_translation_completed( array $updated_ids ) {
-		/** @var string $sql */
-		$sql = $this->wpdb->prepare( ' AND st.status != %d', ICL_TM_COMPLETE );
-		$subquery = $this->get_translations_snippet() . $sql . $this->get_and_translations_less_than_secondary_languages_snippet();
-
-		return $this->update_string_ids_if_subquery_exists( $subquery, $updated_ids, ICL_TM_NOT_TRANSLATED );
-	}
-
-	/**
-	 * Defaults to ICL_STRING_TRANSLATION_PARTIAL if not caught before
-	 *
-	 * @param array $updated_ids
-	 *
-	 * @return array
-	 */
-	private function update_remaining_strings_with_one_not_translated( array $updated_ids ) {
-		/** @var string $sql */
-		$sql = $this->wpdb->prepare( " AND st.status = %d AND (st.mo_string = '' OR st.mo_string IS NULL)", ICL_TM_NOT_TRANSLATED );
-		$subquery = $this->get_translations_snippet() . $sql;
-
-		return $this->update_string_ids_if_subquery_exists( $subquery, $updated_ids, ICL_STRING_TRANSLATION_PARTIAL );
-	}
-
-	/**
-	 * Defaults to ICL_TM_COMPLETE if not caught before
-	 *
-	 * @param array $updated_ids
-	 *
-	 * @return array
-	 */
-	private function update_remaining_strings( array $updated_ids ) {
-		$subquery = $this->get_translations_snippet();
-
-		return $this->update_string_ids_if_subquery_exists( $subquery, $updated_ids, ICL_TM_COMPLETE );
-	}
-
-	/**
-	 * @param string $subquery
-	 * @param array  $updated_ids
-	 * @param int    $new_status
-	 *
-	 * @return array
-	 */
-	private function update_string_ids_if_subquery_exists( $subquery, array $updated_ids, $new_status ) {
-		$ids = $this->wpdb->get_col(
-			"SELECT DISTINCT s.id FROM {$this->wpdb->prefix}icl_strings AS s
-			 WHERE EXISTS(" . $subquery . ')'
-			. $this->get_and_not_in_updated_snippet( $updated_ids )
-		);
-
-		$this->update_strings_status( $ids, $new_status );
-
-		return array_merge( $updated_ids, $ids );
-	}
-
-	/**
-	 * Subquery for the string translations
-	 *
-	 * @return string
-	 */
-	private function get_translations_snippet() {
-		return "SELECT DISTINCT st.string_id
-				FROM {$this->wpdb->prefix}icl_string_translations AS st
-				WHERE st.string_id = s.id
-					AND st.language != s.language";
-	}
-
-	/**
-	 * Subquery where translations are less than the number of secondary languages:
-	 * - the string translation language must be different than the string language
-	 * - the string translation language must be part of the active languages
-	 *
-	 * @return string
-	 */
-	private function get_and_translations_less_than_secondary_languages_snippet() {
-		$secondary_languages_count = count( $this->active_lang_codes ) - 1;
-
-		return $this->wpdb->prepare(
-			" AND (
-					SELECT COUNT( st2.id )
-					FROM {$this->wpdb->prefix}icl_string_translations AS st2
-					WHERE st2.string_id = s.id
-						AND st2.language != s.language
-						AND st2.language IN(" . wpml_prepare_in( $this->active_lang_codes ) . ')
-			) < %d',
-			$secondary_languages_count
-		);
-	}
-
-	/**
-	 * @param array $updated_ids
-	 *
-	 * @return string
-	 */
-	private function get_and_not_in_updated_snippet( array $updated_ids ) {
-		return ' AND s.id NOT IN(' . wpml_prepare_in( $updated_ids ) . ')';
-	}
-
-	/**
-	 * @param array $ids
-	 * @param int   $status
-	 */
-	private function update_strings_status( array $ids, $status ) {
-		if ( ! $ids ) {
-			return;
+		if ( $changed_ids ) {
+			$this->execute(
+				"
+				UPDATE {$this->wpdb->prefix}icl_strings AS s
+				LEFT JOIN ( {$aggregates} ) AS agg ON agg.string_id = s.id
+				SET s.status = ( {$new_status} )
+				WHERE {$where}",
+				'query'
+			);
 		}
 
-		/** @var string $sql */
-		$sql = $this->wpdb->prepare(
-			"UPDATE {$this->wpdb->prefix}icl_strings SET status = %d WHERE id IN(" . wpml_prepare_in( $ids ) . ')',
-			$status
+		return $changed_ids;
+	}
+
+	private function execute( $sql, $mode ) {
+		if ( 'col' === $mode ) {
+			return $this->wpdb->get_col( $sql );
+		}
+
+		if ( 'var' === $mode ) {
+			return $this->wpdb->get_var( $sql );
+		}
+
+		return $this->wpdb->query( $sql );
+	}
+
+	public function run_for_zeroed_range( $from_id, $to_id ) {
+		$from_id = (int) $from_id;
+		$to_id   = (int) $to_id;
+		$wpdb    = $this->wpdb;
+
+		$count_zeroed = $wpdb->prepare(
+			"SELECT COUNT(*) FROM {$wpdb->prefix}icl_strings WHERE status = %d AND id > %d AND id <= %d",
+			ICL_TM_NOT_TRANSLATED,
+			$from_id,
+			$to_id
+		);
+		$scanned      = (int) $this->execute( $count_zeroed, 'var' );
+
+		if ( ! $scanned ) {
+			return array(
+				'scanned' => 0,
+				'changed' => 0,
+			);
+		}
+
+		$changed = $this->recompute( $from_id, $to_id );
+
+		return array(
+			'scanned' => $scanned,
+			'changed' => count( $changed ),
+		);
+	}
+
+	public function get_max_string_id() {
+		$wpdb = $this->wpdb;
+
+		return (int) $this->execute( "SELECT MAX(id) FROM {$wpdb->prefix}icl_strings", 'var' );
+	}
+
+	public function get_page_end_id( $after_id, $rows ) {
+		$wpdb = $this->wpdb;
+
+		$page_end = $wpdb->prepare(
+			"SELECT MAX(id) AS page_end FROM ( SELECT id FROM {$wpdb->prefix}icl_strings WHERE id > %d ORDER BY id LIMIT %d ) AS page",
+			(int) $after_id,
+			max( 1, (int) $rows )
 		);
 
-		$this->wpdb->query( $sql );
+		return (int) $this->execute( $page_end, 'var' );
+	}
+
+	private function get_heal_where_snippet( $from_id, $to_id ) {
+		if ( null === $from_id || null === $to_id ) {
+			return '';
+		}
+
+		$wpdb = $this->wpdb;
+
+		$sql = $wpdb->prepare(
+			' AND s.id > %d AND s.id <= %d AND s.status = %d AND agg.has_complete_or_mo = 1',
+			(int) $from_id,
+			(int) $to_id,
+			ICL_TM_NOT_TRANSLATED
+		);
+
+		return $sql;
+	}
+
+	private function get_translation_aggregates_subquery( $from_id = null, $to_id = null ) {
+		$wpdb      = $this->wpdb;
+		$in_scope  = $this->in_scope_languages_snippet();
+		$range_sql = '';
+		if ( null !== $from_id && null !== $to_id ) {
+			$range_sql = $wpdb->prepare(
+				' AND st.string_id > %d AND st.string_id <= %d',
+				(int) $from_id,
+				(int) $to_id
+			);
+		}
+
+		$sql = $wpdb->prepare(
+			"SELECT st.string_id,
+				MAX( st.status != %d OR ( st.mo_string IS NOT NULL AND LENGTH( st.mo_string ) > 0 ) ) AS has_translated_or_mo,
+				MAX( st.language IN( {$in_scope} ) AND st.status = %d AND ( st.mo_string IS NULL OR LENGTH( st.mo_string ) = 0 ) ) AS has_waiting,
+				MAX( st.language IN( {$in_scope} ) AND st.status = %d AND ( st.mo_string IS NULL OR LENGTH( st.mo_string ) = 0 ) ) AS has_needs_update,
+				MAX( st.status = %d OR ( st.mo_string IS NOT NULL AND LENGTH( st.mo_string ) > 0 ) ) AS has_complete_or_mo,
+				MAX( st.status != %d AND ( st.mo_string IS NULL OR LENGTH( st.mo_string ) = 0 ) ) AS has_not_complete,
+				MAX( st.language IN( {$in_scope} ) AND st.status = %d AND ( st.mo_string IS NULL OR LENGTH( st.mo_string ) = 0 ) ) AS has_untranslated_row,
+				COUNT( DISTINCT CASE WHEN st.language IN( {$in_scope} ) THEN st.language END ) AS active_translations
+			FROM {$wpdb->prefix}icl_string_translations AS st
+			JOIN {$wpdb->prefix}icl_strings AS s2 ON s2.id = st.string_id
+			WHERE st.language != s2.language{$range_sql}
+			GROUP BY st.string_id",
+			ICL_TM_NOT_TRANSLATED,
+			ICL_TM_WAITING_FOR_TRANSLATOR,
+			ICL_TM_NEEDS_UPDATE,
+			ICL_TM_COMPLETE,
+			ICL_TM_COMPLETE,
+			ICL_TM_NOT_TRANSLATED
+		);
+
+		return $sql;
+	}
+
+	private function get_new_status_snippet() {
+		$wpdb     = $this->wpdb;
+		$expected = $this->get_expected_translations_snippet();
+
+		$sql = $wpdb->prepare(
+			"CASE
+				WHEN agg.string_id IS NULL OR agg.has_translated_or_mo = 0 THEN %d
+				WHEN agg.has_waiting = 1 THEN %d
+				WHEN agg.has_needs_update = 1 THEN %d
+				WHEN agg.active_translations < {$expected} AND agg.has_complete_or_mo = 1 THEN %d
+				WHEN agg.active_translations < {$expected} AND agg.has_not_complete = 1 THEN %d
+				WHEN agg.has_untranslated_row = 1 THEN %d
+				ELSE %d
+			END",
+			ICL_TM_NOT_TRANSLATED,
+			ICL_TM_WAITING_FOR_TRANSLATOR,
+			ICL_TM_NEEDS_UPDATE,
+			ICL_STRING_TRANSLATION_PARTIAL,
+			ICL_TM_NOT_TRANSLATED,
+			ICL_STRING_TRANSLATION_PARTIAL,
+			ICL_TM_COMPLETE
+		);
+
+		return $sql;
+	}
+
+	private function get_expected_translations_snippet() {
+		return sprintf(
+			'( %d - CASE WHEN s.language IN( %s ) THEN 1 ELSE 0 END )',
+			count( $this->active_lang_codes ),
+			$this->in_scope_languages_snippet()
+		);
+	}
+
+	private function in_scope_languages_snippet() {
+		return $this->active_lang_codes ? wpml_prepare_in( $this->active_lang_codes ) : 'NULL';
 	}
 }

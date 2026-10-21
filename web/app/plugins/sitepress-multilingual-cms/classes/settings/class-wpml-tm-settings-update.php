@@ -1,6 +1,7 @@
 <?php
 
 use WPML\FP\Obj;
+use WPML\TM\Settings\TranslationModeTransition;
 
 class WPML_TM_Settings_Update extends WPML_SP_User {
 
@@ -9,32 +10,20 @@ class WPML_TM_Settings_Update extends WPML_SP_User {
 	private $index_sync;
 	private $index_plural;
 	private $index_unlocked;
-	/** @var  TranslationManagement $tm_instance */
 	private $tm_instance;
-	/** @var WPML_Settings_Helper $settings_helper */
 	private $settings_helper;
 
-	/**
-	 * @param string                $index_singular
-	 * @param string                $index_plural
-	 * @param TranslationManagement $tm_instance
-	 * @param SitePress             $sitepress
-	 * @param WPML_Settings_Helper  $settings_helper
-	 */
 	public function __construct( $index_singular, $index_plural, &$tm_instance, &$sitepress, $settings_helper ) {
 		parent::__construct( $sitepress );
 		$this->tm_instance     = &$tm_instance;
 		$this->index_singular  = $index_singular;
 		$this->index_plural    = $index_plural;
 		$this->index_ro        = $index_plural . '_readonly_config';
-		$this->index_sync      = $index_plural . '_sync_option';
+		$this->index_sync      = 'custom-type' === $index_singular ? 'custom_posts_sync_option' : $index_plural . '_sync_option';
 		$this->index_unlocked  = 'custom-type' == $index_singular ? 'custom_posts_unlocked_option' : 'taxonomies_unlocked_option';
 		$this->settings_helper = $settings_helper;
 	}
 
-	/**
-	 * @param array $config
-	 */
 	public function update_from_config( array $config ) {
 		$this->update_tm_settings( Obj::propOr( [], $this->index_plural, $config ) );
 	}
@@ -56,18 +45,24 @@ class WPML_TM_Settings_Update extends WPML_SP_User {
 
 				if ( ! $this->is_unlocked_type( $val, $unlocked_option ) ) {
 
-					$sync_existing_setting                                  = isset( $sync_option[ $val ] ) ? $sync_option[ $val ] : false;
+					$sync_existing_setting                                  = isset( $sync_option[ $val ] ) ? $sync_option[ $val ] : ( 'custom-types' === $section_plural ? WPML_CONTENT_TYPE_DONT_TRANSLATE : false );
 					$sync_new_setting                                       = (int) $c['attr']['translate'];
 					$this->tm_instance->settings[ $this->index_ro ][ $val ] = $sync_new_setting;
 					$sync_option[ $val ]                                    = $sync_new_setting;
 
-					if ( $this->is_making_type_translatable( $sync_new_setting, $sync_existing_setting ) ) {
+					if ( TranslationModeTransition::isBecomingTranslatable( $sync_new_setting, $sync_existing_setting ) ) {
+						$this->tm_instance->save_settings();
 						if ( $section_plural === 'taxonomies' ) {
-							$this->sitepress->verify_taxonomy_translations( $val );
+							$this->settings_helper->set_taxonomy_translatable_mode( $val, $sync_new_setting );
 						} else {
 							$this->sitepress->verify_post_translations( $val );
 						}
+					} elseif (
+						$section_plural === 'taxonomies'
+						&& TranslationModeTransition::isBecomingNotTranslatable( $sync_new_setting, $sync_existing_setting )
+					) {
 						$this->tm_instance->save_settings();
+						$this->settings_helper->set_taxonomy_translatable_mode( $val, $sync_new_setting );
 					}
 				}
 			}
@@ -77,29 +72,12 @@ class WPML_TM_Settings_Update extends WPML_SP_User {
 		}
 	}
 
-	/**
-	 * @param int $new_sync 0, 1 or 2
-	 * @param int $old_sync 0, 1 or 2
-	 *
-	 * @return bool
-	 */
-	private function is_making_type_translatable( $new_sync, $old_sync ) {
-		return in_array(
-			       $new_sync,
-			       [
-				       WPML_CONTENT_TYPE_TRANSLATE,
-				       WPML_CONTENT_TYPE_DISPLAY_AS_IF_TRANSLATED,
-			       ]
-		       ) && WPML_CONTENT_TYPE_DONT_TRANSLATE === $old_sync;
-	}
-
 	private function update_tm_settings( array $config ) {
 		$section_singular            = $this->index_singular;
 		$config                      = array_filter( $config );
 		$config[ $section_singular ] = Obj::propOr( [], $section_singular, $config );
 		$this->sync_settings( $config );
 
-		// taxonomies - check what's been removed
 		if ( ! empty( $this->tm_instance->settings[ $this->index_ro ] ) ) {
 			$config_values = [];
 			foreach ( $config[ $section_singular ] as $config_value ) {

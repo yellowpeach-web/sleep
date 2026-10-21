@@ -1,20 +1,13 @@
 <?php
 
 use WPML\API\Sanitize;
+use WPML\Core\Component\PostHog\Application\Service\Event\EventInstanceService;
 
 class WPML_Post_Edit_Ajax {
 	const AJAX_ACTION_SWITCH_POST_LANGUAGE = 'wpml_switch_post_language';
 
-	/**
-	 * For test purposes
-	 *
-	 * @var WPML_Custom_Field_Setting_Factory
-	 */
 	public static $post_custom_field_settings;
 
-	/**
-	 * Ajax handler for adding a term via Ajax.
-	 */
 	public static function wpml_save_term_action() {
 		global $sitepress;
 
@@ -31,6 +24,12 @@ class WPML_Post_Edit_Ajax {
 		$description = wp_kses_post( $_POST['description'] );
 		$meta_data   = isset( $_POST['meta_data'] ) ? $_POST['meta_data'] : array();
 
+		$undecodable = self::undecodable_meta_keys( $meta_data );
+		if ( $undecodable ) {
+			wp_send_json_error( [ 'message' => self::undecodable_meta_message( $undecodable ) ] );
+			return;
+		}
+
 		remove_filter( 'pre_term_description', 'wp_filter_kses' );
 		remove_filter( 'term_description', 'wp_kses_data' );
 
@@ -38,22 +37,24 @@ class WPML_Post_Edit_Ajax {
 		$sitepress->get_wp_api()->wp_send_json_success( $new_term_object );
 	}
 
-	/**
-	 * @param \SitePress           $sitepress
-	 * @param ?string|false        $lang
-	 * @param ?string|false        $taxonomy
-	 * @param ?string|false        $slug
-	 * @param ?string|false        $name
-	 * @param ?int|false           $trid
-	 * @param ?string              $description
-	 * @param ?array<string,mixed> $meta_data
-	 *
-	 * @return \WP_Term|false
-	 */
+	private static function trid_exists_for_taxonomy( $trid, $taxonomy ) {
+		global $wpdb;
+
+		return (bool) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT 1 FROM {$wpdb->prefix}icl_translations
+				 WHERE trid = %s AND element_type = %s LIMIT 1",
+				(string) $trid,
+				'tax_' . $taxonomy
+			)
+		);
+	}
+
 	public static function save_term_ajax( $sitepress, $lang, $taxonomy, $slug, $name, $trid, $description, $meta_data ) {
 		$new_term_object = false;
 
-		if ( $name !== "" && $taxonomy && $trid && $lang ) {
+		if ( $name !== "" && $taxonomy && $trid && $lang
+			 && self::trid_exists_for_taxonomy( $trid, $taxonomy ) ) {
 
 			$args = array(
 				'taxonomy'  => $taxonomy,
@@ -76,12 +77,7 @@ class WPML_Post_Edit_Ajax {
 			$switch_lang->restore_lang();
 
 			if ( $res && isset( $res[ 'term_taxonomy_id' ] ) ) {
-				/* res holds the term taxonomy id, we return the whole term objects to the ajax call */
 				$switch_lang = new WPML_Temporary_Switch_Language( $sitepress, $lang );
-				/**
-				 * @var \WP_Term|\stdClass $new_term_object A few lines below, we are adding properties that WP_Term does not have.
-				 *                                          We should probably improve this code and use a specialized object instead.
-				 */
 				$new_term_object = get_term_by( 'term_taxonomy_id', (int) $res['term_taxonomy_id'], $taxonomy );
 				$switch_lang->restore_lang();
 
@@ -93,23 +89,89 @@ class WPML_Post_Edit_Ajax {
 				}
 
 				WPML_Terms_Translations::icl_save_term_translation_action( $taxonomy, $res );
+
+				self::ensure_term_translation_status_row( $taxonomy, (int) $res['term_taxonomy_id'] );
+
+				self::capture_taxonomy_term_translation_event( $sitepress, $taxonomy, $lang, $trid, $res, $name, $slug, $description );
+
+				$term_hierarchy_sync = wpml_get_hierarchy_sync_helper( 'term' );
+				if ( is_taxonomy_hierarchical( $taxonomy ) && $term_hierarchy_sync->is_need_sync( $taxonomy, false, $res['term_id'] ) ) {
+					$term_hierarchy_sync->sync_element_hierarchy( $taxonomy, false, $res['term_id'] );
+				}
 			}
 		}
 
 		return $new_term_object;
 	}
 
-	/**
-	 * Gets the content of a post, its excerpt as well as its title and returns it as an array
-	 *
-	 * @param string $content_type
-	 * @param string $excerpt_type
-	 * @param int    $trid
-	 * @param string $lang
-	 *
-	 * @return array containing all the fields information
-	 */
-	public static function copy_from_original_fields( $content_type, $excerpt_type, $trid, $lang ) {
+	private static function ensure_term_translation_status_row( $taxonomy, $tt_id ) {
+		global $wpdb;
+
+		if ( ! $tt_id || ! defined( 'ICL_TM_COMPLETE' ) ) {
+			return;
+		}
+
+		$translation = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT translation_id, source_language_code
+					FROM {$wpdb->prefix}icl_translations
+					WHERE element_type = %s AND element_id = %d",
+				'tax_' . $taxonomy,
+				$tt_id
+			)
+		);
+
+		if ( ! $translation || null === $translation->source_language_code ) {
+			return;
+		}
+
+		$translationId = (int) $translation->translation_id;
+
+		$existing = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT rid FROM {$wpdb->prefix}icl_translation_status WHERE translation_id = %d",
+				$translationId
+			)
+		);
+
+		if ( $existing ) {
+			( new \WPML\TM\Taxonomy\Job\TermJobRowFactory( $wpdb ) )
+				->supersedeWithManualTranslation( $translationId );
+
+			$wpdb->update(
+				$wpdb->prefix . 'icl_translation_status',
+				[
+					'status'              => ICL_TM_COMPLETE,
+					'needs_update'        => 0,
+					'review_status'       => null,
+					'translation_service' => 'local',
+					'translator_id'       => get_current_user_id(),
+				],
+				[ 'translation_id' => $translationId ],
+				[ '%d', '%d', '%s', '%s', '%d' ],
+				[ '%d' ]
+			);
+
+			return;
+		}
+
+		$wpdb->insert(
+			$wpdb->prefix . 'icl_translation_status',
+			[
+				'translation_id'      => $translationId,
+				'status'              => ICL_TM_COMPLETE,
+				'translation_service' => 'local',
+				'translator_id'       => get_current_user_id(),
+				'batch_id'            => 0,
+				'needs_update'        => 0,
+				'md5'                 => '',
+				'translation_package' => '',
+			],
+			[ '%d', '%d', '%s', '%d', '%d', '%d', '%s', '%s' ]
+		);
+	}
+
+	public static function copy_from_original_fields( $content_type, $excerpt_type, $trid, $lang, $target_post_id = 0, $target_lang = null ) {
 		global $wpdb;
 		$post_id = $wpdb->get_var(
 			$wpdb->prepare( "SELECT element_id FROM {$wpdb->prefix}icl_translations WHERE trid=%d AND language_code=%s",
@@ -123,31 +185,24 @@ class WPML_Post_Edit_Ajax {
 
 		$fields_contents = array();
 		if ( ! empty( $post ) ) {
-			foreach ( $fields_to_copy as $editor_key => $editor_field ) { //loops over the three fields to be inserted into the array
-				if ( $editor_key === 'content' || $editor_key === 'excerpt' ) { //
+			foreach ( $fields_to_copy as $editor_key => $editor_field ) {
+				if ( $editor_key === 'content' || $editor_key === 'excerpt' ) {
 					$editor_var = 'rich';
 					if ( $editor_key === 'content' ) {
-						$editor_var = $content_type; //these variables are supplied by a javascript call in scripts.js icl_copy_from_original(lang, trid)
+						$editor_var = $content_type;
 					} elseif ( $editor_key === 'excerpt' ) {
 						$editor_var = $excerpt_type;
 					}
 
-					if ( function_exists( 'format_for_editor' ) ) {
-						// WordPress 4.3 uses format_for_editor
-						$html_pre = $post->$editor_field;
-						if($editor_var == 'rich') {
-							$html_pre = convert_chars( $html_pre );
-							$html_pre = wpautop( $html_pre );
-						}
-						$html_pre = format_for_editor( $html_pre, $editor_var );
-					} else {
-						// Backwards compatible for WordPress < 4.3
-						if ( $editor_var === 'rich' ) {
-							$html_pre = wp_richedit_pre( $post->$editor_field );
-						} else {
-							$html_pre = wp_htmledit_pre( $post->$editor_field );
-						}
+					$html_pre = 'content' === $editor_key
+						? self::content_for_editor( $post, $target_lang )
+						: $post->$editor_field;
+
+					if ( 'rich' === $editor_var ) {
+						$html_pre = convert_chars( $html_pre );
+						$html_pre = wpautop( $html_pre );
 					}
+					$html_pre = format_for_editor( $html_pre, $editor_var );
 
 					$fields_contents[$editor_key] = htmlspecialchars_decode( $html_pre );
 				} elseif ( $editor_key === 'title' ) {
@@ -157,7 +212,20 @@ class WPML_Post_Edit_Ajax {
 			$fields_contents[ 'builtin_custom_fields' ] = apply_filters( 'wpml_copy_from_original_custom_fields',
 			                                                    self::copy_from_original_custom_fields( $post ) );
 
-			$fields_contents['external_custom_fields'] = self::copy_meta_values_from_original( $post );
+			$external_custom_fields                    = self::copy_meta_values_from_original( $post );
+			$fields_contents['external_custom_fields'] = $external_custom_fields;
+
+			$refusal                                = null;
+			$fields_contents['saved_custom_fields'] = self::save_meta_values_on_translation(
+				(int) $target_post_id,
+				$trid,
+				$external_custom_fields,
+				$refusal
+			);
+
+			if ( $refusal ) {
+				$fields_contents['custom_fields_refused'] = $refusal;
+			}
 		} else {
 			$fields_contents[ 'error' ] = __( 'Post not found', 'sitepress' );
 		}
@@ -166,13 +234,24 @@ class WPML_Post_Edit_Ajax {
 		return $fields_contents;
 	}
 
-	/**
-	 * Gets the content of a custom posts custom field , its excerpt as well as its title and returns it as an array
-	 *
-	 * @param \WP_Post $post
-	 *
-	 * @return array<string,string|array<string,string>>
-	 */
+	private static function content_for_editor( $post, $target_lang ) {
+		global $sitepress;
+
+		$switched = $target_lang && $target_lang !== $sitepress->get_current_language();
+
+		if ( $switched ) {
+			$sitepress->switch_lang( $target_lang );
+		}
+
+		try {
+			return (string) apply_filters( 'content_edit_pre', $post->post_content, $post->ID );
+		} finally {
+			if ( $switched ) {
+				$sitepress->switch_lang();
+			}
+		}
+	}
+
 	public static function copy_from_original_custom_fields( $post ) {
 
 		$elements                 = array();
@@ -186,10 +265,6 @@ class WPML_Post_Edit_Ajax {
 		return $elements;
 	}
 
-	/**
-	 * @param WP_Post $post
-	 * @return array
-	 */
 	private static function copy_meta_values_from_original ($post) {
 		global $wpdb;
 
@@ -204,15 +279,105 @@ class WPML_Post_Edit_Ajax {
 			return array();
 		}
 
-		$sql = "SELECT meta_key as name, meta_value as value FROM {$wpdb->postmeta} WHERE post_id=%d AND meta_key IN ("
-		       . wpml_prepare_in( $post_custom_fields ) . ')';
+		$post_custom_fields = array_diff( $post_custom_fields, WPML_Post_Custom_Field_Setting_Keys::get_excluded_keys() );
 
-		return $wpdb->get_results( $wpdb->prepare( $sql, $post->ID ), ARRAY_A );
+		if ( empty( $post_custom_fields ) ) {
+			return array();
+		}
+
+		return $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT meta_key as name, meta_value as value FROM {$wpdb->postmeta} WHERE post_id=%d AND meta_key IN (" . implode( ', ', array_fill( 0, count( $post_custom_fields ), '%s' ) ) . ')',
+				array_merge( array( $post->ID ), $post_custom_fields )
+			),
+			ARRAY_A
+		);
 	}
 
-	/**
-	 * Ajax handler for switching the language of a post.
-	 */
+	private static function save_meta_values_on_translation( $target_post_id, $trid, $fields, &$refusal = null ) {
+		global $wpdb;
+
+		if ( ! $target_post_id || ! $fields ) {
+			return array();
+		}
+
+		$target_post_type   = get_post_type( $target_post_id );
+		$target_type_object = $target_post_type ? get_post_type_object( $target_post_type ) : null;
+
+		if ( $target_type_object && ! current_user_can( 'edit_post', $target_post_id ) ) {
+			$refusal = 'not-allowed-to-edit-target';
+
+			return array();
+		}
+
+		$existing_trid = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT trid FROM {$wpdb->prefix}icl_translations WHERE element_id=%d AND element_type=%s",
+				$target_post_id,
+				'post_' . $target_post_type
+			)
+		);
+
+		if ( $existing_trid && (int) $existing_trid !== (int) $trid ) {
+			$refusal = 'target-belongs-to-another-translation-group';
+
+			return array();
+		}
+
+		$already_on_translation = array();
+		foreach ( (array) get_post_meta( $target_post_id ) as $existing_key => $ignored ) {
+			$already_on_translation[ $existing_key ] = true;
+		}
+
+		$saved = array();
+
+		foreach ( $fields as $field ) {
+			if ( ! isset( $field['name'] ) || isset( $already_on_translation[ $field['name'] ] ) ) {
+				continue;
+			}
+
+			$meta_id = add_post_meta(
+				$target_post_id,
+				$field['name'],
+				wp_slash( maybe_unserialize( $field['value'] ) )
+			);
+
+			if ( $meta_id ) {
+				$saved[] = array(
+					'name'    => $field['name'],
+					'value'   => $field['value'],
+					'meta_id' => (int) $meta_id,
+					'row'     => self::render_custom_field_row( $field['name'], $field['value'], (int) $meta_id ),
+				);
+			}
+		}
+
+		return $saved;
+	}
+
+	private static function render_custom_field_row( $name, $value, $meta_id ) {
+		if ( ! function_exists( '_list_meta_row' )
+			 && defined( 'ABSPATH' )
+			 && file_exists( ABSPATH . 'wp-admin/includes/template.php' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/template.php';
+		}
+
+		if ( ! function_exists( '_list_meta_row' ) ) {
+			return '';
+		}
+
+		$count = 0;
+
+		return _list_meta_row(
+			array(
+				'meta_id'    => $meta_id,
+				'meta_key'   => $name,
+				'meta_value' => $value,
+			),
+			$count
+		);
+	}
+
 	public static function wpml_switch_post_language() {
 		global $sitepress, $wpdb;
 
@@ -235,27 +400,31 @@ class WPML_Post_Edit_Ajax {
 
 		if ( $post_id && $to ) {
 
+			if ( ! current_user_can( 'edit_post', (int) $post_id ) ) {
+				wp_send_json_error( __( 'You are not allowed to edit this post.', 'sitepress' ), 403 );
+			}
+
 			$post_type      = get_post_type( $post_id );
 			$wpml_post_type = 'post_' . $post_type;
 			$trid           = $sitepress->get_element_trid( $post_id, $wpml_post_type );
 
-			/* Check if a translation in that language already exists with a different post id.
-			 * If so, then don't perform this action.
-			 */
 
-			$query_for_existing_translation = $wpdb->prepare( "	SELECT translation_id, element_id
+			$existing_translation = $wpdb->get_row(
+				$wpdb->prepare( "	SELECT translation_id, element_id
 																FROM {$wpdb->prefix}icl_translations
 																WHERE element_type = %s
 																	AND trid = %d
 																	AND language_code = %s",
-			                                                  $wpml_post_type, $trid, $to );
-			$existing_translation           = $wpdb->get_row( $query_for_existing_translation );
+					$wpml_post_type,
+					$trid,
+					$to
+				)
+			);
 
 			if ( $existing_translation && $existing_translation->element_id != $post_id ) {
 				$result = false;
 			} else {
 				$sitepress->set_element_language_details( $post_id, $wpml_post_type, $trid, $to );
-				// Synchronize the posts terms languages. Do not create automatic translations though.
 				WPML_Terms_Translations::sync_post_terms_language( $post_id );
 				require_once WPML_PLUGIN_PATH . '/inc/cache.php';
 				icl_cache_clear( $post_type . 's_per_language', true );
@@ -263,7 +432,7 @@ class WPML_Post_Edit_Ajax {
 				$result = $to;
 			}
 
-			\WPML\LIB\WP\Cache::clearMemoizedFunction( 'get_source_language_by_trid', (int) $trid );
+			SitePress::clear_source_language_by_trid_cache( (int) $trid );
 		}
 
 		wp_send_json_success( $result );
@@ -274,25 +443,22 @@ class WPML_Post_Edit_Ajax {
 		$nonce = isset( $_POST['_icl_nonce'] ) ? sanitize_text_field( $_POST['_icl_nonce'] ) : '';
 
 		if ( ! wp_verify_nonce( $nonce, 'wpml_get_default_lang' ) ) {
+			/* translators: Error message returned when a request from the browser cannot be trusted and is turned away. */
 			wp_send_json_error( esc_html__( 'Invalid request!', 'sitepress' ), 400 );
 		}
 
 		wp_send_json_success( $sitepress->get_default_language() );
 	}
 
-	/**
-	 * @param array $term
-	 * @param array $meta_data
-	 * @param bool  $is_new_term
-	 *
-	 * @return bool
-	 */
 	private static function add_term_metadata( $term, $meta_data, $is_new_term ) {
 		global $sitepress;
 
 		foreach ( $meta_data as $meta_key => $meta_value ) {
+			list( $decoded, $data ) = self::decode_meta_value( $meta_value );
+			if ( ! $decoded ) {
+				continue;
+			}
 			delete_term_meta( $term['term_id'], $meta_key );
-			$data = self::safe_maybe_unserialize( stripslashes( $meta_value ) );
 			if ( ! add_term_meta( $term['term_id'], $meta_key, $data ) ) {
 				throw new RuntimeException( sprintf( 'Unable to add term meta form term: %d', $term['term_id'] ) );
 			}
@@ -304,18 +470,80 @@ class WPML_Post_Edit_Ajax {
 		return true;
 	}
 
-	/**
-	 * Safe unserialization for term metadata should not allow to unserialize classes.
-	 *
-	 * @param string $data
-	 * @return mixed
-	 */
-	private static function safe_maybe_unserialize( $data ) {
-		if ( is_serialized( $data ) ) { // Don't attempt to unserialize data that wasn't serialized going in.
-			return @unserialize( trim( $data ), [ 'allowed_classes' => false ] );
+	private static function decode_meta_value( $meta_value ) {
+		if ( ! is_string( $meta_value ) ) {
+			return [ true, $meta_value ];
 		}
 
-		return $data;
+		$data = stripslashes( $meta_value );
+		if ( ! is_serialized( $data ) ) {
+			return [ true, $data ];
+		}
+
+		$data  = trim( $data );
+		$value = @unserialize( $data, [ 'allowed_classes' => false ] );
+		if ( false === $value && 'b:0;' !== $data ) {
+			return [ false, null ];
+		}
+
+		return [ true, $value ];
+	}
+
+	private static function undecodable_meta_keys( $meta_data ) {
+		$keys = [];
+		if ( ! is_array( $meta_data ) ) {
+			return $keys;
+		}
+
+		foreach ( $meta_data as $meta_key => $meta_value ) {
+			list( $decoded ) = self::decode_meta_value( $meta_value );
+			if ( ! $decoded ) {
+				$keys[] = (string) $meta_key;
+			}
+		}
+
+		return $keys;
+	}
+
+	private static function undecodable_meta_message( array $meta_keys ) {
+		return sprintf(
+			/* translators: %s: the name(s) of the term field(s) whose edited value could not be read. */
+			__( 'The field %s holds a structured value, and the edited text could not be read back. Nothing was saved and the translation keeps its previous value. Edit this field from the term\'s own edit screen instead.', 'sitepress' ),
+			implode( ', ', array_map( function ( $key ) { return '"' . $key . '"'; }, $meta_keys ) )
+		);
+	}
+
+	private static function capture_taxonomy_term_translation_event( $sitepress, $taxonomy, $lang, $trid, $res, $name, $slug, $description ) {
+
+		if ( ! \WPML\PostHog\State\PostHogState::isEnabled() ) {
+			return;
+		}
+
+		$source_language = $sitepress->get_source_language_by_trid( $trid );
+
+		$original_term_tax_id = (int) $sitepress->get_original_element_id_by_trid( $trid );
+		$original_term = $original_term_tax_id ?
+			get_term_by( 'term_taxonomy_id', $original_term_tax_id, $taxonomy, OBJECT, 'no' ) :
+			false;
+
+		$event_props = array(
+			'taxonomy'             => $taxonomy,
+			'target_language'      => $lang,
+			'source_language'      => $source_language,
+			'term_id'              => $res['term_id'],
+			'term_taxonomy_id'     => $res['term_taxonomy_id'],
+			'is_hierarchical'      => is_taxonomy_hierarchical( $taxonomy ),
+			'original_term_name'   => $original_term ? $original_term->name : '',
+			'original_term_slug'   => $original_term ? $original_term->slug : '',
+			'original_term_desc'   => $original_term ? $original_term->description : '',
+			'translated_term_name' => $name,
+			'translated_term_slug' => $slug,
+			'translated_term_desc' => $description,
+		);
+
+		\WPML\PostHog\Event\CaptureEvent::capture(
+			( new EventInstanceService() )->getTaxonomyTermTranslationSavedEvent( $event_props )
+		);
 	}
 
 }

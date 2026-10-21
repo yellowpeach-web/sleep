@@ -8,6 +8,7 @@ var otgs_wp_installer_dismiss_nag = {
 		var element = jQuery(this);
 		var data = {
 			action: 'installer_dismiss_nag',
+			nonce: element.data('nonce'),
 			repository: element.data('repository'),
 			noticeType: element.data('noticeType'),
 			noticePluginSlug: element.data('noticePluginSlug') !== 'undefined' ? element.data('noticePluginSlug') : null,

@@ -10,25 +10,16 @@ use WPML\LIB\WP\Hooks;
 
 class TermHooks implements \IWPML_Backend_Action {
 
-	/**
-	 * @var Strategy
-	 */
 	private $shuffled;
 
 	public function __construct( Strategy $shuffled ) {
 		$this->shuffled = $shuffled;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getId() {
-		return (int) Sanitize::stringProp( 'tag_ID', $_GET ); // phpcs:ignore
+		return (int) Sanitize::stringProp( 'tag_ID', $_GET );
 	}
 
-	/**
-	 * @return void
-	 */
 	public function add_hooks() {
 		$id = $this->getId();
 		if ( ! $id ) {

@@ -7,7 +7,7 @@ add_action( 'template_redirect', 'icl_language_canonical_redirects', 1 );
 
 function icl_language_canonical_redirects() {
 	global $wp_query, $sitepress_settings;
-	if ( 3 == $sitepress_settings['language_negotiation_type'] && is_singular() && empty( $wp_query->posts ) ) {
+	if ( WPML_LANGUAGE_NEGOTIATION_TYPE_PARAMETER === WPML_URL_Format::of( $sitepress_settings ) && is_singular() && empty( $wp_query->posts ) ) {
 		$pid       = get_query_var( 'p' );
 		$permalink = $pid ? get_permalink( $pid ) : false;
 		$permalink = $permalink ? html_entity_decode( $permalink ) : false;

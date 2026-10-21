@@ -1,0 +1,183 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);",
+            "lang": "ar"
+         },
+         "WPML detected that the alias domain feature was incorrectly configured and has been automatically reset. The alias domain feature is designed only for cases where two domains point to the same WordPress installation. See the details below for the current state of your site.": [
+            "اكتشف WPML أن ميزة النطاق البديل تم تكوينها بشكل غير صحيح وتمت إعادة تعيينها تلقائيًا. ميزة النطاق البديل مصممة فقط للحالات التي يشير فيها نطاقان إلى نفس تثبيت WordPress. راجع التفاصيل أدناه لمعرفة الحالة الحالية لموقعك."
+         ],
+         "Connect this site to the original?": [
+            "هل تريد ربط هذا الموقع بالموقع الأصلي؟"
+         ],
+         "If you connect, this site will re-attach to ": [
+            "إذا قمت بالربط، فسيتم إلحاق هذا الموقع مجددًا بـ "
+         ],
+         ". Specifically:": [
+            ". وتحديدًا:"
+         ],
+         "share billing and translation words": [
+            "مشاركة الفواتير وكلمات الترجمة"
+         ],
+         " with the original site again. This site won’t need its own subscription or PAYG plan.": [
+            " مع الموقع الأصلي مرة أخرى. لن يحتاج هذا الموقع إلى اشتراك خاص به أو خطة الدفع حسب الاستخدام."
+         ],
+         "It will ": [
+            "سوف "
+         ],
+         "regain access to the shared translation memory": [
+            "يستعيد الوصول إلى ذاكرة الترجمة المشتركة"
+         ],
+         ". New translations created on either site become reusable on the other.": [
+            ". تصبح الترجمات الجديدة التي يتم إنشاؤها على أي من الموقعين قابلة لإعادة الاستخدام في الموقع الآخر."
+         ],
+         "The original site at ": [
+            "الموقع الأصلي في "
+         ],
+         " is not affected.": [
+            " لا يتأثر."
+         ],
+         "Do you want to connect this site?": [
+            "هل تريد ربط هذا الموقع؟"
+         ],
+         "No, keep independent": [
+            "لا، ابقهِ مستقلًا"
+         ],
+         "Connecting…": [
+            "جاري الربط…"
+         ],
+         "Yes, connect": [
+            "نعم، اربط"
+         ],
+         "This subsite has its own translation account": [
+            "يحتوي هذا الموقع الفرعي على حساب ترجمة خاص به"
+         ],
+         "It does not share translation credits, translation memory or glossary with the main site. To share them, connect this subsite to the main site's account.": [
+            "لا يشارك الموقع أرصدة الترجمة أو ذاكرة الترجمة أو المسرد مع الموقع الرئيسي. ولمشاركتها، اربط هذا الموقع الفرعي بحساب الموقع الرئيسي."
+         ],
+         "How to connect a site": [
+            "كيفية ربط موقع"
+         ],
+         "Site disconnected": [
+            "الموقع مفصول"
+         ],
+         "Site copy connected": [
+            "تم ربط نسخة الموقع"
+         ],
+         "Register this site": [
+            "تسجيل هذا الموقع"
+         ],
+         "Register this site copy": [
+            "تسجيل نسخة الموقع هذه"
+         ],
+         "This site is now running from a new URL.": [
+            "يعمل هذا الموقع الآن من عنوان URL جديد."
+         ],
+         "This site is now <strong>independent</strong>. It no longer shares billing, translation words, or translation memory with <code>%s</code>. The original site is unaffected.": [
+            "أصبح هذا الموقع الآن <strong>مستقلاً</strong>. ولم يعد يشارك الفواتير أو كلمات الترجمة أو ذاكرة الترجمة مع <code>%s</code>. ولم يتأثر الموقع الأصلي بذلك."
+         ],
+         "This site is connected to your original at <code>%s</code>. It shares the same <strong>billing, translation words, and translation memory</strong> — nothing changes there.": [
+            "هذا الموقع متصل بموقعك الأصلي في <code>%s</code>. وهو يشارك نفس <strong>الفواتير، وكلمات الترجمة، وذاكرة الترجمة</strong> — ولا يتغير شيء هناك."
+         ],
+         "Disconnect this site": [
+            "افصل هذا الموقع"
+         ],
+         "Disconnect failed. Please try again later.": [
+            "فشل الفصل. يرجى المحاولة مرة أخرى لاحقًا."
+         ],
+         "Disconnect this site from the original?": [
+            "هل تريد فصل هذا الموقع عن الموقع الأصلي؟"
+         ],
+         "If you disconnect, this site will become independent from ": [
+            "إذا قمت بالفصل، فسيصبح هذا الموقع مستقلًا عن "
+         ],
+         "stop sharing billing and translation words": [
+            "التوقف عن مشاركة الفواتير وكلمات الترجمة"
+         ],
+         " with the original site. This site will need its own subscription or PAYG plan to use automatic translation.": [
+            " مع الموقع الأصلي. سيحتاج هذا الموقع إلى اشتراك خاص به أو خطة الدفع حسب الاستخدام لاستخدام الترجمة التلقائية."
+         ],
+         "no longer access the shared translation memory": [
+            "عدم الوصول إلى ذاكرة الترجمة المشتركة بعد الآن"
+         ],
+         ". Existing translations stay on each site, but new translations won’t be shared.": [
+            ". تبقى الترجمات الحالية في كل موقع، ولكن لن يتم مشاركة الترجمات الجديدة."
+         ],
+         "Do you want to disconnect this site?": [
+            "هل تريد فصل هذا الموقع؟"
+         ],
+         "No, keep connected": [
+            "لا، ابقهِ متصلًا"
+         ],
+         "Disconnecting…": [
+            "جاري الفصل…"
+         ],
+         "Yes, disconnect": [
+            "نعم، افصل"
+         ],
+         "Dismiss this notice": [
+            "تجاهل هذا الإشعار"
+         ],
+         "This site is independent": [
+            "هذا الموقع مستقل"
+         ],
+         "This site is now <strong>connected</strong> to <code>%s</code>. It shares the same billing, translation words, and translation memory as the original site.": [
+            "أصبح هذا الموقع الآن <strong>متصلاً</strong> بـ <code>%s</code>. وهو يشارك نفس الفواتير وكلمات الترجمة وذاكرة الترجمة الخاصة بالموقع الأصلي."
+         ],
+         "This site is independent of <code>%s</code>. It does not share billing, translation words, or translation memory with the original site.": [
+            "هذا الموقع مستقل عن <code>%s</code>. ولا يشارك الفواتير أو كلمات الترجمة أو ذاكرة الترجمة مع الموقع الأصلي."
+         ],
+         "Connect this site to the original": [
+            "ربط هذا الموقع بالموقع الأصلي"
+         ],
+         "Connect failed. Please try again later.": [
+            "فشل الربط. يرجى المحاولة مرة أخرى لاحقًا."
+         ],
+         "Site address updated": [
+            "تم تحديث عنوان الموقع"
+         ],
+         "This site moved from <code>%s</code>. It keeps its <strong>translations, billing, translation words and translation memory</strong>.": [
+            "تم نقل هذا الموقع من <code>%s</code>. ويحتفظ بـ <strong>الترجمات، والفواتير، وكلمات الترجمة، وذاكرة الترجمة</strong> الخاصة به."
+         ],
+         "Because this site lives at a new URL, please register a new site key to keep using WPML features like automatic translation and plugin updates. Your existing content and translations are safe.": [
+            "نظرًا لأن هذا الموقع موجود على عنوان URL جديد، يرجى تسجيل مفتاح موقع جديد لمواصلة استخدام ميزات WPML مثل الترجمة التلقائية وتحديثات الإضافات. محتواك وترجماتك الحالية في أمان."
+         ],
+         "Tip:": [
+            "نصيحة:"
+         ],
+         "production and development sites have separate site key quotas, so getting a key for this copy won’t reduce what’s available for your production site.": [
+            "مواقع الإنتاج والتطوير لها حصص منفصلة لمفاتيح الموقع، لذا فإن الحصول على مفتاح لهذه النسخة لن يقلل مما هو متاح لموقع الإنتاج الخاص بك."
+         ],
+         "Connecting this subsite to the main site's account…": [
+            "جارٍ ربط هذا الموقع الفرعي بحساب الموقع الرئيسي…"
+         ],
+         "Retry now": [
+            "أعد المحاولة الآن"
+         ],
+         "Use a separate account for this subsite": [
+            "استخدم حسابًا منفصلاً لهذا الموقع الفرعي"
+         ],
+         "Get a key for this site": [
+            "احصل على مفتاح لهذا الموقع"
+         ],
+         "Site key:": [
+            "مفتاح الموقع:"
+         ],
+         "Enter your site key here": [
+            "أدخل مفتاح موقعك هنا"
+         ],
+         "Registering...": [
+            "جاري التسجيل..."
+         ],
+         "Register": [
+            "تسجيل"
+         ],
+         "Registration failed. Please try again.": [
+            "فشل التسجيل. يرجى المحاولة مرة أخرى."
+         ]
+      }
+   }
+}

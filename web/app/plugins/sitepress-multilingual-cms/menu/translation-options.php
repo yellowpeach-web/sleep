@@ -1,4 +1,5 @@
 <div class="wrap">
+	<?php /* translators: Title of the settings screen, and the item in the WPML menu that opens it. */ ?>
 	<h2><?php echo __( 'Settings', 'sitepress' ); ?></h2>
 	<br />
 

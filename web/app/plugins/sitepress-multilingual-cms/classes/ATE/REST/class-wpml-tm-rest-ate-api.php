@@ -1,7 +1,4 @@
 <?php
-/**
- * @author OnTheGo Systems
- */
 
 class WPML_TM_REST_ATE_API extends WPML_TM_ATE_Required_Rest_Base {
 	const CAPABILITY_CREATE = 'manage_translations';
@@ -9,11 +6,6 @@ class WPML_TM_REST_ATE_API extends WPML_TM_ATE_Required_Rest_Base {
 
 	private $api;
 
-	/**
-	 * WPML_TM_REST_AMS_Clients constructor.
-	 *
-	 * @param WPML_TM_ATE_API $api
-	 */
 	public function __construct( WPML_TM_ATE_API $api ) {
 		parent::__construct();
 		$this->api = $api;
@@ -41,26 +33,26 @@ class WPML_TM_REST_ATE_API extends WPML_TM_ATE_Required_Rest_Base {
 		);
 	}
 
-	/**
-	 * @param WP_REST_Request $request
-	 *
-	 * @return array|WP_Error
-	 * @throws \InvalidArgumentException
-	 */
 	public function create_jobs( WP_REST_Request $request ) {
 		return $this->api->create_jobs( $request->get_params() );
 	}
 
-	/**
-	 * @param WP_REST_Request $request
-	 *
-	 * @return array|WP_Error
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_job( WP_REST_Request $request ) {
 		$ate_job_id = $request->get_param( 'ateJobId' );
 
-		return $this->api->get_job( $ate_job_id );
+		$job = \WPML\TM\Jobs\Authorization\AuthorizedJobResolver::make()->byAteId(
+			\WPML\Core\Security\ExecutionContext\ExecutionContextHolder::current(),
+			$ate_job_id
+		);
+		if ( ! $job ) {
+			return new WP_Error(
+				'wpml_job_forbidden',
+				__( 'You are not allowed to access this translation job.', 'sitepress' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		return $this->api->get_job( $job->ateId() );
 	}
 
 	function get_allowed_capabilities( WP_REST_Request $request ) {

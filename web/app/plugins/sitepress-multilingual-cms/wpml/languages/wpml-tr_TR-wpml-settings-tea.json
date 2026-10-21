@@ -1,0 +1,399 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n > 1);",
+            "lang": "tr_TR"
+         },
+         "Error in updating since dates for types.": [
+            "Türler için tarihler güncellenirken hata oluştu."
+         ],
+         "Error in fetching untranslated types count": [
+            "Çevrilmemiş tür sayısı alınırken hata oluştu"
+         ],
+         "Error in updating since date for type.": [
+            "Tür için tarih güncellenirken hata oluştu."
+         ],
+         "Content to translate": [
+            "Çevrilecek içerik"
+         ],
+         "Content to Translate": [
+            "Çevrilecek içerik"
+         ],
+         "Content type": [
+            "İçerik türü"
+         ],
+         "Include": [
+            "Dahil et"
+         ],
+         "These settings can be changed on the Translations dashboard.": [
+            "Bu ayarlar Çeviri Paneli üzerinden değiştirilebilir."
+         ],
+         "Items": [
+            "Öğeler"
+         ],
+         "Word count": [
+            "Kelime sayısı"
+         ],
+         "Loading content to translate": [
+            "Çevrilecek içerik yükleniyor"
+         ],
+         "Words to translate": [
+            "Çevrilecek kelimeler"
+         ],
+         "Calculating… <s>less than 1 minute left.</s>": [
+            "Hesaplanıyor… <s>1 dakikadan az kaldı.</s>"
+         ],
+         "Calculating… <s>%d minute left.</s>": [
+            "Hesaplanıyor… <s>%d dakika kaldı.</s>",
+            "Hesaplanıyor… <s>%d dakika kaldı.</s>"
+         ],
+         "Words needed to translate your existing content into the new languages: %s.": [
+            "Mevcut içeriğinizi yeni dillere çevirmek için gereken kelime sayısı: %s."
+         ],
+         "Words needed to translate your existing content into the new language.": [
+            "Mevcut içeriğinizi yeni dile çevirmek için gereken kelime sayısı."
+         ],
+         "Based on the remaining untranslated content across all languages.": [
+            "Tüm dillerdeki kalan çevrilmemiş içeriğe göre."
+         ],
+         "Estimated from the selected source volume multiplied by the target languages.": [
+            "Seçilen kaynak hacminin hedef dillerle çarpılmasıyla tahmin edilmiştir."
+         ],
+         "%1$s source words × %2$s language": [
+            "%1$s kaynak kelime × %2$s dil",
+            "%1$s kaynak kelime × %2$s dil"
+         ],
+         "Already translated content": [
+            "Zaten çevrilmiş içerik"
+         ],
+         "Words required:": [
+            "Gereken kelime:"
+         ],
+         "Words": [
+            "Kelime"
+         ],
+         "Documents you translated yourself stay exactly as you made them": [
+            "Kendi çevirdiğiniz belgeler tam olarak hazırladığınız gibi kalır"
+         ],
+         "(%d document)": [
+            "(%d belge)",
+            "(%d belge)"
+         ],
+         "View documents": [
+            "Belgeleri görüntüle"
+         ],
+         "%1$d of %2$d language will be translated automatically": [
+            "%2$d dilden %1$d tanesi otomatik olarak çevrilecek",
+            "%2$d dilden %1$d tanesi otomatik olarak çevrilecek"
+         ],
+         "Translated to %d language": [
+            "%d dile çevrildi",
+            "%d dile çevrildi"
+         ],
+         "Add/remove languages": [
+            "Dil ekle/kaldır"
+         ],
+         "Percentages show how much of your selected content is already translated in each language.": [
+            "Yüzdeler, seçtiğiniz içeriğin her dilde ne kadarının zaten çevrildiğini gösterir."
+         ],
+         "Note: Content already translated into all languages is not included in this calculation.": [
+            "Not: Tüm dillere zaten çevrilmiş olan içerikler bu hesaplamaya dahil edilmez."
+         ],
+         "Same as default": [
+            "Varsayılan ile aynı"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "%1$s ve %2$s aynı dil olarak algılandığından aralarında otomatik çeviri yapılamaz."
+         ],
+         "Translation paused": [
+            "Çeviri duraklatıldı"
+         ],
+         "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor.": [
+            "WPML yeni %s çevirileri oluşturmuyor; bu nedenle bu dil dahil edilmedi. Dahil etmek için Diller düzenleyicisindeki ilgili dil satırında “Çevirmeye devam et” seçeneğini kullanın."
+         ],
+         "Manual only": [
+            "Sadece manuel"
+         ],
+         "%s has no automatic-translation support. You can translate this content manually.": [
+            "%s otomatik çeviri desteğine sahip değil. Bu içeriği manuel olarak çevirebilirsiniz."
+         ],
+         "Adjusted word rate (%s)": [
+            "Ayarlanmış kelime oranı (%s)"
+         ],
+         "This adjusted word rate applies to legacy translation engines.": [
+            "Bu ayarlanmış kelime oranı eski çeviri motorları için geçerlidir."
+         ],
+         "Translation engine: <strong>%s</strong>": [
+            "Çeviri motoru: <strong>%s</strong>"
+         ],
+         "Legacy engine": [
+            "Eski motor"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Eski fiyatlandırma uygulandı. %s eski bir çeviri motorudur, yeni siteler için önerilmez ve kullanımdan kaldırılacaktır. Mevcut siteler bunun için ayarlanmış bir kelime oranını korur."
+         ],
+         "Switch to PTC": [
+            "PTC'ye Geç"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
+            "Mevcut içeriğinizi çevirmek için bugün gereken miktar budur. Kurulum tamamlandıktan sonra sayılan formlar veya kaydırıcılar gibi diğer eklentiler tarafından eklenen bazı metinleri içermez. Temanızdan ve eklentilerinizden gelen site dizgileri de kurulumdan sonra sayılır ve genellikle birkaç yüz kelime ekler. Bundan sonra düzenlemeler ücretsizdir. Yalnızca eklediğiniz kelimeler için tekrar ödeme yaparsınız."
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Mevcut içeriğinizi bugün çevirmek için gereken miktar budur. Kurulum tamamlandıktan sonra sayılan formlar veya kaydırıcılar gibi diğer eklentiler tarafından eklenen bazı metinleri içermez. Temanızdan ve eklentilerinizden gelen site dizeleri de kurulumdan sonra sayılır ve genellikle birkaç yüz kelime ekler. %s servisinin kelime başına ücretiyle; çevrilmiş sayfalarda yapılan değişiklikler tekrar ücretlendirilir."
+         ],
+         "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
+            "Mevcut içeriğinizi çevirmek için bugün gereken miktar budur. Bundan sonra düzenlemeler ücretsizdir. Yalnızca eklediğiniz kelimeler için tekrar ödeme yaparsınız."
+         ],
+         "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Mevcut içeriğinizi bugün çevirmek için gereken miktar budur. %s servisinin kelime başına ücretiyle; çevrilmiş sayfalarda yapılan değişiklikler tekrar ücretlendirilir."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
+            "Sayfaları, yazıları ve ürünleri özel alanları, sayfa tasarımcısı metinleri ve ortam metinleriyle birlikte; ayrıca kullandıkları kategorileri, etiketleri ve nitelikleri sayar."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
+            "Sayfaları, yazıları ve ürünleri özel alanları, sayfa tasarımcısı metinleri ve ortam metinleriyle birlikte; kullandıkları kategorileri, etiketleri, nitelikleri ve site dizgilerini sayar. Bir terim hem kullanıldığı her öğede hem de çeviriye iki şekilde gönderildiği için kendi başına bir kez sayılır."
+         ],
+         "Total items": [
+            "Toplam öğe"
+         ],
+         "Total source words": [
+            "Toplam kaynak kelime"
+         ],
+         "Previous": [
+            "Önceki"
+         ],
+         "Next": [
+            "Sonraki"
+         ],
+         "Showing %1$d–%2$d of %3$d types.": [
+            "%3$d türden %1$d–%2$d arası gösteriliyor."
+         ],
+         "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated.": [
+            "Tüm mevcut %1$s tüm dillere çevrildi.<br>Yeni %2$s veya düzenlemeler otomatik olarak çevrilecektir."
+         ],
+         "All %s": [
+            "Tüm %s"
+         ],
+         "For translated types": [
+            "Çevrilen türler için"
+         ],
+         "None": [
+            "Hiçbiri"
+         ],
+         "Since %s": [
+            "%s tarihinden beri"
+         ],
+         "Since specific date": [
+            "Belirli bir tarihten beri"
+         ],
+         "<b>Pay-As-You-Go</b> is active on this site.": [
+            "Bu sitede <b>Kullandıkça ödeme</b> etkin."
+         ],
+         "<b>%s words</b> are on this site. Continue.": [
+            "Bu sitede <b>%s kelime</b> var. Devam edin."
+         ],
+         "Your site will be translated right after the setup.": [
+            "Siteniz kurulumdan hemen sonra çevrilecektir."
+         ],
+         "To use prepaid words, register WPML on this site.": [
+            "Ön ödemeli kelimeleri kullanmak için WPML'yi bu siteye kaydedin."
+         ],
+         "Checking…": [
+            "Kontrol ediliyor…"
+         ],
+         "Retry": [
+            "Yeniden dene"
+         ],
+         "We could not reach our translation system.": [
+            "Çeviri sistemimize ulaşılamadı."
+         ],
+         "This site is not registered with a WPML account, so prepaid words are not available.": [
+            "Bu site bir WPML hesabına kayıtlı değil, bu nedenle ön ödemeli kelimeler kullanılamaz."
+         ],
+         "We could not read your WPML account.": [
+            "WPML hesabınız okunamadı."
+         ],
+         "%s more words are needed to translate your site.": [
+            "Sitenizi çevirmek için %s kelime daha gerekiyor."
+         ],
+         "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>.": [
+            "<b>Otomatik Olarak Her Şeyi Çevir</b> özelliğini başlatmak için WPML hesabınızdaki ön ödemeli kelimeleri bu siteye atayın."
+         ],
+         "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>.": [
+            "Zaten sahip olduğunuz kelimeleri atayın ve geri kalanını satın alın veya <b>Kullandıkça ödeme</b> sistemini etkinleştirin."
+         ],
+         "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
+            "<b>Otomatik Olarak Her Şeyi Çevir</b> özelliğini başlatmak için <b>Kullandıkça ödeme</b> sistemini etkinleştirin veya ön ödemeli kelime satın alın."
+         ],
+         "Translation started": [
+            "Çeviri başlatıldı"
+         ],
+         "Your content is being sent for automatic translation. Follow its progress on the Translations page.": [
+            "İçeriğiniz otomatik çeviri için gönderiliyor. İlerlemeyi Çeviriler sayfasından takip edin."
+         ],
+         "Close": [
+            "Kapat"
+         ],
+         "Preparing…": [
+            "Hazırlanıyor…"
+         ],
+         "Go to Translations": [
+            "Çevirilere git"
+         ],
+         "Adjust content limits for <b>Translate Everything</b>": [
+            "<b>Her Şeyi Çevir</b> için içerik sınırlarını ayarla"
+         ],
+         "Review the cost and adjust how far back automatic translation applies per content type.": [
+            "Maliyeti inceleyin ve otomatik çevirinin içerik türü başına ne kadar geriye dönük uygulanacağını ayarlayın."
+         ],
+         "This amount will cover translating your existing content into the new language.": [
+            "Bu miktar, mevcut içeriğinizin yeni dile çevrilmesini kapsayacaktır.",
+            "Bu miktar, mevcut içeriğinizin yeni dillere çevrilmesini kapsayacaktır."
+         ],
+         "Choose how to pay for the translation": [
+            "Çeviri için nasıl ödeme yapacağınızı seçin"
+         ],
+         "WPML could not calculate the word count. You can add the language without a cost estimate.": [
+            "WPML kelime sayısını hesaplayamadı. Dili bir maliyet tahmini olmadan ekleyebilirsiniz."
+         ],
+         "Cancel": [
+            "İptal"
+         ],
+         "Save changes": [
+            "Değişiklikleri kaydet"
+         ],
+         "You can adjust the content limits once Translate Everything finishes the current translation run.": [
+            "İçerik sınırlarını, Her Şeyi Çevir mevcut çeviri işlemini bitirdiğinde ayarlayabilirsiniz."
+         ],
+         "%1$sCheck pricing%2$s.": [
+            "%1$sFiyatlandırmayı kontrol et%2$s."
+         ],
+         "Lowest cost per word": [
+            "Kelime başına en düşük maliyet"
+         ],
+         "Pay only for what you use": [
+            "Yalnızca kullandığınız kadar ödeyin"
+         ],
+         "Never run out. Translation never stops.": [
+            "Asla tükenmez. Çeviri hiç durmaz."
+         ],
+         "The first 500 words each month are free": [
+            "Her ay ilk 500 kelime ücretsizdir"
+         ],
+         "Pay-As-You-Go": [
+            "Kullandıkça ödeme"
+         ],
+         "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate.": [
+            "Otomatik olarak çevirmek için <b>Kullandıkça ödeme</b> sistemini etkinleştirin. <b>Kullandıkça ödeme</b>, çevirdiğiniz kelimeler için sizi ücretlendirir."
+         ],
+         "Activating <b>Pay-As-You-Go</b>…": [
+            "<b>Kullandıkça ödeme</b> etkinleştiriliyor…"
+         ],
+         "Continue in the new tab": [
+            "Yeni sekmede devam et"
+         ],
+         "Activate <b>Pay-As-You-Go</b>": [
+            "<b>Kullandıkça ödeme</b>'yi etkinleştir"
+         ],
+         "<b>Pay-As-You-Go</b> is not active yet.": [
+            "<b>Kullandıkça ödeme</b> henüz etkin değil."
+         ],
+         "Refresh": [
+            "Yenile"
+         ],
+         "Already using <b>Pay-As-You-Go</b> on another site?": [
+            "Başka bir sitede zaten <b>Kullandıkça ödeme</b> kullanıyor musunuz?"
+         ],
+         "Connect this site to it": [
+            "Bu siteyi ona bağlayın"
+         ],
+         "Activate Pay-As-You-Go": [
+            "Kullandıkça ödemeyi Etkinleştir"
+         ],
+         "Connect your sites to share translation memory, glossary and word quota.": [
+            "Çeviri belleğini, sözlüğü ve kelime kotasını paylaşmak için sitelerinizi bağlayın."
+         ],
+         "Learn more": [
+            "Daha fazla bilgi edinin"
+         ],
+         "Copy your migration code:": [
+            "Taşıma kodunuzu kopyalayın:"
+         ],
+         "Loading…": [
+            "Yükleniyor…"
+         ],
+         "Copied!": [
+            "Kopyalandı!"
+         ],
+         "Log into a site with an active automatic translation account.": [
+            "Aktif bir otomatik çeviri hesabı olan bir sitede oturum açın."
+         ],
+         "Go to \"WPML\" → \"Translation Dashboard\".": [
+            "“WPML” → “Çeviri Paneli” yoluna gidin."
+         ],
+         "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
+            "“Ödeme ve Bakım” sekmesinde “Bağlı siteler” kısmına gidin."
+         ],
+         "Click \"Enter the connection key of another site\" to finish connecting your sites.": [
+            "Sitelerinizi bağlamayı bitirmek için “Başka bir sitenin bağlantı anahtarını girin” seçeneğine tıklayın."
+         ],
+         "Assign words": [
+            "Kelime ata"
+         ],
+         "Buy and assign words": [
+            "Kelime satın al ve ata"
+         ],
+         "Refresh to assign words": [
+            "Kelime atamak için yenile"
+         ],
+         "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site.": [
+            "En az %3$s%4$s kelime%5$s içeren bir %1$sön ödemeli paket%2$s satın alın ve bu siteye atayın."
+         ],
+         "This amount will cover translation of all your current content.": [
+            "Bu miktar, mevcut tüm içeriğinizin çevirisini kapsayacaktır."
+         ],
+         "Assign %1$s%2$s words%3$s to this site.": [
+            "Bu siteye %1$s%2$s kelime%3$s atayın."
+         ],
+         "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s.": [
+            "Sahip olduğunuz %1$s%2$s kelimeyi%3$s atayın ve %4$s%5$s tane daha%6$s satın alın."
+         ],
+         "Buy %1$s%2$s words%3$s for this site.": [
+            "Bu site için %1$s%2$s kelime%3$s satın alın."
+         ],
+         "Assign at least %1$s%2$s words%3$s to this site to continue.": [
+            "Devam etmek için bu siteye en az %1$s%2$s kelime%3$s atayın."
+         ],
+         "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount.": [
+            "WPML hesabınızdan kelime atayın ve kalan miktarı karşılamak için en az %3$s%4$s kelime%5$s içeren ek bir %1$sön ödemeli paket%2$s satın alın."
+         ],
+         "Prepaid words": [
+            "Ön ödemeli kelimeler"
+         ],
+         "There are %1$s%2$s words%3$s on your WPML account.": [
+            "WPML hesabınızda %1$s%2$s kelime%3$s var."
+         ],
+         "There are %1$s%2$s available on your WPML account.%3$s": [
+            "WPML hesabınızda %1$s%2$s kullanılabilir kelime%3$s var."
+         ],
+         "(Only the WPML account owner can do this.)": [
+            "(Bunu yalnızca WPML hesabı sahibi yapabilir.)"
+         ],
+         "Checking for new words...": [
+            "Yeni kelimeler kontrol ediliyor..."
+         ],
+         "Still not enough words. Refresh again in %d seconds.": [
+            "Hala yeterli kelime yok. %d saniye içinde tekrar yenileyin."
+         ],
+         "Already assigned?": [
+            "Zaten atandı mı?"
+         ],
+         "Close modal": [
+            "Modalı kapat"
+         ]
+      }
+   }
+}

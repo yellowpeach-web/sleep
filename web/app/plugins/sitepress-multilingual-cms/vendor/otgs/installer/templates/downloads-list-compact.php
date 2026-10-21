@@ -63,7 +63,7 @@
 
                     <?php if( !WP_Installer()->dependencies->is_uploading_allowed() ): ?>
                         <p class="installer-error-box"><?php printf(__('Downloading is not possible because WordPress cannot write into the plugins folder. %sHow to fix%s.', 'installer'),
-                                '<a href="http://codex.wordpress.org/Changing_File_Permissions">', '</a>') ?></p>
+                                '<a href="https://codex.wordpress.org/Changing_File_Permissions">', '</a>') ?></p>
                     <?php elseif( WP_Installer()->dependencies->is_win_paths_exception($repository_id) ): ?>
                         <p><?php echo WP_Installer()->dependencies->win_paths_exception_message() ?></p>
                     <?php endif;?>

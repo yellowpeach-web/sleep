@@ -3,49 +3,44 @@
 use WPML\FP\Str;
 
 class WPML_URL_Converter_Lang_Param_Helper {
-	/**
-	 * @var array
-	 */
-	private static $cache = array();
+	private $cache = array();
 
-	/**
-	 * @var array
-	 */
 	private $active_languages;
+	private $language_codes_reverse_map;
 
-	/**
-	 * @param array $active_languages
-	 */
 	public function __construct( array $active_languages ) {
 		$this->active_languages = $active_languages;
+		$code_map = (array) array_combine( $active_languages, $active_languages );
+		$code_map = apply_filters( 'wpml_language_codes_map', $code_map );
+		$this->language_codes_reverse_map = array_flip( $code_map );
 	}
 
-	/**
-	 *
-	 * @param string $url
-	 * @param bool   $only_admin If set to true only language parameters on Admin Screen URLs will be recognized. The
-	 *                           function will return null for non-Admin Screens.
-	 *
-	 * @return null|string Language code
-	 */
+	private function resolve_active_language_from_locale( $locale ) {
+		$variant = strtolower( str_replace( '_', '-', $locale ) );
+		if ( in_array( $variant, $this->active_languages, true ) ) {
+			return $variant;
+		}
+
+		$parts = explode( '_', $locale );
+		$base  = strtolower( $parts[0] );
+
+		return in_array( $base, $this->active_languages, true ) ? $base : null;
+	}
+
 	public function lang_by_param( $url, $only_admin = true ) {
-		if ( isset( self::$cache[ $url ] ) ) {
-			return self::$cache[ $url ];
+		$cache_key = ( $only_admin ? 'admin:' : 'all:' ) . $url;
+
+		if ( array_key_exists( $cache_key, $this->cache ) ) {
+			return $this->cache[ $cache_key ];
 		}
 
 		$lang = $this->extract_lang_param_from_url( $url, $only_admin );
 
-		self::$cache[ $url ] = $lang;
+		$this->cache[ $cache_key ] = $lang;
 
 		return $lang;
 	}
 
-	/**
-	 * @param string $url
-	 * @param bool   $only_admin
-	 *
-	 * @return string|null
-	 */
 	private function extract_lang_param_from_url( $url, $only_admin ) {
 		$url             = wpml_strip_subdir_from_url( $url );
 		$url_query_parts = wpml_parse_url( $url );
@@ -55,21 +50,21 @@ class WPML_URL_Converter_Lang_Param_Helper {
 			return $isLoginPageUrl && isset( $vars['wp_lang'] ) && is_string( $vars['wp_lang'] );
 		};
 		$getWpLang       = function( $vars ) {
-			$wp_lang = explode( '_', $vars['wp_lang'] );
-			return ( count( $wp_lang ) > 0 ) ? strtolower( $wp_lang[0] ) : null;
+			return $this->resolve_active_language_from_locale( (string) $vars['wp_lang'] );
 		};
 
 		if ( null !== $url_query ) {
 			parse_str( $url_query, $vars );
 			if ( $this->can_retrieve_lang_from_query( $only_admin, $vars ) ) {
-				return $vars['lang'];
+				return $this->get_canonical_language_code( $vars['lang'] );
 			} else if ( $isLoginPage( $vars ) ) {
-				// Handling case when Language URL format is 'Language name added as a parameter'.
-				return $getWpLang( $vars );
+				$wp_lang_code = $getWpLang( $vars );
+				if ( null !== $wp_lang_code ) {
+					return $wp_lang_code;
+				}
 			}
 		}
 
-		// Handling case when Language URL format is 'Different languages in directories'.
 		if ( is_array( $url_query_parts ) && isset( $url_query_parts['query'] ) && is_string( $url_query_parts['query'] ) ) {
 			parse_str( $url_query_parts['query'], $vars );
 			if ( $isLoginPage( $vars ) ) {
@@ -80,12 +75,6 @@ class WPML_URL_Converter_Lang_Param_Helper {
 		return null;
 	}
 
-	/**
-	 * @param bool  $only_admin
-	 * @param array $url_query_parts
-	 *
-	 * @return bool
-	 */
 	private function has_query_part( $only_admin, $url_query_parts ) {
 		if ( ! isset( $url_query_parts['query'] ) ) {
 			return false;
@@ -106,12 +95,6 @@ class WPML_URL_Converter_Lang_Param_Helper {
 		return true;
 	}
 
-	/**
-	 * @param bool  $only_admin
-	 * @param array $vars
-	 *
-	 * @return bool
-	 */
 	private function can_retrieve_lang_from_query( $only_admin, $vars ) {
 		if ( ! isset( $vars['lang'] ) ) {
 			return false;
@@ -121,10 +104,19 @@ class WPML_URL_Converter_Lang_Param_Helper {
 			return true;
 		}
 
-		if ( in_array( $vars['lang'], $this->active_languages, true ) ) {
+		if (
+			in_array( $vars['lang'], $this->active_languages, true )
+			|| isset( $this->language_codes_reverse_map[ $vars['lang'] ] )
+		) {
 			return true;
 		}
 
 		return false;
+	}
+
+	private function get_canonical_language_code( $language ) {
+		return isset( $this->language_codes_reverse_map[ $language ] )
+			? $this->language_codes_reverse_map[ $language ]
+			: $language;
 	}
 }

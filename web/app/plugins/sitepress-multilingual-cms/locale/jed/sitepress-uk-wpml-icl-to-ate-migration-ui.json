@@ -4,91 +4,251 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "uk"
          },
-         "Translation Memory was successfully copied to Advanced Translation Editor.": [
-            ""
+         "Select %s": [
+            "Вибрати %s"
+         ],
+         "From:": [
+            "З:"
+         ],
+         "--Choose language--": [
+            "--Виберіть мову--"
+         ],
+         "to:": [
+            "на:"
+         ],
+         "Set language pair(s) for Translator %s:": [
+            "Встановити мовні пари для перекладача %s:"
+         ],
+         "+ Add more language pairs for this translator": [
+            "+ Додати більше мовних пар для цього перекладача"
+         ],
+         "<b>Translation Memory</b> was successfully copied to Advanced Translation Editor.": [
+            "<b>Пам’ять перекладів</b> успішно скопійована до Розширеного редактора перекладів."
          ],
          "Deactivate ICanLocalize.com as Translation Service on this site": [
-            ""
+            "Деактивувати ICanLocalize.com як сервіс перекладу на цьому сайті"
          ],
-         "Missing a translator? Or were new jobs since the last copy of the Translation Memory?": [
-            ""
+         "Missing a translator? Or were new jobs since the last copy of the <b>Translation Memory</b>?": [
+            "Бракує перекладача? Або з’явилися нові завдання з моменту останнього копіювання <b>пам’яті перекладів</b>?"
          ],
          "Enter here your ICanLocalize authentication details.": [
-            ""
+            "Введіть тут свої дані автентифікації ICanLocalize."
          ],
          "API Token:": [
-            ""
+            "Токен API:"
          ],
          "Please enter valid value for ICL token.": [
-            ""
+            "Будь ласка, введіть коректне значення для токена ICL."
          ],
          "Enter ICL API token here": [
-            ""
+            "Введіть токен ICL API тут"
          ],
          "Submit": [
-            ""
+            "Надіслати"
          ],
          "Sign up": [
-            ""
+            "Зареєструйтеся"
          ],
          "to ICanLocalize to receive your API token.": [
-            ""
+            "в ICanLocalize, щоб отримати свій токен API."
          ],
          "Already have an account? Login and": [
-            ""
+            "Вже маєте акаунт? Увійдіть і"
          ],
          "get your token.": [
-            ""
+            "отримайте свій токен."
          ],
-         "Copy new Translation Memory to Advanced Translation Memory": [
-            ""
+         "Copy new <b>Translation Memory</b> to Advanced Translation Memory": [
+            "Копіювати нову <b>пам’ять перекладів</b> до Advanced Translation Memory"
          ],
          "Import translation memory": [
-            ""
+            "Імпортувати пам’ять перекладів"
          ],
          "ICanLocalize is already deactivated on this site": [
-            ""
+            "ICanLocalize уже деактивовано на цьому сайті"
          ],
-         "You can still import Translators or Copy Translation Memory to Advanced Translator Editor": [
-            ""
+         "You can still import Translators or Copy <b>Translation Memory</b> to Advanced Translator Editor": [
+            "Ви все ще можете імпортувати перекладачів або скопіювати <b>пам’ять перекладів</b> до Advanced Translator Editor"
          ],
-         "Move from ICanLocalize.com to Advanced Translation Editor": [
-            ""
+         "Move from ICanLocalize.com to <b>Advanced Translation Editor</b>": [
+            "Перейти з ICanLocalize.com на <b>advanced translation editor</b>"
          ],
          "Import translators": [
-            ""
+            "Імпортувати перекладачів"
          ],
          "Come back": [
-            ""
+            "Повернутися"
+         ],
+         "Cancel": [
+            "Скасувати"
+         ],
+         "Save": [
+            "Зберегти"
+         ],
+         "Name": [
+            "Назва"
+         ],
+         "Language Pairs": [
+            "Мовні пари"
          ],
          "Not supported pairs:": [
-            ""
+            "Непідтримувані пари:"
          ],
          "ICanLocalize.com deactivated": [
-            ""
+            "ICanLocalize.com деактивовано"
          ],
          "Translate memory is imported": [
-            ""
+            "Пам’ять перекладів імпортована"
          ],
          "There is no translators in ICL": [
-            ""
+            "В ICL немає перекладачів"
          ],
          "Translators saved": [
-            ""
+            "Перекладачі збережені"
+         ],
+         "%s file upload failed.": [
+            "Помилка завантаження файлу %s."
+         ],
+         "Flag": [
+            "Прапор"
+         ],
+         "Flag file": [
+            "Файл прапора"
+         ],
+         "You just added %s language. Next, select it as the site's default language or a translation language.": [
+            "Ви щойно додали мову %s. Далі виберіть її як мову сайту за замовчуванням або мову перекладу."
+         ],
+         "Language added": [
+            "Мову додано"
+         ],
+         "The value \"%s\" already exists": [
+            "Значення «%s» уже існує"
+         ],
+         "Add a new language": [
+            "Додати нову мову"
+         ],
+         "Create a country-specific language by choosing the general language from the list below. Then, choose the country it should be localized for.": [
+            "Створіть мову для конкретної країни, вибравши загальну мову зі списку нижче. Потім виберіть країну, для якої вона має бути локалізована."
+         ],
+         "By choosing a combination that already exists in the database, WPML can help fill out the necessary fields. Read more about <AddingACustomLanguageLink />.": [
+            "Вибравши комбінацію, яка вже існує в базі даних, WPML може допомогти заповнити необхідні поля. Докладніше про <AddingACustomLanguageLink />."
+         ],
+         "Cannot find?": [
+            "Не можете знайти?"
+         ],
+         "Click here": [
+            "Натисніть тут"
+         ],
+         "The wrong format. It may contain only small letters and \"-\". E.g: \"fr\" , \"pt-br\", \"zh-hans\"": [
+            "Неправильний формат. Він може містити лише малі літери та «-». Наприклад: «fr», «pt-br», «zh-hans»"
+         ],
+         "Language": [
+            "Мова"
+         ],
+         "Location": [
+            "Розташування"
+         ],
+         "Code": [
+            "Код"
          ],
          "Flags must be:": [
-            ""
+            "Прапори мають бути:"
+         ],
+         "Automatic Translation will use the default behavior for this language": [
+            "Автоматичний переклад використовуватиме поведінку за замовчуванням для цієї мови"
+         ],
+         "Language mapping": [
+            "Відповідність мов"
+         ],
+         "Use Automatic Translation default behavior": [
+            "Використовувати поведінку автоматичного перекладу за замовчуванням"
          ],
          "PNG, SVG, or JPG files": [
-            ""
+            "Файли PNG, SVG або JPG"
+         ],
+         "Default locale": [
+            "Локаль за замовчуванням"
+         ],
+         "The wrong format. It may contain only small letters and \"_\". E.g: \"de\" , \"de_DE\", \"zh_Hant_TW\"": [
+            "Неправильний формат. Він може містити лише малі літери та «_». Наприклад: «de», «de_DE», «zh_Hant_TW»"
+         ],
+         "hreflang": [
+            "hreflang"
          ],
          "18 x 12 pixels": [
-            ""
+            "18 x 12 пікселів"
          ],
-         "Read more about ": [
-            ""
+         "Encode url?": [
+            "Кодувати URL?"
+         ],
+         "NO": [
+            "НІ"
+         ],
+         "YES": [
+            "ТАК"
+         ],
+         " (required)": [
+            " (обов’язково)"
+         ],
+         "The name of your language as it will appear on your site's language switcher.": [
+            "Назва вашої мови, як вона з’являтиметься в перемикачі мов вашого сайту."
+         ],
+         "Please fill in the field": [
+            "Будь ласка, заповніть поле"
+         ],
+         "A unique value that identifies the language in the database and URL. Once saved, the language code cannot be changed.": [
+            "Унікальне значення, яке ідентифікує мову в базі даних і URL. Після збереження код мови неможливо змінити."
+         ],
+         "Save language": [
+            "Зберегти мову"
+         ],
+         "If your custom language is similar to an existing language, you can use the existing language's spellcheck and automatic translation. For example, if your custom language is Swiss-German, you can map to German as the language to use for spellcheck and automatic translation. If you don't map your custom language to an existing language, spellcheck and automatic translation features will be unavailable in that language.": [
+            "Якщо ваша власна мова схожа на існуючу, ви можете використовувати перевірку орфографії та автоматичний переклад існуючої мови. Наприклад, якщо вашою власною мовою є швейцарська німецька, ви можете встановити відповідність німецькій мові для перевірки орфографії та автоматичного перекладу. Якщо ви не встановите відповідність власної мови існуючій, функції перевірки орфографії та автоматичного перекладу будуть недоступні для цієї мови."
+         ],
+         "The value WPML checks when loading translations from MO and PO files. The default locale is included in the filenames in your /wp-content/languages/ folder in your WordPress setup.": [
+            "Значення, яке WPML перевіряє під час завантаження перекладів із файлів MO та PO. Локаль за замовчуванням входить до назв файлів у вашій папці /wp-content/languages/ у вашій інсталяції WordPress."
+         ],
+         "Google uses the hreflang attribute to direct users to sites in their relevant language and location. Examples:": [
+            "Google використовує атрибут hreflang, щоб спрямовувати користувачів на сайти відповідною мовою та для відповідного регіону. Приклади:"
+         ],
+         "All English-speaking users: en": [
+            "Усі англомовні користувачі: en"
+         ],
+         "English for UK users: en-gb": [
+            "Англійська для користувачів у Великобританії: en-gb"
+         ],
+         "English for US users: en-us": [
+            "Англійська для користувачів у США: en-us"
+         ],
+         "Determines if URLs in this language are encoded or use ASCII characters (if unsure, leave it as \"No\").": [
+            "Визначає, чи кодуються URL-адреси цією мовою, чи використовуються символи ASCII (якщо не впевнені, залиште «Ні»)."
+         ],
+         "adding a custom language": [
+            "додавання власної мови"
+         ],
+         "What are the languages of your site?": [
+            "Які мови вашого сайту?"
+         ],
+         "Default language": [
+            "Мова за замовчуванням"
+         ],
+         "What is the current language of your website?": [
+            "Яка поточна мова вашого вебсайту?"
+         ],
+         "Translation languages": [
+            "Мови перекладу"
+         ],
+         "Which languages do you want to translate your site into?": [
+            "Якими мовами ви хочете перекласти свій сайт?"
+         ],
+         "If you cannot find languages that you need in the list,": [
+            "Якщо ви не можете знайти потрібні мови у списку,"
+         ],
+         "create a custom language": [
+            "створіть власну мову"
          ]
       }
    }

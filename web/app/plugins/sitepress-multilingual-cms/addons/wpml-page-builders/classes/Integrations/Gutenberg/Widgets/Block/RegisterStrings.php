@@ -4,24 +4,37 @@ namespace WPML\PB\Gutenberg\Widgets\Block;
 
 use WPML\FP\Fns;
 use WPML\FP\Logic;
-use WPML\FP\Lst;
 use WPML\FP\Obj;
 use WPML\LIB\WP\Hooks;
+
 use function WPML\Container\make;
-use function WPML\FP\pipe;
 use function WPML\FP\spreadArgs;
 
-class RegisterStrings implements \IWPML_REST_Action, \WPML\PB\Gutenberg\Integration {
-	public function add_hooks() {
-		$registerStrings = Fns::memorize( function ( $oldValue, $newValue ) {
-			$gutenbergIntegration = make( \WPML_Gutenberg_Integration::class );
-			$blocks               = $this->getBlocks( $gutenbergIntegration, $newValue );
+class RegisterStrings implements \IWPML_REST_Action, \IWPML_DIC_Action, \WPML\PB\Gutenberg\Integration {
 
-			$gutenbergIntegration->register_strings_from_widget( $blocks, Strings::createPackage() );
-		} );
+	const AFTER_STRING_CLEANUP = 20;
+
+	private $pbFactory;
+
+	public function __construct( \WPML_PB_Factory $pbFactory ) {
+		$this->pbFactory = $pbFactory;
+	}
+
+	public function add_hooks() {
+		$registerStrings = Fns::memorize(
+			function ( $oldValue, $newValue ) {
+				$gutenbergIntegration = make( \WPML_Gutenberg_Integration::class );
+				$blocks               = $this->getBlocks( $gutenbergIntegration, $newValue );
+
+				$gutenbergIntegration->register_strings_from_widget( $blocks, Strings::createPackage() );
+			}
+		);
 
 		Hooks::onAction( 'update_option_widget_block', 10, 2 )
-		     ->then( spreadArgs( $registerStrings ) );
+			->then( spreadArgs( $registerStrings ) );
+
+		Hooks::onAction( 'wpml_delete_unused_package_strings', self::AFTER_STRING_CLEANUP )
+			->then( spreadArgs( [ $this, 'deleteEmptyStringPackage' ] ) );
 	}
 
 	private function getBlocks( $gutenbergIntegration, $options ) {
@@ -32,7 +45,17 @@ class RegisterStrings implements \IWPML_REST_Action, \WPML\PB\Gutenberg\Integrat
 			->filter()
 			->unique()
 			->map( [ $gutenbergIntegration, 'parse_blocks' ] )
-			->flatten( 1 )
 			->toArray();
+	}
+
+	public function deleteEmptyStringPackage( $packageData ) {
+		if ( isset( $packageData['kind_slug'] ) && Strings::PACKAGE_KIND_SLUG === $packageData['kind_slug'] ) {
+			$package        = $this->pbFactory->get_wpml_package( $packageData );
+			$packageStrings = $package->get_package_strings( true );
+
+			if ( ! $packageStrings ) {
+				do_action( 'wpml_delete_package', $packageData['name'], $packageData['kind'] );
+			}
+		}
 	}
 }

@@ -1,0 +1,2663 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "de_DE"
+         },
+         "Untranslated strings that I encounter on front-end while logged in": [
+            "Nicht übersetzte Strings, auf die ich im Frontend stoße, während ich angemeldet bin"
+         ],
+         "Untranslated strings that all front-end users encounter": [
+            "Nicht übersetzte Strings, auf die alle Frontend-Benutzer stoßen"
+         ],
+         "Disable auto-registration of strings": [
+            "Automatische Registrierung von Strings deaktivieren"
+         ],
+         "Plugins": [
+            "Plugins"
+         ],
+         "Themes": [
+            "Themes"
+         ],
+         "WordPress": [
+            "WordPress"
+         ],
+         "Other": [
+            "Andere"
+         ],
+         "%1$s (%2$d item)": [
+            "%1$s (%2$d Element)",
+            "%1$s (%2$d Elemente)"
+         ],
+         "We cancelled %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
+            "Wir haben %1$d von %2$d Elementen abgebrochen, aber bei %3$d ist ein Fehler aufgetreten. Bitte lade die Seite neu und versuche es erneut."
+         ],
+         "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
+            "Wir haben %1$d von %2$d Elementen erneut gesendet, aber bei %3$d ist ein Fehler aufgetreten. Bitte lade die Seite neu und versuche es erneut."
+         ],
+         "Error in fetching default translation batch name": [
+            "Fehler beim Abrufen des Standardnamens für den Übersetzungs-Batch"
+         ],
+         "Error in fetching translation editor type.": [
+            "Fehler beim Abrufen des Typs des Übersetzungs-Editors."
+         ],
+         "Error in fetching untranslated types count": [
+            "Fehler beim Abrufen der Anzahl nicht übersetzter Typen"
+         ],
+         "Error in fetching remote translation service data.": [
+            "Fehler beim Abrufen der Daten des Remote-Übersetzungsdienstes."
+         ],
+         "Validation failed": [
+            "Validierung fehlgeschlagen"
+         ],
+         "%s: labels and slug": [
+            "%s: Bezeichnungen und Slug"
+         ],
+         "%1$s (%2$s)": [
+            "%1$s (%2$s)"
+         ],
+         "Translation jobs couldn’t be cancelled": [
+            "Übersetzungsaufträge konnten nicht abgebrochen werden"
+         ],
+         "Reload the page and try again.": [
+            "Lade die Seite neu und versuche es erneut."
+         ],
+         "All unfinished translation jobs were cancelled": [
+            "Alle nicht abgeschlossenen Übersetzungsaufträge wurden abgebrochen"
+         ],
+         "WPML could not display the Translations dashboard.": [
+            "WPML konnte das Übersetzungs-Dashboard nicht anzeigen."
+         ],
+         "Reload the page to try again. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses, and the browser console for details.": [
+            "Laden Sie die Seite neu, um es erneut zu versuchen. Wenn dies weiterhin geschieht, überprüfen Sie das PHP-Fehlerprotokoll der Website auf Ausgaben, die die Antworten von WPML unterbrechen, sowie die Browser-Konsole auf Details."
+         ],
+         "Please wait until download finishes": [
+            "Bitte warte, bis der Download abgeschlossen ist"
+         ],
+         "You need to wait 5 minutes after the last check": [
+            "Du musst nach der letzten Prüfung 5 Minuten warten"
+         ],
+         "Check status and get translations": [
+            "Status prüfen und Übersetzungen abrufen"
+         ],
+         "%d translation could not be applied.": [
+            "%d Übersetzung konnte nicht angewendet werden.",
+            "%d Übersetzungen konnten nicht angewendet werden."
+         ],
+         "Some were paused after repeated failures and will be retried automatically.": [
+            "Einige wurden nach wiederholten Fehlern pausiert und werden automatisch erneut versucht."
+         ],
+         "They are still waiting and will be tried again on the next download.": [
+            "Sie warten noch und werden beim nächsten Download erneut versucht."
+         ],
+         "Status: ": [
+            "Status: "
+         ],
+         "Downloaded jobs: ": [
+            "Heruntergeladene Aufträge: "
+         ],
+         "Cancelled jobs: ": [
+            "Abgebrochene Aufträge: "
+         ],
+         "none of your translation jobs have been completed": [
+            "keiner deiner Übersetzungsaufträge wurde abgeschlossen"
+         ],
+         "The download did not finish, so some translations may still be waiting. Please try again.": [
+            "Der Download wurde nicht beendet, daher warten möglicherweise noch einige Übersetzungen. Bitte versuche es erneut."
+         ],
+         "%d batches are still being processed by the translation service. Check again in a few minutes.": [
+            "%d Batches werden noch vom Übersetzungsdienst verarbeitet. Prüfe es in ein paar Minuten erneut."
+         ],
+         "Checking translation jobs status. Please don't close this page!": [
+            "Status der Übersetzungsaufträge wird geprüft. Bitte schließe diese Seite nicht!"
+         ],
+         "<strong>%d translation job</strong> has been sent to remote translators": [
+            "<strong>%d Übersetzungsauftrag</strong> wurde an Remote-Übersetzer gesendet",
+            "<strong>%d Übersetzungsaufträge</strong> wurden an Remote-Übersetzer gesendet"
+         ],
+         "Last check: %s": [
+            "Letzte Prüfung: %s"
+         ],
+         "Last check: Never": [
+            "Letzte Prüfung: Nie"
+         ],
+         "Switch to Private Translation Cloud (PTC)": [
+            "Zur Private Translation Cloud (PTC) wechseln"
+         ],
+         "Switch to PTC": [
+            "Zu PTC wechseln"
+         ],
+         "Switching…": [
+            "Wechseln…"
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Steuerelemente für die Übersetzungs-Engine konnten nicht geladen werden. Lade die Seite neu und versuche es erneut."
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "Wir konnten den Wechsel nicht bestätigen. Versuche es erneut oder lade die Seite neu, um die aktuelle Engine zu sehen."
+         ],
+         "Loading translation engine settings…": [
+            "Einstellungen der Übersetzungs-Engine werden geladen…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "Fülle oben deinen Website-Kontext aus, bevor du zu PTC wechselst."
+         ],
+         "Reload page": [
+            "Seite neu laden"
+         ],
+         "Filtering is disabled to show all selected items. ": [
+            "Die Filterung ist deaktiviert, um alle ausgewählten Elemente anzuzeigen. "
+         ],
+         "Apply filters": [
+            "Filter anwenden"
+         ],
+         "%d item selected": [
+            "%d Element ausgewählt",
+            "%d Elemente ausgewählt"
+         ],
+         "(%d words to translate)": [
+            "(%d Wörter zum Übersetzen)"
+         ],
+         "%s item not showing.": [
+            "%s Element wird nicht angezeigt.",
+            "%s Elemente werden nicht angezeigt."
+         ],
+         "Show all selected items": [
+            "Alle ausgewählten Elemente anzeigen"
+         ],
+         "Translate your content": [
+            "Inhalte übersetzen"
+         ],
+         "Unselect all": [
+            "Alle abwählen"
+         ],
+         "Source Language:": [
+            "Quellsprache:"
+         ],
+         "translated to:": [
+            "übersetzt in:"
+         ],
+         "Filter": [
+            "Filtern"
+         ],
+         "You are about to change the source language filter from %1$s to %2$s": [
+            "Du bist dabei, den Quellsprachenfilter von %1$s auf %2$s zu ändern"
+         ],
+         "Updating the source language filter will clear the items you've selected for translation. Are you sure you want to continue?": [
+            "Das Aktualisieren des Quellsprachenfilters löscht die Elemente, die du zur Übersetzung ausgewählt hast. Bist du sicher, dass du fortfahren möchtest?"
+         ],
+         "Change source language": [
+            "Quellsprache ändern"
+         ],
+         "Cancel": [
+            "Abbrechen"
+         ],
+         "Filter by publication status": [
+            "Nach Veröffentlichungsstatus filtern"
+         ],
+         "All Statuses": [
+            "Alle Status"
+         ],
+         "All languages": [
+            "Alle Sprachen"
+         ],
+         "All translation statuses": [
+            "Alle Übersetzungsstatus"
+         ],
+         "Not completed": [
+            "Nicht abgeschlossen"
+         ],
+         "Needs updating": [
+            "Aktualisierung erforderlich"
+         ],
+         "Translation in progress": [
+            "Übersetzung in Bearbeitung"
+         ],
+         "Translation complete": [
+            "Übersetzung abgeschlossen"
+         ],
+         "Filter by translation status": [
+            "Nach Übersetzungsstatus filtern"
+         ],
+         "Global Filter": [
+            "Globaler Filter"
+         ],
+         "%1$s (ID: %2$d)": [
+            "%1$s (ID: %2$d)"
+         ],
+         "Parent:": [
+            "Eltern-Element:"
+         ],
+         "Search parent by title, path, or ID": [
+            "Eltern-Element nach Titel, Pfad oder ID suchen"
+         ],
+         "Parent: %s": [
+            "Eltern-Element: %s"
+         ],
+         "Search by term title in %s": [
+            "Nach Begriffstitel in %s suchen"
+         ],
+         "All taxonomies": [
+            "Alle Taxonomien"
+         ],
+         "Loading": [
+            "Laden"
+         ],
+         "Taxonomy Term:": [
+            "Taxonomie-Begriff:"
+         ],
+         "Loading terms": [
+            "Begriffe werden geladen"
+         ],
+         "No terms found": [
+            "Keine Begriffe gefunden"
+         ],
+         "Filter by:": [
+            "Filtern nach:"
+         ],
+         "Title": [
+            "Titel"
+         ],
+         "Automatic translation is paused — payment required (%s).": [
+            "Automatische Übersetzung ist pausiert – Zahlung erforderlich (%s)."
+         ],
+         "Automatic translation is paused: monthly spending cap reached. It continues when the cap is raised, or when the cap resets.": [
+            "Automatische Übersetzung ist pausiert: monatliches Ausgabenlimit erreicht. Sie wird fortgesetzt, wenn das Limit erhöht oder zurückgesetzt wird."
+         ],
+         "You have %1$s%2$s prepaid word in your WPML account%3$s. Assign these words to this site to resume automatic translation.": [
+            "Du hast %1$s%2$s Prepaid-Wort in deinem WPML-Konto%3$s. Weise dieses Wort dieser Website zu, um die automatische Übersetzung fortzusetzen.",
+            "Du hast %1$s%2$s Prepaid-Wörter in deinem WPML-Konto%3$s. Weise diese Wörter dieser Website zu, um die automatische Übersetzung fortzusetzen."
+         ],
+         "Not enough prepaid words to continue automatic translation. Add more words to resume.": [
+            "Nicht genügend Prepaid-Wörter vorhanden, um die automatische Übersetzung fortzusetzen. Füge mehr Wörter hinzu, um fortzufahren."
+         ],
+         "Assign words": [
+            "Wörter zuweisen"
+         ],
+         "Get more words": [
+            "Mehr Wörter kaufen"
+         ],
+         "View": [
+            "Anzeigen"
+         ],
+         "Edit": [
+            "Bearbeiten"
+         ],
+         "Edit note for the translators": [
+            "Notiz für die Übersetzer bearbeiten"
+         ],
+         "Add note for the translators": [
+            "Notiz für die Übersetzer hinzufügen"
+         ],
+         "Select %s": [
+            "%s auswählen"
+         ],
+         "(no title)": [
+            "(kein Titel)"
+         ],
+         "Image": [
+            "Bild"
+         ],
+         "%s Title": [
+            "%s Titel"
+         ],
+         "%s Date": [
+            "%s Datum"
+         ],
+         "Date / Status": [
+            "Datum / Status"
+         ],
+         "Loading items...": [
+            "Elemente werden geladen..."
+         ],
+         "This page is set to be %1$stranslated manually%2$s using the WordPress Editor": [
+            "Diese Seite ist so eingestellt, dass sie %1$smanuell übersetzt%2$s wird, unter Verwendung des WordPress-Editors"
+         ],
+         "%1$d %2$s selected": [
+            "%1$d %2$s ausgewählt"
+         ],
+         "items": [
+            "Elemente"
+         ],
+         "Filtering is disabled to show all selected items": [
+            "Die Filterung ist deaktiviert, um alle ausgewählten Elemente anzuzeigen"
+         ],
+         "Apply filter": [
+            "Filter anwenden"
+         ],
+         "%1$d %2$s not showing": [
+            "%1$d %2$s werden nicht angezeigt"
+         ],
+         "Show selected items": [
+            "Ausgewählte Elemente anzeigen"
+         ],
+         "Looking for more items...": [
+            "Suche nach weiteren Elementen..."
+         ],
+         " / page": [
+            " / Seite"
+         ],
+         "Previous": [
+            "Vorherige"
+         ],
+         "Next": [
+            "Weiter"
+         ],
+         "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
+            "Der Inhalt deiner Website ist zu umfangreich für einen einzelnen Übersetzungs-Batch. Verwende Filter, um die Auswahl zu reduzieren, und klicke dann auf „Alle auswählen“."
+         ],
+         "The current filter captures too much content. Narrow it down to enable \"select all\" for translation.": [
+            "Der aktuelle Filter erfasst zu viel Inhalt. Grenzt ihn ein, um „Alle auswählen“ für die Übersetzung zu aktivieren."
+         ],
+         "Select All": [
+            "Alle auswählen"
+         ],
+         "All %d items matching criteria are selected": [
+            "Alle %d Elemente, die den Kriterien entsprechen, sind ausgewählt"
+         ],
+         "All %d items in this section are selected": [
+            "Alle %d Elemente in diesem Bereich sind ausgewählt"
+         ],
+         "You have too many items to send for translation at once. Apply a filter to narrow down the items to enable this option.": [
+            "Du hast zu viele Elemente, um sie alle auf einmal zur Übersetzung zu senden. Wende einen Filter an, um die Elemente einzugrenzen und diese Option zu aktivieren."
+         ],
+         "Clear selection": [
+            "Auswahl aufheben"
+         ],
+         "Select all items that match this search": [
+            "Alle Elemente auswählen, die dieser Suche entsprechen"
+         ],
+         "Loading...": [
+            "Laden..."
+         ],
+         "Select all %ss": [
+            "Alle %s auswählen"
+         ],
+         "Save note": [
+            "Notiz speichern"
+         ],
+         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
+            "Die folgenden Zielsprachen unterstützen keine automatische Übersetzung: %s. <a>Bekannten Sprachen zuordnen</a>, um die automatische Übersetzung zu aktivieren."
+         ],
+         "The site's default language %s doesn't support automatic translation.": [
+            "Die Standardsprache der Website %s unterstützt keine automatische Übersetzung."
+         ],
+         "Some sections are hidden due to current filter settings or because they have no items. <show_all>Show all translation statuses</show_all>": [
+            "Einige Bereiche sind aufgrund aktueller Filtereinstellungen ausgeblendet oder weil sie keine Elemente enthalten. <show_all>Alle Übersetzungsstatus anzeigen</show_all>"
+         ],
+         "Step 1": [
+            "Schritt 1"
+         ],
+         "Select items for translation": [
+            "Elemente zur Übersetzung auswählen"
+         ],
+         "Clear filters": [
+            "Filter löschen"
+         ],
+         "WPML could not load these items from your site.": [
+            "WPML konnte diese Elemente nicht von Ihrer Website laden."
+         ],
+         "Try again or reload the page. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses.": [
+            "Versuchen Sie es erneut oder laden Sie die Seite neu. Wenn dies weiterhin geschieht, überprüfen Sie das PHP-Fehlerprotokoll der Website auf Ausgaben, die die Antworten von WPML unterbrechen."
+         ],
+         "Try again": [
+            "Erneut versuchen"
+         ],
+         "strings": [
+            "Strings"
+         ],
+         "WPML didn't find any %s matching your criteria.": [
+            "WPML hat keine %s gefunden, die deinen Kriterien entsprechen."
+         ],
+         "You have too many items selected to use this feature. Deselect some of the items to enable it.": [
+            "Du hast zu viele Elemente ausgewählt, um diese Funktion zu nutzen. Wähle einige Elemente ab, um sie zu aktivieren."
+         ],
+         "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can send this content now and it will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>.": [
+            "<strong>%1$s</strong> Wörter sind im <strong>monatlichen Ausgabenlimit</strong> für <site>%2$s</site> verbleibend (<figure>%3$s</figure> von <figure>%4$s</figure> bereits verbraucht). Du kannst diesen Inhalt jetzt senden und er wird übersetzt, bis das Limit erreicht ist. Der Rest folgt, wenn das Limit erhöht wird oder wenn es am <strong>%5$s</strong> zurückgesetzt wird."
+         ],
+         "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can turn this on now and content will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>.": [
+            "<strong>%1$s</strong> Wörter sind im <strong>monatlichen Ausgabenlimit</strong> für <site>%2$s</site> verbleibend (<figure>%3$s</figure> von <figure>%4$s</figure> bereits verbraucht). Du kannst dies jetzt aktivieren und der Inhalt wird übersetzt, bis das Limit erreicht ist. Der Rest folgt, wenn das Limit erhöht wird oder wenn es am <strong>%5$s</strong> zurückgesetzt wird."
+         ],
+         "Raise the cap": [
+            "Limit erhöhen"
+         ],
+         "Only the account owner can do this.": [
+            "Nur der Kontoinhaber kann dies tun."
+         ],
+         "Show strings in:": [
+            "Strings anzeigen in:"
+         ],
+         "Display Columns": [
+            "Spalten anzeigen"
+         ],
+         "Close modal": [
+            "Modal schließen"
+         ],
+         "Select visible columns": [
+            "Sichtbare Spalten auswählen"
+         ],
+         "String": [
+            "String"
+         ],
+         "Name": [
+            "Name"
+         ],
+         "Domain": [
+            "Domain"
+         ],
+         "Source": [
+            "Quelle"
+         ],
+         "Type": [
+            "Typ"
+         ],
+         "Apply": [
+            "Anwenden"
+         ],
+         "All domains": [
+            "Alle Domains"
+         ],
+         "Domain:": [
+            "Domain:"
+         ],
+         "All sources": [
+            "Alle Quellen"
+         ],
+         "Frontend (viewed)": [
+            "Frontend (angezeigt)"
+         ],
+         "Backend (viewed)": [
+            "Backend (angezeigt)"
+         ],
+         "Unknown": [
+            "Unbekannt"
+         ],
+         "Source:": [
+            "Quelle:"
+         ],
+         "String or Name:": [
+            "String oder Name:"
+         ],
+         "Search string or a name": [
+            "String oder einen Namen suchen"
+         ],
+         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
+            "Dieser Filter ist nur verfügbar, wenn die Quelle auf „Frontend“ oder „Backend“ eingestellt ist."
+         ],
+         "front-end": [
+            "Frontend"
+         ],
+         "back-end": [
+            "Backend"
+         ],
+         "viewed": [
+            "angezeigt"
+         ],
+         "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
+            "Öffnet die Seite für Theme- und Plugin-Lokalisierung, auf der du dein Theme und deine Plugins nach noch nicht registrierten Strings durchsuchen und sie hier für die Übersetzung verfügbar machen kannst."
+         ],
+         "Finding strings in themes and plugins": [
+            "Strings in Themes und Plugins finden"
+         ],
+         "Strings in the theme and plugins": [
+            "Strings im Theme und in Plugins"
+         ],
+         "Translate front-end texts you can customize from the WordPress admin like footer text, copyright notices, plugin options and settings, time format, widget texts, and more.": [
+            "Übersetze Frontend-Texte, die du im WordPress-Admin anpassen kannst, wie Footer-Texte, Copyright-Hinweise, Plugin-Optionen und -Einstellungen, Zeitformate, Widget-Texte und mehr."
+         ],
+         "Translating Strings From Admin and Settings": [
+            "Strings aus Admin und Einstellungen übersetzen"
+         ],
+         "Translate texts in admin screens": [
+            "Texte in Admin-Screens übersetzen"
+         ],
+         "Translate User Meta Information": [
+            "Benutzer-Metadaten übersetzen"
+         ],
+         "Making User Meta Information Translatable": [
+            "Benutzer-Metadaten übersetzbar machen"
+         ],
+         "Translate user profile strings": [
+            "Strings aus Benutzerprofilen übersetzen"
+         ],
+         "No strings have been registered for translation yet. Open your site's front-end (<a/>) and WPML will automatically detect the untranslated strings and list them here. ": [
+            "Es wurden noch keine Strings für die Übersetzung registriert. Öffne das Frontend deiner Website (<a/>) und WPML wird die nicht übersetzten Strings automatisch erkennen und hier auflisten. "
+         ],
+         "hide details": [
+            "Details ausblenden"
+         ],
+         "more details": [
+            "mehr Details"
+         ],
+         "Still can't find the strings you're looking to translate? Add more strings for translation.": [
+            "Du kannst die Strings, die du übersetzen möchtest, immer noch nicht finden? Füge weitere Strings zur Übersetzung hinzu."
+         ],
+         "Not seeing strings that you are looking for?": [
+            "Siehst du die gesuchten Strings nicht?"
+         ],
+         "Enable the autoregistration setting.": [
+            "Aktiviere die Einstellung zur automatischen Registrierung."
+         ],
+         "Visit translations on the site's frontend for WPML to see which strings are missing translations. Visiting one language is enough: %s.": [
+            "Besuche Übersetzungen im Frontend der Website, damit WPML sehen kann, welche Strings noch nicht übersetzt sind. Der Besuch einer Sprache reicht aus: %s."
+         ],
+         "Alternatively, you can register strings manually.": [
+            "Alternativ kannst du Strings manuell registrieren."
+         ],
+         "Registering new strings found on your site…": [
+            "Neu gefundene Strings auf deiner Website werden registriert…"
+         ],
+         "Registering new strings is paused: there is not enough PHP memory to continue. Increase the memory limit or <retryQueue>try again</retryQueue>.": [
+            "Die Registrierung neuer Strings ist pausiert: Es ist nicht genügend PHP-Speicher vorhanden. Erhöhe das Speicherlimit oder <retryQueue>versuche es erneut</retryQueue>."
+         ],
+         "Registering new strings was interrupted. <retryQueue>Try again</retryQueue>": [
+            "Die Registrierung neuer Strings wurde unterbrochen. <retryQueue>Versuche es erneut</retryQueue>"
+         ],
+         "New strings were registered while you were working. <updateStringsList>Update the list</updateStringsList>": [
+            "Während du gearbeitet hast, wurden neue Strings registriert. <updateStringsList>Liste aktualisieren</updateStringsList>"
+         ],
+         "<b>Translate Everything</b> translates only those strings which are registered in English language": [
+            "<b>Alles übersetzen</b> übersetzt nur jene Strings, die in englischer Sprache registriert sind"
+         ],
+         "Most strings from your plugins and theme are in English, so we’re showing them alongside your default language. Use the <b>Source Language</b> filter to view strings in a specific language.": [
+            "Die meisten Strings aus deinen Plugins und deinem Theme sind auf Englisch, daher zeigen wir sie zusammen mit deiner Standardsprache an. Verwende den Filter <b>Quellsprache</b>, um Strings in einer bestimmten Sprache anzuzeigen."
+         ],
+         "You’re using <b>%s</b> to cache your site, which may prevent WPML from automatically registering new strings. To fix this, clear your page cache, then visit your translated pages again on the frontend to detect new strings.": [
+            "Du verwendest <b>%s</b> zum Cachen deiner Website, was WPML daran hindern kann, neue Strings automatisch zu registrieren. Um dies zu beheben, leere deinen Seitencache und besuche dann deine übersetzten Seiten erneut im Frontend, um neue Strings zu erkennen."
+         ],
+         "WPML can detect strings that appear on the site and list them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here only the strings that actually appear on the site, you need to enable this feature.": [
+            "WPML kann Strings erkennen, die auf der Website erscheinen, und sie hier auflisten. Diese Funktion hilft dir, die Strings zu identifizieren, die tatsächlich auf der Website erscheinen, und sie zu übersetzen. Um hier nur die Strings zu sehen, die tatsächlich auf der Website erscheinen, musst du diese Funktion aktivieren."
+         ],
+         "WPML detects strings that appear on the site and lists them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here all the strings in the site, you need to disable this feature.": [
+            "WPML erkennt Strings, die auf der Website erscheinen, und listet sie hier auf. Diese Funktion hilft dir, die Strings zu identifizieren, die tatsächlich auf der Website erscheinen, und sie zu übersetzen. Um hier alle Strings der Website zu sehen, musst du diese Funktion deaktivieren."
+         ],
+         "Detect untranslated strings": [
+            "Nicht übersetzte Strings erkennen"
+         ],
+         "WPML can detect untranslated strings and automatically register them for translation. This happens in real time as you or your visitors browse your website.": [
+            "WPML kann nicht übersetzte Strings erkennen und sie automatisch für die Übersetzung registrieren. Dies geschieht in Echtzeit, während du oder deine Besucher deine Website durchsuchen."
+         ],
+         "Automatically register untranslated strings": [
+            "Nicht übersetzte Strings automatisch registrieren"
+         ],
+         "Learn how to use auto-registration": [
+            "Erfahre, wie du die automatische Registrierung nutzt"
+         ],
+         "recommended": [
+            "empfohlen"
+         ],
+         "Also register strings from the website's back-end": [
+            "Auch Strings aus dem Backend der Website registrieren"
+         ],
+         "Save settings": [
+            "Einstellungen speichern"
+         ],
+         "Request failed because of the network error": [
+            "Anfrage aufgrund eines Netzwerkfehlers fehlgeschlagen"
+         ],
+         "Enabled": [
+            "Aktiviert"
+         ],
+         "Disabled": [
+            "Deaktiviert"
+         ],
+         "Modify": [
+            "Ändern"
+         ],
+         "You can only translate %1$s from the site's default language (%2$s).": [
+            "Du kannst %1$s nur aus der Standardsprache der Website (%2$s) übersetzen."
+         ],
+         "Search taxonomy or a name": [
+            "Taxonomie oder Namen suchen"
+         ],
+         "Filter by post type": [
+            "Nach Beitragstyp filtern"
+         ],
+         "All post types": [
+            "Alle Beitragstypen"
+         ],
+         "%d Not-translatable taxonomy is hidden. Switch it to <i>Translatable</i> in <a>WPML → Settings</a> to include it here.": [
+            "%d nicht übersetzbare Taxonomie ist ausgeblendet. Schalte sie in <a>WPML → Einstellungen</a> auf <i>Übersetzbar</i> um, um sie hier einzuschließen.",
+            "%d nicht übersetzbare Taxonomien sind ausgeblendet. Schalte sie in <a>WPML → Einstellungen</a> auf <i>Übersetzbar</i> um, um sie hier einzuschließen."
+         ],
+         "No translatable taxonomies match the current filters.": [
+            "Keine übersetzbaren Taxonomien entsprechen den aktuellen Filtern."
+         ],
+         "Select all taxonomies": [
+            "Alle Taxonomien auswählen"
+         ],
+         "Sort by taxonomy": [
+            "Nach Taxonomie sortieren"
+         ],
+         "Terms in": [
+            "Begriffe in"
+         ],
+         "Post types": [
+            "Beitragstypen"
+         ],
+         "Translated / Total terms": [
+            "Übersetzte / Gesamte Begriffe"
+         ],
+         "translated": [
+            "übersetzt"
+         ],
+         "translation in progress": [
+            "Übersetzung in Bearbeitung"
+         ],
+         "preparing for translation": [
+            "Vorbereitung für Übersetzung"
+         ],
+         "translation needs update": [
+            "Aktualisierung erforderlich"
+         ],
+         "translation stalled - the job never reached our translation system": [
+            "übersetzung blockiert – der auftrag hat unser übersetzungssystem nie erreicht"
+         ],
+         "partially translated": [
+            "teilweise übersetzt"
+         ],
+         "not translated": [
+            "nicht übersetzt"
+         ],
+         "%1$s: %2$s": [
+            "%1$s: %2$s"
+         ],
+         "Open %s in the Taxonomy Translation tab": [
+            "%s im Tab Taxonomie-Übersetzung öffnen"
+         ],
+         "Taxonomy labels and slug": [
+            "Taxonomie-Labels und Slug"
+         ],
+         "WPML String Translation is not active.": [
+            "WPML String Translation ist nicht aktiv."
+         ],
+         "Taxonomy labels and slugs are translated with <b>String Translation</b> — activate the plugin to translate them.": [
+            "Taxonomie-Labels und Slugs werden mit der <b>String-Übersetzung</b> übersetzt – aktiviere das Plugin, um sie zu übersetzen."
+         ],
+         "No taxonomy labels to translate.": [
+            "Keine Taxonomie-Labels zum Übersetzen vorhanden."
+         ],
+         "Select all taxonomy labels": [
+            "Alle Taxonomie-Labels auswählen"
+         ],
+         "Taxonomy labels": [
+            "Taxonomie-Labels"
+         ],
+         "Select labels for %s": [
+            "Labels für %s auswählen"
+         ],
+         "Labels not detected by String Translation. Rescan needed.": [
+            "Labels wurden von der String-Übersetzung nicht erkannt. Erneuter Scan erforderlich."
+         ],
+         "Labels not found": [
+            "Labels nicht gefunden"
+         ],
+         "Scanning…": [
+            "Scannen…"
+         ],
+         "Rescan": [
+            "Erneut scannen"
+         ],
+         "%d Taxonomy selected": [
+            "%d Taxonomie ausgewählt",
+            "%d Taxonomien ausgewählt"
+         ],
+         "<b>Translate Everything Automatically</b> (TEA) is active.": [
+            "<b>Alles automatisch übersetzen</b> (TEA) ist aktiv."
+         ],
+         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
+            "Neue und aktualisierte Begriffe in übersetzbaren Taxonomien werden automatisch in die Warteschlange gestellt. Wähle unten Taxonomien aus, um einen einmaligen Bulk-Auftrag für alle verbleibenden nicht übersetzten Begriffe zu senden."
+         ],
+         "Switch Now": [
+            "Jetzt wechseln"
+         ],
+         "Add site description": [
+            "Website-Beschreibung hinzufügen"
+         ],
+         "Turn on now": [
+            "Jetzt einschalten"
+         ],
+         "Set up <b>Translate Everything</b>": [
+            "<b>Alles übersetzen</b> einrichten"
+         ],
+         "You’ve been translating with %s.": [
+            "Du hast bisher mit %s übersetzt."
+         ],
+         "Your current translations stay exactly as they are. The switch to PTC affects only new and changed content. To refresh an old translation with PTC, re-send it from the <b>Translation Dashboard</b>. This works even while automatic translation runs. It skips anything already translated.": [
+            "Deine aktuellen Übersetzungen bleiben genau so, wie sie sind. Der Wechsel zu PTC betrifft nur neue und geänderte Inhalte. Um eine alte Übersetzung mit PTC zu aktualisieren, sende sie erneut über das <b>Übersetzungs-Dashboard</b>. Dies funktioniert auch, während die automatische Übersetzung läuft. Bereits übersetzte Inhalte werden übersprungen."
+         ],
+         "They stay as they are. Automatic translation only touches content that isn’t translated yet. WPML skips anything you’ve already translated. To refresh a page, re-send it from the <b>Translation Dashboard</b> anytime.": [
+            "Sie bleiben so, wie sie sind. Die automatische Übersetzung rührt nur Inhalte an, die noch nicht übersetzt sind. WPML überspringt alles, was du bereits übersetzt hast. Um eine Seite zu aktualisieren, sende sie jederzeit erneut über das <b>Übersetzungs-Dashboard</b>."
+         ],
+         "Add your site description and target audience": [
+            "Füge deine Website-Beschreibung und Zielgruppe hinzu"
+         ],
+         "Save": [
+            "Speichern"
+         ],
+         "Saving…": [
+            "Speichern…"
+         ],
+         "Your automatic translation pricing has been upgraded": [
+            "Deine Preise für die automatische Übersetzung wurden aktualisiert"
+         ],
+         "Loading notice details…": [
+            "Details zur Benachrichtigung werden geladen…"
+         ],
+         "With WPML 5, automatic translation now costs once per page, per language. After that, edits that add words cost only the added words — edits that don’t grow the page are free. Rework copy, run A/B tests, refine wording. You’re already on PTC, with automatic translation on. There’s nothing to change.": [
+            "Mit WPML 5 kostet die automatische Übersetzung jetzt einmal pro Seite und Sprache. Danach kosten Bearbeitungen, die Wörter hinzufügen, nur die hinzugefügten Wörter – Bearbeitungen, die die Seite nicht vergrößern, sind kostenlos. Überarbeite Texte, führe A/B-Tests durch, verfeinere Formulierungen. Du nutzt bereits PTC und die automatische Übersetzung ist aktiviert. Es gibt nichts zu ändern."
+         ],
+         "Got it": [
+            "Verstanden"
+         ],
+         "See your pricing": [
+            "Preise ansehen"
+         ],
+         "You’re all set. The new pricing is active.": [
+            "Alles bereit. Die neue Preisgestaltung ist aktiv."
+         ],
+         "Automatic translation now costs once per page, per language. Edits afterwards are free. New content stays translated as you publish.": [
+            "Die automatische Übersetzung kostet jetzt einmal pro Seite und Sprache. Nachträgliche Bearbeitungen sind kostenlos. Neue Inhalte bleiben bei der Veröffentlichung übersetzt."
+         ],
+         "What happens to my existing translations?": [
+            "Was passiert mit meinen bestehenden Übersetzungen?"
+         ],
+         "Switch to PTC for better translations and the new pricing": [
+            "Wechsle zu PTC für bessere Übersetzungen und die neue Preisgestaltung"
+         ],
+         "Pay once per page, then edit for free": [
+            "Einmal pro Seite bezahlen, dann kostenlos bearbeiten"
+         ],
+         "You’re translating your whole site automatically with %s. The new pay-once pricing applies when you use PTC, our recommended AI engine.": [
+            "Du übersetzt deine gesamte Website automatisch mit %s. Die neue Einmalzahlung-Preisgestaltung gilt, wenn du PTC verwendest, unsere empfohlene KI-Engine."
+         ],
+         "WPML 5 brings a simpler, lower price for automatic translation, using <strong>Private Translation Cloud (PTC)</strong>, WPML’s own AI engine. Set it up to have WPML translate your whole site automatically.": [
+            "WPML 5 bringt einen einfacheren, niedrigeren Preis für die automatische Übersetzung unter Verwendung der <strong>Private Translation Cloud (PTC)</strong>, der WPML-eigenen KI-Engine. Richte sie ein, damit WPML deine gesamte Website automatisch übersetzt."
+         ],
+         "What you gain": [
+            "Deine Vorteile"
+         ],
+         "Pay once per page, in each language.": [
+            "Bezahle einmal pro Seite in jeder Sprache."
+         ],
+         "After that, only added words are charged.": [
+            "Danach werden nur hinzugefügte Wörter berechnet."
+         ],
+         "Edit as much as you want.": [
+            "Bearbeite so viel du willst."
+         ],
+         "A/B tests, copy changes, and rewrites cost only the words they add.": [
+            "A/B-Tests, Textänderungen und Umschreibungen kosten nur die Wörter, die sie hinzufügen."
+         ],
+         "Translations in your voice.": [
+            "Übersetzungen in deinem Stil."
+         ],
+         "PTC learns your terms and tone from your existing translations.": [
+            "PTC lernt deine Begriffe und deinen Tonfall aus deinen bestehenden Übersetzungen."
+         ],
+         "Questions? Tap to expand": [
+            "Fragen? Zum Erweitern tippen"
+         ],
+         "Why is the pay-once pricing only for PTC?": [
+            "Warum gibt es die Pauschalpreise nur für PTC?"
+         ],
+         "PTC is WPML’s own AI engine. It reads the whole page, learns your terms and tone, and is backed by our quality guarantee, so we can price it once per page. DeepL, Google and Microsoft translate segment by segment and are priced per word, changes included.": [
+            "PTC ist die eigene KI-Engine von WPML. Sie liest die gesamte Seite, lernt Ihre Begriffe sowie Ihren Tonfall und ist durch unsere Qualitätsgarantie abgesichert, sodass wir einen Pauschalpreis pro Seite anbieten können. DeepL, Google und Microsoft übersetzen Segment für Segment und werden pro Wort abgerechnet, Änderungen inklusive."
+         ],
+         "How much will I pay?": [
+            "Wie viel werde ich bezahlen?"
+         ],
+         "You’re on %s: per word, changes included. Switch to PTC to pay once per page, with free changes.": [
+            "Sie nutzen %s: pro Wort, Änderungen inklusive. Wechseln Sie zu PTC, um einmal pro Seite zu bezahlen, inklusive kostenloser Änderungen."
+         ],
+         "On PTC, you pay once per page, in each language. After that, edits to that page are free. You pay again only if the page grows past what you first paid for. In short: you pay for new content, not for updates.": [
+            "Bei PTC zahlst du einmal pro Seite in jeder Sprache. Danach sind Bearbeitungen an dieser Seite kostenlos. Du zahlst erst wieder, wenn die Seite über das hinauswächst, wofür du zuerst bezahlt hast. Kurz gesagt: Du zahlst für neue Inhalte, nicht für Aktualisierungen."
+         ],
+         "Yes, show me how": [
+            "Ja, zeig mir wie"
+         ],
+         "Not interested": [
+            "Nicht interessiert"
+         ],
+         "Do these in order. If you turn on automatic translation before choosing PTC, WPML translates your whole site with the wrong engine. You’d then pay to redo that work.": [
+            "Führe diese Schritte der Reihe nach aus. Wenn du die automatische Übersetzung einschaltest, bevor du PTC wählst, übersetzt WPML deine gesamte Website mit der falschen Engine. Du müsstest dann bezahlen, um diese Arbeit erneut zu erledigen."
+         ],
+         "Do these in order. The engine change affects only new and changed content. Your current translations stay as they are.": [
+            "Führe diese Schritte der Reihe nach aus. Der Engine-Wechsel betrifft nur neue und geänderte Inhalte. Deine aktuellen Übersetzungen bleiben so, wie sie sind."
+         ],
+         "Switch on the new pricing in %d step": [
+            "Schalte die neue Preisgestaltung in %d Schritt ein",
+            "Schalte die neue Preisgestaltung in %d Schritten ein"
+         ],
+         "Done": [
+            "Fertig"
+         ],
+         "Automatic translation is paused. Settle it in the <b>Translate Everything</b> box first.": [
+            "Die automatische Übersetzung ist pausiert. Kläre dies zuerst in der Box <b>Alles übersetzen</b>."
+         ],
+         "Do the step above first": [
+            "Führe zuerst den obigen Schritt aus"
+         ],
+         "Switch to the <b>Advanced Translation Editor</b>": [
+            "Wechseln Sie zum <b>Erweiterten Übersetzungs-Editor</b>"
+         ],
+         "Switch your engine to PTC": [
+            "Wechseln Sie Ihre Engine zu PTC"
+         ],
+         "Turn on <b>Translate Everything Automatically</b>": [
+            "Schalte <b>Alles automatisch übersetzen</b> ein"
+         ],
+         "The Advanced Translation Editor is your editor now.": [
+            "Der Erweiterte Übersetzungs-Editor ist jetzt Ihr Editor."
+         ],
+         "You’re using the Classic Translation Editor, an old legacy tool. PTC and automatic translation run in the Advanced Translation Editor, which also gives you:": [
+            "Sie verwenden den Klassischen Übersetzungs-Editor, ein altes Legacy-Tool. PTC und die automatische Übersetzung laufen im Erweiterten Übersetzungs-Editor, der Ihnen außerdem Folgendes bietet:"
+         ],
+         "recommended: pay once per page. PTC needs a short description of your site; the next dialog asks for it.": [
+            "empfohlen: einmal pro Seite bezahlen. PTC benötigt eine kurze Beschreibung Ihrer Website; der nächste Dialog fragt diese ab."
+         ],
+         "recommended: pay once per page": [
+            "empfohlen: einmal pro Seite bezahlen"
+         ],
+         "Only you can describe your site. PTC uses this to translate in your voice. Enter it in AI Settings, then Save.": [
+            "Nur du kannst deine Website beschreiben. PTC nutzt dies, um in deinem Stil zu übersetzen. Gib die Beschreibung in den KI-Einstellungen ein und speichere dann."
+         ],
+         "Starts with your current engine, %s, priced per word. After step 1 it runs on PTC, pay once per page.": [
+            "Beginnt mit Ihrer aktuellen Engine, %s, Abrechnung pro Wort. Nach Schritt 1 läuft es über PTC, Bezahlung einmal pro Seite."
+         ],
+         "WPML translates your whole site. New content stays translated as you publish.": [
+            "WPML übersetzt deine gesamte Website. Neue Inhalte bleiben bei der Veröffentlichung übersetzt."
+         ],
+         "Translation Memory": [
+            "Übersetzungsspeicher"
+         ],
+         "HTML Protection": [
+            "HTML-Schutz"
+         ],
+         "Glossary": [
+            "Glossar"
+         ],
+         "Spellchecker": [
+            "Rechtschreibprüfung"
+         ],
+         "AI Assistant": [
+            "KI-Assistent"
+         ],
+         "Automatic Translation": [
+            "Automatische Übersetzung"
+         ],
+         "<b>Translate Everything Automatically</b> is already on, with %s (per word).": [
+            "<b>Alles automatisch übersetzen</b> ist bereits aktiviert, mit %s (pro Wort)."
+         ],
+         "Not now": [
+            "Nicht jetzt"
+         ],
+         "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
+            "Verbindungsfehler. Bitte warte eine Minute und lade diese Seite neu. Wenn das Problem weiterhin besteht, kontaktiere bitte den WPML-Support."
+         ],
+         "You don’t have enough prepaid words to translate this content.": [
+            "Du hast nicht genügend Prepaid-Wörter, um diesen Inhalt zu übersetzen."
+         ],
+         "You have %1$s prepaid words — %2$s more are needed to translate this content": [
+            "Du hast %1$s Prepaid-Wörter – %2$s weitere werden benötigt, um diesen Inhalt zu übersetzen"
+         ],
+         "You’re missing %1$s prepaid words for the translation jobs in progress — %2$s are needed in total": [
+            "Dir fehlen %1$s Prepaid-Wörter für die laufenden Übersetzungsaufträge – insgesamt werden %2$s benötigt"
+         ],
+         "Automatic translation costs:": [
+            "Kosten für automatische Übersetzung:"
+         ],
+         "Words": [
+            "Wort",
+            "Wörter"
+         ],
+         "Words to translate automatic": [
+            "Wörter für automatische Übersetzung"
+         ],
+         "Words required:": [
+            "Wörter erforderlich:"
+         ],
+         "Pricing": [
+            "Preise"
+         ],
+         "Your Automatic Translation Words": [
+            "Deine Wörter für die automatische Übersetzung"
+         ],
+         "To proceed with translation, activate <b>Pay-As-You-Go</b> or assign prepaid words.": [
+            "Um mit der Übersetzung fortzufahren, aktivieren Sie <b>Nutzungsbasierte Abrechnung</b> oder weisen Sie Prepaid-Wörter zu."
+         ],
+         "<b>Pay-As-You-Go</b> activated": [
+            "<b>Nutzungsbasierte Abrechnung</b> aktiviert"
+         ],
+         "You can now continue translating your content automatically.": [
+            "Du kannst nun fortfahren, deine Inhalte automatisch zu übersetzen."
+         ],
+         "%s word assigned to this site.": [
+            "%s Wort dieser Website zugewiesen.",
+            "%s Wörter dieser Website zugewiesen."
+         ],
+         "Leave existing translations as they are": [
+            "Bestehende Übersetzungen so belassen, wie sie sind"
+         ],
+         "Overwrite existing translations": [
+            "Bestehende Übersetzungen überschreiben"
+         ],
+         "Some of the content you want to translate is already translated": [
+            "Einige der Inhalte, die du übersetzen möchtest, sind bereits übersetzt"
+         ],
+         "What do you want to do with the content that's already translated?": [
+            "Was möchtest du mit den bereits übersetzten Inhalten tun?"
+         ],
+         "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
+            "Übersetzungen von DeepL, Google Translate und Microsoft Translator sollten am besten vor der Veröffentlichung überprüft werden."
+         ],
+         "Translations from PTC are publish-ready, so you can publish them without review.": [
+            "Übersetzungen von PTC sind bereit für die Veröffentlichung, sodass du sie ohne Überprüfung veröffentlichen kannst."
+         ],
+         "Suggested deadline:": [
+            "Vorgeschlagene Frist:"
+         ],
+         "Set a batch name and deadline": [
+            "Batch-Namen und Frist festlegen"
+         ],
+         "You can assign a custom name to this batch for easy tracking and suggest a deadline to clarify the priority for translators.": [
+            "Du kannst diesem Batch einen benutzerdefinierten Namen zur einfachen Nachverfolgung zuweisen und eine Frist vorschlagen, um die Priorität für Übersetzer zu verdeutlichen."
+         ],
+         "Batch name:": [
+            "Batch-Name:"
+         ],
+         "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s translator</add_yourself> to the site.<br/> Add yourself as %2$s translator and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Um dich selbst als Übersetzer zuzuweisen, musst du dich zuerst als <add_yourself>%1$s-Übersetzer</add_yourself> zur Website hinzufügen.<br/> Füge dich als %2$s-Übersetzer hinzu und klicke auf <check_again>erneut prüfen</check_again> oder wähle eine andere Übersetzungsoption."
+         ],
+         "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s to %2$s translator</add_yourself> to the site.<br/> Add yourself as %3$s to %4$s translator and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Um dich selbst als Übersetzer zuzuweisen, musst du dich zuerst als <add_yourself>Übersetzer für %1$s nach %2$s</add_yourself> zur Website hinzufügen.<br/> Füge dich als Übersetzer für %3$s nach %4$s hinzu und klicke auf <check_again>erneut prüfen</check_again> oder wähle eine andere Übersetzungsoption."
+         ],
+         "Checking": [
+            "Prüfung läuft"
+         ],
+         "In order to assign a translation service, you first need to <activate_ts>activate a translation service</activate_ts>.<br/>Activate a translation service and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Um einen Übersetzungsdienst zuzuweisen, musst du zuerst einen <activate_ts>Übersetzungsdienst aktivieren</activate_ts>.<br/>Aktiviere einen Übersetzungsdienst und klicke auf <check_again>erneut prüfen</check_again> oder wähle eine andere Übersetzungsoption."
+         ],
+         " Checking ": [
+            " Prüfung läuft "
+         ],
+         "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Um automatisch zu übersetzen, müssen Sie zunächst <enable_ate>WPMLs <b>Erweiterten Übersetzungs-Editor</b> aktivieren</enable_ate>.<br/>Aktivieren Sie den <b>Erweiterten Übersetzungs-Editor</b> und klicken Sie auf <check_again>erneut prüfen</check_again> oder wählen Sie eine andere Übersetzungsoption."
+         ],
+         "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
+            "Der ausgewählte Inhalt wurde mit dem <b>klassischen Übersetzungs-Editor</b> übersetzt und kann nicht zur automatischen Übersetzung gesendet werden. Um dies zu ermöglichen, aktiviere „Auch für alte Übersetzungen verwenden“ auf der Seite <wpmlSettingLink>WPML-Einstellungen</wpmlSettingLink>."
+         ],
+         "Some of the selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
+            "Einige der ausgewählten Inhalte wurden mit dem <b>klassischen Übersetzungs-Editor</b> übersetzt und können nicht zur automatischen Übersetzung gesendet werden. Um dies zu ermöglichen, aktiviere „Auch für alte Übersetzungen verwenden“ auf der Seite <wpmlSettingLink>WPML-Einstellungen</wpmlSettingLink>."
+         ],
+         "Content that is already translated into this language will not be duplicated; its existing translation is kept.\nWhen duplicating content, please first duplicate parent pages to maintain the site's hierarchy.": [
+            "Inhalte, die bereits in diese Sprache übersetzt wurden, werden nicht dupliziert; die vorhandene Übersetzung bleibt erhalten.\nWenn Sie Inhalte duplizieren, duplizieren Sie bitte zuerst die übergeordneten Seiten, um die Hierarchie der Website beizubehalten."
+         ],
+         "Some of the selected content is already being translated. This will cancel any in-progress translations.": [
+            "Einige der ausgewählten Inhalte werden bereits übersetzt. Dies bricht alle laufenden Übersetzungen ab."
+         ],
+         "The selected items were translated using the WordPress Editor and will be overwritten with automatic translations.": [
+            "Die ausgewählten Elemente wurden mit dem WordPress-Editor übersetzt und werden mit automatischen Übersetzungen überschrieben."
+         ],
+         "Some of the selected content was translated using the WordPress Editor and will be overwritten.": [
+            "Einige der ausgewählten Inhalte wurden mit dem WordPress-Editor übersetzt und werden überschrieben."
+         ],
+         "Translated content structure will change. The selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
+            "Die Struktur der übersetzten Inhalte wird sich ändern. Die ausgewählten Elemente wurden zuvor im WordPress-Editor übersetzt. Wenn WPML sie automatisch übersetzt, wird die Struktur des übersetzten Beitrags wieder an den Originalinhalt angepasst. Vorhandener übersetzter Text wird weiterhin als Basis verwendet, damit Tonfall und Terminologie erhalten bleiben."
+         ],
+         "Translated content structure will change. Some of the selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
+            "Die Struktur der übersetzten Inhalte wird sich ändern. Einige der ausgewählten Elemente wurden zuvor im WordPress-Editor übersetzt. Wenn WPML sie automatisch übersetzt, wird die Struktur des übersetzten Beitrags wieder an den Originalinhalt angepasst. Vorhandener übersetzter Text wird weiterhin als Basis verwendet, damit Tonfall und Terminologie erhalten bleiben."
+         ],
+         "In order to assign to a translator, you first need to <add_translators>add %1$s translators</add_translators> to the site.<br/> Add %2$s translators and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Um einem Übersetzer zuzuweisen, musst du zuerst <add_translators>%1$s-Übersetzer</add_translators> zur Website hinzufügen.<br/> Füge %2$s-Übersetzer hinzu und klicke auf <check_again>erneut prüfen</check_again> oder wähle eine andere Übersetzungsoption."
+         ],
+         "In order to assign to a translator, you first need to <add_translators>add %1$s to %2$s translators</add_translators> to the site.<br/> Add %3$s to %4$s translators and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Um einem Übersetzer zuzuweisen, musst du zuerst <add_translators>Übersetzer für %1$s nach %2$s</add_translators> zur Website hinzufügen.<br/> Füge Übersetzer für %3$s nach %4$s hinzu und klicke auf <check_again>erneut prüfen</check_again> oder wähle eine andere Übersetzungsoption."
+         ],
+         "Your site doesn't have any reviewers for %s. This means that you’re the only person who can review these translations.": [
+            "Deine Website hat keine Reviewer für %s. Das bedeutet, dass du die einzige Person bist, die diese Übersetzungen überprüfen kann."
+         ],
+         "Your site doesn't have any reviewers yet. This means that you’re the only person who can review translations.": [
+            "Deine Website hat noch keine Reviewer. Das bedeutet, dass du die einzige Person bist, die Übersetzungen überprüfen kann."
+         ],
+         "If you want other people to review the translations, go to <a>Settings → Translators</a> and add translators. They will be able to both review and translate content for you.": [
+            "Wenn du möchtest, dass andere Personen die Übersetzungen überprüfen, gehe zu <a>Einstellungen → Übersetzer</a> und füge Übersetzer hinzu. Diese können dann sowohl Inhalte für dich überprüfen als auch übersetzen."
+         ],
+         "Automatic translation is paused — payment required": [
+            "Automatische Übersetzung pausiert – Zahlung erforderlich"
+         ],
+         "A payment of %s could not be processed. Pay it in the <b>Translate Everything</b> box above to resume.": [
+            "Eine Zahlung von %s konnte nicht verarbeitet werden. Bezahle diese in der Box <b>Alles übersetzen</b> oben, um fortzufahren."
+         ],
+         "Automatic translation is paused: monthly spending cap reached": [
+            "Automatische Übersetzung pausiert: Monatliches Ausgabenlimit erreicht"
+         ],
+         "<site>%1$s</site> reached its monthly spending cap (<figure>%2$s</figure> of <figure>%3$s</figure> words used). Raise it above to continue.": [
+            "<site>%1$s</site> hat sein monatliches Ausgabenlimit erreicht (<figure>%2$s</figure> von <figure>%3$s</figure> Wörtern verbraucht). Erhöhe es oben, um fortzufahren."
+         ],
+         "WPML does not support duplicating strings. Your selection to duplicate strings to %1$s will be ignored if you proceed with the translation.": [
+            "WPML unterstützt das Duplizieren von Strings nicht. Deine Auswahl, Strings nach %1$s zu duplizieren, wird ignoriert, wenn du mit der Übersetzung fortfährst."
+         ],
+         "WPML does not support duplicating %1$s elements. Your selection to duplicate elements to %2$s will be ignored if you proceed with the translation.": [
+            "WPML unterstützt das Duplizieren von %1$s-Elementen nicht. Deine Auswahl, Elemente nach %2$s zu duplizieren, wird ignoriert, wenn du mit der Übersetzung fortfährst."
+         ],
+         "WPML does not support duplicating %1$s elements and strings. Your selection to duplicate elements and strings to %2$s will be ignored if you proceed with the translation.": [
+            "WPML unterstützt das Duplizieren von %1$s-Elementen und Strings nicht. Deine Auswahl, Elemente und Strings nach %2$s zu duplizieren, wird ignoriert, wenn du mit der Übersetzung fortfährst."
+         ],
+         "WPML does not support duplicating strings.": [
+            "WPML unterstützt das Duplizieren von Strings nicht."
+         ],
+         "WPML does not support duplicating %1$s elements.": [
+            "WPML unterstützt das Duplizieren von %1$s-Elementen nicht."
+         ],
+         "WPML does not support duplicating %1$s elements and strings.": [
+            "WPML unterstützt das Duplizieren von %1$s-Elementen und Strings nicht."
+         ],
+         "WPML does not support duplicating taxonomies.": [
+            "WPML unterstützt das Duplizieren von Taxonomien nicht."
+         ],
+         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
+            "WPML unterstützt das Duplizieren von Taxonomien nicht. Deine Auswahl, Taxonomien nach %1$s zu duplizieren, wird ignoriert, wenn du mit der Übersetzung fortfährst."
+         ],
+         "Finish setting up %s on your site": [
+            "Schließe die Einrichtung von %s auf deiner Website ab"
+         ],
+         "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
+            "Du musst %s authentifizieren, um Inhalte zur Übersetzung dorthin zu senden.<br/>Besuche den <a>Tab Übersetzer</a>, um die Einrichtung abzuschließen, und klicke auf <check_again>erneut prüfen</check_again> oder wähle eine andere Übersetzungsoption."
+         ],
+         "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
+            "Für einige der ausgewählten Inhalte steht eine Übersetzung zur Überprüfung aus. Wenn Sie sie erneut senden, wird diese Übersetzung ersetzt."
+         ],
+         "You selected multiple translation methods for content across different languages:": [
+            "Du hast mehrere Übersetzungsmethoden für Inhalte in verschiedenen Sprachen ausgewählt:"
+         ],
+         "Sent for translation": [
+            "Zur Übersetzung gesendet"
+         ],
+         "Some items were not sent for translation": [
+            "Einige Elemente wurden nicht zur Übersetzung gesendet"
+         ],
+         "Sending for translation failed": [
+            "Senden zur Übersetzung fehlgeschlagen"
+         ],
+         "WPML can't reach our translation system right now, so these items haven't been sent. Check the connection and retry.": [
+            "WPML kann unser Übersetzungssystem derzeit nicht erreichen, daher wurden diese Elemente nicht gesendet. Überprüfen Sie die Verbindung und versuchen Sie es erneut."
+         ],
+         "WPML could not read the translation server's answer about these items. If you send them anyway and the server already has them, you may be charged for them twice.": [
+            "WPML konnte die Antwort des Übersetzungsservers zu diesen Elementen nicht lesen. Wenn Sie sie trotzdem senden und der Server sie bereits hat, werden sie Ihnen möglicherweise doppelt berechnet."
+         ],
+         "Check connection and retry": [
+            "Verbindung prüfen und erneut versuchen"
+         ],
+         "Retry not-sent items": [
+            "Nicht gesendete Elemente erneut versuchen"
+         ],
+         "Send anyway": [
+            "Trotzdem senden"
+         ],
+         "Close": [
+            "Schließen"
+         ],
+         "Continue sending": [
+            "Senden fortsetzen"
+         ],
+         "Ok": [
+            "Ok"
+         ],
+         "<s>1 item</s> is being translated automatically.": [
+            "<s>1 Element</s> wird automatisch übersetzt.",
+            "<s>%d Elemente</s> werden automatisch übersetzt."
+         ],
+         "You can track their progress at the top of the page.": [
+            "Du kannst deren Fortschritt oben auf der Seite verfolgen."
+         ],
+         "From now on, WPML will automatically translate new content on your site.": [
+            "Von nun an wird WPML neue Inhalte auf deiner Website automatisch übersetzen."
+         ],
+         "This number might vary because you enabled the <b>Translate Everything Automatically</b> Mode.": [
+            "Diese Zahl kann variieren, da du den Modus <b>Alles automatisch übersetzen</b> aktiviert hast."
+         ],
+         "From now on, WPML will automatically translate your site's content.": [
+            "Von nun an wird WPML die Inhalte deiner Website automatisch übersetzen."
+         ],
+         "Automatic translations summary": [
+            "Zusammenfassung der automatischen Übersetzungen"
+         ],
+         "<s>1 item</s> has been successfully assigned to you! To check its status, please go to <s>Translation Tasks</s>. <translations_queue/>": [
+            "<s>1 Element</s> wurde dir erfolgreich zugewiesen! Um den Status zu prüfen, gehe bitte zu <s>Übersetzungsaufgaben</s>. <translations_queue/>",
+            "<s>%d Elemente</s> wurden dir erfolgreich zugewiesen! Für Status-Updates gehe bitte zu <s>Übersetzungsaufgaben</s>. <translations_queue/>"
+         ],
+         "Currently logged in translator summary": [
+            "Zusammenfassung für aktuell angemeldeten Übersetzer"
+         ],
+         "Go to Translation Tasks": [
+            "Zu den Übersetzungsaufgaben gehen"
+         ],
+         "<s>1 item</s> has been duplicated.": [
+            "<s>1 Element</s> wurde dupliziert.",
+            "<s>%d Elemente</s> wurden dupliziert."
+         ],
+         "Duplication summary": [
+            "Zusammenfassung der Duplizierung"
+         ],
+         "Please try again in a few minutes. If the issue persists, <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, copy the technical details below and paste them into our Maiya agent for assistance.": [
+            "Bitte versuche es in ein paar Minuten erneut. Wenn das Problem weiterhin besteht, <supportLink>öffne ein Ticket in unserem Forum-Thread (Maiya)</supportLink>, kopiere die technischen Details unten und füge sie bei unserem Maiya-Agenten ein, um Unterstützung zu erhalten."
+         ],
+         "There was a problem sending your content for translation.": [
+            "Es gab ein Problem beim Senden deiner Inhalte zur Übersetzung."
+         ],
+         "See technical details": [
+            "Technische Details anzeigen"
+         ],
+         "Hide technical details": [
+            "Technische Details ausblenden"
+         ],
+         "Some of the selected strings are already registered or translated into %s. Since their source language matches the target language, they cannot be retranslated.": [
+            "Einige der ausgewählten Strings sind bereits registriert oder in %s übersetzt. Da ihre Quellsprache mit der Zielsprache übereinstimmt, können sie nicht erneut übersetzt werden."
+         ],
+         "Some of the selected content has already been translated from %1$s to %2$s and cannot be re-translated from %3$s to %4$s.": [
+            "Einige der ausgewählten Inhalte wurden bereits von %1$s nach %2$s übersetzt und können nicht erneut von %3$s nach %4$s übersetzt werden."
+         ],
+         "Content already translated": [
+            "Inhalt bereits übersetzt"
+         ],
+         "Some of the selected content has a translation in progress, so it was not duplicated.": [
+            "Einige der ausgewählten Inhalte haben eine laufende Übersetzung und wurden daher nicht dupliziert."
+         ],
+         "Content already being translated": [
+            "Inhalt wird bereits übersetzt"
+         ],
+         "WPML could not count the words of these items.": [
+            "WPML konnte die Wörter dieser Elemente nicht zählen."
+         ],
+         "Some content couldn't be sent to translation.": [
+            "Einige Inhalte konnten nicht zur Übersetzung gesendet werden."
+         ],
+         "WPML did not create translations for some languages because of the following reasons:": [
+            "WPML hat aus den folgenden Gründen keine Übersetzungen für einige Sprachen erstellt:"
+         ],
+         "%s Flag": [
+            "Flagge von %s"
+         ],
+         "<s>1 item</s> has been successfully sent to translators!": [
+            "<s>1 Element</s> wurde erfolgreich an Übersetzer gesendet!",
+            "<s>%d Elemente</s> wurden erfolgreich an Übersetzer gesendet!"
+         ],
+         "Local translations summary": [
+            "Zusammenfassung der lokalen Übersetzungen"
+         ],
+         "You can check their status in WPML → Translation": [
+            "Du kannst deren Status unter WPML → Übersetzung prüfen"
+         ],
+         "Items not sent:": [
+            "Nicht gesendete Elemente:"
+         ],
+         "%d item was sent for translation.": [
+            "%d Element wurde zur Übersetzung gesendet.",
+            "%d Elemente wurden zur Übersetzung gesendet."
+         ],
+         "%d item was not sent.": [
+            "%d Element wurde nicht gesendet.",
+            "%d Elemente wurden nicht gesendet."
+         ],
+         "Reason: %s": [
+            "Grund: %s"
+         ],
+         "Items already sent will be translated and delivered normally.": [
+            "Bereits gesendete Elemente werden normal übersetzt und geliefert."
+         ],
+         "Continue to %s": [
+            "Weiter zu %s"
+         ],
+         "We were unable to send the following batches for professional translation:": [
+            "Wir konnten die folgenden Batches nicht zur professionellen Übersetzung senden:"
+         ],
+         "<p><a><s>Contact WPML support for help</s></a></p>": [
+            "<p><a><s>Kontaktiere den WPML-Support für Hilfe</s></a></p>"
+         ],
+         "Translation Service": [
+            "Übersetzungsdienst"
+         ],
+         "sending for professional translation..": [
+            "Senden zur professionellen Übersetzung.."
+         ],
+         "<s>%1$d item</s> is being sent for translation to %2$s. Please continue to their site to start the translation.": [
+            "<s>%1$d Element</s> wird zur Übersetzung an %2$s gesendet. Bitte fahre auf deren Website fort, um mit der Übersetzung zu beginnen.",
+            "<s>%1$d Elemente</s> werden zur Übersetzung an %2$s gesendet. Bitte fahre auf deren Website fort, um mit der Übersetzung zu beginnen."
+         ],
+         "Translation service translations summary": [
+            "Zusammenfassung der Übersetzungsdienst-Übersetzungen"
+         ],
+         "One or more assigned translators are invalid. The translator may have been removed or their language permissions changed.<br/> Review your settings on the <translators_page>Translators page</translators_page>.": [
+            "Ein oder mehrere zugewiesene Übersetzer sind ungültig. Der Übersetzer wurde möglicherweise entfernt oder seine Sprachberechtigungen wurden geändert.<br/> Überprüfe deine Einstellungen auf der <translators_page>Übersetzer-Seite</translators_page>."
+         ],
+         "The selected translation service is no longer valid. It may have been changed, unauthenticated, or deactivated.<br/> Review your settings on the <translators_page>Translators page</translators_page>.": [
+            "Der ausgewählte Übersetzungsdienst ist nicht mehr gültig. Er wurde möglicherweise geändert, die Authentifizierung wurde aufgehoben oder er wurde deaktiviert.<br/> Überprüfe Deine Einstellungen auf der <translators_page>Übersetzer-Seite</translators_page>."
+         ],
+         "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
+            "Der aktuell ausgewählte Übersetzungs-Editor unterstützt keine automatische Übersetzung. Du musst den <b>Erweiterten Übersetzungs-Editor</b> aktivieren, um Inhalte zur automatischen Übersetzung zu senden.<br/> Überprüfe Deine Einstellungen auf der <wpml_settings>WPML-Einstellungsseite</wpml_settings>."
+         ],
+         "Validation error happened during send to translation.": [
+            "Beim Senden zur Übersetzung ist ein Validierungsfehler aufgetreten."
+         ],
+         "Translate and Duplicate": [
+            "Übersetzen und duplizieren"
+         ],
+         "Duplicate": [
+            "Duplizieren"
+         ],
+         "Translate content": [
+            "Inhalte übersetzen"
+         ],
+         "Checking translation engine…": [
+            "Übersetzungs-Engine wird geprüft…"
+         ],
+         "Checking site context…": [
+            "Website-Kontext wird geprüft…"
+         ],
+         "Could not check the translation engine. Reload the page to try again.": [
+            "Die Übersetzungs-Engine konnte nicht geprüft werden. Lade die Seite neu, um es erneut zu versuchen."
+         ],
+         "Automatic translation is paused until the failed payment is settled. Pay it in the Translate Everything box.": [
+            "Die automatische Übersetzung ist pausiert, bis die fehlgeschlagene Zahlung beglichen wurde. Bezahle sie in der Box „Alles automatisch übersetzen“."
+         ],
+         "Please choose one of the available payment options.": [
+            "Bitte wähle eine der verfügbaren Zahlungsoptionen."
+         ],
+         "Selected content is already translated": [
+            "Ausgewählter Inhalt ist bereits übersetzt"
+         ],
+         "Please select a review mode": [
+            "Bitte wähle einen Review-Modus"
+         ],
+         "Assign local translator or choose another option": [
+            "Lokalen Übersetzer zuweisen oder eine andere Option wählen"
+         ],
+         "Assign yourself or choose another option": [
+            "Dich selbst zuweisen oder eine andere Option wählen"
+         ],
+         "Activate translation service or choose another option": [
+            "Übersetzungsdienst aktivieren oder eine andere Option wählen"
+         ],
+         "Activate the Advanced Translation Editor or choose another option": [
+            "Aktivieren Sie den Erweiterten Übersetzungs-Editor oder wählen Sie eine andere Option"
+         ],
+         "Authenticate translation service or choose another option": [
+            "Übersetzungsdienst authentifizieren oder eine andere Option wählen"
+         ],
+         "Please provide context to enable translation": [
+            "Bitte gib einen Kontext an, um die Übersetzung zu ermöglichen"
+         ],
+         "Keep this page open while WPML sends your content for translation. Leaving now stops the remaining items from being sent.": [
+            "Lassen Sie diese Seite offen, während WPML Ihre Inhalte zur Übersetzung sendet. Wenn Sie die Seite jetzt verlassen, wird das Senden der verbleibenden Elemente gestoppt."
+         ],
+         "Sending content for translation": [
+            "Inhalte zur Übersetzung senden"
+         ],
+         "<s>%1$s</s> cannot process more than <s>%2$d</s> jobs in a single batch. WPML will automatically split your jobs into separate batches to ensure an error-free delivery to <s>%3$s</s>. <br/><br/> Do you want to proceed?": [
+            "<s>%1$s</s> kann nicht mehr als <s>%2$d</s> Aufträge in einem einzigen Batch verarbeiten. WPML wird Deine Aufträge automatisch in separate Batches aufteilen, um eine fehlerfreie Übermittlung an <s>%3$s</s> zu gewährleisten. <br/><br/> Möchtest Du fortfahren?"
+         ],
+         "WPML will send jobs to %s in separate batches": [
+            "WPML wird Aufträge an %s in separaten Batches senden"
+         ],
+         "Yes, send jobs in separate batches": [
+            "Ja, Aufträge in separaten Batches senden"
+         ],
+         "No, I will split jobs myself": [
+            "Nein, ich werde die Aufträge selbst aufteilen"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
+            "Einige Taxonomie-Begriffe wurden noch nicht gesendet. Die gesendeten Begriffe werden übersetzt – klicken Sie auf „Senden fortsetzen“, um den Rest zu senden."
+         ],
+         "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
+            "Die Taxonomie-Begriffe wurden noch nicht gesendet. Klicken Sie auf „Senden fortsetzen“, um sie zu senden."
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
+            "Einige Taxonomie-Begriffe wurden noch nicht gesendet. Die gesendeten Begriffe werden übersetzt – versuchen Sie es bei den nicht gesendeten Elementen erneut, um den Rest zu senden."
+         ],
+         "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
+            "Die Taxonomie-Begriffe wurden noch nicht gesendet. Versuchen Sie es bei den nicht gesendeten Elementen erneut, um sie zu senden."
+         ],
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
+            "Einige Taxonomie-Begriffe wurden nicht zur Übersetzung gesendet. Die gesendeten Begriffe werden gerade übersetzt – senden Sie den Rest erneut, um den Vorgang abzuschließen."
+         ],
+         "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
+            "WPML konnte die Taxonomie-Begriffe nicht zur Übersetzung senden, daher wurde keiner von ihnen übertragen. Bitte versuchen Sie es erneut."
+         ],
+         "This will translate only your future content": [
+            "Dies wird nur Deine zukünftigen Inhalte übersetzen"
+         ],
+         "This will translate your entire site": [
+            "Dies wird Deine gesamte Website übersetzen"
+         ],
+         "Translate everything automatically from now on, without asking me.": [
+            "Ab jetzt alles automatisch übersetzen, ohne mich zu fragen."
+         ],
+         "Existing content": [
+            "Bestehende Inhalte"
+         ],
+         "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
+            "Du hast ausgewählt, Strings zu übersetzen, die in %1$s vorliegen. Nur diese Strings werden nach %2$s übersetzt."
+         ],
+         "You selected to translate strings that are in %1$s and %2$s. Only these strings will be translated to %3$s.": [
+            "Du hast ausgewählt, Strings zu übersetzen, die in %1$s und %2$s vorliegen. Nur diese Strings werden nach %3$s übersetzt."
+         ],
+         "Source language": [
+            "Quellsprache"
+         ],
+         "Target language": [
+            "Zielsprache"
+         ],
+         "Words to translate": [
+            "Zu übersetzende Wörter"
+         ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$sGesamt:%2$s %3$s"
+         ],
+         "Translation service additional options": [
+            "Zusätzliche Optionen des Übersetzungsdienstes"
+         ],
+         "Refresh": [
+            "Aktualisieren"
+         ],
+         "Fetching translation service data...": [
+            "Daten des Übersetzungsdienstes werden abgerufen..."
+         ],
+         "-": [
+            "-"
+         ],
+         "Translate automatically": [
+            "Automatisch übersetzen"
+         ],
+         "Translate myself": [
+            "Selbst übersetzen"
+         ],
+         "Assign a translator": [
+            "Einen Übersetzer zuweisen"
+         ],
+         "Assign translation service": [
+            "Übersetzungsdienst zuweisen"
+         ],
+         "Do nothing": [
+            "Nichts tun"
+         ],
+         "Please choose": [
+            "Bitte wählen"
+         ],
+         "Choose a translator": [
+            "Wähle einen Übersetzer"
+         ],
+         "First available": [
+            "Zuerst verfügbar"
+         ],
+         "(Me)": [
+            "(ich)"
+         ],
+         "Translation quality": [
+            "Übersetzungsqualität"
+         ],
+         "Expand": [
+            "Erweitern"
+         ],
+         "%1$s · %2$d": [
+            "%1$s · %2$d"
+         ],
+         "Mistakes visible": [
+            "Fehler sichtbar"
+         ],
+         "Minimize": [
+            "Minimieren"
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC übersetzt mit höherer Qualität und liefert Dir veröffentlichungsreife Ergebnisse."
+         ],
+         "Step 2": [
+            "Schritt 2"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "Die automatische Übersetzung der gesamten Website erfordert die Einrichtung der KI-Übersetzung."
+         ],
+         "Set up AI translation": [
+            "KI-Übersetzung einrichten"
+         ],
+         "Keep a wp-admin window open until WPML finishes translating": [
+            "Lass ein wp-admin-Fenster offen, bis WPML die Übersetzung abgeschlossen hat"
+         ],
+         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
+            "WPML übersetzt Deine Inhalte normalerweise im Hintergrund, ohne dass Du im WordPress-Admin bleiben musst. WPML kann diese Website jedoch nicht erreichen, daher werden Deine Übersetzungen abgerufen, während ein wp-admin-Fenster geöffnet ist."
+         ],
+         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
+            "Du kannst überall im WordPress-Admin weiterarbeiten. Lass einfach ein Fenster offen, bis die Übersetzung abgeschlossen ist."
+         ],
+         "Next check for translations in %s.": [
+            "Nächste Prüfung auf Übersetzungen in %s."
+         ],
+         "Hide details": [
+            "Details ausblenden"
+         ],
+         "What could be blocking it, and how to fix it": [
+            "Was die Verbindung blockieren könnte und wie man es behebt"
+         ],
+         "Check these on your site": [
+            "Überprüfe dies auf Deiner Website"
+         ],
+         "The site might be on a private network, in staging, or only reachable through a VPN.": [
+            "Die Website befindet sich möglicherweise in einem privaten Netzwerk, in einer Staging-Umgebung oder ist nur über ein VPN erreichbar."
+         ],
+         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
+            "Eine HTTP-Basisauthentifizierung oder eine IP-Allowlist blockiert möglicherweise externe Anfragen."
+         ],
+         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
+            "Ein Sicherheits-Plugin, eine Firewall oder eine WAF lehnt möglicherweise Anfragen von WPML ab."
+         ],
+         "The site might be in maintenance mode.": [
+            "Die Website befindet sich möglicherweise im Wartungsmodus."
+         ],
+         "Already fixed this on your site?": [
+            "Hast Du dies bereits auf Deiner Website behoben?"
+         ],
+         "Check again whether the site is reachable": [
+            "Erneut prüfen, ob die Website erreichbar ist"
+         ],
+         "Checking…": [
+            "Prüfung läuft…"
+         ],
+         "Check again": [
+            "Erneut prüfen"
+         ],
+         "Still couldn't reach your site.": [
+            "Deine Website konnte immer noch nicht erreicht werden."
+         ],
+         "Automatic translations completed": [
+            "Automatische Übersetzungen abgeschlossen"
+         ],
+         "<s>1 translation</s> has been successfully translated automatically": [
+            "<s>1 Übersetzung</s> wurde erfolgreich automatisch übersetzt",
+            "<s>%d Übersetzungen</s> wurden erfolgreich automatisch übersetzt"
+         ],
+         "Automatic jobs in progress": [
+            "Automatische Aufträge in Bearbeitung"
+         ],
+         "<s>%d automatic translation</s> is in progress": [
+            "<s>%d automatische Übersetzung</s> ist in Bearbeitung",
+            "<s>%d automatische Übersetzungen</s> sind in Bearbeitung"
+         ],
+         "You can close this page. WPML keeps translating your site in the background, and you can come back any time to check progress.": [
+            "Du kannst diese Seite schließen. WPML übersetzt Deine Website weiterhin im Hintergrund, und Du kannst jederzeit zurückkehren, um den Fortschritt zu prüfen."
+         ],
+         "Your default language, %s, must be mapped to a supported language in order to use automatic translation": [
+            "Deine Standardsprache, %s, muss einer unterstützten Sprache zugeordnet werden, um die automatische Übersetzung nutzen zu können"
+         ],
+         "Map the language": [
+            "Sprache zuordnen"
+         ],
+         "%d second": [
+            "%d Sekunde",
+            "%d Sekunden"
+         ],
+         "%d minute": [
+            "%d Minute",
+            "%d Minuten"
+         ],
+         "%d hour": [
+            "%d Stunde",
+            "%d Stunden"
+         ],
+         "%d day": [
+            "%d Tag",
+            "%d Tage"
+         ],
+         "%d translation": [
+            "%d Übersetzung",
+            "%d Übersetzungen"
+         ],
+         "checking now": [
+            "wird jetzt geprüft"
+         ],
+         "next check in %s": [
+            "nächste Prüfung in %s"
+         ],
+         "WPML stopped checking for delivered translations after repeated failures.": [
+            "WPML hat die Überprüfung auf gelieferte Übersetzungen nach wiederholten Fehlern eingestellt."
+         ],
+         "Receiving translations: last received %1$s ago · %2$s": [
+            "Übersetzungen empfangen: zuletzt vor %1$s erhalten · %2$s"
+         ],
+         "Receiving translations: last received %s ago": [
+            "Übersetzungen empfangen: zuletzt vor %s erhalten"
+         ],
+         "Receiving translations: no translations received yet · %s": [
+            "Übersetzungen empfangen: noch keine Übersetzungen erhalten · %s"
+         ],
+         "Receiving translations: no translations received yet": [
+            "Übersetzungen empfangen: noch keine Übersetzungen erhalten"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
+            "Übersetzungen werden empfangen: zuletzt empfangen vor %1$s · %2$s warten · %3$s"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s waiting": [
+            "Übersetzungen werden empfangen: zuletzt empfangen vor %1$s · %2$s warten"
+         ],
+         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
+            "Übersetzungen werden empfangen: noch keine Übersetzungen empfangen · %1$s warten · %2$s"
+         ],
+         "Receiving translations: no translations received yet · %s waiting": [
+            "Übersetzungen werden empfangen: noch keine Übersetzungen empfangen · %s warten"
+         ],
+         "These translations are taking longer than they should to arrive.": [
+            "Diese Übersetzungen brauchen länger als gewöhnlich, um anzukommen."
+         ],
+         "Picking up translations…": [
+            "Übersetzungen werden abgerufen…"
+         ],
+         "Pick up translations now": [
+            "Übersetzungen jetzt abrufen"
+         ],
+         "%d translations ": [
+            "%d Übersetzungen "
+         ],
+         "%d translation ": [
+            "%d Übersetzung "
+         ],
+         "this includes translations from <b>Translate Everything Automatically</b>": [
+            "(dies schließt Übersetzungen von <b>Alles automatisch übersetzen</b> ein)"
+         ],
+         "are waiting for your review": [
+            "warten auf Deine Überprüfung"
+         ],
+         "is waiting for your review": [
+            "wartet auf Deine Überprüfung"
+         ],
+         "Review Translations": [
+            "Übersetzungen überprüfen"
+         ],
+         "Translate existing content": [
+            "Bestehende Inhalte übersetzen"
+         ],
+         "Translate now": [
+            "Jetzt übersetzen"
+         ],
+         "Starting with version 4.7, WPML will also automatically translate texts (strings) coming from %s.": [
+            "Ab Version 4.7 wird WPML auch Texte (Strings) von %s automatisch übersetzen."
+         ],
+         "WPML will not translate existing texts of this type but any new ones you create will be automatically translated. If you prefer, you can <button />.": [
+            "WPML wird bestehende Texte dieses Typs nicht übersetzen, aber alle neuen, die Du erstellst, werden automatisch übersetzt. Wenn Du möchtest, kannst Du <button />."
+         ],
+         "Starting with version 4.7, WPML will also automatically translate:": [
+            "Ab Version 4.7 wird WPML auch Folgendes automatisch übersetzen:"
+         ],
+         "Content set to \"use translation if available or fallback to default language\": %s.": [
+            "Inhalte, die auf „Übersetzung verwenden, falls verfügbar, oder auf Standardsprache zurückgreifen“ eingestellt sind: %s."
+         ],
+         "Texts (strings) coming from: %s.": [
+            "Texte (Strings) von: %s."
+         ],
+         "WPML will not translate existing content for these post types and texts but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
+            "WPML wird bestehende Inhalte für diese Beitragstypen und Texte nicht übersetzen, aber alle neuen Inhalte, die Du erstellst, werden automatisch übersetzt. Wenn Du möchtest, kannst Du mit dem <button /> beginnen."
+         ],
+         "WPML will not translate existing content for these post types but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
+            "WPML wird bestehende Inhalte für diese Beitragstypen nicht übersetzen, aber alle neuen Inhalte, die Du erstellst, werden automatisch übersetzt. Wenn Du möchtest, kannst Du mit dem <button /> beginnen."
+         ],
+         "start translating existing content now": [
+            "Übersetzen bestehender Inhalte jetzt starten"
+         ],
+         "New content is ready to translate": [
+            "Neue Inhalte sind bereit zur Übersetzung"
+         ],
+         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "%s wurden übersetzbar, nachdem Du die Übersetzungskosten überprüft hast, daher hat „Alles übersetzen“ sie nicht einbezogen. Überprüfe die Kosten und schließe sie ein, um Deine Website vollständig übersetzt zu halten."
+         ],
+         "Review cost and include": [
+            "Kosten überprüfen und einschließen"
+         ],
+         "Learn more →": [
+            "Mehr erfahren →"
+         ],
+         "PTC can also translate your app's interface, not just your website.": [
+            "PTC kann auch die Benutzeroberfläche Deiner App übersetzen, nicht nur Deine Website."
+         ],
+         "PTC can translate software with automatic QA and a money-back guarantee.": [
+            "PTC kann Software mit automatischer Qualitätssicherung und Geld-zurück-Garantie übersetzen."
+         ],
+         "PTC translates every string in context, so it fits your interface.": [
+            "PTC übersetzt jeden String im Kontext, damit er zu Deiner Benutzeroberfläche passt."
+         ],
+         "PTC can translate your software right inside your Git workflow.": [
+            "PTC kann Deine Software direkt in Deinem Git-Workflow übersetzen."
+         ],
+         "The following target languages do not support automatic translations: %s": [
+            "Die folgenden Zielsprachen unterstützen keine automatischen Übersetzungen: %s"
+         ],
+         "To enable automatic translation map them to known languages.": [
+            "Um die automatische Übersetzung zu aktivieren, ordne sie bekannten Sprachen zu."
+         ],
+         "Map to known languages": [
+            "Bekannten Sprachen zuordnen"
+         ],
+         "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
+            "Um Hilfe zu erhalten, <supportLink>öffne bitte ein Ticket in unserem Forum-Thread (Maiya)</supportLink>, klicke auf die Schaltfläche „Alle kopieren“, um die Debug-Informationen zu erhalten, und „füge“ sie bei unserem Maiya-Agenten ein. Wenn Du weiterhin Probleme hast, verwende das <logsLink>Protokoll-Tool</logsLink>, um weitere Daten zu sammeln."
+         ],
+         "Copied!": [
+            "Kopiert!"
+         ],
+         "Copy All": [
+            "Alle kopieren"
+         ],
+         "Error type": [
+            "Fehlertyp"
+         ],
+         "Error Message": [
+            "Fehlermeldung"
+         ],
+         "Job ID": [
+            "Auftrags-ID"
+         ],
+         "ATE Job ID": [
+            "ATE-Auftrags-ID"
+         ],
+         "Original ID": [
+            "Original-ID"
+         ],
+         "Element ID": [
+            "Element-ID"
+         ],
+         "Copy to clipboard": [
+            "In die Zwischenablage kopieren"
+         ],
+         "Hide errors details": [
+            "Fehlerdetails ausblenden"
+         ],
+         "Show errors details": [
+            "Fehlerdetails anzeigen"
+         ],
+         "<strong>%d item</strong> couldn't be completed due to an unexpected error. Try resending it for translation. If the issue continues, <a>contact WPML support</a>.": [
+            "<strong>%d Element</strong> konnte aufgrund eines unerwarteten Fehlers nicht abgeschlossen werden. Versuche, es erneut zur Übersetzung zu senden. Wenn das Problem weiterhin besteht, <a>kontaktiere den WPML-Support</a>.",
+            "<strong>%d Elemente</strong> konnten aufgrund eines unerwarteten Fehlers nicht abgeschlossen werden. Versuche, sie erneut zur Übersetzung zu senden. Wenn das Problem weiterhin besteht, <a>kontaktiere den WPML-Support</a>."
+         ],
+         "Cancelling %1$d/%2$d...": [
+            "Abbrechen von %1$d/%2$d..."
+         ],
+         "Cancelling...": [
+            "Abbrechen..."
+         ],
+         "Discard jobs": [
+            "Aufträge verwerfen"
+         ],
+         "These items can't be resent because their source content is missing. Discard them instead.": [
+            "Diese Elemente können nicht erneut gesendet werden, da ihr Quellinhalt fehlt. Verwirf sie stattdessen."
+         ],
+         "Resending %1$d/%2$d...": [
+            "Erneutes Senden von %1$d/%2$d..."
+         ],
+         "Resending...": [
+            "Erneutes Senden..."
+         ],
+         "Resend": [
+            "Erneut senden"
+         ],
+         "Translation status details": [
+            "Details zum Übersetzungsstatus"
+         ],
+         "Translation status": [
+            "Übersetzungsstatus"
+         ],
+         "Before translating with PTC, please provide context about your website and target audience (one-time thing).": [
+            "Bevor Du mit PTC übersetzt, gib bitte Kontext zu Deiner Website und Zielgruppe an (einmalige Sache)."
+         ],
+         "Provide Context": [
+            "Kontext angeben"
+         ],
+         "Remaining time: <s>Less than 1 minute</s>": [
+            "Verbleibende Zeit: <s>Weniger als 1 Minute</s>"
+         ],
+         "Remaining time: <s>%d minute</s>": [
+            "Verbleibende Zeit: <s>%d Minute</s>",
+            "Verbleibende Zeit: <s>%d Minuten</s>"
+         ],
+         "Default language does not support automatic translations.": [
+            "Standardsprache unterstützt keine automatischen Übersetzungen."
+         ],
+         "WPML could not check if your default language can be translated automatically.": [
+            "WPML konnte nicht prüfen, ob Ihre Standardsprache automatisch übersetzt werden kann."
+         ],
+         "WPML could not check if your default language can be translated automatically. Reload the page to try again.": [
+            "WPML konnte nicht prüfen, ob Ihre Standardsprache automatisch übersetzt werden kann. Laden Sie die Seite neu, um es erneut zu versuchen."
+         ],
+         "Add your site description before you can turn this on.": [
+            "Fügen Sie Ihre Website-Beschreibung hinzu, bevor Sie dies aktivieren können."
+         ],
+         "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
+            "Sie müssen den Erweiterten Übersetzungs-Editor aktivieren, um „Alles automatisch übersetzen“ zu nutzen."
+         ],
+         "Add it now": [
+            "Jetzt hinzufügen"
+         ],
+         "It's too expensive": [
+            "Es ist zu teuer"
+         ],
+         "The translation quality is not good enough": [
+            "Die Übersetzungsqualität ist nicht gut genug"
+         ],
+         "I'm switching to a different translation provider": [
+            "Ich wechsle zu einem anderen Übersetzungsanbieter"
+         ],
+         "I'm experiencing technical issues": [
+            "Ich habe technische Probleme"
+         ],
+         "I want to control what gets translated manually": [
+            "Ich möchte manuell kontrollieren, was übersetzt wird"
+         ],
+         "Other reason": [
+            "Anderer Grund"
+         ],
+         "Why are you turning off <b>Translate Everything Automatically</b>?": [
+            "Warum schaltest Du <b>Alles automatisch übersetzen</b> aus?"
+         ],
+         "Your answer helps us improve WPML.": [
+            "Deine Antwort hilft uns, WPML zu verbessern."
+         ],
+         "Turn off": [
+            "Ausschalten"
+         ],
+         "Available": [
+            "Verfügbar"
+         ],
+         "Not available": [
+            "Nicht verfügbar"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "Versteht das Thema, die Zielgruppe und den Tonfall Ihrer Website"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "Veröffentlichungsreife Qualität, abgesichert durch unsere Garantie"
+         ],
+         "Review before publishing": [
+            "Vor der Veröffentlichung überprüfen"
+         ],
+         "Pay once per page – only added words are charged": [
+            "Einmal pro Seite bezahlen – nur neu hinzugefügte Wörter werden berechnet"
+         ],
+         "Per word, changes included": [
+            "Pro Wort, Änderungen inklusive"
+         ],
+         "Your active engine": [
+            "Ihre aktive Engine"
+         ],
+         "WPML's own AI engine": [
+            "Die eigene KI-Engine von WPML"
+         ],
+         "Translate Everything Automatically": [
+            "Alles automatisch übersetzen"
+         ],
+         "Turn on with %s": [
+            "Mit %s einschalten"
+         ],
+         "Switching to PTC later applies to new and changed content. What %s translated stays as it is.": [
+            "Ein späterer Wechsel zu PTC gilt für neue und geänderte Inhalte. Was von %s übersetzt wurde, bleibt unverändert."
+         ],
+         "Translate your whole site quickly and conveniently.": [
+            "Übersetze Deine gesamte Website schnell und bequem."
+         ],
+         "Translation updates cost only the added words.": [
+            "Übersetzungsaktualisierungen kosten nur die hinzugefügten Wörter."
+         ],
+         "Nothing is translated until you review the cost and confirm.": [
+            "Nichts wird übersetzt, bis Du die Kosten überprüfst und bestätigst."
+         ],
+         "How to turn this on": [
+            "Wie man dies einschaltet"
+         ],
+         "When you set this up": [
+            "Wenn Du dies einrichtest"
+         ],
+         "Choose your engine: keep %s, priced per word, or switch to PTC to pay once per page.": [
+            "Wählen Sie Ihre Engine: Behalten Sie %s mit Abrechnung pro Wort bei oder wechseln Sie zu PTC, um einmal pro Seite zu bezahlen."
+         ],
+         "Review what gets translated and see the cost.": [
+            "Überprüfe, was übersetzt wird, und sieh Dir die Kosten an."
+         ],
+         "WPML translates your site and keeps new content translated.": [
+            "WPML übersetzt Deine Website und hält neue Inhalte übersetzt."
+         ],
+         "Choose how to publish — with or without your review.": [
+            "Wähle, wie veröffentlicht werden soll – mit oder ohne Deine Überprüfung."
+         ],
+         "Content that becomes translatable later, for example products after the WooCommerce Multilingual setup, is offered to you before it is translated.": [
+            "Inhalte, die erst später übersetzbar werden, zum Beispiel Produkte nach der Einrichtung von WooCommerce Multilingual, werden Dir angeboten, bevor sie übersetzt werden."
+         ],
+         "Switch to PTC instead": [
+            "Stattdessen zu PTC wechseln"
+         ],
+         "You're translating with %s: priced per word, and changes to translated pages are charged again. With PTC you pay once per page and changes are free.": [
+            "Sie übersetzen mit %s: Abrechnung pro Wort, wobei Änderungen an übersetzten Seiten erneut berechnet werden. Mit PTC zahlen Sie einmal pro Seite und Änderungen sind kostenlos."
+         ],
+         "at %s's per-word rate; changes to translated pages are charged again": [
+            "zum Wortpreis von %s; Änderungen an übersetzten Seiten werden erneut berechnet"
+         ],
+         "Prepaid words assigned": [
+            "Zugewiesene Prepaid-Wörter"
+         ],
+         "You’re all set.": [
+            "Du bist startklar."
+         ],
+         "Click <b>Translate Everything Automatically</b> to start translating.": [
+            "Klicke auf <b>Alles automatisch übersetzen</b>, um mit der Übersetzung zu beginnen."
+         ],
+         "Before translating everything": [
+            "Vor dem Übersetzen von allem"
+         ],
+         "Go back": [
+            "Zurück"
+         ],
+         "Continue anyway": [
+            "Trotzdem fortfahren"
+         ],
+         "WPML could not check with our translation system if your default language can be translated automatically.": [
+            "WPML konnte nicht mit unserem Übersetzungssystem überprüfen, ob Ihre Standardsprache automatisch übersetzt werden kann."
+         ],
+         "Content to translate": [
+            "Zu übersetzender Inhalt"
+         ],
+         "Publishing method": [
+            "Veröffentlichungsmethode"
+         ],
+         "Payment method": [
+            "Zahlungsmethode"
+         ],
+         "Enable <b>Translate Everything Automatically</b>": [
+            "<b>Alles automatisch übersetzen</b> aktivieren"
+         ],
+         "Continue": [
+            "Weiter"
+         ],
+         "Calculating words for translating existing content. Please wait...": [
+            "Wörter für die Übersetzung bestehender Inhalte werden berechnet. Bitte warten..."
+         ],
+         "Set Up <b>Translate Everything Automatically</b>": [
+            "<b>Alles automatisch übersetzen</b> einrichten"
+         ],
+         "Review your site content and get the translation cost based on what you choose to translate.": [
+            "Überprüfe Deinen Website-Inhalt und erhalte die Übersetzungskosten basierend auf dem, was Du übersetzen möchtest."
+         ],
+         "Select payment method": [
+            "Zahlungsmethode auswählen"
+         ],
+         "Translate Everything Automatically - disabled": [
+            "Alles automatisch übersetzen – deaktiviert"
+         ],
+         "Translate Everything Automatically - stopping": [
+            "Alles automatisch übersetzen – wird beendet"
+         ],
+         "<b>Translate Everything Automatically</b> is stopping": [
+            "<b>Alles automatisch übersetzen</b> wird beendet"
+         ],
+         "Translate Everything Automatically - paused": [
+            "Alles automatisch übersetzen – pausiert"
+         ],
+         "Turn off <b>Translate Everything Automatically</b>?": [
+            "<b>Alles automatisch übersetzen</b> ausschalten?"
+         ],
+         "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
+            "WPML wird die automatische Übersetzung neuer und bearbeiteter Inhalte beenden. Bereits gelieferte Übersetzungen bleiben unverändert."
+         ],
+         "%d translation is still in progress. You will not be charged for it.": [
+            "%d Übersetzung ist noch in Bearbeitung. Sie wird dir nicht in Rechnung gestellt.",
+            "%d Übersetzungen sind noch in Bearbeitung. Sie werden dir nicht in Rechnung gestellt."
+         ],
+         "%d translation is currently in progress and will be cancelled.": [
+            "%d Übersetzung ist derzeit in Bearbeitung und wird abgebrochen.",
+            "%d Übersetzungen sind derzeit in Bearbeitung und werden abgebrochen."
+         ],
+         "You can adjust the content limits once Translate Everything finishes the current translation run.": [
+            "Du kannst die Inhaltsbeschränkungen anpassen, sobald „Alles automatisch übersetzen“ den aktuellen Übersetzungslauf abgeschlossen hat."
+         ],
+         "Adjust content limits": [
+            "Inhaltsbeschränkungen anpassen"
+         ],
+         "Adjust how far back automatic translations apply per content type.": [
+            "Passe an, wie weit automatische Übersetzungen pro Inhaltstyp zurückreichen."
+         ],
+         "Every content type is fully translated, so there is nothing left to set a date for. You can still choose which types automatic translation covers from now on.": [
+            "Jeder Inhaltstyp ist vollständig übersetzt, daher gibt es kein Datum mehr festzulegen. Du kannst weiterhin wählen, welche Typen die automatische Übersetzung von nun an abdeckt."
+         ],
+         "Save changes": [
+            "Änderungen speichern"
+         ],
+         "Translate Everything options": [
+            "Optionen für „Alles automatisch übersetzen“"
+         ],
+         "Turn off <b>Translate Everything</b>": [
+            "<b>Alles automatisch übersetzen</b> ausschalten"
+         ],
+         "Words this cycle": [
+            "Wörter in diesem Abrechnungszeitraum"
+         ],
+         "%1$s prepaid words left, then billed as you go.": [
+            "%1$s Prepaid-Wörter übrig, danach nutzungsbasierte Abrechnung."
+         ],
+         "Words left": [
+            "Verbleibende Wörter"
+         ],
+         "Preparing your translations — %d job queued so far...": [
+            "Deine Übersetzungen werden vorbereitet – bisher %d Auftrag in der Warteschlange...",
+            "Deine Übersetzungen werden vorbereitet – bisher %d Aufträge in der Warteschlange..."
+         ],
+         "Preparing content for translation...": [
+            "Inhalte werden für die Übersetzung vorbereitet..."
+         ],
+         "%d translation left in the queue...": [
+            "%d Übersetzung verbleibt in der Warteschlange...",
+            "%d Übersetzungen verbleiben in der Warteschlange..."
+         ],
+         "Finished — %1$d item couldn't be completed and %2$s are waiting for your approval": [
+            "Abgeschlossen – %1$d Element konnte nicht fertiggestellt werden und %2$s warten auf deine Genehmigung",
+            "Abgeschlossen – %1$d Elemente konnten nicht fertiggestellt werden und %2$s warten auf deine Genehmigung"
+         ],
+         "Finished — %d item couldn't be completed": [
+            "Abgeschlossen – %d Element konnte nicht fertiggestellt werden",
+            "Abgeschlossen – %d Elemente konnten nicht fertiggestellt werden"
+         ],
+         "Finished translating your content, except %s waiting for your approval": [
+            "Übersetzung deiner Inhalte abgeschlossen, außer %s, die auf deine Genehmigung warten"
+         ],
+         "Finished translating your content": [
+            "Übersetzung deiner Inhalte abgeschlossen"
+         ],
+         "Engine": [
+            "Engine"
+         ],
+         "Quality": [
+            "Qualität"
+         ],
+         "%1$d / 100 — %2$s": [
+            "%1$d / 100 — %2$s"
+         ],
+         "review before publishing recommended": [
+            "Überprüfung vor der Veröffentlichung empfohlen"
+         ],
+         "good enough to publish without review": [
+            "gut genug, um ohne Überprüfung veröffentlicht zu werden"
+         ],
+         "usable, but mistakes are visible": [
+            "brauchbar, aber Fehler sind sichtbar"
+         ],
+         "Per word, changes included. ": [
+            "Pro Wort, Änderungen inklusive. "
+         ],
+         " to make changes free.": [
+            " um Änderungen kostenlos vorzunehmen."
+         ],
+         "Pay once per page — only added words are charged.": [
+            "Bezahle einmal pro Seite – nur hinzugefügte Wörter werden berechnet."
+         ],
+         "Status": [
+            "Status"
+         ],
+         "Some items were translated using the <b>Classic Translation Editor</b> and cannot be sent for automatic translation. Please select these items and choose the option to translate them yourself.": [
+            "Einige Elemente wurden mit dem <b>Klassischen Übersetzungs-Editor</b> übersetzt und können nicht zur automatischen Übersetzung gesendet werden. Bitte wähle diese Elemente aus und entscheide dich für die Option, sie selbst zu übersetzen."
+         ],
+         "Translate Everything Automatically - enabled": [
+            "Alles automatisch übersetzen – aktiviert"
+         ],
+         "<b>Translate Everything Automatically</b> is enabled": [
+            "<b>Alles automatisch übersetzen</b> ist aktiviert"
+         ],
+         "<b>Translate Everything Automatically</b> is temporarily paused": [
+            "<b>Alles automatisch übersetzen</b> ist vorübergehend pausiert"
+         ],
+         "Automatic translation is temporarily paused": [
+            "Automatische Übersetzung ist vorübergehend pausiert"
+         ],
+         "We noticed something unexpected in your recent translation activity and paused automatic translation on your account. Contact support and we’ll review it with you.": [
+            "Wir haben etwas Unerwartetes bei deiner letzten Übersetzungsaktivität bemerkt und die automatische Übersetzung für dein Konto pausiert. Kontaktiere den Support und wir werden dies gemeinsam mit dir überprüfen."
+         ],
+         "Contact support": [
+            "Support kontaktieren"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — unpaid balance on a linked account": [
+            "<b>Alles automatisch übersetzen</b> ist pausiert – offener Betrag auf einem verknüpften Konto"
+         ],
+         "Automatic translation is paused — unpaid balance on a linked account": [
+            "Automatische Übersetzung ist pausiert – offener Betrag auf einem verknüpften Konto"
+         ],
+         "There is an unpaid balance on another account linked to this billing e-mail. Settle it or <a>contact support</a>.": [
+            "Auf einem anderen Konto, das mit dieser Rechnungs-E-Mail verknüpft ist, besteht ein offener Betrag. Begleichen Sie diesen oder <a>kontaktieren Sie den Support</a>."
+         ],
+         "There is an unpaid balance on another account linked to this card. Settle it or <a>contact support</a>.": [
+            "Auf einem anderen Konto, das mit dieser Karte verknüpft ist, besteht ein offener Betrag. Begleichen Sie diesen oder <a>kontaktieren Sie den Support</a>."
+         ],
+         "Go to billing": [
+            "Zur Abrechnung"
+         ],
+         "Everything already translated stays live. You only pay for new translation.": [
+            "Alles bereits Übersetzte bleibt live. Du zahlst nur für neue Übersetzungen."
+         ],
+         "Cancel translation": [
+            "Übersetzung abbrechen"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment pending": [
+            "<b>Alles automatisch übersetzen</b> ist pausiert – Zahlung ausstehend"
+         ],
+         "Automatic translation is paused — payment pending": [
+            "Automatische Übersetzung pausiert – Zahlung ausstehend"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment required": [
+            "<b>Alles automatisch übersetzen</b> ist pausiert – Zahlung erforderlich"
+         ],
+         "Automatic translation - payment required": [
+            "Automatische Übersetzung – Zahlung erforderlich"
+         ],
+         "<s>%d</s> translation is waiting for your Pay-As-You-Go payment.": [
+            "<s>%d</s> Übersetzung wartet auf Ihre Zahlung für die nutzungsbasierte Abrechnung.",
+            "<s>%d</s> Übersetzungen warten auf Ihre Zahlung für die nutzungsbasierte Abrechnung."
+         ],
+         "We are charging your card. If the payment is declined, update your card.": [
+            "Wir belasten Ihre Karte. Wenn die Zahlung abgelehnt wird, aktualisieren Sie Ihre Karte."
+         ],
+         "Translation resumes automatically once the payment goes through.": [
+            "Die Übersetzung wird automatisch fortgesetzt, sobald die Zahlung erfolgt ist."
+         ],
+         "<s>%d</s> translation is waiting for payment.": [
+            "<s>%d</s> Übersetzung wartet auf Zahlung.",
+            "<s>%d</s> Übersetzungen warten auf Zahlung."
+         ],
+         "We could not process your <b>Pay-As-You-Go</b> payment of %s.": [
+            "Wir konnten Ihre <b>Nutzungsbasierte Abrechnung</b>-Zahlung von %s nicht verarbeiten."
+         ],
+         "We could not process the %s payment for your completed translations. Click \"Pay now\" to retry and continue using automatic translation.": [
+            "Wir konnten die Zahlung von %s für deine abgeschlossenen Übersetzungen nicht verarbeiten. Klicke auf „Jetzt bezahlen“, um es erneut zu versuchen und die automatische Übersetzung weiterhin zu nutzen."
+         ],
+         "Update card": [
+            "Karte aktualisieren"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment needed": [
+            "<b>Alles automatisch übersetzen</b> ist pausiert – Zahlung erforderlich"
+         ],
+         "Automatic translation is paused — payment needed": [
+            "Automatische Übersetzung pausiert – Zahlung erforderlich"
+         ],
+         "<s>%d</s> translation is on hold until you choose how to pay for it.": [
+            "<s>%d</s> Übersetzung wird angehalten, bis Sie eine Zahlungsmethode wählen.",
+            "<s>%d</s> Übersetzungen werden angehalten, bis Sie eine Zahlungsmethode wählen."
+         ],
+         "Choose a payment method": [
+            "Zahlungsmethode wählen"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — not enough words": [
+            "<b>Alles automatisch übersetzen</b> ist pausiert – nicht genügend Wörter"
+         ],
+         "Automatic translation is paused — not enough words": [
+            "Automatische Übersetzung ist pausiert – nicht genügend Wörter"
+         ],
+         "<s>%d</s> translation is waiting for more words.": [
+            "<s>%d</s> Übersetzung wartet auf weitere Wörter.",
+            "<s>%d</s> Übersetzungen warten auf weitere Wörter."
+         ],
+         "You have %1$s%2$s prepaid translation word in your WPML account%3$s. Assign these words to this site to resume automatic translation.": [
+            "Du hast %1$s%2$s Prepaid-Übersetzungswort in deinem WPML-Konto%3$s. Weise dieses Wort dieser Website zu, um die automatische Übersetzung fortzusetzen.",
+            "Du hast %1$s%2$s Prepaid-Übersetzungswörter in deinem WPML-Konto%3$s. Weise diese Wörter dieser Website zu, um die automatische Übersetzung fortzusetzen."
+         ],
+         "Your prepaid translation words have run out. Already assigned words on your account? Refresh checks.": [
+            "Deine Prepaid-Übersetzungswörter sind aufgebraucht. Hast du deinem Konto bereits Wörter zugewiesen? Prüfe dies durch Aktualisieren."
+         ],
+         "Translation resumes automatically — the remaining %d translation completes on its own.": [
+            "Die Übersetzung wird automatisch fortgesetzt – die verbleibende %d Übersetzung wird von selbst abgeschlossen.",
+            "Die Übersetzung wird automatisch fortgesetzt – die verbleibenden %d Übersetzungen werden von selbst abgeschlossen."
+         ],
+         "Translation resumes automatically once more words are assigned.": [
+            "Die Übersetzung wird automatisch fortgesetzt, sobald weitere Wörter zugewiesen wurden."
+         ],
+         "Checking your word balance…": [
+            "Dein Wortguthaben wird geprüft…"
+         ],
+         "%s word added": [
+            "%s Wort hinzugefügt",
+            "%s Wörter hinzugefügt"
+         ],
+         "resuming %s translation": [
+            "%s Übersetzung wird fortgesetzt",
+            "%s Übersetzungen werden fortgesetzt"
+         ],
+         "No new words found yet — translation stays paused until more words are assigned to this site.": [
+            "Noch keine neuen Wörter gefunden – die Übersetzung bleibt pausiert, bis dieser Website mehr Wörter zugewiesen werden."
+         ],
+         "<s>%d</s> translation is waiting for your review.": [
+            "<s>%d</s> Übersetzung wartet auf dein Review.",
+            "<s>%d</s> Übersetzungen warten auf dein Review."
+         ],
+         "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
+            "<b>Alles automatisch übersetzen</b> ist pausiert: monatliches Ausgabenlimit erreicht"
+         ],
+         "<s>%d</s> translation is waiting for the cap to be raised.": [
+            "<s>%d</s> Übersetzung wartet darauf, dass das Limit erhöht wird.",
+            "<s>%d</s> Übersetzungen warten darauf, dass das Limit erhöht wird."
+         ],
+         "<site>%1$s</site> reached its <strong>monthly spending cap</strong> (<figure>%2$s</figure> of <figure>%3$s</figure> words used).": [
+            "<site>%1$s</site> hat sein <strong>monatliches Ausgabenlimit</strong> erreicht (<figure>%2$s</figure> von <figure>%3$s</figure> Wörtern verbraucht)."
+         ],
+         "Translation continues when the cap is raised, or when the cap resets on <strong>%s</strong>.": [
+            "Die Übersetzung wird fortgesetzt, wenn das Limit erhöht wird oder wenn das Limit am <strong>%s</strong> zurückgesetzt wird."
+         ],
+         "WPML is reconnecting to our translation system. <b>Translate Everything</b> continues on its own once it reconnects. Nothing is lost.": [
+            "WPML stellt die Verbindung zu unserem Übersetzungssystem wieder her. <b>Alles übersetzen</b> wird automatisch fortgesetzt, sobald die Verbindung wiederhergestellt ist. Es geht nichts verloren."
+         ],
+         "You don't need to do anything. WPML keeps trying in the background.": [
+            "Sie müssen nichts tun. WPML versucht es im Hintergrund weiter."
+         ],
+         "Retry": [
+            "Wiederholen"
+         ],
+         "Retry now": [
+            "Jetzt wiederholen"
+         ],
+         "WPML is reconnecting to our translation system.": [
+            "WPML stellt die Verbindung zu unserem Übersetzungssystem wieder her."
+         ],
+         "WPML is reconnecting to our translation system. You can turn on <b>Translate Everything</b> once it reconnects.": [
+            "WPML stellt die Verbindung zu unserem Übersetzungssystem wieder her. Sie können <b>Alles übersetzen</b> aktivieren, sobald die Verbindung wiederhergestellt ist."
+         ],
+         "This item needs a translation update but can't be translated automatically because it was translated with the Classic Translation Editor.": [
+            "Dieses Element benötigt eine Aktualisierung der Übersetzung, kann aber nicht automatisch übersetzt werden, da es mit dem Klassischen Übersetzungs-Editor übersetzt wurde."
+         ],
+         "This item needs update. Please, select the item and send for translation.": [
+            "Dieses Element erfordert eine Aktualisierung. Bitte wähle das Element aus und sende es zur Übersetzung."
+         ],
+         "Translations completed with the Classic Translation Editor cannot be sent for automatic translation": [
+            "Mit dem Klassischen Übersetzungs-Editor abgeschlossene Übersetzungen können nicht zur automatischen Übersetzung gesendet werden"
+         ],
+         "automatic translation": [
+            "automatische Übersetzung"
+         ],
+         "unassigned": [
+            "nicht zugewiesen"
+         ],
+         "waiting for automatic translation": [
+            "wartet auf automatische Übersetzung"
+         ],
+         "waiting for translator": [
+            "wartet auf Übersetzer"
+         ],
+         "in progress": [
+            "in Bearbeitung"
+         ],
+         "needs update": [
+            "Aktualisierung erforderlich"
+         ],
+         "duplicate": [
+            "Duplikat"
+         ],
+         "complete": [
+            "abgeschlossen"
+         ],
+         "needs review": [
+            "Review erforderlich"
+         ],
+         "translation failed - needs attention": [
+            "Übersetzung fehlgeschlagen – Aufmerksamkeit erforderlich"
+         ],
+         "needs attention": [
+            "Aufmerksamkeit erforderlich"
+         ],
+         "translation error": [
+            "Übersetzungsfehler"
+         ],
+         "The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "Die Übersetzung für %s wurde außerhalb des WPML-Übersetzungs-Editors erstellt oder zuletzt bearbeitet (zum Beispiel im WordPress-Editor). Wenn du sie neu übersetzt, wird die Struktur des übersetzten Beitrags an das Original angepasst, aber WPML verwendet deine bestehende Übersetzung als Basis, damit Tonfall und Terminologie erhalten bleiben."
+         ],
+         "This item needs a translation update. The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "Dieses Element benötigt eine Aktualisierung der Übersetzung. Die Übersetzung für %s wurde außerhalb des WPML-Übersetzungs-Editors erstellt oder zuletzt bearbeitet (zum Beispiel im WordPress-Editor). Wenn du sie neu übersetzt, wird die Struktur des übersetzten Beitrags an das Original angepasst, aber WPML verwendet deine bestehende Übersetzung als Basis, damit Tonfall und Terminologie erhalten bleiben."
+         ],
+         "This item hasn't been translated yet and is set to use the WordPress Editor.": [
+            "Dieses Element wurde noch nicht übersetzt und ist so eingestellt, dass der WordPress-Editor verwendet wird."
+         ],
+         "This item was translated using the WordPress Editor. Switching to the WPML's Translation Editor will overwrite the existing translation.": [
+            "Dieses Element wurde mit dem WordPress-Editor übersetzt. Der Wechsel zum WPML-Übersetzungs-Editor wird die bestehende Übersetzung überschreiben."
+         ],
+         "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
+            "Dieses Element benötigt eine Aktualisierung der Übersetzung, wurde aber zuvor mit dem WordPress-Editor übersetzt. Die Verwendung des WPML-Übersetzungs-Editors wird die bestehende Übersetzung überschreiben."
+         ],
+         "%1$s: %2$s%3$s": [
+            "%1$s: %2$s%3$s"
+         ],
+         "Could not fetch engines data": [
+            "Engine-Daten konnten nicht abgerufen werden"
+         ],
+         "Error in updating since dates for types.": [
+            "Fehler beim Aktualisieren der „Seit“-Daten für Typen."
+         ],
+         "Error in dismissing the offer to translate the new content types.": [
+            "Fehler beim Verwerfen des Angebots zur Übersetzung der neuen Inhaltstypen."
+         ],
+         "Error in updating since date for type.": [
+            "Fehler beim Aktualisieren des „Seit“-Datums für den Typ."
+         ],
+         "Content to Translate": [
+            "Zu übersetzende Inhalte"
+         ],
+         "Content type": [
+            "Inhaltstyp"
+         ],
+         "Include": [
+            "Einschließen"
+         ],
+         "These settings can be changed on the Translations dashboard.": [
+            "Diese Einstellungen können im Übersetzungs-Dashboard geändert werden."
+         ],
+         "Items": [
+            "Elemente"
+         ],
+         "Word count": [
+            "Wortanzahl"
+         ],
+         "Loading content to translate": [
+            "Zu übersetzende Inhalte werden geladen"
+         ],
+         "Calculating… <s>less than 1 minute left.</s>": [
+            "Berechnung läuft… <s>weniger als 1 Minute verbleibend.</s>"
+         ],
+         "Calculating… <s>%d minute left.</s>": [
+            "Berechnung läuft… <s>%d Minute verbleibend.</s>",
+            "Berechnung läuft… <s>%d Minuten verbleibend.</s>"
+         ],
+         "Words needed to translate your existing content into the new languages: %s.": [
+            "Benötigte Wörter, um deine bestehenden Inhalte in die neuen Sprachen zu übersetzen: %s."
+         ],
+         "Words needed to translate your existing content into the new language.": [
+            "Benötigte Wörter, um deine bestehenden Inhalte in die neue Sprache zu übersetzen."
+         ],
+         "Based on the remaining untranslated content across all languages.": [
+            "Basierend auf den verbleibenden nicht übersetzten Inhalten in allen Sprachen."
+         ],
+         "Estimated from the selected source volume multiplied by the target languages.": [
+            "Geschätzt aus dem ausgewählten Quellvolumen multipliziert mit den Zielsprachen."
+         ],
+         "%1$s source words × %2$s language": [
+            "%1$s Quellwörter × %2$s Sprache",
+            "%1$s Quellwörter × %2$s Sprachen"
+         ],
+         "Already translated content": [
+            "Bereits übersetzte Inhalte"
+         ],
+         "Documents you translated yourself stay exactly as you made them": [
+            "Dokumente, die du selbst übersetzt hast, bleiben genau so, wie du sie erstellt hast"
+         ],
+         "(%d document)": [
+            "(%d Dokument)",
+            "(%d Dokumente)"
+         ],
+         "View documents": [
+            "Dokumente anzeigen"
+         ],
+         "%1$d of %2$d language will be translated automatically": [
+            "%1$d von %2$d Sprache wird automatisch übersetzt",
+            "%1$d von %2$d Sprachen werden automatisch übersetzt"
+         ],
+         "Translated to %d language": [
+            "In %d Sprache übersetzt",
+            "In %d Sprachen übersetzt"
+         ],
+         "Add/remove languages": [
+            "Sprachen hinzufügen/entfernen"
+         ],
+         "Percentages show how much of your selected content is already translated in each language.": [
+            "Prozentangaben zeigen, wie viel deiner ausgewählten Inhalte in der jeweiligen Sprache bereits übersetzt ist."
+         ],
+         "Note: Content already translated into all languages is not included in this calculation.": [
+            "Hinweis: Inhalte, die bereits in alle Sprachen übersetzt wurden, sind in dieser Berechnung nicht enthalten."
+         ],
+         "Same as default": [
+            "Gleich wie Standard"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "Die automatische Übersetzung ist zwischen %1$s und %2$s nicht verfügbar, da sie als dieselbe Sprache erkannt werden."
+         ],
+         "Translation paused": [
+            "Übersetzung angehalten"
+         ],
+         "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor.": [
+            "WPML erstellt keine neuen Übersetzungen für %s, daher ist diese Sprache nicht enthalten. Um sie einzuschließen, verwenden Sie „Übersetzung fortsetzen“ in der Zeile der Sprache im Sprachen-Editor."
+         ],
+         "Manual only": [
+            "Nur manuell"
+         ],
+         "%s has no automatic-translation support. You can translate this content manually.": [
+            "%s bietet keine Unterstützung für automatische Übersetzungen. Du kannst diesen Inhalt manuell übersetzen."
+         ],
+         "Adjusted word rate (%s)": [
+            "Angepasste Wortrate (%s)"
+         ],
+         "This adjusted word rate applies to legacy translation engines.": [
+            "Diese angepasste Wortrate gilt für Legacy-Übersetzungs-Engines."
+         ],
+         "Translation engine: <strong>%s</strong>": [
+            "Übersetzungs-Engine: <strong>%s</strong>"
+         ],
+         "Legacy engine": [
+            "Legacy-Engine"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Legacy-Preise angewendet. %s ist eine Legacy-Übersetzungs-Engine, die für neue Websites nicht empfohlen wird und eingestellt wird. Bestehende Websites behalten eine angepasste Wortrate dafür bei."
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
+            "Das wird heute für die Übersetzung Ihrer aktuellen Inhalte benötigt. Darin sind einige von anderen Plugins hinzugefügte Texte wie Formulare oder Slider nicht enthalten, die erst nach Abschluss der Einrichtung gezählt werden. Website-Strings aus Ihrem Theme und Ihren Plugins werden ebenfalls nach der Einrichtung gezählt und machen typischerweise mehrere hundert Wörter aus. Danach sind Bearbeitungen kostenlos. Sie zahlen erst wieder für Wörter, die Sie neu hinzufügen."
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Dies ist der Umfang, der heute für die Übersetzung Ihrer aktuellen Inhalte benötigt wird. Nicht enthalten sind Texte, die von anderen Plugins hinzugefügt wurden, wie z. B. Formulare oder Slider, die erst nach Abschluss der Einrichtung gezählt werden. Website-Strings aus Ihrem Theme und Ihren Plugins werden ebenfalls erst nach der Einrichtung gezählt und belaufen sich in der Regel auf mehrere hundert Wörter. Zum Wortpreis von %s; Änderungen an übersetzten Seiten werden erneut berechnet."
+         ],
+         "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
+            "Das wird heute für die Übersetzung Ihrer aktuellen Inhalte benötigt. Danach sind Bearbeitungen kostenlos. Sie zahlen erst wieder für Wörter, die Sie neu hinzufügen."
+         ],
+         "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Dies ist der Umfang, der heute für die Übersetzung Ihrer aktuellen Inhalte benötigt wird. Zum Wortpreis von %s; Änderungen an übersetzten Seiten werden erneut berechnet."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
+            "Dabei werden Seiten, Beiträge und Produkte mitsamt ihren benutzerdefinierten Feldern, Page-Builder-Texten und Medientexten sowie den darin verwendeten Kategorien, Schlagwörtern und Attributen gezählt."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
+            "Dabei werden Seiten, Beiträge und Produkte mitsamt ihren benutzerdefinierten Feldern, Page-Builder-Texten und Medientexten, den darin verwendeten Kategorien, Schlagwörtern und Attributen sowie Website-Strings gezählt. Ein Begriff wird in jedem Element gezählt, das ihn verwendet, sowie einmal separat, da er für die Übersetzung auf beiden Wegen gesendet wird."
+         ],
+         "Total items": [
+            "Elemente insgesamt"
+         ],
+         "Total source words": [
+            "Quellwörter insgesamt"
+         ],
+         "Showing %1$d–%2$d of %3$d types.": [
+            "Zeige %1$d–%2$d von %3$d Typen."
+         ],
+         "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated.": [
+            "Alle aktuellen %1$s sind in alle Sprachen übersetzt.<br>Neue %2$s oder Bearbeitungen werden automatisch übersetzt."
+         ],
+         "All %s": [
+            "Alle %s"
+         ],
+         "For translated types": [
+            "Für übersetzte Typen"
+         ],
+         "None": [
+            "Keine"
+         ],
+         "Since %s": [
+            "Seit %s"
+         ],
+         "Since specific date": [
+            "Seit einem bestimmten Datum"
+         ],
+         "<b>Pay-As-You-Go</b> is active on this site.": [
+            "<b>Nutzungsbasierte Abrechnung</b> ist auf dieser Website aktiv."
+         ],
+         "<b>%s words</b> are on this site. Continue.": [
+            "<b>%s Wörter</b> befinden sich auf dieser Website. Weiter."
+         ],
+         "Your site will be translated right after the setup.": [
+            "Deine Website wird direkt nach der Einrichtung übersetzt."
+         ],
+         "To use prepaid words, register WPML on this site.": [
+            "Um Prepaid-Wörter zu nutzen, registrieren Sie WPML auf dieser Website."
+         ],
+         "We could not reach our translation system.": [
+            "Wir konnten unser Übersetzungssystem nicht erreichen."
+         ],
+         "This site is not registered with a WPML account, so prepaid words are not available.": [
+            "Diese Website ist nicht mit einem WPML-Konto registriert, daher sind keine Prepaid-Wörter verfügbar."
+         ],
+         "We could not read your WPML account.": [
+            "Wir konnten Ihr WPML-Konto nicht auslesen."
+         ],
+         "%s more words are needed to translate your site.": [
+            "%s weitere Wörter werden benötigt, um Ihre Website zu übersetzen."
+         ],
+         "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>.": [
+            "Weisen Sie dieser Website Prepaid-Wörter aus Ihrem WPML-Konto zu, um <b>Alles automatisch übersetzen</b> zu starten."
+         ],
+         "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>.": [
+            "Weisen Sie die Wörter zu, die Sie bereits haben, und kaufen Sie den Rest, oder aktivieren Sie die <b>nutzungsbasierte Abrechnung</b>."
+         ],
+         "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
+            "Um <b>Alles automatisch übersetzen</b> zu starten, aktivieren Sie die <b>nutzungsbasierte Abrechnung</b> oder kaufen Sie Prepaid-Wörter."
+         ],
+         "Error in fetching currently logged in translator": [
+            "Fehler beim Abrufen des aktuell angemeldeten Übersetzers"
+         ],
+         "Error in fetching local translators": [
+            "Fehler beim Abrufen lokaler Übersetzer"
+         ],
+         "usage ledger": [
+            "Nutzungsprotokoll"
+         ],
+         "Cancelled. %1$d translation was in progress; its %2$s words are back on your account. Details:": [
+            "Abgebrochen. %1$d Übersetzung war in Bearbeitung; die %2$s Wörter sind wieder auf deinem Konto. Details:",
+            "Abgebrochen. %1$d Übersetzungen waren in Bearbeitung; ihre %2$s Wörter sind wieder auf deinem Konto. Details:"
+         ],
+         "Cancelled. We asked to return the words for %d translation in progress; the usage ledger shows it once confirmed.": [
+            "Abgebrochen. Wir haben um Rückgabe der Wörter für %d laufende Übersetzung gebeten; das Nutzungsprotokoll zeigt dies nach Bestätigung an.",
+            "Abgebrochen. Wir haben um Rückgabe der Wörter für %d laufende Übersetzungen gebeten; das Nutzungsprotokoll zeigt diese nach Bestätigung an."
+         ],
+         "Published": [
+            "Veröffentlicht"
+         ],
+         "Draft": [
+            "Entwurf"
+         ],
+         "Trash": [
+            "Papierkorb"
+         ],
+         "Pending": [
+            "Ausstehend"
+         ],
+         "Private": [
+            "Privat"
+         ],
+         "Future": [
+            "Geplant"
+         ],
+         "Auto Draft": [
+            "Auto-Entwurf"
+         ],
+         "External": [
+            "Extern"
+         ],
+         "Pay now": [
+            "Jetzt bezahlen"
+         ],
+         "%1$sCheck pricing%2$s.": [
+            "%1$sPreise prüfen%2$s."
+         ],
+         "Lowest cost per word": [
+            "Niedrigste Kosten pro Wort"
+         ],
+         "Pay only for what you use": [
+            "Zahle nur für das, was du nutzt"
+         ],
+         "Never run out. Translation never stops.": [
+            "Geht nie aus. Die Übersetzung stoppt nie."
+         ],
+         "The first 500 words each month are free": [
+            "Die ersten 500 Wörter pro Monat sind kostenlos"
+         ],
+         "Pay-As-You-Go": [
+            "Nutzungsbasierte Abrechnung"
+         ],
+         "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate.": [
+            "Aktivieren Sie die <b>nutzungsbasierte Abrechnung</b>, um automatisch zu übersetzen. Bei der <b>nutzungsbasierten Abrechnung</b> werden Ihnen die Wörter berechnet, die Sie übersetzen."
+         ],
+         "Activating <b>Pay-As-You-Go</b>…": [
+            "<b>Nutzungsbasierte Abrechnung</b> wird aktiviert…"
+         ],
+         "Continue in the new tab": [
+            "Im neuen Tab fortfahren"
+         ],
+         "Activate <b>Pay-As-You-Go</b>": [
+            "<b>Nutzungsbasierte Abrechnung</b> aktivieren"
+         ],
+         "<b>Pay-As-You-Go</b> is not active yet.": [
+            "<b>Nutzungsbasierte Abrechnung</b> ist noch nicht aktiv."
+         ],
+         "Already using <b>Pay-As-You-Go</b> on another site?": [
+            "Nutzen Sie bereits <b>Nutzungsbasierte Abrechnung</b> auf einer anderen Website?"
+         ],
+         "Connect this site to it": [
+            "Diese Website damit verbinden"
+         ],
+         "Activate Pay-As-You-Go": [
+            "Nutzungsbasierte Abrechnung aktivieren"
+         ],
+         "Connect your sites to share translation memory, glossary and word quota.": [
+            "Verbinde deine Websites, um Übersetzungsspeicher, Glossar und Wortkontingent zu teilen."
+         ],
+         "Learn more": [
+            "Mehr erfahren"
+         ],
+         "Copy your migration code:": [
+            "Kopiere deinen Migrationscode:"
+         ],
+         "Loading…": [
+            "Ladevorgang…"
+         ],
+         "Log into a site with an active automatic translation account.": [
+            "Melde dich auf einer Website mit einem aktiven Konto für automatische Übersetzungen an."
+         ],
+         "Go to \"WPML\" → \"Translation Dashboard\".": [
+            "Gehe zu „WPML“ → „Übersetzungs-Dashboard“."
+         ],
+         "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
+            "Gehe im Tab „Zahlung & Wartung“ zu „Verbundene Websites“."
+         ],
+         "Click \"Enter the connection key of another site\" to finish connecting your sites.": [
+            "Klicke auf „Verbindungsschlüssel einer anderen Website eingeben“, um die Verbindung deiner Websites abzuschließen."
+         ],
+         "Buy and assign words": [
+            "Wörter kaufen und zuweisen"
+         ],
+         "Refresh to assign words": [
+            "Aktualisieren, um Wörter zuzuweisen"
+         ],
+         "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site.": [
+            "Kaufe ein %1$sPrepaid-Paket%2$s mit mindestens %3$s%4$s Wörtern%5$s und weise sie dieser Website zu."
+         ],
+         "This amount will cover translation of all your current content.": [
+            "Dieser Betrag deckt die Übersetzung all deiner aktuellen Inhalte ab."
+         ],
+         "Assign %1$s%2$s words%3$s to this site.": [
+            "Weisen Sie dieser Website %1$s%2$s Wörter%3$s zu."
+         ],
+         "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s.": [
+            "Weisen Sie Ihre %1$s%2$s Wörter%3$s zu und kaufen Sie %4$s%5$s weitere%6$s."
+         ],
+         "Buy %1$s%2$s words%3$s for this site.": [
+            "Kaufen Sie %1$s%2$s Wörter%3$s für diese Website."
+         ],
+         "Assign at least %1$s%2$s words%3$s to this site to continue.": [
+            "Weise dieser Website mindestens %1$s%2$s Wörter%3$s zu, um fortzufahren."
+         ],
+         "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount.": [
+            "Weise Wörter von deinem WPML-Konto zu und kaufe ein zusätzliches %1$sPrepaid-Paket%2$s mit mindestens %3$s%4$s Wörtern%5$s, um den verbleibenden Betrag abzudecken."
+         ],
+         "Prepaid words": [
+            "Prepaid-Wörter"
+         ],
+         "There are %1$s%2$s words%3$s on your WPML account.": [
+            "Es befinden sich %1$s%2$s Wörter%3$s in Ihrem WPML-Konto."
+         ],
+         "There are %1$s%2$s available on your WPML account.%3$s": [
+            "Es sind %1$s%2$s auf deinem WPML-Konto verfügbar.%3$s"
+         ],
+         "(Only the WPML account owner can do this.)": [
+            "(Dies kann nur der Inhaber des WPML-Kontos tun.)"
+         ],
+         "Checking for new words...": [
+            "Suche nach neuen Wörtern..."
+         ],
+         "Still not enough words. Refresh again in %d seconds.": [
+            "Noch immer nicht genügend Wörter. In %d Sekunden erneut aktualisieren."
+         ],
+         "Already assigned?": [
+            "Bereits zugewiesen?"
+         ],
+         "Collapse": [
+            "Einklappen"
+         ],
+         "Obvious mistakes": [
+            "Offensichtliche Fehler"
+         ],
+         "Ready to publish": [
+            "Bereit zur Veröffentlichung"
+         ],
+         "Your engine": [
+            "Deine Engine"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Übersetzungsqualität (Skala 50-100): %1$s erreicht %2$d, %3$s erreicht %4$d."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Die Ergebnisse basieren auf der internen MQM-Studie zur Übersetzungsqualität von WPML."
+         ],
+         "Select an item": [
+            "Eintrag auswählen"
+         ],
+         "Open dropdown": [
+            "Dropdown öffnen"
+         ],
+         "Reset": [
+            "Zurücksetzen"
+         ],
+         "Search": [
+            "Suchen"
+         ],
+         "No items found": [
+            "Keine Einträge gefunden"
+         ],
+         "%1$s Flag": [
+            "Flagge von %1$s"
+         ],
+         "Recommended": [
+            "Empfohlen"
+         ],
+         "- Select a review mode -": [
+            "- Review-Modus auswählen -"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "Was möchtest Du tun, wenn WPML die automatische Übersetzung Deiner Inhalte abgeschlossen hat?"
+         ],
+         "What would you like to do after WPML finishes translating your content automatically?": [
+            "Was möchtest Du tun, nachdem WPML die automatische Übersetzung Deiner Inhalte abgeschlossen hat?"
+         ],
+         "Publish without review": [
+            "Ohne Review veröffentlichen"
+         ],
+         "WPML publishes translations immediately, skipping the review process.": [
+            "WPML veröffentlicht Übersetzungen sofort und überspringt den Review-Prozess."
+         ],
+         "Wait for review": [
+            "Auf Review warten"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "Für DeepL, Google und Microsoft empfehlen wir ein menschliches Review, um die Korrektheit zu bestätigen. PTC liefert „Better Than Human Translations“, die den Kontext verstehen, sodass Du den Review-Prozess getrost überspringen kannst."
+         ],
+         "WPML keeps translations unpublished, so you can review them first.": [
+            "WPML lässt Übersetzungen unveröffentlicht, damit Du sie zuerst überprüfen kannst."
+         ],
+         "Your translators review and approve translations before publishing.": [
+            "Deine Übersetzer überprüfen und genehmigen die Übersetzungen vor der Veröffentlichung."
+         ],
+         "Publish and mark for review": [
+            "Veröffentlichen und für Review markieren"
+         ],
+         "WPML publishes translations immediately but flags them for you to check at your convenience.": [
+            "WPML veröffentlicht Übersetzungen sofort, markiert sie aber, damit Du sie später in Ruhe prüfen kannst."
+         ],
+         "WPML publishes translations immediately but flags them for translators to review later.": [
+            "WPML veröffentlicht Übersetzungen sofort, markiert sie aber für Übersetzer zur späteren Überprüfung."
+         ],
+         "PTC provides Better Than Human Translations that rarely need improvements, so you can confidently skip the review process.": [
+            "PTC liefert „Better Than Human Translations“, die selten Verbesserungen benötigen, sodass Du den Review-Prozess getrost überspringen kannst."
+         ]
+      }
+   }
+}

@@ -2,55 +2,72 @@
 
 namespace WPML\PB\Elementor\Config\DynamicElements;
 
-use WPML\FP\Fns;
 use WPML\FP\Obj;
-use WPML\FP\Relation;
-use WPML\FP\Logic;
-
+use WPML\PB\Elementor\Helper\Path;
 
 class WooProduct {
 
-	/**
-	 * @param string $widgetName
-	 *
-	 * @return callable(string): string
-	 */
-	private static function getConfig( $widgetName ) {
-		$widgetConfig = wpml_collect( [
-			'title'             => [
-				'dynamicKey'    => 'title',
-				'widgetType'    => 'heading',
-				'shortcodeName' => 'woocommerce-product-title-tag',
-			],
-			'short-description' => [
-				'dynamicKey'    => 'editor',
-				'widgetType'    => 'text-editor',
-				'shortcodeName' => 'woocommerce-product-short-description-tag',
-			],
-		] )->get( $widgetName );
+	const DYNAMIC_KEYS = [
+		'title_text',
+		'description_text',
+		'image',
+		'link',
+		'editor',
+		'title',
+		'text',
+		'content',
+		'url',
+	];
 
-		return Obj::prop( Fns::__, $widgetConfig );
+	const TAG_NAMES = [
+		'woocommerce-product-title-tag',
+		'woocommerce-product-image-tag',
+		'woocommerce-product-price-tag',
+		'woocommerce-product-short-description-tag',
+		'woocommerce-product-content-tag',
+		'woocommerce-product-gallery-tag',
+		'woocommerce-product-stock-tag',
+		'woocommerce-product-rating-tag',
+		'woocommerce-product-sale-tag',
+		'woocommerce-product-terms-tag',
+		'woocommerce-product-add-to-cart-tag',
+		'woocommerce-product-sku-tag',
+	];
+
+	private static function getConverter( $dynamicKey ) {
+		$dynamicPath = [ 'settings', '__dynamic__', $dynamicKey ];
+
+		$hasDynamicTag = function ( $item ) use ( $dynamicPath ) {
+			$value = Path::get( $dynamicPath, $item );
+
+			return is_string( $value )
+				&& strpos( $value, '[elementor-tag' ) !== false
+				&& strpos( $value, 'name="woocommerce-product-' ) !== false
+				&& self::hasTagName( $value );
+		};
+
+		$dynamicLens = Obj::lensPath( $dynamicPath );
+
+		return [ $hasDynamicTag, $dynamicLens, self::TAG_NAMES, 'product_id' ];
 	}
 
-	/**
-	 * @param string $widget
-	 *
-	 * @return array
-	 */
-	public static function get( $widget ) {
-		$get = self::getConfig( $widget );
+	private static function hasTagName( $value ) {
+		foreach ( self::TAG_NAMES as $tagName ) {
+			if ( strpos( $value, 'name="' . $tagName . '"' ) !== false ) {
+				return true;
+			}
+		}
 
-		$widgetPath = [ 'settings', '__dynamic__', $get( 'dynamicKey' ) ];
+		return false;
+	}
 
-		// $isWooWidget :: array -> bool
-		$isWooWidget = Logic::allPass( [
-			Relation::propEq( 'widgetType', $get( 'widgetType' ) ),
-			Obj::path( $widgetPath ),
-		] );
+	public static function getAll() {
+		$converters = [];
 
-		// $widgetLens :: callable -> callable -> mixed
-		$widgetLens = Obj::lensPath( $widgetPath );
+		foreach ( self::DYNAMIC_KEYS as $dynamicKey ) {
+			$converters[] = self::getConverter( $dynamicKey );
+		}
 
-		return [ $isWooWidget, $widgetLens, $get( 'shortcodeName' ), 'product_id' ];
+		return $converters;
 	}
 }

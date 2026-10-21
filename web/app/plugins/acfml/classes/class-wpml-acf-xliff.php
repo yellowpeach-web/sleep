@@ -1,38 +1,27 @@
 <?php
 
-/**
- * @author OnTheGo Systems
- */
 class WPML_ACF_Xliff implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
-	/** @var wpdb $wpdb */
 	public $wpdb;
-	/** @var SitePress $sitepress */
 	protected $sitepress;
 
-	private $search_patterns            = array();
+	private $search_patterns = [];
 	private $cache_key_for_fields_groups = 'get_acf_groups';
-	private $cache_group                 = 'wpml_acf';
+	private $cache_group = 'wpml_acf';
 
-	/**
-	 * WPML_ACF constructor.
-	 *
-	 * @param wpdb      $wpdb
-	 * @param SitePress $sitepress
-	 */
 	public function __construct( wpdb $wpdb, SitePress $sitepress ) {
 		$this->wpdb      = $wpdb;
 		$this->sitepress = $sitepress;
 	}
 
 	public function add_hooks() {
-		add_action( 'save_post', array( $this, 'save_post' ), WPML_PRIORITY_BEFORE_EVERYTHING );
-		add_action( 'acf/update_field_group', array( $this, 'update_acf_field_group' ) );
+		add_action( 'save_post', [ $this, 'save_post' ], WPML_PRIORITY_BEFORE_EVERYTHING );
+		add_action( 'acf/update_field_group', [ $this, 'update_acf_field_group' ] );
 	}
 
 	public function save_post() {
 		if ( $this->is_updating_a_translatable_post_with_acf_fields() ) {
-			$this->search_patterns = array();
-			$fields                = get_field_objects( $_POST['post_ID'] );
+			$this->search_patterns = [];
+			$fields = get_field_objects( isset( $_POST['post_ID'] ) ? absint( wp_unslash( $_POST['post_ID'] ) ) : 0 );
 
 			if ( $fields && is_array( $fields ) ) {
 				$this->update_custom_fields_settings( $fields );
@@ -41,9 +30,6 @@ class WPML_ACF_Xliff implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \
 		}
 	}
 
-	/**
-	 * @return bool
-	 */
 	private function is_updating_a_translatable_post_with_acf_fields() {
 		return array_key_exists( 'post_type', $_POST )
 		&& array_key_exists( 'post_ID', $_POST )
@@ -55,9 +41,6 @@ class WPML_ACF_Xliff implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \
 		&& $this->sitepress->is_translated_post_type( $_POST['post_type'] );
 	}
 
-	/**
-	 * @param array $acf_fields
-	 */
 	private function update_custom_fields_settings( array $acf_fields ) {
 		$fields = $this->build_fields_names( $acf_fields );
 		foreach ( $fields as $field ) {
@@ -94,7 +77,7 @@ class WPML_ACF_Xliff implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \
 
 			$sql_post_meta = "SELECT DISTINCT meta_key FROM {$this->wpdb->postmeta} WHERE ";
 
-			$sql_post_meta_where = array();
+			$sql_post_meta_where = [];
 			for ( $i = 0; $i < $conditions; $i ++ ) {
 				$sql_post_meta_where[] = 'meta_key LIKE %s';
 			}
@@ -104,16 +87,15 @@ class WPML_ACF_Xliff implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \
 
 			$metas = $this->wpdb->get_col( $sql );
 
-			/** @var array $metas */
 			foreach ( $metas as $meta ) {
 				$this->set_field_to_be_copied( $meta );
 			}
 
-			$this->search_patterns = array();
+			$this->search_patterns = [];
 		}
 	}
 
-	private function build_fields_names( array $fields, array $parent_names = array() ) {
+	private function build_fields_names( array $fields, array $parent_names = [] ) {
 		foreach ( $fields as $index => &$field ) {
 			$field_names       = $parent_names;
 			$field_names[]     = $field['name'];
@@ -126,14 +108,11 @@ class WPML_ACF_Xliff implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \
 		return $fields;
 	}
 
-	/**
-	 * @param string $search_pattern
-	 */
 	private function collect_meta_keys_to_update( $search_pattern ) {
 		$this->search_patterns[] = $search_pattern;
 	}
 
-	private function get_wildcards_field_name( array $field = array() ) {
+	private function get_wildcards_field_name( array $field = [] ) {
 		$cf_names = $field['cf-names'];
 		$result   = array_shift( $cf_names );
 
@@ -151,18 +130,17 @@ class WPML_ACF_Xliff implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \
 	}
 
 	private function set_field_to_be_copied( $field ) {
-		$custom_fields_readonly_config   = $this->sitepress->get_setting( 'custom_fields_readonly_config' );
-		$custom_fields_readonly_config[] = $field;
-		$this->sitepress->set_setting( 'custom_fields_readonly_config', $custom_fields_readonly_config, true );
+		$custom_fields_readonly_config = $this->sitepress->get_setting( 'custom_fields_readonly_config', [] );
+		if ( ! in_array( $field, $custom_fields_readonly_config, true ) ) {
+			$custom_fields_readonly_config[] = $field;
+			$this->sitepress->set_setting( 'custom_fields_readonly_config', $custom_fields_readonly_config, true );
+		}
 
-		$custom_fields_translation           = $this->sitepress->get_setting( 'custom_fields_translation' );
+		$custom_fields_translation           = $this->sitepress->get_setting( 'custom_fields_translation', [] );
 		$custom_fields_translation[ $field ] = WPML_COPY_CUSTOM_FIELD;
 		$this->sitepress->set_setting( 'custom_fields_translation', $custom_fields_translation, true );
 	}
 
-	/**
-	 * @return string
-	 */
 	private function get_wildcards() {
 		return '%';
 	}
@@ -172,15 +150,14 @@ class WPML_ACF_Xliff implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \
 			$cache = new WPML_WP_Cache( $this->cache_group );
 			$cache->flush_group_cache();
 
-			$this->search_patterns = array();
+			$this->search_patterns = [];
 			$group_id              = $_POST['post_ID'];
 			$groups                = $this->get_acf_groups();
 
-			/** @var WP_Post $group */
 			foreach ( $groups as $group ) {
 				if ( (int) $group_id === $group->ID ) {
 					$fields = acf_get_fields( $group->ID );
-					if ( is_array( $fields ) && $fields ) {
+					if ( $fields ) {
 						$this->update_custom_fields_settings( $fields );
 					}
 				}
@@ -190,32 +167,24 @@ class WPML_ACF_Xliff implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \
 		}
 	}
 
-	/**
-	 * @return bool
-	 */
 	private function is_updating_acf_group() {
 		return array_key_exists( 'post_type', $_POST ) && array_key_exists( 'post_ID', $_POST ) && 'acf-field-group' === $_POST['post_type'];
 	}
 
-	/**
-	 * @todo Improve this query since only ID is used no need for all fields.
-	 *
-	 * @return array
-	 */
 	private function get_acf_groups() {
 		$found  = false;
 		$cache  = new WPML_WP_Cache( $this->cache_group );
 		$result = $cache->get( $this->cache_key_for_fields_groups, $found );
 		if ( ! $found ) {
-			$result = get_posts( array(
+			$result = get_posts( [
 				'post_type'              => 'acf-field-group',
 				'posts_per_page'         => -1,
 				'orderby'                => 'menu_order title',
 				'order'                  => 'asc',
-				'suppress_filters'       => false, // allow WPML to modify the query
-				'post_status'            => array( 'publish', 'acf-disabled' ),
+				'suppress_filters'       => false,
+				'post_status'            => [ 'publish', 'acf-disabled' ],
 				'update_post_meta_cache' => false,
-			) );
+			] );
 			$cache->set( $this->cache_key_for_fields_groups, $result );
 		}
 

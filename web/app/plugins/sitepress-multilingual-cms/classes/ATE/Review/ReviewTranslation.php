@@ -15,10 +15,20 @@ use WPML\TM\API\Jobs;
 use WPML\TM\API\Translators;
 use WPML\Core\WP\App\Resources;
 use WPML\FP\Obj;
+use WPML\TM\ATE\UpdateTranslation\UpdateTranslation;
 use function WPML\FP\pipe;
 use function WPML\FP\spreadArgs;
 
-class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action {
+class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC_Action {
+
+	private $review_status_lookup;
+
+	private $preview_recursion_guard;
+
+	public function __construct( ReviewStatusLookup $review_status_lookup, PreviewRecursionGuard $preview_recursion_guard ) {
+		$this->review_status_lookup    = $review_status_lookup;
+		$this->preview_recursion_guard = $preview_recursion_guard;
+	}
 
 	public function add_hooks() {
 		if ( self::hasValidNonce() ) {
@@ -36,8 +46,6 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 				add_filter(
 					'init',
 					function () {
-						// This hook is only needed for the WP Autosaved revision preview.
-						// For Translation Review it can cause problems overwritting the post by an autosaved draft.
 						remove_filter( 'the_preview', '_set_preview' );
 						return true;
 					},
@@ -46,29 +54,7 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 			}
 		}
 
-		Hooks::onFilter( 'user_has_cap', 10, 3 )
-		     ->then( spreadArgs( function ( $userCaps, $requiredCaps, $args ) {
-				 /** @var array $userCaps */
-				 /** @var array $requiredCaps */
-				 /** @var array $args */
-
-			     if ( Relation::propEq( 0, 'edit_post', $args ) ) {
-				     $translator = Translators::getCurrent();
-
-				     if ( $translator->ID ) {
-					     $postId = $args[2];
-					     $job    = Jobs::getPostJob( $postId, Post::getType( $postId ), WPMLPost::getLang( $postId ) );
-
-					     if ( ReviewStatus::doesJobNeedReview( $job ) && self::canEditLanguage( $translator, $job ) ) {
-						     return Lst::concat( $userCaps, Lst::zipObj( $requiredCaps, Lst::repeat( true, count( $requiredCaps ) ) ) );
-					     }
-				     }
-
-				     return $userCaps;
-			     }
-
-			     return $userCaps;
-		     } ) );
+		Hooks::onFilter( 'user_has_cap', 10, 3 )->then( spreadArgs( [ $this, 'maybeGrantReviewCap' ] ) );
 
 		Hooks::onFilter( 'wpml_tm_allowed_translators_for_job', 10, 2 )
 		     ->then( spreadArgs( function ( $allowedTranslators, \WPML_Element_Translation_Job $job ) {
@@ -87,6 +73,30 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 		}
 	}
 
+	const REVIEW_META_CAPS = [ 'edit_post', 'read_post' ];
+
+	public function maybeGrantReviewCap( $user_caps, $required_caps, $args ) {
+		if ( ! Lst::includes( Obj::prop( 0, $args ), self::REVIEW_META_CAPS ) ) {
+			return $user_caps;
+		}
+
+		$translator = Translators::getCurrent();
+
+		if ( ! $translator->ID || empty( $translator->language_pairs ) ) {
+			return $user_caps;
+		}
+
+		$post_id = is_object( $args[2] ) && $args[2] instanceof \WP_Post ? $args[2]->ID : $args[2];
+
+		$job = $this->review_status_lookup->getJobAwaitingReview( $post_id, Post::getType( $post_id ), WPMLPost::getLang( $post_id ) );
+
+		if ( $job && self::canEditLanguage( $translator, $job ) ) {
+			return Lst::concat( $user_caps, Lst::zipObj( $required_caps, Lst::repeat( true, count( $required_caps ) ) ) );
+		}
+
+		return $user_caps;
+	}
+
 	private static function canEditLanguage( $translator, $job ) {
 		if ( ! $job ) {
 			return false;
@@ -95,12 +105,6 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 		return Lst::includes( Obj::prop('language_code', $job), Obj::pathOr( [], [ 'language_pairs', Obj::prop('source_language_code', $job) ], $translator ) );
 	}
 
-	/**
-	 * This will ensure to block the standard preview
-	 * for non-public CPTs.
-	 *
-	 * @return bool
-	 */
 	private static function hasValidNonce() {
 		$get = Obj::prop( Fns::__, $_GET );
 
@@ -110,11 +114,6 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 		);
 	}
 
-	/**
-	 * @param int $jobId
-	 *
-	 * @return callable
-	 */
 	public function handleTranslationReview() {
 		return function ( $data ) {
 			$post  = Obj::prop( 'post', $data );
@@ -123,18 +122,12 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 				? Str::split( ',', Sanitize::stringProp('targetLanguages', $_GET) ) : null;
 
 			if ( $jobId ) {
-				/**
-				 * This hooks is fired as soon as a translation review is about to be displayed.
-				 *
-				 * @since 4.5.0
-				 *
-				 * @param int             $jobId The job Id.
-				 * @param object|\WP_Post $post  The job's related object to be reviewed.
-				 */
 				do_action( 'wpml_tm_handle_translation_review', $jobId, $post );
 
 				Hooks::onFilter( 'wp_redirect' )
 					 ->then( [ __CLASS__, 'failGracefullyOnPreviewRedirection' ] );
+
+				$this->preview_recursion_guard->addHooks();
 
 				Hooks::onAction( 'template_redirect', PHP_INT_MAX )
 					 ->then( function () {
@@ -161,19 +154,22 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 		';
 	}
 
-	/**
-	 * @return null This will stop the redirection.
-	 */
 	public static function failGracefullyOnPreviewRedirection() {
 		do_action( 'wp_head' );
 		self::printReviewToolbarAnchor();
+		$edit_translation_message = sprintf(
+			/* translators: Line in the notice shown after an automatic translation is ready. %1$s: the opening tag that puts the name of the button in bold, %2$s: its closing tag. The words between them are the label of the "Edit Translation" item in the toolbar, so use the same wording there. */
+			esc_html__( 'Click %1$sEdit Translation%2$s in the toolbar above to review your translation in the editor.', 'sitepress' ),
+			'<strong>',
+			'</strong>'
+		);
 
         echo '
             <div class="wpml-review__modal-mask wpml-review__modal-mask-transparent">
                 <div class="wpml-review__modal-box wpml-review__modal-box-transparent wpml-review__modal-preview-not-available">
                     <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 0C10.8 0 0 10.8 0 24C0 37.2 10.8 48 24 48C37.2 48 48 37.2 48 24C48 10.8 37.2 0 24 0ZM24 43.5C13.2 43.5 4.5 34.8 4.5 24C4.5 13.2 13.2 4.5 24 4.5C34.8 4.5 43.5 13.2 43.5 24C43.5 34.8 34.8 43.5 24 43.5Z" fill="url(#paint0_linear)"/><path d="M24 10.2C22.5 10.2 21 11.4 21 13.2C21 15 22.2 16.2 24 16.2C25.8 16.2 27 15 27 13.2C27 11.4 25.5 10.2 24 10.2ZM24 20.4C22.8 20.4 21.9 21.3 21.9 22.5V35.7C21.9 36.9 22.8 37.8 24 37.8C25.2 37.8 26.1 36.9 26.1 35.7V22.5C26.1 21.3 25.2 20.4 24 20.4Z" fill="url(#paint1_linear)"/><defs><linearGradient id="paint0_linear" x1="38.6667" y1="6.66666" x2="8" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#27AD95"/><stop offset="1" stop-color="#2782AD"/></linearGradient><linearGradient id="paint1_linear" x1="38.6667" y1="6.66666" x2="8" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#27AD95"/><stop offset="1" stop-color="#2782AD"/></linearGradient></defs></svg>
-                    <h2>'. esc_html__( 'Preview is not available', 'wpml-translation-management' ) .'</h2>
-                    <p>'. sprintf(esc_html__( 'Click %sEdit Translation%s in the toolbar above to review your translation in the editor.', 'wpml-translation-management' ), '<strong>', '</strong>') .'</p>
+                    <h2>'. esc_html__( 'Preview is not available', 'sitepress' ) .'</h2>
+                    <p>'. $edit_translation_message .'</p>
                 </div>
             </div>
         ';
@@ -183,17 +179,19 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 
 
 	public function getData( $jobId, $post, $filterTargetLanguages ) {
-		$job = Jobs::get( $jobId );
+		$jobId = (int) $jobId;
+		$job   = Jobs::get( $jobId );
 
 		return [
 			'name' => 'reviewTranslation',
 			'data' => [
 				'jobEditUrl'          => $this->getEditUrl( $jobId ),
 				'nextJobUrl'          => NextTranslationLink::get( $job, $filterTargetLanguages ),
-				'jobId'               => (int) $jobId,
+				'jobId'               => $jobId,
 				'postId'              => $post->ID,
 				'isPublished'         => Relation::propEq( 'post_status', 'publish', $post ) ? 1 : 0,
-				'needsReview'         => ReviewStatus::doesJobNeedReview( $job ),
+				'scheduled'           => $this->isOriginalScheduled( $job ) ? 1 : 0,
+				'needsReview'       => ReviewStatus::doesJobNeedReview( $job ),
 				'completedInATE'      => $this->isCompletedInATE( $_GET ),
 				'isReturningFromATE'  => (bool) Obj::prop( 'editFromReviewPage', $_GET ),
 				'clickedBackInATE'    => (bool) Obj::prop( 'back', $_GET ),
@@ -208,14 +206,17 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 		];
 	}
 
-	/**
-	 * Returns completed status based on key 'complete_no_changes' in $params.
-	 * Returns NOT_COMPLETED if 'complete_no_changes' is not set.
-	 *
-	 * @param array $params
-	 *
-	 * @return string
-	 */
+	private function isOriginalScheduled( $job ) {
+		$originalId = is_object( $job ) ? (int) Obj::prop( 'original_doc_id', $job ) : 0;
+		if ( ! $originalId ) {
+			return false;
+		}
+
+		$original = get_post( $originalId );
+
+		return $original instanceof \WP_Post && 'future' === $original->post_status;
+	}
+
 	public function isCompletedInATE( $params ) {
 		$completedInATE = pipe(
 			Obj::prop( 'complete_no_changes' ),
@@ -230,23 +231,11 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 		return $completedInATE( $params );
 	}
 
-	/**
-	 * @param int $jobId
-	 *
-	 * @return string
-	 */
 	private function getEditUrl( $jobId ) {
 		return \add_query_arg( [ 'preview' => 1 ], Jobs::getEditUrl( $this->getReturnParamInEditUrl(), $jobId ) );
 	}
 
-	/**
-	 * @return string
-	 */
 	private function getReturnParamInEditUrl() {
-		/**
-		 * Those are GET params which ATE may send when we return to the review page.
-		 * We don't want to include them in subsequent edit link.
-		 */
 		$ateParams = [
 			'back',
 			'complete_no_changes',
@@ -256,23 +245,17 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 			'ate_original_id',
 			'ate_status',
 			'editFromReviewPage',
+			\WPML\TM\ATE\ReturnToken::PARAM,
 		];
 
 		$returnParam = Jobs::getCurrentUrl();
 		$returnParam = \remove_query_arg( $ateParams, $returnParam );
 
-		/**
-		 * We need to add the `editFromReviewPage` param to the return URL to be able to detect that we are returning from ATE to the review page.
-		 * It is used to repeat the sync on "in-progress" status.
-		 */
 		$returnParam = \add_query_arg( [ 'editFromReviewPage' => 1 ], $returnParam );
 
 		return $returnParam;
 	}
 
-	/**
-	 * @return boolean
-	 */
 	public function isCurrentPageReviewPostTypeTemplate() {
 		$queryVars = [];
 		if ( isset( $_SERVER['QUERY_STRING'] ) ) {
@@ -282,9 +265,6 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 		return Obj::has( 'wpmlReviewPostType', $queryVars ) && 'wp_template' === $queryVars['wpmlReviewPostType'];
 	}
 
-	/**
-	 * @return boolean
-	 */
 	public function isCurrentPageReview() {
 		$queryVars = [];
 		if ( isset( $_SERVER['QUERY_STRING'] ) ) {
@@ -295,17 +275,7 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 		return !! $jobId || Obj::has( 'wpmlReviewPostType', $queryVars );
 	}
 
-	/**
-	 * This filter is called from WP core /wp-includes/blocks.php right before block is rendered.
-	 * If anything other than null is returned from this filter that value is used as final block rendered value without calling actual block render function.
-	 *
-	 * @param string|null $preRenderedContent Pre-rendered context for the block.
-	 * @param array       $blockParams Block params being rendered.
-	 *
-	 * @return string|null $context
-	 */
 	public function onPreRenderBlock( $preRenderedContent, $blockParams ) {
-		// Fixes error 'postId is not defined' in WP core when context vars are removed for posts with 'wp_template' type.
 		if ( is_array( $blockParams ) && 'core/comments' === $blockParams['blockName'] && $this->isCurrentPageReviewPostTypeTemplate() ) {
 			return '';
 		}

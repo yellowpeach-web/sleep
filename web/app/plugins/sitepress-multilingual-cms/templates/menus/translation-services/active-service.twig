@@ -6,7 +6,7 @@
     <div class="ts-active-service js-ts-active-service">
         <input type="hidden" class="active-service-title" value="{{ strings.modal_title }}">
         <input type="hidden" class="active-service-header" value="{{ strings.modal_header }}">
-        <input type="hidden" class="active-service-tip" value="{{ strings.modal_tip|format( "<a target='_blank' href='" ~ active_service.get_url ~ "'>" ~ active_service.get_name ~ "</a>" ) }}">
+        <input type="hidden" class="active-service-tip" value="{{ strings.modal_tip|format( "<a target='_blank' href='" ~ active_service.get_url|e('html_attr') ~ "'>" ~ active_service.get_name|e ~ "</a>" ) }}">
         <input type="hidden" class="js-needs-info-refresh" value="{{ needs_info_refresh }}">
         <input type="hidden" class="js-ts-refresh-nonce" value="{{ nonces['refresh_ts_info'] }}">
         <div class="ts-admin-section-leftcol">
@@ -34,7 +34,7 @@
             {% endif %}
 
             <h3>{{ active_service.get_name }}</h3>
-            <p>{{ active_service.get_description|raw }}</p>
+            <p>{{ service_description|raw }}</p>
 
             <p><a target="_blank" href="{{ active_service.get_doc_url }}">{{ strings.documentation }}</a></p>
 
@@ -48,7 +48,7 @@
                             <button data-id="{{ active_service.get_id }}" data-custom-fields="{{ active_service.get_custom_fields | json_encode }}" class="js-update-service-credentials button-primary">{{ strings.authentication.update_credentials_button }}</button>
                         </p>
                     {% else %}
-                        <p>{{ strings.authentication.description|format( active_service.get_name, '<a target="_blank" href="' ~ active_service.get_doc_url ~ '">' ~ strings.documentation_lower ~ '</a>' )|raw }}</p>
+                        <p>{{ strings.authentication.description|format( active_service.get_name|e, '<a target="_blank" href="' ~ active_service.get_doc_url|e('html_attr') ~ '">' ~ strings.documentation_lower ~ '</a>' )|raw }}</p>
                         <p class="notice-action-link"><button class="js-authenticate-service wpml-antd-button wpml-antd-button-primary" data-id="{{ active_service.get_id }}" data-custom-fields="{{ active_service.get_custom_fields | json_encode }}">{{ strings.authentication.authenticate_button }}</button></p>
                     {% endif %}
 

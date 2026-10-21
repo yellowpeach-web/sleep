@@ -2,6 +2,8 @@
 
 class WPML_Redirect_By_Param extends WPML_Redirection {
 
+	const MAX_TERM_IDS = 50;
+
 	private $post_like_params = array(
 		'p'       => 1,
 		'page_id' => 1,
@@ -12,16 +14,8 @@ class WPML_Redirect_By_Param extends WPML_Redirection {
 		'tag'    => 1,
 	);
 
-	/** @var SitePress */
 	private $sitepress;
 
-	/**
-	 * @param array                    $tax_sync_option
-	 * @param WPML_URL_Converter       $url_converter
-	 * @param WPML_Request             $request_handler
-	 * @param WPML_Language_Resolution $lang_resolution
-	 * @param SitePress                $sitepress
-	 */
 	public function __construct( $tax_sync_option, &$url_converter, &$request_handler, &$lang_resolution, &$sitepress ) {
 		parent::__construct( $url_converter, $request_handler, $lang_resolution );
 		global $wp_rewrite;
@@ -40,9 +34,6 @@ class WPML_Redirect_By_Param extends WPML_Redirection {
 		add_action( 'template_redirect', array( $this, 'template_redirect_action' ), 1 );
 	}
 
-	/**
-	 * @return bool|string
-	 */
 	public function get_redirect_target() {
 		$target = $this->redirect_hidden_home();
 		if ( (bool) $target === false ) {
@@ -53,35 +44,103 @@ class WPML_Redirect_By_Param extends WPML_Redirection {
 			$target   = $target !== false ? rtrim( $path, '/' ) . $target : false;
 		}
 
+		if ( false === $target ) {
+			$target = $this->removed_language_target( \WPML\Languages\RemovedLanguageRedirect::MODE_PARAMETER );
+		}
+
 		return $target;
 	}
 
 	private function find_potential_translation( $query_params, $lang_code ) {
-		if ( count( $translatable_params = array_intersect_key( $query_params, $this->post_like_params ) ) === 1 ) {
-			/** @var WPML_Post_Translation $wpml_post_translations */
+		$post_params = array_intersect_key( $query_params, $this->post_like_params );
+		if ( count( $post_params ) === 1 ) {
 			global $wpml_post_translations;
-			$potential_translation = $wpml_post_translations->element_id_in(
-				$query_params[ ( $parameter = key( $translatable_params ) ) ],
-				$lang_code
-			);
-		} elseif ( count( $translatable_params = array_intersect_key( $query_params, $this->term_like_params ) ) === 1 ) {
-			/** @var WPML_Term_Translation $wpml_term_translations */
-			global $wpml_term_translations;
-			$potential_translation = $wpml_term_translations->term_id_in(
-				$query_params[ ( $parameter = key( $translatable_params ) ) ],
-				$lang_code
-			);
+
+			$parameter = key( $post_params );
+			$post_id   = $query_params[ $parameter ];
+			if ( ! is_scalar( $post_id ) ) {
+				return false;
+			}
+
+			$translation = $wpml_post_translations->element_id_in( $post_id, $lang_code );
+
+			return isset( $translation ) && (int) $translation !== (int) $post_id ? array( $parameter, $translation ) : false;
 		}
-		/** @var String $parameter */
-		return isset( $potential_translation, $parameter ) ? array( $parameter, $potential_translation ) : false;
+
+		$term_params = array_intersect_key( $query_params, $this->term_like_params );
+		if ( count( $term_params ) === 1 ) {
+			$parameter = key( $term_params );
+			$value     = $query_params[ $parameter ];
+			if ( 'tag' === $parameter && ! ( is_string( $value ) && ctype_digit( $value ) ) ) {
+				return false;
+			}
+
+			$value = $this->translate_term_value( $value, $lang_code );
+
+			return false !== $value ? array( $parameter, $value ) : false;
+		}
+
+		return false;
 	}
 
-	/**
-	 * @param string $query_params_string
-	 * @param string $lang_code
-	 *
-	 * @return array|false
-	 */
+	private function translate_term_value( $value, $lang_code ) {
+		global $wpml_term_translations;
+
+		$parsed = $this->parse_term_value( $value );
+		if ( false === $parsed ) {
+			return false;
+		}
+
+		$changed = false;
+		$lists   = array();
+		foreach ( $parsed['lists'] as $key => $items ) {
+			foreach ( $items as $index => $item ) {
+				$term_id     = abs( (int) $item );
+				$translation = $wpml_term_translations->term_id_in( $term_id, $lang_code );
+				if ( $translation && (int) $translation !== $term_id ) {
+					$items[ $index ] = ( '-' === $item[0] ? '-' : '' ) . (int) $translation;
+					$changed         = true;
+				}
+			}
+			$lists[ $key ] = implode( ',', $items );
+		}
+
+		if ( ! $changed ) {
+			return false;
+		}
+
+		return $parsed['is_array'] ? $lists : reset( $lists );
+	}
+
+	private function parse_term_value( $value ) {
+		$is_array = is_array( $value );
+		$lists    = array();
+		$count    = 0;
+
+		foreach ( $is_array ? $value : array( $value ) as $key => $list ) {
+			if ( ! is_string( $list ) ) {
+				return false;
+			}
+
+			$items  = explode( ',', $list );
+			$count += count( $items );
+			if ( $count > self::MAX_TERM_IDS ) {
+				return false;
+			}
+			foreach ( $items as $item ) {
+				if ( ! preg_match( '/\A-?[0-9]+\z/', $item ) ) {
+					return false;
+				}
+			}
+			$lists[ $key ] = $items;
+		}
+
+		return $lists ? array(
+			'is_array' => $is_array,
+			'lists'    => $lists,
+		) : false;
+	}
+
 	private function needs_redirect( $query_params_string, $lang_code ) {
 		global $sitepress;
 
@@ -100,12 +159,12 @@ class WPML_Redirect_By_Param extends WPML_Redirection {
 			}
 		}
 
-		if ( ( $potential_translation = $this->find_potential_translation( $query_params, $lang_code ) ) !== false
-			 && (int) $query_params[ $potential_translation[0] ] !== (int) $potential_translation[1]
-			 && ! $element_lang
-		) {
-			$query_params[ $potential_translation[0] ] = $potential_translation[1];
-			$changed                                   = true;
+		if ( ! $element_lang ) {
+			$potential_translation = $this->find_potential_translation( $query_params, $lang_code );
+			if ( false !== $potential_translation ) {
+				$query_params[ $potential_translation[0] ] = $potential_translation[1];
+				$changed                                   = true;
+			}
 		}
 
 		return isset( $changed ) ? $query_params : false;
@@ -124,47 +183,58 @@ class WPML_Redirect_By_Param extends WPML_Redirection {
 		return $query_params_new !== false ? rawurldecode( http_build_query( $query_params_new ) ) : false;
 	}
 
-	/**
-	 * @param string $query_params_string
-	 *
-	 * @return null|string
-	 */
 	private function get_element_language( $query_params_string ) {
-		$language                          = '';
-		list( $element_id, $element_type ) = $this->get_element_details( $query_params_string );
-
-		if ( $element_id && $element_type ) {
-			$language = $this->sitepress->get_language_for_element( $element_id, $element_type );
-		}
-
-		return $language;
-	}
-
-	/**
-	 * @param string $url
-	 *
-	 * @return array
-	 */
-	private function get_element_details( $url ) {
-		$element_id   = '';
-		$element_type = '';
-		parse_str( $url, $query_args );
+		parse_str( $query_params_string, $query_args );
 
 		if ( isset( $query_args['p'] ) ) {
-			$element_id   = $query_args['p'];
-			$element_type = 'post_' . get_post_type( (int) $element_id );
-		} elseif ( isset( $query_args['cat'] ) ) {
-			$element_id   = $query_args['cat'];
-			$term         = get_term( (int) $element_id );
-			$element_type = 'tax_' . $term->taxonomy;
+			return $this->get_post_language( $query_args['p'] );
 		}
 
-		return array( $element_id, $element_type );
+		if ( isset( $query_args['cat'] ) ) {
+			return $this->get_cat_language( $query_args['cat'] );
+		}
+
+		return '';
 	}
 
-	/**
-	 * @link https://onthegosystems.myjetbrains.com/youtrack/issue/wpmlcore-2822
-	 */
+	private function get_post_language( $post_id ) {
+		if ( ! is_scalar( $post_id ) || ! $post_id ) {
+			return '';
+		}
+
+		return $this->sitepress->get_language_for_element( $post_id, 'post_' . get_post_type( (int) $post_id ) );
+	}
+
+	private function get_cat_language( $value ) {
+		$parsed = $this->parse_term_value( $value );
+		if ( false === $parsed ) {
+			return '';
+		}
+
+		$languages = array();
+		foreach ( $parsed['lists'] as $items ) {
+			foreach ( $items as $item ) {
+				if ( '-' === $item[0] ) {
+					continue;
+				}
+
+				$term_id = (int) $item;
+				$term    = get_term( $term_id );
+				if ( ! is_object( $term ) || empty( $term->taxonomy ) ) {
+					return '';
+				}
+
+				$language = $this->sitepress->get_language_for_element( $term_id, 'tax_' . $term->taxonomy );
+				if ( ! $language ) {
+					return '';
+				}
+				$languages[ $language ] = true;
+			}
+		}
+
+		return 1 === count( $languages ) ? (string) key( $languages ) : '';
+	}
+
 	public function template_redirect_action() {
 		if ( $this->sitepress->get_wp_api()->is_front_page()
 			 && $this->sitepress->get_wp_api()->get_query_var( 'page' )

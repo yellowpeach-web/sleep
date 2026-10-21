@@ -2,11 +2,36 @@
 
 ## Table of Contents
 
-* [Fns](#fns)
+* [Cast](#Cast)
+    * [__call](#__call)
+    * [__callStatic](#__callstatic)
+    * [hasMacro](#hasmacro)
+    * [init](#init)
+    * [macro](#macro)
+    * [toBool](#tobool)
+    * [toInt](#toint)
+    * [toStr](#tostr)
+    * [toArr](#toarr)
+* [Either](#Either)
+    * [of](#of)
+    * [left](#left)
+    * [right](#right)
+    * [fromNullable](#fromnullable)
+    * [fromBool](#frombool)
+    * [tryCatch](#trycatch)
+    * [getOrElse](#getorelse)
+* [Fns](#Fns)
+    * [__call](#__call)
+    * [__callStatic](#__callstatic)
+    * [hasMacro](#hasmacro)
+    * [init](#init)
+    * [macro](#macro)
+    * [maybeToEither](#maybetoeither)
+    * [noop](#noop)
     * [always](#always)
     * [converge](#converge)
     * [map](#map)
-    * [](#)
+    * [each](#each)
     * [identity](#identity)
     * [tap](#tap)
     * [reduce](#reduce)
@@ -40,10 +65,34 @@
     * [liftA3](#lifta3)
     * [liftN](#liftn)
     * [until](#until)
+* [Json](#Json)
+    * [__call](#__call)
+    * [__callStatic](#__callstatic)
+    * [hasMacro](#hasmacro)
     * [init](#init)
-    * [noop](#noop)
-    * [maybeToEither](#maybetoeither)
-* [Logic](#logic)
+    * [macro](#macro)
+    * [toArray](#toarray)
+    * [toCollection](#tocollection)
+* [Lens](#Lens)
+    * [__call](#__call)
+    * [__callStatic](#__callstatic)
+    * [hasMacro](#hasmacro)
+    * [init](#init)
+    * [macro](#macro)
+    * [iso](#iso)
+    * [isoIdentity](#isoidentity)
+    * [isoUnserialized](#isounserialized)
+    * [isoJsonDecoded](#isojsondecoded)
+    * [isoUrlDecoded](#isourldecoded)
+    * [isoBase64Decoded](#isobase64decoded)
+    * [isoParsedUrl](#isoparsedurl)
+    * [isoParsedQuery](#isoparsedquery)
+* [Logic](#Logic)
+    * [__call](#__call)
+    * [__callStatic](#__callstatic)
+    * [hasMacro](#hasmacro)
+    * [init](#init)
+    * [macro](#macro)
     * [not](#not)
     * [isNotNull](#isnotnull)
     * [ifElse](#ifelse)
@@ -55,17 +104,26 @@
     * [anyPass](#anypass)
     * [complement](#complement)
     * [defaultTo](#defaultto)
-    * [either](#either-1)
-    * [](#-1)
+    * [either](#either)
+    * [until](#until)
     * [propSatisfies](#propsatisfies)
-    * [](#-2)
-    * [](#-3)
+    * [isArray](#isarray)
+    * [isMappable](#ismappable)
     * [isEmpty](#isempty)
     * [isNotEmpty](#isnotempty)
     * [firstSatisfying](#firstsatisfying)
     * [isTruthy](#istruthy)
-    * [init](#init-1)
-* [Lst](#lst)
+* [Lst](#Lst)
+    * [__call](#__call)
+    * [__callStatic](#__callstatic)
+    * [diff](#diff)
+    * [hasMacro](#hasmacro)
+    * [init](#init)
+    * [keyBy](#keyby)
+    * [keyWith](#keywith)
+    * [macro](#macro)
+    * [repeat](#repeat)
+    * [sum](#sum)
     * [append](#append)
     * [fromPairs](#frompairs)
     * [toObj](#toobj)
@@ -94,25 +152,37 @@
     * [drop](#drop)
     * [dropLast](#droplast)
     * [makePair](#makepair)
-    * [](#-4)
+    * [make](#make)
     * [insert](#insert)
     * [range](#range)
     * [xprod](#xprod)
     * [prepend](#prepend)
     * [reverse](#reverse)
-    * [init](#init-2)
-    * [keyBy](#keyby)
-    * [keyWith](#keywith)
-    * [diff](#diff)
-    * [repeat](#repeat)
-    * [sum](#sum)
-* [Math](#math)
+* [Math](#Math)
+    * [__call](#__call)
+    * [__callStatic](#__callstatic)
+    * [hasMacro](#hasmacro)
+    * [init](#init)
+    * [macro](#macro)
     * [multiply](#multiply)
     * [divide](#divide)
     * [add](#add)
     * [product](#product)
-    * [init](#init-3)
-* [Obj](#obj)
+* [Maybe](#Maybe)
+    * [fromNullable](#fromnullable)
+    * [safe](#safe)
+    * [safeAfter](#safeafter)
+    * [safeBefore](#safebefore)
+    * [just](#just)
+    * [of](#of)
+* [Obj](#Obj)
+    * [__call](#__call)
+    * [__callStatic](#__callstatic)
+    * [hasMacro](#hasmacro)
+    * [init](#init)
+    * [macro](#macro)
+    * [merge](#merge)
+    * [without](#without)
     * [prop](#prop)
     * [propOr](#propor)
     * [props](#props)
@@ -138,15 +208,19 @@
     * [project](#project)
     * [where](#where)
     * [has](#has)
+    * [hasPath](#haspath)
     * [evolve](#evolve)
     * [objOf](#objof)
     * [keys](#keys)
     * [values](#values)
     * [replaceRecursive](#replacerecursive)
     * [toArray](#toarray)
-    * [init](#init-4)
-    * [without](#without)
-* [Relation](#relation)
+* [Relation](#Relation)
+    * [__call](#__call)
+    * [__callStatic](#__callstatic)
+    * [hasMacro](#hasmacro)
+    * [init](#init)
+    * [macro](#macro)
     * [equals](#equals)
     * [lt](#lt)
     * [lte](#lte)
@@ -154,14 +228,20 @@
     * [gte](#gte)
     * [propEq](#propeq)
     * [sortWith](#sortwith)
-    * [init](#init-5)
-* [Str](#str)
+* [Str](#Str)
+    * [__call](#__call)
+    * [__callStatic](#__callstatic)
+    * [hasMacro](#hasmacro)
+    * [init](#init)
+    * [macro](#macro)
+    * [truncate_bytes](#truncate_bytes)
     * [tail](#tail)
     * [split](#split)
-    * [includes](#includes-1)
+    * [parse](#parse)
+    * [includes](#includes)
     * [trim](#trim)
     * [trimPrefix](#trimprefix)
-    * [concat](#concat-1)
+    * [concat](#concat)
     * [sub](#sub)
     * [startsWith](#startswith)
     * [endsWith](#endswith)
@@ -174,3959 +254,3085 @@
     * [wrap](#wrap)
     * [toUpper](#toupper)
     * [toLower](#tolower)
-    * [init](#init-6)
 
-## Fns
+* Cast
+### __call
 
 
 
 
+Dynamically handle calls to the class. 
 
-* Full name: \WPML\FP\Fns
+ 
 
+**Parameters**
 
-### always
+* `(string) $method`
+* `(array) $parameters`
 
+**Return Values**
 
+`mixed`
 
-```php
-Fns::always( mixed $...$a ): callable
-```
 
-Curried :: a → ( * → a )
 
-Returns a function that always returns the given value.
 
-```php
-$t = Fns::always( 'Tee' );
-$t(); //=> 'Tee'
-```
+**Throws Exceptions**
 
-* This method is **static**.
-**Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
+`\BadMethodCallException`
 
 
 
 
----
+### __callStatic
 
-### converge
 
 
 
-```php
-Fns::converge( mixed $...$convergingFn, mixed $...$branchingFns ): callable
-```
+Dynamically handle calls to the class. 
 
-- Curried :: ( ( x1, x2, … ) → z ) → [( ( a, b, … ) → x1 ), ( ( a, b, … ) → x2 ), …] → ( a → b → … → z )
+ 
 
-Accepts a converging function and a list of branching functions and returns a new function. The arity of the new function is the same as the arity of the longest branching function. When invoked, this new function is applied to some arguments, and each branching function is applied to those same arguments. The results of each branching function are passed as arguments to the converging function to produce the return value.
+**Parameters**
 
-```php
-$divide = curryN( 2, function ( $num, $dom ) { return $num / $dom; } );
-$sum    = function ( Collection $collection ) { return $collection->sum(); };
-$length = function ( Collection $collection ) { return $collection->count(); };
+* `(string) $method`
+* `(array) $parameters`
 
-$average = Fns::converge( $divide, [ $sum, $length ] );
-$this->assertEquals( 4, $average( wpml_collect( [ 1, 2, 3, 4, 5, 6, 7 ] ) ) );
-```
+**Return Values**
 
-* This method is **static**.
-**Parameters:**
+`mixed`
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$convergingFn` | **mixed** |  |
-| `$...$branchingFns` | **mixed** |  |
 
 
 
+**Throws Exceptions**
 
----
 
-### map
+`\BadMethodCallException`
 
 
 
-```php
-Fns::map( mixed $...$fn, mixed $...$target ): callable|mixed
-```
 
-- Curried :: ( a→b )→f a→f b
+### hasMacro
 
-Takes a function and a *functor*, applies the function to each of the functor's values, and returns a functor of the same shape.
 
-And array is considered a *functor*
 
-Dispatches to the *map* method of the second argument, if present
 
-* This method is **static**.
-**Parameters:**
+Checks if macro is registered. 
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-| `$...$target` | **mixed** |  |
+ 
 
+**Parameters**
 
+* `(string) $name`
 
+**Return Values**
 
----
+`bool`
 
-### 
 
 
 
-```php
-Fns::(  ): 
-```
 
-static callable|mixed each ( ...$fn, ...$target ) - Curried :: ( a→b )→f a→f b
-
-
-
-
-
----
-
-### identity
-
-
-
-```php
-Fns::identity( mixed $mixed ): callable|mixed
-```
-
-- Curried :: a->a
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$mixed` | **mixed** |  |
-
-
-
-
----
-
-### tap
-
-
-
-```php
-Fns::tap( mixed $callable, mixed $mixed ): callable|mixed
-```
-
-- Curried :: fn->data->data
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$callable` | **mixed** |  |
-| `$mixed` | **mixed** |  |
-
-
-
-
----
-
-### reduce
-
-
-
-```php
-Fns::reduce( mixed $...$fn, mixed $...$initial, mixed $...$target ): callable|mixed
-```
-
-- Curried :: ( ( a, b ) → a ) → a → [b] → a
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-| `$...$initial` | **mixed** |  |
-| `$...$target` | **mixed** |  |
-
-
-
-
----
-
-### reduceRight
-
-
-
-```php
-Fns::reduceRight( mixed $...$fn, mixed $...$initial, mixed $...$target ): callable|mixed
-```
-
-- Curried :: ( ( a, b ) → a ) → a → [b] → a
-
-Takes a function, an initial value and an array and returns the result.
-
-The function receives two values, the accumulator and the current value, and should return a result.
-
-The array values are passed to the function in the reverse order.
-
-```php
-$numbers = [ 1, 2, 3, 4, 5, 8, 19 ];
-
-$append = function( $acc, $val ) {
-   $acc[] = $val;
-   return $acc;
-};
-
-$reducer = Fns::reduceRight( $append, [] );
-$result = $reducer( $numbers ); // [ 19, 8, 5, 4, 3, 2, 1 ]
-
-// Works on collections too.
-$result = $reducer( wpml_collect( $numbers ) ); // [ 19, 8, 5, 4, 3, 2, 1 ]
-```
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-| `$...$initial` | **mixed** |  |
-| `$...$target` | **mixed** |  |
-
-
-
-
----
-
-### filter
-
-
-
-```php
-Fns::filter( mixed $...$predicate, mixed $...$target ): callable|mixed
-```
-
-- Curried :: ( a → bool ) → [a] → [a]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicate` | **mixed** |  |
-| `$...$target` | **mixed** |  |
-
-
-
-
----
-
-### reject
-
-
-
-```php
-Fns::reject( mixed $...$predicate, mixed $...$target ): callable|mixed
-```
-
-- Curried :: ( a → bool ) → [a] → [a]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicate` | **mixed** |  |
-| `$...$target` | **mixed** |  |
-
-
-
-
----
-
-### value
-
-
-
-```php
-Fns::value( mixed $mixed ): callable|mixed
-```
-
-- Curried :: a|( *→a ) → a
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$mixed` | **mixed** |  |
-
-
-
-
----
-
-### constructN
-
-
-
-```php
-Fns::constructN( mixed $...$argCount, mixed $...$className ): callable|object
-```
-
-- Curried :: int → string → object
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$argCount` | **mixed** |  |
-| `$...$className` | **mixed** |  |
-
-
-
-
----
-
-### ascend
-
-
-
-```php
-Fns::ascend( mixed $...$fn, mixed $...$a, mixed $...$b ): callable|integer
-```
-
-- Curried :: ( a → b ) → a → a → int
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
-
-
-
-
----
-
-### descend
-
-
-
-```php
-Fns::descend( mixed $...$fn, mixed $...$a, mixed $...$b ): callable|integer
-```
-
-- Curried :: ( a → b ) → a → a → int
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
-
-
-
-
----
-
-### useWith
-
-
-
-```php
-Fns::useWith( mixed $...$fn, mixed $...$transformations ): callable
-```
-
-- Curried :: ( ( x1, x2, … ) → z ) → [( a → x1 ), ( b → x2 ), …] → ( a → b → … → z )
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-| `$...$transformations` | **mixed** |  |
-
-
-
-
----
-
-### nthArg
-
-
-
-```php
-Fns::nthArg( mixed $...$n ): callable
-```
-
-- Curried :: int → *… → *
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$n` | **mixed** |  |
-
-
-
-
----
-
-### either
-
-
-
-```php
-Fns::either( mixed $...$f, mixed $...$g, mixed $...$e ): callable|mixed
-```
-
-- Curried:: ( a → b ) → ( b → c ) → Either a b → c
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$f` | **mixed** |  |
-| `$...$g` | **mixed** |  |
-| `$...$e` | **mixed** |  |
-
-
-
-
----
-
-### maybe
-
-
-
-```php
-Fns::maybe( mixed $...$v, mixed $...$f, mixed $...$m ): callable|mixed
-```
-
-- Curried:: b → ( a → b ) → Maybe a → b
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$v` | **mixed** |  |
-| `$...$f` | **mixed** |  |
-| `$...$m` | **mixed** |  |
-
-
-
-
----
-
-### isRight
-
-
-
-```php
-Fns::isRight( mixed $...$e ): callable|boolean
-```
-
-- Curried:: e → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$e` | **mixed** |  |
-
-
-
-
----
-
-### isLeft
-
-
-
-```php
-Fns::isLeft( mixed $...$e ): callable|boolean
-```
-
-- Curried:: e → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$e` | **mixed** |  |
-
-
-
-
----
-
-### isJust
-
-
-
-```php
-Fns::isJust( mixed $...$m ): callable|boolean
-```
-
-- Curried:: e → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$m` | **mixed** |  |
-
-
-
-
----
-
-### isNothing
-
-
-
-```php
-Fns::isNothing( mixed $...$m ): callable|boolean
-```
-
-- Curried:: e → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$m` | **mixed** |  |
-
-
-
-
----
-
-### T
-
-
-
-```php
-Fns::T( mixed $...$_ ): callable|mixed
-```
-
-- Curried :: _ → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$_` | **mixed** |  |
-
-
-
-
----
-
-### F
-
-
-
-```php
-Fns::F( mixed $...$_ ): callable|mixed
-```
-
-- Curried :: _ → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$_` | **mixed** |  |
-
-
-
-
----
-
-### safe
-
-
-
-```php
-Fns::safe( mixed $...$fn ): callable|\WPML\FP\Maybe
-```
-
-- Curried :: ( a → b ) → ( a → Maybe b )
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-
-
-
-
----
-
-### make
-
-
-
-```php
-Fns::make( mixed $...$className ): callable|object
-```
-
-- Curried :: string → object
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$className` | **mixed** |  |
-
-
-
-
----
-
-### makeN
-
-
-
-```php
-Fns::makeN( mixed $...$argCount, mixed $...$className ): callable|object
-```
-
-- Curried :: int → string → object
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$argCount` | **mixed** |  |
-| `$...$className` | **mixed** |  |
-
-
-
-
----
-
-### unary
-
-
-
-```php
-Fns::unary( mixed $...$fn ): callable
-```
-
-- Curried:: ( * → b ) → ( a → b )
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-
-
-
-
----
-
-### memorizeWith
-
-
-
-```php
-Fns::memorizeWith( mixed $...$cacheKeyFn, mixed $...$fn ): callable|mixed
-```
-
-- Curried :: ( *… → String ) → ( *… → a ) → ( *… → a )
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$cacheKeyFn` | **mixed** |  |
-| `$...$fn` | **mixed** |  |
-
-
-
-
----
-
-### memorize
-
-
-
-```php
-Fns::memorize( mixed $...$fn ): callable|mixed
-```
-
-- Curried :: ( *… → a ) → ( *… → a )
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-
-
-
-
----
-
-### once
-
-
-
-```php
-Fns::once( mixed $...$fn ): callable|mixed
-```
-
-- Curried :: ( *… → a ) → ( *… → a )
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-
-
-
-
----
-
-### withNamedLock
-
-
-
-```php
-Fns::withNamedLock( mixed $...$name, mixed $...$returnFn, mixed $...$fn ): callable|mixed
-```
-
-- Curried :: String → ( *… → String ) → ( *… → a ) → ( *… → a )
-
-Creates a new function that is *locked* so that it wont be called recursively. Multiple functions can use the same lock so they are blocked from calling each other recursively
-
-```php
-     $lockName = 'my-lock';
-     $addOne = Fns::withNamedLock(
-         $lockName,
-         Fns::identity(),
-         function ( $x ) use ( &$addOne ) { return $addOne( $x + 1 ); }
-     );
-
-     $this->assertEquals( 13, $addOne( 12 ), 'Should not recurse' );
-
-     $addTwo = Fns::withNamedLock(
-         $lockName,
-         Fns::identity(),
-         function ( $x ) use ( $addOne ) { return pipe( $addOne, $addOne) ( $x ); }
-     );
-
-     $this->assertEquals( 10, $addTwo( 10 ), 'Should return 10 because $addOne is locked by the same name as $addTwo' );
-```
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$name` | **mixed** |  |
-| `$...$returnFn` | **mixed** |  |
-| `$...$fn` | **mixed** |  |
-
-
-
-
----
-
-### withoutRecursion
-
-
-
-```php
-Fns::withoutRecursion( mixed $...$returnFn, mixed $...$fn ): callable|mixed
-```
-
-- Curried :: ( *… → String ) → ( *… → a ) → ( *… → a )
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$returnFn` | **mixed** |  |
-| `$...$fn` | **mixed** |  |
-
-
-
-
----
-
-### liftA2
-
-
-
-```php
-Fns::liftA2( mixed $...$fn, mixed $...$monadA, mixed $...$monadB ): callable|mixed
-```
-
-- Curried :: ( a → b → c ) → m a → m b → m c
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-| `$...$monadA` | **mixed** |  |
-| `$...$monadB` | **mixed** |  |
-
-
-
-
----
-
-### liftA3
-
-
-
-```php
-Fns::liftA3( mixed $...$fn, mixed $...$monadA, mixed $...$monadB, mixed $...$monadC ): callable|mixed
-```
-
-- Curried :: ( a → b → c → d ) → m a → m b → m c → m d
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-| `$...$monadA` | **mixed** |  |
-| `$...$monadB` | **mixed** |  |
-| `$...$monadC` | **mixed** |  |
-
-
-
-
----
-
-### liftN
-
-
-
-```php
-Fns::liftN( mixed $...$n, mixed $...$fn, mixed $...$monad ): callable|mixed
-```
-
-- Curried :: Number->( ( * ) → a ) → ( *m ) → m a
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$n` | **mixed** |  |
-| `$...$fn` | **mixed** |  |
-| `$...$monad` | **mixed** |  |
-
-
-
-
----
-
-### until
-
-
-
-```php
-Fns::until( mixed $...$predicate, mixed $...$fns ): callable|mixed
-```
-
-- Curried :: ( b → bool ) → [( a → b )] → a → b
-
-Executes consecutive functions until their $predicate($fn(...$args)) is true. When a result fulfils predicate then it is returned.
-
-```
-      $fns = [
-        $add(1),
-        $add(5),
-        $add(10),
-        $add(23),
-     ];
-
-     $this->assertSame( 20, Fns::until( Relation::gt( Fns::__, 18 ), $fns )( 10 ) );
-```
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicate` | **mixed** |  |
-| `$...$fns` | **mixed** |  |
-
-
-
-
----
 
 ### init
 
 
 
-```php
-Fns::init(  ): void
-```
+ init (void)
+
+ 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
+
+**Return Values**
+
+`void`
 
 
 
-* This method is **static**.
+
+### macro
 
 
 
----
+
+Register a custom macro. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+* `(callable) $macro`
+
+**Return Values**
+
+`void`
+
+
+
+
+
+
+### toBool
+
+**Signature:** `toBool(mixed ...$v)`
+
+
+
+Curried :: mixed->bool
+
+### toInt
+
+**Signature:** `toInt(mixed ...$v)`
+
+
+
+Curried :: mixed->int
+
+### toStr
+
+**Signature:** `toStr(mixed ...$v)`
+
+
+
+Curried :: mixed->string
+
+### toArr
+
+**Signature:** `toArr(mixed ...$v)`
+
+
+
+Curried :: mixed->array
+
+
+* Either
+### of
+
+
+
+
+
+Curried :: a → Right a
+ *
+
+
+### left
+
+
+
+
+
+Curried :: a → Left a
+ *
+
+
+### right
+
+
+
+
+
+Curried :: a → Right a
+ *
+
+
+### fromNullable
+
+
+
+
+
+Curried :: a → Either a
+ *
+
+
+### fromBool
+
+
+
+
+
+Curried :: a → Either a
+ *
+
+
+### tryCatch
+
+
+
+
+
+Curried :: a → Either a
+ *
+
+
+### getOrElse
+
+
+
+
+
+
+
+
+* Fns
+### __call
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### __callStatic
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### hasMacro
+
+
+
+
+Checks if macro is registered. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+
+**Return Values**
+
+`bool`
+
+
+
+
+
+
+### init
+
+
+
+ init (void)
+
+ 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
+
+**Return Values**
+
+`void`
+
+
+
+
+### macro
+
+
+
+
+Register a custom macro. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+* `(callable) $macro`
+
+**Return Values**
+
+`void`
+
+
+
+
+
+
+### maybeToEither
+
+
+
+
+Curried function that transforms a Maybe into an Either. 
+
+ 
+
+**Parameters**
+
+* `(mixed|null) $or`
+* `(\Maybe|null) $maybe`
+
+**Return Values**
+
+`callable|\Either`
+
+
+
+
+
 
 ### noop
 
 
 
-```php
-Fns::noop(  ): \Closure
-```
+ noop (void)
 
+ 
 
+ 
 
-* This method is **static**.
+**Parameters**
 
+`This function has no parameters.`
 
+**Return Values**
 
----
-
-### maybeToEither
-
-Curried function that transforms a Maybe into an Either.
-
-```php
-Fns::maybeToEither( mixed|null $or = null, \WPML\FP\Maybe|null $maybe = null ): callable|\WPML\FP\Either
-```
-
-
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$or` | **mixed&#124;null** |  |
-| `$maybe` | **\WPML\FP\Maybe&#124;null** |  |
+`void`
 
 
 
 
----
+### always
 
-## Logic
+**Signature:** `always(...$a)`
+
+Curried :: a → ( → a )
+ Returns a function that always returns the given value.
+ ```php
+ $t = Fns::always( 'Tee' );
+ $t(); //=> 'Tee'
+ ```
+ *
+
+### converge
+
+**Signature:** `converge(...$convergingFn, ...$branchingFns)`
+
+
+
+Curried :: ( ( x1, x2, … ) → z ) → [( ( a, b, … ) → x1 ), ( ( a, b, … ) → x2 ), …] → ( a → b → … → z )
+ Accepts a converging function and a list of branching functions and returns a new function. The arity of the new function is the same as the arity of the longest branching function. When invoked, this new function is applied to some arguments, and each branching function is applied to those same arguments. The results of each branching function are passed as arguments to the converging function to produce the return value.
+ ```php
+ $divide = curryN( 2, function ( $num, $dom ) { return $num / $dom; } );
+ $sum    = function ( Collection $collection ) { return $collection->sum(); };
+ $length = function ( Collection $collection ) { return $collection->count(); };
+ $average = Fns::converge( $divide, [ $sum, $length ] );
+ $this->assertEquals( 4, $average( wpml_collect( [ 1, 2, 3, 4, 5, 6, 7 ] ) ) );
+ ```
+ *
+
+### map
+
+**Signature:** `map(...$fn, ...$target)`
+
+
+
+Curried :: ( a→b )→f a→f b
+ Takes a function and a *functor*, applies the function to each of the functor's values, and returns a functor of the same shape.
+ And array is considered a *functorDispatches to the *mapmethod of the second argument, if present
+ *
+
+### each
+
+**Signature:** `each(...$fn, ...$target)`
+
+
+
+Curried :: ( a→b )→f a→f b
+
+### identity
+
+**Signature:** `identity(mixed ...$data)`
+
+
+
+Curried :: a->a
+
+### tap
+
+**Signature:** `tap(callable  ...$fn, mixed ...$data)`
+
+
+
+Curried :: fn->data->data
+
+### reduce
+
+**Signature:** `reduce(...$fn, ...$initial, ...$target)`
+
+
+
+Curried :: ( ( a, b ) → a ) → a → [b] → a
+
+### reduceRight
+
+**Signature:** `reduceRight(...$fn, ...$initial, ...$target)`
+
+
+
+Curried :: ( ( a, b ) → a ) → a → [b] → a
+ Takes a function, an initial value and an array and returns the result.
+ The function receives two values, the accumulator and the current value, and should return a result.
+ The array values are passed to the function in the reverse order.
+ ```php
+ $numbers = [ 1, 2, 3, 4, 5, 8, 19 ];
+ $append = function( $acc, $val ) {
+ $acc[] = $val;
+ return $acc;
+ };
+ $reducer = Fns::reduceRight( $append, [] );
+ $result = $reducer( $numbers ); // [ 19, 8, 5, 4, 3, 2, 1 ]
+ // Works on collections too.
+ $result = $reducer( wpml_collect( $numbers ) ); // [ 19, 8, 5, 4, 3, 2, 1 ]
+ ```
+ *
+
+### filter
+
+**Signature:** `filter(...$predicate, ...$target)`
+
+
+
+Curried :: ( a → bool ) → [a] → [a]
+
+### reject
+
+**Signature:** `reject(...$predicate, ...$target)`
+
+
+
+Curried :: ( a → bool ) → [a] → [a]
+
+### value
+
+**Signature:** `value(mixed ...$data)`
+
+
+
+Curried :: a|( *→a ) → a
+
+### constructN
+
+**Signature:** `constructN(...$argCount, ...$className)`
+
+
+
+Curried :: int → string → object
+
+### ascend
+
+**Signature:** `ascend(...$fn, ...$a, ...$b)`
+
+
+
+Curried :: ( a → b ) → a → a → int
+
+### descend
+
+**Signature:** `descend(...$fn, ...$a, ...$b)`
+
+
+
+Curried :: ( a → b ) → a → a → int
+
+### useWith
+
+**Signature:** `useWith(...$fn, ...$transformations)`
+
+
+
+Curried :: ( ( x1, x2, … ) → z ) → [( a → x1 ), ( b → x2 ), …] → ( a → b → … → z )
+
+### nthArg
+
+**Signature:** `nthArg(...$n)`
+
+
+
+Curried :: int → *… → *
+
+### either
+
+**Signature:** `either(...$f, ...$g, ...$e)`
+
+
+
+Curried :: ( a → b ) → ( b → c ) → Either a b → c
+
+### maybe
+
+**Signature:** `maybe(...$v, ...$f, ...$m)`
+
+
+
+Curried :: b → ( a → b ) → Maybe a → b
+
+### isRight
+
+**Signature:** `isRight(...$e)`
+
+
+
+Curried :: e → bool
+
+### isLeft
+
+**Signature:** `isLeft(...$e)`
+
+
+
+Curried :: e → bool
+
+### isJust
+
+**Signature:** `isJust(...$m)`
+
+
+
+Curried :: e → bool
+
+### isNothing
+
+**Signature:** `isNothing(...$m)`
+
+
+
+Curried :: e → bool
+
+### T
+
+**Signature:** `T(...$_)`
+
+
+
+Curried :: _ → bool
+
+### F
+
+**Signature:** `F(...$_)`
+
+
+
+Curried :: _ → bool
+
+### safe
+
+**Signature:** `safe(...$fn)`
+
+
+
+Curried :: ( a → b ) → ( a → Maybe b )
+
+### make
+
+**Signature:** `make(...$className)`
+
+
+
+Curried :: string → object
+
+### makeN
+
+**Signature:** `makeN(...$argCount, ...$className)`
+
+
+
+Curried :: int → string → object
+
+### unary
+
+**Signature:** `unary(...$fn)`
+
+
+
+Curried :: ( → b ) → ( a → b )
+
+### memorizeWith
+
+**Signature:** `memorizeWith(...$cacheKeyFn, ...$fn)`
+
+
+
+Curried :: ( *… → String ) → ( *… → a ) → ( *… → a )
+
+### memorize
+
+**Signature:** `memorize(...$fn)`
+
+
+
+Curried :: ( *… → a ) → ( *… → a )
+
+### once
+
+**Signature:** `once(...$fn)`
+
+
+
+Curried :: ( *… → a ) → ( *… → a )
+
+### withNamedLock
+
+**Signature:** `withNamedLock(...$name, ...$returnFn, ...$fn)`
+
+
+
+Curried :: String → ( *… → String ) → ( *… → a ) → ( *… → a )
+ Creates a new function that is *lockedso that it wont be called recursively. Multiple functions can use the same lock so they are blocked from calling each other recursively
+ ```php
+ $lockName = 'my-lock';
+ $addOne = Fns::withNamedLock(
+ $lockName,
+ Fns::identity(),
+ function ( $x ) use ( &$addOne ) { return $addOne( $x + 1 ); }
+ );
+ $this->assertEquals( 13, $addOne( 12 ), 'Should not recurse' );
+ $addTwo = Fns::withNamedLock(
+ $lockName,
+ Fns::identity(),
+ function ( $x ) use ( $addOne ) { return pipe( $addOne, $addOne) ( $x ); }
+ );
+ $this->assertEquals( 10, $addTwo( 10 ), 'Should return 10 because $addOne is locked by the same name as $addTwo' );
+ ```
+ *
+
+### withoutRecursion
+
+**Signature:** `withoutRecursion(...$returnFn, ...$fn)`
+
+
+
+Curried :: ( *… → String ) → ( *… → a ) → ( *… → a )
+
+### liftA2
+
+**Signature:** `liftA2(...$fn, ...$monadA, ...$monadB)`
+
+
+
+Curried :: ( a → b → c ) → m a → m b → m c
+
+### liftA3
+
+**Signature:** `liftA3(...$fn, ...$monadA, ...$monadB, ...$monadC)`
+
+
+
+Curried :: ( a → b → c → d ) → m a → m b → m c → m d
+
+### liftN
+
+**Signature:** `liftN(...$n, ...$fn, ...$monad)`
+
+
+
+Curried :: Number->( ( ) → a ) → ( *m ) → m a
+ *
+
+### until
+
+**Signature:** `until(...$predicate, ...$fns)`
+
+
+
+Curried :: ( b → bool ) → [( a → b )] → a → b
+ *
+
+
+* Json
+### __call
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### __callStatic
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### hasMacro
+
+
+
+
+Checks if macro is registered. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+
+**Return Values**
+
+`bool`
 
 
 
 
 
-* Full name: \WPML\FP\Logic
+
+### init
+
+
+
+ init (void)
+
+ 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
+
+**Return Values**
+
+`void`
+
+
+
+
+### macro
+
+
+
+
+Register a custom macro. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+* `(callable) $macro`
+
+**Return Values**
+
+`void`
+
+
+
+
+
+
+### toArray
+
+**Signature:** `toArray(string ...$str)`
+
+
+
+Curried :: json -> array
+
+### toCollection
+
+**Signature:** `toCollection(string ...$str)`
+
+Curried :: json -> null | Collection
+
+
+* Lens
+### __call
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### __callStatic
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### hasMacro
+
+
+
+
+Checks if macro is registered. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+
+**Return Values**
+
+`bool`
+
+
+
+
+
+
+### init
+
+
+
+ init (void)
+
+ 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
+
+**Return Values**
+
+`void`
+
+
+
+
+### macro
+
+
+
+
+Register a custom macro. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+* `(callable) $macro`
+
+**Return Values**
+
+`void`
+
+
+
+
+
+
+### iso
+
+**Signature:** `iso(...$to, ...$from)`
+
+
+
+Curried :: callable->callable->callable
+
+### isoIdentity
+
+**Signature:** `isoIdentity()`
+
+:: callable->callable->callable
+
+### isoUnserialized
+
+**Signature:** `isoUnserialized()`
+
+:: callable->callable->callable
+
+### isoJsonDecoded
+
+**Signature:** `isoJsonDecoded()`
+
+:: callable->callable->callable
+
+### isoUrlDecoded
+
+**Signature:** `isoUrlDecoded()`
+
+:: callable->callable->callable
+
+### isoBase64Decoded
+
+**Signature:** `isoBase64Decoded()`
+
+:: callable->callable->callable
+
+### isoParsedUrl
+
+**Signature:** `isoParsedUrl()`
+
+:: callable->callable->callable
+
+### isoParsedQuery
+
+**Signature:** `isoParsedQuery()`
+
+:: callable->callable->callable
+
+
+* Logic
+### __call
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### __callStatic
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### hasMacro
+
+
+
+
+Checks if macro is registered. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+
+**Return Values**
+
+`bool`
+
+
+
+
+
+
+### init
+
+
+
+ init (void)
+
+ 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
+
+**Return Values**
+
+`void`
+
+
+
+
+### macro
+
+
+
+
+Register a custom macro. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+* `(callable) $macro`
+
+**Return Values**
+
+`void`
+
+
+
+
 
 
 ### not
 
-
-
-```php
-Logic::not( mixed $mixed ): callable|boolean
-```
-
-- Curried :: mixed->bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$mixed` | **mixed** |  |
+**Signature:** `not(mixed ...$v)`
 
 
 
-
----
+Curried :: mixed->bool
 
 ### isNotNull
 
-
-
-```php
-Logic::isNotNull( mixed $mixed ): callable|boolean
-```
-
-- Curried :: mixed->bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$mixed` | **mixed** |  |
+**Signature:** `isNotNull(mixed ...$v)`
 
 
 
-
----
+Curried :: mixed->bool
 
 ### ifElse
 
-
-
-```php
-Logic::ifElse( mixed $...$predicate, mixed $...$first, mixed $...$second, mixed $...$data ): callable|mixed
-```
-
-- Curried :: ( a->bool )->callable->callable->callable
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicate` | **mixed** |  |
-| `$...$first` | **mixed** |  |
-| `$...$second` | **mixed** |  |
-| `$...$data` | **mixed** |  |
+**Signature:** `ifElse(...$predicate, ...$first, ...$second, ...$data)`
 
 
 
-
----
+Curried :: ( a->bool )->callable->callable->callable
 
 ### when
 
-
-
-```php
-Logic::when( mixed $...$predicate, mixed $...$fn ): callable
-```
-
-- Curried :: ( a->bool )->callable->callable
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicate` | **mixed** |  |
-| `$...$fn` | **mixed** |  |
+**Signature:** `when(...$predicate, ...$fn)`
 
 
 
-
----
+Curried :: ( a->bool )->callable->callable
 
 ### unless
 
-
-
-```php
-Logic::unless( mixed $...$predicate, mixed $...$fn ): callable
-```
-
-- Curried :: ( a->bool )->callable->callable
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicate` | **mixed** |  |
-| `$...$fn` | **mixed** |  |
+**Signature:** `unless(...$predicate, ...$fn)`
 
 
 
-
----
+Curried :: ( a->bool )->callable->callable
 
 ### cond
 
-
-
-```php
-Logic::cond( mixed $...$conditions, mixed $...$fn ): callable
-```
-
-- Curried :: [( a->bool ), callable]->callable
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$conditions` | **mixed** |  |
-| `$...$fn` | **mixed** |  |
+**Signature:** `cond(...$conditions, ...$fn)`
 
 
 
-
----
+Curried :: [( a->bool ), callable]->callable
 
 ### both
 
-
-
-```php
-Logic::both( mixed $...$a, mixed $...$b, mixed $...$data ): callable
-```
-
-- Curried :: ( a → bool ) → ( a → bool ) → a → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
-| `$...$data` | **mixed** |  |
+**Signature:** `both(...$a, ...$b, ...$data)`
 
 
 
-
----
+Curried :: ( a → bool ) → ( a → bool ) → a → bool
 
 ### allPass
 
-
-
-```php
-Logic::allPass( mixed $...$predicates, mixed $...$data ): callable|boolean
-```
-
-- Curried :: [( *… → bool )] → ( *… → bool )
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicates` | **mixed** |  |
-| `$...$data` | **mixed** |  |
+**Signature:** `allPass(...$predicates, ...$data)`
 
 
 
-
----
+Curried :: [( *… → bool )] → ( *… → bool )
 
 ### anyPass
 
-
-
-```php
-Logic::anyPass( mixed $...$predicates, mixed $...$data ): callable|boolean
-```
-
-- Curried :: [( *… → bool )] → ( *… → bool )
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicates` | **mixed** |  |
-| `$...$data` | **mixed** |  |
+**Signature:** `anyPass(...$predicates, ...$data)`
 
 
 
-
----
+Curried :: [( *… → bool )] → ( *… → bool )
 
 ### complement
 
-
-
-```php
-Logic::complement( mixed $...$fn ): callable
-```
-
-- Curried :: ( *… → * ) → ( *… → bool )
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
+**Signature:** `complement(...$fn)`
 
 
 
-
----
+Curried :: ( *… → ) → ( *… → bool )
 
 ### defaultTo
 
-
-
-```php
-Logic::defaultTo( mixed $...$a, mixed $...$b ): callable|mixed
-```
-
-- Curried :: a → b → a | b
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
+**Signature:** `defaultTo(...$a, ...$b)`
 
 
 
-
----
+Curried :: a → b → a | b
 
 ### either
 
-
-
-```php
-Logic::either( mixed $...$a, mixed $...$b ): callable|boolean
-```
-
-- Curried :: ( *… → bool ) → ( *… → bool ) → ( *… → bool )
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
+**Signature:** `either(...$a, ...$b)`
 
 
 
+Curried :: ( *… → bool ) → ( *… → bool ) → ( *… → bool )
 
----
+### until
 
-### 
-
-
-
-```php
-Logic::(  ): 
-```
-
-static callable|mixed until ( ...$predicate, ...$transform, ...$data ) - Curried :: ( a → bool ) → ( a → a ) → a → a
+**Signature:** `until(...$predicate, ...$transform, ...$data)`
 
 
 
-
-
----
+Curried :: ( a → bool ) → ( a → a ) → a → a
 
 ### propSatisfies
 
-
-
-```php
-Logic::propSatisfies( mixed $...$predicate, mixed $...$prop, mixed $...$data ): callable|boolean
-```
-
-- Curried :: ( a → bool ) → String → [String => a] → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicate` | **mixed** |  |
-| `$...$prop` | **mixed** |  |
-| `$...$data` | **mixed** |  |
+**Signature:** `propSatisfies(...$predicate, ...$prop, ...$data)`
 
 
 
+Curried :: ( a → bool ) → String → [String => a] → bool
 
----
+### isArray
 
-### 
-
-
-
-```php
-Logic::(  ): 
-```
-
-static callable|bool isArray ( ...$a ) - Curried :: a → bool
+**Signature:** `isArray(...$a)`
 
 
 
+Curried :: a → bool
 
+### isMappable
 
----
-
-### 
-
-
-
-```php
-Logic::(  ): 
-```
-
-static callable|bool isMappable ( ...$a ) - Curried :: a → bool
+**Signature:** `isMappable(...$a)`
 
 
 
-
-
----
+Curried :: a → bool
 
 ### isEmpty
 
-
-
-```php
-Logic::isEmpty( mixed $...$a ): callable|boolean
-```
-
-- Curried:: a → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
+**Signature:** `isEmpty(...$a)`
 
 
 
-
----
+Curried :: a → bool
 
 ### isNotEmpty
 
-
-
-```php
-Logic::isNotEmpty( mixed $...$a ): callable|boolean
-```
-
-- Curried:: a → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
+**Signature:** `isNotEmpty(...$a)`
 
 
 
-
----
+Curried :: a → bool
 
 ### firstSatisfying
 
-
-
-```php
-Logic::firstSatisfying( mixed $...$predicate, mixed $...$functions, mixed $...$data ): callable|mixed
-```
-
-- Curried:: callable->callable[]->mixed->mixed
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicate` | **mixed** |  |
-| `$...$functions` | **mixed** |  |
-| `$...$data` | **mixed** |  |
+**Signature:** `firstSatisfying(...$predicate, ...$functions, ...$data)`
 
 
 
-
----
+Curried :: callable->callable[]->mixed->mixed
 
 ### isTruthy
 
+**Signature:** `isTruthy(...$data)`
 
 
-```php
-Logic::isTruthy( mixed $...$data ): callable|boolean
-```
 
-- Curried:: mixed->bool
+Curried :: mixed->bool
 
-* This method is **static**.
-**Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$data` | **mixed** |  |
+* Lst
+### __call
 
 
 
 
----
+Dynamically handle calls to the class. 
 
-### init
+ 
 
+**Parameters**
 
+* `(string) $method`
+* `(array) $parameters`
 
-```php
-Logic::init(  ): void
-```
+**Return Values**
 
+`mixed`
 
 
-* This method is **static**.
 
 
+**Throws Exceptions**
 
----
 
-## Lst
+`\BadMethodCallException`
 
-Lst class contains functions for working on ordered arrays indexed with numerical keys
 
 
 
-* Full name: \WPML\FP\Lst
+### __callStatic
 
 
-### append
 
 
+Dynamically handle calls to the class. 
 
-```php
-Lst::append( mixed $mixed, mixed $array ): callable|array
-```
+ 
 
-- Curried :: mixed->array->array
+**Parameters**
 
-* This method is **static**.
-**Parameters:**
+* `(string) $method`
+* `(array) $parameters`
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$mixed` | **mixed** |  |
-| `$array` | **mixed** |  |
+**Return Values**
 
+`mixed`
 
 
 
----
 
-### fromPairs
+**Throws Exceptions**
 
 
+`\BadMethodCallException`
 
-```php
-Lst::fromPairs( mixed $array ): callable|array
-```
 
-- Curried :: [[a, b]] → [a => b]
 
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$array` | **mixed** |  |
-
-
-
-
----
-
-### toObj
-
-
-
-```php
-Lst::toObj( mixed $array ): callable|array
-```
-
-- Curried :: array → object
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$array` | **mixed** |  |
-
-
-
-
----
-
-### pluck
-
-
-
-```php
-Lst::pluck( mixed $...$prop, mixed $...$array ): callable|array
-```
-
-- Curried :: string → array → array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$prop` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### partition
-
-
-
-```php
-Lst::partition( mixed $...$predicate, mixed $...$target ): callable|array
-```
-
-- Curried :: ( a → bool ) → [a] → [[a], [a]]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicate` | **mixed** |  |
-| `$...$target` | **mixed** |  |
-
-
-
-
----
-
-### sort
-
-
-
-```php
-Lst::sort( mixed $...$fn, mixed $...$target ): callable|array
-```
-
-- Curried :: ( ( a, a ) → int ) → [a] → [a]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-| `$...$target` | **mixed** |  |
-
-
-
-
----
-
-### unfold
-
-
-
-```php
-Lst::unfold( mixed $...$fn, mixed $...$seed ): callable|array
-```
-
-- Curried :: ( a → [b] ) → * → [b]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$fn` | **mixed** |  |
-| `$...$seed` | **mixed** |  |
-
-
-
-
----
-
-### zip
-
-
-
-```php
-Lst::zip( mixed $...$a, mixed $...$b ): callable|array
-```
-
-- Curried :: [a] → [b] → [[a, b]]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
-
-
-
-
----
-
-### zipObj
-
-
-
-```php
-Lst::zipObj( mixed $...$a, mixed $...$b ): callable|array
-```
-
-- Curried :: [a] → [b] → [a => b]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
-
-
-
-
----
-
-### zipWith
-
-
-
-```php
-Lst::zipWith( mixed $...$f, mixed $...$a, mixed $...$b ): callable|array
-```
-
-- Curried :: ( ( a, b ) → c ) → [a] → [b] → [c]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$f` | **mixed** |  |
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
-
-
-
-
----
-
-### join
-
-
-
-```php
-Lst::join( mixed $...$glue, mixed $...$array ): callable|string
-```
-
-- Curried :: string → [a] → string
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$glue` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### joinWithCommasAndAnd
-
-
-
-```php
-Lst::joinWithCommasAndAnd( mixed $...$array ): callable|string
-```
-
-- Curried :: [a] → string
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### concat
-
-
-
-```php
-Lst::concat( mixed $...$a, mixed $...$b ): callable|array
-```
-
-- Curried :: [a] → [a] → [a]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
-
-
-
-
----
-
-### find
-
-
-
-```php
-Lst::find( mixed $...$predicate, mixed $...$array ): callable|array|null
-```
-
-- Curried :: ( a → bool ) → [a] → a | null
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicate` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### flattenToDepth
-
-
-
-```php
-Lst::flattenToDepth( mixed $...$depth, mixed $...$array ): callable|array
-```
-
-- Curried :: int → [[a]] → [a]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$depth` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### flatten
-
-
-
-```php
-Lst::flatten( mixed $...$array ): callable|array
-```
-
-- Curried :: [[a]] → [a]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### includes
-
-
-
-```php
-Lst::includes( mixed $...$val, mixed $...$array ): callable|boolean
-```
-
-- Curried :: a → [a] → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$val` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### includesAll
-
-
-
-```php
-Lst::includesAll( mixed $...$values, mixed $...$array ): callable|boolean
-```
-
-- Curried :: [a] → [a] → bool
-
-Determines if all the values are in the given array
-
-```
-$includes10and20 = Lst::includesAll( [ 10, 20 ] );
-
-$this->assertTrue( $includes10and20( [ 5, 10, 15, 20 ] ) );
-$this->assertFalse( $includes10and20( [ 5, 15, 20 ] ) );
-```
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$values` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### nth
-
-
-
-```php
-Lst::nth( mixed $...$n, mixed $...$array ): callable|boolean
-```
-
-- Curried :: int → [a] → a | null
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$n` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### first
-
-
-
-```php
-Lst::first( mixed $...$array ): callable|boolean
-```
-
-- Curried :: [a, b] → a | null
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### last
-
-
-
-```php
-Lst::last( mixed $...$array ): callable|boolean
-```
-
-- Curried :: [a, b] → b | null
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### length
-
-
-
-```php
-Lst::length( mixed $...$array ): callable|integer
-```
-
-- Curried :: [a] → int
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### take
-
-
-
-```php
-Lst::take( mixed $...$n, mixed $...$array ): callable|array
-```
-
-- Curried :: int → [a] → [a]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$n` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### takeLast
-
-
-
-```php
-Lst::takeLast( mixed $...$n, mixed $...$array ): callable|array
-```
-
-- Curried :: int → [a] → [a]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$n` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### slice
-
-
-
-```php
-Lst::slice( mixed $...$offset, mixed $...$limit, mixed $...$array ): callable|array
-```
-
-- Curried :: int → int->[a] → [a]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$offset` | **mixed** |  |
-| `$...$limit` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### drop
-
-
-
-```php
-Lst::drop( mixed $...$n, mixed $...$array ): callable|array
-```
-
-- Curried :: int → [a] → [a]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$n` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### dropLast
-
-
-
-```php
-Lst::dropLast( mixed $...$n, mixed $...$array ): callable|array
-```
-
-- Curried :: int → [a] → [a]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$n` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### makePair
-
-
-
-```php
-Lst::makePair( mixed $...$a, mixed $...$b ): callable|array
-```
-
-- Curried :: mixed → mixed → array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
-
-
-
-
----
-
-### 
-
-
-
-```php
-Lst::(  ): 
-```
-
-static callable|array make ( ...$a ) - Curried :: mixed → array
-
-
-
-
-
----
-
-### insert
-
-
-
-```php
-Lst::insert( mixed $...$index, mixed $...$v, mixed $...$array ): callable|array
-```
-
-- Curried :: int → mixed → array → array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$index` | **mixed** |  |
-| `$...$v` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### range
-
-
-
-```php
-Lst::range( mixed $...$from, mixed $...$to ): callable|array
-```
-
-- Curried :: int → int → array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$from` | **mixed** |  |
-| `$...$to` | **mixed** |  |
-
-
-
-
----
-
-### xprod
-
-
-
-```php
-Lst::xprod( mixed $...$a, mixed $...$b ): callable|array
-```
-
-- Curried :: [a]->[b]->[a, b]
-
-Creates a new list out of the two supplied by creating each possible pair from the lists.
-
-```
-$a              = [ 1, 2, 3 ];
-$b              = [ 'a', 'b', 'c' ];
-$expectedResult = [
-  [ 1, 'a' ], [ 1, 'b' ], [ 1, 'c' ],
-  [ 2, 'a' ], [ 2, 'b' ], [ 2, 'c' ],
-  [ 3, 'a' ], [ 3, 'b' ], [ 3, 'c' ],
-];
-
-$this->assertEquals( $expectedResult, Lst::xprod( $a, $b ) );
-```
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
-
-
-
-
----
-
-### prepend
-
-
-
-```php
-Lst::prepend( mixed $...$val, mixed $...$array ): callable|array
-```
-
-- Curried:: a → [a] → [a]
-
-Returns a new array with the given element at the front, followed by the contents of the list.
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$val` | **mixed** |  |
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### reverse
-
-
-
-```php
-Lst::reverse( mixed $...$array ): callable|array
-```
-
-- Curried:: [a] → [a]
-
-Returns a new array with the elements reversed.
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$array` | **mixed** |  |
-
-
-
-
----
-
-### init
-
-
-
-```php
-Lst::init(  ): void
-```
-
-
-
-* This method is **static**.
-
-
-
----
-
-### keyBy
-
-Curried function that keys the array by the given key
-
-```php
-Lst::keyBy( string $key = null, array&lt;mixed,mixed&gt; $array = null ): array&lt;mixed,mixed&gt;|callable
-```
-
-keyBy :: string -> array -> array
-
-```
-$data = [
-   [ 'x' => 'a', 'y' => 123 ],
-   [ 'x' => 'b', 'y' => 456 ],
-];
-
-Lst::keyBy( 'x', $data );
-[
-   'a' => [ 'x' => 'a', 'y' => 123 ],
-   'b' => [ 'x' => 'b', 'y' => 456 ],
-],
-```
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$key` | **string** |  |
-| `$array` | **array<mixed,mixed>** |  |
-
-
-
-
----
-
-### keyWith
-
-Curried function that wraps each item in array with pair: [$key => $item1]
-
-```php
-Lst::keyWith( string $key = null, array&lt;mixed,mixed&gt; $array = null ): array&lt;mixed,mixed&gt;|callable
-```
-
-keyWith :: string -> array -> array
-
-```
-$data = [ 1, 2.3, 'some data', - 2, 'a' ];
-
-Lst::keyWith('myKey', $data);
-[ [ 'myKey' => 1 ], [ 'myKey' => 2.3 ], [ 'myKey' => 'some data' ], [ 'myKey' => - 2 ], [ 'myKey' => 'a' ] ]
-```
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$key` | **string** |  |
-| `$array` | **array<mixed,mixed>** |  |
-
-
-
-
----
 
 ### diff
 
-This method will return the values in the original collection that are not present in the given collection:
-
-```php
-Lst::diff( array|\WPML\Collect\Support\Collection $array1 = null, array|\WPML\Collect\Support\Collection $array2 = null ): callable|\WPML\Collect\Support\Collection|array
-```
 
 
 
-* This method is **static**.
-**Parameters:**
+This method will return the values in the original collection that are not present in the given collection: 
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$array1` | **array&#124;\WPML\Collect\Support\Collection** |  |
-| `$array2` | **array&#124;\WPML\Collect\Support\Collection** |  |
+ 
+
+**Parameters**
+
+* `(array|\Collection) $array1`
+* `(array|\Collection) $array2`
+
+**Return Values**
+
+`callable|\Collection|array`
 
 
 
 
----
+
+
+### hasMacro
+
+
+
+
+Checks if macro is registered. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+
+**Return Values**
+
+`bool`
+
+
+
+
+
+
+### init
+
+
+
+ init (void)
+
+ 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
+
+**Return Values**
+
+`void`
+
+
+
+
+### keyBy
+
+
+
+
+Curried function that keys the array by the given key 
+
+keyBy :: string -> array -> array  
+  
+$data = [  
+   [ 'x' => 'a', 'y' => 123 ],  
+   [ 'x' => 'b', 'y' => 456 ],  
+];  
+  
+Lst::keyBy( 'x', $data );  
+[  
+   'a' => [ 'x' => 'a', 'y' => 123 ],  
+   'b' => [ 'x' => 'b', 'y' => 456 ],  
+],  
+
+**Parameters**
+
+* `(string) $key`
+* `(array) $array`
+
+**Return Values**
+
+`array|callable`
+
+
+
+
+
+
+### keyWith
+
+
+
+
+Curried function that wraps each item in array with pair: [$key => $item1] 
+
+keyWith :: string -> array -> array  
+  
+$data = [ 1, 2.3, 'some data', - 2, 'a' ];  
+  
+Lst::keyWith('myKey', $data);  
+[ [ 'myKey' => 1 ], [ 'myKey' => 2.3 ], [ 'myKey' => 'some data' ], [ 'myKey' => - 2 ], [ 'myKey' => 'a' ] ]  
+
+**Parameters**
+
+* `(string) $key`
+* `(array) $array`
+
+**Return Values**
+
+`array|callable`
+
+
+
+
+
+
+### macro
+
+
+
+
+Register a custom macro. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+* `(callable) $macro`
+
+**Return Values**
+
+`void`
+
+
+
+
+
 
 ### repeat
 
-It returns array of $val elements repeated $times times.
-
-```php
-Lst::repeat( mixed $val = null, integer $times = null ): callable|\WPML\FP\array[mixed]
-```
 
 
 
-* This method is **static**.
-**Parameters:**
+It returns array of $val elements repeated $times times. 
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$val` | **mixed** |  |
-| `$times` | **integer** |  |
+ 
+
+**Parameters**
+
+* `(mixed) $val`
+* `(int) $times`
+
+**Return Values**
+
+`callable|mixed`
 
 
 
 
----
+
 
 ### sum
 
 
 
-```php
-Lst::sum( array|\WPML\Collect\Support\Collection $param = null ): callable|integer
-```
+ sum (void)
 
+ 
 
+ 
 
-* This method is **static**.
-**Parameters:**
+**Parameters**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$param` | **array&#124;\WPML\Collect\Support\Collection** |  |
+`This function has no parameters.`
 
+**Return Values**
 
-
-
----
-
-## Math
+`void`
 
 
 
 
+### append
 
-* Full name: \WPML\FP\Math
+**Signature:** `append(mixed ...$newItem, array ...$data)`
+
+
+
+Curried :: mixed->array->array
+
+### fromPairs
+
+**Signature:** `fromPairs(array ...$array)`
+
+
+
+Curried :: [[a, b]] → [a => b]
+
+### toObj
+
+**Signature:** `toObj(array ...$array)`
+
+
+
+Curried :: array → object
+
+### pluck
+
+**Signature:** `pluck(...$prop, ...$array)`
+
+
+
+Curried :: string → array → array
+
+### partition
+
+**Signature:** `partition(...$predicate, ...$target)`
+
+
+
+Curried :: ( a → bool ) → [a] → [[a], [a]]
+
+### sort
+
+**Signature:** `sort(...$fn, ...$target)`
+
+
+
+Curried :: ( ( a, a ) → int|bool ) → [a] → [a]
+
+### unfold
+
+**Signature:** `unfold(...$fn, ...$seed)`
+
+
+
+Curried :: ( a → [b] ) → → [b]
+
+### zip
+
+**Signature:** `zip(...$a, ...$b)`
+
+
+
+Curried :: [a] → [b] → [[a, b]]
+
+### zipObj
+
+**Signature:** `zipObj(...$a, ...$b)`
+
+
+
+Curried :: [a] → [b] → [a => b]
+
+### zipWith
+
+**Signature:** `zipWith(...$f, ...$a, ...$b)`
+
+
+
+Curried :: ( ( a, b ) → c ) → [a] → [b] → [c]
+
+### join
+
+**Signature:** `join(...$glue, ...$array)`
+
+
+
+Curried :: string → [a] → string
+
+### joinWithCommasAndAnd
+
+**Signature:** `joinWithCommasAndAnd(...$array)`
+
+
+
+Curried :: [a] → string
+
+### concat
+
+**Signature:** `concat(...$a, ...$b)`
+
+
+
+Curried :: [a] → [a] → [a]
+
+### find
+
+**Signature:** `find(...$predicate, ...$array)`
+
+
+
+Curried :: ( a → bool ) → [a] → a | null
+
+### flattenToDepth
+
+**Signature:** `flattenToDepth(...$depth, ...$array)`
+
+
+
+Curried :: int → [[a]] → [a]
+
+### flatten
+
+**Signature:** `flatten(...$array)`
+
+
+
+Curried :: [[a]] → [a]
+
+### includes
+
+**Signature:** `includes(...$val, ...$array)`
+
+
+
+Curried :: a → [a] → bool
+
+### includesAll
+
+**Signature:** `includesAll(...$values, ...$array)`
+
+
+
+Curried :: [a] → [a] → bool
+ Determines if all the values are in the given array
+ ```
+ $includes10and20 = Lst::includesAll( [ 10, 20 ] );
+ $this->assertTrue( $includes10and20( [ 5, 10, 15, 20 ] ) );
+ $this->assertFalse( $includes10and20( [ 5, 15, 20 ] ) );
+ ```
+
+### nth
+
+**Signature:** `nth(...$n, ...$array)`
+
+
+
+Curried :: int → [a] → a | null
+
+### first
+
+**Signature:** `first(...$array)`
+
+
+
+Curried :: [a, b] → a | null
+
+### last
+
+**Signature:** `last(...$array)`
+
+
+
+Curried :: [a, b] → b | null
+
+### length
+
+**Signature:** `length(...$array)`
+
+
+
+Curried :: [a] → int
+
+### take
+
+**Signature:** `take(...$n, ...$array)`
+
+
+
+Curried :: int → [a] → [a]
+
+### takeLast
+
+**Signature:** `takeLast(...$n, ...$array)`
+
+
+
+Curried :: int → [a] → [a]
+
+### slice
+
+**Signature:** `slice(...$offset, ...$limit, ...$array)`
+
+
+
+Curried :: int → int->[a] → [a]
+
+### drop
+
+**Signature:** `drop(...$n, ...$array)`
+
+
+
+Curried :: int → [a] → [a]
+
+### dropLast
+
+**Signature:** `dropLast(...$n, ...$array)`
+
+
+
+Curried :: int → [a] → [a]
+
+### makePair
+
+**Signature:** `makePair(...$a, ...$b)`
+
+
+
+Curried :: mixed → mixed → array
+
+### make
+
+**Signature:** `make(...$a)`
+
+
+
+Curried :: mixed → array
+
+### insert
+
+**Signature:** `insert(...$index, ...$v, ...$array)`
+
+
+
+Curried :: int → mixed → array → array
+
+### range
+
+**Signature:** `range(...$from, ...$to)`
+
+
+
+Curried :: int → int → array
+
+### xprod
+
+**Signature:** `xprod(...$a, ...$b)`
+
+
+
+Curried :: [a]->[b]->[a, b]
+ Creates a new list out of the two supplied by creating each possible pair from the lists.
+ ```
+ $a              = [ 1, 2, 3 ];
+ $b              = [ 'a', 'b', 'c' ];
+ $expectedResult = [
+ [ 1, 'a' ], [ 1, 'b' ], [ 1, 'c' ],
+ [ 2, 'a' ], [ 2, 'b' ], [ 2, 'c' ],
+ [ 3, 'a' ], [ 3, 'b' ], [ 3, 'c' ],
+ ];
+ $this->assertEquals( $expectedResult, Lst::xprod( $a, $b ) );
+ ```
+
+### prepend
+
+**Signature:** `prepend(...$val, ...$array)`
+
+
+
+Curried :: a → [a] → [a]
+ Returns a new array with the given element at the front, followed by the contents of the list.
+ *
+
+### reverse
+
+**Signature:** `reverse(...$array)`
+
+
+
+Curried :: [a] → [a]
+ Returns a new array with the elements reversed.
+ *
+
+
+* Math
+### __call
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### __callStatic
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### hasMacro
+
+
+
+
+Checks if macro is registered. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+
+**Return Values**
+
+`bool`
+
+
+
+
+
+
+### init
+
+
+
+ init (void)
+
+ 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
+
+**Return Values**
+
+`void`
+
+
+
+
+### macro
+
+
+
+
+Register a custom macro. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+* `(callable) $macro`
+
+**Return Values**
+
+`void`
+
+
+
+
 
 
 ### multiply
 
-
-
-```php
-Math::multiply( mixed $...$a, mixed $...$b ): callable|mixed
-```
-
-- Curried :: Number → Number → Number
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
+**Signature:** `multiply(...$a, ...$b)`
 
 
 
-
----
+Curried :: Number → Number → Number
 
 ### divide
 
-
-
-```php
-Math::divide( mixed $...$a, mixed $...$b ): callable|mixed
-```
-
-- Curried :: Number → Number → Number
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
+**Signature:** `divide(...$a, ...$b)`
 
 
 
-
----
+Curried :: Number → Number → Number
 
 ### add
 
-
-
-```php
-Math::add( mixed $...$a, mixed $...$b ): callable|mixed
-```
-
-- Curried :: Number → Number → Number
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
+**Signature:** `add(...$a, ...$b)`
 
 
 
-
----
+Curried :: Number → Number → Number
 
 ### product
 
+**Signature:** `product(...$array)`
 
 
-```php
-Math::product( mixed $...$array ): callable|mixed
-```
 
-- Curried :: [Number] → Number
+Curried :: [Number] → Number
 
-* This method is **static**.
-**Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$array` | **mixed** |  |
+* Maybe
+### fromNullable
 
 
 
 
----
+
+Curried :: a → Nothing | Just a
+ if $value is null or false it returns a Nothing otherwise returns a Just containing the value
+ *
+
+
+### safe
+
+
+
+
+
+Curried :: ( a → b ) → ( a → Maybe b )
+ returns a function that when called will run the passed in function and put the result into a Maybe
+ *
+
+
+### safeAfter
+
+
+
+
+
+Curried :: ( b → bool ) → ( a → b ) → ( a → Maybe b )
+ returns a function that when called will run the passed in function and pass the result of the function
+ to the predicate. If the predicate returns true the result will be a Just containing the result of the function.
+ Otherwise it returns a Nothing if the predicate returns false.
+ *
+
+
+### safeBefore
+
+
+
+
+
+Curried :: ( a → bool ) → ( a → b ) → ( a → Maybe b )
+ returns a function that when called will pass the given value to the predicate.
+ If the predicate returns true the value will be lifted into a Just instance and
+ the passed in function will then be mapped.
+ Otherwise it returns a Nothing if the predicate returns false.
+ *
+
+
+### just
+
+
+
+
+
+Curried :: a → Just a
+ returns a Just containing the value.
+ *
+
+
+### of
+
+
+
+
+
+Curried :: a → Just a
+ returns a Just containing the value.
+ *
+
+
+
+
+* Obj
+### __call
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### __callStatic
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### hasMacro
+
+
+
+
+Checks if macro is registered. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+
+**Return Values**
+
+`bool`
+
+
+
+
+
 
 ### init
 
 
 
-```php
-Math::init(  ): void
-```
+ init (void)
+
+ 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
+
+**Return Values**
+
+`void`
 
 
 
-* This method is **static**.
 
-
-
----
-
-## Obj
+### macro
 
 
 
 
+Register a custom macro. 
 
-* Full name: \WPML\FP\Obj
+ 
+
+**Parameters**
+
+* `(string) $name`
+* `(callable) $macro`
+
+**Return Values**
+
+`void`
+
+
+
+
+
+
+### merge
+
+
+
+
+Curried :: array|object -> array|object -> array|object 
+
+It merges the new data with item. 
+
+**Parameters**
+
+* `(array|object) $newData`
+* `(array|object) $item`
+
+**Return Values**
+
+`array|object`
+
+
+
+
+
+
+### without
+
+
+
+
+Curried :: mixed → array|object|Collection → array|object|Collection function to remove an item by key from an array. 
+
+ 
+
+**Parameters**
+
+* `(string|int) $key`
+* `(array|object|\Collection|null) $item`
+
+**Return Values**
+
+`callable|array|object|\Collection`
+
+
+
+
 
 
 ### prop
 
-
-
-```php
-Obj::prop( mixed $...$key, mixed $...$obj ): callable|mixed
-```
-
-- Curried :: string->Collection|array|object->mixed|null
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$key` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `prop(...$key, ...$obj)`
 
 
 
-
----
+Curried :: string->Collection|array|object->mixed|null
 
 ### propOr
 
-
-
-```php
-Obj::propOr( mixed $...$default, mixed $...$key, mixed $...$obj ): callable|mixed
-```
-
-- Curried :: mixed->string->Collection|array|object->mixed|null
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$default` | **mixed** |  |
-| `$...$key` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `propOr(...$default, ...$key, ...$obj)`
 
 
 
-
----
+Curried :: mixed->string->Collection|array|object->mixed|null
 
 ### props
 
-
-
-```php
-Obj::props( mixed $...$keys, mixed $...$obj ): callable|array
-```
-
-- Curried :: [keys] → Collection|array|object → [v]
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$keys` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `props(...$keys, ...$obj)`
 
 
 
-
----
+Curried :: [keys] → Collection|array|object → [v]
 
 ### addProp
 
-
-
-```php
-Obj::addProp( mixed $...$key, mixed $...$transformation, mixed $...$obj ): callable|array|\stdClass
-```
-
-- Curried :: string->callable->object|array->object->array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$key` | **mixed** |  |
-| `$...$transformation` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `addProp(...$key, ...$transformation, ...$obj)`
 
 
 
-
----
+Curried :: string->callable->object|array->object->array
 
 ### removeProp
 
-
-
-```php
-Obj::removeProp( mixed $...$key, mixed $...$obj ): callable|array|\stdClass
-```
-
-- Curried :: string->object|array->object->array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$key` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `removeProp(...$key, ...$obj)`
 
 
 
-
----
+Curried :: string->object|array->object->array
 
 ### renameProp
 
-
-
-```php
-Obj::renameProp( mixed $...$key, mixed $...$newKey, mixed $...$obj ): callable|array|\stdClass
-```
-
-- Curried :: string->string->object|array->object->array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$key` | **mixed** |  |
-| `$...$newKey` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `renameProp(...$key, ...$newKey, ...$obj)`
 
 
 
-
----
+Curried :: string->string->object|array->object->array
 
 ### path
 
-
-
-```php
-Obj::path( mixed $...$path, mixed $...$obj ): callable|mixed
-```
-
-- Curried :: array->Collection|array|object->mixed|null
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$path` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `path(...$path, ...$obj)`
 
 
 
-
----
+Curried :: array->Collection|array|object->mixed|null
 
 ### pathOr
 
-
-
-```php
-Obj::pathOr( mixed $...$default, mixed $...$path, mixed $...$obj ): callable|mixed
-```
-
-- Curried :: mixed → array → Collection|array|object → mixed
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$default` | **mixed** |  |
-| `$...$path` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `pathOr(...$default, ...$path, ...$obj)`
 
 
 
-
----
+Curried :: mixed → array → Collection|array|object → mixed
 
 ### assoc
 
-
-
-```php
-Obj::assoc( mixed $...$key, mixed $...$value, mixed $...$item ): callable
-```
-
-- Curried :: string->mixed->Collection|array|object->mixed|null
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$key` | **mixed** |  |
-| `$...$value` | **mixed** |  |
-| `$...$item` | **mixed** |  |
+**Signature:** `assoc(...$key, ...$value, ...$item)`
 
 
 
-
----
+Curried :: string->mixed->Collection|array|object->mixed|null
 
 ### assocPath
 
-
-
-```php
-Obj::assocPath( mixed $...$path, mixed $...$value, mixed $...$item ): callable
-```
-
-- Curried :: array->mixed->Collection|array|object->mixed|null
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$path` | **mixed** |  |
-| `$...$value` | **mixed** |  |
-| `$...$item` | **mixed** |  |
+**Signature:** `assocPath(...$path, ...$value, ...$item)`
 
 
 
-
----
+Curried :: array->mixed->Collection|array|object->mixed|null
 
 ### lens
 
-
-
-```php
-Obj::lens( mixed $...$getter, mixed $...$setter ): callable
-```
-
-- Curried :: callable->callable->callable
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$getter` | **mixed** |  |
-| `$...$setter` | **mixed** |  |
+**Signature:** `lens(...$getter, ...$setter)`
 
 
 
-
----
+Curried :: callable->callable->callable
 
 ### lensProp
 
-
-
-```php
-Obj::lensProp( mixed $...$prop ): callable
-```
-
-- Curried :: string->callable
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$prop` | **mixed** |  |
+**Signature:** `lensProp(...$prop)`
 
 
 
-
----
+Curried :: string->callable
 
 ### lensPath
 
-
-
-```php
-Obj::lensPath( mixed $...$path ): callable
-```
-
-- Curried :: array->callable
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$path` | **mixed** |  |
+**Signature:** `lensPath(...$path)`
 
 
 
-
----
+Curried :: array->callable
 
 ### lensMapped
 
-
-
-```php
-Obj::lensMapped( mixed $...$toFunctorFn ): callable
-```
-
-- Curried :: callable->callable
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$toFunctorFn` | **mixed** |  |
+**Signature:** `lensMapped(...$toFunctorFn)`
 
 
 
-
----
+Curried :: callable->callable
 
 ### lensMappedProp
 
-
-
-```php
-Obj::lensMappedProp( mixed $...$prop ): callable
-```
-
-- Curried :: string->callable
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$prop` | **mixed** |  |
+**Signature:** `lensMappedProp(...$prop)`
 
 
 
-
----
+Curried :: string->callable
 
 ### view
 
-
-
-```php
-Obj::view( mixed $...$lens, mixed $...$obj ): callable
-```
-
-- Curried :: callable->Collection|array|object->mixed
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$lens` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `view(...$lens, ...$obj)`
 
 
 
-
----
+Curried :: callable->Collection|array|object->mixed
 
 ### set
 
-
-
-```php
-Obj::set( mixed $...$lens, mixed $...$value, mixed $...$obj ): callable
-```
-
-- Curried :: callable->mixed->Collection|array|object->mixed
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$lens` | **mixed** |  |
-| `$...$value` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `set(...$lens, ...$value, ...$obj)`
 
 
 
-
----
+Curried :: callable->mixed->Collection|array|object->mixed
 
 ### over
 
-
-
-```php
-Obj::over( mixed $...$lens, mixed $...$transformation, mixed $...$obj ): callable
-```
-
-- Curried :: callable->callable->Collection|array|object->mixed
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$lens` | **mixed** |  |
-| `$...$transformation` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `over(...$lens, ...$transformation, ...$obj)`
 
 
 
-
----
+Curried :: callable->callable->Collection|array|object->mixed
 
 ### pick
 
-
-
-```php
-Obj::pick( mixed $...$props, mixed $...$obj ): callable
-```
-
-- Curried :: array->Collection|array->Collection|array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$props` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `pick(...$props, ...$obj)`
 
 
 
-
----
+Curried :: array->Collection|array->Collection|array
 
 ### pickAll
 
-
-
-```php
-Obj::pickAll( mixed $...$props, mixed $...$obj ): callable
-```
-
-- Curried :: array->Collection|array->Collection|array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$props` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `pickAll(...$props, ...$obj)`
 
 
 
-
----
+Curried :: array->Collection|array->Collection|array
 
 ### pickBy
 
-
-
-```php
-Obj::pickBy( mixed $...$predicate, mixed $...$obj ): callable
-```
-
-- Curried :: ( ( v, k ) → bool ) → Collection|array->Collection|array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicate` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `pickBy(...$predicate, ...$obj)`
 
 
 
-
----
+Curried :: ( ( v, k ) → bool ) → Collection|array->Collection|array
 
 ### pickByKey
 
-
-
-```php
-Obj::pickByKey( mixed $...$predicate, mixed $...$obj ): callable
-```
-
-- Curried :: ( ( k ) → bool ) → Collection|array->callable|Collection|array|object
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$predicate` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `pickByKey(...$predicate, ...$obj)`
 
 
 
-
----
+Curried :: ( ( k ) → bool ) → Collection|array->callable|Collection|array|object
 
 ### project
 
-
-
-```php
-Obj::project( mixed $...$props, mixed $...$target ): callable
-```
-
-- Curried :: array->Collection|array->Collection|array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$props` | **mixed** |  |
-| `$...$target` | **mixed** |  |
+**Signature:** `project(...$props, ...$target)`
 
 
 
-
----
+Curried :: array->Collection|array->Collection|array
 
 ### where
 
-
-
-```php
-Obj::where( array $condition ): callable
-```
-
-- Curried :: [string → ( * → bool )] → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$condition` | **array** |  |
+**Signature:** `where(array $condition)`
 
 
 
-
----
+Curried :: [string → ( → bool )] → bool
 
 ### has
 
-
-
-```php
-Obj::has( mixed $...$prop, mixed $...$item ): callable|boolean
-```
-
-- Curried :: string → a → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$prop` | **mixed** |  |
-| `$...$item` | **mixed** |  |
+**Signature:** `has(...$prop, ...$item)`
 
 
 
+Curried :: string → a → bool
 
----
+### hasPath
+
+**Signature:** `hasPath(...$path, ...$item)`
+
+
+
+Curried :: array<string> → a → bool
 
 ### evolve
 
-
-
-```php
-Obj::evolve( mixed $...$transformations, mixed $...$item ): callable|mixed
-```
-
-- Curried :: array → array → array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$transformations` | **mixed** |  |
-| `$...$item` | **mixed** |  |
+**Signature:** `evolve(...$transformations, ...$item)`
 
 
 
-
----
+Curried :: array → array → array
+ *
 
 ### objOf
 
-
-
-```php
-Obj::objOf( mixed $...$key, mixed $...$value ): callable|array
-```
-
-- Curried :: string->mixed->array
-
-Creates an object containing a single key:value pair.
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$key` | **mixed** |  |
-| `$...$value` | **mixed** |  |
+**Signature:** `objOf(...$key, ...$value)`
 
 
 
-
----
+Curried :: string->mixed->array
+ Creates an object containing a single key:value pair.
+ *
 
 ### keys
 
+**Signature:** `keys(...$obj)`
 
 
-```php
-Obj::keys( mixed $...$obj ): callable|array
-```
 
-- Curried :: object|array->array
-
-Returns
+Curried :: object|array->array
+ Returns
  - keys if argument is an array
  - public properties' names if argument is an object
  - keys if argument is Collection
-
-```
-$this->assertEquals( [ 0, 1, 2 ], Obj::keys( [ 'a', 'b', 'c' ] ) );
-$this->assertEquals( [ 'a', 'b', 'c' ], Obj::keys( [ 'a' => 1, 'b' => 2, 'c' => 3 ] ) );
-
-$this->assertEquals( [ 0, 1, 2 ], Obj::keys( \wpml_collect( [ 'a', 'b', 'c' ] ) ) );
-$this->assertEquals( [ 'a', 'b', 'c' ], Obj::keys( \wpml_collect( [ 'a' => 1, 'b' => 2, 'c' => 3 ] ) ) );
-
-$this->assertEquals( [ 'a', 'b', 'c' ], Obj::keys( (object) [ 'a' => 1, 'b' => 2, 'c' => 3 ] ) );
-```
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$obj` | **mixed** |  |
-
-
-
-
----
+ ```
+ $this->assertEquals( [ 0, 1, 2 ], Obj::keys( [ 'a', 'b', 'c' ] ) );
+ $this->assertEquals( [ 'a', 'b', 'c' ], Obj::keys( [ 'a' => 1, 'b' => 2, 'c' => 3 ] ) );
+ $this->assertEquals( [ 0, 1, 2 ], Obj::keys( \wpml_collect( [ 'a', 'b', 'c' ] ) ) );
+ $this->assertEquals( [ 'a', 'b', 'c' ], Obj::keys( \wpml_collect( [ 'a' => 1, 'b' => 2, 'c' => 3 ] ) ) );
+ $this->assertEquals( [ 'a', 'b', 'c' ], Obj::keys( (object) [ 'a' => 1, 'b' => 2, 'c' => 3 ] ) );
+ ```
+ *
 
 ### values
 
+**Signature:** `values(...$obj)`
 
 
-```php
-Obj::values( mixed $...$obj ): callable|array
-```
 
-- Curried :: object|array->array
-
-Returns
+Curried :: object|array->array
+ Returns
  - values if argument is an array
  - public properties' values if argument is an object
  - values if argument is Collection
-
-```
-$this->assertEquals( [ 'a', 'b', 'c' ], Obj::values( [ 'a', 'b', 'c' ] ) );
-$this->assertEquals( [ 1, 2, 3 ], Obj::values( [ 'a' => 1, 'b' => 2, 'c' => 3 ] ) );
-
-$this->assertEquals( [ 'a', 'b', 'c' ], Obj::values( \wpml_collect( [ 'a', 'b', 'c' ] ) ) );
-$this->assertEquals( [ 1, 2, 3 ], Obj::values( \wpml_collect( [ 'a' => 1, 'b' => 2, 'c' => 3 ] ) ) );
-
-$this->assertEquals( [ 1, 2, 3 ], Obj::values( (object) [ 'a' => 1, 'b' => 2, 'c' => 3 ] ) );
-```
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$obj` | **mixed** |  |
-
-
-
-
----
+ ```
+ $this->assertEquals( [ 'a', 'b', 'c' ], Obj::values( [ 'a', 'b', 'c' ] ) );
+ $this->assertEquals( [ 1, 2, 3 ], Obj::values( [ 'a' => 1, 'b' => 2, 'c' => 3 ] ) );
+ $this->assertEquals( [ 'a', 'b', 'c' ], Obj::values( \wpml_collect( [ 'a', 'b', 'c' ] ) ) );
+ $this->assertEquals( [ 1, 2, 3 ], Obj::values( \wpml_collect( [ 'a' => 1, 'b' => 2, 'c' => 3 ] ) ) );
+ $this->assertEquals( [ 1, 2, 3 ], Obj::values( (object) [ 'a' => 1, 'b' => 2, 'c' => 3 ] ) );
+ ```
+ *
 
 ### replaceRecursive
 
-
-
-```php
-Obj::replaceRecursive( mixed $array, mixed $...$target ): callable|array
-```
-
-- Curried :: array->array->array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$array` | **mixed** |  |
-| `$...$target` | **mixed** |  |
+**Signature:** `replaceRecursive(array ...$newValue, ...$target)`
 
 
 
-
----
+Curried :: array->array->array
+ *
 
 ### toArray
 
+**Signature:** `toArray(Collection|Object ...$item)`
 
 
-```php
-Obj::toArray( mixed $Collection|Object ): callable|array
-```
 
-- Curried :: Collection|Object->array
+Curried :: Collection|Object->array
 
-* This method is **static**.
-**Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$Collection|Object` | **mixed** |  |
+* Promise
+
+* Relation
+### __call
 
 
 
 
----
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### __callStatic
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### hasMacro
+
+
+
+
+Checks if macro is registered. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+
+**Return Values**
+
+`bool`
+
+
+
+
+
 
 ### init
 
 
 
-```php
-Obj::init(  ): void
-```
+ init (void)
 
+ 
 
+ 
 
-* This method is **static**.
+**Parameters**
 
+`This function has no parameters.`
 
+**Return Values**
 
----
-
-### without
-
-Curried :: mixed → array|object|Collection → array|object|Collection
-function to remove an item by key from an array.
-
-```php
-Obj::without( string|integer $key = null, array|object|\WPML\Collect\Support\Collection|null $item = null ): callable|array|object|\WPML\Collect\Support\Collection
-```
-
-
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$key` | **string&#124;integer** |  |
-| `$item` | **array&#124;object&#124;\WPML\Collect\Support\Collection&#124;null** |  |
+`void`
 
 
 
 
----
-
-## Relation
+### macro
 
 
 
 
+Register a custom macro. 
 
-* Full name: \WPML\FP\Relation
+ 
+
+**Parameters**
+
+* `(string) $name`
+* `(callable) $macro`
+
+**Return Values**
+
+`void`
+
+
+
+
 
 
 ### equals
 
-
-
-```php
-Relation::equals( mixed $...$a, mixed $...$b ): callable|boolean
-```
-
-- Curried :: a->b->bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
+**Signature:** `equals(...$a, ...$b)`
 
 
 
-
----
+Curried :: a->b->bool
 
 ### lt
 
-
-
-```php
-Relation::lt( mixed $...$a, mixed $...$b ): callable|boolean
-```
-
-- Curried :: a->b->bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
+**Signature:** `lt(...$a, ...$b)`
 
 
 
-
----
+Curried :: a->b->bool
 
 ### lte
 
-
-
-```php
-Relation::lte( mixed $...$a, mixed $...$b ): callable|boolean
-```
-
-- Curried :: a->b->bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
+**Signature:** `lte(...$a, ...$b)`
 
 
 
-
----
+Curried :: a->b->bool
 
 ### gt
 
-
-
-```php
-Relation::gt( mixed $...$a, mixed $...$b ): callable|boolean
-```
-
-- Curried :: a->b->bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
+**Signature:** `gt(...$a, ...$b)`
 
 
 
-
----
+Curried :: a->b->bool
 
 ### gte
 
-
-
-```php
-Relation::gte( mixed $...$a, mixed $...$b ): callable|boolean
-```
-
-- Curried :: a->b->bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
+**Signature:** `gte(...$a, ...$b)`
 
 
 
-
----
+Curried :: a->b->bool
 
 ### propEq
 
-
-
-```php
-Relation::propEq( mixed $...$prop, mixed $...$value, mixed $...$obj ): callable|boolean
-```
-
-- Curried :: String → a → array → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$prop` | **mixed** |  |
-| `$...$value` | **mixed** |  |
-| `$...$obj` | **mixed** |  |
+**Signature:** `propEq(...$prop, ...$value, ...$obj)`
 
 
 
-
----
+Curried :: String → a → array → bool
 
 ### sortWith
 
+**Signature:** `sortWith(...$comparators, ...$array)`
 
 
-```php
-Relation::sortWith( mixed $...$comparators, mixed $...$array ): callable|array
-```
 
-- Curried :: [(a, a) → int] → [a] → [a]
+Curried :: [(a, a) → int] → [a] → [a]
 
-* This method is **static**.
-**Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$comparators` | **mixed** |  |
-| `$...$array` | **mixed** |  |
+* Str
+### __call
 
 
 
 
----
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### __callStatic
+
+
+
+
+Dynamically handle calls to the class. 
+
+ 
+
+**Parameters**
+
+* `(string) $method`
+* `(array) $parameters`
+
+**Return Values**
+
+`mixed`
+
+
+
+
+**Throws Exceptions**
+
+
+`\BadMethodCallException`
+
+
+
+
+### hasMacro
+
+
+
+
+Checks if macro is registered. 
+
+ 
+
+**Parameters**
+
+* `(string) $name`
+
+**Return Values**
+
+`bool`
+
+
+
+
+
 
 ### init
 
 
 
-```php
-Relation::init(  ): void
-```
+ init (void)
+
+ 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
+
+**Return Values**
+
+`void`
 
 
 
-* This method is **static**.
 
-
-
----
-
-## Str
+### macro
 
 
 
 
+Register a custom macro. 
 
-* Full name: \WPML\FP\Str
+ 
+
+**Parameters**
+
+* `(string) $name`
+* `(callable) $macro`
+
+**Return Values**
+
+`void`
+
+
+
+
+
+
+### truncate_bytes
+
+
+
+
+Truncates a string to a maximum number of bytes keeping multibyte chars integrity. 
+
+ 
+
+**Parameters**
+
+* `(string) $string`
+* `(int) $max_bytes`
+* `(int|null) $max_characters`
+
+**Return Values**
+
+`string`
+
+
+
+
 
 
 ### tail
 
-
-
-```php
-Str::tail( mixed $string ): string
-```
-
-- Curried :: string->string
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$string` | **mixed** |  |
+**Signature:** `tail(string ...$str)`
 
 
 
-
----
+Curried :: string->string
 
 ### split
 
-
-
-```php
-Str::split( mixed $...$delimiter, mixed $...$str ): array
-```
-
-- Curried :: string->string->string
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$delimiter` | **mixed** |  |
-| `$...$str` | **mixed** |  |
+**Signature:** `split(...$delimiter, ...$str)`
 
 
 
+Curried :: string->string->string
 
----
+### parse
+
+**Signature:** `parse(...$string)`
+
+
+
+Curried :: string → array
 
 ### includes
 
-
-
-```php
-Str::includes( mixed $...$needle, mixed $...$str ): callable|boolean
-```
-
-- Curried :: string → string → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$needle` | **mixed** |  |
-| `$...$str` | **mixed** |  |
+**Signature:** `includes(...$needle, ...$str)`
 
 
 
-
----
+Curried :: string → string → bool
 
 ### trim
 
-
-
-```php
-Str::trim( mixed $...$trim, mixed $...$str ): callable|string
-```
-
-- Curried :: string → string → string
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$trim` | **mixed** |  |
-| `$...$str` | **mixed** |  |
+**Signature:** `trim(...$trim, ...$str)`
 
 
 
-
----
+Curried :: string → string → string
 
 ### trimPrefix
 
-
-
-```php
-Str::trimPrefix( mixed $...$trim, mixed $...$str ): callable|string
-```
-
-- Curried :: string → string → string
-
-Trims the prefix from the start of the string if the prefix exists
-
-```
-$trimmed = Str::trimPrefix( 'prefix-', 'prefix-test' );
-```
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$trim` | **mixed** |  |
-| `$...$str` | **mixed** |  |
+**Signature:** `trimPrefix(...$trim, ...$str)`
 
 
 
-
----
+Curried :: string → string → string
+ Trims the prefix from the start of the string if the prefix exists
+ ```
+ $trimmed = Str::trimPrefix( 'prefix-', 'prefix-test' );
+ ```
+ *
 
 ### concat
 
-
-
-```php
-Str::concat( mixed $...$a, mixed $...$b ): callable|string
-```
-
-- Curried :: string → string → string
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$a` | **mixed** |  |
-| `$...$b` | **mixed** |  |
+**Signature:** `concat(...$a, ...$b)`
 
 
 
-
----
+Curried :: string → string → string
 
 ### sub
 
-
-
-```php
-Str::sub( mixed $...$start, mixed $...$str ): callable|string
-```
-
-- Curried :: int → string → string
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$start` | **mixed** |  |
-| `$...$str` | **mixed** |  |
+**Signature:** `sub(...$start, ...$str)`
 
 
 
-
----
+Curried :: int → string → string
 
 ### startsWith
 
-
-
-```php
-Str::startsWith( mixed $...$test, mixed $...$str ): callable|string
-```
-
-- Curried :: string → string → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$test` | **mixed** |  |
-| `$...$str` | **mixed** |  |
+**Signature:** `startsWith(...$test, ...$str)`
 
 
 
-
----
+Curried :: string → string → bool
 
 ### endsWith
 
-
-
-```php
-Str::endsWith( mixed $...$test, mixed $...$str ): callable|string
-```
-
-- Curried :: string → string → bool
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$test` | **mixed** |  |
-| `$...$str` | **mixed** |  |
+**Signature:** `endsWith(...$test, ...$str)`
 
 
 
-
----
+Curried :: string → string → bool
 
 ### pos
 
-
-
-```php
-Str::pos( mixed $...$test, mixed $...$str ): callable|integer
-```
-
-- Curried :: string → string → int
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$test` | **mixed** |  |
-| `$...$str` | **mixed** |  |
+**Signature:** `pos(...$test, ...$str)`
 
 
 
-
----
+Curried :: string → string → int
 
 ### len
 
-
-
-```php
-Str::len( mixed $...$str ): callable|integer
-```
-
-- Curried :: string → int
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$str` | **mixed** |  |
+**Signature:** `len(...$str)`
 
 
 
-
----
+Curried :: string → int
 
 ### replace
 
-
-
-```php
-Str::replace( mixed $...$find, mixed $...$replace, mixed $...$str ): callable|string
-```
-
-- Curried :: string → string → string → string
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$find` | **mixed** |  |
-| `$...$replace` | **mixed** |  |
-| `$...$str` | **mixed** |  |
+**Signature:** `replace(...$find, ...$replace, ...$str)`
 
 
 
-
----
+Curried :: string → string → string → string
 
 ### pregReplace
 
-
-
-```php
-Str::pregReplace( mixed $...$pattern, mixed $...$replace, mixed $...$str ): callable|string
-```
-
-- Curried :: string → string → string → string
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$pattern` | **mixed** |  |
-| `$...$replace` | **mixed** |  |
-| `$...$str` | **mixed** |  |
+**Signature:** `pregReplace(...$pattern, ...$replace, ...$str)`
 
 
 
-
----
+Curried :: string → string → string → string
 
 ### match
 
-
-
-```php
-Str::match( mixed $...$pattern, mixed $...$str ): callable|string
-```
-
-- Curried :: string → string → array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$pattern` | **mixed** |  |
-| `$...$str` | **mixed** |  |
+**Signature:** `match(...$pattern, ...$str)`
 
 
 
-
----
+Curried :: string → string → array
 
 ### matchAll
 
-
-
-```php
-Str::matchAll( mixed $...$pattern, mixed $...$str ): callable|string
-```
-
-- Curried :: string → string → array
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$pattern` | **mixed** |  |
-| `$...$str` | **mixed** |  |
+**Signature:** `matchAll(...$pattern, ...$str)`
 
 
 
-
----
+Curried :: string → string → array
 
 ### wrap
 
-
-
-```php
-Str::wrap( mixed $...$before, mixed $...$after, mixed $...$str ): callable|string
-```
-
-- Curried :: string → string → string
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$...$before` | **mixed** |  |
-| `$...$after` | **mixed** |  |
-| `$...$str` | **mixed** |  |
+**Signature:** `wrap(...$before, ...$after, ...$str)`
 
 
 
-
----
+Curried :: string → string → string
 
 ### toUpper
 
-
-
-```php
-Str::toUpper( mixed $string ): callable|string
-```
-
-- Curried :: string → string
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$string` | **mixed** |  |
+**Signature:** `toUpper(string ...$str)`
 
 
 
-
----
+Curried :: string → string
 
 ### toLower
 
-
-
-```php
-Str::toLower( mixed $string ): callable|string
-```
-
-- Curried :: string → string
-
-Wraps a string inside 2 other strings
-
-```
-$wrapsInDiv = Str::wrap( '<div>', '</div>' );
-$wrapsInDiv( 'To be wrapped' ); // '<div>To be wrapped</div>'
-```
-
-* This method is **static**.
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$string` | **mixed** |  |
+**Signature:** `toLower(string ...$str)`
 
 
 
-
----
-
-### init
-
-
-
-```php
-Str::init(  ): void
-```
+Curried :: string → string
+ Wraps a string inside 2 other strings
+ ```
+ $wrapsInDiv = Str::wrap( '<div>', '</div>' );
+ $wrapsInDiv( 'To be wrapped' ); // '<div>To be wrapped</div>'
+ ```
+ *
 
 
+* Wrapper
 
-* This method is **static**.
-
-
-
----
-
-
-
---------
-> This document was automatically generated from source code comments on 2022-03-07 using [phpDocumentor](http://www.phpdoc.org/) and [cvuorinen/phpdoc-markdown-public](https://github.com/cvuorinen/phpdoc-markdown-public)

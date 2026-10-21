@@ -19,11 +19,17 @@ use function WPML\FP\System\sanitizeString;
 
 class AddressStep implements IHandler {
 
+	const DOMAIN_MODE_UNAVAILABLE = 'This option is not yet available for Multisite installs';
+
 	public function run( Collection $data ) {
 
 		$isDomainMode    = Relation::propEq( 'mode', LanguageNegotiation::DOMAIN_STRING );
 		$isDirectoryMode = Relation::propEq( 'mode', LanguageNegotiation::DIRECTORY_STRING );
 		$otherWise       = Fns::always( true );
+
+		if ( $isDomainMode( $data ) && ! LanguageNegotiation::isDomainModeAvailable() ) {
+			return Either::left( __( 'This option is not yet available for Multisite installs', 'sitepress' ) );
+		}
 
 		$handleModes = Logic::cond( [
 			[ $isDomainMode, $this->handleDomains() ],
@@ -39,39 +45,64 @@ class AddressStep implements IHandler {
 		            ->map( Fns::always( 'ok' ) );
 	}
 
-	/**
-	 * @return callable(Collection) : Either Left(unavailable) | Right(data)
-	 */
 	private function validateDomains() {
 		return function ( $data ) {
-			return $this->validate( wpml_collect( $data->get( 'domains' ) ), $data );
+			if ( Obj::propOr( false, 'ignoreInvalidUrls', $data ) ) {
+				return Either::of( $data );
+			}
+
+			$validator = make( \WPML_Language_Domain_Validation::class );
+			$scheme    = wpml_parse_url( get_home_url(), PHP_URL_SCHEME ) ?: 'http';
+			$failed    = wpml_collect( $data->get( 'domains' ) )
+				->map(
+					function ( $domain ) use ( $validator, $scheme ) {
+						return $validator->validate( \WPML_Language_Domains::baseUrlOf( $domain, $scheme ) );
+					}
+				)
+				->reject( Relation::equals( \WPML_Language_Domain_Validation::VALID ) )
+				->toArray();
+
+			return $failed
+				? Either::left( $failed )
+				: Either::of( $data );
 		};
 	}
 
-	/**
-	 * @return callable(Collection) : Either Left(unavailable) | Right(data)
-	 */
+	private function normalizeDomains() {
+		return function ( Collection $data ) {
+			$stored  = LanguageNegotiation::getDomains();
+			$stored  = is_array( $stored ) ? $stored : [];
+			$domains = [];
+			$failed  = [];
+
+			foreach ( (array) $data->get( 'domains', [] ) as $code => $domain ) {
+				$domain = \WPML_Language_Domains::to_store( is_scalar( $domain ) ? (string) $domain : '', isset( $stored[ $code ] ) ? $stored[ $code ] : null );
+
+				if ( \WPML_Language_Domains::is_normalize_error( $domain ) ) {
+					$failed[ $code ] = $domain;
+				} else {
+					$domains[ $code ] = $domain;
+				}
+			}
+
+			return $failed
+				? Either::left( $failed )
+				: Either::of( $data->put( 'domains', $domains ) );
+		};
+	}
+
 	private function handleDomains() {
 		$saveDomains = Fns::tap( pipe( Obj::prop( 'domains' ), LanguageNegotiation::saveDomains() ) );
 
-		return pipe( $this->validateDomains(), chain( $saveDomains ) );
+		return pipe( $this->normalizeDomains(), chain( $this->validateDomains() ), chain( $saveDomains ) );
 	}
 
-	/**
-	 * @return callable(Collection) : Either Left(unavailable) | Right(data)
-	 */
 	private function validateSubdirectoryUrls() {
 		return function ( Collection $data ) {
 			return $this->validate( \wpml_collect( $data->get( 'domains' ) )->map(  Fns::nthArg( 1 ) ), $data );
 		};
 	}
 
-	/**
-	 * @param Collection $domains
-	 * @param Collection $data
-	 *
-	 * @return callable|\WPML\FP\Left|Right
-	 */
 	private function validate( Collection $domains, Collection $data ) {
 		$unavailableUrls = $domains->reject( $this->getValidator( $data ) )->keys()->toArray();
 
@@ -80,18 +111,9 @@ class AddressStep implements IHandler {
 			: Either::of( $data );
 	}
 
-	/**
-	 * @param Collection $data
-	 *
-	 * @return callable(string) : bool
-	 */
 	private function getValidator( Collection $data ) {
-		$validator = Relation::propEq( 'mode', LanguageNegotiation::DIRECTORY_STRING, $data )
-			? [ make( \WPML_Lang_URL_Validator::class ), 'validate_langs_in_dirs' ]
-			: [ make( \WPML_Language_Domain_Validation::class ), 'is_valid' ];
-
 		return Obj::propOr( false, 'ignoreInvalidUrls', $data )
 			? Fns::always( true )
-			: Fns::unary( $validator );
+			: Fns::unary( [ make( \WPML_Lang_URL_Validator::class ), 'validate_langs_in_dirs' ] );
 	}
 }

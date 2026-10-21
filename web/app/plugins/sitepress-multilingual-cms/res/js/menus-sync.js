@@ -27,7 +27,7 @@ var WPML_core = WPML_core || {};
 				jQuery( '#icl_msync_submit' ).prop( 'disabled', false );
 			} else {
 				checkboxes.each( function( i, el ) {
-					jQuery( el ).removeProp( 'checked' );
+					jQuery( el ).prop( 'checked', false );
 				});
 				jQuery( '#icl_msync_submit' ).prop( 'disabled', true );
 			}
@@ -47,7 +47,7 @@ var WPML_core = WPML_core || {};
 			if (checked_count && checked_items.length == icl_msync_confirm.find('tbody :checkbox').length) {
 				jQuery('#icl_msync_confirm').find('thead :checkbox').prop('checked', true);
 			} else {
-				jQuery('#icl_msync').find('thead :checkbox').prop('checked', false);
+				jQuery('#icl_msync_confirm').find('thead :checkbox').prop('checked', false);
 			}
 
 			WPML_core.icl_msync_validation();
@@ -105,6 +105,22 @@ var WPML_core = WPML_core || {};
 		});
 	};
 
+	/**
+	 * Stop the run and say what the server refused. `WPML\Request\Payload` and
+	 * the request gate both answer {code, message, params}; anything else is
+	 * shown as it came, and a refusal with nothing in it falls back to the
+	 * sentence shipped with the screen.
+	 */
+	WPML_core.msync_failed = function (refusal) {
+		var message = refusal && 'object' === typeof refusal ? refusal.message : refusal;
+
+		jQuery('.spinner').remove();
+		jQuery('#icl_msync_submit').prop('disabled', false);
+		jQuery('#icl_msync_message')
+			.text(message ? message : menus_sync.syncFailedText)
+			.fadeIn('slow');
+	};
+
 	WPML_core.sync_menus = function (total_menus) {
 
 		var message;
@@ -135,9 +151,23 @@ var WPML_core = WPML_core || {};
 										type:    "POST",
 										data:    data,
 										success: function (response) {
-											if (response.success) {
+											if (response && response.success) {
 												WPML_core.sync_menus(total_menus);
+												return;
 											}
+											// wp_send_json_error() answers
+											// {success:false,data:…}; a 2xx carrying one
+											// is a refusal, and used to match no branch
+											// at all, so the batch simply stopped with
+											// the spinner running and nothing said.
+											WPML_core.msync_failed(response ? response.data : null);
+										},
+										// A refused request (a malformed payload is
+										// answered 400, a denied caller 403) is routed
+										// here by jQuery and never to success:
+										// (DEV0905-8).
+										error:   function (xhr) {
+											WPML_core.msync_failed(xhr && xhr.responseJSON ? xhr.responseJSON.data : null);
 										}
 									});
 		} else {
@@ -155,24 +185,28 @@ var WPML_core = WPML_core || {};
 										},
 										success: function (response) {
 											if (response.success && response.data.items) {
+												// M5 (2026-05-26): match the PHP partial's
+												// `display_menu_links_to_string_translation()`
+												// — one `<p>` with two sentences joined by
+												// `<br>`. Sentence 1 has gettext `%1$s` /
+												// `%2$s` placeholders for the link tags
+												// around "Translations -> Strings"
+												// (wpmldev-7288); split the translated
+												// string on the placeholders and build the
+												// `<a>` via jQuery so we don't have to use
+												// `.html()` (avoids any HTML-injection risk
+												// if a translation ever introduces stray
+												// markup).
+												var parts = menus_sync.text1.split(/%[12]\$s/);
 												var element = jQuery('<p></p>');
-												element.text(menus_sync.text1);
-                                                element.append('<br>' + menus_sync.text2 + ' ' );
-												var items = 0;
-
-												for (var key in response.data.items) {
-													if (response.data.items.hasOwnProperty(key)) {
-														if(items>0) {
-															element.append(', ');
-														}
-														var link = jQuery('<a></a>');
-														link.attr('href', response.data.items[key]);
-														link.text(key);
-														link.appendTo(element);
-														items++;
-													}
-												}
-                                                element.append( '<br>' + menus_sync.text3);
+												element.append(document.createTextNode(parts[0] || ''));
+												var link = jQuery('<a></a>')
+													.attr('href', menus_sync.stringsUrl)
+													.text(parts[1] || '');
+												link.appendTo(element);
+												element.append(document.createTextNode(parts[2] || ''));
+												element.append('<br>');
+												element.append(document.createTextNode(menus_sync.text2));
 
 												element.appendTo(jQuery('#icl_msync_confirm_form'));
 											}

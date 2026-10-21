@@ -5,15 +5,10 @@ use WPML\FP\Obj;
 use WPML\FP\Type;
 
 abstract class WPML_ACF_Field {
-	/** @var mixed */
 	public $meta_value;
-	/** @var string */
 	public $target_lang;
-	/** @var array */
 	public $meta_data;
-	/** @var bool */
 	public $related_acf_field_value;
-	/** @var \WPML_ACF_Convertable|null */
 	public $ids_object;
 
 
@@ -26,9 +21,6 @@ abstract class WPML_ACF_Field {
 		$this->ids_object = $ids;
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function convert_ids() {
 		if ( null === $this->ids_object ) {
 			return null;
@@ -36,12 +28,6 @@ abstract class WPML_ACF_Field {
 		return $this->ids_object->convert( $this );
 	}
 
-	/**
-	 * @param  bool  $has_element_with_display_translated
-	 * @param  mixed $field
-	 *
-	 * @return bool
-	 */
 	public function has_element_with_display_translated(
 		$has_element_with_display_translated,
 		$field
@@ -66,8 +52,5 @@ abstract class WPML_ACF_Field {
 		return $has_element_with_display_translated;
 	}
 
-	/**
-	 * @return string
-	 */
 	abstract public function field_type();
 }

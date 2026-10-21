@@ -2,6 +2,7 @@
 
 namespace WPML;
 
+use WPML\API\Settings;
 use WPML\FP\Fns;
 use WPML\FP\Lst;
 use WPML\FP\Obj;
@@ -31,6 +32,40 @@ class Plugins {
 		}
 	}
 
+	/**
+	 * The verdict `inc/functions-load-tm.php` reached at plugin boot: did this
+	 * request load Translation Management's module functions?
+	 *
+	 * `is-tm-allowed` is not stable within one request. The product itself
+	 * rewrites it from the live installer subscription on
+	 * `otgs_installer_initialized` and on
+	 * `otgs_installer_subscription_refreshed`, both of which fire after plugin
+	 * boot - so a license upgrade, or any drift between the stored option and
+	 * the installer's subscription record, lands mid-request. A gate that read
+	 * the option again later could decide to use TM code that boot had declined
+	 * to define, and the request died on an undefined function (POST-16a).
+	 *
+	 * Whatever the option says later, the code this request can call was
+	 * settled at boot. This is where that one answer lives.
+	 *
+	 * @var bool|null
+	 */
+	private static $isTMLoadedForRequest = null;
+
+	public static function latchTMLoadedForRequest( $isLoaded ) {
+		if ( self::$isTMLoadedForRequest === null ) {
+			self::$isTMLoadedForRequest = (bool) $isLoaded;
+		}
+
+		return self::$isTMLoadedForRequest;
+	}
+
+	public static function isTMLoadedForRequest() {
+		return self::$isTMLoadedForRequest === null
+			? function_exists( 'wpml_tm_load_element_translations' )
+			: self::$isTMLoadedForRequest;
+	}
+
 	public static function isTMAllowed() {
 		$isTMAllowed = true;
 
@@ -58,25 +93,83 @@ class Plugins {
 				if ( self::WPML_SUBSCRIPTION_TYPE_BLOG === $type ) {
 					Option::setTranslateEverything( false );
 				}
+				self::selectTranslationEditorIfMissing( $type );
 			}
 		}
 	}
 
-	/**
-	 * @param bool $isSetupComplete
-	 */
+	private static function selectTranslationEditorIfMissing( $subscriptionType ) {
+		global $sitepress;
+
+		if (
+			self::WPML_SUBSCRIPTION_TYPE_BLOG === $subscriptionType
+			|| true !== Option::isTMAllowed()
+			|| ! is_object( $sitepress )
+			|| ! function_exists( 'wpml_is_setup_complete' )
+			|| ! function_exists( 'wpml_get_tm_sub_setting' )
+			|| ! wpml_is_setup_complete()
+		) {
+			return;
+		}
+
+		$editor = wpml_get_tm_sub_setting( 'doc_translation_method', null );
+		if ( null !== $editor && (string) ICL_TM_TMETHOD_MANUAL !== (string) $editor ) {
+			return;
+		}
+
+		$newSettings = [];
+
+		$hasExplicitGlobalEditorMode = in_array(
+			wpml_get_tm_sub_setting( \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_GLOBAL_EDITOR, null ),
+			[
+				\WPML_TM_Post_Edit_TM_Editor_Mode::EDITOR_NATIVE,
+				\WPML_TM_Post_Edit_TM_Editor_Mode::EDITOR_WPML,
+				\WPML_TM_Post_Edit_TM_Editor_Mode::EDITOR_DASHBOARD,
+			],
+			true
+		)
+			|| null !== wpml_get_tm_sub_setting( \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_GLOBAL_USE_NATIVE, null )
+			|| null !== wpml_get_tm_sub_setting( \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_GLOBAL_USE_WPML, null );
+
+		if ( ! $hasExplicitGlobalEditorMode ) {
+			$newSettings[ \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_GLOBAL_EDITOR ] = \WPML_TM_Post_Edit_TM_Editor_Mode::EDITOR_NATIVE;
+		}
+		$newSettings['doc_translation_method'] = ICL_TM_TMETHOD_ATE;
+
+		$tmSettings = Settings::getOr( [], 'translation-management' );
+		$tmSettings = is_array( $tmSettings ) ? $tmSettings : [];
+
+		Settings::setAndSave( 'translation-management', array_merge( $tmSettings, $newSettings ) );
+
+		global $iclTranslationManagement;
+		if ( is_object( $iclTranslationManagement ) ) {
+			foreach ( $newSettings as $key => $value ) {
+				$iclTranslationManagement->settings[ $key ] = $value;
+			}
+		}
+
+		if ( function_exists( 'wpml_get_cache' ) && class_exists( \WPML_Translation_Roles_Records::class ) ) {
+			wpml_get_cache( \WPML_Translation_Roles_Records::CACHE_GROUP )->flush_group_cache();
+		}
+	}
+
 	public static function loadEmbeddedTM( $isSetupComplete ) {
-		$tmSlug  = 'wpml-translation-management/plugin.php';
+		$tmSlug = 'wpml-translation-management/plugin.php';
 
 		self::stopPluginActivation( self::WPML_TM_PLUGIN );
 		add_action( 'otgs_installer_subscription_refreshed', [ self::class, 'updateTMAllowedOption' ] );
+		add_action( 'otgs_installer_site_key_update', [ self::class, 'updateTMAllowedAndTranslateEverythingOnSubscriptionChange' ] );
 
 		if ( ! self::deactivateTm() ) {
 
 			add_action( "after_plugin_row_$tmSlug", [ self::class, 'showEmbeddedTMNotice' ] );
-			add_action( 'otgs_installer_initialized', [ self::class,
-				'updateTMAllowedAndTranslateEverythingOnSubscriptionChange'
-			] );
+			add_action(
+                'otgs_installer_initialized',
+                [
+					self::class,
+					'updateTMAllowedAndTranslateEverythingOnSubscriptionChange',
+				]
+            );
 
 			$isTMAllowed = Option::isTMAllowed();
 			if ( $isTMAllowed === null ) {
@@ -84,8 +177,66 @@ class Plugins {
 			}
 			if ( ! $isSetupComplete || $isTMAllowed ) {
 				require_once WPML_PLUGIN_PATH . '/tm.php';
+			} else {
+				// Blog license: tm.php is not loaded, but a few options
+				// core reads WPML_TM_URL and its neighbours on every license
+				require_once WPML_PLUGIN_PATH . '/inc/constants-tm.php';
+				self::loadBlogLicenseSettingsSaving();
+				self::loadBlogLicenseTranslationStatus();
 			}
 		}
+	}
+
+	/**
+	 * Keep translation status moving on a Blog license (wpmldev-3902).
+	 *
+	 * tm.php holds the only listener on `wpml_tm_save_post`, the action core
+	 * fires on every post save. Without it the "needs update" row is never
+	 * written and the status icon never leaves the pencil, although the read
+	 * side (WPML_Post_Status, WPML_Post_Status_Display) works without TM.
+	 * The listener registered here writes that row and nothing else - see
+	 * WPML_Blog_License_Translation_Status.
+	 *
+	 * @return void
+	 */
+	private static function loadBlogLicenseTranslationStatus() {
+		add_action( 'wpml_tm_save_post', [ \WPML_Blog_License_Translation_Status::class, 'on_save_post' ], 10, 3 );
+	}
+
+	private static function loadBlogLicenseSettingsSaving() {
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			global $sitepress;
+			if ( $sitepress instanceof \SitePress ) {
+				( new \WPML_TM_Options_Ajax( $sitepress ) )->ajax_hooks();
+			}
+			return;
+		}
+
+		add_action( 'admin_enqueue_scripts', [ self::class, 'registerBlogLicenseMcsScript' ] );
+	}
+
+	/**
+	 * Register the legacy MCS save script on a blog license. Same handle,
+	 * file and version as the TM registration in `inc/js-tm-scripts.php`,
+	 * but with only the `jquery` dependency — the translation-pickup
+	 * polling chain that registration adds is TM-specific and unused by
+	 * the blog-eligible save buttons. The existing
+	 * `wp_enqueue_script( 'wpml-tm-mcs' )` call in the MCS settings render
+	 * then resolves (wpmldev-7163).
+	 *
+	 * @return void
+	 */
+	public static function registerBlogLicenseMcsScript() {
+		if ( wp_script_is( 'wpml-tm-mcs', 'registered' ) ) {
+			return;
+		}
+		wp_register_script(
+			'wpml-tm-mcs',
+			ICL_PLUGIN_URL . '/res/js/mcs/wpml-tm-mcs.js',
+			[ 'jquery' ],
+			ICL_SITEPRESS_SCRIPT_VERSION,
+			true
+		);
 	}
 
 	private static function deactivateTm() {
@@ -108,8 +259,8 @@ class Plugins {
 	public static function isTMActive() {
 		$hasTM = function ( $plugins ) {
 			return is_array( $plugins ) && (
-					Lst::includes( self::WPML_TM_PLUGIN, $plugins ) || // 'active_plugins' stores plugins as values
-					array_key_exists( self::WPML_TM_PLUGIN, $plugins ) // 'active_sitewide_plugins' stores plugins as keys
+					Lst::includes( self::WPML_TM_PLUGIN, $plugins ) ||
+					array_key_exists( self::WPML_TM_PLUGIN, $plugins )
 				);
 		};
 
@@ -154,11 +305,7 @@ class Plugins {
 							'This plugin has been deactivated as it is now part of the WPML Multilingual CMS plugin. You can safely delete it.',
 							'sitepress'
 						);
-						$readMoreLink = 'https://wpml.org/changelog/2021/10/wpml-4-5-translate-all-of-your-sites-content-with-one-click/?utm_source=plugin&utm_medium=gui&utm_campaign=wpmlcore#fewer-plugins-to-manage';
 						?>
-						<a href="<?php echo $readMoreLink; ?>" target="_blank" class="wpml-external-link">
-							<?php _e( 'Read more', 'sitepress' ); ?>
-						</a>
 					</p>
 				</div>
 		</tr>

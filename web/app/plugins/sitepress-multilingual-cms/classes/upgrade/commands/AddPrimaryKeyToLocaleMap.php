@@ -2,7 +2,7 @@
 
 namespace WPML\Upgrade\Commands;
 
-class AddPrimaryKeyToLocaleMap extends AddPrimaryKeyToTable {
+class AddPrimaryKeyToLocaleMap extends AddPrimaryKeyToTable implements \IWPML_Pre_Setup_Upgrade_Command {
 
 	protected function get_table() {
 		return 'icl_locale_map';

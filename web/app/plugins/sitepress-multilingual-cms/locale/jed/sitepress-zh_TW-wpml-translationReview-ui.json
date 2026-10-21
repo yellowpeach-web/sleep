@@ -4,7 +4,8 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "zh_TW"
          },
          "Accepted": [
             "已接受"
@@ -13,13 +14,16 @@
             "已核准！"
          ],
          "Loading the next translation for review...": [
-            "正在載入下一個翻譯以供審閱..."
+            "正在載入下一個待審核的翻譯..."
          ],
          "Back": [
             "返回"
          ],
          "Turn off to not automatically load the next translation after finishing this review.": [
-            "關閉此選項可在完成此審閱後不自動載入下一個翻譯。"
+            "關閉此選項可在完成本次審核後，不自動載入下一個翻譯。"
+         ],
+         "Turn on to automatically load the next translation after finishing this  .": [
+            "開啟此選項可在完成本次審核後，自動載入下一個翻譯。"
          ],
          "Edit": [
             "編輯"
@@ -27,11 +31,8 @@
          "Edit translation": [
             "編輯翻譯"
          ],
-         "Please wait, applying translation..": [
-            "請稍候，正在套用翻譯.."
-         ],
          "Next review": [
-            "下一個審閱"
+            "下一個審核"
          ],
          "Publish this translation": [
             "發佈此翻譯"
@@ -42,8 +43,14 @@
          "Published!": [
             "已發佈！"
          ],
+         "Please wait, applying translation..": [
+            "請稍候，正在套用翻譯..."
+         ],
          "There was an error in applying translation.": [
-            "套用翻譯時出錯。"
+            "套用翻譯時發生錯誤。"
+         ],
+         "Someone is already reviewing this translation. Please try again later.": [
+            "有人正在審核此翻譯。請稍後再試。"
          ]
       }
    }

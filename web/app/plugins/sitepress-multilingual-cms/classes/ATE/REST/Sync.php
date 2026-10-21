@@ -10,6 +10,8 @@ use WPML\FP\Lst;
 use WPML\FP\Obj;
 use WPML\FP\Relation;
 use WPML\TM\API\Jobs;
+use WPML\TM\ATE\API\ClientRestrictionState;
+use WPML\TM\ATE\API\SpendCapState;
 use WPML\TM\ATE\Sync\Arguments;
 use WPML\TM\ATE\Sync\Process;
 use WPML\TM\ATE\Sync\Result;
@@ -20,9 +22,6 @@ use WPML_TM_ATE_Job;
 use function WPML\Container\make;
 
 class Sync extends Base {
-	/**
-	 * @return array
-	 */
 	public function get_routes() {
 		return [
 			[
@@ -41,11 +40,6 @@ class Sync extends Base {
 		];
 	}
 
-	/**
-	 * @param WP_REST_Request $request
-	 *
-	 * @return array
-	 */
 	public function get_allowed_capabilities( WP_REST_Request $request ) {
 		return [
 			'manage_options',
@@ -54,12 +48,6 @@ class Sync extends Base {
 		];
 	}
 
-	/**
-	 * @param WP_REST_Request $request
-	 *
-	 * @return array
-	 * @throws \Auryn\InjectionException
-	 */
 	public function sync( WP_REST_Request $request ) {
 		$args                    = new Arguments();
 		$args->ateToken          = $request->get_param( 'ateToken' );
@@ -78,19 +66,30 @@ class Sync extends Base {
 			$result = new Result();
 		}
 
+		$restriction = ClientRestrictionState::get();
+		if ( $restriction ) {
+			$result->clientRestriction = $restriction->toArray();
+		}
+
+		$spendCap = SpendCapState::getShown();
+		if ( $spendCap ) {
+			$result->spendCap = $spendCap->toArray();
+		}
+
+		if ( is_array( $result->jobs ) && $result->jobs ) {
+			$resolver     = \WPML\TM\Jobs\Authorization\AuthorizedJobResolver::make();
+			$context      = \WPML\Core\Security\ExecutionContext\ExecutionContextHolder::current();
+			$result->jobs = array_values( array_filter(
+				$result->jobs,
+				function ( $job ) use ( $resolver, $context ) {
+					return (bool) $resolver->byLocalId( $context, (int) Obj::prop( 'jobId', $job ) );
+				}
+			) );
+		}
+
 		return (array) $result;
 	}
 
-	/**
-	 * The job was already completed, but for some reason it got into a
-	 * different status afterwards. WPML confirms a complete translation
-	 * to ATE and then ATE set the job status to "Delivered". So, it's safe
-	 * at this point to set the job status to "Completed".
-	 *
-	 * See wpmldev-2801.
-	 *
-	 * @param array $jobs
-	 */
 	private function fallback_to_unstuck_completed_jobs( &$jobs ) {
 		if ( ! is_array( $jobs ) ) {
 			return;

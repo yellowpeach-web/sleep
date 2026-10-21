@@ -16,6 +16,8 @@ class WPML_Comment_Duplication{
 			), array( 'comment_ID' => $comment['comment_ID'] ), array( '%d', '%d' ), array( '%d' )
 		);
 		wp_update_comment_count_now($duplicate_of);
+
+		do_action( 'wpml_comment_counts_mark_out_of_date' );
 	}
 
 	public function get_correct_parent($comment, $dup_id){
@@ -57,7 +59,6 @@ class WPML_Comment_Duplication{
 
 			add_action ( 'wp_insert_comment', array( $iclTranslationManagement, 'duplication_insert_comment' ), 100 );
 			update_comment_meta ( $dup_comment_id, '_icl_duplicate_of', $original_cid );
-			// comment meta
 			$meta = $wpdb->get_results (
 				$wpdb->prepare (
 					"SELECT meta_key, meta_value FROM {$wpdb->commentmeta} WHERE comment_id=%d",
@@ -77,6 +78,8 @@ class WPML_Comment_Duplication{
 		}
 
 		wp_update_comment_count_now ( $dup_id );
+
+		do_action( 'wpml_comment_counts_mark_out_of_date' );
 	}
 
 	private function duplicate_exists( $dup_id, $original_cid ) {

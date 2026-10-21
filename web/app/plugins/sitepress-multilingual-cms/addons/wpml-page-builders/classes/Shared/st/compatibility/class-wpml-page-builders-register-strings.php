@@ -1,36 +1,28 @@
 <?php
 
-/**
- * Class WPML_Page_Builders_Register_Strings
- */
+use WPML\PB\TranslationJob\SourceLabels;
+
 abstract class WPML_Page_Builders_Register_Strings {
 
-	/**
-	 * @var IWPML_Page_Builders_Translatable_Nodes
-	 */
 	private $translatable_nodes;
 
-	/**
-	 * @var IWPML_Page_Builders_Data_Settings
-	 */
 	protected $data_settings;
 
-	/**
-	 * @var WPML_PB_String_Registration
-	 */
 	private $string_registration;
 
-	/** @var WPML_PB_Reuse_Translations_By_Strategy|null $reuse_translations */
 	private $reuse_translations;
 
-	/** @var int $string_location */
 	private $string_location;
+
+	private $group_index;
+
+	private $collected;
 
 	public function __construct(
 		IWPML_Page_Builders_Translatable_Nodes $translatable_nodes,
 		IWPML_Page_Builders_Data_Settings $data_settings,
 		WPML_PB_String_Registration $string_registration,
-		WPML_PB_Reuse_Translations_By_Strategy $reuse_translations = null
+		?WPML_PB_Reuse_Translations_By_Strategy $reuse_translations = null
 	) {
 
 		$this->data_settings       = $data_settings;
@@ -39,15 +31,20 @@ abstract class WPML_Page_Builders_Register_Strings {
 		$this->reuse_translations  = $reuse_translations;
 	}
 
-	/**
-	 * @param WP_Post $post
-	 * @param array $package
-	 */
 	public function register_strings( WP_Post $post, array $package ) {
+		SourceLabels::run(
+			function () use ( $post, $package ) {
+				$this->register_strings_in_source_labels( $post, $package );
+			}
+		);
+	}
+
+	private function register_strings_in_source_labels( WP_Post $post, array $package ) {
 
 		do_action( 'wpml_start_string_package_registration', $package );
 
 		$this->string_location = 1;
+		$this->group_index     = 0;
 
 		if ( $this->data_settings->is_handling_post( $post->ID ) ) {
 
@@ -56,20 +53,18 @@ abstract class WPML_Page_Builders_Register_Strings {
 				$this->reuse_translations->set_original_strings( $existing_strings );
 			}
 
-			$data = get_post_meta( $post->ID, $this->data_settings->get_meta_field(), false );
+			$converted = $this->get_data_to_register( $post );
 
-			if ( $data ) {
-				$converted = $this->data_settings->convert_data_to_array( $data );
-				if ( is_array( $converted ) ) {
-					$this->register_strings_for_modules(
-						$converted,
-						$package
-					);
-				}
+			if ( is_array( $converted ) ) {
+				do_action( 'wpml_pb_register_strings_for_post', $package, $post );
+
+				$this->register_strings_for_modules(
+					$converted,
+					$package
+				);
 			}
 
 			if ( $this->reuse_translations ) {
-				// @phpstan-ignore-next-line
 				$this->reuse_translations->find_and_reuse( $post->ID, $existing_strings );
 			}
 		}
@@ -77,14 +72,65 @@ abstract class WPML_Page_Builders_Register_Strings {
 		do_action( 'wpml_delete_unused_package_strings', $package );
 	}
 
-	/**
-	 * @param string $node_id
-	 * @param mixed $element
-	 * @param array $package
-	 */
+	public function collect_strings( WP_Post $post ) {
+		if ( ! $this->data_settings->is_handling_post( $post->ID ) ) {
+			return [];
+		}
+
+		$converted = $this->get_data_to_register( $post );
+		if ( ! is_array( $converted ) ) {
+			return [];
+		}
+
+		$this->collected       = [];
+		$this->string_location = 1;
+		$this->group_index     = 0;
+		try {
+			$this->register_strings_for_modules( $converted, [] );
+			$collected = $this->collected;
+		} finally {
+			$this->collected = null;
+		}
+
+		return $collected;
+	}
+
+	public static function is_text_to_compare( WPML_PB_String $string ) {
+		$value = $string->get_value();
+
+		return is_string( $value )
+			&& 'LINK' !== $string->get_editor_type()
+			&& ! preg_match( '#^\s*(?:[a-z][a-z0-9+.-]*:)?//\S+\s*$#i', $value );
+	}
+
+	protected function get_data_to_register( WP_Post $post ) {
+		$data = get_post_meta( $post->ID, $this->data_settings->get_meta_field(), false );
+
+		if ( ! $data ) {
+			return [];
+		}
+
+		return $this->data_settings->convert_data_to_array( $data );
+	}
+
 	protected function register_strings_for_node( $node_id, $element, array $package ) {
 		$strings = $this->translatable_nodes->get( $node_id, $element );
+
+		if ( null !== $this->collected ) {
+			foreach ( $strings as $string ) {
+				if ( $string instanceof WPML_PB_String && self::is_text_to_compare( $string ) ) {
+					$this->collected[ $string->get_name() ] = $string->get_value();
+				}
+			}
+
+			return;
+		}
+
 		foreach ( $strings as $string ) {
+			$string = $this->filter_string_to_register( $string, $node_id, $element, $package );
+
+			do_action( 'wpml_pb_register_string_for_node', $package, (string) $node_id, $string, $element );
+
 			$this->string_registration->register_string(
 				$package['post_id'],
 				$string->get_value(),
@@ -92,16 +138,19 @@ abstract class WPML_Page_Builders_Register_Strings {
 				$string->get_title(),
 				$string->get_name(),
 				$this->string_location,
-				$string->get_wrap_tag()
+				$string->get_wrap_tag(),
+				$this->group_index
 			);
 
-			$this->string_location++;
+			++$this->string_location;
 		}
+
+		++$this->group_index;
 	}
 
-	/**
-	 * @param array $data_array
-	 * @param array $package
-	 */
+	protected function filter_string_to_register( WPML_PB_String $string, $node_id, $element, $package ) {
+		return $string;
+	}
+
 	abstract protected function register_strings_for_modules( array $data_array, array $package );
 }

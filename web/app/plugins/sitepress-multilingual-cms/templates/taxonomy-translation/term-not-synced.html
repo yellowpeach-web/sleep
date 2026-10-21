@@ -1,9 +1,15 @@
 <span class="icl_tt_term_name_sync" id="<%=trid + '-' + lang%>">
 	<% if ( name ) { %>
-		<%= parent %></br>
+		<% if ( removedParent ) { %>
+			<span class="wpml-parent-change-removed" style="background-color:#F55959;">-<%- removedParent %></span>
+		<% } %>
+		<% if ( addedParent ) { %>
+			<span class="wpml-parent-change-added" style="background-color:#CCFF99;">+<%- addedParent %></span>
+		<% } %>
+		</br>
 		<% if ( level > 0 ) { %>
 			<%= Array(level+1).join('—') + " " %>
 		<% } %>
-		<%= name %>
+		<%- name %>
 	<% } %>
 </span>

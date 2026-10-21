@@ -9,10 +9,13 @@ class WPML_Display_As_Translated_Message_For_New_Post_Factory implements IWPML_B
 
 		if ( 'post-new.php' === $pagenow ) {
 			return new WPML_Display_As_Translated_Message_For_New_Post( $sitepress, $notices );
-		} else {
-			$notices->remove_notice( WPML_Notices::DEFAULT_GROUP, 'WPML_Display_As_Translated_Message_For_New_Post' );
-			return null;
 		}
+
+		if ( ! wp_doing_ajax() ) {
+			$notices->remove_notice( WPML_Notices::DEFAULT_GROUP, 'WPML_Display_As_Translated_Message_For_New_Post' );
+		}
+
+		return null;
 	}
 
 }

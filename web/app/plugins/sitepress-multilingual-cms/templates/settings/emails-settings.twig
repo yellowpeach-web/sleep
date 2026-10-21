@@ -1,6 +1,14 @@
 {% set completed_frequency_dropdown %}
-<select name="notification[completed_frequency]"{{ settings.completed_frequency.disabled }}>
+<select name="notification[completed_frequency]">
     {% for option in settings.completed_frequency.options %}
+    <option value="{{ option.value }}"{{ option.checked }}>{{ option.label }}</option>
+    {% endfor %}
+</select>
+{% endset %}
+
+{% set job_limits_dropdown %}
+<select id="wpml_tm_job_limits_in_email" name="notification[job_limits]"{{ settings.job_limits.disabled }}>
+    {% for option in settings.job_limits.options %}
     <option value="{{ option.value }}"{{ option.checked }}>{{ option.label }}</option>
     {% endfor %}
 </select>
@@ -11,56 +19,80 @@
            size="1"{{ settings.overdue_offset.disabled }}>
 {% endset %}
 
-<div class="wpml-section" id="translation-notifications-translator">
+{# M4 follow-up (2026-05-21): the three legacy `.wpml-section`
+   blocks on `?section=translators` — `…-translator`, `…-manager`,
+   and the Save-button `…-sec-3` — collapse into one consolidated
+   `Notifications` card matching `New/translators.html`. The two
+   inner sub-blocks become plain `<div>`s (no `.wpml-section`
+   chrome) so they live inside the outer card; the Save button is
+   emitted by the twig template too, replacing the separate
+   `.wpml-section` wrapper PHP used to print. #}
+<div class="wpml-section" id="translation-notifications">
     <div class="wpml-section-header">
-        <h4>{{ strings.section_title_translator }}</h4>
+        <h2>{{ strings.section_title }}</h2>
     </div>
     <div class="wpml-section-content">
-        <ul>
-            <li>
-                <input name="notification[new-job]" type="checkbox" id="wpml_tm_notify_new_job"
-                       data-child="notification[include_xliff]"
-                       value="{{ settings.new_job.value }}"{{ settings.new_job.checked }}>
-                <label for="wpml_tm_notify_new_job">{{ strings.label_new_job }}</label>
-                <ul>
-                    <li>
-                        <input type="checkbox" name="notification[include_xliff]" id="wpml_tm_notify_include_xliff"
-                               value="{{ settings.include_xliff.value }}"
-                                {{ settings.include_xliff.checked }}{{ settings.include_xliff.disabled }}>
-                        <label for="icl_include_xliff">{{ strings.label_include_xliff }}</label>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <input name="notification[resigned]" type="checkbox" id="wpml_tm_notify_job_resigned"
-                       value="{{ settings.resigned.value }}"{{ settings.resigned.checked }}>
-                <label for="wpml_tm_notify_job_resigned">{{ strings.label_resigned_job }}</label>
-            </li>
-        </ul>
-    </div>
-</div>
-<div class="wpml-section" id="translation-notifications-manager">
-    <div class="wpml-section-header">
-        <h4>{{ strings.section_title_manager }}</h4>
-    </div>
-    <div class="wpml-section-content">
-        <ul>
-            <li>
-                <input name="notification[completed]" type="checkbox" id="wpml_tm_notify_completed"
-                       data-child="notification[completed_frequency]"
-                       value="{{ settings.completed.value }}"{{ settings.completed.checked }}>
-                <label for="wpml_tm_notify_completed">
-                    {{ strings.label_completed_job|format(completed_frequency_dropdown)|raw }}
-                </label>
-            </li>
-            <li>
-                <input name="notification[overdue]" type="checkbox" id="wpml_tm_notify_job_overdue"
-                       data-child="notification[overdue_offset]"
-                       value="{{ settings.overdue.value }}"{{ settings.overdue.checked }}>
-                <label for="wpml_tm_notify_job_overdue">
-                    {{ strings.label_overdue_job|format(overdue_offset_input)|raw }}
-                </label>
-            </li>
-        </ul>
+        <div id="translation-notifications-translator" class="wpml-notifications-subsection">
+            <h4>{{ strings.section_title_translator }}</h4>
+            <ul>
+                <li>
+                    <input name="notification[new-job]" type="checkbox" id="wpml_tm_notify_new_job" class="wpml-checkbox-native"
+                           data-child="notification[include_xliff]||notification[job_limits]"
+                           value="{{ settings.new_job.value }}"{{ settings.new_job.checked }}>
+                    <label for="wpml_tm_notify_new_job">{{ strings.label_new_job }}</label>
+                    <ul class="wpml-subsection">
+                        <li>
+                            <label for="wpml_tm_job_limits_in_email">{{ strings.label_job_limits }}</label>
+                            {{ job_limits_dropdown|raw }}
+                        </li>
+                        <li>
+                            <input type="checkbox" name="notification[include_xliff]" id="wpml_tm_notify_include_xliff" class="wpml-checkbox-native"
+                                   value="{{ settings.include_xliff.value }}"
+                                    {{ settings.include_xliff.checked }}{{ settings.include_xliff.disabled }}>
+                            <label for="wpml_tm_notify_include_xliff">{{ strings.label_include_xliff }}</label>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <input name="notification[resigned]" type="checkbox" id="wpml_tm_notify_job_resigned"
+                           class="wpml-checkbox-native"
+                           value="{{ settings.resigned.value }}"{{ settings.resigned.checked }}>
+                    <label for="wpml_tm_notify_job_resigned">{{ strings.label_resigned_job }}</label>
+                </li>
+            </ul>
+        </div>
+        <div id="translation-notifications-manager" class="wpml-notifications-subsection">
+            <h4>{{ strings.section_title_manager }}</h4>
+            <ul>
+                <li>
+                    <label>{{ strings.label_completed_job|format(completed_frequency_dropdown)|raw }}</label>
+                </li>
+                <li>
+                    <input name="notification[manager_resigned]" type="checkbox" id="wpml_tm_notify_manager_resigned"
+                           class="wpml-checkbox-native"
+                           value="{{ settings.manager_resigned.value }}"{{ settings.manager_resigned.checked }}>
+                    <label for="wpml_tm_notify_manager_resigned">{{ strings.label_manager_resigned }}</label>
+                </li>
+                <li>
+                    <input name="notification[service_job_update]" type="checkbox" id="wpml_tm_notify_service_job_update"
+                           class="wpml-checkbox-native"
+                           value="{{ settings.service_job_update.value }}"{{ settings.service_job_update.checked }}>
+                    <label for="wpml_tm_notify_service_job_update">{{ strings.label_service_job_update }}</label>
+                </li>
+                <li>
+                    <input name="notification[overdue]" type="checkbox" id="wpml_tm_notify_job_overdue"
+                           class="wpml-checkbox-native"
+                           data-child="notification[overdue_offset]"
+                           value="{{ settings.overdue.value }}"{{ settings.overdue.checked }}>
+                    <label for="wpml_tm_notify_job_overdue">
+                        {{ strings.label_overdue_job|format(overdue_offset_input)|raw }}
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <p class="submit buttons-wrap">
+            <span class="icl_ajx_response" id="icl_ajx_response_notifications"></span>
+            <input type="submit" class="button-primary wpml-button base-btn" value="{{ strings.label_save }}"/>
+        </p>
     </div>
 </div>

@@ -1,11 +1,13 @@
 <?php
 
+use WPML\Request\Adapter\Ajax;
+use WPML\Request\Policy\Policy;
+
 class WPML_Ajax_Route {
 
 	const ACTION_PREFIX        = 'wp_ajax_';
 	const ACTION_PREFIX_LENGTH = 8;
 
-	/** @var  WPML_Ajax_Factory $factory */
 	private $factory;
 
 	public function __construct( WPML_Ajax_Factory $factory ) {
@@ -13,8 +15,8 @@ class WPML_Ajax_Route {
 		$this->factory->add_route( $this );
 	}
 
-	public function add( $class_name ) {
-		add_action( self::ACTION_PREFIX . $class_name, array( $this, 'do_ajax' ) );
+	public function add( $class_name, Policy $policy ) {
+		Ajax::register( $class_name, $policy, array( $this, 'do_ajax' ) );
 	}
 
 	public function do_ajax() {

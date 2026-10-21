@@ -3,6 +3,7 @@
 namespace ACFML;
 
 use ACFML\Strings\Package;
+use ACFML\Tools\AdminUrl;
 use ACFML\TranslationDataTrait;
 use WPML\LIB\WP\Hooks;
 use function WPML\FP\spreadArgs;
@@ -19,12 +20,7 @@ class TranslationDataMetaboxHooks implements \IWPML_Backend_Action {
 		)->then( spreadArgs( [ $this, 'addMetaBox' ] ) );
 	}
 
-	/**
-	 * @param \WP_Post $post
-	 * @todo  acfml-830 Pending proper GUI
-	 */
 	public function addMetaBox( $post ) {
-		// phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
 		if ( in_array( $post->post_status, self::STATI_TO_SKIP, true ) ) {
 			return;
 		}
@@ -34,6 +30,7 @@ class TranslationDataMetaboxHooks implements \IWPML_Backend_Action {
 		)->getStatus();
 		add_meta_box(
 			self::METABOX_ID,
+			/* translators: Title of the WPML panel on the ACF field group screen and on the post editor. Used as a name elsewhere in this plugin, so translate it the same way each time. */
 			'<i class="otgs-ico-translation"></i>&nbsp;' . esc_html__( 'Multilingual Setup', 'acfml' ),
 			function() use ( $post, $status ) {
 				$this->translationModeInfo( $post->ID );
@@ -43,12 +40,8 @@ class TranslationDataMetaboxHooks implements \IWPML_Backend_Action {
 			'normal',
 			'high'
 		);
-		// phpcs:enable
 	}
 
-	/**
-	 * @param int $postId
-	 */
 	private function translationModeInfo( $postId ) {
 		if ( ! $this->hasTranslationType ) {
 			return;
@@ -61,7 +54,7 @@ class TranslationDataMetaboxHooks implements \IWPML_Backend_Action {
 
 		echo '<div class="acfml-translation-status-metabox acfml-translation-mode">'
 			. '<span class="acfml-translation-info-title">' . esc_html( $this->contentTypeHelper->getTranslationInfoLabel() ) . '</span>'
-			. $this->getObjectTranslationInformation( $objectSlug, ' - ' ) // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
+			. $this->getObjectTranslationInformation( $objectSlug, ' - ' )
 			. sprintf(
 				/* translators: %1$s and %2$s are placeholders for bold tags. */
 				esc_html__( '%1$sChange translation settings%2$s', 'acfml' ),
@@ -71,17 +64,15 @@ class TranslationDataMetaboxHooks implements \IWPML_Backend_Action {
 			. '</div>';
 	}
 
-	/**
-	 * @param string $status
-	 */
 	private function labelsTranslationsStatusInfo( $status ) {
+		$tmDashboardUrl = AdminUrl::getWPMLTMDashboardPackageSection( $this->contentTypeHelper->getLabelTranslationsPackageSlug() );
 		echo '<div class="acfml-translation-status-metabox acfml-labels-translation-status">'
 			. '<span class="acfml-translation-info-title">' . esc_html( $this->contentTypeHelper->getLabelsTranslationInfoLabel() ) . '</span>'
-			. $this->getTranslationInformation( Package::status2text( $status ) ) // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
+			. $this->getTranslationInformation( Package::status2text( $status ) )
 			. sprintf(
-				/* translators: %1$s and %2$s are placeholders for bold tags. */
+				/* translators: %1$s and %2$s are placeholders for link tags. */
 				esc_html__( '%1$sTranslate labels%2$s', 'acfml' ),
-				'<a href="' . esc_url( admin_url( 'admin.php?page=tm/menu/main.php' ) ) . '" title="" class="wpml-external-link" target="_blank">',
+				'<a href="' . esc_url( $tmDashboardUrl ) . '" title="" class="wpml-external-link" target="_blank">',
 				'</a>'
 			)
 			. '</div>';

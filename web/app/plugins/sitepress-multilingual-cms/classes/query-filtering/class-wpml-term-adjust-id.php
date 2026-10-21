@@ -1,63 +1,66 @@
 <?php
 
-/**
- * Class WPML_Term_Adjust_Id
- */
+use WPML\TaxonomyTermTranslation\Hooks as TermTranslationHooks;
+
 class WPML_Term_Adjust_Id {
 
-	/** @var WPML_Debug_BackTrace */
 	private $debug_backtrace;
 
-	/** @var WPML_Term_Translation */
 	private $term_translation;
 
-	/** @var WPML_Post_Translation */
 	private $post_translation;
 
-	/** @var SitePress */
 	private $sitepress;
 
-	/**
-	 * WPML_Term_Adjust_Id constructor.
-	 *
-	 * @param WPML_Debug_BackTrace  $debug_backtrace
-	 * @param WPML_Term_Translation $term_translation
-	 * @param WPML_Post_Translation $post_translation
-	 * @param SitePress             $sitepress
-	 */
+	private $opt_out;
+
+	private $translated_ttids = [];
+
 	public function __construct(
 		WPML_Debug_BackTrace $debug_backtrace,
 		WPML_Term_Translation $term_translation,
 		WPML_Post_Translation $post_translation,
-		SitePress $sitepress
+		SitePress $sitepress,
+		?WPML_Term_Query_Opt_Out $opt_out = null
 	) {
 		$this->debug_backtrace  = $debug_backtrace;
 		$this->term_translation = $term_translation;
 		$this->post_translation = $post_translation;
 		$this->sitepress        = $sitepress;
+		$this->opt_out          = $opt_out ? $opt_out : new WPML_Term_Query_Opt_Out( $sitepress );
 	}
 
-	/**
-	 * @param WP_Term $term
-	 * @param boolean $adjust_id_url_filter_off
-	 *
-	 * @return WP_Term
-	 */
 	public function filter(
 		WP_Term $term,
 		$adjust_id_url_filter_off
 	) {
 		if (
 			$adjust_id_url_filter_off
-			|| ! $this->sitepress->get_setting( 'auto_adjust_ids' )
-			|| $this->is_ajax_add_term_translation()
+			|| $this->opt_out->is_id_adjustment_opted_out()
+		) {
+			WPML_Non_Persistent_Cache::flush_group( __CLASS__ );
+
+			return $term;
+		}
+
+		if ( $this->is_known_without_adjustment( (int) $term->term_taxonomy_id, $this->sitepress->get_current_language() ) ) {
+			return clone $term;
+		}
+
+		if (
+			$this->is_ajax_add_term_translation()
+			|| $this->is_populated_for_a_query_skipping_filters()
 			|| $this->debug_backtrace->are_functions_in_call_stack(
 				[
 					'get_category_parents',
 					'get_permalink',
 					'wp_update_post',
 					'wp_update_term',
-				]
+					'wp_delete_term',
+					'wp_set_object_terms',
+					'wp_update_nav_menu_object',
+				],
+				false
 			)
 		) {
 			WPML_Non_Persistent_Cache::flush_group( __CLASS__ );
@@ -71,16 +74,22 @@ class WPML_Term_Adjust_Id {
 		$found       = false;
 		$cached_term = WPML_Non_Persistent_Cache::get( $key, __CLASS__, $found );
 		if ( $found ) {
-	        // See description on next return.
             return is_object( $cached_term ) ? clone $cached_term : $cached_term;
 		}
 
-		$translated_id = $this->term_translation->element_id_in( $term->term_taxonomy_id, $this->sitepress->get_current_language() );
+		$translated_id = $this->translated_term_taxonomy_id( (int) $term->term_taxonomy_id, $this->sitepress->get_current_language() );
 
 		if ( $translated_id && (int) $translated_id !== (int) $term->term_taxonomy_id ) {
 
-			/** @var \WP_Term|\stdClass $term Declared also as \stdClass because we are setting `object_id`, which is not a property of \WP_Term. */
+			if ( has_filter( 'get_term', [ $this->sitepress, 'get_term_adjust_id' ] ) ) {
+				$should_add_filter = remove_filter( 'get_term', [ $this->sitepress, 'get_term_adjust_id' ], 1 );
+			}
+
 			$term = get_term_by( 'term_taxonomy_id', $translated_id, $term->taxonomy );
+
+			if ( ! empty( $should_add_filter ) ) {
+				add_filter( 'get_term', [ $this->sitepress, 'get_term_adjust_id' ], 1, 1 );
+			}
 
 			if ( $object_id ) {
 				$translated_object_id = $this->post_translation->element_id_in( $object_id, $this->sitepress->get_current_language() );
@@ -94,34 +103,47 @@ class WPML_Term_Adjust_Id {
 
 		WPML_Non_Persistent_Cache::set( $key, $term, __CLASS__ );
 
-        // Clone term object otherwise WP uses the same term object
-        // whenever the term id matches. That leads to always have on all
-        // references the last queried object_id.
-        // Example:
-        // Term "a EN" with id 1 has a translation "a FR" with id 2.
-        // Querie contains en and fr post, language is en.
-        // EN post with id 10 has term 1. The term object will have term_id 1
-        // and object_id 10. FR post with id 12 has term 2. 2 will be adjusted
-        // to 1 as en is the current language. Instead of having two term
-        // objects now, WP will get the reference by id and updates the
-        // the object id. So both will have the object_id of the last queried:
-        // [ { term_id: 1, object_id: 12 }, { term_id: 1, object_id: 12 } ]
-        // To prevent that and get correct objects:
-        // [ { term_id: 1, object_id: 10 }, { term_id: 1, object_id: 12 } ]
-        // It's required to create a clone of the $term.
         return is_object( $term ) ? clone $term : $term;
 	}
 
-	/**
-	 * @return bool
-	 */
+	public function forget_translations() {
+		$this->translated_ttids = [];
+	}
+
+	private function translated_term_taxonomy_id( $term_taxonomy_id, $language ) {
+		if ( ! isset( $this->translated_ttids[ $language ] ) || ! array_key_exists( $term_taxonomy_id, $this->translated_ttids[ $language ] ) ) {
+			$translated = $this->term_translation->element_id_in( $term_taxonomy_id, $language );
+
+			$this->translated_ttids[ $language ][ $term_taxonomy_id ] = $translated ? (int) $translated : null;
+		}
+
+		return $this->translated_ttids[ $language ][ $term_taxonomy_id ];
+	}
+
+	private function is_known_without_adjustment( $term_taxonomy_id, $language ) {
+		if ( ! isset( $this->translated_ttids[ $language ] ) || ! array_key_exists( $term_taxonomy_id, $this->translated_ttids[ $language ] ) ) {
+			return false;
+		}
+		$translated = $this->translated_ttids[ $language ][ $term_taxonomy_id ];
+
+		return ! $translated || $translated === $term_taxonomy_id;
+	}
+
+	private function is_populated_for_a_query_skipping_filters() {
+		foreach ( (array) $this->debug_backtrace->get_backtrace() as $frame ) {
+			if ( isset( $frame['object'] ) && $frame['object'] instanceof WP_Term_Query ) {
+				return TermTranslationHooks::shouldSkip( $frame['object']->query_vars );
+			}
+		}
+
+		return false;
+	}
+
 	private function is_ajax_add_term_translation() {
-		/* phpcs:disable WordPress.Security.NonceVerification.Missing */
 		$taxonomy = isset( $_POST['taxonomy'] ) ? $_POST['taxonomy'] : false;
 		if ( $taxonomy ) {
 			return isset( $_POST['action'] ) && 'add-tag' === $_POST['action'] && ! empty( $_POST[ 'icl_tax_' . $taxonomy . '_language' ] );
 		}
-		/* phpcs:enable WordPress.Security.NonceVerification.Missing */
 
 		return false;
 	}

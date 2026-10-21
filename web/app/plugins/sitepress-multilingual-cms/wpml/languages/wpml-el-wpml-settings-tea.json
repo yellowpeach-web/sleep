@@ -1,0 +1,399 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "el"
+         },
+         "Error in updating since dates for types.": [
+            "Σφάλμα κατά την ενημέρωση των ημερομηνιών «από» για τους τύπους."
+         ],
+         "Error in fetching untranslated types count": [
+            "Σφάλμα κατά την ανάκτηση του πλήθους των μη μεταφρασμένων τύπων"
+         ],
+         "Error in updating since date for type.": [
+            "Σφάλμα κατά την ενημέρωση της ημερομηνίας «από» για τον τύπο."
+         ],
+         "Content to translate": [
+            "Περιεχόμενο προς μετάφραση"
+         ],
+         "Content to Translate": [
+            "Περιεχόμενο προς μετάφραση"
+         ],
+         "Content type": [
+            "Τύπος περιεχομένου"
+         ],
+         "Include": [
+            "Συμπερίληψη"
+         ],
+         "These settings can be changed on the Translations dashboard.": [
+            "Αυτές οι ρυθμίσεις μπορούν να αλλάξουν στον Πίνακα ελέγχου μετάφρασης."
+         ],
+         "Items": [
+            "Στοιχεία"
+         ],
+         "Word count": [
+            "Καταμέτρηση λέξεων"
+         ],
+         "Loading content to translate": [
+            "Φόρτωση περιεχομένου προς μετάφραση"
+         ],
+         "Words to translate": [
+            "Λέξεις προς μετάφραση"
+         ],
+         "Calculating… <s>less than 1 minute left.</s>": [
+            "Υπολογισμός… <s>απομένει λιγότερο από 1 λεπτό.</s>"
+         ],
+         "Calculating… <s>%d minute left.</s>": [
+            "Υπολογισμός… <s>απομένει %d λεπτό.</s>",
+            "Υπολογισμός… <s>απομένουν %d λεπτά.</s>"
+         ],
+         "Words needed to translate your existing content into the new languages: %s.": [
+            "Λέξεις που απαιτούνται για τη μετάφραση του υπάρχοντος περιεχομένου σας στις νέες γλώσσες: %s."
+         ],
+         "Words needed to translate your existing content into the new language.": [
+            "Λέξεις που απαιτούνται για τη μετάφραση του υπάρχοντος περιεχομένου σας στη νέα γλώσσα."
+         ],
+         "Based on the remaining untranslated content across all languages.": [
+            "Με βάση το εναπομείναν μη μεταφρασμένο περιεχόμενο σε όλες τις γλώσσες."
+         ],
+         "Estimated from the selected source volume multiplied by the target languages.": [
+            "Εκτίμηση από τον επιλεγμένο όγκο πηγής πολλαπλασιασμένο επί τις γλώσσες-στόχους."
+         ],
+         "%1$s source words × %2$s language": [
+            "%1$s λέξεις πηγής × %2$s γλώσσα",
+            "%1$s λέξεις πηγής × %2$s γλώσσες"
+         ],
+         "Already translated content": [
+            "Ήδη μεταφρασμένο περιεχόμενο"
+         ],
+         "Words required:": [
+            "Απαιτούμενες λέξεις:"
+         ],
+         "Words": [
+            "Λέξεις"
+         ],
+         "Documents you translated yourself stay exactly as you made them": [
+            "Τα έγγραφα που μεταφράσατε εσείς παραμένουν ακριβώς όπως τα δημιουργήσατε"
+         ],
+         "(%d document)": [
+            "(%d έγγραφο)",
+            "(%d έγγραφα)"
+         ],
+         "View documents": [
+            "Προβολή εγγράφων"
+         ],
+         "%1$d of %2$d language will be translated automatically": [
+            "%1$d από %2$d γλώσσα θα μεταφραστεί αυτόματα",
+            "%1$d από %2$d γλώσσες θα μεταφραστούν αυτόματα"
+         ],
+         "Translated to %d language": [
+            "Μεταφράστηκε σε %d γλώσσα",
+            "Μεταφράστηκε σε %d γλώσσες"
+         ],
+         "Add/remove languages": [
+            "Προσθήκη/αφαίρεση γλωσσών"
+         ],
+         "Percentages show how much of your selected content is already translated in each language.": [
+            "Τα ποσοστά δείχνουν πόσο από το επιλεγμένο περιεχόμενό σας είναι ήδη μεταφρασμένο σε κάθε γλώσσα."
+         ],
+         "Note: Content already translated into all languages is not included in this calculation.": [
+            "Σημείωση: Το περιεχόμενο που είναι ήδη μεταφρασμένο σε όλες τις γλώσσες δεν περιλαμβάνεται σε αυτόν τον υπολογισμό."
+         ],
+         "Same as default": [
+            "Ίδια με την προεπιλεγμένη"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "Η αυτόματη μετάφραση δεν είναι διαθέσιμη μεταξύ %1$s και %2$s επειδή αναγνωρίζονται ως η ίδια γλώσσα."
+         ],
+         "Translation paused": [
+            "Η μετάφραση τέθηκε σε παύση"
+         ],
+         "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor.": [
+            "Το WPML δεν δημιουργεί νέες μεταφράσεις για τα %s, επομένως αυτή η γλώσσα δεν συμπεριλαμβάνεται. Για να τη συμπεριλάβετε, χρησιμοποιήστε την επιλογή “Συνέχιση μετάφρασης” στη γραμμή της γλώσσας στο πρόγραμμα επεξεργασίας γλωσσών."
+         ],
+         "Manual only": [
+            "Μόνο χειροκίνητα"
+         ],
+         "%s has no automatic-translation support. You can translate this content manually.": [
+            "Η γλώσσα %s δεν διαθέτει υποστήριξη αυτόματης μετάφρασης. Μπορείτε να μεταφράσετε αυτό το περιεχόμενο χειροκίνητα."
+         ],
+         "Adjusted word rate (%s)": [
+            "Προσαρμοσμένη τιμή λέξης (%s)"
+         ],
+         "This adjusted word rate applies to legacy translation engines.": [
+            "Αυτή η προσαρμοσμένη τιμή λέξης ισχύει για παλαιού τύπου μηχανές μετάφρασης."
+         ],
+         "Translation engine: <strong>%s</strong>": [
+            "Μηχανή μετάφρασης: <strong>%s</strong>"
+         ],
+         "Legacy engine": [
+            "Παλαιού τύπου μηχανή"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Εφαρμόστηκε τιμολόγηση παλαιού τύπου. Η %s είναι μια παλαιού τύπου μηχανή μετάφρασης, δεν συνιστάται για νέους ιστότοπους και θα καταργηθεί. Οι υπάρχοντες ιστότοποι διατηρούν μια προσαρμοσμένη τιμή λέξης για αυτήν."
+         ],
+         "Switch to PTC": [
+            "Εναλλαγή σε PTC"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
+            "Αυτό απαιτείται σήμερα για τη μετάφραση του τρέχοντος περιεχομένου σας. Δεν περιλαμβάνει ορισμένα κείμενα που προστίθενται από άλλα πρόσθετα, όπως φόρμες ή ρυθμιστικά (sliders), τα οποία υπολογίζονται μετά την ολοκλήρωση της ρύθμισης. Οι συμβολοσειρές του ιστοτόπου από το θέμα και τα πρόσθετά σας υπολογίζονται επίσης μετά τη ρύθμιση και συνήθως προσθέτουν αρκετές εκατοντάδες λέξεις. Στη συνέχεια, οι επεξεργασίες είναι δωρεάν. Πληρώνετε ξανά μόνο για τις λέξεις που προσθέτετε."
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Αυτό είναι ό,τι χρειάζεται σήμερα για τη μετάφραση του τρέχοντος περιεχομένου σας. Δεν περιλαμβάνει ορισμένα κείμενα που έχουν προστεθεί από άλλα πρόσθετα, όπως φόρμες ή sliders, τα οποία καταμετρώνται μετά την ολοκλήρωση της εγκατάστασης. Τα κείμενα του ιστοτόπου από το θέμα και τα πρόσθετά σας καταμετρώνται επίσης μετά την εγκατάσταση και συνήθως προσθέτουν αρκετές εκατοντάδες λέξεις. Με τη χρέωση ανά λέξη του %s· οι αλλαγές σε μεταφρασμένες σελίδες χρεώνονται ξανά."
+         ],
+         "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
+            "Αυτό απαιτείται σήμερα για τη μετάφραση του τρέχοντος περιεχομένου σας. Στη συνέχεια, οι επεξεργασίες είναι δωρεάν. Πληρώνετε ξανά μόνο για τις λέξεις που προσθέτετε."
+         ],
+         "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again.": [
+            "Αυτό είναι ό,τι χρειάζεται σήμερα για τη μετάφραση του τρέχοντος περιεχομένου σας. Με τη χρέωση ανά λέξη του %s· οι αλλαγές σε μεταφρασμένες σελίδες χρεώνονται ξανά."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
+            "Καταμετρά σελίδες, άρθρα και προϊόντα μαζί με τα προσαρμοσμένα πεδία τους, κείμενα κατασκευαστών σελίδων (page builder) και πολυμέσων, καθώς και τις κατηγορίες, τις ετικέτες και τις ιδιότητες που χρησιμοποιούν."
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
+            "Καταμετρά σελίδες, άρθρα και προϊόντα μαζί με τα προσαρμοσμένα πεδία τους, κείμενα κατασκευαστών σελίδων (page builder) και πολυμέσων, τις κατηγορίες, τις ετικέτες και τις ιδιότητες που χρησιμοποιούν, καθώς και συμβολοσειρές του ιστότοπου. Ένας όρος καταμετράται σε κάθε στοιχείο που τον χρησιμοποιεί και μία φορά ξεχωριστά, επειδή αποστέλλεται για μετάφραση και με τους δύο τρόπους."
+         ],
+         "Total items": [
+            "Σύνολο στοιχείων"
+         ],
+         "Total source words": [
+            "Σύνολο λέξεων πηγής"
+         ],
+         "Previous": [
+            "Προηγούμενο"
+         ],
+         "Next": [
+            "Επόμενο"
+         ],
+         "Showing %1$d–%2$d of %3$d types.": [
+            "Εμφάνιση %1$d–%2$d από %3$d τύπους."
+         ],
+         "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated.": [
+            "Όλα τα τρέχοντα %1$s είναι μεταφρασμένα σε όλες τις γλώσσες.<br>Τα νέα %2$s ή οι επεξεργασίες θα μεταφράζονται αυτόματα."
+         ],
+         "All %s": [
+            "Όλα τα %s"
+         ],
+         "For translated types": [
+            "Για μεταφρασμένους τύπους"
+         ],
+         "None": [
+            "Κανένα"
+         ],
+         "Since %s": [
+            "Από %s"
+         ],
+         "Since specific date": [
+            "Από συγκεκριμένη ημερομηνία"
+         ],
+         "<b>Pay-As-You-Go</b> is active on this site.": [
+            "Η <b>Χρέωση βάσει χρήσης</b> είναι ενεργή σε αυτόν τον ιστότοπο."
+         ],
+         "<b>%s words</b> are on this site. Continue.": [
+            "<b>%s λέξεις</b> βρίσκονται σε αυτόν τον ιστότοπο. Συνέχεια."
+         ],
+         "Your site will be translated right after the setup.": [
+            "Ο ιστότοπός σας θα μεταφραστεί αμέσως μετά την εγκατάσταση."
+         ],
+         "To use prepaid words, register WPML on this site.": [
+            "Για να χρησιμοποιήσετε προπληρωμένες λέξεις, καταχωρίστε το WPML σε αυτόν τον ιστότοπο."
+         ],
+         "Checking…": [
+            "Γίνεται έλεγχος…"
+         ],
+         "Retry": [
+            "Προσπάθεια ξανά"
+         ],
+         "We could not reach our translation system.": [
+            "Δεν ήταν δυνατή η επικοινωνία με το σύστημα μετάφρασης."
+         ],
+         "This site is not registered with a WPML account, so prepaid words are not available.": [
+            "Αυτός ο ιστότοπος δεν είναι καταχωρισμένος σε έναν λογαριασμό WPML, επομένως οι προπληρωμένες λέξεις δεν είναι διαθέσιμες."
+         ],
+         "We could not read your WPML account.": [
+            "Δεν ήταν δυνατή η ανάγνωση του λογαριασμού σας WPML."
+         ],
+         "%s more words are needed to translate your site.": [
+            "Χρειάζονται %s επιπλέον λέξεις για τη μετάφραση του ιστοτόπου σας."
+         ],
+         "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>.": [
+            "Εκχωρήστε προπληρωμένες λέξεις από τον λογαριασμό σας WPML σε αυτόν τον ιστότοπο για να ξεκινήσετε το <b>Translate Everything Automatically</b>."
+         ],
+         "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>.": [
+            "Εκχωρήστε τις λέξεις που ήδη έχετε και αγοράστε τις υπόλοιπες, ή ενεργοποιήστε τη <b>Χρέωση βάσει χρήσης</b>."
+         ],
+         "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
+            "Για να ξεκινήσετε το <b>Translate Everything Automatically</b>, ενεργοποιήστε τη <b>Χρέωση βάσει χρήσης</b> ή αγοράστε προπληρωμένες λέξεις."
+         ],
+         "Translation started": [
+            "Η μετάφραση ξεκίνησε"
+         ],
+         "Your content is being sent for automatic translation. Follow its progress on the Translations page.": [
+            "Το περιεχόμενό σας αποστέλλεται για αυτόματη μετάφραση. Παρακολουθήστε την πρόοδό του στη σελίδα Μεταφράσεις."
+         ],
+         "Close": [
+            "Κλείσιμο"
+         ],
+         "Preparing…": [
+            "Προετοιμασία…"
+         ],
+         "Go to Translations": [
+            "Μετάβαση στις μεταφράσεις"
+         ],
+         "Adjust content limits for <b>Translate Everything</b>": [
+            "Προσαρμογή ορίων περιεχομένου για τη <b>Μετάφραση των πάντων</b>"
+         ],
+         "Review the cost and adjust how far back automatic translation applies per content type.": [
+            "Ελέγξτε το κόστος και προσαρμόστε πόσο πίσω θα ισχύει η αυτόματη μετάφραση ανά τύπο περιεχομένου."
+         ],
+         "This amount will cover translating your existing content into the new language.": [
+            "Αυτό το ποσό θα καλύψει τη μετάφραση του υπάρχοντος περιεχομένου σας στη νέα γλώσσα.",
+            "Αυτό το ποσό θα καλύψει τη μετάφραση του υπάρχοντος περιεχομένου σας στις νέες γλώσσες."
+         ],
+         "Choose how to pay for the translation": [
+            "Επιλέξτε τρόπο πληρωμής για τη μετάφραση"
+         ],
+         "WPML could not calculate the word count. You can add the language without a cost estimate.": [
+            "Το WPML δεν μπόρεσε να υπολογίσει τον αριθμό των λέξεων. Μπορείτε να προσθέσετε τη γλώσσα χωρίς εκτίμηση κόστους."
+         ],
+         "Cancel": [
+            "Ακύρωση"
+         ],
+         "Save changes": [
+            "Αποθήκευση αλλαγών"
+         ],
+         "You can adjust the content limits once Translate Everything finishes the current translation run.": [
+            "Μπορείτε να προσαρμόσετε τα όρια περιεχομένου μόλις η Μετάφραση των πάντων ολοκληρώσει την τρέχουσα εκτέλεση μετάφρασης."
+         ],
+         "%1$sCheck pricing%2$s.": [
+            "%1$sΈλεγχος τιμολόγησης%2$s."
+         ],
+         "Lowest cost per word": [
+            "Χαμηλότερο κόστος ανά λέξη"
+         ],
+         "Pay only for what you use": [
+            "Πληρώστε μόνο για ό,τι χρησιμοποιείτε"
+         ],
+         "Never run out. Translation never stops.": [
+            "Μην ξεμείνετε ποτέ. Η μετάφραση δεν σταματά ποτέ."
+         ],
+         "The first 500 words each month are free": [
+            "Οι πρώτες 500 λέξεις κάθε μήνα είναι δωρεάν"
+         ],
+         "Pay-As-You-Go": [
+            "Χρέωση βάσει χρήσης"
+         ],
+         "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate.": [
+            "Ενεργοποιήστε τη <b>Χρέωση βάσει χρήσης</b> για αυτόματη μετάφραση. Η <b>Χρέωση βάσει χρήσης</b> σάς χρεώνει για τις λέξεις που μεταφράζετε."
+         ],
+         "Activating <b>Pay-As-You-Go</b>…": [
+            "Ενεργοποίηση <b>Χρέωσης βάσει χρήσης</b>…"
+         ],
+         "Continue in the new tab": [
+            "Συνέχεια στη νέα καρτέλα"
+         ],
+         "Activate <b>Pay-As-You-Go</b>": [
+            "Ενεργοποίηση <b>Χρέωση βάσει χρήσης</b>"
+         ],
+         "<b>Pay-As-You-Go</b> is not active yet.": [
+            "Η <b>Χρέωση βάσει χρήσης</b> δεν είναι ακόμη ενεργή."
+         ],
+         "Refresh": [
+            "Ανανέωση"
+         ],
+         "Already using <b>Pay-As-You-Go</b> on another site?": [
+            "Χρησιμοποιείτε ήδη τη <b>Χρέωση βάσει χρήσης</b> σε άλλον ιστότοπο;"
+         ],
+         "Connect this site to it": [
+            "Σύνδεση αυτού του ιστότοπου σε αυτόν"
+         ],
+         "Activate Pay-As-You-Go": [
+            "Ενεργοποίηση Χρέωσης βάσει χρήσης"
+         ],
+         "Connect your sites to share translation memory, glossary and word quota.": [
+            "Συνδέστε τους ιστότοπούς σας για να μοιράζεστε τη μεταφραστική μνήμη, το γλωσσάριο και το όριο λέξεων."
+         ],
+         "Learn more": [
+            "Μάθετε περισσότερα"
+         ],
+         "Copy your migration code:": [
+            "Αντιγράψτε τον κωδικό μετανάστευσής σας:"
+         ],
+         "Loading…": [
+            "Φόρτωση…"
+         ],
+         "Copied!": [
+            "Αντιγράφηκε!"
+         ],
+         "Log into a site with an active automatic translation account.": [
+            "Συνδεθείτε σε έναν ιστότοπο με ενεργό λογαριασμό αυτόματης μετάφρασης."
+         ],
+         "Go to \"WPML\" → \"Translation Dashboard\".": [
+            "Μεταβείτε στο “WPML” → “Πίνακας ελέγχου μετάφρασης”."
+         ],
+         "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
+            "Στην καρτέλα “Πληρωμή & Συντήρηση”, μεταβείτε στο “Συνδεδεμένοι ιστότοποι”."
+         ],
+         "Click \"Enter the connection key of another site\" to finish connecting your sites.": [
+            "Κάντε κλικ στο “Εισαγάγετε το κλειδί σύνδεσης ενός άλλου ιστότοπου” για να ολοκληρώσετε τη σύνδεση των ιστότοπών σας."
+         ],
+         "Assign words": [
+            "Εκχώρηση λέξεων"
+         ],
+         "Buy and assign words": [
+            "Αγορά και εκχώρηση λέξεων"
+         ],
+         "Refresh to assign words": [
+            "Ανανέωση για εκχώρηση λέξεων"
+         ],
+         "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site.": [
+            "Αγοράστε ένα %1$sπροπληρωμένο πακέτο%2$s με τουλάχιστον %3$s%4$s λέξεις%5$s και εκχωρήστε τις σε αυτόν τον ιστότοπο."
+         ],
+         "This amount will cover translation of all your current content.": [
+            "Αυτό το ποσό θα καλύψει τη μετάφραση όλου του τρέχοντος περιεχομένου σας."
+         ],
+         "Assign %1$s%2$s words%3$s to this site.": [
+            "Εκχωρήστε %1$s%2$s λέξεις%3$s σε αυτόν τον ιστότοπο."
+         ],
+         "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s.": [
+            "Εκχωρήστε τις %1$s%2$s λέξεις%3$s σας και αγοράστε %4$s%5$s περισσότερες%6$s."
+         ],
+         "Buy %1$s%2$s words%3$s for this site.": [
+            "Αγοράστε %1$s%2$s λέξεις%3$s για αυτόν τον ιστότοπο."
+         ],
+         "Assign at least %1$s%2$s words%3$s to this site to continue.": [
+            "Εκχωρήστε τουλάχιστον %1$s%2$s λέξεις%3$s σε αυτόν τον ιστότοπο για να συνεχίσετε."
+         ],
+         "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount.": [
+            "Εκχωρήστε λέξεις από τον λογαριασμό σας WPML και αγοράστε ένα επιπλέον %1$sπροπληρωμένο πακέτο%2$s με τουλάχιστον %3$s%4$s λέξεις%5$s για να καλύψετε το υπόλοιπο ποσό."
+         ],
+         "Prepaid words": [
+            "Προπληρωμένες λέξεις"
+         ],
+         "There are %1$s%2$s words%3$s on your WPML account.": [
+            "Υπάρχουν %1$s%2$s λέξεις%3$s στον λογαριασμό σας WPML."
+         ],
+         "There are %1$s%2$s available on your WPML account.%3$s": [
+            "Υπάρχουν %1$s%2$s διαθέσιμες στον λογαριασμό σας WPML.%3$s"
+         ],
+         "(Only the WPML account owner can do this.)": [
+            "(Μόνο ο κάτοχος του λογαριασμού WPML μπορεί να το κάνει αυτό.)"
+         ],
+         "Checking for new words...": [
+            "Έλεγχος για νέες λέξεις..."
+         ],
+         "Still not enough words. Refresh again in %d seconds.": [
+            "Ακόμα δεν υπάρχουν αρκετές λέξεις. Ανανεώστε ξανά σε %d δευτερόλεπτα."
+         ],
+         "Already assigned?": [
+            "Έχουν ήδη εκχωρηθεί;"
+         ],
+         "Close modal": [
+            "Κλείσιμο παραθύρου"
+         ]
+      }
+   }
+}

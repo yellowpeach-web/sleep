@@ -1,18 +1,18 @@
 <?php
 
-class WPML_Elementor_Adjust_Global_Widget_ID {
+class WPML_Elementor_Adjust_Global_Widget_ID implements IWPML_Action {
 
-	/** @var IWPML_Page_Builders_Data_Settings */
 	private $elementor_settings;
 
-	/** @var WPML_Translation_Element_Factory */
 	private $translation_element_factory;
 
-	/** @var SitePress */
 	private $sitepress;
 
-	/** @var string */
-	private $current_language;
+	private $has_open_language_scope = false;
+
+	private $scope_language;
+
+	private $latch_before_scope;
 
 	public function __construct(
 		IWPML_Page_Builders_Data_Settings $elementor_settings,
@@ -27,7 +27,10 @@ class WPML_Elementor_Adjust_Global_Widget_ID {
 	public function add_hooks() {
 		add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'adjust_ids' ) );
 		add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'restore_current_language' ) );
-		add_action( 'elementor/frontend/the_content', array( $this, 'duplicate_css_class_with_original_id' ) );
+		add_action( 'shutdown', array( $this, 'restore_current_language' ), 0 );
+		add_action( 'wpml_language_has_switched', array( $this, 'keep_admin_language_through_switch' ), PHP_INT_MIN, 0 );
+		add_filter( 'elementor/editor/localize_settings', array( $this, 'localize_content_locale' ) );
+		add_filter( 'elementor/frontend/the_content', array( $this, 'duplicate_css_class_with_original_id' ) );
 
 		if ( is_admin() ) {
 			add_filter(
@@ -40,13 +43,23 @@ class WPML_Elementor_Adjust_Global_Widget_ID {
 	}
 
 	public function adjust_ids() {
-		$this->current_language = $this->sitepress->get_current_language();
+		$post_id = absint( $_REQUEST['post'] );
 
-		$post_id = absint( $_REQUEST['post'] ); // WPCS: sanitization ok.
+		if ( ! $post_id || ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
 
 		$post     = $this->translation_element_factory->create_post( $post_id );
 		$language = $post->get_language_code();
-		$this->sitepress->switch_lang( $language );
+
+		$this->latch_before_scope = $this->sitepress->is_wpml_switch_language_triggered();
+		try {
+			$this->sitepress->switch_lang( $language );
+		} finally {
+			$this->latch_before_scope = null;
+		}
+		$this->has_open_language_scope = true;
+		$this->scope_language          = $language;
 
 		$custom_field_data = get_post_meta(
 			$post_id,
@@ -68,7 +81,6 @@ class WPML_Elementor_Adjust_Global_Widget_ID {
 				$this->elementor_settings->prepare_data_for_saving( $custom_field_data_adjusted )
 			);
 
-			// Update post date so Elementor doesn't use auto saved post
 			$post_data                  = get_post( $post_id, ARRAY_A );
 			$post_data['post_date']     = current_time( 'mysql' );
 			$post_data['post_date_gmt'] = '';
@@ -90,7 +102,6 @@ class WPML_Elementor_Adjust_Global_Widget_ID {
 						}
 					}
 				} catch ( Exception $e ) {
-					// Not much we can do if the elementor templateID is a non existing post
 				}
 			}
 			$data['elements'] = $this->set_global_widget_id_for_language( $data['elements'], $language );
@@ -100,47 +111,60 @@ class WPML_Elementor_Adjust_Global_Widget_ID {
 	}
 
 	public function restore_current_language() {
-		$this->sitepress->switch_lang( $this->current_language );
+		if ( ! $this->has_open_language_scope ) {
+			return;
+		}
+
+		$this->has_open_language_scope = false;
+		$this->scope_language          = null;
+		$this->sitepress->switch_lang();
 	}
 
-	/**
-	 * The snippet is a WHERE condition which is added to a DB query.
-	 * This will include the source element in the query results in case the element
-	 * does not exist in the current language.
-	 *
-	 * @see WPML_Query_Filter::display_as_translated_snippet
-	 *
-	 * @param bool  $display_as_translated
-	 * @param array $post_types
-	 *
-	 * @return bool
-	 */
+	public function keep_admin_language_through_switch() {
+		if ( null === $this->latch_before_scope ) {
+			return;
+		}
+
+		$this->sitepress->restore_wpml_switch_language_triggered( $this->latch_before_scope );
+	}
+
+	public function localize_content_locale( $settings ) {
+		if ( ! $this->has_open_language_scope || ! is_array( $settings ) ) {
+			return $settings;
+		}
+
+		$locale = $this->sitepress->get_locale( $this->scope_language );
+		if ( $locale ) {
+			$settings['locale'] = $locale;
+		}
+
+		return $settings;
+	}
+
 	public function should_use_display_as_translated_snippet( $display_as_translated, $post_types ) {
 		if ( isset( $_GET['action'] ) && 'elementor' === $_GET['action']
-		     && in_array( 'elementor_library', array_keys( $post_types ), true ) ) {
+			&& in_array( 'elementor_library', array_keys( $post_types ), true ) ) {
 			return true;
 		}
 
 		return $display_as_translated;
 	}
 
-	/**
-	 * @param string $content
-	 *
-	 * @return string
-	 */
 	public function duplicate_css_class_with_original_id( $content ) {
-		$classPrefixes = wpml_collect( [
-			'elementor-',
-			'elementor-global-',
-		] )->implode( '|' );
+		$classPrefixes = implode( '|', [ 'elementor-', 'elementor-global-' ] );
+		$pattern       = '/(class="[^"]*?((?:' . $classPrefixes . ')))(\d+)/';
+		$result        = preg_replace_callback( $pattern, [ $this, 'convert_id_to_original' ], $content );
 
-		return preg_replace_callback( '/(class=".*(' . $classPrefixes . '))(\d+)/', array( $this, 'convert_id_to_original' ), $content );
+		if ( null === $result ) {
+			return $content;
+		}
+
+		return $result;
 	}
 
 	private function convert_id_to_original( array $matches ) {
 		$class_prefix = $matches[2];
-		$id           = (int)$matches[3];
+		$id           = (int) $matches[3];
 		$element      = $this->translation_element_factory->create_post( $id );
 		$source       = $element->get_source_element();
 

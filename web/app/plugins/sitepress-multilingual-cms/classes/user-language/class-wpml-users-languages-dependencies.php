@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @package wpml-core
- * @subpackage wpml-user-language
- */
 class WPML_Users_Languages_Dependencies {
 	public $WPML_User_Language_Switcher_Hooks;
 	private $WPML_User_Language_Switcher_Resources;
@@ -21,6 +17,13 @@ class WPML_Users_Languages_Dependencies {
 		$this->WPML_Language_Code                    = new WPML_Language_Code( $sitepress );
 		$this->WPML_Users_Languages                  = new WPML_Users_Languages( $this->WPML_Language_Code, $this->WPML_WP_API );
 		$this->WPML_User_Language                    = new WPML_User_Language( $sitepress );
+
+		$this->WPML_User_Language->register_hooks();
+		register_activation_hook(
+			WPML_PLUGIN_PATH . '/' . WPML_PLUGIN_FILE,
+			array( $this->WPML_User_Language, 'update_user_lang_on_site_setup' )
+		);
+
 		$this->WPML_User_Language_Switcher           = new WPML_User_Language_Switcher( $this->WPML_Language_Code );
 		$this->WPML_User_Language_Switcher_Resources = new WPML_User_Language_Switcher_Resources();
 		$this->WPML_User_Language_Switcher_UI        = new WPML_User_Language_Switcher_UI( $this->WPML_User_Language_Switcher, $this->WPML_User_Language_Switcher_Resources );

@@ -17,7 +17,9 @@ WPML_core.wp_nav_language_change = function() {
         data: data,
         url: location.href,
         success: function(res){
-            jQuery('#icl_translation_of_wrap').html(res);
+            // wpmldev-5105: the response is raw markup from render_translation_of().
+            // `wp_nav_menus` declares the `wpml-purify` dependency that defines this.
+            jQuery('#icl_translation_of_wrap').html(WPML_core.purify(res));
             thiss.prop('disabled', false);
         }
     });

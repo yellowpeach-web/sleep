@@ -4,19 +4,10 @@ class WPML_TM_Pickup_Mode_Ajax {
 
 	const NONCE_PICKUP_MODE = 'wpml_save_translation_pickup_mode';
 
-	/**
-	 * @var SitePress
-	 */
 	private $sitepress;
 
-	/**
-	 * @var WPML_Update_PickUp_Method
-	 */
 	private $update_pickup_mode;
 
-	/**
-	 * @var WPML_Pro_Translation
-	 */
 	private $icl_pro_translation;
 
 	public function __construct( SitePress $sitepress, WPML_Pro_Translation $icl_pro_translation ) {
@@ -26,7 +17,7 @@ class WPML_TM_Pickup_Mode_Ajax {
 	}
 
 	public function ajax_hooks() {
-		add_action( 'wp_ajax_wpml_save_translation_pickup_mode', array( $this, 'wpml_save_translation_pickup_mode' ) );
+		\WPML\Request\Adapter\Ajax::register( 'wpml_save_translation_pickup_mode', \WPML\Request\Policy\Policy::capability( 'manage_options', \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_save_translation_pickup_mode', 'nonce' ) ), array( $this, 'wpml_save_translation_pickup_mode' ) );
 	}
 
 	public function wpml_save_translation_pickup_mode() {
@@ -67,6 +58,6 @@ class WPML_TM_Pickup_Mode_Ajax {
 				$valid_request = false;
 			}
 		}
-		return $valid_request;
+		return $valid_request && current_user_can( 'manage_options' );
 	}
 }

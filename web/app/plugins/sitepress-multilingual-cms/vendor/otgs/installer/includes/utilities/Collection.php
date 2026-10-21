@@ -3,45 +3,22 @@
 namespace OTGS\Installer;
 
 class Collection {
-	/**
-	 * @var array
-	 */
 	private $array;
 
-	/**
-	 * The items contained in the collection.
-	 *
-	 * @var mixed[]
-	 */
 	protected $items = [];
 
 	private function __construct( array $array ) {
 		$this->array = $array;
 	}
 
-	/**
-	 * @param array $array
-	 *
-	 * @return Collection
-	 */
 	public static function of( array $array ) {
 		return new static( $array );
 	}
 
-	/**
-	 * @param callable $fn
-	 *
-	 * @return Collection
-	 */
 	public function filter( callable $fn ) {
 		return self::of( array_filter( $this->array, $fn ) );
 	}
 
-	/**
-	 * @param callable $fn
-	 *
-	 * @return Collection
-	 */
 	public function map( callable $fn ) {
 		$keys = array_keys( $this->array );
 
@@ -52,56 +29,30 @@ class Collection {
 		return self::of( false !== $combined ? $combined : [] );
 	}
 
-	/**
-	 * Converts array from key => vales to an array of pairs [ key, value ]
-	 * @return Collection
-	 */
 	public function entities() {
-		$toPairs = function ( $value, $key ) { return [ $key, $value ]; };
+		$toPairs = function ( $value, $key ) {
+			return [ $key, $value ];
+		};
 
 		return $this->map( $toPairs );
 	}
 
-	/**
-	 * @param string $column
-	 *
-	 * @return Collection
-	 */
 	public function pluck( $column ) {
 		return self::of( array_column( $this->array, $column ) );
 	}
 
-	/**
-	 * @param callable $fn
-	 * @param mixed    $initial
-	 *
-	 * @return mixed
-	 */
 	public function reduce( callable $fn, $initial = 0 ) {
 		return array_reduce( $this->array, $fn, $initial );
 	}
 
-	/**
-	 * @return Collection
-	 */
 	public function values() {
 		return self::of( array_values( $this->array ) );
 	}
 
-	/**
-	 * @param array $other
-	 *
-	 * @return Collection
-	 */
 	public function mergeRecursive( array $other ) {
 		return self::of( array_merge_recursive( $this->array, $other ) );
 	}
 
-	/**
-	 * @param string $key
-	 *
-	 * @return mixed|Collection|NullCollection|array
-	 */
 	public function get( $key = null ) {
 		if ( null !== $key ) {
 			$data = array_key_exists( $key, $this->array ) ? $this->array[ $key ] : null;
@@ -139,41 +90,57 @@ class Collection {
 		return new NullCollection();
 	}
 
-	/**
-	 * Determine if an item exists at an offset.
-	 *
-	 * @param  mixed  $key
-	 * @return bool
-	 */
-	public function offsetExists($key)
-	{
-		return array_key_exists($key, $this->items);
+	public function offsetExists( $key ) {
+		return array_key_exists( $key, $this->items );
 	}
 
-	/**
-	 * Determine if an item exists in the collection by key.
-	 *
-	 * @param  mixed  $key
-	 * @return bool
-	 */
-	public function has($key)
-	{
-		return $this->offsetExists($key);
+	public function has( $key ) {
+		return $this->offsetExists( $key );
+	}
+
+	public function any( callable $fn ) {
+		return $this->filter( $fn )->count() > 0;
+	}
+
+	public function count() {
+		return count( $this->array );
+	}
+
+	public function firstIndex( callable $fn ) {
+		foreach ( $this->array as $index=>$item ) {
+			if ( $fn( $item ) ) {
+				return $index;
+			}
+		}
+		return -1;
+
 	}
 }
 
 class NullCollection {
 
-	public function map( callable $fn ) { return $this; }
+	public function map( callable $fn ) {
+		return $this;
+	}
 
-	public function filter( callable $fn ) { return $this; }
+	public function filter( callable $fn ) {
+		return $this;
+	}
 
-	public function head() { return $this; }
+	public function head() {
+		return $this;
+	}
 
-	public function pluck() { return $this; }
+	public function pluck() {
+		return $this;
+	}
 
-	public function get() { return $this; }
+	public function get() {
+		return $this;
+	}
 
-	public function getOrNull() { return null; }
+	public function getOrNull() {
+		return null;
+	}
 
 }

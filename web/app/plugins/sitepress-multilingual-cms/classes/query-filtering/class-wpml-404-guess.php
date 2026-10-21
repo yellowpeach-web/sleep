@@ -1,38 +1,21 @@
 <?php
 
-/**
- * Class WPML_404_Guess
- *
- * @package    wpml-core
- * @subpackage post-translation
- *
- * @since      3.2.3
- */
 class WPML_404_Guess extends WPML_Slug_Resolution {
 
-	/** @var  WPML_Query_Filter $query_filter */
+	const CACHE_GROUP = 'WPML_404_Guess';
+
+	const CACHE_VERSION = 2;
+
 	private $query_filter;
 
-	/**
-	 * @param wpdb              $wpdb
-	 * @param SitePress         $sitepress
-	 * @param WPML_Query_Filter $query_filter
-	 */
-	public function __construct( &$wpdb, &$sitepress, &$query_filter ) {
+	private $cache_factory;
+
+	public function __construct( &$wpdb, &$sitepress, &$query_filter, ?WPML_WP_Cache_Factory $cache_factory = null ) {
 		parent::__construct( $wpdb, $sitepress );
-		$this->query_filter = &$query_filter;
+		$this->query_filter  = &$query_filter;
+		$this->cache_factory = $cache_factory ? $cache_factory : new WPML_WP_Cache_Factory();
 	}
 
-	/**
-	 * Attempts to guess the correct URL based on query vars
-	 *
-	 * @since 3.2.3
-	 *
-	 * @param string   $name
-	 * @param WP_Query $query
-	 *
-	 * @return array<string|bool> containing most likely name, type and whether or not a match was found
-	 */
 	public function guess_cpt_by_name( $name, $query ) {
 		$type  = $query->get( 'post_type' );
 		$ret   = array( $name, $type, false );
@@ -42,91 +25,104 @@ class WPML_404_Guess extends WPML_Slug_Resolution {
 		if ( (bool) $types === true ) {
 
 			$date_snippet = $this->by_date_snippet( $query );
-			$page_first = (bool) $query->get( 'pagename' );
+			$page_first   = (bool) $query->get( 'pagename' );
 
-			$cache     = new WPML_WP_Cache( 'WPML_404_Guess' );
-			$cache_key = 'guess_cpt' . $name . wp_json_encode( $types ) . $page_first . $date_snippet;
-			$found     = false;
-			$ret       = $cache->get( $cache_key, $found );
+			$can_read_private = $this->current_user_can_read_private_posts();
+
+			$cache_item = $this->cache_factory->create_language_aware_cache_item(
+				self::CACHE_GROUP,
+				array( 'guess_cpt', self::CACHE_VERSION, $name, $types, $page_first, $date_snippet, $can_read_private )
+			);
+
+			list( $ret, $found ) = $cache_item->get_with_found();
 
 			if ( ! $found ) {
-				$ret = $this->find_post_type( $name, $type, $types, $date_snippet, $page_first );
-				$cache->set( $cache_key, $ret );
+				$ret = $this->find_post_type( $name, $type, $types, $date_snippet, $page_first, $can_read_private );
+				$cache_item->set( $ret );
 			}
 		}
 
 		return $ret;
 	}
 
-	/**
-	 * Query the database to find the post type
-	 *
-	 * @param string $name
-	 * @param string $type
-	 * @param array  $types
-	 * @param string $date_snippet
-	 * @param bool $page_first
-	 *
-	 * @return array
-	 */
-	private function find_post_type( $name, $type, $types, $date_snippet, $page_first ) {
+	private function current_user_can_read_private_posts() {
+		return $this->pluggable_user_api_loaded() && current_user_can( 'read_private_posts' );
+	}
+
+	protected function pluggable_user_api_loaded() {
+		return function_exists( 'wp_get_current_user' );
+	}
+
+	private function find_post_type( $name, $type, $types, $date_snippet, $page_first, $can_read_private ) {
+		$wpdb   = $this->wpdb;
 		$ret    = array( $name, $type, false );
 		$where  = $this->wpdb->prepare( 'post_name = %s ', $name );
-		$where .= " AND post_type IN ('" . implode( "', '", $types ) . "')";
+		$where .= ' AND post_type IN (' . wpml_prepare_in( $types ) . ')';
 		$where .= $date_snippet;
-		/** @var \stdClass $res */
+
+		$private_status_clause = $can_read_private
+			? " OR post_status = 'private' "
+			: '';
+
+		$status_clause = " AND ( post_status = 'publish' {$private_status_clause}
+				OR ( post_type = 'attachment' AND post_status = 'inherit' ) ) ";
+
+		$matched_types = null;
+		if ( $type && count( $types ) > 1 ) {
+			$matched_types = $this->wpdb->get_col(
+				"SELECT DISTINCT post_type
+				 FROM {$this->wpdb->posts} p
+				 WHERE $where
+					{$status_clause}
+				 LIMIT " . (int) count( $types )
+			);
+			if ( ! $matched_types ) {
+				return $ret;
+			}
+		}
+
 		$res    = $this->wpdb->get_row(
 			"
 										 SELECT post_type, post_name
-										 FROM {$this->wpdb->posts} p
-										 LEFT JOIN {$this->wpdb->prefix}icl_translations wpml_translations
+											 FROM {$wpdb->posts} p
+											 LEFT JOIN {$wpdb->prefix}icl_translations wpml_translations
 											ON wpml_translations.element_id = p.ID
-											    AND CONCAT('post_', p.post_type) = wpml_translations.element_type
-										        AND " . $this->query_filter->in_translated_types_snippet( false, 'p' ) . "
+											    AND wpml_translations.element_type IN (" . wpml_prepare_in( wpml_post_element_types( $types ) ) . ')
+										        AND ' . $this->query_filter->in_translated_types_snippet( false, 'p' ) . "
 										 WHERE $where
-										    AND ( post_status = 'publish'
+										    AND ( post_status = 'publish' {$private_status_clause}
 										        OR ( post_type = 'attachment'
 										             AND post_status = 'inherit' ) )
 										    " . $this->order_by_type_and_language_snippet( (bool) $date_snippet, $page_first ) . '
 									     LIMIT 1'
 		);
 		if ( (bool) $res === true ) {
-			$ret = array( $res->post_name, $res->post_type, true );
+			$ret = array( $res->post_name, null === $matched_types ? array( $res->post_type ) : $matched_types, true );
 		}
 
 		return $ret;
 	}
 
 
-	/**
-	 * Retrieves year, month and day parameters from the query if they are set and builds the appropriate sql
-	 * snippet to filter for them.
-	 *
-	 * @param WP_Query $query
-	 *
-	 * @return string
-	 */
 	private function by_date_snippet( $query ) {
 		$snippet = '';
-		foreach ( array(
-			'year'     => 'YEAR',
-			'monthnum' => 'MONTH',
-			'day'      => 'DAY',
-		) as $index => $time_unit ) {
-			if ( (bool) ( $value = $query->get( $index ) ) === true ) {
-				$snippet .= $this->wpdb->prepare( " AND {$time_unit}(post_date) = %d ", $value );
-			}
+		$year    = $query->get( 'year' );
+		$month   = $query->get( 'monthnum' );
+		$day     = $query->get( 'day' );
+
+		if ( $year ) {
+			$snippet .= $this->wpdb->prepare( ' AND YEAR(post_date) = %d ', $year );
+		}
+		if ( $month ) {
+			$snippet .= $this->wpdb->prepare( ' AND MONTH(post_date) = %d ', $month );
+		}
+		if ( $day ) {
+			$snippet .= $this->wpdb->prepare( ' AND DAY(post_date) = %d ', $day );
 		}
 
 		return $snippet;
 	}
 
-	/**
-	 * @param bool $has_date
-	 * @param bool $page_first
-	 *
-	 * @return string
-	 */
 	private function order_by_type_and_language_snippet( $has_date, $page_first ) {
 		$lang_order   = $this->get_ordered_langs();
 		$current_lang = array_shift( $lang_order );
@@ -153,10 +149,6 @@ class WPML_404_Guess extends WPML_Slug_Resolution {
 		return $order_by;
 	}
 
-	/**
-	 *
-	 * @return string
-	 */
 	private function order_by_post_type_snippet() {
 		$post_types = array(
 			'page' => 2,

@@ -19,6 +19,8 @@ use function WPML\FP\pipe;
 
 class MigrateMultilingualWidgets implements \IWPML_St_Upgrade_Command {
 
+	const RENAME_BATCH = 500;
+
 	public function run() {
 		$multiLingualWidgets = Option::getOr( 'widget_text_icl', [] );
 		$multiLingualWidgets = array_filter( $multiLingualWidgets, Logic::complement( 'is_scalar' ) );
@@ -28,7 +30,6 @@ class MigrateMultilingualWidgets implements \IWPML_St_Upgrade_Command {
 
 		$textWidgets = Option::getOr( 'widget_text', [] );
 		if ( $textWidgets ) {
-			/** @var array $textWidgetsKeys */
 			$textWidgetsKeys = Obj::keys( $textWidgets );
 			$theHighestTextWidgetId = max( $textWidgetsKeys );
 		} else {
@@ -75,16 +76,44 @@ class MigrateMultilingualWidgets implements \IWPML_St_Upgrade_Command {
 	}
 
 	private function convertWidgetsContentStrings() {
-		global $wpdb;
-
-		$wpdb->query("
-			UPDATE {$wpdb->prefix}icl_strings
-			SET `name` = CONCAT( 'widget body - ', MD5(`value`))
-			WHERE `name` LIKE 'widget body - text_icl%'
-		");
+		$this->renameWidgetBodyStrings();
 
 		$locales = Fns::map( Languages::getWPLocale(), Languages::getSecondaries() );
 		Fns::map( partial( [ ManagerFactory::create(), 'add' ], 'Widgets' ), $locales );
+	}
+
+	private function renameWidgetBodyStrings() {
+		global $wpdb;
+
+		$table  = $wpdb->prefix . 'icl_strings';
+		$like   = $wpdb->esc_like( 'widget body - text_icl' ) . '%';
+		$lastId = 0;
+
+		do {
+			$rows = (array) $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT `id`, `value` FROM `{$table}` WHERE `name` LIKE %s AND `id` > %d ORDER BY `id` ASC LIMIT %d",
+					$like,
+					$lastId,
+					self::RENAME_BATCH
+				),
+				ARRAY_A
+			);
+			$read = count( $rows );
+
+			foreach ( $rows as $row ) {
+				$id     = (int) $row['id'];
+				$lastId = max( $lastId, $id );
+
+				$wpdb->query(
+					$wpdb->prepare(
+						"UPDATE `{$table}` SET `name` = %s WHERE `id` = %d",
+						'widget body - ' . md5( (string) $row['value'] ),
+						$id
+					)
+				);
+			}
+		} while ( $read === self::RENAME_BATCH );
 	}
 
 	public function run_ajax() {

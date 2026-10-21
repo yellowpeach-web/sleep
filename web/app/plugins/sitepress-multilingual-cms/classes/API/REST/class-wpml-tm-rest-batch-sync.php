@@ -3,7 +3,6 @@
 use WPML\LIB\WP\User;
 
 class WPML_TM_REST_Batch_Sync extends WPML_REST_Base {
-	/** @var WPML_TP_Batch_Sync_API */
 	private $batch_sync_api;
 
 	public function __construct( WPML_TP_Batch_Sync_API $batch_sync_api ) {
@@ -41,18 +40,47 @@ class WPML_TM_REST_Batch_Sync extends WPML_REST_Base {
 	}
 
 	public function init( WP_REST_Request $request ) {
+		\WPML\TM\Jobs\JobLog::maybeInitRequest();
+		\WPML\TM\Jobs\JobLog::createNewGroup(
+			\WPML\TM\Jobs\JobLog::GROUP_ID_SYNC_JOBS,
+			'TP batch sync init',
+			array( 'batchIds' => $request->get_param( 'batchId' ) )
+		);
+
 		try {
-			return $this->batch_sync_api->init_synchronization( $request->get_param( 'batchId' ) );
+			$queued = $this->batch_sync_api->init_synchronization( $request->get_param( 'batchId' ) );
+
+			\WPML\TM\Jobs\JobLog::add( 'tp_batch_sync_queued', array( 'queued_batches' => $queued ) );
+			\WPML\TM\Jobs\JobLog::finishCurrentGroup();
+
+			return $queued;
 		} catch ( Exception $e ) {
-			return new WP_Error( 500, $e->getMessage() );
+			\WPML\TM\Jobs\JobLog::addError( 'tp_batch_sync_init_failed', array( 'message' => $e->getMessage() ) );
+			\WPML\TM\Jobs\JobLog::finishCurrentGroup();
+
+			return \WPML\WordPress\ClientSafeError::wpError( 'TP batch sync init', $e );
 		}
 	}
 
 	public function check_progress() {
+		\WPML\TM\Jobs\JobLog::maybeInitRequest();
+		\WPML\TM\Jobs\JobLog::createNewGroup(
+			\WPML\TM\Jobs\JobLog::GROUP_ID_SYNC_JOBS,
+			'TP batch sync status poll'
+		);
+
 		try {
-			return $this->batch_sync_api->check_progress();
+			$queued = $this->batch_sync_api->check_progress();
+
+			\WPML\TM\Jobs\JobLog::add( 'tp_batch_sync_still_queued', array( 'queued_batches' => $queued ) );
+			\WPML\TM\Jobs\JobLog::finishCurrentGroup();
+
+			return $queued;
 		} catch ( Exception $e ) {
-			return new WP_Error( 500, $e->getMessage() );
+			\WPML\TM\Jobs\JobLog::addError( 'tp_batch_sync_status_failed', array( 'message' => $e->getMessage() ) );
+			\WPML\TM\Jobs\JobLog::finishCurrentGroup();
+
+			return \WPML\WordPress\ClientSafeError::wpError( 'TP batch sync progress', $e );
 		}
 	}
 

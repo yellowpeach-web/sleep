@@ -20,12 +20,12 @@ class AddLanguages implements IHandler {
 			$id = Languages::add(
 				$language['code'],
 				$language['name'],
-				$language['locale'],
+				(string) Obj::propOr( '', 'locale', $language ),
 				0,
 				0,
 				(int) $language['encode_url'],
 				$language['hreflang'],
-				Obj::prop('country', $language)
+				$this->country( $language )
 			);
 
 			if ( $id ) {
@@ -38,7 +38,6 @@ class AddLanguages implements IHandler {
 					);
 				}
 
-				/** @phpstan-ignore-next-line */
 				$this->saveMapping( $language, $id );
 			}
 
@@ -52,10 +51,12 @@ class AddLanguages implements IHandler {
 		return $result;
 	}
 
-	/**
-	 * @param array $language
-	 * @param int   $id
-	 */
+	private function country( $language ) {
+		$country = Obj::propOr( '', 'country', $language );
+
+		return '' === trim( (string) $country ) ? null : $country;
+	}
+
 	private function saveMapping( $language, $id ) {
 		$languageMapping = Obj::prop( 'mapping', $language );
 		if ( $id && $languageMapping ) {

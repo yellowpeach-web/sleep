@@ -13,13 +13,6 @@ class FrontendHooks implements \IWPML_Frontend_Action {
 			->then( spreadArgs( [ self::class, 'convertTargetLinks' ] ) );
 	}
 
-	/**
-	 * @param mixed  $value
-	 * @param string $postId
-	 * @param array  $field
-	 *
-	 * @return mixed
-	 */
 	public static function convertTargetLinks( $value, $postId, $field ) {
 		$isWysiwygField = Obj::prop( 'type', $field ) === 'wysiwyg';
 

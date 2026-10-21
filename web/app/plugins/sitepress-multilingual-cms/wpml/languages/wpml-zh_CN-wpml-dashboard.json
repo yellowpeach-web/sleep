@@ -1,0 +1,2613 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "zh_CN"
+         },
+         "Untranslated strings that I encounter on front-end while logged in": [
+            "登录后我在前端遇到的未翻译字符串"
+         ],
+         "Untranslated strings that all front-end users encounter": [
+            "所有前端用户遇到的未翻译字符串"
+         ],
+         "Disable auto-registration of strings": [
+            "禁用字符串的自动登记"
+         ],
+         "Plugins": [
+            "插件"
+         ],
+         "Themes": [
+            "主题"
+         ],
+         "WordPress": [
+            "WordPress"
+         ],
+         "Other": [
+            "其他"
+         ],
+         "%1$s (%2$d item)": [
+            "%1$s（%2$d 个项目）"
+         ],
+         "We cancelled %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
+            "我们取消了 %2$d 个项目中的 %1$d 个，但有 %3$d 个失败。请刷新页面并重试。"
+         ],
+         "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
+            "我们重新发送了 %2$d 个项目中的 %1$d 个，但有 %3$d 个失败。请刷新页面并重试。"
+         ],
+         "Error in fetching default translation batch name": [
+            "获取默认翻译批次名称时出错"
+         ],
+         "Error in fetching translation editor type.": [
+            "获取翻译编辑器类型时出错。"
+         ],
+         "Error in fetching untranslated types count": [
+            "获取未翻译类型计数时出错"
+         ],
+         "Error in fetching remote translation service data.": [
+            "获取远程翻译服务数据时出错。"
+         ],
+         "Validation failed": [
+            "验证失败"
+         ],
+         "%s: labels and slug": [
+            "%s：标签和别名"
+         ],
+         "%1$s (%2$s)": [
+            "%1$s (%2$s)"
+         ],
+         "Translation jobs couldn’t be cancelled": [
+            "翻译作业无法取消"
+         ],
+         "Reload the page and try again.": [
+            "刷新页面并重试。"
+         ],
+         "All unfinished translation jobs were cancelled": [
+            "所有未完成的翻译作业已取消"
+         ],
+         "WPML could not display the Translations dashboard.": [
+            "WPML 无法显示翻译仪表板。"
+         ],
+         "Reload the page to try again. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses, and the browser console for details.": [
+            "请重新加载页面重试。如果问题仍然存在，请检查站点的 PHP 错误日志中是否有破坏 WPML 响应的输出，并查看浏览器控制台了解详情。"
+         ],
+         "Please wait until download finishes": [
+            "请等待下载完成"
+         ],
+         "You need to wait 5 minutes after the last check": [
+            "您需要在上次检查后等待 5 分钟"
+         ],
+         "Check status and get translations": [
+            "检查状态并获取翻译"
+         ],
+         "%d translation could not be applied.": [
+            "无法应用 %d 个翻译。"
+         ],
+         "Some were paused after repeated failures and will be retried automatically.": [
+            "部分翻译在多次失败后已暂停，并将自动重试。"
+         ],
+         "They are still waiting and will be tried again on the next download.": [
+            "它们仍在等待中，并将在下次下载时再次尝试。"
+         ],
+         "Status: ": [
+            "状态： "
+         ],
+         "Downloaded jobs: ": [
+            "已下载的作业： "
+         ],
+         "Cancelled jobs: ": [
+            "已取消的作业： "
+         ],
+         "none of your translation jobs have been completed": [
+            "您的翻译作业均未完成"
+         ],
+         "The download did not finish, so some translations may still be waiting. Please try again.": [
+            "下载未完成，因此某些翻译可能仍在等待中。请重试。"
+         ],
+         "%d batches are still being processed by the translation service. Check again in a few minutes.": [
+            "翻译服务仍在处理 %d 个批次。请在几分钟后再次检查。"
+         ],
+         "Checking translation jobs status. Please don't close this page!": [
+            "正在检查翻译作业状态。请不要关闭此页面！"
+         ],
+         "<strong>%d translation job</strong> has been sent to remote translators": [
+            "已向远程译员发送 <strong>%d 个翻译作业</strong>"
+         ],
+         "Last check: %s": [
+            "上次检查：%s"
+         ],
+         "Last check: Never": [
+            "上次检查：从不"
+         ],
+         "Switch to Private Translation Cloud (PTC)": [
+            "切换到 Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "切换到 PTC"
+         ],
+         "Switching…": [
+            "正在切换…"
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "翻译引擎控件无法加载。请刷新页面并重试。"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "我们无法确认切换。请重试，或刷新以查看当前引擎。"
+         ],
+         "Loading translation engine settings…": [
+            "正在加载翻译引擎设置…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "在切换到 PTC 之前，请填写上方的站点背景信息。"
+         ],
+         "Reload page": [
+            "刷新页面"
+         ],
+         "Filtering is disabled to show all selected items. ": [
+            "过滤已禁用以显示所有选定项目。 "
+         ],
+         "Apply filters": [
+            "应用过滤器"
+         ],
+         "%d item selected": [
+            "已选择 %d 个项目"
+         ],
+         "(%d words to translate)": [
+            "（需翻译 %d 个字数）"
+         ],
+         "%s item not showing.": [
+            "%s 个项目未显示。"
+         ],
+         "Show all selected items": [
+            "显示所有选定项目"
+         ],
+         "Translate your content": [
+            "翻译您的内容"
+         ],
+         "Unselect all": [
+            "取消全选"
+         ],
+         "Source Language:": [
+            "源语言："
+         ],
+         "translated to:": [
+            "翻译为："
+         ],
+         "Filter": [
+            "筛选"
+         ],
+         "You are about to change the source language filter from %1$s to %2$s": [
+            "您即将把源语言过滤器从 %1$s 更改为 %2$s"
+         ],
+         "Updating the source language filter will clear the items you've selected for translation. Are you sure you want to continue?": [
+            "更新源语言过滤器将清除您已选择翻译的项目。您确定要继续吗？"
+         ],
+         "Change source language": [
+            "更改源语言"
+         ],
+         "Cancel": [
+            "取消"
+         ],
+         "Filter by publication status": [
+            "按发布状态筛选"
+         ],
+         "All Statuses": [
+            "所有状态"
+         ],
+         "All languages": [
+            "所有语言"
+         ],
+         "All translation statuses": [
+            "所有翻译状态"
+         ],
+         "Not completed": [
+            "未完成"
+         ],
+         "Needs updating": [
+            "需要更新"
+         ],
+         "Translation in progress": [
+            "翻译中"
+         ],
+         "Translation complete": [
+            "翻译完成"
+         ],
+         "Filter by translation status": [
+            "按翻译状态筛选"
+         ],
+         "Global Filter": [
+            "全局过滤器"
+         ],
+         "%1$s (ID: %2$d)": [
+            "%1$s (ID: %2$d)"
+         ],
+         "Parent:": [
+            "父级："
+         ],
+         "Search parent by title, path, or ID": [
+            "按标题、路径或 ID 搜索父级"
+         ],
+         "Parent: %s": [
+            "父级：%s"
+         ],
+         "Search by term title in %s": [
+            "在 %s 中按术语标题搜索"
+         ],
+         "All taxonomies": [
+            "所有分类法"
+         ],
+         "Loading": [
+            "正在加载"
+         ],
+         "Taxonomy Term:": [
+            "分类术语："
+         ],
+         "Loading terms": [
+            "正在加载术语"
+         ],
+         "No terms found": [
+            "未找到术语"
+         ],
+         "Filter by:": [
+            "筛选条件："
+         ],
+         "Title": [
+            "标题"
+         ],
+         "Automatic translation is paused — payment required (%s).": [
+            "自动翻译已暂停 — 需要支付 (%s)。"
+         ],
+         "Automatic translation is paused: monthly spending cap reached. It continues when the cap is raised, or when the cap resets.": [
+            "自动翻译已暂停：已达到每月支出限额。提高限额或限额重置后将继续。"
+         ],
+         "You have %1$s%2$s prepaid word in your WPML account%3$s. Assign these words to this site to resume automatic translation.": [
+            "您的 WPML 账户中有 %1$s%2$s 个预付费字数%3$s。将这些字数分配给此站点以恢复自动翻译。"
+         ],
+         "Not enough prepaid words to continue automatic translation. Add more words to resume.": [
+            "预付字数不足，无法继续自动翻译。请添加更多字数以恢复。"
+         ],
+         "Assign words": [
+            "分配字数"
+         ],
+         "Get more words": [
+            "获取更多字数"
+         ],
+         "View": [
+            "查看"
+         ],
+         "Edit": [
+            "编辑"
+         ],
+         "Edit note for the translators": [
+            "编辑给译者的备注"
+         ],
+         "Add note for the translators": [
+            "添加给译者的备注"
+         ],
+         "Select %s": [
+            "选择 %s"
+         ],
+         "(no title)": [
+            "（无标题）"
+         ],
+         "Image": [
+            "图像"
+         ],
+         "%s Title": [
+            "%s 标题"
+         ],
+         "%s Date": [
+            "%s 日期"
+         ],
+         "Date / Status": [
+            "日期 / 状态"
+         ],
+         "Loading items...": [
+            "正在加载项目..."
+         ],
+         "This page is set to be %1$stranslated manually%2$s using the WordPress Editor": [
+            "此页面已设置为使用 WordPress 编辑器 %1$s手动翻译%2$s"
+         ],
+         "%1$d %2$s selected": [
+            "已选择 %1$d 个 %2$s"
+         ],
+         "items": [
+            "项目"
+         ],
+         "Filtering is disabled to show all selected items": [
+            "过滤已禁用以显示所有选定项目"
+         ],
+         "Apply filter": [
+            "应用过滤器"
+         ],
+         "%1$d %2$s not showing": [
+            "%1$d 个 %2$s 未显示"
+         ],
+         "Show selected items": [
+            "显示选定项目"
+         ],
+         "Looking for more items...": [
+            "正在查找更多项目..."
+         ],
+         " / page": [
+            " / 页"
+         ],
+         "Previous": [
+            "上一页"
+         ],
+         "Next": [
+            "下一步"
+         ],
+         "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
+            "您的站点内容过多，无法放入单个翻译批次。请使用过滤器减少选择，然后点击“全选”。"
+         ],
+         "The current filter captures too much content. Narrow it down to enable \"select all\" for translation.": [
+            "当前过滤器包含的内容过多。请缩小范围以启用翻译“全选”。"
+         ],
+         "Select All": [
+            "全选"
+         ],
+         "All %d items matching criteria are selected": [
+            "已选择所有符合条件的 %d 个项目"
+         ],
+         "All %d items in this section are selected": [
+            "已选择此部分中的所有 %d 个项目"
+         ],
+         "You have too many items to send for translation at once. Apply a filter to narrow down the items to enable this option.": [
+            "您一次发送翻译的项目过多。请应用过滤器缩小项目范围以启用此选项。"
+         ],
+         "Clear selection": [
+            "清除选择"
+         ],
+         "Select all items that match this search": [
+            "选择所有匹配此搜索的项目"
+         ],
+         "Loading...": [
+            "正在加载..."
+         ],
+         "Select all %ss": [
+            "选择所有 %s"
+         ],
+         "Save note": [
+            "保存备注"
+         ],
+         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
+            "以下目标语言不支持自动翻译：%s。请<a>映射到已知语言</a>以启用自动翻译。"
+         ],
+         "The site's default language %s doesn't support automatic translation.": [
+            "站点的默认语言 %s 不支持自动翻译。"
+         ],
+         "Some sections are hidden due to current filter settings or because they have no items. <show_all>Show all translation statuses</show_all>": [
+            "由于当前的过滤器设置或因为没有项目，某些部分已被隐藏。<show_all>显示所有翻译状态</show_all>"
+         ],
+         "Step 1": [
+            "步骤 1"
+         ],
+         "Select items for translation": [
+            "选择要翻译的项目"
+         ],
+         "Clear filters": [
+            "清除过滤器"
+         ],
+         "WPML could not load these items from your site.": [
+            "WPML 无法从您的站点加载这些项目。"
+         ],
+         "Try again or reload the page. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses.": [
+            "请重试或重新加载页面。如果问题仍然存在，请检查站点的 PHP 错误日志中是否有破坏 WPML 响应的输出。"
+         ],
+         "Try again": [
+            "重试"
+         ],
+         "strings": [
+            "字符串"
+         ],
+         "WPML didn't find any %s matching your criteria.": [
+            "WPML 未找到任何符合您条件的 %s。"
+         ],
+         "You have too many items selected to use this feature. Deselect some of the items to enable it.": [
+            "您选择的项目过多，无法使用此功能。请取消选择部分项目以启用它。"
+         ],
+         "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can send this content now and it will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>.": [
+            "为 <site>%2$s</site> 设置的<strong>每月支出限额</strong>中还剩余 <strong>%1$s</strong> 个字数（已使用 <figure>%4$s</figure> 中的 <figure>%3$s</figure>）。您现在可以发送此内容，它将被翻译直到达到限额。其余部分将在提高限额或限额于 <strong>%5$s</strong> 重置后继续。"
+         ],
+         "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can turn this on now and content will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>.": [
+            "为 <site>%2$s</site> 设置的<strong>每月支出限额</strong>中还剩余 <strong>%1$s</strong> 个字数（已使用 <figure>%4$s</figure> 中的 <figure>%3$s</figure>）。您现在可以开启此功能，内容将被翻译直到达到限额。其余部分将在提高限额或限额于 <strong>%5$s</strong> 重置后继续。"
+         ],
+         "Raise the cap": [
+            "提高限额"
+         ],
+         "Only the account owner can do this.": [
+            "只有账户所有者可以执行此操作。"
+         ],
+         "Show strings in:": [
+            "显示字符串于："
+         ],
+         "Display Columns": [
+            "显示列"
+         ],
+         "Close modal": [
+            "关闭模态框"
+         ],
+         "Select visible columns": [
+            "选择可见列"
+         ],
+         "String": [
+            "字符串"
+         ],
+         "Name": [
+            "名称"
+         ],
+         "Domain": [
+            "域"
+         ],
+         "Source": [
+            "源"
+         ],
+         "Type": [
+            "类型"
+         ],
+         "Apply": [
+            "应用"
+         ],
+         "All domains": [
+            "所有域名"
+         ],
+         "Domain:": [
+            "域："
+         ],
+         "All sources": [
+            "所有来源"
+         ],
+         "Frontend (viewed)": [
+            "前端（已查看）"
+         ],
+         "Backend (viewed)": [
+            "后端（已查看）"
+         ],
+         "Unknown": [
+            "未知"
+         ],
+         "Source:": [
+            "来源："
+         ],
+         "String or Name:": [
+            "字符串或名称："
+         ],
+         "Search string or a name": [
+            "搜索字符串或名称"
+         ],
+         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
+            "此过滤器仅在来源设置为“前端”或“后端”时可用。"
+         ],
+         "front-end": [
+            "前端"
+         ],
+         "back-end": [
+            "后端"
+         ],
+         "viewed": [
+            "已查看"
+         ],
+         "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
+            "打开主题和插件本地化页面，您可以在其中扫描主题和插件中尚未登记的字符串，并使其在此处可供翻译。"
+         ],
+         "Finding strings in themes and plugins": [
+            "在主题和插件中查找字符串"
+         ],
+         "Strings in the theme and plugins": [
+            "主题和插件中的字符串"
+         ],
+         "Translate front-end texts you can customize from the WordPress admin like footer text, copyright notices, plugin options and settings, time format, widget texts, and more.": [
+            "翻译您可以从 WordPress 管理后台自定义的前端文本，如页脚文本、版权声明、插件选项和设置、时间格式、小工具文本等。"
+         ],
+         "Translating Strings From Admin and Settings": [
+            "翻译来自管理和设置的字符串"
+         ],
+         "Translate texts in admin screens": [
+            "翻译管理屏幕中的文本"
+         ],
+         "Translate User Meta Information": [
+            "翻译用户元信息"
+         ],
+         "Making User Meta Information Translatable": [
+            "使用户元信息可翻译"
+         ],
+         "Translate user profile strings": [
+            "翻译用户个人资料字符串"
+         ],
+         "No strings have been registered for translation yet. Open your site's front-end (<a/>) and WPML will automatically detect the untranslated strings and list them here. ": [
+            "尚未登记任何要翻译的字符串。打开您站点的前端 (<a/>)，WPML 将自动检测未翻译的字符串并在此列出。 "
+         ],
+         "hide details": [
+            "隐藏详情"
+         ],
+         "more details": [
+            "更多详情"
+         ],
+         "Still can't find the strings you're looking to translate? Add more strings for translation.": [
+            "仍然找不到您想要翻译的字符串？添加更多字符串进行翻译。"
+         ],
+         "Not seeing strings that you are looking for?": [
+            "没看到您正在寻找的字符串？"
+         ],
+         "Enable the autoregistration setting.": [
+            "启用自动登记设置。"
+         ],
+         "Visit translations on the site's frontend for WPML to see which strings are missing translations. Visiting one language is enough: %s.": [
+            "访问站点前端的翻译，以便 WPML 查看哪些字符串缺少翻译。访问一种语言就足够了：%s。"
+         ],
+         "Alternatively, you can register strings manually.": [
+            "或者，您可以手动登记字符串。"
+         ],
+         "Registering new strings found on your site…": [
+            "正在登记在您的站点上发现的新字符串…"
+         ],
+         "Registering new strings is paused: there is not enough PHP memory to continue. Increase the memory limit or <retryQueue>try again</retryQueue>.": [
+            "登记新字符串已暂停：没有足够的 PHP 内存来继续。请增加内存限制或 <retryQueue>重试</retryQueue>。"
+         ],
+         "Registering new strings was interrupted. <retryQueue>Try again</retryQueue>": [
+            "登记新字符串已中断。<retryQueue>重试</retryQueue>"
+         ],
+         "New strings were registered while you were working. <updateStringsList>Update the list</updateStringsList>": [
+            "在您工作时登记了新字符串。<updateStringsList>更新列表</updateStringsList>"
+         ],
+         "<b>Translate Everything</b> translates only those strings which are registered in English language": [
+            "<b>自动翻译所有内容</b>仅翻译以英语登记的字符串"
+         ],
+         "Most strings from your plugins and theme are in English, so we’re showing them alongside your default language. Use the <b>Source Language</b> filter to view strings in a specific language.": [
+            "您的插件和主题中的大多数字符串都是英语，因此我们将它们与您的默认语言一起显示。使用<b>源语言</b>过滤器查看特定语言的字符串。"
+         ],
+         "You’re using <b>%s</b> to cache your site, which may prevent WPML from automatically registering new strings. To fix this, clear your page cache, then visit your translated pages again on the frontend to detect new strings.": [
+            "您正在使用 <b>%s</b> 来缓存您的站点，这可能会阻止 WPML 自动登记新字符串。要修复此问题，请清除页面缓存，然后再次访问前端的翻译页面以检测新字符串。"
+         ],
+         "WPML can detect strings that appear on the site and list them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here only the strings that actually appear on the site, you need to enable this feature.": [
+            "WPML 可以检测站点上出现的字符串并在此列出。此功能可帮助您识别站点上实际出现的字符串并进行翻译。要在此仅查看站点上实际出现的字符串，您需要启用此功能。"
+         ],
+         "WPML detects strings that appear on the site and lists them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here all the strings in the site, you need to disable this feature.": [
+            "WPML 检测站点上出现的字符串并在此列出。此功能可帮助您识别站点上实际出现的字符串并进行翻译。要在此查看站点中的所有字符串，您需要禁用此功能。"
+         ],
+         "Detect untranslated strings": [
+            "检测未翻译的字符串"
+         ],
+         "WPML can detect untranslated strings and automatically register them for translation. This happens in real time as you or your visitors browse your website.": [
+            "WPML 可以检测未翻译的字符串并自动登记它们以进行翻译。当您或您的访客浏览您的网站时，这会实时发生。"
+         ],
+         "Automatically register untranslated strings": [
+            "自动登记未翻译的字符串"
+         ],
+         "Learn how to use auto-registration": [
+            "了解如何使用自动登记"
+         ],
+         "recommended": [
+            "推荐"
+         ],
+         "Also register strings from the website's back-end": [
+            "同时登记来自网站后端的字符串"
+         ],
+         "Save settings": [
+            "保存设置"
+         ],
+         "Request failed because of the network error": [
+            "由于网络错误，请求失败"
+         ],
+         "Enabled": [
+            "已启用"
+         ],
+         "Disabled": [
+            "已禁用"
+         ],
+         "Modify": [
+            "修改"
+         ],
+         "You can only translate %1$s from the site's default language (%2$s).": [
+            "您只能从站点的默认语言 (%2$s) 翻译 %1$s。"
+         ],
+         "Search taxonomy or a name": [
+            "搜索分类法或名称"
+         ],
+         "Filter by post type": [
+            "按文章类型筛选"
+         ],
+         "All post types": [
+            "所有文章类型"
+         ],
+         "%d Not-translatable taxonomy is hidden. Switch it to <i>Translatable</i> in <a>WPML → Settings</a> to include it here.": [
+            "隐藏了 %d 个不可翻译的分类法。在 <a>WPML → 设置</a>中将它们切换为<i>可翻译</i>以将其包含在此处。"
+         ],
+         "No translatable taxonomies match the current filters.": [
+            "没有可翻译的分类法符合当前筛选条件。"
+         ],
+         "Select all taxonomies": [
+            "选择所有分类法"
+         ],
+         "Sort by taxonomy": [
+            "按分类法排序"
+         ],
+         "Terms in": [
+            "项属于"
+         ],
+         "Post types": [
+            "文章类型"
+         ],
+         "Translated / Total terms": [
+            "已翻译 / 总项数"
+         ],
+         "translated": [
+            "已翻译"
+         ],
+         "translation in progress": [
+            "正在翻译"
+         ],
+         "preparing for translation": [
+            "正在准备翻译"
+         ],
+         "translation needs update": [
+            "翻译需要更新"
+         ],
+         "translation stalled - the job never reached our translation system": [
+            "翻译已停滞 - 作业未能送达我们的翻译系统"
+         ],
+         "partially translated": [
+            "部分已翻译"
+         ],
+         "not translated": [
+            "未翻译"
+         ],
+         "%1$s: %2$s": [
+            "%1$s：%2$s"
+         ],
+         "Open %s in the Taxonomy Translation tab": [
+            "在分类翻译选项卡中打开 %s"
+         ],
+         "Taxonomy labels and slug": [
+            "分类法标签和别名"
+         ],
+         "WPML String Translation is not active.": [
+            "WPML String Translation 尚未激活。"
+         ],
+         "Taxonomy labels and slugs are translated with <b>String Translation</b> — activate the plugin to translate them.": [
+            "分类法标签和别名通过 <b>String Translation</b> 进行翻译 — 请激活该插件以翻译它们。"
+         ],
+         "No taxonomy labels to translate.": [
+            "没有要翻译的分类法标签。"
+         ],
+         "Select all taxonomy labels": [
+            "选择所有分类法标签"
+         ],
+         "Taxonomy labels": [
+            "分类法标签"
+         ],
+         "Select labels for %s": [
+            "为 %s 选择标签"
+         ],
+         "Labels not detected by String Translation. Rescan needed.": [
+            "String Translation 未检测到标签。需要重新扫描。"
+         ],
+         "Labels not found": [
+            "未找到标签"
+         ],
+         "Scanning…": [
+            "正在扫描…"
+         ],
+         "Rescan": [
+            "重新扫描"
+         ],
+         "%d Taxonomy selected": [
+            "已选择 %d 个分类法"
+         ],
+         "<b>Translate Everything Automatically</b> (TEA) is active.": [
+            "<b>自动翻译所有内容</b> (TEA) 已激活。"
+         ],
+         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
+            "“可翻译”分类法中新建和更新的项将自动排队。在下方选择分类法，为任何剩余的未翻译项发送一次性批量作业。"
+         ],
+         "Switch Now": [
+            "立即切换"
+         ],
+         "Add site description": [
+            "添加站点说明"
+         ],
+         "Turn on now": [
+            "立即开启"
+         ],
+         "Set up <b>Translate Everything</b>": [
+            "设置<b>翻译所有内容</b>"
+         ],
+         "You’ve been translating with %s.": [
+            "您一直使用 %s 进行翻译。"
+         ],
+         "Your current translations stay exactly as they are. The switch to PTC affects only new and changed content. To refresh an old translation with PTC, re-send it from the <b>Translation Dashboard</b>. This works even while automatic translation runs. It skips anything already translated.": [
+            "您当前的翻译将保持原样。切换到 PTC 仅影响新内容和更改的内容。要使用 PTC 刷新旧翻译，请随时从<b>翻译仪表板</b>重新发送。即使在自动翻译运行时，此操作也有效。它会跳过任何已翻译的内容。"
+         ],
+         "They stay as they are. Automatic translation only touches content that isn’t translated yet. WPML skips anything you’ve already translated. To refresh a page, re-send it from the <b>Translation Dashboard</b> anytime.": [
+            "它们将保持原样。自动翻译仅处理尚未翻译的内容。WPML 会跳过您已经翻译的任何内容。要刷新页面，请随时从<b>翻译仪表板</b>重新发送。"
+         ],
+         "Add your site description and target audience": [
+            "添加您的站点说明和目标受众"
+         ],
+         "Save": [
+            "保存"
+         ],
+         "Saving…": [
+            "正在保存…"
+         ],
+         "Your automatic translation pricing has been upgraded": [
+            "您的自动翻译定价已升级"
+         ],
+         "Loading notice details…": [
+            "正在加载通知详情…"
+         ],
+         "With WPML 5, automatic translation now costs once per page, per language. After that, edits that add words cost only the added words — edits that don’t grow the page are free. Rework copy, run A/B tests, refine wording. You’re already on PTC, with automatic translation on. There’s nothing to change.": [
+            "在 WPML 5 中，自动翻译现在按每个页面、每种语言收费一次。之后，增加字数的编辑仅对增加的字数收费 — 不增加页面的编辑是免费的。您可以重写文案、运行 A/B 测试、优化措辞。您已经在使用 PTC，并且已开启自动翻译。无需更改任何内容。"
+         ],
+         "Got it": [
+            "知道了"
+         ],
+         "See your pricing": [
+            "查看您的定价"
+         ],
+         "You’re all set. The new pricing is active.": [
+            "您已准备就绪。新定价已生效。"
+         ],
+         "Automatic translation now costs once per page, per language. Edits afterwards are free. New content stays translated as you publish.": [
+            "自动翻译现在按每个页面、每种语言收费一次。之后的编辑是免费的。新内容在发布时保持翻译状态。"
+         ],
+         "What happens to my existing translations?": [
+            "我现有的翻译会怎样？"
+         ],
+         "Switch to PTC for better translations and the new pricing": [
+            "切换到 PTC 以获得更好的翻译和新定价"
+         ],
+         "Pay once per page, then edit for free": [
+            "每页支付一次，然后免费编辑"
+         ],
+         "You’re translating your whole site automatically with %s. The new pay-once pricing applies when you use PTC, our recommended AI engine.": [
+            "您正在使用 %s 自动翻译整个站点。当您使用 PTC（我们推荐的 AI 引擎）时，将适用新的“支付一次”定价。"
+         ],
+         "WPML 5 brings a simpler, lower price for automatic translation, using <strong>Private Translation Cloud (PTC)</strong>, WPML’s own AI engine. Set it up to have WPML translate your whole site automatically.": [
+            "WPML 5 使用 <strong>Private Translation Cloud (PTC)</strong>（WPML 自有的 AI 引擎）带来了更简单、更低的自动翻译价格。设置它以让 WPML 自动翻译您的整个站点。"
+         ],
+         "What you gain": [
+            "您的收益"
+         ],
+         "Pay once per page, in each language.": [
+            "每种语言的每个页面仅需支付一次。"
+         ],
+         "After that, only added words are charged.": [
+            "之后，仅对增加的字数收费。"
+         ],
+         "Edit as much as you want.": [
+            "随心所欲地进行编辑。"
+         ],
+         "A/B tests, copy changes, and rewrites cost only the words they add.": [
+            "A/B 测试、文案更改和重写仅对增加的字数收费。"
+         ],
+         "Translations in your voice.": [
+            "符合您风格的翻译。"
+         ],
+         "PTC learns your terms and tone from your existing translations.": [
+            "PTC 会从您现有的翻译中学习您的术语和语气。"
+         ],
+         "Questions? Tap to expand": [
+            "有疑问？点击展开"
+         ],
+         "Why is the pay-once pricing only for PTC?": [
+            "为什么只有 PTC 采用按页计费的定价方式？"
+         ],
+         "PTC is WPML’s own AI engine. It reads the whole page, learns your terms and tone, and is backed by our quality guarantee, so we can price it once per page. DeepL, Google and Microsoft translate segment by segment and are priced per word, changes included.": [
+            "PTC 是 WPML 自有的 AI 引擎。它会阅读整个页面，学习您的术语和语气，并由我们的质量保证提供支持，因此我们可以按每页定价一次。DeepL、Google 和 Microsoft 按段落翻译并按字数计费，且包含更改费用。"
+         ],
+         "How much will I pay?": [
+            "我需要支付多少钱？"
+         ],
+         "You’re on %s: per word, changes included. Switch to PTC to pay once per page, with free changes.": [
+            "您正在使用 %s：按字数计费，包含更改费用。切换到 PTC 即可按页计费，且更改免费。"
+         ],
+         "On PTC, you pay once per page, in each language. After that, edits to that page are free. You pay again only if the page grows past what you first paid for. In short: you pay for new content, not for updates.": [
+            "在 PTC 上，您按每个页面、每种语言支付一次。之后，对该页面的编辑是免费的。只有当页面增长超过您最初支付的字数时，您才需要再次付费。简而言之：您为新内容付费，而不是为更新付费。"
+         ],
+         "Yes, show me how": [
+            "是的，告诉我如何操作"
+         ],
+         "Not interested": [
+            "不感兴趣"
+         ],
+         "Do these in order. If you turn on automatic translation before choosing PTC, WPML translates your whole site with the wrong engine. You’d then pay to redo that work.": [
+            "请按顺序执行这些步骤。如果您在选择 PTC 之前开启自动翻译，WPML 将使用错误的引擎翻译您的整个站点。届时您将不得不付费重新完成该工作。"
+         ],
+         "Do these in order. The engine change affects only new and changed content. Your current translations stay as they are.": [
+            "请按顺序执行这些步骤。引擎更改仅影响新内容和更改的内容。您当前的翻译将保持原样。"
+         ],
+         "Switch on the new pricing in %d step": [
+            "通过 %d 个步骤切换到新定价"
+         ],
+         "Done": [
+            "完成"
+         ],
+         "Automatic translation is paused. Settle it in the <b>Translate Everything</b> box first.": [
+            "自动翻译已暂停。请先在<b>翻译所有内容</b>框中解决此问题。"
+         ],
+         "Do the step above first": [
+            "请先执行上述步骤"
+         ],
+         "Switch to the <b>Advanced Translation Editor</b>": [
+            "切换到<b>高级翻译编辑器</b>"
+         ],
+         "Switch your engine to PTC": [
+            "将您的引擎切换到 PTC"
+         ],
+         "Turn on <b>Translate Everything Automatically</b>": [
+            "开启<b>自动翻译所有内容</b>"
+         ],
+         "The Advanced Translation Editor is your editor now.": [
+            "高级翻译编辑器现在是您的编辑器。"
+         ],
+         "You’re using the Classic Translation Editor, an old legacy tool. PTC and automatic translation run in the Advanced Translation Editor, which also gives you:": [
+            "您正在使用经典翻译编辑器，这是一个旧的传统工具。PTC 和自动翻译在高级翻译编辑器中运行，它还为您提供："
+         ],
+         "recommended: pay once per page. PTC needs a short description of your site; the next dialog asks for it.": [
+            "推荐：按页计费。PTC 需要对您的站点进行简短说明；下一个对话框将询问该说明。"
+         ],
+         "recommended: pay once per page": [
+            "推荐：按页计费"
+         ],
+         "Only you can describe your site. PTC uses this to translate in your voice. Enter it in AI Settings, then Save.": [
+            "只有您可以描述您的站点。PTC 使用此信息以您的风格进行翻译。在 AI 设置中输入描述，然后保存。"
+         ],
+         "Starts with your current engine, %s, priced per word. After step 1 it runs on PTC, pay once per page.": [
+            "从您当前的引擎 %s 开始，按字数计费。完成第 1 步后，它将运行在 PTC 上，按页计费。"
+         ],
+         "WPML translates your whole site. New content stays translated as you publish.": [
+            "WPML 翻译您的整个站点。新内容在发布时保持翻译状态。"
+         ],
+         "Translation Memory": [
+            "翻译记忆库"
+         ],
+         "HTML Protection": [
+            "HTML 保护"
+         ],
+         "Glossary": [
+            "术语表"
+         ],
+         "Spellchecker": [
+            "拼写检查器"
+         ],
+         "AI Assistant": [
+            "AI 助手"
+         ],
+         "Automatic Translation": [
+            "自动翻译"
+         ],
+         "<b>Translate Everything Automatically</b> is already on, with %s (per word).": [
+            "<b>自动翻译所有内容</b>已开启，使用的是 %s（按字数计费）。"
+         ],
+         "Not now": [
+            "以后再说"
+         ],
+         "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
+            "连接错误。请稍等片刻并重新加载此页面。如果问题仍然存在，请联系 WPML 支持。"
+         ],
+         "You don’t have enough prepaid words to translate this content.": [
+            "您没有足够的预付费字数来翻译此内容。"
+         ],
+         "You have %1$s prepaid words — %2$s more are needed to translate this content": [
+            "您有 %1$s 个预付费字数 — 还需要 %2$s 个字数才能翻译此内容"
+         ],
+         "You’re missing %1$s prepaid words for the translation jobs in progress — %2$s are needed in total": [
+            "进行中的翻译作业缺少 %1$s 个预付费字数 — 总共需要 %2$s 个"
+         ],
+         "Automatic translation costs:": [
+            "自动翻译费用："
+         ],
+         "Words": [
+            "字数"
+         ],
+         "Words to translate automatic": [
+            "自动翻译字数"
+         ],
+         "Words required:": [
+            "所需字数："
+         ],
+         "Pricing": [
+            "定价"
+         ],
+         "Your Automatic Translation Words": [
+            "您的自动翻译字数"
+         ],
+         "To proceed with translation, activate <b>Pay-As-You-Go</b> or assign prepaid words.": [
+            "要继续翻译，请激活<b>现收现付</b>或分配预付费字数。"
+         ],
+         "<b>Pay-As-You-Go</b> activated": [
+            "<b>现收现付</b>已激活"
+         ],
+         "You can now continue translating your content automatically.": [
+            "您现在可以继续自动翻译您的内容。"
+         ],
+         "%s word assigned to this site.": [
+            "已为该站点分配 %s 个单词。"
+         ],
+         "Leave existing translations as they are": [
+            "保留现有翻译原样"
+         ],
+         "Overwrite existing translations": [
+            "覆盖现有翻译"
+         ],
+         "Some of the content you want to translate is already translated": [
+            "您要翻译的部分内容已经翻译过了"
+         ],
+         "What do you want to do with the content that's already translated?": [
+            "您想如何处理已经翻译的内容？"
+         ],
+         "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
+            "来自 DeepL、Google Translate 和 Microsoft Translator 的翻译最好在发布前进行审核。"
+         ],
+         "Translations from PTC are publish-ready, so you can publish them without review.": [
+            "来自 PTC 的翻译已达到发布标准，因此您可以直接发布而无需审核。"
+         ],
+         "Suggested deadline:": [
+            "建议截止日期："
+         ],
+         "Set a batch name and deadline": [
+            "设置批次名称和截止日期"
+         ],
+         "You can assign a custom name to this batch for easy tracking and suggest a deadline to clarify the priority for translators.": [
+            "您可以为此批次分配自定义名称以便于跟踪，并建议截止日期以向译员明确优先级。"
+         ],
+         "Batch name:": [
+            "批次名称："
+         ],
+         "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s translator</add_yourself> to the site.<br/> Add yourself as %2$s translator and click <check_again>check again</check_again> or choose a different translation option.": [
+            "为了将您自己分配为译员，您首先需要将<add_yourself>自己作为 %1$s 译员添加</add_yourself>到站点。<br/> 将自己添加为 %2$s 译员并点击<check_again>重新检查</check_again>或选择其他翻译选项。"
+         ],
+         "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s to %2$s translator</add_yourself> to the site.<br/> Add yourself as %3$s to %4$s translator and click <check_again>check again</check_again> or choose a different translation option.": [
+            "为了将您自己分配为译员，您首先需要将<add_yourself>自己作为 %1$s 到 %2$s 的译员添加</add_yourself>到站点。<br/> 将自己添加为 %3$s 到 %4$s 译员并点击<check_again>重新检查</check_again>或选择其他翻译选项。"
+         ],
+         "Checking": [
+            "正在检查"
+         ],
+         "In order to assign a translation service, you first need to <activate_ts>activate a translation service</activate_ts>.<br/>Activate a translation service and click <check_again>check again</check_again> or choose a different translation option.": [
+            "为了分配翻译服务，您首先需要<activate_ts>激活翻译服务</activate_ts>。<br/>激活翻译服务并点击<check_again>重新检查</check_again>或选择其他翻译选项。"
+         ],
+         " Checking ": [
+            " 正在检查 "
+         ],
+         "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
+            "为了进行自动翻译，您首先需要<enable_ate>启用 WPML 的<b>高级翻译编辑器</b></enable_ate>。<br/>启用<b>高级翻译编辑器</b>并点击<check_again>重新检查</check_again>或选择其他翻译选项。"
+         ],
+         "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
+            "所选内容是使用<b>经典翻译编辑器</b>翻译的，无法发送进行自动翻译。要允许此操作，请在 <wpmlSettingLink>WPML 设置</wpmlSettingLink>页面中启用“也用于旧翻译”。"
+         ],
+         "Some of the selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
+            "所选的部分内容是使用<b>经典翻译编辑器</b>翻译的，无法发送进行自动翻译。要允许此操作，请在 <wpmlSettingLink>WPML 设置</wpmlSettingLink>页面中启用“也用于旧翻译”。"
+         ],
+         "Content that is already translated into this language will not be duplicated; its existing translation is kept.\nWhen duplicating content, please first duplicate parent pages to maintain the site's hierarchy.": [
+            "已经翻译成此语言的内容将不会被复制；其现有翻译将被保留。\n复制内容时，请先复制父页面以保持站点的层级结构。"
+         ],
+         "Some of the selected content is already being translated. This will cancel any in-progress translations.": [
+            "所选的部分内容已经在翻译中。这将取消任何正在进行的翻译。"
+         ],
+         "The selected items were translated using the WordPress Editor and will be overwritten with automatic translations.": [
+            "所选项目是使用 WordPress 编辑器翻译的，将被自动翻译覆盖。"
+         ],
+         "Some of the selected content was translated using the WordPress Editor and will be overwritten.": [
+            "所选的部分内容是使用 WordPress 编辑器翻译的，将被覆盖。"
+         ],
+         "Translated content structure will change. The selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
+            "翻译内容的结构将发生变化。所选项目之前是在 WordPress 编辑器中翻译的。当 WPML 自动翻译它们时，翻译后文章的结构将恢复为与原始内容匹配。现有的翻译文本仍将用作基础，以便保留语气和术语。"
+         ],
+         "Translated content structure will change. Some of the selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
+            "翻译内容的结构将发生变化。所选的部分项目之前是在 WordPress 编辑器中翻译的。当 WPML 自动翻译它们时，翻译后文章的结构将恢复为与原始内容匹配。现有的翻译文本仍将用作基础，以便保留语气和术语。"
+         ],
+         "In order to assign to a translator, you first need to <add_translators>add %1$s translators</add_translators> to the site.<br/> Add %2$s translators and click <check_again>check again</check_again> or choose a different translation option.": [
+            "为了分配给译员，您首先需要向站点<add_translators>添加 %1$s 译员</add_translators>。<br/> 添加 %2$s 译员并点击<check_again>重新检查</check_again>或选择其他翻译选项。"
+         ],
+         "In order to assign to a translator, you first need to <add_translators>add %1$s to %2$s translators</add_translators> to the site.<br/> Add %3$s to %4$s translators and click <check_again>check again</check_again> or choose a different translation option.": [
+            "为了分配给译员，您首先需要向站点<add_translators>添加 %1$s 到 %2$s 的译员</add_translators>。<br/> 添加 %3$s 到 %4$s 译员并点击<check_again>重新检查</check_again>或选择其他翻译选项。"
+         ],
+         "Your site doesn't have any reviewers for %s. This means that you’re the only person who can review these translations.": [
+            "您的站点没有任何 %s 的审核员。这意味着您是唯一可以审核这些翻译的人。"
+         ],
+         "Your site doesn't have any reviewers yet. This means that you’re the only person who can review translations.": [
+            "您的站点还没有任何审核员。这意味着您是唯一可以审核翻译的人。"
+         ],
+         "If you want other people to review the translations, go to <a>Settings → Translators</a> and add translators. They will be able to both review and translate content for you.": [
+            "如果您想让其他人审核翻译，请前往 <a>设置 → 译者</a> 并添加译者。他们将能够为您审核和翻译内容。"
+         ],
+         "Automatic translation is paused — payment required": [
+            "自动翻译已暂停 — 需要付款"
+         ],
+         "A payment of %s could not be processed. Pay it in the <b>Translate Everything</b> box above to resume.": [
+            "无法处理 %s 的付款。请在上面的<b>翻译所有内容</b>框中支付以恢复。"
+         ],
+         "Automatic translation is paused: monthly spending cap reached": [
+            "自动翻译已暂停：已达到每月支出限额"
+         ],
+         "<site>%1$s</site> reached its monthly spending cap (<figure>%2$s</figure> of <figure>%3$s</figure> words used). Raise it above to continue.": [
+            "<site>%1$s</site> 已达到其每月支出限额（已使用 <figure>%3$s</figure> 个单词中的 <figure>%2$s</figure> 个）。请在上方提高限额以继续。"
+         ],
+         "WPML does not support duplicating strings. Your selection to duplicate strings to %1$s will be ignored if you proceed with the translation.": [
+            "WPML 不支持复制字符串。如果您继续翻译，将字符串复制到 %1$s 的选择将被忽略。"
+         ],
+         "WPML does not support duplicating %1$s elements. Your selection to duplicate elements to %2$s will be ignored if you proceed with the translation.": [
+            "WPML 不支持复制 %1$s 元素。如果您继续翻译，您选择将元素复制到 %2$s 的操作将被忽略。"
+         ],
+         "WPML does not support duplicating %1$s elements and strings. Your selection to duplicate elements and strings to %2$s will be ignored if you proceed with the translation.": [
+            "WPML 不支持复制 %1$s 元素和字符串。如果您继续翻译，您选择将元素和字符串复制到 %2$s 的操作将被忽略。"
+         ],
+         "WPML does not support duplicating strings.": [
+            "WPML 不支持复制字符串。"
+         ],
+         "WPML does not support duplicating %1$s elements.": [
+            "WPML 不支持复制 %1$s 元素。"
+         ],
+         "WPML does not support duplicating %1$s elements and strings.": [
+            "WPML 不支持复制 %1$s 元素和字符串。"
+         ],
+         "WPML does not support duplicating taxonomies.": [
+            "WPML 不支持复制分类法。"
+         ],
+         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
+            "WPML 不支持复制分类法。如果您继续翻译，您选择将分类法复制到 %1$s 的操作将被忽略。"
+         ],
+         "Finish setting up %s on your site": [
+            "完成在您的站点上设置 %s"
+         ],
+         "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
+            "您需要对 %s 进行身份验证才能向其发送翻译内容。<br/>访问<a>译者选项卡</a>完成设置，然后点击<check_again>重新检查</check_again>或选择其他翻译选项。"
+         ],
+         "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
+            "所选的部分内容有待审核的翻译。再次发送将替换该翻译。"
+         ],
+         "You selected multiple translation methods for content across different languages:": [
+            "您为不同语言的内容选择了多种翻译方法："
+         ],
+         "Sent for translation": [
+            "已发送翻译"
+         ],
+         "Some items were not sent for translation": [
+            "部分项目未发送翻译"
+         ],
+         "Sending for translation failed": [
+            "发送翻译失败"
+         ],
+         "WPML can't reach our translation system right now, so these items haven't been sent. Check the connection and retry.": [
+            "WPML 目前无法连接到我们的翻译系统，因此尚未发送这些项目。请检查连接并重试。"
+         ],
+         "WPML could not read the translation server's answer about these items. If you send them anyway and the server already has them, you may be charged for them twice.": [
+            "WPML 无法读取翻译服务器关于这些项目的回复。如果您坚持发送，而服务器上已经存在这些内容，您可能会被重复收费。"
+         ],
+         "Check connection and retry": [
+            "检查连接并重试"
+         ],
+         "Retry not-sent items": [
+            "重试未发送的项目"
+         ],
+         "Send anyway": [
+            "仍然发送"
+         ],
+         "Close": [
+            "关闭"
+         ],
+         "Continue sending": [
+            "继续发送"
+         ],
+         "Ok": [
+            "确定"
+         ],
+         "<s>1 item</s> is being translated automatically.": [
+            "<s>%d 个项目</s>正在自动翻译。"
+         ],
+         "You can track their progress at the top of the page.": [
+            "您可以在页面顶部跟踪它们的进度。"
+         ],
+         "From now on, WPML will automatically translate new content on your site.": [
+            "从现在起，WPML 将自动翻译您站点上的新内容。"
+         ],
+         "This number might vary because you enabled the <b>Translate Everything Automatically</b> Mode.": [
+            "此数字可能会有所变化，因为您启用了<b>自动翻译所有内容</b>模式。"
+         ],
+         "From now on, WPML will automatically translate your site's content.": [
+            "从现在起，WPML 将自动翻译您站点的内容。"
+         ],
+         "Automatic translations summary": [
+            "自动翻译摘要"
+         ],
+         "<s>1 item</s> has been successfully assigned to you! To check its status, please go to <s>Translation Tasks</s>. <translations_queue/>": [
+            "<s>%d 个项目</s>已成功分配给您！有关状态更新，请前往<s>翻译任务</s>。 <translations_queue/>"
+         ],
+         "Currently logged in translator summary": [
+            "当前登录的译员摘要"
+         ],
+         "Go to Translation Tasks": [
+            "前往翻译任务"
+         ],
+         "<s>1 item</s> has been duplicated.": [
+            "<s>%d 个项目</s>已复制。"
+         ],
+         "Duplication summary": [
+            "复制摘要"
+         ],
+         "Please try again in a few minutes. If the issue persists, <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, copy the technical details below and paste them into our Maiya agent for assistance.": [
+            "请在几分钟后重试。如果问题仍然存在，请<supportLink>在我们的论坛主题 (Maiya) 中开票</supportLink>，复制下面的技术详情并将其粘贴给我们的 Maiya 代理以寻求帮助。"
+         ],
+         "There was a problem sending your content for translation.": [
+            "发送翻译内容时出现问题。"
+         ],
+         "See technical details": [
+            "查看技术详情"
+         ],
+         "Hide technical details": [
+            "隐藏技术详情"
+         ],
+         "Some of the selected strings are already registered or translated into %s. Since their source language matches the target language, they cannot be retranslated.": [
+            "所选的部分字符串已注册或已翻译为 %s。由于它们的源语言与目标语言匹配，因此无法重新翻译。"
+         ],
+         "Some of the selected content has already been translated from %1$s to %2$s and cannot be re-translated from %3$s to %4$s.": [
+            "所选的部分内容已从 %1$s 翻译为 %2$s，无法从 %3$s 重新翻译为 %4$s。"
+         ],
+         "Content already translated": [
+            "内容已翻译"
+         ],
+         "Some of the selected content has a translation in progress, so it was not duplicated.": [
+            "所选的部分内容正在翻译中，因此未被复制。"
+         ],
+         "Content already being translated": [
+            "内容已在翻译中"
+         ],
+         "WPML could not count the words of these items.": [
+            "WPML 无法统计这些项目的字数。"
+         ],
+         "Some content couldn't be sent to translation.": [
+            "部分内容无法发送翻译。"
+         ],
+         "WPML did not create translations for some languages because of the following reasons:": [
+            "由于以下原因，WPML 未为某些语言创建翻译："
+         ],
+         "%s Flag": [
+            "%s 旗帜"
+         ],
+         "<s>1 item</s> has been successfully sent to translators!": [
+            "<s>%d 个项目</s>已成功发送给译员！"
+         ],
+         "Local translations summary": [
+            "本地翻译摘要"
+         ],
+         "You can check their status in WPML → Translation": [
+            "您可以在 WPML → 翻译中检查它们的状态"
+         ],
+         "Items not sent:": [
+            "未发送的项目："
+         ],
+         "%d item was sent for translation.": [
+            "已发送 %d 个项目进行翻译。"
+         ],
+         "%d item was not sent.": [
+            "%d 个项目未发送。"
+         ],
+         "Reason: %s": [
+            "原因：%s"
+         ],
+         "Items already sent will be translated and delivered normally.": [
+            "已发送的项目将正常翻译并交付。"
+         ],
+         "Continue to %s": [
+            "继续访问 %s"
+         ],
+         "We were unable to send the following batches for professional translation:": [
+            "我们无法将以下批次发送进行专业翻译："
+         ],
+         "<p><a><s>Contact WPML support for help</s></a></p>": [
+            "<p><a><s>联系 WPML 支持寻求帮助</s></a></p>"
+         ],
+         "Translation Service": [
+            "翻译服务"
+         ],
+         "sending for professional translation..": [
+            "正在发送进行专业翻译.."
+         ],
+         "<s>%1$d item</s> is being sent for translation to %2$s. Please continue to their site to start the translation.": [
+            "<s>%1$d 个项目</s>正在发送到 %2$s 进行翻译。请继续访问其网站以开始翻译。"
+         ],
+         "Translation service translations summary": [
+            "翻译服务翻译摘要"
+         ],
+         "One or more assigned translators are invalid. The translator may have been removed or their language permissions changed.<br/> Review your settings on the <translators_page>Translators page</translators_page>.": [
+            "一个或多个分配的译员无效。译员可能已被移除或其语言权限已更改。<br/> 请在<translators_page>译者页面</translators_page>上检查您的设置。"
+         ],
+         "The selected translation service is no longer valid. It may have been changed, unauthenticated, or deactivated.<br/> Review your settings on the <translators_page>Translators page</translators_page>.": [
+            "所选的翻译服务不再有效。它可能已被更改、取消身份验证或停用。<br/> 请在<translators_page>译者页面</translators_page>上检查您的设置。"
+         ],
+         "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
+            "当前选择的翻译编辑器不支持自动翻译。您必须启用<b>高级翻译编辑器</b>才能发送内容进行自动翻译。<br/> 请在 <wpml_settings>WPML 设置页面</wpml_settings>上检查您的设置。"
+         ],
+         "Validation error happened during send to translation.": [
+            "发送翻译时发生验证错误。"
+         ],
+         "Translate and Duplicate": [
+            "翻译并复制"
+         ],
+         "Duplicate": [
+            "复制"
+         ],
+         "Translate content": [
+            "翻译内容"
+         ],
+         "Checking translation engine…": [
+            "正在检查翻译引擎…"
+         ],
+         "Checking site context…": [
+            "正在检查站点背景…"
+         ],
+         "Could not check the translation engine. Reload the page to try again.": [
+            "无法检查翻译引擎。请刷新页面重试。"
+         ],
+         "Automatic translation is paused until the failed payment is settled. Pay it in the Translate Everything box.": [
+            "自动翻译已暂停，直到结清失败的付款。请在“翻译所有内容”框中支付。"
+         ],
+         "Please choose one of the available payment options.": [
+            "请选择一种可用的付款方式。"
+         ],
+         "Selected content is already translated": [
+            "所选内容已翻译"
+         ],
+         "Please select a review mode": [
+            "请选择审核模式"
+         ],
+         "Assign local translator or choose another option": [
+            "分配本地译员或选择其他选项"
+         ],
+         "Assign yourself or choose another option": [
+            "分配给您自己或选择其他选项"
+         ],
+         "Activate translation service or choose another option": [
+            "激活翻译服务或选择其他选项"
+         ],
+         "Activate the Advanced Translation Editor or choose another option": [
+            "激活高级翻译编辑器或选择其他选项"
+         ],
+         "Authenticate translation service or choose another option": [
+            "验证翻译服务或选择其他选项"
+         ],
+         "Please provide context to enable translation": [
+            "请提供背景信息以启用翻译"
+         ],
+         "Keep this page open while WPML sends your content for translation. Leaving now stops the remaining items from being sent.": [
+            "在 WPML 发送翻译内容时，请保持此页面打开。现在离开将停止发送剩余项目。"
+         ],
+         "Sending content for translation": [
+            "正在发送翻译内容"
+         ],
+         "<s>%1$s</s> cannot process more than <s>%2$d</s> jobs in a single batch. WPML will automatically split your jobs into separate batches to ensure an error-free delivery to <s>%3$s</s>. <br/><br/> Do you want to proceed?": [
+            "<s>%1$s</s> 在单个批次中无法处理超过 <s>%2$d</s> 个作业。WPML 将自动将您的作业拆分为单独的批次，以确保无误地交付给 <s>%3$s</s>。<br/><br/>您要继续吗？"
+         ],
+         "WPML will send jobs to %s in separate batches": [
+            "WPML 将分批向 %s 发送作业"
+         ],
+         "Yes, send jobs in separate batches": [
+            "是，分批发送作业"
+         ],
+         "No, I will split jobs myself": [
+            "不，我将自己拆分作业"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
+            "部分分类术语尚未发送。已发送的术语正在翻译中 - 点击“继续发送”以发送其余部分。"
+         ],
+         "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
+            "分类术语尚未发送。点击“继续发送”以发送它们。"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
+            "部分分类术语尚未发送。已发送的术语正在翻译中 - 请重试未发送的项目以发送其余部分。"
+         ],
+         "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
+            "分类术语尚未发送。请重试未发送的项目以发送它们。"
+         ],
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
+            "部分分类术语未发送翻译。已发送的术语正在翻译中 - 请再次发送其余术语以完成翻译。"
+         ],
+         "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
+            "WPML 无法发送分类术语进行翻译，因此均未发送。请重试。"
+         ],
+         "This will translate only your future content": [
+            "这将仅翻译您未来的内容"
+         ],
+         "This will translate your entire site": [
+            "这将翻译您的整个站点"
+         ],
+         "Translate everything automatically from now on, without asking me.": [
+            "从现在起自动翻译所有内容，无需询问我。"
+         ],
+         "Existing content": [
+            "现有内容"
+         ],
+         "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
+            "您选择了翻译 %1$s 中的字符串。只有这些字符串将被翻译为 %2$s。"
+         ],
+         "You selected to translate strings that are in %1$s and %2$s. Only these strings will be translated to %3$s.": [
+            "您选择了翻译 %1$s 和 %2$s 中的字符串。只有这些字符串将被翻译为 %3$s。"
+         ],
+         "Source language": [
+            "源语言"
+         ],
+         "Target language": [
+            "目标语言"
+         ],
+         "Words to translate": [
+            "待翻译字数"
+         ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$s总计：%2$s %3$s"
+         ],
+         "Translation service additional options": [
+            "翻译服务附加选项"
+         ],
+         "Refresh": [
+            "刷新"
+         ],
+         "Fetching translation service data...": [
+            "正在获取翻译服务数据..."
+         ],
+         "-": [
+            "-"
+         ],
+         "Translate automatically": [
+            "自动翻译"
+         ],
+         "Translate myself": [
+            "自己翻译"
+         ],
+         "Assign a translator": [
+            "分配译员"
+         ],
+         "Assign translation service": [
+            "分配翻译服务"
+         ],
+         "Do nothing": [
+            "不执行任何操作"
+         ],
+         "Please choose": [
+            "请选择"
+         ],
+         "Choose a translator": [
+            "选择译员"
+         ],
+         "First available": [
+            "首位可用译员"
+         ],
+         "(Me)": [
+            "（我）"
+         ],
+         "Translation quality": [
+            "翻译质量"
+         ],
+         "Expand": [
+            "展开"
+         ],
+         "%1$s · %2$d": [
+            "%1$s · %2$d"
+         ],
+         "Mistakes visible": [
+            "可见错误"
+         ],
+         "Minimize": [
+            "最小化"
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC 的翻译质量更高，并为您提供可直接发布的翻译结果。"
+         ],
+         "Step 2": [
+            "第 2 步"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "全站自动翻译需要设置 AI 翻译。"
+         ],
+         "Set up AI translation": [
+            "设置 AI 翻译"
+         ],
+         "Keep a wp-admin window open until WPML finishes translating": [
+            "保持 wp-admin 窗口打开，直到 WPML 完成翻译"
+         ],
+         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
+            "WPML 通常在后台翻译您的内容，您无需留在 WordPress 管理后台。但是，WPML 无法连接到此站点，因此它会在 wp-admin 窗口打开时提取您的翻译。"
+         ],
+         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
+            "您可以继续在 WordPress 管理后台的任何地方工作。只需保持一个窗口打开，直到翻译完成。"
+         ],
+         "Next check for translations in %s.": [
+            "下次检查翻译将在 %s 后进行。"
+         ],
+         "Hide details": [
+            "隐藏详情"
+         ],
+         "What could be blocking it, and how to fix it": [
+            "可能是什么原因导致了阻塞，以及如何修复它"
+         ],
+         "Check these on your site": [
+            "在您的站点上检查这些项"
+         ],
+         "The site might be on a private network, in staging, or only reachable through a VPN.": [
+            "站点可能位于私有网络中、处于暂存状态，或者仅能通过 VPN 访问。"
+         ],
+         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
+            "HTTP 基本身份验证或 IP 允许列表可能会阻止外部请求。"
+         ],
+         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
+            "安全插件、防火墙或 WAF 可能会拒绝来自 WPML 的请求。"
+         ],
+         "The site might be in maintenance mode.": [
+            "站点可能处于维护模式。"
+         ],
+         "Already fixed this on your site?": [
+            "已经在您的站点上修复了此问题？"
+         ],
+         "Check again whether the site is reachable": [
+            "再次检查站点是否可访问"
+         ],
+         "Checking…": [
+            "正在检查…"
+         ],
+         "Check again": [
+            "再次检查"
+         ],
+         "Still couldn't reach your site.": [
+            "仍然无法连接到您的站点。"
+         ],
+         "Automatic translations completed": [
+            "自动翻译已完成"
+         ],
+         "<s>1 translation</s> has been successfully translated automatically": [
+            "<s>%d 个翻译</s>已成功自动翻译"
+         ],
+         "Automatic jobs in progress": [
+            "自动翻译作业正在进行中"
+         ],
+         "<s>%d automatic translation</s> is in progress": [
+            "<s>%d 个自动翻译</s>正在进行中"
+         ],
+         "You can close this page. WPML keeps translating your site in the background, and you can come back any time to check progress.": [
+            "您可以关闭此页面。WPML 会在后台继续翻译您的站点，您可以随时回来检查进度。"
+         ],
+         "Your default language, %s, must be mapped to a supported language in order to use automatic translation": [
+            "您的默认语言 %s 必须映射到受支持的语言才能使用自动翻译"
+         ],
+         "Map the language": [
+            "映射语言"
+         ],
+         "%d second": [
+            "%d 秒"
+         ],
+         "%d minute": [
+            "%d 分钟"
+         ],
+         "%d hour": [
+            "%d 小时"
+         ],
+         "%d day": [
+            "%d 天"
+         ],
+         "%d translation": [
+            "%d 个翻译"
+         ],
+         "checking now": [
+            "正在检查"
+         ],
+         "next check in %s": [
+            "%s 后进行下次检查"
+         ],
+         "WPML stopped checking for delivered translations after repeated failures.": [
+            "在多次尝试失败后，WPML 已停止检查已交付的翻译。"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s": [
+            "正在接收翻译：上次接收于 %1$s 前 · %2$s"
+         ],
+         "Receiving translations: last received %s ago": [
+            "正在接收翻译：上次接收于 %s 前"
+         ],
+         "Receiving translations: no translations received yet · %s": [
+            "正在接收翻译：尚未收到翻译 · %s"
+         ],
+         "Receiving translations: no translations received yet": [
+            "正在接收翻译：尚未收到翻译"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
+            "正在接收翻译：上次接收于 %1$s 前 · %2$s 正在等待 · %3$s"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s waiting": [
+            "正在接收翻译：上次接收于 %1$s 前 · %2$s 正在等待"
+         ],
+         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
+            "正在接收翻译：尚未收到翻译 · %1$s 正在等待 · %2$s"
+         ],
+         "Receiving translations: no translations received yet · %s waiting": [
+            "正在接收翻译：尚未收到翻译 · %s 正在等待"
+         ],
+         "These translations are taking longer than they should to arrive.": [
+            "这些翻译的到达时间比预期的要长。"
+         ],
+         "Picking up translations…": [
+            "正在提取翻译…"
+         ],
+         "Pick up translations now": [
+            "立即提取翻译"
+         ],
+         "%d translations ": [
+            "%d 个翻译 "
+         ],
+         "%d translation ": [
+            "%d 个翻译 "
+         ],
+         "this includes translations from <b>Translate Everything Automatically</b>": [
+            "（这包括来自<b>自动翻译所有内容</b>的翻译）"
+         ],
+         "are waiting for your review": [
+            "正在等待您的审核"
+         ],
+         "is waiting for your review": [
+            "正在等待您的审核"
+         ],
+         "Review Translations": [
+            "审核翻译"
+         ],
+         "Translate existing content": [
+            "翻译现有内容"
+         ],
+         "Translate now": [
+            "立即翻译"
+         ],
+         "Starting with version 4.7, WPML will also automatically translate texts (strings) coming from %s.": [
+            "从 4.7 版本开始，WPML 还将自动翻译来自 %s 的文本（字符串）。"
+         ],
+         "WPML will not translate existing texts of this type but any new ones you create will be automatically translated. If you prefer, you can <button />.": [
+            "WPML 不会翻译此类别的现有文本，但您创建的任何新文本都将被自动翻译。如果您愿意，可以 <button />。"
+         ],
+         "Starting with version 4.7, WPML will also automatically translate:": [
+            "从 4.7 版本开始，WPML 还将自动翻译："
+         ],
+         "Content set to \"use translation if available or fallback to default language\": %s.": [
+            "设置为“如果可用则使用翻译，否则回退到默认语言”的内容：%s。"
+         ],
+         "Texts (strings) coming from: %s.": [
+            "来自以下项的文本（字符串）：%s。"
+         ],
+         "WPML will not translate existing content for these post types and texts but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
+            "WPML 不会翻译这些文章类型和文本的现有内容，但您创建的任何新内容都将被自动翻译。如果您愿意，可以开始 <button />。"
+         ],
+         "WPML will not translate existing content for these post types but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
+            "WPML 不会翻译这些文章类型的现有内容，但您创建的任何新内容都将被自动翻译。如果您愿意，可以开始 <button />。"
+         ],
+         "start translating existing content now": [
+            "立即开始翻译现有内容"
+         ],
+         "New content is ready to translate": [
+            "新内容已准备好翻译"
+         ],
+         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "在您审核翻译费用后，%s 变为可翻译状态，因此“自动翻译所有内容”未包含它们。请审核费用并包含它们，以保持您的站点完全翻译。"
+         ],
+         "Review cost and include": [
+            "审核费用并包含"
+         ],
+         "Learn more →": [
+            "了解更多 →"
+         ],
+         "PTC can also translate your app's interface, not just your website.": [
+            "PTC 还可以翻译您的应用界面，而不仅仅是您的网站。"
+         ],
+         "PTC can translate software with automatic QA and a money-back guarantee.": [
+            "PTC 可以通过自动 QA 和退款保证来翻译软件。"
+         ],
+         "PTC translates every string in context, so it fits your interface.": [
+            "PTC 会根据上下文翻译每个字符串，使其适配您的界面。"
+         ],
+         "PTC can translate your software right inside your Git workflow.": [
+            "PTC 可以在您的 Git 工作流中直接翻译您的软件。"
+         ],
+         "The following target languages do not support automatic translations: %s": [
+            "以下目标语言不支持自动翻译：%s"
+         ],
+         "To enable automatic translation map them to known languages.": [
+            "要启用自动翻译，请将它们映射到已知语言。"
+         ],
+         "Map to known languages": [
+            "映射到已知语言"
+         ],
+         "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
+            "为了获得帮助，请<supportLink>在我们的论坛主题 (Maiya) 中提交工单</supportLink>，点击“全部复制”按钮获取调试信息并将其“粘贴”给我们的 Maiya 代理。如果您仍然遇到问题，请使用 <logsLink>日志工具</logsLink> 收集更多数据。"
+         ],
+         "Copied!": [
+            "已复制！"
+         ],
+         "Copy All": [
+            "全部复制"
+         ],
+         "Error type": [
+            "错误类型"
+         ],
+         "Error Message": [
+            "错误消息"
+         ],
+         "Job ID": [
+            "作业 ID"
+         ],
+         "ATE Job ID": [
+            "ATE 作业 ID"
+         ],
+         "Original ID": [
+            "原始 ID"
+         ],
+         "Element ID": [
+            "元素 ID"
+         ],
+         "Copy to clipboard": [
+            "复制到剪贴板"
+         ],
+         "Hide errors details": [
+            "隐藏错误详情"
+         ],
+         "Show errors details": [
+            "显示错误详情"
+         ],
+         "<strong>%d item</strong> couldn't be completed due to an unexpected error. Try resending it for translation. If the issue continues, <a>contact WPML support</a>.": [
+            "由于意外错误，<strong>%d 个项目</strong>无法完成。请尝试重新发送它们进行翻译。如果问题仍然存在，请<a>联系 WPML 支持</a>。"
+         ],
+         "Cancelling %1$d/%2$d...": [
+            "正在取消 %1$d/%2$d..."
+         ],
+         "Cancelling...": [
+            "正在取消..."
+         ],
+         "Discard jobs": [
+            "丢弃作业"
+         ],
+         "These items can't be resent because their source content is missing. Discard them instead.": [
+            "由于源内容缺失，这些项目无法重新发送。请将其丢弃。"
+         ],
+         "Resending %1$d/%2$d...": [
+            "正在重新发送 %1$d/%2$d..."
+         ],
+         "Resending...": [
+            "正在重新发送..."
+         ],
+         "Resend": [
+            "重新发送"
+         ],
+         "Translation status details": [
+            "翻译状态详情"
+         ],
+         "Translation status": [
+            "翻译状态"
+         ],
+         "Before translating with PTC, please provide context about your website and target audience (one-time thing).": [
+            "在使用 PTC 翻译之前，请提供有关您的网站和目标受众的背景信息（仅需一次）。"
+         ],
+         "Provide Context": [
+            "提供背景信息"
+         ],
+         "Remaining time: <s>Less than 1 minute</s>": [
+            "剩余时间：<s>不到 1 分钟</s>"
+         ],
+         "Remaining time: <s>%d minute</s>": [
+            "剩余时间：<s>%d 分钟</s>"
+         ],
+         "Default language does not support automatic translations.": [
+            "默认语言不支持自动翻译。"
+         ],
+         "WPML could not check if your default language can be translated automatically.": [
+            "WPML 无法检查您的默认语言是否可以自动翻译。"
+         ],
+         "WPML could not check if your default language can be translated automatically. Reload the page to try again.": [
+            "WPML 无法检查您的默认语言是否可以自动翻译。请重新加载页面以重试。"
+         ],
+         "Add your site description before you can turn this on.": [
+            "在开启此功能前，请先添加您的站点说明。"
+         ],
+         "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
+            "您必须启用高级翻译编辑器才能激活自动翻译所有内容。"
+         ],
+         "Add it now": [
+            "立即添加"
+         ],
+         "It's too expensive": [
+            "价格太贵了"
+         ],
+         "The translation quality is not good enough": [
+            "翻译质量不够好"
+         ],
+         "I'm switching to a different translation provider": [
+            "我正在切换到其他翻译提供商"
+         ],
+         "I'm experiencing technical issues": [
+            "我遇到了技术问题"
+         ],
+         "I want to control what gets translated manually": [
+            "我想手动控制翻译内容"
+         ],
+         "Other reason": [
+            "其他原因"
+         ],
+         "Why are you turning off <b>Translate Everything Automatically</b>?": [
+            "您为什么要关闭<b>自动翻译所有内容</b>？"
+         ],
+         "Your answer helps us improve WPML.": [
+            "您的回答有助于我们改进 WPML。"
+         ],
+         "Turn off": [
+            "关闭"
+         ],
+         "Available": [
+            "可用"
+         ],
+         "Not available": [
+            "不可用"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "理解您站点的议题、受众和语气"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "具备发布质量，由我们的保证提供支持"
+         ],
+         "Review before publishing": [
+            "发布前审核"
+         ],
+         "Pay once per page – only added words are charged": [
+            "按页计费 – 仅对新增字数收费"
+         ],
+         "Per word, changes included": [
+            "按字数计费，包含更改费用"
+         ],
+         "Your active engine": [
+            "您当前的引擎"
+         ],
+         "WPML's own AI engine": [
+            "WPML 自有的 AI 引擎"
+         ],
+         "Translate Everything Automatically": [
+            "自动翻译所有内容"
+         ],
+         "Turn on with %s": [
+            "使用 %s 开启"
+         ],
+         "Switching to PTC later applies to new and changed content. What %s translated stays as it is.": [
+            "稍后切换到 PTC 将适用于新内容和更改的内容。由 %s 翻译的内容将保持原样。"
+         ],
+         "Translate your whole site quickly and conveniently.": [
+            "快速方便地翻译您的整个站点。"
+         ],
+         "Translation updates cost only the added words.": [
+            "翻译更新仅对新增字数收费。"
+         ],
+         "Nothing is translated until you review the cost and confirm.": [
+            "在您审核费用并确认之前，不会翻译任何内容。"
+         ],
+         "How to turn this on": [
+            "如何开启此功能"
+         ],
+         "When you set this up": [
+            "当您设置好此项后"
+         ],
+         "Choose your engine: keep %s, priced per word, or switch to PTC to pay once per page.": [
+            "选择您的引擎：保留 %s（按字数计费），或切换到 PTC 以按页计费。"
+         ],
+         "Review what gets translated and see the cost.": [
+            "审核翻译内容并查看费用。"
+         ],
+         "WPML translates your site and keeps new content translated.": [
+            "WPML 会翻译您的站点并保持新内容处于已翻译状态。"
+         ],
+         "Choose how to publish — with or without your review.": [
+            "选择发布方式 —— 经过或不经过您的审核。"
+         ],
+         "Content that becomes translatable later, for example products after the WooCommerce Multilingual setup, is offered to you before it is translated.": [
+            "稍后变为可翻译的内容（例如 WooCommerce Multilingual 设置后的产品）将在翻译前提供给您选择。"
+         ],
+         "Switch to PTC instead": [
+            "改为切换到 PTC"
+         ],
+         "You're translating with %s: priced per word, and changes to translated pages are charged again. With PTC you pay once per page and changes are free.": [
+            "您正在使用 %s 进行翻译：按字数计费，且对已翻译页面的更改将再次收费。使用 PTC，您只需按页计费，且更改是免费的。"
+         ],
+         "at %s's per-word rate; changes to translated pages are charged again": [
+            "按 %s 的字数费率计费；对已翻译页面的更改将再次收费"
+         ],
+         "Prepaid words assigned": [
+            "已分配预付费字数"
+         ],
+         "You’re all set.": [
+            "您已准备就绪。"
+         ],
+         "Click <b>Translate Everything Automatically</b> to start translating.": [
+            "点击<b>自动翻译所有内容</b>开始翻译。"
+         ],
+         "Before translating everything": [
+            "在翻译所有内容之前"
+         ],
+         "Go back": [
+            "返回"
+         ],
+         "Continue anyway": [
+            "仍然继续"
+         ],
+         "WPML could not check with our translation system if your default language can be translated automatically.": [
+            "WPML 无法与我们的翻译系统核对您的默认语言是否可以自动翻译。"
+         ],
+         "Content to translate": [
+            "要翻译的内容"
+         ],
+         "Publishing method": [
+            "发布方式"
+         ],
+         "Payment method": [
+            "支付方式"
+         ],
+         "Enable <b>Translate Everything Automatically</b>": [
+            "启用<b>自动翻译所有内容</b>"
+         ],
+         "Continue": [
+            "继续"
+         ],
+         "Calculating words for translating existing content. Please wait...": [
+            "正在计算翻译现有内容的字数。请稍候..."
+         ],
+         "Set Up <b>Translate Everything Automatically</b>": [
+            "设置<b>自动翻译所有内容</b>"
+         ],
+         "Review your site content and get the translation cost based on what you choose to translate.": [
+            "审核您的站点内容，并根据您选择翻译的内容获取翻译费用。"
+         ],
+         "Select payment method": [
+            "选择支付方式"
+         ],
+         "Translate Everything Automatically - disabled": [
+            "自动翻译所有内容 - 已禁用"
+         ],
+         "Translate Everything Automatically - stopping": [
+            "自动翻译所有内容 - 正在停止"
+         ],
+         "<b>Translate Everything Automatically</b> is stopping": [
+            "<b>自动翻译所有内容</b>正在停止"
+         ],
+         "Translate Everything Automatically - paused": [
+            "自动翻译所有内容 - 已暂停"
+         ],
+         "Turn off <b>Translate Everything Automatically</b>?": [
+            "关闭<b>自动翻译所有内容</b>？"
+         ],
+         "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
+            "WPML 将停止自动翻译新内容和编辑过的内容。已经交付的翻译将保持原样。"
+         ],
+         "%d translation is still in progress. You will not be charged for it.": [
+            "%d 个翻译仍在进行中。您不会被收取费用。"
+         ],
+         "%d translation is currently in progress and will be cancelled.": [
+            "%d 个翻译目前正在进行中，将被取消。"
+         ],
+         "You can adjust the content limits once Translate Everything finishes the current translation run.": [
+            "一旦“自动翻译所有内容”完成当前的翻译运行，您就可以调整内容限制。"
+         ],
+         "Adjust content limits": [
+            "调整内容限制"
+         ],
+         "Adjust how far back automatic translations apply per content type.": [
+            "按内容类型调整自动翻译追溯的时间范围。"
+         ],
+         "Every content type is fully translated, so there is nothing left to set a date for. You can still choose which types automatic translation covers from now on.": [
+            "每种内容类型都已完全翻译，因此无需再设置日期。您仍然可以从现在起选择自动翻译涵盖的类型。"
+         ],
+         "Save changes": [
+            "保存更改"
+         ],
+         "Translate Everything options": [
+            "自动翻译所有内容选项"
+         ],
+         "Turn off <b>Translate Everything</b>": [
+            "关闭 <b>翻译所有内容</b>"
+         ],
+         "Words this cycle": [
+            "本周期字数"
+         ],
+         "%1$s prepaid words left, then billed as you go.": [
+            "%1$s 个剩余预付费字数，之后按需付费。"
+         ],
+         "Words left": [
+            "剩余字数"
+         ],
+         "Preparing your translations — %d job queued so far...": [
+            "正在准备您的翻译 —— 到目前为止已排队 %d 个作业..."
+         ],
+         "Preparing content for translation...": [
+            "正在准备翻译内容..."
+         ],
+         "%d translation left in the queue...": [
+            "队列中还剩 %d 个翻译..."
+         ],
+         "Finished — %1$d item couldn't be completed and %2$s are waiting for your approval": [
+            "已完成 —— %1$d 个项目无法完成，%2$s 正在等待您的批准"
+         ],
+         "Finished — %d item couldn't be completed": [
+            "已完成 —— %d 个项目无法完成"
+         ],
+         "Finished translating your content, except %s waiting for your approval": [
+            "已完成内容翻译，除了正在等待您批准的 %s"
+         ],
+         "Finished translating your content": [
+            "已完成内容翻译"
+         ],
+         "Engine": [
+            "引擎"
+         ],
+         "Quality": [
+            "质量"
+         ],
+         "%1$d / 100 — %2$s": [
+            "%1$d / 100 — %2$s"
+         ],
+         "review before publishing recommended": [
+            "建议发布前审核"
+         ],
+         "good enough to publish without review": [
+            "质量足以直接发布，无需审核"
+         ],
+         "usable, but mistakes are visible": [
+            "可用，但有明显错误"
+         ],
+         "Per word, changes included. ": [
+            "按字数计费，包含更改费用。 "
+         ],
+         " to make changes free.": [
+            " 免费进行更改。"
+         ],
+         "Pay once per page — only added words are charged.": [
+            "每页仅支付一次费用 —— 仅对新增字数收费。"
+         ],
+         "Status": [
+            "状态"
+         ],
+         "Some items were translated using the <b>Classic Translation Editor</b> and cannot be sent for automatic translation. Please select these items and choose the option to translate them yourself.": [
+            "部分项目使用<b>经典翻译编辑器</b>翻译，无法发送进行自动翻译。请选择这些项目并选择自行翻译的选项。"
+         ],
+         "Translate Everything Automatically - enabled": [
+            "自动翻译所有内容 - 已启用"
+         ],
+         "<b>Translate Everything Automatically</b> is enabled": [
+            "<b>自动翻译所有内容</b>已启用"
+         ],
+         "<b>Translate Everything Automatically</b> is temporarily paused": [
+            "<b>自动翻译所有内容</b>已暂时暂停"
+         ],
+         "Automatic translation is temporarily paused": [
+            "自动翻译已暂时暂停"
+         ],
+         "We noticed something unexpected in your recent translation activity and paused automatic translation on your account. Contact support and we’ll review it with you.": [
+            "我们注意到您最近的翻译活动中存在异常，因此暂停了您账户的自动翻译。请联系支持人员，我们将与您一起进行审核。"
+         ],
+         "Contact support": [
+            "联系支持"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — unpaid balance on a linked account": [
+            "<b>自动翻译所有内容</b>已暂停 — 关联账户存在未结余额"
+         ],
+         "Automatic translation is paused — unpaid balance on a linked account": [
+            "自动翻译已暂停 — 关联账户存在未结余额"
+         ],
+         "There is an unpaid balance on another account linked to this billing e-mail. Settle it or <a>contact support</a>.": [
+            "与此账单电子邮箱关联的另一个账户存在未结余额。请结清该款项或<a>联系支持团队</a>。"
+         ],
+         "There is an unpaid balance on another account linked to this card. Settle it or <a>contact support</a>.": [
+            "与此卡关联的另一个账户存在未结余额。请结清该款项或<a>联系支持团队</a>。"
+         ],
+         "Go to billing": [
+            "前往账单"
+         ],
+         "Everything already translated stays live. You only pay for new translation.": [
+            "所有已翻译的内容将保持在线。您只需为新的翻译付费。"
+         ],
+         "Cancel translation": [
+            "取消翻译"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment pending": [
+            "<b>自动翻译所有内容</b>已暂停 — 付款处理中"
+         ],
+         "Automatic translation is paused — payment pending": [
+            "自动翻译已暂停 — 付款处理中"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment required": [
+            "<b>自动翻译所有内容</b>已暂停 — 需要付款"
+         ],
+         "Automatic translation - payment required": [
+            "自动翻译 - 需要付款"
+         ],
+         "<s>%d</s> translation is waiting for your Pay-As-You-Go payment.": [
+            "<s>%d</s> 项翻译正在等待您的现收现付付款。"
+         ],
+         "We are charging your card. If the payment is declined, update your card.": [
+            "我们正在从您的卡中扣费。如果付款被拒绝，请更新您的卡。"
+         ],
+         "Translation resumes automatically once the payment goes through.": [
+            "付款完成后，翻译将自动恢复。"
+         ],
+         "<s>%d</s> translation is waiting for payment.": [
+            "<s>%d</s> 个翻译正在等待付款。"
+         ],
+         "We could not process your <b>Pay-As-You-Go</b> payment of %s.": [
+            "我们无法处理您 %s 的<b>现收现付</b>付款。"
+         ],
+         "We could not process the %s payment for your completed translations. Click \"Pay now\" to retry and continue using automatic translation.": [
+            "我们无法处理您已完成翻译的 %s 付款。点击“立即支付”重试并继续使用自动翻译。"
+         ],
+         "Update card": [
+            "更新卡"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment needed": [
+            "<b>自动翻译所有内容</b>已暂停 — 需要付款"
+         ],
+         "Automatic translation is paused — payment needed": [
+            "自动翻译已暂停 — 需要付款"
+         ],
+         "<s>%d</s> translation is on hold until you choose how to pay for it.": [
+            "<s>%d</s> 项翻译已暂停，直到您选择支付方式。"
+         ],
+         "Choose a payment method": [
+            "选择付款方式"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — not enough words": [
+            "<b>自动翻译所有内容</b>已暂停 — 字数不足"
+         ],
+         "Automatic translation is paused — not enough words": [
+            "自动翻译已暂停 — 字数不足"
+         ],
+         "<s>%d</s> translation is waiting for more words.": [
+            "<s>%d</s> 个翻译正在等待更多字数。"
+         ],
+         "You have %1$s%2$s prepaid translation word in your WPML account%3$s. Assign these words to this site to resume automatic translation.": [
+            "您的 WPML 账户中有 %1$s%2$s 个预付费翻译字数%3$s。请将这些字数分配给此站点以恢复自动翻译。"
+         ],
+         "Your prepaid translation words have run out. Already assigned words on your account? Refresh checks.": [
+            "您的预付费翻译字数已用完。您的账户中已有分配的字数？请刷新检查。"
+         ],
+         "Translation resumes automatically — the remaining %d translation completes on its own.": [
+            "翻译自动恢复 — 剩余的 %d 个翻译将自行完成。"
+         ],
+         "Translation resumes automatically once more words are assigned.": [
+            "分配更多字数后，翻译将自动恢复。"
+         ],
+         "Checking your word balance…": [
+            "正在检查您的字数余额…"
+         ],
+         "%s word added": [
+            "已添加 %s 个字数"
+         ],
+         "resuming %s translation": [
+            "正在恢复 %s 个翻译"
+         ],
+         "No new words found yet — translation stays paused until more words are assigned to this site.": [
+            "尚未发现新字数 — 在为此站点分配更多字数之前，翻译将保持暂停状态。"
+         ],
+         "<s>%d</s> translation is waiting for your review.": [
+            "<s>%d</s> 个翻译正在等待您的审核。"
+         ],
+         "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
+            "<b>自动翻译所有内容</b>已暂停：已达到每月支出限额"
+         ],
+         "<s>%d</s> translation is waiting for the cap to be raised.": [
+            "<s>%d</s> 个翻译正在等待限额提高。"
+         ],
+         "<site>%1$s</site> reached its <strong>monthly spending cap</strong> (<figure>%2$s</figure> of <figure>%3$s</figure> words used).": [
+            "<site>%1$s</site> 已达到其<strong>每月支出限额</strong>（在 <figure>%3$s</figure> 个字数中已使用 <figure>%2$s</figure> 个）。"
+         ],
+         "Translation continues when the cap is raised, or when the cap resets on <strong>%s</strong>.": [
+            "当限额提高或在 <strong>%s</strong> 重置时，翻译将继续。"
+         ],
+         "WPML is reconnecting to our translation system. <b>Translate Everything</b> continues on its own once it reconnects. Nothing is lost.": [
+            "WPML 正在重新连接到我们的翻译系统。重新连接后，<b>翻译所有内容</b>将自动继续。不会丢失任何内容。"
+         ],
+         "You don't need to do anything. WPML keeps trying in the background.": [
+            "您无需进行任何操作。WPML 将在后台继续尝试。"
+         ],
+         "Retry": [
+            "重试"
+         ],
+         "Retry now": [
+            "立即重试"
+         ],
+         "WPML is reconnecting to our translation system.": [
+            "WPML 正在重新连接到我们的翻译系统。"
+         ],
+         "WPML is reconnecting to our translation system. You can turn on <b>Translate Everything</b> once it reconnects.": [
+            "WPML 正在重新连接到我们的翻译系统。重新连接后，您可以开启<b>翻译所有内容</b>。"
+         ],
+         "This item needs a translation update but can't be translated automatically because it was translated with the Classic Translation Editor.": [
+            "此项目需要翻译更新，但由于它是使用经典翻译编辑器翻译的，因此无法自动翻译。"
+         ],
+         "This item needs update. Please, select the item and send for translation.": [
+            "此项目需要更新。请选择该项目并发送翻译。"
+         ],
+         "Translations completed with the Classic Translation Editor cannot be sent for automatic translation": [
+            "使用经典翻译编辑器完成的翻译无法发送进行自动翻译"
+         ],
+         "automatic translation": [
+            "自动翻译"
+         ],
+         "unassigned": [
+            "未分配"
+         ],
+         "waiting for automatic translation": [
+            "等待自动翻译"
+         ],
+         "waiting for translator": [
+            "等待译者"
+         ],
+         "in progress": [
+            "进行中"
+         ],
+         "needs update": [
+            "需要更新"
+         ],
+         "duplicate": [
+            "副本"
+         ],
+         "complete": [
+            "完成"
+         ],
+         "needs review": [
+            "需要审核"
+         ],
+         "translation failed - needs attention": [
+            "翻译失败 - 需要关注"
+         ],
+         "needs attention": [
+            "需要关注"
+         ],
+         "translation error": [
+            "翻译错误"
+         ],
+         "The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "%s 翻译是在 WPML 翻译编辑器之外（例如在 WordPress 编辑器中）创建或最后编辑的。当您重新翻译它时，翻译后的文章结构将更新以匹配原文，但 WPML 将使用您现有的翻译作为基础，以便保留语气和术语。"
+         ],
+         "This item needs a translation update. The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "此项目需要翻译更新。%s 翻译是在 WPML 翻译编辑器之外（例如在 WordPress 编辑器中）创建或最后编辑的。当您重新翻译它时，翻译后的文章结构将更新以匹配原文，但 WPML 将使用您现有的翻译作为基础，以便保留语气和术语。"
+         ],
+         "This item hasn't been translated yet and is set to use the WordPress Editor.": [
+            "此项目尚未翻译，并设置为使用 WordPress 编辑器。"
+         ],
+         "This item was translated using the WordPress Editor. Switching to the WPML's Translation Editor will overwrite the existing translation.": [
+            "此项目是使用 WordPress 编辑器翻译的。切换到高级翻译编辑器将覆盖现有翻译。"
+         ],
+         "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
+            "此项目需要翻译更新，但之前是使用 WordPress 编辑器翻译的。使用高级翻译编辑器将覆盖现有翻译。"
+         ],
+         "%1$s: %2$s%3$s": [
+            "%1$s：%2$s%3$s"
+         ],
+         "Could not fetch engines data": [
+            "无法获取引擎数据"
+         ],
+         "Error in updating since dates for types.": [
+            "更新类型的起始日期时出错。"
+         ],
+         "Error in dismissing the offer to translate the new content types.": [
+            "拒绝翻译新内容类型的提议时出错。"
+         ],
+         "Error in updating since date for type.": [
+            "更新类型的起始日期时出错。"
+         ],
+         "Content to Translate": [
+            "要翻译的内容"
+         ],
+         "Content type": [
+            "内容类型"
+         ],
+         "Include": [
+            "包含"
+         ],
+         "These settings can be changed on the Translations dashboard.": [
+            "这些设置可以在翻译仪表板上更改。"
+         ],
+         "Items": [
+            "项目"
+         ],
+         "Word count": [
+            "字数统计"
+         ],
+         "Loading content to translate": [
+            "正在加载要翻译的内容"
+         ],
+         "Calculating… <s>less than 1 minute left.</s>": [
+            "正在计算… <s>剩余时间不到 1 分钟。</s>"
+         ],
+         "Calculating… <s>%d minute left.</s>": [
+            "正在计算… <s>剩余 %d 分钟。</s>"
+         ],
+         "Words needed to translate your existing content into the new languages: %s.": [
+            "将现有内容翻译成新语言所需的字数：%s。"
+         ],
+         "Words needed to translate your existing content into the new language.": [
+            "将现有内容翻译成新语言所需的字数。"
+         ],
+         "Based on the remaining untranslated content across all languages.": [
+            "基于所有语言中剩余的未翻译内容。"
+         ],
+         "Estimated from the selected source volume multiplied by the target languages.": [
+            "根据选定的源内容量乘以目标语言数量估算。"
+         ],
+         "%1$s source words × %2$s language": [
+            "%1$s 个源字数 × %2$s 种语言"
+         ],
+         "Already translated content": [
+            "已翻译的内容"
+         ],
+         "Documents you translated yourself stay exactly as you made them": [
+            "您自己翻译的文档将保持原样"
+         ],
+         "(%d document)": [
+            "（%d 个文档）"
+         ],
+         "View documents": [
+            "查看文档"
+         ],
+         "%1$d of %2$d language will be translated automatically": [
+            "%2$d 种语言中的 %1$d 种将自动翻译"
+         ],
+         "Translated to %d language": [
+            "已翻译为 %d 种语言"
+         ],
+         "Add/remove languages": [
+            "添加/删除语言"
+         ],
+         "Percentages show how much of your selected content is already translated in each language.": [
+            "百分比显示了您选择的内容在每种语言中已翻译的比例。"
+         ],
+         "Note: Content already translated into all languages is not included in this calculation.": [
+            "注意：已翻译成所有语言的内容不包含在此计算中。"
+         ],
+         "Same as default": [
+            "与默认语言相同"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "由于 %1$s 和 %2$s 被识别为同一种语言，因此它们之间无法进行自动翻译。"
+         ],
+         "Translation paused": [
+            "翻译已暂停"
+         ],
+         "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor.": [
+            "WPML 目前未创建新的 %s 翻译，因此未包含此语言。如需包含此语言，请在语言编辑器的该语言行中使用“恢复翻译”。"
+         ],
+         "Manual only": [
+            "仅手动"
+         ],
+         "%s has no automatic-translation support. You can translate this content manually.": [
+            "%s 不支持自动翻译。您可以手动翻译此内容。"
+         ],
+         "Adjusted word rate (%s)": [
+            "调整后的字数费率 (%s)"
+         ],
+         "This adjusted word rate applies to legacy translation engines.": [
+            "此调整后的字数费率适用于传统翻译引擎。"
+         ],
+         "Translation engine: <strong>%s</strong>": [
+            "翻译引擎：<strong>%s</strong>"
+         ],
+         "Legacy engine": [
+            "传统引擎"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "已应用传统定价。%s 是传统翻译引擎，不推荐用于新站点，并且将被弃用。现有站点将保留其调整后的字数费率。"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
+            "这是翻译您当前内容现在所需的字数。其中不包含由其他插件添加的某些文本（例如表单或滑块），这些文本将在设置完成后进行统计。来自主题和插件的站点字符串也会在设置完成后统计，通常会增加几百个字。之后，进行编辑是免费的。您只需为您新添加的字数再次付费。"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
+            "这是翻译您当前内容所需的字数。它不包括由其他插件添加的一些文本（如表单或滑块），这些文本将在设置完成后计算。来自您的主题和插件的站点字符串也将在设置后计算，通常会增加几百个单词。按 %s 的字数费率计费；对已翻译页面的更改将再次收费。"
+         ],
+         "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
+            "这是翻译您当前内容现在所需的字数。之后，进行编辑是免费的。您只需为您新添加的字数再次付费。"
+         ],
+         "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again.": [
+            "这是翻译您当前内容所需的字数。按 %s 的字数费率计费；对已翻译页面的更改将再次收费。"
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
+            "它统计页面、文章和产品，包括其自定义字段、页面构建器文本和媒体文本，以及它们使用的分类、标签和属性。"
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
+            "它统计页面、文章和产品，包括其自定义字段、页面构建器文本和媒体文本，它们使用的分类、标签和属性，以及站点字符串。术语不仅在每个使用它的项目中计入，其本身也会被单独计入一次，因为两种方式都会发送翻译。"
+         ],
+         "Total items": [
+            "总项目数"
+         ],
+         "Total source words": [
+            "总源字数"
+         ],
+         "Showing %1$d–%2$d of %3$d types.": [
+            "显示 %3$d 种类型中的第 %1$d–%2$d 种。"
+         ],
+         "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated.": [
+            "所有当前的 %1$s 已翻译成所有语言。<br>新的 %2$s 或编辑内容将自动翻译。"
+         ],
+         "All %s": [
+            "所有 %s"
+         ],
+         "For translated types": [
+            "针对已翻译类型"
+         ],
+         "None": [
+            "无"
+         ],
+         "Since %s": [
+            "自 %s 起"
+         ],
+         "Since specific date": [
+            "自特定日期起"
+         ],
+         "<b>Pay-As-You-Go</b> is active on this site.": [
+            "<b>现收现付</b>已在此站点上激活。"
+         ],
+         "<b>%s words</b> are on this site. Continue.": [
+            "此站点上有 <b>%s 个字数</b>。继续。"
+         ],
+         "Your site will be translated right after the setup.": [
+            "您的站点将在设置后立即进行翻译。"
+         ],
+         "To use prepaid words, register WPML on this site.": [
+            "要使用预付费字数，请在此站点上注册 WPML。"
+         ],
+         "We could not reach our translation system.": [
+            "我们无法连接到翻译系统。"
+         ],
+         "This site is not registered with a WPML account, so prepaid words are not available.": [
+            "此站点未注册 WPML 账户，因此预付费字数不可用。"
+         ],
+         "We could not read your WPML account.": [
+            "我们无法读取您的 WPML 账户。"
+         ],
+         "%s more words are needed to translate your site.": [
+            "翻译您的站点还需要 %s 个字数。"
+         ],
+         "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>.": [
+            "从您的 WPML 账户分配预付费字数到此站点，以开始<b>自动翻译所有内容</b>。"
+         ],
+         "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>.": [
+            "分配您已有的字数并购买剩余部分，或激活<b>现收现付</b>。"
+         ],
+         "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
+            "要开始<b>自动翻译所有内容</b>，请激活<b>现收现付</b>或购买预付费字数。"
+         ],
+         "Error in fetching currently logged in translator": [
+            "获取当前登录的译者时出错"
+         ],
+         "Error in fetching local translators": [
+            "获取本地译者时出错"
+         ],
+         "usage ledger": [
+            "使用分类账"
+         ],
+         "Cancelled. %1$d translation was in progress; its %2$s words are back on your account. Details:": [
+            "已取消。%1$d 个翻译正在进行中；其 %2$s 个字数已退回到您的账户。详情："
+         ],
+         "Cancelled. We asked to return the words for %d translation in progress; the usage ledger shows it once confirmed.": [
+            "已取消。我们已请求退回正在进行的 %d 个翻译的字数；确认后，使用分类账将显示这些字数。"
+         ],
+         "Published": [
+            "已发布"
+         ],
+         "Draft": [
+            "草稿"
+         ],
+         "Trash": [
+            "回收站"
+         ],
+         "Pending": [
+            "待定"
+         ],
+         "Private": [
+            "私有"
+         ],
+         "Future": [
+            "定时发布"
+         ],
+         "Auto Draft": [
+            "自动草稿"
+         ],
+         "External": [
+            "外部"
+         ],
+         "Pay now": [
+            "立即支付"
+         ],
+         "%1$sCheck pricing%2$s.": [
+            "%1$s查看定价%2$s。"
+         ],
+         "Lowest cost per word": [
+            "最低字数单价"
+         ],
+         "Pay only for what you use": [
+            "仅为您使用的内容付费"
+         ],
+         "Never run out. Translation never stops.": [
+            "永不耗尽。翻译永不停止。"
+         ],
+         "The first 500 words each month are free": [
+            "每月前 500 个字数免费"
+         ],
+         "Pay-As-You-Go": [
+            "现收现付"
+         ],
+         "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate.": [
+            "激活<b>现收现付</b>以进行自动翻译。<b>现收现付</b>会根据您翻译的字数向您收费。"
+         ],
+         "Activating <b>Pay-As-You-Go</b>…": [
+            "正在激活<b>现收现付</b>…"
+         ],
+         "Continue in the new tab": [
+            "在新建标签页中继续"
+         ],
+         "Activate <b>Pay-As-You-Go</b>": [
+            "激活<b>现收现付</b>"
+         ],
+         "<b>Pay-As-You-Go</b> is not active yet.": [
+            "<b>现收现付</b>尚未激活。"
+         ],
+         "Already using <b>Pay-As-You-Go</b> on another site?": [
+            "已在另一个站点上使用<b>现收现付</b>？"
+         ],
+         "Connect this site to it": [
+            "将此站点连接到它"
+         ],
+         "Activate Pay-As-You-Go": [
+            "激活现收现付"
+         ],
+         "Connect your sites to share translation memory, glossary and word quota.": [
+            "连接您的站点以共享翻译记忆库、术语表和字数配额。"
+         ],
+         "Learn more": [
+            "了解更多"
+         ],
+         "Copy your migration code:": [
+            "复制您的迁移代码："
+         ],
+         "Loading…": [
+            "正在加载…"
+         ],
+         "Log into a site with an active automatic translation account.": [
+            "登录具有活动自动翻译账户的站点。"
+         ],
+         "Go to \"WPML\" → \"Translation Dashboard\".": [
+            "前往“WPML” → “翻译仪表板”。"
+         ],
+         "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
+            "在“付款与维护”选项卡中，前往“已连接的站点”。"
+         ],
+         "Click \"Enter the connection key of another site\" to finish connecting your sites.": [
+            "点击“输入另一个站点的连接密钥”以完成站点连接。"
+         ],
+         "Buy and assign words": [
+            "购买并分配字数"
+         ],
+         "Refresh to assign words": [
+            "刷新以分配字数"
+         ],
+         "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site.": [
+            "购买至少包含 %3$s%4$s 个字数%5$s 的 %1$s预付费套餐%2$s 并将其分配给此站点。"
+         ],
+         "This amount will cover translation of all your current content.": [
+            "此金额将涵盖您当前所有内容的翻译。"
+         ],
+         "Assign %1$s%2$s words%3$s to this site.": [
+            "分配 %1$s%2$s 个字数%3$s 到此站点。"
+         ],
+         "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s.": [
+            "分配您的 %1$s%2$s 个字数%3$s 并购买 %4$s%5$s 更多%6$s。"
+         ],
+         "Buy %1$s%2$s words%3$s for this site.": [
+            "为此站点购买 %1$s%2$s 个字数%3$s。"
+         ],
+         "Assign at least %1$s%2$s words%3$s to this site to continue.": [
+            "请向此站点分配至少 %1$s%2$s 个字数%3$s 以继续。"
+         ],
+         "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount.": [
+            "从您的 WPML 账户分配字数，并额外购买至少包含 %3$s%4$s 个字数%5$s 的 %1$s预付费套餐%2$s 以补足剩余所需。"
+         ],
+         "Prepaid words": [
+            "预付费字数"
+         ],
+         "There are %1$s%2$s words%3$s on your WPML account.": [
+            "您的 WPML 账户中有 %1$s%2$s 个字数%3$s。"
+         ],
+         "There are %1$s%2$s available on your WPML account.%3$s": [
+            "您的 WPML 账户中有 %1$s%2$s 个字数可用。%3$s"
+         ],
+         "(Only the WPML account owner can do this.)": [
+            "（只有 WPML 账户所有者可以执行此操作。）"
+         ],
+         "Checking for new words...": [
+            "正在检查新字数..."
+         ],
+         "Still not enough words. Refresh again in %d seconds.": [
+            "字数仍然不足。请在 %d 秒后再次刷新。"
+         ],
+         "Already assigned?": [
+            "已经分配？"
+         ],
+         "Collapse": [
+            "折叠"
+         ],
+         "Obvious mistakes": [
+            "明显错误"
+         ],
+         "Ready to publish": [
+            "准备发布"
+         ],
+         "Your engine": [
+            "您的引擎"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "翻译质量（50-100 分）：%1$s 得分为 %2$d，%3$s 得分为 %4$d。"
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "评分基于 WPML 内部的 MQM 翻译质量研究。"
+         ],
+         "Select an item": [
+            "选择一个项目"
+         ],
+         "Open dropdown": [
+            "打开下拉菜单"
+         ],
+         "Reset": [
+            "重置"
+         ],
+         "Search": [
+            "搜索"
+         ],
+         "No items found": [
+            "未找到项目"
+         ],
+         "%1$s Flag": [
+            "%1$s 国旗"
+         ],
+         "Recommended": [
+            "推荐"
+         ],
+         "- Select a review mode -": [
+            "- 选择审核模式 -"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "当 WPML 完成自动翻译您的内容后，您想做什么？"
+         ],
+         "What would you like to do after WPML finishes translating your content automatically?": [
+            "在 WPML 完成自动翻译您的内容后，您想做什么？"
+         ],
+         "Publish without review": [
+            "无需审核直接发布"
+         ],
+         "WPML publishes translations immediately, skipping the review process.": [
+            "WPML 立即发布翻译，跳过审核过程。"
+         ],
+         "Wait for review": [
+            "等待审核"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "对于 DeepL、Google 和 Microsoft，我们建议进行人工审核以确认其正确性。PTC 提供能够理解上下文的优于人工的翻译，因此您可以放心地跳过审核过程。"
+         ],
+         "WPML keeps translations unpublished, so you can review them first.": [
+            "WPML 保持翻译为未发布状态，以便您可以先进行审核。"
+         ],
+         "Your translators review and approve translations before publishing.": [
+            "您的译员在发布前审核并批准翻译。"
+         ],
+         "Publish and mark for review": [
+            "发布并标记为待审核"
+         ],
+         "WPML publishes translations immediately but flags them for you to check at your convenience.": [
+            "WPML 立即发布翻译，但会对其进行标记，以便您在方便时检查。"
+         ],
+         "WPML publishes translations immediately but flags them for translators to review later.": [
+            "WPML 立即发布翻译，但会对其进行标记，以便译员稍后审核。"
+         ],
+         "PTC provides Better Than Human Translations that rarely need improvements, so you can confidently skip the review process.": [
+            "PTC 提供优于人工的翻译，极少需要改进，因此您可以放心地跳过审核过程。"
+         ]
+      }
+   }
+}

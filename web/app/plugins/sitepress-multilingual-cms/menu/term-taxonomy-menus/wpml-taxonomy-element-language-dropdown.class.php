@@ -11,7 +11,7 @@ class WPML_Taxonomy_Element_Language_Dropdown {
 
 	<div id="icl_<?php echo esc_attr( $type ); ?>_lang" class="postbox" style="line-height:normal;">
 		<h3 class="hndle">
-			<span><?php echo esc_html__( 'Language', 'sitepress' ); ?></span>
+			<span><?php echo /* translators: Column heading and field label in the WPML admin, for the language of a piece of content. Noun, singular. */ esc_html__( 'Language', 'sitepress' ); ?></span>
 		</h3>
 		<div class="inside" style="padding: 10px;">
 

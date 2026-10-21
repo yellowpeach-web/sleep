@@ -1,25 +1,233 @@
 <wpml-config>
 	<custom-fields>
 		<custom-field action="translate">_yoast_wpseo_title</custom-field>
-		<custom-field action="translate">_yoast_wpseo_bctitle</custom-field>
-		<custom-field action="translate">_yoast_wpseo_metadesc</custom-field>
-		<custom-field action="translate">_yoast_wpseo_metakeywords</custom-field>
-		<custom-field action="translate">_yoast_wpseo_focuskw</custom-field>
-		<custom-field action="translate">_yoast_wpseo_focuskeywords</custom-field>
+		<custom-field action="translate" label="Breadcrumb Title">_yoast_wpseo_bctitle</custom-field>
+		<custom-field action="translate" label="Meta Description">_yoast_wpseo_metadesc</custom-field>
+		<custom-field action="translate" label="Focus Keyword">_yoast_wpseo_focuskw</custom-field>
+		<custom-field action="translate" label="Focus Keywords" encoding="json">_yoast_wpseo_focuskeywords</custom-field>
+		<custom-field action="translate" encoding="json">_yoast_wpseo_keywordsynonyms</custom-field>
 		<custom-field action="copy">_yoast_wpseo_meta-robots-noindex</custom-field>
 		<custom-field action="copy">_yoast_wpseo_meta-robots-nofollow</custom-field>
 		<custom-field action="copy">_yoast_wpseo_meta-robots-adv</custom-field>
 		<custom-field action="ignore">_yoast_wpseo_canonical</custom-field>
 		<custom-field action="ignore">_yoast_wpseo_redirect</custom-field>
 		<custom-field action="translate">_yoast_wpseo_opengraph-description</custom-field>
-		<custom-field action="translate">_yoast_wpseo_google-plus-description</custom-field>
 		<custom-field action="translate">_yoast_wpseo_twitter-title</custom-field>
 		<custom-field action="translate">_yoast_wpseo_twitter-description</custom-field>
 		<custom-field action="translate">_yoast_wpseo_opengraph-title</custom-field>
 		<custom-field action="copy-once">_yoast_wpseo_opengraph-image</custom-field>
 		<custom-field action="copy-once">_yoast_wpseo_twitter-image</custom-field>
+		<custom-field action="copy-once">_yoast_wpseo_opengraph-image-id</custom-field>
+		<custom-field action="copy-once">_yoast_wpseo_twitter-image-id</custom-field>
+		<custom-field action="copy-once">_yoast_wpseo_estimated-reading-time-minutes</custom-field>
 		<custom-field action="copy">_yoast_wpseo_primary_category</custom-field>
 		<custom-field action="copy">_yoast_wpseo_primary_product_cat</custom-field>
+		<custom-field action="copy">_yoast_wpseo_schema_page_type</custom-field>
+		<custom-field action="copy">_yoast_wpseo_schema_article_type</custom-field>
+		<custom-field action="translate">rank_math_schema_MusicGroup</custom-field>
+		<custom-field action="translate">rank_math_schema_MusicAlbum</custom-field>
+		<custom-field action="translate">rank_math_schema_Person</custom-field>
+		<custom-field action="translate">rank_math_schema_Service</custom-field>
+		<custom-field action="translate">rank_math_schema_Article</custom-field>
+		<custom-field action="translate">rank_math_schema_BlogPosting</custom-field>
+		<custom-field action="translate">rank_math_schema_NewsArticle</custom-field>
+		<custom-field action="translate">rank_math_schema_Movie</custom-field>
+		<custom-field action="translate">rank_math_schema_ClaimReview</custom-field>
+		<custom-field action="translate">rank_math_schema_Dataset</custom-field>
+		<custom-field action="translate">rank_math_schema_Organization</custom-field>
+		<custom-field action="translate">rank_math_schema_Airline</custom-field>
+		<custom-field action="translate">rank_math_schema_Consortium</custom-field>
+		<custom-field action="translate">rank_math_schema_Corporation</custom-field>
+		<custom-field action="translate">rank_math_schema_EducationalOrganization</custom-field>
+		<custom-field action="translate">rank_math_schema_CollegeOrUniversity</custom-field>
+		<custom-field action="translate">rank_math_schema_ElementarySchool</custom-field>
+		<custom-field action="translate">rank_math_schema_HighSchool</custom-field>
+		<custom-field action="translate">rank_math_schema_MiddleSchool</custom-field>
+		<custom-field action="translate">rank_math_schema_Preschool</custom-field>
+		<custom-field action="translate">rank_math_schema_School</custom-field>
+		<custom-field action="translate">rank_math_schema_FundingScheme</custom-field>
+		<custom-field action="translate">rank_math_schema_GovernmentOrganization</custom-field>
+		<custom-field action="translate">rank_math_schema_LibrarySystem</custom-field>
+		<custom-field action="translate">rank_math_schema_LocalBusiness</custom-field>
+		<custom-field action="translate">rank_math_schema_AnimalShelter</custom-field>
+		<custom-field action="translate">rank_math_schema_ArchiveOrganization</custom-field>
+		<custom-field action="translate">rank_math_schema_AutomotiveBusiness</custom-field>
+		<custom-field action="translate">rank_math_schema_AutoBodyShop</custom-field>
+		<custom-field action="translate">rank_math_schema_AutoDealer</custom-field>
+		<custom-field action="translate">rank_math_schema_AutoPartsStore</custom-field>
+		<custom-field action="translate">rank_math_schema_AutoRental</custom-field>
+		<custom-field action="translate">rank_math_schema_AutoRepair</custom-field>
+		<custom-field action="translate">rank_math_schema_AutoWash</custom-field>
+		<custom-field action="translate">rank_math_schema_GasStation</custom-field>
+		<custom-field action="translate">rank_math_schema_MotorcycleDealer</custom-field>
+		<custom-field action="translate">rank_math_schema_MotorcycleRepair</custom-field>
+		<custom-field action="translate">rank_math_schema_ChildCare</custom-field>
+		<custom-field action="translate">rank_math_schema_DryCleaningOrLaundry</custom-field>
+		<custom-field action="translate">rank_math_schema_EmergencyService</custom-field>
+		<custom-field action="translate">rank_math_schema_FireStation</custom-field>
+		<custom-field action="translate">rank_math_schema_Hospital</custom-field>
+		<custom-field action="translate">rank_math_schema_PoliceStation</custom-field>
+		<custom-field action="translate">rank_math_schema_EmploymentAgency</custom-field>
+		<custom-field action="translate">rank_math_schema_EntertainmentBusiness</custom-field>
+		<custom-field action="translate">rank_math_schema_AdultEntertainment</custom-field>
+		<custom-field action="translate">rank_math_schema_AmusementPark</custom-field>
+		<custom-field action="translate">rank_math_schema_ArtGallery</custom-field>
+		<custom-field action="translate">rank_math_schema_Casino</custom-field>
+		<custom-field action="translate">rank_math_schema_ComedyClub</custom-field>
+		<custom-field action="translate">rank_math_schema_MovieTheater</custom-field>
+		<custom-field action="translate">rank_math_schema_NightClub</custom-field>
+		<custom-field action="translate">rank_math_schema_FinancialService</custom-field>
+		<custom-field action="translate">rank_math_schema_AccountingService</custom-field>
+		<custom-field action="translate">rank_math_schema_AutomatedTeller</custom-field>
+		<custom-field action="translate">rank_math_schema_BankOrCreditUnion</custom-field>
+		<custom-field action="translate">rank_math_schema_InsuranceAgency</custom-field>
+		<custom-field action="translate">rank_math_schema_FoodEstablishment</custom-field>
+		<custom-field action="translate">rank_math_schema_Bakery</custom-field>
+		<custom-field action="translate">rank_math_schema_BarOrPub</custom-field>
+		<custom-field action="translate">rank_math_schema_Brewery</custom-field>
+		<custom-field action="translate">rank_math_schema_CafeOrCoffeeShop</custom-field>
+		<custom-field action="translate">rank_math_schema_Distillery</custom-field>
+		<custom-field action="translate">rank_math_schema_FastFoodRestaurant</custom-field>
+		<custom-field action="translate">rank_math_schema_IceCreamShop</custom-field>
+		<custom-field action="translate">rank_math_schema_Restaurant</custom-field>
+		<custom-field action="translate">rank_math_schema_Winery</custom-field>
+		<custom-field action="translate">rank_math_schema_GovernmentOffice</custom-field>
+		<custom-field action="translate">rank_math_schema_PostOffice</custom-field>
+		<custom-field action="translate">rank_math_schema_HealthAndBeautyBusiness</custom-field>
+		<custom-field action="translate">rank_math_schema_BeautySalon</custom-field>
+		<custom-field action="translate">rank_math_schema_DaySpa</custom-field>
+		<custom-field action="translate">rank_math_schema_HairSalon</custom-field>
+		<custom-field action="translate">rank_math_schema_HealthClub</custom-field>
+		<custom-field action="translate">rank_math_schema_NailSalon</custom-field>
+		<custom-field action="translate">rank_math_schema_TattooParlor</custom-field>
+		<custom-field action="translate">rank_math_schema_HomeAndConstructionBusiness</custom-field>
+		<custom-field action="translate">rank_math_schema_Electrician</custom-field>
+		<custom-field action="translate">rank_math_schema_GeneralContractor</custom-field>
+		<custom-field action="translate">rank_math_schema_HVACBusiness</custom-field>
+		<custom-field action="translate">rank_math_schema_HousePainter</custom-field>
+		<custom-field action="translate">rank_math_schema_Locksmith</custom-field>
+		<custom-field action="translate">rank_math_schema_MovingCompany</custom-field>
+		<custom-field action="translate">rank_math_schema_Plumber</custom-field>
+		<custom-field action="translate">rank_math_schema_RoofingContractor</custom-field>
+		<custom-field action="translate">rank_math_schema_InternetCafe</custom-field>
+		<custom-field action="translate">rank_math_schema_LegalService</custom-field>
+		<custom-field action="translate">rank_math_schema_Notary</custom-field>
+		<custom-field action="translate">rank_math_schema_Library</custom-field>
+		<custom-field action="translate">rank_math_schema_LodgingBusiness</custom-field>
+		<custom-field action="translate">rank_math_schema_BedAndBreakfast</custom-field>
+		<custom-field action="translate">rank_math_schema_Campground</custom-field>
+		<custom-field action="translate">rank_math_schema_Hostel</custom-field>
+		<custom-field action="translate">rank_math_schema_Hotel</custom-field>
+		<custom-field action="translate">rank_math_schema_Motel</custom-field>
+		<custom-field action="translate">rank_math_schema_Resort</custom-field>
+		<custom-field action="translate">rank_math_schema_SkiResort</custom-field>
+		<custom-field action="translate">rank_math_schema_MedicalBusiness</custom-field>
+		<custom-field action="translate">rank_math_schema_CommunityHealth</custom-field>
+		<custom-field action="translate">rank_math_schema_Dentist</custom-field>
+		<custom-field action="translate">rank_math_schema_Dermatology</custom-field>
+		<custom-field action="translate">rank_math_schema_DietNutrition</custom-field>
+		<custom-field action="translate">rank_math_schema_Emergency</custom-field>
+		<custom-field action="translate">rank_math_schema_Geriatric</custom-field>
+		<custom-field action="translate">rank_math_schema_Gynecologic</custom-field>
+		<custom-field action="translate">rank_math_schema_MedicalClinic</custom-field>
+		<custom-field action="translate">rank_math_schema_Optician</custom-field>
+		<custom-field action="translate">rank_math_schema_Pharmacy</custom-field>
+		<custom-field action="translate">rank_math_schema_Physician</custom-field>
+		<custom-field action="translate">rank_math_schema_ProfessionalService</custom-field>
+		<custom-field action="translate">rank_math_schema_RadioStation</custom-field>
+		<custom-field action="translate">rank_math_schema_RealEstateAgent</custom-field>
+		<custom-field action="translate">rank_math_schema_RecyclingCenter</custom-field>
+		<custom-field action="translate">rank_math_schema_SelfStorage</custom-field>
+		<custom-field action="translate">rank_math_schema_ShoppingCenter</custom-field>
+		<custom-field action="translate">rank_math_schema_SportsActivityLocation</custom-field>
+		<custom-field action="translate">rank_math_schema_BowlingAlley</custom-field>
+		<custom-field action="translate">rank_math_schema_ExerciseGym</custom-field>
+		<custom-field action="translate">rank_math_schema_GolfCourse</custom-field>
+		<custom-field action="translate">rank_math_schema_PublicSwimmingPool</custom-field>
+		<custom-field action="translate">rank_math_schema_SportsClub</custom-field>
+		<custom-field action="translate">rank_math_schema_StadiumOrArena</custom-field>
+		<custom-field action="translate">rank_math_schema_TennisComplex</custom-field>
+		<custom-field action="translate">rank_math_schema_Store</custom-field>
+		<custom-field action="translate">rank_math_schema_BikeStore</custom-field>
+		<custom-field action="translate">rank_math_schema_BookStore</custom-field>
+		<custom-field action="translate">rank_math_schema_ClothingStore</custom-field>
+		<custom-field action="translate">rank_math_schema_ComputerStore</custom-field>
+		<custom-field action="translate">rank_math_schema_ConvenienceStore</custom-field>
+		<custom-field action="translate">rank_math_schema_DepartmentStore</custom-field>
+		<custom-field action="translate">rank_math_schema_ElectronicsStore</custom-field>
+		<custom-field action="translate">rank_math_schema_Florist</custom-field>
+		<custom-field action="translate">rank_math_schema_FurnitureStore</custom-field>
+		<custom-field action="translate">rank_math_schema_GardenStore</custom-field>
+		<custom-field action="translate">rank_math_schema_GroceryStore</custom-field>
+		<custom-field action="translate">rank_math_schema_HardwareStore</custom-field>
+		<custom-field action="translate">rank_math_schema_HobbyShop</custom-field>
+		<custom-field action="translate">rank_math_schema_HomeGoodsStore</custom-field>
+		<custom-field action="translate">rank_math_schema_JewelryStore</custom-field>
+		<custom-field action="translate">rank_math_schema_LiquorStore</custom-field>
+		<custom-field action="translate">rank_math_schema_MensClothingStore</custom-field>
+		<custom-field action="translate">rank_math_schema_MobilePhoneStore</custom-field>
+		<custom-field action="translate">rank_math_schema_MovieRentalStore</custom-field>
+		<custom-field action="translate">rank_math_schema_MusicStore</custom-field>
+		<custom-field action="translate">rank_math_schema_OfficeEquipmentStore</custom-field>
+		<custom-field action="translate">rank_math_schema_OutletStore</custom-field>
+		<custom-field action="translate">rank_math_schema_PawnShop</custom-field>
+		<custom-field action="translate">rank_math_schema_PetStore</custom-field>
+		<custom-field action="translate">rank_math_schema_ShoeStore</custom-field>
+		<custom-field action="translate">rank_math_schema_SportingGoodsStore</custom-field>
+		<custom-field action="translate">rank_math_schema_TireShop</custom-field>
+		<custom-field action="translate">rank_math_schema_ToyStore</custom-field>
+		<custom-field action="translate">rank_math_schema_WholesaleStore</custom-field>
+		<custom-field action="translate">rank_math_schema_TelevisionStation</custom-field>
+		<custom-field action="translate">rank_math_schema_TouristInformationCenter</custom-field>
+		<custom-field action="translate">rank_math_schema_TravelAgency</custom-field>
+		<custom-field action="translate">rank_math_schema_MedicalOrganization</custom-field>
+		<custom-field action="translate">rank_math_schema_DiagnosticLab</custom-field>
+		<custom-field action="translate">rank_math_schema_VeterinaryCare</custom-field>
+		<custom-field action="translate">rank_math_schema_NGO</custom-field>
+		<custom-field action="translate">rank_math_schema_NewsMediaOrganization</custom-field>
+		<custom-field action="translate">rank_math_schema_OnlineStore</custom-field>
+		<custom-field action="translate">rank_math_schema_OnlineBusiness</custom-field>
+		<custom-field action="translate">rank_math_schema_PerformingGroup</custom-field>
+		<custom-field action="translate">rank_math_schema_DanceGroup</custom-field>
+		<custom-field action="translate">rank_math_schema_TheaterGroup</custom-field>
+		<custom-field action="translate">rank_math_schema_Project</custom-field>
+		<custom-field action="translate">rank_math_schema_FundingAgency</custom-field>
+		<custom-field action="translate">rank_math_schema_ResearchProject</custom-field>
+		<custom-field action="translate">rank_math_schema_SportsOrganization</custom-field>
+		<custom-field action="translate">rank_math_schema_SportsTeam</custom-field>
+		<custom-field action="translate">rank_math_schema_WorkersUnion</custom-field>
+		<custom-field action="translate">rank_math_schema_Recipe</custom-field>
+		<custom-field action="translate">rank_math_schema_Product</custom-field>
+		<custom-field action="translate">rank_math_schema_VideoObject</custom-field>
+		<custom-field action="translate">rank_math_schema_FAQPage</custom-field>
+		<custom-field action="translate">rank_math_schema_HowTo</custom-field>
+		<custom-field action="translate">rank_math_schema_JobPosting</custom-field>
+		<custom-field action="translate">rank_math_schema_PodcastEpisode</custom-field>
+		<custom-field action="translate">rank_math_schema_Book</custom-field>
+		<custom-field action="translate">rank_math_schema_Course</custom-field>
+		<custom-field action="translate">rank_math_schema_Event</custom-field>
+		<custom-field action="translate">rank_math_schema_BusinessEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_ChildrensEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_ComedyEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_DanceEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_DeliveryEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_EducationEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_ExhibitionEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_Festival</custom-field>
+		<custom-field action="translate">rank_math_schema_FoodEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_LiteraryEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_MusicEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_PublicationEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_SaleEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_ScreeningEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_SocialEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_SportsEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_TheaterEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_VisualArtsEvent</custom-field>
+		<custom-field action="translate">rank_math_schema_SoftwareApplication</custom-field>
+		<custom-field action="copy">rank_math_schema_WooCommerceProduct</custom-field>
+		<custom-field action="copy">rank_math_schema_EDDProduct</custom-field>
+		<custom-field action="copy">rank_math_schema_ItemList</custom-field>
 	</custom-fields>
 	<custom-fields-texts>
 		<key name="_yoast_wpseo_focuskeywords">
@@ -27,14 +235,1962 @@
 				<key name="keyword" />
 			</key>
 		</key>
+		<key name="_yoast_wpseo_keywordsynonyms">
+			<key name="*" />
+		</key>
+		<key name="rank_math_schema_MusicGroup">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_MusicAlbum">
+			<key name="name"/>
+			<key name="description"/>
+		</key>
+		<key name="rank_math_schema_Person">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="jobTitle"/>
+		</key>
+		<key name="rank_math_schema_Service">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="serviceType"/>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+		</key>
+		<key name="rank_math_schema_Article">
+			<key name="headline"/>
+			<key name="description"/>
+			<key name="keywords"/>
+			<key name="author">
+				<key name="name"/>
+			</key>
+			<key name="articleSection"/>
+		</key>
+		<key name="rank_math_schema_BlogPosting">
+			<key name="headline"/>
+			<key name="description"/>
+			<key name="keywords"/>
+			<key name="author">
+				<key name="name"/>
+			</key>
+			<key name="articleSection"/>
+		</key>
+		<key name="rank_math_schema_NewsArticle">
+			<key name="headline"/>
+			<key name="description"/>
+			<key name="keywords"/>
+			<key name="author">
+				<key name="name"/>
+			</key>
+			<key name="articleSection"/>
+		</key>
+		<key name="rank_math_schema_Movie">
+			<key name="name"/>
+			<key name="director"/>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_ClaimReview">
+			<key name="claimReviewed"/>
+			<key name="reviewRating">
+				<key name="alternateName"/>
+			</key>
+			<key name="author">
+				<key name="name"/>
+			</key>
+			<key name="itemReviewed">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="appearance">
+					<key name="headline"/>
+					<key name="author">
+						<key name="name"/>
+					</key>
+				</key>
+			</key>
+			<key name="publisher">
+				<key name="name"/>
+			</key>
+		</key>
+		<key name="rank_math_schema_Dataset">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="keywords">
+				<key name="*"/>
+			</key>
+			<key name="includedInDataCatalog">
+				<key name="name"/>
+			</key>
+			<key name="hasPart">
+				<key name="*">
+					<key name="name"/>
+					<key name="description"/>
+					<key name="creator">
+						<key name="name"/>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_Organization">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Airline">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Consortium">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Corporation">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_EducationalOrganization">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_CollegeOrUniversity">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ElementarySchool">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_HighSchool">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_MiddleSchool">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Preschool">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_School">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_FundingScheme">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_GovernmentOrganization">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_LibrarySystem">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_LocalBusiness">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_AnimalShelter">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ArchiveOrganization">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_AutomotiveBusiness">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_AutoBodyShop">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_AutoDealer">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_AutoPartsStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_AutoRental">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_AutoRepair">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_AutoWash">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_GasStation">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_MotorcycleDealer">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_MotorcycleRepair">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ChildCare">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_DryCleaningOrLaundry">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_EmergencyService">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_FireStation">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Hospital">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_PoliceStation">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_EmploymentAgency">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_EntertainmentBusiness">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_AdultEntertainment">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_AmusementPark">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ArtGallery">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Casino">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ComedyClub">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_MovieTheater">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_NightClub">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_FinancialService">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_AccountingService">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_AutomatedTeller">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_BankOrCreditUnion">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_InsuranceAgency">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_FoodEstablishment">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Bakery">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_BarOrPub">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Brewery">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_CafeOrCoffeeShop">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Distillery">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_FastFoodRestaurant">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_IceCreamShop">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Restaurant">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+			<key name="servesCuisine">
+				<key name="*"/>
+			</key>
+		</key>
+		<key name="rank_math_schema_Winery">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_GovernmentOffice">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_PostOffice">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_HealthAndBeautyBusiness">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_BeautySalon">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_DaySpa">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_HairSalon">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_HealthClub">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_NailSalon">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_TattooParlor">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_HomeAndConstructionBusiness">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Electrician">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_GeneralContractor">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_HVACBusiness">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_HousePainter">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Locksmith">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_MovingCompany">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Plumber">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_RoofingContractor">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_InternetCafe">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_LegalService">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Notary">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Library">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_LodgingBusiness">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_BedAndBreakfast">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Campground">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Hostel">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Hotel">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Motel">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Resort">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_SkiResort">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_MedicalBusiness">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_CommunityHealth">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Dentist">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Dermatology">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_DietNutrition">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Emergency">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Geriatric">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Gynecologic">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_MedicalClinic">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Optician">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Pharmacy">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Physician">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ProfessionalService">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_RadioStation">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_RealEstateAgent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_RecyclingCenter">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_SelfStorage">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ShoppingCenter">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_SportsActivityLocation">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_BowlingAlley">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ExerciseGym">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_GolfCourse">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_PublicSwimmingPool">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_SportsClub">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_StadiumOrArena">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_TennisComplex">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Store">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_BikeStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_BookStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ClothingStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ComputerStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ConvenienceStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_DepartmentStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ElectronicsStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Florist">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_FurnitureStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_GardenStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_GroceryStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_HardwareStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_HobbyShop">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_HomeGoodsStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_JewelryStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_LiquorStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_MensClothingStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_MobilePhoneStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_MovieRentalStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_MusicStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_OfficeEquipmentStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_OutletStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_PawnShop">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_PetStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ShoeStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_SportingGoodsStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_TireShop">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ToyStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_WholesaleStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_TelevisionStation">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_TouristInformationCenter">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_TravelAgency">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_MedicalOrganization">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_DiagnosticLab">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_VeterinaryCare">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_NGO">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_NewsMediaOrganization">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_OnlineStore">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_OnlineBusiness">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_PerformingGroup">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_DanceGroup">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_TheaterGroup">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Project">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_FundingAgency">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_ResearchProject">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_SportsOrganization">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_SportsTeam">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_WorkersUnion">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="paymentAccepted"/>
+		</key>
+		<key name="rank_math_schema_Recipe">
+			<key name="name"/>
+			<key name="author">
+				<key name="name"/>
+			</key>
+			<key name="description"/>
+			<key name="recipeCategory"/>
+			<key name="recipeCuisine"/>
+			<key name="keywords"/>
+			<key name="recipeYield"/>
+			<key name="nutrition">
+				<key name="calories"/>
+			</key>
+			<key name="recipeIngredient">
+				<key name="*"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+			<key name="video">
+				<key name="name"/>
+				<key name="description"/>
+			</key>
+			<key name="recipeInstructions">
+				<key name="name"/>
+				<key name="itemListElement">
+					<key name="*">
+						<key name="name"/>
+						<key name="text"/>
+					</key>
+				</key>
+				<key name="*">
+					<key name="name"/>
+					<key name="text"/>
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+							<key name="text"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_Product">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="brand">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_VideoObject">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="hasPart">
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_FAQPage">
+			<key name="name"/>
+			<key name="mainEntity">
+				<key name="*">
+					<key name="name"/>
+					<key name="acceptedAnswer">
+						<key name="text"/>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_HowTo">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="material"/>
+			<key name="supply">
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="tool">
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="step">
+				<key name="*">
+					<key name="name"/>
+					<key name="itemListElement">
+						<key name="text"/>
+						<key name="*">
+							<key name="text"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_JobPosting">
+			<key name="title"/>
+			<key name="description"/>
+			<key name="hiringOrganization">
+				<key name="name"/>
+			</key>
+			<key name="applicantLocationRequirements">
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="jobLocation">
+				<key name="name"/>
+			</key>
+		</key>
+		<key name="rank_math_schema_PodcastEpisode">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="author">
+				<key name="name"/>
+			</key>
+			<key name="partOfSeason">
+				<key name="name"/>
+			</key>
+		</key>
+		<key name="rank_math_schema_Book">
+			<key name="name"/>
+			<key name="author">
+				<key name="name"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+			<key name="hasPart">
+				<key name="*">
+					<key name="name"/>
+					<key name="bookEdition"/>
+					<key name="author">
+						<key name="name"/>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_Course">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="provider">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_Event">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_BusinessEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_ChildrensEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_ComedyEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_DanceEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_DeliveryEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_EducationEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_ExhibitionEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_Festival">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_FoodEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_LiteraryEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_MusicEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_PublicationEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_SaleEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_ScreeningEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_SocialEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_SportsEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_TheaterEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_VisualArtsEvent">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="location">
+				<key name="name"/>
+				<key name="*">
+					<key name="name"/>
+				</key>
+			</key>
+			<key name="performer">
+				<key name="name"/>
+			</key>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+		<key name="rank_math_schema_SoftwareApplication">
+			<key name="name"/>
+			<key name="description"/>
+			<key name="offers">
+				<key name="name"/>
+				<key name="category"/>
+			</key>
+			<key name="review">
+				<key name="author">
+					<key name="name"/>
+				</key>
+				<key name="reviewRating">
+					<key name="alternateName"/>
+				</key>
+				<key name="positiveNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+				<key name="negativeNotes">
+					<key name="itemListElement">
+						<key name="*">
+							<key name="name"/>
+						</key>
+					</key>
+				</key>
+			</key>
+		</key>
+	
 	</custom-fields-texts>
 	<admin-texts>
 		<key name="wpseo_titles">
 			<key name="title-*" />
 			<key name="bctitle-*" />
 			<key name="metadesc-*" />
-			<key name="metakey-*" />
+			<key name="social-title-*" />
+			<key name="social-description-*" />
+			<key name="website_name" />
+			<key name="alternate_website_name" />
 			<key name="company_name" />
+			<key name="company_alternate_name" />
+			<key name="org-description" />
+			<key name="org-legal-name" />
 			<key name="breadcrumbs-sep" />
 			<key name="breadcrumbs-home" />
 			<key name="breadcrumbs-prefix" />
@@ -56,5 +2212,32 @@
 			<key name="og_frontpage_image" />
 		</key>
 	</admin-texts>
+	<gutenberg-blocks>
+		<gutenberg-block type="yoast/faq-block" translate="1" label="Yoast Faq Block">
+			<key name="questions">
+				<key name="*">
+					<key name="question" />
+					<key name="answer" />
+					<key name="jsonQuestion" />
+					<key name="jsonAnswer" />
+				</key>
+			</key>
+			<xpath label="Question">//div/strong</xpath>
+			<xpath label="Answer">//div/p</xpath>
+		</gutenberg-block>
+		<gutenberg-block type="yoast/how-to-block" translate="1" label="Yoast How to Block">
+			<key name="jsonDescription" />
+			<key name="steps">
+				<key name="*">
+					<key name="name" />
+					<key name="text" />
+					<key name="jsonName" />
+					<key name="jsonText" />
+				</key>
+			</key>
+			<xpath>//div/p</xpath>
+			<xpath label="Step Title">//div/ol/li/strong</xpath>
+			<xpath label="Step Description">//div/ol/li/p</xpath>
+		</gutenberg-block>
+	</gutenberg-blocks>
 </wpml-config>
-

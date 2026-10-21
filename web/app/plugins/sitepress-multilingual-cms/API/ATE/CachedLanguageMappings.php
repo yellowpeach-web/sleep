@@ -7,16 +7,11 @@ use WPML\TM\ATE\API\CacheStorage\Transient;
 use function WPML\Container\make;
 
 class CachedLanguageMappings extends LanguageMappings {
-	/**
-	 * @return CachedATEAPI
-	 */
 	protected static function getATEAPI() {
 		return new CachedATEAPI( make( \WPML_TM_ATE_API::class ), new Transient() );
 	}
 
 	public static function clearCache() {
-		$transientStorage = new Transient();
-		$transientStorage->delete( CachedATEAPI::CACHE_OPTION );
+		CachedATEAPI::clearAllCaches();
 	}
 }
-

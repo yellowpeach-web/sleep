@@ -10,63 +10,39 @@ use function WPML\FP\invoke;
 use function WPML\FP\partialRight;
 use function WPML\Container\make;
 
-/**
- * Class WPML_PB_Integration
- */
 class WPML_PB_Integration {
 
 	const MIGRATION_DONE_POST_META = '_wpml_location_migration_done';
 
-	/** @var SitePress */
 	private $sitepress;
 
-	/** @var WPML_PB_Factory */
 	private $factory;
 
-	/** @var bool */
 	private $new_translations_recieved = false;
 
-	/** @var array */
 	private $save_post_queue = array();
 
-	/** @var bool */
 	private $is_registering_string = false;
 
-	/** @var array */
+	private $is_writing_back_native_edit = false;
+
 	private $strategies = array();
 
-	/** @var StringCleanUp[]  */
 	private $stringCleanUp = [];
 
-	/**
-	 * @var WPML_PB_Integration_Rescan
-	 */
 	private $rescan;
 
-	/** @var array $media_updaters */
 	private $media_updaters = [];
 
-	/**
-	 * WPML_PB_Integration constructor.
-	 *
-	 * @param SitePress       $sitepress
-	 * @param WPML_PB_Factory $factory
-	 */
 	public function __construct( SitePress $sitepress, WPML_PB_Factory $factory ) {
 		$this->sitepress = $sitepress;
 		$this->factory   = $factory;
 	}
 
-	/**
-	 * @param IWPML_PB_Strategy $strategy
-	 */
 	public function add_strategy( IWPML_PB_Strategy $strategy ) {
 		$this->strategies[] = $strategy;
 	}
 
-	/**
-	 * @return WPML_PB_Integration_Rescan
-	 */
 	public function get_rescan() {
 		if ( null === $this->rescan ) {
 			$this->rescan = new WPML_PB_Integration_Rescan( $this );
@@ -75,17 +51,14 @@ class WPML_PB_Integration {
 		return $this->rescan;
 	}
 
-	/**
-	 * @param WPML_PB_Integration_Rescan $rescan
-	 */
 	public function set_rescan( WPML_PB_Integration_Rescan $rescan ) {
 		$this->rescan = $rescan;
 	}
 
 	public function resave_post_translation_in_shutdown( WPML_Post_Element $post_element, $disallowed_in_shutdown = true ) {
 		if ( ! $post_element->get_source_element()
-			 || ( did_action( 'shutdown' ) && $disallowed_in_shutdown )
-			 || array_key_exists( $post_element->get_id(), $this->save_post_queue )
+			|| ( did_action( 'shutdown' ) && $disallowed_in_shutdown )
+			|| array_key_exists( $post_element->get_id(), $this->save_post_queue )
 		) {
 			return;
 		}
@@ -97,41 +70,39 @@ class WPML_PB_Integration {
 		$updated_packages = $this->factory->get_package_strings_resave()->from_element( $post_element );
 
 		if ( ! $updated_packages ) {
-			$this->factory->get_handle_post_body()->copy(
-				$post_element->get_id(),
-				$post_element->get_source_element()->get_id(),
-				array()
+			$this->resave_translation_without_tm_status_update(
+				function () use ( $post_element ) {
+					$this->factory->get_handle_post_body()->copy(
+						$post_element->get_id(),
+						$post_element->get_source_element()->get_id(),
+						array()
+					);
+				}
 			);
 		}
 
-		$this->with_strategies( function( IWPML_PB_Strategy $strategy ) use ( $updated_packages, $post_element ) {
-			foreach ( $updated_packages as $package ) {
-				$this->factory->get_string_translations( $strategy )
-					->add_package_to_update_list( $package, $post_element->get_language_code() );
+		$this->with_strategies(
+			function ( IWPML_PB_Strategy $strategy ) use ( $updated_packages, $post_element ) {
+				foreach ( $updated_packages as $package ) {
+					$this->factory->get_string_translations( $strategy )
+						->queue_package_for_update( $package, $post_element->get_language_code() );
+				}
 			}
-		} );
+		);
 
 		$this->new_translations_recieved = true;
 		$this->queue_save_post_actions( $post_element->get_id(), $post_element->get_wp_object() );
 	}
 
-	/**
-	 * @param int|string $post_id
-	 * @param \WP_Post   $post
-	 */
 	public function queue_save_post_actions( $post_id, $post ) {
 		$this->update_last_editor_mode( (int) $post_id );
 		$this->save_post_queue[ $post_id ] = $post;
 	}
 
-	/**
-	 * @return \WP_Post[]
-	 */
 	public function get_save_post_queue() {
 		return $this->save_post_queue;
 	}
 
-	/** @param int $post_id */
 	private function update_last_editor_mode( $post_id ) {
 		if ( ! $this->is_translation( $post_id ) ) {
 			return;
@@ -139,35 +110,24 @@ class WPML_PB_Integration {
 
 		if ( $this->is_editing_translation_with_native_editor( $post_id ) ) {
 			WPML_PB_Last_Translation_Edit_Mode::set_native_editor( $post_id );
-		} else {
-			WPML_PB_Last_Translation_Edit_Mode::set_translation_editor( $post_id );
 		}
 	}
 
-	/**
-	 * Due to the "translation auto-update" feature, an original update
-	 * can also trigger an update on the translations.
-	 * We need to make sure the globally edited post is matching with
-	 * the local one.
-	 *
-	 * @param int $translatedPostId
-	 *
-	 * @return bool
-	 */
-	private function is_editing_translation_with_native_editor( $translatedPostId ) {
-		// $getPOST :: string -> mixed
-		$getPOST = Obj::prop( Fns::__, $_POST ); // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+	public function set_last_editor_mode_to_translation_editor( $post_id ) {
+		WPML_PB_Last_Translation_Edit_Mode::set_translation_editor( $post_id );
+	}
 
-		// $isQuickEditAction :: int -> bool
-		$isQuickEditAction = function( $id ) use ( $getPOST ) {
+	public function is_editing_translation_with_native_editor( $translatedPostId ) {
+		$getPOST = Obj::prop( Fns::__, $_POST );
+
+		$isQuickEditAction = function ( $id ) use ( $getPOST ) {
 			return wp_doing_ajax()
-				   && 'inline-save' === $getPOST( 'action' )
-				   && $id === (int) $getPOST( 'post_ID' );
+				&& 'inline-save' === $getPOST( 'action' )
+				&& $id === (int) $getPOST( 'post_ID' );
 		};
 
-		// $isSavingPostWithREST :: int -> bool
-		$isSavingPostWithREST = function( $translatedPostId ) {
-			if ( ! in_array( $_SERVER['REQUEST_METHOD'], [ 'POST', 'PUT', 'PATCH' ], true ) ) {
+		$isSavingPostWithREST = function ( $translatedPostId ) {
+			if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || ! in_array( $_SERVER['REQUEST_METHOD'], [ 'POST', 'PUT', 'PATCH' ], true ) ) {
 				return false;
 			}
 
@@ -177,23 +137,33 @@ class WPML_PB_Integration {
 						Type::isNull(),
 						Str::includes( '?P' ),
 						Str::includes( '[' ),
-						Str::includes( '(' )
+						Str::includes( '(' ),
 					]
 				)
 			);
 
 			$quoteComposedBase = Fns::unary( partialRight( 'preg_quote', '/' ) );
 
-			$postTypeSlugs = wpml_collect( get_post_types( [
-					'show_in_rest' => true,
-				], 'objects' ) )
-				->map( function( $postType ) {
+			$postTypeSlugs = wpml_collect(
+				get_post_types(
+					[ 'show_in_rest' => true ],
+					'objects'
+				)
+			)->map(
+				function ( $postType ) {
 					return Obj::prop( 'rest_base', $postType ) ?: Obj::prop( 'name', $postType );
-				} )
-				// Filter out variable bases, see https://onthegosystems.myjetbrains.com/youtrack/issue/wpmlpb-450
-				->filter( $hasValidBase )
-				->map ( $quoteComposedBase )
+				}
+			)->filter( $hasValidBase )
+				->map( $quoteComposedBase )
 				->implode( '|' );
+
+			$restRoute = Obj::prop( 'rest_route', $_GET );
+
+			if ( is_string( $restRoute ) ) {
+				preg_match( '/^\/wp\/v2\/(?:' . $postTypeSlugs . ')\/(\d+)/', $restRoute, $matches );
+
+				return (int) Obj::prop( 1, $matches ) === $translatedPostId;
+			}
 
 			preg_match( '/' . preg_quote( rest_get_url_prefix(), '/' ) . '\/wp\/v2\/(?:' . $postTypeSlugs . ')\/(\d+)/', $_SERVER['REQUEST_URI'], $matches );
 			$RESTPostId = (int) Obj::prop( 1, $matches );
@@ -201,11 +171,9 @@ class WPML_PB_Integration {
 			return $RESTPostId === $translatedPostId;
 		};
 
-		// $getGET :: string -> mixed
-		$getGET = Obj::prop( Fns::__, $_GET ); // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+		$getGET = Obj::prop( Fns::__, $_GET );
 
-		// $isBulkEditAction :: int -> bool
-		$isBulkEditAction = function( $id ) use ( $getGET ) {
+		$isBulkEditAction = function ( $id ) use ( $getGET ) {
 			$screenAction = 'edit-' . get_post_type( $id );
 			return $screenAction === $getGET( 'screen' )
 				&& 'edit' === $getGET( 'action' )
@@ -218,31 +186,13 @@ class WPML_PB_Integration {
 			|| ( ( $isQuickEditAction( $translatedPostId ) || $isBulkEditAction( $translatedPostId ) ) && WPML_PB_Last_Translation_Edit_Mode::is_native_editor( $translatedPostId ) )
 			|| $isSavingPostWithREST( $translatedPostId );
 
-		/**
-		 * This filter allows to override the result if a translation
-		 * is edited with a native editor, but not the WP one.
-		 *
-		 * @since WPML 4.5.0
-		 *
-		 * @param bool $isTranslationWithNativeEditor
-		 * @param int  $translatedPostId
-		 */
 		return apply_filters( 'wpml_pb_is_editing_translation_with_native_editor', $isTranslationWithNativeEditor, $translatedPostId );
 	}
 
-	/**
-	 * @param int $postId
-	 *
-	 * @return bool
-	 */
 	private function is_translation( $postId ) {
 		return (bool) $this->factory->get_post_element( $postId )->get_source_language_code();
 	}
 
-	/**
-	 * @param WP_Post $post
-	 * @param bool $allowRegisteringPostTranslation Specifies if the string registration must be allowed for posts that are not original.
-	 */
 	public function register_all_strings_for_translation( $post, $allowRegisteringPostTranslation = false ) {
 		if ( $post instanceof \WP_Post && $this->is_post_status_ok( $post ) && ( $allowRegisteringPostTranslation || $this->is_original_post( $post ) ) ) {
 			$this->is_registering_string = true;
@@ -251,31 +201,19 @@ class WPML_PB_Integration {
 		}
 	}
 
-	/**
-	 * @param \WP_Post|\stdClass $post
-	 *
-	 * @return bool
-	 */
 	private function is_original_post( $post ) {
-		return $post->ID == $this->sitepress->get_original_element_id( $post->ID, 'post_' . $post->post_type );
+		return (int) $post->ID === (int) $this->sitepress->get_original_element_id( $post->ID, 'post_' . $post->post_type, false, true, false, true );
 	}
 
-	/**
-	 * @param \WP_Post|\stdClass $post
-	 *
-	 * @return bool
-	 */
-	private function is_post_status_ok( $post ) {
-		return ! in_array( $post->post_status, array( 'trash', 'auto-draft', 'inherit' ) );
+	public function is_post_status_ok( $post ) {
+		return ! in_array( $post->post_status, array( 'trash', 'auto-draft', 'inherit' ), true );
 	}
 
-	/**
-	 * Add all actions filters.
-	 */
 	public function add_hooks() {
 		add_action( 'pre_post_update', array( $this, 'migrate_location' ) );
 		add_action( 'save_post', array( $this, 'queue_save_post_actions' ), PHP_INT_MAX, 2 );
-		add_action( 'wpml_pb_resave_post_translation', array( $this, 'resave_post_translation_in_shutdown' ), 10, 1 );
+		add_action( 'wpml_pro_translation_after_post_save', array( $this, 'set_last_editor_mode_to_translation_editor' ) );
+		add_action( 'wpml_pb_resave_post_translation', array( $this, 'resave_post_translation_in_shutdown' ), 10, 2 );
 		add_action( 'icl_st_add_string_translation', array( $this, 'new_translation' ), 10, 1 );
 		add_action( 'wpml_pb_finished_adding_string_translations', array( $this, 'process_pb_content_with_hidden_strings_only' ), 9, 2 );
 		add_action( 'wpml_pb_finished_adding_string_translations', array( $this, 'save_translations_to_post' ), 10 );
@@ -285,17 +223,37 @@ class WPML_PB_Integration {
 
 		add_action( 'wpml_pb_register_all_strings_for_translation', [ $this, 'register_all_strings_for_translation' ] );
 		add_filter( 'wpml_pb_register_strings_in_content', [ $this, 'register_strings_in_content' ], 10, 3 );
-		add_filter( 'wpml_pb_update_translations_in_content', [ $this, 'update_translations_in_content'], 10, 2 );
+		add_filter( 'wpml_pb_update_translations_in_content', [ $this, 'update_translations_in_content' ], 10, 2 );
 
 		add_action( 'wpml_start_GB_register_strings', [ $this, 'initialize_string_clean_up' ], 10, 1 );
 		add_action( 'wpml_end_GB_register_strings', [ $this, 'clean_up_strings' ], 10, 1 );
+
+		add_filter( 'wpml_auto_translate_string_package', [ $this, 'disableTranslateEverything' ], 10, 2 );
+		add_filter( 'wpml_get_page_builder_text_domains', [ $this, 'getPageBuildersKinds' ] );
 	}
 
-	/**
-	 * @param int      $new_post_id
-	 * @param array    $fields
-	 * @param stdClass $job
-	 */
+	public function disableTranslateEverything( $enabled, $package ) {
+		$kind  = Obj::prop( 'kind', $package );
+		$kinds = $this->getPageBuildersKinds( [] );
+
+		if ( in_array( $kind, $kinds, true ) ) {
+			return false;
+		}
+
+		return $enabled;
+	}
+
+	public function getPageBuildersKinds( $pbBuilders ) {
+		if ( ! is_array( $pbBuilders ) ) {
+			$pbBuilders = [];
+		}
+
+		return wpml_collect( $this->strategies )
+			->map( invoke( 'get_package_kind' ) )
+			->merge( $pbBuilders )
+			->all();
+	}
+
 	public function cleanup_strings_after_translation_completed( $new_post_id, array $fields, stdClass $job ) {
 		if ( 'post' === $job->element_type_prefix ) {
 			$original_post = get_post( $job->original_doc_id );
@@ -303,43 +261,53 @@ class WPML_PB_Integration {
 		}
 	}
 
+	public function without_resave( callable $callback ) {
+		$was_writing_back                  = $this->is_writing_back_native_edit;
+		$this->is_writing_back_native_edit = true;
+
+		try {
+			return $callback();
+		} finally {
+			$this->is_writing_back_native_edit = $was_writing_back;
+		}
+	}
+
 	public function new_translation( $translated_string_id ) {
-		if ( ! $this->is_registering_string ) {
-			$this->with_strategies( function( $strategy ) use ( $translated_string_id ) {
-				$this->factory->get_string_translations( $strategy )->new_translation( $translated_string_id );
-			} );
+		if ( ! $this->is_registering_string && ! $this->is_writing_back_native_edit ) {
+			$this->with_strategies(
+				function ( $strategy ) use ( $translated_string_id ) {
+					$this->factory->get_string_translations( $strategy )->new_translation( $translated_string_id );
+				}
+			);
 			$this->new_translations_recieved = true;
 		}
 	}
 
-	/**
-	 * @param callable $callable
-	 */
-	private function with_strategies( callable $callable ) {
-		Fns::each( $callable, $this->strategies );
+	private function with_strategies( callable $callback ) {
+		Fns::each( $callback, $this->strategies );
 	}
 
-	/**
-	 * When a Page Builder content has only a "LINK" string, it's won't be part
-	 * of the translation job as it's automatically converted.
-	 * We need to add the package to the update list (by strategies).
-	 *
-	 * @param int $new_post_id
-	 * @param int $original_doc_id
-	 */
 	public function process_pb_content_with_hidden_strings_only( $new_post_id, $original_doc_id ) {
-		if (
-			! did_action( 'wpml_add_string_translation' )
-			&& apply_filters( 'wpml_pb_is_page_builder_page', false, get_post( $new_post_id ) )
-		) {
+		if ( did_action( 'wpml_add_string_translation' ) ) {
+			return;
+		}
+
+		$new_post = $new_post_id ? get_post( $new_post_id ) : null;
+
+		if ( ! $new_post instanceof WP_Post ) {
+			return;
+		}
+
+		if ( apply_filters( 'wpml_pb_is_page_builder_page', false, $new_post ) ) {
 			$targetLang = $this->sitepress->get_language_for_element( $new_post_id, 'post_' . get_post_type( $new_post_id ) );
 
-			$addPackageToUpdateList = function( WPML_Package $package ) use ( $targetLang ) {
-				$this->with_strategies( function( IWPML_PB_Strategy $strategy ) use ( $package, $targetLang ) {
-					$this->factory
-						->get_string_translations( $strategy )
-						->add_package_to_update_list( $package, $targetLang );
-				} );
+			$addPackageToUpdateList = function ( WPML_Package $package ) use ( $targetLang ) {
+				$this->with_strategies(
+					function ( IWPML_PB_Strategy $strategy ) use ( $package, $targetLang ) {
+						$this->factory->get_string_translations( $strategy )
+							->queue_package_for_update( $package, $targetLang );
+					}
+				);
 			};
 
 			$this->new_translations_recieved = wpml_collect( apply_filters( 'wpml_st_get_post_string_packages', [], $original_doc_id ) )
@@ -350,34 +318,54 @@ class WPML_PB_Integration {
 
 	public function save_translations_to_post() {
 		if ( $this->new_translations_recieved ) {
-			$this->with_strategies( function( IWPML_PB_Strategy $strategy ) {
-				$this->factory->get_string_translations( $strategy )->save_translations_to_post();
-			} );
+			$this->resave_translation_without_tm_status_update(
+				function () {
+					$this->with_strategies(
+						function ( IWPML_PB_Strategy $strategy ) {
+							$this->factory->get_string_translations( $strategy )->start_saving_translations_to_post();
+						}
+					);
+					try {
+						$this->with_strategies(
+							function ( IWPML_PB_Strategy $strategy ) {
+								$this->factory->get_string_translations( $strategy )->save_translations_to_post();
+							}
+						);
+					} finally {
+						$this->with_strategies(
+							function ( IWPML_PB_Strategy $strategy ) {
+								$this->factory->get_string_translations( $strategy )->finish_saving_translations_to_post();
+							}
+						);
+					}
+				}
+			);
 			$this->new_translations_recieved = false;
 		}
 	}
 
-	/**
-	 * @param string $content
-	 * @param string $lang
-	 *
-	 * @return string
-	 */
+	private function resave_translation_without_tm_status_update( callable $callback ) {
+		$was_attached = remove_action( 'wpml_tm_save_post', 'wpml_tm_save_post', 10 );
+
+		try {
+			$callback();
+		} finally {
+			if ( $was_attached ) {
+				add_action( 'wpml_tm_save_post', 'wpml_tm_save_post', 10, 3 );
+			}
+		}
+	}
+
 	public function update_translations_in_content( $content, $lang ) {
-		$this->with_strategies( function ( IWPML_PB_Strategy $strategy ) use ( &$content, $lang ) {
-			$content = $this->factory->get_string_translations( $strategy )->update_translations_in_content( $content, $lang );
-		} );
+		$this->with_strategies(
+			function ( IWPML_PB_Strategy $strategy ) use ( &$content, $lang ) {
+				$content = $this->factory->get_string_translations( $strategy )->update_translations_in_content( $content, $lang );
+			}
+		);
 
 		return $content;
 	}
 
-	/**
-	 * @see https://onthegosystems.myjetbrains.com/youtrack/issue/wpmlst-958
-	 * @param array                $translation_package
-	 * @param WP_Post|WPML_Package $post
-	 *
-	 * @return array
-	 */
 	public function rescan( array $translation_package, $post ) {
 		if ( $post instanceof WP_Post ) {
 			$translation_package = $this->get_rescan()->rescan( $translation_package, $post );
@@ -386,11 +374,8 @@ class WPML_PB_Integration {
 		return $translation_package;
 	}
 
-	/**
-	 * @param int $post_id
-	 */
 	public function migrate_location( $post_id ) {
-		if ( $this->post_has_strings( $post_id ) && ! $this->is_migrate_location_done( $post_id ) ) {
+		if ( ! $this->is_migrate_location_done( $post_id ) && $this->post_has_strings( $post_id ) ) {
 			$wpdb = $this->sitepress->get_wpdb();
 			$post = $wpdb->get_row( $wpdb->prepare( "SELECT ID, post_type, post_status, post_content FROM {$wpdb->posts} WHERE ID = %d", $post_id ) );
 			if ( $this->is_post_status_ok( $post ) && $this->is_original_post( $post ) ) {
@@ -401,13 +386,6 @@ class WPML_PB_Integration {
 		}
 	}
 
-	/**
-	 * @param bool $registered
-	 * @param string|int $post_id
-	 * @param string $content
-	 *
-	 * @return bool
-	 */
 	public function register_strings_in_content( $registered, $post_id, $content ) {
 		foreach ( $this->strategies as $strategy ) {
 			$registered = $strategy->register_strings_in_content( $post_id, $content, $this->stringCleanUp[ $post_id ] ) || $registered;
@@ -429,63 +407,50 @@ class WPML_PB_Integration {
 		$this->stringCleanUp[ $post->ID ]->cleanUp();
 	}
 
-	/**
-	 * @param int $post_id
-	 *
-	 * @return bool
-	 */
 	private function post_has_strings( $post_id ) {
-		$wpdb = $this->sitepress->get_wpdb();
-		$string_packages_table = $wpdb->prefix . 'icl_string_packages';
-
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '$string_packages_table'" ) !== $string_packages_table ) {
+		if ( ! \WPML\Upgrade\SchemaFacts::hasTable( 'icl_string_packages' ) ) {
 			return false;
 		}
 
-		$string_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM {$string_packages_table} WHERE post_id = %d", $post_id) );
+		$wpdb                  = $this->sitepress->get_wpdb();
+		$string_packages_table = $wpdb->prefix . 'icl_string_packages';
+
+		$string_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM {$string_packages_table} WHERE post_id = %d", $post_id ) );
+
 		return $string_count > 0;
 	}
 
-	/**
-	 * @param int $post_id
-	 *
-	 * @return bool
-	 */
 	private function is_migrate_location_done( $post_id ) {
 		return get_post_meta( $post_id, self::MIGRATION_DONE_POST_META, true );
 	}
 
-	/**
-	 * @param int $post_id
-	 */
 	private function mark_migrate_location_done( $post_id ) {
-		update_post_meta( $post_id, WPML_PB_Integration::MIGRATION_DONE_POST_META, true );
+		update_post_meta( $post_id, self::MIGRATION_DONE_POST_META, true );
 	}
 
-	/**
-	 * @param WP_Post $post
-	 */
 	public function translate_media( $post ) {
+		if ( ! defined( 'WPML_MEDIA_VERSION' ) ) {
+			return;
+		}
+
+		$post = get_post( $post->ID );
+		if ( ! $post ) {
+			return;
+		}
+
 		if ( $this->is_post_status_ok( $post ) && ! $this->is_original_post( $post ) ) {
-			foreach ( $this->get_media_updaters( $post ) as $updater ) {
-				$updater->translate( $post );
-			}
+			$this->resave_translation_without_tm_status_update(
+				function () use ( $post ) {
+					foreach ( $this->get_media_updaters( $post ) as $updater ) {
+						$updater->translate( $post );
+					}
+				}
+			);
 		}
 	}
 
-	/**
-	 * @param \WP_Post $post
-	 *
-	 * @return IWPML_PB_Media_Update[]
-	 */
 	private function get_media_updaters( $post ) {
 		if ( ! isset( $this->media_updaters[ $post->ID ] ) ) {
-			/**
-			 * Gets all media updaters.
-			 *
-			 * @param IWPML_PB_Media_Update[] $media_updaters
-			 * @param \WP_Post                $post
-			 */
 			$this->media_updaters[ $post->ID ] = apply_filters( 'wpml_pb_get_media_updaters', [], $post );
 		}
 

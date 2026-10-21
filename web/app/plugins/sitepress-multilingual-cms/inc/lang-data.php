@@ -1,8 +1,5 @@
 <?php
 
-/**
- * @return mixed
- */
 function icl_get_languages_names() {
 	static $__icl_lang_names_cached = null;
 
@@ -18,9 +15,6 @@ function icl_get_languages_names() {
 }
 
 
-/**
- * @return array
- */
 function icl_get_languages_codes() {
 	static $result = null;
 
@@ -151,7 +145,6 @@ function icl_get_languages_codes() {
 			'Portuguese, Brazil'    => 'pt-br',
 			'Portuguese, Portugal'  => 'pt-pt',
 			'Punjabi'               => 'pa',
-			'Quechua'               => 'qu',
 			'Rhaeto-Romance'        => 'rm',
 			'Romanian'              => 'ro',
 			'Russian'               => 'ru',
@@ -210,9 +203,6 @@ function icl_get_languages_codes() {
 	return $result;
 }
 
-/**
- * @return array
- */
 function icl_get_languages_locales() {
 	static $result = null;
 
@@ -227,26 +217,26 @@ function icl_get_languages_locales() {
 			'bs'      => 'bs_BA',
 			'ca'      => 'ca',
 			'cs'      => 'cs_CZ',
-			'cy'      => 'cy_GB',
+			'cy'      => 'cy',
 			'da'      => 'da_DK',
 			'de'      => 'de_DE',
 			'el'      => 'el',
 			'en'      => 'en_US',
-			'eo'      => 'eo_UY',
+			'eo'      => 'eo',
 			'es'      => 'es_ES',
 			'et'      => 'et',
-			'eu'      => 'eu_ES',
+			'eu'      => 'eu',
 			'fa'      => 'fa_IR',
 			'fi'      => 'fi',
 			'fo'      => 'fo_FO',
 			'fr'      => 'fr_FR',
-			'ga'      => 'ga_IE',
+			'ga'      => 'ga',
 			'gl'      => 'gl_ES',
 			'he'      => 'he_IL',
 			'hi'      => 'hi_IN',
 			'hr'      => 'hr',
 			'hu'      => 'hu_HU',
-			'hy'      => 'hy_AM',
+			'hy'      => 'hy',
 			'id'      => 'id_ID',
 			'is'      => 'is_IS',
 			'it'      => 'it_IT',
@@ -256,33 +246,33 @@ function icl_get_languages_locales() {
 			'ko'      => 'ko_KR',
 			'ku'      => 'ckb',
 			'lt'      => 'lt_LT',
-			'lv'      => 'lv_LV',
+			'lv'      => 'lv',
 			'mg'      => 'mg_MG',
 			'mk'      => 'mk_MK',
-			'mn'      => 'mn_MN',
+			'mn'      => 'mn',
 			'ms'      => 'ms_MY',
-			'mt'      => 'mt_MT',
+			'mt'      => 'mlt',
 			'nb'      => 'nb_NO',
-			'ne'      => 'ne',
+			'ne'      => 'ne_NP',
 			'no'      => 'nb_NO',
 			'nn'      => 'nn_NO',
 			'ni'      => 'ni_ID',
 			'nl'      => 'nl_NL',
-			'pa'      => 'pa_IN',
+			'pa'      => 'pa',
 			'pl'      => 'pl_PL',
 			'pt-br'   => 'pt_BR',
 			'pt-pt'   => 'pt_PT',
-			'qu'      => 'quz_PE',
 			'ro'      => 'ro_RO',
 			'ru'      => 'ru_RU',
 			'si'      => 'si_LK',
 			'sk'      => 'sk_SK',
 			'sl'      => 'sl_SI',
 			'so'      => 'so_SO',
-			'sq'      => 'sq_AL',
+			'sq'      => 'sq',
 			'sr'      => 'sr_RS',
 			'su'      => 'su_ID',
 			'sv'      => 'sv_SE',
+			'sw'      => 'sw',
 			'ta'      => 'ta_IN',
 			'tg'      => 'tg_TJ',
 			'th'      => 'th',
@@ -291,9 +281,10 @@ function icl_get_languages_locales() {
 			'uk'      => 'uk',
 			'ur'      => 'ur',
 			'uz'      => 'uz_UZ',
-			'vi'      => 'vi_VN',
+			'vi'      => 'vi',
 			'zh-hans' => 'zh_CN',
 			'zh-hant' => 'zh_TW',
+			'zu'      => 'zul',
 		);
 	}
 

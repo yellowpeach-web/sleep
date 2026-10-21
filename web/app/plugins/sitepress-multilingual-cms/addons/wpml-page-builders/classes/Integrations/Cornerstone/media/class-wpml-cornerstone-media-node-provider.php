@@ -6,15 +6,10 @@ class WPML_Cornerstone_Media_Node_Provider {
 
 	private $nodes = array();
 
-	public function __construct( WPML_Page_Builders_Media_Translate $media_translate ) {
+	public function __construct( IWPML_PB_Media_Find_And_Translate $media_translate ) {
 		$this->media_translate = $media_translate;
 	}
 
-	/**
-	 * @param string $type
-	 *
-	 * @return WPML_Cornerstone_Media_Node|null
-	 */
 	public function get( $type ) {
 		if ( ! array_key_exists( $type, $this->nodes ) ) {
 			$this->add( $type );
@@ -23,9 +18,6 @@ class WPML_Cornerstone_Media_Node_Provider {
 		return $this->nodes[ $type ];
 	}
 
-	/**
-	 * @param string $type
-	 */
 	private function add( $type ) {
 		switch ( $type ) {
 			case 'image':
@@ -57,5 +49,9 @@ class WPML_Cornerstone_Media_Node_Provider {
 		}
 
 		$this->nodes[ $type ] = $node;
+	}
+
+	public function get_media() {
+		return $this->media_translate->get_used_media_in_post();
 	}
 }

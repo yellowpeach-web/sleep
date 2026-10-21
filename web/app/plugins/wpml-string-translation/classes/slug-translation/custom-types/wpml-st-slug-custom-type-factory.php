@@ -2,13 +2,10 @@
 
 class WPML_ST_Slug_Custom_Type_Factory {
 
-	/** @var SitePress $sitepress */
 	private $sitepress;
 
-	/** @var WPML_Slug_Translation_Records $slug_records */
 	private $slug_records;
 
-	/** @var WPML_ST_Slug_Translations */
 	private $slug_translations;
 
 
@@ -23,20 +20,16 @@ class WPML_ST_Slug_Custom_Type_Factory {
 	}
 
 
-	/**
-	 * @param string $name
-	 * @param bool   $display_as_translated
-	 *
-	 * @return WPML_ST_Slug_Custom_Type
-	 */
-	public function create( $name, $display_as_translated ) {
+	public function create( $name, $display_as_translated, $registered_slug = '' ) {
 		$slug = $this->slug_records->get_slug( $name );
 
 		return new WPML_ST_Slug_Custom_Type(
 			$name,
 			$display_as_translated,
 			$slug->get_original_value(),
-			$this->slug_translations->get( $slug, $display_as_translated )
+			$this->slug_translations->get( $slug, $display_as_translated ),
+			(array) $slug->get_translation_values(),
+			$registered_slug
 		);
 	}
 

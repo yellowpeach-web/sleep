@@ -3,39 +3,43 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/js/browser-language-redirect-dialog/texts.js:11
-msgid "How Browser Language Redirect Affects Google Indexing"
+#: src/js/browser-language-redirect-dialog/texts.js:10
+msgid "Before proceeding, we recommend that you read these two pages:"
 msgstr ""
 
 #: src/js/browser-language-redirect-dialog/texts.js:12
+msgid "How Browser Language Redirect Affects Google Indexing"
+msgstr ""
+
+#: src/js/browser-language-redirect-dialog/texts.js:13
+#. Link text that opens the WPML documentation. Used under the browser redirect warning and next to each translation service.
 msgid "Documentation"
 msgstr ""
 
-#: src/js/browser-language-redirect-dialog/texts.js:3
+#: src/js/browser-language-redirect-dialog/texts.js:4
 msgid "Browser redirect affects Google indexing and search results"
 msgstr ""
 
-#: src/js/browser-language-redirect-dialog/texts.js:4
+#: src/js/browser-language-redirect-dialog/texts.js:5
+#. Label of the button that turns on the redirect by browser language after the warning about search engines has been read; verb, imperative.
 msgid "Got it, activate anyway"
 msgstr ""
 
-#: src/js/browser-language-redirect-dialog/texts.js:5
+#: src/js/browser-language-redirect-dialog/texts.js:6
+#. Button label that closes a dialog or clears a filter without applying it: verb, imperative, not the noun "a cancellation".
 msgid "Cancel"
 msgstr ""
 
-#: src/js/browser-language-redirect-dialog/texts.js:7
+#: src/js/browser-language-redirect-dialog/texts.js:8
 msgid ""
 "When you redirect visitors based on their language, you also redirect "
 "Google. Google wants to see your site exactly like visitors see it, "
 "including any redirects that you apply."
 msgstr ""
 
-#: src/js/browser-language-redirect-dialog/texts.js:8
+#: src/js/browser-language-redirect-dialog/texts.js:9
+#. Second paragraph of the dialog that warns about redirecting by browser language. "This feature" is that redirect.
 msgid ""
 "It is OK to redirect visitors based on their language, but you need to "
 "realize that this feature affects SEO."
-msgstr ""
-
-#: src/js/browser-language-redirect-dialog/texts.js:9
-msgid "Before proceeding, we recommend that you read these two pages:"
 msgstr ""

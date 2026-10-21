@@ -2,7 +2,6 @@
 
 class WPML_PB_API_Hooks_Strategy implements IWPML_PB_Strategy {
 
-	/** @var  WPML_PB_Factory $factory */
 	private $factory;
 	private $name;
 
@@ -10,21 +9,11 @@ class WPML_PB_API_Hooks_Strategy implements IWPML_PB_Strategy {
 		$this->name = $name;
 	}
 
-	/**
-	 * @param \WP_Post|stdClass $post
-	 */
 	public function register_strings( $post ) {
 		do_action( 'wpml_page_builder_register_strings', $post, $this->get_package_key( $post->ID ) );
 	}
 
-	/**
-	 * @param string|int $post_id
-	 * @param string $content
-	 * @param WPML\PB\Shortcode\StringCleanUp $stringCleanUp
-	 *
-	 * @return bool
-	 */
-	public function register_strings_in_content( $post_id, $content, WPML\PB\Shortcode\StringCleanUp $stringCleanUp ) {
+	public function register_strings_in_content( $post_id, $content, ?WPML\PB\Shortcode\StringCleanUp $stringCleanUp = null ) {
 		return false;
 	}
 
@@ -32,16 +21,11 @@ class WPML_PB_API_Hooks_Strategy implements IWPML_PB_Strategy {
 		$this->factory = $factory;
 	}
 
-	/**
-	 * @param int $page_id
-	 *
-	 * @return array
-	 */
 	public function get_package_key( $page_id ) {
 		return array(
 			'kind'    => $this->get_package_kind(),
 			'name'    => $page_id,
-			'title'   => 'Page Builder Page ' . $page_id,
+			'title'   => 'Page Builder Page ' . $page_id . ': ' . $this->get_package_kind(),
 			'post_id' => $page_id,
 		);
 	}
@@ -50,7 +34,7 @@ class WPML_PB_API_Hooks_Strategy implements IWPML_PB_Strategy {
 		return $this->name;
 	}
 
-	public function get_update_post( $package_data) {
+	public function get_update_post( $package_data ) {
 		return $this->factory->get_update_post( $package_data, $this );
 	}
 
@@ -67,7 +51,5 @@ class WPML_PB_API_Hooks_Strategy implements IWPML_PB_Strategy {
 	}
 
 	public function migrate_location( $post_id, $post_content ) {
-
 	}
-
 }

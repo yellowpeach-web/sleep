@@ -6,49 +6,24 @@ use WPML\Media\Classes\WPML_Media_Element_Translation_Factory;
 
 class WPML_Media_Post_With_Media_Files {
 
-	/**
-	 * @var int
-	 */
 	private $post_id;
-	/**
-	 * @var WPML_Media_Img_Parse
-	 */
 	private $media_parser_factory;
-	/**
-	 * @var WPML_Media_Attachment_By_URL_Factory
-	 */
 	private $attachment_by_url_factory;
-	/**
-	 * @var SitePress $sitepress
-	 */
 	private $sitepress;
-	/**
-	 * @var WPML_Custom_Field_Setting_Factory
-	 */
 	private $cf_settings_factory;
 
-	/**
-	 * @var \WPML\Media\Classes\WPML_Media_Attachment_By_URL_Query
-	 */
 	private $mediaAttachmentByURLQuery;
 
-	/**
-	 * WPML_Media_Post_With_Media_Files constructor.
-	 *
-	 * @param $post_id
-	 * @param \WPML\Media\Factories\WPML_Media_Element_Parser_Factory $media_parser_factory
-	 * @param WPML_Media_Attachment_By_URL_Factory $attachment_by_url_factory
-	 * @param SitePress $sitepress
-	 * @param WPML_Custom_Field_Setting_Factory $cf_settings_factory
-	 * @param \WPML\Media\Factories\WPML_Media_Attachment_By_URL_Query_Factory $mediaAttachmentByURLQueryFactory
-	 */
+	private $attached_media_ids;
+
 	public function __construct(
 		$post_id,
 		\WPML\Media\Factories\WPML_Media_Element_Parser_Factory $media_parser_factory,
 		WPML_Media_Attachment_By_URL_Factory $attachment_by_url_factory,
 		SitePress $sitepress,
 		WPML_Custom_Field_Setting_Factory $cf_settings_factory,
-		\WPML\Media\Factories\WPML_Media_Attachment_By_URL_Query_Factory $mediaAttachmentByURLQueryFactory
+		\WPML\Media\Factories\WPML_Media_Attachment_By_URL_Query_Factory $mediaAttachmentByURLQueryFactory,
+		$attached_media_ids = null
 	) {
 		$this->post_id                   = $post_id;
 		$this->media_parser_factory      = $media_parser_factory;
@@ -56,6 +31,7 @@ class WPML_Media_Post_With_Media_Files {
 		$this->sitepress                 = $sitepress;
 		$this->cf_settings_factory       = $cf_settings_factory;
 		$this->mediaAttachmentByURLQuery = $mediaAttachmentByURLQueryFactory->create();
+		$this->attached_media_ids        = $attached_media_ids;
 	}
 
 	public function get_media_ids() {
@@ -70,10 +46,10 @@ class WPML_Media_Post_With_Media_Files {
 
 			foreach ( $media_parsers as $media_parser ) {
 				$media_ids = $this->unique_array_merge( $media_ids, $this->_get_ids_from_media_array( $media_parser, $media_parser->getMediaElements() ) );
+			}
 
-				if ( $featured_image = get_post_meta( $this->post_id, '_thumbnail_id', true ) ) {
-					$media_ids[] = $featured_image;
-				}
+			if ( $featured_image = get_post_meta( $this->post_id, '_thumbnail_id', true ) ) {
+				$media_ids = $this->unique_array_merge( $media_ids, [ $featured_image ] );
 			}
 
 			$media_localization_settings = WPML_Media::get_setting( 'media_files_localization' );
@@ -97,25 +73,19 @@ class WPML_Media_Post_With_Media_Files {
 
 		}
 
-		return Fns::filter( Post::get(), apply_filters( 'wpml_ids_of_media_used_in_post', $media_ids, $this->post_id ) );
+		$media_ids = apply_filters( 'wpml_ids_of_media_used_in_post', $media_ids, $this->post_id );
+
+		if ( $media_ids && function_exists( '_prime_post_caches' ) ) {
+			_prime_post_caches( array_map( 'intval', array_values( $media_ids ) ), true, true );
+		}
+
+		return Fns::filter( Post::get(), $media_ids );
 	}
 
-	/**
-	 * @param array $first_array
-	 * @param array $second_array
-	 *
-	 * @return array
-	 */
 	private function unique_array_merge( $first_array, $second_array) {
 		return array_unique( array_values( array_merge( $first_array, $second_array ) ) );
 	}
 
-	/**
-	 * @param \WPML\Media\Classes\WPML_Media_Element_Parser $media_parser
-	 * @param array $media_array
-	 *
-	 * @return array
-	 */
 	private function _get_ids_from_media_array( $media_parser, $media_array ) {
 		$media_ids = array();
 		foreach ( $media_array as $media ) {
@@ -136,9 +106,6 @@ class WPML_Media_Post_With_Media_Files {
 		return $media_ids;
 	}
 
-	/**
-	 * @param WPML_Media_Element_Parser[] $mediaParsers
-	 */
 	private function prefetchDataForFutureAttachmentByUrlGetIdCalls( $mediaParsers ) {
 		$urls = [];
 		foreach ( $mediaParsers as $mediaParser ) {
@@ -147,13 +114,14 @@ class WPML_Media_Post_With_Media_Files {
 					continue;
 				}
 
-				$urls[] = $mediaParser->getMediaSrcFromAttributes( $media['attributes'] );
+				$urls[] = WPML_Media_Attachment_By_URL::normalizeUrl( $mediaParser->getMediaSrcFromAttributes( $media['attributes'] ) );
 			}
 		}
 
 		$this->mediaAttachmentByURLQuery->prefetchAllIdsFromGuids(
-			wpml_get_current_language(),
+			[ wpml_get_current_language() ],
 			array_merge(
+				$urls,
 				array_map(
 					function( $url ) {
 						return WPML_Media_Attachment_By_URL::getUrl( $url );
@@ -169,7 +137,7 @@ class WPML_Media_Post_With_Media_Files {
 			)
 		);
 		$this->mediaAttachmentByURLQuery->prefetchAllIdsFromMetas(
-			wpml_get_current_language(),
+			[ wpml_get_current_language() ],
 			array_merge(
 				array_map(
 					function( $url ) {
@@ -195,11 +163,6 @@ class WPML_Media_Post_With_Media_Files {
 		);
 	}
 
-	/**
-	 * @param string $post_content
-	 *
-	 * @return array
-	 */
 	private function get_gallery_media_ids( $post_content ) {
 
 		$galleries_media_ids     = array();
@@ -221,11 +184,6 @@ class WPML_Media_Post_With_Media_Files {
 		return $galleries_media_ids;
 	}
 
-	/**
-	 * @param $languages
-	 *
-	 * @return array
-	 */
 	public function get_untranslated_media( $languages ) {
 
 		$untranslated_media = array();
@@ -259,6 +217,9 @@ class WPML_Media_Post_With_Media_Files {
 		$post_meta = get_metadata( 'post', $this->post_id );
 
 		if ( is_array( $post_meta ) ) {
+			if ( function_exists( 'wpml_resolve_custom_field_preferences' ) ) {
+				wpml_resolve_custom_field_preferences( array_keys( $post_meta ) );
+			}
 			foreach ( $post_meta as $meta_key => $meta_value ) {
 				$setting         = $this->cf_settings_factory->post_meta_setting( $meta_key );
 				$is_translatable = $this->sitepress->get_wp_api()
@@ -273,6 +234,10 @@ class WPML_Media_Post_With_Media_Files {
 	}
 
 	private function get_attached_media_ids( $post_id ) {
+		if ( null !== $this->attached_media_ids ) {
+			return $this->attached_media_ids;
+		}
+
 		$attachments = get_children(
 			array(
 				'post_parent' => $post_id,

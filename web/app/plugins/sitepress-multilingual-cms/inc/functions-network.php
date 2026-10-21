@@ -1,60 +1,39 @@
 <?php
 wp_cache_add_global_groups( array( 'sitepress_ms' ) );
 
-$filtered_action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_NULL_ON_FAILURE );
-$filtered_action = $filtered_action ? $filtered_action : filter_input( INPUT_GET, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_NULL_ON_FAILURE );
-if ( 0 === strcmp( $filtered_action, 'resetwpml' ) ) {
-	include_once WPML_PLUGIN_PATH . '/inc/functions-troubleshooting.php';
-}
-
 add_action( 'network_admin_menu', 'icl_network_administration_menu' );
-add_action( 'wpmuadminedit', 'icl_wpmuadminedit' );
 
-function icl_wpmuadminedit() {
-	if ( ! isset( $_REQUEST['action'] ) ) {
-		return;
-	}
-
-	$filtered_action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_NULL_ON_FAILURE );
-	$filtered_action = $filtered_action ? $filtered_action : filter_input( INPUT_GET, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_NULL_ON_FAILURE );
-
-	switch ( $filtered_action ) {
-		case 'resetwpml':
-			icl_network_reset_wpml();
-			break;
-		case 'deactivatewpml':
-			icl_network_deactivate_wpml();
-			break;
-		case 'activatewpml':
-			icl_network_activate_wpml();
-			break;
-	}
-}
+\WPML\Request\Adapter\NetworkAdmin::register(
+	'deactivatewpml',
+	\WPML\Request\Policy\Policy::capability( 'manage_network', \WPML\Request\Policy\Authenticity::actionNonce( 'deactivatewpml', '_wpnonce' ) ),
+	'icl_network_deactivate_wpml'
+);
+\WPML\Request\Adapter\NetworkAdmin::register(
+	'activatewpml',
+	\WPML\Request\Policy\Policy::capability( 'manage_network', \WPML\Request\Policy\Authenticity::actionNonce( 'activatewpml', '_wpnonce' ) ),
+	'icl_network_activate_wpml'
+);
 
 function icl_network_administration_menu() {
 	add_menu_page(
+		/* translators: The name of the plugin, used as the title of its screens and of its menu. It is a product name and stays as it is. */
 		__( 'WPML', 'sitepress' ),
+		/* translators: The name of the plugin, used as the title of its screens and of its menu. It is a product name and stays as it is. */
 		__( 'WPML', 'sitepress' ),
-		'manage_sitess',
+		'manage_sites',
 		WPML_PLUGIN_FOLDER . '/menu/network.php',
-		/** @phpstan-ignore-next-line WP doc issue. */
 		null,
-		ICL_PLUGIN_URL . '/res/img/icon16.png'
+		ICL_PLUGIN_URL . '/res/img/icon16.svg'
 	);
 	add_submenu_page(
 		WPML_PLUGIN_FOLDER . '/menu/network.php',
+		/* translators: Item in the network admin menu that opens the WPML settings for the whole network. */
 		__( 'Network settings', 'sitepress' ),
+		/* translators: Item in the network admin menu that opens the WPML settings for the whole network. */
 		__( 'Network settings', 'sitepress' ),
 		'manage_sites',
 		WPML_PLUGIN_FOLDER . '/menu/network.php'
 	);
-}
-
-function icl_network_reset_wpml() {
-
-	icl_reset_wpml();
-
-	wp_redirect( network_admin_url( 'admin.php?page=' . WPML_PLUGIN_FOLDER . '/menu/network.php&updated=true&action=resetwpml' ) );
 }
 
 function icl_network_deactivate_wpml( $blog_id = false ) {

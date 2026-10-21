@@ -4,12 +4,8 @@ class WPML_Compatibility_Disqus implements IWPML_Action {
 
 	const LANGUAGE_NOT_SUPPORTED = '';
 
-	/** @var SitePress */
 	private $sitepress;
 
-	/**
-	 * @param SitePress $sitepress
-	 */
 	public function __construct( SitePress $sitepress ) {
 		$this->sitepress = $sitepress;
 	}
@@ -31,16 +27,13 @@ class WPML_Compatibility_Disqus implements IWPML_Action {
 	            	* /disqus-comment-system/public/js/comment_embed.js by variable `disqus_config_custom`
 					*/
 	                var disqus_config = function () {
-	                	this.language = "' . $current_language . '";
+	                	this.language = "' . esc_js( $current_language ) . '";
 	                };
 	            </script>';
 			}
 		};
 	}
 
-	/**
-	 * @return string
-	 */
 	private function get_current_lang() {
 		$current_language = $this->sitepress->get_current_language();
 		$map              = $this->get_lang_map();
@@ -48,9 +41,6 @@ class WPML_Compatibility_Disqus implements IWPML_Action {
 		return isset( $map[ $current_language ] ) ? $map[ $current_language ] : $current_language;
 	}
 
-	/**
-	 * @return array
-	 */
 	private function get_lang_map() {
 		$map = array(
 			'bs'      => self::LANGUAGE_NOT_SUPPORTED,

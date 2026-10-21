@@ -1,0 +1,2613 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "ja"
+         },
+         "Untranslated strings that I encounter on front-end while logged in": [
+            "ログイン中にフロントエンドで遭遇した未翻訳の文字列"
+         ],
+         "Untranslated strings that all front-end users encounter": [
+            "すべてのフロントエンドユーザーが遭遇した未翻訳の文字列"
+         ],
+         "Disable auto-registration of strings": [
+            "文字列の自動登録を無効にする"
+         ],
+         "Plugins": [
+            "プラグイン"
+         ],
+         "Themes": [
+            "テーマ"
+         ],
+         "WordPress": [
+            "WordPress"
+         ],
+         "Other": [
+            "その他"
+         ],
+         "%1$s (%2$d item)": [
+            "%1$s (%2$d アイテム)"
+         ],
+         "We cancelled %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
+            "%2$d 個中 %1$d 個のアイテムをキャンセルしましたが、%3$d 個が失敗しました。ページを再読み込みしてもう一度お試しください。"
+         ],
+         "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
+            "%2$d 個中 %1$d 個のアイテムを再送信しましたが、%3$d 個が失敗しました。ページを再読み込みしてもう一度お試しください。"
+         ],
+         "Error in fetching default translation batch name": [
+            "デフォルトの翻訳バッチ名の取得中にエラーが発生しました"
+         ],
+         "Error in fetching translation editor type.": [
+            "翻訳エディタタイプの取得中にエラーが発生しました。"
+         ],
+         "Error in fetching untranslated types count": [
+            "未翻訳タイプのカウント取得中にエラーが発生しました"
+         ],
+         "Error in fetching remote translation service data.": [
+            "リモート翻訳サービスのデータ取得中にエラーが発生しました。"
+         ],
+         "Validation failed": [
+            "検証に失敗しました"
+         ],
+         "%s: labels and slug": [
+            "%s：ラベルとスラッグ"
+         ],
+         "%1$s (%2$s)": [
+            "%1$s (%2$s)"
+         ],
+         "Translation jobs couldn’t be cancelled": [
+            "翻訳ジョブをキャンセルできませんでした"
+         ],
+         "Reload the page and try again.": [
+            "ページを再読み込みしてもう一度お試しください。"
+         ],
+         "All unfinished translation jobs were cancelled": [
+            "未完了の翻訳ジョブはすべてキャンセルされました"
+         ],
+         "WPML could not display the Translations dashboard.": [
+            "WPMLは翻訳ダッシュボードを表示できませんでした。"
+         ],
+         "Reload the page to try again. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses, and the browser console for details.": [
+            "ページを再読み込みしてもう一度お試しください。問題が解決しない場合は、WPMLのレスポンスを妨げている出力がないかサイトのPHPエラーログを確認し、ブラウザのコンソールで詳細を確認してください。"
+         ],
+         "Please wait until download finishes": [
+            "ダウンロードが完了するまでお待ちください"
+         ],
+         "You need to wait 5 minutes after the last check": [
+            "前回の確認から5分間待つ必要があります"
+         ],
+         "Check status and get translations": [
+            "ステータスを確認して翻訳を取得"
+         ],
+         "%d translation could not be applied.": [
+            "%d 件の翻訳を適用できませんでした。"
+         ],
+         "Some were paused after repeated failures and will be retried automatically.": [
+            "一部は繰り返しの失敗により一時停止されました。これらは自動的に再試行されます。"
+         ],
+         "They are still waiting and will be tried again on the next download.": [
+            "これらはまだ待機中であり、次回のダウンロード時に再試行されます。"
+         ],
+         "Status: ": [
+            "ステータス： "
+         ],
+         "Downloaded jobs: ": [
+            "ダウンロードされたジョブ： "
+         ],
+         "Cancelled jobs: ": [
+            "キャンセルされたジョブ： "
+         ],
+         "none of your translation jobs have been completed": [
+            "翻訳ジョブは一つも完了していません"
+         ],
+         "The download did not finish, so some translations may still be waiting. Please try again.": [
+            "ダウンロードが完了しなかったため、一部の翻訳がまだ待機中である可能性があります。もう一度お試しください。"
+         ],
+         "%d batches are still being processed by the translation service. Check again in a few minutes.": [
+            "%d 個のバッチが翻訳サービスによってまだ処理されています。数分後にもう一度確認してください。"
+         ],
+         "Checking translation jobs status. Please don't close this page!": [
+            "翻訳ジョブのステータスを確認しています。このページを閉じないでください！"
+         ],
+         "<strong>%d translation job</strong> has been sent to remote translators": [
+            "<strong>%d 件の翻訳ジョブ</strong> がリモート翻訳者に送信されました"
+         ],
+         "Last check: %s": [
+            "最終確認： %s"
+         ],
+         "Last check: Never": [
+            "最終確認： なし"
+         ],
+         "Switch to Private Translation Cloud (PTC)": [
+            "Private Translation Cloud (PTC) に切り替える"
+         ],
+         "Switch to PTC": [
+            "PTC に切り替える"
+         ],
+         "Switching…": [
+            "切り替え中…"
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "翻訳エンジンコントロールを読み込めませんでした。ページを再読み込みしてもう一度お試しください。"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "切り替えを確認できませんでした。もう一度試すか、再読み込みして現在のエンジンを確認してください。"
+         ],
+         "Loading translation engine settings…": [
+            "翻訳エンジンの設定を読み込んでいます…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "PTC に切り替える前に、上のサイトコンテキストを入力してください。"
+         ],
+         "Reload page": [
+            "ページを再読み込み"
+         ],
+         "Filtering is disabled to show all selected items. ": [
+            "選択したすべてのアイテムを表示するため、フィルタリングは無効になっています。 "
+         ],
+         "Apply filters": [
+            "フィルターを適用"
+         ],
+         "%d item selected": [
+            "%d 個のアイテムを選択中"
+         ],
+         "(%d words to translate)": [
+            "（翻訳対象： %d 単語）"
+         ],
+         "%s item not showing.": [
+            "%s 個のアイテムが表示されていません。"
+         ],
+         "Show all selected items": [
+            "選択したすべてのアイテムを表示"
+         ],
+         "Translate your content": [
+            "コンテンツを翻訳"
+         ],
+         "Unselect all": [
+            "すべての選択を解除"
+         ],
+         "Source Language:": [
+            "元言語："
+         ],
+         "translated to:": [
+            "翻訳先："
+         ],
+         "Filter": [
+            "フィルター"
+         ],
+         "You are about to change the source language filter from %1$s to %2$s": [
+            "元言語フィルターを %1$s から %2$s に変更しようとしています"
+         ],
+         "Updating the source language filter will clear the items you've selected for translation. Are you sure you want to continue?": [
+            "元言語フィルターを更新すると、翻訳用に選択したアイテムがクリアされます。続行してもよろしいですか？"
+         ],
+         "Change source language": [
+            "元言語を変更"
+         ],
+         "Cancel": [
+            "キャンセル"
+         ],
+         "Filter by publication status": [
+            "公開ステータスでフィルター"
+         ],
+         "All Statuses": [
+            "すべてのステータス"
+         ],
+         "All languages": [
+            "すべての言語"
+         ],
+         "All translation statuses": [
+            "すべての翻訳ステータス"
+         ],
+         "Not completed": [
+            "未完了"
+         ],
+         "Needs updating": [
+            "更新が必要"
+         ],
+         "Translation in progress": [
+            "翻訳進行中"
+         ],
+         "Translation complete": [
+            "翻訳完了"
+         ],
+         "Filter by translation status": [
+            "翻訳ステータスでフィルター"
+         ],
+         "Global Filter": [
+            "グローバルフィルター"
+         ],
+         "%1$s (ID: %2$d)": [
+            "%1$s (ID: %2$d)"
+         ],
+         "Parent:": [
+            "親："
+         ],
+         "Search parent by title, path, or ID": [
+            "タイトル、パス、または ID で親を検索"
+         ],
+         "Parent: %s": [
+            "親： %s"
+         ],
+         "Search by term title in %s": [
+            "%s 内のタームタイトルで検索"
+         ],
+         "All taxonomies": [
+            "すべてのタクソノミー"
+         ],
+         "Loading": [
+            "読み込み中"
+         ],
+         "Taxonomy Term:": [
+            "タクソノミーターム："
+         ],
+         "Loading terms": [
+            "タームを読み込み中"
+         ],
+         "No terms found": [
+            "タームが見つかりません"
+         ],
+         "Filter by:": [
+            "フィルター："
+         ],
+         "Title": [
+            "タイトル"
+         ],
+         "Automatic translation is paused — payment required (%s).": [
+            "自動翻訳が一時停止されました — 支払いが必要です (%s)。"
+         ],
+         "Automatic translation is paused: monthly spending cap reached. It continues when the cap is raised, or when the cap resets.": [
+            "自動翻訳が一時停止されました：月間利用限度額に達しました。限度額が引き上げられるか、リセットされると再開されます。"
+         ],
+         "You have %1$s%2$s prepaid word in your WPML account%3$s. Assign these words to this site to resume automatic translation.": [
+            "WPML アカウントに %1$s %2$s %3$s プリペイド単語があります。自動翻訳を再開するには、これらの単語をこのサイトに割り当ててください。"
+         ],
+         "Not enough prepaid words to continue automatic translation. Add more words to resume.": [
+            "自動翻訳を続行するためのプリペイド単語が不足しています。単語を追加して再開してください。"
+         ],
+         "Assign words": [
+            "単語を割り当てる"
+         ],
+         "Get more words": [
+            "単語を増やす"
+         ],
+         "View": [
+            "表示"
+         ],
+         "Edit": [
+            "編集"
+         ],
+         "Edit note for the translators": [
+            "翻訳者へのメモを編集"
+         ],
+         "Add note for the translators": [
+            "翻訳者へのメモを追加"
+         ],
+         "Select %s": [
+            "%s を選択"
+         ],
+         "(no title)": [
+            "(タイトルなし)"
+         ],
+         "Image": [
+            "画像"
+         ],
+         "%s Title": [
+            "%s タイトル"
+         ],
+         "%s Date": [
+            "%s 日付"
+         ],
+         "Date / Status": [
+            "日付 / ステータス"
+         ],
+         "Loading items...": [
+            "アイテムを読み込み中..."
+         ],
+         "This page is set to be %1$stranslated manually%2$s using the WordPress Editor": [
+            "このページは WordPress エディタを使用して %1$s手動で翻訳%2$s するように設定されています"
+         ],
+         "%1$d %2$s selected": [
+            "%1$d 個の %2$s を選択中"
+         ],
+         "items": [
+            "アイテム"
+         ],
+         "Filtering is disabled to show all selected items": [
+            "選択したすべてのアイテムを表示するため、フィルタリングは無効になっています"
+         ],
+         "Apply filter": [
+            "フィルターを適用"
+         ],
+         "%1$d %2$s not showing": [
+            "%1$d 個の %2$s が表示されていません"
+         ],
+         "Show selected items": [
+            "選択したアイテムを表示"
+         ],
+         "Looking for more items...": [
+            "さらにアイテムを探しています..."
+         ],
+         " / page": [
+            " / ページ"
+         ],
+         "Previous": [
+            "前へ"
+         ],
+         "Next": [
+            "次へ"
+         ],
+         "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
+            "サイトのコンテンツが多すぎるため、1つの翻訳バッチに収まりません。フィルターを使用して選択範囲を絞り込み、「すべて選択」してください。"
+         ],
+         "The current filter captures too much content. Narrow it down to enable \"select all\" for translation.": [
+            "現在のフィルターで取得されるコンテンツが多すぎます。翻訳のために「すべて選択」を有効にするには、範囲を絞り込んでください。"
+         ],
+         "Select All": [
+            "すべて選択"
+         ],
+         "All %d items matching criteria are selected": [
+            "条件に一致するすべてのアイテム（%d 個）が選択されています"
+         ],
+         "All %d items in this section are selected": [
+            "このセクションのすべてのアイテム（%d 個）が選択されています"
+         ],
+         "You have too many items to send for translation at once. Apply a filter to narrow down the items to enable this option.": [
+            "一度に送信するアイテムが多すぎます。このオプションを有効にするには、フィルターを適用してアイテムを絞り込んでください。"
+         ],
+         "Clear selection": [
+            "選択を解除"
+         ],
+         "Select all items that match this search": [
+            "この検索に一致するすべてのアイテムを選択"
+         ],
+         "Loading...": [
+            "読み込み中..."
+         ],
+         "Select all %ss": [
+            "すべての %s を選択"
+         ],
+         "Save note": [
+            "メモを保存"
+         ],
+         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
+            "次の翻訳言語は自動翻訳をサポートしていません： %s。自動翻訳を有効にするには、<a>既知の言語にマッピング</a>してください。"
+         ],
+         "The site's default language %s doesn't support automatic translation.": [
+            "サイトのデフォルト言語 %s は自動翻訳をサポートしていません。"
+         ],
+         "Some sections are hidden due to current filter settings or because they have no items. <show_all>Show all translation statuses</show_all>": [
+            "現在のフィルター設定、またはアイテムがないため、一部のセクションが非表示になっています。 <show_all>すべての翻訳ステータスを表示</show_all>"
+         ],
+         "Step 1": [
+            "ステップ 1"
+         ],
+         "Select items for translation": [
+            "翻訳するアイテムを選択"
+         ],
+         "Clear filters": [
+            "フィルターをクリア"
+         ],
+         "WPML could not load these items from your site.": [
+            "WPMLはサイトからこれらのアイテムを読み込めませんでした。"
+         ],
+         "Try again or reload the page. If this keeps happening, check the site's PHP error log for output that breaks WPML's responses.": [
+            "もう一度試すか、ページを再読み込みしてください。問題が解決しない場合は、WPMLのレスポンスを妨げている出力がないかサイトのPHPエラーログを確認してください。"
+         ],
+         "Try again": [
+            "もう一度試す"
+         ],
+         "strings": [
+            "文字列"
+         ],
+         "WPML didn't find any %s matching your criteria.": [
+            "WPML は条件に一致する %s を見つけられませんでした。"
+         ],
+         "You have too many items selected to use this feature. Deselect some of the items to enable it.": [
+            "選択されているアイテムが多すぎるため、この機能は使用できません。一部のアイテムの選択を解除して有効にしてください。"
+         ],
+         "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can send this content now and it will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>.": [
+            "<site>%2$s</site> に設定された <strong>月間利用限度額</strong> の残りは <strong>%1$s</strong> 単語です（<figure>%4$s</figure> 単語中 <figure>%3$s</figure> 単語を使用済み）。このコンテンツを今すぐ送信でき、限度額に達するまで翻訳されます。残りは限度額が引き上げられるか、<strong>%5$s</strong> に限度額がリセットされた後に翻訳されます。"
+         ],
+         "<strong>%1$s</strong> words are left in the <strong>monthly spending cap</strong> set for <site>%2$s</site> (<figure>%3$s</figure> of <figure>%4$s</figure> already used). You can turn this on now and content will be translated until the cap is reached. The rest follows when the cap is raised, or when the cap resets on <strong>%5$s</strong>.": [
+            "<site>%2$s</site> に設定された <strong>月間利用限度額</strong> の残りは <strong>%1$s</strong> 単語です（<figure>%4$s</figure> 単語中 <figure>%3$s</figure> 単語を使用済み）。今すぐこれを有効にでき、限度額に達するまでコンテンツが翻訳されます。残りは限度額が引き上げられるか、<strong>%5$s</strong> に限度額がリセットされた後に翻訳されます。"
+         ],
+         "Raise the cap": [
+            "限度額を引き上げる"
+         ],
+         "Only the account owner can do this.": [
+            "アカウント所有者のみがこれを実行できます。"
+         ],
+         "Show strings in:": [
+            "表示する文字列："
+         ],
+         "Display Columns": [
+            "列を表示"
+         ],
+         "Close modal": [
+            "モーダルを閉じる"
+         ],
+         "Select visible columns": [
+            "表示する列を選択"
+         ],
+         "String": [
+            "文字列"
+         ],
+         "Name": [
+            "名前"
+         ],
+         "Domain": [
+            "ドメイン"
+         ],
+         "Source": [
+            "ソース"
+         ],
+         "Type": [
+            "タイプ"
+         ],
+         "Apply": [
+            "適用"
+         ],
+         "All domains": [
+            "すべてのドメイン"
+         ],
+         "Domain:": [
+            "ドメイン："
+         ],
+         "All sources": [
+            "すべてのソース"
+         ],
+         "Frontend (viewed)": [
+            "フロントエンド (表示)"
+         ],
+         "Backend (viewed)": [
+            "バックエンド (表示)"
+         ],
+         "Unknown": [
+            "不明"
+         ],
+         "Source:": [
+            "ソース："
+         ],
+         "String or Name:": [
+            "文字列または名前："
+         ],
+         "Search string or a name": [
+            "文字列または名前を検索"
+         ],
+         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
+            "このフィルターは、ソースが「フロントエンド」または「バックエンド」に設定されている場合にのみ使用できます。"
+         ],
+         "front-end": [
+            "フロントエンド"
+         ],
+         "back-end": [
+            "バックエンド"
+         ],
+         "viewed": [
+            "表示済み"
+         ],
+         "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
+            "テーマとプラグインのローカライズページを開きます。ここでは、まだ登録されていない文字列がないかテーマやプラグインをスキャンし、ここで翻訳できるようにすることができます。"
+         ],
+         "Finding strings in themes and plugins": [
+            "テーマとプラグイン内の文字列を検索"
+         ],
+         "Strings in the theme and plugins": [
+            "テーマとプラグイン内の文字列"
+         ],
+         "Translate front-end texts you can customize from the WordPress admin like footer text, copyright notices, plugin options and settings, time format, widget texts, and more.": [
+            "フッターテキスト、著作権表示、プラグインのオプションと設定、時刻形式、ウィジェットテキストなど、WordPress 管理画面からカスタマイズできるフロントエンドテキストを翻訳します。"
+         ],
+         "Translating Strings From Admin and Settings": [
+            "管理画面と設定からの文字列の翻訳"
+         ],
+         "Translate texts in admin screens": [
+            "管理画面のテキストを翻訳"
+         ],
+         "Translate User Meta Information": [
+            "ユーザーメタ情報を翻訳"
+         ],
+         "Making User Meta Information Translatable": [
+            "ユーザーメタ情報を翻訳可能にする"
+         ],
+         "Translate user profile strings": [
+            "ユーザープロフィールの文字列を翻訳"
+         ],
+         "No strings have been registered for translation yet. Open your site's front-end (<a/>) and WPML will automatically detect the untranslated strings and list them here. ": [
+            "翻訳用に登録された文字列はまだありません。サイトのフロントエンド (<a/>) を開くと、WPML が未翻訳の文字列を自動的に検出し、ここにリストします。 "
+         ],
+         "hide details": [
+            "詳細を隠す"
+         ],
+         "more details": [
+            "詳細を表示"
+         ],
+         "Still can't find the strings you're looking to translate? Add more strings for translation.": [
+            "翻訳したい文字列がまだ見つかりませんか？ 翻訳する文字列をさらに追加してください。"
+         ],
+         "Not seeing strings that you are looking for?": [
+            "お探しの文字列が表示されませんか？"
+         ],
+         "Enable the autoregistration setting.": [
+            "自動登録設定を有効にしてください。"
+         ],
+         "Visit translations on the site's frontend for WPML to see which strings are missing translations. Visiting one language is enough: %s.": [
+            "サイトのフロントエンドで翻訳を表示し、WPML にどの文字列の翻訳が不足しているかを確認させてください。1つの言語にアクセスするだけで十分です： %s。"
+         ],
+         "Alternatively, you can register strings manually.": [
+            "または、文字列を手動で登録することもできます。"
+         ],
+         "Registering new strings found on your site…": [
+            "サイトで見つかった新しい文字列を登録しています…"
+         ],
+         "Registering new strings is paused: there is not enough PHP memory to continue. Increase the memory limit or <retryQueue>try again</retryQueue>.": [
+            "新しい文字列の登録が一時停止されました：続行するための PHP メモリが不足しています。メモリ制限を増やすか、<retryQueue>もう一度お試しください</retryQueue>。"
+         ],
+         "Registering new strings was interrupted. <retryQueue>Try again</retryQueue>": [
+            "新しい文字列の登録が中断されました。 <retryQueue>もう一度お試しください</retryQueue>"
+         ],
+         "New strings were registered while you were working. <updateStringsList>Update the list</updateStringsList>": [
+            "作業中に新しい文字列が登録されました。 <updateStringsList>リストを更新</updateStringsList>"
+         ],
+         "<b>Translate Everything</b> translates only those strings which are registered in English language": [
+            "<b>すべてを翻訳する</b>は、英語で登録されている文字列のみを翻訳します"
+         ],
+         "Most strings from your plugins and theme are in English, so we’re showing them alongside your default language. Use the <b>Source Language</b> filter to view strings in a specific language.": [
+            "プラグインやテーマのほとんどの文字列は英語であるため、デフォルト言語と並べて表示しています。特定の言語の文字列を表示するには、<b>元言語</b>フィルターを使用してください。"
+         ],
+         "You’re using <b>%s</b> to cache your site, which may prevent WPML from automatically registering new strings. To fix this, clear your page cache, then visit your translated pages again on the frontend to detect new strings.": [
+            "サイトのキャッシュに <b>%s</b> を使用しているため、WPML が新しい文字列を自動的に登録できない可能性があります。これを修正するには、ページキャッシュをクリアしてから、フロントエンドで翻訳済みのページに再度アクセスして新しい文字列を検出してください。"
+         ],
+         "WPML can detect strings that appear on the site and list them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here only the strings that actually appear on the site, you need to enable this feature.": [
+            "WPML はサイトに表示される文字列を検出し、ここにリストすることができます。この機能は、サイトに実際に表示される文字列を特定して翻訳するのに役立ちます。サイトに実際に表示される文字列のみをここに表示するには、この機能を有効にする必要があります。"
+         ],
+         "WPML detects strings that appear on the site and lists them here. This feature helps you identify the strings that actually appear on the site and translate them. To see here all the strings in the site, you need to disable this feature.": [
+            "WPML はサイトに表示される文字列を検出し、ここにリストします。この機能は、サイトに実際に表示される文字列を特定して翻訳するのに役立ちます。サイト内のすべての文字列をここに表示するには、この機能を無効にする必要があります。"
+         ],
+         "Detect untranslated strings": [
+            "未翻訳の文字列を検出"
+         ],
+         "WPML can detect untranslated strings and automatically register them for translation. This happens in real time as you or your visitors browse your website.": [
+            "WPML は未翻訳の文字列を検出し、翻訳用に自動的に登録できます。これは、あなたや訪問者がウェブサイトを閲覧する際にリアルタイムで行われます。"
+         ],
+         "Automatically register untranslated strings": [
+            "未翻訳の文字列を自動的に登録する"
+         ],
+         "Learn how to use auto-registration": [
+            "自動登録の使用方法を確認する"
+         ],
+         "recommended": [
+            "推奨"
+         ],
+         "Also register strings from the website's back-end": [
+            "ウェブサイトのバックエンドからの文字列も登録する"
+         ],
+         "Save settings": [
+            "設定を保存"
+         ],
+         "Request failed because of the network error": [
+            "ネットワークエラーのためリクエストに失敗しました"
+         ],
+         "Enabled": [
+            "有効"
+         ],
+         "Disabled": [
+            "無効"
+         ],
+         "Modify": [
+            "変更"
+         ],
+         "You can only translate %1$s from the site's default language (%2$s).": [
+            "サイトのデフォルト言語 (%2$s) からのみ %1$s を翻訳できます。"
+         ],
+         "Search taxonomy or a name": [
+            "タクソノミーまたは名前を検索"
+         ],
+         "Filter by post type": [
+            "投稿タイプでフィルター"
+         ],
+         "All post types": [
+            "すべての投稿タイプ"
+         ],
+         "%d Not-translatable taxonomy is hidden. Switch it to <i>Translatable</i> in <a>WPML → Settings</a> to include it here.": [
+            "%d 個の翻訳不可なタクソノミーが非表示になっています。これらをここに含めるには、<a>WPML → 設定</a> で <i>翻訳可能</i> に切り替えてください。"
+         ],
+         "No translatable taxonomies match the current filters.": [
+            "現在のフィルターに一致する翻訳可能なタクソノミーはありません。"
+         ],
+         "Select all taxonomies": [
+            "すべてのタクソノミーを選択"
+         ],
+         "Sort by taxonomy": [
+            "タクソノミーで並べ替え"
+         ],
+         "Terms in": [
+            "対象のターム："
+         ],
+         "Post types": [
+            "投稿タイプ"
+         ],
+         "Translated / Total terms": [
+            "翻訳済み / 全ターム"
+         ],
+         "translated": [
+            "翻訳済み"
+         ],
+         "translation in progress": [
+            "翻訳進行中"
+         ],
+         "preparing for translation": [
+            "翻訳準備中"
+         ],
+         "translation needs update": [
+            "更新が必要"
+         ],
+         "translation stalled - the job never reached our translation system": [
+            "翻訳が停止しました - ジョブが翻訳システムに届きませんでした"
+         ],
+         "partially translated": [
+            "一部翻訳済み"
+         ],
+         "not translated": [
+            "未翻訳"
+         ],
+         "%1$s: %2$s": [
+            "%1$s： %2$s"
+         ],
+         "Open %s in the Taxonomy Translation tab": [
+            "タクソノミー翻訳タブで %s を開く"
+         ],
+         "Taxonomy labels and slug": [
+            "タクソノミーのラベルとスラッグ"
+         ],
+         "WPML String Translation is not active.": [
+            "WPML String Translation が有効ではありません。"
+         ],
+         "Taxonomy labels and slugs are translated with <b>String Translation</b> — activate the plugin to translate them.": [
+            "タクソノミーのラベルとスラッグは<b>文字列翻訳</b>で翻訳されます。翻訳するにはプラグインを有効化してください。"
+         ],
+         "No taxonomy labels to translate.": [
+            "翻訳するタクソノミーラベルはありません。"
+         ],
+         "Select all taxonomy labels": [
+            "すべてのタクソノミーラベルを選択"
+         ],
+         "Taxonomy labels": [
+            "タクソノミーラベル"
+         ],
+         "Select labels for %s": [
+            "%s のラベルを選択"
+         ],
+         "Labels not detected by String Translation. Rescan needed.": [
+            "文字列翻訳によってラベルが検出されませんでした。再スキャンが必要です。"
+         ],
+         "Labels not found": [
+            "ラベルが見つかりません"
+         ],
+         "Scanning…": [
+            "スキャン中…"
+         ],
+         "Rescan": [
+            "再スキャン"
+         ],
+         "%d Taxonomy selected": [
+            "%d 個のタクソノミーを選択済み"
+         ],
+         "<b>Translate Everything Automatically</b> (TEA) is active.": [
+            "<b>すべてを自動翻訳する</b> (TEA) が有効です。"
+         ],
+         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
+            "「翻訳可能」なタクソノミーの新規および更新されたタームは、自動的にキューに入れられます。残りの未翻訳タームを一括で送信するには、以下からタクソノミーを選択してください。"
+         ],
+         "Switch Now": [
+            "今すぐ切り替える"
+         ],
+         "Add site description": [
+            "サイトの説明を追加"
+         ],
+         "Turn on now": [
+            "今すぐ有効化"
+         ],
+         "Set up <b>Translate Everything</b>": [
+            "<b>すべてを翻訳する</b>をセットアップする"
+         ],
+         "You’ve been translating with %s.": [
+            "%s を使用して翻訳しています。"
+         ],
+         "Your current translations stay exactly as they are. The switch to PTC affects only new and changed content. To refresh an old translation with PTC, re-send it from the <b>Translation Dashboard</b>. This works even while automatic translation runs. It skips anything already translated.": [
+            "現在の翻訳はそのまま維持されます。PTC への切り替えは、新規および変更されたコンテンツにのみ適用されます。以前の翻訳を PTC で更新するには、<b>翻訳ダッシュボード</b>から再送信してください。これは自動翻訳の実行中も可能です。すでに翻訳済みの内容はスキップされます。"
+         ],
+         "They stay as they are. Automatic translation only touches content that isn’t translated yet. WPML skips anything you’ve already translated. To refresh a page, re-send it from the <b>Translation Dashboard</b> anytime.": [
+            "現在の翻訳はそのまま維持されます。自動翻訳は未翻訳のコンテンツのみを対象とします。WPML はすでに翻訳済みの内容をスキップします。ページを更新するには、いつでも<b>翻訳ダッシュボード</b>から再送信してください。"
+         ],
+         "Add your site description and target audience": [
+            "サイトの説明とターゲットオーディエンスを追加する"
+         ],
+         "Save": [
+            "保存"
+         ],
+         "Saving…": [
+            "保存中…"
+         ],
+         "Your automatic translation pricing has been upgraded": [
+            "自動翻訳の料金プランがアップグレードされました"
+         ],
+         "Loading notice details…": [
+            "通知の詳細を読み込み中…"
+         ],
+         "With WPML 5, automatic translation now costs once per page, per language. After that, edits that add words cost only the added words — edits that don’t grow the page are free. Rework copy, run A/B tests, refine wording. You’re already on PTC, with automatic translation on. There’s nothing to change.": [
+            "WPML 5 では、自動翻訳の料金はページごと、言語ごとに一度だけ発生します。その後、単語が追加される編集については追加分のみ課金され、ページ量が増えない編集は無料です。コピーの書き直し、A/B テスト、表現の微調整などが自由に行えます。お客様はすでに自動翻訳がオンの状態で PTC をご利用中のため、変更の必要はありません。"
+         ],
+         "Got it": [
+            "了解しました"
+         ],
+         "See your pricing": [
+            "料金を確認する"
+         ],
+         "You’re all set. The new pricing is active.": [
+            "準備が整いました。新しい料金プランが適用されています。"
+         ],
+         "Automatic translation now costs once per page, per language. Edits afterwards are free. New content stays translated as you publish.": [
+            "自動翻訳の料金は、ページごと、言語ごとに一度だけ発生するようになりました。その後の編集は無料です。新しいコンテンツは公開時に翻訳された状態が維持されます。"
+         ],
+         "What happens to my existing translations?": [
+            "既存の翻訳はどうなりますか？"
+         ],
+         "Switch to PTC for better translations and the new pricing": [
+            "より高品質な翻訳と新しい料金プランのために PTC へ切り替える"
+         ],
+         "Pay once per page, then edit for free": [
+            "ページごとに一度支払い、その後の編集は無料"
+         ],
+         "You’re translating your whole site automatically with %s. The new pay-once pricing applies when you use PTC, our recommended AI engine.": [
+            "現在、%s を使用してサイト全体を自動翻訳しています。新しい「一度だけ支払う」料金プランは、推奨 AI エンジンである PTC を使用する場合に適用されます。"
+         ],
+         "WPML 5 brings a simpler, lower price for automatic translation, using <strong>Private Translation Cloud (PTC)</strong>, WPML’s own AI engine. Set it up to have WPML translate your whole site automatically.": [
+            "WPML 5 では、WPML 独自の AI エンジンである <strong>Private Translation Cloud (PTC)</strong> を使用することで、よりシンプルで低価格な自動翻訳を提供します。セットアップを行うと、WPML がサイト全体を自動的に翻訳します。"
+         ],
+         "What you gain": [
+            "メリット"
+         ],
+         "Pay once per page, in each language.": [
+            "各言語で、ページごとに一度だけ支払う。"
+         ],
+         "After that, only added words are charged.": [
+            "その後は、追加された単語分のみが課金対象。"
+         ],
+         "Edit as much as you want.": [
+            "何度でも自由に編集可能。"
+         ],
+         "A/B tests, copy changes, and rewrites cost only the words they add.": [
+            "A/B テスト、コピーの変更、書き直しは、追加された単語分のみ課金。"
+         ],
+         "Translations in your voice.": [
+            "あなたのブランドの声に合わせた翻訳。"
+         ],
+         "PTC learns your terms and tone from your existing translations.": [
+            "PTC は既存の翻訳から用語やトーンを学習します。"
+         ],
+         "Questions? Tap to expand": [
+            "ご質問がありますか？ タップして展開"
+         ],
+         "Why is the pay-once pricing only for PTC?": [
+            "なぜページ単位の料金設定は PTC だけなのですか？"
+         ],
+         "PTC is WPML’s own AI engine. It reads the whole page, learns your terms and tone, and is backed by our quality guarantee, so we can price it once per page. DeepL, Google and Microsoft translate segment by segment and are priced per word, changes included.": [
+            "PTC は WPML 独自の AI エンジンです。ページ全体を読み取り、用語やトーンを学習し、当社の品質保証が付いているため、1ページあたりの料金設定が可能です。DeepL、Google、Microsoft はセグメントごとに翻訳し、変更を含めて単語ごとに課金されます。"
+         ],
+         "How much will I pay?": [
+            "料金はいくらになりますか？"
+         ],
+         "You’re on %s: per word, changes included. Switch to PTC to pay once per page, with free changes.": [
+            "現在は %s を使用しています：単語ごとの課金で、変更も含まれます。PTC に切り替えると、1ページあたりの支払いで、変更は無料になります。"
+         ],
+         "On PTC, you pay once per page, in each language. After that, edits to that page are free. You pay again only if the page grows past what you first paid for. In short: you pay for new content, not for updates.": [
+            "PTC では、各言語でページごとに一度だけ支払います。その後のページ編集は無料です。最初に支払った分を超えてページ量が増えた場合にのみ、再度支払いが発生します。つまり、更新ではなく新規コンテンツに対して支払うことになります。"
+         ],
+         "Yes, show me how": [
+            "はい、方法を表示してください"
+         ],
+         "Not interested": [
+            "興味がない"
+         ],
+         "Do these in order. If you turn on automatic translation before choosing PTC, WPML translates your whole site with the wrong engine. You’d then pay to redo that work.": [
+            "順番通りに行ってください。PTC を選択する前に自動翻訳をオンにすると、WPML は誤ったエンジンでサイト全体を翻訳してしまいます。その場合、やり直しのための費用が発生してしまいます。"
+         ],
+         "Do these in order. The engine change affects only new and changed content. Your current translations stay as they are.": [
+            "順番通りに行ってください。エンジンの変更は、新規および変更されたコンテンツにのみ影響します。現在の翻訳はそのまま維持されます。"
+         ],
+         "Switch on the new pricing in %d step": [
+            "%d ステップで新しい料金プランに切り替える"
+         ],
+         "Done": [
+            "完了"
+         ],
+         "Automatic translation is paused. Settle it in the <b>Translate Everything</b> box first.": [
+            "自動翻訳が一時停止しています。まず<b>すべてを翻訳する</b>ボックスで解決してください。"
+         ],
+         "Do the step above first": [
+            "先に上記のステップを完了してください"
+         ],
+         "Switch to the <b>Advanced Translation Editor</b>": [
+            "<b>高度な翻訳エディタ</b>に切り替える"
+         ],
+         "Switch your engine to PTC": [
+            "エンジンを PTC に切り替える"
+         ],
+         "Turn on <b>Translate Everything Automatically</b>": [
+            "<b>すべてを自動翻訳する</b>をオンにする"
+         ],
+         "The Advanced Translation Editor is your editor now.": [
+            "現在、高度な翻訳エディタが使用されています。"
+         ],
+         "You’re using the Classic Translation Editor, an old legacy tool. PTC and automatic translation run in the Advanced Translation Editor, which also gives you:": [
+            "現在、古いレガシーツールであるクラシック翻訳エディタを使用しています。PTCと自動翻訳は高度な翻訳エディタで動作し、以下の機能も利用できます："
+         ],
+         "recommended: pay once per page. PTC needs a short description of your site; the next dialog asks for it.": [
+            "推奨：1ページあたりの支払い。PTC にはサイトの簡単な説明が必要です。次のダイアログで入力してください。"
+         ],
+         "recommended: pay once per page": [
+            "推奨：1ページあたりの支払い"
+         ],
+         "Only you can describe your site. PTC uses this to translate in your voice. Enter it in AI Settings, then Save.": [
+            "サイトの説明を入力できるのはあなただけです。PTC はこれを使用して、あなたのブランドの声で翻訳します。AI 設定に入力して保存してください。"
+         ],
+         "Starts with your current engine, %s, priced per word. After step 1 it runs on PTC, pay once per page.": [
+            "現在のエンジン %s（単語単位の料金）で開始します。ステップ1の後は PTC で動作し、1ページあたりの支払いになります。"
+         ],
+         "WPML translates your whole site. New content stays translated as you publish.": [
+            "WPML がサイト全体を翻訳します。新しいコンテンツは公開時に翻訳された状態が維持されます。"
+         ],
+         "Translation Memory": [
+            "翻訳メモリ"
+         ],
+         "HTML Protection": [
+            "HTML保護"
+         ],
+         "Glossary": [
+            "用語集"
+         ],
+         "Spellchecker": [
+            "スペルチェッカー"
+         ],
+         "AI Assistant": [
+            "AIアシスタント"
+         ],
+         "Automatic Translation": [
+            "自動翻訳"
+         ],
+         "<b>Translate Everything Automatically</b> is already on, with %s (per word).": [
+            "<b>すべてを自動翻訳する</b>は、%s（単語単位）ですでに有効になっています。"
+         ],
+         "Not now": [
+            "後で"
+         ],
+         "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
+            "接続エラーが発生しました。しばらく待ってからこのページを再読み込みしてください。問題が解決しない場合は、WPML サポートにお問い合わせください。"
+         ],
+         "You don’t have enough prepaid words to translate this content.": [
+            "このコンテンツを翻訳するためのプリペイド単語が不足しています。"
+         ],
+         "You have %1$s prepaid words — %2$s more are needed to translate this content": [
+            "現在 %1$s 単語のプリペイド単語があります。このコンテンツを翻訳するには、さらに %2$s 単語必要です。"
+         ],
+         "You’re missing %1$s prepaid words for the translation jobs in progress — %2$s are needed in total": [
+            "進行中の翻訳ジョブに対して %1$s 単語のプリペイド単語が不足しています。合計で %2$s 単語必要です。"
+         ],
+         "Automatic translation costs:": [
+            "自動翻訳の費用："
+         ],
+         "Words": [
+            "単語"
+         ],
+         "Words to translate automatic": [
+            "自動翻訳する単語数"
+         ],
+         "Words required:": [
+            "必要な単語数："
+         ],
+         "Pricing": [
+            "料金"
+         ],
+         "Your Automatic Translation Words": [
+            "自動翻訳の単語数"
+         ],
+         "To proceed with translation, activate <b>Pay-As-You-Go</b> or assign prepaid words.": [
+            "翻訳を続行するには、<b>従量課金制</b>を有効にするか、プリペイド単語を割り当ててください。"
+         ],
+         "<b>Pay-As-You-Go</b> activated": [
+            "<b>従量課金制</b>が有効になりました"
+         ],
+         "You can now continue translating your content automatically.": [
+            "コンテンツの自動翻訳を続行できるようになりました。"
+         ],
+         "%s word assigned to this site.": [
+            "%s 単語がこのサイトに割り当てられました。"
+         ],
+         "Leave existing translations as they are": [
+            "既存の翻訳をそのまま残す"
+         ],
+         "Overwrite existing translations": [
+            "既存の翻訳を上書きする"
+         ],
+         "Some of the content you want to translate is already translated": [
+            "翻訳しようとしているコンテンツの一部はすでに翻訳されています"
+         ],
+         "What do you want to do with the content that's already translated?": [
+            "すでに翻訳されているコンテンツをどうしますか？"
+         ],
+         "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
+            "DeepL、Google Translate、Microsoft Translator による翻訳は、公開前にレビューすることをお勧めします。"
+         ],
+         "Translations from PTC are publish-ready, so you can publish them without review.": [
+            "PTC による翻訳はそのまま公開できる品質のため、レビューなしで公開できます。"
+         ],
+         "Suggested deadline:": [
+            "希望納期："
+         ],
+         "Set a batch name and deadline": [
+            "バッチ名と納期を設定する"
+         ],
+         "You can assign a custom name to this batch for easy tracking and suggest a deadline to clarify the priority for translators.": [
+            "追跡を容易にするためにこのバッチにカスタム名を割り当てたり、翻訳者に優先順位を明確にするための納期を提案したりできます。"
+         ],
+         "Batch name:": [
+            "バッチ名："
+         ],
+         "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s translator</add_yourself> to the site.<br/> Add yourself as %2$s translator and click <check_again>check again</check_again> or choose a different translation option.": [
+            "自分を翻訳者として割り当てるには、まずサイトに <add_yourself>自分を %1$s の翻訳者として追加</add_yourself> する必要があります。<br/> 自分を %2$s の翻訳者として追加してから <check_again>再確認</check_again> をクリックするか、別の翻訳オプションを選択してください。"
+         ],
+         "In order to assign yourself as translator, you first need to <add_yourself>add yourself as %1$s to %2$s translator</add_yourself> to the site.<br/> Add yourself as %3$s to %4$s translator and click <check_again>check again</check_again> or choose a different translation option.": [
+            "自分を翻訳者として割り当てるには、まずサイトに <add_yourself>自分を %1$s から %2$s への翻訳者として追加</add_yourself> する必要があります。<br/> 自分を %3$s から %4$s への翻訳者として追加してから <check_again>再確認</check_again> をクリックするか、別の翻訳オプションを選択してください。"
+         ],
+         "Checking": [
+            "確認中"
+         ],
+         "In order to assign a translation service, you first need to <activate_ts>activate a translation service</activate_ts>.<br/>Activate a translation service and click <check_again>check again</check_again> or choose a different translation option.": [
+            "翻訳サービスを割り当てるには、まず <activate_ts>翻訳サービスを有効化</activate_ts> する必要があります。<br/>翻訳サービスを有効化してから <check_again>再確認</check_again> をクリックするか、別の翻訳オプションを選択してください。"
+         ],
+         " Checking ": [
+            " 確認中 "
+         ],
+         "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
+            "自動翻訳を行うには、まず <enable_ate>WPML の<b>高度な翻訳エディタ</b>を有効化</enable_ate> する必要があります。<br/><b>高度な翻訳エディタ</b>を有効化してから <check_again>再確認</check_again> をクリックするか、別の翻訳オプションを選択してください。"
+         ],
+         "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
+            "選択されたコンテンツは<b>クラシック翻訳エディタ</b>を使用して翻訳されているため、自動翻訳に送信できません。これを許可するには、<wpmlSettingLink>WPML 設定</wpmlSettingLink>ページで「古い翻訳にも使用する」を有効にしてください。"
+         ],
+         "Some of the selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
+            "選択されたコンテンツの一部は<b>クラシック翻訳エディタ</b>を使用して翻訳されているため、自動翻訳に送信できません。これを許可するには、<wpmlSettingLink>WPML 設定</wpmlSettingLink>ページで「古い翻訳にも使用する」を有効にしてください。"
+         ],
+         "Content that is already translated into this language will not be duplicated; its existing translation is kept.\nWhen duplicating content, please first duplicate parent pages to maintain the site's hierarchy.": [
+            "この言語にすでに翻訳されているコンテンツは複製されず、既存の翻訳が保持されます。\nコンテンツを複製する際は、サイトの階層を維持するために、まず親ページを複製してください。"
+         ],
+         "Some of the selected content is already being translated. This will cancel any in-progress translations.": [
+            "選択されたコンテンツの一部はすでに翻訳中です。再送信すると、進行中の翻訳はキャンセルされます。"
+         ],
+         "The selected items were translated using the WordPress Editor and will be overwritten with automatic translations.": [
+            "選択されたアイテムは WordPress エディタを使用して翻訳されており、自動翻訳で上書きされます。"
+         ],
+         "Some of the selected content was translated using the WordPress Editor and will be overwritten.": [
+            "選択されたコンテンツの一部は WordPress エディタを使用して翻訳されており、上書きされます。"
+         ],
+         "Translated content structure will change. The selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
+            "翻訳されたコンテンツの構造が変更されます。選択されたアイテムは以前 WordPress エディタで翻訳されました。WPML がこれらを自動翻訳すると、翻訳された投稿の構造は元のコンテンツと一致するように戻ります。既存の翻訳テキストはベースとして使用されるため、トーンや用語は維持されます。"
+         ],
+         "Translated content structure will change. Some of the selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
+            "翻訳されたコンテンツの構造が変更されます。選択されたアイテムの一部は以前 WordPress エディタで翻訳されました。WPML がこれらを自動翻訳すると、翻訳された投稿の構造は元のコンテンツと一致するように戻ります。既存の翻訳テキストはベースとして使用されるため、トーンや用語は維持されます。"
+         ],
+         "In order to assign to a translator, you first need to <add_translators>add %1$s translators</add_translators> to the site.<br/> Add %2$s translators and click <check_again>check again</check_again> or choose a different translation option.": [
+            "翻訳者に割り当てるには、まずサイトに <add_translators>%1$s の翻訳者を追加</add_translators> する必要があります。<br/> %2$s の翻訳者を追加してから <check_again>再確認</check_again> をクリックするか、別の翻訳オプションを選択してください。"
+         ],
+         "In order to assign to a translator, you first need to <add_translators>add %1$s to %2$s translators</add_translators> to the site.<br/> Add %3$s to %4$s translators and click <check_again>check again</check_again> or choose a different translation option.": [
+            "翻訳者に割り当てるには、まずサイトに <add_translators>%1$s から %2$s への翻訳者を追加</add_translators> する必要があります。<br/> %3$s から %4$s への翻訳者を追加してから <check_again>再確認</check_again> をクリックするか、別の翻訳オプションを選択してください。"
+         ],
+         "Your site doesn't have any reviewers for %s. This means that you’re the only person who can review these translations.": [
+            "このサイトには %s のレビュー担当者が設定されていません。そのため、あなただけがこれらの翻訳をレビューできる唯一の人物となります。"
+         ],
+         "Your site doesn't have any reviewers yet. This means that you’re the only person who can review translations.": [
+            "このサイトにはまだレビュー担当者が設定されていません。そのため、あなただけが翻訳をレビューできる唯一の人物となります。"
+         ],
+         "If you want other people to review the translations, go to <a>Settings → Translators</a> and add translators. They will be able to both review and translate content for you.": [
+            "他の人に翻訳をレビューしてもらいたい場合は、<a>設定 → 翻訳者</a> に移動して翻訳者を追加してください。追加された翻訳者は、コンテンツのレビューと翻訳の両方を行えるようになります。"
+         ],
+         "Automatic translation is paused — payment required": [
+            "自動翻訳が一時停止しています — 支払いが必要です"
+         ],
+         "A payment of %s could not be processed. Pay it in the <b>Translate Everything</b> box above to resume.": [
+            "%s の支払いを処理できませんでした。再開するには、上の<b>すべてを翻訳する</b>ボックスで支払いを済ませてください。"
+         ],
+         "Automatic translation is paused: monthly spending cap reached": [
+            "自動翻訳が一時停止しています：月間利用限度額に達しました"
+         ],
+         "<site>%1$s</site> reached its monthly spending cap (<figure>%2$s</figure> of <figure>%3$s</figure> words used). Raise it above to continue.": [
+            "<site>%1$s</site> が月間利用限度額に達しました (<figure>%3$s</figure> 単語中 <figure>%2$s</figure> 単語を使用)。続行するには限度額を引き上げてください。"
+         ],
+         "WPML does not support duplicating strings. Your selection to duplicate strings to %1$s will be ignored if you proceed with the translation.": [
+            "WPML は文字列の複製をサポートしていません。翻訳を続行した場合、文字列を %1$s に複製する選択は無視されます。"
+         ],
+         "WPML does not support duplicating %1$s elements. Your selection to duplicate elements to %2$s will be ignored if you proceed with the translation.": [
+            "WPML は %1$s 要素の複製をサポートしていません。翻訳を続行した場合、要素を %2$s に複製する選択は無視されます。"
+         ],
+         "WPML does not support duplicating %1$s elements and strings. Your selection to duplicate elements and strings to %2$s will be ignored if you proceed with the translation.": [
+            "WPML は %1$s 要素および文字列の複製をサポートしていません。翻訳を続行した場合、要素および文字列を %2$s に複製する選択は無視されます。"
+         ],
+         "WPML does not support duplicating strings.": [
+            "WPML は文字列の複製をサポートしていません。"
+         ],
+         "WPML does not support duplicating %1$s elements.": [
+            "WPML は %1$s 要素の複製をサポートしていません。"
+         ],
+         "WPML does not support duplicating %1$s elements and strings.": [
+            "WPML は %1$s 要素および文字列の複製をサポートしていません。"
+         ],
+         "WPML does not support duplicating taxonomies.": [
+            "WPML はタクソノミーの複製をサポートしていません。"
+         ],
+         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
+            "WPML はタクソノミーの複製をサポートしていません。翻訳を続行した場合、タクソノミーを %1$s に複製する選択は無視されます。"
+         ],
+         "Finish setting up %s on your site": [
+            "サイトでの %s のセットアップを完了してください"
+         ],
+         "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
+            "翻訳するコンテンツを送信するには、%s の認証が必要です。<br/><a>翻訳者タブ</a>に移動してセットアップを完了し、<check_again>再確認</check_again> をクリックするか、別の翻訳オプションを選択してください。"
+         ],
+         "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
+            "選択したコンテンツの一部にはレビュー待ちの翻訳があります。再送信すると、その翻訳は置き換えられます。"
+         ],
+         "You selected multiple translation methods for content across different languages:": [
+            "異なる言語のコンテンツに対して複数の翻訳方法が選択されました："
+         ],
+         "Sent for translation": [
+            "翻訳に送信済み"
+         ],
+         "Some items were not sent for translation": [
+            "一部のアイテムが翻訳に送信されませんでした"
+         ],
+         "Sending for translation failed": [
+            "翻訳への送信に失敗しました"
+         ],
+         "WPML can't reach our translation system right now, so these items haven't been sent. Check the connection and retry.": [
+            "現在 WPML が翻訳システムに接続できないため、これらのアイテムは送信されていません。接続を確認して再試行してください。"
+         ],
+         "WPML could not read the translation server's answer about these items. If you send them anyway and the server already has them, you may be charged for them twice.": [
+            "WPML はこれらのアイテムに関する翻訳サーバーの応答を読み取れませんでした。このまま送信してサーバーにすでに存在していた場合、二重に請求される可能性があります。"
+         ],
+         "Check connection and retry": [
+            "接続を確認して再試行"
+         ],
+         "Retry not-sent items": [
+            "未送信のアイテムを再試行"
+         ],
+         "Send anyway": [
+            "このまま送信"
+         ],
+         "Close": [
+            "閉じる"
+         ],
+         "Continue sending": [
+            "送信を続行"
+         ],
+         "Ok": [
+            "OK"
+         ],
+         "<s>1 item</s> is being translated automatically.": [
+            "<s>%d 個のアイテム</s>が自動的に翻訳されています。"
+         ],
+         "You can track their progress at the top of the page.": [
+            "進行状況はページ上部で確認できます。"
+         ],
+         "From now on, WPML will automatically translate new content on your site.": [
+            "今後、WPML はサイトの新しいコンテンツを自動的に翻訳します。"
+         ],
+         "This number might vary because you enabled the <b>Translate Everything Automatically</b> Mode.": [
+            "<b>すべてを自動翻訳する</b>モードが有効なため、この数値は変動する可能性があります。"
+         ],
+         "From now on, WPML will automatically translate your site's content.": [
+            "今後、WPML はサイトのコンテンツを自動的に翻訳します。"
+         ],
+         "Automatic translations summary": [
+            "自動翻訳の概要"
+         ],
+         "<s>1 item</s> has been successfully assigned to you! To check its status, please go to <s>Translation Tasks</s>. <translations_queue/>": [
+            "<s>%d 個のアイテム</s>があなたに正常に割り当てられました！ ステータスの更新については、<s>翻訳タスク</s>に移動してください。 <translations_queue/>"
+         ],
+         "Currently logged in translator summary": [
+            "現在ログインしている翻訳者の概要"
+         ],
+         "Go to Translation Tasks": [
+            "翻訳タスクに移動"
+         ],
+         "<s>1 item</s> has been duplicated.": [
+            "<s>%d 個のアイテム</s>が複製されました。"
+         ],
+         "Duplication summary": [
+            "複製の概要"
+         ],
+         "Please try again in a few minutes. If the issue persists, <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, copy the technical details below and paste them into our Maiya agent for assistance.": [
+            "数分後にもう一度お試しください。問題が解決しない場合は、<supportLink>フォーラムスレッド (Maiya) でチケットを作成</supportLink>し、以下の技術的な詳細をコピーして Maiya エージェントに貼り付けてサポートを受けてください。"
+         ],
+         "There was a problem sending your content for translation.": [
+            "コンテンツを翻訳に送信する際に問題が発生しました。"
+         ],
+         "See technical details": [
+            "技術的な詳細を表示"
+         ],
+         "Hide technical details": [
+            "技術的な詳細を隠す"
+         ],
+         "Some of the selected strings are already registered or translated into %s. Since their source language matches the target language, they cannot be retranslated.": [
+            "選択された文字列の一部は、すでに %s に登録または翻訳されています。元言語と翻訳言語が一致するため、再翻訳はできません。"
+         ],
+         "Some of the selected content has already been translated from %1$s to %2$s and cannot be re-translated from %3$s to %4$s.": [
+            "選択されたコンテンツの一部はすでに %1$s から %2$s へ翻訳されているため、%3$s から %4$s へ再翻訳することはできません。"
+         ],
+         "Content already translated": [
+            "コンテンツはすでに翻訳済みです"
+         ],
+         "Some of the selected content has a translation in progress, so it was not duplicated.": [
+            "選択したコンテンツの一部に進行中の翻訳があるため、複製されませんでした。"
+         ],
+         "Content already being translated": [
+            "コンテンツはすでに翻訳中です"
+         ],
+         "WPML could not count the words of these items.": [
+            "WPML はこれらのアイテムの単語数をカウントできませんでした。"
+         ],
+         "Some content couldn't be sent to translation.": [
+            "一部のコンテンツを翻訳に送信できませんでした。"
+         ],
+         "WPML did not create translations for some languages because of the following reasons:": [
+            "以下の理由により、WPML は一部の言語の翻訳を作成しませんでした："
+         ],
+         "%s Flag": [
+            "%s の国旗"
+         ],
+         "<s>1 item</s> has been successfully sent to translators!": [
+            "<s>%d 個のアイテム</s>が翻訳者に正常に送信されました！"
+         ],
+         "Local translations summary": [
+            "ローカル翻訳の概要"
+         ],
+         "You can check their status in WPML → Translation": [
+            "ステータスは WPML → 翻訳 で確認できます"
+         ],
+         "Items not sent:": [
+            "未送信のアイテム："
+         ],
+         "%d item was sent for translation.": [
+            "%d 個のアイテムが翻訳に送信されました。"
+         ],
+         "%d item was not sent.": [
+            "%d 個のアイテムが送信されませんでした。"
+         ],
+         "Reason: %s": [
+            "理由： %s"
+         ],
+         "Items already sent will be translated and delivered normally.": [
+            "すでに送信されたアイテムは、通常通り翻訳され配信されます。"
+         ],
+         "Continue to %s": [
+            "%s へ進む"
+         ],
+         "We were unable to send the following batches for professional translation:": [
+            "以下のバッチをプロの翻訳サービスに送信できませんでした："
+         ],
+         "<p><a><s>Contact WPML support for help</s></a></p>": [
+            "<p><a><s>WPML サポートに問い合わせる</s></a></p>"
+         ],
+         "Translation Service": [
+            "翻訳サービス"
+         ],
+         "sending for professional translation..": [
+            "プロの翻訳サービスに送信中.."
+         ],
+         "<s>%1$d item</s> is being sent for translation to %2$s. Please continue to their site to start the translation.": [
+            "<s>%1$d 個のアイテム</s>を %2$s に翻訳送信しています。翻訳を開始するには、該当サービスのサイトへ進んでください。"
+         ],
+         "Translation service translations summary": [
+            "翻訳サービスによる翻訳の概要"
+         ],
+         "One or more assigned translators are invalid. The translator may have been removed or their language permissions changed.<br/> Review your settings on the <translators_page>Translators page</translators_page>.": [
+            "割り当てられた 1 人以上の翻訳者が無効です。翻訳者が削除されたか、言語権限が変更された可能性があります。<br/> <translators_page>翻訳者ページ</translators_page>で設定を確認してください。"
+         ],
+         "The selected translation service is no longer valid. It may have been changed, unauthenticated, or deactivated.<br/> Review your settings on the <translators_page>Translators page</translators_page>.": [
+            "選択された翻訳サービスはもう有効ではありません。変更されたか、認証が解除されたか、無効化された可能性があります。<br/> <translators_page>翻訳者ページ</translators_page>で設定を確認してください。"
+         ],
+         "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
+            "現在選択されている翻訳エディタは自動翻訳をサポートしていません。自動翻訳にコンテンツを送信するには、<b>高度な翻訳エディタ</b>を有効にする必要があります。<br/> <wpml_settings>WPML 設定ページ</wpml_settings>で設定を確認してください。"
+         ],
+         "Validation error happened during send to translation.": [
+            "翻訳への送信中に検証エラーが発生しました。"
+         ],
+         "Translate and Duplicate": [
+            "翻訳と複製"
+         ],
+         "Duplicate": [
+            "複製"
+         ],
+         "Translate content": [
+            "コンテンツを翻訳"
+         ],
+         "Checking translation engine…": [
+            "翻訳エンジンを確認中…"
+         ],
+         "Checking site context…": [
+            "サイトのコンテキストを確認中…"
+         ],
+         "Could not check the translation engine. Reload the page to try again.": [
+            "翻訳エンジンを確認できませんでした。ページを再読み込みしてもう一度お試しください。"
+         ],
+         "Automatic translation is paused until the failed payment is settled. Pay it in the Translate Everything box.": [
+            "失敗した支払いが決済されるまで、自動翻訳は一時停止されます。「すべてを翻訳する」ボックスで支払いを済ませてください。"
+         ],
+         "Please choose one of the available payment options.": [
+            "利用可能な支払いオプションのいずれかを選択してください。"
+         ],
+         "Selected content is already translated": [
+            "選択されたコンテンツはすでに翻訳されています"
+         ],
+         "Please select a review mode": [
+            "レビューモードを選択してください"
+         ],
+         "Assign local translator or choose another option": [
+            "ローカル翻訳者を割り当てるか、別のオプションを選択してください"
+         ],
+         "Assign yourself or choose another option": [
+            "自分を割り当てるか、別のオプションを選択してください"
+         ],
+         "Activate translation service or choose another option": [
+            "翻訳サービスを有効化するか、別のオプションを選択してください"
+         ],
+         "Activate the Advanced Translation Editor or choose another option": [
+            "高度な翻訳エディタを有効化するか、別のオプションを選択してください"
+         ],
+         "Authenticate translation service or choose another option": [
+            "翻訳サービスを認証するか、別のオプションを選択してください"
+         ],
+         "Please provide context to enable translation": [
+            "翻訳を有効にするためにコンテキストを提供してください"
+         ],
+         "Keep this page open while WPML sends your content for translation. Leaving now stops the remaining items from being sent.": [
+            "WPMLがコンテンツを翻訳に送信している間、このページを開いたままにしてください。今離れると、残りのアイテムの送信が停止されます。"
+         ],
+         "Sending content for translation": [
+            "コンテンツを翻訳に送信中"
+         ],
+         "<s>%1$s</s> cannot process more than <s>%2$d</s> jobs in a single batch. WPML will automatically split your jobs into separate batches to ensure an error-free delivery to <s>%3$s</s>. <br/><br/> Do you want to proceed?": [
+            "<s>%1$s</s> は1つのバッチで <s>%2$d</s> 件を超えるジョブを処理できません。WPMLは <s>%3$s</s> への配信をエラーなく行うため、ジョブを自動的に個別のバッチに分割します。<br/><br/>続行しますか？"
+         ],
+         "WPML will send jobs to %s in separate batches": [
+            "WPMLは %s へのジョブを個別のバッチで送信します"
+         ],
+         "Yes, send jobs in separate batches": [
+            "はい、ジョブを個別のバッチで送信します"
+         ],
+         "No, I will split jobs myself": [
+            "いいえ、自分でジョブを分割します"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
+            "一部のタクソノミータームがまだ送信されていません。送信されたものは翻訳中です。残りを送信するには「送信を続行」をクリックしてください。"
+         ],
+         "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
+            "タクソノミータームがまだ送信されていません。「送信を続行」をクリックして送信してください。"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
+            "一部のタクソノミータームがまだ送信されていません。送信されたものは翻訳中です。未送信のアイテムを再試行して残りを送信してください。"
+         ],
+         "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
+            "タクソノミータームがまだ送信されていません。未送信のアイテムを再試行して送信してください。"
+         ],
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
+            "一部のタクソノミー用語が翻訳に送信されませんでした。送信されたものは翻訳中です。残りを再度送信して完了させてください。"
+         ],
+         "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
+            "WPML がタクソノミー用語を翻訳に送信できなかったため、送信されたものはありません。もう一度お試しください。"
+         ],
+         "This will translate only your future content": [
+            "これは今後のコンテンツのみを翻訳します"
+         ],
+         "This will translate your entire site": [
+            "これはサイト全体を翻訳します"
+         ],
+         "Translate everything automatically from now on, without asking me.": [
+            "今後は確認せずに、すべてを自動的に翻訳する。"
+         ],
+         "Existing content": [
+            "既存のコンテンツ"
+         ],
+         "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
+            "%1$s にある文字列の翻訳が選択されました。これらの文字列のみが %2$s に翻訳されます。"
+         ],
+         "You selected to translate strings that are in %1$s and %2$s. Only these strings will be translated to %3$s.": [
+            "%1$s と %2$s にある文字列の翻訳が選択されました。これらの文字列のみが %3$s に翻訳されます。"
+         ],
+         "Source language": [
+            "元言語"
+         ],
+         "Target language": [
+            "翻訳言語"
+         ],
+         "Words to translate": [
+            "翻訳する単語数"
+         ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$s合計:%2$s %3$s"
+         ],
+         "Translation service additional options": [
+            "翻訳サービスの追加オプション"
+         ],
+         "Refresh": [
+            "更新"
+         ],
+         "Fetching translation service data...": [
+            "翻訳サービスデータを取得中..."
+         ],
+         "-": [
+            "-"
+         ],
+         "Translate automatically": [
+            "自動的に翻訳"
+         ],
+         "Translate myself": [
+            "自分で翻訳"
+         ],
+         "Assign a translator": [
+            "翻訳者を割り当てる"
+         ],
+         "Assign translation service": [
+            "翻訳サービスを割り当てる"
+         ],
+         "Do nothing": [
+            "何もしない"
+         ],
+         "Please choose": [
+            "選択してください"
+         ],
+         "Choose a translator": [
+            "翻訳者を選択"
+         ],
+         "First available": [
+            "最初の空き担当者"
+         ],
+         "(Me)": [
+            "(自分)"
+         ],
+         "Translation quality": [
+            "翻訳品質"
+         ],
+         "Expand": [
+            "展開"
+         ],
+         "%1$s · %2$d": [
+            "%1$s · %2$d"
+         ],
+         "Mistakes visible": [
+            "間違いが目立つ"
+         ],
+         "Minimize": [
+            "最小化"
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTCはより高い品質で翻訳し、そのまま公開可能な結果を提供します。"
+         ],
+         "Step 2": [
+            "ステップ 2"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "サイト全体の自動翻訳にはAI翻訳のセットアップが必要です。"
+         ],
+         "Set up AI translation": [
+            "AI 翻訳をセットアップする"
+         ],
+         "Keep a wp-admin window open until WPML finishes translating": [
+            "WPMLが翻訳を完了するまでwp-adminウィンドウを開いたままにしてください"
+         ],
+         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
+            "WPMLは通常、WordPress管理画面に留まることなくバックグラウンドでコンテンツを翻訳します。しかし、WPMLがこのサイトにアクセスできないため、wp-adminウィンドウが開いている間に翻訳を取得します。"
+         ],
+         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
+            "WordPress管理画面のどこで作業を続けても構いません。翻訳が完了するまで、ウィンドウを1つ開いたままにしておいてください。"
+         ],
+         "Next check for translations in %s.": [
+            "次回の翻訳確認は %s 後です。"
+         ],
+         "Hide details": [
+            "詳細を隠す"
+         ],
+         "What could be blocking it, and how to fix it": [
+            "何がブロックしている可能性があるか、およびその修正方法"
+         ],
+         "Check these on your site": [
+            "サイトでこれらを確認してください"
+         ],
+         "The site might be on a private network, in staging, or only reachable through a VPN.": [
+            "サイトがプライベートネットワーク内、ステージング環境、またはVPN経由でしかアクセスできない可能性があります。"
+         ],
+         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
+            "HTTP基本認証またはIPホワイトリストが外部からのリクエストをブロックしている可能性があります。"
+         ],
+         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
+            "セキュリティプラグイン、ファイアウォール、またはWAFがWPMLからのリクエストを拒否している可能性があります。"
+         ],
+         "The site might be in maintenance mode.": [
+            "サイトがメンテナンスモードになっている可能性があります。"
+         ],
+         "Already fixed this on your site?": [
+            "サイトでこれを修正済みですか？"
+         ],
+         "Check again whether the site is reachable": [
+            "サイトにアクセス可能か再度確認する"
+         ],
+         "Checking…": [
+            "確認中…"
+         ],
+         "Check again": [
+            "再確認"
+         ],
+         "Still couldn't reach your site.": [
+            "依然としてサイトにアクセスできませんでした。"
+         ],
+         "Automatic translations completed": [
+            "自動翻訳が完了しました"
+         ],
+         "<s>1 translation</s> has been successfully translated automatically": [
+            "<s>%d 件の翻訳</s> が自動翻訳に成功しました"
+         ],
+         "Automatic jobs in progress": [
+            "進行中の自動翻訳ジョブ"
+         ],
+         "<s>%d automatic translation</s> is in progress": [
+            "<s>%d 件の自動翻訳</s> が進行中です"
+         ],
+         "You can close this page. WPML keeps translating your site in the background, and you can come back any time to check progress.": [
+            "このページを閉じても大丈夫です。WPMLはバックグラウンドでサイトの翻訳を継続します。いつでも戻って進捗を確認できます。"
+         ],
+         "Your default language, %s, must be mapped to a supported language in order to use automatic translation": [
+            "自動翻訳を使用するには、デフォルト言語の %s をサポートされている言語にマッピングする必要があります"
+         ],
+         "Map the language": [
+            "言語をマッピングする"
+         ],
+         "%d second": [
+            "%d 秒"
+         ],
+         "%d minute": [
+            "%d 分"
+         ],
+         "%d hour": [
+            "%d 時間"
+         ],
+         "%d day": [
+            "%d 日"
+         ],
+         "%d translation": [
+            "%d 件の翻訳"
+         ],
+         "checking now": [
+            "現在確認中"
+         ],
+         "next check in %s": [
+            "%s 後に次回の確認"
+         ],
+         "WPML stopped checking for delivered translations after repeated failures.": [
+            "失敗が繰り返されたため、WPML は配信された翻訳の確認を停止しました。"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s": [
+            "翻訳の受信：最終受信 %1$s前 · %2$s"
+         ],
+         "Receiving translations: last received %s ago": [
+            "翻訳の受信：最終受信 %s前"
+         ],
+         "Receiving translations: no translations received yet · %s": [
+            "翻訳の受信：まだ翻訳を受信していません · %s"
+         ],
+         "Receiving translations: no translations received yet": [
+            "翻訳の受信：まだ翻訳を受信していません"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
+            "翻訳を受信中：最終受信 %1$s 前 · %2$s 待機中 · %3$s"
+         ],
+         "Receiving translations: last received %1$s ago · %2$s waiting": [
+            "翻訳を受信中：最終受信 %1$s 前 · %2$s 待機中"
+         ],
+         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
+            "翻訳を受信中：翻訳はまだ受信されていません · %1$s 待機中 · %2$s"
+         ],
+         "Receiving translations: no translations received yet · %s waiting": [
+            "翻訳を受信中：翻訳はまだ受信されていません · %s 待機中"
+         ],
+         "These translations are taking longer than they should to arrive.": [
+            "これらの翻訳の到着に通常より時間がかかっています。"
+         ],
+         "Picking up translations…": [
+            "翻訳を取得中…"
+         ],
+         "Pick up translations now": [
+            "今すぐ翻訳を取得"
+         ],
+         "%d translations ": [
+            "%d 件の翻訳 "
+         ],
+         "%d translation ": [
+            "%d 件の翻訳 "
+         ],
+         "this includes translations from <b>Translate Everything Automatically</b>": [
+            "（これには<b>すべてを自動翻訳する</b>による翻訳が含まれます）"
+         ],
+         "are waiting for your review": [
+            "がレビュー待ちです"
+         ],
+         "is waiting for your review": [
+            "がレビュー待ちです"
+         ],
+         "Review Translations": [
+            "翻訳をレビュー"
+         ],
+         "Translate existing content": [
+            "既存のコンテンツを翻訳"
+         ],
+         "Translate now": [
+            "今すぐ翻訳"
+         ],
+         "Starting with version 4.7, WPML will also automatically translate texts (strings) coming from %s.": [
+            "バージョン4.7以降、WPMLは %s からのテキスト（文字列）も自動的に翻訳します。"
+         ],
+         "WPML will not translate existing texts of this type but any new ones you create will be automatically translated. If you prefer, you can <button />.": [
+            "WPMLはこのタイプの既存のテキストは翻訳しませんが、新しく作成されたものは自動的に翻訳されます。よろしければ、<button />することもできます。"
+         ],
+         "Starting with version 4.7, WPML will also automatically translate:": [
+            "バージョン4.7以降、WPMLは以下も自動的に翻訳します："
+         ],
+         "Content set to \"use translation if available or fallback to default language\": %s.": [
+            "「翻訳があれば使用し、なければデフォルト言語にフォールバックする」に設定されたコンテンツ： %s。"
+         ],
+         "Texts (strings) coming from: %s.": [
+            "次からのテキスト（文字列）： %s。"
+         ],
+         "WPML will not translate existing content for these post types and texts but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
+            "WPMLはこれらの投稿タイプやテキストの既存のコンテンツは翻訳しませんが、新しく作成されたコンテンツは自動的に翻訳されます。よろしければ、<button />を開始できます。"
+         ],
+         "WPML will not translate existing content for these post types but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
+            "WPMLはこれらの投稿タイプの既存のコンテンツは翻訳しませんが、新しく作成されたコンテンツは自動的に翻訳されます。よろしければ、<button />を開始できます。"
+         ],
+         "start translating existing content now": [
+            "既存のコンテンツの翻訳を今すぐ開始"
+         ],
+         "New content is ready to translate": [
+            "新しいコンテンツの翻訳準備ができました"
+         ],
+         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "翻訳コストを確認した後に %s が翻訳可能になったため、「すべてを翻訳する」には含まれませんでした。サイトを完全に翻訳された状態に保つために、コストを確認してこれらを含めてください。"
+         ],
+         "Review cost and include": [
+            "コストを確認して含める"
+         ],
+         "Learn more →": [
+            "詳細はこちら →"
+         ],
+         "PTC can also translate your app's interface, not just your website.": [
+            "PTCはウェブサイトだけでなく、アプリのインターフェースも翻訳できます。"
+         ],
+         "PTC can translate software with automatic QA and a money-back guarantee.": [
+            "PTCは自動QAと返金保証付きでソフトウェアを翻訳できます。"
+         ],
+         "PTC translates every string in context, so it fits your interface.": [
+            "PTCはすべての文字列をコンテキストに合わせて翻訳するため、インターフェースに適合します。"
+         ],
+         "PTC can translate your software right inside your Git workflow.": [
+            "PTCはGitワークフロー内で直接ソフトウェアを翻訳できます。"
+         ],
+         "The following target languages do not support automatic translations: %s": [
+            "以下のターゲット言語は自動翻訳をサポートしていません： %s"
+         ],
+         "To enable automatic translation map them to known languages.": [
+            "自動翻訳を有効にするには、既知の言語にマッピングしてください。"
+         ],
+         "Map to known languages": [
+            "既知の言語にマッピング"
+         ],
+         "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
+            "サポートを受けるには、<supportLink>フォーラムスレッド (Maiya) でチケットを作成</supportLink>し、「すべてコピー」ボタンをクリックしてデバッグ情報を取得し、Maiyaエージェントに「貼り付け」てください。問題が解決しない場合は、<logsLink>ログツール</logsLink>を使用して詳細なデータを収集してください。"
+         ],
+         "Copied!": [
+            "コピーしました！"
+         ],
+         "Copy All": [
+            "すべてコピー"
+         ],
+         "Error type": [
+            "エラータイプ"
+         ],
+         "Error Message": [
+            "エラーメッセージ"
+         ],
+         "Job ID": [
+            "ジョブID"
+         ],
+         "ATE Job ID": [
+            "ATEジョブID"
+         ],
+         "Original ID": [
+            "元ID"
+         ],
+         "Element ID": [
+            "要素ID"
+         ],
+         "Copy to clipboard": [
+            "クリップボードにコピー"
+         ],
+         "Hide errors details": [
+            "エラー詳細を隠す"
+         ],
+         "Show errors details": [
+            "エラー詳細を表示"
+         ],
+         "<strong>%d item</strong> couldn't be completed due to an unexpected error. Try resending it for translation. If the issue continues, <a>contact WPML support</a>.": [
+            "予期しないエラーにより <strong>%d 件のアイテム</strong> を完了できませんでした。翻訳のために再送信してみてください。問題が解決しない場合は、<a>WPMLサポートに連絡</a>してください。"
+         ],
+         "Cancelling %1$d/%2$d...": [
+            "%1$d/%2$d をキャンセル中..."
+         ],
+         "Cancelling...": [
+            "キャンセル中..."
+         ],
+         "Discard jobs": [
+            "ジョブを破棄"
+         ],
+         "These items can't be resent because their source content is missing. Discard them instead.": [
+            "これらのアイテムはソースコンテンツが見つからないため、再送信できません。代わりに破棄してください。"
+         ],
+         "Resending %1$d/%2$d...": [
+            "%1$d/%2$d を再送信中..."
+         ],
+         "Resending...": [
+            "再送信中..."
+         ],
+         "Resend": [
+            "再送信"
+         ],
+         "Translation status details": [
+            "翻訳ステータスの詳細"
+         ],
+         "Translation status": [
+            "翻訳ステータス"
+         ],
+         "Before translating with PTC, please provide context about your website and target audience (one-time thing).": [
+            "PTCで翻訳する前に、ウェブサイトとターゲットオーディエンスに関するコンテキストを提供してください（一度のみ）。"
+         ],
+         "Provide Context": [
+            "コンテキストを提供"
+         ],
+         "Remaining time: <s>Less than 1 minute</s>": [
+            "残り時間： <s>1分未満</s>"
+         ],
+         "Remaining time: <s>%d minute</s>": [
+            "残り時間： <s>%d 分</s>"
+         ],
+         "Default language does not support automatic translations.": [
+            "デフォルト言語は自動翻訳をサポートしていません。"
+         ],
+         "WPML could not check if your default language can be translated automatically.": [
+            "WPML はデフォルト言語を自動翻訳できるかどうかを確認できませんでした。"
+         ],
+         "WPML could not check if your default language can be translated automatically. Reload the page to try again.": [
+            "WPML はデフォルト言語を自動翻訳できるかどうかを確認できませんでした。ページを再読み込みして再試行してください。"
+         ],
+         "Add your site description before you can turn this on.": [
+            "これを有効にする前に、サイトの説明を追加してください。"
+         ],
+         "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
+            "「すべてを自動翻訳する」を有効にするには、高度な翻訳エディタを有効化する必要があります。"
+         ],
+         "Add it now": [
+            "今すぐ追加する"
+         ],
+         "It's too expensive": [
+            "料金が高すぎるため"
+         ],
+         "The translation quality is not good enough": [
+            "翻訳の品質が十分ではないため"
+         ],
+         "I'm switching to a different translation provider": [
+            "別の翻訳プロバイダーに切り替えるため"
+         ],
+         "I'm experiencing technical issues": [
+            "技術的な問題が発生しているため"
+         ],
+         "I want to control what gets translated manually": [
+            "手動で翻訳するものを制御したいため"
+         ],
+         "Other reason": [
+            "その他の理由"
+         ],
+         "Why are you turning off <b>Translate Everything Automatically</b>?": [
+            "なぜ<b>すべてを自動翻訳する</b>をオフにするのですか？"
+         ],
+         "Your answer helps us improve WPML.": [
+            "お客様の回答はWPMLの改善に役立てられます。"
+         ],
+         "Turn off": [
+            "オフにする"
+         ],
+         "Available": [
+            "利用可能"
+         ],
+         "Not available": [
+            "利用不可"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "サイトのトピック、オーディエンス、トーンを理解する"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "当社の保証付きで、そのまま公開できる品質"
+         ],
+         "Review before publishing": [
+            "公開前にレビューする"
+         ],
+         "Pay once per page – only added words are charged": [
+            "1ページあたりの支払い – 追加された単語のみが課金対象"
+         ],
+         "Per word, changes included": [
+            "単語単位、変更を含む"
+         ],
+         "Your active engine": [
+            "現在のアクティブなエンジン"
+         ],
+         "WPML's own AI engine": [
+            "WPML 独自の AI エンジン"
+         ],
+         "Translate Everything Automatically": [
+            "すべてを自動翻訳する"
+         ],
+         "Turn on with %s": [
+            "%s で有効化"
+         ],
+         "Switching to PTC later applies to new and changed content. What %s translated stays as it is.": [
+            "後で PTC に切り替えた場合、新規および変更されたコンテンツに適用されます。%s が翻訳した内容はそのまま保持されます。"
+         ],
+         "Translate your whole site quickly and conveniently.": [
+            "サイト全体を迅速かつ便利に翻訳します。"
+         ],
+         "Translation updates cost only the added words.": [
+            "翻訳の更新コストは、追加された単語分のみです。"
+         ],
+         "Nothing is translated until you review the cost and confirm.": [
+            "コストを確認して承認するまで、何も翻訳されません。"
+         ],
+         "How to turn this on": [
+            "オンにする方法"
+         ],
+         "When you set this up": [
+            "セットアップすると"
+         ],
+         "Choose your engine: keep %s, priced per word, or switch to PTC to pay once per page.": [
+            "エンジンを選択してください：%s（単語単位）を使い続けるか、PTC（1ページあたりの支払い）に切り替えるか選択できます。"
+         ],
+         "Review what gets translated and see the cost.": [
+            "翻訳される内容を確認し、コストを表示します。"
+         ],
+         "WPML translates your site and keeps new content translated.": [
+            "WPMLがサイトを翻訳し、新しいコンテンツの翻訳状態を維持します。"
+         ],
+         "Choose how to publish — with or without your review.": [
+            "公開方法を選択します（レビューあり、またはなし）。"
+         ],
+         "Content that becomes translatable later, for example products after the WooCommerce Multilingual setup, is offered to you before it is translated.": [
+            "WooCommerce Multilingualセットアップ後の製品など、後から翻訳可能になるコンテンツは、翻訳前に提案されます。"
+         ],
+         "Switch to PTC instead": [
+            "代わりに PTC に切り替える"
+         ],
+         "You're translating with %s: priced per word, and changes to translated pages are charged again. With PTC you pay once per page and changes are free.": [
+            "現在は %s で翻訳しています：単語単位の料金で、翻訳済みページの変更には再度料金が発生します。PTC なら1ページあたりの支払いで、変更は無料です。"
+         ],
+         "at %s's per-word rate; changes to translated pages are charged again": [
+            "%s の単語単位の料金で計算。翻訳済みページの変更には再度料金が発生します"
+         ],
+         "Prepaid words assigned": [
+            "割り当て済みのプリペイド単語"
+         ],
+         "You’re all set.": [
+            "準備が整いました。"
+         ],
+         "Click <b>Translate Everything Automatically</b> to start translating.": [
+            "<b>すべてを自動翻訳する</b>をクリックして翻訳を開始します。"
+         ],
+         "Before translating everything": [
+            "すべてを翻訳する前に"
+         ],
+         "Go back": [
+            "戻る"
+         ],
+         "Continue anyway": [
+            "警告を無視して続行"
+         ],
+         "WPML could not check with our translation system if your default language can be translated automatically.": [
+            "WPML はデフォルト言語を自動翻訳できるかどうかを翻訳システムに確認できませんでした。"
+         ],
+         "Content to translate": [
+            "翻訳するコンテンツ"
+         ],
+         "Publishing method": [
+            "公開方法"
+         ],
+         "Payment method": [
+            "支払い方法"
+         ],
+         "Enable <b>Translate Everything Automatically</b>": [
+            "<b>すべてを自動翻訳する</b>を有効にする"
+         ],
+         "Continue": [
+            "続行"
+         ],
+         "Calculating words for translating existing content. Please wait...": [
+            "既存コンテンツの翻訳単語数を計算しています。お待ちください..."
+         ],
+         "Set Up <b>Translate Everything Automatically</b>": [
+            "<b>すべてを自動翻訳する</b>をセットアップ"
+         ],
+         "Review your site content and get the translation cost based on what you choose to translate.": [
+            "サイトのコンテンツを確認し、翻訳を選択した内容に基づいて翻訳コストを取得します。"
+         ],
+         "Select payment method": [
+            "支払い方法を選択"
+         ],
+         "Translate Everything Automatically - disabled": [
+            "すべてを自動翻訳する - 無効"
+         ],
+         "Translate Everything Automatically - stopping": [
+            "すべてを自動翻訳する - 停止中"
+         ],
+         "<b>Translate Everything Automatically</b> is stopping": [
+            "<b>すべてを自動翻訳する</b>を停止しています"
+         ],
+         "Translate Everything Automatically - paused": [
+            "すべてを自動翻訳する - 一時停止中"
+         ],
+         "Turn off <b>Translate Everything Automatically</b>?": [
+            "<b>すべてを自動翻訳する</b>をオフにしますか？"
+         ],
+         "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
+            "WPMLは新規および編集されたコンテンツの自動翻訳を停止します。すでに配信された翻訳はそのまま残ります。"
+         ],
+         "%d translation is still in progress. You will not be charged for it.": [
+            "%d 件の翻訳がまだ進行中です。これらに対して課金されることはありません。"
+         ],
+         "%d translation is currently in progress and will be cancelled.": [
+            "%d 件の翻訳が現在進行中で、キャンセルされます。"
+         ],
+         "You can adjust the content limits once Translate Everything finishes the current translation run.": [
+            "「すべてを翻訳する」が現在の翻訳実行を完了すると、コンテンツの制限を調整できます。"
+         ],
+         "Adjust content limits": [
+            "コンテンツ制限を調整"
+         ],
+         "Adjust how far back automatic translations apply per content type.": [
+            "コンテンツタイプごとに自動翻訳をどこまで遡って適用するかを調整します。"
+         ],
+         "Every content type is fully translated, so there is nothing left to set a date for. You can still choose which types automatic translation covers from now on.": [
+            "すべてのコンテンツタイプが完全に翻訳されているため、日付を設定するものは残っていません。今後どのタイプを自動翻訳の対象にするかは引き続き選択できます。"
+         ],
+         "Save changes": [
+            "変更を保存"
+         ],
+         "Translate Everything options": [
+            "「すべてを翻訳する」のオプション"
+         ],
+         "Turn off <b>Translate Everything</b>": [
+            "<b>すべてを翻訳する</b>をオフにする"
+         ],
+         "Words this cycle": [
+            "今サイクルの単語数"
+         ],
+         "%1$s prepaid words left, then billed as you go.": [
+            "残り %1$s プリペイド単語。その後は従量課金となります。"
+         ],
+         "Words left": [
+            "残りの単語数"
+         ],
+         "Preparing your translations — %d job queued so far...": [
+            "翻訳を準備中 — これまでに %d 件のジョブがキューに追加されました..."
+         ],
+         "Preparing content for translation...": [
+            "翻訳するコンテンツを準備中..."
+         ],
+         "%d translation left in the queue...": [
+            "キューに %d 件の翻訳が残っています..."
+         ],
+         "Finished — %1$d item couldn't be completed and %2$s are waiting for your approval": [
+            "完了 — %1$d 件のアイテムを完了できず、%2$s が承認待ちです"
+         ],
+         "Finished — %d item couldn't be completed": [
+            "完了 — %d 件のアイテムを完了できませんでした"
+         ],
+         "Finished translating your content, except %s waiting for your approval": [
+            "コンテンツの翻訳が完了しました（承認待ちの %s を除く）"
+         ],
+         "Finished translating your content": [
+            "コンテンツの翻訳が完了しました"
+         ],
+         "Engine": [
+            "エンジン"
+         ],
+         "Quality": [
+            "品質"
+         ],
+         "%1$d / 100 — %2$s": [
+            "%1$d / 100 — %2$s"
+         ],
+         "review before publishing recommended": [
+            "公開前のレビューを推奨"
+         ],
+         "good enough to publish without review": [
+            "レビューなしで公開できる品質"
+         ],
+         "usable, but mistakes are visible": [
+            "使用可能ですが、間違いが目立ちます"
+         ],
+         "Per word, changes included. ": [
+            "単語単位、変更を含む。 "
+         ],
+         " to make changes free.": [
+            " 変更を無料で行うことができます。"
+         ],
+         "Pay once per page — only added words are charged.": [
+            "ページごとに一度だけ支払い — 追加された単語のみが課金されます。"
+         ],
+         "Status": [
+            "ステータス"
+         ],
+         "Some items were translated using the <b>Classic Translation Editor</b> and cannot be sent for automatic translation. Please select these items and choose the option to translate them yourself.": [
+            "一部のアイテムは<b>クラシック翻訳エディタ</b>を使用して翻訳されており、自動翻訳に送信できません。これらのアイテムを選択し、自分で翻訳するオプションを選択してください。"
+         ],
+         "Translate Everything Automatically - enabled": [
+            "すべてを自動翻訳する - 有効"
+         ],
+         "<b>Translate Everything Automatically</b> is enabled": [
+            "<b>すべてを自動翻訳する</b>が有効です"
+         ],
+         "<b>Translate Everything Automatically</b> is temporarily paused": [
+            "<b>すべてを自動翻訳する</b>は一時的に停止されています"
+         ],
+         "Automatic translation is temporarily paused": [
+            "自動翻訳は一時的に停止されています"
+         ],
+         "We noticed something unexpected in your recent translation activity and paused automatic translation on your account. Contact support and we’ll review it with you.": [
+            "最近の翻訳アクティビティに予期しない動きがあったため、アカウントの自動翻訳を停止しました。サポートにお問い合わせください。内容を確認させていただきます。"
+         ],
+         "Contact support": [
+            "サポートに連絡"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — unpaid balance on a linked account": [
+            "<b>すべてを自動翻訳する</b>は一時停止中です — リンクされたアカウントに未払い残高があります"
+         ],
+         "Automatic translation is paused — unpaid balance on a linked account": [
+            "自動翻訳は一時停止中です — リンクされたアカウントに未払い残高があります"
+         ],
+         "There is an unpaid balance on another account linked to this billing e-mail. Settle it or <a>contact support</a>.": [
+            "この請求先メールアドレスにリンクされている別のアカウントに未払い残高があります。清算するか、<a>サポートにお問い合わせ</a>ください。"
+         ],
+         "There is an unpaid balance on another account linked to this card. Settle it or <a>contact support</a>.": [
+            "このカードにリンクされている別のアカウントに未払い残高があります。清算するか、<a>サポートにお問い合わせ</a>ください。"
+         ],
+         "Go to billing": [
+            "請求に移動"
+         ],
+         "Everything already translated stays live. You only pay for new translation.": [
+            "すでに翻訳されたものはすべてそのまま公開されます。新しい翻訳に対してのみ支払いが発生します。"
+         ],
+         "Cancel translation": [
+            "翻訳をキャンセル"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment pending": [
+            "<b>すべてを自動翻訳する</b>は一時停止中です — 支払い保留中"
+         ],
+         "Automatic translation is paused — payment pending": [
+            "自動翻訳は一時停止中です — 支払い保留中"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment required": [
+            "<b>すべてを自動翻訳する</b>が停止されました — 支払いが必要です"
+         ],
+         "Automatic translation - payment required": [
+            "自動翻訳 - 支払いが必要です"
+         ],
+         "<s>%d</s> translation is waiting for your Pay-As-You-Go payment.": [
+            "<s>%d</s> 件の翻訳が従量課金制の支払いを待機しています。"
+         ],
+         "We are charging your card. If the payment is declined, update your card.": [
+            "カードに請求を行っています。決済が拒否された場合は、カードを更新してください。"
+         ],
+         "Translation resumes automatically once the payment goes through.": [
+            "支払いが完了すると、翻訳は自動的に再開されます。"
+         ],
+         "<s>%d</s> translation is waiting for payment.": [
+            "<s>%d</s> 件の翻訳が支払いを待っています。"
+         ],
+         "We could not process your <b>Pay-As-You-Go</b> payment of %s.": [
+            "%s の<b>従量課金制</b>の支払いを処理できませんでした。"
+         ],
+         "We could not process the %s payment for your completed translations. Click \"Pay now\" to retry and continue using automatic translation.": [
+            "完了した翻訳に対する %s の支払いを処理できませんでした。「今すぐ支払う」をクリックして再試行し、自動翻訳の使用を継続してください。"
+         ],
+         "Update card": [
+            "カードを更新"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — payment needed": [
+            "<b>すべてを自動翻訳する</b>は一時停止中です — 支払いが必要"
+         ],
+         "Automatic translation is paused — payment needed": [
+            "自動翻訳は一時停止中です — 支払いが必要"
+         ],
+         "<s>%d</s> translation is on hold until you choose how to pay for it.": [
+            "<s>%d</s> 件の翻訳は、支払い方法を選択するまで保留されます。"
+         ],
+         "Choose a payment method": [
+            "支払い方法を選択"
+         ],
+         "<b>Translate Everything Automatically</b> is paused — not enough words": [
+            "<b>すべてを自動翻訳する</b>が停止されました — 単語が不足しています"
+         ],
+         "Automatic translation is paused — not enough words": [
+            "自動翻訳が停止されました — 単語が不足しています"
+         ],
+         "<s>%d</s> translation is waiting for more words.": [
+            "<s>%d</s> 件の翻訳が追加の単語を待っています。"
+         ],
+         "You have %1$s%2$s prepaid translation word in your WPML account%3$s. Assign these words to this site to resume automatic translation.": [
+            "WPML アカウントに %1$s%2$s プリペイド翻訳単語%3$s があります。自動翻訳を再開するには、これらの単語をこのサイトに割り当ててください。"
+         ],
+         "Your prepaid translation words have run out. Already assigned words on your account? Refresh checks.": [
+            "プリペイド翻訳単語がなくなりました。アカウントに割り当て済みの単語はありますか？更新して確認してください。"
+         ],
+         "Translation resumes automatically — the remaining %d translation completes on its own.": [
+            "翻訳は自動的に再開されます。残りの %d 件の翻訳は自動的に完了します。"
+         ],
+         "Translation resumes automatically once more words are assigned.": [
+            "さらに単語が割り当てられると、翻訳は自動的に再開されます。"
+         ],
+         "Checking your word balance…": [
+            "単語の残高を確認中…"
+         ],
+         "%s word added": [
+            "%s 単語が追加されました"
+         ],
+         "resuming %s translation": [
+            "%s 件の翻訳を再開中"
+         ],
+         "No new words found yet — translation stays paused until more words are assigned to this site.": [
+            "新しい単語はまだ見つかりません。このサイトにさらに単語が割り当てられるまで、翻訳は停止されたままになります。"
+         ],
+         "<s>%d</s> translation is waiting for your review.": [
+            "<s>%d</s> 件の翻訳がレビューを待っています。"
+         ],
+         "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
+            "<b>すべてを自動翻訳する</b>が停止されました：月間利用限度額に達しました"
+         ],
+         "<s>%d</s> translation is waiting for the cap to be raised.": [
+            "<s>%d</s> 件の翻訳が限度額の引き上げを待っています。"
+         ],
+         "<site>%1$s</site> reached its <strong>monthly spending cap</strong> (<figure>%2$s</figure> of <figure>%3$s</figure> words used).": [
+            "<site>%1$s</site> が <strong>月間利用限度額</strong> に達しました（<figure>%3$s</figure> 単語中 <figure>%2$s</figure> 単語を使用）。"
+         ],
+         "Translation continues when the cap is raised, or when the cap resets on <strong>%s</strong>.": [
+            "限度額が引き上げられるか、<strong>%s</strong> に限度額がリセットされると翻訳が継続されます。"
+         ],
+         "WPML is reconnecting to our translation system. <b>Translate Everything</b> continues on its own once it reconnects. Nothing is lost.": [
+            "WPML は翻訳システムに再接続しています。再接続されると、<b>すべてを翻訳する</b>は自動的に再開されます。データは失われません。"
+         ],
+         "You don't need to do anything. WPML keeps trying in the background.": [
+            "何もする必要はありません。WPML がバックグラウンドで試行を続けます。"
+         ],
+         "Retry": [
+            "再試行"
+         ],
+         "Retry now": [
+            "今すぐ再試行"
+         ],
+         "WPML is reconnecting to our translation system.": [
+            "WPML は翻訳システムへの再接続を試みています。"
+         ],
+         "WPML is reconnecting to our translation system. You can turn on <b>Translate Everything</b> once it reconnects.": [
+            "WPML は翻訳システムへの再接続を試みています。再接続されたら<b>すべてを翻訳する</b>をオンにできます。"
+         ],
+         "This item needs a translation update but can't be translated automatically because it was translated with the Classic Translation Editor.": [
+            "このアイテムは翻訳の更新が必要ですが、クラシック翻訳エディタで翻訳されたため、自動翻訳できません。"
+         ],
+         "This item needs update. Please, select the item and send for translation.": [
+            "このアイテムは更新が必要です。アイテムを選択して翻訳に送信してください。"
+         ],
+         "Translations completed with the Classic Translation Editor cannot be sent for automatic translation": [
+            "クラシック翻訳エディタで完了した翻訳は自動翻訳に送信できません"
+         ],
+         "automatic translation": [
+            "自動翻訳"
+         ],
+         "unassigned": [
+            "未割り当て"
+         ],
+         "waiting for automatic translation": [
+            "自動翻訳待ち"
+         ],
+         "waiting for translator": [
+            "翻訳者待ち"
+         ],
+         "in progress": [
+            "進行中"
+         ],
+         "needs update": [
+            "更新が必要"
+         ],
+         "duplicate": [
+            "複製"
+         ],
+         "complete": [
+            "完了"
+         ],
+         "needs review": [
+            "レビュー待ち"
+         ],
+         "translation failed - needs attention": [
+            "翻訳失敗 - 要注意"
+         ],
+         "needs attention": [
+            "要注意"
+         ],
+         "translation error": [
+            "翻訳エラー"
+         ],
+         "The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "%s の翻訳は、WPML 翻訳エディタ以外（WordPress エディタなど）で作成または最後に編集されました。再翻訳すると、翻訳済み投稿の構造は元のコンテンツに合わせて更新されますが、WPML は既存の翻訳をベースとして使用するため、トーンや用語は維持されます。"
+         ],
+         "This item needs a translation update. The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "このアイテムは翻訳の更新が必要です。%s の翻訳は、WPML 翻訳エディタ以外（WordPress エディタなど）で作成または最後に編集されました。再翻訳すると、翻訳済み投稿の構造は元のコンテンツに合わせて更新されますが、WPML は既存の翻訳をベースとして使用するため、トーンや用語は維持されます。"
+         ],
+         "This item hasn't been translated yet and is set to use the WordPress Editor.": [
+            "このアイテムはまだ翻訳されておらず、WordPress エディタを使用するように設定されています。"
+         ],
+         "This item was translated using the WordPress Editor. Switching to the WPML's Translation Editor will overwrite the existing translation.": [
+            "このアイテムは WordPress エディタを使用して翻訳されました。WPML 翻訳エディタに切り替えると、既存の翻訳が上書きされます。"
+         ],
+         "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
+            "このアイテムは翻訳の更新が必要ですが、以前に WordPress エディタを使用して翻訳されました。WPML 翻訳エディタを使用すると、既存の翻訳が上書きされます。"
+         ],
+         "%1$s: %2$s%3$s": [
+            "%1$s： %2$s%3$s"
+         ],
+         "Could not fetch engines data": [
+            "エンジンデータを取得できませんでした"
+         ],
+         "Error in updating since dates for types.": [
+            "タイプ別の「以降の日付」の更新中にエラーが発生しました。"
+         ],
+         "Error in dismissing the offer to translate the new content types.": [
+            "新しいコンテンツタイプの翻訳の提案を非表示にする際にエラーが発生しました。"
+         ],
+         "Error in updating since date for type.": [
+            "タイプ別の「以降の日付」の更新中にエラーが発生しました。"
+         ],
+         "Content to Translate": [
+            "翻訳するコンテンツ"
+         ],
+         "Content type": [
+            "コンテンツタイプ"
+         ],
+         "Include": [
+            "含める"
+         ],
+         "These settings can be changed on the Translations dashboard.": [
+            "これらの設定は翻訳ダッシュボードで変更できます。"
+         ],
+         "Items": [
+            "アイテム"
+         ],
+         "Word count": [
+            "単語数"
+         ],
+         "Loading content to translate": [
+            "翻訳するコンテンツを読み込み中"
+         ],
+         "Calculating… <s>less than 1 minute left.</s>": [
+            "計算中… <s>残り1分未満です。</s>"
+         ],
+         "Calculating… <s>%d minute left.</s>": [
+            "計算中… <s>残り %d 分です。</s>"
+         ],
+         "Words needed to translate your existing content into the new languages: %s.": [
+            "既存のコンテンツを新しい言語（%s）に翻訳するために必要な単語数。"
+         ],
+         "Words needed to translate your existing content into the new language.": [
+            "既存のコンテンツを新しい言語に翻訳するために必要な単語数。"
+         ],
+         "Based on the remaining untranslated content across all languages.": [
+            "すべての言語における未翻訳の残りのコンテンツに基づいています。"
+         ],
+         "Estimated from the selected source volume multiplied by the target languages.": [
+            "選択されたソースのボリュームにターゲット言語の数を掛けて推定されます。"
+         ],
+         "%1$s source words × %2$s language": [
+            "%1$s ソース単語 × %2$s 言語"
+         ],
+         "Already translated content": [
+            "すでに翻訳済みのコンテンツ"
+         ],
+         "Documents you translated yourself stay exactly as you made them": [
+            "自分で翻訳したドキュメントは、作成した通りの状態が維持されます"
+         ],
+         "(%d document)": [
+            "（%d ドキュメント）"
+         ],
+         "View documents": [
+            "ドキュメントを表示"
+         ],
+         "%1$d of %2$d language will be translated automatically": [
+            "%2$d 言語中 %1$d 言語が自動的に翻訳されます"
+         ],
+         "Translated to %d language": [
+            "%d 言語に翻訳済み"
+         ],
+         "Add/remove languages": [
+            "言語を追加/削除"
+         ],
+         "Percentages show how much of your selected content is already translated in each language.": [
+            "パーセンテージは、選択したコンテンツのうち、各言語ですでに翻訳されている割合を示します。"
+         ],
+         "Note: Content already translated into all languages is not included in this calculation.": [
+            "注意：すべての言語に翻訳済みのコンテンツはこの計算に含まれません。"
+         ],
+         "Same as default": [
+            "デフォルトと同じ"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "%1$s と %2$s は同じ言語として認識されているため、これらの間での自動翻訳は利用できません。"
+         ],
+         "Translation paused": [
+            "翻訳の一時停止中"
+         ],
+         "WPML is not creating new %s translations, so this language is not included. To include it, use “Resume translating” on the language’s row in the Languages editor.": [
+            "WPML は新しい %s の翻訳を作成していないため、この言語は含まれていません。これを含めるには、言語エディタのその言語の行で「翻訳を再開」を使用してください。"
+         ],
+         "Manual only": [
+            "手動のみ"
+         ],
+         "%s has no automatic-translation support. You can translate this content manually.": [
+            "%s は自動翻訳をサポートしていません。このコンテンツは手動で翻訳できます。"
+         ],
+         "Adjusted word rate (%s)": [
+            "調整済み単語レート (%s)"
+         ],
+         "This adjusted word rate applies to legacy translation engines.": [
+            "この調整済み単語レートは、レガシー翻訳エンジンに適用されます。"
+         ],
+         "Translation engine: <strong>%s</strong>": [
+            "翻訳エンジン： <strong>%s</strong>"
+         ],
+         "Legacy engine": [
+            "レガシーエンジン"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "レガシー料金が適用されました。%s はレガシー翻訳エンジンであり、新しいサイトには推奨されず、今後廃止される予定です。既存のサイトでは、調整済みの単語レートが維持されます。"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
+            "これは、現在のコンテンツを翻訳するために本日必要な単語数です。フォームやスライダーなど、他のプラグインによって追加された一部のテキストは含まれておらず、セットアップ完了後にカウントされます。テーマやプラグインのサイト文字列もセットアップ後にカウントされ、通常は数百単語が追加されます。その後、編集は無料です。新しく追加した単語についてのみ再度お支払いが発生します。"
+         ],
+         "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
+            "これは、現在のコンテンツを翻訳するために今日必要な分です。セットアップ完了後にカウントされる、フォームやスライダーなど他のプラグインによって追加された一部のテキストは含まれていません。テーマやプラグインからのサイト文字列もセットアップ後にカウントされ、通常は数百単語追加されます。%s の単語単位の料金で計算され、翻訳済みページの変更には再度料金が発生します。"
+         ],
+         "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
+            "これは、現在のコンテンツを翻訳するために本日必要な単語数です。その後、編集は無料です。新しく追加した単語についてのみ再度お支払いが発生します。"
+         ],
+         "This is what translating your current content needs today. At %s's per-word rate; changes to translated pages are charged again.": [
+            "これは、現在のコンテンツを翻訳するために今日必要な分です。%s の単語単位の料金で計算され、翻訳済みページの変更には再度料金が発生します。"
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
+            "固定ページ、投稿、商品（カスタムフィールド、ページビルダーのテキスト、メディアのテキストを含む）、およびそれらが使用するカテゴリー、タグ、属性をカウントします。"
+         ],
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
+            "固定ページ、投稿、商品（カスタムフィールド、ページビルダーのテキスト、メディアのテキストを含む）、それらが使用するカテゴリー、タグ、属性、およびサイトの文字列をカウントします。タームは、両方の方法で翻訳に送信されるため、それを使用する各アイテムでカウントされるほか、単独でも1回カウントされます。"
+         ],
+         "Total items": [
+            "合計アイテム数"
+         ],
+         "Total source words": [
+            "合計ソース単語数"
+         ],
+         "Showing %1$d–%2$d of %3$d types.": [
+            "%3$d 種類のうち %1$d–%2$d 種類を表示中。"
+         ],
+         "All current %1$s are translated to all languages.<br>New %2$s or edits will be automatically translated.": [
+            "現在のすべての %1$s はすべての言語に翻訳されています。<br>新しい %2$s や編集内容は自動的に翻訳されます。"
+         ],
+         "All %s": [
+            "すべての %s"
+         ],
+         "For translated types": [
+            "翻訳済みタイプに従う"
+         ],
+         "None": [
+            "なし"
+         ],
+         "Since %s": [
+            "%s 以降"
+         ],
+         "Since specific date": [
+            "特定の日付以降"
+         ],
+         "<b>Pay-As-You-Go</b> is active on this site.": [
+            "このサイトでは <b>従量課金制</b> が有効です。"
+         ],
+         "<b>%s words</b> are on this site. Continue.": [
+            "このサイトには <b>%s 単語</b> あります。続行してください。"
+         ],
+         "Your site will be translated right after the setup.": [
+            "セットアップ後すぐにサイトが翻訳されます。"
+         ],
+         "To use prepaid words, register WPML on this site.": [
+            "プリペイド単語を使用するには、このサイトで WPML を登録してください。"
+         ],
+         "We could not reach our translation system.": [
+            "翻訳システムに接続できませんでした。"
+         ],
+         "This site is not registered with a WPML account, so prepaid words are not available.": [
+            "このサイトは WPML アカウントに登録されていないため、プリペイド単語は利用できません。"
+         ],
+         "We could not read your WPML account.": [
+            "WPML アカウントを読み取ることができませんでした。"
+         ],
+         "%s more words are needed to translate your site.": [
+            "サイトを翻訳するには、あと %s 単語必要です。"
+         ],
+         "Assign prepaid words from your WPML account to this site to start <b>Translate Everything Automatically</b>.": [
+            "<b>すべてを自動翻訳する</b>を開始するには、WPML アカウントからこのサイトにプリペイド単語を割り当ててください。"
+         ],
+         "Assign the words you already have and buy the rest, or activate <b>Pay-As-You-Go</b>.": [
+            "すでにお持ちの単語を割り当てて残りを購入するか、<b>従量課金制</b>を有効にしてください。"
+         ],
+         "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
+            "<b>すべてを自動翻訳する</b>を開始するには、<b>従量課金制</b>を有効にするか、プリペイド単語を購入してください。"
+         ],
+         "Error in fetching currently logged in translator": [
+            "現在ログインしている翻訳者の取得中にエラーが発生しました"
+         ],
+         "Error in fetching local translators": [
+            "ローカル翻訳者の取得中にエラーが発生しました"
+         ],
+         "usage ledger": [
+            "利用台帳"
+         ],
+         "Cancelled. %1$d translation was in progress; its %2$s words are back on your account. Details:": [
+            "キャンセルされました。%1$d 件の翻訳が進行中でした。その %2$s 単語がアカウントに戻りました。詳細："
+         ],
+         "Cancelled. We asked to return the words for %d translation in progress; the usage ledger shows it once confirmed.": [
+            "キャンセルされました。進行中の %d 件の翻訳について単語の返却をリクエストしました。確認されると利用台帳に表示されます。"
+         ],
+         "Published": [
+            "公開済み"
+         ],
+         "Draft": [
+            "下書き"
+         ],
+         "Trash": [
+            "ゴミ箱"
+         ],
+         "Pending": [
+            "保留中"
+         ],
+         "Private": [
+            "非公開"
+         ],
+         "Future": [
+            "予約済み"
+         ],
+         "Auto Draft": [
+            "自動下書き"
+         ],
+         "External": [
+            "外部"
+         ],
+         "Pay now": [
+            "今すぐ支払う"
+         ],
+         "%1$sCheck pricing%2$s.": [
+            "%1$s料金を確認%2$s。"
+         ],
+         "Lowest cost per word": [
+            "1単語あたりの最低コスト"
+         ],
+         "Pay only for what you use": [
+            "使った分だけお支払い"
+         ],
+         "Never run out. Translation never stops.": [
+            "不足することはありません。翻訳が止まることはありません。"
+         ],
+         "The first 500 words each month are free": [
+            "毎月最初の500単語は無料"
+         ],
+         "Pay-As-You-Go": [
+            "従量課金制"
+         ],
+         "Activate <b>Pay-As-You-Go</b> to translate automatically. <b>Pay-As-You-Go</b> charges you for the words you translate.": [
+            "自動翻訳を行うには <b>従量課金制</b> を有効にしてください。<b>従量課金制</b> では、翻訳した単語数に応じて課金されます。"
+         ],
+         "Activating <b>Pay-As-You-Go</b>…": [
+            "<b>従量課金制</b> を有効化中…"
+         ],
+         "Continue in the new tab": [
+            "新しいタブで続行する"
+         ],
+         "Activate <b>Pay-As-You-Go</b>": [
+            "<b>従量課金制</b>を有効にする"
+         ],
+         "<b>Pay-As-You-Go</b> is not active yet.": [
+            "<b>従量課金制</b> はまだ有効ではありません。"
+         ],
+         "Already using <b>Pay-As-You-Go</b> on another site?": [
+            "すでに別のサイトで<b>従量課金制</b>を使用していますか？"
+         ],
+         "Connect this site to it": [
+            "このサイトを接続する"
+         ],
+         "Activate Pay-As-You-Go": [
+            "従量課金制を有効にする"
+         ],
+         "Connect your sites to share translation memory, glossary and word quota.": [
+            "サイトを接続して、翻訳メモリ、用語集、単語枠を共有します。"
+         ],
+         "Learn more": [
+            "詳細はこちら"
+         ],
+         "Copy your migration code:": [
+            "移行コードをコピー："
+         ],
+         "Loading…": [
+            "読み込み中…"
+         ],
+         "Log into a site with an active automatic translation account.": [
+            "有効な自動翻訳アカウントを持つサイトにログインします。"
+         ],
+         "Go to \"WPML\" → \"Translation Dashboard\".": [
+            "「WPML」→「翻訳ダッシュボード」に移動します。"
+         ],
+         "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
+            "「支払いとメンテナンス」タブで「接続済みサイト」に移動します。"
+         ],
+         "Click \"Enter the connection key of another site\" to finish connecting your sites.": [
+            "「別のサイトの接続キーを入力」をクリックして、サイトの接続を完了します。"
+         ],
+         "Buy and assign words": [
+            "単語を購入して割り当てる"
+         ],
+         "Refresh to assign words": [
+            "更新して単語を割り当てる"
+         ],
+         "Buy a %1$sprepaid package%2$s with at least %3$s%4$s words%5$s and assign them to this site.": [
+            "少なくとも %3$s%4$s 単語%5$s を含む %1$sプリペイドパッケージ%2$s を購入し、このサイトに割り当ててください。"
+         ],
+         "This amount will cover translation of all your current content.": [
+            "この量は、現在のすべてのコンテンツの翻訳をカバーします。"
+         ],
+         "Assign %1$s%2$s words%3$s to this site.": [
+            "このサイトに %1$s%2$s 単語%3$s を割り当てる。"
+         ],
+         "Assign your %1$s%2$s words%3$s and buy %4$s%5$s more%6$s.": [
+            "お持ちの %1$s%2$s 単語%3$s を割り当て、さらに %4$s%5$s 単語%6$s 購入する。"
+         ],
+         "Buy %1$s%2$s words%3$s for this site.": [
+            "このサイトのために %1$s%2$s 単語%3$s を購入する。"
+         ],
+         "Assign at least %1$s%2$s words%3$s to this site to continue.": [
+            "続行するには、少なくとも %1$s%2$s 単語%3$s をこのサイトに割り当ててください。"
+         ],
+         "Assign words from your WPML account and buy an additional %1$sprepaid package%2$s with at least %3$s%4$s words%5$s to cover the remaining amount.": [
+            "WPML アカウントから単語を割り当て、残りの量をカバーするために、少なくとも %3$s%4$s 単語%5$s を含む追加の %1$sプリペイドパッケージ%2$s を購入してください。"
+         ],
+         "Prepaid words": [
+            "プリペイド単語"
+         ],
+         "There are %1$s%2$s words%3$s on your WPML account.": [
+            "WPML アカウントに %1$s%2$s 単語%3$s あります。"
+         ],
+         "There are %1$s%2$s available on your WPML account.%3$s": [
+            "WPML アカウントに %1$s%2$s 単語%3$s の空きがあります。"
+         ],
+         "(Only the WPML account owner can do this.)": [
+            "（これを行えるのは WPML アカウントの所有者のみです。）"
+         ],
+         "Checking for new words...": [
+            "新しい単語を確認中..."
+         ],
+         "Still not enough words. Refresh again in %d seconds.": [
+            "まだ単語が不足しています。%d 秒後に再度更新してください。"
+         ],
+         "Already assigned?": [
+            "すでに割り当て済みですか？"
+         ],
+         "Collapse": [
+            "折りたたむ"
+         ],
+         "Obvious mistakes": [
+            "明らかな間違い"
+         ],
+         "Ready to publish": [
+            "公開準備完了"
+         ],
+         "Your engine": [
+            "現在のエンジン"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "翻訳品質（50-100スケール）： %1$s のスコアは %2$d、%3$s のスコアは %4$d です。"
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "スコアは WPML 内部の MQM 翻訳品質調査に基づいています。"
+         ],
+         "Select an item": [
+            "アイテムを選択"
+         ],
+         "Open dropdown": [
+            "ドロップダウンを開く"
+         ],
+         "Reset": [
+            "リセット"
+         ],
+         "Search": [
+            "検索"
+         ],
+         "No items found": [
+            "アイテムが見つかりません"
+         ],
+         "%1$s Flag": [
+            "%1$s の国旗"
+         ],
+         "Recommended": [
+            "推奨"
+         ],
+         "- Select a review mode -": [
+            "- レビューモードを選択 -"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "WPML がコンテンツの自動翻訳を完了したとき、どうしますか？"
+         ],
+         "What would you like to do after WPML finishes translating your content automatically?": [
+            "WPML がコンテンツの自動翻訳を完了した後、どうしますか？"
+         ],
+         "Publish without review": [
+            "レビューなしで公開"
+         ],
+         "WPML publishes translations immediately, skipping the review process.": [
+            "WPML はレビュープロセスをスキップして、すぐに翻訳を公開します。"
+         ],
+         "Wait for review": [
+            "レビューを待つ"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "DeepL、Google、Microsoft の場合は、内容が正しいことを確認するために人間によるレビューをお勧めします。PTC は文脈を理解した、人間による翻訳を超える品質の翻訳を提供するため、安心してレビュープロセスをスキップできます。"
+         ],
+         "WPML keeps translations unpublished, so you can review them first.": [
+            "WPML は翻訳を未公開のままにするため、最初にレビューを行うことができます。"
+         ],
+         "Your translators review and approve translations before publishing.": [
+            "公開前に翻訳者が翻訳をレビューし、承認します。"
+         ],
+         "Publish and mark for review": [
+            "公開してレビュー用にマーク"
+         ],
+         "WPML publishes translations immediately but flags them for you to check at your convenience.": [
+            "WPML は翻訳をすぐに公開しますが、都合の良いときに確認できるようにフラグを立てます。"
+         ],
+         "WPML publishes translations immediately but flags them for translators to review later.": [
+            "WPML は翻訳をすぐに公開しますが、後で翻訳者がレビューできるようにフラグを立てます。"
+         ],
+         "PTC provides Better Than Human Translations that rarely need improvements, so you can confidently skip the review process.": [
+            "PTC は人間による翻訳よりも優れた翻訳を提供し、改善が必要になることはほとんどないため、安心してレビュープロセスをスキップできます。"
+         ]
+      }
+   }
+}

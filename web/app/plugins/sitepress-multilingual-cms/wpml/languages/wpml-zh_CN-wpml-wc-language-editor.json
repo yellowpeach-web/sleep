@@ -1,0 +1,1527 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "zh_CN"
+         },
+         "You have unsaved language changes from a previous session.": [
+            "您有来自上一个会话的未保存语言更改。"
+         ],
+         "Restore changes": [
+            "恢复更改"
+         ],
+         "Discard": [
+            "放弃"
+         ],
+         "Unsaved language changes from a previous session could not be restored, because the site’s languages changed after they were made. Those changes were discarded.": [
+            "无法恢复上一个会话中未保存的语言更改，因为在更改后站点的语言发生了变化。这些更改已被放弃。"
+         ],
+         "Dismiss": [
+            "忽略"
+         ],
+         "Impact on existing content": [
+            "对现有内容的影响"
+         ],
+         "Checking which content will be affected…": [
+            "正在检查哪些内容将受到影响……"
+         ],
+         "We couldn’t estimate the impact. You can still apply the change; content will be updated during the save.": [
+            "我们无法估算影响。您仍然可以应用更改；内容将在保存期间更新。"
+         ],
+         "Try again": [
+            "重试"
+         ],
+         "No existing content needs updating.": [
+            "没有现有内容需要更新。"
+         ],
+         "%d post will be updated.": [
+            "%d 篇文章将被更新。"
+         ],
+         "%d link will be adjusted.": [
+            "%d 个链接将被调整。"
+         ],
+         "%d translated string will be re-keyed.": [
+            "%d 个已翻译字符串将被重新键入。"
+         ],
+         "Finish the change to %s": [
+            "完成对 %s 的更改"
+         ],
+         "What changes automatically": [
+            "自动更改的内容"
+         ],
+         "The language’s country becomes %s.": [
+            "该语言的国家/地区变为 %s。"
+         ],
+         "Automatic translation will be re-mapped to the new regional variant. Existing translations stay as they are.": [
+            "自动翻译将重新映射到新的区域变体。现有翻译保持不变。"
+         ],
+         "Automatic translation will now target the new regional variant. Existing translations stay as they are.": [
+            "自动翻译现在将针对新的区域变体。现有翻译保持不变。"
+         ],
+         "The hreflang tag becomes %s.": [
+            "hreflang 标签变为 %s。"
+         ],
+         "Also update these?": [
+            "也要更新这些吗？"
+         ],
+         "Riskier change": [
+            "风险较高的更改"
+         ],
+         "Cancel": [
+            "取消"
+         ],
+         "Apply": [
+            "应用"
+         ],
+         "Anything whose translation group already has a version in %s stays where it is.": [
+            "翻译组中已包含 %s 版本的任何内容都将保留在原处。"
+         ],
+         "You have %1$d %2$s page from a language you removed. Bring it here?": [
+            "您有来自已移除语言的 %1$d 个 %2$s 页面。要将它们带到这里吗？"
+         ],
+         "I understand these items are not %1$s and will be re-labelled as %2$s.": [
+            "我明白这些项目不是 %1$s，并将被重新标记为 %2$s。"
+         ],
+         "Re-labels them as %s, keeping their connections to your other languages.": [
+            "将它们重新标记为 %s，并保持它们与其他语言的连接。"
+         ],
+         "Content from a language you removed": [
+            "来自您已删除语言的内容"
+         ],
+         "Choose what to bring here": [
+            "选择要带到此处的内容"
+         ],
+         "Apply changes": [
+            "应用更改"
+         ],
+         "These changes are applied when you click Save.": [
+            "点击“保存”时将应用这些更改。"
+         ],
+         "Change the WordPress locale %1$s → %2$s": [
+            "更改 WordPress 区域设置 %1$s → %2$s"
+         ],
+         "WordPress uses this to load admin language packs and plugin / theme translations.": [
+            "WordPress 使用此设置来加载管理后台语言包以及插件/主题翻译。"
+         ],
+         "Already used by %s.": [
+            "已被 %s 使用。"
+         ],
+         "Change the language code in URLs %1$s → %2$s": [
+            "更改 URL 中的语言代码 %1$s → %2$s"
+         ],
+         "Renames the language code. Existing %s URLs in search engines, bookmarks and external links become 404s unless redirects are set up.": [
+            "重命名语言代码。除非设置了重定向，否则搜索引擎、书签和外部链接中现有的 %s URL 将变为 404 错误。"
+         ],
+         "Use the flag of %s": [
+            "使用 %s 的旗帜"
+         ],
+         "You picked the current flag yourself, so WPML keeps it unless you ask.": [
+            "您亲自挑选了当前的旗帜，因此除非您要求，否则 WPML 将保留它。"
+         ],
+         "The flag shown in language switchers and in the admin.": [
+            "在语言切换器和管理后台中显示的旗帜。"
+         ],
+         "Rename the language %1$s → %2$s": [
+            "重命名语言 %1$s → %2$s"
+         ],
+         "Updates the name in every language of the admin. Labels you edited yourself are kept.": [
+            "更新管理后台每种语言中的名称。您亲自编辑的标签将被保留。"
+         ],
+         "Change the hreflang tag %1$s → %2$s": [
+            "更改 hreflang 标签 %1$s → %2$s"
+         ],
+         "You customised this tag, so WPML keeps it unless you ask. Search engines read it to serve the right regional version.": [
+            "您自定义了此标签，因此除非您要求，否则 WPML 将保留它。搜索引擎通过读取它来提供正确的区域版本。"
+         ],
+         "What should happen to %s?": [
+            "%s 应该如何处理？"
+         ],
+         "Pick the outcome you want. Nothing happens until you confirm below.": [
+            "选择您想要的结果。在您于下方确认之前，不会发生任何操作。"
+         ],
+         "Checking for translated content…": [
+            "正在检查翻译内容……"
+         ],
+         "What should happen to this language": [
+            "应该如何处理此语言"
+         ],
+         "Which content types": [
+            "哪些内容类型"
+         ],
+         "%1$s — %2$d item": [
+            "%1$s — %2$d 个项目"
+         ],
+         "Pages and posts": [
+            "页面和文章"
+         ],
+         "Products": [
+            "产品"
+         ],
+         "Categories and tags": [
+            "分类和标签"
+         ],
+         "Images": [
+            "图像"
+         ],
+         "Menus": [
+            "菜单"
+         ],
+         "Delete them permanently now — this cannot be undone": [
+            "现在永久删除它们 —— 此操作无法撤销"
+         ],
+         "Categories, tags and menus have no WordPress Trash, so those are deleted right away either way.": [
+            "分类、标签和菜单没有 WordPress 回收站，因此无论哪种方式都会立即删除。"
+         ],
+         "Your site’s setting “when deleting a post, delete its translations too” is on. We will not apply it here, so nothing in %s is deleted.": [
+            "您的站点设置“删除文章时，同时也删除其翻译”已开启。我们在此处不会应用它，因此 %s 中的任何内容都不会被删除。"
+         ],
+         ", ": [
+            ", "
+         ],
+         "your other languages": [
+            "您的其他语言"
+         ],
+         "%s’s string translations are deleted with it.": [
+            "%s 的字符串翻译将随之删除。"
+         ],
+         "Its queued translation jobs are cancelled without charge; any already in progress are stopped, and the words already sent are still charged.": [
+            "其队列中的翻译作业将被免费取消；任何已在进行中的作业都将停止，而已发送的字数仍将计费。"
+         ],
+         "Move this content into": [
+            "将此内容移至"
+         ],
+         "Choose a language…": [
+            "选择一种语言……"
+         ],
+         "Same language": [
+            "相同语言"
+         ],
+         "A different language": [
+            "不同语言"
+         ],
+         "I understand these items are not %s and will be re-labelled as the language I pick.": [
+            "我明白这些项目不是 %s，并将被重新标记为我选择的语言。"
+         ],
+         "%s is taken off the site when you save, and its content is moved straight after — nothing is deleted either way.": [
+            "保存时 %s 将从站点中移除，其内容随后会立即移动 —— 无论哪种方式都不会删除任何内容。"
+         ],
+         "WPML could not stop translating into %s. Nothing was changed — try again, or pick another goal.": [
+            "WPML 无法停止翻译为 %s。未进行任何更改 —— 请重试，或选择另一个目标。"
+         ],
+         "Review %d item": [
+            "审核 %d 个项目"
+         ],
+         "Stop translating into %s": [
+            "停止翻译为 %s"
+         ],
+         "Move %1$d item into %2$s": [
+            "将 %1$d 个项目移至 %2$s"
+         ],
+         "Move %d item": [
+            "移动 %d 个项目"
+         ],
+         "Move %d item to the Trash": [
+            "将 %d 个项目移至回收站"
+         ],
+         "Delete %d item permanently": [
+            "永久删除 %d 个项目"
+         ],
+         "Remove language — nothing is deleted": [
+            "移除语言 —— 不删除任何内容"
+         ],
+         "What would be removed": [
+            "将被移除的内容"
+         ],
+         "Hide the list": [
+            "隐藏列表"
+         ],
+         "Reading the list…": [
+            "正在读取列表……"
+         ],
+         "We couldn’t read the list of items. The counts above still stand, and you can go ahead or close this dialog.": [
+            "我们无法读取项目列表。上方的计数仍然有效，您可以继续操作或关闭此对话框。"
+         ],
+         "%1$s — %2$s (#%3$d)": [
+            "%1$s — %2$s (#%3$d)"
+         ],
+         "Nothing is selected right now.": [
+            "当前未选择任何内容。"
+         ],
+         "Showing %1$d–%2$d of %3$d item": [
+            "正在显示 %1$d–%2$d 个项目，共 %3$d 个"
+         ],
+         "Previous": [
+            "上一页"
+         ],
+         "Next": [
+            "下一步"
+         ],
+         "%s is off your site, but its content could not be moved. Nothing was deleted — the content is listed under Removed languages, where you can move it from.": [
+            "%s 已从您的站点移除，但其内容无法移动。未删除任何内容 —— 内容列在“已移除的语言”下，您可以从那里移动它。"
+         ],
+         "Done": [
+            "完成"
+         ],
+         "%s stays on your site. Its pages keep their addresses and their search rankings, and the language switcher keeps offering it.": [
+            "%s 仍保留在您的站点上。其页面保留其地址和搜索排名，语言切换器继续提供该语言。"
+         ],
+         "WPML has stopped creating new %s translations. To start again, use “Resume translating” on the language’s row.": [
+            "WPML 已停止创建新的 %s 翻译。要重新开始，请在该语言所在行使用“恢复翻译”。"
+         ],
+         "%1$s is off your site. Nothing was deleted: its addresses now redirect to your %2$s pages, and every item it holds is still in your database and in your admin lists.": [
+            "%1$s 已从您的站点移除。未删除任何内容：其地址现在重定向到您的 %2$s 页面，且其包含的每个项目仍保留在您的数据库和管理列表中。"
+         ],
+         "To bring %s back, add it again — or use “Put back” under Removed languages, below.": [
+            "要找回 %s，请重新添加它 —— 或使用下方“已移除的语言”下的“放回”。"
+         ],
+         "To bring %s back, add it again as a custom language with the same code — its content is still here.": [
+            "要找回 %s，请使用相同的代码将其重新添加为自定义语言 —— 其内容仍在此处。"
+         ],
+         "To bring %s back, add it again from the language picker — it asks which country the content belongs to, and the content is still here.": [
+            "要找回 %s，请从语言选择器中重新添加它 —— 它会询问内容属于哪个国家/地区，且内容仍在此处。"
+         ],
+         "They stay in your Trash until %s.": [
+            "它们将保留在回收站中，直到 %s。"
+         ],
+         "The deletion of %s’s content finished. WPML could not read back a record of what it removed.": [
+            "%s 内容的删除已完成。WPML 无法读回其移除内容的记录。"
+         ],
+         "Close": [
+            "关闭"
+         ],
+         "Unavailable until WPML can count this language’s content.": [
+            "在 WPML 统计完此语言的内容之前不可用。"
+         ],
+         "If your site uses one domain per language, that language’s domain is not redirected: while it still points at this site it answers in your site’s default language at the same addresses.": [
+            "如果您的站点每种语言使用一个域名，则该语言的域名不会被重定向：当它仍指向此站点时，它将在相同的地址以您站点的默认语言响应。"
+         ],
+         "The listed items are removed, along with their translation records, their string translations and their translation jobs.": [
+            "列出的项目将被移除，连同它们的翻译记录、字符串翻译和翻译作业。"
+         ],
+         "The listed items are removed, along with their translation records, their string translations and their %d translation job.": [
+            "列出的项目将被移除，连同它们的翻译记录、字符串翻译和 %d 个翻译作业。"
+         ],
+         "We couldn’t check for translated content. You can still remove the language; its translations are kept. Deleting its content and moving it into another language both need that count, so those two goals are unavailable.": [
+            "我们无法检查翻译内容。您仍然可以移除该语言；其翻译将被保留。删除其内容和将其移动到另一种语言都需要该计数，因此这两个目标不可用。"
+         ],
+         "This can be undone.": [
+            "此操作可以撤销。"
+         ],
+         "Stop translating into %s, keep its content online.": [
+            "停止翻译为 %s，并保留其在线内容。"
+         ],
+         "Your %1$s content stays published at its current addresses and keeps its search rankings. The language switcher keeps offering %1$s.": [
+            "您的 %1$s 内容将保留在当前地址发布，并维持其搜索排名。语言切换器将继续提供 %1$s。"
+         ],
+         "Your %1$d %2$s item stays published at its current address and keeps its search ranking. The language switcher keeps offering %2$s.": [
+            "您的 %1$d 个 %2$s 项目将保留在当前地址发布，并维持其搜索排名。语言切换器将继续提供 %2$s。"
+         ],
+         "Translations are already paused for this language — nothing more changes.": [
+            "此语言的翻译已暂停 —— 不再有其他更改。"
+         ],
+         "WPML stops creating new translations.": [
+            "WPML 停止创建新翻译。"
+         ],
+         "Nothing is deleted": [
+            "不删除任何内容"
+         ],
+         "Take %s off the site, but keep everything in case we come back.": [
+            "将 %s 从站点移除，但保留所有内容以防以后恢复。"
+         ],
+         "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. Everything %1$s holds stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was.": [
+            "访客将不再看到 %1$s；其地址将重定向到您的 %2$s 页面，因此不会返回 404 错误。%1$s 包含的所有内容都保留在您的数据库和管理列表中，重新添加 %1$s 将使其完全恢复原样。"
+         ],
+         "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. The %3$d item stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was.": [
+            "访客将不再看到 %1$s；其地址将重定向到您的 %2$s 页面，因此不会返回 404 错误。这 %3$d 个项目保留在您的数据库和管理列表中，重新添加 %1$s 将使其完全恢复原样。"
+         ],
+         "Reversible": [
+            "可撤销"
+         ],
+         "Take %s off the site and delete its content.": [
+            "将 %s 从站点移除并删除其内容。"
+         ],
+         "Originals in other languages are untouched. Image files stay on disk.": [
+            "其他语言中的原文不受影响。图像文件保留在磁盘上。"
+         ],
+         "Only reversible if the Trash route is chosen": [
+            "仅在选择回收站路径时可撤销"
+         ],
+         "Not reversible — this site has the Trash disabled": [
+            "不可撤销 —— 此站点已禁用回收站"
+         ],
+         "This can only be undone when the items go to the Trash.": [
+            "只有当项目进入回收站时，此操作才能撤销。"
+         ],
+         "This site has the Trash disabled, so deleting this content cannot be undone.": [
+            "此站点已禁用回收站，因此删除此内容的操作无法撤销。"
+         ],
+         "Move this language’s content into another language.": [
+            "将此语言的内容移至另一种语言。"
+         ],
+         "Reassigns this language’s items to a language you pick, keeping their connections to the other languages. For renaming and merging, not retiring.": [
+            "将此语言的项目重新分配给您选择的语言，并保持它们与其他语言的连接。用于重命名和合并，而非停用。"
+         ],
+         "Reassigns the %d item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring.": [
+            "将这 %d 个项目重新分配给您选择的语言，并保持它们与其他语言的连接。用于重命名和合并，而非停用。"
+         ],
+         "The content is kept, but the move cannot be undone.": [
+            "内容将被保留，但移动操作无法撤销。"
+         ],
+         "There is no other active language on this site to move the content into.": [
+            "此站点上没有其他激活的语言可供移动内容。"
+         ],
+         "You have existing content in %s": [
+            "您在 %s 中已有内容"
+         ],
+         "This site has %1$d items in %2$s from before. What should happen to them?": [
+            "此站点以前在 %2$s 中有 %1$d 个项目。应该如何处理它们？"
+         ],
+         "Bring back my content as %1$s (%2$s).": [
+            "将我的内容作为 %1$s (%2$s) 找回。"
+         ],
+         "The language keeps its original code (%s). There is no automatic way back.": [
+            "该语言保留其原始代码 (%s)。没有自动恢复的方法。"
+         ],
+         "Start fresh and keep the old content separate.": [
+            "重新开始并保持旧内容独立。"
+         ],
+         "You can attach the old content to the new language later from WPML → Support.": [
+            "您可以稍后从 WPML → 支持将旧内容附加到新语言。"
+         ],
+         "Never mind": [
+            "没关系"
+         ],
+         "Add language": [
+            "添加语言"
+         ],
+         "How much would a new language cost?": [
+            "新语言的费用是多少？"
+         ],
+         "Pick a language to see how many words your content has and what translating them would cost.": [
+            "选择一种语言以查看您的内容有多少单词以及翻译它们的费用。"
+         ],
+         "These costs apply once you use automatic translation for the new language.": [
+            "一旦您对新语言使用自动翻译，这些费用就会生效。"
+         ],
+         "No languages are available to estimate. Every language automatic translation supports is already on your site.": [
+            "没有可供估算的语言。自动翻译支持的每种语言都已在您的站点上。"
+         ],
+         "Language": [
+            "语言"
+         ],
+         "Select a language…": [
+            "选择一种语言……"
+         ],
+         "Show cost": [
+            "显示费用"
+         ],
+         "Add a custom language": [
+            "添加自定义语言"
+         ],
+         "Use this only for non-standard dialects or local variants that aren't in the language list.": [
+            "仅将此用于语言列表中没有的非标准方言或本地变体。"
+         ],
+         "Most users don't need a custom language. Most variants (e.g., Mexican Spanish, Brazilian Portuguese) already exist in the language list above. Use this form only for genuine custom language variants.": [
+            "大多数用户不需要自定义语言。大多数变体（例如墨西哥西班牙语、巴西葡萄牙语）已存在于上方的语言列表中。仅对真正的自定义语言变体使用此表单。"
+         ],
+         "Variant name": [
+            "变体名称"
+         ],
+         "e.g., Andalusian": [
+            "例如：粤语"
+         ],
+         "“%s” is already the name of one of your languages. Choose a different name, or rename that language first.": [
+            "“%s”已经是您的一种语言的名称。请选择不同的名称，或先重命名该语言。"
+         ],
+         "“%s” is available in the language list. We recommend adding it with Search and add a language. Continue only if you need your own variant.": [
+            "“%s”在语言列表中可用。我们建议通过“搜索并添加语言”来添加它。仅在您需要自己的变体时才继续。"
+         ],
+         "Default locale": [
+            "默认区域设置"
+         ],
+         "Code": [
+            "代码"
+         ],
+         "pms or es-an": [
+            "pms 或 es-an"
+         ],
+         "Once defined, this cannot be changed.": [
+            "一旦定义，此项将无法更改。"
+         ],
+         "hreflang": [
+            "hreflang"
+         ],
+         "WPML no longer lists “%s”, so you can add it here as a custom language. We filled in its usual settings.": [
+            "WPML 不再列出“%s”，因此您可以在此处将其添加为自定义语言。我们已填入其常用设置。"
+         ],
+         "Flag": [
+            "旗帜"
+         ],
+         "Uploading…": [
+            "正在上传……"
+         ],
+         "Upload SVG…": [
+            "上传 SVG……"
+         ],
+         "Upload a custom flag (SVG)": [
+            "上传自定义旗帜 (SVG)"
+         ],
+         "The flag could not be uploaded.": [
+            "无法上传旗帜。"
+         ],
+         "SVG recommended for crisp display.": [
+            "推荐使用 SVG 以获得清晰的显示效果。"
+         ],
+         "Encode URL?": [
+            "编码 URL？"
+         ],
+         "No": [
+            "否"
+         ],
+         "Yes": [
+            "是"
+         ],
+         "Map to a supported language (recommended)": [
+            "映射到受支持的语言（推荐）"
+         ],
+         "— Match automatically —": [
+            "— 自动匹配 —"
+         ],
+         "The locale “%s” isn’t valid. Use letters, numbers and underscores only, like es_ES.": [
+            "区域设置“%s”无效。请仅使用字母、数字和下划线，例如 es_ES。"
+         ],
+         "The hreflang “%1$s” is too long. Use at most %2$d characters.": [
+            "hreflang“%1$s”太长。请最多使用 %2$d 个字符。"
+         ],
+         "The language code “%1$s” is too long. Use at most %2$d characters.": [
+            "语言代码“%1$s”太长。请最多使用 %2$d 个字符。"
+         ],
+         "The language code “%1$s” isn’t valid. Use letters, numbers, hyphens and underscores — up to %2$d characters.": [
+            "语言代码“%1$s”无效。请使用字母、数字、连字符和下划线 —— 最多 %2$d 个字符。"
+         ],
+         "“%s” is already a supported language. Add it from Search instead of creating a custom variant.": [
+            "“%s”已经是受支持的语言。请从“搜索”中添加它，而不是创建自定义变体。"
+         ],
+         "This language code is already used by “%s”. Choose a different one.": [
+            "此语言代码已被“%s”使用。请选择一个不同的代码。"
+         ],
+         "Enter a name for this language.": [
+            "为此语言输入一个名称。"
+         ],
+         "Enter a locale.": [
+            "输入区域设置。"
+         ],
+         "Enter a language code.": [
+            "输入语言代码。"
+         ],
+         "Edit labels for %s": [
+            "编辑 %s 的标签"
+         ],
+         "Set how the “%s” language is named in each of your site languages. Names are prefilled. Edit any to override.": [
+            "设置“%s”语言在您站点的每种语言中的名称。名称已预填。编辑任何名称以进行覆盖。"
+         ],
+         "Loading names…": [
+            "正在加载名称……"
+         ],
+         "this language": [
+            "此语言"
+         ],
+         "Save labels": [
+            "保存标签"
+         ],
+         "Your server cannot convert international domain names. Enter the xn-- form of %s.": [
+            "您的服务器无法转换国际化域名。请输入 %s 的 xn-- 格式。"
+         ],
+         "The domain you have entered is invalid.": [
+            "您输入的域名无效。"
+         ],
+         "Set a domain for %s": [
+            "为 %s 设置域名"
+         ],
+         "Set a domain for each new language": [
+            "为每个新语言设置域名"
+         ],
+         "Your site uses a different domain per language. %s is no longer the default language, so it needs a domain of its own. Until it has one, its pages cannot be reached.": [
+            "您的站点每种语言使用不同的域名。%s 不再是默认语言，因此它需要自己的域名。在设置域名之前，无法访问其页面。"
+         ],
+         "Your site uses a different domain per language, so %s needs a domain of its own before it can be visited.": [
+            "您的站点每种语言使用不同的域名，因此 %s 需要有自己的域名才能被访问。"
+         ],
+         "Your site uses a different domain per language, so each new language needs a domain of its own before it can be visited.": [
+            "您的站点每种语言使用不同的域名，因此每个新语言都需要有自己的域名才能被访问。"
+         ],
+         "This is the site address.": [
+            "这是站点地址。"
+         ],
+         "Change it in Settings → General.": [
+            "在设置 → 常规中进行更改。"
+         ],
+         "Valid": [
+            "有效"
+         ],
+         "Blocked by a firewall or CDN": [
+            "已被防火墙或 CDN 阻止"
+         ],
+         "Not valid": [
+            "无效"
+         ],
+         "Validate on save": [
+            "保存时验证"
+         ],
+         "This domain is already used by another language or by the site itself.": [
+            "此域名已被其他语言或站点本身使用。"
+         ],
+         "Enter the domain this language will be served from.": [
+            "输入此语言将使用的域名。"
+         ],
+         "%s will serve this language.": [
+            "%s 将提供此语言。"
+         ],
+         "If it shows your site, you can save it anyway.": [
+            "如果它能正常显示您的站点，您仍然可以保存。"
+         ],
+         "Two languages cannot use the same domain: %s is already used. Give each language its own domain.": [
+            "两种语言不能使用相同的域名：%s 已被使用。请为每种语言分配各自的域名。"
+         ],
+         "%s loads, but a firewall or CDN blocked WPML's check.": [
+            "%s 可以加载，但防火墙或 CDN 阻止了 WPML 的检查。"
+         ],
+         "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
+            "域名无法验证：%s。请检查它是否指向此站点，或取消勾选“保存时验证”以强制保存。"
+         ],
+         "Save anyway": [
+            "仍然保存"
+         ],
+         "Save": [
+            "保存"
+         ],
+         "0 languages — nothing to reset here": [
+            "0 种语言 — 此处无需重置"
+         ],
+         "Reset language defaults": [
+            "重置语言默认值"
+         ],
+         "WPML couldn’t finish checking your languages.": [
+            "WPML 无法完成对语言的检查。"
+         ],
+         "This says nothing about your languages — the check stopped before it could compare them all. Nothing has been changed.": [
+            "这并不代表您的语言有问题 — 检查在对比完所有语言之前已停止。未更改任何内容。"
+         ],
+         "All your languages already use WPML’s catalogue defaults.": [
+            "您的所有语言已在使用 WPML 的目录默认值。"
+         ],
+         "Flags, label translations and WordPress locales all match — there is nothing to reset.": [
+            "旗帜、标签翻译和 WordPress 区域设置均匹配 — 无需重置。"
+         ],
+         "These languages no longer match WPML’s language catalogue. Put back:": [
+            "这些语言不再与 WPML 的语言目录匹配。恢复："
+         ],
+         "Flags": [
+            "旗帜"
+         ],
+         "%d language using a flag that is not the catalogue default": [
+            "%d 种语言使用的旗帜不是目录默认旗帜"
+         ],
+         "Labels and their translations": [
+            "标签及其翻译"
+         ],
+         "%1$s, %2$s": [
+            "%1$s，%2$s"
+         ],
+         "%d language": [
+            "%d 种语言"
+         ],
+         "%d display language": [
+            "%d 种显示语言"
+         ],
+         "%d edited": [
+            "%d 个已编辑"
+         ],
+         "%d missing": [
+            "%d 个缺失"
+         ],
+         "%1$s of %2$s": [
+            "%1$s / %2$s"
+         ],
+         "hide": [
+            "隐藏"
+         ],
+         "show": [
+            "显示"
+         ],
+         "missing": [
+            "缺失"
+         ],
+         "+ %d more": [
+            "+ 另外 %d 个"
+         ],
+         "WP Locale": [
+            "WP 区域设置"
+         ],
+         "%d language whose locale does not match its country": [
+            "%d 种语言的区域设置与其国家/地区不匹配"
+         ],
+         "Only the groups you tick are changed. Everything else is left exactly as it is.": [
+            "仅更改您勾选的组。其他所有内容将保持原样。"
+         ],
+         "The check stopped before it could compare everything, so there may be more than this.": [
+            "检查在对比完所有内容之前已停止，因此可能还有更多内容。"
+         ],
+         "Resetting…": [
+            "正在重置…"
+         ],
+         "Reset selected": [
+            "重置所选项目"
+         ],
+         "Language Code": [
+            "语言代码"
+         ],
+         "Country": [
+            "国家/地区"
+         ],
+         "Locale": [
+            "区域设置"
+         ],
+         "Update the URL code for %s?": [
+            "更新 %s 的 URL 代码？"
+         ],
+         "Confirm language changes": [
+            "确认语言更改"
+         ],
+         "Checking what needs updating…": [
+            "正在检查需要更新的内容……"
+         ],
+         "We couldn’t check the impact. You can still save — content is updated during the save.": [
+            "我们无法检查影响。您仍然可以保存 —— 内容将在保存期间更新。"
+         ],
+         "What happens": [
+            "会发生什么"
+         ],
+         "%d link on your site is updated to the new address.": [
+            "您站点上的 %d 个链接已更新为新地址。"
+         ],
+         "Old URLs are not redirected automatically. If you need them to keep working, set up the redirects yourself.": [
+            "旧 URL 不会自动重定向。如果您需要它们继续工作，请自行设置重定向。"
+         ],
+         "This updates your language settings; existing content isn’t rewritten.": [
+            "这将更新您的语言设置；现有内容不会被重写。"
+         ],
+         "Your translations and strings are unchanged.": [
+            "您的翻译和字符串保持不变。"
+         ],
+         "Update": [
+            "更新"
+         ],
+         "Save changes": [
+            "保存更改"
+         ],
+         "Do you want to set the locale?": [
+            "您要设置区域设置吗？"
+         ],
+         "WPML uses the locale to download the right WordPress language pack, so setting it switches the admin, theme and plugin texts to that language pack.": [
+            "WPML 使用区域设置来下载正确的 WordPress 语言包，因此设置它会将管理后台、主题和插件文本切换到该语言包。"
+         ],
+         "Yes, set the locale": [
+            "是的，设置区域设置"
+         ],
+         "Are you sure you want to edit the language code?": [
+            "您确定要编辑语言代码吗？"
+         ],
+         "URLs containing it change — WPML fixes linked URLs after saving.": [
+            "包含它的 URL 会发生变化 —— WPML 会在保存后修复链接的 URL。"
+         ],
+         "External links / bookmarks to the old URL break unless redirected.": [
+            "除非进行重定向，否则指向旧 URL 的外部链接/书签将失效。"
+         ],
+         "Yes, edit the code": [
+            "是的，编辑代码"
+         ],
+         "Are you sure you want to edit the country?": [
+            "您确定要编辑国家/地区吗？"
+         ],
+         "It may also change the locale (if the new country has a WordPress.org locale).": [
+            "它还可能更改区域设置（如果新国家/地区有 WordPress.org 区域设置）。"
+         ],
+         "It affects ATE automatic-translation mapping.": [
+            "它会影响 ATE 自动翻译映射。"
+         ],
+         "Yes, edit the country": [
+            "是的，编辑国家/地区"
+         ],
+         "Are you sure you want to edit the locale?": [
+            "您确定要编辑区域设置吗？"
+         ],
+         "WPML uses the locale to download the right WordPress language pack, so changing it switches the admin, theme and plugin texts to the new language pack.": [
+            "WPML 使用区域设置来下载正确的 WordPress 语言包，因此更改它会将管理界面、主题和插件文本切换到新的语言包。"
+         ],
+         "Yes, edit the locale": [
+            "是的，编辑区域设置"
+         ],
+         "Step %1$d of %2$d — updating %3$s": [
+            "第 %1$d 步，共 %2$d 步 — 正在更新 %3$s"
+         ],
+         "Step %1$d of %2$d": [
+            "第 %1$d 步，共 %2$d 步"
+         ],
+         "%1$d of %2$d item": [
+            "%1$d / %2$d 个项目"
+         ],
+         "%d%%": [
+            "%d%%"
+         ],
+         "%d item could not be updated:": [
+            "%d 个项目无法更新："
+         ],
+         "You can retry the save from the Languages page, or fix these items manually.": [
+            "您可以从“语言”页面重试保存，或手动修复这些项目。"
+         ],
+         "Some changes could not be applied": [
+            "某些更改无法应用"
+         ],
+         "Language changes saved with some skipped items": [
+            "语言更改已保存，但跳过了一些项目"
+         ],
+         "Language changes saved": [
+            "语言更改已保存"
+         ],
+         "Updating content": [
+            "正在更新内容"
+         ],
+         "Keep this tab open until the process finishes. Closing it will pause the save.": [
+            "在过程完成之前，请保持此标签页处于打开状态。关闭它将暂停保存。"
+         ],
+         "%d item was skipped so far:": [
+            "到目前为止已跳过 %d 个项目："
+         ],
+         "%1$s — %2$s (%3$s)": [
+            "%1$s — %2$s ((%3$s))"
+         ],
+         "Most language changes were applied. Some items could not be updated and were skipped.": [
+            "大多数语言更改已应用。某些项目无法更新并已跳过。"
+         ],
+         "All language changes were applied.": [
+            "所有语言更改均已应用。"
+         ],
+         "The save could not finish. Your existing content was not fully updated — review the languages page and try again.": [
+            "保存无法完成。您现有的内容未完全更新 — 请检查语言页面并重试。"
+         ],
+         "Don't close this tab until the process finishes.": [
+            "在过程完成之前，请勿关闭此标签页。"
+         ],
+         "Content update was paused": [
+            "内容更新已暂停"
+         ],
+         "Resume to finish saving your language changes.": [
+            "恢复以完成保存您的语言更改。"
+         ],
+         "Resume saving": [
+            "恢复保存"
+         ],
+         "Estimating time left…": [
+            "正在估算剩余时间…"
+         ],
+         "About %d second left": [
+            "剩余约 %d 秒"
+         ],
+         "About %d minute left": [
+            "剩余约 %d 分钟"
+         ],
+         "Automatic translation for %1$s could not be re-mapped to %2$s. Change the country again later to retry.": [
+            "%1$s 的自动翻译无法重新映射到 %2$s。请稍后再次更改国家/地区以重试。"
+         ],
+         "Automatic translation for %1$s could not be re-mapped. Change the country again later to retry.": [
+            "%1$s 的自动翻译无法重新映射。请稍后再次更改国家/地区以重试。"
+         ],
+         "Automatic translation for %1$s already targeted %2$s; nothing was re-mapped.": [
+            "%1$s 的自动翻译已指向 %2$s；未重新映射任何内容。"
+         ],
+         "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country. Your current mapping was kept.": [
+            "自动翻译不适用于 %2$s。要自动翻译 %1$s，请在“编辑”→“国家/地区”下选择自动翻译支持的国家/地区。您当前的映射已保留。"
+         ],
+         "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country.": [
+            "自动翻译不适用于 %2$s。要自动翻译 %1$s，请在“编辑”→“国家/地区”下选择自动翻译支持的国家/地区。"
+         ],
+         "Automatic translation for %1$s was not re-mapped: %2$s.": [
+            "%1$s 的自动翻译未重新映射：%2$s。"
+         ],
+         "Automatic translation for %1$s now targets %2$s.": [
+            "%1$s 的自动翻译现在指向 %2$s。"
+         ],
+         "“%s” is already an active language.": [
+            "“%s”已经是启用语言。"
+         ],
+         "That language is already active.": [
+            "该语言已启用。"
+         ],
+         "%s needs a domain of its own before this can be saved. Set one in the URL format section.": [
+            "%s 需要有自己的域名才能保存。请在语言 URL 格式部分进行设置。"
+         ],
+         "Every language that is not the default needs a domain of its own before this can be saved. Set it in the URL format section.": [
+            "除默认语言外的每种语言都需要有自己的域名才能保存。请在语言 URL 格式部分进行设置。"
+         ],
+         "The language code “%s” is already in use. Choose a different one.": [
+            "语言代码“%s”已被使用。请选择一个不同的代码。"
+         ],
+         "That language code is already in use. Choose a different one.": [
+            "该语言代码已被使用。请选择一个不同的代码。"
+         ],
+         "That language code isn’t valid. Use letters, numbers, hyphens and underscores — up to %d characters.": [
+            "该语言代码无效。请使用字母、数字、连字符和下划线 — 最多 %d 个字符。"
+         ],
+         "That language code is too long. Use at most %d characters.": [
+            "该语言代码太长。最多使用 %d 个字符。"
+         ],
+         "That locale isn’t valid. Use letters, numbers and underscores only, like es_ES.": [
+            "该区域设置无效。仅使用字母、数字和下划线，例如 es_ES。"
+         ],
+         "That hreflang is too long. Use at most %d characters.": [
+            "该 hreflang 太长。最多使用 %d 个字符。"
+         ],
+         "Another active language already uses the identity “%s”.": [
+            "另一个启用语言已使用标识“%s”。"
+         ],
+         "Another active language already has this identity.": [
+            "另一个启用语言已具有此标识。"
+         ],
+         "WPML no longer offers this language and country. Languages you have already added keep working.": [
+            "WPML 不再提供此语言和国家/地区。您已添加的语言将继续有效。"
+         ],
+         "You can still add it with “add a custom language”, using the same code.": [
+            "您仍可以使用相同的代码通过“添加自定义语言”来添加它。"
+         ],
+         "That flag is not available for this language. Choose one of the offered flags or upload a custom SVG.": [
+            "该旗帜不适用于此语言。请选择提供的旗帜之一或上传自定义 SVG。"
+         ],
+         "That name is already used by one of your languages. Choose a different name.": [
+            "该名称已被您的其中一种语言使用。请选择一个不同的名称。"
+         ],
+         "That language code is already a supported language. Add it from Search instead of creating a custom variant.": [
+            "该语言代码已是受支持的语言。请从“搜索”中添加它，而不是创建自定义变体。"
+         ],
+         "“%s” is the code of a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first.": [
+            "“%s”是您自己创建并随后删除的语言代码。请将其作为自定义语言再次添加以将其恢复，或者先从“已删除语言”面板中将其删除。"
+         ],
+         "That code belongs to a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first.": [
+            "该代码属于您自己创建并随后删除的语言。请将其作为自定义语言再次添加以将其恢复，或者先从“已删除语言”面板中将其删除。"
+         ],
+         "Enter a locale for this language.": [
+            "输入此语言的区域设置。"
+         ],
+         "Select a country for this language before saving.": [
+            "保存前请为此语言选择一个国家/地区。"
+         ],
+         "This language can’t be used with that country.": [
+            "此语言不能与该国家/地区一起使用。"
+         ],
+         "“%s” isn’t in the language catalogue. Pick it from the list, or add it as a custom language.": [
+            "“%s”不在语言目录中。请从列表中选择它，或将其添加为自定义语言。"
+         ],
+         "This language isn’t in the language catalogue. Pick it from the list, or add it as a custom language.": [
+            "此语言不在语言目录中。请从列表中选择它，或将其添加为自定义语言。"
+         ],
+         "The default language cannot be a language that is being removed.": [
+            "默认语言不能是正在删除的语言。"
+         ],
+         "Before “%s” can be saved, choose whether to bring back the content this site has from before in that language or to start fresh.": [
+            "在保存“%s”之前，请选择是恢复该站点先前以此语言创建的内容，还是重新开始。"
+         ],
+         "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
+            "在保存该语言之前，请选择是恢复该站点先前以此语言创建的内容，还是重新开始。"
+         ],
+         "You don’t have permission to change languages.": [
+            "您没有更改语言的权限。"
+         ],
+         "“%s” couldn’t be added. Please try again.": [
+            "无法添加“%s”。请重试。"
+         ],
+         "The language couldn’t be added. Please try again.": [
+            "无法添加该语言。请重试。"
+         ],
+         "Couldn’t save the language settings.": [
+            "无法保存语言设置。"
+         ],
+         "One language": [
+            "一种语言"
+         ],
+         "%1$s: no WordPress language pack exists for %2$s, so the locale was saved without translation files.": [
+            "%1$s：不存在 %2$s 的 WordPress 语言包，因此保存了区域设置但没有翻译文件。"
+         ],
+         "%1$s: the WordPress language pack for %2$s could not be requested, so the locale was saved without translation files.": [
+            "%1$s：无法请求 %2$s 的 WordPress 语言包，因此保存了区域设置但没有翻译文件。"
+         ],
+         "%1$s: the WordPress language pack for %2$s could not be downloaded, so the locale was saved without translation files.": [
+            "%1$s：无法下载 %2$s 的 WordPress 语言包，因此保存了区域设置但没有翻译文件。"
+         ],
+         "%1$s: the links in post %2$s did not match the old language code and were left as they were.": [
+            "%1$s：文章 %2$s 中的链接与旧语言代码不匹配，已保持原样。"
+         ],
+         "%1$s: the links in post %2$s could not be rewritten.": [
+            "%1$s：文章 %2$s 中的链接无法重写。"
+         ],
+         "%1$s: some translation jobs could not be cancelled.": [
+            "%1$s：某些翻译工作无法取消。"
+         ],
+         "%1$s: one step of the save kept failing and was skipped.": [
+            "%1$s：保存的一个步骤不断失败并已跳过。"
+         ],
+         "%1$s: one item could not be updated (%2$s).": [
+            "%1$s：一个项目无法更新 ((%2$s))。"
+         ],
+         "Is this a right-to-left language?": [
+            "这是从右到左的语言吗？"
+         ],
+         "WPML lays out the admin and the site for this language from right to left, like Arabic or Hebrew.": [
+            "WPML 为此语言从右到左布局管理界面和站点，例如阿拉伯语或希伯来语。"
+         ],
+         "Reading direction": [
+            "阅读方向"
+         ],
+         "Left-to-right": [
+            "从左到右"
+         ],
+         "Right-to-left": [
+            "从右到左"
+         ],
+         "Let WPML decide": [
+            "由 WPML 决定"
+         ],
+         "If you cannot find your language in the list, <a>add a custom language</a>.": [
+            "如果您在列表中找不到您的语言，请<a>添加自定义语言</a>。"
+         ],
+         "Default language": [
+            "默认语言"
+         ],
+         "What is the current language of your website?": [
+            "您的网站当前使用的是什么语言？"
+         ],
+         "Translation languages": [
+            "翻译语言"
+         ],
+         "Which languages do you want to translate your site into?": [
+            "您想将网站翻译成哪些语言？"
+         ],
+         "Click the lock to set the locale": [
+            "点击锁图标以设置区域设置"
+         ],
+         "Not set": [
+            "未设置"
+         ],
+         "Unlock this field": [
+            "解锁此字段"
+         ],
+         "Recommended not to change. Click to unlock.": [
+            "建议不要更改。点击以解锁。"
+         ],
+         "Uploading flag…": [
+            "正在上传旗帜…"
+         ],
+         "Display Code": [
+            "显示代码"
+         ],
+         "Stored code: %s": [
+            "存储的代码：%s"
+         ],
+         "Encode URL": [
+            "编码 URL"
+         ],
+         "Encode non-Latin characters": [
+            "编码非拉丁字符"
+         ],
+         "Mapping": [
+            "映射"
+         ],
+         "This language is recognized as the same as your site’s default language, so it can’t be translated automatically. To carry your content over, duplicate it instead.": [
+            "此语言被识别为与您站点的默认语言相同，因此无法自动翻译。要结转您的内容，请改为复制它。"
+         ],
+         "How to Duplicate and Copy Content in WPML": [
+            "如何在 WPML 中复制和拷贝内容"
+         ],
+         "Edit language labels…": [
+            "编辑语言标签…"
+         ],
+         "The default language can’t be removed.": [
+            "默认语言无法删除。"
+         ],
+         "Delete language": [
+            "删除语言"
+         ],
+         "Type to search all languages…": [
+            "输入以搜索所有语言…"
+         ],
+         "Unsaved changes": [
+            "未保存的更改"
+         ],
+         "Custom": [
+            "自定义"
+         ],
+         "This language stays on your site and keeps serving its pages. WPML is not creating new translations into it.": [
+            "此语言保留在您的站点上并继续提供其页面。WPML 不会为其创建新的翻译。"
+         ],
+         "Translation paused": [
+            "翻译已暂停"
+         ],
+         "This language isn’t supported by the automatic translation engine, so its content must be translated manually.": [
+            "自动翻译引擎不支持此语言，因此其内容必须手动翻译。"
+         ],
+         "Same as default": [
+            "与默认语言相同"
+         ],
+         "Manual translation only": [
+            "仅限手动翻译"
+         ],
+         "This custom language uses the code of a language WPML offers. To translate it automatically, map it to a language.": [
+            "此自定义语言使用了 WPML 所提供语言的代码。要自动翻译该语言，请将其映射到某种语言。"
+         ],
+         "Needs a mapping": [
+            "需要映射"
+         ],
+         "Default": [
+            "默认"
+         ],
+         "Set as default": [
+            "设为默认"
+         ],
+         "Resume translating": [
+            "恢复翻译"
+         ],
+         "Hide": [
+            "隐藏"
+         ],
+         "The default language can’t be hidden.": [
+            "默认语言无法隐藏。"
+         ],
+         "Completely hide content in this language from visitors and search engines, but keep it visible to yourself. Useful for reviewing translations that are still in progress.": [
+            "对访客和搜索引擎完全隐藏此语言的内容，但对自己保持可见。对于审核仍在进行中的翻译非常有用。"
+         ],
+         "Hide this language from visitors and search engines.": [
+            "对访客和搜索引擎隐藏此语言。"
+         ],
+         "Edit the language code": [
+            "编辑语言代码"
+         ],
+         "Used to build this language’s page URLs (e.g. /en/).": [
+            "用于构建此语言的页面 URL（例如 /zh-hans/）。"
+         ],
+         "Remove language": [
+            "移除语言"
+         ],
+         "Undo": [
+            "撤销"
+         ],
+         "Collapse ▴": [
+            "收起 ▴"
+         ],
+         "Edit ▾": [
+            "编辑 ▾"
+         ],
+         "Recognized as the same language as the default": [
+            "识别为与默认语言相同"
+         ],
+         "%s (Regional)": [
+            "%s（区域）"
+         ],
+         "%s is no longer in this list. Use “add a custom language” below to add it.": [
+            "“%s”已不在该列表中。请使用下方的“添加自定义语言”来添加它。"
+         ],
+         "Search and add a language…": [
+            "搜索并添加语言…"
+         ],
+         "Search and add a language": [
+            "搜索并添加语言"
+         ],
+         "Regional": [
+            "区域"
+         ],
+         "International": [
+            "国际"
+         ],
+         "This language has a single fixed country.": [
+            "此语言具有单一固定的国家/地区。"
+         ],
+         "Select a country…": [
+            "选择国家/地区…"
+         ],
+         "Default language (currently %s)": [
+            "默认语言（当前为 %s）"
+         ],
+         "Flag of %s": [
+            "%s 的旗帜"
+         ],
+         "Current flag": [
+            "当前旗帜"
+         ],
+         "Custom flag": [
+            "自定义旗帜"
+         ],
+         "Neutral globe": [
+            "中性地球仪"
+         ],
+         "Country code as the flag": [
+            "国家/地区代码作为旗帜"
+         ],
+         "Language flag": [
+            "语言旗帜"
+         ],
+         "Choose a flag…": [
+            "选择旗帜…"
+         ],
+         "Countries": [
+            "国家/地区"
+         ],
+         "Regions": [
+            "区域"
+         ],
+         "Languages": [
+            "语言"
+         ],
+         "Organisations": [
+            "组织"
+         ],
+         "Upload a custom SVG…": [
+            "上传自定义 SVG…"
+         ],
+         "Match automatically": [
+            "自动匹配"
+         ],
+         "Map to a supported language": [
+            "映射到受支持的语言"
+         ],
+         "Choose a language to map to…": [
+            "选择要映射到的语言…"
+         ],
+         "No matches": [
+            "无匹配项"
+         ],
+         "The items you include below are removed, along with their translation records. Originals in your other languages are untouched, and image files stay on disk. Comments on these posts are deleted with them. Nothing in %s’s sibling languages is deleted.": [
+            "您在下面包含的项目及其翻译记录将被移除。您其他语言中的原文不受影响，图像文件保留在磁盘上。这些文章上的评论将随之删除。%s 的同级语言中的任何内容都不会被删除。"
+         ],
+         "Skip them, move everything else.": [
+            "跳过这些，移动其他所有内容。"
+         ],
+         "%1$d item that already has a %3$s version stays under %2$s. You can deal with it separately.": [
+            "已有 %3$s 版本的 %1$d 个项目将保留在 %2$s 下。您可以单独处理它们。"
+         ],
+         "Merge them into the %s ones.": [
+            "将它们合并到 %s 版本中。"
+         ],
+         "Duplicate terms are removed": [
+            "重复的术语已被移除"
+         ],
+         "Objects and settings move onto the existing version; the duplicate is deleted. Nothing in the target language is deleted.": [
+            "对象和设置将移动到现有版本；副本将被删除。目标语言中的任何内容都不会被删除。"
+         ],
+         "What should happen to the items already in %s?": [
+            "对于已在 %s 中的项目，应该如何处理？"
+         ],
+         "%1$d item from %2$s already has a version in the language you picked. Pick the outcome you want.": [
+            "来自 %2$s 的 %1$d 个项目在您选择的语言中已有版本。请选择您想要的结果。"
+         ],
+         "What should happen to the colliding items": [
+            "如何处理冲突的项目"
+         ],
+         "Move into %s": [
+            "移动到 %s"
+         ],
+         "Reassigns the %1$d %2$s item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring.": [
+            "将 %1$d 个 %2$s 项目重新分配给您选择的语言，并保持它们与其他语言的连接。用于重命名和合并，而非停用。"
+         ],
+         "Only the content moves. Per-language settings other plugins keep — for example which currencies WooCommerce Multilingual offers in a language — stay under the old language code and are not carried over.": [
+            "仅移动内容。其他插件保留的按语言设置（例如 WooCommerce Multilingual 在某种语言中提供的货币）将保留在旧语言代码下，不会结转。"
+         ],
+         "Moved from %1$s into %2$s.": [
+            "已从 %1$s 移动到 %2$s。"
+         ],
+         "%d content item moved": [
+            "已移动 %d 个内容项目"
+         ],
+         "%d link to the original language updated": [
+            "已更新 %d 个指向原始语言的链接"
+         ],
+         "%d string translation moved": [
+            "已移动 %d 个字符串翻译"
+         ],
+         "%d string moved": [
+            "已移动 %d 个字符串"
+         ],
+         "%1$d item stayed behind: its translation group already has a %2$s version. It is still listed under %3$s in Removed languages.": [
+            "%1$d 个项目留在原处：它们的翻译组已经有了 %2$s 版本。它们仍列在“已移除的语言”中的 %3$s 下。"
+         ],
+         "%1$d duplicate term merged into the %2$s version and removed.": [
+            "%1$d 个重复术语已合并到 %2$s 版本并被移除。"
+         ],
+         "%1$d item became its own document in %2$s.": [
+            "%1$d 个项目在 %2$s 中变成了独立文档。"
+         ],
+         "%1$d item of a kind this tool does not move or merge is still under %2$s.": [
+            "此工具无法移动或合并的 %1$d 个项目仍保留在 %2$s 下。"
+         ],
+         "What the deletion removed from %s": [
+            "从 %s 中删除的内容"
+         ],
+         "The items that have a Trash are in it. Categories, tags and menus have no WordPress Trash, so those were deleted right away.": [
+            "有回收站的项目已放入其中。分类、标签和菜单没有 WordPress 回收站，因此这些项目已被立即删除。"
+         ],
+         "This site has the Trash disabled, so the item it removed was deleted permanently — there is nothing to restore.": [
+            "此站点已禁用回收站，因此移除的项目已被永久删除 — 无法恢复。"
+         ],
+         "Nothing was left to remove.": [
+            "没有剩下要移除的内容。"
+         ],
+         "String translations": [
+            "字符串翻译"
+         ],
+         "Translation jobs": [
+            "翻译作业"
+         ],
+         "%1$d removed · %2$d kept · %3$d skipped": [
+            "%1$d 已移除 · %2$d 已保留 · %3$d 已跳过"
+         ],
+         "Skipped because: %s": [
+            "跳过原因：%s"
+         ],
+         "No translation jobs needed cancelling.": [
+            "没有翻译工作需要取消。"
+         ],
+         "%d translation job was cancelled without charge.": [
+            "已免费取消 %d 个翻译工作。"
+         ],
+         "%d job was stopped mid-work — the words already sent are still charged.": [
+            "%d 个工作在进行中停止 — 已发送的单词仍将计费。"
+         ],
+         "%d more skipped item is counted above but not listed.": [
+            "上面统计了另外 %d 个跳过的项目，但未列出。"
+         ],
+         "Removed %s": [
+            "已于 %s 移除"
+         ],
+         "Removal date not recorded": [
+            "未记录移除日期"
+         ],
+         "%d item still here": [
+            "仍有 %d 个项目在此处"
+         ],
+         "You created this language yourself, so it cannot be put back from here. Add it again as a custom language with the same code and its content comes back with it.": [
+            "您自己创建了此语言，因此无法从此处恢复。使用相同的代码再次将其添加为自定义语言，其内容将随之恢复。"
+         ],
+         "This language has no country on record. Add it back from the language picker, which asks which country the content belongs to.": [
+            "此语言没有记录国家/地区。请从语言选择器中将其添加回来，它会询问内容属于哪个国家/地区。"
+         ],
+         "This language is not in WPML’s language list, so it cannot be added back from here.": [
+            "此语言不在 WPML 的语言列表中，因此无法从此处添加回来。"
+         ],
+         "Added back — press Save": [
+            "已添加回来 — 请按保存"
+         ],
+         "Put back": [
+            "放回"
+         ],
+         "Move": [
+            "移动"
+         ],
+         "Delete": [
+            "删除"
+         ],
+         "Removed languages": [
+            "已移除的语言"
+         ],
+         "These languages are off your site but still hold content. Removing a language keeps what it holds — from here you can put a language back, move its content into another language, or delete that content for good.": [
+            "这些语言已从您的站点移除，但仍保留内容。移除语言会保留其持有的内容 — 您可以从此处将语言放回、将其内容移动到另一种语言，或永久删除该内容。"
+         ],
+         "No language is left holding content. %s is now empty.": [
+            "没有语言再持有内容。“%s”现在为空。"
+         ],
+         "You do not have permission to move a language’s content.": [
+            "您没有移动语言内容的权限。"
+         ],
+         "Pick the language to move this content into, then try again.": [
+            "请选择要将此内容移动到的语言，然后重试。"
+         ],
+         "That is the same language. Pick a different one to move the content into.": [
+            "这是同一种语言。请选择一个不同的语言来移动内容。"
+         ],
+         "%s is back on your site, so there is nothing to move. Refresh the list.": [
+            "%s 已回到您的站点，因此没有什么可移动的。请刷新列表。"
+         ],
+         "%s no longer holds any content. Refresh the list.": [
+            "%s 不再持有任何内容。请刷新列表。"
+         ],
+         "%s is not one of your site’s active languages. Pick another one.": [
+            "%s 不是您站点的启用语言之一。请选择另一个。"
+         ],
+         "Moving content into a different language needs the confirmation below.": [
+            "将内容移动到不同的语言需要下面的确认。"
+         ],
+         "WPML could not move this content (%s).": [
+            "WPML 无法移动此内容 (%s)。"
+         ],
+         "Move them to the Trash — you have %d day to change your mind": [
+            "将它们移至回收站 — 您有 %d 天的时间可以改变主意"
+         ],
+         "Delete permanently — this site has the Trash disabled": [
+            "永久删除 — 此站点已禁用回收站"
+         ],
+         "Trash first, or delete now": [
+            "先放入回收站，或现在删除"
+         ],
+         "How to delete": [
+            "如何删除"
+         ],
+         "Items already in the Trash are left where they are.": [
+            "已在回收站中的项目将保留在原处。"
+         ],
+         "Loading languages": [
+            "正在加载语言"
+         ],
+         "The name of this language variant as it appears in the language switcher.": [
+            "此语言变体在语言切换器中显示的名称。"
+         ],
+         "Sets the regional variant of the language. Automatic Translation uses this to produce more accurate translations.": [
+            "设置语言的区域变体。自动翻译使用此设置来生成更准确的翻译。"
+         ],
+         "The flag shown next to this language in the front-end language switcher.": [
+            "前端语言切换器中显示在此语言旁边的旗帜。"
+         ],
+         "The WordPress locale, for example en_US. WordPress uses it to load the matching theme and plugin translation files.": [
+            "WordPress 区域设置，例如 en_US。WordPress 使用它来加载匹配的主题和插件翻译文件。"
+         ],
+         "Used to build this language’s page URLs, for example /en/.": [
+            "用于构建此语言的页面 URL，例如 /en/。"
+         ],
+         "The hreflang value added to the page HTML. Search engines use it to serve the correct language or regional version.": [
+            "添加到页面 HTML 的 hreflang 值。搜索引擎使用它来提供正确的语言或区域版本。"
+         ],
+         "Determines whether non-Latin characters in URLs are encoded. Leave it off unless your CDN, server, or redirects require ASCII-only URLs.": [
+            "确定是否对 URL 中的非拉丁字符进行编码。除非您的 CDN、服务器或重定向需要仅限 ASCII 的 URL，否则请保持关闭。"
+         ],
+         "Maps this custom language variant to a supported language so automatic translation engines can translate it. Choose “Match automatically” to let WPML find the closest supported language itself.": [
+            "将此自定义语言变体映射到受支持的语言，以便自动翻译引擎可以对其进行翻译。选择“自动匹配”让 WPML 自己寻找最接近的受支持语言。"
+         ],
+         "Only SVG flags can be uploaded.": [
+            "只能上传 SVG 格式的旗帜。"
+         ],
+         "The flag is too large. Maximum size is %s.": [
+            "旗帜太大。最大尺寸为 %s。"
+         ],
+         "The file could not be read.": [
+            "文件无法读取。"
+         ],
+         "The flag could not be saved. Please try again.": [
+            "旗帜无法保存。请重试。"
+         ],
+         "%1$s is already active, set to %2$s. Change its country instead of adding it again.": [
+            "%1$s 已启用，设置为 %2$s。请更改其国家/地区，而不是再次添加。"
+         ],
+         "%1$s is already active. Change its country instead of adding it again.": [
+            "%1$s 已启用。请更改其国家/地区，而不是再次添加。"
+         ],
+         "WPML couldn’t apply the change it detected for %1$s: %2$s still has an unsaved change. Save or revert it first.": [
+            "WPML 无法应用它为 %1$s 检测到的更改：%2$s 仍有未保存的更改。请先保存或还原它。"
+         ],
+         "Copied to clipboard.": [
+            "已复制到剪贴板。"
+         ],
+         "An earlier language save is paused. Resume or dismiss it first, then save this change.": [
+            "之前的语言保存已暂停。请先恢复或忽略它，然后保存此更改。"
+         ],
+         "WPML is still finishing an earlier language save. Wait for it to finish, then apply this change.": [
+            "WPML 仍在完成之前的语言保存。请等待其完成，然后再应用此更改。"
+         ],
+         "Language settings saved.": [
+            "语言设置已保存。"
+         ],
+         "No changes to save.": [
+            "没有要保存的更改。"
+         ],
+         "Couldn’t check your languages against WPML’s catalogue.": [
+            "无法根据 WPML 的目录检查您的语言。"
+         ],
+         "Reset done. %d more language still differs from WPML’s catalogue — open Reset language defaults again to put it back.": [
+            "重置完成。还有 %d 种语言仍与 WPML 的目录不同 — 请再次打开“重置语言默认值”以恢复它们。"
+         ],
+         "Your languages are back on WPML’s catalogue defaults.": [
+            "您的语言已恢复为 WPML 的目录默认值。"
+         ],
+         "Couldn’t reset the language defaults.": [
+            "无法重置语言默认值。"
+         ],
+         "%1$s \"%2$s\" is already used by %3$s.": [
+            "%3$s 已使用 %1$s “%2$s”。"
+         ],
+         "The country of a saved language can’t be changed right now — the background save this needs is switched off on this site.": [
+            "目前无法更改已保存语言的国家/地区 — 此站点已关闭此操作所需的后台保存功能。"
+         ],
+         "Cost to translate your content into %s": [
+            "将您的内容翻译为 %s 的费用"
+         ],
+         "Cost to translate your content into the new languages": [
+            "将您的内容翻译为新语言的费用"
+         ],
+         "Add this language": [
+            "添加此语言"
+         ],
+         "Costs are based on your current content settings. Adjust them from the Translations dashboard.": [
+            "费用基于您当前的内容设置。您可以从翻译仪表板进行调整。"
+         ],
+         "Manage and Hide Site Languages": [
+            "管理和隐藏网站语言"
+         ],
+         "Add, remove, configure, and hide your site’s translation languages. Click Edit on any row to edit its country, flag, codes, mapping, and visibility.": [
+            "添加、删除、配置和隐藏您站点的翻译语言。点击任意行上的“编辑”即可编辑其国家/地区、旗帜、代码、映射和可见性。"
+         ],
+         "WPML couldn’t communicate with our translation system. You can still edit and save your languages. Please contact support if the problem persists.": [
+            "WPML 无法与我们的翻译系统通信。您仍然可以编辑和保存您的语言。如果问题仍然存在，请联系支持。"
+         ],
+         "Please <support>contact our support</support> and provide the error details below.": [
+            "请 <support>联系我们的支持团队</support> 并提供下方的错误详情。"
+         ],
+         "Show more": [
+            "显示更多"
+         ],
+         "Show less": [
+            "显示更少"
+         ],
+         "Copy error details": [
+            "复制错误详情"
+         ],
+         "Copy": [
+            "复制"
+         ],
+         "Click to copy": [
+            "点击复制"
+         ],
+         "Reset language defaults…": [
+            "重置语言默认值…"
+         ],
+         "Saving…": [
+            "正在保存…"
+         ],
+         "Calculate Costs": [
+            "计算费用"
+         ],
+         "Content brought into the language you added": [
+            "已转入您所添加语言的内容"
+         ],
+         "The language was added. Its content did not move.": [
+            "语言已添加。其内容未移动。"
+         ],
+         "Verifying automatic translation compatibility": [
+            "正在验证自动翻译兼容性"
+         ],
+         "Updating language presets…": [
+            "正在更新语言预设…"
+         ],
+         "Language changes saved.": [
+            "语言更改已保存。"
+         ],
+         "Apply and save": [
+            "应用并保存"
+         ],
+         "Close modal": [
+            "关闭模态框"
+         ]
+      }
+   }
+}

@@ -1,38 +1,15 @@
 <?php
-/**
- * WPML Sunrise Script - START
- *
- * @author OnTheGoSystems
- * @version 3.7.0
- *
- * Place this script in the wp-content folder and add "define('SUNRISE', 'on');" in wp-config.php
- * in order to enable using different domains for different languages in multisite mode
- *
- * Experimental feature
- */
 
-/**
- * Class WPML_Sunrise_Lang_In_Domains
- *
- * @author OnTheGoSystems
- */
 class WPML_Sunrise_Lang_In_Domains {
 
-	/** @var  wpdb $wpdb */
 	private $wpdb;
 
-	/** @var  string $table_prefix */
 	private $table_prefix;
 
-	/** @var  string $current_blog */
 	private $current_blog;
 
-	/** @var  bool $no_recursion */
 	private $no_recursion;
 
-	/**
-	 * Method init
-	 */
 	public function init() {
 		if ( ! defined( 'WPML_SUNRISE_MULTISITE_DOMAINS' ) ) {
 			define( 'WPML_SUNRISE_MULTISITE_DOMAINS', true );
@@ -41,11 +18,6 @@ class WPML_Sunrise_Lang_In_Domains {
 		add_filter( 'query', array( $this, 'query_filter' ) );
 	}
 
-	/**
-	 * @param string $q
-	 *
-	 * @return string
-	 */
 	public function query_filter( $q ) {
 		$this->set_private_properties();
 
@@ -54,8 +26,9 @@ class WPML_Sunrise_Lang_In_Domains {
 			$this->no_recursion = true;
 
 			$domains = $this->extract_variables_from_query( $q, 'domain' );
+			$paths   = $this->extract_variables_from_query( $q, 'path' );
 
-			if ( $domains && $this->query_has_no_result( $q ) ) {
+			if ( $domains && $this->query_has_no_result( $domains, $paths ) ) {
 				$q = $this->transpose_query_if_one_domain_is_matching( $q, $domains );
 			}
 
@@ -65,9 +38,6 @@ class WPML_Sunrise_Lang_In_Domains {
 		return $q;
 	}
 
-	/**
-	 * method set_private_properties
-	 */
 	private function set_private_properties() {
 		global $wpdb, $table_prefix, $current_blog;
 
@@ -77,11 +47,6 @@ class WPML_Sunrise_Lang_In_Domains {
 
 	}
 
-	/**
-	 * @param string $query
-	 *
-	 * @return array
-	 */
 	private function extract_variables_from_query( $query, $field ) {
 		$variables = array();
 		$patterns  = array(
@@ -105,56 +70,92 @@ class WPML_Sunrise_Lang_In_Domains {
 		return $variables;
 	}
 
-	/**
-	 * @param string $q
-	 *
-	 * @return bool
-	 */
-	private function query_has_no_result( $q ) {
-		return ! (bool) $this->wpdb->get_row( $q );
+	private function query_has_no_result( array $domains, array $paths ) {
+		$wpdb = $this->wpdb;
+		$paths = $paths ?: array( null );
+
+		foreach ( $domains as $domain ) {
+			foreach ( $paths as $path ) {
+				if ( null === $path ) {
+					$match = $wpdb->get_row(
+						$wpdb->prepare(
+							"SELECT blog_id FROM {$wpdb->blogs} WHERE domain = %s LIMIT 1",
+							$domain
+						)
+					);
+				} else {
+					$match = $wpdb->get_row(
+						$wpdb->prepare(
+							"SELECT blog_id FROM {$wpdb->blogs} WHERE domain = %s AND path = %s LIMIT 1",
+							$domain,
+							$path
+						)
+					);
+				}
+
+				if ( $match ) {
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
-	/**
-	 * @param string $q
-	 * @param array  $domains
-	 *
-	 * @return string
-	 */
 	private function transpose_query_if_one_domain_is_matching( $q, $domains ) {
+		$wpdb = $this->wpdb;
+
 		$paths = $this->extract_variables_from_query( $q, 'path' );
 
-		// Create as many placeholders as $paths we have.
-		$placeholders = implode( ',', array_fill( 0, sizeof( $paths ), '%s' ) );
-
-		// Array with all the parameters for preparing the SQL.
-		$parameters   = $paths;
-		$parameters[] = BLOG_ID_CURRENT_SITE;
-
-		// The ORDER is there to get the default site at the end of the results.
-		$blogs = $this->wpdb->get_col(
-			$this->wpdb->prepare(
-				"SELECT blog_id FROM {$this->wpdb->blogs} WHERE path IN ($placeholders) ORDER BY blog_id = %d",
-				$parameters
+		$blogs = array_map(
+			'intval',
+			(array) get_sites(
+				array(
+					'fields'                 => 'ids',
+					'number'                 => 0,
+					'orderby'                => 'id',
+					'order'                  => 'ASC',
+					'path__in'               => $paths,
+					'update_site_cache'      => false,
+					'update_site_meta_cache' => false,
+				)
 			)
 		);
+
+		$default_site_key = array_search( (int) BLOG_ID_CURRENT_SITE, $blogs, true );
+		if ( false !== $default_site_key ) {
+			unset( $blogs[ $default_site_key ] );
+			$blogs[] = (int) BLOG_ID_CURRENT_SITE;
+		}
 
 		$found_blog_id = null;
 		foreach ( (array) $blogs as $blog_id ) {
 			$prefix = $this->table_prefix;
 
 			if ( $blog_id > 1 ) {
-				$prefix .= $blog_id . '_';
+				$prefix .= (int) $blog_id . '_';
 			}
 
-			$icl_settings = $this->wpdb->get_var( "SELECT option_value FROM {$prefix}options WHERE option_name = 'icl_sitepress_settings'" );
+			if ( 1 !== preg_match( '/^[A-Za-z0-9_]+$/D', $prefix ) ) {
+				continue;
+			}
+
+			$icl_settings = $this->wpdb->get_var(
+				"SELECT option_value FROM " . esc_sql( $prefix ) . "options WHERE option_name = 'icl_sitepress_settings'"
+			);
 
 			if ( $icl_settings ) {
-				$icl_settings = unserialize( $icl_settings );
+				$icl_settings = unserialize( $icl_settings, [ 'allowed_classes' => false ] );
 
-				if ( $icl_settings && 2 === (int) $icl_settings['language_negotiation_type'] ) {
+				if (
+					is_array( $icl_settings )
+					&& isset( $icl_settings['language_negotiation_type'], $icl_settings['language_domains'] )
+					&& is_array( $icl_settings['language_domains'] )
+					&& 2 === (int) $icl_settings['language_negotiation_type']
+				) {
 					$found_blog_id = $this->get_blog_id_from_domain( $domains, $icl_settings, $blog_id );
 					if ( $found_blog_id ) {
-						$q = $this->wpdb->prepare( "SELECT blog_id FROM {$this->wpdb->blogs} WHERE blog_id = %d", $found_blog_id );
+						$q = $this->wpdb->prepare( "SELECT blog_id FROM {$wpdb->blogs} WHERE blog_id = %d", $found_blog_id );
 						break;
 					}
 				}
@@ -164,13 +165,6 @@ class WPML_Sunrise_Lang_In_Domains {
 		return $q;
 	}
 
-	/**
-	 * @param array $domains
-	 * @param array $wpml_settings
-	 * @param int   $blog_id
-	 *
-	 * @return mixed
-	 */
 	private function get_blog_id_from_domain( array $domains, array $wpml_settings, $blog_id ) {
 		foreach ( $domains as $domain ) {
 			if ( in_array( 'http://' . $domain, $wpml_settings['language_domains'], true ) ) {
@@ -187,6 +181,3 @@ class WPML_Sunrise_Lang_In_Domains {
 $wpml_sunrise_lang_in_domains = new WPML_Sunrise_Lang_In_Domains();
 $wpml_sunrise_lang_in_domains->init();
 
-/**
- * WPML Sunrise Script - END
- */

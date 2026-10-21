@@ -4,19 +4,35 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "uk"
          },
-         "Draft — Pending review": [
-            "Чернетка – Чекає на перевірку"
+         "%1$s and %2$s": [
+            "%1$s та %2$s"
          ],
-         "Complete": [
-            "Завершений"
+         "Start batch sync": [
+            "Почати синхронізацію пакетів"
          ],
-         "Insufficient funds": [
-            "Недостатньо коштів"
+         "Cancel job": [
+            "Скасувати завдання"
+         ],
+         "Continue reviewing": [
+            "Продовжити перегляд"
+         ],
+         "Start downloading XLIFF file": [
+            "Почати завантаження файлу XLIFF"
          ],
          "Edit": [
             "Редагувати"
+         ],
+         "Get translation": [
+            "Отримати переклад"
+         ],
+         "Edit Translation": [
+            "Редагувати переклад"
+         ],
+         "Continue Translating": [
+            "Продовжити переклад"
          ],
          "Resign": [
             "Відмовитися"
@@ -27,32 +43,474 @@
          "Translate": [
             "Перекласти"
          ],
+         "Take and Translate": [
+            "Взяти та перекласти"
+         ],
+         "This job was created by Translate Everything and cannot be cancelled on its own. To stop it, turn off Translate Everything from the Translation Dashboard.": [
+            "Це завдання було створено функцією «Translate Everything», тому його неможливо скасувати окремо. Щоб зупинити його, вимкніть «Translate Everything» на панелі керування перекладами."
+         ],
          "View": [
             "Переглянути"
          ],
-         "Delete Translations": [
-            "Видалити переклади"
-         ],
-         "Keep Translations as Draft": [
-            "Залишити переклади у вигляді чернеток"
-         ],
          "Never mind. I want to review these translations.": [
-            "Не треба. Я хочу перевірити ці переклади."
+            "Неважливо. Я хочу переглянути ці переклади."
          ],
          "Cancel": [
             "Скасувати"
          ],
          "This will remove the selected jobs from the Translations Queue without publishing them. What would you like to do with the translations?": [
-            "Вибрані замовлення будуть видалені з черги перекладів без публікування. Що зробити з перекладами?"
+            "Це видалить вибрані завдання з черги перекладів без їх публікації. Що ви хочете зробити з перекладами?"
          ],
          "Cancel Translation Review": [
-            "Скасувати редагування перекладів"
+            "Скасувати перегляд перекладу"
+         ],
+         "Delete Translations": [
+            "Видалити переклади"
+         ],
+         "Keep Translations as Draft": [
+            "Зберегти переклади як чернетки"
+         ],
+         "Bulk actions": [
+            "Масові дії"
+         ],
+         "Apply": [
+            "Застосувати"
+         ],
+         "Actions applied to multiple translation jobs can take a few seconds. Please do not leave the page.": [
+            "Застосування дій до кількох завдань із перекладу може тривати кілька секунд. Будь ласка, не залишайте сторінку."
+         ],
+         "Actions applied to multiple translation jobs can take a few minutes. Please do not leave the page.": [
+            "Застосування дій до кількох завдань із перекладу може тривати кілька хвилин. Будь ласка, не залишайте сторінку."
+         ],
+         "Select translator": [
+            "Вибрати перекладача"
+         ],
+         "Assign": [
+            "Призначити"
+         ],
+         "Cancelled": [
+            "Скасовано"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "Автоматичний переклад неодноразово завершувався помилкою, і WPML припинив спроби. Надішліть повторно або видаліть завдання з панелі керування перекладами або скасуйте його тут."
+         ],
+         "Needs translation": [
+            "Потребує перекладу"
+         ],
+         "Needs update": [
+            "Потребує оновлення"
+         ],
+         "Translation ready to download": [
+            "Переклад готовий до завантаження"
+         ],
+         "Completed": [
+            "Завершено"
+         ],
+         "Failed - needs attention": [
+            "Помилка — потребує уваги"
+         ],
+         "%s terms are published immediately because they don't support draft mode.": [
+            "%s терміни публікуються негайно, оскільки вони не підтримують режим чернетки."
+         ],
+         "%s are immediately published because they don't support draft mode.": [
+            "%s публікуються негайно, оскільки вони не підтримують режим чернетки."
+         ],
+         "Published — Pending review": [
+            "Опубліковано — Очікує на перегляд"
+         ],
+         "Draft — Pending review": [
+            "Чернетка — Очікує на перегляд"
+         ],
+         "Review in progress": [
+            "Перегляд у процесі"
+         ],
+         "Published — Review in progress": [
+            "Опубліковано — Перегляд у процесі"
+         ],
+         "Draft — Review in progress": [
+            "Чернетка — Перегляд у процесі"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "Очікування вашої оплати в міру використання"
+         ],
+         "Waiting for payment": [
+            "Очікування оплати"
+         ],
+         "Insufficient funds": [
+            "Недостатньо коштів"
+         ],
+         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
+            "Автоматичний переклад було призупинено через тимчасову помилку, він відновиться автоматично — жодних дій не потрібно. Якщо статус не зміниться протягом приблизно 30 хвилин, зверніться до служби підтримки WPML."
+         ],
+         "In progress": [
+            "У процесі"
+         ],
+         "View original": [
+            "Переглянути оригінал"
+         ],
+         "(no title)": [
+            "(без заголовка)"
+         ],
+         "Automatic translation": [
+            "Автоматичний переклад"
+         ],
+         "TP ID: %d": [
+            "ID ТП: %d"
+         ],
+         "Reset": [
+            "Скинути"
+         ],
+         "Filter": [
+            "Фільтрувати"
+         ],
+         "Reference ID (%s)": [
+            "Референс-ID (%s)"
+         ],
+         "Job ID (%s)": [
+            "ID завдання (%s)"
+         ],
+         "Title (%s)": [
+            "Заголовок (%s)"
+         ],
+         "Type (%s)": [
+            "Тип (%s)"
+         ],
+         "Language (%s)": [
+            "Мова (%s)"
+         ],
+         "Batch name (%s)": [
+            "Назва пакета (%s)"
+         ],
+         "Status (%s)": [
+            "Статус (%s)"
+         ],
+         "Translated by (%s)": [
+            "Перекладач (%s)"
+         ],
+         "Sent date (%s)": [
+            "Дата надсилання (%s)"
+         ],
+         "Deadline (%s)": [
+            "Кінцевий термін (%s)"
+         ],
+         "Clear all filters": [
+            "Очистити всі фільтри"
+         ],
+         "Any Translation Service": [
+            "Будь-яка служба перекладу"
+         ],
+         "Any WordPress Translator": [
+            "Будь-який перекладач WordPress"
+         ],
+         "From": [
+            "З"
+         ],
+         "To": [
+            "До"
+         ],
+         "Anyone": [
+            "Будь-хто"
+         ],
+         "Include jobs from translation services": [
+            "Включити завдання від служб перекладу"
+         ],
+         "All types": [
+            "Усі типи"
+         ],
+         "Select visible columns": [
+            "Вибрати видимі колонки"
+         ],
+         "No Data": [
+            "Немає даних"
+         ],
+         "Sort descending": [
+            "Сортувати за спаданням"
+         ],
+         "Sort ascending": [
+            "Сортувати за зростанням"
+         ],
+         "Cancel sorting": [
+            "Скасувати сортування"
+         ],
+         "The bulk action is running...": [
+            "Виконується масова дія..."
+         ],
+         "Export all jobs to XLIFF 1.0": [
+            "Експортувати всі завдання в XLIFF 1.0"
+         ],
+         "Export all filtered jobs to XLIFF 1.0": [
+            "Експортувати всі відфільтровані завдання в XLIFF 1.0"
+         ],
+         "Export all jobs to XLIFF 1.1": [
+            "Експортувати всі завдання в XLIFF 1.1"
+         ],
+         "Export all filtered jobs to XLIFF 1.1": [
+            "Експортувати всі відфільтровані завдання в XLIFF 1.1"
+         ],
+         "Export all jobs to XLIFF 1.2": [
+            "Експортувати всі завдання в XLIFF 1.2"
+         ],
+         "Export all filtered jobs to XLIFF 1.2": [
+            "Експортувати всі відфільтровані завдання в XLIFF 1.2"
+         ],
+         "Export": [
+            "Експортувати"
+         ],
+         "Select File": [
+            "Вибрати файл"
+         ],
+         ".xliff .zip": [
+            ".xliff .zip"
+         ],
+         "Importing": [
+            "Імпортування"
+         ],
+         "Import": [
+            "Імпортувати"
+         ],
+         "Import / Export XLIFF": [
+            "Імпорт / Експорт XLIFF"
+         ],
+         "Actions": [
+            "Дії"
+         ],
+         "Batch name": [
+            "Назва пакета"
+         ],
+         "Filter by %s": [
+            "Фільтрувати за %s"
+         ],
+         "WPML's id for this translation. It stays the same when the job is sent again.": [
+            "ID WPML для цього перекладу. Він залишається незмінним при повторному надсиланні завдання."
+         ],
+         "The number in exported XLIFF file names. It changes when the job is sent again.": [
+            "Номер в іменах експортованих файлів XLIFF. Він змінюється при повторному надсиланні завдання."
+         ],
+         "Title": [
+            "Заголовок"
+         ],
+         "Approve translation reviews": [
+            "Схвалити перегляди перекладів"
+         ],
+         "Cancel jobs": [
+            "Скасувати завдання"
+         ],
+         "Cancel translation reviews": [
+            "Скасувати перегляди перекладів"
+         ],
+         "Export to XLIFF %s": [
+            "Експортувати в XLIFF %s"
+         ],
+         "Get translations": [
+            "Отримати переклади"
+         ],
+         "This action does not apply to any of the selected translation jobs": [
+            "Ця дія не застосовується до жодного з вибраних завдань із перекладу"
+         ],
+         "%d translation is still in progress. You will not be charged for it.": [
+            "%d переклад усе ще в процесі. Плата за нього не стягуватиметься.",
+            "%d переклади все ще в процесі. Плата за них не стягуватиметься.",
+            "%d перекладів усе ще в процесі. Плата за них не стягуватиметься."
+         ],
+         "usage ledger": [
+            "журнал використання"
+         ],
+         "Cancelled. %1$d translation was in progress; its %2$s words are back on your account. Details:": [
+            "Скасовано. %1$d переклад був у процесі; його %2$s слів повернуто на ваш рахунок. Детальніше:",
+            "Скасовано. %1$d переклади були у процесі; їхні %2$s слів повернуто на ваш рахунок. Детальніше:",
+            "Скасовано. %1$d перекладів були у процесі; їхні %2$s слів повернуто на ваш рахунок. Детальніше:"
+         ],
+         "Cancelled. We asked to return the words for %d translation in progress; the usage ledger shows it once confirmed.": [
+            "Скасовано. Ми надіслали запит на повернення слів за %d переклад у процесі; вони з’являться в журналі використання після підтвердження.",
+            "Скасовано. Ми надіслали запит на повернення слів за %d переклади в процесі; вони з’являться в журналі використання після підтвердження.",
+            "Скасовано. Ми надіслали запит на повернення слів за %d перекладів в процесі; вони з’являться в журналі використання після підтвердження."
+         ],
+         "Translations have been downloaded": [
+            "Переклади завантажено"
+         ],
+         "Translation has been downloaded": [
+            "Переклад завантажено"
+         ],
+         "Translations could not be downloaded": [
+            "Не вдалося завантажити переклади"
+         ],
+         "Translation could not be downloaded": [
+            "Не вдалося завантажити переклад"
+         ],
+         "paused after repeated failures, will be retried automatically — %s": [
+            "призупинено після повторних невдач, буде повторено автоматично — %s"
+         ],
+         "%d translation could not be downloaded": [
+            "Не вдалося завантажити %d переклад",
+            "Не вдалося завантажити %d переклади",
+            "Не вдалося завантажити %d перекладів"
+         ],
+         "%d translation has been downloaded": [
+            "%d переклад завантажено",
+            "%d переклади завантажено",
+            "%d перекладів завантажено"
+         ],
+         "No valid jobs selected to approve translations reviews!": [
+            "Не вибрано жодного дійсного завдання для схвалення переглядів перекладів!"
+         ],
+         "%1$s (%2$s)": [
+            "%1$s (%2$s)"
+         ],
+         "%s was not approved because it is still open for editing.": [
+            "%s не було схвалено, оскільки він усе ще відкритий для редагування.",
+            "%s не були схвалені, оскільки вони все ще відкриті для редагування.",
+            "%s не були схвалені, оскільки вони все ще відкриті для редагування."
+         ],
+         "Approving it now would publish the translation without the edits.": [
+            "Схвалення його зараз призведе до публікації перекладу без внесених правок.",
+            "Схвалення їх зараз призведе до публікації перекладів без внесених правок.",
+            "Схвалення їх зараз призведе до публікації перекладів без внесених правок."
+         ],
+         "Click Continue reviewing, finish the edits and click Complete in the editor.": [
+            "Натисніть «Продовжити перегляд», завершіть редагування та натисніть «Завершити» в редакторі."
+         ],
+         "Then approve the translation here.": [
+            "Потім схваліть переклад тут.",
+            "Потім схваліть переклади тут.",
+            "Потім схваліть переклади тут."
+         ],
+         "If the editor does not open, send the content to translation again from the Translation Dashboard.": [
+            "Якщо редактор не відкривається, надішліть вміст на переклад повторно з панелі керування перекладами."
+         ],
+         "Approving translations reviews failed!": [
+            "Помилка схвалення переглядів перекладів!"
+         ],
+         "Failed approving translations for the following posts: ": [
+            "Не вдалося схвалити переклади для таких дописів: "
+         ],
+         "Translations reviews approved successfully!": [
+            "Перегляди перекладів успішно схвалено!"
+         ],
+         "The translator has been assigned to the job": [
+            "Перекладача призначено на завдання"
+         ],
+         "The translator could not be assigned to the job": [
+            "Не вдалося призначити перекладача на завдання"
+         ],
+         "The jobs have been cancelled": [
+            "Завдання скасовано"
+         ],
+         "The job has been cancelled": [
+            "Завдання скасовано"
+         ],
+         "The jobs could not be cancelled": [
+            "Не вдалося скасувати завдання"
+         ],
+         "The job could not be cancelled": [
+            "Не вдалося скасувати завдання"
+         ],
+         "Translation reviews have been canceled": [
+            "Перегляди перекладів скасовано"
+         ],
+         "Translation review has been canceled": [
+            "Перегляд перекладу скасовано"
+         ],
+         "Translation reviews could not be canceled": [
+            "Не вдалося скасувати перегляди перекладів"
+         ],
+         "Translation review could not be canceled": [
+            "Не вдалося скасувати перегляд перекладу"
+         ],
+         "Translated by": [
+            "Перекладач"
+         ],
+         "Sent on": [
+            "Надіслано"
+         ],
+         "Deadline": [
+            "Кінцевий термін"
+         ],
+         "Status": [
+            "Статус"
          ],
          "Pending review": [
-            "Очікується перевірка"
+            "Очікує на перегляд"
+         ],
+         "Reference ID": [
+            "Референс-ID"
+         ],
+         "Job ID": [
+            "ID завдання"
+         ],
+         "Type": [
+            "Тип"
          ],
          "Languages": [
             "Мови"
+         ],
+         "Download XLIFF file couldn't be finished": [
+            "Не вдалося завершити завантаження файлу XLIFF"
+         ],
+         "Could not load jobs for export": [
+            "Не вдалося завантажити завдання для експорту"
+         ],
+         "The export to XLIFF failed": [
+            "Помилка експорту в XLIFF"
+         ],
+         "Imported %d jobs": [
+            "Імпортовано %d завдань"
+         ],
+         "Imported one job": [
+            "Імпортовано одне завдання"
+         ],
+         "Could not import any job": [
+            "Не вдалося імпортувати жодного завдання"
+         ],
+         "Import failed!": [
+            "Помилка імпорту!"
+         ],
+         "Loading translations queue": [
+            "Завантаження черги перекладів"
+         ],
+         "Loading translation jobs": [
+            "Завантаження завдань із перекладу"
+         ],
+         "Jobs could not be loaded": [
+            "Не вдалося завантажити завдання"
+         ],
+         "This translator cannot translate this language pair.": [
+            "Цей перекладач не може перекладати цю мовну пару."
+         ],
+         "This translator is no longer available. Reload the page and choose a translator again.": [
+            "Цей перекладач більше не доступний. Оновіть сторінку та виберіть перекладача знову."
+         ],
+         "Specify some jobs to resign": [
+            "Вкажіть завдання, від яких потрібно відмовитися"
+         ],
+         "We could not resign jobs: %s": [
+            "Не вдалося відмовитися від завдань: %s"
+         ],
+         "Resigned from jobs": [
+            "Відмовилися від завдань"
+         ],
+         "Resigned from job": [
+            "Відмовилися від завдання"
+         ],
+         "Failed to resign from jobs": [
+            "Не вдалося відмовитися від завдань"
+         ],
+         "The Advanced Editor jobs synchronization has failed": [
+            "Синхронізація завдань Advanced Editor не вдалася"
+         ],
+         "Synchronization with the Professional Translation service has failed": [
+            "Синхронізація зі службою професійного перекладу не вдалася"
+         ],
+         "%d batches are still being processed by the translation service. Check again in a few minutes.": [
+            "%d пакети все ще обробляються службою перекладу. Перевірте ще раз за кілька хвилин."
+         ],
+         "Batch sync finished successfully!": [
+            "Синхронізацію пакетів успішно завершено!"
+         ],
+         "Batch sync couldn't be finished": [
+            "Не вдалося завершити синхронізацію пакетів"
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "Наша система перекладу не прийняла цей запит (відповідь: %d). Зачекайте хвилину та спробуйте ще раз. Якщо проблема не зникне, зверніться до служби підтримки WPML."
          ]
       }
    }

@@ -2,10 +2,8 @@
 
 class WPML_Display_As_Translated_Message_For_New_Post implements IWPML_Action {
 
-	/** @var SitePress $sitepress */
 	private $sitepress;
 
-	/** @var WPML_Notices $notices */
 	private $notices;
 
 	public function __construct( SitePress $sitepress, WPML_Notices $notices ) {
@@ -43,6 +41,7 @@ class WPML_Display_As_Translated_Message_For_New_Post implements IWPML_Action {
 		$plural_name    = strtolower( $post_type->labels->name );
 
 		$output = esc_html(
+			/* translators: Notice shown when a post is being written in a language that is not the language of the site. %1$s: the name of the content type in the singular, in both places, %2$s: its name in the plural, in both places, %3$s: the language being written in, in both places, %4$s: the language of the site. */
 			sprintf( __( "You are creating a %1\$s in %3\$s and you've set %2\$s to display even when not translated. Please note that this %1\$s will only appear in %3\$s. Only %2\$s that you create in the site's default language (%4\$s) will appear in all the site's languages.", 'sitepress' ),
 				$singular_name,
 				$plural_name,
@@ -51,7 +50,7 @@ class WPML_Display_As_Translated_Message_For_New_Post implements IWPML_Action {
 			)
 		);
 		$output .= '<br /><br />';
-		$output .= '<a href="https://wpml.org/?page_id=1451509" target="_blank">' . esc_html__( 'Read how this works', 'sitepress' ) . '</a>';
+		$output .= '<a href="' . esc_url( \WPML\OutboundLinks\OutboundLinks::to( 'https://wpml.org/documentation/translating-your-contents/displaying-untranslated-content-on-pages-in-secondary-languages/', array( 'medium' => 'notice', 'campaign' => 'display-as-translated' ) ) ) . '" target="_blank">' . esc_html__( 'Read how this works', 'sitepress' ) . '</a>';
 
 		return $output;
 

@@ -4,36 +4,20 @@ class WPML_LS_Migration {
 
 	const ICL_OPTIONS_SLUG = 'icl_sitepress_settings';
 
-	/* @var WPML_LS_Settings $settings */
 	private $settings;
 
-	/* @var SitePress $sitepress */
 	private $sitepress;
 
-	/* @var WPML_LS_Slot_Factory $slot_factory */
 	private $slot_factory;
 
-	/* @var array $old_settings */
 	private $old_settings;
 
-	/**
-	 * WPML_LS_Migration constructor.
-	 *
-	 * @param WPML_LS_Settings     $settings
-	 * @param SitePress            $sitepress
-	 * @param WPML_LS_Slot_Factory $slot_factory
-	 */
 	public function __construct( $settings, $sitepress, $slot_factory ) {
 		$this->settings     = $settings;
 		$this->sitepress    = $sitepress;
 		$this->slot_factory = $slot_factory;
 	}
 
-	/**
-	 * @param array $old_settings
-	 *
-	 * @return mixed
-	 */
 	public function get_converted_settings( $old_settings ) {
 		$this->old_settings = is_array( $old_settings ) ? $old_settings : array();
 
@@ -53,9 +37,6 @@ class WPML_LS_Migration {
 		return $new_settings;
 	}
 
-	/**
-	 * @return array
-	 */
 	private function get_converted_global_settings() {
 		$new_settings['additional_css']  = isset( $this->old_settings['icl_additional_css'] )
 			? $this->old_settings['icl_additional_css'] : '';
@@ -65,9 +46,6 @@ class WPML_LS_Migration {
 		return $new_settings;
 	}
 
-	/**
-	 * @return array
-	 */
 	private function get_converted_menus_settings() {
 		$menus_settings = array();
 
@@ -96,9 +74,6 @@ class WPML_LS_Migration {
 		return $menus_settings;
 	}
 
-	/**
-	 * @return array
-	 */
 	private function get_converted_sidebars_settings() {
 		$sidebars_settings = array();
 
@@ -127,6 +102,7 @@ class WPML_LS_Migration {
 					'display_names_in_current_lang' => $this->get_old_setting( 'icl_lso_display_lang' ),
 					'display_link_for_current_lang' => 1,
 					'widget_title'                  => $this->get_old_setting( 'icl_widget_title_show' )
+						/* translators: Name of the Languages screen: in the WPML menu, as the title of that screen, and as a column heading listing the languages of a piece of content. Plural noun. */
 						? esc_html__( 'Languages', 'sitepress' ) : '',
 				);
 
@@ -140,9 +116,6 @@ class WPML_LS_Migration {
 		return $sidebars_settings;
 	}
 
-	/**
-	 * @return array
-	 */
 	private function get_converted_footer_settings() {
 
 		$s = array(
@@ -161,9 +134,6 @@ class WPML_LS_Migration {
 		return $this->slot_factory->get_slot( $s );
 	}
 
-	/**
-	 * @return array
-	 */
 	private function get_converted_post_translations_settings() {
 		$s = array(
 			'slot_group'                    => 'statics',
@@ -182,9 +152,6 @@ class WPML_LS_Migration {
 		return $this->slot_factory->get_slot( $s );
 	}
 
-	/**
-	 * @return array
-	 */
 	private function get_converted_shortcode_actions_settings() {
 		$s = array(
 			'slot_group'                    => 'statics',
@@ -202,11 +169,6 @@ class WPML_LS_Migration {
 		return $this->slot_factory->get_slot( $s );
 	}
 
-	/**
-	 * @param string $context
-	 *
-	 * @return array
-	 */
 	private function get_color_picker_settings_for( $context ) {
 		$ret = array();
 
@@ -233,26 +195,16 @@ class WPML_LS_Migration {
 		return array_filter( $ret );
 	}
 
-	/**
-	 * @param string $key
-	 *
-	 * @return mixed|string|int|null
-	 */
 	private function get_old_setting( $key ) {
 		return isset( $this->old_settings[ $key ] ) ? $this->old_settings[ $key ] : null;
 	}
 
-	/**
-	 * @param string $slot_type
-	 *
-	 * @return mixed
-	 */
 	private function get_template_for( $slot_type ) {
 		$templates       = $this->settings->get_core_templates();
 		$type            = 'dropdown';
-		$old_type        = $this->get_old_setting( 'icl_lang_sel_type' );        // dropdown | list
-		$old_stype       = $this->get_old_setting( 'icl_lang_sel_stype' );       // classic | mobile-auto | mobile
-		$old_orientation = $this->get_old_setting( 'icl_lang_sel_orientation' ); // vertical | horizontal
+		$old_type        = $this->get_old_setting( 'icl_lang_sel_type' );
+		$old_stype       = $this->get_old_setting( 'icl_lang_sel_stype' );
+		$old_orientation = $this->get_old_setting( 'icl_lang_sel_orientation' );
 
 		if ( $slot_type === 'menus' ) {
 			$type = 'menu-item';
@@ -273,9 +225,6 @@ class WPML_LS_Migration {
 		return $templates[ $type ];
 	}
 
-	/**
-	 * @return bool
-	 */
 	private function has_old_keys() {
 		$result   = false;
 		$old_keys = array(
@@ -303,31 +252,26 @@ class WPML_LS_Migration {
 		return $result;
 	}
 
-	/**
-	 * @since 3.7.0 Convert menu LS handled now by ID instead of slugs previously
-	 *
-	 * @param array $settings
-	 *
-	 * @return array
-	 */
 	public function convert_menu_ids( $settings ) {
 		if ( $settings['menus'] ) {
 
 			foreach ( $settings['menus'] as $slug => $menu_slot ) {
 
-				/** @var WPML_LS_Menu_Slot $menu_slot */
 				if ( is_string( $slug ) ) {
 
-					$current_lang = $this->sitepress->get_current_language();
 					$this->sitepress->switch_lang( $this->sitepress->get_default_language() );
-					$menu                   = wp_get_nav_menu_object( $slug );
-					$new_id                 = $menu->term_id;
-					$slot_args              = $menu_slot->get_model();
-					$slot_args['slot_slug'] = $new_id;
-					$new_slot               = $this->slot_factory->get_slot( $slot_args );
-					unset( $settings['menus'][ $slug ] );
-					$settings['menus'][ $new_id ] = $new_slot;
-					$this->sitepress->switch_lang( $current_lang );
+
+					try {
+						$menu                   = wp_get_nav_menu_object( $slug );
+						$new_id                 = $menu->term_id;
+						$slot_args              = $menu_slot->get_model();
+						$slot_args['slot_slug'] = $new_id;
+						$new_slot               = $this->slot_factory->get_slot( $slot_args );
+						unset( $settings['menus'][ $slug ] );
+						$settings['menus'][ $new_id ] = $new_slot;
+					} finally {
+						$this->sitepress->switch_lang();
+					}
 				}
 			}
 		}

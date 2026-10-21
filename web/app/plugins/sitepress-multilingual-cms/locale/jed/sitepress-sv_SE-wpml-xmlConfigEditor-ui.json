@@ -4,10 +4,11 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "no"
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "sv_SE"
          },
          "The wpml-config.xml file in the root folder of your theme and plugins tells WPML which content is translatable. You can override these settings with your own custom settings by adding them below.": [
-            "Filen wpml-config.xml i rotmappen i ditt tema och plugins berättar för WPML vilket innehåll som är översättningsbart. Du kan åsidosätta dessa inställningar med dina egna anpassade inställningar genom att lägga till dem nedan."
+            "Filen wpml-config.xml i rotmappen för ditt tema och dina tillägg talar om för WPML vilket innehåll som är översättningsbart. Du kan åsidosätta dessa inställningar med dina egna anpassade inställningar genom att lägga till dem nedan."
          ],
          "Read more about language configuration files.": [
             "Läs mer om språkkonfigurationsfiler."
@@ -18,14 +19,20 @@
          "Error": [
             "Fel"
          ],
+         "Configuration saved.": [
+            "Konfigurationen har sparats."
+         ],
+         "Could not save the configuration — please retry.": [
+            "Det gick inte att spara konfigurationen – försök igen."
+         ],
          "Shortcuts": [
             "Genvägar"
          ],
          "Fold/Unfold code": [
-            "Dölj/visa kod"
+            "Fäll ihop/fäll ut kod"
          ],
          "Auto format": [
-            "Autoformat"
+            "Autoformatera"
          ]
       }
    }

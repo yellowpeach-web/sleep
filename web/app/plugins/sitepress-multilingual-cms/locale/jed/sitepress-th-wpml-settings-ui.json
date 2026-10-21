@@ -1,0 +1,228 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "th"
+         },
+         "%1$s and %2$s": [
+            "%1$s และ %2$s"
+         ],
+         "You must use the Advanced Translation Editor if you want to translate your content automatically.": [
+            "คุณต้องใช้ตัวแก้ไขการแปลขั้นสูงหากต้องการแปลเนื้อหาของคุณโดยอัตโนมัติ"
+         ],
+         "Synchronize translators and translation managers with ATE": [
+            "ซิงโครไนซ์นักแปลและผู้จัดการการแปลกับ ATE"
+         ],
+         "Please try again in a few minutes. If the problem persists, please contact %1$sWPML support%2$s.": [
+            "โปรดลองอีกครั้งในอีกไม่กี่นาที หากปัญหายังคงอยู่ โปรดติดต่อ %1$sฝ่ายสนับสนุน WPML%2$s"
+         ],
+         "The number of translated terms carrying %s could not be counted.": [
+            "ไม่สามารถนับจำนวนคำศัพท์ที่แปลแล้วซึ่งมี %s ได้"
+         ],
+         "There are no translated terms carrying %s yet that need translating again. The change applies to new translations.": [
+            "ยังไม่มีคำศัพท์ที่แปลแล้วซึ่งมี %s ที่ต้องแปลอีกครั้ง การเปลี่ยนแปลงนี้จะมีผลกับคำแปลใหม่"
+         ],
+         "%1$s translated term carries %2$s — only new translations are affected.": [
+            "มีคำศัพท์ที่แปลแล้ว %1$s คำที่มี %2$s — จะมีผลเฉพาะกับคำแปลใหม่เท่านั้น"
+         ],
+         "The number of translated posts carrying %s could not be counted.": [
+            "ไม่สามารถนับจำนวนโพสต์ที่แปลแล้วซึ่งมี %s ได้"
+         ],
+         "There are no translated posts carrying %s yet that need translating again. The change applies to new translations.": [
+            "ยังไม่มีโพสต์ที่แปลแล้วซึ่งมี %s ที่ต้องแปลอีกครั้ง การเปลี่ยนแปลงนี้จะมีผลกับคำแปลใหม่"
+         ],
+         "%1$s translated post carries %2$s — it will be marked as needing a translation update.": [
+            "มีโพสต์ที่แปลแล้ว %1$s โพสต์ที่มี %2$s — โพสต์เหล่านี้จะถูกทำเครื่องหมายว่าจำเป็นต้องอัปเดตการแปล"
+         ],
+         "%1$s translated post carries %2$s — its translation will show the original's value from now on.": [
+            "มีโพสต์ที่แปลแล้ว %1$s โพสต์ที่มี %2$s — คำแปลของโพสต์เหล่านี้จะแสดงค่าของต้นฉบับนับจากนี้เป็นต้นไป"
+         ],
+         "%1$s translated post carries %2$s — translations without a value get the original's once.": [
+            "มีโพสต์ที่แปลแล้ว %1$s โพสต์ที่มี %2$s — คำแปลที่ไม่มีค่าจะได้รับค่าของต้นฉบับหนึ่งครั้ง"
+         ],
+         "%1$s translated post carries %2$s — it is no longer translated and what its translations hold stays as it is.": [
+            "มีโพสต์ที่แปลแล้ว %1$s โพสต์ที่มี %2$s — โพสต์เหล่านี้จะไม่ถูกแปลอีกต่อไป และสิ่งที่อยู่ในคำแปลจะคงเดิมไว้"
+         ],
+         "Review these translation setting changes": [
+            "รีวิวการเปลี่ยนแปลงการตั้งค่าการแปลเหล่านี้"
+         ],
+         "Cancel": [
+            "ยกเลิก"
+         ],
+         "Save changes": [
+            "บันทึกการเปลี่ยนแปลง"
+         ],
+         "Also update the existing posts now": [
+            "อัปเดตโพสต์ที่มีอยู่ตอนนี้ด้วย"
+         ],
+         "Also update the %s existing post now": [
+            "อัปเดตโพสต์ที่มีอยู่ %s โพสต์ตอนนี้ด้วย"
+         ],
+         "Only apply to new translations": [
+            "ใช้กับการแปลใหม่เท่านั้น"
+         ],
+         "Once saved, WPML automatically sends new and updated posts with this field to translation. This may use translation words.": [
+            "เมื่อบันทึกแล้ว WPML จะส่งโพสต์ใหม่และโพสต์ที่อัปเดตซึ่งมีฟิลด์เหล่านี้ไปแปลโดยอัตโนมัติ ซึ่งอาจมีการใช้คำสำหรับการแปล"
+         ],
+         "Once saved, WPML automatically sends new and updated terms with this key to translation. This may use translation words.": [
+            "เมื่อบันทึกแล้ว WPML จะส่งคำศัพท์ใหม่และคำศัพท์ที่อัปเดตซึ่งมีคีย์เหล่านี้ไปแปลโดยอัตโนมัติ ซึ่งอาจมีการใช้คำสำหรับการแปล"
+         ],
+         "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "ไม่ว่าจะเลือกทางใด การตั้งค่าใหม่จะถูกบันทึก หากเลือก “ใช้กับคำแปลใหม่เท่านั้น” คำแปลที่มีอยู่เดิมทั้งหมดจะคงเดิมทุกประการ"
+         ],
+         "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
+            "ฟิลด์ที่กำหนดเอง %1$s ฟิลด์กลายเป็นฟิลด์ที่แปลได้จากภายนอกหน้าจอนี้: %2$s โปรดตัดสินใจว่าจะให้เกิดอะไรขึ้นกับคำแปลที่มีอยู่แล้ว"
+         ],
+         "Review this field": [
+            "รีวิวฟิลด์เหล่านี้"
+         ],
+         "Save": [
+            "บันทึก"
+         ],
+         "Calculate Costs": [
+            "คำนวณค่าใช้จ่าย"
+         ],
+         "WPML will automatically translate %1$s into %2$s.": [
+            "WPML จะแปล %1$s เป็น %2$s โดยอัตโนมัติ"
+         ],
+         "Automatic translation uses translation words.": [
+            "การแปลอัตโนมัติมีการใช้คำสำหรับการแปล"
+         ],
+         "Are you OK with this?": [
+            "คุณตกลงตามนี้หรือไม่?"
+         ],
+         "Are you sure you want to change the translation option?": [
+            "คุณแน่ใจหรือไม่ว่าต้องการเปลี่ยนตัวเลือกการแปล?"
+         ],
+         "Yes, continue": [
+            "ใช่ ดำเนินการต่อ"
+         ],
+         "No, go back": [
+            "ไม่ กลับไป"
+         ],
+         "%d term": [
+            "%d รายการ"
+         ],
+         "%d language": [
+            "%d ภาษา"
+         ],
+         "%s will be translated.": [
+            "%s จะถูกแปล"
+         ],
+         "Change the URLs of existing translations?": [
+            "เปลี่ยน URL ของคำแปลที่มีอยู่หรือไม่?"
+         ],
+         "Counting the existing translations this affects… %1$s of %2$s posts.": [
+            "กำลังนับคำแปลที่มีอยู่ซึ่งได้รับผลกระทบ… %1$s จาก %2$s โพสต์"
+         ],
+         "Counting the existing translations this affects…": [
+            "กำลังนับคำแปลที่มีอยู่ซึ่งได้รับผลกระทบ…"
+         ],
+         "Also update the %s existing translation now — its URL changes": [
+            "อัปเดตคำแปลที่มีอยู่ %s รายการตอนนี้ด้วย — URL ของคำแปลจะเปลี่ยนไป"
+         ],
+         "Either way the setting is saved. With \"Only apply to new translations\" every existing translation keeps its slug.": [
+            "ไม่ว่าจะเลือกทางใด การตั้งค่าจะถูกบันทึก หากเลือก “ใช้กับคำแปลใหม่เท่านั้น” คำแปลที่มีอยู่เดิมทั้งหมดจะใช้ Slug เดิม"
+         ],
+         "No existing translation gets a different URL from this option. It does not apply to new translations either. None of your active languages has \"Encode URL\" turned on.": [
+            "ไม่มีการแปลที่มีอยู่ที่จะได้รับ URL แตกต่างจากตัวเลือกนี้ และไม่นำไปใช้กับการแปลใหม่เช่นกัน ไม่มีภาษาที่ใช้งานอยู่ของคุณเปิดใช้ “เข้ารหัส URL” ไว้"
+         ],
+         "No existing translation gets a different URL from this option. It applies to new translations.": [
+            "ไม่มีคำแปลที่มีอยู่รายการใดที่จะได้รับ URL ใหม่จากตัวเลือกนี้ โดยจะมีผลกับคำแปลใหม่"
+         ],
+         "%s existing translation in a language with encoded URLs would get the original's slug.": [
+            "คำแปลที่มีอยู่ %s รายการในภาษาที่มี URL แบบเข้ารหัสจะได้รับ Slug ของต้นฉบับ"
+         ],
+         "%s existing translation would get a slug regenerated from its title.": [
+            "คำแปลที่มีอยู่ %s รายการจะได้รับการสร้าง Slug ใหม่จากชื่อเรื่อง"
+         ],
+         "This changes the URL of %s published translation. Links to it from your other translations are updated. Search engines and links from elsewhere keep the old address until you redirect it.": [
+            "การดำเนินการนี้จะเปลี่ยน URL ของคำแปลที่เผยแพร่แล้ว %s รายการ ลิงก์ที่เชื่อมมายังคำแปลเหล่านี้จากคำแปลอื่น ๆ ของคุณจะถูกอัปเดต ส่วนเครื่องมือค้นหาและลิงก์จากที่อื่นจะยังคงใช้ที่อยู่เดิมจนกว่าคุณจะเปลี่ยนเส้นทาง"
+         ],
+         "Retry": [
+            "ลองใหม่"
+         ],
+         "Updating %1$s of %2$s translation…": [
+            "กำลังอัปเดตคำแปล %1$s จาก %2$s รายการ…"
+         ],
+         "Updating %1$s of %2$s posts…": [
+            "กำลังอัปเดตโพสต์ %1$s จาก %2$s โพสต์…"
+         ],
+         "%1$s %2$s updated.": [
+            "อัปเดต %1$s %2$s แล้ว"
+         ],
+         "%s post updated.": [
+            "อัปเดตแล้ว %s โพสต์"
+         ],
+         "%s marked as needing a translation update.": [
+            "ทำเครื่องหมายว่าจำเป็นต้องอัปเดตการแปลแล้ว %s รายการ"
+         ],
+         "%1$s sent to translation and %2$s outside Translate Everything's range marked for later.": [
+            "ส่งไปแปลแล้ว %1$s รายการ และทำเครื่องหมายรายการที่อยู่นอกขอบเขตของแปลทุกอย่างโดยอัตโนมัติไว้สำหรับภายหลัง %2$s รายการ"
+         ],
+         "%s sent to translation.": [
+            "ส่งไปแปลแล้ว %s รายการ"
+         ],
+         "Nothing was sent. %s outside Translate Everything's range marked for later.": [
+            "ไม่มีรายการใดถูกส่ง ทำเครื่องหมายรายการที่อยู่นอกขอบเขตของแปลทุกอย่างโดยอัตโนมัติไว้สำหรับภายหลัง %s รายการ"
+         ],
+         "Nothing was sent.": [
+            "ไม่มีรายการใดถูกส่ง"
+         ],
+         "%s in a language Translate Everything does not send marked for later.": [
+            "ทำเครื่องหมายรายการในภาษาที่แปลทุกอย่างโดยอัตโนมัติไม่รองรับไว้สำหรับภายหลัง %s รายการ"
+         ],
+         "The URL of %s translation was updated.": [
+            "อัปเดต URL ของคำแปล %s รายการแล้ว"
+         ],
+         "No URL was changed.": [
+            "ไม่มี URL ใดถูกเปลี่ยน"
+         ],
+         "%s translation no longer needed a change.": [
+            "คำแปล %s รายการไม่จำเป็นต้องเปลี่ยนอีกต่อไป"
+         ],
+         "The update continues in the background. The admin bar shows its progress.": [
+            "การอัปเดตจะดำเนินต่อไปในเบื้องหลัง แถบผู้ดูแลระบบจะแสดงความคืบหน้า"
+         ],
+         "Counting the words this sends…": [
+            "กำลังนับจำนวนคำที่ส่ง…"
+         ],
+         "Counting the words this sends… %1$s of %2$s posts.": [
+            "กำลังนับจำนวนคำที่ส่ง… %1$s จาก %2$s โพสต์"
+         ],
+         "The number of words this sends could not be estimated. The Translation Dashboard shows the cost once the posts are queued.": [
+            "ไม่สามารถประมาณจำนวนคำที่ส่งได้ แดชบอร์ดการแปลจะแสดงค่าใช้จ่ายเมื่อโพสต์เข้าสู่คิวแล้ว"
+         ],
+         "This sends %s word of content that could not be priced. The Translation Dashboard shows the cost once the posts are queued.": [
+            "การดำเนินการนี้จะส่งเนื้อหาจำนวน %s คำซึ่งไม่สามารถประเมินราคาได้ แดชบอร์ดการแปลจะแสดงค่าใช้จ่ายเมื่อโพสต์เข้าสู่คิวแล้ว"
+         ],
+         "Sending it again to %2$s languages uses about %1$s word.": [
+            "การส่งไปแปลอีกครั้งใน %2$s ภาษาจะใช้คำประมาณ %1$s คำ"
+         ],
+         "Sending them again to %2$s languages uses about %1$s word.": [
+            "การส่งรายการเหล่านั้นไปแปลอีกครั้งใน %2$s ภาษาจะใช้คำประมาณ %1$s คำ"
+         ],
+         "Sending it again uses about %s word.": [
+            "การส่งไปแปลอีกครั้งจะใช้คำประมาณ %s คำ"
+         ],
+         "Sending them again uses about %s word.": [
+            "การส่งรายการเหล่านั้นไปแปลอีกครั้งจะใช้คำประมาณ %s คำ"
+         ],
+         "%s of the posts is outside Translate Everything's range: its translations will be marked without being sent.": [
+            "มีโพสต์ %s โพสต์ที่อยู่นอกขอบเขตของแปลทุกอย่างโดยอัตโนมัติ: คำแปลของโพสต์เหล่านี้จะถูกทำเครื่องหมายโดยไม่ถูกส่งไปแปล"
+         ],
+         "Your choice for the existing translations was not recorded.": [
+            "ไม่ได้บันทึกตัวเลือกของคุณสำหรับคำแปลที่มีอยู่"
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "ระบบการแปลของเราไม่ยอมรับคำขอนี้ (ได้รับคำตอบเป็น %d) โปรดรอสักครู่แล้วลองใหม่อีกครั้ง และติดต่อฝ่ายสนับสนุนของ WPML หากปัญหายังคงเกิดขึ้น"
+         ],
+         "several post types listed\u0004%1$s %2$s updated.": [
+            "อัปเดต %1$s %2$s แล้ว"
+         ]
+      }
+   }
+}

@@ -2,9 +2,6 @@
 
 class WPML_TM_Emails_Settings_Factory implements IWPML_Backend_Action_Loader {
 
-	/**
-	 * @return WPML_TM_Emails_Settings
-	 */
 	public function create() {
 		global $iclTranslationManagement;
 
@@ -19,7 +16,6 @@ class WPML_TM_Emails_Settings_Factory implements IWPML_Backend_Action_Loader {
 	}
 
 	private function is_tm_settings_page() {
-		return isset( $_GET['page'] )
-			&& WPML_TM_FOLDER . WPML_Translation_Management::PAGE_SLUG_SETTINGS === filter_var( $_GET['page'], FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		return WPML_TM_FOLDER . WPML_Translation_Management::PAGE_SLUG_SETTINGS === \WPML\SuperGlobals\Request::page();
 	}
 }

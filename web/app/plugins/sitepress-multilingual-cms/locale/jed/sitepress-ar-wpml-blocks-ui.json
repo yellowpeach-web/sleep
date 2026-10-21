@@ -3,58 +3,66 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);",
+            "lang": "ar"
          },
          "Advanced": [
             "متقدم"
          ],
          "HTML anchor": [
-            "عنصر ارتساء HTML"
+            "مربط HTML"
          ],
          "Add a shortcut to this block when loading the page using the “#anchor” URL.": [
-            "أضف اختصارًا إلى هذه الكتلة عند تحميل الصفحة باستخدام مسار الإنترنت الخاص بـ\"#anchor\"."
+            "أضف اختصارًا لهذا المكون عند تحميل الصفحة باستخدام عنوان URL ”#anchor“."
          ],
          "Additional CSS class(es)": [
-            "فئة (فئات) CSS الإضافية"
+            "فئة (فئات) CSS إضافية"
          ],
          "Separate multiple classes with spaces.": [
-            "فصل الفئات المتعددة بفاصلة."
+            "افصل بين الفئات المتعددة بمسافات."
          ],
          "Color": [
             "اللون"
+         ],
+         "px": [
+            "بكسل"
+         ],
+         "%": [
+            "%"
          ],
          "Dimensions": [
             "الأبعاد"
          ],
          "BLOCK": [
-            "الكتل"
+            "المكون"
          ],
          "Block margin": [
-            "هامش كتلة البيانات"
+            "هامش المكون"
          ],
          "Block padding": [
-            "نطاق كتلة البيانات"
+            "حشوة المكون"
          ],
          "LANGUAGE": [
             "اللغة"
          ],
          "Language spacing": [
-            "تباعد المسافات في اللغة"
+            "تباعد اللغة"
          ],
          "Language padding": [
-            "نطاق اللغة"
+            "حشوة اللغة"
          ],
          "Display": [
-            "عرض"
+            "العرض"
          ],
          "Show flag": [
-            "عرض العلم"
+            "إظهار العلم"
          ],
          "Show language name": [
-            "عرض اسم اللغة"
+            "إظهار اسم اللغة"
          ],
          "Display language name in": [
-            "عرض اسم اللغة في"
+            "عرض اسم اللغة بـ"
          ],
          "Style": [
             "النمط"
@@ -69,19 +77,25 @@
             "الارتفاع"
          ],
          "Spacing": [
-            "تباعد المسافات"
+            "التباعد"
+         ],
+         "Switch to %s": [
+            "التبديل إلى %s"
+         ],
+         "Available languages": [
+            "اللغات المتاحة"
          ],
          "Allow wrapping to multiple lines": [
-            "السماح بالتضمين في عدة أسطر"
+            "السماح بالالتفاف إلى أسطر متعددة"
          ],
          "Open on click": [
-            "الفتح عند النقر"
+            "فتح عند النقر"
          ],
          "Show arrow": [
-            "عرض السهم"
+            "إظهار السهم"
          ],
          "Layout": [
-            "التنسيق"
+            "التخطيط"
          ],
          "Justification": [
             "المحاذاة"
@@ -89,11 +103,17 @@
          "Orientation": [
             "الاتجاه"
          ],
+         "Language Switcher": [
+            "مبدل اللغة"
+         ],
+         "Language switcher, press tab to navigate to other languages": [
+            "مبدل اللغة، اضغط على مفتاح tab للتنقل إلى لغات أخرى"
+         ],
          "Typography": [
-            "نمط الطباعة"
+            "تنسيق الخط"
          ],
          "Background": [
-            "خلفية"
+            "الخلفية"
          ],
          "Language Text": [
             "نص اللغة"
@@ -108,28 +128,28 @@
             "خلفية اللغة الحالية"
          ],
          "Full name": [
-            "الاسم بالكامل"
+            "الاسم الكامل"
          ],
          "Code": [
-            "الكود"
+            "الرمز"
          ],
          "Justify items left": [
-            "ضبط العناصر إلى اليسار"
+            "محاذاة العناصر لليسار"
          ],
          "Justify items center": [
-            "ضبط العناصر إلى المنتصف"
+            "محاذاة العناصر للمركز"
          ],
          "Justify items right": [
-            "ضبط العناصر إلى اليمين"
+            "محاذاة العناصر لليمين"
          ],
          "Justify items space between": [
-            "ضبط المسافة البينية للعناصر"
+            "توزيع العناصر بمسافات متساوية"
          ],
          "Horizontal": [
             "أفقي"
          ],
          "Vertical": [
-            "رأسي"
+            "عمودي"
          ],
          "Normal": [
             "عادي"
@@ -141,25 +161,28 @@
             "كبير"
          ],
          "X-Large": [
-            "كبير للغاية"
+            "كبير جدًا"
+         ],
+         "Ab": [
+            "أب"
+         ],
+         "AB": [
+            "أب"
+         ],
+         "ab": [
+            "أب"
          ],
          "Small": [
             "صغير"
          ],
          "Displays the WPML Language Switcher.": [
-            "يعرض محوّل اللغة الخاص بـWPML."
-         ],
-         "Language Switcher": [
-            "محوّل اللغة"
+            "يعرض مبدل لغة WPML."
          ],
          "displays the WPML Language Switcher": [
-            "يعرض محوّل اللغة الخاص بـWPML"
-         ],
-         "Displays the WPML Language Switcher. <br/> Learn <a>how to translate this block</a>.": [
-            "يعرض محوّل اللغة WPML Language Switcher. <br/> تعرف على <a>كيفية ترجمة كتلة البيانات هذه</a>."
+            "يعرض مبدل لغة WPML"
          ],
          "Navigation Language Switcher": [
-            "محوّل لغة التنقل"
+            "مبدل لغة التنقل"
          ],
          "Reset all": [
             "إعادة تعيين الكل"

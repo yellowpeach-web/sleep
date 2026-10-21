@@ -9,7 +9,6 @@ class ActivationAjax {
 	const NONCE_ACTION           = 'translation_service_toggle';
 	const REFRESH_TS_INFO_ACTION = 'refresh_ts_info';
 
-	/** @var \WPML_TP_Client */
 	private $tp_client;
 
 	public function __construct( \WPML_TP_Client $tp_client ) {
@@ -17,11 +16,15 @@ class ActivationAjax {
 	}
 
 	public function add_hooks() {
-		add_action( 'wp_ajax_translation_service_toggle', array( $this, 'translation_service_toggle' ) );
-		add_action( 'wp_ajax_refresh_ts_info', array( $this, 'refresh_ts_info' ) );
+		\WPML\Request\Adapter\Ajax::register( 'translation_service_toggle', \WPML\Request\Policy\Policy::capability( 'manage_translations', \WPML\Request\Policy\Authenticity::actionNonce( 'translation_service_toggle', 'nonce' ) ), array( $this, 'translation_service_toggle' ) );
+		\WPML\Request\Adapter\Ajax::register( 'refresh_ts_info', \WPML\Request\Policy\Policy::capability( 'manage_translations', \WPML\Request\Policy\Authenticity::actionNonce( 'refresh_ts_info', 'nonce' ) ), array( $this, 'refresh_ts_info' ) );
 	}
 
 	public function translation_service_toggle() {
+		if ( \WPML\Setup\Initializer::rejectSettingsMutationAjax() ) {
+			return;
+		}
+
 		if ( $this->is_valid_request( self::NONCE_ACTION ) ) {
 
 			if ( ! isset( $_POST['service_id'] ) ) {
@@ -57,6 +60,10 @@ class ActivationAjax {
 	}
 
 	public function refresh_ts_info() {
+		if ( \WPML\Setup\Initializer::rejectSettingsMutationAjax() ) {
+			return;
+		}
+
 		if ( $this->is_valid_request( self::REFRESH_TS_INFO_ACTION ) ) {
 			$active_service = $this->tp_client->services()->get_active( true );
 
@@ -71,7 +78,8 @@ class ActivationAjax {
 			}
 
 			wp_send_json_error(
-				array( 'message' => __( 'It was not possible to refresh the active translation service information.', 'wpml-translation-management' ) )
+				/* translators: Error message shown when the details of the translation service could not be read again. */
+				array( 'message' => __( 'It was not possible to refresh the active translation service information.', 'sitepress' ) )
 			);
 			return;
 		}
@@ -79,12 +87,6 @@ class ActivationAjax {
 		$this->send_invalid_nonce_error();
 	}
 
-	/**
-	 * @param int $service_id
-	 *
-	 * @return array
-	 * @throws \InvalidArgumentException
-	 */
 	private function activate_service( $service_id ) {
 		$result  = TranslationProxy::select_service( $service_id );
 		$message = '';
@@ -109,11 +111,6 @@ class ActivationAjax {
 		);
 	}
 
-	/**
-	 * @param string $action
-	 *
-	 * @return bool
-	 */
 	private function is_valid_request( $action ) {
 		if ( ! isset( $_POST['nonce'] ) ) {
 			return false;
@@ -124,7 +121,7 @@ class ActivationAjax {
 
 	private function send_invalid_nonce_error() {
 		$response = array(
-			'message' => __( 'You are not allowed to perform this action.', 'wpml-translation-management' ),
+			'message' => __( 'You are not allowed to perform this action.', 'sitepress' ),
 			'reload'  => 0,
 		);
 

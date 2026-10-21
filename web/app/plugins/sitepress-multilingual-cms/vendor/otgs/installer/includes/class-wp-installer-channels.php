@@ -1,9 +1,7 @@
 <?php
 
-/**
- * Class WP_Installer_Channels
- * @since 1.8
- */
+use OTGS\Installer\Settings;
+
 class WP_Installer_Channels{
 
 	const CHANNEL_PRODUCTION = 'production';
@@ -13,12 +11,9 @@ class WP_Installer_Channels{
 	protected static $_instance = null;
 
 	function __construct() {
-		add_action( 'init', array( $this, 'init' ), 20 ); // after Installer
+		add_action( 'init', array( $this, 'init' ), 20 );
 	}
 
-	/**
-	 * @return null|WP_Installer_Channels
-	 */
 	public static function instance() {
 
 		if ( is_null( self::$_instance ) ) {
@@ -28,13 +23,6 @@ class WP_Installer_Channels{
 		return self::$_instance;
 	}
 
-	/**
-	 * Get the channel literal id based on the numeric id
-	 *
-	 * @param mixed $id
-	 *
-	 * @return string
-	 */
 	public static function channel_name_by_id( $id ) {
 		if ( self::CHANNEL_DEVELOPMENT === $id ) {
 			$channel = __( 'Development', 'installer' );
@@ -47,38 +35,33 @@ class WP_Installer_Channels{
 		return $channel;
 	}
 
-	/**
-	 * Initialization
-	 */
 	public function init(){
-		global $pagenow;
 
 		if ( defined( 'DOING_AJAX' ) ) {
 			add_action( 'wp_ajax_installer_set_channel', array( $this, 'set_channel' ) );
 		}
 
-		if ( $pagenow === 'plugin-install.php' && isset( $_GET['tab'] ) && $_GET['tab'] === 'commercial' ) {
-			wp_enqueue_script( 'installer-channels', WP_Installer()->res_url() . '/res/js/channels.js', array( 'jquery' ), WP_Installer()->version() );
+		if ( WP_Installer::is_products_screen() ) {
+			wp_enqueue_script( 'installer-channels', WP_Installer()->res_url() . '/res/js/channels.js', array( 'jquery', 'installer-admin' ), WP_Installer()->version() );
 		}
 
 	}
 
-	/**
-	 * Ajax handler for channel switching
-	 */
 	public function set_channel(){
 		$repository_id  = sanitize_text_field( $_POST['repository_id'] );
 		$channel = sanitize_text_field( $_POST['channel'] );
+		$installer = WP_Installer::instance();
+		$settings = $installer->get_settings();
 
 		$response = array();
 		if ( wp_verify_nonce( $_POST['nonce'], 'installer_set_channel:' . $repository_id ) ) {
-			if( isset( WP_Installer()->settings['repositories'][$repository_id] ) ){
-				WP_Installer()->settings['repositories'][$repository_id]['channel'] = $channel;
-				WP_Installer()->settings['repositories'][$repository_id]['no-prompt'] = $_POST['noprompt'] === 'true';
-				WP_Installer()->save_settings();
+			if( isset( $settings['repositories'][$repository_id] ) ){
+				$settings['repositories'][$repository_id]['channel'] = $channel;
+				$settings['repositories'][$repository_id]['no-prompt'] = $_POST['noprompt'] === 'true';
+				$installer->save_settings( $settings );
 			}
 
-			WP_Installer()->refresh_repositories_data();
+			$installer->refresh_repositories_data();
 
 			$response['status'] = 'OK';
 		}
@@ -87,34 +70,21 @@ class WP_Installer_Channels{
 		exit;
 	}
 
-	/**
-	 * @param string $repository_id
-	 *
-	 * @return int
-	 */
 	public function get_channel( $repository_id ){
 		$channel = self::CHANNEL_PRODUCTION;
-		if( isset( WP_Installer()->settings['repositories'][$repository_id]['channel'] ) ){
-			$channel = WP_Installer()->settings['repositories'][$repository_id]['channel'];
+		$settings = Settings::load_channels();
+		if( isset( $settings['repositories'][$repository_id]['channel'] ) ){
+			$channel = $settings['repositories'][$repository_id]['channel'];
 		}
 		return $channel;
 	}
 
-	/**
-	 * @param $repository_id
-	 *
-	 * @return bool
-	 */
 	private function get_no_prompt( $repository_id ) {
 		$settings  = WP_Installer()->settings;
 
 		return ! empty( $settings['repositories'][ $repository_id ]['no-prompt'] );
 	}
 
-	/**
-	 * @param string $repository_id
-	 * @param array $downloads
-	 */
 	public function load_channel_selector( $repository_id, $downloads ) {
 
 		$available_channels = $this->get_available_channels( $repository_id );
@@ -134,12 +104,6 @@ class WP_Installer_Channels{
 		}
 	}
 
-	/**
-	 * The beta and development channels can be used only when already using the most up to date versions
-	 * @param array $downloads
-	 *
-	 * @return bool
-	 */
 	public function can_use_unstable_channels( $downloads ){
 
 		$can = true;
@@ -155,13 +119,6 @@ class WP_Installer_Channels{
 		return $can;
 	}
 
-	/**
-	 * Get available updates channels. Only include channels with actual downloads available.
-	 *
-	 * @param string $repository_id
-	 *
-	 * @return array
-	 */
 	public function get_available_channels( $repository_id ) {
 
 		$beta = false;
@@ -197,12 +154,6 @@ class WP_Installer_Channels{
 		return $channels;
 	}
 
-	/**
-	 * @param string $repository_id
-	 * @param array $downloads
-	 *
-	 * @return array
-	 */
 	public function filter_downloads_by_channel( $repository_id, $downloads ) {
 
 		$current_channel = $this->get_channel( $repository_id );
@@ -248,15 +199,6 @@ class WP_Installer_Channels{
 		return $downloads;
 	}
 
-	/**
-	 * Get the source channel for the installed version when on the Beta or Development channel
-	 * @param string $version
-	 * @param string $repository_id
-	 * @param string $download_id
-	 * @param string $download_kind
-	 *
-	 * @return string
-	 */
 	public function get_download_source_channel( $version, $repository_id, $download_id, $download_kind ) {
 
 		$version_channel    = '';

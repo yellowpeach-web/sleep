@@ -12,16 +12,12 @@ use function WPML\FP\pipe;
 
 class DirectoryHooks implements \IWPML_Frontend_Action, \IWPML_DIC_Action {
 
-	/** @var \SitePress $sitepress */
 	private $sitepress;
 
-	/** @var \WPML_URL_Converter $urlConverter */
 	private $urlConverter;
 
-	/** @var null|string $host */
 	private $host;
 
-	/** @var null|string[] $validLanguageDirs */
 	private $validLanguageDirs;
 
 	public function __construct(
@@ -40,9 +36,6 @@ class DirectoryHooks implements \IWPML_Frontend_Action, \IWPML_DIC_Action {
 		}
 	}
 
-	/**
-	 * @param \WP_Query $wp_query
-	 */
 	public function catchSitemapInSecondaryLanguage( $wp_query ) {
 		if (
 			$wp_query->get( 'sitemap' )
@@ -54,24 +47,9 @@ class DirectoryHooks implements \IWPML_Frontend_Action, \IWPML_DIC_Action {
 		}
 	}
 
-	/**
-	 * This filter hook is actually checking is a URL is external.
-	 * Returning "false" will define the URL as internal and it
-	 * will be showing in the sitemap.
-	 *
-	 * Without this filter, the considered home URL includes the
-	 * default language directory, so it excludes secondary language URLs.
-	 *
-	 * @param null|bool $override
-	 * @param array     $urlParts
-	 *
-	 * @return null|bool
-	 */
 	public function allowNonDefaultLangLinks( $override, $urlParts ) {
-		// $isSameHost :: array -> bool
 		$isSameHost = pipe( Obj::prop( 'host' ), Relation::equals( $this->getHost() ) );
 
-		// $isDirectoryInActiveLang :: array -> bool
 		$isDirectoryInActiveLang = pipe(
 			Obj::propOr( '', 'path' ),
 			Str::trim( '/' ),
@@ -88,9 +66,6 @@ class DirectoryHooks implements \IWPML_Frontend_Action, \IWPML_DIC_Action {
 		return $isValidUrlParts ? false : $override;
 	}
 
-	/**
-	 * @return string
-	 */
 	private function getHost() {
 		if ( null === $this->host ) {
 			$this->host = wpml_parse_url( $this->urlConverter->get_abs_home(), PHP_URL_HOST );
@@ -99,13 +74,10 @@ class DirectoryHooks implements \IWPML_Frontend_Action, \IWPML_DIC_Action {
 		return $this->host;
 	}
 
-	/**
-	 * @return string[]
-	 */
 	private function getValidLanguageDirs() {
 		if ( null === $this->validLanguageDirs ) {
 			$this->validLanguageDirs = array_merge(
-				[ '' ], // For the root dir.
+				[ '' ],
 				array_keys( $this->sitepress->get_active_languages() )
 			);
 		}
@@ -113,9 +85,6 @@ class DirectoryHooks implements \IWPML_Frontend_Action, \IWPML_DIC_Action {
 		return $this->validLanguageDirs;
 	}
 
-	/**
-	 * @return bool
-	 */
 	private function isDefaultLangInDirectory() {
 		return (bool) Obj::path( [ 'urls', 'directory_for_default_language' ], $this->sitepress->get_settings() );
 	}

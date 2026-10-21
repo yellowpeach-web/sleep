@@ -1,0 +1,1527 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "ko_KR"
+         },
+         "You have unsaved language changes from a previous session.": [
+            "이전 세션에서 저장하지 않은 언어 변경 사항이 있습니다."
+         ],
+         "Restore changes": [
+            "변경 사항 복원"
+         ],
+         "Discard": [
+            "삭제"
+         ],
+         "Unsaved language changes from a previous session could not be restored, because the site’s languages changed after they were made. Those changes were discarded.": [
+            "변경 사항을 만든 후 사이트의 언어가 변경되었기 때문에 이전 세션에서 저장하지 않은 언어 변경 사항을 복원할 수 없습니다. 해당 변경 사항은 삭제되었습니다."
+         ],
+         "Dismiss": [
+            "닫기"
+         ],
+         "Impact on existing content": [
+            "기존 콘텐츠에 미치는 영향"
+         ],
+         "Checking which content will be affected…": [
+            "영향을 받을 콘텐츠를 확인하는 중…"
+         ],
+         "We couldn’t estimate the impact. You can still apply the change; content will be updated during the save.": [
+            "영향을 추정할 수 없습니다. 그래도 변경 사항을 적용할 수 있으며, 저장하는 동안 콘텐츠가 업데이트됩니다."
+         ],
+         "Try again": [
+            "다시 시도"
+         ],
+         "No existing content needs updating.": [
+            "업데이트가 필요한 기존 콘텐츠가 없습니다."
+         ],
+         "%d post will be updated.": [
+            "%d개의 포스트가 업데이트됩니다."
+         ],
+         "%d link will be adjusted.": [
+            "%d개의 링크가 조정됩니다."
+         ],
+         "%d translated string will be re-keyed.": [
+            "%d개의 번역된 문자열의 키가 다시 지정됩니다."
+         ],
+         "Finish the change to %s": [
+            "%s(으)로 변경 완료"
+         ],
+         "What changes automatically": [
+            "자동으로 변경되는 사항"
+         ],
+         "The language’s country becomes %s.": [
+            "언어의 국가가 %s(으)로 변경됩니다."
+         ],
+         "Automatic translation will be re-mapped to the new regional variant. Existing translations stay as they are.": [
+            "자동 번역이 새로운 지역 변형으로 다시 매핑됩니다. 기존 번역은 그대로 유지됩니다."
+         ],
+         "Automatic translation will now target the new regional variant. Existing translations stay as they are.": [
+            "이제 자동 번역이 새로운 지역 변형을 대상으로 합니다. 기존 번역은 그대로 유지됩니다."
+         ],
+         "The hreflang tag becomes %s.": [
+            "hreflang 태그가 %s(이)가 됩니다."
+         ],
+         "Also update these?": [
+            "이 항목들도 업데이트하시겠습니까?"
+         ],
+         "Riskier change": [
+            "위험한 변경 사항"
+         ],
+         "Cancel": [
+            "취소"
+         ],
+         "Apply": [
+            "적용"
+         ],
+         "Anything whose translation group already has a version in %s stays where it is.": [
+            "번역 그룹에 이미 %s 버전이 있는 모든 항목은 그대로 유지됩니다."
+         ],
+         "You have %1$d %2$s page from a language you removed. Bring it here?": [
+            "삭제한 언어에서 가져온 %1$d개의 %2$s 페이지가 있습니다. 여기로 가져오시겠습니까?"
+         ],
+         "I understand these items are not %1$s and will be re-labelled as %2$s.": [
+            "이 항목들이 %1$s이(가) 아니며 %2$s(으)로 다시 레이블이 지정됨을 이해합니다."
+         ],
+         "Re-labels them as %s, keeping their connections to your other languages.": [
+            "다른 언어와의 연결을 유지하면서 %s(으)로 다시 레이블을 지정합니다."
+         ],
+         "Content from a language you removed": [
+            "삭제한 언어의 콘텐츠"
+         ],
+         "Choose what to bring here": [
+            "가져올 항목 선택"
+         ],
+         "Apply changes": [
+            "변경 사항 적용"
+         ],
+         "These changes are applied when you click Save.": [
+            "저장을 클릭하면 변경 사항이 적용됩니다."
+         ],
+         "Change the WordPress locale %1$s → %2$s": [
+            "WordPress 로캘 변경 %1$s → %2$s"
+         ],
+         "WordPress uses this to load admin language packs and plugin / theme translations.": [
+            "WordPress는 이를 사용하여 관리자 언어 팩과 플러그인/테마 번역을 로드합니다."
+         ],
+         "Already used by %s.": [
+            "이미 %s에서 사용 중입니다."
+         ],
+         "Change the language code in URLs %1$s → %2$s": [
+            "URL의 언어 코드 변경 %1$s → %2$s"
+         ],
+         "Renames the language code. Existing %s URLs in search engines, bookmarks and external links become 404s unless redirects are set up.": [
+            "언어 코드의 이름을 바꿉니다. 리디렉션을 설정하지 않으면 검색 엔진, 북마크 및 외부 링크의 기존 %s URL은 404 오류가 발생합니다."
+         ],
+         "Use the flag of %s": [
+            "%s 국기 사용"
+         ],
+         "You picked the current flag yourself, so WPML keeps it unless you ask.": [
+            "현재 국기를 직접 선택하셨으므로, 요청하지 않는 한 WPML은 이를 유지합니다."
+         ],
+         "The flag shown in language switchers and in the admin.": [
+            "언어 전환기 및 관리자 화면에 표시되는 국기입니다."
+         ],
+         "Rename the language %1$s → %2$s": [
+            "언어 이름 변경 %1$s → %2$s"
+         ],
+         "Updates the name in every language of the admin. Labels you edited yourself are kept.": [
+            "관리자 화면의 모든 언어 이름을 업데이트합니다. 직접 편집한 레이블은 유지됩니다."
+         ],
+         "Change the hreflang tag %1$s → %2$s": [
+            "hreflang 태그 변경 %1$s → %2$s"
+         ],
+         "You customised this tag, so WPML keeps it unless you ask. Search engines read it to serve the right regional version.": [
+            "이 태그를 사용자 정의하셨으므로, 요청하지 않는 한 WPML은 이를 유지합니다. 검색 엔진은 올바른 지역 버전을 제공하기 위해 이 태그를 읽습니다."
+         ],
+         "What should happen to %s?": [
+            "%s에 어떤 작업을 수행할까요?"
+         ],
+         "Pick the outcome you want. Nothing happens until you confirm below.": [
+            "원하는 결과를 선택하세요. 아래에서 확인하기 전까지는 아무 일도 일어나지 않습니다."
+         ],
+         "Checking for translated content…": [
+            "번역된 콘텐츠 확인 중…"
+         ],
+         "What should happen to this language": [
+            "이 언어에 수행할 작업"
+         ],
+         "Which content types": [
+            "콘텐츠 유형"
+         ],
+         "%1$s — %2$d item": [
+            "%1$s — %2$d개 항목"
+         ],
+         "Pages and posts": [
+            "페이지 및 포스트"
+         ],
+         "Products": [
+            "상품"
+         ],
+         "Categories and tags": [
+            "카테고리 및 태그"
+         ],
+         "Images": [
+            "이미지"
+         ],
+         "Menus": [
+            "메뉴"
+         ],
+         "Delete them permanently now — this cannot be undone": [
+            "지금 영구적으로 삭제 — 이 작업은 되돌릴 수 없습니다"
+         ],
+         "Categories, tags and menus have no WordPress Trash, so those are deleted right away either way.": [
+            "카테고리, 태그 및 메뉴는 WordPress 휴지통이 없으므로 어떤 방식으로든 즉시 삭제됩니다."
+         ],
+         "Your site’s setting “when deleting a post, delete its translations too” is on. We will not apply it here, so nothing in %s is deleted.": [
+            "사이트의 “포스트 삭제 시 번역본도 삭제” 설정이 켜져 있습니다. 여기서는 적용하지 않으므로 %s의 어떤 항목도 삭제되지 않습니다."
+         ],
+         ", ": [
+            ", "
+         ],
+         "your other languages": [
+            "기타 언어"
+         ],
+         "%s’s string translations are deleted with it.": [
+            "%s의 문자열 번역도 함께 삭제됩니다."
+         ],
+         "Its queued translation jobs are cancelled without charge; any already in progress are stopped, and the words already sent are still charged.": [
+            "대기 중인 번역 작업은 비용 청구 없이 취소됩니다. 이미 진행 중인 작업은 중단되지만, 이미 전송된 단어에 대해서는 비용이 청구됩니다."
+         ],
+         "Move this content into": [
+            "이 콘텐츠를 다음으로 이동"
+         ],
+         "Choose a language…": [
+            "언어 선택…"
+         ],
+         "Same language": [
+            "동일한 언어"
+         ],
+         "A different language": [
+            "다른 언어"
+         ],
+         "I understand these items are not %s and will be re-labelled as the language I pick.": [
+            "이 항목들이 %s이(가) 아니며 내가 선택한 언어로 다시 레이블이 지정됨을 이해합니다."
+         ],
+         "%s is taken off the site when you save, and its content is moved straight after — nothing is deleted either way.": [
+            "저장하면 %s이(가) 사이트에서 제거되고 콘텐츠가 바로 이동됩니다. 어떤 경우에도 삭제되는 것은 없습니다."
+         ],
+         "WPML could not stop translating into %s. Nothing was changed — try again, or pick another goal.": [
+            "WPML이 %s(으)로의 번역을 중단할 수 없습니다. 변경된 사항이 없습니다. 다시 시도하거나 다른 목표를 선택하세요."
+         ],
+         "Review %d item": [
+            "%d개 항목 검토"
+         ],
+         "Stop translating into %s": [
+            "%s(으)로의 번역 중단"
+         ],
+         "Move %1$d item into %2$s": [
+            "%1$d개 항목을 %2$s(으)로 이동"
+         ],
+         "Move %d item": [
+            "%d개 항목 이동"
+         ],
+         "Move %d item to the Trash": [
+            "%d개 항목을 휴지통으로 이동"
+         ],
+         "Delete %d item permanently": [
+            "%d개 항목을 영구적으로 삭제"
+         ],
+         "Remove language — nothing is deleted": [
+            "언어 제거 — 삭제되는 항목 없음"
+         ],
+         "What would be removed": [
+            "제거될 항목"
+         ],
+         "Hide the list": [
+            "목록 숨기기"
+         ],
+         "Reading the list…": [
+            "목록 읽는 중…"
+         ],
+         "We couldn’t read the list of items. The counts above still stand, and you can go ahead or close this dialog.": [
+            "항목 목록을 읽을 수 없습니다. 위의 개수는 여전히 유효하며, 계속 진행하거나 이 대화 상자를 닫을 수 있습니다."
+         ],
+         "%1$s — %2$s (#%3$d)": [
+            "%1$s — %2$s (#%3$d)"
+         ],
+         "Nothing is selected right now.": [
+            "현재 선택된 항목이 없습니다."
+         ],
+         "Showing %1$d–%2$d of %3$d item": [
+            "총 %3$d개 항목 중 %1$d~%2$d개 표시 중"
+         ],
+         "Previous": [
+            "이전"
+         ],
+         "Next": [
+            "다음"
+         ],
+         "%s is off your site, but its content could not be moved. Nothing was deleted — the content is listed under Removed languages, where you can move it from.": [
+            "%s이(가) 사이트에서 제거되었지만 콘텐츠를 이동할 수 없습니다. 삭제된 항목은 없습니다. 콘텐츠는 ‘제거된 언어’ 아래에 나열되며 거기에서 이동할 수 있습니다."
+         ],
+         "Done": [
+            "완료"
+         ],
+         "%s stays on your site. Its pages keep their addresses and their search rankings, and the language switcher keeps offering it.": [
+            "%s이(가) 사이트에 유지됩니다. 해당 페이지는 주소와 검색 순위를 유지하며, 언어 전환기에서도 계속 제공됩니다."
+         ],
+         "WPML has stopped creating new %s translations. To start again, use “Resume translating” on the language’s row.": [
+            "WPML이 새로운 %s 번역 생성을 중단했습니다. 다시 시작하려면 해당 언어의 행에서 “번역 재개”를 사용하세요."
+         ],
+         "%1$s is off your site. Nothing was deleted: its addresses now redirect to your %2$s pages, and every item it holds is still in your database and in your admin lists.": [
+            "%1$s이(가) 사이트에서 제거되었습니다. 삭제된 항목은 없습니다. 해당 주소는 이제 %2$s 페이지로 리디렉션되며, 포함된 모든 항목은 데이터베이스와 관리자 목록에 그대로 남아 있습니다."
+         ],
+         "To bring %s back, add it again — or use “Put back” under Removed languages, below.": [
+            "%s을(를) 다시 가져오려면 다시 추가하거나 아래의 ‘제거된 언어’에서 “되돌리기”를 사용하세요."
+         ],
+         "To bring %s back, add it again as a custom language with the same code — its content is still here.": [
+            "%s을(를) 다시 가져오려면 동일한 코드를 사용하는 사용자 정의 언어로 다시 추가하세요. 콘텐츠는 여전히 여기에 있습니다."
+         ],
+         "To bring %s back, add it again from the language picker — it asks which country the content belongs to, and the content is still here.": [
+            "%s을(를) 다시 가져오려면 언어 선택기에서 다시 추가하세요. 콘텐츠가 어느 국가에 속하는지 묻는 메시지가 표시되며 콘텐츠는 여전히 여기에 있습니다."
+         ],
+         "They stay in your Trash until %s.": [
+            "%s까지 휴지통에 보관됩니다."
+         ],
+         "The deletion of %s’s content finished. WPML could not read back a record of what it removed.": [
+            "%s 콘텐츠 삭제가 완료되었습니다. WPML이 제거된 항목의 기록을 다시 읽을 수 없습니다."
+         ],
+         "Close": [
+            "닫기"
+         ],
+         "Unavailable until WPML can count this language’s content.": [
+            "WPML이 이 언어의 콘텐츠를 계산할 수 있을 때까지 사용할 수 없습니다."
+         ],
+         "If your site uses one domain per language, that language’s domain is not redirected: while it still points at this site it answers in your site’s default language at the same addresses.": [
+            "사이트에서 언어당 하나의 도메인을 사용하는 경우 해당 언어의 도메인은 리디렉션되지 않습니다. 해당 도메인이 여전히 이 사이트를 가리키는 동안에는 동일한 주소에서 사이트의 기본 언어로 응답합니다."
+         ],
+         "The listed items are removed, along with their translation records, their string translations and their translation jobs.": [
+            "나열된 항목은 번역 기록, 문자열 번역 및 번역 작업과 함께 제거됩니다."
+         ],
+         "The listed items are removed, along with their translation records, their string translations and their %d translation job.": [
+            "나열된 항목은 번역 기록, 문자열 번역 및 %d개의 번역 작업과 함께 제거됩니다."
+         ],
+         "We couldn’t check for translated content. You can still remove the language; its translations are kept. Deleting its content and moving it into another language both need that count, so those two goals are unavailable.": [
+            "번역된 콘텐츠를 확인할 수 없습니다. 그래도 언어를 제거할 수 있으며 번역은 유지됩니다. 콘텐츠를 삭제하거나 다른 언어로 이동하려면 해당 개수 확인이 필요하므로 이 두 가지 목표는 사용할 수 없습니다."
+         ],
+         "This can be undone.": [
+            "이 작업은 되돌릴 수 있습니다."
+         ],
+         "Stop translating into %s, keep its content online.": [
+            "%s(으)로의 번역을 중단하고 해당 콘텐츠를 온라인 상태로 유지합니다."
+         ],
+         "Your %1$s content stays published at its current addresses and keeps its search rankings. The language switcher keeps offering %1$s.": [
+            "%1$s 콘텐츠는 현재 주소에 그대로 게시되어 검색 순위를 유지합니다. 언어 전환기에서도 %1$s을(를) 계속 제공합니다."
+         ],
+         "Your %1$d %2$s item stays published at its current address and keeps its search ranking. The language switcher keeps offering %2$s.": [
+            "%1$d개의 %2$s 항목은 현재 주소에 그대로 게시되어 검색 순위를 유지합니다. 언어 전환기에서도 %2$s을(를) 계속 제공합니다."
+         ],
+         "Translations are already paused for this language — nothing more changes.": [
+            "이 언어에 대한 번역이 이미 일시 중지되었습니다. 더 이상 변경되는 사항은 없습니다."
+         ],
+         "WPML stops creating new translations.": [
+            "WPML이 새 번역 생성을 중단합니다."
+         ],
+         "Nothing is deleted": [
+            "삭제되는 항목 없음"
+         ],
+         "Take %s off the site, but keep everything in case we come back.": [
+            "사이트에서 %s을(를) 제거하지만, 나중에 다시 사용할 경우를 대비해 모든 항목을 유지합니다."
+         ],
+         "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. Everything %1$s holds stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was.": [
+            "방문자에게는 %1$s이(가) 더 이상 표시되지 않습니다. 해당 주소는 %2$s 페이지로 리디렉션되므로 404 오류가 발생하지 않습니다. %1$s에 포함된 모든 항목은 데이터베이스와 관리자 목록에 유지되며, %1$s을(를) 다시 추가하면 이전 상태 그대로 복구됩니다."
+         ],
+         "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. The %3$d item stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was.": [
+            "방문자에게는 %1$s이(가) 더 이상 표시되지 않습니다. 해당 주소는 %2$s 페이지로 리디렉션되므로 404 오류가 발생하지 않습니다. %3$d개 항목은 데이터베이스와 관리자 목록에 유지되며, %1$s을(를) 다시 추가하면 이전 상태 그대로 복구됩니다."
+         ],
+         "Reversible": [
+            "되돌리기 가능"
+         ],
+         "Take %s off the site and delete its content.": [
+            "사이트에서 %s을(를) 제거하고 콘텐츠를 삭제합니다."
+         ],
+         "Originals in other languages are untouched. Image files stay on disk.": [
+            "다른 언어의 원본은 영향을 받지 않습니다. 이미지 파일은 디스크에 유지됩니다."
+         ],
+         "Only reversible if the Trash route is chosen": [
+            "휴지통 방식을 선택한 경우에만 되돌릴 수 있음"
+         ],
+         "Not reversible — this site has the Trash disabled": [
+            "되돌릴 수 없음 — 이 사이트는 휴지통이 비활성화되어 있습니다"
+         ],
+         "This can only be undone when the items go to the Trash.": [
+            "항목이 휴지통으로 이동한 경우에만 되돌릴 수 있습니다."
+         ],
+         "This site has the Trash disabled, so deleting this content cannot be undone.": [
+            "이 사이트는 휴지통이 비활성화되어 있어 이 콘텐츠를 삭제하면 되돌릴 수 없습니다."
+         ],
+         "Move this language’s content into another language.": [
+            "이 언어의 콘텐츠를 다른 언어로 이동합니다."
+         ],
+         "Reassigns this language’s items to a language you pick, keeping their connections to the other languages. For renaming and merging, not retiring.": [
+            "다른 언어와의 연결을 유지하면서 이 언어의 항목을 선택한 언어에 다시 할당합니다. 이는 삭제가 아닌 이름 변경 및 병합을 위한 것입니다."
+         ],
+         "Reassigns the %d item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring.": [
+            "다른 언어와의 연결을 유지하면서 %d개 항목을 선택한 언어에 다시 할당합니다. 이는 삭제가 아닌 이름 변경 및 병합을 위한 것입니다."
+         ],
+         "The content is kept, but the move cannot be undone.": [
+            "콘텐츠는 유지되지만 이동을 되돌릴 수 없습니다."
+         ],
+         "There is no other active language on this site to move the content into.": [
+            "이 사이트에는 콘텐츠를 이동할 수 있는 다른 활성 언어가 없습니다."
+         ],
+         "You have existing content in %s": [
+            "%s에 기존 콘텐츠가 있습니다"
+         ],
+         "This site has %1$d items in %2$s from before. What should happen to them?": [
+            "이 사이트에는 이전에 생성된 %2$s의 %1$d개 항목이 있습니다. 이 항목들에 어떤 작업을 수행할까요?"
+         ],
+         "Bring back my content as %1$s (%2$s).": [
+            "내 콘텐츠를 %1$s (%2$s)(으)로 다시 가져옵니다."
+         ],
+         "The language keeps its original code (%s). There is no automatic way back.": [
+            "언어는 원래 코드인 (%s)을(를) 유지합니다. 자동으로 되돌릴 수 있는 방법은 없습니다."
+         ],
+         "Start fresh and keep the old content separate.": [
+            "새로 시작하고 이전 콘텐츠는 별도로 유지합니다."
+         ],
+         "You can attach the old content to the new language later from WPML → Support.": [
+            "나중에 WPML → 지원에서 이전 콘텐츠를 새 언어에 첨부할 수 있습니다."
+         ],
+         "Never mind": [
+            "취소"
+         ],
+         "Add language": [
+            "언어 추가"
+         ],
+         "How much would a new language cost?": [
+            "새 언어의 비용은 얼마인가요?"
+         ],
+         "Pick a language to see how many words your content has and what translating them would cost.": [
+            "언어를 선택하여 콘텐츠의 단어 수와 번역 비용을 확인하세요."
+         ],
+         "These costs apply once you use automatic translation for the new language.": [
+            "이 비용은 새 언어에 대해 자동 번역을 사용할 때 적용됩니다."
+         ],
+         "No languages are available to estimate. Every language automatic translation supports is already on your site.": [
+            "추정할 수 있는 언어가 없습니다. 자동 번역이 지원하는 모든 언어가 이미 사이트에 있습니다."
+         ],
+         "Language": [
+            "언어"
+         ],
+         "Select a language…": [
+            "언어 선택…"
+         ],
+         "Show cost": [
+            "비용 표시"
+         ],
+         "Add a custom language": [
+            "사용자 정의 언어 추가"
+         ],
+         "Use this only for non-standard dialects or local variants that aren't in the language list.": [
+            "언어 목록에 없는 비표준 방언이나 지역 변형에만 이 기능을 사용하세요."
+         ],
+         "Most users don't need a custom language. Most variants (e.g., Mexican Spanish, Brazilian Portuguese) already exist in the language list above. Use this form only for genuine custom language variants.": [
+            "대부분의 사용자는 사용자 정의 언어가 필요하지 않습니다. 대부분의 변형(예: 멕시코 스페인어, 브라질 포르투갈어)은 이미 위의 언어 목록에 존재합니다. 실제 사용자 정의 언어 변형인 경우에만 이 양식을 사용하세요."
+         ],
+         "Variant name": [
+            "변형 이름"
+         ],
+         "e.g., Andalusian": [
+            "예: 안달루시아어"
+         ],
+         "“%s” is already the name of one of your languages. Choose a different name, or rename that language first.": [
+            "“%s”은(는) 이미 사용 중인 언어 이름입니다. 다른 이름을 선택하거나 해당 언어의 이름을 먼저 바꾸세요."
+         ],
+         "“%s” is available in the language list. We recommend adding it with Search and add a language. Continue only if you need your own variant.": [
+            "“%s”은(는) 언어 목록에서 사용할 수 있습니다. ‘언어 검색 및 추가’를 통해 추가하는 것을 권장합니다. 자신만의 변형이 필요한 경우에만 계속하세요."
+         ],
+         "Default locale": [
+            "기본 로캘"
+         ],
+         "Code": [
+            "코드"
+         ],
+         "pms or es-an": [
+            "pms 또는 es-an"
+         ],
+         "Once defined, this cannot be changed.": [
+            "한 번 정의하면 변경할 수 없습니다."
+         ],
+         "hreflang": [
+            "hreflang"
+         ],
+         "WPML no longer lists “%s”, so you can add it here as a custom language. We filled in its usual settings.": [
+            "WPML에 더 이상 “%s”이(가) 나열되지 않으므로, 여기에서 사용자 정의 언어로 추가할 수 있습니다. 기본 설정 항목이 미리 입력되었습니다."
+         ],
+         "Flag": [
+            "국기"
+         ],
+         "Uploading…": [
+            "업로드 중…"
+         ],
+         "Upload SVG…": [
+            "SVG 업로드…"
+         ],
+         "Upload a custom flag (SVG)": [
+            "사용자 정의 국기 업로드(SVG)"
+         ],
+         "The flag could not be uploaded.": [
+            "국기를 업로드할 수 없습니다."
+         ],
+         "SVG recommended for crisp display.": [
+            "선명한 표시를 위해 SVG를 권장합니다."
+         ],
+         "Encode URL?": [
+            "URL을 인코딩하시겠습니까?"
+         ],
+         "No": [
+            "아니요"
+         ],
+         "Yes": [
+            "예"
+         ],
+         "Map to a supported language (recommended)": [
+            "지원되는 언어에 매핑(권장)"
+         ],
+         "— Match automatically —": [
+            "— 자동 일치 —"
+         ],
+         "The locale “%s” isn’t valid. Use letters, numbers and underscores only, like es_ES.": [
+            "로캘 “%s”이(가) 유효하지 않습니다. es_ES와(과) 같이 영문자, 숫자, 밑줄만 사용하세요."
+         ],
+         "The hreflang “%1$s” is too long. Use at most %2$d characters.": [
+            "hreflang “%1$s”이(가) 너무 깁니다. 최대 %2$d자까지 사용하세요."
+         ],
+         "The language code “%1$s” is too long. Use at most %2$d characters.": [
+            "언어 코드 “%1$s”이(가) 너무 깁니다. 최대 %2$d자까지 사용하세요."
+         ],
+         "The language code “%1$s” isn’t valid. Use letters, numbers, hyphens and underscores — up to %2$d characters.": [
+            "언어 코드 “%1$s”이(가) 유효하지 않습니다. 영문자, 숫자, 하이픈, 밑줄을 사용하여 최대 %2$d자까지 입력하세요."
+         ],
+         "“%s” is already a supported language. Add it from Search instead of creating a custom variant.": [
+            "“%s”은(는) 이미 지원되는 언어입니다. 사용자 정의 변형을 만드는 대신 검색에서 추가하세요."
+         ],
+         "This language code is already used by “%s”. Choose a different one.": [
+            "이 언어 코드는 이미 “%s”에서 사용 중입니다. 다른 코드를 선택하세요."
+         ],
+         "Enter a name for this language.": [
+            "이 언어의 이름을 입력하세요."
+         ],
+         "Enter a locale.": [
+            "로캘을 입력하세요."
+         ],
+         "Enter a language code.": [
+            "언어 코드를 입력하세요."
+         ],
+         "Edit labels for %s": [
+            "%s 레이블 편집"
+         ],
+         "Set how the “%s” language is named in each of your site languages. Names are prefilled. Edit any to override.": [
+            "각 사이트 언어에서 “%s” 언어의 이름을 설정합니다. 이름은 미리 채워져 있습니다. 재정의하려면 편집하세요."
+         ],
+         "Loading names…": [
+            "이름 로드 중…"
+         ],
+         "this language": [
+            "이 언어"
+         ],
+         "Save labels": [
+            "레이블 저장"
+         ],
+         "Your server cannot convert international domain names. Enter the xn-- form of %s.": [
+            "서버에서 다국어 도메인 이름을 변환할 수 없습니다. %s의 xn-- 형식을 입력하세요."
+         ],
+         "The domain you have entered is invalid.": [
+            "입력한 도메인이 유효하지 않습니다."
+         ],
+         "Set a domain for %s": [
+            "%s의 도메인 설정"
+         ],
+         "Set a domain for each new language": [
+            "각 새 언어의 도메인 설정"
+         ],
+         "Your site uses a different domain per language. %s is no longer the default language, so it needs a domain of its own. Until it has one, its pages cannot be reached.": [
+            "사이트에서 언어당 개별 도메인을 사용합니다. %s은(는) 더 이상 기본 언어가 아니므로 자체 도메인이 필요합니다. 도메인을 설정할 때까지 해당 페이지에 접속할 수 없습니다."
+         ],
+         "Your site uses a different domain per language, so %s needs a domain of its own before it can be visited.": [
+            "사이트에서 언어당 개별 도메인을 사용하므로, %s을(를) 방문하려면 자체 도메인이 필요합니다."
+         ],
+         "Your site uses a different domain per language, so each new language needs a domain of its own before it can be visited.": [
+            "사이트에서 언어당 개별 도메인을 사용하므로, 각 새 언어를 방문하려면 자체 도메인이 필요합니다."
+         ],
+         "This is the site address.": [
+            "사이트 주소입니다."
+         ],
+         "Change it in Settings → General.": [
+            "설정 → 일반에서 변경하십시오."
+         ],
+         "Valid": [
+            "유효함"
+         ],
+         "Blocked by a firewall or CDN": [
+            "방화벽 또는 CDN에 의해 차단됨"
+         ],
+         "Not valid": [
+            "유효하지 않음"
+         ],
+         "Validate on save": [
+            "저장 시 유효성 검사"
+         ],
+         "This domain is already used by another language or by the site itself.": [
+            "이 도메인은 이미 다른 언어나 사이트 자체에서 사용 중입니다."
+         ],
+         "Enter the domain this language will be served from.": [
+            "이 언어가 제공될 도메인을 입력하십시오."
+         ],
+         "%s will serve this language.": [
+            "%s에서 이 언어를 제공합니다."
+         ],
+         "If it shows your site, you can save it anyway.": [
+            "내 사이트가 정상적으로 표시된다면 그대로 저장할 수 있습니다."
+         ],
+         "Two languages cannot use the same domain: %s is already used. Give each language its own domain.": [
+            "두 언어가 동일한 도메인을 사용할 수 없습니다. %s은(는) 이미 사용 중입니다. 각 언어에 고유한 도메인을 지정하십시오."
+         ],
+         "%s loads, but a firewall or CDN blocked WPML's check.": [
+            "%s이(가) 로드되지만 방화벽 또는 CDN이 WPML의 확인 작업을 차단했습니다."
+         ],
+         "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
+            "도메인 유효성을 검사할 수 없습니다: %s. 이 사이트를 가리키는지 확인하거나, 그대로 저장하려면 “저장 시 유효성 검사”를 선택 해제하십시오."
+         ],
+         "Save anyway": [
+            "무시하고 저장"
+         ],
+         "Save": [
+            "저장"
+         ],
+         "0 languages — nothing to reset here": [
+            "0개 언어 — 재설정할 항목이 없습니다"
+         ],
+         "Reset language defaults": [
+            "언어 기본값 재설정"
+         ],
+         "WPML couldn’t finish checking your languages.": [
+            "WPML이 언어 확인을 완료하지 못했습니다."
+         ],
+         "This says nothing about your languages — the check stopped before it could compare them all. Nothing has been changed.": [
+            "이는 언어에 문제가 있다는 의미는 아닙니다 — 모든 언어를 비교하기 전에 확인이 중단되었습니다. 변경된 사항은 없습니다."
+         ],
+         "All your languages already use WPML’s catalogue defaults.": [
+            "모든 언어가 이미 WPML의 카탈로그 기본값을 사용하고 있습니다."
+         ],
+         "Flags, label translations and WordPress locales all match — there is nothing to reset.": [
+            "국기, 레이블 번역 및 WordPress 로캘이 모두 일치합니다 — 재설정할 항목이 없습니다."
+         ],
+         "These languages no longer match WPML’s language catalogue. Put back:": [
+            "이 언어들은 더 이상 WPML의 언어 카탈로그와 일치하지 않습니다. 되돌리기:"
+         ],
+         "Flags": [
+            "국기"
+         ],
+         "%d language using a flag that is not the catalogue default": [
+            "카탈로그 기본값이 아닌 국기를 사용하는 %d개 언어"
+         ],
+         "Labels and their translations": [
+            "레이블 및 번역"
+         ],
+         "%1$s, %2$s": [
+            "%1$s, %2$s"
+         ],
+         "%d language": [
+            "%d개 언어"
+         ],
+         "%d display language": [
+            "%d개 표시 언어"
+         ],
+         "%d edited": [
+            "%d개 편집됨"
+         ],
+         "%d missing": [
+            "%d개 누락됨"
+         ],
+         "%1$s of %2$s": [
+            "%2$s 중 %1$s"
+         ],
+         "hide": [
+            "숨기기"
+         ],
+         "show": [
+            "보기"
+         ],
+         "missing": [
+            "누락됨"
+         ],
+         "+ %d more": [
+            "+ %d개 더 보기"
+         ],
+         "WP Locale": [
+            "WP 로캘"
+         ],
+         "%d language whose locale does not match its country": [
+            "로캘이 해당 국가와 일치하지 않는 %d개 언어"
+         ],
+         "Only the groups you tick are changed. Everything else is left exactly as it is.": [
+            "선택한 그룹만 변경됩니다. 나머지는 그대로 유지됩니다."
+         ],
+         "The check stopped before it could compare everything, so there may be more than this.": [
+            "모든 항목을 비교하기 전에 확인이 중단되었으므로 이보다 더 많을 수 있습니다."
+         ],
+         "Resetting…": [
+            "재설정 중…"
+         ],
+         "Reset selected": [
+            "선택 항목 재설정"
+         ],
+         "Language Code": [
+            "언어 코드"
+         ],
+         "Country": [
+            "국가"
+         ],
+         "Locale": [
+            "로캘"
+         ],
+         "Update the URL code for %s?": [
+            "%s의 URL 코드를 업데이트하시겠습니까?"
+         ],
+         "Confirm language changes": [
+            "언어 변경 사항 확인"
+         ],
+         "Checking what needs updating…": [
+            "업데이트가 필요한 항목 확인 중…"
+         ],
+         "We couldn’t check the impact. You can still save — content is updated during the save.": [
+            "영향을 확인할 수 없습니다. 그래도 저장할 수 있으며, 저장하는 동안 콘텐츠가 업데이트됩니다."
+         ],
+         "What happens": [
+            "발생하는 일"
+         ],
+         "%d link on your site is updated to the new address.": [
+            "사이트의 %d개 링크가 새 주소로 업데이트됩니다."
+         ],
+         "Old URLs are not redirected automatically. If you need them to keep working, set up the redirects yourself.": [
+            "이전 URL은 자동으로 리디렉션되지 않습니다. 계속 작동해야 하는 경우 리디렉션을 직접 설정하세요."
+         ],
+         "This updates your language settings; existing content isn’t rewritten.": [
+            "언어 설정이 업데이트되지만 기존 콘텐츠는 다시 작성되지 않습니다."
+         ],
+         "Your translations and strings are unchanged.": [
+            "번역 및 문자열은 변경되지 않습니다."
+         ],
+         "Update": [
+            "업데이트"
+         ],
+         "Save changes": [
+            "변경 사항 저장"
+         ],
+         "Do you want to set the locale?": [
+            "로캘을 설정하시겠습니까?"
+         ],
+         "WPML uses the locale to download the right WordPress language pack, so setting it switches the admin, theme and plugin texts to that language pack.": [
+            "WPML은 로캘을 사용하여 올바른 WordPress 언어 팩을 다운로드하므로, 로캘을 설정하면 관리자, 테마 및 플러그인 텍스트가 해당 언어 팩으로 전환됩니다."
+         ],
+         "Yes, set the locale": [
+            "예, 로캘 설정"
+         ],
+         "Are you sure you want to edit the language code?": [
+            "언어 코드를 편집하시겠습니까?"
+         ],
+         "URLs containing it change — WPML fixes linked URLs after saving.": [
+            "해당 코드가 포함된 URL이 변경됩니다. WPML은 저장 후 연결된 URL을 수정합니다."
+         ],
+         "External links / bookmarks to the old URL break unless redirected.": [
+            "리디렉션하지 않으면 이전 URL에 대한 외부 링크/북마크가 끊어집니다."
+         ],
+         "Yes, edit the code": [
+            "예, 코드 편집"
+         ],
+         "Are you sure you want to edit the country?": [
+            "국가를 편집하시겠습니까?"
+         ],
+         "It may also change the locale (if the new country has a WordPress.org locale).": [
+            "로캘도 변경될 수 있습니다(새 국가에 WordPress.org 로캘이 있는 경우)."
+         ],
+         "It affects ATE automatic-translation mapping.": [
+            "ATE 자동 번역 매핑에 영향을 미칩니다."
+         ],
+         "Yes, edit the country": [
+            "예, 국가 편집"
+         ],
+         "Are you sure you want to edit the locale?": [
+            "로캘을 편집하시겠습니까?"
+         ],
+         "WPML uses the locale to download the right WordPress language pack, so changing it switches the admin, theme and plugin texts to the new language pack.": [
+            "WPML은 로케일을 사용하여 적절한 WordPress 언어 팩을 다운로드하므로, 로케일을 변경하면 관리자, 테마 및 플러그인 텍스트가 새 언어 팩으로 전환됩니다."
+         ],
+         "Yes, edit the locale": [
+            "예, 로케일 편집"
+         ],
+         "Step %1$d of %2$d — updating %3$s": [
+            "%2$d단계 중 %1$d단계 — %3$s 업데이트 중"
+         ],
+         "Step %1$d of %2$d": [
+            "%2$d단계 중 %1$d단계"
+         ],
+         "%1$d of %2$d item": [
+            "%2$d개 중 %1$d개 항목"
+         ],
+         "%d%%": [
+            "%d%%"
+         ],
+         "%d item could not be updated:": [
+            "%d개 항목을 업데이트할 수 없습니다:"
+         ],
+         "You can retry the save from the Languages page, or fix these items manually.": [
+            "언어 페이지에서 저장을 다시 시도하거나 이러한 항목을 수동으로 수정할 수 있습니다."
+         ],
+         "Some changes could not be applied": [
+            "일부 변경 사항을 적용할 수 없습니다"
+         ],
+         "Language changes saved with some skipped items": [
+            "일부 항목을 제외하고 언어 변경 사항이 저장되었습니다"
+         ],
+         "Language changes saved": [
+            "언어 변경 사항이 저장되었습니다"
+         ],
+         "Updating content": [
+            "콘텐츠 업데이트 중"
+         ],
+         "Keep this tab open until the process finishes. Closing it will pause the save.": [
+            "프로세스가 완료될 때까지 이 탭을 열어 두세요. 탭을 닫으면 저장이 일시 중지됩니다."
+         ],
+         "%d item was skipped so far:": [
+            "지금까지 %d개 항목을 건너뛰었습니다:"
+         ],
+         "%1$s — %2$s (%3$s)": [
+            "%1$s — %2$s (%3$s)"
+         ],
+         "Most language changes were applied. Some items could not be updated and were skipped.": [
+            "대부분의 언어 변경 사항이 적용되었습니다. 일부 항목은 업데이트할 수 없어 건너뛰었습니다."
+         ],
+         "All language changes were applied.": [
+            "모든 언어 변경 사항이 적용되었습니다."
+         ],
+         "The save could not finish. Your existing content was not fully updated — review the languages page and try again.": [
+            "저장을 완료할 수 없습니다. 기존 콘텐츠가 완전히 업데이트되지 않았습니다. 언어 페이지를 검토하고 다시 시도하세요."
+         ],
+         "Don't close this tab until the process finishes.": [
+            "프로세스가 완료될 때까지 이 탭을 닫지 마세요."
+         ],
+         "Content update was paused": [
+            "콘텐츠 업데이트가 일시 중지되었습니다"
+         ],
+         "Resume to finish saving your language changes.": [
+            "언어 변경 사항 저장을 완료하려면 재개하세요."
+         ],
+         "Resume saving": [
+            "저장 재개"
+         ],
+         "Estimating time left…": [
+            "남은 시간 계산 중…"
+         ],
+         "About %d second left": [
+            "약 %d초 남음"
+         ],
+         "About %d minute left": [
+            "약 %d분 남음"
+         ],
+         "Automatic translation for %1$s could not be re-mapped to %2$s. Change the country again later to retry.": [
+            "%1$s의 자동 번역을 %2$s(으)로 다시 매핑할 수 없습니다. 나중에 국가를 다시 변경하여 재시도하세요."
+         ],
+         "Automatic translation for %1$s could not be re-mapped. Change the country again later to retry.": [
+            "%1$s의 자동 번역을 다시 매핑할 수 없습니다. 나중에 국가를 다시 변경하여 재시도하세요."
+         ],
+         "Automatic translation for %1$s already targeted %2$s; nothing was re-mapped.": [
+            "%1$s의 자동 번역이 이미 %2$s을(를) 대상으로 하고 있습니다. 다시 매핑된 항목이 없습니다."
+         ],
+         "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country. Your current mapping was kept.": [
+            "%2$s은(는) 자동 번역을 사용할 수 없습니다. %1$s을(를) 자동으로 번역하려면 편집 → 국가에서 자동 번역이 지원되는 국가를 선택하세요. 현재 매핑이 유지되었습니다."
+         ],
+         "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country.": [
+            "%2$s은(는) 자동 번역을 사용할 수 없습니다. %1$s을(를) 자동으로 번역하려면 편집 → 국가에서 자동 번역이 지원되는 국가를 선택하세요."
+         ],
+         "Automatic translation for %1$s was not re-mapped: %2$s.": [
+            "%1$s의 자동 번역이 다시 매핑되지 않았습니다: %2$s."
+         ],
+         "Automatic translation for %1$s now targets %2$s.": [
+            "이제 %1$s의 자동 번역 대상은 %2$s입니다."
+         ],
+         "“%s” is already an active language.": [
+            "“%s”은(는) 이미 활성화된 언어입니다."
+         ],
+         "That language is already active.": [
+            "해당 언어는 이미 활성화되어 있습니다."
+         ],
+         "%s needs a domain of its own before this can be saved. Set one in the URL format section.": [
+            "이를 저장하려면 %s에 자체 도메인이 필요합니다. 언어 URL 형식 섹션에서 설정하십시오."
+         ],
+         "Every language that is not the default needs a domain of its own before this can be saved. Set it in the URL format section.": [
+            "이를 저장하려면 기본 언어가 아닌 모든 언어에 자체 도메인이 필요합니다. 언어 URL 형식 섹션에서 설정하십시오."
+         ],
+         "The language code “%s” is already in use. Choose a different one.": [
+            "언어 코드 “%s”은(는) 이미 사용 중입니다. 다른 코드를 선택하세요."
+         ],
+         "That language code is already in use. Choose a different one.": [
+            "해당 언어 코드는 이미 사용 중입니다. 다른 코드를 선택하세요."
+         ],
+         "That language code isn’t valid. Use letters, numbers, hyphens and underscores — up to %d characters.": [
+            "해당 언어 코드가 유효하지 않습니다. 문자, 숫자, 하이픈, 밑줄을 사용하여 최대 %d자까지 입력하세요."
+         ],
+         "That language code is too long. Use at most %d characters.": [
+            "해당 언어 코드가 너무 깁니다. 최대 %d자까지 사용하세요."
+         ],
+         "That locale isn’t valid. Use letters, numbers and underscores only, like es_ES.": [
+            "해당 로케일이 유효하지 않습니다. es_ES와(과) 같이 문자, 숫자, 밑줄만 사용하세요."
+         ],
+         "That hreflang is too long. Use at most %d characters.": [
+            "해당 hreflang이 너무 깁니다. 최대 %d자까지 사용하세요."
+         ],
+         "Another active language already uses the identity “%s”.": [
+            "다른 활성 언어가 이미 “%s” 식별자를 사용하고 있습니다."
+         ],
+         "Another active language already has this identity.": [
+            "다른 활성 언어에 이미 이 식별자가 있습니다."
+         ],
+         "WPML no longer offers this language and country. Languages you have already added keep working.": [
+            "WPML은 더 이상 이 언어와 국가를 제공하지 않습니다. 이미 추가한 언어는 계속 작동합니다."
+         ],
+         "You can still add it with “add a custom language”, using the same code.": [
+            "동일한 코드를 사용하여 “사용자 정의 언어 추가”로 추가할 수 있습니다."
+         ],
+         "That flag is not available for this language. Choose one of the offered flags or upload a custom SVG.": [
+            "해당 국기는 이 언어에서 사용할 수 없습니다. 제공되는 국기 중 하나를 선택하거나 사용자 정의 SVG를 업로드하세요."
+         ],
+         "That name is already used by one of your languages. Choose a different name.": [
+            "해당 이름은 이미 사용 중인 언어 이름입니다. 다른 이름을 선택하세요."
+         ],
+         "That language code is already a supported language. Add it from Search instead of creating a custom variant.": [
+            "해당 언어 코드는 이미 지원되는 언어입니다. 사용자 정의 변종을 만드는 대신 검색에서 추가하세요."
+         ],
+         "“%s” is the code of a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first.": [
+            "“%s”은(는) 직접 생성했다가 삭제한 언어의 코드입니다. 다시 사용하려면 사용자 정의 언어로 다시 추가하거나, 먼저 삭제된 언어 패널에서 삭제하세요."
+         ],
+         "That code belongs to a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first.": [
+            "해당 코드는 직접 생성했다가 삭제한 언어에 속합니다. 다시 사용하려면 사용자 정의 언어로 다시 추가하거나, 먼저 삭제된 언어 패널에서 삭제하세요."
+         ],
+         "Enter a locale for this language.": [
+            "이 언어의 로케일을 입력하세요."
+         ],
+         "Select a country for this language before saving.": [
+            "저장하기 전에 이 언어의 국가를 선택하세요."
+         ],
+         "This language can’t be used with that country.": [
+            "이 언어는 해당 국가와 함께 사용할 수 없습니다."
+         ],
+         "“%s” isn’t in the language catalogue. Pick it from the list, or add it as a custom language.": [
+            "“%s”은(는) 언어 카탈로그에 없습니다. 목록에서 선택하거나 사용자 정의 언어로 추가하세요."
+         ],
+         "This language isn’t in the language catalogue. Pick it from the list, or add it as a custom language.": [
+            "이 언어는 언어 카탈로그에 없습니다. 목록에서 선택하거나 사용자 정의 언어로 추가하세요."
+         ],
+         "The default language cannot be a language that is being removed.": [
+            "제거 중인 언어는 기본 언어로 설정할 수 없습니다."
+         ],
+         "Before “%s” can be saved, choose whether to bring back the content this site has from before in that language or to start fresh.": [
+            "“%s” 언어를 저장하려면 먼저 이 사이트에 기존에 있던 해당 언어의 콘텐츠를 복원할지, 아니면 새로 시작할지 선택하세요."
+         ],
+         "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
+            "이 언어를 저장하려면 먼저 이 사이트에 기존에 있던 해당 언어의 콘텐츠를 복원할지, 아니면 새로 시작할지 선택하세요."
+         ],
+         "You don’t have permission to change languages.": [
+            "언어를 변경할 권한이 없습니다."
+         ],
+         "“%s” couldn’t be added. Please try again.": [
+            "“%s”을(를) 추가할 수 없습니다. 다시 시도해 주세요."
+         ],
+         "The language couldn’t be added. Please try again.": [
+            "언어를 추가할 수 없습니다. 다시 시도해 주세요."
+         ],
+         "Couldn’t save the language settings.": [
+            "언어 설정을 저장할 수 없습니다."
+         ],
+         "One language": [
+            "한 개 언어"
+         ],
+         "%1$s: no WordPress language pack exists for %2$s, so the locale was saved without translation files.": [
+            "%1$s: %2$s에 대한 WordPress 언어 팩이 존재하지 않아 번역 파일 없이 로케일이 저장되었습니다."
+         ],
+         "%1$s: the WordPress language pack for %2$s could not be requested, so the locale was saved without translation files.": [
+            "%1$s: %2$s에 대한 WordPress 언어 팩을 요청할 수 없어 번역 파일 없이 로케일이 저장되었습니다."
+         ],
+         "%1$s: the WordPress language pack for %2$s could not be downloaded, so the locale was saved without translation files.": [
+            "%1$s: %2$s에 대한 WordPress 언어 팩을 다운로드할 수 없어 번역 파일 없이 로케일이 저장되었습니다."
+         ],
+         "%1$s: the links in post %2$s did not match the old language code and were left as they were.": [
+            "%1$s: 포스트 %2$s의 링크가 이전 언어 코드와 일치하지 않아 그대로 유지되었습니다."
+         ],
+         "%1$s: the links in post %2$s could not be rewritten.": [
+            "%1$s: 포스트 %2$s의 링크를 다시 작성할 수 없습니다."
+         ],
+         "%1$s: some translation jobs could not be cancelled.": [
+            "%1$s: 일부 번역 작업을 취소할 수 없습니다."
+         ],
+         "%1$s: one step of the save kept failing and was skipped.": [
+            "%1$s: 저장 단계 중 하나가 계속 실패하여 건너뛰었습니다."
+         ],
+         "%1$s: one item could not be updated (%2$s).": [
+            "%1$s: 한 항목을 업데이트할 수 없습니다(%2$s)."
+         ],
+         "Is this a right-to-left language?": [
+            "오른쪽에서 왼쪽으로 읽는 언어입니까?"
+         ],
+         "WPML lays out the admin and the site for this language from right to left, like Arabic or Hebrew.": [
+            "WPML은 아랍어나 히브리어처럼 이 언어의 관리자 및 사이트 레이아웃을 오른쪽에서 왼쪽으로 배치합니다."
+         ],
+         "Reading direction": [
+            "읽기 방향"
+         ],
+         "Left-to-right": [
+            "왼쪽에서 오른쪽으로"
+         ],
+         "Right-to-left": [
+            "오른쪽에서 왼쪽으로"
+         ],
+         "Let WPML decide": [
+            "WPML이 결정하도록 허용"
+         ],
+         "If you cannot find your language in the list, <a>add a custom language</a>.": [
+            "목록에서 언어를 찾을 수 없는 경우 <a>사용자 정의 언어를 추가</a>하세요."
+         ],
+         "Default language": [
+            "기본 언어"
+         ],
+         "What is the current language of your website?": [
+            "웹사이트의 현재 언어는 무엇입니까?"
+         ],
+         "Translation languages": [
+            "번역 언어"
+         ],
+         "Which languages do you want to translate your site into?": [
+            "사이트를 어떤 언어로 번역하시겠습니까?"
+         ],
+         "Click the lock to set the locale": [
+            "로케일을 설정하려면 자물쇠를 클릭하세요"
+         ],
+         "Not set": [
+            "설정되지 않음"
+         ],
+         "Unlock this field": [
+            "이 필드 잠금 해제"
+         ],
+         "Recommended not to change. Click to unlock.": [
+            "변경하지 않는 것이 권장됩니다. 잠금을 해제하려면 클릭하세요."
+         ],
+         "Uploading flag…": [
+            "국기 업로드 중…"
+         ],
+         "Display Code": [
+            "표시 코드"
+         ],
+         "Stored code: %s": [
+            "저장된 코드: %s"
+         ],
+         "Encode URL": [
+            "URL 인코딩"
+         ],
+         "Encode non-Latin characters": [
+            "비라틴 문자 인코딩"
+         ],
+         "Mapping": [
+            "매핑"
+         ],
+         "This language is recognized as the same as your site’s default language, so it can’t be translated automatically. To carry your content over, duplicate it instead.": [
+            "이 언어는 사이트의 기본 언어와 동일한 것으로 인식되어 자동으로 번역할 수 없습니다. 콘텐츠를 가져오려면 대신 복제하세요."
+         ],
+         "How to Duplicate and Copy Content in WPML": [
+            "WPML에서 콘텐츠를 복제 및 복사하는 방법"
+         ],
+         "Edit language labels…": [
+            "언어 레이블 편집…"
+         ],
+         "The default language can’t be removed.": [
+            "기본 언어는 삭제할 수 없습니다."
+         ],
+         "Delete language": [
+            "언어 삭제"
+         ],
+         "Type to search all languages…": [
+            "모든 언어를 검색하려면 입력하세요…"
+         ],
+         "Unsaved changes": [
+            "저장되지 않은 변경 사항"
+         ],
+         "Custom": [
+            "사용자 정의"
+         ],
+         "This language stays on your site and keeps serving its pages. WPML is not creating new translations into it.": [
+            "이 언어는 사이트에 유지되며 페이지를 계속 제공합니다. WPML은 이 언어로 새 번역을 생성하지 않습니다."
+         ],
+         "Translation paused": [
+            "번역 중단됨"
+         ],
+         "This language isn’t supported by the automatic translation engine, so its content must be translated manually.": [
+            "이 언어는 자동 번역 엔진에서 지원되지 않으므로 콘텐츠를 수동으로 번역해야 합니다."
+         ],
+         "Same as default": [
+            "기본 언어와 동일"
+         ],
+         "Manual translation only": [
+            "수동 번역 전용"
+         ],
+         "This custom language uses the code of a language WPML offers. To translate it automatically, map it to a language.": [
+            "이 사용자 정의 언어는 WPML이 제공하는 언어의 코드를 사용합니다. 자동으로 번역하려면 언어에 매핑하세요."
+         ],
+         "Needs a mapping": [
+            "매핑 필요"
+         ],
+         "Default": [
+            "기본"
+         ],
+         "Set as default": [
+            "기본으로 설정"
+         ],
+         "Resume translating": [
+            "번역 재개"
+         ],
+         "Hide": [
+            "숨기기"
+         ],
+         "The default language can’t be hidden.": [
+            "기본 언어는 숨길 수 없습니다."
+         ],
+         "Completely hide content in this language from visitors and search engines, but keep it visible to yourself. Useful for reviewing translations that are still in progress.": [
+            "이 언어의 콘텐츠를 방문자와 검색 엔진으로부터 완전히 숨기되, 본인에게는 보이도록 유지합니다. 진행 중인 번역을 검토할 때 유용합니다."
+         ],
+         "Hide this language from visitors and search engines.": [
+            "방문자와 검색 엔진으로부터 이 언어를 숨깁니다."
+         ],
+         "Edit the language code": [
+            "언어 코드 편집"
+         ],
+         "Used to build this language’s page URLs (e.g. /en/).": [
+            "이 언어의 페이지 URL을 빌드하는 데 사용됩니다(예: /ko/)."
+         ],
+         "Remove language": [
+            "언어 제거"
+         ],
+         "Undo": [
+            "실행 취소"
+         ],
+         "Collapse ▴": [
+            "접기 ▴"
+         ],
+         "Edit ▾": [
+            "편집 ▾"
+         ],
+         "Recognized as the same language as the default": [
+            "기본 언어와 동일한 언어로 인식됨"
+         ],
+         "%s (Regional)": [
+            "%s (지역)"
+         ],
+         "%s is no longer in this list. Use “add a custom language” below to add it.": [
+            "%s이(가) 더 이상 이 목록에 없습니다. 추가하려면 아래의 “사용자 정의 언어 추가”를 사용하세요."
+         ],
+         "Search and add a language…": [
+            "언어 검색 및 추가…"
+         ],
+         "Search and add a language": [
+            "언어 검색 및 추가"
+         ],
+         "Regional": [
+            "지역"
+         ],
+         "International": [
+            "국제"
+         ],
+         "This language has a single fixed country.": [
+            "이 언어는 단일 고정 국가를 가집니다."
+         ],
+         "Select a country…": [
+            "국가 선택…"
+         ],
+         "Default language (currently %s)": [
+            "기본 언어 (현재 %s)"
+         ],
+         "Flag of %s": [
+            "%s 국기"
+         ],
+         "Current flag": [
+            "현재 국기"
+         ],
+         "Custom flag": [
+            "사용자 정의 국기"
+         ],
+         "Neutral globe": [
+            "중립 지구본"
+         ],
+         "Country code as the flag": [
+            "국기 대신 국가 코드 표시"
+         ],
+         "Language flag": [
+            "언어 국기"
+         ],
+         "Choose a flag…": [
+            "국기 선택…"
+         ],
+         "Countries": [
+            "국가"
+         ],
+         "Regions": [
+            "지역"
+         ],
+         "Languages": [
+            "언어"
+         ],
+         "Organisations": [
+            "조직"
+         ],
+         "Upload a custom SVG…": [
+            "사용자 정의 SVG 업로드…"
+         ],
+         "Match automatically": [
+            "자동으로 일치시키기"
+         ],
+         "Map to a supported language": [
+            "지원되는 언어에 매핑"
+         ],
+         "Choose a language to map to…": [
+            "매핑할 언어 선택…"
+         ],
+         "No matches": [
+            "일치하는 항목 없음"
+         ],
+         "The items you include below are removed, along with their translation records. Originals in your other languages are untouched, and image files stay on disk. Comments on these posts are deleted with them. Nothing in %s’s sibling languages is deleted.": [
+            "아래에 포함된 항목은 번역 기록과 함께 제거됩니다. 다른 언어의 원본은 그대로 유지되며 이미지 파일도 디스크에 남습니다. 이러한 포스트의 댓글은 함께 삭제됩니다. %s의 형제 언어에 있는 항목은 삭제되지 않습니다."
+         ],
+         "Skip them, move everything else.": [
+            "건너뛰고 나머지 모든 항목 이동."
+         ],
+         "%1$d item that already has a %3$s version stays under %2$s. You can deal with it separately.": [
+            "이미 %3$s 버전이 있는 %1$d개 항목은 %2$s에 그대로 유지됩니다. 이 항목들은 별도로 처리할 수 있습니다."
+         ],
+         "Merge them into the %s ones.": [
+            "%s 버전으로 병합합니다."
+         ],
+         "Duplicate terms are removed": [
+            "중복된 용어가 제거되었습니다"
+         ],
+         "Objects and settings move onto the existing version; the duplicate is deleted. Nothing in the target language is deleted.": [
+            "개체 및 설정이 기존 버전으로 이동하며 중복 항목은 삭제됩니다. 대상 언어의 어떤 항목도 삭제되지 않습니다."
+         ],
+         "What should happen to the items already in %s?": [
+            "이미 %s에 있는 항목을 어떻게 처리할까요?"
+         ],
+         "%1$d item from %2$s already has a version in the language you picked. Pick the outcome you want.": [
+            "%2$s의 %1$d개 항목이 선택한 언어에 이미 버전이 있습니다. 원하는 결과를 선택하십시오."
+         ],
+         "What should happen to the colliding items": [
+            "충돌하는 항목 처리 방법"
+         ],
+         "Move into %s": [
+            "%s(으)로 이동"
+         ],
+         "Reassigns the %1$d %2$s item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring.": [
+            "%1$d개의 %2$s 항목을 선택한 언어에 재할당하고 다른 언어와의 연결을 유지합니다. 폐기가 아닌 이름 변경 및 병합용입니다."
+         ],
+         "Only the content moves. Per-language settings other plugins keep — for example which currencies WooCommerce Multilingual offers in a language — stay under the old language code and are not carried over.": [
+            "콘텐츠만 이동합니다. 다른 플러그인이 유지하는 언어별 설정(예: WooCommerce Multilingual에서 제공하는 통화)은 이전 언어 코드에 그대로 유지되며 이전되지 않습니다."
+         ],
+         "Moved from %1$s into %2$s.": [
+            "%1$s에서 %2$s(으)로 이동되었습니다."
+         ],
+         "%d content item moved": [
+            "%d개의 콘텐츠 항목이 이동됨"
+         ],
+         "%d link to the original language updated": [
+            "원본 언어에 대한 %d개의 링크가 업데이트됨"
+         ],
+         "%d string translation moved": [
+            "%d개의 문자열 번역이 이동됨"
+         ],
+         "%d string moved": [
+            "%d개의 문자열이 이동됨"
+         ],
+         "%1$d item stayed behind: its translation group already has a %2$s version. It is still listed under %3$s in Removed languages.": [
+            "%1$d개 항목이 남았습니다: 해당 번역 그룹에 이미 %2$s 버전이 있습니다. 이 항목들은 제거된 언어의 %3$s 아래에 여전히 나열됩니다."
+         ],
+         "%1$d duplicate term merged into the %2$s version and removed.": [
+            "%1$d개의 중복 용어가 %2$s 버전으로 병합되어 제거되었습니다."
+         ],
+         "%1$d item became its own document in %2$s.": [
+            "%1$d개 항목이 %2$s에서 자체 문서가 되었습니다."
+         ],
+         "%1$d item of a kind this tool does not move or merge is still under %2$s.": [
+            "이 도구에서 이동하거나 병합할 수 없는 종류의 %1$d개 항목이 여전히 %2$s에 있습니다."
+         ],
+         "What the deletion removed from %s": [
+            "%s에서 삭제된 항목"
+         ],
+         "The items that have a Trash are in it. Categories, tags and menus have no WordPress Trash, so those were deleted right away.": [
+            "휴지통이 있는 항목은 휴지통으로 이동되었습니다. 카테고리, 태그 및 메뉴는 WordPress 휴지통이 없으므로 즉시 삭제되었습니다."
+         ],
+         "This site has the Trash disabled, so the item it removed was deleted permanently — there is nothing to restore.": [
+            "이 사이트는 휴지통이 비활성화되어 있어 제거된 항목이 영구적으로 삭제되었습니다. 복구할 항목이 없습니다."
+         ],
+         "Nothing was left to remove.": [
+            "제거할 항목이 남지 않았습니다."
+         ],
+         "String translations": [
+            "문자열 번역"
+         ],
+         "Translation jobs": [
+            "번역 작업"
+         ],
+         "%1$d removed · %2$d kept · %3$d skipped": [
+            "%1$d개 제거됨 · %2$d개 유지됨 · %3$d개 건너뜀"
+         ],
+         "Skipped because: %s": [
+            "건너뛴 이유: %s"
+         ],
+         "No translation jobs needed cancelling.": [
+            "취소할 번역 작업이 없습니다."
+         ],
+         "%d translation job was cancelled without charge.": [
+            "%d개의 번역 작업이 비용 청구 없이 취소되었습니다."
+         ],
+         "%d job was stopped mid-work — the words already sent are still charged.": [
+            "%d개의 작업이 진행 중에 중단되었습니다. 이미 전송된 단어에 대해서는 비용이 청구됩니다."
+         ],
+         "%d more skipped item is counted above but not listed.": [
+            "%d개의 추가 건너뛴 항목이 위에 합산되었으나 나열되지는 않았습니다."
+         ],
+         "Removed %s": [
+            "%s에 제거됨"
+         ],
+         "Removal date not recorded": [
+            "제거 날짜가 기록되지 않음"
+         ],
+         "%d item still here": [
+            "여기에 %d개 항목이 남아 있음"
+         ],
+         "You created this language yourself, so it cannot be put back from here. Add it again as a custom language with the same code and its content comes back with it.": [
+            "이 언어는 직접 생성했으므로 여기에서 되돌릴 수 없습니다. 동일한 코드로 사용자 정의 언어를 다시 추가하면 콘텐츠가 함께 복구됩니다."
+         ],
+         "This language has no country on record. Add it back from the language picker, which asks which country the content belongs to.": [
+            "이 언어는 기록된 국가가 없습니다. 콘텐츠가 속한 국가를 묻는 언어 선택기에서 다시 추가하세요."
+         ],
+         "This language is not in WPML’s language list, so it cannot be added back from here.": [
+            "이 언어는 WPML의 언어 목록에 없으므로 여기에서 다시 추가할 수 없습니다."
+         ],
+         "Added back — press Save": [
+            "다시 추가됨 — 저장을 누르세요"
+         ],
+         "Put back": [
+            "되돌리기"
+         ],
+         "Move": [
+            "이동"
+         ],
+         "Delete": [
+            "삭제"
+         ],
+         "Removed languages": [
+            "제거된 언어"
+         ],
+         "These languages are off your site but still hold content. Removing a language keeps what it holds — from here you can put a language back, move its content into another language, or delete that content for good.": [
+            "이 언어들은 사이트에서 제거되었지만 여전히 콘텐츠를 보유하고 있습니다. 언어를 제거해도 보유한 콘텐츠는 유지됩니다. 여기에서 언어를 되돌리거나, 콘텐츠를 다른 언어로 이동하거나, 영구적으로 삭제할 수 있습니다."
+         ],
+         "No language is left holding content. %s is now empty.": [
+            "콘텐츠를 보유한 언어가 없습니다. %s이(가) 이제 비어 있습니다."
+         ],
+         "You do not have permission to move a language’s content.": [
+            "언어 콘텐츠를 이동할 권한이 없습니다."
+         ],
+         "Pick the language to move this content into, then try again.": [
+            "이 콘텐츠를 이동할 언어를 선택한 후 다시 시도하세요."
+         ],
+         "That is the same language. Pick a different one to move the content into.": [
+            "동일한 언어입니다. 콘텐츠를 이동할 다른 언어를 선택하세요."
+         ],
+         "%s is back on your site, so there is nothing to move. Refresh the list.": [
+            "%s이(가) 사이트에 다시 추가되어 이동할 항목이 없습니다. 목록을 새로 고침하세요."
+         ],
+         "%s no longer holds any content. Refresh the list.": [
+            "%s에 더 이상 콘텐츠가 없습니다. 목록을 새로 고침하세요."
+         ],
+         "%s is not one of your site’s active languages. Pick another one.": [
+            "%s은(는) 사이트의 활성 언어가 아닙니다. 다른 언어를 선택하세요."
+         ],
+         "Moving content into a different language needs the confirmation below.": [
+            "콘텐츠를 다른 언어로 이동하려면 아래 확인이 필요합니다."
+         ],
+         "WPML could not move this content (%s).": [
+            "WPML이 이 콘텐츠를 이동할 수 없습니다(%s)."
+         ],
+         "Move them to the Trash — you have %d day to change your mind": [
+            "휴지통으로 이동 — 마음을 바꿀 수 있는 기간이 %d일 남았습니다"
+         ],
+         "Delete permanently — this site has the Trash disabled": [
+            "영구 삭제 — 이 사이트는 휴지통이 비활성화되어 있습니다"
+         ],
+         "Trash first, or delete now": [
+            "휴지통으로 먼저 이동하거나 지금 삭제"
+         ],
+         "How to delete": [
+            "삭제 방법"
+         ],
+         "Items already in the Trash are left where they are.": [
+            "이미 휴지통에 있는 항목은 그대로 유지됩니다."
+         ],
+         "Loading languages": [
+            "언어 로드 중"
+         ],
+         "The name of this language variant as it appears in the language switcher.": [
+            "언어 전환기에 표시되는 이 언어 변종의 이름입니다."
+         ],
+         "Sets the regional variant of the language. Automatic Translation uses this to produce more accurate translations.": [
+            "언어의 지역 변종을 설정합니다. 자동 번역은 이를 사용하여 더 정확한 번역을 생성합니다."
+         ],
+         "The flag shown next to this language in the front-end language switcher.": [
+            "프런트엔드 언어 전환기에서 이 언어 옆에 표시되는 국기입니다."
+         ],
+         "The WordPress locale, for example en_US. WordPress uses it to load the matching theme and plugin translation files.": [
+            "WordPress 로케일(예: en_US)입니다. WordPress는 이를 사용하여 일치하는 테마 및 플러그인 번역 파일을 로드합니다."
+         ],
+         "Used to build this language’s page URLs, for example /en/.": [
+            "이 언어의 페이지 URL을 빌드하는 데 사용됩니다(예: /ko/)."
+         ],
+         "The hreflang value added to the page HTML. Search engines use it to serve the correct language or regional version.": [
+            "페이지 HTML에 추가되는 hreflang 값입니다. 검색 엔진은 이를 사용하여 올바른 언어 또는 지역 버전을 제공합니다."
+         ],
+         "Determines whether non-Latin characters in URLs are encoded. Leave it off unless your CDN, server, or redirects require ASCII-only URLs.": [
+            "URL의 비라틴 문자 인코딩 여부를 결정합니다. CDN, 서버 또는 리디렉션에서 ASCII 전용 URL을 요구하지 않는 한 비활성 상태로 두세요."
+         ],
+         "Maps this custom language variant to a supported language so automatic translation engines can translate it. Choose “Match automatically” to let WPML find the closest supported language itself.": [
+            "자동 번역 엔진이 번역할 수 있도록 이 사용자 정의 언어 변종을 지원되는 언어에 매핑합니다. WPML이 가장 유사한 지원 언어를 직접 찾도록 하려면 “자동으로 일치시키기”를 선택하세요."
+         ],
+         "Only SVG flags can be uploaded.": [
+            "SVG 국기만 업로드할 수 있습니다."
+         ],
+         "The flag is too large. Maximum size is %s.": [
+            "국기 파일이 너무 큽니다. 최대 크기는 %s입니다."
+         ],
+         "The file could not be read.": [
+            "파일을 읽을 수 없습니다."
+         ],
+         "The flag could not be saved. Please try again.": [
+            "국기를 저장할 수 없습니다. 다시 시도해 주세요."
+         ],
+         "%1$s is already active, set to %2$s. Change its country instead of adding it again.": [
+            "%1$s은(는) 이미 활성화되어 있으며 %2$s(으)로 설정되어 있습니다. 다시 추가하는 대신 국가를 변경하세요."
+         ],
+         "%1$s is already active. Change its country instead of adding it again.": [
+            "%1$s은(는) 이미 활성화되어 있습니다. 다시 추가하는 대신 국가를 변경하세요."
+         ],
+         "WPML couldn’t apply the change it detected for %1$s: %2$s still has an unsaved change. Save or revert it first.": [
+            "WPML이 %1$s에 대해 감지한 변경 사항을 적용할 수 없습니다: %2$s에 아직 저장되지 않은 변경 사항이 있습니다. 먼저 저장하거나 되돌리세요."
+         ],
+         "Copied to clipboard.": [
+            "클립보드에 복사되었습니다."
+         ],
+         "An earlier language save is paused. Resume or dismiss it first, then save this change.": [
+            "이전 언어 저장이 일시 중지되었습니다. 먼저 재개하거나 취소한 다음 이 변경 사항을 저장하세요."
+         ],
+         "WPML is still finishing an earlier language save. Wait for it to finish, then apply this change.": [
+            "WPML이 아직 이전 언어 저장 작업을 마무리하고 있습니다. 작업이 완료될 때까지 기다린 후 이 변경 사항을 적용하세요."
+         ],
+         "Language settings saved.": [
+            "언어 설정이 저장되었습니다."
+         ],
+         "No changes to save.": [
+            "저장할 변경 사항이 없습니다."
+         ],
+         "Couldn’t check your languages against WPML’s catalogue.": [
+            "언어를 WPML 카탈로그와 대조하여 확인할 수 없습니다."
+         ],
+         "Reset done. %d more language still differs from WPML’s catalogue — open Reset language defaults again to put it back.": [
+            "재설정이 완료되었습니다. %d개의 언어가 여전히 WPML 카탈로그와 다릅니다 — 다시 되돌리려면 언어 기본값 재설정을 다시 여십시오."
+         ],
+         "Your languages are back on WPML’s catalogue defaults.": [
+            "언어가 WPML 카탈로그 기본값으로 복구되었습니다."
+         ],
+         "Couldn’t reset the language defaults.": [
+            "언어 기본값을 재설정할 수 없습니다."
+         ],
+         "%1$s \"%2$s\" is already used by %3$s.": [
+            "%3$s에서 %1$s “%2$s”을(를) 이미 사용 중입니다."
+         ],
+         "The country of a saved language can’t be changed right now — the background save this needs is switched off on this site.": [
+            "현재 저장된 언어의 국가를 변경할 수 없습니다. 이 작업에 필요한 백그라운드 저장 기능이 이 사이트에서 비활성화되어 있습니다."
+         ],
+         "Cost to translate your content into %s": [
+            "콘텐츠를 %s(으)로 번역하는 데 드는 비용"
+         ],
+         "Cost to translate your content into the new languages": [
+            "콘텐츠를 새 언어로 번역하는 데 드는 비용"
+         ],
+         "Add this language": [
+            "이 언어 추가"
+         ],
+         "Costs are based on your current content settings. Adjust them from the Translations dashboard.": [
+            "비용은 현재 콘텐츠 설정을 기준으로 합니다. 번역 대시보드에서 설정을 조정할 수 있습니다."
+         ],
+         "Manage and Hide Site Languages": [
+            "사이트 언어 관리 및 숨기기"
+         ],
+         "Add, remove, configure, and hide your site’s translation languages. Click Edit on any row to edit its country, flag, codes, mapping, and visibility.": [
+            "사이트의 번역 언어를 추가, 제거, 구성 및 숨깁니다. 행에서 편집을 클릭하여 국가, 국기, 코드, 매핑 및 가시성을 편집할 수 있습니다."
+         ],
+         "WPML couldn’t communicate with our translation system. You can still edit and save your languages. Please contact support if the problem persists.": [
+            "WPML이 번역 시스템과 통신할 수 없습니다. 계속해서 언어를 편집하고 저장할 수는 있습니다. 문제가 지속되면 지원팀에 문의하세요."
+         ],
+         "Please <support>contact our support</support> and provide the error details below.": [
+            "<support>지원팀에 문의</support>하여 아래의 오류 세부 정보를 제공해 주세요."
+         ],
+         "Show more": [
+            "더 보기"
+         ],
+         "Show less": [
+            "간략히 보기"
+         ],
+         "Copy error details": [
+            "오류 세부 정보 복사"
+         ],
+         "Copy": [
+            "복사"
+         ],
+         "Click to copy": [
+            "클릭하여 복사"
+         ],
+         "Reset language defaults…": [
+            "언어 기본값 재설정…"
+         ],
+         "Saving…": [
+            "저장 중…"
+         ],
+         "Calculate Costs": [
+            "비용 계산"
+         ],
+         "Content brought into the language you added": [
+            "추가한 언어로 가져온 콘텐츠"
+         ],
+         "The language was added. Its content did not move.": [
+            "언어가 추가되었습니다. 콘텐츠가 이동되지 않았습니다."
+         ],
+         "Verifying automatic translation compatibility": [
+            "자동 번역 호환성 확인 중"
+         ],
+         "Updating language presets…": [
+            "언어 사전 설정 업데이트 중…"
+         ],
+         "Language changes saved.": [
+            "언어 변경 사항이 저장되었습니다."
+         ],
+         "Apply and save": [
+            "적용 및 저장"
+         ],
+         "Close modal": [
+            "모달 닫기"
+         ]
+      }
+   }
+}

@@ -2,38 +2,22 @@
 
 namespace WPML\Utils;
 
-/**
- * Class DebugBackTrace
- *
- * @package WPML\Utils
- */
 class DebugBackTrace {
 
-	/** @var array */
+	const DEFAULT_LIMIT = 50;
+
 	private $debug_backtrace = [];
 
-	/** @var int */
 	private $limit;
 
-	/** @var bool */
 	private $provide_object;
 
-	/** @var bool */
 	private $ignore_args;
 
-	/** @var string */
 	private $debug_backtrace_function;
 
-	/**
-	 * DebugBackTrace constructor.
-	 *
-	 * @param int         $limit
-	 * @param bool        $provide_object
-	 * @param bool        $ignore_args
-	 * @param null|string $debug_backtrace_function
-	 */
 	public function __construct(
-		$limit = 0,
+		$limit = self::DEFAULT_LIMIT,
 		$provide_object = false,
 		$ignore_args = true,
 		$debug_backtrace_function = null
@@ -47,12 +31,10 @@ class DebugBackTrace {
 		$this->debug_backtrace_function = $debug_backtrace_function;
 	}
 
-	/**
-	 * @param array $functions
-	 * @param bool  $refresh
-	 *
-	 * @return bool
-	 */
+	public function get_limit() {
+		return $this->limit;
+	}
+
 	public function are_functions_in_call_stack( array $functions, $refresh = true ) {
 		if ( empty( $this->debug_backtrace ) || $refresh ) {
 			$this->get_backtrace();
@@ -73,22 +55,10 @@ class DebugBackTrace {
 		return $found;
 	}
 
-	/**
-	 * @param string $function_name
-	 * @param bool   $refresh
-	 *
-	 * @return bool
-	 */
 	public function is_function_in_call_stack( $function_name, $refresh = true ) {
 		return $this->are_functions_in_call_stack( [ $function_name ], $refresh );
 	}
 
-	/**
-	 * @param string $function_name
-	 * @param bool   $refresh
-	 *
-	 * @return int
-	 */
 	public function count_function_in_call_stack( $function_name, $refresh = true ) {
 		if ( empty( $this->debug_backtrace ) || $refresh ) {
 			$this->get_backtrace();
@@ -104,24 +74,13 @@ class DebugBackTrace {
 		return $count;
 	}
 
-	/**
-	 * @param string $class_name
-	 * @param string $function_name
-	 * @param bool   $refresh
-	 *
-	 * @return bool
-	 */
 	public function is_class_function_in_call_stack( $class_name, $function_name, $refresh = true ) {
 		return $this->are_functions_in_call_stack( [ [ $class_name, $function_name ] ], $refresh );
 	}
 
-	/**
-	 * @return array
-	 */
 	public function get_backtrace() {
 		$options = false;
 
-		// As of 5.3.6, 'options' parameter is a bit mask for the following options.
 		if ( $this->provide_object ) {
 			$options |= DEBUG_BACKTRACE_PROVIDE_OBJECT;
 		}
@@ -136,7 +95,7 @@ class DebugBackTrace {
 				$options,
 				$actual_limit,
 			]
-		); // Add one item to include the current frame.
+		);
 
 		$this->remove_frames_for_this_class();
 
@@ -144,11 +103,6 @@ class DebugBackTrace {
 	}
 
 	private function remove_frames_for_this_class() {
-		/**
-		 * We cannot rely on number of frames to remove.
-		 * php 5.6 and 7+ provides different call stacks.
-		 * php 5.6 adds call_user_func_array from get_backtrace()
-		 */
 		do {
 			$found = false;
 
@@ -166,7 +120,7 @@ class DebugBackTrace {
 			}
 		} while ( $found );
 
-		$this->remove_last_frame(); // Remove frame with the function called this class.
+		$this->remove_last_frame();
 	}
 
 	public function remove_last_frame() {

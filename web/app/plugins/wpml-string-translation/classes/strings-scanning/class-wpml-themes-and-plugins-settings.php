@@ -6,7 +6,7 @@ class WPML_ST_Themes_And_Plugins_Settings {
 
 	public function init_hooks() {
 		if ( $this->must_display_notices() ) {
-			add_action( 'wp_ajax_hide_strings_scan_notices', array( $this, 'hide_strings_scan_notices' ) );
+			\WPML\Request\Adapter\Ajax::register( 'hide_strings_scan_notices', \WPML\Request\Policy\Policy::capability( [ 'wpml_manage_theme_and_plugin_localization', 'manage_translations' ], \WPML\Request\Policy\Authenticity::actionNonce( 'hide_strings_scan_notices', 'nonce' ) ), array( $this, 'hide_strings_scan_notices' ) );
 			add_action( 'wpml-notices-scripts-enqueued', array( $this, 'enqueue_scripts' ) );
 		}
 	}
@@ -41,6 +41,7 @@ class WPML_ST_Themes_And_Plugins_Settings {
 			'message' => __( 'Also prevent similar messages in the future?', 'wpml-string-translation' ),
 			'no'      => __( 'No - keep showing these message', 'wpml-string-translation' ),
 			'yes'     => __( 'Yes - disable these notifications completely', 'wpml-string-translation' ),
+			'nonce'   => wp_create_nonce( 'hide_strings_scan_notices' ),
 		);
 		wp_register_script( 'wpml-st-disable-notices', WPML_ST_URL . '/res/js/disable-string-scan-notices.js', array( 'jquery', 'jquery-ui-dialog' ) );
 		wp_localize_script( 'wpml-st-disable-notices', 'wpml_st_disable_notices_strings', $strings );

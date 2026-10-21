@@ -20,6 +20,18 @@ abstract class WPML_Media_Element_Parser {
 
 	abstract public function validate();
 
+	protected function textContains( $needle, $haystack ) {
+		if ( function_exists( 'mb_strpos' ) ) {
+			return false !== mb_strpos( $haystack, $needle );
+		}
+
+		return false !== strpos( $haystack, $needle );
+	}
+
+	protected function attributeOr( $attrs, $key, $default = '' ) {
+		return is_array( $attrs ) && array_key_exists( $key, $attrs ) ? $attrs[ $key ] : $default;
+	}
+
 	protected function getAttachments( $matches ) {
 		$attachments = [];
 

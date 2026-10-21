@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @package    wpml-core
- * @subpackage wpml-user-language
- */
 class WPML_Language_Code extends WPML_SP_User {
 
 	private $WPML_WP_API;
@@ -20,15 +16,10 @@ class WPML_Language_Code extends WPML_SP_User {
 			if ( strlen( $code ) < 2 ) {
 				return false;
 			}
-			if ( strlen( $code ) > 2 ) {
-				$code = substr( $code, 0, 2 );
-			}
 			$code = strtolower( $code );
 		}
 
-		$languages = $this->sitepress->get_languages();
-
-		if ( ! isset( $languages[ $code ] ) ) {
+		if ( ! in_array( $code, $this->sitepress->get_supported_language_codes(), true ) ) {
 			return false;
 		}
 

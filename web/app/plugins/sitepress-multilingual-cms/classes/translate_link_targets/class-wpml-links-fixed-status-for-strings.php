@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Class WPML_Links_Fixed_Status_For_Posts
- *
- * @package wpml-tm
- */
 class WPML_Links_Fixed_Status_For_Strings extends WPML_Links_Fixed_Status {
 
 	private $wp_api;
@@ -54,7 +49,7 @@ class WPML_Links_Fixed_Status_For_Strings extends WPML_Links_Fixed_Status {
 	}
 
 	private function save_strings_that_need_fixing( $strings_that_need_links_fixed ) {
-		$this->wp_api->update_option( $this->option_name, $strings_that_need_links_fixed );
+		$this->wp_api->update_option( $this->option_name, $strings_that_need_links_fixed, false );
 	}
 
 }

@@ -1,1 +1,357 @@
-.menu-check-all input[type="checkbox"]{padding:10px 0 0 1px;vertical-align:top}.icl_msync i.inactive{color:#aaa;font-weight:normal}.icl_msync_item{border-radius:3px 3px}.icl_msync_add{background-color:#CCFF99;padding:2px 4px;display:inline-block;margin-bottom:2px}.icl_msync_del{background-color:#F5BFCC;padding:2px 4px;display:inline-block;margin-bottom:2px}.icl_msync_not{background-color:#A1A1A1;padding:2px 4px;display:inline-block;margin-bottom:2px}.icl_msync_mov{background-color:#33B3B3;padding:2px 4px;display:inline-block;margin-bottom:2px}.icl_msync_label_changed{background-color:#33b3ff;padding:2px 4px;display:inline-block;margin-bottom:2px}.icl_msync_url_changed,.icl_msync_options_changed{background-color:#2743ff;color:#ddd;padding:2px 4px;display:inline-block;margin-bottom:2px}.icl_msync_label_missing{background-color:#F55959;padding:2px 4px;display:inline-block;margin-bottom:2px}.icl_msync_url_missing{background-color:#f58f36;padding:2px 4px;display:inline-block;margin-bottom:2px}.icl_msync_menu_title{background-color:#99CCCC;font-weight:bold}input.icl_msync_add{background-color:#CCFF99;padding:2px 4px}.icl_msync_menu_title small{font-weight:normal}
+/*
+ * WP Menus Sync chrome — used by both:
+ *   - the legacy URL `?page=…/menu-sync/menus-sync.php`
+ *   - the new-IA tab `?page=tm/menu/main.php&tab=menus`
+ * Both surfaces enqueue this bundle:
+ *   - legacy via `WPML_Admin_Scripts_Setup::wpml_css_setup` (basename-derived).
+ *   - new IA via `TranslationsTabStripDispatcher::aliasesForActiveTab()`
+ *     which aliases `$_GET['page']` so the same basename-derived enqueue fires.
+ *
+ * Everything is scoped to `.wpml-tm-menus-sync` (a marker class added to the
+ * partial's `<div class="wrap">`) so the rules can't leak onto other WP admin
+ * pages that also use `.wrap`. Christian, 2026-05-26.
+ */
+
+/* ─── Pre-existing legacy bits we still rely on ─── */
+.menu-check-all input[type=checkbox] { padding: 10px 0 0 1px; vertical-align: top; }
+
+/* Override WP-admin's default `.wrap` 10 px top margin so the
+   tab body aligns flush with the tab strip above. Selector matches
+   the partial's `<div class="wrap wpml-tm-menus-sync">` and beats
+   the bare `.wrap` rule on specificity. */
+.wrap.wpml-tm-menus-sync { margin-top: 0; }
+
+/* ─── New IA chrome: intro / custom-items paragraphs ─── */
+.wpml-tm-menus-sync > p { font-size: 14px; margin: 0 0 16px; }
+.wpml-tm-menus-sync > p ~ p { margin-top: 8px; }
+
+/* Per-menu heading + table card. M5 mockup
+   (`translations-wp-menu-sync.html`) puts each menu in its own
+   `<h2>` + standalone `<table>`. Spacing rhythm: 24 px between
+   menus (heading carries top margin); 8 px between heading and
+   its table; tables carry their own bottom margin so the next
+   heading sits 24 px below the previous table. Christian,
+   2026-05-26. */
+.wpml-tm-menus-sync .wpml-menu-sync__menu-heading {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    margin: 24px 0 8px;
+}
+.wpml-tm-menus-sync form > .wpml-menu-sync__menu-heading:first-of-type {
+    margin-top: 0;
+}
+.wpml-tm-menus-sync .wpml-menu-sync__menu-table {
+    margin: 0 0 8px;
+}
+
+/* Legend strip below the Sync button. Mockup
+   `translations-wp-menu-sync.html`: 5 chips (Added / Moved /
+   Stale / No URL / Options) with descriptive text per item,
+   flowed in a flex-wrap row, prefaced by a small uppercase
+   "Legend" header. Chips reuse `.icl_msync_item.icl_msync_<X>`
+   so they pick up the same colours used inside the table.
+   Christian, 2026-05-26. */
+.wpml-tm-menus-sync .wpml-menu-sync__legend {
+    margin: 16px 0;
+    font-size: 12px;
+    color: #6b7280;
+}
+.wpml-tm-menus-sync .wpml-menu-sync__legend-heading {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #9ca3af;
+    margin-bottom: 6px;
+}
+.wpml-tm-menus-sync .wpml-menu-sync__legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 20px;
+    row-gap: 8px;
+}
+.wpml-tm-menus-sync .wpml-menu-sync__legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.wpml-tm-menus-sync .wpml-menu-sync__legend-text {
+    color: #4b5563;
+    font-size: 12px;
+}
+
+/* ─── Table card ─── */
+.wpml-tm-menus-sync .icl_msync.widefat {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: none;
+    background: #fff;
+}
+/* `table-layout: fixed` is scoped to the per-menu OVERVIEW tables
+   (the ones rendered by the `foreach ( $icl_menus_sync->menus … )`
+   loop, which I tagged with `.wpml-menu-sync__menu-table`). Those
+   have `count(active_languages) + 1` columns whose widths should
+   stay equal regardless of content length. The post-Apply-changes
+   confirm table (`#icl_msync_confirm`) always has exactly 3 columns
+   — checkbox / language / action — with very different natural
+   widths; fixed layout would force the checkbox column to a third
+   of the table. Christian, 2026-05-26. */
+.wpml-tm-menus-sync .wpml-menu-sync__menu-table {
+    table-layout: fixed;
+}
+
+/* Header */
+.wpml-tm-menus-sync .icl_msync.widefat thead th {
+    background: #f9fafb;
+    color: #374151;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    padding: 10px 12px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+/* Body cells */
+.wpml-tm-menus-sync .icl_msync.widefat tbody td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #f3f4f6;
+    border-top: 0;
+    vertical-align: top;
+    color: #1f2937;
+    background: #fff;
+}
+.wpml-tm-menus-sync .icl_msync.widefat tbody tr:hover td { background: #fafafa; }
+
+/* Menu-name rows. The first menu's name row is a bare <tr>, identified by the
+   editable `<input class="icl_msync_add">` it carries; subsequent menus' name
+   rows additionally get `.icl_msync_menu_title`. Style both the same way so
+   they look like consistent section bands.
+
+   Background lives on the cells — `border-collapse: separate` (set on the
+   table for the rounded card) means `<tr>` backgrounds don't paint, so a
+   row-level band is composed from per-cell backgrounds. The inner `<strong>`
+   (which wraps the menu name in subsequent menu rows) intentionally does
+   NOT get its own background — if the menu name is long enough to wrap
+   over multiple lines, an inline `<strong>` background paints per text
+   line with visible gaps. Inheriting the cell's color is enough; the
+   `<strong>` UA style already provides the bold weight. Same for `<small>`
+   under the editable input — it keeps its own muted-gray helper-text
+   styling from the rule further below. Christian, 2026-05-26. */
+.wpml-tm-menus-sync .icl_msync.widefat tbody tr:has(input.icl_msync_add) > td,
+.wpml-tm-menus-sync .icl_msync.widefat tbody tr.icl_msync_menu_title > td {
+    background: #f3f4f6;
+    font-weight: 600;
+    color: #111827;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* Inline editable per-language menu-label input. */
+.wpml-tm-menus-sync .icl_msync.widefat input.icl_msync_add {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    color: #1f2937;
+    background: #fff;
+    box-shadow: none;
+}
+.wpml-tm-menus-sync .icl_msync.widefat input.icl_msync_add:focus {
+    outline: none;
+    border-color: #2F7D92;
+    box-shadow: 0 0 0 2px rgba(47, 125, 146, .12);
+}
+.wpml-tm-menus-sync .icl_msync.widefat small {
+    color: #6b7280;
+    font-size: 11px;
+    display: block;
+    margin-top: 2px;
+}
+
+/* "Not translated" inactive placeholder. */
+.wpml-tm-menus-sync .icl_msync.widefat i.inactive {
+    color: #9ca3af;
+    font-style: italic;
+    font-weight: 400;
+}
+
+/* ─── Legacy per-row legend chips (the spans below the table) and per-cell
+       state chips inside the table share `.icl_msync_item`. Light-tint palette
+       matching `__ui/WPML/Settings/New/translations-wp-menu-sync.html`. ─── */
+.wpml-tm-menus-sync .icl_msync_item {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: none;
+    line-height: 1.5;
+    vertical-align: middle;
+    box-shadow: none;
+}
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_add        { background: #dcfce7; color: #166534; }
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_mov        { background: #dbeafe; color: #1e40af; }
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_del        { background: #fee2e2; color: #991b1b; }
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_not        { background: #f3f4f6; color: #4b5563; }
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_label_changed { background: #fef3c7; color: #92400e; }
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_url_missing,
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_label_missing { background: #ffedd5; color: #9a3412; }
+/* `index_changed()` chips (`_label_missing` / `_label_changed` /
+   `_url_missing` / `_url_changed` / `_options_changed`) sit in a
+   target cell either after the depth-dash indent or stacked after
+   a preceding state chip (commonly `_mov`) — need a small left
+   margin so they don't crowd the preceding text/chip. Christian,
+   2026-05-26. */
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_label_missing,
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_label_changed,
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_url_missing,
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_url_changed,
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_options_changed { margin-left: 3px; }
+/* `_options_changed` / `_url_changed` get a distinct tint —
+   the legend chip "Menu Options will be updated" and the
+   per-menu counter row value (`0`/`1`/…) both sit on gray
+   `#f9fafb` row/page backgrounds, so the mockup's neutral
+   gray-on-gray would render almost invisible. Purple
+   (`#f3e8ff / #6b21a8`) doesn't collide with any other chip's
+   semantic colour (add = green, mov = blue, del = red,
+   label_changed = yellow, url/label_missing = orange, not =
+   gray) and reads as "option metadata that will sync"
+   without echoing the blue Moved tint that an earlier indigo
+   recolour drifted too close to. Christian, 2026-05-26.
+   No border — every other chip overrides only bg + color, and
+   the base `.icl_msync_item` rule already sets `border: none`. */
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_options_changed,
+.wpml-tm-menus-sync .icl_msync_item.icl_msync_url_changed {
+    background: #f3e8ff;
+    color: #6b21a8;
+}
+
+/* Per-cell `add` / `mov` chip text in TARGET columns flattens to plain inline
+   text — the mockup shows the state accent on the SOURCE column only. The
+   chip <span> stays in the DOM so the hidden <input name="sync[add|mov][…]">
+   next to it still carries the form POST payload. */
+.wpml-tm-menus-sync .icl_msync.widefat tbody td:not(:first-child) > .icl_msync_item.icl_msync_add,
+.wpml-tm-menus-sync .icl_msync.widefat tbody td:not(:first-child) > .icl_msync_item.icl_msync_mov {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    font-weight: inherit;
+    font-size: inherit;
+    display: inline;
+}
+/* Hide the chip icon ONLY on chips that the rule above flattens to plain
+   inline text in target columns (`_add` / `_mov`) — once the capsule
+   styling is gone, the inline SVG just floats next to a translated
+   title with nothing to anchor it to and reads as noise. Chips that
+   keep their capsule chrome in target cells (`_label_missing`,
+   `_label_changed`, `_url_missing`, `_url_changed`, `_options_changed`)
+   keep their icon, because there the icon is part of the chip badge
+   alongside the label. Source-column state chip + legend chips outside
+   the table are unaffected by the `td:not(:first-child)` scope.
+   Christian, 2026-05-26. */
+.wpml-tm-menus-sync .icl_msync.widefat tbody td:not(:first-child) > .icl_msync_item.icl_msync_add .icl_msync_chip-icon,
+.wpml-tm-menus-sync .icl_msync.widefat tbody td:not(:first-child) > .icl_msync_item.icl_msync_mov .icl_msync_chip-icon {
+    display: none;
+}
+
+/* ─── Source-column state chip (PHP-emitted, see `render_items_tree_default`).
+       The PHP partial emits a `<span class="icl_msync_source_state
+       icl_msync_source_state_{add|mov}">` inside the source cell; the rules
+       below paint the chip + tint the source cell + add the colored left
+       border, matching the mockup's `cell-added` / `cell-moved`. ─── */
+.wpml-tm-menus-sync .icl_msync.widefat tbody tr:has(> td > .icl_msync_source_state_add) > td:first-child {
+    background: #f0fdf4;
+    border-left: 3px solid #22c55e;
+    padding-left: 9px;
+}
+.wpml-tm-menus-sync .icl_msync.widefat tbody tr:has(> td > .icl_msync_source_state_mov) > td:first-child {
+    background: #eff6ff;
+    border-left: 3px solid #3b82f6;
+    padding-left: 9px;
+}
+.wpml-tm-menus-sync .icl_msync_source_state {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+    line-height: 1.5;
+    vertical-align: middle;
+    margin-left: 3px;
+}
+.wpml-tm-menus-sync .icl_msync_source_state_add { background: #dcfce7; color: #166534; }
+.wpml-tm-menus-sync .icl_msync_source_state_mov { background: #dbeafe; color: #1e40af; }
+
+/* SVG icon inside any chip (legend + source-cell state + per-cell).
+   The SVG itself sets `width="10"` and `height="10"` inline so it
+   sizes reliably; `currentColor` on the SVG stroke inherits each
+   chip's text colour from the surrounding rule. Spacing uses
+   `margin-right` rather than the parent chip's flex `gap` so it
+   still works in flattened-target-cell contexts where the chip
+   span gets `display: inline` (gap only applies to flex). */
+.wpml-tm-menus-sync .icl_msync_chip-icon {
+    flex-shrink: 0;
+    margin-right: 3px;
+    vertical-align: -1px;
+}
+
+/* Footer counter row (`Menu Option: auto_add`) — demoted to helper-text.
+   Scoped to per-menu overview tables so it doesn't catch the last
+   row of `#icl_msync_confirm` (which carries a real "add menu
+   translation" action and should keep full chip styling). */
+.wpml-tm-menus-sync .wpml-menu-sync__menu-table tbody tr:last-child td {
+    font-size: 11px;
+    color: #6b7280;
+    background: #f9fafb;
+}
+
+/* Sync button — WPML brand blue (`#2F7D92`, the `--wpml-color-blue`
+   token). The old `#0073aa` was the legacy WP-admin blue. */
+.wpml-tm-menus-sync #icl_msync_sync.button-primary {
+    background: #2F7D92;
+    border-color: #2F7D92;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 6px 20px;
+    height: auto;
+    line-height: 1.5;
+    border-radius: 4px;
+    box-shadow: none;
+    text-shadow: none;
+    transition: background-color .12s linear;
+}
+.wpml-tm-menus-sync #icl_msync_sync.button-primary:hover,
+.wpml-tm-menus-sync #icl_msync_sync.button-primary:focus {
+    background: #25636f;
+    border-color: #25636f;
+    color: #fff;
+}
+.wpml-tm-menus-sync #icl_msync_sync.button-primary:disabled {
+    background: #cbd5e1;
+    border-color: #cbd5e1;
+    color: #fff;
+    opacity: 1;
+}
+
+/* Sync warning span next to the button. */
+.wpml-tm-menus-sync #icl_msync_max_input_vars { font-size: 12px; color: #4b5563; }
+
+/* ─── Confirm-screen specific. `#icl_msync_confirm` is the post-Sync preview
+       table. Keep the menu-title row band consistent with the overview. ─── */
+.wpml-tm-menus-sync #icl_msync_confirm tbody tr .check-column { padding: 8px 10px; }

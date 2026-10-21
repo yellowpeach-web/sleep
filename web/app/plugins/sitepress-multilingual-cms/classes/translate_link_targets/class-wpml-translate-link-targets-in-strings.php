@@ -1,15 +1,9 @@
 <?php
 
-/**
- * Class WPML_Translate_Link_Targets_In_Strings
- *
- * @package wpml-tm
- */
 class WPML_Translate_Link_Targets_In_Strings extends WPML_Translate_Link_Targets_In_Content {
 
 	private $option_name = 'wpml_strings_need_links_fixed';
 
-	/* var WPML_WP_API $wp_api */
 	private $wp_api;
 
 	public function __construct( WPML_Translate_Link_Target_Global_State $translate_link_target_global_state, &$wpdb, $wp_api, $pro_translation ) {
@@ -18,6 +12,8 @@ class WPML_Translate_Link_Targets_In_Strings extends WPML_Translate_Link_Targets
 	}
 
 	protected function get_contents_with_links_needing_fix( $start = 0, $count = 0 ) {
+		$wpdb = $this->wpdb;
+
 		$strings_to_fix = $this->wp_api->get_option( $this->option_name, array() );
 		sort( $strings_to_fix, SORT_NUMERIC );
 		$strings_to_fix_part = array();
@@ -37,11 +33,13 @@ class WPML_Translate_Link_Targets_In_Strings extends WPML_Translate_Link_Targets
 		$this->content_to_fix = array();
 
 		if ( sizeof( $strings_to_fix_part ) ) {
-			$strings_to_fix_part  = wpml_prepare_in( $strings_to_fix_part, '%d' );
-			$this->content_to_fix = $this->wpdb->get_results(
-				"SELECT id as element_id, language as language_code
-					FROM {$this->wpdb->prefix}icl_string_translations
-					WHERE id in ( {$strings_to_fix_part} )"
+			$this->content_to_fix = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT id as element_id, language as language_code
+					FROM {$wpdb->prefix}icl_string_translations
+					WHERE id in (" . implode( ', ', array_fill( 0, count( $strings_to_fix_part ), '%d' ) ) . ')',
+					$strings_to_fix_part
+				)
 			);
 		}
 	}
@@ -51,7 +49,7 @@ class WPML_Translate_Link_Targets_In_Strings extends WPML_Translate_Link_Targets
 	}
 
 	public function get_number_to_be_fixed( $start_id = 0, $limit = 0 ) {
-		$this->get_contents_with_links_needing_fix( $start_id );
+		$this->get_contents_with_links_needing_fix( $start_id, $limit );
 		return sizeof( $this->content_to_fix );
 	}
 

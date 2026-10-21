@@ -10,19 +10,14 @@ class MigrateAteRepository implements \IWPML_Upgrade_Command {
 
 	const OPTION_NAME_REPO = 'WPML_TM_ATE_JOBS';
 
-	/** @var \WPML_Upgrade_Schema $schema */
 	private $schema;
 
-	/** @var bool $result */
 	private $result = false;
 
 	public function __construct( array $args ) {
 		$this->schema = $args[0];
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function run() {
 		$this->result = $this->addColumnsToJobsTable();
 
@@ -47,42 +42,51 @@ class MigrateAteRepository implements \IWPML_Upgrade_Command {
 		$records = get_option( self::OPTION_NAME_REPO );
 
 		if ( is_array( $records ) && $records ) {
-			$wpdb           = $this->schema->get_wpdb();
-			$recordPairs    = wpml_collect( array_keys( $records ) )->zip( $records );
-			$ateJobIdCases  = $recordPairs->reduce( $this->getCasesReducer(), '' ) . "ELSE 0\n";
+			$wpdb   = $this->schema->get_wpdb();
+			$jobIds = array_map( 'intval', array_keys( $records ) );
+			$cases  = $this->getAteJobIdCaseArgs( $records );
 
-			$sql = "
-				UPDATE {$wpdb->prefix}" . self::TABLE_NAME . "
-				SET
-					" . self::COLUMN_EDITOR_JOB_ID . " = (
-						CASE job_id
-							" . $ateJobIdCases . "
-					    END
+			if ( ! $cases ) {
+				$wpdb->query(
+					$wpdb->prepare(
+						"UPDATE {$wpdb->prefix}icl_translate_job
+						SET editor_job_id = 0
+						WHERE editor_job_id IS NULL
+							AND job_id IN (" . implode( ', ', array_fill( 0, count( $jobIds ), '%d' ) ) . ')',
+						$jobIds
 					)
-				WHERE " . self::COLUMN_EDITOR_JOB_ID . " IS NULL
-				    AND job_id IN(" . wpml_prepare_in( array_keys( $records ), '%d' ) . ")
-			";
-
-			$wpdb->query( $sql );
+				);
+			} else {
+				$wpdb->query(
+					$wpdb->prepare(
+						"UPDATE {$wpdb->prefix}icl_translate_job
+						SET editor_job_id = (
+							CASE job_id
+								" . implode( ' ', array_fill( 0, count( $cases ) / 2, 'WHEN %d THEN %d' ) ) . '
+								ELSE 0
+							END
+						)
+						WHERE editor_job_id IS NULL
+							AND job_id IN (' . implode( ', ', array_fill( 0, count( $jobIds ), '%d' ) ) . ')',
+						array_merge( $cases, $jobIds )
+					)
+				);
+			}
 		}
 
 		$this->disableAutoloadOnOldOption();
 	}
 
-	/**
-	 * @param string $field
-	 *
-	 * @return \Closure
-	 */
-	private function getCasesReducer() {
-		$wpdb  = $this->schema->get_wpdb();
+	private function getAteJobIdCaseArgs( array $records ) {
+		$args = [];
+		foreach ( $records as $jobId => $data ) {
+			if ( isset( $data['ate_job_id'] ) ) {
+				$args[] = (int) $jobId;
+				$args[] = (int) $data['ate_job_id'];
+			}
+		}
 
-		return function( $cases, $data ) use ( $wpdb ) {
-			$cases .= isset( $data[1]['ate_job_id'] )
-				? $wpdb->prepare( "WHEN %d THEN %d\n", $data[0], $data[1]['ate_job_id'] ) : '';
-
-			return $cases;
-		};
+		return $args;
 	}
 
 	private function disableAutoloadOnOldOption() {
@@ -95,36 +99,18 @@ class MigrateAteRepository implements \IWPML_Upgrade_Command {
 		);
 	}
 
-	/**
-	 * Runs in admin pages.
-	 *
-	 * @return bool
-	 */
 	public function run_admin() {
 		return $this->run();
 	}
 
-	/**
-	 * Unused.
-	 *
-	 * @return null
-	 */
 	public function run_ajax() {
 		return null;
 	}
 
-	/**
-	 * Unused.
-	 *
-	 * @return null
-	 */
 	public function run_frontend() {
 		return null;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function get_results() {
 		return $this->result;
 	}

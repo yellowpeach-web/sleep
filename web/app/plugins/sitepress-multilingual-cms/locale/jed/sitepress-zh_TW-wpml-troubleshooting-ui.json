@@ -4,28 +4,98 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "zh_TW"
          },
          "Preparing...": [
-            ""
+            "正在準備..."
          ],
          "All jobs have been cancelled": [
-            ""
+            "所有工作已取消"
          ],
          "There is no more jobs to cancel": [
-            ""
+            "沒有更多可取消的工作"
          ],
          "The jobs cancellation has failed": [
-            ""
+            "取消工作失敗"
          ],
          "Cancel in-progress automatic jobs": [
-            ""
+            "取消進行中的自動翻譯工作"
+         ],
+         "Domain name has been updated": [
+            "網域名稱已更新"
+         ],
+         "Domain name update has been failed": [
+            "網域名稱更新失敗"
+         ],
+         "Update domain name in language switcher settings": [
+            "更新語言切換器設定中的網域名稱"
+         ],
+         "Disclaimer: MySQL Disk Space": [
+            "免責聲明：MySQL 磁碟空間"
+         ],
+         "Cleaning and compressing the wp_icl_translate and wp_icl_translation_status tables reduces its data size, but does not automatically free up disk space in MySQL. To reclaim disk space, a table rebuild is required—a risky operation not performed automatically by this tool.": [
+            "清理並壓縮 wp_icl_translate 與 wp_icl_translation_status 資料表可減少其資料大小，但不會自動釋放 MySQL 中的磁碟空間。若要回收磁碟空間，需要重建資料表——這是一項具風險的操作，此工具不會自動執行。"
+         ],
+         "Optimize translation tables": [
+            "最佳化翻譯資料表"
+         ],
+         "Previous State Migration": [
+            "先前狀態遷移"
+         ],
+         "Translation Elements Migration": [
+            "翻譯元素遷移"
+         ],
+         "Processed": [
+            "已處理"
+         ],
+         "Error": [
+            "錯誤"
+         ],
+         "Success": [
+            "成功"
+         ],
+         "Database tables optimization completed successfully.": [
+            "資料庫資料表最佳化已成功完成。"
+         ],
+         "Warning": [
+            "警告"
+         ],
+         "This process is resource-intensive and may take a significant amount of time. It is recommended to run this optimization during periods of low traffic.": [
+            "此程序非常耗費資源，且可能需要相當長的時間。建議在低流量期間執行此最佳化。"
+         ],
+         "Database Tables Optimization": [
+            "資料庫資料表最佳化"
          ],
          "Refresh license data to recognise license update": [
-            ""
+            "重新整理授權資料以辨識授權更新"
          ],
          "WPML License has been refreshed": [
-            ""
+            "WPML 授權已重新整理"
+         ],
+         "Translate Everything Automatically is not active.": [
+            "自動翻譯所有內容尚未啟用。"
+         ],
+         "Retry stuck automatic translations": [
+            "重試卡住的自動翻譯"
+         ],
+         "Resends translation jobs that couldn't be processed due to a temporary issue while <b>Translate Everything Automatically</b> was active.": [
+            "重新傳送在 <b>自動翻譯所有內容</b> 啟用期間因暫時性問題而無法處理的翻譯工作。"
+         ],
+         "Checking for stuck translation jobs...": [
+            "正在檢查卡住的翻譯工作..."
+         ],
+         "Processing... %s stuck translation found so far": [
+            "正在處理... 目前已發現 %s 個卡住的翻譯"
+         ],
+         "Something went wrong while checking for stuck translation jobs. Please <a>contact WPML support</a>.": [
+            "檢查卡住的翻譯工作時發生錯誤。請 <a>聯絡 WPML 支援人員</a>。"
+         ],
+         "No stuck translation jobs found.": [
+            "未發現卡住的翻譯工作。"
+         ],
+         "%s stuck translation job found. WPML will translate it automatically in the background.\nYou can check the progress in the <b>Translation Dashboard</b>.": [
+            "發現 %s 個卡住的翻譯工作。WPML 將在背景自動翻譯這些內容。\n您可以在 <b>翻譯控制台</b> 中查看其進度。"
          ]
       }
    }

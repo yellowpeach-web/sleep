@@ -1,128 +1,101 @@
 <?php
 
 use WPML\FP\Fns;
-use WPML\LIB\WP\Cache;
+use WPML\FP\Maybe;
 
-/**
- * @since      3.2
- *
- * Class WPML_Term_Translation
- *
- * Provides APIs for translating taxonomy terms
- *
- * @package    wpml-core
- * @subpackage taxonomy-term-translation
- */
 class WPML_Term_Translation extends WPML_Element_Translation {
 	const CACHE_MAX_WARMUP_COUNT = 200;
 	const CACHE_EXPIRE           = 0;
 	const CACHE_GROUP            = 'wpml_term_translation';
 
-	/** @var int */
 	protected $cache_max_warmup_count = self::CACHE_MAX_WARMUP_COUNT;
 
-	/**
-	 * @return int
-	 */
+	private static $keys_in_cache = array();
+
 	public function get_cache_max_warmup_count() {
 		return $this->cache_max_warmup_count;
 	}
 
-	/**
-	 * @param int $cache_max_warmup_count
-	 *
-	 * @return void
-	 */
 	public function set_cache_max_warmup_count( $cache_max_warmup_count ) {
 		$this->cache_max_warmup_count = $cache_max_warmup_count;
 	}
 
-	/**
-	 * @return void
-	 */
 	public function add_hooks() {
-		// wp_delete_term: Removes a term from the database.
+		wp_cache_add_non_persistent_groups( self::CACHE_GROUP );
+
 		add_action( 'delete_term', array( $this, 'invalidate_cache' ) );
 
-		// wp_set_object_terms: Creates term and taxonomy relationships.
 		add_action( 'set_object_terms', array( $this, 'invalidate_cache' ) );
 
-		// wp_insert_term: Adds a new term to the database.
-		// wp_update_term: Updates term based on arguments provided.
 		add_action( 'saved_term', array( $this, 'invalidate_cache' ) );
 
-		// wp_remove_object_terms: Removes term(s) associated with a given object.
 		add_action( 'deleted_term_relationships', array( $this, 'invalidate_cache' ) );
 
-		// clean_object_term_cache: Removes the taxonomy relationship to terms from the cache.
 		add_action( 'clean_object_term_cache', array( $this, 'invalidate_cache' ) );
 
-		// clean_term_cache: Removes all of the term IDs from the cache.
-		// Covers:
-		// wp_delete_term,
-		// wp_insert_term,
-		// wp_update_term,
-		// wp_update_term_count_now (Updates the amount of terms in taxonomy),
-		// _split_shared_term (Creates a new term for a term_taxonomy item that currently shares its term
-		// with another term_taxonomy).
 		add_action( 'clean_term_cache', array( $this, 'invalidate_cache' ) );
 	}
 
-	/**
-	 * @return null|string
-	 */
-	private function get_cache_expire() {
-		return self::CACHE_EXPIRE;
-	}
-
-	/**
-	 * @return void
-	 */
 	public function invalidate_cache() {
-		Cache::flushGroup( self::CACHE_GROUP );
+		foreach ( array_keys( self::$keys_in_cache ) as $key ) {
+			wp_cache_delete( $key, self::CACHE_GROUP );
+		}
+		self::$keys_in_cache = array();
 	}
 
-	/**
-	 * @param int $term_id
-	 *
-	 * @return null|string
-	 */
+	private function get_from_cache( $key ) {
+		$value = wp_cache_get( $key, self::CACHE_GROUP );
+
+		return is_array( $value ) && array_key_exists( 'data', $value ) ? Maybe::just( $value['data'] ) : Maybe::nothing();
+	}
+
+	private function set_in_cache( $key, $value ) {
+		self::$keys_in_cache[ $key ] = true;
+		wp_cache_set( $key, array( 'data' => $value ), self::CACHE_GROUP, self::CACHE_EXPIRE );
+	}
+
 	public function lang_code_by_termid( $term_id ) {
 		return $this->get_element_lang_code( (int) $this->adjust_ttid_for_term_id( $term_id ) );
 	}
 
-	/**
-	 * @param array $data
-	 */
+	public function term_ids_by_slug( $slug, $taxonomy ) {
+		$wpdb      = $this->wpdb;
+		$cache_key = $taxonomy . ':' . $slug;
+
+		return WPML_Non_Persistent_Cache::execute_and_cache(
+			$cache_key,
+			function () use ( $slug, $taxonomy, $wpdb ) {
+				return array_map(
+					'intval',
+					(array) $wpdb->get_col(
+						$wpdb->prepare(
+							"SELECT t.term_id
+							FROM {$wpdb->terms} t
+							JOIN {$wpdb->term_taxonomy} tt ON tt.term_id = t.term_id
+							WHERE tt.taxonomy = %s AND t.slug = %s
+							ORDER BY t.term_id",
+							$taxonomy,
+							$slug
+						)
+					)
+				);
+			},
+			__CLASS__
+		);
+	}
+
 	private function set_data_to_cache( array $data ) {
-		$expire = $this->get_cache_expire();
 		foreach ( $data as $row ) {
-			Cache::set( self::CACHE_GROUP, 'ttid_by_termid_' . $row['term_id'], $expire, (int) $row['element_id'] );
-			Cache::set( self::CACHE_GROUP, 'ttid_by_termidtaxonomy_' . $row['term_id'] . $row['taxonomy'], $expire, (int) $row['element_id'] );
-			Cache::set( self::CACHE_GROUP, 'termid_by_ttid_' . $row['element_id'], $expire, (int) $row['term_id'] );
+			$this->set_in_cache( 'ttid_by_termid_' . $row['term_id'], (int) $row['element_id'] );
+			$this->set_in_cache( 'ttid_by_termidtaxonomy_' . $row['term_id'] . $row['taxonomy'], (int) $row['element_id'] );
+			$this->set_in_cache( 'termid_by_ttid_' . $row['element_id'], (int) $row['term_id'] );
 		}
 	}
 
-	/**
-	 * We need to fetch items one by one only if items count where term_taxonomy_Id != term_id > CACHE_MAX_WARMUP_COUNT.
-	 * Otherwise we should just return the original argument instead of fetching one by one.
-	 * Because if no result found in the cache - we already have selected all possible rows and there is no sence to subquery for the same data with extra cond.
-	 *
-	 * @param int $count
-	 *
-	 * @return boolean
-	 */
 	private function is_cache_type_select_all_items_in_one_query( $count ) {
 		return $count <= $this->get_cache_max_warmup_count();
 	}
 
-	/**
-	 * Converts term_id into term_taxonomy_id
-	 *
-	 * @param string|int $term_id
-	 *
-	 * @return string|int
-	 */
 	public function adjust_ttid_for_term_id( $term_id ) {
 		$count = $this->maybe_warm_term_id_cache();
 		if ( 0 === $count ) {
@@ -141,23 +114,15 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 			if ( count( $data ) ) {
 				$this->set_data_to_cache( $data );
 			} else {
-				// This will prevent from extra sql queries when function is called with the same param.
-				Cache::set( self::CACHE_GROUP, $key_prefix . $term_id, $this->get_cache_expire(), $term_id );
+				$this->set_in_cache( $key_prefix . $term_id, $term_id );
 			}
 
-			return Cache::get( self::CACHE_GROUP, $key )->getOrElse( $term_id );
+			return $this->get_from_cache( $key )->getOrElse( $term_id );
 		};
 
-		return Cache::get( self::CACHE_GROUP, $key )->getOrElse( $get_ttid_or_fallback_to_term_id );
+		return $this->get_from_cache( $key )->getOrElse( $get_ttid_or_fallback_to_term_id );
 	}
 
-	/**
-	 * Converts term_taxonomy_id into term_id.
-	 *
-	 * @param string|int $ttid
-	 *
-	 * @return string|int
-	 */
 	public function adjust_term_id_for_ttid( $ttid ) {
 		$count = $this->maybe_warm_term_id_cache();
 		if ( 0 === $count ) {
@@ -176,23 +141,15 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 			if ( count( $data ) ) {
 				$this->set_data_to_cache( $data );
 			} else {
-				// This will prevent from extra sql queries when function is called with the same param.
-				Cache::set( self::CACHE_GROUP, $key_prefix . $ttid, $this->get_cache_expire(), $ttid );
+				$this->set_in_cache( $key_prefix . $ttid, $ttid );
 			}
 
-			return Cache::get( self::CACHE_GROUP, $key )->getOrElse( $ttid );
+			return $this->get_from_cache( $key )->getOrElse( $ttid );
 		};
 
-		return Cache::get( self::CACHE_GROUP, $key )->getOrElse( $get_term_id_or_fallback_to_ttid );
+		return $this->get_from_cache( $key )->getOrElse( $get_term_id_or_fallback_to_ttid );
 	}
 
-	/**
-	 * @param int        $term_id
-	 * @param string     $lang_code
-	 * @param bool|false $original_fallback if true will return the the input term_id in case no translation is found.
-	 *
-	 * @return null|int
-	 */
 	public function term_id_in( $term_id, $lang_code, $original_fallback = false ) {
 
 		return $this->adjust_term_id_for_ttid(
@@ -200,12 +157,6 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 		);
 	}
 
-	/**
-	 * @param string|int $term_id
-	 * @param string     $taxonomy
-	 *
-	 * @return string|int|null
-	 */
 	public function trid_from_tax_and_id( $term_id, $taxonomy ) {
 		$count = $this->maybe_warm_term_id_cache();
 		if ( 0 === $count ) {
@@ -224,34 +175,21 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 			if ( count( $data ) ) {
 				$this->set_data_to_cache( $data );
 			} else {
-				// This will prevent from extra sql queries when function is called with the same params.
-				Cache::set( self::CACHE_GROUP, $key_prefix . $term_id . $taxonomy, $this->get_cache_expire(), $term_id );
+				$this->set_in_cache( $key_prefix . $term_id . $taxonomy, $term_id );
 			}
 
-			return Cache::get( self::CACHE_GROUP, $key )->getOrElse( $term_id );
+			return $this->get_from_cache( $key )->getOrElse( $term_id );
 		};
 
-		$ttid = Cache::get( self::CACHE_GROUP, $key )->getOrElse( $get_term_id );
+		$ttid = $this->get_from_cache( $key )->getOrElse( $get_term_id );
 
 		return $this->get_element_trid( $ttid );
 	}
 
-	/**
-	 * Returns all post types to which a taxonomy is linked.
-	 *
-	 * @param string $taxonomy
-	 *
-	 * @return array
-	 *
-	 * @since 3.2.3
-	 */
 	public function get_taxonomy_post_types( $taxonomy ) {
 		return WPML_WP_Taxonomy::get_linked_post_types( $taxonomy );
 	}
 
-	/**
-	 * @return string
-	 */
 	protected function get_element_join() {
 
 		return "
@@ -261,11 +199,6 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 		";
 	}
 
-	/**
-	 * @param string $cols
-	 *
-	 * @return string
-	 */
 	protected function get_query_sql( $cols = 'wpml_translations.element_id, tax.term_id, tax.taxonomy' ) {
 		$sql  = '';
 		$sql .= "SELECT {$cols} FROM {$this->wpdb->prefix}icl_translations wpml_translations" . $this->get_element_join();
@@ -276,29 +209,21 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 		return $sql;
 	}
 
-	/**
-	 * @return string
-	 */
 	protected function get_type_prefix() {
 		return 'tax_';
 	}
 
-	/**
-	 * @return int
-	 */
 	private function maybe_warm_term_id_cache() {
 		$key = 'items_count_for_cache';
 
 		$get_count = function() use ( $key ) {
 			$sql = $this->get_query_sql( 'tax.term_id' );
-			// Query one more than the max warmup count.
 			$sql = $sql . ' LIMIT 0, ' . ( $this->get_cache_max_warmup_count() + 1 );
 
-			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$data  = $this->wpdb->get_results( $sql, ARRAY_A );
 			$count = is_array( $data ) ? count( $data ) : 0;
 
-			Cache::set( self::CACHE_GROUP, $key, $this->get_cache_expire(), $count );
+			$this->set_in_cache( $key, $count );
 
 			if ( $count > 0 && $count <= $this->get_cache_max_warmup_count() ) {
 				$data = $this->get_maybe_warm_term_id_cache_data();
@@ -308,37 +233,21 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 			return $count;
 		};
 
-		return Cache::get( self::CACHE_GROUP, $key )->getOrElse( $get_count );
+		return $this->get_from_cache( $key )->getOrElse( $get_count );
 	}
 
-	/**
-	 * @param string $where_sql
-	 * @param array  $where_sql_params
-	 *
-	 * @return array $data
-	 */
 	private function get_maybe_warm_term_id_cache_data( $where_sql = '', $where_sql_params = array() ) {
 		$sql = $this->get_query_sql();
 
 		if ( count( $where_sql_params ) > 0 ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$sql = $this->wpdb->prepare( $sql . $where_sql, $where_sql_params );
 		}
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$data = $this->wpdb->get_results( $sql, ARRAY_A );
 
 		return $data;
 	}
 
-	/**
-	 * @param string $term
-	 * @param string $slug
-	 * @param string $taxonomy
-	 * @param string $lang_code
-	 *
-	 * @return string
-	 */
 	public function generate_unique_term_slug( $term, $slug, $taxonomy, $lang_code ) {
 		if ( '' === trim( $slug ) ) {
 			$slug = sanitize_title( $term );
@@ -346,9 +255,6 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 		return WPML_Terms_Translations::term_unique_slug( $slug, $taxonomy, $lang_code );
 	}
 
-	/**
-	 * @return self
-	 */
 	public static function getGlobalInstance() {
 		global $wpml_term_translations, $wpdb;
 

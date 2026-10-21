@@ -1,68 +1,21 @@
 <?php
-/**
- * WPML_TM_MCS_Pagination_Render class file.
- *
- * @package wpml-translation-management
- */
 
-/**
- * Class WPML_TM_MCS_Pagination_Render
- */
 class WPML_TM_MCS_Pagination_Render {
 
-	/**
-	 * Twig template path.
-	 */
 	const TM_MCS_PAGINATION_TEMPLATE = 'tm-mcs-pagination.twig';
 
-	/**
-	 * Twig template service.
-	 *
-	 * @var IWPML_Template_Service
-	 */
 	private $template;
 
-	/**
-	 * Admin pagination instance.
-	 *
-	 * @var WPML_Admin_Pagination
-	 */
 	private $pagination;
 
-	/**
-	 * Items per page.
-	 *
-	 * @var int Items per page
-	 */
 	private $items_per_page;
 
-	/**
-	 * Total items.
-	 *
-	 * @var int Total items
-	 */
 	private $total_items;
 
-	/**
-	 * Current page number.
-	 *
-	 * @var int Current page
-	 */
 	private $current_page;
 
-	/**
-	 * Total number of pages.
-	 *
-	 * @var int Total pages
-	 */
 	private $total_pages;
 
-	/**
-	 * WPML_TM_MCS_Pagination_Render constructor.
-	 *
-	 * @param IWPML_Template_Service $template   Twig template service.
-	 * @param WPML_Admin_Pagination  $pagination Admin pagination object.
-	 */
 	public function __construct( IWPML_Template_Service $template, WPML_Admin_Pagination $pagination ) {
 		$this->template       = $template;
 		$this->pagination     = $pagination;
@@ -72,11 +25,6 @@ class WPML_TM_MCS_Pagination_Render {
 		$this->total_pages    = $pagination->get_total_pages();
 	}
 
-	/**
-	 * Get twig model.
-	 *
-	 * @return array
-	 */
 	private function get_model() {
 		$from = min( ( $this->current_page - 1 ) * $this->items_per_page + 1, $this->total_items );
 		$to   = min( $this->current_page * $this->items_per_page, $this->total_items );
@@ -87,11 +35,14 @@ class WPML_TM_MCS_Pagination_Render {
 
 		$model = array(
 			'strings'          => array(
-				'displaying'    => __( 'Displaying', 'wpml-translation-management' ),
-				'of'            => __( 'of', 'wpml-translation-management' ),
-				'display_all'   => __( 'Display all results', 'wpml-translation-management' ),
-				'display_less'  => __( 'Display 20 results per page', 'wpml-translation-management' ),
-				'nothing_found' => __( 'Nothing found', 'wpml-translation-management' ),
+				/* translators: Word in front of the numbers above a list, as in "Displaying 1 of 20". */
+				'displaying'    => __( 'Displaying', 'sitepress' ),
+				/* translators: Word between two numbers above a list, as in "Displaying 1 of 20": the first is what is shown, the second is how many there are in all. */
+				'of'            => __( 'of', 'sitepress' ),
+				'display_all'   => __( 'Display all results', 'sitepress' ),
+				'display_less'  => __( 'Display 20 results per page', 'sitepress' ),
+				/* translators: Shown in place of a list when nothing matches what was looked for. */
+				'nothing_found' => __( 'Nothing found', 'sitepress' ),
 			),
 			'pagination'       => $this->pagination,
 			'from'             => number_format_i18n( $from ),
@@ -108,20 +59,10 @@ class WPML_TM_MCS_Pagination_Render {
 		return $model;
 	}
 
-	/**
-	 * Render model via twig.
-	 *
-	 * @return mixed
-	 */
 	public function render() {
 		return $this->template->show( $this->get_model(), self::TM_MCS_PAGINATION_TEMPLATE );
 	}
 
-	/**
-	 * Paginate links.
-	 *
-	 * @return array
-	 */
 	public function paginate_links() {
 		$page_links = array();
 

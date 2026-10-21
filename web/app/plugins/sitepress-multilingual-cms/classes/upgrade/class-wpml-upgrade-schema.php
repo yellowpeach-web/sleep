@@ -2,50 +2,54 @@
 
 class WPML_Upgrade_Schema {
 
-	/** @var wpdb $wpdb */
 	private $wpdb;
 
 	public function __construct( wpdb $wpdb ) {
 		$this->wpdb = $wpdb;
 	}
 
-	/**
-	 * @param string $table_name
-	 *
-	 * @return bool
-	 */
 	public function does_table_exist( $table_name ) {
-		return $this->has_results( $this->wpdb->get_results( "SHOW TABLES LIKE '{$this->wpdb->prefix}{$table_name}'" ) );
+		$wpdb       = $this->wpdb;
+		$table_name = $this->get_prefixed_table_name( $table_name );
+
+		return $this->has_results(
+			$wpdb->get_results(
+				$wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name )
+			)
+		);
 	}
 
-	/**
-	 * @param string $table_name
-	 * @param string $column_name
-	 *
-	 * @return bool
-	 */
 	public function does_column_exist( $table_name, $column_name ) {
-		return $this->has_results( $this->wpdb->get_results( "SHOW COLUMNS FROM {$this->wpdb->prefix}{$table_name} LIKE '{$column_name}'" ) );
+		$wpdb       = $this->wpdb;
+		$table_name = $this->get_prefixed_table_name( $table_name );
+
+		return $this->has_results(
+			$wpdb->get_results(
+				$wpdb->prepare( "SHOW COLUMNS FROM `{$table_name}` LIKE %s", $column_name )
+			)
+		);
 	}
 
-	/**
-	 * @param string $table_name
-	 * @param string $index_name
-	 *
-	 * @return bool
-	 */
 	public function does_index_exist( $table_name, $index_name ) {
-		return $this->has_results( $this->wpdb->get_results( "SHOW INDEXES FROM {$this->wpdb->prefix}{$table_name} WHERE key_name = '{$index_name}'" ) );
+		$wpdb       = $this->wpdb;
+		$table_name = $this->get_prefixed_table_name( $table_name );
+
+		return $this->has_results(
+			$wpdb->get_results(
+				$wpdb->prepare( "SHOW INDEXES FROM `{$table_name}` WHERE key_name = %s", $index_name )
+			)
+		);
 	}
 
-	/**
-	 * @param string $table_name
-	 * @param string $key_name
-	 *
-	 * @return bool
-	 */
 	public function does_key_exist( $table_name, $key_name ) {
-		return $this->has_results( $this->wpdb->get_results( "SHOW KEYS FROM {$this->wpdb->prefix}{$table_name} WHERE key_name = '{$key_name}'" ) );
+		$wpdb       = $this->wpdb;
+		$table_name = $this->get_prefixed_table_name( $table_name );
+
+		return $this->has_results(
+			$wpdb->get_results(
+				$wpdb->prepare( "SHOW KEYS FROM `{$table_name}` WHERE key_name = %s", $key_name )
+			)
+		);
 	}
 
 
@@ -53,82 +57,87 @@ class WPML_Upgrade_Schema {
 		return is_array( $results ) && count( $results );
 	}
 
-	/**
-	 * @param string $table_name
-	 * @param string $column_name
-	 * @param string $attribute_string
-	 *
-	 * @return false|int
-	 */
+	public function ensure_columns( $table_name, array $columns ) {
+		if ( ! $this->does_table_exist( $table_name ) ) {
+			return false;
+		}
+
+		$any_missing = false;
+		foreach ( $columns as $column_name => $attribute_string ) {
+			if ( ! $this->does_column_exist( $table_name, $column_name ) ) {
+				$any_missing = true;
+				$this->add_column( $table_name, $column_name, $attribute_string );
+			}
+		}
+
+		return $any_missing;
+	}
+
 	public function add_column( $table_name, $column_name, $attribute_string ) {
-		return $this->wpdb->query( "ALTER TABLE {$this->wpdb->prefix}{$table_name} ADD `{$column_name}` {$attribute_string}" );
+		$wpdb        = $this->wpdb;
+		$table_name  = $this->get_prefixed_table_name( $table_name );
+
+		return $wpdb->query( "ALTER TABLE `{$table_name}` ADD `{$column_name}` {$attribute_string}" );
 	}
 
-	/**
-	 * @param string $table_name
-	 * @param string $column_name
-	 * @param string $attribute_string
-	 *
-	 * @return false|int
-	 */
 	public function modify_column( $table_name, $column_name, $attribute_string ) {
-		return $this->wpdb->query( "ALTER TABLE {$this->wpdb->prefix}{$table_name} MODIFY COLUMN `{$column_name}` {$attribute_string}" );
+		$wpdb        = $this->wpdb;
+		$table_name  = $this->get_prefixed_table_name( $table_name );
+
+		return $wpdb->query( "ALTER TABLE `{$table_name}` MODIFY COLUMN `{$column_name}` {$attribute_string}" );
 	}
 
-	/**
-	 * @param string $table_name
-	 * @param string $index_name
-	 * @param string $attribute_string
-	 *
-	 * @return false|int
-	 */
 	public function add_index( $table_name, $index_name, $attribute_string ) {
-		return $this->wpdb->query( "ALTER TABLE {$this->wpdb->prefix}{$table_name} ADD INDEX `{$index_name}` {$attribute_string}" );
+		$wpdb       = $this->wpdb;
+		$table_name = $this->get_prefixed_table_name( $table_name );
+
+		return $wpdb->query( "ALTER TABLE `{$table_name}` ADD INDEX `{$index_name}` {$attribute_string}" );
 	}
 
-	/**
-	 * @param string $table_name
-	 * @param array  $key_columns
-	 *
-	 * @return false|int
-	 */
 	public function add_primary_key( $table_name, $key_columns ) {
-		return $this->wpdb->query( "ALTER TABLE {$this->wpdb->prefix}{$table_name} ADD PRIMARY KEY (`" . implode( '`, `', $key_columns ) . '`)' );
+		$wpdb       = $this->wpdb;
+		$table_name = $this->get_prefixed_table_name( $table_name );
+		$key_columns = (array) $key_columns;
+
+		return $wpdb->query( "ALTER TABLE `{$table_name}` ADD PRIMARY KEY (`" . implode( '`, `', $key_columns ) . '`)' );
 	}
 
-	/**
-	 * @param string $table_name
-	 * @param string $index_name
-	 *
-	 * @return false|int
-	 */
 	public function drop_index( $table_name, $index_name ) {
-		return $this->wpdb->query( "ALTER TABLE {$this->wpdb->prefix}{$table_name} DROP INDEX `{$index_name}`" );
+		$wpdb       = $this->wpdb;
+		$table_name = $this->get_prefixed_table_name( $table_name );
+
+		return $wpdb->query( "ALTER TABLE `{$table_name}` DROP INDEX `{$index_name}`" );
 	}
 
-	/**
-	 * @param string $table_name
-	 * @param string $column_name
-	 *
-	 * @return null|string
-	 */
+	public function drop_column( $table_name, $column_name ) {
+		$wpdb       = $this->wpdb;
+		$table_name = $this->get_prefixed_table_name( $table_name );
+
+		return $wpdb->query( 'ALTER TABLE `' . esc_sql( $table_name ) . '` DROP COLUMN `' . esc_sql( $column_name ) . '`' );
+	}
+
 	public function get_column_collation( $table_name, $column_name ) {
-		return $this->wpdb->get_var(
-			"SELECT COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS
-			 WHERE TABLE_SCHEMA = '{$this->wpdb->dbname}'
-			 	AND TABLE_NAME = '{$this->wpdb->prefix}{$table_name}'
-			 	AND COLUMN_NAME = '{$column_name}'"
+		$wpdb       = $this->wpdb;
+		$table_name = $this->get_prefixed_table_name( $table_name );
+
+		return $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS
+				 WHERE TABLE_SCHEMA = %s
+				 	AND TABLE_NAME = %s
+				 	AND COLUMN_NAME = %s',
+				$wpdb->dbname,
+				$table_name,
+				$column_name
+			)
 		);
 	}
 
-	/**
-	 * @param string $table_name
-	 *
-	 * @return string|null
-	 */
 	public function get_table_collation( $table_name ) {
-		$table_data = $this->wpdb->get_row(
-			$this->wpdb->prepare( 'SHOW TABLE status LIKE %s', $table_name )
+		$wpdb = $this->wpdb;
+
+		$table_data = $wpdb->get_row(
+			$wpdb->prepare( 'SHOW TABLE status LIKE %s', $table_name )
 		);
 
 		if ( isset( $table_data->Collation ) ) {
@@ -138,68 +147,80 @@ class WPML_Upgrade_Schema {
 		return null;
 	}
 
-	/**
-	 * We try to get the collation from the posts table first.
-	 *
-	 * @return string|null
-	 */
-	public function get_default_collate() {
-		$posts_table_collate = $this->get_table_collation( $this->wpdb->posts );
+	public function get_default_charset_and_collate() {
+		$collate = $this->get_table_collation( $this->wpdb->posts );
 
-		if ( $posts_table_collate ) {
-			return $posts_table_collate;
-		} elseif ( ! empty( $this->wpdb->collate ) ) {
-			return $this->wpdb->collate;
+		if ( $collate ) {
+			return [
+				'charset' => $this->get_collation_charset( $collate ),
+				'collate' => $collate,
+			];
 		}
 
-		return null;
+		return [
+			'charset' => ! empty( $this->wpdb->charset ) ? $this->wpdb->charset : null,
+			'collate' => ! empty( $this->wpdb->collate ) ? $this->wpdb->collate : null,
+		];
 	}
 
-	/**
-	 * @param string $table_name
-	 *
-	 * @return string|null
-	 */
+	public function get_default_collate() {
+		$pair = $this->get_default_charset_and_collate();
+
+		return $pair['collate'];
+	}
+
 	public function get_table_charset( $table_name ) {
-		try {
-			return $this->wpdb->get_var(
-				$this->wpdb->prepare(
-					'SELECT CCSA.character_set_name
-					FROM information_schema.`TABLES` T,
-					information_schema.`COLLATION_CHARACTER_SET_APPLICABILITY` CCSA
-					WHERE CCSA.collation_name = T.table_collation
-					AND T.table_schema = "%s"
-					AND T.table_name = "%s";',
-					$this->wpdb->dbname,
-					$table_name
+		$collation = $this->get_table_collation( $table_name );
+
+		return $collation ? $this->get_collation_charset( $collation ) : null;
+	}
+
+	public function get_collation_charset( $collation ) {
+		$wpdb = $this->wpdb;
+
+		if ( $this->has_full_collation_name_column() ) {
+			$charset = $wpdb->get_var(
+				$wpdb->prepare(
+					'SELECT CHARACTER_SET_NAME FROM information_schema.COLLATION_CHARACTER_SET_APPLICABILITY WHERE FULL_COLLATION_NAME = %s LIMIT 1',
+					$collation
 				)
 			);
-		} catch ( Exception $e ) {
-			return null;
+		} else {
+			$charset = $wpdb->get_var(
+				$wpdb->prepare(
+					'SELECT CHARACTER_SET_NAME FROM information_schema.COLLATION_CHARACTER_SET_APPLICABILITY WHERE COLLATION_NAME = %s LIMIT 1',
+					$collation
+				)
+			);
 		}
+
+		if ( is_string( $charset ) && '' !== $charset ) {
+			return $charset;
+		}
+
+		$parts = explode( '_', $collation, 2 );
+
+		return $parts[0];
 	}
 
-	/**
-	 * We try to get the charset from the posts table first.
-	 *
-	 * @return string|null
-	 */
+	private function has_full_collation_name_column() {
+		return $this->has_results(
+			$this->wpdb->get_results( "SHOW COLUMNS FROM information_schema.COLLATION_CHARACTER_SET_APPLICABILITY LIKE 'FULL_COLLATION_NAME'" )
+		);
+	}
+
 	public function get_default_charset() {
-		$post_table_charset = $this->get_table_charset( $this->wpdb->posts );
+		$pair = $this->get_default_charset_and_collate();
 
-		if ( $post_table_charset ) {
-			return $post_table_charset;
-		} elseif ( ! empty( $this->wpdb->charset ) ) {
-			return $this->wpdb->charset;
-		}
-
-		return null;
+		return $pair['charset'];
 	}
 
-	/**
-	 * @return wpdb
-	 */
 	public function get_wpdb() {
 		return $this->wpdb;
 	}
+
+	private function get_prefixed_table_name( $table_name ) {
+		return $this->wpdb->prefix . $table_name;
+	}
+
 }

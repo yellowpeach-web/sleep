@@ -1,0 +1,1619 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "uk"
+         },
+         "You have unsaved language changes from a previous session.": [
+            "У вас є незбережені зміни мов із попереднього сеансу."
+         ],
+         "Restore changes": [
+            "Відновити зміни"
+         ],
+         "Discard": [
+            "Відхилити"
+         ],
+         "Unsaved language changes from a previous session could not be restored, because the site’s languages changed after they were made. Those changes were discarded.": [
+            "Незбережені зміни мов із попереднього сеансу не вдалося відновити, оскільки мови сайту змінилися після того, як ці зміни були внесені. Ті зміни було відхилено."
+         ],
+         "Dismiss": [
+            "Закрити"
+         ],
+         "Impact on existing content": [
+            "Вплив на наявний вміст"
+         ],
+         "Checking which content will be affected…": [
+            "Перевірка того, на який вміст це вплине…"
+         ],
+         "We couldn’t estimate the impact. You can still apply the change; content will be updated during the save.": [
+            "Нам не вдалося оцінити вплив. Ви все одно можете застосувати зміну; вміст буде оновлено під час збереження."
+         ],
+         "Try again": [
+            "Спробувати знову"
+         ],
+         "No existing content needs updating.": [
+            "Жоден наявний вміст не потребує оновлення."
+         ],
+         "%d post will be updated.": [
+            "%d допис буде оновлено.",
+            "%d дописи буде оновлено.",
+            "%d дописів буде оновлено."
+         ],
+         "%d link will be adjusted.": [
+            "%d посилання буде скориговано.",
+            "%d посилання буде скориговано.",
+            "%d посилань буде скориговано."
+         ],
+         "%d translated string will be re-keyed.": [
+            "%d перекладений рядок отримає новий ключ.",
+            "%d перекладені рядки отримають нові ключі.",
+            "%d перекладених рядків отримають нові ключі."
+         ],
+         "Finish the change to %s": [
+            "Завершити зміну на %s"
+         ],
+         "What changes automatically": [
+            "Що змінюється автоматично"
+         ],
+         "The language’s country becomes %s.": [
+            "Країною мови стає %s."
+         ],
+         "Automatic translation will be re-mapped to the new regional variant. Existing translations stay as they are.": [
+            "Автоматичний переклад буде переприв’язано до нового регіонального варіанта. Наявні переклади залишаться без змін."
+         ],
+         "Automatic translation will now target the new regional variant. Existing translations stay as they are.": [
+            "Автоматичний переклад тепер буде націлений на новий регіональний варіант. Наявні переклади залишаться без змін."
+         ],
+         "The hreflang tag becomes %s.": [
+            "Тег hreflang стає %s."
+         ],
+         "Also update these?": [
+            "Також оновити ці?"
+         ],
+         "Riskier change": [
+            "Більш ризикована зміна"
+         ],
+         "Cancel": [
+            "Скасувати"
+         ],
+         "Apply": [
+            "Застосувати"
+         ],
+         "Anything whose translation group already has a version in %s stays where it is.": [
+            "Усе, чия група перекладу вже має версію в %s, залишається на своєму місці."
+         ],
+         "You have %1$d %2$s page from a language you removed. Bring it here?": [
+            "У вас є %1$d сторінка мовою %2$s з мови, яку ви видалили. Перенести її сюди?",
+            "У вас є %1$d сторінки мовою %2$s з мови, яку ви видалили. Перенести їх сюди?",
+            "У вас є %1$d сторінок мовою %2$s з мови, яку ви видалили. Перенести їх сюди?"
+         ],
+         "I understand these items are not %1$s and will be re-labelled as %2$s.": [
+            "Я розумію, що ці елементи не є %1$s і будуть перемарковані як %2$s."
+         ],
+         "Re-labels them as %s, keeping their connections to your other languages.": [
+            "Перемарковує їх як %s, зберігаючи їхні зв’язки з іншими вашими мовами."
+         ],
+         "Content from a language you removed": [
+            "Вміст із мови, яку ви видалили"
+         ],
+         "Choose what to bring here": [
+            "Виберіть, що перенести сюди"
+         ],
+         "Apply changes": [
+            "Застосувати зміни"
+         ],
+         "These changes are applied when you click Save.": [
+            "Ці зміни будуть застосовані, коли ви натиснете «Зберегти»."
+         ],
+         "Change the WordPress locale %1$s → %2$s": [
+            "Змінити локаль WordPress %1$s → %2$s"
+         ],
+         "WordPress uses this to load admin language packs and plugin / theme translations.": [
+            "WordPress використовує це для завантаження мовних пакетів адмінпанелі та перекладів плагінів / тем."
+         ],
+         "Already used by %s.": [
+            "Уже використовується %s."
+         ],
+         "Change the language code in URLs %1$s → %2$s": [
+            "Змінити код мови в URL-адресах %1$s → %2$s"
+         ],
+         "Renames the language code. Existing %s URLs in search engines, bookmarks and external links become 404s unless redirects are set up.": [
+            "Перейменовує код мови. Наявні URL-адреси %s у пошукових системах, закладках і зовнішніх посиланнях стануть помилками 404, якщо не налаштовано переспрямування."
+         ],
+         "Use the flag of %s": [
+            "Використовувати прапор %s"
+         ],
+         "You picked the current flag yourself, so WPML keeps it unless you ask.": [
+            "Ви самі вибрали поточний прапор, тому WPML збереже його, якщо ви не попросите про інше."
+         ],
+         "The flag shown in language switchers and in the admin.": [
+            "Прапор, що відображається в перемикачах мов та в адмінпанелі."
+         ],
+         "Rename the language %1$s → %2$s": [
+            "Перейменувати мову %1$s → %2$s"
+         ],
+         "Updates the name in every language of the admin. Labels you edited yourself are kept.": [
+            "Оновлює назву кожною мовою адмінпанелі. Ярлики, які ви відредагували власноруч, зберігаються."
+         ],
+         "Change the hreflang tag %1$s → %2$s": [
+            "Змінити тег hreflang %1$s → %2$s"
+         ],
+         "You customised this tag, so WPML keeps it unless you ask. Search engines read it to serve the right regional version.": [
+            "Ви налаштували цей тег власноруч, тому WPML збереже його, якщо ви не попросите про інше. Пошукові системи читають його, щоб показувати правильну регіональну версію."
+         ],
+         "What should happen to %s?": [
+            "Що має статися з %s?"
+         ],
+         "Pick the outcome you want. Nothing happens until you confirm below.": [
+            "Виберіть бажаний результат. Нічого не станеться, доки ви не підтвердите нижче."
+         ],
+         "Checking for translated content…": [
+            "Перевірка перекладеного вмісту…"
+         ],
+         "What should happen to this language": [
+            "Що має статися з цією мовою"
+         ],
+         "Which content types": [
+            "Які типи вмісту"
+         ],
+         "%1$s — %2$d item": [
+            "%2$d: %1$s елемент",
+            "%2$d: %1$s елементи",
+            "%2$d: %1$s елементів"
+         ],
+         "Pages and posts": [
+            "Сторінки та дописи"
+         ],
+         "Products": [
+            "Товари"
+         ],
+         "Categories and tags": [
+            "Категорії та теги"
+         ],
+         "Images": [
+            "Зображення"
+         ],
+         "Menus": [
+            "Меню"
+         ],
+         "Delete them permanently now — this cannot be undone": [
+            "Видалити їх остаточно зараз — це неможливо скасувати"
+         ],
+         "Categories, tags and menus have no WordPress Trash, so those are deleted right away either way.": [
+            "Категорії, теги та меню не мають кошика WordPress, тому вони видаляються відразу в будь-якому разі."
+         ],
+         "Your site’s setting “when deleting a post, delete its translations too” is on. We will not apply it here, so nothing in %s is deleted.": [
+            "Налаштування вашого сайту «при видаленні допису також видаляти його переклади» увімкнено. Ми не будемо застосовувати його тут, тому нічого в %s не буде видалено."
+         ],
+         ", ": [
+            ", "
+         ],
+         "your other languages": [
+            "інші ваші мови"
+         ],
+         "%s’s string translations are deleted with it.": [
+            "Переклади рядків %s видаляються разом із нею."
+         ],
+         "Its queued translation jobs are cancelled without charge; any already in progress are stopped, and the words already sent are still charged.": [
+            "Її чергові завдання з перекладу скасовуються безкоштовно; будь-які завдання, що вже виконуються, зупиняються, а за вже надіслані слова все одно стягується плата."
+         ],
+         "Move this content into": [
+            "Перемістити цей вміст у"
+         ],
+         "Choose a language…": [
+            "Виберіть мову…"
+         ],
+         "Same language": [
+            "Та сама мова"
+         ],
+         "A different language": [
+            "Інша мова"
+         ],
+         "I understand these items are not %s and will be re-labelled as the language I pick.": [
+            "Я розумію, що ці елементи не є %s і будуть перемарковані як мова, яку я виберу."
+         ],
+         "%s is taken off the site when you save, and its content is moved straight after — nothing is deleted either way.": [
+            "При збереженні %s видаляється із сайту, а її вміст переміщується відразу після цього — у будь-якому разі нічого не видаляється."
+         ],
+         "WPML could not stop translating into %s. Nothing was changed — try again, or pick another goal.": [
+            "WPML не вдалося припинити переклад на %s. Нічого не було змінено — спробуйте знову або виберіть іншу ціль."
+         ],
+         "Review %d item": [
+            "Переглянути %d елемент",
+            "Переглянути %d елементи",
+            "Переглянути %d елементів"
+         ],
+         "Stop translating into %s": [
+            "Припинити переклад на %s"
+         ],
+         "Move %1$d item into %2$s": [
+            "Перемістити %1$d елемент у %2$s",
+            "Перемістити %1$d елементи у %2$s",
+            "Перемістити %1$d елементів у %2$s"
+         ],
+         "Move %d item": [
+            "Перемістити %d елемент",
+            "Перемістити %d елементи",
+            "Перемістити %d елементів"
+         ],
+         "Move %d item to the Trash": [
+            "Перемістити %d елемент у кошик",
+            "Перемістити %d елементи у кошик",
+            "Перемістити %d елементів у кошик"
+         ],
+         "Delete %d item permanently": [
+            "Видалити %d елемент остаточно",
+            "Видалити %d елементи остаточно",
+            "Видалити %d елементів остаточно"
+         ],
+         "Remove language — nothing is deleted": [
+            "Видалити мову — нічого не видаляється"
+         ],
+         "What would be removed": [
+            "Що буде видалено"
+         ],
+         "Hide the list": [
+            "Приховати список"
+         ],
+         "Reading the list…": [
+            "Читання списку…"
+         ],
+         "We couldn’t read the list of items. The counts above still stand, and you can go ahead or close this dialog.": [
+            "Нам не вдалося прочитати список елементів. Наведені вище підрахунки залишаються чинними, і ви можете продовжити або закрити це діалогове вікно."
+         ],
+         "%1$s — %2$s (#%3$d)": [
+            "%1$s — %2$s (#%3$d)"
+         ],
+         "Nothing is selected right now.": [
+            "Зараз нічого не вибрано."
+         ],
+         "Showing %1$d–%2$d of %3$d item": [
+            "Показано %1$d–%2$d із %3$d елемента",
+            "Показано %1$d–%2$d із %3$d елементів",
+            "Показано %1$d–%2$d із %3$d елементів"
+         ],
+         "Previous": [
+            "Назад"
+         ],
+         "Next": [
+            "Далі"
+         ],
+         "%s is off your site, but its content could not be moved. Nothing was deleted — the content is listed under Removed languages, where you can move it from.": [
+            "%s видалено з вашого сайту, але її вміст не вдалося перемістити. Нічого не було видалено — вміст перелічено в розділі «Видалені мови», звідки ви можете його перемістити."
+         ],
+         "Done": [
+            "Готово"
+         ],
+         "%s stays on your site. Its pages keep their addresses and their search rankings, and the language switcher keeps offering it.": [
+            "%s залишається на вашому сайті. Її сторінки зберігають свої адреси та позиції в пошуку, а перемикач мов продовжує її пропонувати."
+         ],
+         "WPML has stopped creating new %s translations. To start again, use “Resume translating” on the language’s row.": [
+            "WPML припинив створення нових перекладів на %s. Щоб почати знову, скористайтеся кнопкою «Відновити переклад» у рядку мови."
+         ],
+         "%1$s is off your site. Nothing was deleted: its addresses now redirect to your %2$s pages, and every item it holds is still in your database and in your admin lists.": [
+            "%1$s видалено з вашого сайту. Нічого не було видалено: її адреси тепер переспрямовують на ваші сторінки %2$s, і кожен елемент, який вона містить, усе ще є у вашій базі даних і в списках адмінпанелі."
+         ],
+         "To bring %s back, add it again — or use “Put back” under Removed languages, below.": [
+            "Щоб повернути %s, додайте її знову — або скористайтеся кнопкою «Повернути» в розділі «Видалені мови» нижче."
+         ],
+         "To bring %s back, add it again as a custom language with the same code — its content is still here.": [
+            "Щоб повернути %s, додайте її знову як власну мову з самим кодом — її вміст усе ще тут."
+         ],
+         "To bring %s back, add it again from the language picker — it asks which country the content belongs to, and the content is still here.": [
+            "Щоб повернути %s, додайте її знову за допомогою засобу вибору мови — він запитає, до якої країни належить вміст, і вміст усе ще тут."
+         ],
+         "They stay in your Trash until %s.": [
+            "Вони залишаються у вашому кошику до %s."
+         ],
+         "The deletion of %s’s content finished. WPML could not read back a record of what it removed.": [
+            "Видалення вмісту %s завершено. WPML не вдалося прочитати запис про те, що саме було видалено."
+         ],
+         "Close": [
+            "Закрити"
+         ],
+         "Unavailable until WPML can count this language’s content.": [
+            "Недоступно, доки WPML не зможе підрахувати вміст цієї мови."
+         ],
+         "If your site uses one domain per language, that language’s domain is not redirected: while it still points at this site it answers in your site’s default language at the same addresses.": [
+            "Якщо ваш сайт використовує один домен на мову, домен цієї мови не переспрямовується: поки він усе ще вказує на цей сайт, він відповідає основною мовою вашого сайту за тими самими адресами."
+         ],
+         "The listed items are removed, along with their translation records, their string translations and their translation jobs.": [
+            "Перелічені елементи видаляються разом із їхніми записами про переклад, перекладами рядків і завданнями з перекладу."
+         ],
+         "The listed items are removed, along with their translation records, their string translations and their %d translation job.": [
+            "Перелічені елементи видаляються разом із їхніми записами про переклад, перекладами рядків і їхнім %d завданням із перекладу.",
+            "Перелічені елементи видаляються разом із їхніми записами про переклад, перекладами рядків і їхніми %d завданнями з перекладу.",
+            "Перелічені елементи видаляються разом із їхніми записами про переклад, перекладами рядків і їхніми %d завданнями з перекладу."
+         ],
+         "We couldn’t check for translated content. You can still remove the language; its translations are kept. Deleting its content and moving it into another language both need that count, so those two goals are unavailable.": [
+            "Нам не вдалося перевірити наявність перекладеного вмісту. Ви все одно можете видалити мову; її переклади буде збережено. Видалення її вмісту та переміщення його в іншу мову потребують цього підрахунку, тому ці дві цілі недоступні."
+         ],
+         "This can be undone.": [
+            "Це можна скасувати."
+         ],
+         "Stop translating into %s, keep its content online.": [
+            "Припинити переклад на %s, залишити контент онлайн."
+         ],
+         "Your %1$s content stays published at its current addresses and keeps its search rankings. The language switcher keeps offering %1$s.": [
+            "Ваш контент мовою %1$s залишається опублікованим за поточними адресами та зберігає свої позиції в пошуковій видачі. Перемикач мов продовжує пропонувати %1$s."
+         ],
+         "Your %1$d %2$s item stays published at its current address and keeps its search ranking. The language switcher keeps offering %2$s.": [
+            "Ваш %1$d елемент мовою %2$s залишається опублікованим за своєю поточною адресою та зберігає позицію в пошуковій видачі. Перемикач мов продовжує пропонувати %2$s.",
+            "Ваші %1$d елементи мовою %2$s залишаються опублікованими за своїми поточними адресами та зберігають позиції в пошуковій видачі. Перемикач мов продовжує пропонувати %2$s.",
+            "Ваші %1$d елементів мовою %2$s залишаються опублікованими за своїми поточними адресами та зберігають позиції в пошуковій видачі. Перемикач мов продовжує пропонувати %2$s."
+         ],
+         "Translations are already paused for this language — nothing more changes.": [
+            "Переклади для цієї мови вже призупинено — більше нічого не змінюється."
+         ],
+         "WPML stops creating new translations.": [
+            "WPML припиняє створення нових перекладів."
+         ],
+         "Nothing is deleted": [
+            "Нічого не видаляється"
+         ],
+         "Take %s off the site, but keep everything in case we come back.": [
+            "Видалити %s із сайту, але зберегти все на випадок повернення."
+         ],
+         "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. Everything %1$s holds stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was.": [
+            "Відвідувачі перестають бачити %1$s; її адреси переспрямовують на ваші сторінки %2$s, тому ніщо не повертає помилку 404. Усе, що містить %1$s, залишається у вашій базі даних і в списках адмінпанелі, а повторне додавання %1$s повертає все точно в такому вигляді, як було."
+         ],
+         "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. The %3$d item stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was.": [
+            "Відвідувачі перестають бачити %1$s; її адреси переспрямовують на ваші сторінки %2$s, тому ніщо не повертає помилку 404. %3$d елемент залишається у вашій базі даних і в списках адмінпанелі, а повторне додавання %1$s повертає його точно в такому вигляді, як він був.",
+            "Відвідувачі перестають бачити %1$s; її адреси переспрямовують на ваші сторінки %2$s, тому ніщо не повертає помилку 404. %3$d елементи залишаються у вашій базі даних і в списках адмінпанелі, а повторне додавання %1$s повертає їх точно в такому вигляді, як вони були.",
+            "Відвідувачі перестають бачити %1$s; її адреси переспрямовують на ваші сторінки %2$s, тому ніщо не повертає помилку 404. %3$d елементів залишаються у вашій базі даних і в списках адмінпанелі, а повторне додавання %1$s повертає їх точно в такому вигляді, як вони були."
+         ],
+         "Reversible": [
+            "Зворотна дія"
+         ],
+         "Take %s off the site and delete its content.": [
+            "Видалити %s із сайту та видалити її вміст."
+         ],
+         "Originals in other languages are untouched. Image files stay on disk.": [
+            "Оригінали іншими мовами залишаються недоторканими. Файли зображень залишаються на диску."
+         ],
+         "Only reversible if the Trash route is chosen": [
+            "Зворотна дія можлива лише за умови вибору видалення через кошик"
+         ],
+         "Not reversible — this site has the Trash disabled": [
+            "Дія незворотна — на цьому сайті вимкнено кошик"
+         ],
+         "This can only be undone when the items go to the Trash.": [
+            "Це можна скасувати лише тоді, коли елементи потрапляють у кошик."
+         ],
+         "This site has the Trash disabled, so deleting this content cannot be undone.": [
+            "На цьому сайті вимкнено кошик, тому видалення цього вмісту неможливо скасувати."
+         ],
+         "Move this language’s content into another language.": [
+            "Перемістити вміст цієї мови в іншу мову."
+         ],
+         "Reassigns this language’s items to a language you pick, keeping their connections to the other languages. For renaming and merging, not retiring.": [
+            "Перепризначає елементи цієї мови вибраній вами мові, зберігаючи їхні зв’язки з іншими мовами. Для перейменування та об’єднання, а не для вилучення."
+         ],
+         "Reassigns the %d item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring.": [
+            "Перепризначає %d елемент вибраній вами мові, зберігаючи його зв’язки з іншими мовами. Для перейменування та об’єднання, а не для вилучення.",
+            "Перепризначає %d елементи вибраній вами мові, зберігаючи їхні зв’язки з іншими мовами. Для перейменування та об’єднання, а не для вилучення.",
+            "Перепризначає %d елементів вибраній вами мові, зберігаючи їхні зв’язки з іншими мовами. Для перейменування та об’єднання, а не для вилучення."
+         ],
+         "The content is kept, but the move cannot be undone.": [
+            "Вміст зберігається, але переміщення неможливо скасувати."
+         ],
+         "There is no other active language on this site to move the content into.": [
+            "На цьому сайті немає іншої активної мови, у яку можна було б перемістити вміст."
+         ],
+         "You have existing content in %s": [
+            "У вас є наявний вміст мовою %s"
+         ],
+         "This site has %1$d items in %2$s from before. What should happen to them?": [
+            "На цьому сайті раніше було %1$d елементів мовою %2$s. Що з ними має статися?"
+         ],
+         "Bring back my content as %1$s (%2$s).": [
+            "Повернути мій вміст як %1$s (%2$s)."
+         ],
+         "The language keeps its original code (%s). There is no automatic way back.": [
+            "Мова зберігає свій початковий код (%s). Автоматичного способу повернути це немає."
+         ],
+         "Start fresh and keep the old content separate.": [
+            "Почати заново та тримати старий вміст окремо."
+         ],
+         "You can attach the old content to the new language later from WPML → Support.": [
+            "Ви зможете прикріпити старий вміст до нової мови пізніше в розділі WPML → Підтримка."
+         ],
+         "Never mind": [
+            "Не зважайте"
+         ],
+         "Add language": [
+            "Додати мову"
+         ],
+         "How much would a new language cost?": [
+            "Скільки коштуватиме нова мова?"
+         ],
+         "Pick a language to see how many words your content has and what translating them would cost.": [
+            "Виберіть мову, щоб побачити, скільки слів у вашому вмісті та скільки коштуватиме їх переклад."
+         ],
+         "These costs apply once you use automatic translation for the new language.": [
+            "Ці витрати застосовуються, коли ви почнете використовувати автоматичний переклад для нової мови."
+         ],
+         "No languages are available to estimate. Every language automatic translation supports is already on your site.": [
+            "Немає доступних мов для оцінки. Кожна мова, яку підтримує автоматичний переклад, уже є на вашому сайті."
+         ],
+         "Language": [
+            "Мова"
+         ],
+         "Select a language…": [
+            "Виберіть мову…"
+         ],
+         "Show cost": [
+            "Показати вартість"
+         ],
+         "Add a custom language": [
+            "Додати власну мову"
+         ],
+         "Use this only for non-standard dialects or local variants that aren't in the language list.": [
+            "Використовуйте це лише для нестандартних діалектів або місцевих варіантів, яких немає в списку мов."
+         ],
+         "Most users don't need a custom language. Most variants (e.g., Mexican Spanish, Brazilian Portuguese) already exist in the language list above. Use this form only for genuine custom language variants.": [
+            "Більшості користувачів не потрібна власна мова. Більшість варіантів (наприклад, мексиканська іспанська, бразильська португальська) уже є в списку мов вище. Використовуйте цю форму лише для справжніх власних варіантів мови."
+         ],
+         "Variant name": [
+            "Назва варіанта"
+         ],
+         "e.g., Andalusian": [
+            "напр., андалузька"
+         ],
+         "“%s” is already the name of one of your languages. Choose a different name, or rename that language first.": [
+            "«%s» вже є назвою однієї з ваших мов. Виберіть іншу назву або спочатку перейменуйте ту мову."
+         ],
+         "“%s” is available in the language list. We recommend adding it with Search and add a language. Continue only if you need your own variant.": [
+            "«%s» доступна в списку мов. Ми рекомендуємо додати її за допомогою функції «Пошук і додавання мови». Продовжуйте, лише якщо вам потрібен власний варіант."
+         ],
+         "Default locale": [
+            "Локаль за замовчуванням"
+         ],
+         "Code": [
+            "Код"
+         ],
+         "pms or es-an": [
+            "pms або es-an"
+         ],
+         "Once defined, this cannot be changed.": [
+            "Після визначення це неможливо змінити."
+         ],
+         "hreflang": [
+            "hreflang"
+         ],
+         "WPML no longer lists “%s”, so you can add it here as a custom language. We filled in its usual settings.": [
+            "WPML більше не містить мову «%s» у списку, тому ви можете додати її тут як власну мову. Ми заповнили її звичні налаштування."
+         ],
+         "Flag": [
+            "Прапор"
+         ],
+         "Uploading…": [
+            "Завантаження…"
+         ],
+         "Upload SVG…": [
+            "Завантажити SVG…"
+         ],
+         "Upload a custom flag (SVG)": [
+            "Завантажити власний прапор (SVG)"
+         ],
+         "The flag could not be uploaded.": [
+            "Не вдалося завантажити прапор."
+         ],
+         "SVG recommended for crisp display.": [
+            "SVG рекомендується для чіткого відображення."
+         ],
+         "Encode URL?": [
+            "Кодувати URL?"
+         ],
+         "No": [
+            "Ні"
+         ],
+         "Yes": [
+            "Так"
+         ],
+         "Map to a supported language (recommended)": [
+            "Зіставити з підтримуваною мовою (рекомендовано)"
+         ],
+         "— Match automatically —": [
+            "— Зіставити автоматично —"
+         ],
+         "The locale “%s” isn’t valid. Use letters, numbers and underscores only, like es_ES.": [
+            "Локаль «%s» недійсна. Використовуйте лише букви, цифри та підкреслення, як-от es_ES."
+         ],
+         "The hreflang “%1$s” is too long. Use at most %2$d characters.": [
+            "Тег hreflang «%1$s» занадто довгий. Використовуйте не більше %2$d символів."
+         ],
+         "The language code “%1$s” is too long. Use at most %2$d characters.": [
+            "Код мови «%1$s» занадто довгий. Використовуйте не більше %2$d символів."
+         ],
+         "The language code “%1$s” isn’t valid. Use letters, numbers, hyphens and underscores — up to %2$d characters.": [
+            "Код мови «%1$s» недійсний. Використовуйте букви, цифри, дефіси та підкреслення — до %2$d символів."
+         ],
+         "“%s” is already a supported language. Add it from Search instead of creating a custom variant.": [
+            "«%s» уже є підтримуваною мовою. Додайте її через пошук замість створення власного варіанта."
+         ],
+         "This language code is already used by “%s”. Choose a different one.": [
+            "Цей код мови вже використовується мовою «%s». Виберіть інший."
+         ],
+         "Enter a name for this language.": [
+            "Введіть назву для цієї мови."
+         ],
+         "Enter a locale.": [
+            "Введіть локаль."
+         ],
+         "Enter a language code.": [
+            "Введіть код мови."
+         ],
+         "Edit labels for %s": [
+            "Редагувати назви для %s"
+         ],
+         "Set how the “%s” language is named in each of your site languages. Names are prefilled. Edit any to override.": [
+            "Установіть, як називається мова «%s» кожною з мов вашого сайту. Назви заповнені попередньо. Відредагуйте будь-яку, щоб змінити її."
+         ],
+         "Loading names…": [
+            "Завантаження назв…"
+         ],
+         "this language": [
+            "ця мова"
+         ],
+         "Save labels": [
+            "Зберегти назви"
+         ],
+         "Your server cannot convert international domain names. Enter the xn-- form of %s.": [
+            "Ваш сервер не може перетворювати інтернаціоналізовані доменні імена. Введіть форму xn-- для %s."
+         ],
+         "The domain you have entered is invalid.": [
+            "Введений домен недійсний."
+         ],
+         "Set a domain for %s": [
+            "Встановіть домен для %s"
+         ],
+         "Set a domain for each new language": [
+            "Встановіть домен для кожної нової мови"
+         ],
+         "Your site uses a different domain per language. %s is no longer the default language, so it needs a domain of its own. Until it has one, its pages cannot be reached.": [
+            "Ваш сайт використовує різні домени для кожної мови. %s більше не є мовою за замовчуванням, тому їй потрібен власний домен. Поки його не буде, її сторінки будуть недоступні."
+         ],
+         "Your site uses a different domain per language, so %s needs a domain of its own before it can be visited.": [
+            "Ваш сайт використовує різні домени для кожної мови, тому для %s потрібен власний домен, перш ніж її можна буде відвідати."
+         ],
+         "Your site uses a different domain per language, so each new language needs a domain of its own before it can be visited.": [
+            "Ваш сайт використовує різні домени для кожної мови, тому кожній новій мові потрібен власний домен, перш ніж її можна буде відвідати."
+         ],
+         "This is the site address.": [
+            "Це адреса сайту."
+         ],
+         "Change it in Settings → General.": [
+            "Змініть її в Налаштування → Загальне."
+         ],
+         "Valid": [
+            "Дійсний"
+         ],
+         "Blocked by a firewall or CDN": [
+            "Заблоковано фаєрволом або CDN"
+         ],
+         "Not valid": [
+            "Недійсний"
+         ],
+         "Validate on save": [
+            "Перевіряти під час збереження"
+         ],
+         "This domain is already used by another language or by the site itself.": [
+            "Цей домен уже використовується іншою мовою або самим сайтом."
+         ],
+         "Enter the domain this language will be served from.": [
+            "Введіть домен, на якому буде розміщено цю мову."
+         ],
+         "%s will serve this language.": [
+            "%s відображатиме цю мову."
+         ],
+         "If it shows your site, you can save it anyway.": [
+            "Якщо на ньому відображається ваш сайт, ви однаково можете його зберегти."
+         ],
+         "Two languages cannot use the same domain: %s is already used. Give each language its own domain.": [
+            "Дві мови не можуть використовувати один і той самий домен: %s уже використовується. Призначте кожній мові власний домен."
+         ],
+         "%s loads, but a firewall or CDN blocked WPML's check.": [
+            "%s завантажується, але фаєрвол або CDN заблокували перевірку WPML."
+         ],
+         "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
+            "Не вдалося перевірити домен: %s. Переконайтеся, що він вказує на цей сайт, або зніміть прапорець «Перевіряти під час збереження», щоб зберегти його в будь-якому разі."
+         ],
+         "Save anyway": [
+            "Все одно зберегти"
+         ],
+         "Save": [
+            "Зберегти"
+         ],
+         "0 languages — nothing to reset here": [
+            "0 мов — тут нічого скидати"
+         ],
+         "Reset language defaults": [
+            "Скинути налаштування мов за замовчуванням"
+         ],
+         "WPML couldn’t finish checking your languages.": [
+            "WPML не вдалося завершити перевірку ваших мов."
+         ],
+         "This says nothing about your languages — the check stopped before it could compare them all. Nothing has been changed.": [
+            "Це нічого не говорить про ваші мови — перевірка зупинилася до того, як вдалося порівняти їх усі. Нічого не було змінено."
+         ],
+         "All your languages already use WPML’s catalogue defaults.": [
+            "Усі ваші мови вже використовують стандартні налаштування каталогу WPML."
+         ],
+         "Flags, label translations and WordPress locales all match — there is nothing to reset.": [
+            "Прапори, переклади міток і локалі WordPress збігаються — скидати нічого."
+         ],
+         "These languages no longer match WPML’s language catalogue. Put back:": [
+            "Ці мови більше не відповідають каталогу мов WPML. Повернути:"
+         ],
+         "Flags": [
+            "Прапори"
+         ],
+         "%d language using a flag that is not the catalogue default": [
+            "%d мова використовує прапор, який не є стандартним для каталогу",
+            "%d мови використовують прапор, який не є стандартним для каталогу",
+            "%d мов використовують прапор, який не є стандартним для каталогу"
+         ],
+         "Labels and their translations": [
+            "Мітки та їхні переклади"
+         ],
+         "%1$s, %2$s": [
+            "%1$s, %2$s"
+         ],
+         "%d language": [
+            "%d мова",
+            "%d мови",
+            "%d мов"
+         ],
+         "%d display language": [
+            "%d мова відображення",
+            "%d мови відображення",
+            "%d мов відображення"
+         ],
+         "%d edited": [
+            "%d відредагована",
+            "%d відредаговані",
+            "%d відредагованих"
+         ],
+         "%d missing": [
+            "%d відсутня",
+            "%d відсутні",
+            "%d відсутніх"
+         ],
+         "%1$s of %2$s": [
+            "%1$s з %2$s"
+         ],
+         "hide": [
+            "сховати"
+         ],
+         "show": [
+            "показати"
+         ],
+         "missing": [
+            "відсутня"
+         ],
+         "+ %d more": [
+            "+ ще %d",
+            "+ ще %d",
+            "+ ще %d"
+         ],
+         "WP Locale": [
+            "Локаль WP"
+         ],
+         "%d language whose locale does not match its country": [
+            "%d мова, локаль якої не відповідає її країні",
+            "%d мови, локаль яких не відповідає їхній країні",
+            "%d мов, локаль яких не відповідає їхній країні"
+         ],
+         "Only the groups you tick are changed. Everything else is left exactly as it is.": [
+            "Будуть змінені лише ті групи, які ви позначите. Все інше залишиться без змін."
+         ],
+         "The check stopped before it could compare everything, so there may be more than this.": [
+            "Перевірка зупинилася до того, як вдалося порівняти все, тому їх може бути більше."
+         ],
+         "Resetting…": [
+            "Скидання…"
+         ],
+         "Reset selected": [
+            "Скинути вибране"
+         ],
+         "Language Code": [
+            "Код мови"
+         ],
+         "Country": [
+            "Країна"
+         ],
+         "Locale": [
+            "Локаль"
+         ],
+         "Update the URL code for %s?": [
+            "Оновити код URL для %s?"
+         ],
+         "Confirm language changes": [
+            "Підтвердити зміни мови"
+         ],
+         "Checking what needs updating…": [
+            "Перевірка того, що потребує оновлення…"
+         ],
+         "We couldn’t check the impact. You can still save — content is updated during the save.": [
+            "Ми не змогли перевірити вплив. Ви все одно можете зберегти — вміст оновлюється під час збереження."
+         ],
+         "What happens": [
+            "Що станеться"
+         ],
+         "%d link on your site is updated to the new address.": [
+            "%d посилання на вашому сайті оновлено до нової адреси.",
+            "%d посилання на вашому сайті оновлено до нової адреси.",
+            "%d посилань на вашому сайті оновлено до нової адреси."
+         ],
+         "Old URLs are not redirected automatically. If you need them to keep working, set up the redirects yourself.": [
+            "Старі URL-адреси не перенаправляються автоматично. Якщо потрібно, щоб вони продовжували працювати, налаштуйте перенаправлення самостійно."
+         ],
+         "This updates your language settings; existing content isn’t rewritten.": [
+            "Це оновить ваші налаштування мови; наявний вміст не буде переписано."
+         ],
+         "Your translations and strings are unchanged.": [
+            "Ваші переклади та рядки залишаться без змін."
+         ],
+         "Update": [
+            "Оновити"
+         ],
+         "Save changes": [
+            "Зберегти зміни"
+         ],
+         "Do you want to set the locale?": [
+            "Ви хочете встановити локаль?"
+         ],
+         "WPML uses the locale to download the right WordPress language pack, so setting it switches the admin, theme and plugin texts to that language pack.": [
+            "WPML використовує локаль для завантаження відповідного мовного пакета WordPress, тому її встановлення перемикає тексти панелі керування, теми та плагінів на цей мовний пакет."
+         ],
+         "Yes, set the locale": [
+            "Так, встановити локаль"
+         ],
+         "Are you sure you want to edit the language code?": [
+            "Ви впевнені, що хочете змінити код мови?"
+         ],
+         "URLs containing it change — WPML fixes linked URLs after saving.": [
+            "URL-адреси, що містять його, зміняться — WPML виправить пов’язані URL-адреси після збереження."
+         ],
+         "External links / bookmarks to the old URL break unless redirected.": [
+            "Зовнішні посилання та закладки на стару URL-адресу перестануть працювати, якщо не налаштувати перенаправлення."
+         ],
+         "Yes, edit the code": [
+            "Так, змінити код"
+         ],
+         "Are you sure you want to edit the country?": [
+            "Ви впевнені, що хочете змінити країну?"
+         ],
+         "It may also change the locale (if the new country has a WordPress.org locale).": [
+            "Це також може змінити локаль (якщо нова країна має локаль WordPress.org)."
+         ],
+         "It affects ATE automatic-translation mapping.": [
+            "Це впливає на зіставлення автоматичного перекладу ATE."
+         ],
+         "Yes, edit the country": [
+            "Так, змінити країну"
+         ],
+         "Are you sure you want to edit the locale?": [
+            "Ви впевнені, що хочете змінити локаль?"
+         ],
+         "WPML uses the locale to download the right WordPress language pack, so changing it switches the admin, theme and plugin texts to the new language pack.": [
+            "WPML використовує локаль для завантаження відповідного мовного пакета WordPress, тому її зміна перемикає тексти панелі керування, теми та плагінів на новий мовний пакет."
+         ],
+         "Yes, edit the locale": [
+            "Так, змінити локаль"
+         ],
+         "Step %1$d of %2$d — updating %3$s": [
+            "Крок %1$d з %2$d — оновлення %3$s"
+         ],
+         "Step %1$d of %2$d": [
+            "Крок %1$d з %2$d"
+         ],
+         "%1$d of %2$d item": [
+            "%1$d з %2$d елемента",
+            "%1$d з %2$d елементів",
+            "%1$d з %2$d елементів"
+         ],
+         "%d%%": [
+            "%d%%"
+         ],
+         "%d item could not be updated:": [
+            "%d елемент не вдалося оновити:",
+            "%d елементи не вдалося оновити:",
+            "%d елементів не вдалося оновити:"
+         ],
+         "You can retry the save from the Languages page, or fix these items manually.": [
+            "Ви можете повторити збереження зі сторінки «Мови» або виправити ці елементи вручну."
+         ],
+         "Some changes could not be applied": [
+            "Деякі зміни не вдалося застосувати"
+         ],
+         "Language changes saved with some skipped items": [
+            "Зміни мови збережено з деякими пропущеними елементами"
+         ],
+         "Language changes saved": [
+            "Зміни мови збережено"
+         ],
+         "Updating content": [
+            "Оновлення вмісту"
+         ],
+         "Keep this tab open until the process finishes. Closing it will pause the save.": [
+            "Тримайте цю вкладку відкритою до завершення процесу. Її закриття призупинить збереження."
+         ],
+         "%d item was skipped so far:": [
+            "%d елемент був пропущений до цього часу:",
+            "%d елементи були пропущені до цього часу:",
+            "%d елементів були пропущені до цього часу:"
+         ],
+         "%1$s — %2$s (%3$s)": [
+            "%1$s — %2$s ((%3$s))"
+         ],
+         "Most language changes were applied. Some items could not be updated and were skipped.": [
+            "Більшість змін мови було застосовано. Деякі елементи не вдалося оновити, і їх було пропущено."
+         ],
+         "All language changes were applied.": [
+            "Усі зміни мови було застосовано."
+         ],
+         "The save could not finish. Your existing content was not fully updated — review the languages page and try again.": [
+            "Збереження не вдалося завершити. Ваш наявний вміст не було повністю оновлено — перегляньте сторінку мов і спробуйте ще раз."
+         ],
+         "Don't close this tab until the process finishes.": [
+            "Не закривайте цю вкладку до завершення процесу."
+         ],
+         "Content update was paused": [
+            "Оновлення вмісту призупинено"
+         ],
+         "Resume to finish saving your language changes.": [
+            "Відновіть, щоб завершити збереження змін мови."
+         ],
+         "Resume saving": [
+            "Відновити збереження"
+         ],
+         "Estimating time left…": [
+            "Оцінювання часу, що залишився…"
+         ],
+         "About %d second left": [
+            "Залишилося близько %d секунди",
+            "Залишилося близько %d секунд",
+            "Залишилося близько %d секунд"
+         ],
+         "About %d minute left": [
+            "Залишилася близько %d хвилина",
+            "Залишилося близько %d хвилини",
+            "Залишилося близько %d хвилин"
+         ],
+         "Automatic translation for %1$s could not be re-mapped to %2$s. Change the country again later to retry.": [
+            "Автоматичний переклад для %1$s не вдалося перезіставити з %2$s. Змініть країну пізніше, щоб повторити спробу."
+         ],
+         "Automatic translation for %1$s could not be re-mapped. Change the country again later to retry.": [
+            "Автоматичний переклад для %1$s не вдалося перезіставити. Змініть країну пізніше, щоб повторити спробу."
+         ],
+         "Automatic translation for %1$s already targeted %2$s; nothing was re-mapped.": [
+            "Автоматичний переклад для %1$s уже спрямований на %2$s; нічого не було перезіставлено."
+         ],
+         "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country. Your current mapping was kept.": [
+            "Автоматичний переклад недоступний для %2$s. Щоб перекладати %1$s автоматично, виберіть країну, яку підтримує автоматичний переклад, у розділі Редагувати → Країна. Ваше поточне зіставлення збережено."
+         ],
+         "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country.": [
+            "Автоматичний переклад недоступний для %2$s. Щоб перекладати %1$s автоматично, виберіть країну, яку підтримує автоматичний переклад, у розділі Редагувати → Країна."
+         ],
+         "Automatic translation for %1$s was not re-mapped: %2$s.": [
+            "Автоматичний переклад для %1$s не було перезіставлено: %2$s."
+         ],
+         "Automatic translation for %1$s now targets %2$s.": [
+            "Автоматичний переклад для %1$s тепер спрямований на %2$s."
+         ],
+         "“%s” is already an active language.": [
+            "«%s» уже є активною мовою."
+         ],
+         "That language is already active.": [
+            "Ця мова вже активна."
+         ],
+         "%s needs a domain of its own before this can be saved. Set one in the URL format section.": [
+            "Для %s потрібен власний домен, перш ніж це можна буде зберегти. Встановіть його в розділі формату URL-адрес."
+         ],
+         "Every language that is not the default needs a domain of its own before this can be saved. Set it in the URL format section.": [
+            "Кожній мові, яка не є мовою за замовчуванням, потрібен власний домен, перш ніж це можна буде зберегти. Встановіть його в розділі формату URL-адрес."
+         ],
+         "The language code “%s” is already in use. Choose a different one.": [
+            "Код мови «%s» уже використовується. Виберіть інший."
+         ],
+         "That language code is already in use. Choose a different one.": [
+            "Цей код мови вже використовується. Виберіть інший."
+         ],
+         "That language code isn’t valid. Use letters, numbers, hyphens and underscores — up to %d characters.": [
+            "Цей код мови недійсний. Використовуйте літери, цифри, дефіси та підкреслення — до %d символів."
+         ],
+         "That language code is too long. Use at most %d characters.": [
+            "Цей код мови занадто довгий. Використовуйте не більше %d символів."
+         ],
+         "That locale isn’t valid. Use letters, numbers and underscores only, like es_ES.": [
+            "Ця локаль недійсна. Використовуйте лише літери, цифри та підкреслення, наприклад es_ES."
+         ],
+         "That hreflang is too long. Use at most %d characters.": [
+            "Цей hreflang занадто довгий. Використовуйте не більше %d символів."
+         ],
+         "Another active language already uses the identity “%s”.": [
+            "Інша активна мова вже використовує ідентифікатор «%s»."
+         ],
+         "Another active language already has this identity.": [
+            "Інша активна мова вже має цей ідентифікатор."
+         ],
+         "WPML no longer offers this language and country. Languages you have already added keep working.": [
+            "WPML більше не пропонує цю мову та країну. Мови, які ви вже додали, продовжують працювати."
+         ],
+         "You can still add it with “add a custom language”, using the same code.": [
+            "Ви все одно можете додати її за допомогою посилання «додати власну мову», використовуючи той самий код."
+         ],
+         "That flag is not available for this language. Choose one of the offered flags or upload a custom SVG.": [
+            "Цей прапор недоступний для цієї мови. Виберіть один із запропонованих прапорів або завантажте власний SVG."
+         ],
+         "That name is already used by one of your languages. Choose a different name.": [
+            "Ця назва вже використовується однією з ваших мов. Виберіть іншу назву."
+         ],
+         "That language code is already a supported language. Add it from Search instead of creating a custom variant.": [
+            "Цей код мови вже є підтримуваною мовою. Додайте її через пошук замість створення власного варіанту."
+         ],
+         "“%s” is the code of a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first.": [
+            "«%s» — це код мови, яку ви створили самостійно, а потім видалили. Додайте її знову як власну мову, щоб повернути, або спочатку видаліть її з панелі «Видалені мови»."
+         ],
+         "That code belongs to a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first.": [
+            "Цей код належить мові, яку ви створили самостійно, а потім видалили. Додайте її знову як власну мову, щоб повернути, або спочатку видаліть її з панелі «Видалені мови»."
+         ],
+         "Enter a locale for this language.": [
+            "Введіть локаль для цієї мови."
+         ],
+         "Select a country for this language before saving.": [
+            "Виберіть країну для цієї мови перед збереженням."
+         ],
+         "This language can’t be used with that country.": [
+            "Цю мову не можна використовувати з цією країною."
+         ],
+         "“%s” isn’t in the language catalogue. Pick it from the list, or add it as a custom language.": [
+            "«%s» немає в каталозі мов. Виберіть її зі списку або додайте як власну мову."
+         ],
+         "This language isn’t in the language catalogue. Pick it from the list, or add it as a custom language.": [
+            "Цієї мови немає в каталозі мов. Виберіть її зі списку або додайте як власну мову."
+         ],
+         "The default language cannot be a language that is being removed.": [
+            "Мовою за замовчуванням не може бути мова, яка видаляється."
+         ],
+         "Before “%s” can be saved, choose whether to bring back the content this site has from before in that language or to start fresh.": [
+            "Перш ніж зберегти «%s», виберіть, чи відновити контент цією мовою, який уже був на сайті, чи почати заново."
+         ],
+         "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
+            "Перш ніж зберегти цю мову, виберіть, чи відновити контент цією мовою, який уже був на сайті, чи почати заново."
+         ],
+         "You don’t have permission to change languages.": [
+            "У вас немає дозволу на зміну мов."
+         ],
+         "“%s” couldn’t be added. Please try again.": [
+            "Не вдалося додати «%s». Будь ласка, спробуйте ще раз."
+         ],
+         "The language couldn’t be added. Please try again.": [
+            "Не вдалося додати мову. Будь ласка, спробуйте ще раз."
+         ],
+         "Couldn’t save the language settings.": [
+            "Не вдалося зберегти налаштування мови."
+         ],
+         "One language": [
+            "Одна мова"
+         ],
+         "%1$s: no WordPress language pack exists for %2$s, so the locale was saved without translation files.": [
+            "%1$s: мовного пакета WordPress для %2$s не існує, тому локаль було збережено без файлів перекладу."
+         ],
+         "%1$s: the WordPress language pack for %2$s could not be requested, so the locale was saved without translation files.": [
+            "%1$s: не вдалося надіслати запит на мовний пакет WordPress для %2$s, тому локаль було збережено без файлів перекладу."
+         ],
+         "%1$s: the WordPress language pack for %2$s could not be downloaded, so the locale was saved without translation files.": [
+            "%1$s: не вдалося завантажити мовний пакет WordPress для %2$s, тому локаль було збережено без файлів перекладу."
+         ],
+         "%1$s: the links in post %2$s did not match the old language code and were left as they were.": [
+            "%1$s: посилання в дописі %2$s не збігалися зі старим кодом мови та були залишені як є."
+         ],
+         "%1$s: the links in post %2$s could not be rewritten.": [
+            "%1$s: не вдалося переписати посилання в дописі %2$s."
+         ],
+         "%1$s: some translation jobs could not be cancelled.": [
+            "%1$s: деякі завдання з перекладу не вдалося скасувати."
+         ],
+         "%1$s: one step of the save kept failing and was skipped.": [
+            "%1$s: один крок збереження постійно завершувався помилкою і був пропущений."
+         ],
+         "%1$s: one item could not be updated (%2$s).": [
+            "%1$s: один елемент не вдалося оновити (%2$s)."
+         ],
+         "Is this a right-to-left language?": [
+            "Це мова з письмом справа наліво?"
+         ],
+         "WPML lays out the admin and the site for this language from right to left, like Arabic or Hebrew.": [
+            "WPML компонує панель керування та сайт для цієї мови справа наліво, як для арабської чи івриту."
+         ],
+         "Reading direction": [
+            "Напрямок читання"
+         ],
+         "Left-to-right": [
+            "Зліва направо"
+         ],
+         "Right-to-left": [
+            "Справа наліво"
+         ],
+         "Let WPML decide": [
+            "Дозволити WPML вирішити"
+         ],
+         "If you cannot find your language in the list, <a>add a custom language</a>.": [
+            "Якщо ви не можете знайти свою мову в списку, <a>додайте власну мову</a>."
+         ],
+         "Default language": [
+            "Мова за замовчуванням"
+         ],
+         "What is the current language of your website?": [
+            "Яка поточна мова вашого вебсайту?"
+         ],
+         "Translation languages": [
+            "Мови перекладу"
+         ],
+         "Which languages do you want to translate your site into?": [
+            "Якими мовами ви хочете перекласти свій сайт?"
+         ],
+         "Click the lock to set the locale": [
+            "Натисніть на замок, щоб встановити локаль"
+         ],
+         "Not set": [
+            "Не встановлено"
+         ],
+         "Unlock this field": [
+            "Розблокувати це поле"
+         ],
+         "Recommended not to change. Click to unlock.": [
+            "Рекомендовано не змінювати. Натисніть, щоб розблокувати."
+         ],
+         "Uploading flag…": [
+            "Завантаження прапора…"
+         ],
+         "Display Code": [
+            "Код відображення"
+         ],
+         "Stored code: %s": [
+            "Збережений код: %s"
+         ],
+         "Encode URL": [
+            "Кодувати URL"
+         ],
+         "Encode non-Latin characters": [
+            "Кодувати нелатинські символи"
+         ],
+         "Mapping": [
+            "Зіставлення"
+         ],
+         "This language is recognized as the same as your site’s default language, so it can’t be translated automatically. To carry your content over, duplicate it instead.": [
+            "Ця мова розпізнається як така сама, як мова вашого сайту за замовчуванням, тому її неможливо перекласти автоматично. Щоб перенести свій вміст, натомість дублюйте його."
+         ],
+         "How to Duplicate and Copy Content in WPML": [
+            "Як дублювати та копіювати вміст у WPML"
+         ],
+         "Edit language labels…": [
+            "Редагувати назви мов…"
+         ],
+         "The default language can’t be removed.": [
+            "Мову за замовчуванням неможливо видалити."
+         ],
+         "Delete language": [
+            "Видалити мову"
+         ],
+         "Type to search all languages…": [
+            "Введіть текст для пошуку серед усіх мов…"
+         ],
+         "Unsaved changes": [
+            "Незбережені зміни"
+         ],
+         "Custom": [
+            "Власна"
+         ],
+         "This language stays on your site and keeps serving its pages. WPML is not creating new translations into it.": [
+            "Ця мова залишається на вашому сайті та продовжує обслуговувати його сторінки. WPML не створює для неї нових перекладів."
+         ],
+         "Translation paused": [
+            "Переклад призупинено"
+         ],
+         "This language isn’t supported by the automatic translation engine, so its content must be translated manually.": [
+            "Ця мова не підтримується системою автоматичного перекладу, тому її вміст потрібно перекладати вручну."
+         ],
+         "Same as default": [
+            "Така ж, як за замовчуванням"
+         ],
+         "Manual translation only": [
+            "Тільки ручний переклад"
+         ],
+         "This custom language uses the code of a language WPML offers. To translate it automatically, map it to a language.": [
+            "Ця власна мова використовує код мови, яку пропонує WPML. Щоб перекладати її автоматично, зіставте її з мовою."
+         ],
+         "Needs a mapping": [
+            "Потрібне зіставлення"
+         ],
+         "Default": [
+            "За замовчуванням"
+         ],
+         "Set as default": [
+            "Встановити як за замовчуванням"
+         ],
+         "Resume translating": [
+            "Відновити переклад"
+         ],
+         "Hide": [
+            "Приховати"
+         ],
+         "The default language can’t be hidden.": [
+            "Мову за замовчуванням неможливо приховати."
+         ],
+         "Completely hide content in this language from visitors and search engines, but keep it visible to yourself. Useful for reviewing translations that are still in progress.": [
+            "Повністю приховати вміст цією мовою від відвідувачів і пошукових систем, але залишити його видимим для вас. Корисно для перегляду перекладів, які ще тривають."
+         ],
+         "Hide this language from visitors and search engines.": [
+            "Приховати цю мову від відвідувачів і пошукових систем."
+         ],
+         "Edit the language code": [
+            "Редагувати код мови"
+         ],
+         "Used to build this language’s page URLs (e.g. /en/).": [
+            "Використовується для створення URL-адрес сторінок цієї мови (наприклад, /uk/)."
+         ],
+         "Remove language": [
+            "Видалити мову"
+         ],
+         "Undo": [
+            "Скасувати"
+         ],
+         "Collapse ▴": [
+            "Згорнути ▴"
+         ],
+         "Edit ▾": [
+            "Редагувати ▾"
+         ],
+         "Recognized as the same language as the default": [
+            "Розпізнається як та сама мова, що й мова за замовчуванням"
+         ],
+         "%s (Regional)": [
+            "%s (регіональна)"
+         ],
+         "%s is no longer in this list. Use “add a custom language” below to add it.": [
+            "Мови %s більше немає в цьому списку. Скористайтеся посиланням «додати власну мову» нижче, щоб додати її."
+         ],
+         "Search and add a language…": [
+            "Знайти та додати мову…"
+         ],
+         "Search and add a language": [
+            "Знайти та додати мову"
+         ],
+         "Regional": [
+            "Регіональна"
+         ],
+         "International": [
+            "Міжнародна"
+         ],
+         "This language has a single fixed country.": [
+            "Ця мова має одну фіксовану країну."
+         ],
+         "Select a country…": [
+            "Виберіть країну…"
+         ],
+         "Default language (currently %s)": [
+            "Мова за замовчуванням (зараз %s)"
+         ],
+         "Flag of %s": [
+            "Прапор %s"
+         ],
+         "Current flag": [
+            "Поточний прапор"
+         ],
+         "Custom flag": [
+            "Власний прапор"
+         ],
+         "Neutral globe": [
+            "Нейтральний глобус"
+         ],
+         "Country code as the flag": [
+            "Код країни як прапор"
+         ],
+         "Language flag": [
+            "Прапор мови"
+         ],
+         "Choose a flag…": [
+            "Виберіть прапор…"
+         ],
+         "Countries": [
+            "Країни"
+         ],
+         "Regions": [
+            "Регіони"
+         ],
+         "Languages": [
+            "Мови"
+         ],
+         "Organisations": [
+            "Організації"
+         ],
+         "Upload a custom SVG…": [
+            "Завантажити власний SVG…"
+         ],
+         "Match automatically": [
+            "Зіставити автоматично"
+         ],
+         "Map to a supported language": [
+            "Зіставити з підтримуваною мовою"
+         ],
+         "Choose a language to map to…": [
+            "Виберіть мову для зіставлення…"
+         ],
+         "No matches": [
+            "Збігів не знайдено"
+         ],
+         "The items you include below are removed, along with their translation records. Originals in your other languages are untouched, and image files stay on disk. Comments on these posts are deleted with them. Nothing in %s’s sibling languages is deleted.": [
+            "Елементи, які ви включите нижче, будуть видалені разом із записами про їхній переклад. Оригінали іншими мовами залишаться недоторканими, а файли зображень — на диску. Коментарі до цих дописів будуть видалені разом із ними. Нічого в споріднених мовах до %s видалено не буде."
+         ],
+         "Skip them, move everything else.": [
+            "Пропустіть їх, перемістіть усе інше."
+         ],
+         "%1$d item that already has a %3$s version stays under %2$s. You can deal with it separately.": [
+            "%1$d елемент, який уже має версію мовою %3$s, залишається в %2$s. Ви можете опрацювати його окремо.",
+            "%1$d елементи, які вже мають версію мовою %3$s, залишаються в %2$s. Ви можете опрацювати їх окремо.",
+            "%1$d елементів, які вже мають версію мовою %3$s, залишаються в %2$s. Ви можете опрацювати їх окремо."
+         ],
+         "Merge them into the %s ones.": [
+            "Об’єднати їх із мовою %s."
+         ],
+         "Duplicate terms are removed": [
+            "Дублікати термінів видалено"
+         ],
+         "Objects and settings move onto the existing version; the duplicate is deleted. Nothing in the target language is deleted.": [
+            "Об’єкти та налаштування переміщуються до існуючої версії; дублікат видаляється. Нічого в цільовій мові не видаляється."
+         ],
+         "What should happen to the items already in %s?": [
+            "Що має статися з елементами, які вже є в %s?"
+         ],
+         "%1$d item from %2$s already has a version in the language you picked. Pick the outcome you want.": [
+            "%1$d елемент із %2$s вже має версію вибраною вами мовою. Виберіть бажаний результат.",
+            "%1$d елементи з %2$s вже мають версію вибраною вами мовою. Виберіть бажаний результат.",
+            "%1$d елементів із %2$s вже мають версію вибраною вами мовою. Виберіть бажаний результат."
+         ],
+         "What should happen to the colliding items": [
+            "Що має статися з конфліктними елементами"
+         ],
+         "Move into %s": [
+            "Перемістити в %s"
+         ],
+         "Reassigns the %1$d %2$s item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring.": [
+            "Перепризначає %1$d елемент %2$s вибраній вами мові, зберігаючи його зв’язки з іншими мовами. Для перейменування та об’єднання, а не для вилучення.",
+            "Перепризначає %1$d елементи %2$s вибраній вами мові, зберігаючи їхні зв’язки з іншими мовами. Для перейменування та об’єднання, а не для вилучення.",
+            "Перепризначає %1$d елементів %2$s вибраній вами мові, зберігаючи їхні зв’язки з іншими мовами. Для перейменування та об’єднання, а не для вилучення."
+         ],
+         "Only the content moves. Per-language settings other plugins keep — for example which currencies WooCommerce Multilingual offers in a language — stay under the old language code and are not carried over.": [
+            "Переміщується лише вміст. Налаштування окремих мов, які зберігають інші плагіни — наприклад, які валюти пропонує WooCommerce Multilingual для певної мови — залишаються під старим кодом мови та не переносяться."
+         ],
+         "Moved from %1$s into %2$s.": [
+            "Перенесено з %1$s до %2$s."
+         ],
+         "%d content item moved": [
+            "%d елемент вмісту перенесено",
+            "%d елементи вмісту перенесено",
+            "%d елементів вмісту перенесено"
+         ],
+         "%d link to the original language updated": [
+            "%d посилання на оригінальну мову оновлено",
+            "%d посилання на оригінальну мову оновлено",
+            "%d посилань на оригінальну мову оновлено"
+         ],
+         "%d string translation moved": [
+            "%d переклад рядка перенесено",
+            "%d переклади рядків перенесено",
+            "%d перекладів рядків перенесено"
+         ],
+         "%d string moved": [
+            "%d рядок перенесено",
+            "%d рядки перенесено",
+            "%d рядків перенесено"
+         ],
+         "%1$d item stayed behind: its translation group already has a %2$s version. It is still listed under %3$s in Removed languages.": [
+            "%1$d елемент залишився: його група перекладу вже має версію %2$s. Він усе ще вказаний під %3$s у розділі «Видалені мови».",
+            "%1$d елементи залишилися: їхня група перекладу вже має версію %2$s. Вони все ще вказані під %3$s у розділі «Видалені мови».",
+            "%1$d елементів залишилися: їхня група перекладу вже має версію %2$s. Вони все ще вказані під %3$s у розділі «Видалені мови»."
+         ],
+         "%1$d duplicate term merged into the %2$s version and removed.": [
+            "%1$d дублікат терміна об’єднано з версією мовою %2$s та видалено.",
+            "%1$d дублікати термінів об’єднано з версією мовою %2$s та видалено.",
+            "%1$d дублікатів термінів об’єднано з версією мовою %2$s та видалено."
+         ],
+         "%1$d item became its own document in %2$s.": [
+            "%1$d елемент став окремим документом мовою %2$s.",
+            "%1$d елементи стали окремими документами мовою %2$s.",
+            "%1$d елементів стали окремими документами мовою %2$s."
+         ],
+         "%1$d item of a kind this tool does not move or merge is still under %2$s.": [
+            "%1$d елемент типу, який цей інструмент не переміщує та не об’єднує, все ще залишається в %2$s.",
+            "%1$d елементи типу, який цей інструмент не переміщує та не об’єднує, все ще залишаються в %2$s.",
+            "%1$d елементів типу, який цей інструмент не переміщує та не об’єднує, все ще залишаються в %2$s."
+         ],
+         "What the deletion removed from %s": [
+            "Що було видалено з %s"
+         ],
+         "The items that have a Trash are in it. Categories, tags and menus have no WordPress Trash, so those were deleted right away.": [
+            "Елементи, які мають кошик, знаходяться в ньому. Категорії, теги та меню не мають кошика WordPress, тому вони були видалені відразу."
+         ],
+         "This site has the Trash disabled, so the item it removed was deleted permanently — there is nothing to restore.": [
+            "На цьому сайті вимкнено кошик, тому видалений елемент було видалено назавжди — відновити нічого.",
+            "На цьому сайті вимкнено кошик, тому видалені елементи було видалено назавжди — відновити нічого.",
+            "На цьому сайті вимкнено кошик, тому видалені елементи було видалено назавжди — відновити нічого."
+         ],
+         "Nothing was left to remove.": [
+            "Нічого не залишилося для видалення."
+         ],
+         "String translations": [
+            "Переклади рядків"
+         ],
+         "Translation jobs": [
+            "Завдання на переклад"
+         ],
+         "%1$d removed · %2$d kept · %3$d skipped": [
+            "%1$d видалено · %2$d збережено · %3$d пропущено"
+         ],
+         "Skipped because: %s": [
+            "Пропущено через: %s"
+         ],
+         "No translation jobs needed cancelling.": [
+            "Не було завдань на переклад, які потребували б скасування."
+         ],
+         "%d translation job was cancelled without charge.": [
+            "%d завдання на переклад було скасовано безкоштовно.",
+            "%d завдання на переклад були скасовані безкоштовно.",
+            "%d завдань на переклад були скасовані безкоштовно."
+         ],
+         "%d job was stopped mid-work — the words already sent are still charged.": [
+            "%d завдання було зупинено під час роботи — слова, що вже були надіслані, все одно оплачуються.",
+            "%d завдання були зупинені під час роботи — слова, що вже були надіслані, все одно оплачуються.",
+            "%d завдань були зупинені під час роботи — слова, що вже були надіслані, все одно оплачуються."
+         ],
+         "%d more skipped item is counted above but not listed.": [
+            "Ще %d пропущений елемент враховано вище, але не вказано в списку.",
+            "Ще %d пропущені елементи враховані вище, але не вказані в списку.",
+            "Ще %d пропущених елементів враховані вище, але не вказані в списку."
+         ],
+         "Removed %s": [
+            "Видалено %s"
+         ],
+         "Removal date not recorded": [
+            "Дата видалення не записана"
+         ],
+         "%d item still here": [
+            "%d елемент усе ще тут",
+            "%d елементи усе ще тут",
+            "%d елементів усе ще тут"
+         ],
+         "You created this language yourself, so it cannot be put back from here. Add it again as a custom language with the same code and its content comes back with it.": [
+            "Ви створили цю мову самостійно, тому її неможливо повернути звідси. Додайте її знову як власну мову з тим самим кодом, і її вміст повернеться разом із нею."
+         ],
+         "This language has no country on record. Add it back from the language picker, which asks which country the content belongs to.": [
+            "Для цієї мови не вказано країну. Додайте її знову через засіб вибору мови, який запитає, до якої країни належить вміст."
+         ],
+         "This language is not in WPML’s language list, so it cannot be added back from here.": [
+            "Цієї мови немає у списку мов WPML, тому її неможливо додати назад звідси."
+         ],
+         "Added back — press Save": [
+            "Повернуто — натисніть «Зберегти»"
+         ],
+         "Put back": [
+            "Повернути"
+         ],
+         "Move": [
+            "Перемістити"
+         ],
+         "Delete": [
+            "Видалити"
+         ],
+         "Removed languages": [
+            "Видалені мови"
+         ],
+         "These languages are off your site but still hold content. Removing a language keeps what it holds — from here you can put a language back, move its content into another language, or delete that content for good.": [
+            "Ці мови вимкнені на вашому сайті, але все ще містять вміст. Видалення мови зберігає її вміст — звідси ви можете повернути мову, перемістити її вміст в іншу мову або видалити цей вміст назавжди."
+         ],
+         "No language is left holding content. %s is now empty.": [
+            "Не залишилося мов, що містять вміст. Розділ «%s» тепер порожній."
+         ],
+         "You do not have permission to move a language’s content.": [
+            "У вас немає прав для переміщення вмісту мови."
+         ],
+         "Pick the language to move this content into, then try again.": [
+            "Виберіть мову, в яку потрібно перемістити цей вміст, а потім спробуйте ще раз."
+         ],
+         "That is the same language. Pick a different one to move the content into.": [
+            "Це та сама мова. Виберіть іншу мову для переміщення вмісту."
+         ],
+         "%s is back on your site, so there is nothing to move. Refresh the list.": [
+            "%s знову на вашому сайті, тому переміщувати нічого. Оновіть список."
+         ],
+         "%s no longer holds any content. Refresh the list.": [
+            "%s більше не містить вмісту. Оновіть список."
+         ],
+         "%s is not one of your site’s active languages. Pick another one.": [
+            "%s не є однією з активних мов вашого сайту. Виберіть іншу."
+         ],
+         "Moving content into a different language needs the confirmation below.": [
+            "Переміщення вмісту в іншу мову потребує підтвердження нижче."
+         ],
+         "WPML could not move this content (%s).": [
+            "WPML не вдалося перемістити цей вміст: (%s)."
+         ],
+         "Move them to the Trash — you have %d day to change your mind": [
+            "Перемістити їх у кошик — у вас є %d день, щоб передумати",
+            "Перемістити їх у кошик — у вас є %d дні, щоб передумати",
+            "Перемістити їх у кошик — у вас є %d днів, щоб передумати"
+         ],
+         "Delete permanently — this site has the Trash disabled": [
+            "Видалити назавжди — на цьому сайті вимкнено кошик"
+         ],
+         "Trash first, or delete now": [
+            "Спочатку в кошик або видалити зараз"
+         ],
+         "How to delete": [
+            "Як видалити"
+         ],
+         "Items already in the Trash are left where they are.": [
+            "Елементи, які вже знаходяться в кошику, залишаться там, де вони є."
+         ],
+         "Loading languages": [
+            "Завантаження мов"
+         ],
+         "The name of this language variant as it appears in the language switcher.": [
+            "Назва цього варіанта мови, як вона відображається в перемикачі мов."
+         ],
+         "Sets the regional variant of the language. Automatic Translation uses this to produce more accurate translations.": [
+            "Встановлює регіональний варіант мови. Автоматичний переклад використовує це для створення точніших перекладів."
+         ],
+         "The flag shown next to this language in the front-end language switcher.": [
+            "Прапор, що відображається поруч із цією мовою в перемикачі мов на сайті."
+         ],
+         "The WordPress locale, for example en_US. WordPress uses it to load the matching theme and plugin translation files.": [
+            "Локаль WordPress, наприклад en_US. WordPress використовує її для завантаження відповідних файлів перекладу тем і плагінів."
+         ],
+         "Used to build this language’s page URLs, for example /en/.": [
+            "Використовується для створення URL-адрес сторінок цією мовою, наприклад /uk/."
+         ],
+         "The hreflang value added to the page HTML. Search engines use it to serve the correct language or regional version.": [
+            "Значення hreflang, що додається до HTML сторінки. Пошукові системи використовують його для показу правильної мовної або регіональної версії."
+         ],
+         "Determines whether non-Latin characters in URLs are encoded. Leave it off unless your CDN, server, or redirects require ASCII-only URLs.": [
+            "Визначає, чи кодуються нелатинські символи в URL-адресах. Залиште вимкненим, якщо ваша мережа CDN, сервер або перенаправлення не потребують URL-адрес лише в ASCII."
+         ],
+         "Maps this custom language variant to a supported language so automatic translation engines can translate it. Choose “Match automatically” to let WPML find the closest supported language itself.": [
+            "Зіставляє цей варіант власної мови з підтримуваною мовою, щоб системи автоматичного перекладу могли її перекласти. Виберіть «Зіставити автоматично», щоб дозволити WPML самостійно знайти найближчу підтримувану мову."
+         ],
+         "Only SVG flags can be uploaded.": [
+            "Можна завантажувати лише прапори у форматі SVG."
+         ],
+         "The flag is too large. Maximum size is %s.": [
+            "Прапор занадто великий. Максимальний розмір — %s."
+         ],
+         "The file could not be read.": [
+            "Не вдалося прочитати файл."
+         ],
+         "The flag could not be saved. Please try again.": [
+            "Не вдалося зберегти прапор. Будь ласка, спробуйте ще раз."
+         ],
+         "%1$s is already active, set to %2$s. Change its country instead of adding it again.": [
+            "%1$s уже активна, встановлена для країни %2$s. Змініть її країну замість того, щоб додавати її знову."
+         ],
+         "%1$s is already active. Change its country instead of adding it again.": [
+            "%1$s уже активна. Змініть її країну замість того, щоб додавати її знову."
+         ],
+         "WPML couldn’t apply the change it detected for %1$s: %2$s still has an unsaved change. Save or revert it first.": [
+            "WPML не вдалося застосувати виявлену зміну для %1$s: %2$s все ще має незбережену зміну. Спочатку збережіть або скасуйте її."
+         ],
+         "Copied to clipboard.": [
+            "Скопійовано в буфер обміну."
+         ],
+         "An earlier language save is paused. Resume or dismiss it first, then save this change.": [
+            "Попереднє збереження мови призупинено. Спочатку відновіть або відхиліть його, а потім збережіть цю зміну."
+         ],
+         "WPML is still finishing an earlier language save. Wait for it to finish, then apply this change.": [
+            "WPML усе ще завершує попереднє збереження мови. Зачекайте, поки воно завершиться, а потім застосуйте цю зміну."
+         ],
+         "Language settings saved.": [
+            "Налаштування мови збережено."
+         ],
+         "No changes to save.": [
+            "Немає змін для збереження."
+         ],
+         "Couldn’t check your languages against WPML’s catalogue.": [
+            "Не вдалося перевірити ваші мови на відповідність каталогу WPML."
+         ],
+         "Reset done. %d more language still differs from WPML’s catalogue — open Reset language defaults again to put it back.": [
+            "Скидання завершено. Ще %d мова все ще відрізняється від каталогу WPML — знову відкрийте «Скинути налаштування мов за замовчуванням», щоб повернути її.",
+            "Скидання завершено. Ще %d мови все ще відрізняються від каталогу WPML — знову відкрийте «Скинути налаштування мов за замовчуванням», щоб повернути їх.",
+            "Скидання завершено. Ще %d мов все ще відрізняються від каталогу WPML — знову відкрийте «Скинути налаштування мов за замовчуванням», щоб повернути їх."
+         ],
+         "Your languages are back on WPML’s catalogue defaults.": [
+            "Ваші мови повернуто до стандартних налаштувань каталогу WPML."
+         ],
+         "Couldn’t reset the language defaults.": [
+            "Не вдалося скинути налаштування мов за замовчуванням."
+         ],
+         "%1$s \"%2$s\" is already used by %3$s.": [
+            "%1$s «%2$s» уже використовується мовою %3$s."
+         ],
+         "The country of a saved language can’t be changed right now — the background save this needs is switched off on this site.": [
+            "Країну збереженої мови зараз неможливо змінити — фонове збереження, необхідне для цього, вимкнено на цьому сайті."
+         ],
+         "Cost to translate your content into %s": [
+            "Вартість перекладу вашого вмісту мовою %s"
+         ],
+         "Cost to translate your content into the new languages": [
+            "Вартість перекладу вашого вмісту новими мовами"
+         ],
+         "Add this language": [
+            "Додати цю мову"
+         ],
+         "Costs are based on your current content settings. Adjust them from the Translations dashboard.": [
+            "Вартість базується на ваших поточних налаштуваннях вмісту. Налаштуйте їх на панелі керування перекладами."
+         ],
+         "Manage and Hide Site Languages": [
+            "Керувати мовами сайту та приховувати їх"
+         ],
+         "Add, remove, configure, and hide your site’s translation languages. Click Edit on any row to edit its country, flag, codes, mapping, and visibility.": [
+            "Додавайте, видаляйте, налаштовуйте та приховуйте мови перекладу вашого сайту. Натисніть «Редагувати» в будь-якому рядку, щоб змінити країну, прапор, коди, зіставлення та видимість."
+         ],
+         "WPML couldn’t communicate with our translation system. You can still edit and save your languages. Please contact support if the problem persists.": [
+            "WPML не вдалося зв'язатися з нашою системою перекладу. Ви все одно можете редагувати та зберігати свої мови. Будь ласка, зверніться до служби підтримки, якщо проблема не зникне."
+         ],
+         "Please <support>contact our support</support> and provide the error details below.": [
+            "Будь ласка, <support>зверніться до нашої служби підтримки</support> і надайте деталі помилки нижче."
+         ],
+         "Show more": [
+            "Показати більше"
+         ],
+         "Show less": [
+            "Показати менше"
+         ],
+         "Copy error details": [
+            "Копіювати деталі помилки"
+         ],
+         "Copy": [
+            "Копіювати"
+         ],
+         "Click to copy": [
+            "Натисніть, щоб скопіювати"
+         ],
+         "Reset language defaults…": [
+            "Скинути налаштування мов за замовчуванням…"
+         ],
+         "Saving…": [
+            "Збереження…"
+         ],
+         "Calculate Costs": [
+            "Розрахувати вартість"
+         ],
+         "Content brought into the language you added": [
+            "Вміст перенесено в додану вами мову"
+         ],
+         "The language was added. Its content did not move.": [
+            "Мову додано. Її вміст не було переміщено."
+         ],
+         "Verifying automatic translation compatibility": [
+            "Перевірка сумісності з автоматичним перекладом"
+         ],
+         "Updating language presets…": [
+            "Оновлення мовних пресетів…"
+         ],
+         "Language changes saved.": [
+            "Зміни мови збережено."
+         ],
+         "Apply and save": [
+            "Застосувати та зберегти"
+         ],
+         "Close modal": [
+            "Закрити модальне вікно"
+         ]
+      }
+   }
+}

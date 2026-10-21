@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @author OnTheGo Systems
- *
- * AMS: https://git.onthegosystems.com/ate/ams/wikis/home
- * ATE: https://git.onthegosystems.com/ate/ams/wikis/home (https://bitbucket.org/emartini_crossover/ate/wiki/browse/API/V1/jobs)
- */
 class WPML_TM_ATE_AMS_Endpoints {
 	const AMS_BASE_URL               = 'https://ams.wpml.org';
 	const ATE_BASE_URL               = 'https://ate.wpml.org';
@@ -16,32 +10,43 @@ class WPML_TM_ATE_AMS_Endpoints {
 	const ATE_JOB_STATUS_DELIVERED   = 8;
 	const ATE_JOB_STATUS_EDITED      = 15;
 
-	/**
-	 * AMS
-	 */
+	const ATE_JOB_STATUS_NOT_ENOUGH                = 31;
+	const ATE_JOB_STATUS_WAITING_AUTOMATIC_PAYMENT = 33;
+
+	const ATE_JOB_STATUS_FAILED = 32;
+
+	const ATE_JOB_STATUS_MISSING_LANGUAGE_MAPPING = 50;
+
+	const ATE_JOB_STATUS_CANCELLED_NOT_ENOUGH = 34;
+
+	const ATE_JOB_STATUS_CANCELED_BY_USER_SHOULD_HIDE = 42;
+
 	const ENDPOINTS_AUTO_LOGIN          = '/panel/autologin';
 	const ENDPOINTS_CLIENTS             = '/api/wpml/clients';
 	const ENDPOINTS_CONFIRM             = '/api/wpml/jobs/confirm';
-	const ENDPOINTS_EDITOR              = '/api/wpml/jobs/{job_id}/open?translator={translator_email}&return_url={return_url}';
+	const ENDPOINTS_EDITOR              = '/api/wpml/jobs/{job_id}/open?translator={translator_email}&return_url={return_url}&wpml_ph_distinct_id={wpml_ph_distinct_id}&wpml_ph_session_id={wpml_ph_session_id}';
 	const ENDPOINTS_SUBSCRIPTION        = '/api/wpml/websites/translators/{translator_email}/enable';
 	const ENDPOINTS_SUBSCRIPTION_STATUS = '/api/wpml/websites/{WEBSITE_UUID}/translators/{translator_email}';
 	const ENDPOINTS_WEBSITES            = '/api/wpml/websites';
+	const ENDPOINTS_WEBSITE_SITE_NAME   = '/api/wpml/websites/site_name';
 	const ENDPOINTS_CREDITS             = '/api/wpml/credits';
-	const ENDPOINTS_RESUME_ALL          = '/api/wpml/jobs/resume/all';
+	const ENDPOINTS_ACCOUNT_BALANCES    = '/api/wpml/account_balances';
+	const ENDPOINTS_WEBSITE_MIGRATION_CODE = '/api/wpml/websites/migration_code';
+	const ENDPOINTS_WEBSITE_CONTEXTS    = '/api/wpml/website_contexts';
 	const ENDPOINTS_SEND_SITEKEY        = '/api/wpml/websites/assign_key';
+	const ENDPOINTS_UNASSIGN_SITEKEY    = '/api/wpml/websites/unassign_key';
 	const ENDPOINTS_TRANSLATION_ENGINES = '/api/wpml/engines';
+	const ENDPOINTS_AVAILABLE_FORMALITIES = '/api/wpml/engines/available_formalities';
 
-	/**
-	 * AMS CLONED SITES
-	 */
-	const ENDPOINTS_SITE_COPY       = '/api/wpml/websites/copy';
-	const ENDPOINTS_SITE_MOVE       = '/api/wpml/websites/move';
+	const ENDPOINTS_GLOSSARY_COUNTS = '/api/wpml/glossary_counts';
+
+	const ENDPOINTS_NORMALIZED_SUGGESTIONS = '/api/wpml/normalized_suggestions';
+
 	const ENDPOINTS_SITE_CONFIRM    = '/api/wpml/websites/confirm';
 	const ENDPOINTS_COPY_ATTACHED   = '/api/wpml/websites/copy_attached';
+	const ENDPOINTS_DISCONNECT      = '/api/wpml/websites/disconnect';
+	const ENDPOINTS_CONNECT         = '/api/wpml/websites/connect_to_previous_organization';
 
-	/**
-	 * ATE
-	 */
 	const ENDPOINTS_JOB                 = '/api/wpml/job';
 	const ENDPOINTS_JOBS                = '/api/wpml/jobs';
 	const ENDPOINT_JOBS_BY_WPML_JOB_IDS = '/api/wpml/jobs/wpml';
@@ -54,14 +59,24 @@ class WPML_TM_ATE_AMS_Endpoints {
 	const ENDPOINTS_SYNC_ALL            = '/api/wpml/sync/all';
 	const ENDPOINTS_SYNC_PAGE           = '/api/wpml/sync/page';
 	const ENDPOINTS_RETRANSLATE         = '/api/wpml/retranslations/sync';
+	const ENDPOINTS_RETRANSLATE_INFO    = '/api/wpml/retranslations/info';
 	const ENDPOINTS_CLONE_JOB           = '/api/wpml/jobs/%s/clone';
 	const ENDPOINTS_CANCEL_JOBS         = '/api/wpml/jobs/cancel';
+	const ENDPOINTS_RESUME_JOBS         = '/api/wpml/jobs/resume';
 	const ENDPOINTS_HIDE_JOBS           = '/api/wpml/jobs/canceled_on_wpml';
 	const ENDPOINTS_LANGUAGES           = '/api/wpml/languages';
 	const ENDPOINTS_LANGUAGES_MAPPING   = '/api/wpml/languages/mappings';
 	const ENDPOINTS_LANGUAGES_MAPPING_DELETE = '/api/wpml/languages/delete_mapping';
 	const ENDPOINTS_LANGUAGES_CHECK_PAIRS  = '/api/wpml/languages/check_pairs';
 	const ENDPOINTS_LANGUAGES_SHOW      = '/api/wpml/languages/%s';
+	const ENDPOINTS_TEA_STATUS          = '/api/wpml/tea/status';
+	const ENDPOINTS_DELIVERY_REACHABILITY = '/api/wpml/delivery/reachability';
+	const ENDPOINTS_CATALOGUE_VERSION   = '/api/wpml/languages/catalogue_version';
+	const ENDPOINTS_LANGUAGES_TRANSLATIONS = '/api/wpml/languages/translations';
+	const ENDPOINTS_COUNTRIES_TRANSLATIONS = '/api/wpml/countries/translations';
+	const ENDPOINTS_COUNTRIES_FLAGS     = '/api/wpml/countries/flags';
+	const ENDPOINTS_AMS_CATALOGUE_VERSION   = '/api/wpml/catalogue/version';
+	const ENDPOINTS_AMS_CATALOGUE_LANGUAGES = '/api/wpml/catalogue/languages';
 	const SERVICE_AMS                   = 'ams';
 	const SERVICE_ATE                   = 'ate';
 
@@ -71,32 +86,19 @@ class WPML_TM_ATE_AMS_Endpoints {
 	const RETRY_JOBS = '/ate/jobs/retry';
 	const FIX_JOB      = '/ate/jobs/(?P<ateJobId>\d+)/fix';
 
-	/**
-	 * ICL to ATE migration
-	 */
 	const ENDPOINTS_IMPORT_TRANSLATORS_FROM_ICL = '/api/wpml/icl/translators/import';
 	const ENDPOINTS_START_MIGRATION_IMPORT_FROM_ICL = '/api/wpml/icl/translations/import/start';
 	const ENDPOINTS_CHECK_STATUS_MIGRATION_IMPORT_FROM_ICL = '/api/wpml/icl/translations/import/status';
 
 
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_ams_auto_login() {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_AUTO_LOGIN );
 	}
 
-	/**
-	 * @param string     $service
-	 * @param string     $endpoint
-	 * @param array|null $query_string
-	 *
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
-	public function get_endpoint_url( $service, $endpoint, array $query_string = null ) {
+	public function get_endpoint_url( $service, $endpoint, ?array $query_string = null ) {
 		$url = $this->get_base_url( $service ) . $endpoint;
+
+		self::remember_service( $url, $service );
 
 		if ( $query_string ) {
 			$url_parts = wp_parse_url( $url );
@@ -114,7 +116,7 @@ class WPML_TM_ATE_AMS_Endpoints {
 					}
 				}
 			}
-			$url_parts['query'] = http_build_query( $query );
+			$url_parts['query'] = wpml_http_build_query( $query );
 
 			$url = http_build_url( $url_parts );
 		}
@@ -122,12 +124,65 @@ class WPML_TM_ATE_AMS_Endpoints {
 		return $url;
 	}
 
-	/**
-	 * @param $service
-	 *
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
+	private static $service_by_prefix = [];
+
+	private static function remember_service( $url, $service ) {
+		$prefix = (string) $url;
+		$cut    = strcspn( $prefix, '{%?' );
+		$prefix = substr( $prefix, 0, $cut );
+
+		if ( '' !== $prefix ) {
+			self::$service_by_prefix[ $prefix ] = (string) $service;
+		}
+	}
+
+	public static function serviceOfUrl( $url ) {
+		$url      = (string) $url;
+		$prefixes = array_keys( self::$service_by_prefix );
+
+		usort(
+			$prefixes,
+			function ( $a, $b ) {
+				return strlen( $b ) - strlen( $a );
+			}
+		);
+
+		foreach ( $prefixes as $prefix ) {
+			if ( 0 === strpos( $url, $prefix ) ) {
+				return self::$service_by_prefix[ $prefix ];
+			}
+		}
+
+		$ams = self::configured_base_url( self::SERVICE_AMS );
+		$ate = self::configured_base_url( self::SERVICE_ATE );
+
+		if ( $ams !== $ate ) {
+			if ( 0 === strpos( $url, $ams ) ) {
+				return self::SERVICE_AMS;
+			}
+			if ( 0 === strpos( $url, $ate ) ) {
+				return self::SERVICE_ATE;
+			}
+		}
+
+		return self::SERVICE_ATE;
+	}
+
+	private static function configured_base_url( $service ) {
+		$constant_name = strtoupper( $service ) . '_BASE_URL';
+
+		$url = constant( __CLASS__ . '::' . $constant_name );
+
+		if ( defined( $constant_name ) ) {
+			$url = constant( $constant_name );
+		}
+		if ( getenv( $constant_name ) ) {
+			$url = getenv( $constant_name );
+		}
+
+		return (string) $url;
+	}
+
 	public function get_base_url( $service ) {
 		switch ( $service ) {
 			case self::SERVICE_AMS:
@@ -139,11 +194,11 @@ class WPML_TM_ATE_AMS_Endpoints {
 		}
 	}
 
-	private function get_AMS_base_url() {
+	public function get_AMS_base_url() {
 		return $this->get_service_base_url( self::SERVICE_AMS );
 	}
 
-	private function get_ATE_base_url() {
+	public function get_ATE_base_url() {
 		return $this->get_service_base_url( self::SERVICE_ATE );
 	}
 
@@ -178,92 +233,46 @@ class WPML_TM_ATE_AMS_Endpoints {
 		return $url_parts['host'];
 	}
 
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_ams_register_client() {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_SITE );
 	}
 
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_ams_status() {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_STATUS );
 	}
 
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_ams_synchronize_managers() {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_MANAGERS );
 	}
 
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_ams_synchronize_translators() {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_TRANSLATORS );
 	}
 
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
-	public function get_ams_site_copy() {
-		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_SITE_COPY );
-	}
-
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_ams_copy_attached() {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_COPY_ATTACHED );
 	}
 
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
-	public function get_ams_site_move() {
-		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_SITE_MOVE );
-	}
-
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_ams_site_confirm() {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_SITE_CONFIRM );
 	}
 
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
+	public function get_ams_disconnect(): string {
+		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_DISCONNECT );
+	}
+
+	public function get_ams_connect(): string {
+		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_CONNECT );
+	}
+
 	public function get_enable_subscription() {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_SUBSCRIPTION );
 	}
 
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_subscription_status() {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_SUBSCRIPTION_STATUS );
 	}
 
-	/**
-	 * @param int|string|array $job_params
-	 *
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_ate_confirm_job( $job_params = null ) {
 		$job_id_part = $this->parse_job_params( $job_params );
 
@@ -274,11 +283,22 @@ class WPML_TM_ATE_AMS_Endpoints {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_TRANSLATION_ENGINES );
 	}
 
-	/**
-	 * @param null|int|string|array $job_params
-	 *
-	 * @return string
-	 */
+	public function get_available_formalities() {
+		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_AVAILABLE_FORMALITIES );
+	}
+
+	public function get_glossary_counts() {
+		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_GLOSSARY_COUNTS );
+	}
+
+	public function get_normalized_suggestions_count() {
+		return $this->get_endpoint_url(
+			self::SERVICE_AMS,
+			self::ENDPOINTS_NORMALIZED_SUGGESTIONS,
+			array( 'status' => 'pending,queued' )
+		);
+	}
+
 	private function parse_job_params( $job_params ) {
 		$job_id_part = '';
 
@@ -294,22 +314,11 @@ class WPML_TM_ATE_AMS_Endpoints {
 		return $job_id_part;
 	}
 
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_ate_editor() {
 		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_EDITOR );
 	}
 
-	/**
-	 * @param null|int|string|array $job_params
-	 * @param null|array            $statuses
-	 *
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
-	public function get_ate_jobs( $job_params = null, array $statuses = null ) {
+	public function get_ate_jobs( $job_params = null, ?array $statuses = null ) {
 		$job_id_part = $this->parse_job_params( $job_params );
 
 		return $this->get_endpoint_url(
@@ -320,6 +329,18 @@ class WPML_TM_ATE_AMS_Endpoints {
 
 	public function getAteCancelJobs() {
 		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_CANCEL_JOBS );
+	}
+
+	public function getAteResumeJobs() {
+		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_RESUME_JOBS );
+	}
+
+	public function get_ate_tea_status() {
+		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_TEA_STATUS );
+	}
+
+	public function get_ate_delivery_reachability() {
+		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_DELIVERY_REACHABILITY );
 	}
 
 	public function getAteHideJobs() {
@@ -346,6 +367,30 @@ class WPML_TM_ATE_AMS_Endpoints {
 		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_LANGUAGES_SHOW );
 	}
 
+	public function getCatalogueVersion() {
+		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_CATALOGUE_VERSION );
+	}
+
+	public function getLanguagesTranslations() {
+		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_LANGUAGES_TRANSLATIONS );
+	}
+
+	public function getCountriesTranslations() {
+		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_COUNTRIES_TRANSLATIONS );
+	}
+
+	public function getCountriesFlags() {
+		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_COUNTRIES_FLAGS );
+	}
+
+	public function getAmsCatalogueVersion() {
+		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_AMS_CATALOGUE_VERSION );
+	}
+
+	public function getAmsCatalogueLanguages() {
+		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_AMS_CATALOGUE_LANGUAGES );
+	}
+
 	public function startTranlsationMemoryIclMigration(){
 		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_START_MIGRATION_IMPORT_FROM_ICL );
 	}
@@ -358,10 +403,6 @@ class WPML_TM_ATE_AMS_Endpoints {
 		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_IMPORT_TRANSLATORS_FROM_ICL);
 	}
 
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_ate_job_status(  ) {
 		return $this->get_endpoint_url(
 			self::SERVICE_ATE,
@@ -369,11 +410,6 @@ class WPML_TM_ATE_AMS_Endpoints {
 		);
 	}
 
-	/**
-	 * @param int() $job_ids
-	 *
-	 * @return string
-	 */
 	public function get_ate_jobs_by_wpml_job_ids( $job_ids ) {
 		return $this->get_endpoint_url( self::SERVICE_ATE,
 			self::ENDPOINT_JOBS_BY_WPML_JOB_IDS,
@@ -383,41 +419,30 @@ class WPML_TM_ATE_AMS_Endpoints {
 			) );
 	}
 
-	/**
-	 * @return string
-	 */
 	public function get_websites() {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_WEBSITES );
 	}
 
-	/**
-	 * @return string
-	 */
+	public function get_ams_site_name() {
+		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_WEBSITE_SITE_NAME );
+	}
+
 	public function get_source_id_migration() {
 		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINT_SOURCE_ID_MIGRATION );
 	}
 
-	/**
-	 * @throws \InvalidArgumentException
-	 * @return string
-	 */
 	public function get_retranslate(): string {
 		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_RETRANSLATE );
 	}
 
-	/**
-	 * @return string
-	 */
+	public function get_retranslate_info(): string {
+		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_RETRANSLATE_INFO );
+	}
+
 	public function get_sync_all() {
 		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_SYNC_ALL );
 	}
 
-	/**
-	 * @param string $paginationToken
-	 * @param int    $page
-	 *
-	 * @return string
-	 */
 	public function get_sync_page( $paginationToken, $page ) {
 		return $this->get_endpoint_url(
 			self::SERVICE_ATE,
@@ -425,15 +450,11 @@ class WPML_TM_ATE_AMS_Endpoints {
 			[
 				'pagination_token' => $paginationToken,
 				'page'             => $page,
+				'wpml_version'     => ICL_SITEPRESS_VERSION
 			]
 		);
 	}
 
-	/**
-	 * @param int $job_id
-	 *
-	 * @return string
-	 */
 	public function get_clone_job( $job_id ) {
 		return $this->get_endpoint_url(
 			self::SERVICE_ATE,
@@ -441,23 +462,31 @@ class WPML_TM_ATE_AMS_Endpoints {
 		);
 	}
 
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_credits() {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_CREDITS );
 	}
 
-	/**
-	 * @return string
-	 * @throws \InvalidArgumentException
-	 */
-	public function get_resume_all() {
-		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_RESUME_ALL );
+	public function get_account_balances() {
+		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_ACCOUNT_BALANCES );
+	}
+
+	public function get_website_migration_code() {
+		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_WEBSITE_MIGRATION_CODE );
+	}
+
+	public function get_website_context() {
+		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_WEBSITE_CONTEXTS);
 	}
 
 	public function get_send_sitekey() {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_SEND_SITEKEY );
+	}
+
+	public function get_unassign_sitekey() {
+		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_UNASSIGN_SITEKEY );
+	}
+
+	public  function get_ate_dashboard_url() {
+		return $this->get_base_url( WPML_TM_ATE_AMS_Endpoints::SERVICE_AMS ) . '/mini_app/dashboard.js';
 	}
 }

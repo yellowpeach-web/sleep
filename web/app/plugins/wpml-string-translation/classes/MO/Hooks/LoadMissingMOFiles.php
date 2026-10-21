@@ -2,7 +2,6 @@
 
 namespace WPML\ST\MO\Hooks;
 
-use WPML\Collect\Support\Collection;
 use WPML\ST\MO\Generate\MissingMOFile;
 use WPML\WP\OptionManager;
 use function WPML\Container\make;
@@ -13,18 +12,10 @@ class LoadMissingMOFiles implements \IWPML_Action {
 	const OPTION_GROUP                        = 'ST-MO';
 	const MISSING_MO_OPTION                   = 'missing-mo';
 	const TIMEOUT                             = 10;
-	const WPML_VERSION_INTRODUCING_ST_MO_FLOW = '4.3.0';
 
-	/**
-	 * @var MissingMOFile
-	 */
 	private $generateMissingMoFile;
-	/**
-	 * @var OptionManager
-	 */
 	private $optionManager;
 
-	/** @var \WPML_ST_Translations_File_Dictionary_Storage_Table */
 	private $moFilesDictionary;
 
 	public function __construct(
@@ -38,25 +29,12 @@ class LoadMissingMOFiles implements \IWPML_Action {
 	}
 
 	public function add_hooks() {
-		if ( $this->wasWpmlInstalledPriorToMoFlowChanges() ) {
+		if ( defined( 'WPML_CHECK_MISSING_MO_FILES' ) && true === WPML_CHECK_MISSING_MO_FILES ) {
 			add_filter( 'load_textdomain_mofile', [ $this, 'recordMissing' ], 10, 2 );
-
-			if ( $this->isThemeAndLocalizationPage() ) {
-				// By now this complete feature is probably only required to load
-				// generated files, but for the rare case that someone updates
-				// from < 4.3.0 and has missing files, the genration will still
-				// be triggered on the Themen and Plugins localization page.
-				add_action( 'shutdown', [ $this, 'generateMissing' ] );
-			}
+			add_action( 'shutdown', [ $this, 'generateMissing' ] );
 		}
 	}
 
-	/**
-	 * @param string $mofile
-	 * @param string $domain
-	 *
-	 * @return string
-	 */
 	public function recordMissing( $mofile, $domain ) {
 		if ( strpos( $mofile, WP_LANG_DIR . '/themes/' ) === 0 ) {
 			return $mofile;
@@ -75,27 +53,12 @@ class LoadMissingMOFiles implements \IWPML_Action {
 			return $mofile;
 		}
 
-		// Light check to see if a file was already generated.
 		$generatedFile = $this->getGeneratedFileName( $mofile, $domain );
 		if (
 			self::isReadable( $generatedFile )
 			&& $this->moFilesDictionary->is_path_handled( $mofile, $domain )
 		) {
-			// The file exists AND the path is handled by ST.
 			return $generatedFile;
-		}
-
-		if ( ! $this->isThemeAndLocalizationPage() ) {
-			// All following code is for genarating missing files and that's
-			// only happening on the Theme and Plugins localization page.
-			// -> by now we should consider removing the generation completely.
-			return $mofile;
-		}
-
-		// Heavy check to see if the file is handled by String Translation.
-		if ( ! $this->moFilesDictionary->find( $mofile ) ) {
-			// Not handled by String Translation.
-			return $mofile;
 		}
 
 		if ( $this->generateMissingMoFile->isNotProcessed( $generatedFile ) ) {
@@ -130,16 +93,11 @@ class LoadMissingMOFiles implements \IWPML_Action {
 		return is_readable( $mofile );
 	}
 
-	/**
-	 * @return \WPML\Collect\Support\Collection
-	 */
 	private function getMissing() {
-		return wpml_collect( $this->optionManager->get( self::OPTION_GROUP, self::MISSING_MO_OPTION, [] ) );
+		$missing = $this->optionManager->get( self::OPTION_GROUP, self::MISSING_MO_OPTION, [] );
+		return wpml_collect( is_array( $missing ) ? $missing : [] );
 	}
 
-	/**
-	 * @param \WPML\Collect\Support\Collection $missing
-	 */
 	private function saveMissing( \WPML\Collect\Support\Collection $missing ) {
 		$this->optionManager->set( self::OPTION_GROUP, self::MISSING_MO_OPTION, $missing->toArray() );
 	}
@@ -148,21 +106,6 @@ class LoadMissingMOFiles implements \IWPML_Action {
 		return self::TIMEOUT;
 	}
 
-	/**
-	 * @return bool
-	 */
-	private function wasWpmlInstalledPriorToMoFlowChanges() {
-		$wpml_start_version = \get_option( \WPML_Installation::WPML_START_VERSION_KEY, '0.0.0' );
-
-		return version_compare( $wpml_start_version, self::WPML_VERSION_INTRODUCING_ST_MO_FLOW, '<' );
-	}
-
-	/**
-	 * @param string $mofile
-	 * @param string $domain
-	 *
-	 * @return string
-	 */
 	private function getGeneratedFileName( $mofile, $domain ) {
 		$fileName = basename( $mofile );
 
@@ -173,28 +116,8 @@ class LoadMissingMOFiles implements \IWPML_Action {
 		return WP_LANG_DIR . self::MISSING_MO_FILES_DIR . $fileName;
 	}
 
-	/**
-	 * There's a fallback for theme that is looking for
-	 * this kind of file `wp-content/themes/hybrid/ru_RU.mo`.
-	 * We need to add the domain otherwise it collides with
-	 * the MO file for the default domain.
-	 *
-	 * @param string $fileName
-	 * @param string $domain
-	 *
-	 * @return bool
-	 */
 	private function isNonDefaultWithMissingDomain( $fileName, $domain ) {
 		return 'default' !== $domain
 		       && preg_match( '/^[a-z]+_?[A-Z]*\.mo$/', $fileName );
-	}
-
-
-	private function isThemeAndLocalizationPage() {
-		global $sitepress;
-
-		return $sitepress
-			->get_wp_api()
-			->is_core_page( 'theme-localization.php' );
 	}
 }

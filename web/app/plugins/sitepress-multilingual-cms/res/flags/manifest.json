@@ -1,0 +1,2197 @@
+{
+  "manifest_version": 1,
+  "generated_at": "2026-09-04",
+  "namespace": "res/flags/",
+  "upstream": {
+    "repo": "https://github.com/lipis/flag-icons",
+    "commit": "086f7e97d657358203916dbe84f61c2bccaa81eb",
+    "tarball_sha256": "eb5b814c794cda735155e2874e288ad9302b6f7a5728e5e50d3ef0333b6c20f4"
+  },
+  "sources": {
+    "country|region|organisation": "lipis/flag-icons (MIT), flags/4x3, upstream main as of the generation date",
+    "language": "WPML curated set = the language_flag files the bundled catalogue resolves today; kept under language/ so they never collide with country codes"
+  },
+  "rules": {
+    "country_pair": "flag = country/<cc>.svg where <cc> = lower(country_code)",
+    "international_pair": "flag = language/<lang>.svg where <lang> = the language flag listed for the preset; human review required (no territory)",
+    "fallback": "nil.svg (neutral globe) when the named file is not shipped by the installed plugin"
+  },
+  "counts": {
+    "country": 252,
+    "organisation": 7,
+    "region": 11,
+    "language": 59
+  },
+  "flags": [
+    {
+      "file": "country/ad.svg",
+      "name": "Andorra",
+      "kind": "country",
+      "code": "AD"
+    },
+    {
+      "file": "country/ae.svg",
+      "name": "United Arab Emirates",
+      "kind": "country",
+      "code": "AE"
+    },
+    {
+      "file": "country/af.svg",
+      "name": "Afghanistan",
+      "kind": "country",
+      "code": "AF"
+    },
+    {
+      "file": "country/ag.svg",
+      "name": "Antigua and Barbuda",
+      "kind": "country",
+      "code": "AG"
+    },
+    {
+      "file": "country/ai.svg",
+      "name": "Anguilla",
+      "kind": "country",
+      "code": "AI"
+    },
+    {
+      "file": "country/al.svg",
+      "name": "Albania",
+      "kind": "country",
+      "code": "AL"
+    },
+    {
+      "file": "country/am.svg",
+      "name": "Armenia",
+      "kind": "country",
+      "code": "AM"
+    },
+    {
+      "file": "country/ao.svg",
+      "name": "Angola",
+      "kind": "country",
+      "code": "AO"
+    },
+    {
+      "file": "country/aq.svg",
+      "name": "Antarctica",
+      "kind": "country",
+      "code": "AQ"
+    },
+    {
+      "file": "country/ar.svg",
+      "name": "Argentina",
+      "kind": "country",
+      "code": "AR"
+    },
+    {
+      "file": "country/arab.svg",
+      "name": "League of Arab States",
+      "kind": "organisation",
+      "code": "ARAB"
+    },
+    {
+      "file": "country/as.svg",
+      "name": "American Samoa",
+      "kind": "country",
+      "code": "AS"
+    },
+    {
+      "file": "country/asean.svg",
+      "name": "Association of Southeast Asian Nations",
+      "kind": "organisation",
+      "code": "ASEAN"
+    },
+    {
+      "file": "country/at.svg",
+      "name": "Austria",
+      "kind": "country",
+      "code": "AT"
+    },
+    {
+      "file": "country/au.svg",
+      "name": "Australia",
+      "kind": "country",
+      "code": "AU"
+    },
+    {
+      "file": "country/aw.svg",
+      "name": "Aruba",
+      "kind": "country",
+      "code": "AW"
+    },
+    {
+      "file": "country/ax.svg",
+      "name": "Aland Islands",
+      "kind": "country",
+      "code": "AX"
+    },
+    {
+      "file": "country/az.svg",
+      "name": "Azerbaijan",
+      "kind": "country",
+      "code": "AZ"
+    },
+    {
+      "file": "country/ba.svg",
+      "name": "Bosnia and Herzegovina",
+      "kind": "country",
+      "code": "BA"
+    },
+    {
+      "file": "country/bb.svg",
+      "name": "Barbados",
+      "kind": "country",
+      "code": "BB"
+    },
+    {
+      "file": "country/bd.svg",
+      "name": "Bangladesh",
+      "kind": "country",
+      "code": "BD"
+    },
+    {
+      "file": "country/be.svg",
+      "name": "Belgium",
+      "kind": "country",
+      "code": "BE"
+    },
+    {
+      "file": "country/bf.svg",
+      "name": "Burkina Faso",
+      "kind": "country",
+      "code": "BF"
+    },
+    {
+      "file": "country/bg.svg",
+      "name": "Bulgaria",
+      "kind": "country",
+      "code": "BG"
+    },
+    {
+      "file": "country/bh.svg",
+      "name": "Bahrain",
+      "kind": "country",
+      "code": "BH"
+    },
+    {
+      "file": "country/bi.svg",
+      "name": "Burundi",
+      "kind": "country",
+      "code": "BI"
+    },
+    {
+      "file": "country/bj.svg",
+      "name": "Benin",
+      "kind": "country",
+      "code": "BJ"
+    },
+    {
+      "file": "country/bl.svg",
+      "name": "Saint Barthélemy",
+      "kind": "country",
+      "code": "BL"
+    },
+    {
+      "file": "country/bm.svg",
+      "name": "Bermuda",
+      "kind": "country",
+      "code": "BM"
+    },
+    {
+      "file": "country/bn.svg",
+      "name": "Brunei Darussalam",
+      "kind": "country",
+      "code": "BN"
+    },
+    {
+      "file": "country/bo.svg",
+      "name": "Bolivia",
+      "kind": "country",
+      "code": "BO"
+    },
+    {
+      "file": "country/bq.svg",
+      "name": "Bonaire, Sint Eustatius and Saba",
+      "kind": "country",
+      "code": "BQ"
+    },
+    {
+      "file": "country/br.svg",
+      "name": "Brazil",
+      "kind": "country",
+      "code": "BR"
+    },
+    {
+      "file": "country/bs.svg",
+      "name": "Bahamas",
+      "kind": "country",
+      "code": "BS"
+    },
+    {
+      "file": "country/bt.svg",
+      "name": "Bhutan",
+      "kind": "country",
+      "code": "BT"
+    },
+    {
+      "file": "country/bv.svg",
+      "name": "Bouvet Island",
+      "kind": "country",
+      "code": "BV"
+    },
+    {
+      "file": "country/bw.svg",
+      "name": "Botswana",
+      "kind": "country",
+      "code": "BW"
+    },
+    {
+      "file": "country/by.svg",
+      "name": "Belarus",
+      "kind": "country",
+      "code": "BY"
+    },
+    {
+      "file": "country/bz.svg",
+      "name": "Belize",
+      "kind": "country",
+      "code": "BZ"
+    },
+    {
+      "file": "country/ca.svg",
+      "name": "Canada",
+      "kind": "country",
+      "code": "CA"
+    },
+    {
+      "file": "country/cc.svg",
+      "name": "Cocos (Keeling) Islands",
+      "kind": "country",
+      "code": "CC"
+    },
+    {
+      "file": "country/cd.svg",
+      "name": "Democratic Republic of the Congo",
+      "kind": "country",
+      "code": "CD"
+    },
+    {
+      "file": "country/cefta.svg",
+      "name": "Central European Free Trade Agreement",
+      "kind": "organisation",
+      "code": "CEFTA"
+    },
+    {
+      "file": "country/cf.svg",
+      "name": "Central African Republic",
+      "kind": "country",
+      "code": "CF"
+    },
+    {
+      "file": "country/cg.svg",
+      "name": "Republic of the Congo",
+      "kind": "country",
+      "code": "CG"
+    },
+    {
+      "file": "country/ch.svg",
+      "name": "Switzerland",
+      "kind": "country",
+      "code": "CH"
+    },
+    {
+      "file": "country/ci.svg",
+      "name": "Côte d'Ivoire",
+      "kind": "country",
+      "code": "CI"
+    },
+    {
+      "file": "country/ck.svg",
+      "name": "Cook Islands",
+      "kind": "country",
+      "code": "CK"
+    },
+    {
+      "file": "country/cl.svg",
+      "name": "Chile",
+      "kind": "country",
+      "code": "CL"
+    },
+    {
+      "file": "country/cm.svg",
+      "name": "Cameroon",
+      "kind": "country",
+      "code": "CM"
+    },
+    {
+      "file": "country/cn.svg",
+      "name": "China",
+      "kind": "country",
+      "code": "CN"
+    },
+    {
+      "file": "country/co.svg",
+      "name": "Colombia",
+      "kind": "country",
+      "code": "CO"
+    },
+    {
+      "file": "country/cp.svg",
+      "name": "Clipperton Island",
+      "kind": "country",
+      "code": "CP",
+      "iso": false
+    },
+    {
+      "file": "country/cr.svg",
+      "name": "Costa Rica",
+      "kind": "country",
+      "code": "CR"
+    },
+    {
+      "file": "country/cu.svg",
+      "name": "Cuba",
+      "kind": "country",
+      "code": "CU"
+    },
+    {
+      "file": "country/cv.svg",
+      "name": "Cabo Verde",
+      "kind": "country",
+      "code": "CV"
+    },
+    {
+      "file": "country/cw.svg",
+      "name": "Curaçao",
+      "kind": "country",
+      "code": "CW"
+    },
+    {
+      "file": "country/cx.svg",
+      "name": "Christmas Island",
+      "kind": "country",
+      "code": "CX"
+    },
+    {
+      "file": "country/cy.svg",
+      "name": "Cyprus",
+      "kind": "country",
+      "code": "CY"
+    },
+    {
+      "file": "country/cz.svg",
+      "name": "Czech Republic",
+      "kind": "country",
+      "code": "CZ"
+    },
+    {
+      "file": "country/de.svg",
+      "name": "Germany",
+      "kind": "country",
+      "code": "DE"
+    },
+    {
+      "file": "country/dg.svg",
+      "name": "Diego Garcia",
+      "kind": "country",
+      "code": "DG",
+      "iso": false
+    },
+    {
+      "file": "country/dj.svg",
+      "name": "Djibouti",
+      "kind": "country",
+      "code": "DJ"
+    },
+    {
+      "file": "country/dk.svg",
+      "name": "Denmark",
+      "kind": "country",
+      "code": "DK"
+    },
+    {
+      "file": "country/dm.svg",
+      "name": "Dominica",
+      "kind": "country",
+      "code": "DM"
+    },
+    {
+      "file": "country/do.svg",
+      "name": "Dominican Republic",
+      "kind": "country",
+      "code": "DO"
+    },
+    {
+      "file": "country/dz.svg",
+      "name": "Algeria",
+      "kind": "country",
+      "code": "DZ"
+    },
+    {
+      "file": "country/eac.svg",
+      "name": "East African Community",
+      "kind": "organisation",
+      "code": "EAC"
+    },
+    {
+      "file": "country/ec.svg",
+      "name": "Ecuador",
+      "kind": "country",
+      "code": "EC"
+    },
+    {
+      "file": "country/ee.svg",
+      "name": "Estonia",
+      "kind": "country",
+      "code": "EE"
+    },
+    {
+      "file": "country/eg.svg",
+      "name": "Egypt",
+      "kind": "country",
+      "code": "EG"
+    },
+    {
+      "file": "country/eh.svg",
+      "name": "Western Sahara",
+      "kind": "country",
+      "code": "EH"
+    },
+    {
+      "file": "country/er.svg",
+      "name": "Eritrea",
+      "kind": "country",
+      "code": "ER"
+    },
+    {
+      "file": "country/es.svg",
+      "name": "Spain",
+      "kind": "country",
+      "code": "ES"
+    },
+    {
+      "file": "country/es-ct.svg",
+      "name": "Catalonia",
+      "kind": "region",
+      "code": "ES-CT",
+      "parent": "ES"
+    },
+    {
+      "file": "country/es-ga.svg",
+      "name": "Galicia",
+      "kind": "region",
+      "code": "ES-GA",
+      "parent": "ES"
+    },
+    {
+      "file": "country/es-pv.svg",
+      "name": "Basque Country",
+      "kind": "region",
+      "code": "ES-PV",
+      "parent": "ES"
+    },
+    {
+      "file": "country/et.svg",
+      "name": "Ethiopia",
+      "kind": "country",
+      "code": "ET"
+    },
+    {
+      "file": "country/eu.svg",
+      "name": "Europe",
+      "kind": "organisation",
+      "code": "EU"
+    },
+    {
+      "file": "country/fi.svg",
+      "name": "Finland",
+      "kind": "country",
+      "code": "FI"
+    },
+    {
+      "file": "country/fj.svg",
+      "name": "Fiji",
+      "kind": "country",
+      "code": "FJ"
+    },
+    {
+      "file": "country/fk.svg",
+      "name": "Falkland Islands",
+      "kind": "country",
+      "code": "FK"
+    },
+    {
+      "file": "country/fm.svg",
+      "name": "Federated States of Micronesia",
+      "kind": "country",
+      "code": "FM"
+    },
+    {
+      "file": "country/fo.svg",
+      "name": "Faroe Islands",
+      "kind": "country",
+      "code": "FO"
+    },
+    {
+      "file": "country/fr.svg",
+      "name": "France",
+      "kind": "country",
+      "code": "FR"
+    },
+    {
+      "file": "country/ga.svg",
+      "name": "Gabon",
+      "kind": "country",
+      "code": "GA"
+    },
+    {
+      "file": "country/gb.svg",
+      "name": "United Kingdom",
+      "kind": "country",
+      "code": "GB"
+    },
+    {
+      "file": "country/gb-eng.svg",
+      "name": "England",
+      "kind": "region",
+      "code": "GB-ENG",
+      "parent": "GB"
+    },
+    {
+      "file": "country/gb-nir.svg",
+      "name": "Northern Ireland",
+      "kind": "region",
+      "code": "GB-NIR",
+      "parent": "GB"
+    },
+    {
+      "file": "country/gb-sct.svg",
+      "name": "Scotland",
+      "kind": "region",
+      "code": "GB-SCT",
+      "parent": "GB"
+    },
+    {
+      "file": "country/gb-wls.svg",
+      "name": "Wales",
+      "kind": "region",
+      "code": "GB-WLS",
+      "parent": "GB"
+    },
+    {
+      "file": "country/gd.svg",
+      "name": "Grenada",
+      "kind": "country",
+      "code": "GD"
+    },
+    {
+      "file": "country/ge.svg",
+      "name": "Georgia",
+      "kind": "country",
+      "code": "GE"
+    },
+    {
+      "file": "country/gf.svg",
+      "name": "French Guiana",
+      "kind": "country",
+      "code": "GF"
+    },
+    {
+      "file": "country/gg.svg",
+      "name": "Guernsey",
+      "kind": "country",
+      "code": "GG"
+    },
+    {
+      "file": "country/gh.svg",
+      "name": "Ghana",
+      "kind": "country",
+      "code": "GH"
+    },
+    {
+      "file": "country/gi.svg",
+      "name": "Gibraltar",
+      "kind": "country",
+      "code": "GI"
+    },
+    {
+      "file": "country/gl.svg",
+      "name": "Greenland",
+      "kind": "country",
+      "code": "GL"
+    },
+    {
+      "file": "country/gm.svg",
+      "name": "Gambia",
+      "kind": "country",
+      "code": "GM"
+    },
+    {
+      "file": "country/gn.svg",
+      "name": "Guinea",
+      "kind": "country",
+      "code": "GN"
+    },
+    {
+      "file": "country/gp.svg",
+      "name": "Guadeloupe",
+      "kind": "country",
+      "code": "GP"
+    },
+    {
+      "file": "country/gq.svg",
+      "name": "Equatorial Guinea",
+      "kind": "country",
+      "code": "GQ"
+    },
+    {
+      "file": "country/gr.svg",
+      "name": "Greece",
+      "kind": "country",
+      "code": "GR"
+    },
+    {
+      "file": "country/gs.svg",
+      "name": "South Georgia and the South Sandwich Islands",
+      "kind": "country",
+      "code": "GS"
+    },
+    {
+      "file": "country/gt.svg",
+      "name": "Guatemala",
+      "kind": "country",
+      "code": "GT"
+    },
+    {
+      "file": "country/gu.svg",
+      "name": "Guam",
+      "kind": "country",
+      "code": "GU"
+    },
+    {
+      "file": "country/gw.svg",
+      "name": "Guinea-Bissau",
+      "kind": "country",
+      "code": "GW"
+    },
+    {
+      "file": "country/gy.svg",
+      "name": "Guyana",
+      "kind": "country",
+      "code": "GY"
+    },
+    {
+      "file": "country/hk.svg",
+      "name": "Hong Kong",
+      "kind": "country",
+      "code": "HK"
+    },
+    {
+      "file": "country/hm.svg",
+      "name": "Heard Island and McDonald Islands",
+      "kind": "country",
+      "code": "HM"
+    },
+    {
+      "file": "country/hn.svg",
+      "name": "Honduras",
+      "kind": "country",
+      "code": "HN"
+    },
+    {
+      "file": "country/hr.svg",
+      "name": "Croatia",
+      "kind": "country",
+      "code": "HR"
+    },
+    {
+      "file": "country/ht.svg",
+      "name": "Haiti",
+      "kind": "country",
+      "code": "HT"
+    },
+    {
+      "file": "country/hu.svg",
+      "name": "Hungary",
+      "kind": "country",
+      "code": "HU"
+    },
+    {
+      "file": "country/ic.svg",
+      "name": "Canary Islands",
+      "kind": "region",
+      "code": "IC",
+      "parent": "ES"
+    },
+    {
+      "file": "country/id.svg",
+      "name": "Indonesia",
+      "kind": "country",
+      "code": "ID"
+    },
+    {
+      "file": "country/ie.svg",
+      "name": "Ireland",
+      "kind": "country",
+      "code": "IE"
+    },
+    {
+      "file": "country/il.svg",
+      "name": "Israel",
+      "kind": "country",
+      "code": "IL"
+    },
+    {
+      "file": "country/im.svg",
+      "name": "Isle of Man",
+      "kind": "country",
+      "code": "IM"
+    },
+    {
+      "file": "country/in.svg",
+      "name": "India",
+      "kind": "country",
+      "code": "IN"
+    },
+    {
+      "file": "country/io.svg",
+      "name": "British Indian Ocean Territory",
+      "kind": "country",
+      "code": "IO"
+    },
+    {
+      "file": "country/iq.svg",
+      "name": "Iraq",
+      "kind": "country",
+      "code": "IQ"
+    },
+    {
+      "file": "country/ir.svg",
+      "name": "Iran",
+      "kind": "country",
+      "code": "IR"
+    },
+    {
+      "file": "country/is.svg",
+      "name": "Iceland",
+      "kind": "country",
+      "code": "IS"
+    },
+    {
+      "file": "country/it.svg",
+      "name": "Italy",
+      "kind": "country",
+      "code": "IT"
+    },
+    {
+      "file": "country/je.svg",
+      "name": "Jersey",
+      "kind": "country",
+      "code": "JE"
+    },
+    {
+      "file": "country/jm.svg",
+      "name": "Jamaica",
+      "kind": "country",
+      "code": "JM"
+    },
+    {
+      "file": "country/jo.svg",
+      "name": "Jordan",
+      "kind": "country",
+      "code": "JO"
+    },
+    {
+      "file": "country/jp.svg",
+      "name": "Japan",
+      "kind": "country",
+      "code": "JP"
+    },
+    {
+      "file": "country/ke.svg",
+      "name": "Kenya",
+      "kind": "country",
+      "code": "KE"
+    },
+    {
+      "file": "country/kg.svg",
+      "name": "Kyrgyzstan",
+      "kind": "country",
+      "code": "KG"
+    },
+    {
+      "file": "country/kh.svg",
+      "name": "Cambodia",
+      "kind": "country",
+      "code": "KH"
+    },
+    {
+      "file": "country/ki.svg",
+      "name": "Kiribati",
+      "kind": "country",
+      "code": "KI"
+    },
+    {
+      "file": "country/km.svg",
+      "name": "Comoros",
+      "kind": "country",
+      "code": "KM"
+    },
+    {
+      "file": "country/kn.svg",
+      "name": "Saint Kitts and Nevis",
+      "kind": "country",
+      "code": "KN"
+    },
+    {
+      "file": "country/kp.svg",
+      "name": "North Korea",
+      "kind": "country",
+      "code": "KP"
+    },
+    {
+      "file": "country/kr.svg",
+      "name": "South Korea",
+      "kind": "country",
+      "code": "KR"
+    },
+    {
+      "file": "country/kw.svg",
+      "name": "Kuwait",
+      "kind": "country",
+      "code": "KW"
+    },
+    {
+      "file": "country/ky.svg",
+      "name": "Cayman Islands",
+      "kind": "country",
+      "code": "KY"
+    },
+    {
+      "file": "country/kz.svg",
+      "name": "Kazakhstan",
+      "kind": "country",
+      "code": "KZ"
+    },
+    {
+      "file": "country/la.svg",
+      "name": "Laos",
+      "kind": "country",
+      "code": "LA"
+    },
+    {
+      "file": "country/lb.svg",
+      "name": "Lebanon",
+      "kind": "country",
+      "code": "LB"
+    },
+    {
+      "file": "country/lc.svg",
+      "name": "Saint Lucia",
+      "kind": "country",
+      "code": "LC"
+    },
+    {
+      "file": "country/li.svg",
+      "name": "Liechtenstein",
+      "kind": "country",
+      "code": "LI"
+    },
+    {
+      "file": "country/lk.svg",
+      "name": "Sri Lanka",
+      "kind": "country",
+      "code": "LK"
+    },
+    {
+      "file": "country/lr.svg",
+      "name": "Liberia",
+      "kind": "country",
+      "code": "LR"
+    },
+    {
+      "file": "country/ls.svg",
+      "name": "Lesotho",
+      "kind": "country",
+      "code": "LS"
+    },
+    {
+      "file": "country/lt.svg",
+      "name": "Lithuania",
+      "kind": "country",
+      "code": "LT"
+    },
+    {
+      "file": "country/lu.svg",
+      "name": "Luxembourg",
+      "kind": "country",
+      "code": "LU"
+    },
+    {
+      "file": "country/lv.svg",
+      "name": "Latvia",
+      "kind": "country",
+      "code": "LV"
+    },
+    {
+      "file": "country/ly.svg",
+      "name": "Libya",
+      "kind": "country",
+      "code": "LY"
+    },
+    {
+      "file": "country/ma.svg",
+      "name": "Morocco",
+      "kind": "country",
+      "code": "MA"
+    },
+    {
+      "file": "country/mc.svg",
+      "name": "Monaco",
+      "kind": "country",
+      "code": "MC"
+    },
+    {
+      "file": "country/md.svg",
+      "name": "Moldova",
+      "kind": "country",
+      "code": "MD"
+    },
+    {
+      "file": "country/me.svg",
+      "name": "Montenegro",
+      "kind": "country",
+      "code": "ME"
+    },
+    {
+      "file": "country/mf.svg",
+      "name": "Saint Martin",
+      "kind": "country",
+      "code": "MF"
+    },
+    {
+      "file": "country/mg.svg",
+      "name": "Madagascar",
+      "kind": "country",
+      "code": "MG"
+    },
+    {
+      "file": "country/mh.svg",
+      "name": "Marshall Islands",
+      "kind": "country",
+      "code": "MH"
+    },
+    {
+      "file": "country/mk.svg",
+      "name": "North Macedonia",
+      "kind": "country",
+      "code": "MK"
+    },
+    {
+      "file": "country/ml.svg",
+      "name": "Mali",
+      "kind": "country",
+      "code": "ML"
+    },
+    {
+      "file": "country/mm.svg",
+      "name": "Myanmar",
+      "kind": "country",
+      "code": "MM"
+    },
+    {
+      "file": "country/mn.svg",
+      "name": "Mongolia",
+      "kind": "country",
+      "code": "MN"
+    },
+    {
+      "file": "country/mo.svg",
+      "name": "Macau",
+      "kind": "country",
+      "code": "MO"
+    },
+    {
+      "file": "country/mp.svg",
+      "name": "Northern Mariana Islands",
+      "kind": "country",
+      "code": "MP"
+    },
+    {
+      "file": "country/mq.svg",
+      "name": "Martinique",
+      "kind": "country",
+      "code": "MQ"
+    },
+    {
+      "file": "country/mr.svg",
+      "name": "Mauritania",
+      "kind": "country",
+      "code": "MR"
+    },
+    {
+      "file": "country/ms.svg",
+      "name": "Montserrat",
+      "kind": "country",
+      "code": "MS"
+    },
+    {
+      "file": "country/mt.svg",
+      "name": "Malta",
+      "kind": "country",
+      "code": "MT"
+    },
+    {
+      "file": "country/mu.svg",
+      "name": "Mauritius",
+      "kind": "country",
+      "code": "MU"
+    },
+    {
+      "file": "country/mv.svg",
+      "name": "Maldives",
+      "kind": "country",
+      "code": "MV"
+    },
+    {
+      "file": "country/mw.svg",
+      "name": "Malawi",
+      "kind": "country",
+      "code": "MW"
+    },
+    {
+      "file": "country/mx.svg",
+      "name": "Mexico",
+      "kind": "country",
+      "code": "MX"
+    },
+    {
+      "file": "country/my.svg",
+      "name": "Malaysia",
+      "kind": "country",
+      "code": "MY"
+    },
+    {
+      "file": "country/mz.svg",
+      "name": "Mozambique",
+      "kind": "country",
+      "code": "MZ"
+    },
+    {
+      "file": "country/na.svg",
+      "name": "Namibia",
+      "kind": "country",
+      "code": "NA"
+    },
+    {
+      "file": "country/nc.svg",
+      "name": "New Caledonia",
+      "kind": "country",
+      "code": "NC"
+    },
+    {
+      "file": "country/ne.svg",
+      "name": "Niger",
+      "kind": "country",
+      "code": "NE"
+    },
+    {
+      "file": "country/nf.svg",
+      "name": "Norfolk Island",
+      "kind": "country",
+      "code": "NF"
+    },
+    {
+      "file": "country/ng.svg",
+      "name": "Nigeria",
+      "kind": "country",
+      "code": "NG"
+    },
+    {
+      "file": "country/ni.svg",
+      "name": "Nicaragua",
+      "kind": "country",
+      "code": "NI"
+    },
+    {
+      "file": "country/nl.svg",
+      "name": "Netherlands",
+      "kind": "country",
+      "code": "NL"
+    },
+    {
+      "file": "country/no.svg",
+      "name": "Norway",
+      "kind": "country",
+      "code": "NO"
+    },
+    {
+      "file": "country/np.svg",
+      "name": "Nepal",
+      "kind": "country",
+      "code": "NP"
+    },
+    {
+      "file": "country/nr.svg",
+      "name": "Nauru",
+      "kind": "country",
+      "code": "NR"
+    },
+    {
+      "file": "country/nu.svg",
+      "name": "Niue",
+      "kind": "country",
+      "code": "NU"
+    },
+    {
+      "file": "country/nz.svg",
+      "name": "New Zealand",
+      "kind": "country",
+      "code": "NZ"
+    },
+    {
+      "file": "country/om.svg",
+      "name": "Oman",
+      "kind": "country",
+      "code": "OM"
+    },
+    {
+      "file": "country/pa.svg",
+      "name": "Panama",
+      "kind": "country",
+      "code": "PA"
+    },
+    {
+      "file": "country/pc.svg",
+      "name": "Pacific Community",
+      "kind": "organisation",
+      "code": "PC"
+    },
+    {
+      "file": "country/pe.svg",
+      "name": "Peru",
+      "kind": "country",
+      "code": "PE"
+    },
+    {
+      "file": "country/pf.svg",
+      "name": "French Polynesia",
+      "kind": "country",
+      "code": "PF"
+    },
+    {
+      "file": "country/pg.svg",
+      "name": "Papua New Guinea",
+      "kind": "country",
+      "code": "PG"
+    },
+    {
+      "file": "country/ph.svg",
+      "name": "Philippines",
+      "kind": "country",
+      "code": "PH"
+    },
+    {
+      "file": "country/pk.svg",
+      "name": "Pakistan",
+      "kind": "country",
+      "code": "PK"
+    },
+    {
+      "file": "country/pl.svg",
+      "name": "Poland",
+      "kind": "country",
+      "code": "PL"
+    },
+    {
+      "file": "country/pm.svg",
+      "name": "Saint Pierre and Miquelon",
+      "kind": "country",
+      "code": "PM"
+    },
+    {
+      "file": "country/pn.svg",
+      "name": "Pitcairn",
+      "kind": "country",
+      "code": "PN"
+    },
+    {
+      "file": "country/pr.svg",
+      "name": "Puerto Rico",
+      "kind": "country",
+      "code": "PR"
+    },
+    {
+      "file": "country/ps.svg",
+      "name": "State of Palestine",
+      "kind": "country",
+      "code": "PS"
+    },
+    {
+      "file": "country/pt.svg",
+      "name": "Portugal",
+      "kind": "country",
+      "code": "PT"
+    },
+    {
+      "file": "country/pw.svg",
+      "name": "Palau",
+      "kind": "country",
+      "code": "PW"
+    },
+    {
+      "file": "country/py.svg",
+      "name": "Paraguay",
+      "kind": "country",
+      "code": "PY"
+    },
+    {
+      "file": "country/qa.svg",
+      "name": "Qatar",
+      "kind": "country",
+      "code": "QA"
+    },
+    {
+      "file": "country/re.svg",
+      "name": "Réunion",
+      "kind": "country",
+      "code": "RE"
+    },
+    {
+      "file": "country/ro.svg",
+      "name": "Romania",
+      "kind": "country",
+      "code": "RO"
+    },
+    {
+      "file": "country/rs.svg",
+      "name": "Serbia",
+      "kind": "country",
+      "code": "RS"
+    },
+    {
+      "file": "country/ru.svg",
+      "name": "Russia",
+      "kind": "country",
+      "code": "RU"
+    },
+    {
+      "file": "country/rw.svg",
+      "name": "Rwanda",
+      "kind": "country",
+      "code": "RW"
+    },
+    {
+      "file": "country/sa.svg",
+      "name": "Saudi Arabia",
+      "kind": "country",
+      "code": "SA"
+    },
+    {
+      "file": "country/sb.svg",
+      "name": "Solomon Islands",
+      "kind": "country",
+      "code": "SB"
+    },
+    {
+      "file": "country/sc.svg",
+      "name": "Seychelles",
+      "kind": "country",
+      "code": "SC"
+    },
+    {
+      "file": "country/sd.svg",
+      "name": "Sudan",
+      "kind": "country",
+      "code": "SD"
+    },
+    {
+      "file": "country/se.svg",
+      "name": "Sweden",
+      "kind": "country",
+      "code": "SE"
+    },
+    {
+      "file": "country/sg.svg",
+      "name": "Singapore",
+      "kind": "country",
+      "code": "SG"
+    },
+    {
+      "file": "country/sh.svg",
+      "name": "Saint Helena, Ascension and Tristan da Cunha",
+      "kind": "country",
+      "code": "SH"
+    },
+    {
+      "file": "country/sh-ac.svg",
+      "name": "Ascension Island",
+      "kind": "region",
+      "code": "SH-AC",
+      "parent": "SH"
+    },
+    {
+      "file": "country/sh-hl.svg",
+      "name": "Saint Helena",
+      "kind": "region",
+      "code": "SH-HL",
+      "parent": "SH"
+    },
+    {
+      "file": "country/sh-ta.svg",
+      "name": "Tristan da Cunha",
+      "kind": "region",
+      "code": "SH-TA",
+      "parent": "SH"
+    },
+    {
+      "file": "country/si.svg",
+      "name": "Slovenia",
+      "kind": "country",
+      "code": "SI"
+    },
+    {
+      "file": "country/sj.svg",
+      "name": "Svalbard and Jan Mayen",
+      "kind": "country",
+      "code": "SJ"
+    },
+    {
+      "file": "country/sk.svg",
+      "name": "Slovakia",
+      "kind": "country",
+      "code": "SK"
+    },
+    {
+      "file": "country/sl.svg",
+      "name": "Sierra Leone",
+      "kind": "country",
+      "code": "SL"
+    },
+    {
+      "file": "country/sm.svg",
+      "name": "San Marino",
+      "kind": "country",
+      "code": "SM"
+    },
+    {
+      "file": "country/sn.svg",
+      "name": "Senegal",
+      "kind": "country",
+      "code": "SN"
+    },
+    {
+      "file": "country/so.svg",
+      "name": "Somalia",
+      "kind": "country",
+      "code": "SO"
+    },
+    {
+      "file": "country/sr.svg",
+      "name": "Suriname",
+      "kind": "country",
+      "code": "SR"
+    },
+    {
+      "file": "country/ss.svg",
+      "name": "South Sudan",
+      "kind": "country",
+      "code": "SS"
+    },
+    {
+      "file": "country/st.svg",
+      "name": "Sao Tome and Principe",
+      "kind": "country",
+      "code": "ST"
+    },
+    {
+      "file": "country/sv.svg",
+      "name": "El Salvador",
+      "kind": "country",
+      "code": "SV"
+    },
+    {
+      "file": "country/sx.svg",
+      "name": "Sint Maarten",
+      "kind": "country",
+      "code": "SX"
+    },
+    {
+      "file": "country/sy.svg",
+      "name": "Syria",
+      "kind": "country",
+      "code": "SY"
+    },
+    {
+      "file": "country/sz.svg",
+      "name": "Eswatini",
+      "kind": "country",
+      "code": "SZ"
+    },
+    {
+      "file": "country/tc.svg",
+      "name": "Turks and Caicos Islands",
+      "kind": "country",
+      "code": "TC"
+    },
+    {
+      "file": "country/td.svg",
+      "name": "Chad",
+      "kind": "country",
+      "code": "TD"
+    },
+    {
+      "file": "country/tf.svg",
+      "name": "French Southern Territories",
+      "kind": "country",
+      "code": "TF"
+    },
+    {
+      "file": "country/tg.svg",
+      "name": "Togo",
+      "kind": "country",
+      "code": "TG"
+    },
+    {
+      "file": "country/th.svg",
+      "name": "Thailand",
+      "kind": "country",
+      "code": "TH"
+    },
+    {
+      "file": "country/tj.svg",
+      "name": "Tajikistan",
+      "kind": "country",
+      "code": "TJ"
+    },
+    {
+      "file": "country/tk.svg",
+      "name": "Tokelau",
+      "kind": "country",
+      "code": "TK"
+    },
+    {
+      "file": "country/tl.svg",
+      "name": "Timor-Leste",
+      "kind": "country",
+      "code": "TL"
+    },
+    {
+      "file": "country/tm.svg",
+      "name": "Turkmenistan",
+      "kind": "country",
+      "code": "TM"
+    },
+    {
+      "file": "country/tn.svg",
+      "name": "Tunisia",
+      "kind": "country",
+      "code": "TN"
+    },
+    {
+      "file": "country/to.svg",
+      "name": "Tonga",
+      "kind": "country",
+      "code": "TO"
+    },
+    {
+      "file": "country/tr.svg",
+      "name": "Türkiye",
+      "kind": "country",
+      "code": "TR"
+    },
+    {
+      "file": "country/tt.svg",
+      "name": "Trinidad and Tobago",
+      "kind": "country",
+      "code": "TT"
+    },
+    {
+      "file": "country/tv.svg",
+      "name": "Tuvalu",
+      "kind": "country",
+      "code": "TV"
+    },
+    {
+      "file": "country/tw.svg",
+      "name": "Taiwan",
+      "kind": "country",
+      "code": "TW"
+    },
+    {
+      "file": "country/tz.svg",
+      "name": "Tanzania",
+      "kind": "country",
+      "code": "TZ"
+    },
+    {
+      "file": "country/ua.svg",
+      "name": "Ukraine",
+      "kind": "country",
+      "code": "UA"
+    },
+    {
+      "file": "country/ug.svg",
+      "name": "Uganda",
+      "kind": "country",
+      "code": "UG"
+    },
+    {
+      "file": "country/um.svg",
+      "name": "United States Minor Outlying Islands",
+      "kind": "country",
+      "code": "UM"
+    },
+    {
+      "file": "country/un.svg",
+      "name": "United Nations",
+      "kind": "organisation",
+      "code": "UN"
+    },
+    {
+      "file": "country/us.svg",
+      "name": "United States of America",
+      "kind": "country",
+      "code": "US"
+    },
+    {
+      "file": "country/uy.svg",
+      "name": "Uruguay",
+      "kind": "country",
+      "code": "UY"
+    },
+    {
+      "file": "country/uz.svg",
+      "name": "Uzbekistan",
+      "kind": "country",
+      "code": "UZ"
+    },
+    {
+      "file": "country/va.svg",
+      "name": "Holy See",
+      "kind": "country",
+      "code": "VA"
+    },
+    {
+      "file": "country/vc.svg",
+      "name": "Saint Vincent and the Grenadines",
+      "kind": "country",
+      "code": "VC"
+    },
+    {
+      "file": "country/ve.svg",
+      "name": "Venezuela",
+      "kind": "country",
+      "code": "VE"
+    },
+    {
+      "file": "country/vg.svg",
+      "name": "Virgin Islands (British)",
+      "kind": "country",
+      "code": "VG"
+    },
+    {
+      "file": "country/vi.svg",
+      "name": "Virgin Islands (U.S.)",
+      "kind": "country",
+      "code": "VI"
+    },
+    {
+      "file": "country/vn.svg",
+      "name": "Vietnam",
+      "kind": "country",
+      "code": "VN"
+    },
+    {
+      "file": "country/vu.svg",
+      "name": "Vanuatu",
+      "kind": "country",
+      "code": "VU"
+    },
+    {
+      "file": "country/wf.svg",
+      "name": "Wallis and Futuna",
+      "kind": "country",
+      "code": "WF"
+    },
+    {
+      "file": "country/ws.svg",
+      "name": "Samoa",
+      "kind": "country",
+      "code": "WS"
+    },
+    {
+      "file": "country/xk.svg",
+      "name": "Kosovo",
+      "kind": "country",
+      "code": "XK",
+      "iso": false
+    },
+    {
+      "file": "country/ye.svg",
+      "name": "Yemen",
+      "kind": "country",
+      "code": "YE"
+    },
+    {
+      "file": "country/yt.svg",
+      "name": "Mayotte",
+      "kind": "country",
+      "code": "YT"
+    },
+    {
+      "file": "country/za.svg",
+      "name": "South Africa",
+      "kind": "country",
+      "code": "ZA"
+    },
+    {
+      "file": "country/zm.svg",
+      "name": "Zambia",
+      "kind": "country",
+      "code": "ZM"
+    },
+    {
+      "file": "country/zw.svg",
+      "name": "Zimbabwe",
+      "kind": "country",
+      "code": "ZW"
+    },
+    {
+      "file": "language/ar.svg",
+      "name": "Arabic",
+      "kind": "language",
+      "languages": [
+        "ar"
+      ],
+      "current_file": "ar.svg"
+    },
+    {
+      "file": "language/az.svg",
+      "name": "Azerbaijani",
+      "kind": "language",
+      "languages": [
+        "az-latn"
+      ],
+      "current_file": "az.svg"
+    },
+    {
+      "file": "language/bg.svg",
+      "name": "Bulgarian",
+      "kind": "language",
+      "languages": [
+        "bg"
+      ],
+      "current_file": "bg.svg"
+    },
+    {
+      "file": "language/bs.svg",
+      "name": "Bosnian",
+      "kind": "language",
+      "languages": [
+        "bs-latn"
+      ],
+      "current_file": "bs.svg"
+    },
+    {
+      "file": "language/ca.svg",
+      "name": "Catalan",
+      "kind": "language",
+      "languages": [
+        "ca"
+      ],
+      "current_file": "ca.svg"
+    },
+    {
+      "file": "language/cs.svg",
+      "name": "Czech",
+      "kind": "language",
+      "languages": [
+        "cs"
+      ],
+      "current_file": "cs.svg"
+    },
+    {
+      "file": "language/cy.svg",
+      "name": "Welsh",
+      "kind": "language",
+      "languages": [
+        "cy"
+      ],
+      "current_file": "cy.svg"
+    },
+    {
+      "file": "language/da.svg",
+      "name": "Danish",
+      "kind": "language",
+      "languages": [
+        "da"
+      ],
+      "current_file": "da.svg"
+    },
+    {
+      "file": "language/de.svg",
+      "name": "German",
+      "kind": "language",
+      "languages": [
+        "de"
+      ],
+      "current_file": "de.svg"
+    },
+    {
+      "file": "language/el.svg",
+      "name": "Greek",
+      "kind": "language",
+      "languages": [
+        "el"
+      ],
+      "current_file": "el.svg"
+    },
+    {
+      "file": "language/en.svg",
+      "name": "English",
+      "kind": "language",
+      "languages": [
+        "en"
+      ],
+      "current_file": "en.svg"
+    },
+    {
+      "file": "language/eo.svg",
+      "name": "Esperanto",
+      "kind": "language",
+      "languages": [
+        "eo"
+      ],
+      "current_file": "eo.svg"
+    },
+    {
+      "file": "language/es.svg",
+      "name": "Spanish",
+      "kind": "language",
+      "languages": [
+        "es"
+      ],
+      "current_file": "es.svg"
+    },
+    {
+      "file": "language/eu.svg",
+      "name": "Basque",
+      "kind": "language",
+      "languages": [
+        "eu"
+      ],
+      "current_file": "eu.svg"
+    },
+    {
+      "file": "language/fa.svg",
+      "name": "Persian",
+      "kind": "language",
+      "languages": [
+        "fa"
+      ],
+      "current_file": "fa.svg"
+    },
+    {
+      "file": "language/fi.svg",
+      "name": "Finnish",
+      "kind": "language",
+      "languages": [
+        "fi"
+      ],
+      "current_file": "fi.svg"
+    },
+    {
+      "file": "language/fr.svg",
+      "name": "French",
+      "kind": "language",
+      "languages": [
+        "fr"
+      ],
+      "current_file": "fr.svg"
+    },
+    {
+      "file": "language/gl.svg",
+      "name": "Galician",
+      "kind": "language",
+      "languages": [
+        "gl"
+      ],
+      "current_file": "gl.svg"
+    },
+    {
+      "file": "language/he.svg",
+      "name": "Hebrew",
+      "kind": "language",
+      "languages": [
+        "he"
+      ],
+      "current_file": "he.svg"
+    },
+    {
+      "file": "language/hi.svg",
+      "name": "Hindi",
+      "kind": "language",
+      "languages": [
+        "hi"
+      ],
+      "current_file": "hi.svg"
+    },
+    {
+      "file": "language/hr.svg",
+      "name": "Croatian",
+      "kind": "language",
+      "languages": [
+        "hr"
+      ],
+      "current_file": "hr.svg"
+    },
+    {
+      "file": "language/ht.svg",
+      "name": "Haitian Creole",
+      "kind": "language",
+      "languages": [
+        "ht"
+      ],
+      "current_file": "ht.svg"
+    },
+    {
+      "file": "language/hu.svg",
+      "name": "Hungarian",
+      "kind": "language",
+      "languages": [
+        "hu"
+      ],
+      "current_file": "hu.svg"
+    },
+    {
+      "file": "language/hy.svg",
+      "name": "Armenian",
+      "kind": "language",
+      "languages": [
+        "hy"
+      ],
+      "current_file": "hy.svg"
+    },
+    {
+      "file": "language/id.svg",
+      "name": "Indonesian",
+      "kind": "language",
+      "languages": [
+        "id"
+      ],
+      "current_file": "id.svg"
+    },
+    {
+      "file": "language/is.svg",
+      "name": "Icelandic",
+      "kind": "language",
+      "languages": [
+        "is"
+      ],
+      "current_file": "is.svg"
+    },
+    {
+      "file": "language/it.svg",
+      "name": "Italian",
+      "kind": "language",
+      "languages": [
+        "it"
+      ],
+      "current_file": "it.svg"
+    },
+    {
+      "file": "language/ja.svg",
+      "name": "Japanese",
+      "kind": "language",
+      "languages": [
+        "ja"
+      ],
+      "current_file": "ja.svg"
+    },
+    {
+      "file": "language/ko.svg",
+      "name": "Korean",
+      "kind": "language",
+      "languages": [
+        "ko"
+      ],
+      "current_file": "ko.svg"
+    },
+    {
+      "file": "language/ku.svg",
+      "name": "Kurdish",
+      "kind": "language",
+      "languages": [
+        "ku-arab"
+      ],
+      "current_file": "ku.svg"
+    },
+    {
+      "file": "language/lt.svg",
+      "name": "Lithuanian",
+      "kind": "language",
+      "languages": [
+        "lt"
+      ],
+      "current_file": "lt.svg"
+    },
+    {
+      "file": "language/lv.svg",
+      "name": "Latvian",
+      "kind": "language",
+      "languages": [
+        "lv"
+      ],
+      "current_file": "lv.svg"
+    },
+    {
+      "file": "language/mk.svg",
+      "name": "Macedonian",
+      "kind": "language",
+      "languages": [
+        "mk"
+      ],
+      "current_file": "mk.svg"
+    },
+    {
+      "file": "language/mn.svg",
+      "name": "Mongolian",
+      "kind": "language",
+      "languages": [
+        "mn-cyrl"
+      ],
+      "current_file": "mn.svg"
+    },
+    {
+      "file": "language/ms.svg",
+      "name": "Malay",
+      "kind": "language",
+      "languages": [
+        "ms-latn"
+      ],
+      "current_file": "ms.svg"
+    },
+    {
+      "file": "language/mt.svg",
+      "name": "Maltese",
+      "kind": "language",
+      "languages": [
+        "mt"
+      ],
+      "current_file": "mt.svg"
+    },
+    {
+      "file": "language/nl.svg",
+      "name": "Dutch",
+      "kind": "language",
+      "languages": [
+        "nl"
+      ],
+      "current_file": "nl.svg"
+    },
+    {
+      "file": "language/no.svg",
+      "name": "Norwegian",
+      "kind": "language",
+      "languages": [
+        "no",
+        "nb",
+        "nn"
+      ],
+      "current_file": "no.svg"
+    },
+    {
+      "file": "language/pa.svg",
+      "name": "Punjabi",
+      "kind": "language",
+      "languages": [
+        "pa-guru"
+      ],
+      "current_file": "pa.svg"
+    },
+    {
+      "file": "language/pl.svg",
+      "name": "Polish",
+      "kind": "language",
+      "languages": [
+        "pl"
+      ],
+      "current_file": "pl.svg"
+    },
+    {
+      "file": "language/pt.svg",
+      "name": "Portuguese",
+      "kind": "language",
+      "languages": [
+        "pt"
+      ],
+      "current_file": "pt.svg"
+    },
+    {
+      "file": "language/ro.svg",
+      "name": "Romanian",
+      "kind": "language",
+      "languages": [
+        "ro"
+      ],
+      "current_file": "ro.svg"
+    },
+    {
+      "file": "language/ru.svg",
+      "name": "Russian",
+      "kind": "language",
+      "languages": [
+        "ru"
+      ],
+      "current_file": "ru.svg"
+    },
+    {
+      "file": "language/sk.svg",
+      "name": "Slovak",
+      "kind": "language",
+      "languages": [
+        "sk"
+      ],
+      "current_file": "sk.svg"
+    },
+    {
+      "file": "language/so.svg",
+      "name": "Somali",
+      "kind": "language",
+      "languages": [
+        "so"
+      ],
+      "current_file": "so.svg"
+    },
+    {
+      "file": "language/sq.svg",
+      "name": "Albanian",
+      "kind": "language",
+      "languages": [
+        "sq"
+      ],
+      "current_file": "sq.svg"
+    },
+    {
+      "file": "language/sr.svg",
+      "name": "Serbian",
+      "kind": "language",
+      "languages": [
+        "sr-cyrl",
+        "sr-latn"
+      ],
+      "current_file": "sr.svg"
+    },
+    {
+      "file": "language/sw.svg",
+      "name": "Swahili",
+      "kind": "language",
+      "languages": [
+        "sw"
+      ],
+      "current_file": "sw.svg"
+    },
+    {
+      "file": "language/ta.svg",
+      "name": "Tamil",
+      "kind": "language",
+      "languages": [
+        "ta"
+      ],
+      "current_file": "ta.svg"
+    },
+    {
+      "file": "language/th.svg",
+      "name": "Thai",
+      "kind": "language",
+      "languages": [
+        "th"
+      ],
+      "current_file": "th.svg"
+    },
+    {
+      "file": "language/tr.svg",
+      "name": "Turkish",
+      "kind": "language",
+      "languages": [
+        "tr"
+      ],
+      "current_file": "tr.svg"
+    },
+    {
+      "file": "language/uk.svg",
+      "name": "Ukrainian",
+      "kind": "language",
+      "languages": [
+        "uk"
+      ],
+      "current_file": "uk.svg"
+    },
+    {
+      "file": "language/ur.svg",
+      "name": "Urdu",
+      "kind": "language",
+      "languages": [
+        "ur"
+      ],
+      "current_file": "ur.svg"
+    },
+    {
+      "file": "language/uz.svg",
+      "name": "Uzbek",
+      "kind": "language",
+      "languages": [
+        "uz-latn"
+      ],
+      "current_file": "uz.svg"
+    },
+    {
+      "file": "language/yi.svg",
+      "name": "Yiddish",
+      "kind": "language",
+      "languages": [
+        "yi"
+      ],
+      "current_file": "yi.svg"
+    },
+    {
+      "file": "language/zh-hans.svg",
+      "name": "Chinese (Simplified)",
+      "kind": "language",
+      "languages": [
+        "zh-hans"
+      ],
+      "current_file": "zh-hans.svg"
+    },
+    {
+      "file": "language/zh-hant.svg",
+      "name": "Chinese (Traditional)",
+      "kind": "language",
+      "languages": [
+        "zh-hant"
+      ],
+      "current_file": "zh-hant.svg"
+    },
+    {
+      "file": "language/zh.svg",
+      "name": "Chinese",
+      "kind": "language",
+      "languages": [
+        "zh-hk",
+        "zh-mo",
+        "zh-sg"
+      ],
+      "current_file": "zh.svg"
+    },
+    {
+      "file": "language/zu.svg",
+      "name": "Zulu",
+      "kind": "language",
+      "languages": [
+        "zu"
+      ],
+      "current_file": "zu.svg"
+    }
+  ]
+}

@@ -3,55 +3,61 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "sv_SE"
          },
          "Sending for translation": [
             "Skickar för översättning"
          ],
-         "Connecting to WPML’s Advanced Translation Editor": [
-            "Ansluter till WPMLs Avancerade översättningsredigerare"
+         "The translation could not be started because the server did not answer.": [
+            "Översättningen kunde inte påbörjas eftersom servern inte svarade."
          ],
-         "Try again": [
-            "Försök igen"
+         "This translation cannot be opened right now.": [
+            "Den här översättningen kan inte öppnas just nu."
+         ],
+         "Refresh this page": [
+            "Uppdatera den här sidan"
+         ],
+         "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
+            "Det här innehållet översätts automatiskt. Om du vill göra något annat med det måste du avbryta översättningsjobben först."
          ],
          "You don't have the rights to review this language": [
-            "Du har inte rättigheter att granska detta språk"
+            "Du har inte behörighet att granska det här språket"
          ],
-         "translations": [
-            "Översättningar"
+         "%1$s and %2$s": [
+            "%1$s och %2$s"
          ],
-         "left in the queue": [
-            "kvar i kön"
+         "Translating your content": [
+            "Översätter ditt innehåll"
          ],
-         "Translation on hold": [
-            "Översättning i vänteläge"
-         ],
-         "No translations in the queue": [
-            "Inga översättningar i kön"
-         ],
-         "%d translations left": [
-            "%d översättningar kvar"
+         "%d translation notice": [
+            "%d översättningsmeddelande",
+            "%d översättningsmeddelanden"
          ],
          "%d min remaining": [
             "%d min återstår"
          ],
          "less than 1 min remaining": [
-            "mindre än 1 minut återstår"
+            "mindre än 1 min återstår"
          ],
-         "Automatic translation status": [
-            "Status för automatisk översättning"
+         "<b>Translate Everything Automatically</b> is temporarily paused": [
+            "<b>Translate Everything Automatically</b> är tillfälligt pausat"
          ],
-         "Translate Everything Automatically": [
-            "Översätt allt automatiskt"
+         "Automatic translation is temporarily paused": [
+            "Automatisk översättning är tillfälligt pausad"
          ],
-         "Translate Everything Automatically is active": [
-            "Översätt allt automatiskt är aktivt"
+         "We noticed something unexpected in your recent translation activity and paused automatic translation on your account. Contact support and we’ll review it with you.": [
+            "Vi upptäckte något oväntat i din senaste översättningsaktivitet och pausade automatisk översättning på ditt konto. Kontakta supporten så granskar vi det tillsammans med dig."
          ],
-         "Translate Everything Automatically is paused": [
-            "Översätt allt automatiskt är pausat"
+         "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
+            "<b>Translate Everything Automatically</b> är pausat: månatlig utgiftsgräns har nåtts"
          ],
-         "Translate Everything Automatically stopped": [
-            "Översätt allt automatiskt har stoppats"
+         "Automatic translation is paused: monthly spending cap reached": [
+            "Automatisk översättning är pausad: månatlig utgiftsgräns har nåtts"
+         ],
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
+            "Den här webbplatsen har nått den månatliga utgiftsgräns som angetts för den. Översättningen fortsätter när gränsen höjs eller när gränsen återställs. Endast kontoägaren kan göra detta."
          ],
          "Preparing content for translation": [
             "Förbereder innehåll för översättning"
@@ -59,185 +65,124 @@
          "Preparing more content for translation": [
             "Förbereder mer innehåll för översättning"
          ],
-         "An error occured, fix it to continue.": [
-            "Ett fel har uppstått, åtgärda det för att fortsätta."
-         ],
-         "There is an issue with automatic translation that needs your attention. Fix it to continue.": [
-            "Det finns ett problem med automatisk översättning som behöver din uppmärksamhet. Åtgärda för att fortsätta."
-         ],
          "Your default language, %s, must be mapped to a supported language in order to use automatic translation.": [
-            "Ditt Standardspråk %s måste mappas till ett språk som stöds för att automatisk översättning ska kunna användas."
+            "Ditt standardspråk, %s, måste kopplas till ett språk som stöds för att du ska kunna använda automatisk översättning."
          ],
          "Your language, %s, must be mapped to a supported language in order to use automatic translation.": [
-            "Ditt språk %s måste mappas till ett språk som stöds för att automatisk översättning ska kunna användas.",
-            "Följande språk på din webbplats måste mappas till ett språk som stöds för att automatisk översättning ska kunna användas.: %s"
+            "Ditt språk, %s, måste kopplas till ett språk som stöds för att du ska kunna använda automatisk översättning.",
+            "Följande språk på din webbplats måste kopplas till ett språk som stöds för att du ska kunna använda automatisk översättning: %s"
          ],
          "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "Innehåll på dessa språk: %s, kan inte översättas automatiskt om du inte mappar dem till ett annat språk än standardspråket."
+            "Innehåll på dessa språk: %s, kan inte översättas automatiskt om du inte kopplar dem till ett språk som skiljer sig från standardspråket."
          ],
          "%d translation waiting for review": [
             "%d översättning väntar på granskning",
             "%d översättningar väntar på granskning"
          ],
-         "Account credits used": [
-            "Använda kontokrediter"
+         "<b>Translate Everything Automatically</b> has unresolved jobs": [
+            "<b>Translate Everything Automatically</b> har olösta jobb"
          ],
-         "Once you’ve used all your prepaid credits, we’ll invoice you for any additional credits you use after the end of the month": [
-            "När du har använt alla dina förbetalda krediter fakturerar vi dig för eventuella ytterligare krediter du använder efter månadens slut"
+         "Automatic translation has unresolved jobs": [
+            "Automatisk översättning har olösta jobb"
          ],
-         "Payment limit:": [
-            "Betalningsgräns:"
+         "%d job couldn't be completed. Go to <b>Translation Dashboard</b> to review and resolve.": [
+            "%d jobb kunde inte slutföras. Gå till <b>översättningspanelen</b> för att granska och åtgärda.",
+            "%d jobb kunde inte slutföras. Gå till <b>översättningspanelen</b> för att granska och åtgärda."
          ],
-         "%s credits": [
-            "%s krediter"
+         "%1$s custom field became translatable (%2$s). Decide what happens to the translations that already exist.": [
+            "%1$s anpassat fält blev översättningsbart (%2$s). Bestäm vad som ska hända med de översättningar som redan finns.",
+            "%1$s anpassade fält blev översättningsbara (%2$s). Bestäm vad som ska hända med de översättningar som redan finns."
          ],
-         "Credits used:": [
-            "Använda krediter:"
+         "Review": [
+            "Granska"
          ],
-         "Credits left:": [
-            "Krediter kvar:"
+         "Automatic translation status": [
+            "Status för automatisk översättning"
          ],
-         "The number of credit you will receive an invoice for at the end of the month. View your pay-as-you-go details in your site’s automatic translation settings.": [
-            "Det antal krediter som du får en faktura för i slutet av månaden. Visa dina uppgifter om betala per användning för automatisk översättning på din webbplats."
+         "No translations in the queue": [
+            "Inga översättningar i kön"
          ],
-         "Calculating": [
-            "Beräknar"
+         "Translate Everything Automatically": [
+            "Översätt allt automatiskt"
          ],
-         "Remaining prepaid credits that are assigned to this site on WPML.org.": [
-            "Återstående förbetalda krediter som tilldelas den här webbplatsen på WPML.org."
+         "<b>Translate Everything Automatically</b> is active": [
+            "<b>Translate Everything Automatically</b> är aktivt"
          ],
-         "Prepaid credits left": [
-            "Förbetalda krediter kvar"
+         "<b>Translate Everything Automatically</b> is paused — payment required": [
+            "<b>Translate Everything Automatically</b> är pausat – betalning krävs"
          ],
-         "Pay-as-you-go credits used": [
-            "Användning av krediter för betala per användning"
+         "Automatic translation is paused — payment required": [
+            "Automatisk översättning är pausad – betalning krävs"
          ],
-         "Resume": [
-            "Återuppta"
+         "We couldn’t process your payment. Click “Pay now” to complete the transaction and resume automatic translation.": [
+            "Vi kunde inte behandla din betalning. Klicka på ”Pay now” för att slutföra transaktionen och återuppta automatisk översättning."
+         ],
+         "<b>Translate Everything Automatically</b> is paused — unpaid balance on a linked account": [
+            "<b>Översätt allt automatiskt</b> har pausats – obetalt saldo på ett kopplat konto"
+         ],
+         "Automatic translation is paused — unpaid balance on a linked account": [
+            "Automatisk översättning har pausats – obetalt saldo på ett kopplat konto"
+         ],
+         "There is an unpaid balance on another account linked to this card. Settle it or contact support.": [
+            "Det finns ett obetalt saldo på ett annat konto kopplat till detta kort. Betala det eller kontakta support."
+         ],
+         "There is an unpaid balance on another account linked to this billing e-mail. Settle it or contact support.": [
+            "Det finns ett obetalt saldo på ett annat konto kopplat till denna faktura-e-post. Betala det eller kontakta support."
+         ],
+         "<b>Translate Everything</b> automatically is paused - not enough words": [
+            "<b>Translate Everything Automatically</b> är pausat – inte tillräckligt med ord"
+         ],
+         "Automatic translation is paused — not enough words": [
+            "Automatisk översättning är pausad – inte tillräckligt med ord"
+         ],
+         "Translation will resume automatically once you assign more words.": [
+            "Översättningen återupptas automatiskt när du tilldelar fler ord."
+         ],
+         "You have %s prepaid translation words in your WPML account. Assign these words to this site to resume automatic translation": [
+            "Du har %s förbetalda översättningsord på ditt WPML-konto. Tilldela dessa ord till den här webbplatsen för att återuppta automatisk översättning",
+            "Du har %s förbetalda översättningsord på ditt WPML-konto. Tilldela dessa ord till den här webbplatsen för att återuppta automatisk översättning"
+         ],
+         "Your site doesn't meet WPML's minimum requirements": [
+            "Din webbplats uppfyller inte minimikraven för WPML"
+         ],
+         "Fix it": [
+            "Åtgärda det"
          ],
          "Stop": [
             "Stoppa"
          ],
-         "Fix it": [
-            "Fixa det"
+         "Pay now": [
+            "Betala nu"
          ],
-         "Pause": [
-            "Pausa"
+         "Get more words": [
+            "Skaffa fler ord"
          ],
-         "There was an error when trying to pause your Automatic Translation. Please try again later or contact our support.": [
-            "Ett fel inträffade när du försökte pausa den automatiska översättningen. Försök igen senare eller kontakta supporten."
+         "Assign words": [
+            "Tilldela ord"
          ],
-         "There was an error when trying to resume your Automatic Translation. Please try again later or contact our support.": [
-            "Ett fel inträffade när den automatiska översättningen skulle återupptas. Försök igen senare eller kontakta supporten."
+         "Go to Translation Jobs": [
+            "Gå till översättningsjobb"
          ],
-         "Error": [
-            "Fel"
+         "Raise the cap": [
+            "Höj gränsen"
          ],
-         "Draft — Pending review": [
-            "Utkast — väntar på granskning"
+         "Contact support": [
+            "Kontakta support"
          ],
-         "Complete": [
-            "Komplett"
+         "Go to billing": [
+            "Gå till fakturering"
          ],
-         "Insufficient funds": [
-            "Otillräckliga medel"
+         "Resume": [
+            "Återuppta"
          ],
-         "Read more about how to translate your content in the <a>Getting Started Guide</a>": [
-            "Läs mer om hur du översätter ditt innehåll i <a> Kom igång-guiden</a>"
+         "Refreshing translation status. Please wait.": [
+            "Uppdaterar översättningsstatus. Vänta."
          ],
-         "Let's Start Translating!": [
-            "Låt oss börja översätta!"
+         "This translation couldn't be completed due to an unexpected error. Please try resending it.": [
+            "Den här översättningen kunde inte slutföras på grund av ett oväntat fel. Försök att skicka den igen."
          ],
-         "Choose your content from the Translation Dashboard below and create your first translation job!": [
-            "Välj ditt innehåll från översättningspanelen nedan och skapa ditt första översättningsjobb!"
-         ],
-         "Change your <a>automatic translation settings</a> (in-progress translation jobs will be completed with the current settings).": [
-            "Ändra dina <a>automatiska översättningsinställningar</a> (pågående översättningsjobb slutförs med de aktuella inställningarna)."
-         ],
-         "Read more about translating your site automatically.": [
-            "Läs mer om att översätta din webbplats automatiskt."
-         ],
-         "Your site is being automatically translated!": [
-            "Din webbplats översätts automatiskt!"
-         ],
-         "Calculating...": [
-            "Beräknar..."
-         ],
-         "Do not close WP admin!": [
-            "Stäng inte WP-administratören!"
-         ],
-         "The number of translations": [
-            "Antalet översättningar"
-         ],
-         "Translate Everything Automatically - running": [
-            "Översätt allt automatiskt - pågår"
-         ],
-         "Translate Everything Automatically - active": [
-            "Översätt allt automatiskt - aktiv"
-         ],
-         "Pause automatic translation": [
-            "Pausa automatisk översättning"
-         ],
-         "WPML will finish in-progress translations but won't translate anything new.": [
-            "WPML kommer att slutföra pågående översättningar men kommer inte att översätta något nytt."
-         ],
-         "Translate Everything Automatically - paused": [
-            "Översätt allt automatiskt - pausad"
-         ],
-         "Start automatic translation": [
-            "Starta automatisk översättning"
-         ],
-         "This uses %scredits%s to translate your existing content and anything you add or change later.": [
-            "Den använder %skrediter%s för att översätta ditt befintliga innehåll och allt du lägger till eller ändrar senare."
-         ],
-         "Start translating everything automatically": [
-            "Starta automatisk översättning"
-         ],
-         "WPML will translate any new content you create into %1$s.": [
-            "WPML kommer att översätta allt nytt innehåll du skapar till %1$s."
-         ],
-         "WPML will translate all new future content to %1$s and keep translations up to date when you make changes.": [
-            "WPML kommer att översätta allt nytt kommande innehåll till %1$s och hålla översättningarna uppdaterade när du gör ändringar."
-         ],
-         "Do you want to translate existing content, too?": [
-            "Vill du också översätta befintligt innehåll?"
-         ],
-         "Yes, translate all new and existing content": [
-            "Ja, översätt allt nytt och befintligt innehåll"
-         ],
-         "No, only translate new content": [
-            "Nej, bara översätta nytt innehåll"
-         ],
-         "You can translate existing content from the Translation Management Dashboard": [
-            "Du kan översätta befintligt innehåll från instrumentpanelen för översättningshantering"
-         ],
-         "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
-            "Anslutningsfel. Vänta en minut och läs in sidan igen. Om problemet kvarstår, kontakta WPML-supporten."
-         ],
-         "Automatic translation uses credits. %1$sRead more about automatic translation credits%2$s": [
-            "Automatisk översättning använder krediter. %1$sLäs mer om krediter för automatisk översättning%2$s"
-         ],
-         "You need credits to start translating everything.": [
-            "Du behöver krediter för att börja översätta innehållet."
-         ],
-         "Cancel": [
-            "Avbryt"
-         ],
-         "Start translating everything": [
-            "Börja översätta allt"
-         ],
-         "%1$d language": [
-            "%1$d språk",
-            "%1$d språk"
-         ],
-         "Please wait...": [
-            "Vänta..."
-         ],
-         "All new future content": [
-            "Allt nytt framtida innehåll"
-         ],
-         "Translate Everything Automatically - stopped": [
-            "Översätt allt automatiskt - stopped"
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "Vårt översättningssystem accepterade inte den här begäran (det svarade %d). Vänta en minut och försök igen, och kontakta WPML-supporten om det fortsätter att hända."
          ]
       }
    }

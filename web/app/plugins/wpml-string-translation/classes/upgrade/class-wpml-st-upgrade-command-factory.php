@@ -1,53 +1,34 @@
 <?php
-/**
- * WPML_ST_Upgrade_Command_Factory class file.
- *
- * @package wpml-string-translation
- */
 
 use function WPML\Container\make;
 use WPML\ST\Upgrade\Command\RegenerateMoFilesWithStringNames;
+use WPML\ST\Upgrade\Command\RegenerateDefaultMoForWpRouting;
+use WPML\ST\Upgrade\Command\RegenerateMoFilesWithoutNativeCopies;
 use WPML\ST\Upgrade\Command\MigrateMultilingualWidgets;
+use WPML\ST\Upgrade\Command\UpgradeWpSettingsStrings;
+use WPML\ST\Upgrade\Command\DeleteFileHashingOption;
+use WPML\ST\Upgrade\Command\RecomputeStatusesZeroedByOutdatedHandler;
+use WPML\ST\Upgrade\Command\AlignTaxonomyLabelSourceLanguage;
+use WPML\ST\Upgrade\Command\AddStringPackagesUniqueKey;
+use WPML\ST\Upgrade\Command\CreateStringPackagesTable;
+use WPML\ST\Upgrade\Command\RemoveSameLanguageTranslations;
+use WPML\ST\Upgrade\Command\ReopenStringsPassForAdminTexts;
 
-/**
- * Class WPML_ST_Upgrade_Command_Factory
- */
 class WPML_ST_Upgrade_Command_Factory {
-	/**
-	 * WP db instance.
-	 *
-	 * @var wpdb wpdb
-	 */
 	private $wpdb;
 
-	/**
-	 * SitePress instance.
-	 *
-	 * @var SitePress
-	 */
 	private $sitepress;
 
-	/**
-	 * WPML_ST_Upgrade_Command_Factory constructor.
-	 *
-	 * @param wpdb      $wpdb WP db instance.
-	 * @param SitePress $sitepress SitePress instance.
-	 */
 	public function __construct( wpdb $wpdb, SitePress $sitepress ) {
 		$this->wpdb      = $wpdb;
 		$this->sitepress = $sitepress;
 	}
 
-	/**
-	 * Create upgrade commands.
-	 *
-	 * @param string $class_name Name of upgrade command class.
-	 *
-	 * @throws WPML_ST_Upgrade_Command_Not_Found_Exception Exception when command not found.
-	 * @return IWPML_St_Upgrade_Command
-	 */
 	public function create( $class_name ) {
 		switch ( $class_name ) {
+			case CreateStringPackagesTable::class:
+				$result = new CreateStringPackagesTable();
+				break;
 			case 'WPML_ST_Upgrade_Migrate_Originals':
 				$result = new WPML_ST_Upgrade_Migrate_Originals( $this->wpdb, $this->sitepress );
 				break;
@@ -61,17 +42,20 @@ class WPML_ST_Upgrade_Command_Factory {
 			case 'WPML_ST_Upgrade_MO_Scanning':
 				$result = new WPML_ST_Upgrade_MO_Scanning( $this->wpdb );
 				break;
+			case AddStringPackagesUniqueKey::class:
+				$result = new AddStringPackagesUniqueKey( $this->wpdb );
+				break;
 			case 'WPML_ST_Upgrade_DB_String_Name_Index':
 				$result = new WPML_ST_Upgrade_DB_String_Name_Index( $this->wpdb );
 				break;
 			case 'WPML_ST_Upgrade_DB_Longtext_String_Value':
 				$result = new WPML_ST_Upgrade_DB_Longtext_String_Value( $this->wpdb );
 				break;
-			case 'WPML_ST_Upgrade_DB_Strings_Add_Translation_Priority_Field':
-				$result = new WPML_ST_Upgrade_DB_Strings_Add_Translation_Priority_Field( $this->wpdb );
-				break;
 			case 'WPML_ST_Upgrade_DB_String_Packages_Word_Count':
 				$result = new WPML_ST_Upgrade_DB_String_Packages_Word_Count( wpml_get_upgrade_schema() );
+				break;
+			case 'WPML_ST_Upgrade_DB_String_Packages_Translator_Note':
+				$result = new WPML_ST_Upgrade_DB_String_Packages_Translator_Note( wpml_get_upgrade_schema() );
 				break;
 			case '\WPML\ST\Upgrade\Command\RegenerateMoFilesWithStringNames':
 				$isBackground = true;
@@ -80,8 +64,39 @@ class WPML_ST_Upgrade_Command_Factory {
 					\WPML\ST\MO\Generate\Process\ProcessFactory::createSingle( $isBackground )
 				);
 				break;
+			case 'WPML\ST\Upgrade\Command\UpgradeAutoregisteringStrings':
+				$result = new \WPML\ST\Upgrade\Command\UpgradeAutoregisteringStrings( $this->wpdb, $this->sitepress );
+				break;
+			case RegenerateDefaultMoForWpRouting::class:
+				$result = new RegenerateDefaultMoForWpRouting(
+					\WPML\ST\MO\File\ManagerFactory::create(),
+					null,
+					$this->wpdb
+				);
+				break;
+			case RegenerateMoFilesWithoutNativeCopies::class:
+				$result = new RegenerateMoFilesWithoutNativeCopies( \WPML\ST\MO\File\ManagerFactory::create() );
+				break;
 			case MigrateMultilingualWidgets::class:
 				$result = new MigrateMultilingualWidgets();
+				break;
+			case UpgradeWpSettingsStrings::class:
+				$result = new UpgradeWpSettingsStrings();
+				break;
+			case RecomputeStatusesZeroedByOutdatedHandler::class:
+				$result = new RecomputeStatusesZeroedByOutdatedHandler( $this->wpdb, $this->sitepress );
+				break;
+			case DeleteFileHashingOption::class:
+				$result = new DeleteFileHashingOption();
+				break;
+			case AlignTaxonomyLabelSourceLanguage::class:
+				$result = new AlignTaxonomyLabelSourceLanguage( $this->wpdb, $this->sitepress );
+				break;
+			case RemoveSameLanguageTranslations::class:
+				$result = new RemoveSameLanguageTranslations( $this->wpdb );
+				break;
+			case ReopenStringsPassForAdminTexts::class:
+				$result = new ReopenStringsPassForAdminTexts( $this->wpdb );
 				break;
 			default:
 				throw new WPML_ST_Upgrade_Command_Not_Found_Exception( $class_name );

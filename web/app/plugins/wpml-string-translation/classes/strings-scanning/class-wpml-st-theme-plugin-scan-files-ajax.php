@@ -2,38 +2,23 @@
 
 class WPML_ST_Theme_Plugin_Scan_Files_Ajax implements IWPML_Action {
 
-	/** @var IWPML_ST_String_Scanner */
 	private $string_scanner;
 
-	/**
-	 * WPML_ST_Theme_Scan_Files_Ajax constructor.
-	 *
-	 * @param IWPML_ST_String_Scanner $string_scanner
-	 */
 	public function __construct( IWPML_ST_String_Scanner $string_scanner ) {
 		$this->string_scanner = $string_scanner;
 	}
 
 	public function add_hooks() {
-		add_action( 'wp_ajax_wpml_st_scan_chunk', array( $this, 'scan' ) );
+		\WPML\Request\Adapter\Ajax::register( 'wpml_st_scan_chunk', \WPML\Request\Policy\Policy::capability( 'wpml_manage_theme_and_plugin_localization', \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_st_scan_chunk', 'nonce' ) ), array( $this, 'scan' ) );
 	}
 
 	public function scan() {
-		wpml_get_admin_notices()->remove_notice(
-			WPML_ST_Themes_And_Plugins_Settings::NOTICES_GROUP,
-			WPML_ST_Themes_And_Plugins_Updates::WPML_ST_SCAN_NOTICE_ID
-		);
+		if ( ! current_user_can( 'wpml_manage_theme_and_plugin_localization' ) ) {
+			/* translators: Error message shown when the user does not have the rights to do what they asked for. Past participle used as a state, lower case in the source. */
+			wp_send_json_error( __( 'not allowed', 'wpml-string-translation' ) );
+			return;
+		}
 
-		wpml_get_admin_notices()->remove_notice(
-			WPML_ST_Themes_And_Plugins_Settings::NOTICES_GROUP,
-			WPML_ST_Themes_And_Plugins_Updates::WPML_ST_SCAN_ACTIVE_ITEMS_NOTICE_ID
-		);
-
-		$this->clear_items_needs_scan_buffer();
 		$this->string_scanner->scan();
-	}
-
-	public function clear_items_needs_scan_buffer() {
-		delete_option( WPML_ST_Themes_And_Plugins_Updates::WPML_ST_ITEMS_TO_SCAN );
 	}
 }

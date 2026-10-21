@@ -1,11 +1,21 @@
 {% for key, nonce in nonces %}
     <input type="hidden" class="{{ key }}" name="{{ key }}" value="{{ nonce }}">
 {% endfor %}
-<div class="wpml-tm-ts-admin-section wpml-section">
-	<h2>{{ strings.translation_services }}</h2>
-	<p>
-		{{ strings.translation_services_description|raw }}
-	</p>
+<details class="wpml-tm-ts-admin-section wpml-section wpml-ts-collapsible"{% if has_active_service %} open{% endif %}>
+    <summary class="wpml-ts-collapsible__summary">
+        <h2>{{ strings.translation_services }}</h2>
+        <svg class="wpml-ts-collapsible__caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 5l7 7-7 7"/>
+        </svg>
+    </summary>
+
+    <div class="wpml-ts-description">
+        <p>
+            {{ strings.translation_services_description|raw }}
+        </p>
+        <button id="add-unlisted-translation-service" class="ant-btn ant-btn-tertiary wpml-antd-button wpml-antd-button-tertiary wpml-ts-text-xs">{{ strings.enable_unlisted_translation_service }}</button>
+    </div>
+
     {{ active_service|raw }}
 
     {% if false == has_preferred_service and has_services %}
@@ -36,4 +46,4 @@
         </div>
     {% endif %}
 
-</div>
+</details>

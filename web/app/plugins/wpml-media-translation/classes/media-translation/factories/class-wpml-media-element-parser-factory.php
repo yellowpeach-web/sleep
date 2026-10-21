@@ -11,9 +11,6 @@ use WPML\Media\Classes\WPML_Non_Embedded_Pdf_Parser;
 
 class WPML_Media_Element_Parser_Factory {
 
-	/**
-	 * @var array[]
-	 */
 	private $availableMediaParsers = [
 		'img-block'        => [ 'class-name' => WPML_Media_Image_Parser::class ],
 		'audio-block'      => [ 'class-name' => WPML_Media_Image_Parser::class ],
@@ -25,13 +22,6 @@ class WPML_Media_Element_Parser_Factory {
 		'href'             => [ 'class-name' => WPML_Media_Href_Parser::class ],
 	];
 
-	/**
-	 * Returns array of media parsers according to post content.
-	 *
-	 * @param string $post_content
-	 *
-	 * @return array
-	 */
 	public function create( $post_content ) {
 		$parsers = [];
 

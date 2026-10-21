@@ -5,43 +5,25 @@ namespace OTGS\Installer\Api\Endpoint;
 use OTGS\Installer\Api\Exception\InvalidResponseException;
 use OTGS\Installer\Api\Exception\InvalidSubscription;
 use OTGS\Installer\Api\Exception\InvalidSubscriptionResponseException;
+use OTGS\Installer\Api\Exception\RateLimited;
+use OTGS\Installer\Api\Exception\ServiceUnavailable;
 use OTGS\Installer\Api\SiteUrl;
 use OTGS_Installer_Plugin_Finder;
 
 class Subscription {
 
-	/**
-	 * @var SiteUrl
-	 */
 	private $siteUrl;
 
-	/**
-	 * @var OTGS_Installer_Plugin_Finder
-	 */
 	private $plugin_finder;
 
-	/**
-	 * @var string
-	 */
 	private $repositoryId;
 
-	/**
-	 * @param string $repositoryId
-	 * @param SiteUrl $siteUrl
-	 * @param OTGS_Installer_Plugin_Finder $plugin_finder
-	 */
 	public function __construct( $repositoryId, SiteUrl $siteUrl, OTGS_Installer_Plugin_Finder $plugin_finder ) {
 		$this->siteUrl       = $siteUrl;
 		$this->plugin_finder = $plugin_finder;
 		$this->repositoryId = $repositoryId;
 	}
 
-	/**
-	 * @param string $siteKey
-	 * @param int $source
-	 *
-	 * @return array
-	 */
 	public function prepareRequest( $siteKey, $source ) {
 		$requestParameters = [
 			'action'            => 'site_key_validation',
@@ -65,15 +47,22 @@ class Subscription {
 		return apply_filters( 'installer_fetch_subscription_data_request', $requestParameters );
 	}
 
-	/**
-	 * @throws \Exception
-	 * @return \stdClass
-	 * @param array $response
-	 */
 	public function parseResponse( $response ) {
+		$status = (int) wp_remote_retrieve_response_code( $response );
+		if ( 429 === $status ) {
+			throw new RateLimited( RateLimited::sentence( null ) );
+		}
+		if ( 0 !== $status && 200 !== $status ) {
+			throw new ServiceUnavailable( $status );
+		}
+
 		$body = wp_remote_retrieve_body( $response );
 		if ( ! $body || ! is_serialized( $body ) || ! ( $apiResponse = @unserialize( $body ) ) ) {
 			throw new InvalidResponseException();
+		}
+
+		if ( RateLimited::answers( $apiResponse ) ) {
+			throw new RateLimited( RateLimited::sentence( $apiResponse ) );
 		}
 
 		if ( isset( $apiResponse->error ) ) {

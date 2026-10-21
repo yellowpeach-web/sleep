@@ -15,6 +15,7 @@ class WPML_Simple_Language_Selector extends WPML_SP_User {
 				'id'                 => '',
 				'name'               => '',
 				'show_please_select' => true,
+				/* translators: First option in a dropdown, shown before the user has picked anything. The dashes keep it apart from the real values. */
 				'please_select_text' => __( '-- Please select --', 'sitepress' ),
 				'selected'           => '',
 				'echo'               => false,
@@ -28,7 +29,7 @@ class WPML_Simple_Language_Selector extends WPML_SP_User {
 			$options
 		);
 
-		if ( $options['languages'] ) {
+		if ( is_array( $options['languages'] ) ) {
 			$languages = $options['languages'];
 		} else {
 			$languages = $this->sitepress->get_languages( $this->sitepress->get_admin_language() );
@@ -73,7 +74,7 @@ class WPML_Simple_Language_Selector extends WPML_SP_User {
 			<?php
 			if ( $options['show_please_select'] ) {
 				?>
-				<option value="" 
+				<option value=""
 				<?php
 				if ( '' == $options['selected'] ) {
 					echo 'selected="selected"';
@@ -86,7 +87,7 @@ class WPML_Simple_Language_Selector extends WPML_SP_User {
 			}
 			foreach ( $languages as $lang ) {
 				?>
-				<option value="<?php echo esc_attr( $lang['code'] ); ?>" 
+				<option value="<?php echo esc_attr( $lang['code'] ); ?>"
 										  <?php
 											if ( $options['selected'] == $lang['code'] ) {
 												echo 'selected="selected"';
@@ -109,9 +110,8 @@ class WPML_Simple_Language_Selector extends WPML_SP_User {
 
 	public static function enqueue_scripts() {
 		if ( ! wp_script_is( 'wpml-select-2' ) ) {
-			// Enqueue in the footer because this is usually called late.
-			wp_enqueue_script( 'wpml-select-2', ICL_PLUGIN_URL . '/lib/select2/select2.min.js', array( 'jquery' ), ICL_SITEPRESS_VERSION, true );
-			wp_enqueue_script( 'wpml-simple_language-selector', ICL_PLUGIN_URL . '/res/js/wpml-simple-language-selector.js', array( 'jquery' ), ICL_SITEPRESS_VERSION, true );
+			wp_enqueue_script( 'wpml-select-2', ICL_PLUGIN_URL . '/lib/select2/select2.min.js', array( 'jquery' ), ICL_SITEPRESS_SCRIPT_VERSION, true );
+			wp_enqueue_script( 'wpml-simple_language-selector', ICL_PLUGIN_URL . '/res/js/wpml-simple-language-selector.js', array( 'jquery' ), ICL_SITEPRESS_SCRIPT_VERSION, true );
 		}
 	}
 }

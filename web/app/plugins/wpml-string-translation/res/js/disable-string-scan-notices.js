@@ -31,7 +31,8 @@ function wpml_st_hide_strings_scan_notices(element, callback) {
 																				url:      ajaxurl,
 																				type:     'POST',
 																				data:     {
-																					action: 'hide_strings_scan_notices'
+																					action: 'hide_strings_scan_notices',
+																					nonce:  wpml_st_disable_notices_strings.nonce
 																				},
 																				dataType: 'json',
 																				complete: function () {

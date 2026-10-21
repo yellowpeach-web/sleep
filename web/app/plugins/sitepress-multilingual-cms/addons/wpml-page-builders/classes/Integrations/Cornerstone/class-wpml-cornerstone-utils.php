@@ -16,27 +16,59 @@ class Utils {
 		'layout-grid',
 		'layout-cell',
 		'layout-div',
+		'layout-modal',
+		'layout-off-canvas',
+		'layout-slide-container',
+		'layout-slide',
+		'layout-dropdown',
 	];
 
-	/**
-	 * @param array $data
-	 * @return string
-	 */
+	const NODES_WITH_MODULES = [
+		'accordion',
+		'accordion-item-elements',
+		'tabs',
+		'tab-elements',
+		'nav-inline',
+	];
+
+	const LAYOUT_POST_TYPES = [
+		'cs_layout_single',
+		'cs_layout_archive',
+		'cs_layout_single_wc',
+		'cs_layout_archive_wc',
+		'cs_header',
+		'cs_footer',
+	];
+
 	public static function getNodeId( $data ) {
 		return md5( serialize( $data ) );
 	}
 
-	/**
-	 * Check if the type is a layout type.
-	 *
-	 * @param string $type The type to check.
-	 * @return bool
-	 */
 	public static function typeIsLayout( $type ) {
-		// Remove the classic prefix before checking.
 		$type = preg_replace( '/^' . self::MODULE_TYPE_PREFIX . '/', '', $type );
 
-		return in_array( $type, self::LAYOUT_TYPES, true );
+		return in_array( $type, self::getLayoutTypes(), true );
 	}
 
+	public static function isLayoutPostType( $postType ) {
+		return in_array( $postType, self::getLayoutPostTypes(), true );
+	}
+
+	public static function getLayoutPostTypes() {
+		return (array) apply_filters( 'wpml_cornerstone_layout_post_types', self::LAYOUT_POST_TYPES );
+	}
+
+	public static function getLayoutTypes() {
+		return (array) apply_filters( 'wpml_cornerstone_layout_types', self::LAYOUT_TYPES );
+	}
+
+	public static function getNodesWithModules() {
+		return (array) apply_filters( 'wpml_cornerstone_nodes_with_modules', self::NODES_WITH_MODULES );
+	}
+
+	public static function shouldCheckForSubmodules( $type ) {
+		$shouldCheckForSubmodules = in_array( $type, self::getNodesWithModules(), true );
+
+		return apply_filters( 'wpml_cornerstone_should_check_for_submodules', $shouldCheckForSubmodules, $type );
+	}
 }

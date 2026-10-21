@@ -3,241 +3,186 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "el"
          },
          "Sending for translation": [
             "Αποστολή για μετάφραση"
          ],
-         "Connecting to WPML’s Advanced Translation Editor": [
-            "Γίνεται σύνδεση με τον Προηγμένο επεξεργαστή μεταφράσεων του WPML"
+         "The translation could not be started because the server did not answer.": [
+            "Η μετάφραση δεν ήταν δυνατό να ξεκινήσει επειδή ο διακομιστής δεν απάντησε."
          ],
-         "Try again": [
-            "Δοκιμάστε ξανά"
+         "This translation cannot be opened right now.": [
+            "Αυτή η μετάφραση δεν μπορεί να ανοιχτεί αυτήν τη στιγμή."
+         ],
+         "Refresh this page": [
+            "Ανανέωση αυτής της σελίδας"
+         ],
+         "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
+            "Αυτό το περιεχόμενο μεταφράζεται αυτόματα. Εάν θέλετε να κάνετε κάτι διαφορετικό με αυτό, ακυρώστε πρώτα τις εργασίες μετάφρασης."
          ],
          "You don't have the rights to review this language": [
-            "Δεν έχετε δικαιώματα επιμέλειας αυτής της γλώσσας"
+            "Δεν έχετε τα δικαιώματα για να επιθεωρήσετε αυτήν τη γλώσσα"
          ],
-         "translations": [
-            "μεταφράσεις"
+         "%1$s and %2$s": [
+            "%1$s και %2$s"
          ],
-         "left in the queue": [
-            "απομένει στην ουρά"
+         "Translating your content": [
+            "Μετάφραση του περιεχομένου σας"
          ],
-         "Translation on hold": [
-            "Μετάφραση σε αναμονή"
-         ],
-         "No translations in the queue": [
-            "Καμία μετάφραση στην ουρά"
-         ],
-         "%d translations left": [
-            "%d μεταφράσεις ακόμα"
+         "%d translation notice": [
+            "%d ειδοποίηση μετάφρασης",
+            "%d ειδοποιήσεις μετάφρασης"
          ],
          "%d min remaining": [
-            "Απομένουν %d λεπτά"
+            "απομένουν %d λεπτά"
          ],
          "less than 1 min remaining": [
             "απομένει λιγότερο από 1 λεπτό"
          ],
+         "<b>Translate Everything Automatically</b> is temporarily paused": [
+            "Η <b>Αυτόματη μετάφραση όλου του περιεχομένου</b> βρίσκεται προσωρινά σε παύση"
+         ],
+         "Automatic translation is temporarily paused": [
+            "Η αυτόματη μετάφραση βρίσκεται προσωρινά σε παύση"
+         ],
+         "We noticed something unexpected in your recent translation activity and paused automatic translation on your account. Contact support and we’ll review it with you.": [
+            "Παρατηρήσαμε κάτι απροσδόκητο στην πρόσφατη μεταφραστική σας δραστηριότητα και διακόψαμε την αυτόματη μετάφραση στον λογαριασμό σας. Επικοινωνήστε με την υποστήριξη και θα το ελέγξουμε μαζί σας."
+         ],
+         "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
+            "Η <b>Αυτόματη μετάφραση όλου του περιεχομένου</b> βρίσκεται σε παύση: επιτεύχθηκε το μηνιαίο όριο δαπανών"
+         ],
+         "Automatic translation is paused: monthly spending cap reached": [
+            "Η αυτόματη μετάφραση βρίσκεται σε παύση: επιτεύχθηκε το μηνιαίο όριο δαπανών"
+         ],
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
+            "Αυτός ο ιστότοπος έφτασε στο μηνιαίο όριο δαπανών που έχει οριστεί για αυτόν. Η μετάφραση συνεχίζεται όταν αυξηθεί το όριο ή όταν γίνει επαναφορά του ορίου. Μόνο ο κάτοχος του λογαριασμού μπορεί να το κάνει αυτό."
+         ],
+         "Preparing content for translation": [
+            "Προετοιμασία περιεχομένου για μετάφραση"
+         ],
+         "Preparing more content for translation": [
+            "Προετοιμασία περισσότερου περιεχομένου για μετάφραση"
+         ],
+         "Your default language, %s, must be mapped to a supported language in order to use automatic translation.": [
+            "Η προεπιλεγμένη γλώσσα σας, %s, πρέπει να αντιστοιχιστεί σε μια υποστηριζόμενη γλώσσα προκειμένου να χρησιμοποιηθεί η αυτόματη μετάφραση."
+         ],
+         "Your language, %s, must be mapped to a supported language in order to use automatic translation.": [
+            "Η γλώσσα σας, %s, πρέπει να αντιστοιχιστεί σε μια υποστηριζόμενη γλώσσα προκειμένου να χρησιμοποιηθεί η αυτόματη μετάφραση.",
+            "Οι ακόλουθες γλώσσες στον ιστότοπό σας πρέπει να αντιστοιχιστούν σε μια υποστηριζόμενη γλώσσα προκειμένου να χρησιμοποιηθεί η αυτόματη μετάφραση: %s"
+         ],
+         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
+            "Το περιεχόμενο σε αυτές τις γλώσσες: %s, δεν μπορεί να μεταφραστεί αυτόματα, εκτός εάν τις αντιστοιχίσετε σε μια γλώσσα διαφορετική από την προεπιλεγμένη."
+         ],
+         "%d translation waiting for review": [
+            "%d μετάφραση σε αναμονή για επιθεώρηση",
+            "%d μεταφράσεις σε αναμονή για επιθεώρηση"
+         ],
+         "<b>Translate Everything Automatically</b> has unresolved jobs": [
+            "Η <b>Αυτόματη μετάφραση όλου του περιεχομένου</b> έχει ανεπίλυτες εργασίες"
+         ],
+         "Automatic translation has unresolved jobs": [
+            "Η αυτόματη μετάφραση έχει ανεπίλυτες εργασίες"
+         ],
+         "%d job couldn't be completed. Go to <b>Translation Dashboard</b> to review and resolve.": [
+            "%d εργασία δεν μπόρεσε να ολοκληρωθεί. Μεταβείτε στον <b>Πίνακα ελέγχου μετάφρασης</b> για επιθεώρηση και επίλυση.",
+            "%d εργασίες δεν μπόρεσαν να ολοκληρωθούν. Μεταβείτε στον <b>Πίνακα ελέγχου μετάφρασης</b> για επιθεώρηση και επίλυση."
+         ],
+         "%1$s custom field became translatable (%2$s). Decide what happens to the translations that already exist.": [
+            "%1$s προσαρμοσμένο πεδίο έγινε μεταφράσιμο: (%2$s). Αποφασίστε τι θα συμβεί με τις μεταφράσεις που υπάρχουν ήδη.",
+            "%1$s προσαρμοσμένα πεδία έγιναν μεταφράσιμα: (%2$s). Αποφασίστε τι θα συμβεί με τις μεταφράσεις που υπάρχουν ήδη."
+         ],
+         "Review": [
+            "Έλεγχος"
+         ],
          "Automatic translation status": [
             "Κατάσταση αυτόματης μετάφρασης"
          ],
+         "No translations in the queue": [
+            "Δεν υπάρχουν μεταφράσεις στην ουρά"
+         ],
          "Translate Everything Automatically": [
-            "Αυτόματη Μετάφραση Όλων"
+            "Αυτόματη μετάφραση όλου του περιεχομένου"
          ],
-         "Translate Everything Automatically is active": [
-            "Η Αυτόματη Μετάφραση Όλων είναι ενεργή"
+         "<b>Translate Everything Automatically</b> is active": [
+            "Η <b>Αυτόματη μετάφραση όλου του περιεχομένου</b> είναι ενεργή"
          ],
-         "Translate Everything Automatically is paused": [
-            "Η Αυτόματη Μετάφραση Όλων είναι σε παύση"
+         "<b>Translate Everything Automatically</b> is paused — payment required": [
+            "Η <b>Αυτόματη μετάφραση όλου του περιεχομένου</b> βρίσκεται σε παύση — απαιτείται πληρωμή"
          ],
-         "Translate Everything Automatically stopped": [
-            "Η Αυτόματη Μετάφραση Όλων διακόπηκε"
+         "Automatic translation is paused — payment required": [
+            "Η αυτόματη μετάφραση βρίσκεται σε παύση — απαιτείται πληρωμή"
          ],
-         "Preparing content for translation": [
-            "Προετοιμασία περιεχομένου για μετάφραση…"
+         "We couldn’t process your payment. Click “Pay now” to complete the transaction and resume automatic translation.": [
+            "Δεν μπορέσαμε να επεξεργαστούμε την πληρωμή σας. Κάντε κλικ στο “Πληρωμή τώρα” για να ολοκληρώσετε τη συναλλαγή και να συνεχίσετε την αυτόματη μετάφραση."
          ],
-         "Preparing more content for translation": [
-            "Προετοιμασία περισσότερου περιεχομένου για μετάφραση…"
+         "<b>Translate Everything Automatically</b> is paused — unpaid balance on a linked account": [
+            "Η <b>Αυτόματη μετάφραση των πάντων</b> βρίσκεται σε παύση — ανεξόφλητο υπόλοιπο σε συνδεδεμένο λογαριασμό"
          ],
-         "An error occured, fix it to continue.": [
-            "Προέκυψε ένα σφάλμα, επιλύστε το για να συνεχίσετε."
+         "Automatic translation is paused — unpaid balance on a linked account": [
+            "Η αυτόματη μετάφραση βρίσκεται σε παύση — ανεξόφλητο υπόλοιπο σε συνδεδεμένο λογαριασμό"
          ],
-         "There is an issue with automatic translation that needs your attention. Fix it to continue.": [
-            "Υπάρχει ένα πρόβλημα με την αυτόματη μετάφραση που απαιτεί την προσοχή σας. Διορθώστε το για να συνεχίσετε."
+         "There is an unpaid balance on another account linked to this card. Settle it or contact support.": [
+            "Υπάρχει ανεξόφλητο υπόλοιπο σε άλλον λογαριασμό συνδεδεμένο με αυτή την κάρτα. Εξοφλήστε το ή επικοινωνήστε με την υποστήριξη."
          ],
-         "Your default language, %s, must be mapped to a supported language in order to use automatic translation.": [
-            "Η προεπιλεγμένη γλώσσα σας, %s, πρέπει να έχει αντιστοιχιστεί με μια υποστηριζόμενη γλώσσα, για να χρησιμοποιηθεί αυτόματη μετάφραση."
+         "There is an unpaid balance on another account linked to this billing e-mail. Settle it or contact support.": [
+            "Υπάρχει ανεξόφλητο υπόλοιπο σε άλλον λογαριασμό συνδεδεμένο με αυτό το email χρέωσης. Εξοφλήστε το ή επικοινωνήστε με την υποστήριξη."
          ],
-         "Your language, %s, must be mapped to a supported language in order to use automatic translation.": [
-            "Η γλώσσα σας, %s, πρέπει να έχει αντιστοιχιστεί με μια υποστηριζόμενη γλώσσα, για να χρησιμοποιηθεί αυτόματη μετάφραση.",
-            "Οι ακόλουθες γλώσσες στον ιστότοπό σας πρέπει να έχουν αντιστοιχιστεί με μια υποστηριζόμενη γλώσσα, για να χρησιμοποιηθεί αυτόματη μετάφραση: %s"
+         "<b>Translate Everything</b> automatically is paused - not enough words": [
+            "Η <b>Αυτόματη μετάφραση όλου του περιεχομένου</b> βρίσκεται σε παύση - δεν υπάρχουν αρκετές λέξεις"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "Περιεχόμενο σε αυτές τις γλώσσες: %s, δεν μπορεί να μεταφραστεί αυτόματα εκτός αν τα αντιστοιχίσετε με μια γλώσσα που διαφέρει από την προεπιλεγμένη."
+         "Automatic translation is paused — not enough words": [
+            "Η αυτόματη μετάφραση βρίσκεται σε παύση — δεν υπάρχουν αρκετές λέξεις"
          ],
-         "%d translation waiting for review": [
-            "%d μετάφραση αναμένει αναθεώρηση",
-            "%d μεταφράσεις αναμένουν αναθεώρηση"
+         "Translation will resume automatically once you assign more words.": [
+            "Η μετάφραση θα συνεχιστεί αυτόματα μόλις εκχωρήσετε περισσότερες λέξεις."
          ],
-         "Account credits used": [
-            "Χρησιμοποιημένες μονάδες λογαριασμού"
+         "You have %s prepaid translation words in your WPML account. Assign these words to this site to resume automatic translation": [
+            "Έχετε %s προπληρωμένες λέξεις μετάφρασης στον λογαριασμό σας WPML. Εκχωρήστε αυτές τις λέξεις σε αυτόν τον ιστότοπο για να συνεχίσετε την αυτόματη μετάφραση",
+            "Έχετε %s προπληρωμένες λέξεις μετάφρασης στον λογαριασμό σας WPML. Εκχωρήστε αυτές τις λέξεις σε αυτόν τον ιστότοπο για να συνεχίσετε την αυτόματη μετάφραση"
          ],
-         "Once you’ve used all your prepaid credits, we’ll invoice you for any additional credits you use after the end of the month": [
-            "Αφού χρησιμοποιήσετε όλες τις προπληρωμένες μονάδες σας, θα σας χρεώσουμε για τυχόν πρόσθετες μονάδες που χρησιμοποιείτε μετά το τέλος του μήνα."
+         "Your site doesn't meet WPML's minimum requirements": [
+            "Ο ιστότοπός σας δεν πληροί τις ελάχιστες απαιτήσεις του WPML"
          ],
-         "Payment limit:": [
-            "Όριο πληρωμών:"
-         ],
-         "%s credits": [
-            "%s μονάδες"
-         ],
-         "Credits used:": [
-            "Χρησιμοποιημένες μονάδες:"
-         ],
-         "Credits left:": [
-            "Εναπομείνασες μονάδες:"
-         ],
-         "The number of credit you will receive an invoice for at the end of the month. View your pay-as-you-go details in your site’s automatic translation settings.": [
-            "Ο αριθμός μονάδων για τις οποίες θα λάβετε τιμολόγιο στο τέλος του μήνα. Δείτε τις λεπτομέρειες πληρωμής ανάλογα με τη χρήση στις ρυθμίσεις αυτόματης μετάφρασης του ιστότοπού σας."
-         ],
-         "Calculating": [
-            "Υπολογισμός…"
-         ],
-         "Remaining prepaid credits that are assigned to this site on WPML.org.": [
-            "Εναπομείνασες προπληρωμένες μονάδες που έχουν ανατεθεί σε αυτόν τον ιστότοπο στο WPML.org."
-         ],
-         "Prepaid credits left": [
-            "Εναπομείνασες προπληρωμένες μονάδες"
-         ],
-         "Pay-as-you-go credits used": [
-            "Χρησιμοποιήθηκαν μονάδες πληρωμής ανάλογα με τη χρήση"
-         ],
-         "Resume": [
-            "Συνέχιση"
+         "Fix it": [
+            "Διόρθωση"
          ],
          "Stop": [
             "Διακοπή"
          ],
-         "Fix it": [
-            "Επιδιόρθωση"
+         "Pay now": [
+            "Πληρωμή τώρα"
          ],
-         "Pause": [
-            "Παύση"
+         "Get more words": [
+            "Απόκτηση περισσότερων λέξεων"
          ],
-         "There was an error when trying to pause your Automatic Translation. Please try again later or contact our support.": [
-            "Προέκυψε ένα σφάλμα κατά την απόπειρα παύσης της Αυτόματης Μετάφρασής σας. Δοκιμάστε ξανά αργότερα ή επικοινωνήστε το τμήμα υποστήριξής μας."
+         "Assign words": [
+            "Εκχώρηση λέξεων"
          ],
-         "There was an error when trying to resume your Automatic Translation. Please try again later or contact our support.": [
-            "Προέκυψε ένα σφάλμα κατά την απόπειρα συνέχισης της Αυτόματης Μετάφρασής σας. Δοκιμάστε ξανά αργότερα ή επικοινωνήστε με το τμήμα υποστήριξής μας."
+         "Go to Translation Jobs": [
+            "Μετάβαση στις εργασίες μετάφρασης"
          ],
-         "Error": [
-            "Σφάλμα"
+         "Raise the cap": [
+            "Αύξηση του ορίου"
          ],
-         "Draft — Pending review": [
-            "Πρόχειρο — Αναμένει επιμέλεια"
+         "Contact support": [
+            "Επικοινωνία με την υποστήριξη"
          ],
-         "Complete": [
-            "Ολοκληρώθηκε"
+         "Go to billing": [
+            "Μετάβαση στη χρέωση"
          ],
-         "Insufficient funds": [
-            "Ανεπαρκή χρήματα"
+         "Resume": [
+            "Συνέχιση"
          ],
-         "Read more about how to translate your content in the <a>Getting Started Guide</a>": [
-            "Διαβάστε περισσότερα για το πώς να μεταφράζετε το περιεχόμενό σας στον <a>Οδηγό έναρξης</a>"
+         "Refreshing translation status. Please wait.": [
+            "Ανανέωση κατάστασης μετάφρασης. Παρακαλώ περιμένετε."
          ],
-         "Let's Start Translating!": [
-            "Ας αρχίσουμε να μεταφράζουμε!"
+         "This translation couldn't be completed due to an unexpected error. Please try resending it.": [
+            "Αυτή η μετάφραση δεν μπόρεσε να ολοκληρωθεί λόγω ενός απροσδόκητου σφάλματος. Παρακαλούμε δοκιμάστε να την στείλετε ξανά."
          ],
-         "Choose your content from the Translation Dashboard below and create your first translation job!": [
-            "Επιλέξτε το περιεχόμενο που θέλετε από τον Πίνακα εργαλείων, παρακάτω, και δημιουργήστε την πρώτη σας μεταφραστική εργασία!"
-         ],
-         "Change your <a>automatic translation settings</a> (in-progress translation jobs will be completed with the current settings).": [
-            "Επιλέξτε τις <a>ρυθμίσεις αυτόματης μετάφρασης</a> (οι μεταφραστικές εργασίες που βρίσκονται σε εξέλιξη θα ολοκληρωθούν με τις τρέχουσες ρυθμίσεις)."
-         ],
-         "Read more about translating your site automatically.": [
-            "Διαβάστε περισσότερα σχετικά με την αυτόματη μετάφραση του ιστοτόπου σας."
-         ],
-         "Your site is being automatically translated!": [
-            "Ο ιστότοπός σας μεταφράζεται αυτόματα!"
-         ],
-         "Calculating...": [
-            "Υπολογισμός…"
-         ],
-         "Do not close WP admin!": [
-            "Μην κλείσετε τη διαχείριση του WP!"
-         ],
-         "The number of translations": [
-            "Ο αριθμός μεταφράσεων"
-         ],
-         "Translate Everything Automatically - running": [
-            "Αυτόματη Μετάφραση Όλων - εκτελείται"
-         ],
-         "Translate Everything Automatically - active": [
-            "Αυτόματη Μετάφραση Όλων - ενεργή"
-         ],
-         "Pause automatic translation": [
-            "Παύση αυτόματης μετάφρασης"
-         ],
-         "WPML will finish in-progress translations but won't translate anything new.": [
-            "Το WPML θα ολοκληρώσει τις μεταφράσεις σε εξέλιξη αλλά δεν θα μεταφράσει τίποτε νέο."
-         ],
-         "Translate Everything Automatically - paused": [
-            "Αυτόματη Μετάφραση Όλων - σε παύση"
-         ],
-         "Start automatic translation": [
-            "Έναρξη αυτόματης μετάφρασης"
-         ],
-         "This uses %scredits%s to translate your existing content and anything you add or change later.": [
-            "Αυτό χρησιμοποιεί %sμονάδες%s για να μεταφράζεται όλο το υπάρχον περιεχόμενό σας και οτιδήποτε προσθέτετε ή αλλάζετε αργότερα."
-         ],
-         "Start translating everything automatically": [
-            "Έναρξη αυτόματης μετάφρασης όλων"
-         ],
-         "WPML will translate any new content you create into %1$s.": [
-            "Το WPML θα μεταφράζει το νέο περιεχόμενο που δημιουργείτε σε %1$s."
-         ],
-         "WPML will translate all new future content to %1$s and keep translations up to date when you make changes.": [
-            "Το WPML θα μεταφράζει όλο το νέο μελλοντικό περιεχόμενο σε %1$s και θα διατηρεί τις μεταφράσεις ενημερωμένες όταν κάνετε αλλαγές."
-         ],
-         "Do you want to translate existing content, too?": [
-            "Θέλετε να μεταφράσετε επίσης υπάρχον περιεχόμενο;"
-         ],
-         "Yes, translate all new and existing content": [
-            "Ναι, να μεταφραστεί όλο το νέο και υπάρχον περιεχόμενο"
-         ],
-         "No, only translate new content": [
-            "Όχι, να μεταφραστεί μόνο το νέο περιεχόμενο"
-         ],
-         "You can translate existing content from the Translation Management Dashboard": [
-            "Μπορείτε να μεταφράσετε υπάρχον περιεχόμενο από τον Πίνακα Εργαλείων Διαχείρισης Μετάφρασης"
-         ],
-         "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
-            "Σφάλμα σύνδεσης. Περιμένετε ένα λεπτό και επαναφορτώστε αυτή τη σελίδα. Αν το πρόβλημα παραμένει, επικοινωνήστε με το τμήμα υποστήριξης του WPML."
-         ],
-         "Automatic translation uses credits. %1$sRead more about automatic translation credits%2$s": [
-            "Η αυτόματη μετάφραση χρησιμοποιεί μονάδες. %1$sΔιαβάστε περισσότερα για τις μονάδες αυτόματης μετάφρασης%2$s"
-         ],
-         "You need credits to start translating everything.": [
-            "Χρειάζεστε μονάδες για να ξεκινήσετε να μεταφράζετε τα πάντα."
-         ],
-         "Cancel": [
-            "Ακύρωση"
-         ],
-         "Start translating everything": [
-            "Έναρξη μετάφρασης όλων"
-         ],
-         "%1$d language": [
-            "%1$d γλώσσα",
-            "%1$d γλώσσες"
-         ],
-         "Please wait...": [
-            "Περιμένετε..."
-         ],
-         "All new future content": [
-            "Όλο το νέο μελλοντικό περιεχόμενο"
-         ],
-         "Translate Everything Automatically - stopped": [
-            "Αυτόματη Μετάφραση Όλων - διακόπηκε"
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "Το μεταφραστικό μας σύστημα δεν αποδέχτηκε αυτό το αίτημα (απάντησε %d). Περιμένετε ένα λεπτό και δοκιμάστε ξανά, και επικοινωνήστε με την υποστήριξη του WPML εάν το πρόβλημα επιμένει."
          ]
       }
    }

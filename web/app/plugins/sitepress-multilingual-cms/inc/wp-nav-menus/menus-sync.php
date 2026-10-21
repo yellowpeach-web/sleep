@@ -5,15 +5,54 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 	public $sync_data                = false;
 	public $string_translation_links = array();
 	public $operations               = array();
-	/** @var  WPML_Menu_Item_Sync $menu_item_sync */
 	private $menu_item_sync;
 
-	/**
-	 * @param SitePress             $sitepress
-	 * @param wpdb                  $wpdb
-	 * @param WPML_Post_Translation $post_translations
-	 * @param WPML_Term_Translation $term_translations
-	 */
+	public static function chip_icon_svg( $type ) {
+		$aliases = array(
+			'label_changed'   => 'stale',
+			'url_missing'     => 'nourl',
+			'label_missing'   => 'nourl',
+			'options_changed' => 'options',
+			'url_changed'     => 'options',
+		);
+		if ( isset( $aliases[ $type ] ) ) {
+			$type = $aliases[ $type ];
+		}
+		switch ( $type ) {
+			case 'add':
+				return '<svg class="icl_msync_chip-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>';
+			case 'mov':
+				return '<svg class="icl_msync_chip-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7l4-4m0 0l4 4m-4-4v18m-4-4l4 4m0 0l4-4"/></svg>';
+			case 'stale':
+				return '<svg class="icl_msync_chip-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M4.93 4.93a10 10 0 1114.14 14.14 10 10 0 01-14.14-14.14z"/></svg>';
+			case 'nourl':
+				return '<svg class="icl_msync_chip-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101M10.172 13.828a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1M3 3l18 18"/></svg>';
+			case 'options':
+				return '<svg class="icl_msync_chip-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>';
+		}
+		return '';
+	}
+
+	public static function chip_icon_allowed_html() {
+		return array(
+			'svg'  => array(
+				'class'        => true,
+				'width'        => true,
+				'height'       => true,
+				'viewbox'      => true,
+				'fill'         => true,
+				'stroke'       => true,
+				'stroke-width' => true,
+				'aria-hidden'  => true,
+			),
+			'path' => array(
+				'stroke-linecap'  => true,
+				'stroke-linejoin' => true,
+				'd'               => true,
+			),
+		);
+	}
+
 	function __construct( &$sitepress, &$wpdb, &$post_translations, &$term_translations ) {
 		parent::__construct( $sitepress, $wpdb, $post_translations, $term_translations );
 
@@ -32,32 +71,30 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 	function init( $previous_menu = false ) {
 		$this->sitepress->switch_lang( $this->sitepress->get_default_language() );
 
-		$action = filter_input( INPUT_POST, 'action' );
-		$nonce  = (string) filter_input( INPUT_POST, '_icl_nonce_menu_sync' );
+		try {
+			$action = filter_input( INPUT_POST, 'action' );
+			$nonce  = (string) filter_input( INPUT_POST, '_icl_nonce_menu_sync' );
 
-		if ( $action && ! wp_verify_nonce( $nonce, '_icl_nonce_menu_sync' ) ) {
-			wp_send_json_error( 'Invalid nonce' );
+			if ( $action && ! wp_verify_nonce( $nonce, '_icl_nonce_menu_sync' ) ) {
+				wp_send_json_error( 'Invalid nonce' );
+			}
+			$this->menu_item_sync->cleanup_broken_page_items();
+
+			if ( $action === 'icl_msync_preview' ) {
+				$this->is_preview = true;
+				$this->sync_data  = isset( $_POST['sync'] ) ? array_map( 'stripslashes_deep', $_POST['sync'] ) : false;
+				$previous_menu    = WPML_Menu_Sync_Store::get();
+			}
+
+			if ( $previous_menu ) {
+				$this->menus = $previous_menu;
+			} else {
+				$this->get_menus_tree();
+				WPML_Menu_Sync_Store::save( $this->menus );
+			}
+		} finally {
+			$this->sitepress->switch_lang();
 		}
-		$this->menu_item_sync->cleanup_broken_page_items();
-
-		if ( ! session_id() ) {
-			session_start();
-		}
-
-		if ( $action === 'icl_msync_preview' ) {
-			$this->is_preview = true;
-			$this->sync_data  = isset( $_POST['sync'] ) ? array_map( 'stripslashes_deep', $_POST['sync'] ) : false;
-			$previous_menu    = isset( $_SESSION['wpml_menu_sync_menu'] ) ? $_SESSION['wpml_menu_sync_menu'] : null;
-		}
-
-		if ( $previous_menu ) {
-			$this->menus = $previous_menu;
-		} else {
-			$this->get_menus_tree();
-			$_SESSION['wpml_menu_sync_menu'] = $this->menus;
-		}
-
-		$this->sitepress->switch_lang();
 	}
 
 	function get_menu_names() {
@@ -142,7 +179,6 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 						);
 
 						foreach ( $tmenu['items'] as $titem ) {
-							// Has a place in the default menu?
 							$exists = false;
 							foreach ( $valid_items as $item ) {
 								if ( (int) $item['translations'][ $language ]['ID'] === (int) $titem['ID'] ) {
@@ -187,6 +223,26 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 		}
 	}
 
+	public function unknown_menu_ids( array $data ) {
+		$known   = array_map( 'strval', array_keys( (array) $this->menus ) );
+		$unknown = array();
+
+		foreach ( $data as $section ) {
+			if ( ! is_array( $section ) ) {
+				continue;
+			}
+
+			foreach ( array_keys( $section ) as $menu_id ) {
+				$menu_id = (string) $menu_id;
+				if ( ! in_array( $menu_id, $known, true ) ) {
+					$unknown[ $menu_id ] = $menu_id;
+				}
+			}
+		}
+
+		return array_values( $unknown );
+	}
+
 	function do_sync( array $data ) {
 
 		$this->menus = isset( $this->menus ) ? $this->menus : array();
@@ -223,9 +279,10 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 
 		$this->menu_item_sync->sync_custom_fields( $this->menus );
 
-
 		$this->menus = isset( $this->menus ) ? $this->menu_item_sync->sync_menu_order( $this->menus ) : $this->menus;
 		$this->menu_item_sync->cleanup_broken_page_items();
+
+		wp_cache_delete( 'last_changed', 'terms' );
 
 		return $this->menus;
 	}
@@ -238,25 +295,24 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 		$default_language      = $sitepress->get_default_language();
 		foreach ( $this->menus[ $menu_id ]['items'] as $item ) {
 
-			// deleted items #2 (menu order beyond)
 			static $d2_items = array();
 			$deleted_items   = array();
-			if ( isset( $this->menus[ $menu_id ]['translation'] ) && is_array( $this->menus[ $menu_id ]['translation'] ) ) {
+			if ( isset( $this->menus[ $menu_id ]['translations'] ) && is_array( $this->menus[ $menu_id ]['translations'] ) ) {
 				foreach ( $this->menus[ $menu_id ]['translations'] as $language => $tmenu ) {
 
-					if ( ! isset( $d2_items[ $language ] ) ) {
-						$d2_items[ $language ] = array();
+					if ( ! isset( $d2_items[ $menu_id ][ $language ] ) ) {
+						$d2_items[ $menu_id ][ $language ] = array();
 					}
 
 					if ( ! empty( $this->menus[ $menu_id ]['translations'][ $language ]['deleted_items'] ) ) {
 						foreach ( $this->menus[ $menu_id ]['translations'][ $language ]['deleted_items'] as $deleted_item ) {
 							if ( ! in_array(
 								$deleted_item['ID'],
-								$d2_items[ $language ]
+								$d2_items[ $menu_id ][ $language ]
 							) && $deleted_item['menu_order'] > count( $this->menus[ $menu_id ]['items'] )
 							) {
-								$deleted_items[ $language ][] = $deleted_item;
-								$d2_items[ $language ][]      = $deleted_item['ID'];
+								$deleted_items[ $language ][]        = $deleted_item;
+								$d2_items[ $menu_id ][ $language ][] = $deleted_item['ID'];
 							}
 						}
 					}
@@ -274,16 +330,18 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 						?>
 						<td>
 							<?php if ( isset( $deleted_items[ $language['code'] ] ) ) : ?>
-								<?php $need_sync ++; ?>
+								<?php ++$need_sync; ?>
 								<?php foreach ( $deleted_items[ $language['code'] ] as $deleted_item ) : ?>
 									<?php echo str_repeat( ' - ', $depth ); ?><span
 										class="icl_msync_item icl_msync_del"><?php echo esc_html( $deleted_item['title'] ); ?></span>
+									<?php
+									?>
 									<input type="hidden"
-										   name="sync[del][<?php echo esc_attr( $menu_id ); ?>][<?php echo esc_attr( $language['code'] ); ?>][<?php echo esc_attr( $deleted_item['ID'] ); ?>]"
-										   value="<?php echo esc_attr( $deleted_item['title'] ); ?>"/>
+											name="sync[del][<?php echo esc_attr( $menu_id ); ?>][<?php echo esc_attr( $deleted_item['ID'] ); ?>][<?php echo esc_attr( $language['code'] ); ?>]"
+											value="<?php echo esc_attr( $deleted_item['title'] ); ?>"/>
 									<?php
 									$this->operations['del'] = empty( $this->operations['del'] ) ? 1
-										: $this->operations['del'] ++;
+										: $this->operations['del']++;
 									?>
 									<br/>
 								<?php endforeach; ?>
@@ -295,14 +353,13 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 				<?php
 			}
 
-			// show deleted item?
 			static $mo_added = array();
 			$deleted_items   = array();
-			if ( isset( $this->menus[ $menu_id ]['translation'] ) && is_array( $this->menus[ $menu_id ]['translation'] ) ) {
+			if ( isset( $this->menus[ $menu_id ]['translations'] ) && is_array( $this->menus[ $menu_id ]['translations'] ) ) {
 				foreach ( $this->menus[ $menu_id ]['translations'] as $language => $tmenu ) {
 
-					if ( ! isset( $mo_added[ $language ] ) ) {
-						$mo_added[ $language ] = array();
+					if ( ! isset( $mo_added[ $menu_id ][ $language ] ) ) {
+						$mo_added[ $menu_id ][ $language ] = array();
 					}
 
 					if ( ! empty( $this->menus[ $menu_id ]['translations'][ $language ]['deleted_items'] ) ) {
@@ -310,12 +367,12 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 
 							if ( ! in_array(
 								$item['menu_order'],
-								$mo_added[ $language ]
+								$mo_added[ $menu_id ][ $language ]
 							) && $deleted_item['menu_order'] == $item['menu_order']
 							) {
-								$deleted_items[ $language ] = $deleted_item;
-								$mo_added[ $language ][]    = $item['menu_order'];
-								$need_sync ++;
+								$deleted_items[ $language ]          = $deleted_item;
+								$mo_added[ $menu_id ][ $language ][] = $item['menu_order'];
+								++$need_sync;
 							}
 						}
 					}
@@ -325,11 +382,50 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 			$this->render_deleted_items( $deleted_items, $need_sync, $depth, $menu_id );
 
 			if ( $item['parent'] == $parent ) {
+				$row_state = '';
+				foreach ( $active_language_codes as $row_state_lang ) {
+					if ( $row_state_lang === $default_language ) {
+						continue;
+					}
+					if ( ! isset( $item['translations'][ $row_state_lang ] ) ) {
+						continue;
+					}
+					$row_state_item = $item['translations'][ $row_state_lang ];
+					if ( ! empty( $row_state_item['ID'] ) ) {
+						if ( $row_state_item['menu_order'] != $row_state_item['menu_order_new']
+							|| $row_state_item['depth'] != $item['depth'] ) {
+							$row_state = 'mov';
+							break;
+						}
+					} elseif ( $row_state_item && 'custom' === $row_state_item['object_type'] ) {
+						if ( '' === $row_state ) {
+							$row_state = 'add';
+						}
+					} elseif ( ! empty( $row_state_item['object_id'] ) ) {
+						if ( empty( $row_state_item['parent_not_translated'] )
+							&& ! icl_object_id( $item['ID'], 'nav_menu_item', false, (string) $row_state_lang ) ) {
+							if ( '' === $row_state ) {
+								$row_state = 'add';
+							}
+						}
+					} elseif ( $row_state_item && 'post_type_archive' === $row_state_item['object_type'] ) {
+						if ( '' === $row_state ) {
+							$row_state = 'add';
+						}
+					}
+				}
 				?>
 				<tr>
 					<td>
 					<?php
-						echo str_repeat( ' - ', $depth ) . $item['title'];
+						echo esc_html( str_repeat( ' - ', $depth ) . $item['title'] );
+					if ( 'add' === $row_state ) {
+						/* translators: Word in a small badge on the menu synchronization screen: this menu item was added. Past participle used as a state. */
+						echo ' <span class="icl_msync_source_state icl_msync_source_state_add">' . wp_kses( self::chip_icon_svg( 'add' ), self::chip_icon_allowed_html() ) . esc_html__( 'Added', 'sitepress' ) . '</span>';
+					} elseif ( 'mov' === $row_state ) {
+						/* translators: Word in a small badge on the menu synchronization screen: this menu item was moved to another place in the menu. Past participle used as a state. */
+						echo ' <span class="icl_msync_source_state icl_msync_source_state_mov">' . wp_kses( self::chip_icon_svg( 'mov' ), self::chip_icon_allowed_html() ) . esc_html__( 'Moved', 'sitepress' ) . '</span>';
+					}
 					?>
 						</td>
 					<?php
@@ -343,15 +439,14 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 							$item_translation = $item['translations'][ $lang_code ];
 							$item_id          = $item['ID'];
 							echo str_repeat( ' - ', $depth );
-							$need_sync ++;
+							++$need_sync;
 							if ( ! empty( $item_translation['ID'] ) ) {
-								// item translation exists
 								$item_sync_needed = false;
-								if ( $item_translation['menu_order'] != $item_translation['menu_order_new'] || $item_translation['depth'] != $item['depth'] ) { // MOVED
-									echo '<span class="icl_msync_item icl_msync_mov">' . esc_html( $item_translation['title'] ) . '</span>';
+								if ( $item_translation['menu_order'] != $item_translation['menu_order_new'] || $item_translation['depth'] != $item['depth'] ) {
+									echo '<span class="icl_msync_item icl_msync_mov">' . self::chip_icon_svg( 'mov' ) . esc_html( $item_translation['title'] ) . '</span>';
 									echo '<input type="hidden" name="sync[mov][' . esc_attr( (string) $menu_id ) . '][' . esc_attr( (string) $item['ID'] ) . '][' . esc_attr( (string) $lang_code ) . '][' . esc_attr( (string) $item_translation['menu_order_new'] ) . ']" value="' . esc_attr( (string) $item_translation['title'] ) . '" />';
 									$this->operations['mov'] = empty( $this->operations['mov'] ) ? 1
-										: $this->operations['mov'] ++;
+										: $this->operations['mov']++;
 
 									$item_sync_needed = true;
 								}
@@ -395,38 +490,38 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 									);
 									$item_sync_needed = true;
 								}
-								if ( ! $item_sync_needed ) { // NO CHANGE
-									$need_sync --;
+								if ( ! $item_sync_needed ) {
+									--$need_sync;
 									echo esc_html( $item_translation['title'] );
 								}
 							} elseif ( $item_translation && 'custom' === $item_translation['object_type'] ) {
-								// item translation does not exist but is a custom item that will be created
-								echo '<span class="icl_msync_item icl_msync_add">' . esc_html( $item_translation['title'] ) . ' @' . esc_html( (string) $lang_code ) . '</span>';
+								echo '<span class="icl_msync_item icl_msync_add">' . self::chip_icon_svg( 'add' ) . esc_html( $item_translation['title'] ) . ' @' . esc_html( (string) $lang_code ) . '</span>';
 								echo '<input type="hidden" name="sync[add][' . esc_attr( $menu_id ) . '][' . esc_attr( $item['ID'] ) . '][' . esc_attr( (string) $lang_code ) . ']" value="' . esc_attr( $item_translation['title'] . ' @' . $lang_code ) . '" />';
 								$this->incOperation( 'add' );
 							} elseif ( ! empty( $item_translation['object_id'] ) ) {
-								// item translation does not exist but translated object does
-								if ( $item_translation['parent_not_translated'] ) {
+								if ( ! empty( $item_translation['object_not_public'] ) ) {
+									/* translators: Status of a menu item on the WP Menus Sync screen: the page is translated, but the translation is a draft, scheduled or private, so it is not added to the menu yet. */
+									echo '<i class="inactive">' . esc_html__( 'Translation not published', 'sitepress' ) . '</i>';
+									--$need_sync;
+								} elseif ( $item_translation['parent_not_translated'] ) {
 									echo '<span class="icl_msync_item icl_msync_not">' . esc_html( $item_translation['title'] ) . '</span>';
 									$this->operations['not'] = empty( $this->operations['not'] ) ? 1
-										: $this->operations['not'] ++;
+										: $this->operations['not']++;
 								} elseif ( ! icl_object_id( $item['ID'], 'nav_menu_item', false, (string) $lang_code ) ) {
-									// item translation does not exist but translated object does
-									echo '<span class="icl_msync_item icl_msync_add">' . esc_html( $item_translation['title'] ) . '</span>';
+									echo '<span class="icl_msync_item icl_msync_add">' . self::chip_icon_svg( 'add' ) . esc_html( $item_translation['title'] ) . '</span>';
 									echo '<input type="hidden" name="sync[add][' . esc_attr( $menu_id ) . '][' . esc_attr( $item['ID'] ) . '][' . esc_attr( (string) $lang_code ) . ']" value="' . esc_attr( $item_translation['title'] ) . '" />';
 									$this->incOperation( 'add' );
 								} else {
-									$need_sync --;
+									--$need_sync;
 								}
 							} elseif ( $item_translation && 'post_type_archive' === $item_translation['object_type'] ) {
-								// item translation does not exist but is a post type archive item that will be created
-								echo '<span class="icl_msync_item icl_msync_add">' . esc_html( $item_translation['title'] ) . ' @' . esc_html( (string) $lang_code ) . '</span>';
+								echo '<span class="icl_msync_item icl_msync_add">' . self::chip_icon_svg( 'add' ) . esc_html( $item_translation['title'] ) . ' @' . esc_html( (string) $lang_code ) . '</span>';
 								echo '<input type="hidden" name="sync[add][' . esc_attr( $menu_id ) . '][' . esc_attr( $item['ID'] ) . '][' . esc_attr( (string) $lang_code ) . ']" value="' . esc_attr( $item_translation['title'] . ' @' . $lang_code ) . '" />';
 								$this->incOperation( 'add' );
 							} else {
-								// item translation and object translation do not exist
+								/* translators: Status of a piece of content: it has no translation in that language yet. */
 								echo '<i class="inactive">' . esc_html__( 'Not translated', 'sitepress' ) . '</i>';
-								$need_sync --;
+								--$need_sync;
 							}
 							?>
 						</td>
@@ -464,7 +559,7 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 			$translated_id = $this->get_translated_menu( $menu_id, $lang_code );
 			$change        = false;
 			if ( ! isset( $translated_id['id'] ) || $menu_options != $this->get_menu_options( $translated_id['id'] ) ) {
-				$need_sync ++;
+				++$need_sync;
 				$change = true;
 			}
 			if ( $change ) {
@@ -477,7 +572,7 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 					$change
 				);
 			} else {
-				echo esc_html( $menu_options['auto_add'] );
+				echo (int) $menu_options['auto_add'];
 			}
 		}
 		?>
@@ -500,15 +595,16 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 					?>
 					<td>
 						<?php if ( isset( $deleted_items[ $language['code'] ] ) ) : ?>
-							<?php $need_sync ++; ?>
+							<?php ++$need_sync; ?>
 							<?php echo str_repeat( ' - ', $depth ); ?><span
 								class="icl_msync_item icl_msync_del"><?php echo esc_html( $deleted_items[ $language['code'] ]['title'] ); ?></span>
+							<?php  ?>
 							<input type="hidden"
-								   name="sync[del][<?php echo esc_attr( $menu_id ); ?>][<?php echo esc_attr( $language['code'] ); ?>][<?php echo esc_attr( $deleted_items[ $language['code'] ]['ID'] ); ?>]"
-								   value="<?php echo esc_attr( $deleted_items[ $language['code'] ]['title'] ); ?>"/>
+									name="sync[del][<?php echo esc_attr( $menu_id ); ?>][<?php echo esc_attr( $deleted_items[ $language['code'] ]['ID'] ); ?>][<?php echo esc_attr( $language['code'] ); ?>]"
+									value="<?php echo esc_attr( $deleted_items[ $language['code'] ]['title'] ); ?>"/>
 							<?php
 							$this->operations['del'] = empty( $this->operations['del'] ) ? 1
-								: $this->operations['del'] ++;
+								: $this->operations['del']++;
 							?>
 						<?php else : ?>
 						<?php endif; ?>
@@ -523,18 +619,20 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 		$this->string_translation_links[ $this->menus[ $menu_id ]['name'] ] = 1;
 
 		$additional_class = $change ? 'icl_msync_' . $index : '';
+		$icon = $change ? self::chip_icon_svg( $index ) : '';
 		echo '<span class="icl_msync_item ' . esc_attr( $additional_class ) . '">'
-			 . ( ! $item_translation ? 0 : esc_html( $item_translation ) )
-			 . '</span>'
-			 . '<input type="hidden" name="sync[' . esc_attr( $index ) . '][' . esc_attr( $menu_id ) . '][' . esc_attr( $item_id ) . '][' . esc_attr( $lang_code ) . ']" value="'
-			 . esc_attr( $item_translation ) . '" />';
+			. $icon
+			. ( ! $item_translation ? 0 : esc_html( $item_translation ) )
+			. '</span>'
+			. '<input type="hidden" name="sync[' . esc_attr( $index ) . '][' . esc_attr( $menu_id ) . '][' . esc_attr( $item_id ) . '][' . esc_attr( $lang_code ) . ']" value="'
+			. esc_attr( $item_translation ) . '" />';
 		if ( $change ) {
-			$this->operations[ $index ] = empty( $this->operations[ $index ] ) ? 1 : $this->operations[ $index ] ++;
+			$this->operations[ $index ] = empty( $this->operations[ $index ] ) ? 1 : $this->operations[ $index ]++;
 		}
 	}
 
 	function _item_has_children( $menu_id, $item_id ) {
-		 $has = false;
+		$has = false;
 		foreach ( $this->menus[ $menu_id ]['items'] as $item ) {
 			if ( $item['parent'] == $item_id ) {
 				$has = true;
@@ -545,51 +643,59 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 	}
 
 	function get_item_depth( $menu_id, $item_id ) {
-		$depth  = 0;
-		$parent = 0;
+		$items = isset( $this->menus[ $menu_id ]['items'] ) ? $this->menus[ $menu_id ]['items'] : array();
 
-		do {
-			foreach ( $this->menus[ $menu_id ]['items'] as $item ) {
-				if ( $item['ID'] == $item_id ) {
-					$parent = $item['parent'];
-					if ( $parent > 0 ) {
-						$depth++;
-						$item_id = $parent;
-					} else {
-						break;
-					}
-				}
-			}
-		} while ( $parent > 0 );
-
-		return $depth;
-
+		return WPML_Menu_Hierarchy_Guard::depth_in_item_set( $items, $item_id, $menu_id );
 	}
 
 	function admin_notices() {
 		echo '<div class="updated"><p>' . esc_html__( 'Menu(s) syncing complete.', 'sitepress' ) . '</p></div>';
 	}
 
+	public function render_circular_items_notice() {
+		$item_ids = WPML_Menu_Hierarchy_Guard::get_broken_items();
+		if ( ! $item_ids ) {
+			return;
+		}
+		?>
+		<div class="notice notice-warning inline">
+			<p>
+				<?php
+				echo esc_html(
+					sprintf(
+						/* translators: %s: comma-separated list of menu item ids */
+						__( 'Some menu items point to each other as parents (menu item IDs: %s). WPML shows them without hierarchy and does not sync their parent. Please edit these menu items, re-save their correct parents and reload this page.', 'sitepress' ),
+						implode( ', ', $item_ids )
+					)
+				);
+				?>
+			</p>
+		</div>
+		<?php
+	}
+
 	public function display_menu_links_to_string_translation() {
 		$menu_links_data = $this->get_links_for_menu_strings_translation();
 
-		if ( count( $menu_links_data ) > 0 ) {
-			echo '<p>';
-			esc_html_e( "Your menu includes custom items, which you need to translate using WPML's String Translation.", 'sitepress' );
-			echo '<br/>';
-			esc_html_e( '1. Translate these strings: ', 'sitepress' );
-			$i = 0;
-			foreach ( $menu_links_data['items'] as $menu_name => $menu_url ) {
-				if ( $i > 0 ) {
-					echo ', ';
-				}
-				echo '<a href="' . esc_url( $menu_url ) . '">' . esc_html( $menu_name ) . '</a>' . PHP_EOL;
-				$i ++;
-			}
-			echo '<br/>';
-			esc_html_e( "2. When you're done translating, return here and run the menu synchronization again. This will use the strings that you translated to update the menus.", 'sitepress' );
-			echo '</p>';
+		if ( count( $menu_links_data ) === 0 ) {
+			return;
 		}
+
+		$strings_url = add_query_arg( 'tab', 'strings', add_query_arg( 'page', urlencode( WPML_TM_FOLDER . '/menu/main.php' ), 'admin.php' ) );
+		?>
+		<p>
+			<?php
+			printf(
+				/* translators: Notice on the menu synchronization screen. %1$s: the opening tag of a link to the String Translation screen, %2$s: its closing tag. "WPML Translation Dashboard -> Other texts (Strings)" and "Translations -> Strings" are the names of screens as they appear in the WPML menu. */
+				esc_html__( 'Your menu includes custom items, which may not be synchronized. Translate the menu items from the WPML Translation Dashboard -> Other texts (Strings) or manually from the %1$sTranslations -> Strings%2$s page.', 'sitepress' ),
+				'<a href="' . esc_url( $strings_url ) . '">',
+				'</a>'
+			);
+			?>
+			<br>
+			<?php /* translators: Second line of that notice. "This" is the synchronization the reader is about to run. */ esc_html_e( "When you synchronize the menu, you're also running the menu sync operation. This will use the strings that you've translated to update the menus.", 'sitepress' ); ?>
+		</p>
+		<?php
 	}
 
 	public function get_links_for_menu_strings_translation() {
@@ -609,15 +715,10 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 			}
 
 			if ( ! empty( $menu_names ) ) {
-				$menu_url_base = add_query_arg( 'page', urlencode( $wpml_st_folder . '/menu/string-translation.php' ), 'admin.php' );
+				$tm_url = add_query_arg( 'page', urlencode( WPML_TM_FOLDER . '/menu/main.php' ), 'admin.php' );
 
 				foreach ( $menu_names as $menu_name ) {
-					$menu_url                 = add_query_arg(
-						'context',
-						urlencode( $menu_name . WPML_Menu_Sync_Functionality::STRING_CONTEXT_SUFFIX ),
-						$menu_url_base
-					);
-					$menu_links[ $menu_name ] = $menu_url;
+					$menu_links[ $menu_name ] = $tm_url;
 				}
 			}
 		}
@@ -625,6 +726,7 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 		$response = array();
 		if ( $menu_links ) {
 			$response = array(
+				/* translators: Label in front of the list of languages on the menu synchronization screen; the language names follow the colon. */
 				'label' => esc_html__( 'Translate menu strings and URLs for:', 'sitepress' ),
 				'items' => $menu_links,
 			);
@@ -634,6 +736,6 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 	}
 
 	private function incOperation( $mode ) {
-		$this->operations[ $mode ] = empty( $this->operations[ $mode ] ) ? 1 : $this->operations[ $mode ] ++;
+		$this->operations[ $mode ] = empty( $this->operations[ $mode ] ) ? 1 : $this->operations[ $mode ]++;
 	}
 }

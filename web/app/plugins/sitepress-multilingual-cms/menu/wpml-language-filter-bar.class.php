@@ -9,6 +9,7 @@ abstract class WPML_Language_Filter_Bar extends WPML_WPDB_And_SP_User {
 		if ( ! isset( $this->active_languages['all'] ) ) {
 			$this->current_language        = $this->sitepress->get_current_language();
 			$this->active_languages        = $this->sitepress->get_active_languages();
+			/* translators: First option in the language dropdown of the WPML admin: show the content of every language at once. */
 			$this->active_languages['all'] = array( 'display_name' => __( 'All languages', 'sitepress' ) );
 		}
 	}

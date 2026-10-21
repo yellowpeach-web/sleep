@@ -49,25 +49,26 @@ class Upload implements IHandler {
 			if ( Obj::has( 'error', $file ) ) {
 				$error_message = __( 'There was an error uploading the file, please try again!', 'sitepress' );
 				switch ( $file['error'] ) {
-					case UPLOAD_ERR_INI_SIZE;
+					case UPLOAD_ERR_INI_SIZE:
 						$error_message = __( 'The uploaded file exceeds the upload_max_filesize directive in php.ini.', 'sitepress' );
 						break;
-					case UPLOAD_ERR_FORM_SIZE;
+					case UPLOAD_ERR_FORM_SIZE:
+						/* translators: Error message shown when the file being uploaded is too big. %s: the largest size allowed, in bytes. */
 						$error_message = sprintf( __( 'The uploaded file exceeds %s bytes.', 'sitepress' ), 100000 );
 						break;
-					case UPLOAD_ERR_PARTIAL;
+					case UPLOAD_ERR_PARTIAL:
 						$error_message = __( 'The uploaded file was only partially uploaded.', 'sitepress' );
 						break;
-					case UPLOAD_ERR_NO_FILE;
+					case UPLOAD_ERR_NO_FILE:
 						$error_message = __( 'No file was uploaded.', 'sitepress' );
 						break;
-					case UPLOAD_ERR_NO_TMP_DIR;
+					case UPLOAD_ERR_NO_TMP_DIR:
 						$error_message = __( 'Missing a temporary folder.', 'sitepress' );
 						break;
-					case UPLOAD_ERR_CANT_WRITE;
+					case UPLOAD_ERR_CANT_WRITE:
 						$error_message = __( 'Failed to write file to disk.', 'sitepress' );
 						break;
-					case UPLOAD_ERR_EXTENSION;
+					case UPLOAD_ERR_EXTENSION:
 						$error_message = __( 'A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions with phpinfo() may help.', 'sitepress' );
 						break;
 				}
@@ -78,7 +79,9 @@ class Upload implements IHandler {
 			}
 		};
 
-		return Either::fromNullable( $data->get( 'name' ) )
+		$fileName = $data->get( 'name' );
+
+		return Either::fromNullable( is_string( $fileName ) ? $fileName : null )
 		             ->map( Obj::prop( Fns::__, $_FILES ) )
 		             ->map( $upload( $data->get( 'path' ) ) )
 		             ->chain( $handleError )

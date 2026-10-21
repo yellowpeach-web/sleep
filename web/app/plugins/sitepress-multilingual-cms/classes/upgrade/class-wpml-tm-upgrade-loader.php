@@ -5,19 +5,16 @@ use WPML\API\Version;
 
 class WPML_TM_Upgrade_Loader implements IWPML_Action {
 
-	/** @var SitePress */
+	const FRONT_END_SCOPE_ID = 'tm';
+
 	private $sitepress;
 
-	/** @var WPML_Upgrade_Schema */
 	private $upgrade_schema;
 
-	/** @var WPML_Settings_Helper */
 	private $settings;
 
-	/** @var WPML_Upgrade_Command_Factory */
 	private $factory;
 
-	/** @var WPML_Notices */
 	private $notices;
 
 	public function __construct(
@@ -42,12 +39,6 @@ class WPML_TM_Upgrade_Loader implements IWPML_Action {
 
 		$commands = array(
 			$this->factory->create_command_definition(
-				'WPML_TM_Upgrade_Translation_Priorities_For_Posts',
-				array(),
-				array( 'admin', 'ajax', 'front-end' )
-			),
-
-			$this->factory->create_command_definition(
 				'WPML_TM_Upgrade_Default_Editor_For_Old_Jobs',
 				array( $this->sitepress ),
 				array( 'admin', 'ajax', 'front-end' )
@@ -61,14 +52,19 @@ class WPML_TM_Upgrade_Loader implements IWPML_Action {
 
 			$this->factory->create_command_definition( 'WPML_TM_Upgrade_WPML_Site_ID_ATE', array( $this->upgrade_schema ), array( 'admin' ) ),
 			$this->factory->create_command_definition(
-				'WPML_TM_Upgrade_Cancel_Orphan_Jobs',
-				array( new WPML_TP_Sync_Orphan_Jobs_Factory(), new WPML_TM_Jobs_Migration_State() ),
-				array( 'admin' )
-			),
-			$this->factory->create_command_definition(
 				WPML\TM\Upgrade\Commands\MigrateAteRepository::class,
 				[ $this->upgrade_schema ],
 				[ 'admin' ]
+			),
+			$this->factory->create_command_definition(
+				WPML\TM\Upgrade\Commands\MigrateBatchReportToJobRows::class,
+				[],
+				[ 'admin', 'ajax' ]
+			),
+			$this->factory->create_command_definition(
+				'WPML_TM_Upgrade_Cancel_Orphan_Jobs',
+				array( new WPML_TP_Sync_Orphan_Jobs_Factory(), new WPML_TM_Jobs_Migration_State() ),
+				array( 'admin' )
 			),
 			$this->factory->create_command_definition(
 				WPML\TM\Upgrade\Commands\SynchronizeSourceIdOfATEJobs\Command::class,
@@ -93,9 +89,39 @@ class WPML_TM_Upgrade_Loader implements IWPML_Action {
 				[],
 				[ \WPML_Upgrade::SCOPE_ADMIN ]
 			),
+			$this->factory->create_command_definition(
+				WPML\TM\Upgrade\Commands\ResetClonedSiteLock::class,
+				[],
+				[ \WPML_Upgrade::SCOPE_ADMIN ]
+			),
+			$this->factory->create_command_definition(
+				WPML\TM\Upgrade\Commands\ReleaseClonedSiteLockIntoRetry::class,
+				[],
+				[ \WPML_Upgrade::SCOPE_ADMIN ]
+			),
+			$this->factory->create_command_definition(
+				WPML\TM\Upgrade\Commands\RetireAutoMigrationFailureState::class,
+				[],
+				[ \WPML_Upgrade::SCOPE_ADMIN ]
+			),
+			$this->factory->create_command_definition(
+				WPML\TM\Upgrade\Commands\RepairReviewedJobRows::class,
+				[],
+				[ \WPML_Upgrade::SCOPE_ADMIN ]
+			),
+			$this->factory->create_command_definition(
+				WPML\TM\Upgrade\Commands\RetireVariationJobsOutsideTranslateEverything::class,
+				[],
+				[ \WPML_Upgrade::SCOPE_ADMIN, \WPML_Upgrade::SCOPE_CLI ]
+			),
+			$this->factory->create_command_definition(
+				WPML\TM\Upgrade\Commands\RetireUnaskedFieldReprocessingTasks::class,
+				[],
+				[ \WPML_Upgrade::SCOPE_ADMIN ]
+			),
 		);
 
-		$upgrade = new WPML_Upgrade( $commands, $this->sitepress, $this->factory );
+		$upgrade = new WPML_Upgrade( $commands, $this->sitepress, $this->factory, null, self::FRONT_END_SCOPE_ID );
 		$upgrade->run();
 	}
 }

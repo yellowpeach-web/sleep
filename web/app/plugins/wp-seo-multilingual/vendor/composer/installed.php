@@ -1,0 +1,63 @@
+<?php return array(
+    'root' => array(
+        'pretty_version' => 'dev-7693ec743010f65568a0e0613e0836fc60a40140',
+        'version' => 'dev-7693ec743010f65568a0e0613e0836fc60a40140',
+        'type' => 'wordpress-plugin',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'reference' => '7693ec743010f65568a0e0613e0836fc60a40140',
+        'name' => 'wpml/wpseo',
+        'dev' => false,
+    ),
+    'versions' => array(
+        'otgs/icons' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../otgs/icons',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'reference' => 'd8cbc97d15999ba4a3d8caa08c4333af271325f4',
+            'dev_requirement' => false,
+        ),
+        'otgs/ui' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../otgs/ui',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'reference' => 'd8b11b073ba3247f25108b0dd88742ca3b0d4628',
+            'dev_requirement' => false,
+        ),
+        'roave/security-advisories' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'metapackage',
+            'install_path' => NULL,
+            'aliases' => array(),
+            'reference' => '6e213f05f59444f9e6f5a7c438bf130ae74aed32',
+            'dev_requirement' => false,
+        ),
+        'wpml-shared/wpml-lib-dependencies' => array(
+            'pretty_version' => '5.1.0',
+            'version' => '5.1.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../wpml-shared/wpml-lib-dependencies',
+            'aliases' => array(),
+            'reference' => '38c7b2d0a560ab6b1fb86647ba52bb471dca6924',
+            'dev_requirement' => false,
+        ),
+        'wpml/wpseo' => array(
+            'pretty_version' => 'dev-7693ec743010f65568a0e0613e0836fc60a40140',
+            'version' => 'dev-7693ec743010f65568a0e0613e0836fc60a40140',
+            'type' => 'wordpress-plugin',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'reference' => '7693ec743010f65568a0e0613e0836fc60a40140',
+            'dev_requirement' => false,
+        ),
+    ),
+);

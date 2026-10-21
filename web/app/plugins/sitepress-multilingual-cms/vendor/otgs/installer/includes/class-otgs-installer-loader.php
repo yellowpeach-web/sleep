@@ -25,10 +25,12 @@ class OTGS_Installer_Loader {
 			->load_upgrade_response()
 			->load_site_key_ajax_handler()
 			->load_installer_support_hooks()
+			->load_standalone_plugin_notice()
 			->load_translation_service_info_hooks()
 			->load_plugins_update_cache_cleaner()
 			->load_buy_url_hooks()
 			->load_admin_notice_hooks()
-			->load_auto_upgrade_hooks();
+			->load_auto_upgrade_hooks()
+			->load_plan_plugins_hooks();
 	}
 }

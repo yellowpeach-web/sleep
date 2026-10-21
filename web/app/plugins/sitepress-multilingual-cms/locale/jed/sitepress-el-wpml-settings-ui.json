@@ -3,53 +3,251 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "el"
          },
-         "You can choose which posts to translate from the <strong>Translation Management Dashboard</strong>.": [
-            "Μπορείτε να επιλέξετε ποιες δημοσιεύσεις θα μεταφραστούν από τον <strong>Πίνακα Εργαλείων Διαχείρισης Μετάφρασης</strong>."
-         ],
-         "Yes, translate <b>existing</b> and <b>future</b> content automatically": [
-            "Ναι, να μεταφράζεται το <b>υπάρχον</b> και το <b>μελλοντικό</b> περιεχόμενο αυτόματα"
-         ],
-         "Yes, but only translate <b>future</b> content automatically": [
-            "Ναι, μα να μεταφράζεται μόνο το <b>μελλοντικό</b> περιεχόμενο αυτόματα"
-         ],
-         "Yes, translate <b>future</b> content automatically": [
-            "Ναι, να μεταφράζεται το <b>μελλοντικό</b> περιεχόμενο αυτόματα"
-         ],
-         "No, I want to translate some of these posts, but not all": [
-            "Όχι, θέλω να μεταφράζονται ορισμένες από αυτές τις δημοσιεύσεις, αλλά όχι όλες"
+         "%1$s and %2$s": [
+            "%1$s και %2$s"
          ],
          "You must use the Advanced Translation Editor if you want to translate your content automatically.": [
-            "Πρέπει να χρησιμοποιήσετε τον Προηγμένο επεξεργαστή μεταφράσεων, αν θέλετε να μεταφράζετε αυτόματα το περιεχόμενό σας."
+            "Πρέπει να χρησιμοποιήσετε το Προηγμένο πρόγραμμα επεξεργασίας μετάφρασης εάν θέλετε να μεταφράσετε το περιεχόμενό σας αυτόματα."
          ],
          "Synchronize translators and translation managers with ATE": [
-            "Συγχρονισμός μεταφραστών και διαχειριστών μεταφράσεων με τον Προηγμένο επεξεργαστή μεταφράσεων"
+            "Συγχρονισμός μεταφραστών και διαχειριστών μετάφρασης με το ATE"
          ],
-         "Please try again in a few minutes. If the problem persists, please contact %sWPML support%s.": [
-            "Δοκιμάστε ξανά σε λίγα λεπτά. Αν το πρόβλημα επιμείνει, επικοινωνήστε με τη ν %sυποστήριξη του WPML%s."
+         "Please try again in a few minutes. If the problem persists, please contact %1$sWPML support%2$s.": [
+            "Δοκιμάστε ξανά σε λίγα λεπτά. Εάν το πρόβλημα επιμένει, επικοινωνήστε με την %1$sυποστήριξη του WPML%2$s."
          ],
-         "Are you OK with paying for this?": [
-            "Συμφωνείτε να πληρώσετε για αυτήν την υπηρεσία;"
+         "The number of translated terms carrying %s could not be counted.": [
+            "Δεν ήταν δυνατή η καταμέτρηση του αριθμού των μεταφρασμένων όρων που περιέχουν το %s."
+         ],
+         "There are no translated terms carrying %s yet that need translating again. The change applies to new translations.": [
+            "Δεν υπάρχουν ακόμη μεταφρασμένοι όροι που περιέχουν το %s και χρειάζονται ξανά μετάφραση. Η αλλαγή ισχύει για νέες μεταφράσεις."
+         ],
+         "%1$s translated term carries %2$s — only new translations are affected.": [
+            "%1$s μεταφρασμένος όρος περιέχει το %2$s — επηρεάζονται μόνο οι νέες μεταφράσεις.",
+            "%1$s μεταφρασμένοι όροι περιέχουν το %2$s — επηρεάζονται μόνο οι νέες μεταφράσεις."
+         ],
+         "The number of translated posts carrying %s could not be counted.": [
+            "Δεν ήταν δυνατή η καταμέτρηση του αριθμού των μεταφρασμένων δημοσιεύσεων που περιέχουν το %s."
+         ],
+         "There are no translated posts carrying %s yet that need translating again. The change applies to new translations.": [
+            "Δεν υπάρχουν ακόμη μεταφρασμένες δημοσιεύσεις που περιέχουν το %s και χρειάζονται ξανά μετάφραση. Η αλλαγή ισχύει για νέες μεταφράσεις."
+         ],
+         "%1$s translated post carries %2$s — it will be marked as needing a translation update.": [
+            "%1$s μεταφρασμένη δημοσίευση περιέχει το %2$s — θα επισημανθεί ως απαιτούσα ενημέρωση μετάφρασης.",
+            "%1$s μεταφρασμένες δημοσιεύσεις περιέχουν το %2$s — θα επισημανθούν ως απαιτούσες ενημέρωση μετάφρασης."
+         ],
+         "%1$s translated post carries %2$s — its translation will show the original's value from now on.": [
+            "%1$s μεταφρασμένη δημοσίευση περιέχει το %2$s — η μετάφρασή της θα εμφανίζει την τιμή του πρωτοτύπου από εδώ και στο εξής.",
+            "%1$s μεταφρασμένες δημοσιεύσεις περιέχουν το %2$s — οι μεταφράσεις τους θα εμφανίζουν την τιμή του πρωτοτύπου από εδώ και στο εξής."
+         ],
+         "%1$s translated post carries %2$s — translations without a value get the original's once.": [
+            "%1$s μεταφρασμένη δημοσίευση περιέχει το %2$s — οι μεταφράσεις χωρίς τιμή λαμβάνουν την τιμή του πρωτοτύπου μία φορά.",
+            "%1$s μεταφρασμένες δημοσιεύσεις περιέχουν το %2$s — οι μεταφράσεις χωρίς τιμή λαμβάνουν την τιμή του πρωτοτύπου μία φορά."
+         ],
+         "%1$s translated post carries %2$s — it is no longer translated and what its translations hold stays as it is.": [
+            "%1$s μεταφρασμένη δημοσίευση περιέχει το %2$s — δεν μεταφράζεται πλέον και το περιεχόμενο των μεταφράσεών της παραμένει ως έχει.",
+            "%1$s μεταφρασμένες δημοσιεύσεις περιέχουν το %2$s — δεν μεταφράζονται πλέον και το περιεχόμενο των μεταφράσεών τους παραμένει ως έχει."
+         ],
+         "Review these translation setting changes": [
+            "Επανεξέταση αυτών των αλλαγών στις ρυθμίσεις μετάφρασης"
          ],
          "Cancel": [
             "Ακύρωση"
          ],
-         "Make translatable": [
-            "Να καταστούν μεταφράσιμες"
+         "Save changes": [
+            "Αποθήκευση αλλαγών"
+         ],
+         "Also update the existing posts now": [
+            "Ενημέρωση και των υπαρχουσών δημοσιεύσεων τώρα"
+         ],
+         "Also update the %s existing post now": [
+            "Ενημέρωση και της %s υπάρχουσας δημοσίευσης τώρα",
+            "Ενημέρωση και των %s υπαρχουσών δημοσιεύσεων τώρα"
+         ],
+         "Only apply to new translations": [
+            "Εφαρμογή μόνο σε νέες μεταφράσεις"
+         ],
+         "Once saved, WPML automatically sends new and updated posts with this field to translation. This may use translation words.": [
+            "Μόλις αποθηκευτεί, το WPML στέλνει αυτόματα νέες και ενημερωμένες δημοσιεύσεις με αυτό το πεδίο για μετάφραση. Αυτό μπορεί να καταναλώσει λέξεις μετάφρασης.",
+            "Μόλις αποθηκευτεί, το WPML στέλνει αυτόματα νέες και ενημερωμένες δημοσιεύσεις με αυτά τα πεδία για μετάφραση. Αυτό μπορεί να καταναλώσει λέξεις μετάφρασης."
+         ],
+         "Once saved, WPML automatically sends new and updated terms with this key to translation. This may use translation words.": [
+            "Μόλις αποθηκευτεί, το WPML στέλνει αυτόματα νέους και ενημερωμένους όρους με αυτό το κλειδί για μετάφραση. Αυτό μπορεί να καταναλώσει λέξεις μετάφρασης.",
+            "Μόλις αποθηκευτεί, το WPML στέλνει αυτόματα νέους και ενημερωμένους όρους με αυτά τα κλειδιά για μετάφραση. Αυτό μπορεί να καταναλώσει λέξεις μετάφρασης."
+         ],
+         "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "Σε κάθε περίπτωση, η νέα προτίμηση αποθηκεύεται. Με την επιλογή “Εφαρμογή μόνο σε νέες μεταφράσεις”, κάθε υπάρχουσα μετάφραση παραμένει ακριβώς ως έχει."
+         ],
+         "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
+            "%1$s προσαρμοσμένο πεδίο έγινε μεταφράσιμο εκτός αυτής της οθόνης: %2$s. Αποφασίστε τι θα συμβεί με τις μεταφράσεις που υπάρχουν ήδη.",
+            "%1$s προσαρμοσμένα πεδία έγιναν μεταφράσιμα εκτός αυτής της οθόνης: %2$s. Αποφασίστε τι θα συμβεί με τις μεταφράσεις που υπάρχουν ήδη."
+         ],
+         "Review this field": [
+            "Επανεξέταση αυτού του πεδίου",
+            "Επανεξέταση αυτών των πεδίων"
          ],
          "Save": [
             "Αποθήκευση"
          ],
-         "Please confirm this translation setting": [
-            "Επιβεβαιώστε αυτή τη ρύθμιση μετάφρασης"
+         "Calculate Costs": [
+            "Υπολογισμός κόστους"
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate the %1$d existing item.": [
-            "Ο ιστότοπός σας έχει ρυθμιστεί να μεταφράζει όλο το περιεχόμενο αυτόματα. Όταν κάνετε τα <PostTypesNames /> μεταφράσιμα, το WPML θα μεταφράζει αυτόματα το %1$d υπάρχον στοιχείο.",
-            "Ο ιστότοπός σας έχει ρυθμιστεί να μεταφράζει όλο το περιεχόμενο αυτόματα. Όταν κάνετε τα <PostTypesNames /> μεταφράσιμα, το WPML θα μεταφράζει αυτόματα τα %1$d υπάρχοντα στοιχεία."
+         "WPML will automatically translate %1$s into %2$s.": [
+            "Το WPML θα μεταφράσει αυτόματα %1$s σε %2$s."
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate all future content.": [
-            "Ο ιστότοπός σας έχει ρυθμιστεί να μεταφράζει όλο το περιεχόμενο αυτόματα. Όταν κάνετε τα <PostTypesNames /> μεταφράσιμα, το WPML θα μεταφράζει αυτόματα όλο το μελλοντικό περιεχόμενο."
+         "Automatic translation uses translation words.": [
+            "Η αυτόματη μετάφραση χρησιμοποιεί λέξεις μετάφρασης."
+         ],
+         "Are you OK with this?": [
+            "Συμφωνείτε με αυτό;"
+         ],
+         "Are you sure you want to change the translation option?": [
+            "Είστε σίγουροι ότι θέλετε να αλλάξετε την επιλογή μετάφρασης;"
+         ],
+         "Yes, continue": [
+            "Ναι, συνέχεια"
+         ],
+         "No, go back": [
+            "Όχι, πίσω"
+         ],
+         "%d term": [
+            "%d όρο",
+            "%d όρους"
+         ],
+         "%d language": [
+            "%d γλώσσα",
+            "%d γλώσσες"
+         ],
+         "%s will be translated.": [
+            "Το %s θα μεταφραστεί."
+         ],
+         "Change the URLs of existing translations?": [
+            "Αλλαγή των URL των υπαρχουσών μεταφράσεων;"
+         ],
+         "Counting the existing translations this affects… %1$s of %2$s posts.": [
+            "Καταμέτρηση των υπαρχουσών μεταφράσεων που επηρεάζονται… %1$s από %2$s δημοσιεύσεις."
+         ],
+         "Counting the existing translations this affects…": [
+            "Καταμέτρηση των υπαρχουσών μεταφράσεων που επηρεάζονται…"
+         ],
+         "Also update the %s existing translation now — its URL changes": [
+            "Ενημέρωση και της %s υπάρχουσας μετάφρασης τώρα — το URL της θα αλλάξει",
+            "Ενημέρωση και των %s υπαρχουσών μεταφράσεων τώρα — τα URL τους θα αλλάξουν"
+         ],
+         "Either way the setting is saved. With \"Only apply to new translations\" every existing translation keeps its slug.": [
+            "Σε κάθε περίπτωση, η ρύθμιση αποθηκεύεται. Με την επιλογή “Εφαρμογή μόνο σε νέες μεταφράσεις”, κάθε υπάρχουσα μετάφραση διατηρεί το σύντομο όνομά της."
+         ],
+         "No existing translation gets a different URL from this option. It does not apply to new translations either. None of your active languages has \"Encode URL\" turned on.": [
+            "Καμία υπάρχουσα μετάφραση δεν αλλάζει URL από αυτήν την επιλογή. Δεν ισχύει ούτε για νέες μεταφράσεις. Καμία από τις ενεργές γλώσσες σας δεν έχει ενεργοποιημένη την επιλογή “Κωδικοποίηση URL”."
+         ],
+         "No existing translation gets a different URL from this option. It applies to new translations.": [
+            "Καμία υπάρχουσα μετάφραση δεν αλλάζει URL από αυτή την επιλογή. Εφαρμόζεται σε νέες μεταφράσεις."
+         ],
+         "%s existing translation in a language with encoded URLs would get the original's slug.": [
+            "%s υπάρχουσα μετάφραση σε γλώσσα με κωδικοποιημένα URL θα λάβει το σύντομο όνομα του πρωτοτύπου.",
+            "%s υπάρχουσες μεταφράσεις σε γλώσσες με κωδικοποιημένα URL θα λάβουν το σύντομο όνομα του πρωτοτύπου."
+         ],
+         "%s existing translation would get a slug regenerated from its title.": [
+            "Για %s υπάρχουσα μετάφραση θα γίνει αναδημιουργία του σύντομου ονόματος από τον τίτλο της.",
+            "Για %s υπάρχουσες μεταφράσεις θα γίνει αναδημιουργία των σύντομων ονομάτων από τους τίτλους τους."
+         ],
+         "This changes the URL of %s published translation. Links to it from your other translations are updated. Search engines and links from elsewhere keep the old address until you redirect it.": [
+            "Αυτό αλλάζει το URL σε %s δημοσιευμένη μετάφραση. Οι σύνδεσμοι προς αυτήν από άλλες μεταφράσεις σας ενημερώνονται. Οι μηχανές αναζήτησης και οι σύνδεσμοι από αλλού διατηρούν την παλιά διεύθυνση μέχρι να την ανακατευθύνετε.",
+            "Αυτό αλλάζει τα URL σε %s δημοσιευμένες μεταφράσεις. Οι σύνδεσμοι προς αυτές από άλλες μεταφράσεις σας ενημερώνονται. Οι μηχανές αναζήτησης και οι σύνδεσμοι από αλλού διατηρούν τις παλιές διευθύνσεις μέχρι να τις ανακατευθύνετε."
+         ],
+         "Retry": [
+            "Επανάληψη"
+         ],
+         "Updating %1$s of %2$s translation…": [
+            "Ενημέρωση %1$s από %2$s μετάφραση…",
+            "Ενημέρωση %1$s από %2$s μεταφράσεις…"
+         ],
+         "Updating %1$s of %2$s posts…": [
+            "Ενημέρωση %1$s από %2$s δημοσιεύσεις…"
+         ],
+         "%1$s %2$s updated.": [
+            "Ενημερώθηκαν %1$s %2$s."
+         ],
+         "%s post updated.": [
+            "Ενημερώθηκε %s δημοσίευση.",
+            "Ενημερώθηκαν %s δημοσιεύσεις."
+         ],
+         "%s marked as needing a translation update.": [
+            "%s επισημάνθηκαν ως απαιτούσες ενημέρωση μετάφρασης."
+         ],
+         "%1$s sent to translation and %2$s outside Translate Everything's range marked for later.": [
+            "%1$s στάλθηκαν για μετάφραση και %2$s εκτός του εύρους της Αυτόματης Μετάφρασης επισημάνθηκαν για αργότερα."
+         ],
+         "%s sent to translation.": [
+            "%s στάλθηκαν για μετάφραση."
+         ],
+         "Nothing was sent. %s outside Translate Everything's range marked for later.": [
+            "Δεν στάλθηκε τίποτα. %s εκτός του εύρους της Αυτόματης Μετάφρασης επισημάνθηκαν για αργότερα."
+         ],
+         "Nothing was sent.": [
+            "Δεν στάλθηκε τίποτα."
+         ],
+         "%s in a language Translate Everything does not send marked for later.": [
+            "%s σε γλώσσα που δεν υποστηρίζεται από την Αυτόματη Μετάφραση επισημάνθηκαν για αργότερα."
+         ],
+         "The URL of %s translation was updated.": [
+            "Το URL %s μετάφρασης ενημερώθηκε.",
+            "Τα URL %s μεταφράσεων ενημερώθηκαν."
+         ],
+         "No URL was changed.": [
+            "Δεν άλλαξε κανένα URL."
+         ],
+         "%s translation no longer needed a change.": [
+            "%s μετάφραση δεν χρειαζόταν πλέον αλλαγή.",
+            "%s μεταφράσεις δεν χρειάζονταν πλέον αλλαγή."
+         ],
+         "The update continues in the background. The admin bar shows its progress.": [
+            "Η ενημέρωση συνεχίζεται στο παρασκήνιο. Η γραμμή διαχείρισης εμφανίζει την πρόοδό της."
+         ],
+         "Counting the words this sends…": [
+            "Καταμέτρηση των λέξεων που στέλνονται…"
+         ],
+         "Counting the words this sends… %1$s of %2$s posts.": [
+            "Καταμέτρηση των λέξεων που στέλνονται… %1$s από %2$s δημοσιεύσεις."
+         ],
+         "The number of words this sends could not be estimated. The Translation Dashboard shows the cost once the posts are queued.": [
+            "Δεν ήταν δυνατή η εκτίμηση του αριθμού των λέξεων που στέλνονται. Το Ταμπλό Μετάφρασης θα εμφανίσει το κόστος μόλις οι δημοσιεύσεις μπουν στην ουρά."
+         ],
+         "This sends %s word of content that could not be priced. The Translation Dashboard shows the cost once the posts are queued.": [
+            "Αυτό στέλνει %s λέξη περιεχομένου που δεν μπόρεσε να τιμολογηθεί. Το Ταμπλό Μετάφρασης θα εμφανίσει το κόστος μόλις οι δημοσιεύσεις μπουν στην ουρά.",
+            "Αυτό στέλνει %s λέξεις περιεχομένου που δεν μπόρεσαν να τιμολογηθεί. Το Ταμπλό Μετάφρασης θα εμφανίσει το κόστος μόλις οι δημοσιεύσεις μπουν στην ουρά."
+         ],
+         "Sending it again to %2$s languages uses about %1$s word.": [
+            "Η εκ νέου αποστολή σε %2$s γλώσσες καταναλώνει περίπου %1$s λέξη.",
+            "Η εκ νέου αποστολή σε %2$s γλώσσες καταναλώνει περίπου %1$s λέξεις."
+         ],
+         "Sending them again to %2$s languages uses about %1$s word.": [
+            "Η εκ νέου αποστολή τους σε %2$s γλώσσες καταναλώνει περίπου %1$s λέξη.",
+            "Η εκ νέου αποστολή τους σε %2$s γλώσσες καταναλώνει περίπου %1$s λέξεις."
+         ],
+         "Sending it again uses about %s word.": [
+            "Η εκ νέου αποστολή καταναλώνει περίπου %s λέξη.",
+            "Η εκ νέου αποστολή καταναλώνει περίπου %s λέξεις."
+         ],
+         "Sending them again uses about %s word.": [
+            "Η εκ νέου αποστολή τους καταναλώνει περίπου %s λέξη.",
+            "Η εκ νέου αποστολή τους καταναλώνει περίπου %s λέξεις."
+         ],
+         "%s of the posts is outside Translate Everything's range: its translations will be marked without being sent.": [
+            "%s από τις δημοσιεύσεις είναι εκτός του εύρους της Αυτόματης Μετάφρασης: οι μεταφράσεις της θα επισημανθούν χωρίς να σταλούν.",
+            "%s από τις δημοσιεύσεις είναι εκτός του εύρους της Αυτόματης Μετάφρασης: οι μεταφράσεις τους θα επισημανθούν χωρίς να σταλούν."
+         ],
+         "Your choice for the existing translations was not recorded.": [
+            "Η επιλογή σας για τις υπάρχουσες μεταφράσεις δεν καταγράφηκε."
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "Το μεταφραστικό μας σύστημα δεν αποδέχτηκε αυτό το αίτημα (απάντησε %d). Περιμένετε ένα λεπτό και δοκιμάστε ξανά, και επικοινωνήστε με την υποστήριξη του WPML εάν το πρόβλημα επιμένει."
+         ],
+         "several post types listed\u0004%1$s %2$s updated.": [
+            "Ενημερώθηκαν %1$s %2$s."
          ]
       }
    }

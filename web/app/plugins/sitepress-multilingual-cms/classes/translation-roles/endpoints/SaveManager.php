@@ -14,20 +14,15 @@ class SaveManager extends SaveUser {
 
 	const TRANSLATION_MANAGER_INSTRUCTIONS_TEMPLATE = 'notification/translation-manager-instructions.twig';
 
-	/**
-	 * @inheritDoc
-	 */
 	public function run( Collection $data ) {
 
-		// $setRole :: WP_User -> WP_User
 		$setRole = Fns::tap( invoke( 'add_cap' )->with( User::CAP_MANAGE_TRANSLATIONS ) );
 
 		return self::getUser( $data )
 		           ->map( $setRole )
 		           ->map( [ self::class, 'sendInstructions' ] )
 		           ->map( function( $user ) {
-					   do_action( 'wpml_update_translator' );
-					   do_action( 'wpml_tm_ate_synchronize_managers' );
+					   do_action( 'wpml_tm_ate_synchronize_managers', $user->ID );
 					   return true;
 				   } );
 	}
@@ -40,12 +35,15 @@ class SaveManager extends SaveUser {
 		$model = [
 			'setup_url'       => esc_url( $translationSetupUrl ),
 			'username'        => $manager->display_name,
+			/* translators: Line in the email WPML sends to a new translation manager. %s: the name of the site. */
 			'intro_message_1' => sprintf( __( 'You are the Translation Manager for %s. This role lets you manage everything related to translation for this site.', 'sitepress' ), $siteName ),
 			'intro_message_2' => __( 'Before you can start sending content to translation, you need to complete a short setup.', 'sitepress' ),
 			'setup'           => __( 'Set-up the translation', 'sitepress' ),
+			/* translators: Line in the email WPML sends to a translation manager, reminding them of their login name. %1$s: the name of the site, %2$s: that login name. */
 			'reminder'        => sprintf( __( '* Remember, your login name for %1$s is %2$s. If you need help with your password, use the password reset in the login page.', 'sitepress' ), $siteName, $manager->user_login ),
 			'at_your_service' => __( 'At your service', 'sitepress' ),
 			'admin_name'      => $adminUser->display_name,
+			/* translators: Line in the email WPML sends to a new translation manager, naming the person who set it up. %s: the name of the site. */
 			'admin_for_site'  => sprintf( __( 'Administrator for %s', 'sitepress' ), $siteName ),
 		];
 
@@ -54,6 +52,7 @@ class SaveManager extends SaveUser {
 			$model,
 			self::TRANSLATION_MANAGER_INSTRUCTIONS_TEMPLATE
 		);
+		/* translators: Subject of the email WPML sends to a new translation manager. %s: the name of the site. */
 		$subject = sprintf( __( 'You are now the Translation Manager for %s - action needed', 'sitepress' ), $siteName );
 
 		$headers = array(
@@ -64,10 +63,12 @@ class SaveManager extends SaveUser {
 
 		$forceDisplayName = Fns::always( $adminUser->display_name );
 
-		$sendMail = partial( 'wp_mail', $to, $subject, $message, $headers );
+		$sendMail = function () use ( $to, $subject, $message, $headers ) {
+			return \WPML_Mail_Sender::send( $to, $subject, $message, $headers, array(), 'translation-manager-instructions' );
+		};
 
 		Hooks::callWithFilter( $sendMail, 'wp_mail_from_name', $forceDisplayName );
 
-		return true;
+		return $manager;
 	}
 }

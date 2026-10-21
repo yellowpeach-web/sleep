@@ -3,8 +3,9 @@
     <repository>
         <id>wpml</id>
         <apiurl>https://api.wpml.org/</apiurl>
-        <products>https://d2salfytceyqoe.cloudfront.net/wpml33-products.json</products>
-        <default_products>{"id":"wpml-the-wordpress-multilingual-plugin","name":"WPML - The WordPress Multilingual Plugin","product-name":"WPML","url":"https:\/\/wpml.org","site_keys_management_url":"https:\/\/wpml.org\/account\/sites\/","packages":[],"downloads":{"plugins":[]},"recommendation_sections":[],"commecial_tab_sections":[]}</default_products>
+        <products>https://wpml.org/feeds/wpml-components.json</products>
+        <releases>https://wpml.org/feeds/wpml-releases.json</releases>
+        <default_products>{"id":"wpml-the-wordpress-multilingual-plugin","name":"WPML - The WordPress Multilingual Plugin","product-name":"WPML","url":"https:\/\/wpml.org","site_keys_management_url":"https:\/\/wpml.org\/account\/sites\/","support_tags":[],"localization":[],"marketing_cp":[],"packages":[],"products-map":{},"glue_plugins_mapping":{},"downloads":{"plugins":{}},"recommendation_sections":[],"commecial_tab_sections":[]}</default_products>
     </repository>
     <repository>
         <id>toolset</id>

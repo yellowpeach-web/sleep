@@ -30,16 +30,16 @@ class WPML_ST_PB_Plugin {
 		?>
 			<div class="message error">
 				<p>
-			<?php esc_html_e( "The WPML Page Builders plugin that you're using is now part of WPML.", 'sitepress' ); ?>
+			<?php /* translators: First line of the admin notice asking the site owner to remove the separate WPML Page Builders plugin. It is a product name and stays in English. */ esc_html_e( "The WPML Page Builders plugin that you're using is now part of WPML.", 'sitepress' ); ?>
 				</p>
 				<p>
-			<?php esc_html_e( 'You need to deactivate the separate plugin.', 'sitepress' ); ?>
+			<?php /* translators: Second line of that notice; "the separate plugin" is the standalone WPML Page Builders plugin. */ esc_html_e( 'You need to deactivate the separate plugin.', 'sitepress' ); ?>
 				</p>
 				<p>
-			<?php esc_html_e( 'No worries, the full functionality is preserved in WPML String Translation.', 'sitepress' ); ?>
+			<?php /* translators: Third line of that notice. "WPML String Translation" is the add-on's name and stays in English. */ esc_html_e( 'No worries, the full functionality is preserved in WPML String Translation.', 'sitepress' ); ?>
 				</p>
 				<p>
-					<a class="button-primary" href="<?php echo esc_url( $plugins_url ); ?>"><?php esc_html_e( 'Deactivate WPML Page Builders', 'sitepress' ); ?></a>
+					<a class="button-primary" href="<?php echo esc_url( $plugins_url ); ?>"><?php /* translators: Button in that notice that switches the separate plugin off. Verb phrase, imperative; the plugin name stays in English. */ esc_html_e( 'Deactivate WPML Page Builders', 'sitepress' ); ?></a>
 				</p>
 			</div>
 		<?php

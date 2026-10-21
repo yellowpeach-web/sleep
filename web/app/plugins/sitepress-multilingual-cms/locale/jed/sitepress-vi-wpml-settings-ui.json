@@ -4,43 +4,224 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "vi"
          },
-         "You can choose which posts to translate from the <strong>Translation Management Dashboard</strong>.": [
-            "Bạn có thể chọn bài đăng nào cần dịch <strong>Bảng điều khiển Quản lý Dịch thuật</strong>."
-         ],
-         "Yes, translate all of these posts automatically": [
-            "Có, tự động dịch tất cả các bài đăng này"
-         ],
-         "No, I want to translate some of these posts, but not all": [
-            "Không, tôi muốn dịch một vài bài đăng trong số này, nhưng không phải tất cả"
+         "%1$s and %2$s": [
+            "%1$s và %2$s"
          ],
          "You must use the Advanced Translation Editor if you want to translate your content automatically.": [
-            "Bạn phải sử dụng Trình biên tập Dịch thuật Nâng cao nếu bạn muốn dịch tự động nội dung của mình."
+            "Bạn phải sử dụng Trình biên tập dịch thuật nâng cao nếu muốn dịch nội dung của mình tự động."
          ],
          "Synchronize translators and translation managers with ATE": [
-            "Đồng bộ những người dịch và quản lý dịch thuật bằng ATE"
+            "Đồng bộ hóa người dịch và người quản lý dịch thuật với ATE"
          ],
-         "Please try again in a few minutes. If the problem persists, please contact %sWPML support%s.": [
-            "Vui lòng thử lại sau vài phút. Nếu sự cố vẫn còn tiếp diễn, vui lòng liên hệ %sbộ phận hỗ trợ của WPML%s."
+         "Please try again in a few minutes. If the problem persists, please contact %1$sWPML support%2$s.": [
+            "Vui lòng thử lại sau vài phút. Nếu sự cố vẫn tiếp diễn, vui lòng liên hệ với %1$shỗ trợ WPML%2$s."
          ],
-         "Save": [
-            "Lưu"
+         "The number of translated terms carrying %s could not be counted.": [
+            "Không thể đếm được số lượng thuật ngữ đã dịch có chứa %s."
          ],
-         "Please confirm this translation setting": [
-            "Vui lòng xác nhận cài đặt bản dịch này"
+         "There are no translated terms carrying %s yet that need translating again. The change applies to new translations.": [
+            "Chưa có thuật ngữ đã dịch nào chứa %s cần dịch lại. Thay đổi này sẽ áp dụng cho các bản dịch mới."
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate the <NumberOfItems /> existing items.": [
-            "Trang web của bạn được thiết lập để dịch tự động tất cả nội dung. Khi bạn cho phép <PostTypesNames /> có thể dịch được, WPML sẽ tự động dịch  <NumberOfItems /> hạng mục có sẵn."
+         "%1$s translated term carries %2$s — only new translations are affected.": [
+            "%1$s thuật ngữ đã dịch có chứa %2$s — chỉ các bản dịch mới bị ảnh hưởng."
          ],
-         "Are you OK with paying for this?": [
-            "Bạn cảm thấy ổn khi thanh toán cho việc này?"
+         "The number of translated posts carrying %s could not be counted.": [
+            "Không thể đếm được số lượng bài viết đã dịch có chứa %s."
+         ],
+         "There are no translated posts carrying %s yet that need translating again. The change applies to new translations.": [
+            "Chưa có bài viết đã dịch nào chứa %s cần dịch lại. Thay đổi này sẽ áp dụng cho các bản dịch mới."
+         ],
+         "%1$s translated post carries %2$s — it will be marked as needing a translation update.": [
+            "%1$s bài viết đã dịch có chứa %2$s — chúng sẽ được đánh dấu là cần cập nhật bản dịch."
+         ],
+         "%1$s translated post carries %2$s — its translation will show the original's value from now on.": [
+            "%1$s bài viết đã dịch có chứa %2$s — bản dịch của chúng sẽ hiển thị giá trị của bản gốc kể từ bây giờ."
+         ],
+         "%1$s translated post carries %2$s — translations without a value get the original's once.": [
+            "%1$s bài viết đã dịch có chứa %2$s — các bản dịch chưa có giá trị sẽ nhận giá trị của bản gốc một lần."
+         ],
+         "%1$s translated post carries %2$s — it is no longer translated and what its translations hold stays as it is.": [
+            "%1$s bài viết đã dịch có chứa %2$s — chúng không còn được dịch nữa và nội dung bản dịch của chúng sẽ được giữ nguyên."
+         ],
+         "Review these translation setting changes": [
+            "Xem lại những thay đổi cài đặt dịch thuật này"
          ],
          "Cancel": [
             "Hủy"
          ],
-         "Make translatable": [
-            "Cho phép có thể dịch"
+         "Save changes": [
+            "Lưu thay đổi"
+         ],
+         "Also update the existing posts now": [
+            "Đồng thời cập nhật các bài viết hiện có ngay bây giờ"
+         ],
+         "Also update the %s existing post now": [
+            "Đồng thời cập nhật %s bài viết hiện có ngay bây giờ"
+         ],
+         "Only apply to new translations": [
+            "Chỉ áp dụng cho các bản dịch mới"
+         ],
+         "Once saved, WPML automatically sends new and updated posts with this field to translation. This may use translation words.": [
+            "Sau khi lưu, WPML sẽ tự động gửi các bài viết mới và bài viết được cập nhật có các trường này để dịch. Việc này có thể sử dụng từ dịch thuật."
+         ],
+         "Once saved, WPML automatically sends new and updated terms with this key to translation. This may use translation words.": [
+            "Sau khi lưu, WPML sẽ tự động gửi các thuật ngữ mới và thuật ngữ được cập nhật có các khóa này để dịch. Việc này có thể sử dụng từ dịch thuật."
+         ],
+         "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "Dù bằng cách nào, tùy chọn mới cũng sẽ được lưu. Với “Chỉ áp dụng cho các bản dịch mới”, mọi bản dịch hiện có sẽ được giữ nguyên chính xác như hiện tại."
+         ],
+         "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
+            "%1$s trường tùy chỉnh đã trở thành có thể dịch bên ngoài màn hình này: %2$s. Hãy quyết định điều gì sẽ xảy ra với các bản dịch đã tồn tại."
+         ],
+         "Review this field": [
+            "Xem lại các trường này"
+         ],
+         "Save": [
+            "Lưu"
+         ],
+         "Calculate Costs": [
+            "Tính toán chi phí"
+         ],
+         "WPML will automatically translate %1$s into %2$s.": [
+            "WPML sẽ tự động dịch %1$s sang %2$s."
+         ],
+         "Automatic translation uses translation words.": [
+            "Dịch tự động sử dụng từ dịch thuật."
+         ],
+         "Are you OK with this?": [
+            "Bạn có đồng ý với việc này không?"
+         ],
+         "Are you sure you want to change the translation option?": [
+            "Bạn có chắc chắn muốn thay đổi tùy chọn dịch thuật không?"
+         ],
+         "Yes, continue": [
+            "Có, tiếp tục"
+         ],
+         "No, go back": [
+            "Không, quay lại"
+         ],
+         "%d term": [
+            "%d mục"
+         ],
+         "%d language": [
+            "%d ngôn ngữ"
+         ],
+         "%s will be translated.": [
+            "%s sẽ được dịch."
+         ],
+         "Change the URLs of existing translations?": [
+            "Thay đổi URL của các bản dịch hiện có?"
+         ],
+         "Counting the existing translations this affects… %1$s of %2$s posts.": [
+            "Đang đếm các bản dịch hiện có bị ảnh hưởng… %1$s trên %2$s bài viết."
+         ],
+         "Counting the existing translations this affects…": [
+            "Đang đếm các bản dịch hiện có bị ảnh hưởng…"
+         ],
+         "Also update the %s existing translation now — its URL changes": [
+            "Đồng thời cập nhật %s bản dịch hiện có ngay bây giờ — URL của chúng sẽ thay đổi"
+         ],
+         "Either way the setting is saved. With \"Only apply to new translations\" every existing translation keeps its slug.": [
+            "Dù bằng cách nào, cài đặt cũng sẽ được lưu. Với “Chỉ áp dụng cho các bản dịch mới”, mọi bản dịch hiện có sẽ giữ nguyên slug của nó."
+         ],
+         "No existing translation gets a different URL from this option. It does not apply to new translations either. None of your active languages has \"Encode URL\" turned on.": [
+            "Không có bản dịch hiện có nào nhận URL khác từ tùy chọn này. Tùy chọn này cũng không áp dụng cho các bản dịch mới. Không có ngôn ngữ đang hoạt động nào của bạn bật tùy chọn “Mã hóa URL”."
+         ],
+         "No existing translation gets a different URL from this option. It applies to new translations.": [
+            "Không có bản dịch hiện có nào bị thay đổi URL từ tùy chọn này. Nó chỉ áp dụng cho các bản dịch mới."
+         ],
+         "%s existing translation in a language with encoded URLs would get the original's slug.": [
+            "%s bản dịch hiện có trong các ngôn ngữ có URL được mã hóa sẽ nhận slug của bản gốc."
+         ],
+         "%s existing translation would get a slug regenerated from its title.": [
+            "%s bản dịch hiện có sẽ được tạo lại slug từ tiêu đề của chúng."
+         ],
+         "This changes the URL of %s published translation. Links to it from your other translations are updated. Search engines and links from elsewhere keep the old address until you redirect it.": [
+            "Việc này sẽ thay đổi URL của %s bản dịch đã xuất bản. Các liên kết đến chúng từ những bản dịch khác của bạn sẽ được cập nhật. Các công cụ tìm kiếm và liên kết từ nơi khác sẽ giữ địa chỉ cũ cho đến khi bạn chuyển hướng chúng."
+         ],
+         "Retry": [
+            "Thử lại"
+         ],
+         "Updating %1$s of %2$s translation…": [
+            "Đang cập nhật %1$s trên %2$s bản dịch…"
+         ],
+         "Updating %1$s of %2$s posts…": [
+            "Đang cập nhật %1$s trên %2$s bài viết…"
+         ],
+         "%1$s %2$s updated.": [
+            "Đã cập nhật %1$s %2$s."
+         ],
+         "%s post updated.": [
+            "Đã cập nhật %s bài viết."
+         ],
+         "%s marked as needing a translation update.": [
+            "Đã đánh dấu %s bài viết là cần cập nhật bản dịch."
+         ],
+         "%1$s sent to translation and %2$s outside Translate Everything's range marked for later.": [
+            "Đã gửi %1$s bài viết để dịch và đánh dấu %2$s bài viết nằm ngoài phạm vi của Dịch mọi thứ để xử lý sau."
+         ],
+         "%s sent to translation.": [
+            "Đã gửi %s bài viết để dịch."
+         ],
+         "Nothing was sent. %s outside Translate Everything's range marked for later.": [
+            "Không có gì được gửi. Đã đánh dấu %s bài viết nằm ngoài phạm vi của Dịch mọi thứ để xử lý sau."
+         ],
+         "Nothing was sent.": [
+            "Không có gì được gửi."
+         ],
+         "%s in a language Translate Everything does not send marked for later.": [
+            "Đã đánh dấu %s bài viết thuộc ngôn ngữ mà Dịch mọi thứ không gửi để xử lý sau."
+         ],
+         "The URL of %s translation was updated.": [
+            "URL của %s bản dịch đã được cập nhật."
+         ],
+         "No URL was changed.": [
+            "Không có URL nào bị thay đổi."
+         ],
+         "%s translation no longer needed a change.": [
+            "%s bản dịch không còn cần thay đổi nữa."
+         ],
+         "The update continues in the background. The admin bar shows its progress.": [
+            "Quá trình cập nhật tiếp tục chạy ngầm. Thanh quản trị sẽ hiển thị tiến trình của nó."
+         ],
+         "Counting the words this sends…": [
+            "Đang đếm số từ sẽ gửi…"
+         ],
+         "Counting the words this sends… %1$s of %2$s posts.": [
+            "Đang đếm số từ sẽ gửi… %1$s trên %2$s bài viết."
+         ],
+         "The number of words this sends could not be estimated. The Translation Dashboard shows the cost once the posts are queued.": [
+            "Không thể ước tính số lượng từ sẽ gửi. Bảng điều khiển dịch thuật sẽ hiển thị chi phí sau khi các bài viết được đưa vào hàng đợi."
+         ],
+         "This sends %s word of content that could not be priced. The Translation Dashboard shows the cost once the posts are queued.": [
+            "Việc này sẽ gửi %s từ nội dung không thể tính giá. Bảng điều khiển dịch thuật sẽ hiển thị chi phí sau khi các bài viết được đưa vào hàng đợi."
+         ],
+         "Sending it again to %2$s languages uses about %1$s word.": [
+            "Gửi lại nội dung này sang %2$s ngôn ngữ sẽ sử dụng khoảng %1$s từ."
+         ],
+         "Sending them again to %2$s languages uses about %1$s word.": [
+            "Gửi lại chúng sang %2$s ngôn ngữ sẽ sử dụng khoảng %1$s từ."
+         ],
+         "Sending it again uses about %s word.": [
+            "Gửi lại nội dung này sẽ sử dụng khoảng %s từ."
+         ],
+         "Sending them again uses about %s word.": [
+            "Gửi lại chúng sẽ sử dụng khoảng %s từ."
+         ],
+         "%s of the posts is outside Translate Everything's range: its translations will be marked without being sent.": [
+            "%s bài viết nằm ngoài phạm vi của Dịch mọi thứ: bản dịch của chúng sẽ được đánh dấu mà không được gửi đi."
+         ],
+         "Your choice for the existing translations was not recorded.": [
+            "Lựa chọn của bạn cho các bản dịch hiện có không được ghi lại."
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "Hệ thống dịch thuật của chúng tôi đã không chấp nhận yêu cầu này (phản hồi là %d). Vui lòng đợi một lát rồi thử lại và liên hệ với bộ phận hỗ trợ của WPML nếu tình trạng này vẫn tiếp diễn."
+         ],
+         "several post types listed\u0004%1$s %2$s updated.": [
+            "Đã cập nhật %1$s %2$s."
          ]
       }
    }

@@ -2,18 +2,14 @@
 
 namespace ACFML\Post;
 
+use function WPML\Container\make;
+
 class EditorHooksFactory implements \IWPML_Backend_Action_Loader, \IWPML_Deferred_Action_Loader {
 
-	/**
-	 * @return string
-	 */
 	public function get_load_action() {
 		return 'wp_loaded';
 	}
 
-	/**
-	 * @return \IWPML_Action[]|null
-	 */
 	public function create() {
 		global $pagenow;
 
@@ -21,7 +17,7 @@ class EditorHooksFactory implements \IWPML_Backend_Action_Loader, \IWPML_Deferre
 
 		if ( $isPostEditScreen ) {
 			return [
-				new NativeEditorTranslationHooks(),
+				new NativeEditorTranslationHooks( make( \WPML_ACF_Worker::class ) ),
 				new MixedFieldGroupModesHooks(),
 			];
 		}

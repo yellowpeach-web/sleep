@@ -17,11 +17,15 @@ class WPML_Cornerstone_Integration_Factory {
 				\WPML\PB\Cornerstone\Hooks\Editor::class,
 				\WPML\PB\Cornerstone\Hooks\ShortcodeAttributes::class,
 				\WPML\PB\Cornerstone\Hooks\Media::class,
+				\WPML\PB\Cornerstone\Hooks\TranslationJobLabels::class,
+				\WPML\PB\Cornerstone\Hooks\TranslationGuiLabels::class,
 			]
 		);
 
 		$nodes         = new WPML_Cornerstone_Translatable_Nodes();
 		$data_settings = new WPML_Cornerstone_Data_Settings();
+
+		( new \WPML\PB\Duplication\Hooks( $data_settings ) )->add_hooks();
 
 		$string_registration_factory = new WPML_String_Registration_Factory( $data_settings->get_pb_name() );
 		$string_registration         = $string_registration_factory->create();

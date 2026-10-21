@@ -2,7 +2,7 @@
 
 namespace WPML\Upgrade\Commands;
 
-class DropCodeLocaleIndexFromLocaleMap extends DropIndexFromTable {
+class DropCodeLocaleIndexFromLocaleMap extends DropIndexFromTable implements \IWPML_Pre_Setup_Upgrade_Command {
 
 	protected function get_table() {
 		return 'icl_locale_map';

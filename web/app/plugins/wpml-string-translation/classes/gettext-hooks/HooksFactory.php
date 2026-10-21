@@ -1,7 +1,4 @@
 <?php
-/**
- * @author OnTheGo Systems
- */
 
 namespace WPML\ST\Gettext;
 
@@ -13,16 +10,7 @@ class HooksFactory implements \IWPML_Backend_Action_Loader, \IWPML_Frontend_Acti
 	const TRACK_PARAM_TEXT   = 'icl_string_track_value';
 	const TRACK_PARAM_DOMAIN = 'icl_string_track_context';
 
-	/**
-	 * @return \IWPML_Action|Hooks|null
-	 * @throws \WPML\Auryn\InjectionException
-	 */
 	public function create() {
-		/**
-		 * @deprecated this global should not be used anymore.
-		 *
-		 * @var Hooks $st_gettext_hooks
-		 */
 		global $st_gettext_hooks;
 
 		$st_gettext_hooks = null;
@@ -33,7 +21,6 @@ class HooksFactory implements \IWPML_Backend_Action_Loader, \IWPML_Frontend_Acti
 			return $st_gettext_hooks;
 		}
 
-		/** @var Hooks $st_gettext_hooks */
 		$st_gettext_hooks = make( Hooks::class );
 		$st_gettext_hooks->clearFilters();
 
@@ -44,23 +31,8 @@ class HooksFactory implements \IWPML_Backend_Action_Loader, \IWPML_Frontend_Acti
 		return $st_gettext_hooks;
 	}
 
-	/**
-	 * @return Filters\IFilter[]
-	 * @throws \WPML\Auryn\InjectionException
-	 */
 	private function getFilters() {
 		$filters = [];
-
-		/** @var Settings $settings */
-		$settings = make( Settings::class );
-
-		if ( $settings->isAutoRegistrationEnabled() ) {
-			$filters[] = make( Filters\StringTranslation::class );
-		}
-
-		if ( $this->isTrackingStrings( $settings ) ) {
-			$filters[] = make( Filters\StringTracking::class );
-		}
 
 		if ( $this->isHighlightingStrings() ) {
 			$filters[] = make( Filters\StringHighlighting::class );
@@ -69,20 +41,6 @@ class HooksFactory implements \IWPML_Backend_Action_Loader, \IWPML_Frontend_Acti
 		return $filters;
 	}
 
-	/**
-	 * @param Settings $settings
-	 *
-	 * @return bool
-	 */
-	private function isTrackingStrings( Settings $settings ) {
-		return $settings->isTrackStringsEnabled()
-			   && current_user_can( 'edit_others_posts' )
-			   && ! is_admin();
-	}
-
-	/**
-	 * @return bool
-	 */
 	private function isHighlightingStrings() {
 		return isset( $_GET[ self::TRACK_PARAM_TEXT ], $_GET[ self::TRACK_PARAM_DOMAIN ] );
 	}

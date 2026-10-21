@@ -1,0 +1,95 @@
+/* Front-end take-over modal. */
+
+.wpml-takeover__overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba( 0, 0, 0, 0.4 );
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 100000;
+}
+
+.wpml-takeover__dialog {
+	background: #fff;
+	border-radius: 4px;
+	box-shadow: 0 10px 40px rgba( 0, 0, 0, 0.25 );
+	max-width: 460px;
+	width: calc( 100% - 32px );
+	padding: 24px;
+	box-sizing: border-box;
+	font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	color: #1d2327;
+}
+
+.wpml-takeover__title {
+	margin: 0 0 12px;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+.wpml-takeover__body {
+	margin: 0 0 12px;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+.wpml-takeover__risk {
+	margin: 0 0 16px;
+	font-size: 13px;
+	line-height: 1.5;
+	color: #d63638;
+}
+
+.wpml-takeover__ack {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	font-size: 13px;
+	line-height: 1.5;
+	margin: 0 0 20px;
+	cursor: pointer;
+}
+
+.wpml-takeover__ack input {
+	margin-top: 2px;
+}
+
+.wpml-takeover__actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
+.wpml-takeover__btn {
+	font-size: 13px;
+	padding: 6px 16px;
+	border-radius: 3px;
+	cursor: pointer;
+	border: 1px solid transparent;
+	line-height: 1.4;
+}
+
+.wpml-takeover__btn--secondary {
+	background: #f6f7f7;
+	color: #2271b1;
+	border-color: #2271b1;
+}
+
+.wpml-takeover__btn--primary {
+	background: #2271b1;
+	color: #fff;
+	border-color: #2271b1;
+}
+
+.wpml-takeover__btn--primary:disabled {
+	background: #a7c4dd;
+	border-color: #a7c4dd;
+	cursor: not-allowed;
+}
+
+.wpml-takeover__btn:focus {
+	outline: 2px solid #2271b1;
+	outline-offset: 1px;
+}

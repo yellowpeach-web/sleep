@@ -4,25 +4,38 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "uk"
          },
+         "Connecting this subsite to the main site's account…": [
+            "Підключення цього підсайту до акаунта головного сайту…"
+         ],
+         "Retry now": [
+            "Повторити спробу"
+         ],
+         "Use a separate account for this subsite": [
+            "Використовувати окремий акаунт для цього підсайту"
+         ],
+         "Select %s": [
+            "Вибрати %s"
+         ],
          "From:": [
-            "Із:"
+            "З:"
          ],
          "--Choose language--": [
-            "--Вибрати мову--"
+            "--Виберіть мову--"
          ],
          "to:": [
-            "такою мовою:"
+            "до:"
          ],
          "Set language pair(s) for Translator %s:": [
-            "Задати мовні пари для перекладача %s:"
+            "Налаштуйте мовні пари для перекладача %s:"
          ],
          "+ Add more language pairs for this translator": [
-            "+ Додати цьому перекладачеві інші мовні пари"
+            "+ Додати більше мовних пар для цього перекладача"
          ],
          "First Name": [
-            "Ім'я"
+            "Ім’я"
          ],
          "Last Name": [
             "Прізвище"
@@ -31,64 +44,61 @@
             "Роль"
          ],
          "(required)": [
-            "(обов’ язково)"
+            "(обов’язково)"
+         ],
+         "Select a role for the user": [
+            "Виберіть роль для користувача"
          ],
          "Make sure that you have provided a correct email address e.g. name@domain.com": [
-            "Переконайтеся, що електронну адресу введено правильно, наприклад name@domain.com"
+            "Переконайтеся, що ви вказали правильну адресу електронної пошти, наприклад name@domain.com"
          ],
          "This field is required": [
-            "Це обов'язкове поле"
+            "Це поле є обов’язковим"
          ],
          "A translator can be any WordPress role.": [
-            "У перекладача може бути будь-яка роль WordPress."
+            "Перекладач може мати будь-яку роль WordPress."
          ],
          "Username": [
-            "Ім'я користувача"
+            "Ім’я користувача"
          ],
          "Email": [
-            "Ел. адреса"
+            "Електронна пошта"
          ],
-         "Search": [
-            "Пошук"
+         "Search by name, username or email": [
+            "Пошук за ім’ям, іменем користувача або електронною поштою"
          ],
-         "Who will translate?": [
-            "Хто буде перекладати?"
-         ],
-         "You will choose or create new users of this WordPress site as the translators. You can also choose yourself. This allows you to set up a team of translators working in different language pairs.": [
-            "Ви виберете або створите користувачів цього веб-сайту на базі WordPress перекладачами. Також можна вибрати себе самого. Ви зможете створити групу перекладачів, які працюють у різних мовних парах."
-         ],
-         "A Professional Translation Service": [
-            "Служба професійного перекладу"
-         ],
-         "WPML offers tight integration with over 70 translation services. You will choose the translation service that you prefer and enjoy a streamlined process for sending jobs and receiving completed translations.": [
-            "WPML тісно інтегровано з понад 70 службами перекладу. Ви виберете улюблену службу перекладу, і отримаєте налагоджений процес надсилання замовлень та отримання готових перекладів."
-         ],
-         "I want to set a \"Translation Manager\" who will choose the translators for this site": [
-            "Я хочу задати \"Менеджера перекладацьких проектів\", який вибере перекладачів цього веб-сайту"
-         ],
-         "You will choose a user of this site and delegate the setup of translators to him/her. Choose this option when you are building a website for a client, who will set up translator users or choose a translation service.": [
-            "Ви виберете користувача цього веб-сайту і передасте повноваження для призначення перекладачів. Виберіть цей варіант, якщо створюєте веб-сайт для клієнта, який призначить користувачів-перекладачів або вибере службу перекладу."
-         ],
-         "user": [
-            "користувача"
-         ],
-         "Editor": [
-            "Редактор"
-         ],
-         "Select an existing %s and set as Translation Manager": [
-            "Вибрати наявного %s й задати менеджером перекладацьких проектів"
-         ],
-         "Create a new %s and set as Translation Manager": [
-            "Створити нового %s й задати менеджером перекладацьких проектів"
+         "Your site has a large number of users, please enter the exact username or email address.": [
+            "На вашому сайті велика кількість користувачів, будь ласка, введіть точне ім’я користувача або адресу електронної пошти."
          ],
          "Cancel": [
             "Скасувати"
          ],
          "Add Translation Manager": [
-            "Додати менеджера перекладацьких проектів"
+            "Додати менеджера перекладів"
+         ],
+         "user": [
+            "користувач"
+         ],
+         "Editor": [
+            "Редактор"
+         ],
+         "Select an existing user and set them as Translation Manager": [
+            "Виберіть наявного користувача та призначте його менеджером перекладів"
+         ],
+         "Create a new user and set them as Translation Manager": [
+            "Створіть нового користувача та призначте його менеджером перекладів"
+         ],
+         "Add a Translation Manager": [
+            "Додати менеджера перекладів"
+         ],
+         "Select an existing user and set as Translator": [
+            "Виберіть наявного користувача та призначте перекладачем"
+         ],
+         "Create a new user and set as Translator": [
+            "Створіть нового користувача та призначте перекладачем"
          ],
          "Set language pair(s)": [
-            "Задати мовну(і) пару(и)"
+            "Налаштувати мовні пари"
          ],
          "Previous": [
             "Назад"
@@ -99,26 +109,107 @@
          "Add a Translator": [
             "Додати перекладача"
          ],
-         "Select an existing user and set as Translator": [
-            "Вибрати наявного користувача й задати перекладачем"
-         ],
-         "Create a new user and set as Translator": [
-            "Створити нового користувача й задати перекладачем"
-         ],
          "Edit language pair(s) for translator": [
-            "Змінити мовну пару(и) для перекладача"
+            "Редагувати мовні пари для перекладача"
          ],
          "Name": [
-            "Ім'я"
+            "Назва"
          ],
          "Language Pairs": [
             "Мовні пари"
          ],
          "You can translate to and from all languages": [
-            "Ви можете перекладати всіма мовами"
+            "Ви можете перекладати на всі мови та з усіх мов"
+         ],
+         "Edit language pair(s)": [
+            "Редагувати мовні пари"
+         ],
+         "Delete language pair(s)": [
+            "Видалити мовні пари"
+         ],
+         "An error occurred. Please try again.": [
+            "Сталася помилка. Будь ласка, спробуйте ще раз."
+         ],
+         "WPML setup isn't working properly": [
+            "Налаштування WPML працює некоректно"
+         ],
+         "Something interrupted the setup process.": [
+            "Щось перервало процес налаштування."
+         ],
+         "You can safely reset the wizard and try again.": [
+            "Ви можете безпечно перезапустити майстер і спробувати ще раз."
+         ],
+         "Resetting…": [
+            "Перезапуск…"
+         ],
+         "Reset setup": [
+            "Скинути налаштування"
+         ],
+         "Need help?": [
+            "Потрібна допомога?"
+         ],
+         "Contact support": [
+            "Звернутися до служби підтримки"
+         ],
+         "Back to Step %1$s: %2$s": [
+            "Назад до кроку %1$s: %2$s"
+         ],
+         "Technical Details (for WPML Support)": [
+            "Технічні деталі (для служби підтримки WPML)"
+         ],
+         "Copied!": [
+            "Скопійовано!"
+         ],
+         "Copy": [
+            "Копіювати"
+         ],
+         "Failed to enable AI Translation Step": [
+            "Не вдалося ввімкнути крок перекладу AI"
+         ],
+         "AI Translation Activation Failed": [
+            "Помилка активації перекладу AI"
+         ],
+         "We could not load the AI translation setup. Try again, or skip this step for now.": [
+            "Нам не вдалося завантажити налаштування автоматичного перекладу. Спробуйте ще раз або пропустіть цей крок."
+         ],
+         "Try again": [
+            "Спробувати знову"
+         ],
+         "If it keeps failing, contact ": [
+            "Якщо помилка повторюється, зверніться до "
+         ],
+         "Please contact ": [
+            "Будь ласка, зверніться до "
+         ],
+         "WPML Support": [
+            "WPML Support"
+         ],
+         " and provide the technical details below (use the Copy button to copy them).": [
+            " і надайте технічні деталі нижче (скористайтеся кнопкою «Копіювати», щоб скопіювати їх)."
+         ],
+         "Loading AI Translation...": [
+            "Завантаження перекладу AI..."
+         ],
+         "We couldn't save your AI translation context": [
+            "Нам не вдалося зберегти ваш контекст перекладу AI"
+         ],
+         "Please edit a field to try again, or skip the AI translation setup.": [
+            "Будь ласка, відредагуйте поле, щоб спробувати ще раз, або пропустіть налаштування перекладу AI."
+         ],
+         "Are you sure?": [
+            "Ви впевнені?"
+         ],
+         "Skipping this step means that you will not be able to automatically translate the entire site.": [
+            "Пропуск цього кроку означає, що ви не зможете автоматично перекласти весь сайт."
+         ],
+         "Yes, skip": [
+            "Так, пропустити"
+         ],
+         "No, enter the details": [
+            "Ні, ввести деталі"
          ],
          "%s file upload failed.": [
-            "Не вдалося завантажити файл %s."
+            "Помилка завантаження файлу %s."
          ],
          "Flag": [
             "Прапор"
@@ -126,32 +217,32 @@
          "Flag file": [
             "Файл прапора"
          ],
-         "You just added  language. Next, select it as the site's default language or a translation language.": [
-            "Ви щойно додали мову. Далі виберіть її мовою веб-сайту за промовчанням або мовою перекладу."
+         "You just added %s language. Next, select it as the site's default language or a translation language.": [
+            "Ви щойно додали мову %s. Далі виберіть її як мову сайту за замовчуванням або мову перекладу."
          ],
          "Language added": [
             "Мову додано"
          ],
          "The value \"%s\" already exists": [
-            "Значення \"%s\" вже існує"
+            "Значення «%s» вже існує"
          ],
          "Add a new language": [
             "Додати нову мову"
          ],
          "Create a country-specific language by choosing the general language from the list below. Then, choose the country it should be localized for.": [
-            "Створіть мову для певної країни, вибравши загальну мову зі списку нижче. Тоді виберіть країну, для якої її слід локалізувати."
+            "Створіть мову для конкретної країни, вибравши загальну мову зі списку нижче. Потім виберіть країну, для якої її потрібно локалізувати."
          ],
          "By choosing a combination that already exists in the database, WPML can help fill out the necessary fields. Read more about <AddingACustomLanguageLink />.": [
-            "Якщо вибрати поєднання, яке вже існує в базі даних, WPML допоможе заповнити необхідні поля. Докладніше про <AddingACustomLanguageLink />."
+            "Вибравши комбінацію, яка вже існує в базі даних, WPML може допомогти заповнити необхідні поля. Докладніше про <AddingACustomLanguageLink />."
          ],
          "Cannot find?": [
             "Не вдається знайти?"
          ],
          "Click here": [
-            "Клацніть тут"
+            "Натисніть тут"
          ],
          "The wrong format. It may contain only small letters and \"-\". E.g: \"fr\" , \"pt-br\", \"zh-hans\"": [
-            "Неправильний формат. Може містити тільки малі літери та \"-\". Наприклад: \"fr\" , \"pt-br\", \"zh-hans\""
+            "Неправильний формат. Він може містити лише малі літери та «-». Наприклад: «fr», «pt-br», «zh-hans»"
          ],
          "Language": [
             "Мова"
@@ -162,26 +253,35 @@
          "Code": [
             "Код"
          ],
-         "The language will not be supported by automatic translations": [
-            "Автоматичний переклад не буде підтримувати цю мову."
+         "Flags must be:": [
+            "Прапори повинні бути:"
+         ],
+         "Automatic Translation will use the default behavior for this language": [
+            "Автоматичний переклад використовуватиме стандартну поведінку для цієї мови"
          ],
          "Language mapping": [
-            "Зіставлення мов"
+            "Відповідність мов"
          ],
-         "Don't map this language": [
-            "Не зіставляти цю мову"
+         "Use Automatic Translation default behavior": [
+            "Використовувати стандартну поведінку автоматичного перекладу"
+         ],
+         "PNG, SVG, or JPG files": [
+            "Файли PNG, SVG або JPG"
          ],
          "Default locale": [
-            "Мовний стандарт за промовчанням"
+            "Локаль за замовчуванням"
          ],
          "The wrong format. It may contain only small letters and \"_\". E.g: \"de\" , \"de_DE\", \"zh_Hant_TW\"": [
-            "Неправильний формат. Може містити тільки малі літери та \"_\". Наприклад: \"de\" , \"de_DE\", \"zh_Hant_TW\""
+            "Неправильний формат. Він може містити лише малі літери та «_». Наприклад: «de», «de_DE», «zh_Hant_TW»"
          ],
          "hreflang": [
             "hreflang"
          ],
+         "18 x 12 pixels": [
+            "18 x 12 пікселів"
+         ],
          "Encode url?": [
-            "Кодувати URL-адресу?"
+            "Кодувати URL?"
          ],
          "NO": [
             "НІ"
@@ -190,94 +290,172 @@
             "ТАК"
          ],
          " (required)": [
-            "(обов’ язково)"
+            " (обов’язково)"
+         ],
+         "The name of your language as it will appear on your site's language switcher.": [
+            "Назва вашої мови, як вона з’являтиметься в перемикачі мов вашого сайту."
          ],
          "Please fill in the field": [
-            "Заповніть поле"
+            "Будь ласка, заповніть поле"
+         ],
+         "A unique value that identifies the language in the database and URL. Once saved, the language code cannot be changed.": [
+            "Унікальне значення, яке ідентифікує мову в базі даних і URL-адресі. Після збереження код мови змінити неможливо."
          ],
          "Save language": [
             "Зберегти мову"
          ],
-         "The name of your language as it will appear on your site's language switcher.": [
-            "Назва мови як вона відображається в перемикачі мов на вашому веб-сайті."
-         ],
-         "A unique value that identifies the language in the database and URL. Once saved, the language code cannot be changed.": [
-            "Унікальне значення, що визначає мову в базі даних та URL-адресі. Після збереження код мови не можна змінити."
-         ],
          "If your custom language is similar to an existing language, you can use the existing language's spellcheck and automatic translation. For example, if your custom language is Swiss-German, you can map to German as the language to use for spellcheck and automatic translation. If you don't map your custom language to an existing language, spellcheck and automatic translation features will be unavailable in that language.": [
-            "Якщо користувацька мова така ж, як існуючиай, можна використовувати перевірку орфографії та автоматичний переклад існуючої мови. Наприклад, якщо обрана вами мова – швейцарська німецька, її можна зіставити з німецькою мовою, яка буде використовуватися для перевірки орфографії та автоматичного перекладу. Якщо користувацьку мову не зіставляти з існуючою, функції перевірки орфографії та автоматичного перекладу для цієї мови будуть недоступні."
+            "Якщо ваша власна мова схожа на наявну, ви можете використовувати перевірку орфографії та автоматичний переклад наявної мови. Наприклад, якщо вашою власною мовою є швейцарська німецька, ви можете зіставити її з німецькою як мовою для перевірки орфографії та автоматичного перекладу. Якщо ви не зіставите свою власну мову з наявною, функції перевірки орфографії та автоматичного перекладу будуть недоступні для цієї мови."
          ],
          "The value WPML checks when loading translations from MO and PO files. The default locale is included in the filenames in your /wp-content/languages/ folder in your WordPress setup.": [
-            "Значення, яке WPML перевіряє під час завантаження перекладів із файлів формату MO і PO. Регіон за промовчанням включено в назви файлів у папці /wp-content/languages/ у налаштуваннях WordPress."
+            "Значення, яке WPML перевіряє під час завантаження перекладів із файлів MO та PO. Локаль за замовчуванням включена в імена файлів у вашій папці /wp-content/languages/ у вашій установці WordPress."
          ],
          "Google uses the hreflang attribute to direct users to sites in their relevant language and location. Examples:": [
-            "З метою спрямування користувачів на ввеб-сайти відповідно до їхньої мови та розташування Google використовує атрибут hreflang. Приклади:"
+            "Google використовує атрибут hreflang, щоб спрямовувати користувачів на сайти відповідною мовою та в їхньому регіоні. Приклади:"
          ],
          "All English-speaking users: en": [
-            "Усі користувачі з англійською мовою: en"
+            "Усі англомовні користувачі: en"
          ],
          "English for UK users: en-gb": [
-            "Англійська для користувачів з Великої Британії: en-gb"
+            "Англійська для користувачів із Великобританії: en-gb"
          ],
          "English for US users: en-us": [
-            "Англійська для користувачів зі США: en-us"
+            "Англійська для користувачів із США: en-us"
          ],
          "Determines if URLs in this language are encoded or use ASCII characters (if unsure, leave it as \"No\").": [
-            "Визначає, чи URL-адреси цією мовою закодовані або в них використовуються символи ASCII (залиште \"Ні\", якщо не впевнені)."
+            "Визначає, чи кодуються URL-адреси цією мовою, чи використовуються символи ASCII (якщо не впевнені, залиште «Ні»)."
          ],
          "adding a custom language": [
-            "додавання користувацької мови"
+            "додавання власної мови"
          ],
-         "Learn more about required server settings to use a different domain per language": [
-            "Докладніше про необхідні налаштування сервера, коли використовується окремий домен для кожної мови"
+         "I will change the permalink structure later.": [
+            "Я зміню структуру постійних посилань пізніше."
          ],
-         "Language name added as a parameter": [
-            "Назву мови додано як параметр"
+         "Languages in directories do not work with Plain permalinks.": [
+            "Мови в каталогах не працюють із простими постійними посиланнями."
          ],
-         "I will set up the domains for my secondary languages later.": [
-            "Я налаштую домени для додаткових мов пізніше."
-         ],
-         "The domain you have entered is invalid.": [
-            "Введено неприпустимий домен."
-         ],
-         "The domain you have entered must be unique.": [
-            "Введений домен має бути унікальним."
-         ],
-         "Please Note: Your site won't work in your secondary languages until this is successfully set up or you switch to a different URL option.": [
-            "Зверніть увагу. Ваш веб-сайт не працюватиме додатковими мовами, поки його не налаштувати або не перемикнутися на інший параметр URL."
-         ],
-         "Learn more about Language URL Options": [
-            "Докладніше про параметри URL мов"
-         ],
-         "How would you like to format your site's URL?": [
-            "Який формат застосувати до URL-адреси веб-сайту?"
-         ],
-         "Different languages in directories": [
-            "Мови в різних каталогах"
-         ],
-         "The URL rewrite is not configured in your server.": [
-            "На сервері не налаштовано перезаписування URL-адрес."
-         ],
-         "Learn more about required server settings to display languages in directories": [
-            "Докладніше про налаштування сервера, необхідні для відображення мов у каталогах"
-         ],
-         "I will fix my server settings to display languages in directories later.": [
-            "Я виправлю налаштування сервера, необхідні для відображення мов у каталогах, пізніше."
-         ],
-         "Your server settings do not allow for languages in directories. ": [
-            "Налаштування вашого сервера не допускають використання мов в каталогах."
-         ],
-         "Learn more about the required server settings.": [
-            "Докладніше про необхідні налаштування сервера."
+         "Choose a different structure in Settings > Permalinks.": [
+            "Виберіть іншу структуру в меню Налаштування > Постійні посилання."
          ],
          "A different domain per language": [
             "Окремий домен для кожної мови"
          ],
+         "This option is not yet available for Multisite installs": [
+            "Ця опція поки що недоступна для інсталяцій Multisite"
+         ],
+         "Learn more about required server settings to use a different domain per language": [
+            "Докладніше про необхідні налаштування сервера для використання окремого домену для кожної мови"
+         ],
+         "Language name added as a parameter": [
+            "Назва мови додається як параметр"
+         ],
+         "Learn more about Language URL Options": [
+            "Докладніше про варіанти URL-адрес мов"
+         ],
+         "My domains work. Continue without WPML's check.": [
+            "Мої домени працюють. Продовжити без перевірки WPML."
+         ],
+         "I will set up the domains for my secondary languages later.": [
+            "Я налаштую домени для своїх додаткових мов пізніше."
+         ],
+         "Your server cannot convert international domain names. Enter the xn-- form of %s.": [
+            "Ваш сервер не може конвертувати міжнародні доменні імена. Введіть версію xn-- для %s."
+         ],
+         "This domain loads, but a firewall or CDN blocked WPML's check.": [
+            "Цей домен завантажується, але фаєрвол або CDN заблокували перевірку WPML."
+         ],
+         "This domain does not show this site.": [
+            "Цей домен не показує цей сайт."
+         ],
+         "WPML could not reach this domain.": [
+            "WPML не вдалося отримати доступ до цього домену."
+         ],
+         "The domain you have entered is invalid.": [
+            "Введений вами домен недійсний."
+         ],
+         "The domain you have entered must be unique.": [
+            "Введений вами домен має бути унікальним."
+         ],
+         "Please Note: Your site won't work in your secondary languages until this is successfully set up or you switch to a different URL option.": [
+            "Зверніть увагу: ваш сайт не працюватиме вашими додатковими мовами, доки це не буде успішно налаштовано або ви не перейдете на інший варіант URL-адреси."
+         ],
+         "How would you like to structure your site's URLs?": [
+            "Як би ви хотіли структурувати URL-адреси вашого сайту?"
+         ],
+         "Different languages in directories": [
+            "Різні мови в каталогах"
+         ],
+         "The URL rewrite is not configured in your server.": [
+            "Перенаправлення URL-адрес не налаштовано на вашому сервері."
+         ],
+         "I will fix my server settings to display languages in directories later.": [
+            "Я виправлю налаштування сервера для відображення мов у каталогах пізніше."
+         ],
+         "We could not verify your server's URL-rewrite support.": [
+            "Нам не вдалося перевірити підтримку перенаправлення URL-адрес вашим сервером."
+         ],
+         "Learn more about required server settings to display languages in directories": [
+            "Докладніше про необхідні налаштування сервера для відображення мов у каталогах"
+         ],
+         "your pages": [
+            "ваші сторінки"
+         ],
+         "your posts": [
+            "ваші дописи"
+         ],
+         "the Language Switcher settings": [
+            "налаштування перемикача мов"
+         ],
+         "Need help? <a>Using WPML's Plus Icons to Translate Content</a>": [
+            "Потрібна допомога? <a>Використання іконок «плюс» WPML для перекладу вмісту</a>"
+         ],
+         "To start translating, look for the \"plus\" icons that WPML introduces next to content lists and editors. Click the \"plus\" icon under each language to translate.": [
+            "Щоб почати переклад, шукайте іконки «плюс», які WPML додає поруч зі списками вмісту та редакторами. Натисніть іконку «плюс» під кожною мовою, щоб перекласти."
+         ],
+         "Apply settings while proceeding to:": [
+            "Застосувати налаштування під час переходу до:"
+         ],
+         "Translate your pages": [
+            "Перекласти ваші сторінки"
+         ],
+         "Translate your posts": [
+            "Перекласти ваші дописи"
+         ],
+         "the Translation Dashboard": [
+            "панель керування перекладами"
+         ],
+         "Private Translation Cloud (PTC) will translate your whole site and keep new content translated from now on. You pay once for what's translated — editing it afterward is free.": [
+            "Private Translation Cloud (PTC) перекладе весь ваш сайт і надалі підтримуватиме переклад нового вмісту. Ви платите один раз за те, що перекладено — подальше редагування безкоштовне."
+         ],
+         "Apply settings and start site's translation": [
+            "Застосувати налаштування та почати переклад сайту"
+         ],
+         "Start translating your site by visiting the <b>Translation Dashboard</b>.": [
+            "Почніть перекладати свій сайт, відвідавши <b>панель керування перекладами</b>."
+         ],
+         "Apply settings and go to <b>Translation Dashboard</b>": [
+            "Застосувати налаштування та перейти до <b>панелі керування перекладами</b>"
+         ],
+         "the WooCommerce Multilingual setup": [
+            "налаштування WooCommerce Multilingual"
+         ],
+         "Private Translation Cloud (PTC) will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup. You pay once for what's translated. Editing it afterward is free.": [
+            "Private Translation Cloud (PTC) почне перекладати ваш сайт зараз і надалі підтримуватиме переклад нового вмісту. Далі ви налаштуєте свій багатомовний магазин. Ваші товари почнуть перекладатися, як тільки ви завершите налаштування WooCommerce Multilingual. Ви платите один раз за те, що перекладено. Подальше редагування безкоштовне."
+         ],
+         "Continue to WooCommerce Multilingual Setup while translation begins": [
+            "Продовжити налаштування WooCommerce Multilingual під час початку перекладу"
+         ],
+         "Next, you need to set up your multilingual store.": [
+            "Далі вам потрібно налаштувати свій багатомовний магазин."
+         ],
+         "Apply settings and continue to WooCommerce Multilingual Setup": [
+            "Застосувати налаштування та продовжити налаштування WooCommerce Multilingual"
+         ],
          "support forum": [
-            "форум технічної підтримки"
+            "форум підтримки"
          ],
          "There was a critical error setting up WPML. Please contact our <LinkToSupportForum /> to resolve it.": [
-            "Під час налаштування WPML сталася критична помилка. Щоб виправити її, відвідайте <LinkToSupportForum />."
+            "Під час налаштування WPML сталася критична помилка. Будь ласка, зверніться на наш <LinkToSupportForum />, щоб вирішити її."
          ],
          "Hide error message": [
             "Приховати повідомлення про помилку"
@@ -285,95 +463,275 @@
          "Show error message": [
             "Показати повідомлення про помилку"
          ],
-         "WPML has started translating your site": [
-            "WPML почав перекладати ваш веб-сайт"
+         "Go back": [
+            "Назад"
          ],
-         "View the status of the translations in <s>WPML → Translation Management</s>.": [
-            "Перегляньте стан перекладів у <s>WPML → Керування перекладами</s>."
+         "Congratulations, your WPML setup is ready!": [
+            "Вітаємо, ваше налаштування WPML готове!"
          ],
-         "Go to <s>WPML → Translation Management</s> to choose what to translate.": [
-            "Перейдіть у <s>WPML → Керування перекладами</s>, щоб вибрати об’єкти перекладу."
+         "Apply your settings to make your site multilingual.": [
+            "Застосуйте налаштування, щоб зробити ваш сайт багатомовним."
          ],
-         "You are ready to start translating": [
-            "Ви готові почати перекладати"
+         "For language switcher customization and more language options, navigate to <a>Settings → Language Switchers</a>.": [
+            "Для налаштування перемикача мов та інших параметрів мови перейдіть до <a>Налаштування → Перемикачі мов</a>."
          ],
-         "Right now, your site has a nice language switcher in its footer. To enable other styles of language switchers, go to <s>WPML → Languages</s>.": [
-            "У нижньому колонтитулі вашого веб-сайту є зручний перемикач мов. Щоб увімкнути інші стилі перемикачів мов, перейдіть у <s>WPML → Мови</s>."
+         "When you're done with the setup, we recommend visiting <s>Settings → Language Switchers</s> for language switcher customization and more language options.": [
+            "Коли ви завершите налаштування, ми рекомендуємо перейти до розділу <s>Налаштування → Перемикачі мов</s> для налаштування перемикача мов та інших параметрів мови."
          ],
-         "Language switcher customization": [
-            "Налаштування перемикача мов"
+         "Your site's translation has started": [
+            "Переклад вашого сайту розпочато"
+         ],
+         "Applying your setup choices": [
+            "Застосування ваших параметрів налаштування"
+         ],
+         "PTC is translating your content. There's nothing else you need to do here.": [
+            "PTC перекладає ваш вміст. Вам більше нічого не потрібно тут робити."
+         ],
+         "We're applying all your setup choices and preparing WPML. This is a one-time process.": [
+            "Ми застосовуємо всі ваші параметри налаштування та готуємо WPML. Це одноразовий процес."
+         ],
+         "Taking you to %s…": [
+            "Перехід до %s…"
+         ],
+         "What are the languages of your site?": [
+            "Які мови вашого сайту?"
          ],
          "Default language": [
-            "Мова за промовчанням"
+            "Мова за замовчуванням"
          ],
          "What is the current language of your website?": [
-            "Яка поточна мова вашого веб-сайту?"
+            "Яка поточна мова вашого вебсайту?"
          ],
          "Translation languages": [
             "Мови перекладу"
          ],
          "Which languages do you want to translate your site into?": [
-            "Якими мовами потрібно перекласти ваш веб-сайт?"
+            "Якими мовами ви хочете перекласти свій сайт?"
          ],
-         "If you cannot find languages that you need in the list": [
-            "Якщо у списку немає необхідних мов,"
+         "If you cannot find languages that you need in the list,": [
+            "Якщо ви не можете знайти потрібні мови у списку,"
          ],
          "create a custom language": [
-            "створіть користувацьку мову"
-         ],
-         "What are the languages of your site?": [
-            "Які мови вашого веб-сайту?"
-         ],
-         "If you don't have a WPML.org account or a valid subscription, %1$spurchase one%2$s to get automatic updates, full support, and a 30-day money-back guarantee.": [
-            "Якщо у вас немає облікового запису WPML.org або чинної передплати, її можна %1$sпридбати%2$s, щоб отримувати оновлення, повну технічну підтримку і 30-денну гарантію повернення грошей."
+            "створіть власну мову"
          ],
          "Already purchased WPML?": [
-            "Уже придбали WPML?"
+            "Вже придбали WPML?"
          ],
          "Enter your site key from your WPML account to receive automatic updates.": [
-            "Щоб отримувати автоматичні оновлення для, введіть ключ веб-сайту зі свого облікового запису WPML."
+            "Введіть ключ сайту зі свого акаунта WPML, щоб отримувати автоматичні оновлення."
          ],
          "Site key": [
-            "Ключ веб-сайту"
+            "Ключ сайту"
          ],
          "Get a key for this site": [
-            "Отримати ключ для цього веб-сайту"
+            "Отримати ключ для цього сайту"
          ],
-         "Improve your site’s translations using helpful plugins": [
-            "Покращіть переклади свого веб-сайту за допомогою корисних плагінів"
+         "If you don't have a WPML.org account or a valid subscription, %1$spurchase one%2$s to get automatic updates, full support, and a 30-day money-back guarantee.": [
+            "Якщо у вас немає акаунта WPML.org або дійсної підписки, %1$sпридбайте її%2$s, щоб отримувати автоматичні оновлення, повну підтримку та 30-денну гарантію повернення грошей."
          ],
-         "Based on the themes and other plugins running on your site, we recommend that you enable the following WPML components. These are included with your WPML purchase and allow you to translate strings, media, admin texts, and more.": [
-            "На основі тем та інших плагінів на вашому веб-сайті радимо ввімкнути такі компоненти WPML. Вони включені разом із придбаним WPML і дають змогу перекладати рядки, мультимедіа, тексти адміністрування та багато іншого."
+         "This site key is too short. A site key has 10 letters and numbers. Copy it again from your WPML account.": [
+            "Цей ключ сайту занадто короткий. Ключ сайту складається з 10 літер і цифр. Скопіюйте його ще раз зі свого акаунта WPML."
+         ],
+         "This site key is too long. A site key has 10 letters and numbers. Copy it again from your WPML account.": [
+            "Цей ключ сайту занадто довгий. Ключ сайту складається з 10 літер і цифр. Скопіюйте його ще раз зі свого акаунта WPML."
          ],
          "Error in activating plugin.": [
-            "Не вдалося активувати плагін."
+            "Помилка під час активації плагіну."
          ],
          "Error in installing plugin.": [
-            "Не вдалося встановити плагін."
+            "Помилка під час встановлення плагіну."
          ],
-         "Yes, send theme and plugins information, in order to get faster support and compatibility alerts": [
-            "Так, надсилати дані плагінів і теми, щоб отримувати швидшу довідку та оповіщення про сумісність"
+         "Some of your site will stay in one language": [
+            "Частина вашого сайту залишиться однією мовою"
          ],
-         "No, don't send this information and skip compatibility alerts": [
-            "Ні, не надсилати ці дані та пропустити оповіщення про сумісність"
+         "You are leaving out these components. Here is what you will not be able to translate:": [
+            "Ви залишаєте ці компоненти. Ось що ви не зможете перекласти:"
          ],
-         "Do you want to get better and faster support?": [
-            "Хочете отримувати кращу і швидшу підтримку?"
+         "Go back and select them": [
+            "Повернутися та вибрати їх"
          ],
-         "The WPML plugin can send a list of active plugins and theme used in your site to wpml.org. This allows our support team to help you much faster and to contact you in advance about potential compatibility problems and their solutions.": [
-            "Плагін WPML може надсилати список активних плагінів і відомості про тему, що використовується на вашому веб-сайті, на wpml.org. Так наша група підтримки зможе допомогти набагато швидше і заздалегідь зв'язатися з вами в разі потенційних проблем із сумісністю та їх рішень."
+         "Your site needs these WPML components": [
+            "Вашому сайту потрібні ці компоненти WPML"
+         ],
+         "Based on the theme and plugins running on your site, these WPML components are essential for making your site fully multilingual. Without them, many parts of your site will not translate correctly. They are all included with your WPML purchase.": [
+            "Виходячи з теми та плагінів, що працюють на вашому сайті, ці компоненти WPML є необхідними для того, щоб зробити ваш сайт повністю багатомовним. Без них багато частин вашого сайту не будуть перекладені правильно. Усі вони включені у вашу покупку WPML."
+         ],
+         "Skip anyway": [
+            "Все одно пропустити"
+         ],
+         "Install without them": [
+            "Встановити без них"
+         ],
+         "Also send content statistics and your list of plugins and themes, to improve WPML and get maintenance alerts.": [
+            "Також надсилати статистику вмісту та список плагінів і тем для вдосконалення WPML і отримання сповіщень про обслуговування."
+         ],
+         "Content statistics are counts: how many posts and pages you have, how much text, and how much of it is translated into each language. The content itself is never sent. The list of plugins and themes lets us warn you about known compatibility problems.": [
+            "Статистика вмісту — це кількісні показники: скільки у вас записів і сторінок, який обсяг тексту та скільки з нього перекладено кожною мовою. Сам вміст ніколи не надсилається. Список плагінів і тем дозволяє нам попереджати вас про відомі проблеми сумісності."
+         ],
+         "What WPML shares with wpml.org": [
+            "Якими даними WPML ділиться з wpml.org"
+         ],
+         "WPML sends wpml.org your site's WPML version, setup and translation settings, so that your account, updates and support work.": [
+            "WPML надсилає на wpml.org версію WPML вашого сайту, параметри налаштування та перекладу, щоб ваш акаунт, оновлення та підтримка працювали належним чином."
          ],
          "Privacy and data usage policy": [
             "Політика конфіденційності та використання даних"
+         ],
+         "Full details of the info we’re proposing to share": [
+            "Повна інформація про дані, якими ми пропонуємо поділитися"
+         ],
+         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
+            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> з вибором найкращого режиму для вашого сайту."
+         ],
+         "How would you like to translate your content?": [
+            "Як би ви хотіли перекладати свій вміст?"
+         ],
+         "Recommended": [
+            "Рекомендовано"
+         ],
+         "Translate Everything Automatically": [
+            "Перекладати все автоматично"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "Для автоматичного перекладу всього сайту потрібне налаштування перекладу AI."
+         ],
+         "Set up AI translation": [
+            "Налаштувати переклад AI"
+         ],
+         "Translate Some: You Choose What to Translate": [
+            "Перекладати частину: ви вибираєте, що перекладати"
+         ],
+         "Select this option": [
+            "Вибрати цей варіант"
+         ],
+         "How it works": [
+            "Як це працює"
+         ],
+         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "PTC (Private Translation Cloud) — це власний механізм перекладу AI від WPML. Він перекладає весь ваш сайт на кожну вибрану вами мову у фоновому режимі. Ви можете редагувати будь-який переклад і виключати типи дописів."
+         ],
+         "Can't decide?": [
+            "Не можете визначитися?"
+         ],
+         "You select and submit what to translate.": [
+            "Ви вибираєте та надсилаєте те, що потрібно перекласти."
+         ],
+         "Costs": [
+            "Вартість"
+         ],
+         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
+            "Платіть один раз за весь перекладений вміст.<br/><strong>Виправлення безкоштовні</strong> — оплачується лише додавання нового вмісту."
+         ],
+         "Pay per translation job submitted.<br/>Each update or new content batch is a separate charge.": [
+            "Платіть за кожне надіслане завдання на переклад.<br/>Кожне оновлення або новий пакет вмісту оплачується окремо."
+         ],
+         "Translation quality": [
+            "Якість перекладу"
+         ],
+         "WPML ensures excellent quality. Bad translations are refunded.": [
+            "WPML гарантує відмінну якість. Кошти за погані переклади повертаються."
+         ],
+         "Ideal for": [
+            "Ідеально для"
+         ],
+         "Known upfront costs": [
+            "Відомих заздалегідь витрат"
+         ],
+         "Unlimited post-translation editing": [
+            "Необмеженого редагування після перекладу"
+         ],
+         "Marketing optimization": [
+            "Маркетингової оптимізації"
+         ],
+         "Turn-key solutions": [
+            "Готові рішення"
+         ],
+         "Partial site translation": [
+            "Часткового перекладу сайту"
+         ],
+         "Maximum control": [
+            "Максимальний контроль"
+         ],
+         "Contact our support team for help": [
+            "Зверніться по допомогу до нашої служби підтримки"
+         ],
+         "Calculate Translation Costs": [
+            "Розрахувати вартість перекладу"
+         ],
+         "Review your site content and estimate the translation cost based on what you choose to translate.": [
+            "Перегляньте вміст свого сайту та оцініть вартість перекладу на основі того, що ви виберете для перекладу."
+         ],
+         "Connecting to Automatic Translation…": [
+            "Під’єднання до автоматичного перекладу…"
+         ],
+         "Before translating everything": [
+            "Перед автоматичним перекладом усього"
+         ],
+         "You can continue without them. Nothing here stops the setup.": [
+            "Ви можете продовжити без них. Ніщо тут не зупиняє налаштування."
+         ],
+         "Translation Contributors": [
+            "Учасники перекладу"
+         ],
+         "Users of this site": [
+            "Користувачі цього сайту"
+         ],
+         "You will choose or create new users of this WordPress site as the translators. You can also choose yourself. This allows you to set up a team of translators working in different language pairs.": [
+            "Ви виберете або створите нових користувачів цього сайту WordPress як перекладачів. Ви також можете вибрати себе. Це дозволяє налаштувати команду перекладачів, які працюють у різних мовних парах."
+         ],
+         "A professional translation service": [
+            "Професійна служба перекладу"
+         ],
+         "You have preselected %s to translate your content. Finish setting it up by entering the API token they provided to you.": [
+            "Ви попередньо вибрали %s для перекладу вашого вмісту. Завершіть налаштування, ввівши API-токен, який вони вам надали."
+         ],
+         "WPML offers tight integration with over 70 translation services. You will choose the translation service that you prefer and enjoy a streamlined process for sending jobs and receiving completed translations.": [
+            "WPML пропонує тісну інтеграцію з понад 70 службами перекладу. Ви виберете службу перекладу, якій віддаєте перевагу, і насолоджуватиметеся спрощеним процесом надсилання завдань та отримання готових перекладів."
+         ],
+         "Human Translation": [
+            "Переклад людиною"
+         ],
+         "Besides the AI translation, you can translate yourself, add your own team of translators and use professional translation services.": [
+            "Окрім перекладу ШІ, ви можете перекладати самостійно, додати власну команду перекладачів та скористатися послугами професійних служб перекладу."
+         ],
+         "I'd like to set up human translation by:": [
+            "Я хочу налаштувати переклад людиною за допомогою:"
+         ],
+         "Only myself": [
+            "Тільки я"
+         ],
+         "You will be the sole translator for this site.": [
+            "Ви будете єдиним перекладачем для цього сайту."
+         ],
+         "A Translation Manager who will setup the translators for my site": [
+            "Менеджер перекладів, який налаштує перекладачів для мого сайту"
+         ],
+         "You will choose a user of this site and delegate the setup of translators to him/her. Choose this option when you are building a website for a client, who will set up translator users or choose a translation service.": [
+            "Ви виберете користувача цього сайту та делегуєте йому/їй налаштування перекладачів. Виберіть цей варіант, якщо ви створюєте вебсайт для клієнта, який сам налаштовуватиме користувачів-перекладачів або обиратиме службу перекладу."
          ],
          "Error: %s": [
             "Помилка: %s"
          ],
          "Authenticate": [
-            "Авторизувати"
+            "Автентифікувати"
+         ],
+         "To send content and receive translations from <service_name />, enter the credentials you received from them.": [
+            "Щоб надсилати вміст і отримувати переклади від <service_name />, введіть облікові дані, які ви від них отримали."
+         ],
+         "Need credentials? Contact <link_to_service />": [
+            "Потрібні облікові дані? Зверніться до <link_to_service />"
+         ],
+         "Success! You can start sending content to %s for translation after you finish the setup wizard.": [
+            "Успішно! Ви можете почати надсилати вміст до %s для перекладу після завершення роботи Setup Wizard."
+         ],
+         "Choose a different one": [
+            "Вибрати іншу"
+         ],
+         "The credentials are invalid. Please, try again.": [
+            "Облікові дані недійсні. Будь ласка, спробуйте ще раз."
          ],
          "Choose a Translation Service": [
-            "Виберіть службу перекладу"
+            "Вибрати службу перекладу"
          ],
          "Loading": [
             "Завантаження"
@@ -381,14 +739,95 @@
          "A new language could not be added correctly": [
             "Не вдалося правильно додати нову мову"
          ],
+         "The language could not be added.": [
+            "Не вдалося додати мову."
+         ],
+         "WPML no longer offers this language. You can still add it as a custom language with the same code: use “create a custom language” under the language lists.": [
+            "WPML більше не пропонує цю мову. Ви все одно можете додати її як спеціальну мову з тим самим кодом: скористайтеся посиланням «створити спеціальну мову» під списком мов."
+         ],
+         "%1$s (%2$s)": [
+            "%1$s (%2$s)"
+         ],
+         "This site has content from before in this language. Add the language from WPML → Languages, which asks whether to bring that content back or start fresh.": [
+            "На цьому сайті вже є вміст цією мовою. Додайте мову через WPML → Мови, де можна вибрати: відновити цей вміст чи почати заново."
+         ],
+         "Enter a language code.": [
+            "Введіть код мови."
+         ],
+         "The language code can only contain letters, numbers, hyphens and underscores.": [
+            "Код мови може містити лише літери, цифри, дефіси та символи підкреслення."
+         ],
+         "The language code is too long.": [
+            "Код мови задовгий."
+         ],
+         "The locale is not in a valid format, for example en_US.": [
+            "Локаль має недійсний формат, наприклад en_US."
+         ],
+         "Choose a language from the list.": [
+            "Виберіть мову зі списку."
+         ],
+         "This language needs a country. Choose one and try again.": [
+            "Для цієї мови потрібно вказати країну. Виберіть країну та повторіть спробу."
+         ],
+         "This language is not offered for that country. Choose another country.": [
+            "Ця мова недоступна для цієї країни. Виберіть іншу країну."
+         ],
+         "This language is no longer offered for that country. Choose another country.": [
+            "Ця мова більше недоступна для цієї країни. Виберіть іншу країну."
+         ],
+         "This language is already on the site.": [
+            "Ця мова вже є на сайті."
+         ],
+         "Another language already uses this language code. Choose a different code.": [
+            "Цей код мови вже використовується для іншої мови. Виберіть інший код."
+         ],
+         "Another language on the site already has this language and country. Choose a different country.": [
+            "Інша мова на сайті вже має таке поєднання мови та країни. Виберіть іншу країну."
+         ],
+         "A custom language on this site already uses this code. Add it again as a custom language with the same code.": [
+            "Спеціальна мова на цьому сайті вже використовує цей код. Додайте її знову як спеціальну мову з тим самим кодом."
+         ],
+         "The language could not be saved. Please try again.": [
+            "Не вдалося зберегти мову. Спробуйте ще раз."
+         ],
+         "Your products, product categories and checkout pages stay in one language, and you cannot sell in other currencies.": [
+            "Ваші товари, категорії товарів і сторінки оформлення замовлення залишаються однією мовою, і ви не можете продавати в інших валютах."
+         ],
+         "The content you enter in custom fields stays in one language.": [
+            "Вміст, який ви вводите в спеціальні поля, залишається однією мовою."
+         ],
+         "Texts that are not in posts or pages stay in one language. This includes your menus, widgets, and the texts that come from your theme and plugins.": [
+            "Тексти, які не містяться в дописах або сторінках, залишаються однією мовою. Сюди входять ваші меню, віджети та тексти, що походять від вашої теми та плагінів."
+         ],
+         "You cannot use different images and other media in each language.": [
+            "Ви не можете використовувати різні зображення та інші медіафайли для кожної мови."
+         ],
+         "Your site cannot run in more than one language. WPML needs this component.": [
+            "Ваш сайт не може працювати більше ніж однією мовою. WPML потребує цього компонента."
+         ],
+         "Some of your site content stays in one language without this component.": [
+            "Частина вмісту вашого сайту залишається однією мовою без цього компонента."
+         ],
          "Languages": [
             "Мови"
          ],
          "URL Format": [
-            "URL-формат"
+            "Формат URL"
          ],
          "Register WPML": [
-            "Реєстрація WPML"
+            "Зареєструвати WPML"
+         ],
+         "AI Translation": [
+            "Переклад ШІ"
+         ],
+         "Skip the AI translation setup": [
+            "Пропустити налаштування перекладу ШІ"
+         ],
+         "Translation Mode": [
+            "Режим перекладу"
+         ],
+         "Back to Translation Mode": [
+            "Назад до режиму перекладу"
          ],
          "Support": [
             "Підтримка"
@@ -397,7 +836,7 @@
             "Плагіни"
          ],
          "Finished": [
-            "Готово"
+            "Завершено"
          ],
          "Back": [
             "Назад"
@@ -409,16 +848,34 @@
             "Пропустити"
          ],
          "Install and activate": [
-            "Установити й активувати"
+            "Встановити та активувати"
          ],
          "Finish": [
-            "Готово"
+            "Завершити"
+         ],
+         "WPML could not save your progress because the wizard state on the server is out of sync. Please reload this page and repeat the last step.": [
+            "WPML не вдалося зберегти ваш прогрес, оскільки стан майстра на сервері розсинхронізований. Будь ласка, оновіть цю сторінку та повторіть останній крок."
+         ],
+         "Search translation services": [
+            "Пошук служб перекладу"
+         ],
+         "Search": [
+            "Пошук"
          ],
          "Settings": [
             "Налаштування"
          ],
          "It’s not currently possible to connect a translation service when WPML is set to translate your site’s content automatically. To use a translation service, please change your translation mode on the <LinkToSettingsPage /> page.": [
-            "Зараз неможливо підключити службу перекладу, якщо WPML налаштований на автоматичний переклад вмісту вашого веб-сайту. Щоб використовувати службу перекладу, змініть режим перекладу на сторінці <LinkToSettingsPage />."
+            "Наразі неможливо під’єднати службу перекладу, коли WPML налаштовано на автоматичний переклад вмісту вашого сайту. Щоб скористатися службою перекладу, змініть режим перекладу на сторінці <LinkToSettingsPage />."
+         ],
+         "Sort descending": [
+            "Сортувати за спаданням"
+         ],
+         "Sort ascending": [
+            "Сортувати за зростанням"
+         ],
+         "Cancel sorting": [
+            "Скасувати сортування"
          ],
          "Documentation": [
             "Документація"

@@ -2,9 +2,6 @@
 
 class WPML_LS_Settings_Color_Presets {
 
-	/**
-	 * @return array
-	 */
 	public function get_defaults() {
 		$void = array(
 			'font_current_normal'       => '',
@@ -64,14 +61,17 @@ class WPML_LS_Settings_Color_Presets {
 				'values' => $void,
 			),
 			'gray'  => array(
+				/* translators: Name of a ready-made set of colours for the language switcher. */
 				'label'  => esc_html__( 'Gray', 'sitepress' ),
 				'values' => $gray,
 			),
 			'white' => array(
+				/* translators: Name of a ready-made set of colours for the language switcher. */
 				'label'  => esc_html__( 'White', 'sitepress' ),
 				'values' => $white,
 			),
 			'blue'  => array(
+				/* translators: Name of a ready-made set of colours for the language switcher. */
 				'label'  => esc_html__( 'Blue', 'sitepress' ),
 				'values' => $blue,
 			),

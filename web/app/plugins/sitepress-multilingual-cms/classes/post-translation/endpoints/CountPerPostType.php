@@ -11,24 +11,26 @@ use WPML\LIB\WP\PostType;
 class CountPerPostType {
 	public function run( Collection $data, \wpdb $wpdb ) {
 		$postTypes = $data->get( 'postTypes', PostTypes::getAutomaticTranslatable() );
-		$postIn    = wpml_prepare_in( $postTypes );
+		if ( ! $postTypes ) {
+			return [];
+		}
 
-		$query = "
-			SELECT posts.post_type, COUNT(posts.ID)
-			FROM {$wpdb->posts} posts
-			INNER JOIN {$wpdb->prefix}icl_translations translations ON translations.element_id = posts.ID AND translations.element_type = CONCAT('post_', posts.post_type)
-			WHERE posts.post_type IN ({$postIn}) AND posts.post_status = %s	AND translations.source_language_code IS NULL		
-			GROUP BY posts.post_type
-		";
+		$postCountPerType = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT posts.post_type, COUNT(posts.ID)
+				FROM {$wpdb->posts} posts
+				INNER JOIN {$wpdb->prefix}icl_translations translations ON translations.element_id = posts.ID AND translations.element_type = CONCAT('post_', posts.post_type)
+				WHERE posts.post_type IN (" . implode( ', ', array_fill( 0, count( $postTypes ), '%s' ) ) . ") AND posts.post_status = %s AND translations.source_language_code IS NULL
+				GROUP BY posts.post_type",
+				array_merge( $postTypes, array( 'publish' ) )
+			),
+			ARRAY_N
+		);
 
-		$postCountPerType = $wpdb->get_results( $wpdb->prepare( $query, 'publish' ), ARRAY_N );
-
-		// $setPluralPostName :: [ 'post' => '1' ] -> [ 'Posts' => 1 ]
 		$setPluralPostName = function ( $postType ) {
 			return [ PostType::getPluralName( $postType[0] )->getOrElse( $postType[0] ) => (int) $postType[1] ];
 		};
 
-		// $setCountToZero :: 'post' -> [ 'post' => 0 ]
 		$setCountToZero = Lst::makePair( Fns::__, 0 );
 
 		return wpml_collect( $postTypes )

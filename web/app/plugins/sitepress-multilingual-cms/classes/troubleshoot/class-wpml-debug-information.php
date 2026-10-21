@@ -2,19 +2,16 @@
 
 class WPML_Debug_Information {
 
-	/** @var wpdb $wpdb */
 	public $wpdb;
 
-	/** @var SitePress $sitepress */
 	protected $sitepress;
 
-	/**
-	 * @param wpdb      $wpdb
-	 * @param SitePress $sitepress
-	 */
+	protected $info;
+
 	public function __construct( $wpdb, $sitepress ) {
 		$this->wpdb      = $wpdb;
 		$this->sitepress = $sitepress;
+		$this->info  = new WPML_Support_Info( $this->wpdb );
 	}
 
 	public function run() {
@@ -33,12 +30,46 @@ class WPML_Debug_Information {
 					$output['theme'] = $this->get_theme_info();
 					break;
 				case 'extra-debug':
-					$output['extra-debug'] = apply_filters( 'icl_get_extra_debug_info', array() );
+					$output['extra-debug'] = $this->mask_installer_site_keys( apply_filters( 'icl_get_extra_debug_info', array() ) );
 					break;
 			}
 		}
 
 		return $output;
+	}
+
+	private function mask_installer_site_keys( $extra_debug ) {
+		if (
+			! isset( $extra_debug['installer'] )
+			|| ! is_array( $extra_debug['installer'] )
+			|| ! isset( $extra_debug['installer']['repositories'] )
+			|| ! is_array( $extra_debug['installer']['repositories'] )
+		) {
+			return $extra_debug;
+		}
+
+		foreach ( $extra_debug['installer']['repositories'] as $repository_id => $repository ) {
+			if ( isset( $repository['subscription'] ) && is_array( $repository['subscription'] ) && array_key_exists( 'key', $repository['subscription'] ) ) {
+				$extra_debug['installer']['repositories'][ $repository_id ]['subscription']['key'] = $this->mask_site_key( $repository['subscription']['key'] );
+			}
+		}
+
+		return $extra_debug;
+	}
+
+	private function mask_site_key( $key ) {
+		if ( null === $key || is_bool( $key ) || '' === $key ) {
+			return $key;
+		}
+		if ( ! is_scalar( $key ) ) {
+			return null;
+		}
+
+		$key    = (string) $key;
+		$length = strlen( $key );
+		$shown  = $length > 4 ? substr( $key, -4 ) : '';
+
+		return str_repeat( '*', $length - strlen( $shown ) ) . $shown;
 	}
 
 	function get_core_info() {
@@ -55,21 +86,23 @@ class WPML_Debug_Information {
 				'RestEnabled'        => wpml_is_rest_enabled() ? 'Yes' : 'No',
 			),
 			'Server'    => array(
-				'jQueryVersion'  => wp_script_is( 'jquery', 'registered' ) ? $GLOBALS['wp_scripts']->registered['jquery']->ver : __( 'n/a', 'bbpress' ),
+				/* translators: Shown in a table cell in place of a value that is not there. Keep the short form your language uses for "not available". */
+				'jQueryVersion'  => wp_script_is( 'jquery', 'registered' ) ? $GLOBALS['wp_scripts']->registered['jquery']->ver : __( 'n/a', 'sitepress' ),
 				'PHPVersion'     => $this->sitepress->get_wp_api()->phpversion(),
 				'MySQLVersion'   => $this->wpdb->db_version(),
 				'ServerSoftware' => $_SERVER['SERVER_SOFTWARE'],
 			),
 			'PHP'       => array(
-				'MemoryLimit'     => ini_get( 'memory_limit' ),
-				'WP Memory Limit' => WP_MEMORY_LIMIT,
+				'MemoryLimit'     => $this->info->get_php_memory_limit(),
+				'WP Memory Limit' => $this->info->get_wp_memory_limit(),
+				'WP Max Memory'   => $this->info->get_wp_max_memory_limit(),
 				'UploadMax'       => ini_get( 'upload_max_filesize' ),
 				'PostMax'         => ini_get( 'post_max_size' ),
 				'TimeLimit'       => ini_get( 'max_execution_time' ),
 				'MaxInputVars'    => ini_get( 'max_input_vars' ),
 				'MBString'        => $this->sitepress->get_wp_api()->extension_loaded( 'mbstring' ),
 				'libxml'          => $this->sitepress->get_wp_api()->extension_loaded( 'libxml' ),
-			),
+			) + $this->get_opcache_info(),
 		);
 
 		return $core;
@@ -104,7 +137,6 @@ class WPML_Debug_Information {
 	function get_theme_info() {
 
 		if ( $this->sitepress->get_wp_api()->get_bloginfo( 'version' ) < '3.4' ) {
-			/** @var \WP_Theme $current_theme */
 			$current_theme = get_theme_data( get_stylesheet_directory() . '/style.css' );
 			$theme         = $current_theme;
 			unset( $theme['Description'] );
@@ -152,5 +184,77 @@ class WPML_Debug_Information {
 		}
 
 		return $json_data;
+	}
+
+	function get_opcache_info() {
+		$opcache_info = array();
+
+		if ( ! function_exists( 'opcache_get_status' ) ) {
+			$opcache_info['OPcache'] = 'Not Installed';
+			return $opcache_info;
+		}
+
+		$status = @opcache_get_status( false );
+
+		if ( false === $status ) {
+			$opcache_info['OPcache'] = 'Installed but Disabled';
+			return $opcache_info;
+		}
+
+		$opcache_info['OPcache'] = 'Enabled';
+
+		if ( isset( $status['memory_usage'] ) ) {
+			$memory = $status['memory_usage'];
+
+			$used_memory_mb = isset( $memory['used_memory'] )
+				? round( $memory['used_memory'] / 1024 / 1024, 2 )
+				: 0;
+
+			$free_memory_mb = isset( $memory['free_memory'] )
+				? round( $memory['free_memory'] / 1024 / 1024, 2 )
+				: 0;
+
+			$wasted_memory_mb = isset( $memory['wasted_memory'] )
+				? round( $memory['wasted_memory'] / 1024 / 1024, 2 )
+				: 0;
+
+			$wasted_percentage = isset( $memory['current_wasted_percentage'] )
+				? round( $memory['current_wasted_percentage'], 2 )
+				: 0;
+
+			$total_memory_mb   = $used_memory_mb + $free_memory_mb + $wasted_memory_mb;
+			$usage_percentage  = $total_memory_mb > 0
+				? round( ( $used_memory_mb / $total_memory_mb ) * 100, 2 )
+				: 0;
+
+			$opcache_info['Memory Used']       = $used_memory_mb . ' MB';
+			$opcache_info['Memory Free']       = $free_memory_mb . ' MB';
+			$opcache_info['Memory Wasted']     = $wasted_memory_mb . ' MB (' . $wasted_percentage . '%)';
+			$opcache_info['Memory Total']      = $total_memory_mb . ' MB';
+			$opcache_info['Memory Usage']      = $usage_percentage . '%';
+		}
+
+		if ( isset( $status['opcache_statistics'] ) ) {
+			$stats = $status['opcache_statistics'];
+
+			$hits = isset( $stats['hits'] ) ? $stats['hits'] : 0;
+
+			$misses = isset( $stats['misses'] ) ? $stats['misses'] : 0;
+
+			$total_requests = $hits + $misses;
+			$hit_rate       = $total_requests > 0
+				? round( ( $hits / $total_requests ) * 100, 2 )
+				: 0;
+
+			$opcache_info['Cache Hits']   = number_format( $hits );
+			$opcache_info['Cache Misses'] = number_format( $misses );
+			$opcache_info['Hit Rate']     = $hit_rate . '%';
+
+			if ( isset( $stats['num_cached_scripts'] ) ) {
+				$opcache_info['Cached Scripts'] = number_format( $stats['num_cached_scripts'] );
+			}
+		}
+
+		return $opcache_info;
 	}
 }

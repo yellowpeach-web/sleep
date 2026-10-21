@@ -1,26 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bruce
- * Date: 17/10/17
- * Time: 10:56 PM
- */
 
 use WPML\FP\Obj;
 
 class WPML_LS_Display_As_Translated_Link {
 
-	/** @var SitePress $sitepress */
 	private $sitepress;
-	/** @var IWPML_URL_Converter_Strategy $url_converter */
 	private $url_converter;
-	/** @var WP_Query $wp_query */
 	private $wp_query;
-	/** @var WPML_Translation_Element_Factory $element_factory */
 	private $element_factory;
-	/** @var string $default_language */
 	private $default_language;
-	/** @var string $processed_language */
 	private $processed_language;
 
 	public function __construct(
@@ -79,22 +67,26 @@ class WPML_LS_Display_As_Translated_Link {
 		if ( $this->sitepress->is_display_as_translated_taxonomy( $queried_object->taxonomy ) &&
 			 isset( $translations[ $this->default_language ] ) ) {
 
-			$url = get_term_link( (int) $translations[ $this->default_language ]->term_id, $queried_object->taxonomy );
+			$this->sitepress->switch_lang( $lang );
+
+			try {
+				$url = get_term_link( (int) $translations[ $this->default_language ]->term_id, $queried_object->taxonomy );
+			} finally {
+				$this->sitepress->switch_lang();
+			}
+
 			$url = $this->url_converter->convert_url_string( $url, $lang );
 		}
 
 		return $url;
 	}
 
-	/**
-	 * The permalink needs to be adjusted when the URL structure contains the category tag (%category%).
-	 *
-	 * @param WP_Term $cat
-	 *
-	 * @return WP_Term
-	 */
 	public function adjust_category_in_post_permalink( $cat ) {
-		$cat_element = $this->element_factory->create( $cat->term_id, 'term' );
+		if ( empty( $cat->term_taxonomy_id ) ) {
+			return $cat;
+		}
+
+		$cat_element = $this->element_factory->create( (int) $cat->term_taxonomy_id, 'term' );
 		$translation = $cat_element->get_translation( $this->processed_language );
 
 		if ( $translation ) {

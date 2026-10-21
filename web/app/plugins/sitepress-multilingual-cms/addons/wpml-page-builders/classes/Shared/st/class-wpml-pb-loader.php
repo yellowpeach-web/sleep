@@ -8,7 +8,7 @@ class WPML_PB_Loader {
 
 	public function __construct(
 		WPML_ST_Settings $st_settings,
-		$pb_integration = null // Only needed for testing
+		$pb_integration = null
 	) {
 		share( Config::getSharedClasses() );
 
@@ -16,17 +16,6 @@ class WPML_PB_Loader {
 
 		$page_builder_strategies = array();
 
-		/**
-		 * This filter hook provide the API page builders names that need to be supported.
-		 *
-		 * For each PB name, we will create a dedicated strategy and a proper string package namespace.
-		 *
-		 * It's called in 2 places:
-		 * - `WPML_Page_Builders_Integration` for external plugins
-		 * - `WPML_Gutenberg_Integration` for WordPress Core block editor
-		 *
-		 * @param string[] $array Required plugin names (e.g. `Beaver Builder`, `Gutenberg`)
-		 */
 		$required = apply_filters( 'wpml_page_builder_support_required', array() );
 		foreach ( $required as $plugin ) {
 			$page_builder_strategies[] = new WPML_PB_API_Hooks_Strategy( $plugin );
@@ -36,16 +25,29 @@ class WPML_PB_Loader {
 		$page_builder_config_import->add_hooks();
 		if ( $page_builder_config_import->has_settings() ) {
 			$strategy = new WPML_PB_Shortcode_Strategy( new WPML_Page_Builder_Settings() );
-			$strategy->add_shortcodes( $page_builder_config_import->get_settings() );
+			$strategy->set_shortcodes_provider(
+				function () use ( $page_builder_config_import ) {
+					return $page_builder_config_import->get_settings();
+				}
+			);
 			$page_builder_strategies[] = $strategy;
 
-			if ( defined( 'WPML_MEDIA_VERSION' ) && $page_builder_config_import->get_media_settings() ) {
-				$shortcodes_media_hooks = new WPML_Page_Builders_Media_Hooks(
-					new WPML_Page_Builders_Media_Shortcodes_Update_Factory( $page_builder_config_import ),
-					'shortcodes'
-				);
-				$shortcodes_media_hooks->add_hooks();
-			}
+			add_filter(
+				'wpml_pb_element_uid_markup_providers',
+				function ( $providers ) use ( $strategy ) {
+					$providers[] = new \WPML\PB\ElementUid\Markup\ShortcodeProvider( $strategy, new WPML_PB_Shortcode_Encoding() );
+
+					return $providers;
+				}
+			);
+
+			$is_media_translation_plugin_enabled = defined( 'WPML_MEDIA_VERSION' ) && $page_builder_config_import->get_media_settings();
+
+			$shortcodes_media_hooks = new WPML_Page_Builders_Media_Hooks(
+				new WPML_Page_Builders_Media_Shortcodes_Update_Factory( $page_builder_config_import ),
+				'shortcodes'
+			);
+			$shortcodes_media_hooks->add_hooks( $is_media_translation_plugin_enabled );
 		}
 
 		self::load_hooks();
@@ -63,7 +65,6 @@ class WPML_PB_Loader {
 				$pb_integration->add_strategy( $strategy );
 			}
 		}
-
 	}
 
 	private static function load_hooks() {
@@ -71,8 +72,12 @@ class WPML_PB_Loader {
 			WPML_PB_Handle_Post_Body::class,
 			WPML\PB\AutoUpdate\Hooks::class,
 			WPML\PB\Shutdown\Hooks::class,
+			WPML\PB\ElementUid\Hooks::class,
 			WPML\PB\GutenbergCleanup\ShortcodeHooks::class,
 			WPML\PB\Shortcode\AdjustIdsHooks::class,
+			WPML\PB\Strings\RegisterHooks::class,
+			WPML\PB\Media\Hooks::class,
+			WPML\PB\AnchorLinks\Hooks::class,
 		];
 
 		make( WPML_Action_Filter_Loader::class )->load( $hooks );

@@ -1,33 +1,23 @@
 <?php
+$app         = '';
 $constructor = '';
 $isJs        = false;
+$errors      = [];
+$response    = [];
 
 $factory           = new WPML_TM_AMS_ATE_Console_Section_Factory();
 $ateConsoleSection = $factory->create();
 
-$response = wp_remote_request( $ateConsoleSection->getWidgetScriptUrl(), [ 'timeout' => 20 ] );
+$appData = $ateConsoleSection->getAppData();
 
-$errors = [];
-if ( is_wp_error( $response ) ) {
-	$errors[] = 'WP_Error response';
-	$errors[] = $response->get_error_message();
-} else {
-	$headerData = wp_remote_retrieve_headers( $response )->getAll();
-	if ( ! $headerData ) {
-		$errors[] = 'Empty headers when retrieving the ATE Widget App';
-	} else {
-		$isJs = $headerData && strpos( $headerData['content-type'], 'javascript' );
-	}
+$app         = $appData['app'];
+$constructor = $appData['constructor'];
+$isJs        = $appData['isJs'];
+$errors      = $appData['errors'];
+$response    = $appData['response'];
 
-	header( $_SERVER['SERVER_PROTOCOL'] . ' ' . $response['response']['code'] . ' ' . $response['response']['message'] );
-	header( 'content-type: ' . $headerData['content-type'] );
-
-	$app = wp_remote_retrieve_body( $response );
-
-	$constructor = wp_json_encode( $ateConsoleSection->get_widget_constructor() );
-	if ( ! $app || ! trim( $app ) ) {
-		$errors[] = 'Empty response when retrieving the ATE Widget App';
-	}
+foreach ( $appData['headers'] as $header ) {
+	header( $header );
 }
 
 if ( WP_DEBUG ) {
@@ -69,7 +59,7 @@ if( typeof ate_jobs_sync.ateCallbacks.invalidateCache === 'function' ) {
 	params.onLanguageMappingChange = ate_jobs_sync.ateCallbacks.invalidateCache
 }
 
-LoadEateWidget(params);
-	
+LoadRealEateWidget(params);
+
 WIDGET_CONSTRUCTOR;
 }

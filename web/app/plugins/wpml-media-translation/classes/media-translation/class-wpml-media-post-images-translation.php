@@ -1,39 +1,17 @@
 <?php
 
-/**
- * Class WPML_Media_Post_Images_Translation
- * Translate images in posts translations when a post is created or updated
- */
 class WPML_Media_Post_Images_Translation implements IWPML_Action {
 
 	const ALT_PLACEHOLDER     = '{%ALT_TEXT%}';
 	const CAPTION_PLACEHOLDER = '{%CAPTION%}';
 
-	/**
-	 * @var WPML_Media_Translated_Images_Update
-	 */
 	private $images_updater;
 
-	/**
-	 * @var SitePress
-	 */
 	private $sitepress;
 
-	/**
-	 * @var wpdb
-	 */
 	private $wpdb;
-	/**
-	 * @var WPML_Translation_Element_Factory
-	 */
 	private $translation_element_factory;
-	/**
-	 * @var WPML_Media_Custom_Field_Images_Translation_Factory
-	 */
 	private $custom_field_images_translation_factory;
-	/**
-	 * @var WPML_Media_Usage_Factory
-	 */
 	private $media_usage_factory;
 
 	private $captions_map = array();
@@ -75,11 +53,19 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 		add_action( 'wpml_added_media_file_translation', array( $this, 'translate_url_in_post' ), PHP_INT_MAX, 1 );
 		add_action( 'wpml_pro_translation_completed', array( $this, 'translate_images' ), PHP_INT_MAX, 1 );
 		add_action( 'wpml_restored_media_file_translation', array( $this, 'translate_url_in_post' ), PHP_INT_MAX, 2 );
+		add_filter( 'wpml_pb_gutenberg_translated_content_before_save', array( $this, 'translate_images_in_translated_block_content' ), 10, 4 );
 	}
 
-	/**
-	 * @param int $post_id
-	 */
+	public function translate_images_in_translated_block_content( $content, $translated_post_id, $target_language, $original_post ) {
+		$source_language = $this->translation_element_factory->create( $original_post->ID, 'post' )->get_language_code();
+
+		if ( ! $source_language ) {
+			return $content;
+		}
+
+		return $this->images_updater->replace_images_with_translations( $content, $target_language, $source_language );
+	}
+
 	public function translate_images( $post_id ) {
 		if ( isset( $this->translate_locks[ $post_id ] ) ) {
 			return;
@@ -90,10 +76,10 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 		$post = get_post( $post_id );
 
 		if ( ! $post ) {
+			unset( $this->translate_locks[ $post_id ] );
 			return;
 		}
 
-		/** @var WPML_Post_Element $post_element */
 		$post_element    = $this->translation_element_factory->create( $post_id, 'post' );
 		$source_language = $post_element->get_source_language_code();
 
@@ -102,11 +88,10 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 			$this->translate_images_in_post_content( $post, $post_element );
 			$this->translate_images_in_custom_fields( $post_id );
 
-		} else { // is original
+		} else {
 			foreach ( array_keys( $this->sitepress->get_active_languages() ) as $target_language ) {
-				/** @var WPML_Post_Element $translation */
 				$translation = $post_element->get_translation( $target_language );
-				if ( null !== $translation && $post_id !== $translation->get_id()  ) {
+				if ( null !== $translation && (int) $post_id !== (int) $translation->get_id() ) {
 					$translatedPost = get_post( $translation->get_id() );
 
 					if ( $translatedPost ) {
@@ -120,20 +105,10 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 		unset( $this->translate_locks[ $post_id ] );
 	}
 
-	/**
-	 * @param int $master_post_id
-	 * @param string $language
-	 * @param array $post_array
-	 * @param int $post_id
-	 */
 	public function translate_images_in_duplicate( $master_post_id, $language, $post_array, $post_id ) {
 		$this->translate_images( $post_id );
 	}
 
-	/**
-	 * @param WP_Post $post
-	 * @param WPML_Post_Element $post_element
-	 */
 	private function translate_images_in_post_content( WP_Post $post, WPML_Post_Element $post_element ) {
 
 		if ( (bool) apply_filters( 'wpml_pb_should_body_be_translated', true, $post, 'translate_images_in_post_content' ) ) {
@@ -143,14 +118,23 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 				$post_element->get_source_language_code()
 			);
 
-			if ( $post_content_filtered !== $post->post_content ) {
+            $post_excerpt_filtered = $this->images_updater->replace_images_with_translations(
+                $post->post_excerpt,
+                $post_element->get_language_code(),
+                $post_element->get_source_language_code()
+            );
+
+			if ( $post_content_filtered !== $post->post_content || $post_excerpt_filtered !== $post->post_excerpt ) {
 				$this->wpdb->update(
 					$this->wpdb->posts,
-					array( 'post_content' => $post_content_filtered ),
+					array( 'post_content' => $post_content_filtered, 'post_excerpt' => $post_excerpt_filtered ),
 					array( 'ID' => $post->ID ),
 					array( '%s' ),
 					array( '%d' )
 				);
+
+				clean_post_cache( $post->ID );
+
 			}
 		} elseif ( $this->is_updated_from_media_translation_menu() ) {
 			do_action( 'wpml_pb_resave_post_translation', $post_element );
@@ -166,9 +150,6 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 		return isset( $_POST['action'] ) && in_array( $_POST['action'], $allowed_actions, true );
 	}
 
-	/**
-	 * @param int $post_id
-	 */
 	private function translate_images_in_custom_fields( $post_id ) {
 
 		$custom_fields_image_translation = $this->custom_field_images_translation_factory->create();
@@ -181,12 +162,6 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 
 	}
 
-	/**
-	 * @param array $postarr
-	 * @param stdClass $job
-	 *
-	 * @return array
-	 */
 	public function translate_images_in_content( array $postarr, stdclass $job ) {
 		$postarr['post_content'] = $this->images_updater->replace_images_with_translations(
 			$postarr['post_content'],
@@ -220,7 +195,7 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 
 		return $postarr;
 	}
-	
+
 	public function replace_caption_placeholders_in_string( $text, $media, $language ) {
 
 		$caption_parser = new WPML_Media_Caption_Tags_Parse();
@@ -260,11 +235,6 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 		return $text;
 	}
 
-	/**
-	 * @param int      $new_post_id
-	 * @param array    $fields
-	 * @param stdClass $job
-	 */
 	public function replace_caption_placeholders_in_fields( array $fields, stdClass $job ) {
 
 		$media = $this->find_media_in_job( $job );
@@ -279,7 +249,7 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 
 		return $fields;
 	}
-	
+
 	private function replace_placeholder_with_caption( $caption_shortcode, WPML_Media_Caption $caption, $new_caption ) {
 		$caption_content     = $caption->get_content();
 		$new_caption_content = str_replace( self::CAPTION_PLACEHOLDER, $new_caption, $caption_content );
@@ -324,12 +294,6 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 	}
 
 	public function restore_placeholders_in_translated_job_body( $new_body ) {
-		/**
-		 * Translation management is updating the translated job data with the post_content
-		 * from the translated post.
-		 * We want the translated job data to contain the placeholders so we need to
-		 * find the captions we replaced and restore it with the version with the placeholders
-		 */
 
 		foreach ( $this->captions_map as $caption_with_placeholder => $caption_in_post ) {
 			$new_body = str_replace( $caption_in_post, $caption_with_placeholder, $new_body );

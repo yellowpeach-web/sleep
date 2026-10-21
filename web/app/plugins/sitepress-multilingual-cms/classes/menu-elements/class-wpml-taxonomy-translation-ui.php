@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class WPML_Taxonomy_Translation_UI
- */
 class WPML_Taxonomy_Translation_UI {
 
 	private $sitepress;
@@ -10,29 +7,22 @@ class WPML_Taxonomy_Translation_UI {
 	private $tax_selector;
 	private $screen_options;
 
-	/**
-	 * WPML_Taxonomy_Translation constructor.
-	 *
-	 * @param SitePress                      $sitepress
-	 * @param string                         $taxonomy if given renders a specific taxonomy,
-	 *                                                 otherwise renders a placeholder
-	 * @param bool[]                         $args array with possible indices:
-	 *                                             'taxonomy_selector' => bool .. whether or not to show the taxonomy selector
-	 * @param WPML_UI_Screen_Options_Factory $screen_options_factory
-	 */
 	public function __construct(
 		SitePress $sitepress,
 		$taxonomy = '',
 		array $args = array(),
-		WPML_UI_Screen_Options_Factory $screen_options_factory = null
+		?WPML_UI_Screen_Options_Factory $screen_options_factory = null
 	) {
 		$this->sitepress    = $sitepress;
 		$this->tax_selector = isset( $args['taxonomy_selector'] ) ? $args['taxonomy_selector'] : true;
 		$this->taxonomy     = $taxonomy ? $taxonomy : false;
 
 		if ( $screen_options_factory ) {
-			$help_title = esc_html__( 'Taxonomy Translation', 'sitepress' );
-			$help_text  = $this->get_help_text();
+			$help_title = function() {
+				/* translators: Title of the screen where the names of categories, tags and other groupings are translated. */
+				return esc_html__( 'Taxonomy Translation', 'sitepress' );
+			};
+			$help_text  = [ $this, 'get_help_text' ];
 
 			$this->screen_options = $screen_options_factory->create_pagination(
 				'taxonomy_translation_per_page',
@@ -46,10 +36,6 @@ class WPML_Taxonomy_Translation_UI {
 		}
 	}
 
-	/**
-	 * Echos the HTML that serves as an entry point for the taxonomy translation
-	 * screen and enqueues necessary js.
-	 */
 	public function render() {
 		WPML_Taxonomy_Translation_Table_Display::enqueue_taxonomy_table_resources( $this->sitepress );
 		$output = '<div class="wrap">';
@@ -60,6 +46,7 @@ class WPML_Taxonomy_Translation_UI {
 			$output .= '<input type="hidden" id="tax-selector-hidden" value="1"/>';
 		}
 		if ( $this->tax_selector ) {
+			/* translators: Title of the screen where the names of categories, tags and other groupings are translated. */
 			$output .= '<h1>' . esc_html__( 'Taxonomy Translation', 'sitepress' ) . '</h1>';
 			$output .= '<br/>';
 		}
@@ -72,9 +59,6 @@ class WPML_Taxonomy_Translation_UI {
 		echo $output . '</div>';
 	}
 
-	/**
-	 * @return int
-	 */
 	private function get_items_per_page() {
 		$items_per_page = 10;
 		if ( $this->screen_options ) {
@@ -84,25 +68,20 @@ class WPML_Taxonomy_Translation_UI {
 		return $items_per_page;
 	}
 
-	/**
-	 * @return string
-	 */
-	private function get_help_text() {
-		/* translators: this is the title of a documentation page used to terminate the sentence "is not possible to ..."  */
-		$translate_base_taxonomy_slug_link_title = esc_html__(
-			'translate the base taxonomy slugs with WPML',
-			'sitepress'
-		);
-		$translate_base_taxonomy_slug_link       = '<a href="https://wpml.org/faq/translate-taxonomy-slugs-wpml/?utm_source=plugin&utm_medium=gui&utm_campaign=wpmlcore" target="_blank">'
-												   . $translate_base_taxonomy_slug_link_title
-												   . '</a>';
-
-		/* translators: this is the title of a documentation page used to terminate the sentence "To learn more, please visit our documentation page about..."  */
+	public function get_help_text() {
+		/* translators: Link text inside the sentence "...our documentation page about translating post categories and custom taxonomies". It starts in lower case because it sits inside that sentence. */
 		$translate_taxonomies_link_title = esc_html__(
 			'translating post categories and custom taxonomies',
 			'sitepress'
 		);
-		$translate_taxonomies_link       = '<a href="https://wpml.org/documentation/getting-started-guide/translating-post-categories-and-custom-taxonomies/?utm_source=plugin&utm_medium=gui&utm_campaign=wpmlcore" target="_blank">'
+		$translate_taxonomies_url        = \WPML\OutboundLinks\OutboundLinks::to(
+			'https://wpml.org/documentation/translating-your-contents/taxonomy/',
+			array(
+				'medium'   => 'settings',
+				'campaign' => 'taxonomy-translation',
+			)
+		);
+		$translate_taxonomies_link       = '<a href="' . esc_url( $translate_taxonomies_url ) . '" target="_blank">'
 										   . $translate_taxonomies_link_title
 										   . '</a>';
 
@@ -111,16 +90,26 @@ class WPML_Taxonomy_Translation_UI {
 			"WPML allows you to easily translate your site's taxonomies. Only taxonomies marked as translatable will be available for translation. Select the taxonomy in the dropdown menu and then use the list of taxonomy terms that appears to translate them.",
 			'sitepress'
 		);
-		/* translators: the sentence is completed with "translate the base taxonomy slugs with WPML" */
-		$help_sentences[] = sprintf(
-			esc_html__(
-				'Please note that currently, you can translate the slugs of taxonomy terms but it is not possible to %s.',
-				'sitepress'
-			),
-			$translate_base_taxonomy_slug_link
-		);
+		if ( defined( 'WPML_ST_VERSION' ) ) {
+			/* translators: Name of a section of the Translation Management settings, where the names of categories, tags and other groupings are translated; also the link text inside the sentence "Set it in Taxonomies Translation." It is a section name, so it keeps its capitals. */
+			$taxonomies_settings_link_title = esc_html__( 'Taxonomies Translation', 'sitepress' );
+			$taxonomies_settings_url        = admin_url( 'admin.php?page=tm/menu/settings&section=taxonomies' );
+			$taxonomies_settings_link       = '<a href="' . esc_url( $taxonomies_settings_url ) . '">'
+											  . $taxonomies_settings_link_title
+											  . '</a>';
+
+			$help_sentences[] = sprintf(
+				/* translators: Note on the taxonomy translation screen. %s: a link, already wrapped in its tags, whose text is "Taxonomies Translation". */
+				esc_html__(
+					'You can translate the base slug of a taxonomy as well as its terms. Set it in %s.',
+					'sitepress'
+				),
+				$taxonomies_settings_link
+			);
+		}
 		/* translators: the sentence is completed with "translating post categories and custom taxonomies" */
 		$help_sentences[] = sprintf(
+			/* translators: Note on the taxonomy translation screen. %s: a link, already wrapped in its tags, whose text is "translating post categories and custom taxonomies". */
 			esc_html__(
 				'To learn more, please visit our documentation page about %s.',
 				'sitepress'

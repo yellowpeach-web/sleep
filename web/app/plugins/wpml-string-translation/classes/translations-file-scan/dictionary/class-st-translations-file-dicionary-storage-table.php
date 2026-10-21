@@ -1,21 +1,14 @@
 <?php
 
 class WPML_ST_Translations_File_Dictionary_Storage_Table implements WPML_ST_Translations_File_Dictionary_Storage {
-	/** @var wpdb */
 	private $wpdb;
 
-	/** @var null|array */
 	private $data;
 
-	/** @var WPML_ST_Translations_File_Entry[] */
 	private $new_data = array();
 
-	/** @var WPML_ST_Translations_File_Entry[] */
 	private $updated_data = array();
 
-	/**
-	 * @param wpdb $wpdb
-	 */
 	public function __construct( wpdb $wpdb ) {
 		$this->wpdb = $wpdb;
 	}
@@ -37,15 +30,13 @@ class WPML_ST_Translations_File_Dictionary_Storage_Table implements WPML_ST_Tran
 		}
 	}
 
-	/**
-	 * We have to postpone saving of real data because target table may not be created yet by migration process
-	 */
 	public function persist() {
+		$wpdb = $this->wpdb;
+
 		foreach ( $this->new_data as $file ) {
-			$sql = "INSERT IGNORE INTO {$this->wpdb->prefix}icl_mo_files_domains ( file_path, file_path_md5, domain, status, num_of_strings, last_modified, component_type, component_id ) VALUES ( %s, %s, %s, %s, %d, %d, %s, %s )";
-			$this->wpdb->query(
-				$this->wpdb->prepare(
-					$sql,
+			$wpdb->query(
+				$wpdb->prepare(
+					"INSERT IGNORE INTO {$wpdb->prefix}icl_mo_files_domains ( file_path, file_path_md5, domain, status, num_of_strings, last_modified, component_type, component_id ) VALUES ( %s, %s, %s, %s, %d, %d, %s, %s )",
 					array(
 						$file->get_path(),
 						$file->get_path_hash(),
@@ -67,22 +58,18 @@ class WPML_ST_Translations_File_Dictionary_Storage_Table implements WPML_ST_Tran
 				array(
 					'file_path_md5' => $file->get_path_hash(),
 				),
-				array( '%s', '%s', '%d', '%d' )
+				array( '%s', '%s', '%d', '%d', '%s', '%s' )
 			);
 		}
 	}
 
-	/**
-	 * @param WPML_ST_Translations_File_Entry $file
-	 * @param array                           $data
-	 *
-	 * @return array
-	 */
 	private function file_to_array( WPML_ST_Translations_File_Entry $file, array $data = array() ) {
 		$data['domain']         = $file->get_domain();
 		$data['status']         = $file->get_status();
 		$data['num_of_strings'] = $file->get_imported_strings_count();
 		$data['last_modified']  = $file->get_last_modified();
+		$data['component_type'] = $file->get_component_type();
+		$data['component_id']   = $file->get_component_id();
 
 		return $data;
 	}
@@ -91,6 +78,8 @@ class WPML_ST_Translations_File_Dictionary_Storage_Table implements WPML_ST_Tran
 		$this->load_data();
 
 		if ( null !== $path ) {
+			$path = WPML_ST_Translations_File_Entry::to_stored_path( $path );
+
 			return isset( $this->data[ $path ] ) ? array( $this->data[ $path ] ) : array();
 		}
 
@@ -112,38 +101,29 @@ class WPML_ST_Translations_File_Dictionary_Storage_Table implements WPML_ST_Tran
 		return $result;
 	}
 
-	/**
-	 * Checks if the given $path is on the wp_icl_mo_files_domains table.
-	 * It's only there when ST has handled the file.
-	 *
-	 * @param string $path
-	 * @param string $domain
-	 *
-	 * @return bool
-	 */
 	public function is_path_handled( $path, $domain ) {
+		$wpdb = $this->wpdb;
+
 		$file = new WPML_ST_Translations_File_Entry( $path, $domain );
 
-		// phpcs:disable WordPress.WP.PreparedSQL.NotPrepared
-		$id = $this->wpdb->get_var(
-			$this->wpdb->prepare(
+		$id = $wpdb->get_var(
+			$wpdb->prepare(
 				"SELECT id
-				FROM {$this->wpdb->prefix}icl_mo_files_domains
+				FROM {$wpdb->prefix}icl_mo_files_domains
 				WHERE file_path_md5 = %s
 				LIMIT 1",
 				$file->get_path_hash()
 			)
 		);
-		// phpcs:enable WordPress.WP.PreparedSQL.NotPrepared
 
 		return null !== $id;
 	}
 
 	private function load_data() {
 		if ( null === $this->data ) {
+			$wpdb       = $this->wpdb;
 			$this->data = array();
-			$sql        = "SELECT * FROM {$this->wpdb->prefix}icl_mo_files_domains";
-			$rowset     = $this->wpdb->get_results( $sql );
+			$rowset     = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}icl_mo_files_domains" );
 
 			foreach ( $rowset as $row ) {
 				$file = new WPML_ST_Translations_File_Entry( $row->file_path, $row->domain, $row->status );
@@ -159,5 +139,41 @@ class WPML_ST_Translations_File_Dictionary_Storage_Table implements WPML_ST_Tran
 
 	public function reset() {
 		$this->data = null;
+	}
+
+	public function findAllUniqueComponentIds( ?string $componentType = null, array $fileExtensions = [] ): array {
+		$wpdb = $this->wpdb;
+
+		if ( ! $fileExtensions ) {
+			if ( null === $componentType ) {
+				return $wpdb->get_col( "SELECT DISTINCT(component_id) FROM {$wpdb->prefix}icl_mo_files_domains" );
+			}
+
+			return $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT DISTINCT(component_id) FROM {$wpdb->prefix}icl_mo_files_domains WHERE component_type = %s",
+					$componentType
+				)
+			);
+		}
+
+		$rows = null === $componentType
+			? $wpdb->get_results( "SELECT component_id, file_path FROM {$wpdb->prefix}icl_mo_files_domains" )
+			: $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT component_id, file_path FROM {$wpdb->prefix}icl_mo_files_domains WHERE component_type = %s",
+					$componentType
+				)
+			);
+
+		$extensions   = array_map( 'strtolower', array_map( 'strval', $fileExtensions ) );
+		$componentIds = array();
+		foreach ( $rows as $row ) {
+			if ( in_array( strtolower( pathinfo( $row->file_path, PATHINFO_EXTENSION ) ), $extensions, true ) ) {
+				$componentIds[ (string) $row->component_id ] = $row->component_id;
+			}
+		}
+
+		return array_values( $componentIds );
 	}
 }

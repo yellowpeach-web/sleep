@@ -18,24 +18,27 @@ use function WPML\FP\spreadArgs;
 
 class NativeEditorTranslationHooks implements \IWPML_Backend_Action {
 
+	private $acfWorker;
+
+	public function __construct( \WPML_ACF_Worker $acfWorker ) {
+		$this->acfWorker = $acfWorker;
+	}
+
 	public function add_hooks() {
 		$postId           = isset( $_GET['post'] ) ? (int) $_GET['post'] : null;
 		$trid             = isset( $_GET['trid'] ) ? (int) $_GET['trid'] : null;
 		$postType         = Sanitize::stringProp( 'post_type', $_GET );
-		$isNewTranslation = (bool) $trid;
 
 		if ( $trid ) {
 			Hooks::onFilter( 'acf/load_value', PHP_INT_MAX, 3 )
-				->then( spreadArgs( Fns::withoutRecursion( Fns::identity(), self::preFillPostTranslationField( $trid ) ) ) );
+				->then( spreadArgs( Fns::withoutRecursion( Fns::identity(), $this->preFillPostTranslationField( $trid ) ) ) );
 		}
 
-		// $isNotFieldGroup :: ( string|null, int|null ) -> bool
 		$isNotFieldGroup = function( $postType, $postId ) {
 			$postType = $postType ?: get_post_type( $postId );
 			return FieldGroup::CPT !== $postType;
 		};
 
-		// $isPostTranslation :: void -> bool
 		$isPostTranslation = function() use ( $postId ) {
 			if ( ! $postId ) {
 				return false;
@@ -45,6 +48,9 @@ class NativeEditorTranslationHooks implements \IWPML_Backend_Action {
 
 			return $originalId && $postId !== $originalId;
 		};
+
+		$isNewTranslation = $trid && ( ! $postId
+			|| (int) \SitePress::get_original_element_id_by_trid( $trid ) !== $postId );
 
 		if (
 			( $isNewTranslation || $isPostTranslation() )
@@ -57,9 +63,6 @@ class NativeEditorTranslationHooks implements \IWPML_Backend_Action {
 		}
 	}
 
-	/**
-	 * @return void
-	 */
 	public static function loadFieldLockFilters() {
 		Hooks::onFilter( 'acf/field_wrapper_attributes', 10, 2 )
 			->then( spreadArgs( [ self::class, 'addClassToFieldWrapper' ] ) );
@@ -68,35 +71,19 @@ class NativeEditorTranslationHooks implements \IWPML_Backend_Action {
 			->then( spreadArgs( [ self::class, 'addClassToFieldLabel' ] ) );
 	}
 
-	/**
-	 * @param int $trid
-	 *
-	 * @return \Closure
-	 */
-	private static function preFillPostTranslationField( $trid ) {
-		// $getOriginalId :: void -> int
+	private function preFillPostTranslationField( $trid ) {
 		$getOriginalId = Fns::memorize( function() use ( $trid ) {
 			return (int) \SitePress::get_original_element_id_by_trid( $trid );
 		} );
 
-		/**
-		 * @param mixed  $value  The value to preview.
-		 * @param string $postId The post ID for this value.
-		 * @param array  $field  The field array.
-		 *
-		 * @return mixed
-		 */
 		return function( $value, $postId, $field ) use ( $getOriginalId ) {
-			// $isNullOrFalse :: mixed -> bool
 			$isNullOrFalseOrEmpty = Lst::includes( Fns::__, [ null, false, '' ] );
 
-			// $isCopiable :: array -> bool
 			$isCopiable = pipe(
 				Obj::prop( 'wpml_cf_preferences' ),
 				Lst::includes( Fns::__, [ WPML_COPY_ONCE_CUSTOM_FIELD, WPML_COPY_CUSTOM_FIELD ] )
 			);
 
-			// $isAutoDraft :: int|string -> bool
 			$isAutoDraft = pipe( 'get_post_status', Relation::equals( 'auto-draft' ) );
 
 			if (
@@ -106,8 +93,8 @@ class NativeEditorTranslationHooks implements \IWPML_Backend_Action {
 			) {
 				$originalId = $getOriginalId();
 
-				if ( $originalId !== $postId ) {
-					return acf_get_value( $originalId, $field );
+				if ( $originalId !== $postId && current_user_can( 'read_post', $originalId ) ) {
+					return $this->convertIdsTheCopyWillSkip( acf_get_value( $originalId, $field ), $field, $originalId, $postId );
 				}
 			}
 
@@ -115,12 +102,22 @@ class NativeEditorTranslationHooks implements \IWPML_Backend_Action {
 		};
 	}
 
-	/**
-	 * @param array $wrapper
-	 * @param array $field
-	 *
-	 * @return array
-	 */
+	private function convertIdsTheCopyWillSkip( $value, array $field, $originalId, $postId ) {
+		if ( in_array( $value, [ null, false, '', '0' ], true ) || ! isset( $field['name'], $field['type'] ) ) {
+			return $value;
+		}
+
+		return $this->acfWorker->convertMetaValue(
+			$value,
+			$field['name'],
+			$field['type'],
+			\WPML_ACF_Worker::META_TYPE_POST,
+			$originalId,
+			$postId,
+			apply_filters( 'wpml_current_language', null )
+		);
+	}
+
 	public static function addClassToFieldWrapper( $wrapper, $field ) {
 		if ( self::isCopied( $field ) ) {
 			return Obj::over( Obj::lensProp( 'class' ), Str::concat( Fns::__, ' acfml-field-copied' ), $wrapper );
@@ -129,12 +126,6 @@ class NativeEditorTranslationHooks implements \IWPML_Backend_Action {
 		return $wrapper;
 	}
 
-	/**
-	 * @param string $labelHtml
-	 * @param array  $field
-	 *
-	 * @return string
-	 */
 	public static function addClassToFieldLabel( $labelHtml, $field ) {
 		if ( self::isCopied( $field ) ) {
 			return '<span class="acfml-field-label-copied">' . $labelHtml . '</span>';
@@ -143,23 +134,16 @@ class NativeEditorTranslationHooks implements \IWPML_Backend_Action {
 		return $labelHtml;
 	}
 
-	/**
-	 * @param array $field
-	 *
-	 * @return bool
-	 */
 	private static function isCopied( $field ) {
 		return Relation::propEq( 'wpml_cf_preferences', WPML_COPY_CUSTOM_FIELD, $field );
 	}
 
-	/**
-	 * @return void
-	 */
 	public static function enqueueAssets() {
 		Wrapper::of( [
 			'name' => 'acfmlNativeEditorTranslationEdit',
 			'data' => [
 				'strings' => [
+					/* translators: Tooltip of a field locked in the WordPress editor of a translation. */
 					'tooltip' => esc_html__( 'This field value is copied from the default language and will be kept in sync across languages.', 'acfml' ),
 				],
 			],

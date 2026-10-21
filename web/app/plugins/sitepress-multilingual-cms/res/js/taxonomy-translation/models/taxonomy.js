@@ -2,7 +2,7 @@
 
 (function () {
 	"use strict";
-	
+
 	TaxonomyTranslation.models.Taxonomy = Backbone.Model.extend({
 
 		defaults: function () {
@@ -23,6 +23,11 @@
 
 		setTaxonomy: function (taxonomy) {
 			this.set("taxonomy", taxonomy, {silent: true});
+			// The new load replaces a pending background refresh (it would answer in its place).
+			if (this._refreshTimer) {
+				clearTimeout(this._refreshTimer);
+				this._refreshTimer = null;
+			}
 			TaxonomyTranslation.data.termRowsCollection.reset();
 
 			if (taxonomy !== undefined) {
@@ -32,18 +37,31 @@
 			}
 		},
 
-		getTaxonomyTerms: function (taxonomy) {
+		getTaxonomyTerms: function (taxonomy, isRefresh) {
 			var self = this;
+			// Only the latest call may answer: an older one ends after the admin picked again.
+			var request = self._termsRequest = (self._termsRequest || 0) + 1;
 
 			jQuery.ajax({
 				url: ajaxurl,
 				type: "POST",
+				dataType: "json",
 				data: {
 					action: 'wpml_get_terms_and_labels_for_taxonomy_table',
 					nonce: labels.wpml_taxonomy_translation_nonce,
 					taxonomy: taxonomy
 				},
+				error: function () {
+					// A failed background refresh keeps the table it already shows.
+					if (isRefresh || request !== self._termsRequest) {
+						return;
+					}
+					self.trigger('termsLoadFailed');
+				},
 				success: function (response) {
+					if (request !== self._termsRequest) {
+						return;
+					}
 					var termsData = response.terms;
 					var labelsData = response.taxLabelTranslations;
 
@@ -66,8 +84,6 @@
 						self.set('bottomContent', response.bottomContent);
 					}
 
-					TaxonomyTranslation.data.resultsTruncated = response.resultsTruncated;
-
 					if (termsData) {
 						self.processData(termsData);
 					} else {
@@ -79,6 +95,8 @@
 		},
 
 		processData: function (termsData) {
+
+			TaxonomyTranslation.data.termRowsCollection.reset();
 
 			var parentTermIDs = [],
 				parents = {},
@@ -99,8 +117,13 @@
 					}
 				});
 				TaxonomyTranslation.data.termRowsCollection.add(new TaxonomyTranslation.models.TermRow({
-					trid: tridGroup.trid,
-					terms: termsObject
+					// String, so the collection is keyed by the exact id even
+					// when it exceeds 2^53 (wpmldev-5066). The server sends a
+					// string; this guards the case where anything else does not.
+					trid: String(tridGroup.trid),
+					terms: termsObject,
+					inProgress: tridGroup.inProgress || {},
+					needsUpdate: tridGroup.needsUpdate || {}
 				}));
 			});
 
@@ -117,6 +140,34 @@
 			this.set("termNames", termNames, {silent: true});
 
 			this.trigger('newTaxonomySet');
+
+			this.scheduleRefreshIfInProgress(termsData);
+		},
+
+		// While any term has an automatic-translation job in progress, re-fetch
+		// the table after a delay so the "refreshing" spinners swap to the final
+		// state once ATE delivers (mirrors the Translation Management behavior).
+		scheduleRefreshIfInProgress: function (termsData) {
+			var self = this;
+
+			if (self._refreshTimer) {
+				clearTimeout(self._refreshTimer);
+				self._refreshTimer = null;
+			}
+
+			var hasInProgress = _.some(termsData, function (tridGroup) {
+				return tridGroup.inProgress && _.keys(tridGroup.inProgress).length > 0;
+			});
+
+			var labelsInProgress = _.some(TaxonomyTranslation.data.translatedTaxonomyLabels || {}, function (labelData) {
+				return labelData && labelData.inProgress;
+			});
+
+			if (hasInProgress || labelsInProgress) {
+				self._refreshTimer = setTimeout(function () {
+					self.getTaxonomyTerms(self.get('taxonomy'), true);
+				}, 6000);
+			}
 		},
 
 		getOriginalTerm: function ( trid ) {
@@ -177,7 +228,11 @@
 							TaxonomyTranslation.data.translatedTaxonomyLabels[newLabelData.lang] = {
 								singular: newLabelData.singular,
 								general: newLabelData.general,
-								slug: newLabelData.slug
+								slug: newLabelData.slug,
+								// The save stored a real translation, so the row must
+								// keep rendering as translated when it re-renders below
+								// without waiting for a reload (wpmldev-7318).
+								hasTranslation: true
 							};
 							WPML_Translate_taxonomy.callbacks.fire('wpml_tt_save_term_translation', self.get('taxonomy'));
 							self.trigger("labelTranslationSaved");

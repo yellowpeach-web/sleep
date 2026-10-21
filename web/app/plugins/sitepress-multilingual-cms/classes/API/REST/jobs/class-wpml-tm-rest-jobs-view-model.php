@@ -5,37 +5,26 @@ use WPML\FP\Fns;
 use WPML\FP\Lst;
 use WPML\FP\Obj;
 use WPML\TM\API\Jobs;
+use WPML\TM\ATE\PullDelivery\State as PullDeliveryState;
+use WPML\WP\OptionManager;
 use WPML\TM\ATE\Review\PreviewLink;
 use WPML\TM\ATE\Review\ReviewStatus;
 use WPML\TM\Jobs\Utils\ElementLink;
+use WPML\TM\Menu\TranslationQueue\TranslationQueuePage;
 
 class WPML_TM_Rest_Jobs_View_Model {
-	/** @var WPML_TM_Rest_Jobs_Translation_Service */
 	private $translation_service;
 
-	/** @var WPML_TM_Rest_Jobs_Element_Info */
 	private $element_info;
 
-	/** @var WPML_TM_Rest_Jobs_Language_Names */
 	private $language_names;
 
-	/** @var WPML_TM_Rest_Job_Translator_Name */
 	private $translator_name;
 
-	/** @var WPML_TM_Rest_Job_Progress */
 	private $progress;
 
-	/** @var ElementLink $element_link */
 	private $element_link;
 
-	/**
-	 * @param WPML_TM_Rest_Jobs_Translation_Service $translation_service
-	 * @param WPML_TM_Rest_Jobs_Element_Info $element_info
-	 * @param WPML_TM_Rest_Jobs_Language_Names $language_names
-	 * @param WPML_TM_Rest_Job_Translator_Name $translator_name
-	 * @param WPML_TM_Rest_Job_Progress $progress
-	 * @param ElementLink $element_link
-	 */
 	public function __construct(
 		WPML_TM_Rest_Jobs_Translation_Service $translation_service,
 		WPML_TM_Rest_Jobs_Element_Info $element_info,
@@ -52,18 +41,17 @@ class WPML_TM_Rest_Jobs_View_Model {
 		$this->element_link        = $element_link;
 	}
 
-	/**
-	 * @param WPML_TM_Jobs_Collection $jobs
-	 * @param int $total_jobs_count
-	 * @param WPML_TM_Jobs_Search_Params $jobs_search_params
-	 *
-	 * @return array
-	 */
-	public function build( WPML_TM_Jobs_Collection $jobs, $total_jobs_count, WPML_TM_Jobs_Search_Params $jobs_search_params ) {
+	public function build( WPML_TM_Jobs_Collection $jobs, $total_jobs_count, WPML_TM_Jobs_Search_Params $jobs_search_params, $page_name = '' ) {
 		$result = [ 'jobs' => [] ];
 
+		$held_for_payment = array_map( 'intval', (array) PullDeliveryState::getKey( 'payment_pending_job_ids', [] ) );
+
+		$waiting_for_payment = $this->isPayAsYouGoAccount()
+			? array_map( 'intval', (array) PullDeliveryState::getKey( 'insufficient_balance_job_ids', [] ) )
+			: [];
+
 		foreach ( $jobs as $job ) {
-			$result['jobs'][] = $this->map_job( $job, $jobs_search_params );
+			$result['jobs'][] = $this->map_job( $job, $jobs_search_params, $page_name, $held_for_payment, $waiting_for_payment );
 		}
 
 		$result['total'] = $total_jobs_count;
@@ -71,25 +59,26 @@ class WPML_TM_Rest_Jobs_View_Model {
 		return $result;
 	}
 
-	/**
-	 * @param WPML_TM_Job_Entity $job
-	 * @param WPML_TM_Jobs_Search_Params $jobs_search_params
-	 *
-	 * @return array
-	 */
-	private function map_job( WPML_TM_Job_Entity $job, WPML_TM_Jobs_Search_Params $jobs_search_params ) {
-		$extra_data = [];
-		$viewUrl    = '';
+	private function map_job( WPML_TM_Job_Entity $job, WPML_TM_Jobs_Search_Params $jobs_search_params, $page_name = '', array $held_for_payment = [], array $waiting_for_payment = [] ) {
+		$extra_data        = [];
+		$viewUrl           = '';
+		$heldForPayment    = false;
+		$waitingForPayment = false;
 
 		if ( $job instanceof WPML_TM_Post_Job_Entity ) {
 			$extra_data['icl_translate_job_id'] = $job->get_translate_job_id();
 			$extra_data['editor_job_id']        = $job->get_editor_job_id();
+			$heldForPayment                     = in_array( (int) $job->get_translate_job_id(), $held_for_payment, true );
+			$waitingForPayment                  = in_array( (int) $job->get_translate_job_id(), $waiting_for_payment, true );
 
-			$viewUrl = $this->getViewUrl( $job, $jobs_search_params );
+			$viewUrl = WPML_TM_Job_Entity::TAXONOMY_TYPE === $job->get_type()
+				? ''
+				: $this->getViewUrl( $job, $jobs_search_params, $page_name );
 		}
 
 		return [
 			'id'                     => $job->get_rid(),
+			'original_element_id'    => $job->get_original_element_id(),
 			'type'                   => $job->get_type(),
 			'tp_id'                  => $job->get_tp_id(),
 			'status'                 => $job->get_status(),
@@ -113,6 +102,9 @@ class WPML_TM_Rest_Jobs_View_Model {
 			'translator_id'          => $job->get_translator_id() ? (int) $job->get_translator_id() : '',
 			'is_ate_job'             => $job->is_ate_job(),
 			'automatic'              => $job->is_automatic(),
+			'created_by_translate_everything' => $job->is_created_by_translate_everything(),
+			'held_for_payment'       => $heldForPayment,
+			'waiting_for_payment'    => $waitingForPayment,
 			'progress'               => $this->progress->get( $job ),
 			'batch'                  => [
 				'id'    => $job->get_batch()->get_id(),
@@ -126,50 +118,29 @@ class WPML_TM_Rest_Jobs_View_Model {
 		];
 	}
 
-	/**
-	 * @param WPML_TM_Job_Entity $job
-	 *
-	 * @return mixed|string|void
-	 */
 	private function get_edit_url( $job ) {
 		$edit_url = '';
 		if ( $job->get_original_element_id() ) {
 
 			$jobId = $job instanceof WPML_TM_Post_Job_Entity ? $job->get_translate_job_id() : $job->get_rid();
 
-			$translation_queue_page = admin_url( 'admin.php?page='
-			                                     . WPML_TM_FOLDER
-			                                     . '/menu/translations-queue.php&job_id='
-			                                     . $jobId );
+			$translation_queue_page = admin_url( TranslationQueuePage::base() . '&job_id=' . $jobId );
 			$edit_url               = apply_filters( 'icl_job_edit_url', $translation_queue_page, $jobId );
 		}
 
 		return $edit_url;
 	}
 
-	/**
-	 * @param WPML_TM_Post_Job_Entity $job
-	 * @param WPML_TM_Jobs_Search_Params $jobs_search_params
-	 *
-	 * @return string
-	 */
-	private function getViewUrl( WPML_TM_Post_Job_Entity $job, WPML_TM_Jobs_Search_Params $jobs_search_params ) {
+	private function getViewUrl( WPML_TM_Post_Job_Entity $job, WPML_TM_Jobs_Search_Params $jobs_search_params, $page_name = '' ) {
 		$needsReview = Lst::includes( $job->get_review_status(), [
 			ReviewStatus::NEEDS_REVIEW,
 			ReviewStatus::EDITING
 		] );
 
-		return $needsReview ? $this->getReviewUrl( $job, $jobs_search_params ) : $this->element_link->getTranslation( $job );
+		return $needsReview ? $this->getReviewUrl( $job, $jobs_search_params, $page_name ) : $this->element_link->getTranslation( $job );
 	}
 
-	/**
-	 * @param WPML_TM_Post_Job_Entity $job
-	 * @param WPML_TM_Jobs_Search_Params $jobs_search_params
-	 *
-	 * @return string
-	 */
-	private function getReviewUrl( WPML_TM_Post_Job_Entity $job, WPML_TM_Jobs_Search_Params $jobs_search_params ) {
-		$translation     = PostTranslations::getInLanguage( $job->get_original_element_id(), $job->get_target_language() );
+	private function getReviewUrl( WPML_TM_Post_Job_Entity $job, WPML_TM_Jobs_Search_Params $jobs_search_params, $page_name = '' ) {
 		$target_language = $jobs_search_params->get_target_language();
 		$element_type    = $jobs_search_params->get_element_type();
 
@@ -182,8 +153,30 @@ class WPML_TM_Rest_Jobs_View_Model {
 			$filterParams .= '&targetLanguages=' . implode( ',', $target_language );
 		}
 
-		$returnUrl    = admin_url( 'admin.php?page=' . WPML_TM_FOLDER . '/menu/translations-queue.php' . $filterParams );
+		$returnPage = WPML_TM_Jobs_List_Script_Data::TM_JOBS_PAGE === $page_name
+			? 'admin.php?page=' . TranslationQueuePage::SLUG . '&tab=jobs'
+			: TranslationQueuePage::base();
+
+		$returnUrl = admin_url( $returnPage . $filterParams );
+
+		$translation     = PostTranslations::getInLanguage( $job->get_original_element_id(), $job->get_target_language() );
+
+		if ( ! $translation || ! $translation->element_id ) {
+			$element_id = (int) $job->get_element_id();
+
+			if ( $element_id <= 0 || ! get_post( $element_id ) ) {
+				return PreviewLink::getWithSpecifiedReturnUrl( $returnUrl, $element_id, $job->get_translate_job_id() );
+			}
+
+			return '';
+		}
 
 		return PreviewLink::getWithSpecifiedReturnUrl( $returnUrl, $translation->element_id, $job->get_translate_job_id() );
+	}
+
+	private function isPayAsYouGoAccount() {
+		$credits = OptionManager::getOr( [], 'TM', 'Account::credits' );
+
+		return is_array( $credits ) && ! empty( $credits['pay_as_you_go'] );
 	}
 }

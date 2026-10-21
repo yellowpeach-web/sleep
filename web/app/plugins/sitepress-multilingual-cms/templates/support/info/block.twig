@@ -15,13 +15,16 @@
 				{% else %}
 					{{ item.label }}
 				{% endif %}
+				{% if item.icon is defined and item.tooltip is defined %}
+					<span class="wpml-tooltip-icon" title="{{ item.tooltip }}"></span>
+				{% endif %}
 			</th>
 			<td class="wpml-support-info-check-{{ item_status }}">
 				{{ item.value }}
 			</td>
-			{% if has_messages %}
+			{% if item.messages is defined and item.messages|length > 0 %}
 				<td class="wpml-support-info-message">
-					{% include 'messages.twig' %}
+					{% include 'messages.twig' with { messages: item.messages } %}
 				</td>
 			{% endif %}
 		</tr>

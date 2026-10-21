@@ -8,9 +8,6 @@ use ACFML\TranslationDataMetaboxHooks;
 
 class HooksFactory implements \IWPML_Backend_Action_Loader {
 
-	/**
-	 * @return \IWPML_Action[]
-	 */
 	public function create() {
 		$cptHelper = new Cpt();
 		return [

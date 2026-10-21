@@ -41,8 +41,10 @@
 			var self  = this;
 			var langs = TaxonomyTranslation.util.langCodes;
 			var terms = self.model.get("terms");
+			var inProgress = self.model.get("inProgress") || {};
+			var needsUpdate = self.model.get("needsUpdate") || {};
 			var originalTerm = null;
-			
+
 			_.each(langs, function (lang) {
 				var term = terms[lang];
 				if (term === undefined) {
@@ -50,6 +52,8 @@
 					terms[lang] = term;
 					self.model.set("terms", terms, {silent: true});
 				}
+				term.set("inProgress", !!inProgress[lang], {silent: true});
+				term.set("needsUpdate", !!needsUpdate[lang], {silent: true});
 				if ( term.isOriginal() ) {
 					originalTerm = term;
 				}

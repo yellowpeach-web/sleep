@@ -23,7 +23,8 @@ class CheckRedirect implements \IWPML_Frontend_Action {
 		if ( $redirect ) {
 			$postType = Post::getType( $post_id );
 			if (
-				make( \WPML_ST_Post_Slug_Translation_Settings::class )->is_translated( $postType )
+				is_string( $postType )
+				&& make( \WPML_ST_Post_Slug_Translation_Settings::class )->is_translated( $postType )
 				&& $sitepress->is_display_as_translated_post_type( $postType )
 			) {
 				$adjustLanguageDetails = Obj::set(

@@ -1,41 +1,21 @@
 <?php
 
-/**
- * Class WPML_Name_Query_Filter
- *
- * @package    wpml-core
- * @subpackage post-translation
- *
- * @since      3.2.3
- */
 abstract class WPML_Name_Query_Filter extends WPML_Slug_Resolution {
 
-	/** @var string $post_type */
 	protected $post_type;
 
-	/** @var string[] $indexes */
 	protected $indexes = array( 'name' );
 
-	/** @var string $id_index */
 	protected $id_index = 'p';
 
-	/** @var string[] $active_languages */
 	protected $active_languages = array();
 
-	/** @var string $al_regexp */
 	protected $al_regexp;
 
-	/** @var  WPML_Post_Translation $post_translation */
 	protected $post_translation;
 
 	protected $is_translated;
 
-	/**
-	 * @param string                $post_type
-	 * @param SitePress             $sitepress
-	 * @param WPML_Post_Translation $post_translations
-	 * @param wpdb                  $wpdb
-	 */
 	public function __construct( $post_type, &$sitepress, &$post_translations, &$wpdb ) {
 		parent::__construct( $wpdb, $sitepress );
 		$this->post_type        = $post_type;
@@ -44,18 +24,6 @@ abstract class WPML_Name_Query_Filter extends WPML_Slug_Resolution {
 		$this->post_translation = &$post_translations;
 	}
 
-	/**
-	 * Looks through the "name" and "pagename" query vars in a given query and identifies the correct page_id
-	 * corresponding to either of these two and then adjusts the query page_id to point at this correct page_id.
-	 *
-	 * @param WP_Query $page_query
-	 *
-	 * @return array
-	 *                  - WP_Query that uses the id index stored in \WPML_Name_Query_Filter::$id_index
-	 *                  instead of "name" or "pagename" in case a match was found, otherwise
-	 *                  returns the input query unaltered.
-	 *                  - int|false the page ID
-	 */
 	public function filter_page_name( WP_Query $page_query ) {
 		$this->active_languages = $this->get_ordered_langs();
 		$this->al_regexp        = $this->generate_al_regexp( $this->active_languages );
@@ -82,13 +50,6 @@ abstract class WPML_Name_Query_Filter extends WPML_Slug_Resolution {
 
 	abstract protected function select_best_match( $pages_with_name );
 
-	/**
-	 * @param WP_Query $page_query
-	 * @param int      $pid
-	 * @param string   $index
-	 *
-	 * @return WP_Query
-	 */
 	protected function maybe_adjust_query_by_pid( $page_query, $pid, $index ) {
 		if ( ! ( isset( $page_query->queried_object )
 				 && isset( $page_query->queried_object->ID )
@@ -121,13 +82,6 @@ abstract class WPML_Name_Query_Filter extends WPML_Slug_Resolution {
 		return $page_query;
 	}
 
-	/**
-	 * Called when the post id is being adjusted. Can be overridden.
-	 *
-	 * @param WP_Query $page_query
-	 *
-	 * @return WP_Query
-	 */
 
 	protected function adjusting_id( $page_query ) {
 		$page_query->is_single = true;
@@ -135,32 +89,19 @@ abstract class WPML_Name_Query_Filter extends WPML_Slug_Resolution {
 		return $page_query;
 	}
 
-	/**
-	 * Returns a SQL snippet for joining the posts table with icl translations filtered for the post_type
-	 * of this class.
-	 *
-	 * @return string
-	 */
-	abstract protected function get_from_join_snippet();
-
-	/**
-	 * Generates a regular expression matcher for matching language slugs in a URI
-	 *
-	 * @param string[] $active_language_codes
-	 *
-	 * @return string
-	 */
 	private function generate_al_regexp( $active_language_codes ) {
 
-		return '/^(' . implode( '|', $active_language_codes ) . ')\//';
+		return '/^(' . implode(
+			'|',
+			array_map(
+				function ( $code ) {
+					return preg_quote( $code, '/' );
+				},
+				$active_language_codes
+			)
+		) . ')\//';
 	}
 
-	/**
-	 * @param WP_Query $page_query
-	 * @param string   $index
-	 *
-	 * @return array
-	 */
 	private function query_needs_adjustment( WP_Query $page_query, $index ) {
 		if ( empty( $page_query->query_vars[ $index ] ) ) {
 			$pages_with_name     = false;
@@ -181,20 +122,10 @@ abstract class WPML_Name_Query_Filter extends WPML_Slug_Resolution {
 		return array( $pages_with_name, $page_name_for_query );
 	}
 
-	/**
-	 * @param string $page_name_for_query
-	 *
-	 * @return bool
-	 */
 	private function page_name_has_parent( $page_name_for_query ) {
 		return false !== strpos( $page_name_for_query, '/' );
 	}
 
-	/**
-	 * @param WP_Query $page_query
-	 *
-	 * @return int|string
-	 */
 	private function get_post_parent_query_var( WP_Query $page_query ) {
 		$post_parent = 0;
 
@@ -205,12 +136,6 @@ abstract class WPML_Name_Query_Filter extends WPML_Slug_Resolution {
 		return $post_parent;
 	}
 
-	/**
-	 * @param string     $page_name_for_query
-	 * @param string|int $post_parent
-	 *
-	 * @return array
-	 */
 	private function get_single_slug_adjusted_IDs( $page_name_for_query, $post_parent ) {
 		$cache     = new WPML_WP_Cache( get_class( $this ) );
 		$cache_key = 'get_single_slug_adjusted_IDs' . $this->post_type . $page_name_for_query . $post_parent;
@@ -226,55 +151,77 @@ abstract class WPML_Name_Query_Filter extends WPML_Slug_Resolution {
 		return array( 'matching_ids' => $pages_with_name );
 	}
 
-	/**
-	 * @param string     $page_name_for_query
-	 * @param string|int $post_parent
-	 *
-	 * @return array
-	 */
 	private function get_single_slug_adjusted_IDs_from_DB( $page_name_for_query, $post_parent ) {
-		$pages_with_name = $this->wpdb->get_col(
-			$this->wpdb->prepare(
-				'
-				SELECT ID
-				' . $this->get_from_join_snippet()
-				. $this->get_where_snippet() . ' p.post_name = %s
-				ORDER BY p.post_parent = %d DESC
-				',
+		$wpdb = $this->wpdb;
+
+		if ( $this->is_translated ) {
+			return $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT p.ID
+					 FROM {$wpdb->posts} p
+					 JOIN {$wpdb->prefix}icl_translations wpml_translations
+						ON p.ID = wpml_translations.element_id
+						AND wpml_translations.element_type = %s
+					 WHERE p.post_type = %s AND p.post_name = %s
+					 ORDER BY p.post_parent = %d DESC, p.post_status = 'publish' DESC, p.ID DESC",
+					'post_' . $this->post_type,
+					$this->post_type,
+					$page_name_for_query,
+					$post_parent
+				)
+			);
+		}
+
+		return $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT p.ID
+				 FROM {$wpdb->posts} p
+				 WHERE p.post_type = %s AND p.post_name = %s
+				 ORDER BY p.post_parent = %d DESC, p.post_status = 'publish' DESC, p.ID DESC",
+				$this->post_type,
 				$page_name_for_query,
 				$post_parent
 			)
 		);
-
-		return $pages_with_name;
 	}
 
-	/**
-	 * @param string[] $slugs slugs that were queried for
-	 *
-	 * @return int[] page_ids ordered by their likelihood of correctly matching the query target,
-	 *               derived from checking all slugs against the sits pages slugs as well as their parent slugs.
-	 *               Elements at the beginning of the array are more correct than later elements, but the results
-	 *               are not yet filtered for the correct language.
-	 *
-	 * @used-by \WPML_Page_Name_Query_Filter::filter_page_name to find the correct page_id corresponding to a set of slugs,
-	 *                                                         by filtering the results of this function by language of the
-	 *                                                         returned page_ids.
-	 */
 	private function get_multiple_slug_adjusted_IDs( $slugs ) {
-		$parent_slugs    = array_slice( $slugs, 0, - 1 );
+		$wpdb = $this->wpdb;
 
-		/** @var array<object>|null $pages_with_name */
-		$pages_with_name = $this->wpdb->get_results(
-			'   SELECT p.ID, p.post_name, p.post_parent, par.post_name as parent_name
-			' . $this->get_from_join_snippet() . "
-			LEFT JOIN {$this->wpdb->posts} par
-				ON par.ID = p.post_parent
-			" . $this->get_where_snippet() . ' p.post_name IN (' . wpml_prepare_in( $slugs ) . ')
-			ORDER BY par.post_name IN (' . wpml_prepare_in( $parent_slugs ) . ') DESC'
-		);
+		$parent_slugs = array_slice( $slugs, 0, - 1 );
 
-		if ( ! $pages_with_name ) {
+		if ( $this->is_translated ) {
+			$pages_with_name = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT p.ID, p.post_name, p.post_parent, par.post_name AS parent_name
+					 FROM {$wpdb->posts} p
+					 JOIN {$wpdb->prefix}icl_translations wpml_translations
+						ON p.ID = wpml_translations.element_id
+						AND wpml_translations.element_type = %s
+					 LEFT JOIN {$wpdb->posts} par ON par.ID = p.post_parent
+					 WHERE p.post_type = %s AND p.post_name IN ("
+					. implode( ', ', array_fill( 0, count( $slugs ), '%s' ) ) . ')
+					 ORDER BY par.post_name IN ('
+					. implode( ', ', array_fill( 0, count( $parent_slugs ), '%s' ) ) . ") DESC, p.post_status = 'publish' DESC",
+					array_merge( array( 'post_' . $this->post_type, $this->post_type ), $slugs, $parent_slugs )
+				)
+			);
+		} else {
+			$pages_with_name = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT p.ID, p.post_name, p.post_parent, par.post_name AS parent_name
+					 FROM {$wpdb->posts} p
+					 LEFT JOIN {$wpdb->posts} par ON par.ID = p.post_parent
+					 WHERE p.post_type = %s AND p.post_name IN ("
+					. implode( ', ', array_fill( 0, count( $slugs ), '%s' ) ) . ')
+					 ORDER BY par.post_name IN ('
+					. implode( ', ', array_fill( 0, count( $parent_slugs ), '%s' ) ) . ") DESC, p.post_status = 'publish' DESC",
+					array_merge( array( $this->post_type ), $slugs, $parent_slugs )
+				)
+			);
+		}
+
+		if ( ! is_array( $pages_with_name ) || ! $pages_with_name ) {
 			return [];
 		}
 
@@ -283,8 +230,4 @@ abstract class WPML_Name_Query_Filter extends WPML_Slug_Resolution {
 		return $query_scorer->get_possible_ids_ordered();
 	}
 
-	private function get_where_snippet() {
-
-		return $this->wpdb->prepare( ' WHERE p.post_type = %s AND ', $this->post_type );
-	}
 }

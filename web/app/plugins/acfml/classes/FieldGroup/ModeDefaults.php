@@ -13,7 +13,6 @@ class ModeDefaults {
 	const TRANSLATE = WPML_TRANSLATE_CUSTOM_FIELD;
 
 	const MAP = [
-		// Basic
 		'text' => [
 			Mode::TRANSLATION  => self::TRANSLATE,
 			Mode::LOCALIZATION => self::TRANSLATE,
@@ -35,14 +34,13 @@ class ModeDefaults {
 			Mode::LOCALIZATION => self::COPY_ONCE,
 		],
 		'url' => [
-			Mode::TRANSLATION  => self::COPY,
-			Mode::LOCALIZATION => self::COPY_ONCE,
+			Mode::TRANSLATION  => self::TRANSLATE,
+			Mode::LOCALIZATION => self::TRANSLATE,
 		],
 		'password' => [
 			Mode::TRANSLATION  => self::COPY,
 			Mode::LOCALIZATION => self::COPY_ONCE,
 		],
-		// Content
 		'image' => [
 			Mode::TRANSLATION  => self::COPY,
 			Mode::LOCALIZATION => self::COPY_ONCE,
@@ -63,7 +61,6 @@ class ModeDefaults {
 			Mode::TRANSLATION  => self::COPY,
 			Mode::LOCALIZATION => self::COPY_ONCE,
 		],
-		// Choice
 		'select' => [
 			Mode::TRANSLATION  => self::COPY,
 			Mode::LOCALIZATION => self::COPY_ONCE,
@@ -84,7 +81,6 @@ class ModeDefaults {
 			Mode::TRANSLATION  => self::COPY,
 			Mode::LOCALIZATION => self::COPY_ONCE,
 		],
-		// jQuery
 		'google_map' => [
 			Mode::TRANSLATION  => self::COPY,
 			Mode::LOCALIZATION => self::COPY_ONCE,
@@ -105,16 +101,7 @@ class ModeDefaults {
 			Mode::TRANSLATION  => self::COPY,
 			Mode::LOCALIZATION => self::COPY_ONCE,
 		],
-		// Layout
-		'message' => [
-			Mode::TRANSLATION  => self::TRANSLATE,
-			Mode::LOCALIZATION => self::TRANSLATE,
-		],
-		'accordion' => [
-			Mode::TRANSLATION  => self::COPY,
-			Mode::LOCALIZATION => self::COPY_ONCE,
-		],
-		'tab' => [
+		'icon_picker' => [
 			Mode::TRANSLATION  => self::COPY,
 			Mode::LOCALIZATION => self::COPY_ONCE,
 		],
@@ -134,10 +121,9 @@ class ModeDefaults {
 			Mode::TRANSLATION  => self::COPY,
 			Mode::LOCALIZATION => self::COPY_ONCE,
 		],
-		// Relational
 		'link' => [
-			Mode::TRANSLATION  => self::COPY,
-			Mode::LOCALIZATION => self::COPY_ONCE,
+			Mode::TRANSLATION  => self::TRANSLATE,
+			Mode::LOCALIZATION => self::TRANSLATE,
 		],
 		'post_object' => [
 			Mode::TRANSLATION  => self::COPY,
@@ -161,27 +147,10 @@ class ModeDefaults {
 		],
 	];
 
-	/**
-	 * @param string $groupMode
-	 * @param array  $field
-	 *
-	 * @return callable|int
-	 */
 	public static function get( $groupMode = null, $field = null ) {
 		$get = curryN( 2, function( $groupMode, $field ) {
-			$fieldTranslationPreference = (int) Obj::pathOr( self::TRANSLATE, [ Obj::prop( 'type', $field ), $groupMode ], self::MAP );
+			$fieldTranslationPreference = (int) Obj::pathOr( self::COPY, [ Obj::prop( 'type', $field ), $groupMode ], self::MAP );
 
-			/**
-			 * This filter allows to override the default translation preference
-			 * based on the field group mode.
-			 *
-			 * @param int    $fieldTranslationPreference The translation preference (1, 2, 3).
-			 * @param string $groupMode                  The field group mode.
-			 * @param array  $field                      The ACF field.
-			 *
-			 * @since 2.0.0
-			 *
-			 */
 			return (int) apply_filters( 'acfml_field_group_mode_field_translation_preference', $fieldTranslationPreference, $groupMode, $field );
 		} );
 

@@ -2,15 +2,9 @@
 
 namespace WPML\Media\Classes;
 
-use WPML\FP\Obj;
-use WPML\FP\Str;
-
-/**
- * Image block parser
- */
 class WPML_Media_Image_Parser extends WPML_Media_Element_Parser {
 
-	protected static $getFromCssBackgroundImagesRegex = '/<\w+[^>]+style\s?=\s?"[^"]*?background-image:url\(\s?([^\s\)]+)\s?\)/';
+	protected static $getFromCssBackgroundImagesRegex = '/<\w+[^>]+style\s*=\s*(["\'])(?:(?!\1).)*?background-image\s*:\s*url\(\s*(?:["\']|&quot;|&apos;|&#0?39;)?(.+?)(?:["\']|&quot;|&apos;|&#0?39;)?\s*\)/';
 	protected static $mediaElementsRegex              = [
 		'/<img ([^>]+)>/s',
 		'/<video ([^>]+)>/s',
@@ -20,80 +14,78 @@ class WPML_Media_Image_Parser extends WPML_Media_Element_Parser {
 	public function getMediaElements() {
 		$mediaElements = $this->getFromTags();
 
-		$blocks = parse_blocks( $this->blockText );
+		if ( ! $this->canParseBlocks() ) {
+			return array_merge( $mediaElements, $this->getFromCssBackgroundImages( $this->blockText ) );
+		}
 
-		return $blocks ? array_merge( $mediaElements, $this->getFromCssBackgroundImagesInBlocks( $blocks ) )
-			: array_merge( $mediaElements, $this->getFromCssBackgroundImages( $this->blockText ) );
+		return array_merge( $mediaElements, $this->getFromCssBackgroundImagesInBlocks( parse_blocks( $this->blockText ) ) );
 	}
 
+	protected function canParseBlocks() {
+		return $this->textContains( '<!-- wp:', $this->blockText ) && function_exists( 'parse_blocks' );
+	}
+
+
 	public function getMediaSrcFromAttributes( $attrs ) {
-		return Obj::propOr( '', 'src', $attrs );
+		return $this->attributeOr( $attrs, 'src' );
 	}
 
 	protected function getFromTags() {
-		$mediaElements = wpml_collect( [] );
+		$mediaElements = [];
 
 		foreach ( self::$mediaElementsRegex as $mediaElementExpression ) {
 			if ( preg_match_all( $mediaElementExpression, $this->blockText, $matches ) ) {
-				$mediaElements = $mediaElements->merge( $this->getAttachments( $matches ) );
+				$mediaElements = array_merge( $mediaElements, $this->getAttachments( $matches ) );
 			}
 		}
 
-		return $mediaElements->toArray();
+		return $mediaElements;
 	}
 
-	/**
-	 * Checks if media element is Image Block and 'parse_blocks' function exists.
-	 *
-	 * @return bool
-	 */
 	public function validate() {
 		return (
 			( function_exists( 'parse_blocks' ) &&
-				( Str::includes( '<!-- wp:image', $this->blockText )
-					|| Str::includes( '<!-- wp:video', $this->blockText )
-					|| Str::includes( '<!-- wp:audio', $this->blockText )
+				( $this->textContains( '<!-- wp:image', $this->blockText )
+					|| $this->textContains( '<!-- wp:video', $this->blockText )
+					|| $this->textContains( '<!-- wp:audio', $this->blockText )
 				)
 			)
 			||
-			Str::includes( '<img', $this->blockText )
+			$this->textContains( '<img', $this->blockText )
 			||
-			Str::includes( '<video', $this->blockText )
+			$this->textContains( '<video', $this->blockText )
 			||
-			Str::includes( '<audio', $this->blockText )
+			$this->textContains( '<audio', $this->blockText )
+			||
+			$this->hasCssBackgroundImage()
+			||
+			$this->hasBlockAttributeBackground()
 		);
 	}
 
-	/**
-	 * `parse_blocks` does not specify which kind of collection it should return
-	 * (not always an array of `WP_Block_Parser_Block`) and the block parser can be filtered,
-	 *  so we'll cast it to a standard object for now.
-	 *
-	 * @param mixed $block
-	 *
-	 * @return \stdClass|\WP_Block_Parser_Block
-	 */
+	protected function hasBlockAttributeBackground() {
+		return $this->textContains( '"backgroundImage":', $this->blockText );
+	}
+
+	protected function hasCssBackgroundImage() {
+		return 1 === preg_match( self::$getFromCssBackgroundImagesRegex, (string) $this->blockText );
+	}
+
 	protected function sanitizeBlock( $block ) {
 		$block = (object) $block;
 
 		if ( isset( $block->attrs ) ) {
-			/** Sometimes `$block->attrs` is an object or an array, so we'll use an object */
 			$block->attrs = (object) $block->attrs;
 		}
 
 		return $block;
 	}
 
-	/**
-	 * @param string $text
-	 *
-	 * @return array
-	 */
 	protected function getFromCssBackgroundImages( $text ) {
 		$images = [];
 
 		if ( preg_match_all( self::$getFromCssBackgroundImagesRegex, $text, $matches ) ) {
-			foreach ( $matches[1] as $src ) {
+			foreach ( $matches[2] as $src ) {
 				$images[] = [
 					'attributes' => [ 'src' => $src ],
 				];
@@ -103,24 +95,33 @@ class WPML_Media_Image_Parser extends WPML_Media_Element_Parser {
 		return $images;
 	}
 
-	/**
-	 * @param array $blocks
-	 *
-	 * @return array
-	 */
 	protected function getFromCssBackgroundImagesInBlocks( $blocks ) {
 		$images = [];
 
 		foreach ( $blocks as $block ) {
 			$block = $this->sanitizeBlock( $block );
 
+			$attribute_background = $this->getBackgroundFromBlockAttributes( $block );
+			if ( $attribute_background ) {
+				$images[] = [ 'attributes' => [ 'src' => $attribute_background ] ];
+			}
+
 			if ( ! empty( $block->innerBlocks ) ) {
 				$inner_images = $this->getFromCssBackgroundImagesInBlocks( $block->innerBlocks );
 				$images       = array_merge( $images, $inner_images );
+			}
+
+			if ( ! isset( $block->innerHTML ) ) {
 				continue;
 			}
 
-			if ( ! isset( $block->innerHTML, $block->attrs->id ) ) {
+			if ( $this->isFreeformBlock( $block ) ) {
+				$images = array_merge( $images, $this->getFromCssBackgroundImages( $block->innerHTML ) );
+				continue;
+			}
+
+			if ( ! isset( $block->attrs->id ) ) {
+				$images = array_merge( $images, $this->getFromCssBackgroundImages( $block->innerHTML ) );
 				continue;
 			}
 
@@ -133,5 +134,22 @@ class WPML_Media_Image_Parser extends WPML_Media_Element_Parser {
 		}
 
 		return $images;
+	}
+
+	protected function getBackgroundFromBlockAttributes( $block ) {
+		if ( ! isset( $block->attrs->style ) ) {
+			return null;
+		}
+
+		$style = json_decode( (string) json_encode( $block->attrs->style ), true );
+		$url   = isset( $style['background']['backgroundImage']['url'] ) ? $style['background']['backgroundImage']['url'] : null;
+
+		return is_string( $url ) && '' !== $url ? $url : null;
+	}
+
+	protected function isFreeformBlock( $block ) {
+		return property_exists( $block, 'blockName' )
+			&& null === $block->blockName
+			&& empty( $block->innerBlocks );
 	}
 }

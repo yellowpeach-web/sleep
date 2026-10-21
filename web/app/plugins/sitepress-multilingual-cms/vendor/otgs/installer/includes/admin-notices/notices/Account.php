@@ -7,29 +7,26 @@ use OTGS\Installer\AdminNotices\Store;
 use OTGS\Installer\AdminNotices\ToolsetConfig;
 use OTGS\Installer\AdminNotices\WPMLConfig;
 use OTGS\Installer\Collection;
+use OTGS\Installer\OutboundLink;
 use function OTGS\Installer\FP\partial;
 
 class Account {
 
 	const NOT_REGISTERED = 'not-registered';
+	const INVALID_SITE_KEY = 'invalid-site-key';
 	const EXPIRED = 'expired';
 	const IN_GRACE = 'in-grace';
 	const REFUNDED = 'refunded';
 	const GET_FIRST_INSTALL_TIME = 'get_first_install_time';
 	const DEVELOPMENT_MODE = 'development_mode';
 
-	/**
-	 * @param \WP_Installer $installer
-	 * @param array $initialNotices
-	 *
-	 * @return array
-	 */
 	public static function getCurrentNotices( \WP_Installer $installer, array $initialNotices ) {
 
 		$config = $installer->get_site_key_nags_config();
 
 		$noticeTypes = [
 			self::NOT_REGISTERED   => [ Account::class, 'shouldShowNotRegistered' ],
+			self::INVALID_SITE_KEY => [ Account::class, 'shouldShowInvalidSiteKey' ],
 			self::EXPIRED          => [ Account::class, 'shouldShowExpired' ],
 			self::IN_GRACE         => [ Account::class, 'shouldShowInGrace' ],
 			self::REFUNDED         => [ Account::class, 'shouldShowRefunded' ],
@@ -43,12 +40,6 @@ class Account {
 
 	}
 
-	/**
-	 * @param \WP_Installer $installer
-	 * @param array $nag
-	 *
-	 * @return bool
-	 */
 	public static function shouldShowNotRegistered( \WP_Installer $installer, array $nag ) {
 		$shouldShow = ! self::isDevelopmentSite( $installer->get_installer_site_url( $nag['repository_id'] ) ) &&
 		              ! $installer->repository_has_subscription( $nag['repository_id'] ) &&
@@ -61,32 +52,19 @@ class Account {
 		return $shouldShow;
 	}
 
-	/**
-	 * @param \WP_Installer $installer
-	 * @param array $nag
-	 *
-	 * @return bool
-	 */
 	public static function shouldShowExpired( \WP_Installer $installer, array $nag ) {
-		return $installer->repository_has_expired_subscription( $nag['repository_id'], 30 * DAY_IN_SECONDS );
+		return $installer->repository_has_expired_subscription( $nag['repository_id'], 30 * DAY_IN_SECONDS )
+		       && ! $installer->repository_has_in_grace_subscription( $nag['repository_id'], 30 * DAY_IN_SECONDS );
 	}
 
-	/**
-	 * @param \WP_Installer $installer
-	 * @param array $nag
-	 *
-	 * @return bool
-	 */
+	public static function shouldShowInvalidSiteKey( \WP_Installer $installer, array $nag ) {
+		return $installer->repository_has_invalid_site_key( $nag['repository_id'] );
+	}
+
 	public static function shouldShowInGrace( \WP_Installer $installer, array $nag ) {
 		return $installer->repository_has_in_grace_subscription( $nag['repository_id'], 30 * DAY_IN_SECONDS );
 	}
 
-	/**
-	 * @param \WP_Installer $installer
-	 * @param array $nag
-	 *
-	 * @return bool
-	 */
 	public static function shouldShowDevelopmentBanner( \WP_Installer $installer, array $nag ) {
 		$showDevelopmentBanner = $installer->repository_has_development_site_key( $nag['repository_id'] );
 		$isDismissed = Loader::isDismissed( $nag[ 'repository_id' ], Account::DEVELOPMENT_MODE );
@@ -98,28 +76,30 @@ class Account {
 	}
 
 	public static function addWpmlDevelopmentAdminBar() {
-		/** @var \WP_Admin_Bar $wp_admin_bar */
 		global $wp_admin_bar;
 
-		$helpText = __( 'This site is registered on wpml.org as a development site.', 'installer' );
+		$learnMoreLink = OutboundLink::to(
+			'https://wpml.org/troubleshooting/site-keys/',
+			[ 'medium' => 'notice', 'campaign' => 'account' ]
+		);
+		$helpText = sprintf(
+			/* translators: %1$s and %2$s are opening and closing link tags. */
+			__( 'This site is registered on wpml.org as a development site. %1$sLearn more%2$s', 'installer' ),
+			'<a href="' . esc_url( $learnMoreLink ) . '" target="_blank">',
+			'</a>'
+		);
 		$text = __( 'Development Site', 'installer' );
 
 		$wp_admin_bar->add_menu(
 			array(
 				'parent' => false,
 				'id'     => 'otgs-wpml-development',
-				'title'  => '<i  class="otgs-ico-sitepress-multilingual-cms js-otgs-popover-tooltip" data-tippy-zIndex="999999" title="' . $helpText . '" > ' . $text . '</i>',
+				'title'  => '<i  class="otgs-ico-sitepress-multilingual-cms js-otgs-popover-tooltip" data-tippy-zIndex="999999" title="' . esc_attr( $helpText ) . '" > ' . $text . '</i>',
 				'href'   => false,
 			)
 		);
 	}
 
-	/**
-	 * @param \WP_Installer $installer
-	 * @param array $nag
-	 *
-	 * @return bool
-	 */
 	public static function shouldShowRefunded( \WP_Installer $installer, array $nag ) {
 		return $installer->repository_has_refunded_subscription( $nag['repository_id'] );
 	}
@@ -136,6 +116,7 @@ class Account {
 			'repo' => [
 				'wpml'    => [
 					Account::NOT_REGISTERED   => $wpmlPages,
+					Account::INVALID_SITE_KEY => $wpmlPages,
 					Account::EXPIRED          => $wpmlPages,
 					Account::IN_GRACE         => $wpmlPages,
 					Account::REFUNDED         => $wpmlPages,
@@ -143,6 +124,7 @@ class Account {
 				],
 				'toolset' => [
 					Account::NOT_REGISTERED   => $toolsetPages,
+					Account::INVALID_SITE_KEY => $toolsetPages,
 					Account::EXPIRED          => $toolsetPages,
 					Account::REFUNDED         => $toolsetPages,
 					Account::DEVELOPMENT_MODE => $toolsetPages,
@@ -154,6 +136,7 @@ class Account {
 	public static function screens( array $screens ) {
 		$config = [
 			Account::NOT_REGISTERED   => [ 'screens' => [ 'plugins' ] ],
+			Account::INVALID_SITE_KEY => [ 'screens' => [ 'plugins', 'dashboard', 'plugin-install' ] ],
 			Account::EXPIRED          => [ 'screens' => [ 'plugins' ] ],
 			Account::IN_GRACE         => [ 'screens' => [ 'plugins' ] ],
 			Account::REFUNDED         => [ 'screens' => [ 'plugins', 'dashboard' ] ],
@@ -173,6 +156,7 @@ class Account {
 			'repo' => [
 				'wpml'    => [
 					Account::NOT_REGISTERED   => WPMLTexts::class . '::notRegistered',
+					Account::INVALID_SITE_KEY => WPMLTexts::class . '::invalidSiteKey',
 					Account::EXPIRED          => WPMLTexts::class . '::expired',
 					Account::IN_GRACE         => WPMLTexts::class . '::inGrace',
 					Account::REFUNDED         => WPMLTexts::class . '::refunded',
@@ -180,6 +164,7 @@ class Account {
 				],
 				'toolset' => [
 					Account::NOT_REGISTERED   => ToolsetTexts::class . '::notRegistered',
+					Account::INVALID_SITE_KEY => ToolsetTexts::class . '::invalidSiteKey',
 					Account::EXPIRED          => ToolsetTexts::class . '::expired',
 					Account::IN_GRACE         => ToolsetTexts::class . '::inGrace',
 					Account::REFUNDED         => ToolsetTexts::class . '::refunded',

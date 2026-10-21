@@ -2,17 +2,8 @@
 
 class WPML_Media_File {
 
-	/**
-	 * @var int
-	 */
 	private $attachment_id;
-	/**
-	 * @var WP_Filesystem_Base
-	 */
 	private $wp_filesystem;
-	/**
-	 * @var wpdb
-	 */
 	private $wpdb;
 
 	public function __construct( $attachment_id, WP_Filesystem_Base $wp_filesystem, wpdb $wpdb ) {
@@ -24,22 +15,69 @@ class WPML_Media_File {
 	public function delete() {
 		$relative_file_path = get_post_meta( $this->attachment_id, '_wp_attached_file', true );
 
-		if ( $relative_file_path && ! $this->file_is_shared( $relative_file_path, $this->attachment_id ) ) {
+		if ( ! $relative_file_path || $this->file_is_shared( $relative_file_path, $this->attachment_id ) ) {
+			return;
+		}
 
-			$file_path = $this->get_full_file_upload_path( $relative_file_path );
+		$this->wp_filesystem->delete( $this->get_full_file_upload_path( $relative_file_path ), false, 'f' );
 
-			$this->wp_filesystem->delete( $file_path, false, 'f' );
+		$subdir = dirname( $relative_file_path );
+		$subdir = '.' === $subdir ? '' : $subdir . '/';
 
-			$attachment_meta_data = wp_get_attachment_metadata( $this->attachment_id );
-			if ( $attachment_meta_data && isset( $attachment_meta_data['file'] ) ) {
-				$subdir = dirname( $attachment_meta_data['file'] );
-				foreach ( $attachment_meta_data['sizes'] as $key => $size ) {
-					$file_path = $this->get_full_file_upload_path( $subdir . '/' . $size['file'] );
-					$this->wp_filesystem->delete( $file_path, false, 'f' );
-				}
+		$files = array();
+
+		$attachment_meta_data = wp_get_attachment_metadata( $this->attachment_id );
+
+		if ( is_array( $attachment_meta_data ) ) {
+			if ( ! empty( $attachment_meta_data['sizes'] ) ) {
+				$files = $this->add_size_files( $files, $attachment_meta_data['sizes'] );
+			}
+
+			if ( ! empty( $attachment_meta_data['original_image'] ) ) {
+				$files[ $attachment_meta_data['original_image'] ] = true;
 			}
 		}
 
+		$backup_sizes = get_post_meta( $this->attachment_id, '_wp_attachment_backup_sizes', true );
+
+		if ( is_array( $backup_sizes ) ) {
+			$files = $this->add_size_files( $files, $backup_sizes );
+		}
+
+		$stem = $this->get_stem( basename( $relative_file_path ) );
+
+		foreach ( array_keys( $files ) as $file ) {
+			if ( $this->is_derived_from( $file, $stem ) ) {
+				$this->wp_filesystem->delete( $this->get_full_file_upload_path( $subdir . $file ), false, 'f' );
+			}
+		}
+	}
+
+	private function get_stem( $file_name ) {
+		$stem = pathinfo( $file_name, PATHINFO_FILENAME );
+
+		do {
+			$previous = $stem;
+			$stem     = (string) preg_replace( '/-(?:scaled|rotated|e\d{13})$/', '', $stem );
+		} while ( $stem !== $previous && '' !== $stem );
+
+		return '' === $stem ? $previous : $stem;
+	}
+
+	private function is_derived_from( $file_name, $stem ) {
+		$pattern = '/^' . preg_quote( $stem, '/' ) . '(?:-scaled|-rotated|-e\d{13}|-pdf(?:-\d+)?)*(?:-\d+x\d+)?\.[a-z0-9]+$/i';
+
+		return 1 === preg_match( $pattern, $file_name );
+	}
+
+	private function add_size_files( array $files, array $sizes ) {
+		foreach ( $sizes as $size ) {
+			if ( is_array( $size ) && ! empty( $size['file'] ) ) {
+				$files[ $size['file'] ] = true;
+			}
+		}
+
+		return $files;
 	}
 
 	private function get_full_file_upload_path( $relative_file_path ) {
@@ -51,11 +89,17 @@ class WPML_Media_File {
 	}
 
 	private function file_is_shared( $relative_file_path, $attachment_id ) {
+		$wpdb = $this->wpdb;
 
-		$sql = "SELECT post_id FROM {$this->wpdb->postmeta} 
-				WHERE post_id <> %d AND meta_key='_wp_attached_file' AND meta_value=%s";
-
-		return $this->wpdb->get_var( $this->wpdb->prepare( $sql, $attachment_id, $relative_file_path ) );
+		return $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT post_id FROM {$wpdb->postmeta}
+				WHERE post_id <> %d AND meta_key='_wp_attached_file' AND meta_value=%s
+				LIMIT 1",
+				$attachment_id,
+				$relative_file_path
+			)
+		);
 	}
 
 }

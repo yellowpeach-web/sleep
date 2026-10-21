@@ -11,32 +11,20 @@ class WPML_ST_Translations_File_Entry {
 	const PATTERN_SEARCH_LANG_MO   = '#[-]?([a-z]+[_A-Z]*)\.mo$#i';
 	const PATTERN_SEARCH_LANG_JSON = '#([a-z]+[_A-Z]*)-[-a-z0-9]+\.json$#i';
 
-	/** @var  string */
 	private $path;
 
-	/** @var string */
 	private $domain;
 
-	/** @var int */
 	private $status;
 
-	/** @var int */
 	private $imported_strings_count = 0;
 
-	/** @var int */
 	private $last_modified;
 
-	/** @var string */
 	private $component_type;
 
-	/** @var string */
 	private $component_id;
 
-	/**
-	 * @param string $path
-	 * @param string $domain
-	 * @param string $status
-	 */
 	public function __construct( $path, $domain, $status = self::NOT_IMPORTED ) {
 		if ( ! is_string( $path ) ) {
 			throw new InvalidArgumentException( 'MO File path must be string type' );
@@ -45,93 +33,97 @@ class WPML_ST_Translations_File_Entry {
 			throw new InvalidArgumentException( 'MO File domain must be string type' );
 		}
 
-		$this->path   = $this->convert_to_relative_path( $path );
+		$this->path   = self::to_stored_path( $path );
 		$this->domain = $domain;
 
 		$this->validate_status( $status );
 		$this->status = $status;
 	}
 
-	/**
-	 * We can't rely on ABSPATH in out tests
-	 *
-	 * @param string $path
-	 *
-	 * @return string
-	 */
-	private function convert_to_relative_path( $path ) {
-		$parts = explode( DIRECTORY_SEPARATOR, $this->fix_dir_separator( WP_CONTENT_DIR ) );
+	public static function to_stored_path( $path, $abspath = null, $content_dir = null ) {
+		list( $abspath, $content_dir ) = self::get_roots( $abspath, $content_dir );
 
-		return str_replace( WP_CONTENT_DIR, end( $parts ), $path );
+		$path = self::fix_dir_separator( $path );
+		if ( DIRECTORY_SEPARATOR === $abspath ) {
+			return $path;
+		}
+		if ( 0 === strpos( $path, $abspath ) ) {
+			return (string) substr( $path, strlen( $abspath ) );
+		}
+		if ( 0 === strpos( $path, $content_dir . DIRECTORY_SEPARATOR ) ) {
+			return basename( $content_dir ) . substr( $path, strlen( $content_dir ) );
+		}
+
+		return $path;
 	}
 
-	/**
-	 * @return string
-	 */
+	public static function resolve_stored_path( $path, $abspath = null, $content_dir = null ) {
+		list( $abspath, $content_dir ) = self::get_roots( $abspath, $content_dir );
+
+		$path = self::fix_dir_separator( $path );
+		if ( self::is_absolute_path( $path ) ) {
+			return $path;
+		}
+
+		$content_prefix = basename( $content_dir ) . DIRECTORY_SEPARATOR;
+		if ( 0 !== strpos( $content_dir, $abspath ) && 0 === strpos( $path, $content_prefix ) ) {
+			return $content_dir . DIRECTORY_SEPARATOR . substr( $path, strlen( $content_prefix ) );
+		}
+
+		return $abspath . $path;
+	}
+
+	private static function get_roots( $abspath, $content_dir ) {
+		$abspath     = self::fix_dir_separator( null === $abspath ? ABSPATH : $abspath );
+		$content_dir = self::fix_dir_separator( null === $content_dir ? WP_CONTENT_DIR : $content_dir );
+
+		return array(
+			rtrim( $abspath, '/\\' ) . DIRECTORY_SEPARATOR,
+			rtrim( $content_dir, '/\\' ),
+		);
+	}
+
+	private static function is_absolute_path( $path ) {
+		return 0 === strpos( $path, '/' ) || 0 === strpos( $path, '\\' ) || 1 === preg_match( '#^[A-Za-z]:[\\\\/]#', $path );
+	}
+
 	public function get_path() {
 		return $this->path;
 	}
 
 	public function get_full_path() {
-		$wp_content_dir = $this->fix_dir_separator( WP_CONTENT_DIR );
-		$parts          = explode( DIRECTORY_SEPARATOR, $wp_content_dir );
-
-		return str_replace( end( $parts ), $wp_content_dir, $this->path );
+		return self::resolve_stored_path( $this->path );
 	}
 
-	/**
-	 * @return string
-	 */
 	public function get_path_hash() {
 		return md5( $this->path );
 	}
 
-	/**
-	 * @return string
-	 */
 	public function get_domain() {
 		return $this->domain;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function get_status() {
 		return $this->status;
 	}
 
-	/**
-	 * @param string $status
-	 */
 	public function set_status( $status ) {
 		$this->validate_status( $status );
 		$this->status = $status;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function get_imported_strings_count() {
 		return $this->imported_strings_count;
 	}
 
-	/**
-	 * @param int $imported_strings_count
-	 */
 	public function set_imported_strings_count( $imported_strings_count ) {
 		$this->imported_strings_count = (int) $imported_strings_count;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function get_last_modified() {
 		return $this->last_modified;
 	}
 
-	/**
-	 * @param int $last_modified
-	 */
 	public function set_last_modified( $last_modified ) {
 		$this->last_modified = (int) $last_modified;
 	}
@@ -147,49 +139,26 @@ class WPML_ST_Translations_File_Entry {
 		return null;
 	}
 
-	/**
-	 * It extracts locale from mo file path, examples
-	 * '/wp-content/languages/admin-pl_PL.mo' => 'pl'
-	 * '/wp-content/plugins/sitepress/sitepress-hr.mo' => 'hr'
-	 *
-	 * @return null|string
-	 * @throws RuntimeException
-	 */
 	public function get_file_locale() {
 		return \WPML\Container\make( WPML_ST_Translations_File_Locale::class )->get( $this->get_path(), $this->get_domain() );
 	}
 
-	/**
-	 * @return string
-	 */
 	public function get_component_type() {
 		return $this->component_type;
 	}
 
-	/**
-	 * @param string $component_type
-	 */
 	public function set_component_type( $component_type ) {
 		$this->component_type = $component_type;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function get_component_id() {
 		return $this->component_id;
 	}
 
-	/**
-	 * @param string $component_id
-	 */
 	public function set_component_id( $component_id ) {
 		$this->component_id = $component_id;
 	}
 
-	/**
-	 * @param string $status
-	 */
 	private function validate_status( $status ) {
 		$allowed_statuses = array(
 			self::NOT_IMPORTED,
@@ -204,12 +173,7 @@ class WPML_ST_Translations_File_Entry {
 		}
 	}
 
-	/**
-	 * @param string $path
-	 *
-	 * @return string
-	 */
-	private function fix_dir_separator( $path ) {
+	private static function fix_dir_separator( $path ) {
 		return ( '\\' === DIRECTORY_SEPARATOR ) ? str_replace( '/', '\\', $path ) : str_replace( '\\', '/', $path );
 	}
 

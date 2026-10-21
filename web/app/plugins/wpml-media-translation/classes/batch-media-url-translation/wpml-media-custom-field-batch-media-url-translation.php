@@ -1,28 +1,12 @@
 <?php
 
-/**
- * Class WPML_Media_Custom_Field_Batch_Url_Translation
- */
 class WPML_Media_Custom_Field_Batch_Url_Translation extends WPML_Media_Batch_Url_Translation implements IWPML_Action {
 
 	const AJAX_ACTION = 'wpml_media_translate_media_url_in_custom_fields';
 
-	/**
-	 * @var WPML_Media_Custom_Field_Images_Translation
-	 */
 	private $custom_field_translation;
-	/**
-	 * @var array
-	 */
 	private $translatable_custom_fields;
 
-	/**
-	 * WPML_Media_Custom_Field_Batch_Url_Translation constructor.
-	 *
-	 * @param WPML_Media_Custom_Field_Images_Translation $custom_field_translation
-	 * @param wpdb                                       $wpdb
-	 * @param array                                      $translatable_custom_fields
-	 */
 	public function __construct(
 		WPML_Media_Custom_Field_Images_Translation $custom_field_translation,
 		wpdb $wpdb,
@@ -33,9 +17,6 @@ class WPML_Media_Custom_Field_Batch_Url_Translation extends WPML_Media_Batch_Url
 		$this->translatable_custom_fields = $translatable_custom_fields;
 	}
 
-	/**
-	 * @return string
-	 */
 	protected function get_ajax_action() {
 		return self::AJAX_ACTION;
 	}
@@ -44,16 +25,14 @@ class WPML_Media_Custom_Field_Batch_Url_Translation extends WPML_Media_Batch_Url
 		return isset( $_POST['action'] ) && self::AJAX_ACTION === $_POST['action'];
 	}
 
-	/**
-	 * @param int $number_of_custom_fields_left
-	 *
-	 * @return string
-	 */
 	protected function get_response_message( $number_of_custom_fields_left ) {
 		return sprintf(
+			/* translators: Progress message on the Media Translation page while media addresses inside custom fields are being updated. %s: either the number of items still left or the word for "done!". */
 			__( 'Translating media urls in custom field translations: %s', 'wpml-media' ),
 			$number_of_custom_fields_left > 0 ?
+				/* translators: Second half of the progress message on the Media Translation page, for example "Translating media urls in post translations: 12 left". %d: the number of items still to process. */
 				sprintf( __( '%d left', 'wpml-media' ), $number_of_custom_fields_left ) :
+				/* translators: Second half of the progress message on the Media Translation page, shown in place of the count once everything has been processed, for example "Translating media urls in post translations: done!". */
 				__( 'done!', 'wpml-media' )
 		);
 	}
@@ -61,25 +40,31 @@ class WPML_Media_Custom_Field_Batch_Url_Translation extends WPML_Media_Batch_Url
 	protected function get_ajax_error_message() {
 		return array(
 			'key'   => 'wpml_media_batch_urls_update_error_custom_fields',
+			/* translators: Error message on the Media Translation page when updating media addresses inside custom fields fails. %s: the reason the server gave. */
 			'value' => esc_js( __( 'Translating media urls in custom fields translations failed: Please try again (%s)', 'wpml-media' ) ),
 		);
 	}
 
 	protected function process_batch( $offset ) {
+		$wpdb = $this->wpdb;
+		$offset = (int) $offset;
+		$post_element_type_like = 'post\_%';
 
 		if ( $this->translatable_custom_fields ) {
-			$translatable_custom_fields_where_in = wpml_prepare_in( $this->translatable_custom_fields );
-			$custom_fields                       = $this->wpdb->get_results(
-				"
-				SELECT SQL_CALC_FOUND_ROWS t.element_id AS post_id, p.meta_id, p.meta_key, p.meta_value  
-				FROM {$this->wpdb->prefix}icl_translations t 
-					JOIN {$this->wpdb->prefix}postmeta p ON t.element_id = p.post_id
-				WHERE t.element_type LIKE 'post_%' 
-					AND t.element_type <> 'post_attachment' 
+			$custom_fields = $this->wpdb->get_results(
+				$wpdb->prepare(
+					"
+				SELECT SQL_CALC_FOUND_ROWS t.element_id AS post_id, p.meta_id, p.meta_key, p.meta_value
+				FROM {$wpdb->prefix}icl_translations t
+					JOIN {$wpdb->prefix}postmeta p ON t.element_id = p.post_id
+				WHERE t.element_type LIKE %s
+					AND t.element_type <> 'post_attachment'
 					AND t.source_language_code IS NULL
-					AND p.meta_key IN ({$translatable_custom_fields_where_in})
+					AND p.meta_key IN (" . implode( ', ', array_fill( 0, count( $this->translatable_custom_fields ), '%s' ) ) . ")
 				ORDER BY t.element_id ASC
-				LIMIT {$offset}, " . self::BATCH_SIZE
+				LIMIT %d, %d",
+					array_merge( [ $post_element_type_like ], $this->translatable_custom_fields, [ $offset, self::BATCH_SIZE ] )
+				)
 			);
 
 			$number_of_all_custom_fields = (int) $this->wpdb->get_var( 'SELECT FOUND_ROWS()' );
@@ -100,32 +85,41 @@ class WPML_Media_Custom_Field_Batch_Url_Translation extends WPML_Media_Batch_Url
 	}
 
 	protected function process_batch_for_selected_media( $offset, $attachment_id ) {
-		$media_url = wpml_like_escape( wp_get_attachment_url( $attachment_id ) );
-		if ( ! $media_url ) {
+		$wpdb                   = $this->wpdb;
+		$offset                 = (int) $offset;
+		$post_element_type_like = 'post\_%';
+
+		$url_patterns = $this->get_media_url_like_patterns( $attachment_id );
+		if ( ! $url_patterns ) {
 			return 0;
 		}
-		preg_match( '/(.+)\.([a-z]+)$/', $media_url, $match );
-		$media_url_no_extension = wpml_like_escape( $match[1] );
-		$extension              = wpml_like_escape( $match[2] );
 
 		$batch_size = $this->get_batch_size( parent::BATCH_SIZE_FACTOR_SPECIFIC_MEDIA );
+
 		if ( $this->translatable_custom_fields ) {
-			$translatable_custom_fields_where_in = wpml_prepare_in( $this->translatable_custom_fields );
-			$custom_fields                       = $this->wpdb->get_results(
-				"
+			$custom_fields = $this->wpdb->get_results(
+				$wpdb->prepare(
+					"
 				SELECT SQL_CALC_FOUND_ROWS t.element_id AS post_id, p.meta_id, p.meta_key, p.meta_value  
-				FROM {$this->wpdb->prefix}icl_translations t 
-					JOIN {$this->wpdb->prefix}postmeta p ON t.element_id = p.post_id
-				WHERE t.element_type LIKE 'post_%' 
+				FROM {$wpdb->prefix}icl_translations t
+					JOIN {$wpdb->postmeta} p ON t.element_id = p.post_id
+				WHERE t.element_type LIKE %s
 					AND t.element_type <> 'post_attachment' 
 					AND t.source_language_code IS NULL
-					AND p.meta_key IN ({$translatable_custom_fields_where_in})
-					AND (
-						p.meta_value LIKE '%{$media_url}%' OR 
-						p.meta_value LIKE '%{$media_url_no_extension}-%x%.{$extension}%'
-					) 
+					AND p.meta_key IN (" . implode( ', ', array_fill( 0, count( $this->translatable_custom_fields ), '%s' ) ) . ")
+					AND (p.meta_value LIKE %s OR p.meta_value LIKE %s OR p.meta_value LIKE %s OR p.meta_value LIKE %s)
 				ORDER BY t.element_id ASC
-				LIMIT {$offset}, " . $batch_size
+				LIMIT %d, %d",
+					array_merge(
+						[ $post_element_type_like ],
+						$this->translatable_custom_fields,
+						$url_patterns,
+						[
+							$offset,
+							$batch_size,
+						]
+					)
+				)
 			);
 
 			$number_of_all_custom_fields = (int) $this->wpdb->get_var( 'SELECT FOUND_ROWS()' );

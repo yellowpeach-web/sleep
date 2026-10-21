@@ -1,29 +1,15 @@
 <?php
 
-/**
- * @package    wpml-core
- * @subpackage wpml-user-language
- */
+use WPML\Element\API\Languages;
+use WPML\FP\Maybe;
+
 class WPML_User_Language_Switcher {
-	/**
-	 * @var WPML_Language_Code
-	 */
 	private $WPML_Language_Code;
 
-	/**
-	 * WPML_User_Language_Switcher constructor.
-	 *
-	 * @param WPML_Language_Code $WPML_Language_Code
-	 */
 	public function __construct( &$WPML_Language_Code ) {
 		$this->WPML_Language_Code = &$WPML_Language_Code;
 	}
 
-	/**
-	 * @param string $email
-	 *
-	 * @return false|mixed|string|null
-	 */
 	private function to_be_selected( $email ) {
 		$language = $this->WPML_Language_Code->get_from_user_meta( $email );
 		if ( ! $language ) {
@@ -33,37 +19,30 @@ class WPML_User_Language_Switcher {
 		return $language;
 	}
 
-	/**
-	 * @param string $email
-	 * @param string $language
-	 *
-	 * @return bool|int
-	 */
 	public function save_language_user_meta( $email, $language ) {
 		$user    = get_user_by( 'email', $email );
 		$updated = false;
 		if ( $user && isset( $user->ID ) ) {
 			$language = $this->WPML_Language_Code->sanitize( $language );
 			$updated  = update_user_meta( $user->ID, 'icl_admin_language', $language );
+
+			$wp_locale = Maybe::of( $language )
+			                  ->map( Languages::getLanguageDetails() )
+			                  ->map( Languages::getWPLocale() )
+			                  ->getOrElse( null );
+
+			if ( $wp_locale ) {
+				update_user_meta( $user->ID, 'locale', $wp_locale );
+			}
 		}
 
 		return $updated;
 	}
 
-	/**
-	 * @param string $language
-	 *
-	 * @return false|string|null
-	 */
 	public function sanitize( $language ) {
 		return $this->WPML_Language_Code->sanitize( $language );
 	}
 
-	/**
-	 * @param string $email
-	 *
-	 * @return array[]
-	 */
 	public function get_model( $email ) {
 
 		$active_languages = apply_filters( 'wpml_active_languages', null, null );
@@ -73,6 +52,7 @@ class WPML_User_Language_Switcher {
 		$options = array();
 
 		$options[] = array(
+			/* translators: Label in front of the dropdown that picks a language; the dropdown follows the colon. */
 			'label'    => __( 'Choose language:', 'sitepress' ),
 			'value'    => 0,
 			'selected' => false,

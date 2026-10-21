@@ -5,42 +5,37 @@ namespace WPML\TM\Settings\Flags;
 use WPML\FP\Obj;
 
 class FlagsRepository {
-	/** @var \wpdb */
 	private $wpdb;
 
-	/**
-	 * @param \wpdb $wpdb
-	 */
 	public function __construct( \wpdb $wpdb ) {
 		$this->wpdb = $wpdb;
 	}
 
 	public function getItems( $data = array() ) {
-		$whereSqlParts = [];
-		$whereArgs     = [];
-
+		$wpdb = $this->wpdb;
 		if ( Obj::has( 'onlyInstalledByDefault', $data ) ) {
-			$whereSqlParts[] = 'flags.from_template = 0';
+			return $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT
+						flags.id,
+						flags.lang_code,
+						flags.flag,
+						flags.from_template
+					FROM {$wpdb->prefix}icl_flags flags
+					WHERE flags.from_template = %d",
+					0
+				)
+			);
 		}
 
-		$whereSqlParts[] = '1=%d';
-		$whereArgs[]     = 1;
-
-		$whereSql = 'WHERE ' . implode( ' AND ', $whereSqlParts );
-
-		$flags = $this->wpdb->get_results(
-			$this->wpdb->prepare(
-				"SELECT
+		return $wpdb->get_results(
+			"SELECT
 					flags.id,
 					flags.lang_code,
 					flags.flag,
 					flags.from_template
-				FROM {$this->wpdb->prefix}icl_flags flags {$whereSql}",
-				$whereArgs
-			)
+				FROM {$wpdb->prefix}icl_flags flags"
 		);
-
-		return $flags;
 	}
 
 	public function getItemsInstalledByDefault( $data = array() ) {
@@ -53,10 +48,12 @@ class FlagsRepository {
 	}
 
 	private function getFlagsCountByExt( $ext ) {
-		return (int) $this->wpdb->get_var(
-			$this->wpdb->prepare(
+		$wpdb = $this->wpdb;
+
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
 				"SELECT COUNT(flags.id)
-				FROM {$this->wpdb->prefix}icl_flags flags
+				FROM {$wpdb->prefix}icl_flags flags
 				WHERE flags.from_template = 0 AND flags.flag LIKE %s",
 				'%.' . $ext
 			)

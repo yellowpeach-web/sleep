@@ -16,11 +16,6 @@ class OrderQueryHelper {
 		}
 	}
 
-	/**
-	 * @param WPML_TM_Jobs_Search_Params $params
-	 *
-	 * @return array
-	 */
 	private function map_sort_parameters( WPML_TM_Jobs_Search_Params $params ) {
 		$orders = array();
 		if ( $params->get_sorting() ) {
@@ -28,6 +23,8 @@ class OrderQueryHelper {
 				if ( $order->get_column() === 'language' ) {
 					$orders[] = 'source_language_name ' . $order->get_direction();
 					$orders[] = 'target_language_name ' . $order->get_direction();
+				} elseif ( $order->get_column() === 'job_id' ) {
+					$orders[] = 'translate_job_id ' . $order->get_direction();
 				} elseif ( $order->get_column() === 'sent_date' || $order->get_column() === 'deadline_date' ) {
 					$orders[] = "DATE({$order->get_column()}) {$order->get_direction()}";
 				} else {

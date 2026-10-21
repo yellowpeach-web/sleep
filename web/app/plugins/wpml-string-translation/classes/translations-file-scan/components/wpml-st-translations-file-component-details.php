@@ -1,32 +1,22 @@
 <?php
 
 class WPML_ST_Translations_File_Component_Details {
-	/** @var WPML_ST_Translations_File_Components_Find[] */
+	const CORE_FILE_NAME_PATTERN = '#^(?:admin-network-|admin-|continents-cities-)?[a-z]{2,3}(?:_[A-Z]{2})?(?:_[a-z0-9]+)?(?:-[0-9a-f]{32})?\.(?:mo|json)$#';
+
 	private $finders;
 
-	/** @var WPML_File $file */
 	private $file;
 
-	/** @var string */
-	private $plugin_dir;
+	private $plugin_dirs = array();
 
-	/** @var string */
-	private $theme_dir;
-
-	/** @var string */
 	private $languages_plugin_dir;
 
-	/** @var string */
 	private $languages_theme_dir;
 
-	/** @var array */
+	private $languages_dirs = array();
+
 	private $cache = array();
 
-	/**
-	 * @param WPML_ST_Translations_File_Components_Find_Plugin $plugin_id_finder
-	 * @param WPML_ST_Translations_File_Components_Find_Theme  $theme_id_finder
-	 * @param WPML_File                                        $wpml_file
-	 */
 	public function __construct(
 		WPML_ST_Translations_File_Components_Find_Plugin $plugin_id_finder,
 		WPML_ST_Translations_File_Components_Find_Theme $theme_id_finder,
@@ -36,20 +26,27 @@ class WPML_ST_Translations_File_Component_Details {
 		$this->finders['theme']  = $theme_id_finder;
 		$this->file              = $wpml_file;
 
-		$this->theme_dir  = $this->file->fix_dir_separator( get_theme_root() );
-		$this->plugin_dir = $this->file->fix_dir_separator( (string) realpath( WPML_PLUGINS_DIR ) );
+		foreach ( array( WP_PLUGIN_DIR, WPML_PLUGINS_DIR ) as $plugin_dir ) {
+			$plugin_dir = realpath( $plugin_dir );
+			if ( false !== $plugin_dir ) {
+				$this->plugin_dirs[] = $this->file->fix_dir_separator( $plugin_dir );
+			}
+		}
+		$this->plugin_dirs = array_unique( $this->plugin_dirs );
 
 		$wp_content_dir = realpath( WP_CONTENT_DIR );
 
 		$this->languages_plugin_dir = $this->file->fix_dir_separator( $wp_content_dir . '/languages/plugins' );
 		$this->languages_theme_dir  = $this->file->fix_dir_separator( $wp_content_dir . '/languages/themes' );
+
+		foreach ( array( WP_LANG_DIR, realpath( WP_LANG_DIR ) ) as $languages_dir ) {
+			if ( $languages_dir ) {
+				$this->languages_dirs[] = rtrim( $this->file->fix_dir_separator( $languages_dir ), '/\\' );
+			}
+		}
+		$this->languages_dirs = array_unique( $this->languages_dirs );
 	}
 
-	/**
-	 * @param string $file_full_path
-	 *
-	 * @return array
-	 */
 	public function find_details( $file_full_path ) {
 		$file_full_path = $this->file->fix_dir_separator( $file_full_path );
 
@@ -65,12 +62,6 @@ class WPML_ST_Translations_File_Component_Details {
 		return $this->cache[ $file_full_path ];
 	}
 
-	/**
-	 * @param string $component_type
-	 * @param string $file_full_path
-	 *
-	 * @return null|string
-	 */
 	public function find_id( $component_type, $file_full_path ) {
 		if ( ! isset( $this->finders[ $component_type ] ) ) {
 			return null;
@@ -79,28 +70,35 @@ class WPML_ST_Translations_File_Component_Details {
 		return $this->finders[ $component_type ]->find_id( $file_full_path );
 	}
 
-	/**
-	 * @param string $file_full_path
-	 *
-	 * @return string
-	 */
 	public function find_type( $file_full_path ) {
-		if ( $this->theme_dir && ( $this->string_contains( $file_full_path, $this->theme_dir ) || $this->string_contains( $file_full_path, $this->languages_theme_dir ) ) ) {
+		$file_full_path = $this->file->fix_dir_separator( $file_full_path );
+
+		if ( $this->get_theme_dirs() && ( null !== $this->find_theme_dir( $file_full_path ) || $this->is_path_in_directory( $file_full_path, $this->languages_theme_dir ) ) ) {
 			return 'theme';
 		}
 
-		if ( $this->string_contains( $file_full_path, $this->plugin_dir ) || $this->string_contains( $file_full_path, $this->languages_plugin_dir ) ) {
+		foreach ( $this->plugin_dirs as $plugin_dir ) {
+			if ( $this->is_path_in_directory( $file_full_path, $plugin_dir ) ) {
+				return 'plugin';
+			}
+		}
+
+		if ( $this->is_wordpress_core_translation_file( $file_full_path ) ) {
+			return 'other';
+		}
+
+		if ( $this->is_path_in_directory( $file_full_path, $this->languages_plugin_dir ) || $this->find_id( 'plugin', $file_full_path ) ) {
 			return 'plugin';
 		}
 
 		return 'other';
 	}
 
-	/**
-	 * @param string $file_full_path
-	 *
-	 * @return bool
-	 */
+	private function is_wordpress_core_translation_file( $file_full_path ) {
+		return in_array( dirname( $file_full_path ), $this->languages_dirs, true )
+			&& 1 === preg_match( self::CORE_FILE_NAME_PATTERN, basename( $file_full_path ) );
+	}
+
 	public function is_component_active( $file_full_path ) {
 		list( $type, $id ) = $this->find_details( $file_full_path );
 
@@ -115,11 +113,50 @@ class WPML_ST_Translations_File_Component_Details {
 		if ( 'plugin' === $type ) {
 			return is_plugin_active( $id );
 		} else {
-			return get_stylesheet_directory() === get_theme_root() . '/' . $id;
+			return $this->is_theme_active( $id, $file_full_path );
 		}
 	}
 
-	private function string_contains( $haystack, $needle ) {
-		return false !== strpos( $haystack, $needle );
+	private function is_theme_active( $id, $file_full_path ) {
+		$theme_dir  = $this->find_theme_dir( $this->file->fix_dir_separator( $file_full_path ) );
+		$theme_dirs = null !== $theme_dir ? array( $theme_dir ) : $this->get_theme_dirs();
+
+		foreach ( $theme_dirs as $theme_dir ) {
+			if ( WPML_ST_Path_Confinement::is_active_theme_directory( $theme_dir . '/' . $id ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public function is_in_theme_root( $file_full_path ) {
+		return null !== $this->find_theme_dir( $this->file->fix_dir_separator( $file_full_path ) );
+	}
+
+	private function get_theme_dirs() {
+		$theme_dirs = array();
+		foreach ( WPML_ST_Translations_File_Components_Find_Theme::get_theme_roots() as $theme_root ) {
+			$theme_dirs[] = $this->file->fix_dir_separator( $theme_root );
+		}
+
+		return $theme_dirs;
+	}
+
+	private function find_theme_dir( $file_full_path ) {
+		foreach ( $this->get_theme_dirs() as $theme_dir ) {
+			if ( $this->is_path_in_directory( $file_full_path, $theme_dir ) ) {
+				return $theme_dir;
+			}
+		}
+
+		return null;
+	}
+
+	private function is_path_in_directory( $path, $directory ) {
+		$directory = rtrim( $directory, '/\\' );
+
+		return '' !== $directory
+			&& ( $path === $directory || 0 === strpos( $path, $directory . DIRECTORY_SEPARATOR ) );
 	}
 }

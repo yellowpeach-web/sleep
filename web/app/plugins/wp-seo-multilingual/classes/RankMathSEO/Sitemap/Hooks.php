@@ -2,75 +2,151 @@
 
 namespace WPML\WPSEO\RankMathSEO\Sitemap;
 
-use WPML\Element\API\PostTranslations;
-use WPML\FP\Fns;
-use WPML\FP\Lst;
-use WPML\FP\Maybe;
 use WPML\FP\Obj;
+use WPML\WPSEO\Shared\Sitemap\FrontPage;
+use WPML\WPSEO\Shared\Sitemap\HomeUrl;
 
 class Hooks implements \IWPML_Frontend_Action, \IWPML_DIC_Action {
 
-	/** @var \WPML_URL_Converter $urlConverter */
-	private $urlConverter;
+	const SETTING_AUTO_ADJUST_IDS = 'auto_adjust_ids';
 
-	/** @var null|array $secondaryHomeUrls */
-	private $secondaryHomesById;
+	private const SITEMAP_INDEX_TYPE = '1';
 
-	public function __construct( \WPML_URL_Converter $urlConverter ) {
-		$this->urlConverter = $urlConverter;
+	private $sitepress;
+
+	private $wpdb;
+
+	private $homesById;
+
+	private $autoAdjustIdsBeforeBuild = null;
+
+	private $buildType = null;
+
+	public function __construct( \SitePress $sitepress, \wpdb $wpdb ) {
+		$this->sitepress = $sitepress;
+		$this->wpdb      = $wpdb;
 	}
 
 	public function add_hooks() {
+		add_filter( 'rank_math/sitemap/build_type', [ $this, 'disableAutoAdjustIds' ], 11 );
 		add_filter( 'rank_math/sitemap/entry', [ $this, 'filterEntry' ], 10, 3 );
+		add_filter( 'rank_math/html_sitemap/get_posts/join', [ $this, 'byLanguageJoin' ], 10, 2 );
+		add_filter( 'rank_math/html_sitemap/get_posts/where', [ $this, 'byLanguageWhere' ], 10, 2 );
 	}
 
-	/**
-	 * @param array  $url
-	 * @param string $type
-	 * @param object $object
-	 *
-	 * @return array|null
-	 */
-	public function filterEntry( $url, $type, $object ) {
+	public function disableAutoAdjustIds( $type ) {
+		if ( self::SITEMAP_INDEX_TYPE === $type || null !== $this->autoAdjustIdsBeforeBuild ) {
+			return $type;
+		}
+
+		$autoAdjustIds = $this->sitepress->get_setting( self::SETTING_AUTO_ADJUST_IDS );
+
+		if ( ! $autoAdjustIds ) {
+			return $type;
+		}
+
+		$this->autoAdjustIdsBeforeBuild = $autoAdjustIds;
+		$this->buildType                = $type;
+		$this->sitepress->set_setting( self::SETTING_AUTO_ADJUST_IDS, 0 );
+
+		foreach ( $this->getEntriesBuiltFilters( $type ) as $entriesBuiltFilter ) {
+			add_filter( $entriesBuiltFilter, [ $this, 'restoreAutoAdjustIds' ], PHP_INT_MAX );
+		}
+
+		return $type;
+	}
+
+	public function restoreAutoAdjustIds( $value ) {
+		if ( null !== $this->autoAdjustIdsBeforeBuild ) {
+			$this->sitepress->set_setting( self::SETTING_AUTO_ADJUST_IDS, $this->autoAdjustIdsBeforeBuild );
+
+			foreach ( $this->getEntriesBuiltFilters( $this->buildType ) as $entriesBuiltFilter ) {
+				remove_filter( $entriesBuiltFilter, [ $this, 'restoreAutoAdjustIds' ], PHP_INT_MAX );
+			}
+
+			$this->autoAdjustIdsBeforeBuild = null;
+			$this->buildType                = null;
+		}
+
+		return $value;
+	}
+
+	private function getEntriesBuiltFilters( $type ) {
+		return [
+			'rank_math/sitemap/' . $type . '_urlset',
+			'rank_math/sitemap/' . $type . '/content',
+		];
+	}
+
+	public function filterEntry( $url, $type, $obj ) {
 		if ( $url && 'post' === $type ) {
-			return $this->replaceHomePageInSecondaryLanguages( $url, $object );
+			return $this->replaceHomePage( $url, $obj );
 		}
 
 		return $url;
 	}
 
-	/**
-	 * @param array  $url
-	 * @param object $object
-	 *
-	 * @return array
-	 */
-	private function replaceHomePageInSecondaryLanguages( $url, $object ) {
-		if ( null === $this->secondaryHomesById ) {
-			// $getIdAndUrl :: \stdClass -> []
-			$getIdAndUrl = function( $translation ) {
-				return [
-					(int) $translation->element_id,
-					$this->urlConverter->convert_url( home_url(), $translation->language_code )
-				];
-			};
+	private function replaceHomePage( $url, $obj ) {
+		if ( null === $this->homesById ) {
+			$this->homesById = [];
 
-			$this->secondaryHomesById = Maybe::fromNullable( get_option( 'page_on_front' ) )
-			                                 ->map( PostTranslations::get() )
-			                                 ->map( Fns::reject( Obj::prop( 'original' ) ) )
-			                                 ->map( Fns::map( $getIdAndUrl ) )
-			                                 ->map( Lst::fromPairs() )
-			                                 ->getOrElse( [] );
+			foreach ( FrontPage::getIdsByLanguage() as $language => $id ) {
+				$this->homesById[ $id ] = HomeUrl::get( $language );
+			}
 		}
 
 		return Obj::assoc(
 			'loc',
 			Obj::propOr(
 				$url['loc'],
-				(int) Obj::prop( 'ID', $object ),
-				$this->secondaryHomesById
+				(int) Obj::prop( 'ID', $obj ),
+				$this->homesById
 			),
 			$url
 		);
+	}
+
+	public function byLanguageJoin( $sql, $postType ) {
+		if ( $this->sitepress->is_translated_post_type( $postType ) ) {
+			$sql .= PostTranslationsJoin::sql( $this->wpdb );
+		}
+
+		return $sql;
+	}
+
+	public function byLanguageWhere( $sql, $postType ) {
+		$default_language = $this->sitepress->get_default_language();
+		$current_language = $this->sitepress->get_current_language();
+
+		if ( $this->sitepress->is_translated_post_type( $postType ) ) {
+			$sql .= $this->wpdb->prepare(
+				' AND ( wpml_translations.language_code = %s',
+				$current_language
+			);
+
+			if ( $this->sitepress->is_display_as_translated_post_type( $postType ) ) {
+				$sql .= $this->wpdb->prepare(
+					"
+					OR (
+						wpml_translations.language_code = %s
+						AND NOT EXISTS (
+							SELECT 1
+							FROM {$this->wpdb->posts} p1
+							JOIN {$this->wpdb->prefix}icl_translations t1 ON p1.ID = t1.element_id
+							WHERE t1.trid = wpml_translations.trid
+							  AND t1.language_code = %s
+							  AND p1.post_status = 'publish'
+						)
+					)
+					",
+					$default_language,
+					$current_language
+				);
+			}
+
+			$sql .= ' )';
+		}
+
+		return $sql;
 	}
 }

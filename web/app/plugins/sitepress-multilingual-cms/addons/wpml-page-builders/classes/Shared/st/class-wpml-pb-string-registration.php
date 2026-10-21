@@ -1,35 +1,18 @@
 <?php
 
-/**
- * Class WPML_PB_String_Registration
- */
+use WPML\PB\TranslationJob\Groups;
+
 class WPML_PB_String_Registration {
 
-	/** @var IWPML_PB_Strategy $strategy */
 	private $strategy;
-	/** @var WPML_ST_String_Factory $string_factory */
 	private $string_factory;
-	/** @var  WPML_ST_Package_Factory $package_factory */
 	private $package_factory;
-	/** @var WPML_Translate_Link_Targets $translate_link_targets */
 	private $translate_link_targets;
 
-	/** @var callable $set_link_translations */
 	private $set_link_translations;
 
-	/** @var  bool $migration_mode */
 	private $migration_mode;
 
-	/**
-	 * WPML_PB_String_Registration constructor.
-	 *
-	 * @param IWPML_PB_Strategy           $strategy
-	 * @param WPML_ST_String_Factory      $string_factory
-	 * @param WPML_ST_Package_Factory     $package_factory
-	 * @param WPML_Translate_Link_Targets $translate_link_targets
-	 * @param callable                    $set_link_translations
-	 * @param bool                        $migration_mode
-	 */
 	public function __construct(
 		IWPML_PB_Strategy $strategy,
 		WPML_ST_String_Factory $string_factory,
@@ -46,13 +29,6 @@ class WPML_PB_String_Registration {
 		$this->migration_mode         = $migration_mode;
 	}
 
-	/**
-	 * @param int    $post_id
-	 * @param string $content
-	 * @param string $name
-	 *
-	 * @return null|int
-	 */
 	public function get_string_id_from_package( $post_id, $content, $name = '' ) {
 		$package_data = $this->strategy->get_package_key( $post_id );
 		$package      = $this->package_factory->create( $package_data );
@@ -67,19 +43,6 @@ class WPML_PB_String_Registration {
 		return apply_filters( 'wpml_string_title_from_id', null, $string_id );
 	}
 
-	/**
-	 * Register string.
-	 *
-	 * @param int          $post_id  Post Id.
-	 * @param string|mixed $content  String content.
-	 * @param string       $type     String editor type.
-	 * @param string       $title    String title.
-	 * @param string       $name     String name.
-	 * @param int          $location String location.
-	 * @param string       $wrap_tag String wrap tag.
-	 *
-	 * @return null|integer $string_id
-	 */
 	public function register_string(
 		$post_id,
 		$content = '',
@@ -87,7 +50,8 @@ class WPML_PB_String_Registration {
 		$title = '',
 		$name = '',
 		$location = 0,
-		$wrap_tag = ''
+		$wrap_tag = '',
+		$groupSequence = null
 	) {
 
 		$string_id = 0;
@@ -103,13 +67,16 @@ class WPML_PB_String_Registration {
 
 			} else {
 
-				if ( 'LINK' === $type && ! $this->translate_link_targets->is_internal_url( $content ) ) {
-					$type = 'LINE';
-				}
-
 				$string_value = $content;
 				$package      = $this->strategy->get_package_key( $post_id );
 				$string_title = $title ? $title : $string_value;
+
+				if ( Groups::isGroupLabel( $string_title ) ) {
+					list( $groups, $label ) = Groups::parseGroupLabel( $string_title );
+
+					$string_title = Groups::buildGroupLabel( $groups, $label, $groupSequence );
+				}
+
 				do_action( 'wpml_register_string', $string_value, $string_name, $package, $string_title, $type );
 
 				$string_id = $this->get_string_id_from_package( $post_id, $content, $string_name );
@@ -124,14 +91,6 @@ class WPML_PB_String_Registration {
 		return $string_id;
 	}
 
-	/**
-	 * Update string data: location and wrap tag.
-	 * Wrap tag is used for SEO significance, can contain values as h1 ... h6, etc.
-	 *
-	 * @param int    $string_id String id.
-	 * @param string $location  String location inside of the page builder content.
-	 * @param string $wrap_tag  String wrap tag for SEO significance.
-	 */
 	private function update_string_data( $string_id, $location, $wrap_tag ) {
 		$string = $this->string_factory->find_by_id( $string_id );
 		$string->set_location( $location );

@@ -3,34 +3,33 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "sv_SE"
          },
          "Accepted": [
-            "Godkänd"
+            "Accepterad"
          ],
          "Approved!": [
             "Godkänd!"
          ],
          "Loading the next translation for review...": [
-            "Läser in nästa översättning för granskning..."
+            "Laddar nästa översättning för granskning..."
          ],
          "Back": [
-            "Tillbaka"
+            "Bakåt"
          ],
          "Turn off to not automatically load the next translation after finishing this review.": [
-            "Stäng av för att inte automatiskt ladda nästa översättning när du har avslutat den här granskningen."
+            "Stäng av för att inte automatiskt ladda nästa översättning efter att denna granskning är klar."
          ],
          "Turn on to automatically load the next translation after finishing this  .": [
-            "Slå på för att automatiskt läsa in nästa översättning efter att ha avslutat denna ."
+            "Slå på för att automatiskt ladda nästa översättning efter att denna granskning är klar."
          ],
          "Edit": [
             "Redigera"
          ],
          "Edit translation": [
             "Redigera översättning"
-         ],
-         "Please wait, applying translation..": [
-            "Vänta, tillämpar översättning.."
          ],
          "Next review": [
             "Nästa granskning"
@@ -39,16 +38,19 @@
             "Publicera denna översättning"
          ],
          "Accept this translation": [
-            "Godkänn denna översättning"
+            "Acceptera denna översättning"
          ],
          "Published!": [
-            "Publicerat!"
+            "Publicerad!"
          ],
-         "Someone is already reviewing this translation. Please try again later.": [
-            "Någon granskar redan den här översättningen. Försök igen senare."
+         "Please wait, applying translation..": [
+            "Vänta lite, tillämpar översättning..."
          ],
          "There was an error in applying translation.": [
-            "Det gick inte att använda översättningen."
+            "Ett fel uppstod när översättningen skulle tillämpas."
+         ],
+         "Someone is already reviewing this translation. Please try again later.": [
+            "Någon annan granskar redan den här översättningen. Försök igen senare."
          ]
       }
    }

@@ -4,25 +4,29 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "uk"
          },
+         "Select %s": [
+            "Вибрати %s"
+         ],
          "From:": [
-            "Із:"
+            "З:"
          ],
          "--Choose language--": [
-            "--Вибрати мову--"
+            "--Виберіть мову--"
          ],
          "to:": [
-            "такою мовою:"
+            "на:"
          ],
          "Set language pair(s) for Translator %s:": [
-            "Задати мовні пари для перекладача %s:"
+            "Встановити мовні пари для перекладача %s:"
          ],
          "+ Add more language pairs for this translator": [
-            "+ Додати цьому перекладачеві інші мовні пари"
+            "+ Додати більше мовних пар для цього перекладача"
          ],
          "First Name": [
-            "Ім'я"
+            "Ім’я"
          ],
          "Last Name": [
             "Прізвище"
@@ -31,46 +35,61 @@
             "Роль"
          ],
          "(required)": [
-            "(обов’ язково)"
+            "(обов’язково)"
+         ],
+         "Select a role for the user": [
+            "Виберіть роль для користувача"
          ],
          "Make sure that you have provided a correct email address e.g. name@domain.com": [
-            "Переконайтеся, що електронну адресу введено правильно, наприклад name@domain.com"
+            "Переконайтеся, що ви ввели правильну адресу електронної пошти, наприклад name@domain.com"
          ],
          "This field is required": [
-            "Це обов'язкове поле"
+            "Це поле є обов’язковим"
          ],
          "A translator can be any WordPress role.": [
-            "У перекладача може бути будь-яка роль WordPress."
+            "Перекладачем може бути будь-яка роль WordPress."
          ],
          "Username": [
-            "Ім'я користувача"
+            "Ім’я користувача"
          ],
          "Email": [
-            "Ел. адреса"
+            "Електронна пошта"
          ],
-         "Search": [
-            "Пошук"
+         "Search by name, username or email": [
+            "Пошук за ім’ям, іменем користувача або електронною поштою"
          ],
-         "user": [
-            "користувача"
-         ],
-         "Editor": [
-            "Редактор"
-         ],
-         "Select an existing %s and set as Translation Manager": [
-            "Вибрати наявного %s й задати менеджером перекладацьких проектів"
-         ],
-         "Create a new %s and set as Translation Manager": [
-            "Створити нового %s й задати менеджером перекладацьких проектів"
+         "Your site has a large number of users, please enter the exact username or email address.": [
+            "На вашому сайті велика кількість користувачів, будь ласка, введіть точне ім’я користувача або адресу електронної пошти."
          ],
          "Cancel": [
             "Скасувати"
          ],
          "Add Translation Manager": [
-            "Додати менеджера перекладацьких проектів"
+            "Додати менеджера перекладів"
+         ],
+         "user": [
+            "користувач"
+         ],
+         "Editor": [
+            "Редактор"
+         ],
+         "Select an existing user and set them as Translation Manager": [
+            "Виберіть наявного користувача та призначте його менеджером перекладів"
+         ],
+         "Create a new user and set them as Translation Manager": [
+            "Створіть нового користувача та призначте його менеджером перекладів"
+         ],
+         "Add a Translation Manager": [
+            "Додати менеджера перекладів"
+         ],
+         "Select an existing user and set as Translator": [
+            "Виберіть наявного користувача та призначте його перекладачем"
+         ],
+         "Create a new user and set as Translator": [
+            "Створіть нового користувача та призначте його перекладачем"
          ],
          "Set language pair(s)": [
-            "Задати мовну(і) пару(и)"
+            "Встановити мовні пари"
          ],
          "Previous": [
             "Назад"
@@ -81,26 +100,26 @@
          "Add a Translator": [
             "Додати перекладача"
          ],
-         "Select an existing user and set as Translator": [
-            "Вибрати наявного користувача й задати перекладачем"
-         ],
-         "Create a new user and set as Translator": [
-            "Створити нового користувача й задати перекладачем"
-         ],
          "Edit language pair(s) for translator": [
-            "Змінити мовну пару(и) для перекладача"
+            "Редагувати мовні пари для перекладача"
          ],
          "Name": [
-            "Ім'я"
+            "Назва"
          ],
          "Language Pairs": [
             "Мовні пари"
          ],
          "You can translate to and from all languages": [
-            "Ви можете перекладати всіма мовами"
+            "Ви можете перекладати на всі мови та з усіх мов"
+         ],
+         "Edit language pair(s)": [
+            "Редагувати мовні пари"
+         ],
+         "Delete language pair(s)": [
+            "Видалити мовні пари"
          ],
          "%s file upload failed.": [
-            "Не вдалося завантажити файл %s."
+            "Помилка завантаження файлу %s."
          ],
          "Flag": [
             "Прапор"
@@ -108,32 +127,32 @@
          "Flag file": [
             "Файл прапора"
          ],
-         "You just added  language. Next, select it as the site's default language or a translation language.": [
-            "Ви щойно додали мову. Далі виберіть її мовою веб-сайту за промовчанням або мовою перекладу."
+         "You just added %s language. Next, select it as the site's default language or a translation language.": [
+            "Ви щойно додали мову %s. Далі виберіть її як мову сайту за замовчуванням або мову перекладу."
          ],
          "Language added": [
             "Мову додано"
          ],
          "The value \"%s\" already exists": [
-            "Значення \"%s\" вже існує"
+            "Значення «%s» вже існує"
          ],
          "Add a new language": [
             "Додати нову мову"
          ],
          "Create a country-specific language by choosing the general language from the list below. Then, choose the country it should be localized for.": [
-            "Створіть мову для певної країни, вибравши загальну мову зі списку нижче. Тоді виберіть країну, для якої її слід локалізувати."
+            "Створіть мову для конкретної країни, вибравши загальну мову зі списку нижче. Потім виберіть країну, для якої вона має бути локалізована."
          ],
          "By choosing a combination that already exists in the database, WPML can help fill out the necessary fields. Read more about <AddingACustomLanguageLink />.": [
-            "Якщо вибрати поєднання, яке вже існує в базі даних, WPML допоможе заповнити необхідні поля. Докладніше про <AddingACustomLanguageLink />."
+            "Вибравши комбінацію, яка вже існує в базі даних, WPML може допомогти заповнити необхідні поля. Дізнайтеся більше про <AddingACustomLanguageLink />."
          ],
          "Cannot find?": [
             "Не вдається знайти?"
          ],
          "Click here": [
-            "Клацніть тут"
+            "Натисніть тут"
          ],
          "The wrong format. It may contain only small letters and \"-\". E.g: \"fr\" , \"pt-br\", \"zh-hans\"": [
-            "Неправильний формат. Може містити тільки малі літери та \"-\". Наприклад: \"fr\" , \"pt-br\", \"zh-hans\""
+            "Неправильний формат. Він може містити лише малі літери та «-». Наприклад: «fr», «pt-br», «zh-hans»"
          ],
          "Language": [
             "Мова"
@@ -144,26 +163,35 @@
          "Code": [
             "Код"
          ],
-         "The language will not be supported by automatic translations": [
-            "Автоматичний переклад не буде підтримувати цю мову."
+         "Flags must be:": [
+            "Прапори мають бути:"
+         ],
+         "Automatic Translation will use the default behavior for this language": [
+            "Автоматичний переклад використовуватиме поведінку за замовчуванням для цієї мови"
          ],
          "Language mapping": [
-            "Зіставлення мов"
+            "Відповідність мов"
          ],
-         "Don't map this language": [
-            "Не зіставляти цю мову"
+         "Use Automatic Translation default behavior": [
+            "Використовувати поведінку автоматичного перекладу за замовчуванням"
+         ],
+         "PNG, SVG, or JPG files": [
+            "Файли PNG, SVG або JPG"
          ],
          "Default locale": [
-            "Мовний стандарт за промовчанням"
+            "Локаль за замовчуванням"
          ],
          "The wrong format. It may contain only small letters and \"_\". E.g: \"de\" , \"de_DE\", \"zh_Hant_TW\"": [
-            "Неправильний формат. Може містити тільки малі літери та \"_\". Наприклад: \"de\" , \"de_DE\", \"zh_Hant_TW\""
+            "Неправильний формат. Він може містити лише малі літери та «_». Наприклад: «de», «de_DE», «zh_Hant_TW»"
          ],
          "hreflang": [
             "hreflang"
          ],
+         "18 x 12 pixels": [
+            "18 x 12 пікселів"
+         ],
          "Encode url?": [
-            "Кодувати URL-адресу?"
+            "Кодувати URL?"
          ],
          "NO": [
             "НІ"
@@ -172,79 +200,91 @@
             "ТАК"
          ],
          " (required)": [
-            "(обов’ язково)"
+            " (обов’язково)"
+         ],
+         "The name of your language as it will appear on your site's language switcher.": [
+            "Назва вашої мови, як вона з’являтиметься в перемикачі мов вашого сайту."
          ],
          "Please fill in the field": [
-            "Заповніть поле"
+            "Будь ласка, заповніть поле"
+         ],
+         "A unique value that identifies the language in the database and URL. Once saved, the language code cannot be changed.": [
+            "Унікальне значення, яке ідентифікує мову в базі даних і URL-адресі. Після збереження код мови неможливо змінити."
          ],
          "Save language": [
             "Зберегти мову"
          ],
-         "The name of your language as it will appear on your site's language switcher.": [
-            "Назва мови як вона відображається в перемикачі мов на вашому веб-сайті."
-         ],
-         "A unique value that identifies the language in the database and URL. Once saved, the language code cannot be changed.": [
-            "Унікальне значення, що визначає мову в базі даних та URL-адресі. Після збереження код мови не можна змінити."
-         ],
          "If your custom language is similar to an existing language, you can use the existing language's spellcheck and automatic translation. For example, if your custom language is Swiss-German, you can map to German as the language to use for spellcheck and automatic translation. If you don't map your custom language to an existing language, spellcheck and automatic translation features will be unavailable in that language.": [
-            "Якщо користувацька мова така ж, як існуючиай, можна використовувати перевірку орфографії та автоматичний переклад існуючої мови. Наприклад, якщо обрана вами мова – швейцарська німецька, її можна зіставити з німецькою мовою, яка буде використовуватися для перевірки орфографії та автоматичного перекладу. Якщо користувацьку мову не зіставляти з існуючою, функції перевірки орфографії та автоматичного перекладу для цієї мови будуть недоступні."
+            "Якщо ваша власна мова схожа на наявну, ви можете використовувати перевірку орфографії та автоматичний переклад наявної мови. Наприклад, якщо вашою власною мовою є швейцарська німецька, ви можете встановити відповідність німецькій мові для перевірки орфографії та автоматичного перекладу. Якщо ви не встановите відповідність власної мови наявній, функції перевірки орфографії та автоматичного перекладу будуть недоступні для цієї мови."
          ],
          "The value WPML checks when loading translations from MO and PO files. The default locale is included in the filenames in your /wp-content/languages/ folder in your WordPress setup.": [
-            "Значення, яке WPML перевіряє під час завантаження перекладів із файлів формату MO і PO. Регіон за промовчанням включено в назви файлів у папці /wp-content/languages/ у налаштуваннях WordPress."
+            "Значення, яке WPML перевіряє під час завантаження перекладів із файлів MO та PO. Локаль за замовчуванням включена в імена файлів у вашій папці /wp-content/languages/ у вашій установці WordPress."
          ],
          "Google uses the hreflang attribute to direct users to sites in their relevant language and location. Examples:": [
-            "З метою спрямування користувачів на ввеб-сайти відповідно до їхньої мови та розташування Google використовує атрибут hreflang. Приклади:"
+            "Google використовує атрибут hreflang, щоб спрямовувати користувачів на сайти відповідною мовою та з відповідним розташуванням. Приклади:"
          ],
          "All English-speaking users: en": [
-            "Усі користувачі з англійською мовою: en"
+            "Усі англомовні користувачі: en"
          ],
          "English for UK users: en-gb": [
-            "Англійська для користувачів з Великої Британії: en-gb"
+            "Англійська для користувачів із Великобританії: en-gb"
          ],
          "English for US users: en-us": [
-            "Англійська для користувачів зі США: en-us"
+            "Англійська для користувачів із США: en-us"
          ],
          "Determines if URLs in this language are encoded or use ASCII characters (if unsure, leave it as \"No\").": [
-            "Визначає, чи URL-адреси цією мовою закодовані або в них використовуються символи ASCII (залиште \"Ні\", якщо не впевнені)."
+            "Визначає, чи кодуються URL-адреси цією мовою, чи використовуються символи ASCII (якщо не впевнені, залиште «Ні»)."
          ],
          "adding a custom language": [
-            "додавання користувацької мови"
+            "додавання власної мови"
+         ],
+         "What are the languages of your site?": [
+            "Які мови вашого сайту?"
          ],
          "Default language": [
-            "Мова за промовчанням"
+            "Мова за замовчуванням"
          ],
          "What is the current language of your website?": [
-            "Яка поточна мова вашого веб-сайту?"
+            "Яка поточна мова вашого вебсайту?"
          ],
          "Translation languages": [
             "Мови перекладу"
          ],
          "Which languages do you want to translate your site into?": [
-            "Якими мовами потрібно перекласти ваш веб-сайт?"
+            "Якими мовами ви хочете перекласти свій сайт?"
          ],
-         "If you cannot find languages that you need in the list": [
-            "Якщо у списку немає необхідних мов,"
+         "If you cannot find languages that you need in the list,": [
+            "Якщо ви не можете знайти потрібні мови у списку,"
          ],
          "create a custom language": [
-            "створіть користувацьку мову"
+            "створіть власну мову"
          ],
-         "What are the languages of your site?": [
-            "Які мови вашого веб-сайту?"
-         ],
-         "You can add a dedicated person to oversee everything translation-related on your site. %sTranslation Managers%s can add new local translators or professional translation services, create and assign translation jobs, review completed translations, and change translation-related settings.": [
-            "Ви можете додати окрему особу, яка контролюватиме все пов’язане з перекладом на вашому веб-сайті. %sМенеджери перекладацьких проектів%s можуть додавати нових власних перекладачів або служби професійного перекладу, створювати та призначати замовлення на переклад, перевіряти виконані переклади і міняти налаштування, пов’язані з перекладом."
+         "You can add a dedicated person to oversee everything translation-related on your site. Translation Managers can add new local translators or professional translation services, create and assign translation jobs, review completed translations, and change translation-related settings.": [
+            "Ви можете додати спеціальну особу для нагляду за всім, що стосується перекладу на вашому сайті. Менеджери перекладів можуть додавати нових місцевих перекладачів або професійні служби перекладу, створювати та призначати завдання на переклад, перевіряти готові переклади та змінювати налаштування, пов’язані з перекладом."
          ],
          "Translation Managers": [
-            "Менеджери перекладацьких проектів"
+            "Менеджери перекладів"
          ],
          "Note: All Administrators are automatically given Translation Manager privileges.": [
-            "Примітка. Усі адміністратори автоматично отримують роль менеджера перекладацьких проектів."
+            "Примітка: усі адміністратори автоматично отримують привілеї менеджера перекладів."
          ],
-         "%sLocal translators%s are users of your site that can log in and add, edit, and review your site's translations. Add a translator and their associated translation pairs to assign them translation jobs.": [
-            "%sВласні перекладачі%s – користувачі, які можуть входити на ваш веб-сайт і додавати, змінювати і перевіряти його переклади. Додайте перекладача та пов’язані з ним пари перекладу, щоб призначати йому замовлення на переклад."
+         "%1$sLocal translators%2$s are users of your site that can log in and add, edit, and review your site's translations. Add a translator and their associated translation pairs to assign them translation jobs.": [
+            "%1$sМісцеві перекладачі%2$s — це користувачі вашого сайту, які можуть входити в систему та додавати, редагувати та перевіряти переклади вашого сайту. Додайте перекладача та відповідні мовні пари, щоб призначати їм завдання на переклад."
+         ],
+         "You can %1$shire an experienced translator%2$s to review your automatic translations for perfect quality.": [
+            "Ви можете %1$sнайняти досвідченого перекладача%2$s, щоб перевірити ваші автоматичні переклади для ідеальної якості."
          ],
          "Translators": [
             "Перекладачі"
+         ],
+         "Can't find a specific translator?": [
+            "Не вдається знайти конкретного перекладача?"
+         ],
+         "Refreshing…": [
+            "Оновлення…"
+         ],
+         "Refresh list now.": [
+            "Оновити список зараз."
          ]
       }
    }

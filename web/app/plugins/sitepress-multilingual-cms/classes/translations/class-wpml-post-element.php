@@ -1,21 +1,10 @@
 <?php
 
-/**
- * @author OnTheGo Systems
- */
 class WPML_Post_Element extends WPML_Translation_Element implements WPML_Duplicable_Element {
-	/**
-	 * @return WP_Post
-	 */
 	function get_wp_object() {
 		return get_post( $this->id );
 	}
 
-	/**
-	 * @param WP_Post $post
-	 *
-	 * @return string
-	 */
 	function get_type( $post = null ) {
 		if ( $post ) {
 			return $post->post_type;
@@ -27,7 +16,7 @@ class WPML_Post_Element extends WPML_Translation_Element implements WPML_Duplica
 	public function get_wpml_element_type() {
 		$element_type = '';
 		if ( ! is_wp_error( $this->get_wp_element_type() ) ) {
-			$element_type = 'post_' . $this->get_wp_element_type();
+			$element_type = $this->get_element_type() . '_' . $this->get_wp_element_type();
 		}
 		return $element_type;
 	}
@@ -36,12 +25,10 @@ class WPML_Post_Element extends WPML_Translation_Element implements WPML_Duplica
 		return $this->id;
 	}
 
-	/**
-	 * @param null|stdClass $element_data null, or a standard object containing at least the `translation_id`, `language_code`, `element_id`, `source_language_code`, `element_type`, and `original` properties.
-	 *
-	 * @return WPML_Post_Element
-	 * @throws \InvalidArgumentException
-	 */
+	function get_element_type () {
+		return 'post';
+	}
+
 	function get_new_instance( $element_data ) {
 		return new WPML_Post_Element( $element_data->element_id, $this->sitepress, $this->wpml_cache );
 	}

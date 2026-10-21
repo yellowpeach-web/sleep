@@ -30,12 +30,36 @@ class Register {
         echo self::getRegistrationForm($model);
 	}
 
-	private static function getRegistrationForm( $model ) {
+	public static function renderEnterSiteKeyItem( $model ) {
+		if ( \WP_Installer::site_key_belongs_to_network( $model->repoId ) ) {
+			return;
+		}
+		?>
+		<div class="otgs-installer-notice-status-item enter_site_key_wrap_js">
+			<p><?php esc_html_e( 'Have a site key from another account?', 'installer' ); ?></p>
+			<a class="enter_site_key_js otgs-installer-notice-status-item-btn"
+			   href="#"
+				<?php if ( \WP_Installer::get_repository_hardcoded_site_key( $model->repoId ) ) : ?>
+					disabled
+					title="<?php printf( esc_attr__( 'Site-key was set by %s, most likely in wp-config.php. Please remove the constant before attempting to register.', 'installer' ), 'OTGS_INSTALLER_SITE_KEY_' . strtoupper( $model->repoId ) ); ?>"
+				<?php endif; ?>
+			>
+				<?php echo esc_html( sprintf( __( 'Register %s with another site key', 'installer' ), $model->productName ) ); ?>
+			</a>
+		</div>
+		<?php
+	}
+
+	public static function getRegistrationForm( $model ) {
 		$registrationText = sprintf(
 			__( 'Enter the site key, from your %1$s account, to receive automatic updates for %2$s.', 'installer' ),
 			self::removeScheme( $model->productUrl ),
 			$model->productName
 		);
+		$accountUrl       = Url::withHost( self::getAccountUrl( $model ) );
+		$accountLink      = $accountUrl
+			? '<p class="otgs-installer-register-link"><a target="_blank" rel="nofollow" href="' . esc_url( $accountUrl ) . '">' . esc_html( __( 'Get a key for this site', 'installer' ) ) . '</a></p>'
+			: '';
 
 		return '<form class="otgsi_site_key_form" method="post">
 			<input type="hidden" name="action" value="save_site_key"/>
@@ -48,7 +72,7 @@ class Register {
                 <input type="text" size="20" name="site_key_' . esc_attr( $model->repoId ) . '" id="site_key_' . esc_attr( $model->repoId ) . '"/>
                 <input class="button-primary" type="submit" value="' . esc_attr__( 'Register', 'installer' ) . '" />
             </div>
-            <p class="otgs-installer-register-link"><a target="_blank" rel="nofollow" href="' . esc_url( self::getAccountUrl( $model ) ) . '">' . esc_html( __( 'Get a key for this site', 'installer' ) ) . '</a></p>
+            ' . $accountLink . '
 
             <div class="installer-error-box hidden"></div>
 		</form>';
@@ -58,11 +82,6 @@ class Register {
 		return str_replace( [ 'https://', 'http://' ], '', $str );
 	}
 
-	/**
-	 * @param $model
-	 *
-	 * @return string
-	 */
 	private static function getAccountUrl( $model ) {
 		return apply_filters(
 			'otgs_installer_add_site_url',
@@ -71,11 +90,6 @@ class Register {
 		);
 	}
 
-	/**
-	 * @param $model
-	 *
-	 * @return string
-	 */
 	private static function getRegisterLink( $model ) {
 		$buttonText = sprintf( esc_attr( 'register on %s.' ), self::removeScheme( $model->productUrl ) );
 		ob_start();

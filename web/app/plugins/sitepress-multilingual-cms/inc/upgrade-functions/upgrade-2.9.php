@@ -57,7 +57,7 @@ $wpdb->insert(
 );
 
 $msFlag = wpml_get_flag_file_name('ms');
-$wpdb->insert(
+$msFlagWritten = $wpdb->insert(
 	$wpdb->prefix . 'icl_flags',
 	array(
 		'lang_code'     => 'ms',
@@ -65,3 +65,7 @@ $wpdb->insert(
 		'from_template' => 0,
 	)
 );
+
+if ( $msFlagWritten ) {
+	WPML_Flags::invalidate();
+}

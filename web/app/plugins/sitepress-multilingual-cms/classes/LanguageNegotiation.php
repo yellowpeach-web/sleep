@@ -8,26 +8,14 @@ use WPML\FP\Obj;
 use function WPML\FP\curryN;
 use function WPML\FP\partial;
 
-/**
- * Class LanguageNegotiation
- * @package WPML\Core
- *
- * @method static callable|void saveMode( ...$mode ) - int|string->void
- *
- * @method static int getMode()
- *
- * @method static string getModeAsString( $mode = null )
- *
- * @method static callable|void saveDomains( ...$domains ) - array->void
- *
- * @method static array getDomains()
- */
 class LanguageNegotiation {
 	use Macroable;
 
 	const DIRECTORY = 1;
 	const DOMAIN = 2;
 	const PARAMETER = 3;
+
+	const SUNRISE_DOMAINS_CONSTANT = 'WPML_SUNRISE_MULTISITE_DOMAINS';
 
 	const DIRECTORY_STRING = 'directory';
 	const DOMAIN_STRING = 'domain';
@@ -39,9 +27,22 @@ class LanguageNegotiation {
 		self::PARAMETER_STRING => self::PARAMETER,
 	];
 
-	/**
-	 * @ignore
-	 */
+	public static function isDomainModeAvailable() {
+		global $wpmu_version, $sitepress;
+
+		if ( isset( $wpmu_version ) ) {
+			return false;
+		}
+
+		$wpApi = $sitepress ? $sitepress->get_wp_api() : new \WPML_WP_API();
+
+		if ( ! $wpApi->is_multisite() ) {
+			return true;
+		}
+
+		return (bool) $wpApi->constant( self::SUNRISE_DOMAINS_CONSTANT );
+	}
+
 	public static function init() {
 		global $sitepress;
 

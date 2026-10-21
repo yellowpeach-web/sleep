@@ -14,40 +14,7 @@ jQuery(function () {
 		setTimeout(function () {
 			response_text.fadeOut('slow');
 		}, 2500);
-	},
-		openTooltip = function(triggerNode) {
-
-			var content = triggerNode.data('content');
-
-			jQuery('.js-wpml-cookie-active-tooltip').pointer('close');
-
-			if(triggerNode.length && content) {
-				triggerNode.addClass('js-wpml-cookie-active-tooltip');
-				triggerNode.pointer({
-					pointerClass : 'js-wpml-cookie-tooltip wpml-ls-tooltip',
-					content:       content,
-					position: {
-						edge:  'bottom',
-						align: 'left'
-					},
-					show: function(event, t){
-						t.pointer.css('marginLeft', '-54px');
-					},
-					close: function(event, t){
-						t.pointer.css('marginLeft', '0');
-					},
-					buttons: function( event, t ) {
-						var button = jQuery('<a class="close" href="#">&nbsp;</a>');
-
-						return button.on( 'click.pointer', function(e) {
-							e.preventDefault();
-							t.element.pointer('close');
-						});
-					}
-
-				}).pointer('open');
-			}
-		};
+	};
 
 	jQuery( '#' + cookie_setting.button_id ).click(function(){
 
@@ -70,11 +37,6 @@ jQuery(function () {
 				ajax_success_action( response, response_text );
 			}
 		});
-	});
-
-	jQuery( '.js-wpml-cookie-tooltip-open' ).click( function( e ) {
-		e.preventDefault();
-		openTooltip( jQuery( this ) );
 	});
 
 });

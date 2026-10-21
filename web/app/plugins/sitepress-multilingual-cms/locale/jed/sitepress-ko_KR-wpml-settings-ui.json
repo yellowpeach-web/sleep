@@ -3,53 +3,225 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "ko_KR"
          },
-         "You can choose which posts to translate from the <strong>Translation Management Dashboard</strong>.": [
-            "<strong>번역 관리 대시보드</strong>에서 번역할 글을 선택할 수 있습니다."
-         ],
-         "Yes, translate <b>existing</b> and <b>future</b> content automatically": [
-            "예, <b>기존</b> 및 <b>향후</b> 콘텐츠를 자동으로 번역합니다"
-         ],
-         "Yes, but only translate <b>future</b> content automatically": [
-            "예, 하지만 <b>향후</b> 콘텐츠만 자동으로 번역합니다"
-         ],
-         "Yes, translate <b>future</b> content automatically": [
-            "예, <b>향후</b> 콘텐츠를 자동으로 번역합니다"
-         ],
-         "No, I want to translate some of these posts, but not all": [
-            "아니오. 이 글 중 일부를 번역하고 싶지만 전부는 아닙니다"
+         "%1$s and %2$s": [
+            "%1$s 및 %2$s"
          ],
          "You must use the Advanced Translation Editor if you want to translate your content automatically.": [
-            "컨텐츠를 자동 번역하려면 고급 번역 편집기를 사용해야 합니다."
+            "콘텐츠를 자동으로 번역하려면 고급 번역 에디터를 사용해야 합니다."
          ],
          "Synchronize translators and translation managers with ATE": [
-            "ATE에서 번역가와 번역 관리자 동기화"
+            "번역가 및 번역 관리자를 고급 번역 에디터(ATE)와 동기화"
          ],
-         "Please try again in a few minutes. If the problem persists, please contact %sWPML support%s.": [
-            "잠시 후에 다시 시도하십시오. 문제가 지속되면 %sWPML 지원팀%s에 문의하십시오."
+         "Please try again in a few minutes. If the problem persists, please contact %1$sWPML support%2$s.": [
+            "몇 분 후에 다시 시도해 주세요. 문제가 지속되면 %1$sWPML 지원%2$s팀에 문의하시기 바랍니다."
          ],
-         "Are you OK with paying for this?": [
-            "비용을 지불하시겠습니까?"
+         "The number of translated terms carrying %s could not be counted.": [
+            "%s을(를) 포함하는 번역된 용어의 수를 셀 수 없습니다."
+         ],
+         "There are no translated terms carrying %s yet that need translating again. The change applies to new translations.": [
+            "아직 %s을(를) 포함하며 다시 번역해야 할 번역된 용어가 없습니다. 변경 사항은 새 번역에 적용됩니다."
+         ],
+         "%1$s translated term carries %2$s — only new translations are affected.": [
+            "%1$s개의 번역된 용어가 %2$s을(를) 포함합니다. 새 번역에만 영향을 미칩니다."
+         ],
+         "The number of translated posts carrying %s could not be counted.": [
+            "%s 필드를 포함하는 번역된 포스트의 수를 셀 수 없습니다."
+         ],
+         "There are no translated posts carrying %s yet that need translating again. The change applies to new translations.": [
+            "아직 %s 필드를 포함하며 다시 번역해야 할 번역된 포스트가 없습니다. 변경 사항은 새 번역에 적용됩니다."
+         ],
+         "%1$s translated post carries %2$s — it will be marked as needing a translation update.": [
+            "%1$s개의 번역된 포스트가 %2$s을(를) 포함합니다. 이 포스트들은 번역 업데이트가 필요한 것으로 표시됩니다."
+         ],
+         "%1$s translated post carries %2$s — its translation will show the original's value from now on.": [
+            "%1$s개의 번역된 포스트가 %2$s을(를) 포함합니다. 지금부터 이들의 번역에는 원본의 값이 표시됩니다."
+         ],
+         "%1$s translated post carries %2$s — translations without a value get the original's once.": [
+            "%1$s개의 번역된 포스트가 %2$s을(를) 포함합니다. 값이 없는 번역은 원본의 값을 한 번 복사합니다."
+         ],
+         "%1$s translated post carries %2$s — it is no longer translated and what its translations hold stays as it is.": [
+            "%1$s개의 번역된 포스트가 %2$s을(를) 포함합니다. 이들은 더 이상 번역되지 않으며 기존 번역 내용은 그대로 유지됩니다."
+         ],
+         "Review these translation setting changes": [
+            "이 번역 설정 변경 사항 검토"
          ],
          "Cancel": [
             "취소"
          ],
-         "Make translatable": [
-            "번역 가능하도록 설정"
+         "Save changes": [
+            "변경 사항 저장"
+         ],
+         "Also update the existing posts now": [
+            "지금 기존 포스트도 업데이트"
+         ],
+         "Also update the %s existing post now": [
+            "지금 기존 포스트 %s개도 업데이트"
+         ],
+         "Only apply to new translations": [
+            "새 번역에만 적용"
+         ],
+         "Once saved, WPML automatically sends new and updated posts with this field to translation. This may use translation words.": [
+            "저장하면 WPML이 이 필드가 포함된 새 포스트 및 업데이트된 포스트를 자동으로 번역으로 보냅니다. 이 과정에서 번역 단어가 사용될 수 있습니다."
+         ],
+         "Once saved, WPML automatically sends new and updated terms with this key to translation. This may use translation words.": [
+            "저장하면 WPML이 이 키가 포함된 새 용어 및 업데이트된 용어를 자동으로 번역으로 보냅니다. 이 과정에서 번역 단어가 사용될 수 있습니다."
+         ],
+         "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "어느 쪽이든 새 기본 설정이 저장됩니다. “새 번역에만 적용”을 선택하면 모든 기존 번역은 그대로 유지됩니다."
+         ],
+         "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
+            "이 화면 외부에서 %1$s개의 사용자 정의 필드가 번역 가능하게 되었습니다: %2$s. 이미 존재하는 번역에 어떤 작업을 수행할지 결정하십시오."
+         ],
+         "Review this field": [
+            "이 필드들 검토"
          ],
          "Save": [
             "저장"
          ],
-         "Please confirm this translation setting": [
-            "이 번역 설정을 확인하십시오"
+         "Calculate Costs": [
+            "비용 계산"
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate the %1$d existing item.": [
-            "사이트는 모든 콘텐츠를 자동으로 번역하도록 설정되어 있습니다. <PostTypesNames />을(를) 번역할 수 있도록 설정하면 WPML에서 %1$d개의 기존 항목을 자동으로 번역합니다.",
-            "사이트는 모든 콘텐츠를 자동으로 번역하도록 설정되어 있습니다. <PostTypesNames />을(를) 번역할 수 있도록 설정하면 WPML에서 %1$d개의 기존 항목을 자동으로 번역합니다."
+         "WPML will automatically translate %1$s into %2$s.": [
+            "WPML이 %1$s을(를) %2$s(으)로 자동 번역합니다."
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate all future content.": [
-            "사이트는 모든 콘텐츠를 자동으로 번역하도록 설정되어 있습니다. <PostTypesNames />을(를) 번역할 수 있도록 설정하면 WPML에서 모든 향후 콘텐츠를 자동으로 번역합니다."
+         "Automatic translation uses translation words.": [
+            "자동 번역에는 번역 단어가 사용됩니다."
+         ],
+         "Are you OK with this?": [
+            "이에 동의하십니까?"
+         ],
+         "Are you sure you want to change the translation option?": [
+            "번역 옵션을 변경하시겠습니까?"
+         ],
+         "Yes, continue": [
+            "예, 계속하기"
+         ],
+         "No, go back": [
+            "아니요, 뒤로 가기"
+         ],
+         "%d term": [
+            "%d개 용어"
+         ],
+         "%d language": [
+            "%d개 언어"
+         ],
+         "%s will be translated.": [
+            "%s이(가) 번역됩니다."
+         ],
+         "Change the URLs of existing translations?": [
+            "기존 번역의 URL을 변경하시겠습니까?"
+         ],
+         "Counting the existing translations this affects… %1$s of %2$s posts.": [
+            "영향을 받는 기존 번역 수를 세는 중… 포스트 %2$s개 중 %1$s개."
+         ],
+         "Counting the existing translations this affects…": [
+            "영향을 받는 기존 번역 수를 세는 중…"
+         ],
+         "Also update the %s existing translation now — its URL changes": [
+            "지금 기존 번역 %s개도 업데이트 — URL이 변경됩니다"
+         ],
+         "Either way the setting is saved. With \"Only apply to new translations\" every existing translation keeps its slug.": [
+            "어느 쪽이든 설정이 저장됩니다. “새 번역에만 적용”을 선택하면 모든 기존 번역은 해당 슬러그를 유지합니다."
+         ],
+         "No existing translation gets a different URL from this option. It does not apply to new translations either. None of your active languages has \"Encode URL\" turned on.": [
+            "이 옵션으로 인해 기존 번역본의 URL이 변경되지 않습니다. 새 번역본에도 적용되지 않습니다. 활성화된 어떤 언어에서도 “URL 인코딩”이 켜져 있지 않습니다."
+         ],
+         "No existing translation gets a different URL from this option. It applies to new translations.": [
+            "이 옵션으로 인해 URL이 변경되는 기존 번역은 없습니다. 새 번역에 적용됩니다."
+         ],
+         "%s existing translation in a language with encoded URLs would get the original's slug.": [
+            "인코딩된 URL을 사용하는 언어의 기존 번역 %s개가 원본의 슬러그를 갖게 됩니다."
+         ],
+         "%s existing translation would get a slug regenerated from its title.": [
+            "기존 번역 %s개의 슬러그가 제목에서 다시 생성됩니다."
+         ],
+         "This changes the URL of %s published translation. Links to it from your other translations are updated. Search engines and links from elsewhere keep the old address until you redirect it.": [
+            "이 작업은 발행된 번역 %s개의 URL을 변경합니다. 다른 번역에서 이들로 연결되는 링크가 업데이트됩니다. 검색 엔진 및 외부 링크는 리디렉션을 설정할 때까지 이전 주소를 유지합니다."
+         ],
+         "Retry": [
+            "재시도"
+         ],
+         "Updating %1$s of %2$s translation…": [
+            "번역 %2$s개 중 %1$s개 업데이트 중…"
+         ],
+         "Updating %1$s of %2$s posts…": [
+            "포스트 %2$s개 중 %1$s개 업데이트 중…"
+         ],
+         "%1$s %2$s updated.": [
+            "%1$s개의 %2$s이(가) 업데이트되었습니다."
+         ],
+         "%s post updated.": [
+            "%s개의 포스트가 업데이트되었습니다."
+         ],
+         "%s marked as needing a translation update.": [
+            "%s개가 번역 업데이트가 필요한 것으로 표시되었습니다."
+         ],
+         "%1$s sent to translation and %2$s outside Translate Everything's range marked for later.": [
+            "%1$s개가 번역으로 전송되었으며, 모든 항목 자동 번역 범위를 벗어난 %2$s개는 나중을 위해 표시되었습니다."
+         ],
+         "%s sent to translation.": [
+            "%s개가 번역으로 전송되었습니다."
+         ],
+         "Nothing was sent. %s outside Translate Everything's range marked for later.": [
+            "전송된 항목이 없습니다. 모든 항목 자동 번역 범위를 벗어난 %s개는 나중을 위해 표시되었습니다."
+         ],
+         "Nothing was sent.": [
+            "전송된 항목이 없습니다."
+         ],
+         "%s in a language Translate Everything does not send marked for later.": [
+            "모든 항목 자동 번역이 지원하지 않는 언어의 %s개가 나중을 위해 표시되었습니다."
+         ],
+         "The URL of %s translation was updated.": [
+            "%s개 번역의 URL이 업데이트되었습니다."
+         ],
+         "No URL was changed.": [
+            "변경되거나 업데이트된 URL이 없습니다."
+         ],
+         "%s translation no longer needed a change.": [
+            "%s개의 번역은 더 이상 변경이 필요하지 않습니다."
+         ],
+         "The update continues in the background. The admin bar shows its progress.": [
+            "업데이트가 백그라운드에서 계속됩니다. 관리자 막대에서 진행 상황을 확인할 수 있습니다."
+         ],
+         "Counting the words this sends…": [
+            "전송할 단어 수를 세는 중…"
+         ],
+         "Counting the words this sends… %1$s of %2$s posts.": [
+            "전송할 단어 수를 세는 중… 포스트 %2$s개 중 %1$s개."
+         ],
+         "The number of words this sends could not be estimated. The Translation Dashboard shows the cost once the posts are queued.": [
+            "전송할 단어 수를 추정할 수 없습니다. 포스트가 대기열에 추가되면 번역 대시보드에 비용이 표시됩니다."
+         ],
+         "This sends %s word of content that could not be priced. The Translation Dashboard shows the cost once the posts are queued.": [
+            "가격을 책정할 수 없는 콘텐츠 %s단어를 전송합니다. 포스트가 대기열에 추가되면 번역 대시보드에 비용이 표시됩니다."
+         ],
+         "Sending it again to %2$s languages uses about %1$s word.": [
+            "%2$s개 언어로 다시 전송하는 데 약 %1$s단어가 사용됩니다."
+         ],
+         "Sending them again to %2$s languages uses about %1$s word.": [
+            "%2$s개 언어로 다시 전송하는 데 약 %1$s단어가 사용됩니다."
+         ],
+         "Sending it again uses about %s word.": [
+            "다시 전송하는 데 약 %s단어가 사용됩니다."
+         ],
+         "Sending them again uses about %s word.": [
+            "다시 전송하는 데 약 %s단어가 사용됩니다."
+         ],
+         "%s of the posts is outside Translate Everything's range: its translations will be marked without being sent.": [
+            "포스트 중 %s개가 모든 항목 자동 번역 범위를 벗어났습니다. 이들의 번역은 전송되지 않고 표시만 됩니다."
+         ],
+         "Your choice for the existing translations was not recorded.": [
+            "기존 번역에 대한 선택 사항이 기록되지 않았습니다."
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "번역 시스템에서 이 요청을 수락하지 않았습니다(%d(으)로 응답함). 잠시 후 다시 시도해 주시고 문제가 계속 발생하면 WPML 지원팀에 문의하세요."
+         ],
+         "several post types listed\u0004%1$s %2$s updated.": [
+            "%1$s개의 %2$s이(가) 업데이트되었습니다."
          ]
       }
    }

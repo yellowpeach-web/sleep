@@ -4,13 +4,14 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "uk"
          },
          "Accepted": [
             "Прийнято"
          ],
          "Approved!": [
-            "Затверджено!"
+            "Схвалено!"
          ],
          "Loading the next translation for review...": [
             "Завантаження наступного перекладу для перевірки..."
@@ -19,16 +20,16 @@
             "Назад"
          ],
          "Turn off to not automatically load the next translation after finishing this review.": [
-            "Вимкніть, щоб не завантажувати наступний переклад автоматично після завершення цієї перевірки."
+            "Вимкніть, щоб автоматично не завантажувати наступний переклад після завершення цієї перевірки."
+         ],
+         "Turn on to automatically load the next translation after finishing this  .": [
+            "Увімкніть, щоб автоматично завантажувати наступний переклад після завершення цієї перевірки."
          ],
          "Edit": [
             "Редагувати"
          ],
          "Edit translation": [
             "Редагувати переклад"
-         ],
-         "Please wait, applying translation..": [
-            "Зачекайте, триває застосування перекладу."
          ],
          "Next review": [
             "Наступна перевірка"
@@ -42,8 +43,14 @@
          "Published!": [
             "Опубліковано!"
          ],
+         "Please wait, applying translation..": [
+            "Будь ласка, зачекайте, застосовується переклад..."
+         ],
          "There was an error in applying translation.": [
             "Під час застосування перекладу сталася помилка."
+         ],
+         "Someone is already reviewing this translation. Please try again later.": [
+            "Хтось уже перевіряє цей переклад. Будь ласка, спробуйте пізніше."
          ]
       }
    }

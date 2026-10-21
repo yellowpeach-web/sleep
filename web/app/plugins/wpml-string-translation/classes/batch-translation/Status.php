@@ -30,26 +30,37 @@ class Status {
 		$batchIds = array_unique( array_values( $batches ) );
 
 		if ( $batchIds ) {
-
-			$in    = wpml_prepare_in( $batchIds, '%d' );
 			$trids = $wpdb->get_results(
-				"SELECT element_id, trid FROM {$wpdb->prefix}icl_translations WHERE element_id IN ({$in}) AND element_type = 'st-batch_strings'"
+				$wpdb->prepare(
+					"SELECT element_id, trid FROM {$wpdb->prefix}icl_translations WHERE element_id IN (" . implode( ', ', array_fill( 0, count( $batchIds ), '%d' ) ) . ") AND element_type = 'st-batch_strings'",
+					$batchIds
+				)
 			);
 
 			$keyByBatchId = Fns::converge( Lst::zipObj(), [ Lst::pluck( 'element_id' ), Lst::pluck( 'trid' ) ] );
 
 			$trids = $keyByBatchId( $trids );
 
-			$in       = wpml_prepare_in( $trids, '%d' );
-			/** @var array $transIds */
-			$transIds = $wpdb->get_results(
-				"SELECT translation_id, trid, language_code FROM {$wpdb->prefix}icl_translations WHERE trid IN ({$in}) AND source_language_code IS NOT NULL"
-			);
+			$transIds = [];
+			if ( $trids ) {
+				$transIds = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT translation_id, trid, language_code FROM {$wpdb->prefix}icl_translations WHERE trid IN (" . implode( ', ', array_fill( 0, count( $trids ), '%d' ) ) . ') AND source_language_code IS NOT NULL',
+						$trids
+					)
+				);
+			}
 
-			$in       = wpml_prepare_in( Lst::pluck( 'translation_id', $transIds ), '%d' );
-			$statuses = $wpdb->get_results(
-				"SELECT status, translation_id FROM {$wpdb->prefix}icl_translation_status WHERE translation_id IN ({$in})"
-			);
+			$translationIds = Lst::pluck( 'translation_id', $transIds );
+			$statuses       = [];
+			if ( $translationIds ) {
+				$statuses = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT status, translation_id FROM {$wpdb->prefix}icl_translation_status WHERE translation_id IN (" . implode( ', ', array_fill( 0, count( $translationIds ), '%d' ) ) . ')',
+						$translationIds
+					)
+				);
+			}
 
 			$keyByTranslationId = Fns::converge(
 				Lst::zipObj(),
@@ -67,7 +78,10 @@ class Status {
 				->map( Obj::prop( Fns::__, $keyByTrid( $transIds ) ) )
 				->map(
 					function ( $item ) use ( $statuses ) {
-						return [ $item->language_code => Obj::prop( $item->translation_id, $statuses ) ];
+						if ( ! is_object( $item ) ) {
+							return [];
+						}
+						return [ Obj::prop( 'language_code', $item ) => Obj::prop( Obj::prop( 'translation_id', $item ), $statuses ) ];
 					}
 				)
 				->toArray();

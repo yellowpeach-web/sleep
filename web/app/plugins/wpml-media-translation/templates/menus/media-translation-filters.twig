@@ -1,50 +1,65 @@
 <form id="posts-filter" method="get">
-    <input type="hidden" name="page" value="wpml-media"/>
-    <input type="hidden" name="sm" value="media-translation"/>
+    {# wpmldev-7007: target the new IA tab so the filter doesn't bounce
+       the user back to the (hidden) legacy media-translation page.
+       The legacy page is still reachable; a server-side redirect in
+       WPML_Legacy_Page_Redirects covers anyone who lands there directly. #}
+    <input type="hidden" name="page" value="tm/menu/main.php"/>
+    <input type="hidden" name="tab" value="media"/>
     {{ nonce|raw }}
-    <label for="filter-by-date" class="screen-reader-text">{{ strings.filter_by_date }}</label>
-    <select id="filter-by-date" name="m">
-        <option {% if( selected_month == 0 ) %}selected="selected"{% endif %}
-                value="0">{{ strings.all_dates }}</option>
-        {% for month in months %}
-            <option {% if( selected_month == month.id ) %}selected="selected"{% endif %}
-                    value="{{ month.id }}">{{ month.label }}</option>
-        {% endfor %}
-    </select>
-    {{ strings.in }}
-    <label for="filter-by-language" class="screen-reader-text">{{ strings.filter_by_language }}</label>
-    <select id="filter-by-language" name="slang">
-        <option value="">{{ strings.any_language }}</option>
-        {% for code, language in languages %}
-            <option {% if( from_language == code ) %}selected="selected"{% endif %}
-                    value="{{ code }}">{{ language.name }}</option>
-        {% endfor %}
-    </select>
-    {{ strings.to }}
-    <select id="filter-by-language" name="tlang">
-        <option value="">{{ strings.any_language }}</option>
-        {% for code, language in languages %}
-            <option {% if( to_language == code ) %}selected="selected"{% endif %}
-                    value="{{ code }}">{{ language.name }}</option>
-        {% endfor %}
-    </select>
+	{# wpmldev-8462: one translatable sentence, "%1$s in %2$s to %3$s". The
+	   segments come in the translation's order; each control segment names
+	   the dropdown to print (1 date, 2 original language, 3 translation language). #}
+	{% for segment in strings.filter_sentence %}
+	<div class="wpml-media-translation-header-col">
+		{% if segment.type == 'text' %}
+		{{ segment.text }}
+		{% elseif segment.control == 1 %}
+		<select id="filter-by-date" name="m" aria-label="{{ strings.filter_by_date }}">
+			<option {% if( selected_month == 0 ) %}selected="selected"{% endif %}
+					value="0">{{ strings.all_dates }}</option>
+			{% for month in months %}
+				<option {% if( selected_month == month.id ) %}selected="selected"{% endif %}
+						value="{{ month.id }}">{{ month.label }}</option>
+			{% endfor %}
+		</select>
+		{% elseif segment.control == 2 %}
+		<select id="filter-by-language" name="slang" aria-label="{{ strings.filter_by_source_language }}">
+			<option value="">{{ strings.any_language }}</option>
+			{% for code, language in languages %}
+				<option {% if( from_language == code ) %}selected="selected"{% endif %}
+						value="{{ code }}">{{ language.name }}</option>
+			{% endfor %}
+		</select>
+		{% elseif segment.control == 3 %}
+		<select id="filter-by-target-language" name="tlang" aria-label="{{ strings.filter_by_target_language }}">
+			<option value="">{{ strings.any_language }}</option>
+			{% for code, language in languages %}
+				<option {% if( to_language == code ) %}selected="selected"{% endif %}
+						value="{{ code }}">{{ language.name }}</option>
+			{% endfor %}
+		</select>
+		{% endif %}
+	</div>
+	{% endfor %}
 
-    <label for="filter-by-translation-status" class="screen-reader-text">{{ strings.filter_by_status }}</label>
-    <select id="filter-by-translation-status" name="status">
-        <option {% if( selected_status|length == 0 ) %}selected="selected"{% endif %}
-                value="">{{ strings.status_all }}</option>
-        <option {% if( selected_status == statuses.not_translated and selected_status|length > 0 ) %}selected="selected"{% endif %}
-                value="{{ statuses.not_translated }}">{{ strings.status_not }}</option>
-        <option {% if( selected_status == statuses.in_progress and selected_status|length > 0 ) %}selected="selected"{% endif %}
-                value="{{ statuses.in_progress }}">{{ strings.status_in_progress }}</option>
-        <option {% if( selected_status == statuses.translated ) %}selected="selected"{% endif %}
-                value="{{ statuses.translated }}">{{ strings.status_translated }}</option>
-        <option {% if( selected_status == statuses.needs_translation ) %}selected="selected"{% endif %}
-                value="{{ statuses.needs_translation }}">{{ strings.status_needs_translation }}</option>
-    </select>
+	<div class="wpml-media-translation-header-col">
+		<label for="filter-by-translation-status" class="screen-reader-text">{{ strings.filter_by_status }}</label>
+		<select id="filter-by-translation-status" name="status">
+			<option {% if( selected_status|length == 0 ) %}selected="selected"{% endif %}
+					value="">{{ strings.status_all }}</option>
+			<option {% if( selected_status == statuses.not_translated and selected_status|length > 0 ) %}selected="selected"{% endif %}
+					value="{{ statuses.not_translated }}">{{ strings.status_not }}</option>
+			<option {% if( selected_status == statuses.translated ) %}selected="selected"{% endif %}
+					value="{{ statuses.translated }}">{{ strings.status_translated }}</option>
+			<option {% if( selected_status == statuses.needs_translation ) %}selected="selected"{% endif %}
+					value="{{ statuses.needs_translation }}">{{ strings.status_needs_translation }}</option>
+		</select>
+	</div>
 
-    <label class="screen-reader-text" for="media-search-input">{{ strings.search_media }}</label>
-    <input size="25" type="search" id="media-search-input" placeholder="{{ strings.search_placeholder }}" name="s"
+	<div id="media-search-input-wrap">
+    	<label class="screen-reader-text" for="media-search-input">{{ strings.search_media }}</label>
+    	<input size="25" type="search" id="media-search-input" placeholder="{{ strings.search_placeholder }}" name="s"
            value="{{ search }}">
+	</div>
     <input type="submit" class="button action" value="{{ strings.search_button_label }}">
 </form>

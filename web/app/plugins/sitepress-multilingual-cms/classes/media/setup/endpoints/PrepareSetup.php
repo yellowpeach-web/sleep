@@ -17,7 +17,11 @@ class PrepareSetup implements IHandler {
 	const LOCK_RELEASE_TIMEOUT = 2 * MINUTE_IN_SECONDS;
 
 	public function run( Collection $data ) {
-		if (  !defined( 'WPML_MEDIA_VERSION' ) || !class_exists( 'WPML_Media_Set_Posts_Media_Flag_Factory' ) ) {
+		if (
+			!defined( 'WPML_MEDIA_VERSION' ) ||
+			!class_exists( 'WPML_Media_Set_Posts_Media_Flag_Factory' ) ||
+			!class_exists( 'WPML_Media_Usage_Factory' )
+		) {
 			return Left::of( [ 'key' => false ] );
 		}
 
@@ -26,7 +30,9 @@ class PrepareSetup implements IHandler {
 
 		if ( $key ) {
 			$mediaFlag = make( \WPML_Media_Set_Posts_Media_Flag_Factory::class)->create();
-			$mediaFlag->clear_flags();
+			if ( is_object( $mediaFlag ) && method_exists( $mediaFlag, 'clear_flags' ) ) {
+				$mediaFlag->clear_flags();
+			}
 
 			return Right::of( [ 'key' => $key, ] );
 		} else {

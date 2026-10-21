@@ -9,21 +9,17 @@ use ACFML\Repeater\Shuffle\Term;
 
 class HooksFactory implements \IWPML_Backend_Action_Loader, \IWPML_Deferred_Action_Loader {
 
-	/**
-	 * @return string
-	 */
 	public function get_load_action() {
 		return 'wp_loaded';
 	}
 
-	/**
-	 * @return \IWPML_Action[]
-	 */
 	public function create() {
 		$shuffled = Resolver::getStrategy();
 		if ( ! $shuffled ) {
 			return [];
 		}
+
+		$status = TranslationStatusFactory::fromGlobals()->create( $shuffled );
 
 		$fieldState       = new \ACFML\FieldState( $shuffled );
 		$customFieldsSync = new \WPML_ACF_Custom_Fields_Sync( $fieldState );
@@ -31,7 +27,7 @@ class HooksFactory implements \IWPML_Backend_Action_Loader, \IWPML_Deferred_Acti
 		$hooks = [
 			$fieldState,
 			$customFieldsSync,
-			new \WPML_ACF_Repeater_Shuffle( $shuffled, $fieldState ),
+			new \WPML_ACF_Repeater_Shuffle( $shuffled, $status ),
 			new CheckboxHooks( $shuffled ),
 		];
 

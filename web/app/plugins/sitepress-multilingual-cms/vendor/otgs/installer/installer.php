@@ -1,5 +1,5 @@
 <?php
-// included from \wpml_installer_instance_delegator
+
 
 include_once untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/includes/class-otgs-installer-wp-share-local-components-setting.php';
 

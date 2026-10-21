@@ -4,18 +4,12 @@ if ( ! class_exists( '_WP_Editors', false ) ) {
 	require ABSPATH . WPINC . '/class-wp-editor.php';
 }
 
+use WPML\TM\Editor\RichText;
+
 class WPML_Translation_Editor extends WPML_WPDB_And_SP_User {
 
-	/**
-	 * @var WPML_Element_Translation_Job $job
-	 */
 	private $job;
 
-	/**
-	 * @param SitePress                    $sitepress
-	 * @param wpdb                         $wpdb
-	 * @param WPML_Element_Translation_Job $job
-	 */
 	public function __construct(
 		&$sitepress,
 		&$wpdb,
@@ -32,9 +26,6 @@ class WPML_Translation_Editor extends WPML_WPDB_And_SP_User {
 		add_filter( 'tiny_mce_before_init', [ $this, 'filter_original_editor_buttons' ], 10, 2 );
 	}
 
-	/**
-	 * Enqueues the JavaScript used by the TM editor.
-	 */
 	public function enqueue_js() {
 		wp_enqueue_script( 'wpml-tm-editor-scripts' );
 		wp_localize_script(
@@ -44,9 +35,6 @@ class WPML_Translation_Editor extends WPML_WPDB_And_SP_User {
 		);
 	}
 
-	/**
-	 * @return string[]
-	 */
 	private function get_translation_editor_strings() {
 
 		$translation_memory_endpoint = apply_filters( 'wpml_st_translation_memory_endpoint', '' );
@@ -54,84 +42,94 @@ class WPML_Translation_Editor extends WPML_WPDB_And_SP_User {
 		return array(
 			'dontShowAgain'             => __(
 				"Don't show this again.",
-				'wpml-translation-management'
+				'sitepress'
 			),
 			'learnMore'                 => __(
 				'<p>The administrator has disabled term translation from the translation editor. </p>
 <p>If your access permissions allow you can change this under "Translation Management" - "Multilingual Content Setup" - "Block translating taxonomy terms that already got translated". </p>
 <p>Please note that editing terms from the translation editor will affect all posts that have the respective terms associated.</p>',
-				'wpml-translation-management'
+				'sitepress'
 			),
 			'warning'                   => __(
 				"Please be advised that editing this term's translation here will change the value of the term in general. The changes made here, will not only affect this post!",
-				'wpml-translation-management'
+				'sitepress'
 			),
+			/* translators: Title of the notice in the translation editor shown when the site is set not to translate the names of categories, tags and other groupings. */
 			'title'                     => __(
 				'Terms translation is disabled',
-				'wpml-translation-management'
+				'sitepress'
 			),
 			'confirm'                   => __(
 				'You have unsaved work. Are you sure you want to close without saving?',
-				'wpml-translation-management'
+				'sitepress'
 			),
+			/* translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation". */
 			'cancel'                    => __(
 				'Cancel',
-				'wpml-translation-management'
+				'sitepress'
 			),
+			/* translators: Button label that keeps what was entered. Verb, imperative. */
 			'save'                      => __(
 				'Save',
-				'wpml-translation-management'
+				'sitepress'
 			),
+			/* translators: Label of the switch in the translation editor that leaves out the parts that are already translated. Verb, imperative. */
 			'hide_translated'           => __(
 				'Hide completed',
-				'wpml-translation-management'
+				'sitepress'
 			),
+			/* translators: Button label in the translation editor: keep the translation and leave the editor. Verb, imperative. */
 			'save_and_close'            => __(
 				'Save & Close',
-				'wpml-translation-management'
+				'sitepress'
 			),
 			'loading_url'               => ICL_PLUGIN_URL . '/res/img/ajax-loader.gif',
+			/* translators: Text shown on the button of the translation editor while the translation is being saved; three dots show that it is still working. */
 			'saving'                    => __(
 				'Saving...',
-				'wpml-translation-management'
+				'sitepress'
 			),
 			'translation_complete'      => __(
 				'Translation is complete',
-				'wpml-translation-management'
+				'sitepress'
 			),
 			'contentNonce'              => wp_create_nonce( 'wpml_save_job_nonce' ),
 			'translationMemoryNonce'    => \WPML\LIB\WP\Nonce::create( $translation_memory_endpoint ),
 			'translationMemoryEndpoint' => $translation_memory_endpoint,
+			/* translators: Heading of the column of the translation editor that holds the text as it was written; the name of that language follows it. */
 			'source_lang'               => __(
 				'Original',
-				'wpml-translation-management'
+				'sitepress'
 			),
+			/* translators: Heading of the column of the translation editor that holds the translation; the name of the language being translated into follows it, so it ends without a full stop. */
 			'target_lang'               => __(
 				'Translation to',
-				'wpml-translation-management'
+				'sitepress'
 			),
 			'copy_all'                  => __(
 				'Copy all fields from original',
-				'wpml-translation-management'
+				'sitepress'
 			),
+			/* translators: Button label in the translation editor: give up a translation job that was handed to you. Verb, imperative. It does not mean signing again. */
 			'resign'                    => __(
 				'Resign',
-				'wpml-translation-management'
+				'sitepress'
 			),
 			'resign_translation'        => __(
 				'Are you sure you want to resign from this job?',
-				'wpml-translation-management'
+				'sitepress'
 			),
-			'resign_url'                => admin_url( 'admin.php?page=' . WPML_TM_FOLDER . '/menu/translations-queue.php&icl_tm_action=save_translation&resign=1&job_id=' . $this->job->get_id() . '&nonce=' . wp_create_nonce( 'save_translation' ) ),
+			'resign_url'                => admin_url( 'admin-post.php?action=wpml_tm_resign_job&job_id=' . $this->job->get_id() . '&nonce=' . wp_create_nonce( 'wpml_tm_resign_job_' . $this->job->get_id() ) ),
 			'confirmNavigate'           => __(
 				'You have unsaved changes!',
-				'wpml-translation-management'
+				'sitepress'
 			),
 			'copy_from_original'        => __(
 				'Copy from original',
-				'wpml-translation-management'
+				'sitepress'
 			),
-			'show_diff'                 => __( 'Show differences', 'wpml-translation-management' ),
+			/* translators: Button label in the translation editor: show what changed in the original since it was last translated. Verb, imperative. */
+			'show_diff'                 => __( 'Show differences', 'sitepress' ),
 		);
 	}
 
@@ -146,9 +144,9 @@ class WPML_Translation_Editor extends WPML_WPDB_And_SP_User {
 	}
 
 	public function output_editors( $field ) {
-		echo '<div id="' . $field['field_type'] . '_original_editor" class="original_value mce_editor_origin">';
+		echo '<div id="' . esc_attr( $field['field_type'] ) . '_original_editor" class="original_value mce_editor_origin">';
 		wp_editor(
-			$field['field_data'],
+			RichText::sanitize( $field['field_data'] ),
 			$field['field_type'] . '_original',
 			array(
 				'textarea_rows' => 4,
@@ -158,9 +156,9 @@ class WPML_Translation_Editor extends WPML_WPDB_And_SP_User {
 			)
 		);
 		echo '</div>';
-		echo '<div id="' . $field['field_type'] . '_translated_editor" class="mce_editor translated_value">';
+		echo '<div id="' . esc_attr( $field['field_type'] ) . '_translated_editor" class="mce_editor translated_value">';
 		wp_editor(
-			$field['field_data_translated'],
+			RichText::sanitize( $field['field_data_translated'] ),
 			$field['field_type'],
 			array(
 				'textarea_rows' => 4,

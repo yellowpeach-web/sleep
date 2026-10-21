@@ -1,5 +1,7 @@
 (function($){
 
+    var PRODUCTION = 'production';
+
     var updateErrors = [];
     var channelUpdateInProgress = false;
 
@@ -44,6 +46,9 @@
 
     }
 
+    // A channel switch stores the channel and refreshes the plugin list with the versions that
+    // channel offers. It installs nothing: the rows that would change are pre-selected and wait
+    // for the user to press Download (wpmldev-7759).
     function changeChannel(selectorContainer){
 
         if(selectorContainer.type == 'click'){
@@ -67,6 +72,14 @@
                 selectorContainer.find('.js-remember').prop('checked') : 0
         };
 
+        var tableSelector = '#installer_repo_' +  select.data('repository-id')  + ' .installer-table-wrap';
+        var downloadsForm = $('#installer_repo_' +  select.data('repository-id') + ' .otgsi_downloads_form');
+
+        var finish = function(){
+            downloadsForm.trigger('installer-update-complete');
+            select.prop('disabled', false);
+        };
+
         resetUpdateErrors();
         otgs_wp_installer.reset_errors();
         channelUpdateInProgress = true;
@@ -78,27 +91,54 @@
             dataType: 'json',
             data: data,
             success: function (ret) {
-                if( ret.status == 'OK'){
-                    var tableSelector = '#installer_repo_' +  select.data('repository-id')  + ' .installer-table-wrap';
-                    $(tableSelector).load( otgs_wp_installer.sanitize(location.href) + ' ' + tableSelector + ' table.widefat', function(){
-
-                        var upgradesCount = $(tableSelector).find('tr .installer-red-text').length
-                            || select.val() == 1 && $(tableSelector).find('td.installer_version_installed .unstable').length;
-                        if( upgradesCount > 0){
-                            automaticUpgrade(tableSelector);
+                if( ret && ret.status == 'OK'){
+                    refreshDownloadsTable(tableSelector, function(refreshed){
+                        if(refreshed){
+                            preselectChangedRows(tableSelector);
                         }else{
-                            $('#installer_repo_' +  select.data('repository-id') + ' .otgsi_downloads_form')
-                                .trigger('installer-update-complete');
+                            logUpdateError();
                         }
-
-                        select.prop('disabled', false);
-                    } );
+                        finish();
+                    });
+                }else{
+                    logUpdateError();
+                    finish();
                 }
-
+            },
+            error: function(){
+                logUpdateError();
+                finish();
             }
 
         });
 
+    }
+
+    // Fetches the current page again and swaps in the plugin table rendered on the new channel.
+    // Not jQuery's .load(): that sends X-Requested-With, and WPML answers 403 to an XHR GET of its
+    // own admin pages (they are not registered on ajax requests), which is where this screen lives
+    // since WPML 5.0 (admin.php?page=wpml-activate-update).
+    function refreshDownloadsTable(tableSelector, done){
+        var url = otgs_wp_installer.sanitize(location.href);
+
+        window.fetch(url, { credentials: 'same-origin' })
+            .then(function(response){
+                if(!response.ok){
+                    throw new Error('HTTP ' + response.status);
+                }
+                return response.text();
+            })
+            .then(function(html){
+                var table = $('<div>').append($.parseHTML(html)).find(tableSelector + ' table.widefat');
+                if(!table.length){
+                    throw new Error('no downloads table in the response');
+                }
+                $(tableSelector).empty().append(table);
+                done(true);
+            })
+            .catch(function(){
+                done(false);
+            });
     }
 
     function retryChannelSwitch(){
@@ -114,7 +154,7 @@
 
         select.val(previousValue).prop('disabled', false);
 
-        if( select.val() > 1){
+        if( select.val() !== PRODUCTION ){
             var selectorContainer = $(this).closest('.installer-channel-selector-wrap');
             var warnText = selectorContainer.find('.installer-warn-text');
             warnText.show();
@@ -122,23 +162,31 @@
 
     }
 
-    function automaticUpgrade(downloadsTable){
+    // Ticks the rows whose installed version is not the one the channel offers: newer versions
+    // (installer-red-text) and, after a switch back to Production, installed pre-releases that
+    // would be replaced (unstable). The reset-to-channel marker lets admin.js send the replacement
+    // of a higher installed version when the user presses Download. Nothing is submitted here.
+    function preselectChangedRows(downloadsTable){
+        var form = $(downloadsTable).closest('form');
+
         $(downloadsTable + ' tr').each(
             function () {
-                var needsUpgrade = $(this).find(
+                var changes = $(this).find(
                         'td.installer_version_installed .installer-red-text, ' +
                         'td.installer_version_installed .unstable'
                     ).length > 0;
-                if (needsUpgrade) {
+                if (changes) {
                     $(this).find('td :checkbox').prop('disabled', false).prop('checked', true);
                 }
             }
         );
 
-        $(downloadsTable)
-            .closest('form')
-            .append('<input type="hidden" name="reset-to-channel" value="1">')
-            .submit();
+        if( ! form.find('input[name="reset-to-channel"]').length ){
+            form.append('<input type="hidden" name="reset-to-channel" value="1">');
+        }
+
+        // admin.js enables the Download button from the checkboxes' change event.
+        form.find(':checkbox[name="downloads[]"]').first().trigger('change');
 
     }
 
@@ -148,7 +196,7 @@
             .closest('.otgs_wp_installer_table')
             .find('.installer-channel-selector');
 
-        if(select.val() > 1 && !hasUpdateErrors()){
+        if(select.val() !== PRODUCTION && !hasUpdateErrors()){
 
             var warnText = select
                 .closest('.installer-channel-selector-wrap')
@@ -201,7 +249,7 @@
             // suppress default errors
             $(this).closest('.otgs_wp_installer_table').find('.installer-error-box').hide();
 
-            var channelType = select.val() == 1 ? 'stable' : 'unstable';
+            var channelType = select.val() === PRODUCTION ? 'stable' : 'unstable';
             message.html(message.data('text-' + channelType).replace(/%CHANNEL%/, channelName));
 
         }else{

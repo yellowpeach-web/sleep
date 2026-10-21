@@ -4,19 +4,59 @@
       "messages": {
          "": {
             "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n > 1);",
             "lang": "fr_FR"
          },
+         "Sending for translation": [
+            "Envoi pour traduction"
+         ],
+         "The translation could not be started because the server did not answer.": [
+            "La traduction n'a pas pu être lancée car le serveur n'a pas répondu."
+         ],
+         "This translation cannot be opened right now.": [
+            "Cette traduction ne peut pas être ouverte pour le moment."
+         ],
+         "Refresh this page": [
+            "Actualiser cette page"
+         ],
+         "Translation Dashboard": [
+            "Tableau de bord de traduction"
+         ],
          "WPML Translation Editor": [
             "Éditeur de traduction WPML"
-         ],
-         "Use only when you want to translate content from one of the few plugins that are not compatible with WPML’s translation editor or  if you would like to create different designs for the same page in different languages.": [
-            "À utiliser uniquement si vous souhaitez traduire des contenus à partir d’un ou de plusieurs plugins non compatibles avec l’éditeur de traduction WPML ou si vous voulez créer des conceptions différentes sur la même page dans diverses langues."
          ],
          "WordPress Editor": [
             "Éditeur WordPress"
          ],
-         "Use the editor to translate:": [
-            "Utiliser l’éditeur pour traduire :"
+         "The WordPress Editor doesn't offer Automatic Translation, <b>Translation Memory</b> and other features that make translation easier.": [
+            "L'Éditeur WordPress ne propose pas la traduction automatique, la <b>mémoire de traduction</b> et d'autres fonctionnalités qui facilitent la traduction."
+         ],
+         "Also, switching back to WPML's Translation Editor later will require re-translating content that you translated with the WordPress editor.": [
+            "De plus, revenir ultérieurement à l'éditeur de traduction de WPML nécessitera de traduire à nouveau le contenu que vous avez traduit avec l'éditeur WordPress."
+         ],
+         "This translation was previously created in the WordPress editor. When you switch to WPML Translation Editor, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "Cette traduction a été précédemment créée dans l'éditeur WordPress. Lorsque vous passerez à l'éditeur de traduction WPML, la structure de la publication traduite sera mise à jour pour correspondre à l'original, mais WPML utilisera votre traduction existante comme base afin que le ton et la terminologie soient préservés."
+         ],
+         "This will overwrite content you translated with the WordPress Editor. If you switch now, you'll have to translate selected content again.": [
+            "Cela écrasera le contenu que vous avez traduit avec l'éditeur WordPress. Si vous changez maintenant, vous devrez traduire à nouveau le contenu sélectionné."
+         ],
+         "I understand, switch to the WordPress Editor": [
+            "Je comprends, passer à l'Éditeur WordPress"
+         ],
+         "I understand, switch to %s": [
+            "Je comprends, passer à %s"
+         ],
+         "I understand, switch to <b>Translation Dashboard</b>": [
+            "Je comprends, passer au <b>Tableau de bord de traduction</b>"
+         ],
+         "You are about to translate with the %s": [
+            "Vous êtes sur le point de traduire avec l'éditeur %s"
+         ],
+         "Translate with the WordPress Editor if you need different designs per language or if the content isn't compatible with WPML's Translation Editor.": [
+            "Traduisez avec l'Éditeur WordPress si vous avez besoin de designs différents par langue ou si le contenu n'est pas compatible avec l'éditeur de traduction de WPML."
+         ],
+         "What do you want to translate?": [
+            "Que voulez-vous traduire ?"
          ],
          "Apply": [
             "Appliquer"
@@ -24,14 +64,20 @@
          "Cancel": [
             "Annuler"
          ],
-         "This %s": [
-            "Ce(tte) %s"
+         "Only this %s": [
+            "Uniquement cet élément (%s)"
+         ],
+         "Recommended": [
+            "Recommandé"
          ],
          "All %s": [
-            "Tous(tes) les %s"
+            "Toutes les %s"
          ],
          "All the site's content": [
             "Tout le contenu du site"
+         ],
+         "Translate items in batch after reviewing the cost of AI translation": [
+            "Traduire des éléments par lots après avoir examiné le coût de la traduction IA"
          ]
       }
    }

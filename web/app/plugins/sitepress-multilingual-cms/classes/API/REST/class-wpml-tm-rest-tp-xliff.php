@@ -3,10 +3,8 @@
 use WPML\LIB\WP\User;
 
 class WPML_TM_REST_TP_XLIFF extends WPML_REST_Base {
-	/** @var WPML_TP_Translations_Repository */
 	private $translation_repository;
 
-	/** @var WPML_TM_Rest_Download_File */
 	private $download_file;
 
 	public function __construct(
@@ -45,13 +43,22 @@ class WPML_TM_REST_TP_XLIFF extends WPML_REST_Base {
 		);
 	}
 
-	/**
-	 * @param WP_REST_Request $request
-	 *
-	 * @return array|string|WP_Error
-	 */
 	public function get_job_translations_from_tp( WP_REST_Request $request ) {
 		try {
+			if ( ! \WPML\LIB\WP\User::canManageTranslations() ) {
+				$jobEntity = wpml_tm_get_jobs_repository()->get_job(
+					$request->get_param( 'job_id' ),
+					$request->get_param( 'job_type' )
+				);
+
+				if (
+					! $jobEntity instanceof WPML_TM_Job_Entity
+					|| ! \WPML\TM\Jobs\Authorization\JobAuthorization::currentUserCanTranslateJobEntity( $jobEntity )
+				) {
+					return new WP_Error( 403, 'You are not allowed to access this job.', [ 'status' => 403 ] );
+				}
+			}
+
 			if ( $request->get_param( 'json' ) ) {
 				return $this->translation_repository->get_job_translations(
 					$request->get_param( 'job_id' ),
@@ -61,15 +68,14 @@ class WPML_TM_REST_TP_XLIFF extends WPML_REST_Base {
 				return $this->download_job_translation( $request );
 			}
 		} catch ( Exception $e ) {
-			return new WP_Error( 400, $e->getMessage() );
+			if ( \WPML\WordPress\ClientSafeError::isDeliberateClientMessage( $e ) ) {
+				return new WP_Error( 400, $e->getMessage(), [ 'status' => 400 ] );
+			}
+
+			return \WPML\WordPress\ClientSafeError::wpError( 'TP XLIFF translations', $e, 400, 400 );
 		}
 	}
 
-	/**
-	 * @param WP_REST_Request $request
-	 *
-	 * @return string
-	 */
 	private function download_job_translation( WP_REST_Request $request ) {
 		try {
 			$content = $this->translation_repository->get_job_translations(
@@ -78,7 +84,7 @@ class WPML_TM_REST_TP_XLIFF extends WPML_REST_Base {
 				false
 			);
 		} catch ( WPML_TP_API_Exception $e ) {
-			return new WP_Error( 500, $e->getMessage() );
+			return \WPML\WordPress\ClientSafeError::wpError( 'TP XLIFF content download', $e, 500, 500 );
 		}
 
 		$file_name = sprintf( 'job-%d.xliff', $request->get_param( 'job_id' ) );

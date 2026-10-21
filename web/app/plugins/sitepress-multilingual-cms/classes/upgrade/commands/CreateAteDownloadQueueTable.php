@@ -2,75 +2,66 @@
 
 namespace WPML\TM\Upgrade\Commands;
 
-use SitePress_Setup;
+use WPML\Upgrade\CreateTable;
 
 class CreateAteDownloadQueueTable implements \IWPML_Upgrade_Command {
 
 	const TABLE_NAME = 'icl_translation_downloads';
 
-	/** @var \WPML_Upgrade_Schema $schema */
 	private $schema;
 
-	/** @var bool $result */
 	private $result = false;
 
 	public function __construct( array $args ) {
 		$this->schema = $args[0];
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function run() {
 		$wpdb = $this->schema->get_wpdb();
 
-		$tableName      = $wpdb->prefix . self::TABLE_NAME;
-		$charsetCollate = SitePress_Setup::get_charset_collate();
-
-		$query = "
-			CREATE TABLE IF NOT EXISTS `{$tableName}` (
-			  `editor_job_id` BIGINT(20) UNSIGNED NOT NULL,
-			  `download_url` VARCHAR(2000) NOT NULL,
-			  `lock_timestamp` INT(11) UNSIGNED NULL,
-			  PRIMARY KEY (`editor_job_id`)
-			) ENGINE=INNODB {$charsetCollate};
-		";
-
-		$this->result = $wpdb->query( $query );
+		$this->result = self::create_table_if_not_exists( $wpdb );
 
 		return $this->result;
 	}
 
 	/**
-	 * Runs in admin pages.
+	 * The one copy of the DDL, so the install/activation path
+	 * (`icl_sitepress_activate()`) and this upgrade command create the very
+	 * same table. A site that was reset never sees the upgrade command again
+	 * unless its licence loads TM, and activation has to stand on its own.
+	 *
+	 * @param \wpdb $wpdb
 	 *
 	 * @return bool
 	 */
+	public static function create_table_if_not_exists( $wpdb ) {
+		$table_name = $wpdb->prefix . self::TABLE_NAME;
+
+		return CreateTable::create(
+			$wpdb,
+			$table_name,
+			'
+			CREATE TABLE IF NOT EXISTS `' . esc_sql( $table_name ) . '` (
+			  `editor_job_id` BIGINT(20) UNSIGNED NOT NULL,
+			  `download_url` VARCHAR(2000) NOT NULL,
+			  `lock_timestamp` INT(11) UNSIGNED NULL,
+			  PRIMARY KEY (`editor_job_id`)
+			) ENGINE=INNODB'
+		);
+	}
+
 	public function run_admin() {
 		return $this->run();
 	}
 
-	/**
-	 * Unused.
-	 *
-	 * @return null
-	 */
 	public function run_ajax() {
 		return null;
 	}
 
-	/**
-	 * Unused.
-	 *
-	 * @return null
-	 */
 	public function run_frontend() {
 		return null;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function get_results() {
 		return $this->result;
 	}

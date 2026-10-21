@@ -15,9 +15,17 @@ class WPML_Include_Url extends WPML_WPDB_User {
 
 	public function filter_include_url( $result ) {
 		$domains = wpml_get_setting_filter( array(), 'language_domains' );
-		$domains = preg_replace( '#^(http(?:s?))://#', '', array_map( 'untrailingslashit', $domains ) );
+		if ( ! is_array( $domains ) ) {
+			$domains = array();
+		}
+		$domains = array_filter( array_map( array( 'WPML_Language_Domains', 'hostOf' ), $domains ) );
 		if ( (bool) $domains === true ) {
 			$php_host_in_domain = wpml_parse_url( $result, PHP_URL_HOST );
+
+			if ( null === $php_host_in_domain ) {
+				return $result;
+			}
+
 			$domains[]          = wpml_parse_url( $this->get_unfiltered_home(), PHP_URL_HOST );
 			foreach ( $domains as $dom ) {
 				if ( strpos( trailingslashit( $php_host_in_domain ), trailingslashit( $dom ) ) === 0 ) {
@@ -43,17 +51,14 @@ class WPML_Include_Url extends WPML_WPDB_User {
 		return $form;
 	}
 
-	/**
-	 * Returns the value of the unfiltered home option directly from the wp_options table.
-	 *
-	 * @return string
-	 */
 	public function get_unfiltered_home() {
+		$wpdb = $this->wpdb;
+
 		$this->unfiltered_home_url = $this->unfiltered_home_url
 			? $this->unfiltered_home_url
 			: $this->wpdb->get_var(
 				"  SELECT option_value
-									   FROM {$this->wpdb->options}
+									   FROM {$wpdb->options}
 									   WHERE option_name = 'home'
 									   LIMIT 1"
 			);

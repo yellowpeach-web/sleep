@@ -12,10 +12,11 @@ use function WPML\Container\make;
 class GetTranslatorRecords implements IHandler {
 
 
-	/**
-	 * @inheritDoc
-	 */
 	public function run( Collection $data ) {
+		if ( (bool) $data->get( 'refresh', false ) ) {
+			CacheRefresh::execute();
+		}
+
 		$translators = make( \WPML_Translator_Records::class )->get_users_with_capability();
 
 		return Either::of(

@@ -3,53 +3,277 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "ru_RU"
          },
-         "You can choose which posts to translate from the <strong>Translation Management Dashboard</strong>.": [
-            "Записи на перевод можно выбрать в <strong>Консоли управления переводами</strong>."
-         ],
-         "Yes, translate <b>existing</b> and <b>future</b> content automatically": [
-            "Да, переводить <b>существующий</b> и <b>будущий</b> контент автоматически"
-         ],
-         "Yes, but only translate <b>future</b> content automatically": [
-            "Да, но переводить автоматически только <b>будущий</b> контент"
-         ],
-         "Yes, translate <b>future</b> content automatically": [
-            "Да, переводить <b>будущий</b> контент автоматически"
-         ],
-         "No, I want to translate some of these posts, but not all": [
-            "Нет, я хочу перевести только отдельные записи, а не все"
+         "%1$s and %2$s": [
+            "%1$s и %2$s"
          ],
          "You must use the Advanced Translation Editor if you want to translate your content automatically.": [
-            "Если вы хотите переводить свой контент автоматически, следует использовать Расширенный редактор перевода."
+            "Вы должны использовать Расширенный редактор переводов, если хотите переводить свой контент автоматически."
          ],
          "Synchronize translators and translation managers with ATE": [
-            "Синхронизировать переводчиков и менеджеров переводческих проектов с РРП"
+            "Синхронизировать переводчиков и менеджеров переводов с ATE"
          ],
-         "Please try again in a few minutes. If the problem persists, please contact %sWPML support%s.": [
-            "Повторите попытку позже. В случае повторного возникновения проблемы обратитесь в %sслужбу поддержки WPML%s."
+         "Please try again in a few minutes. If the problem persists, please contact %1$sWPML support%2$s.": [
+            "Повторите попытку через несколько минут. Если проблема не исчезнет, обратитесь в %1$sподдержку WPML%2$s."
          ],
-         "Are you OK with paying for this?": [
-            "Вы согласны заплатить за это?"
+         "The number of translated terms carrying %s could not be counted.": [
+            "Не удалось подсчитать количество переведенных элементов таксономии, содержащих %s."
+         ],
+         "There are no translated terms carrying %s yet that need translating again. The change applies to new translations.": [
+            "Пока нет переведенных элементов таксономии, содержащих %s, которые нужно перевести повторно. Изменение применяется к новым переводам."
+         ],
+         "%1$s translated term carries %2$s — only new translations are affected.": [
+            "%1$s переведенный элемент таксономии содержит %2$s — это затронет только новые переводы.",
+            "%1$s переведенных элемента таксономии содержат %2$s — это затронет только новые переводы.",
+            "%1$s переведенных элементов таксономии содержат %2$s — это затронет только новые переводы."
+         ],
+         "The number of translated posts carrying %s could not be counted.": [
+            "Не удалось подсчитать количество переведенных записей, содержащих %s."
+         ],
+         "There are no translated posts carrying %s yet that need translating again. The change applies to new translations.": [
+            "Пока нет переведенных записей, содержащих %s, которые нужно перевести повторно. Изменение применяется к новым переводам."
+         ],
+         "%1$s translated post carries %2$s — it will be marked as needing a translation update.": [
+            "%1$s переведенная запись содержит %2$s — она будет помечена как требующая обновления перевода.",
+            "%1$s переведенные записи содержат %2$s — они будут помечены как требующие обновления перевода.",
+            "%1$s переведенных записей содержат %2$s — они будут помечены как требующие обновления перевода."
+         ],
+         "%1$s translated post carries %2$s — its translation will show the original's value from now on.": [
+            "%1$s переведенная запись содержит %2$s — с этого момента в ее переводе будет отображаться значение оригинала.",
+            "%1$s переведенные записи содержат %2$s — с этого момента в их переводах будет отображаться значение оригинала.",
+            "%1$s переведенных записей содержат %2$s — с этого момента в их переводах будет отображаться значение оригинала."
+         ],
+         "%1$s translated post carries %2$s — translations without a value get the original's once.": [
+            "%1$s переведенная запись содержит %2$s — переводы без значения один раз получат значение оригинала.",
+            "%1$s переведенные записи содержат %2$s — переводы без значения один раз получат значение оригинала.",
+            "%1$s переведенных записей содержат %2$s — переводы без значения один раз получат значение оригинала."
+         ],
+         "%1$s translated post carries %2$s — it is no longer translated and what its translations hold stays as it is.": [
+            "%1$s переведенная запись содержит %2$s — она больше не переводится, а содержимое ее перевода остается без изменений.",
+            "%1$s переведенные записи содержат %2$s — они больше не переводятся, а содержимое их переводов остается без изменений.",
+            "%1$s переведенных записей содержат %2$s — они больше не переводятся, а содержимое их переводов остается без изменений."
+         ],
+         "Review these translation setting changes": [
+            "Проверьте эти изменения настроек перевода"
          ],
          "Cancel": [
             "Отмена"
          ],
-         "Make translatable": [
-            "Подготовить к переводу"
+         "Save changes": [
+            "Сохранить изменения"
+         ],
+         "Also update the existing posts now": [
+            "Также обновить существующие записи сейчас"
+         ],
+         "Also update the %s existing post now": [
+            "Также обновить %s существующую запись сейчас",
+            "Также обновить %s существующие записи сейчас",
+            "Также обновить %s существующих записей сейчас"
+         ],
+         "Only apply to new translations": [
+            "Применить только к новым переводам"
+         ],
+         "Once saved, WPML automatically sends new and updated posts with this field to translation. This may use translation words.": [
+            "После сохранения WPML автоматически отправит на перевод новые и обновленные записи с этим полем. Это может потребовать слова для перевода.",
+            "После сохранения WPML автоматически отправит на перевод новые и обновленные записи с этими полями. Это может потребовать слова для перевода.",
+            "После сохранения WPML автоматически отправит на перевод новые и обновленные записи с этими полями. Это может потребовать слова для перевода."
+         ],
+         "Once saved, WPML automatically sends new and updated terms with this key to translation. This may use translation words.": [
+            "После сохранения WPML автоматически отправит на перевод новые и обновленные элементы таксономии с этим ключом. Это может потребовать слова для перевода.",
+            "После сохранения WPML автоматически отправит на перевод новые и обновленные элементы таксономии с этими ключами. Это может потребовать слова для перевода.",
+            "После сохранения WPML автоматически отправит на перевод новые и обновленные элементы таксономии с этими ключами. Это может потребовать слова для перевода."
+         ],
+         "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "В любом случае новая настройка будет сохранена. При выборе «Применять только к новым переводам» каждый существующий перевод останется без изменений."
+         ],
+         "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
+            "%1$s произвольное поле стало переводимым вне этого экрана: %2$s. Решите, что делать с уже существующими переводами.",
+            "%1$s произвольных поля стали переводимыми вне этого экрана: %2$s. Решите, что делать с уже существующими переводами.",
+            "%1$s произвольных полей стали переводимыми вне этого экрана: %2$s. Решите, что делать с уже существующими переводами."
+         ],
+         "Review this field": [
+            "Проверить это поле",
+            "Проверить эти поля",
+            "Проверить эти поля"
          ],
          "Save": [
             "Сохранить"
          ],
-         "Please confirm this translation setting": [
-            "Подтвердите настройку перевода"
+         "Calculate Costs": [
+            "Рассчитать стоимость"
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate the %1$d existing item.": [
-            "В настройках вашего сайта задан автоматический перевод контента. Если вы сделаете <PostTypesNames /> пригодным к переводу, WPML будет автоматически переводить %1$d существующий материал.",
-            "В настройках вашего сайта задан автоматический перевод контента. Если вы сделаете <PostTypesNames /> пригодными к переводу, WPML будет автоматически переводить %1$d существующие материалы."
+         "WPML will automatically translate %1$s into %2$s.": [
+            "WPML автоматически переведет %1$s на %2$s."
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate all future content.": [
-            "В настройках вашего сайта задан автоматический перевод контента. Если вы сделаете <PostTypesNames /> пригодным к переводу, WPML будет автоматически переводить будущий контент."
+         "Automatic translation uses translation words.": [
+            "Автоматический перевод использует слова для перевода."
+         ],
+         "Are you OK with this?": [
+            "Вы согласны с этим?"
+         ],
+         "Are you sure you want to change the translation option?": [
+            "Вы уверены, что хотите изменить параметр перевода?"
+         ],
+         "Yes, continue": [
+            "Да, продолжить"
+         ],
+         "No, go back": [
+            "Нет, вернуться"
+         ],
+         "%d term": [
+            "%d элемент",
+            "%d элемента",
+            "%d элементов"
+         ],
+         "%d language": [
+            "%d язык",
+            "%d языка",
+            "%d языков"
+         ],
+         "%s will be translated.": [
+            "%s будут переведены."
+         ],
+         "Change the URLs of existing translations?": [
+            "Изменить URL-адреса существующих переводов?"
+         ],
+         "Counting the existing translations this affects… %1$s of %2$s posts.": [
+            "Подсчет существующих переводов, которых это коснется… %1$s из %2$s записей."
+         ],
+         "Counting the existing translations this affects…": [
+            "Подсчет существующих переводов, которых это коснется…"
+         ],
+         "Also update the %s existing translation now — its URL changes": [
+            "Также обновить %s существующий перевод сейчас — его URL-адрес изменится",
+            "Также обновить %s существующих перевода сейчас — их URL-адреса изменятся",
+            "Также обновить %s существующих переводов сейчас — их URL-адреса изменятся"
+         ],
+         "Either way the setting is saved. With \"Only apply to new translations\" every existing translation keeps its slug.": [
+            "В любом случае настройка будет сохранена. При выборе «Применять только к новым переводам» каждый существующий перевод сохранит свой ярлык."
+         ],
+         "No existing translation gets a different URL from this option. It does not apply to new translations either. None of your active languages has \"Encode URL\" turned on.": [
+            "Ни один существующий перевод не получит другой URL-адрес из-за этой опции. К новым переводам она также не применяется. Ни для одного из ваших активных языков не включена опция «Кодировать URL»."
+         ],
+         "No existing translation gets a different URL from this option. It applies to new translations.": [
+            "Эта опция не изменит URL-адреса существующих переводов. Она применяется к новым переводам."
+         ],
+         "%s existing translation in a language with encoded URLs would get the original's slug.": [
+            "%s существующий перевод на языке с кодированными URL-адресами получит ярлык оригинала.",
+            "%s существующих перевода на языках с кодированными URL-адресами получат ярлык оригинала.",
+            "%s существующих переводов на языках с кодированными URL-адресами получат ярлык оригинала."
+         ],
+         "%s existing translation would get a slug regenerated from its title.": [
+            "Для %s существующего перевода ярлык будет создан заново на основе его заголовка.",
+            "Для %s существующих переводов ярлыки будут созданы заново на основе их заголовков.",
+            "Для %s существующих переводов ярлыки будут созданы заново на основе их заголовков."
+         ],
+         "This changes the URL of %s published translation. Links to it from your other translations are updated. Search engines and links from elsewhere keep the old address until you redirect it.": [
+            "Это изменит URL-адрес %s опубликованного перевода. Ссылки на него из других ваших переводов будут обновлены. Поисковые системы и ссылки из других мест сохранят старый адрес, пока вы не настроите перенаправление.",
+            "Это изменит URL-адреса %s опубликованных переводов. Ссылки на них из других ваших переводов будут обновлены. Поисковые системы и ссылки из других мест сохранят старые адреса, пока вы не настроите перенаправление.",
+            "Это изменит URL-адреса %s опубликованных переводов. Ссылки на них из других ваших переводов будут обновлены. Поисковые системы и ссылки из других мест сохранят старые адреса, пока вы не настроите перенаправление."
+         ],
+         "Retry": [
+            "Повторить"
+         ],
+         "Updating %1$s of %2$s translation…": [
+            "Обновление %1$s из %2$s перевода…",
+            "Обновление %1$s из %2$s переводов…",
+            "Обновление %1$s из %2$s переводов…"
+         ],
+         "Updating %1$s of %2$s posts…": [
+            "Обновление %1$s из %2$s записей…"
+         ],
+         "%1$s %2$s updated.": [
+            "Обновлено %1$s %2$s."
+         ],
+         "%s post updated.": [
+            "%s запись обновлена.",
+            "%s записи обновлено.",
+            "%s записей обновлено."
+         ],
+         "%s marked as needing a translation update.": [
+            "%s помечено как требующее обновления перевода."
+         ],
+         "%1$s sent to translation and %2$s outside Translate Everything's range marked for later.": [
+            "%1$s отправлено на перевод, а %2$s вне диапазона функции «Переводить все» помечено для последующей обработки."
+         ],
+         "%s sent to translation.": [
+            "%s отправлено на перевод."
+         ],
+         "Nothing was sent. %s outside Translate Everything's range marked for later.": [
+            "Ничего не было отправлено. %s вне диапазона функции «Переводить все» помечено для последующей обработки."
+         ],
+         "Nothing was sent.": [
+            "Ничего не было отправлено."
+         ],
+         "%s in a language Translate Everything does not send marked for later.": [
+            "%s на языке, который не поддерживается функцией «Переводить все», помечено для последующей обработки."
+         ],
+         "The URL of %s translation was updated.": [
+            "URL-адрес %s перевода был обновлен.",
+            "URL-адреса %s переводов были обновлены.",
+            "URL-адреса %s переводов были обновлены."
+         ],
+         "No URL was changed.": [
+            "Ни один URL-адрес не был изменен."
+         ],
+         "%s translation no longer needed a change.": [
+            "%s перевод больше не нуждался в изменениях.",
+            "%s перевода больше не нуждались в изменениях.",
+            "%s переводов больше не нуждались в изменениях."
+         ],
+         "The update continues in the background. The admin bar shows its progress.": [
+            "Обновление продолжается в фоновом режиме. Прогресс отображается в панели администратора."
+         ],
+         "Counting the words this sends…": [
+            "Подсчет слов для отправки…"
+         ],
+         "Counting the words this sends… %1$s of %2$s posts.": [
+            "Подсчет слов для отправки… %1$s из %2$s записей."
+         ],
+         "The number of words this sends could not be estimated. The Translation Dashboard shows the cost once the posts are queued.": [
+            "Не удалось оценить количество слов для отправки. Стоимость отобразится в панели управления переводами после постановки записей в очередь."
+         ],
+         "This sends %s word of content that could not be priced. The Translation Dashboard shows the cost once the posts are queued.": [
+            "Это отправит %s слово контента, стоимость которого не удалось определить. Стоимость отобразится в панели управления переводами после постановки записей в очередь.",
+            "Это отправит %s слова контента, стоимость которого не удалось определить. Стоимость отобразится в панели управления переводами после постановки записей в очередь.",
+            "Это отправит %s слов контента, стоимость которого не удалось определить. Стоимость отобразится в панели управления переводами после постановки записей в очередь."
+         ],
+         "Sending it again to %2$s languages uses about %1$s word.": [
+            "Повторная отправка на %2$s язык потребует около %1$s слова.",
+            "Повторная отправка на %2$s языка потребует около %1$s слов.",
+            "Повторная отправка на %2$s языков потребует около %1$s слов."
+         ],
+         "Sending them again to %2$s languages uses about %1$s word.": [
+            "Повторная их отправка на %2$s язык потребует около %1$s слова.",
+            "Повторная их отправка на %2$s языка потребует около %1$s слов.",
+            "Повторная их отправка на %2$s языков потребует около %1$s слов."
+         ],
+         "Sending it again uses about %s word.": [
+            "Повторная отправка потребует около %s слова.",
+            "Повторная отправка потребует около %s слов.",
+            "Повторная отправка потребует около %s слов."
+         ],
+         "Sending them again uses about %s word.": [
+            "Повторная их отправка потребует около %s слова.",
+            "Повторная их отправка потребует около %s слов.",
+            "Повторная их отправка потребует около %s слов."
+         ],
+         "%s of the posts is outside Translate Everything's range: its translations will be marked without being sent.": [
+            "%s из записей находится вне диапазона функции «Переводить все»: ее переводы будут помечены без отправки.",
+            "%s из записей находятся вне диапазона функции «Переводить все»: их переводы будут помечены без отправки.",
+            "%s из записей находятся вне диапазона функции «Переводить все»: их переводы будут помечены без отправки."
+         ],
+         "Your choice for the existing translations was not recorded.": [
+            "Ваш выбор для существующих переводов не был записан."
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "Наша система перевода не приняла этот запрос (код ответа: %d). Подождите минуту и попробуйте еще раз. Если проблема повторится, обратитесь в поддержку WPML."
+         ],
+         "several post types listed\u0004%1$s %2$s updated.": [
+            "Обновлено %1$s %2$s."
          ]
       }
    }

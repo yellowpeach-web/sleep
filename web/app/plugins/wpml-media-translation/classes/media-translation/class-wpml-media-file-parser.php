@@ -5,9 +5,6 @@ namespace WPML\Media\Classes;
 use WPML\FP\Obj;
 use WPML\FP\Str;
 
-/**
- * Media file block parser
- */
 class WPML_Media_File_Parser extends WPML_Media_Element_Parser {
 
 	private static $objectElementExpression = '/<object ([^>]+)>/s';
@@ -25,11 +22,6 @@ class WPML_Media_File_Parser extends WPML_Media_Element_Parser {
 			$this->getAttachments( $matches ) : [];
 	}
 
-	/**
-	 * Checks if media element is File Block and 'parse_blocks' function exists.
-	 *
-	 * @return bool
-	 */
 	public function validate() {
 		return Str::includes( '<!-- wp:file', $this->blockText ) && function_exists( 'parse_blocks' );
 	}

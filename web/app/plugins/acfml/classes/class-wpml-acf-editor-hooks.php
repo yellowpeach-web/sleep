@@ -9,13 +9,6 @@ class WPML_ACF_Editor_Hooks implements \IWPML_Backend_Action, \IWPML_Frontend_Ac
 		return $this->maybe_set_acf_wyswig_style($field_style, $field_type, $original_post);
 	}
 
-	/**
-	 * @param int          $field_style   Field style bit.
-	 * @param string       $field_type    Field name.
-	 * @param null|WP_Post $original_post Original post object or null.
-	 *
-	 * @return string
-	 */
 	private function maybe_set_acf_wyswig_style($field_style, $field_type, $original_post) {
 
 		if ( preg_match_all('/field-(.+)-\d+/', $field_type, $matches, PREG_SET_ORDER, 0) !== false

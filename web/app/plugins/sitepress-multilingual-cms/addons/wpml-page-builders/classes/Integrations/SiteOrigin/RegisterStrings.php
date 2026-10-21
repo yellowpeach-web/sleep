@@ -2,6 +2,9 @@
 
 namespace WPML\PB\SiteOrigin;
 
+use WPML\PB\TranslationJob\Groups;
+use WPML_PB_String;
+
 class RegisterStrings extends \WPML_Page_Builders_Register_Strings {
 
 	public function register_strings_for_modules( array $data_array, array $package ) {
@@ -16,5 +19,13 @@ class RegisterStrings extends \WPML_Page_Builders_Register_Strings {
 				$this->register_strings_for_modules( $data, $package );
 			}
 		}
+	}
+
+	protected function filter_string_to_register( WPML_PB_String $pbString, $node_id, $element, $package ) {
+		if ( isset( $element['image'] ) ) {
+			$pbString->set_title( Groups::appendImageIdToGroupLabel( $pbString->get_title(), (int) $element['image'] ) );
+		}
+
+		return $pbString;
 	}
 }

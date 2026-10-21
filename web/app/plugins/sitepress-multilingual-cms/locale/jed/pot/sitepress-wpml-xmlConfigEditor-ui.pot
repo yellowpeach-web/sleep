@@ -3,27 +3,40 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/js/xmlConfigEditor/components/Container.js:25
+#: src/js/xmlConfigEditor/components/Container.js:26
 msgid ""
 "The wpml-config.xml file in the root folder of your theme and plugins tells "
 "WPML which content is translatable. You can override these settings with "
 "your own custom settings by adding them below."
 msgstr ""
 
-#: src/js/xmlConfigEditor/components/Container.js:29
+#: src/js/xmlConfigEditor/components/Container.js:30
 msgid "Read more about language configuration files."
 msgstr ""
 
-#: src/js/xmlConfigEditor/components/Controls.js:22
+#: src/js/xmlConfigEditor/components/Controls.js:28
 #: src/js/xmlConfigEditor/hooks/useEditorOptions.js:33
+#. Button label that saves what was entered in the form or dialog; verb, imperative.
 msgid "Save"
 msgstr ""
 
-#: src/js/xmlConfigEditor/components/Messages.js:43
+#: src/js/xmlConfigEditor/components/Messages.js:44
+#. Title of an error message box.
 msgid "Error"
 msgstr ""
 
+#: src/js/xmlConfigEditor/components/Messages.js:58
+#. Confirmation shown after the custom XML configuration has been stored.
+msgid "Configuration saved."
+msgstr ""
+
+#: src/js/xmlConfigEditor/components/Messages.js:68
+#. Shown when the custom XML configuration could not be stored.
+msgid "Could not save the configuration — please retry."
+msgstr ""
+
 #: src/js/xmlConfigEditor/components/SideBar.js:14
+#. Heading of the panel that lists the keyboard shortcuts of the XML configuration editor.
 msgid "Shortcuts"
 msgstr ""
 
@@ -32,5 +45,6 @@ msgid "Fold/Unfold code"
 msgstr ""
 
 #: src/js/xmlConfigEditor/hooks/useEditorOptions.js:26
+#. Name of the keyboard shortcut that tidies up the XML in the configuration editor; verb, imperative.
 msgid "Auto format"
 msgstr ""

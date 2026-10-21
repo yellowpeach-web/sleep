@@ -1,35 +1,23 @@
 <?php
 
-/**
- * Class WPML_Elementor_Tabs
- */
 class WPML_Elementor_Tabs extends WPML_Elementor_Module_With_Items  {
 
-	/**
-	 * @return string
-	 */
 	public function get_items_field() {
 		return 'tabs';
 	}
 
-	/**
-	 * @return array
-	 */
 	public function get_fields() {
 		return array( 'tab_title', 'tab_content' );
 	}
 
-	/**
-	 * @param string $field
-	 *
-	 * @return string
-	 */
 	protected function get_title( $field ) {
 		switch( $field ) {
 			case 'tab_title':
+				/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
 				return esc_html__( 'Tabs: Title', 'sitepress' );
 
 			case 'tab_content':
+				/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
 				return esc_html__( 'Tabs: Content', 'sitepress' );
 
 			default:
@@ -37,11 +25,6 @@ class WPML_Elementor_Tabs extends WPML_Elementor_Module_With_Items  {
 		}
 	}
 
-	/**
-	 * @param string $field
-	 *
-	 * @return string
-	 */
 	protected function get_editor_type( $field ) {
 		switch( $field ) {
 			case 'tab_title':

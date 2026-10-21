@@ -1,50 +1,37 @@
 <?php
 
-/**
- * @author OnTheGo Systems
- */
 class WPML_TM_MCS_ATE_Strings {
 
 	const AMS_STATUS_ACTIVE_NOT_ALL_SUBSCRIBED = 'active-not-all-subscribed';
-	/**
-	 * @var WPML_TM_ATE_Authentication
-	 */
 	private $authentication;
 	private $authentication_data;
-	/**
-	 * @var WPML_TM_ATE_AMS_Endpoints
-	 */
 	private $endpoints;
 	private $statuses;
 
-	/**
-	 * WPML_TM_MCS_ATE constructor.
-	 *
-	 * @param WPML_TM_ATE_Authentication $authentication
-	 * @param WPML_TM_ATE_AMS_Endpoints  $endpoints
-	 */
 	public function __construct( WPML_TM_ATE_Authentication $authentication, WPML_TM_ATE_AMS_Endpoints $endpoints ) {
 		$this->authentication = $authentication;
 		$this->endpoints      = $endpoints;
 
-		$this->authentication_data = get_option( WPML_TM_ATE_Authentication::AMS_DATA_KEY, array() );
+		$authentication_data       = get_option( WPML_TM_ATE_Authentication::AMS_DATA_KEY, array() );
+		$this->authentication_data = is_array( $authentication_data ) ? $authentication_data : array();
 
 		$this->statuses = array(
 			WPML_TM_ATE_Authentication::AMS_STATUS_NON_ACTIVE => array(
 				'type'    => 'error',
 				'message' => array(
-					'status' => __( 'Advanced Translation Editor is not active yet', 'wpml-translation-management' ),
+					'status' => __( 'Advanced Translation Editor is not active yet', 'sitepress' ),
 					'text'   => __(
 						'Request activation to receive an email with directions to activate the service.',
-						'wpml-translation-management'
+						'sitepress'
 					),
 				),
-				'button'  => __( 'Request activation', 'wpml-translation-management' ),
+				/* translators: Button label: ask the site manager to turn the advanced editor on for you. Verb phrase, imperative. */
+				'button'  => __( 'Request activation', 'sitepress' ),
 			),
 			WPML_TM_ATE_Authentication::AMS_STATUS_ENABLED => array(
 				'type'    => 'info',
 				'message' => array(
-					'status' => __( 'Advanced Translation Editor is being activated', 'wpml-translation-management' ),
+					'status' => __( 'Advanced Translation Editor is being activated', 'sitepress' ),
 					'text'   => '',
 				),
 				'button'  => '',
@@ -52,26 +39,22 @@ class WPML_TM_MCS_ATE_Strings {
 			WPML_TM_ATE_Authentication::AMS_STATUS_ACTIVE  => array(
 				'type'    => 'success',
 				'message' => array(
-					'status' => __( 'Advanced Translation Editor is enabled and active', 'wpml-translation-management' ),
+					'status' => __( 'Advanced Translation Editor is enabled and active', 'sitepress' ),
 					'text'   => '',
 				),
-				'button'  => __( 'Advanced Translation Editor is active', 'wpml-translation-management' ),
+				'button'  => __( 'Advanced Translation Editor is active', 'sitepress' ),
 			),
 			self::AMS_STATUS_ACTIVE_NOT_ALL_SUBSCRIBED     => array(
 				'type'    => 'success',
 				'message' => array(
-					'status' => __( "WPML's Advanced Translation Editor is enabled, but not all your translators can use it.", 'wpml-translation-management' ),
+					'status' => __( "WPML's Advanced Translation Editor is enabled, but not all your translators can use it.", 'sitepress' ),
 					'text'   => '',
 				),
-				'button'  => __( 'Advanced Translation Editor is active', 'wpml-translation-management' ),
+				'button'  => __( 'Advanced Translation Editor is active', 'sitepress' ),
 			),
 		);
 	}
 
-	/**
-	 * @return string|WP_Error
-	 * @throws \InvalidArgumentException
-	 */
 	public function get_auto_login() {
 		$shared = null;
 		if ( array_key_exists( 'shared', $this->authentication_data ) ) {
@@ -107,9 +90,6 @@ class WPML_TM_MCS_ATE_Strings {
 		return '<strong>' . $message['status'] . '</strong>' . $message['text'];
 	}
 
-	/**
-	 * @return string
-	 */
 	public function get_status() {
 		$ate_status = WPML_TM_ATE_Authentication::AMS_STATUS_NON_ACTIVE;
 		if ( array_key_exists( 'status', $this->authentication_data ) ) {
@@ -119,23 +99,10 @@ class WPML_TM_MCS_ATE_Strings {
 		return $ate_status;
 	}
 
-	/**
-	 * @param string     $attribute
-	 * @param null|mixed $default
-	 *
-	 * @return mixed
-	 */
 	public function get_current_status_attribute( $attribute, $default = null ) {
 		return $this->get_status_attribute( $this->get_status(), $attribute, $default );
 	}
 
-	/**
-	 * @param string     $status
-	 * @param string     $attribute
-	 * @param null|mixed $default
-	 *
-	 * @return mixed
-	 */
 	public function get_status_attribute( $status, $attribute, $default = null ) {
 		$status_attributes = $this->statuses[ $status ];
 
@@ -151,6 +118,6 @@ class WPML_TM_MCS_ATE_Strings {
 	}
 
 	public function get_synchronize_button_text() {
-		return __( 'Synchronize translators and translation managers', 'wpml-translation-management' );
+		return __( 'Synchronize translators and translation managers', 'sitepress' );
 	}
 }

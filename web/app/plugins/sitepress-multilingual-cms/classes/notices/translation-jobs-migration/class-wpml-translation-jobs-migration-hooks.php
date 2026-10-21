@@ -1,17 +1,16 @@
 <?php
 
+use WPML\Core\WP\App\Resources;
+
 class WPML_Translation_Jobs_Migration_Hooks {
 
 	private $notice;
 	private $ajax_handler;
 
-	/** @var WPML_Translation_Jobs_Migration_Repository */
 	private $jobs_migration_repository;
 
-	/** @var WPML_Upgrade_Schema $schema */
 	private $schema;
 
-	/** @var WPML_TM_Jobs_Migration_State */
 	private $migration_state;
 
 	public function __construct(
@@ -40,25 +39,19 @@ class WPML_Translation_Jobs_Migration_Hooks {
 
 			add_filter( 'wpml_tm_lock_ui', array( $this, 'lock_tm_ui' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-			add_action(
-				'wp_ajax_' . WPML_Translation_Jobs_Migration_Ajax::ACTION,
+			\WPML\Request\Adapter\Ajax::register(
+				WPML_Translation_Jobs_Migration_Ajax::ACTION,
+				\WPML\Request\Policy\Policy::capability(
+					'manage_translations',
+					\WPML\Request\Policy\Authenticity::actionNonce( WPML_Translation_Jobs_Migration_Ajax::ACTION, 'nonce' )
+				),
 				array( $this->ajax_handler, 'run_migration' )
 			);
 		}
 	}
 
-	/**
-	 * @see
-	 * `WPML_TM_Add_TP_Revision_And_TS_Status_Columns_To_Core_Status`
-	 * `WPML_TM_Add_TP_Revision_And_TS_Status_Columns_To_Translation_Status`
-	 * `WPML_TM_Add_TP_ID_Column_To_Translation_Status`
-	 *
-	 * @return bool
-	 */
 	private function new_columns_are_not_added_yet() {
-		$has_columns = $this->schema->does_column_exist( 'icl_core_status', 'tp_revision' )
-			&& $this->schema->does_column_exist( 'icl_core_status', 'ts_status' )
-			&& $this->schema->does_column_exist( 'icl_translation_status', 'tp_revision' )
+		$has_columns = $this->schema->does_column_exist( 'icl_translation_status', 'tp_revision' )
 			&& $this->schema->does_column_exist( 'icl_translation_status', 'ts_status' )
 			&& $this->schema->does_column_exist( 'icl_translation_status', 'tp_id' );
 
@@ -69,14 +62,11 @@ class WPML_Translation_Jobs_Migration_Hooks {
 		wp_enqueue_script(
 			'wpml-tm-translation-jobs-migration',
 			WPML_TM_URL . '/dist/js/translationJobsMigration/app.js',
-			array(),
-			ICL_SITEPRESS_VERSION
+			array( Resources::vendorAsDependency() ),
+			ICL_SITEPRESS_SCRIPT_VERSION
 		);
 	}
 
-	/**
-	 * @return bool
-	 */
 	private function needs_migration() {
 		if ( $this->jobs_migration_repository->get_count() ) {
 			return ! $this->skip_migration_if_service_is_not_active();
@@ -87,9 +77,6 @@ class WPML_Translation_Jobs_Migration_Hooks {
 		return false;
 	}
 
-	/**
-	 * @return bool
-	 */
 	private function skip_migration_if_service_is_not_active() {
 		if ( ! TranslationProxy::is_current_service_active_and_authenticated() ) {
 			$this->migration_state->skip_migration( true );
@@ -100,9 +87,6 @@ class WPML_Translation_Jobs_Migration_Hooks {
 		return false;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function lock_tm_ui() {
 		return true;
 	}

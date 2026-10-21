@@ -1,11 +1,9 @@
 <?php
 global $wpdb;
 
-$sql = "ALTER TABLE  `{$wpdb->prefix}icl_strings` CHANGE  `language`  `language` VARCHAR( 7 ) NOT NULL";
-$wpdb->query( $sql );
+$wpdb->query( "ALTER TABLE  `{$wpdb->prefix}icl_strings` CHANGE  `language`  `language` VARCHAR( 7 ) NOT NULL" );
 
-$sql = "ALTER TABLE  `{$wpdb->prefix}icl_locale_map` CHANGE  `code`  `code` VARCHAR( 7 ) NOT NULL";
-$wpdb->query( $sql );
+$wpdb->query( "ALTER TABLE  `{$wpdb->prefix}icl_locale_map` CHANGE  `code`  `code` VARCHAR( 7 ) NOT NULL" );
 
 $iclsettings = get_option( 'icl_sitepress_settings' );
 

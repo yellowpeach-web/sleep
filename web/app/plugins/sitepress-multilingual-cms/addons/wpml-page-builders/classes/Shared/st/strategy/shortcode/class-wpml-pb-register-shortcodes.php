@@ -1,73 +1,58 @@
 <?php
 
+use WPML\PB\Shortcode\RegistrationPass;
 use WPML\PB\Shortcode\StringCleanUp;
 
-/**
- * Class WPML_PB_Register_Shortcodes
- */
 class WPML_PB_Register_Shortcodes {
 
 	private $handle_strings;
-	/** @var  WPML_PB_Shortcode_Strategy $shortcode_strategy */
 	private $shortcode_strategy;
-	/** @var  WPML_PB_Shortcode_Encoding $encoding */
 	private $encoding;
-	/** @var WPML_PB_Reuse_Translations_By_Strategy|null $reuse_translations */
 	private $reuse_translations;
 
-	/** @var StringCleanUp|null */
 	private $existingStrings;
 
-	/** @var  int $location_index */
-	private $location_index;
+	private $pass;
 
-	/**
-	 * @param WPML_PB_String_Registration                 $handle_strings
-	 * @param WPML_PB_Shortcode_Strategy                  $shortcode_strategy
-	 * @param WPML_PB_Shortcode_Encoding                  $encoding
-	 * @param WPML_PB_Reuse_Translations_By_Strategy|null $reuse_translations
-	 */
+	private $attribute_names = [];
+
 	public function __construct(
 		WPML_PB_String_Registration $handle_strings,
 		WPML_PB_Shortcode_Strategy $shortcode_strategy,
 		WPML_PB_Shortcode_Encoding $encoding,
-		WPML_PB_Reuse_Translations_By_Strategy $reuse_translations = null
+		?WPML_PB_Reuse_Translations_By_Strategy $reuse_translations = null
 	) {
-		$this->handle_strings         = $handle_strings;
-		$this->shortcode_strategy     = $shortcode_strategy;
-		$this->encoding               = $encoding;
-		$this->reuse_translations     = $reuse_translations;
+		$this->handle_strings     = $handle_strings;
+		$this->shortcode_strategy = $shortcode_strategy;
+		$this->encoding           = $encoding;
+		$this->reuse_translations = $reuse_translations;
 	}
 
-	/**
-	 * @param string|int    $post_id
-	 * @param string        $content
-	 * @param StringCleanUp $externalStringCleanUp
-	 *
-	 * @return bool
-	 */
 	public function register_shortcode_strings(
 		$post_id,
 		$content,
-		StringCleanUp $externalStringCleanUp = null
+		?StringCleanUp $externalStringCleanUp = null
 	) {
 
 		$any_registered = false;
 
-		$this->location_index = 1;
+		$this->attribute_names = [];
 
 		$content = apply_filters( 'wpml_pb_shortcode_content_for_translation', $content, $post_id );
 		$content = WPML_PB_Shortcode_Content_Wrapper::maybeWrap( $content, $this->shortcode_strategy->get_shortcodes() );
 
-		$shortcode_parser      = $this->shortcode_strategy->get_shortcode_parser();
-		$shortcodes            = $shortcode_parser->get_shortcodes( $content );
 		$this->existingStrings = $externalStringCleanUp ?: new StringCleanUp( $post_id, $this->shortcode_strategy );
+		$this->pass            = $this->existingStrings->getPass();
+
+		$shortcode_parser = $this->pass->getParser( [ $this->shortcode_strategy, 'get_shortcode_parser' ] );
+		$shortcodes       = $shortcode_parser->get_shortcodes( $content );
 
 		if ( $this->reuse_translations ) {
 			$this->reuse_translations->set_original_strings( $this->existingStrings->get() );
 		}
 
 		foreach ( $shortcodes as $shortcode ) {
+			$strings = [];
 
 			if ( $this->should_handle_content( $shortcode ) ) {
 				$shortcode_content  = $shortcode['content'];
@@ -75,7 +60,7 @@ class WPML_PB_Register_Shortcodes {
 				$encoding_condition = $this->shortcode_strategy->get_shortcode_tag_encoding_condition( $shortcode['tag'] );
 				$type               = $this->shortcode_strategy->get_shortcode_tag_type( $shortcode['tag'] );
 				$shortcode_content  = $this->encoding->decode( $shortcode_content, $encoding, $encoding_condition );
-				$any_registered     = $this->register_string( $post_id, $shortcode_content, $shortcode, 'content', $type ) || $any_registered;
+				$strings[]          = [ $shortcode_content, 'content', $type ];
 			}
 
 			$attributes              = (array) shortcode_parse_atts( $shortcode['attributes'] );
@@ -86,30 +71,34 @@ class WPML_PB_Register_Shortcodes {
 						$encoding   = $this->shortcode_strategy->get_shortcode_attribute_encoding( $shortcode['tag'], $attr );
 						$type       = $this->shortcode_strategy->get_shortcode_attribute_type( $shortcode['tag'], $attr );
 						$attr_value = $this->encoding->decode( $attr_value, $encoding );
-
-						$any_registered = $this->register_string( $post_id, $attr_value, $shortcode, $attr, $type ) || $any_registered;
+						$strings[]  = [ $attr_value, $attr, $type ];
 					}
 				}
 			}
+
+			$this->set_attribute_names( $shortcode, $strings );
+
+			foreach ( $strings as list( $value, $attribute, $type ) ) {
+				$any_registered = $this->register_string( $post_id, $value, $shortcode, $attribute, $type ) || $any_registered;
+			}
 		}
+
+		$this->attribute_names = [];
 
 		if ( $this->reuse_translations ) {
 			$this->reuse_translations->find_and_reuse( $post_id, $this->existingStrings->get() );
 		}
 
-		if( ! $externalStringCleanUp ) {
+		if ( ! $externalStringCleanUp ) {
 			$this->existingStrings->cleanUp();
 			$this->mark_post_as_migrate_location_done( $post_id );
 		}
 
+		do_action( 'wpml_pb_after_register_shortcode_strings', $post_id );
+
 		return $any_registered;
 	}
 
-	/**
-	 * @param array $shortcode
-	 *
-	 * @return bool
-	 */
 	private function should_handle_content( $shortcode ) {
 		$tag = $shortcode['tag'];
 
@@ -125,45 +114,64 @@ class WPML_PB_Register_Shortcodes {
 			)
 		);
 
-		/**
-		 * Allow page builders to override if the shortcode should be handled as a translatable string.
-		 *
-		 * @since 4.2
-		 * @param bool $handle_content.
-		 * @param array $shortcode {
-		 *
-		 *      @type string $tag.
-		 *      @type string $content.
-		 *      @type string $attributes.
-		 * }
-		 */
 		return apply_filters( 'wpml_pb_should_handle_content', $handle_content, $shortcode );
 	}
 
-	function get_updated_shortcode_string_title( $string_id, $shortcode, $attribute ) {
+	public function get_updated_shortcode_string_title( $string_id, $shortcode, $attribute ) {
 		$title = $this->shortcode_strategy->get_shortcode_attribute_label( $shortcode['tag'], $attribute );
 		if ( $title ) {
 			return $title;
 		}
 
-		$current_title = $this->get_shortcode_string_title( $string_id );
-
-		$current_title_parts = explode( ':', $current_title );
-		$current_title_parts = array_map( 'trim', $current_title_parts );
-
-		$shortcode_tag = $shortcode['tag'];
-		if ( isset( $current_title_parts[1] ) ) {
-			$shortcode_attributes = explode( ',', $current_title_parts[1] );
-			$shortcode_attributes = array_map( 'trim', $shortcode_attributes );
+		$shortcode_attributes = [ $attribute ];
+		if (
+			isset( $this->attribute_names['shortcode'], $this->attribute_names['names'][ $attribute ] )
+			&& $this->attribute_names['shortcode'] === $this->get_shortcode_key( $shortcode )
+		) {
+			$shortcode_attributes = $this->attribute_names['names'][ $attribute ];
 		}
-		$shortcode_attributes[] = $attribute;
-		sort( $shortcode_attributes );
-		$shortcode_attributes = array_unique( $shortcode_attributes );
 
-		return $shortcode_tag . ': ' . implode( ', ', $shortcode_attributes );
+		return implode( '/', $shortcode['crumbs'] ) . ': ' . implode( ', ', $shortcode_attributes );
 	}
 
-	function get_shortcode_string_title( $string_id ) {
+	private function set_attribute_names( $shortcode, array $strings ) {
+		$names_by_text     = [];
+		$text_by_attribute = [];
+
+		foreach ( $strings as list( $value, $attribute ) ) {
+			$this->collect_attribute_names( $value, $attribute, $names_by_text, $text_by_attribute );
+		}
+
+		$names = [];
+		foreach ( $text_by_attribute as $attribute => $text ) {
+			$names[ $attribute ] = $names_by_text[ $text ];
+		}
+
+		$this->attribute_names = [
+			'shortcode' => $this->get_shortcode_key( $shortcode ),
+			'names'     => $names,
+		];
+	}
+
+	private function collect_attribute_names( $value, $attribute, array &$names_by_text, array &$text_by_attribute ) {
+		if ( is_array( $value ) ) {
+			foreach ( $value as $key => $data ) {
+				if ( $data['translate'] ) {
+					$this->collect_attribute_names( $data['value'], $attribute . ' ' . $key, $names_by_text, $text_by_attribute );
+				}
+			}
+
+			return;
+		}
+
+		$text = md5( (string) $value );
+		if ( ! isset( $names_by_text[ $text ] ) || ! in_array( $attribute, $names_by_text[ $text ], true ) ) {
+			$names_by_text[ $text ][] = $attribute;
+		}
+		$text_by_attribute[ $attribute ] = $text;
+	}
+
+	public function get_shortcode_string_title( $string_id ) {
 		return $this->handle_strings->get_string_title( $string_id );
 	}
 
@@ -181,26 +189,63 @@ class WPML_PB_Register_Shortcodes {
 				$this->existingStrings->remove( $content );
 			}
 			try {
-				$string_id    = $this->handle_strings->get_string_id_from_package( $post_id, $content );
-				$string_title = $this->get_updated_shortcode_string_title( $string_id, $shortcode, $attribute );
-				$string_id    = $this->handle_strings->register_string( $post_id, $content, $editor_type, $string_title, '', $this->location_index );
+				$pass          = $this->get_pass();
+				$string_name   = md5( (string) $content );
+				$shortcode_key = $this->get_shortcode_key( $shortcode );
+				$first         = $pass->getRegistered( $string_name );
+
+				if ( $first && $first['shortcode'] !== $shortcode_key ) {
+					$string_id = $first['string_id'];
+				} else {
+					$string_id = $this->handle_strings->get_string_id_from_package( $post_id, $content );
+
+					if ( $first ) {
+						$string_title = $first['title'];
+						$location     = $first['location'];
+					} else {
+						$string_title = apply_filters( 'wpml_pb_shortcode_string_title', $this->get_updated_shortcode_string_title( $string_id, $shortcode, $attribute ), $shortcode );
+						$location     = $pass->getLocation();
+					}
+
+					$string_id = $this->handle_strings->register_string( $post_id, $content, $editor_type, $string_title, '', $location, '' );
+					if ( $string_id && ! $first ) {
+						$pass->advanceLocation();
+						$pass->setRegistered(
+							$string_name,
+							[
+								'shortcode' => $shortcode_key,
+								'string_id' => (int) $string_id,
+								'title'     => (string) $string_title,
+								'location'  => $location,
+							]
+						);
+					}
+				}
+
 				if ( $string_id ) {
-					$this->location_index ++;
+					do_action( 'wpml_pb_register_shortcode_string', $post_id, $content, $shortcode );
 				}
 			} catch ( Exception $exception ) {
 				$string_id = 0;
 			}
 		}
 
-		return $string_id !== 0;
+		return (bool) $string_id;
 	}
 
-	/**
-	 * @param int $post_id
-	 */
+	private function get_pass() {
+		if ( ! $this->pass ) {
+			$this->pass = new RegistrationPass();
+		}
+
+		return $this->pass;
+	}
+
+	private function get_shortcode_key( $shortcode ) {
+		return isset( $shortcode['crumbs'] ) ? implode( '/', (array) $shortcode['crumbs'] ) : '';
+	}
+
 	private function mark_post_as_migrate_location_done( $post_id ) {
 		update_post_meta( $post_id, WPML_PB_Integration::MIGRATION_DONE_POST_META, true );
 	}
-
-
 }

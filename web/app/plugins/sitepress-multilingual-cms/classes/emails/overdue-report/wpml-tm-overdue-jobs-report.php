@@ -4,37 +4,25 @@ class WPML_TM_Overdue_Jobs_Report {
 
 	const OVERDUE_JOBS_REPORT_TEMPLATE = 'notification/overdue-jobs-report.twig';
 
-	/** @var  WPML_Translation_Jobs_Collection $jobs_collection */
 	private $jobs_collection;
 
-	/** @var WPML_TM_Email_Notification_View $email_view */
 	private $email_view;
 
-	/** @var bool $has_active_remote_service */
 	private $has_active_remote_service;
 
-	/** @var array $notification_settings */
 	private $notification_settings;
 
 	private $sitepress;
 
 	private $tp_jobs;
 
-	/**
-	 * @param WPML_Translation_Jobs_Collection $jobs_collection
-	 * @param WPML_TM_Email_Notification_View $email_view
-	 * @param bool $has_active_remote_service
-	 * @param array $notification_settings
-	 * @param SitePress $sitepress
-	 * @param WPML_TP_Jobs_Collection|null $tp_jobs
-	 */
 	public function __construct(
 		WPML_Translation_Jobs_Collection $jobs_collection,
 		WPML_TM_Email_Notification_View $email_view,
 		$has_active_remote_service,
 		array $notification_settings,
 		SitePress $sitepress,
-		WPML_TP_Jobs_Collection $tp_jobs = null
+		?WPML_TP_Jobs_Collection $tp_jobs = null
 	) {
 		$this->jobs_collection           = $jobs_collection;
 		$this->email_view                = $email_view;
@@ -48,16 +36,18 @@ class WPML_TM_Overdue_Jobs_Report {
 		$jobs_by_manager_id = $this->get_overdue_jobs_by_manager_id();
 
 		if ( $jobs_by_manager_id ) {
-			$current_language = $this->sitepress->get_current_language();
 			$this->sitepress->switch_lang( $this->sitepress->get_default_language() );
-			foreach ( $jobs_by_manager_id as $manager_id => $jobs ) {
-				$this->send_email( $manager_id, $jobs );
+
+			try {
+				foreach ( $jobs_by_manager_id as $manager_id => $jobs ) {
+					$this->send_email( $manager_id, $jobs );
+				}
+			} finally {
+				$this->sitepress->switch_lang();
 			}
-			$this->sitepress->switch_lang( $current_language );
 		}
 	}
 
-	/** @return array */
 	private function get_overdue_jobs_by_manager_id() {
 		$args = array(
 			'overdue'       => true,
@@ -88,19 +78,15 @@ class WPML_TM_Overdue_Jobs_Report {
 		return $jobs_by_manager_id;
 	}
 
-	/**
-	 * @param string $manager_id
-	 * @param array  $jobs
-	 */
 	private function send_email( $manager_id, array $jobs ) {
 		$manager = get_user_by( 'id', $manager_id );
 
-		$translation_jobs_url = admin_url( 'admin.php?page=' . WPML_TM_FOLDER . '/menu/main.php&sm=jobs' );
+		$translation_jobs_url = admin_url( 'admin.php?page=' . WPML_TM_FOLDER . '/menu/main.php&tab=jobs' );
 
 		/* translators: List of translation jobs: %s replaced by "list of translation jobs" */
-		$message_to_translation_jobsA = esc_html_x( 'You can see all the jobs that you sent and their deadlines in the %s.', 'List of translation jobs: %s replaced by "list of translation jobs"', 'wpml-translation-management' );
-		/* translators: List of translation jobs: used to build a link to the translation jobs page */
-		$message_to_translation_jobsB = esc_html_x( 'list of translation jobs', 'List of translation jobs: used to build a link to the translation jobs page', 'wpml-translation-management' );
+		$message_to_translation_jobsA = esc_html_x( 'You can see all the jobs that you sent and their deadlines in the %s.', 'List of translation jobs: %s replaced by "list of translation jobs"', 'sitepress' );
+		/* translators: Link text inside a sentence in the email WPML sends about work that is late; it opens the screen listing the translation jobs. It starts in lower case because it sits inside the sentence. */
+		$message_to_translation_jobsB = esc_html_x( 'list of translation jobs', 'List of translation jobs: used to build a link to the translation jobs page', 'sitepress' );
 
 		$message_to_translation_jobs = sprintf(
 			$message_to_translation_jobsA,
@@ -109,16 +95,18 @@ class WPML_TM_Overdue_Jobs_Report {
 
 		$model = array(
 			'username'                     => $manager->display_name,
-		    'intro_message_1'              => __( 'This is a quick reminder about translation jobs that you sent and are behind schedule.', 'wpml-translation-management' ),
-		    'intro_message_2'              => __( 'The deadline that you set for the following jobs has passed:', 'wpml-translation-management' ),
+		    /* translators: First line of the email WPML sends about translation work that is late. "This" is the email itself. */
+		    'intro_message_1'              => __( 'This is a quick reminder about translation jobs that you sent and are behind schedule.', 'sitepress' ),
+		    'intro_message_2'              => __( 'The deadline that you set for the following jobs has passed:', 'sitepress' ),
 		    'jobs'                         => $jobs,
-		    'job_deadline_details'         => __( 'deadline: %1$s, late by %2$d days', 'wpml-translation-management' ),
+		    /* translators: Line under a job in the email WPML sends about work that is late. It starts in lower case because it follows the title of the job. %1$s: the date the job is due, %2$d: by how many days it is late. */
+		    'job_deadline_details'         => __( 'deadline: %1$s, late by %2$d days', 'sitepress' ),
 		    'message_to_translation_jobs'  => $message_to_translation_jobs,
 		    'promote_translation_services' => ! $this->has_active_remote_service,
 		);
 
 		$to      = $manager->display_name . ' <' . $manager->user_email . '>';
-		$subject = esc_html__( 'Overdue translation jobs report', 'wpml-translation-management' );
+		$subject = esc_html__( 'Overdue translation jobs report', 'sitepress' );
 		$message = $this->email_view->render_model( $model, self::OVERDUE_JOBS_REPORT_TEMPLATE );
 
 		$headers = array(
@@ -126,6 +114,6 @@ class WPML_TM_Overdue_Jobs_Report {
 			'Content-type: text/html; charset=UTF-8',
 		);
 
-		wp_mail( $to, $subject, $message, $headers );
+		WPML_Mail_Sender::send( $to, $subject, $message, $headers, array(), 'overdue-jobs-report' );
 	}
 }

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Class WPML_Lang_Domains_Box
- *
- * Displays the table holding the language domains on languages.php
- */
 class WPML_Lang_Domains_Box extends WPML_SP_User {
 
 	public function render() {
@@ -14,14 +9,16 @@ class WPML_Lang_Domains_Box extends WPML_SP_User {
 		$default_home     = (string) $this->sitepress->convert_url( $this->sitepress->get_wp_api()->get_home_url(), $default_language );
 		$home_schema      = wpml_parse_url( $default_home, PHP_URL_SCHEME ) . '://';
 		$home_path        = wpml_parse_url( $default_home, PHP_URL_PATH );
-		$is_per_domain    = WPML_LANGUAGE_NEGOTIATION_TYPE_DOMAIN === (int) $this->sitepress->get_setting( 'language_negotiation_type' );
-		$is_sso_enabled   = (bool) $this->sitepress->get_setting( 'language_per_domain_sso_enabled', ! $is_per_domain );
 		ob_start();
 		?>
         <table class="language_domains sub-section">
 			<?php
 			foreach ( $active_languages as $code => $lang ) {
 				$text_box_id = esc_attr( 'language_domain_' . $code );
+				$url_code = \WPML\Core\Component\LanguageEditor\Domain\CustomLanguageFormat::usableDisplayCode(
+					isset( $lang['display_code'] ) ? $lang['display_code'] : null
+				);
+				$url_code = '' !== $url_code ? $url_code : $code;
 				?>
                 <tr>
                     <td>
@@ -48,8 +45,9 @@ class WPML_Lang_Domains_Box extends WPML_SP_User {
                                     type="text"
                                     id="<?php echo $text_box_id; ?>"
                                     name="language_domains[<?php echo esc_attr( $code ); ?>]"
-                                    value="<?php echo $this->get_language_domain( $code, $default_home, $language_domains ); ?>"
+                                    value="<?php echo esc_attr( $this->get_language_domain( $code, $url_code, $default_home, $language_domains ) ); ?>"
                                     data-language="<?php echo esc_attr( $code ); ?>"
+									aria-description="<?php esc_attr_e( 'Edit to change the domain for the language', 'sitepress' ); ?>"
                                     size="30"/>
 							<?php if ( isset( $home_path[1] ) && is_string( $home_path[1] ) ) { ?>
                                 <code><?php echo esc_html( $home_path ); ?></code>
@@ -57,7 +55,7 @@ class WPML_Lang_Domains_Box extends WPML_SP_User {
                         </td>
                         <td>
                             <p style="white-space: nowrap"><input
-                                        class="validate_language_domain"
+                                        class="wpml-checkbox-native validate_language_domain"
                                         type="checkbox"
                                         id="validate_language_domains_<?php echo esc_attr( $code ); ?>"
                                         name="validate_language_domains[]"
@@ -80,68 +78,43 @@ class WPML_Lang_Domains_Box extends WPML_SP_User {
 				<?php
 			}
 			?>
-            <tr>
-                <td colspan="2">
-                    <label for="sso_enabled">
-                        <input type="checkbox" id="sso_enabled" name="sso_enabled"
-                               value="1" <?php checked( $is_sso_enabled, true, true ); ?>>
-						<?php esc_html_e( 'Auto sign-in and sign-out users from all domains', 'sitepress' ); ?>
-                    </label>
-                    <span id="sso_information"><i class="otgs-ico-help"></i></span>
-                    <div id="sso_enabled_notice" style="display: none;">
-						<?php esc_html_e( 'Please log-out and login again in order to be able to access the admin features in all language domains.', 'sitepress' ); ?>
-                    </div>
-                </td>
-            </tr>
         </table>
-        <div id="language_per_domain_sso_description" style="display:none;">
-            <p>
-				<?php
-				/* translators: this is the first of two sentences explaining the "Auto sign-in and sign-out users from all domains" feature */
-				echo esc_html_x( 'This feature allows the theme and plugins to work correctly when on sites that use languages in domains.', 'Tooltip: Auto sign-in and sign-out users from all domains', 'sitepress' );
-				?>
-                <br>
-				<?php
-				/* translators: this is the second of two sentences explaining the "Auto sign-in and sign-out users from all domains" feature */
-				echo esc_html_x( "It requires a call to each of the site's language domains on both log-in and log-out, so there's a small performance penalty to using it.", 'Tooltip: Auto sign-in and sign-out users from all domains', 'sitepress' );
-				?>
-            </p>
-        </div>
 		<?php
 
 		return ob_get_clean();
 	}
 
-	/**
-	 * @param string   $code
-	 * @param string   $default_home
-	 * @param string[] $language_domains
-	 *
-	 * @return string
-	 */
-	private function get_language_domain( $code, $default_home, $language_domains ) {
+	private function get_language_domain( $code, $url_code, $default_home, $language_domains ) {
 		$home_schema = wpml_parse_url( $default_home, PHP_URL_SCHEME ) . '://';
 		$home_path   = wpml_parse_url( $default_home, PHP_URL_PATH );
 		if ( isset( $language_domains[ $code ] ) ) {
 			$pattern             = [
-				'#^' . $home_schema . '#',
-				'#' . $home_path . '$#',
+				'#^' . preg_quote( $home_schema, '#' ) . '#',
+				'#' . preg_quote( (string) $home_path, '#' ) . '$#',
 			];
 			$language_domain_raw = preg_replace( $pattern, '', $language_domains[ $code ] );
 		} else {
-			$language_domain_raw = $this->render_suggested_url( $default_home, $code );
+			$language_domain_raw = $this->render_suggested_url( $default_home, $url_code );
 		}
 
-		return filter_var( $language_domain_raw, FILTER_SANITIZE_URL );
+		return (string) $language_domain_raw;
 	}
 
 	private function render_suggested_url( $home, $lang ) {
-		$url_parts     = parse_url( $home );
-		$exp           = explode( '.', $url_parts['host'] );
-		$suggested_url = $lang . '.';
-		array_shift( $exp );
-		$suggested_url .= count( $exp ) < 2 ? $url_parts['host'] : implode( '.', $exp );
+		return $lang . '.' . self::suggested_base_host( $home );
+	}
 
-		return $suggested_url;
+	public static function suggested_base_host( $home ) {
+		$url_parts = parse_url( $home );
+		$host      = isset( $url_parts['host'] ) ? (string) $url_parts['host'] : '';
+		$exp       = explode( '.', $host );
+		array_shift( $exp );
+		$base = count( $exp ) < 2 ? $host : implode( '.', $exp );
+
+		if ( ! empty( $url_parts['port'] ) ) {
+			$base .= ':' . (int) $url_parts['port'];
+		}
+
+		return $base;
 	}
 }

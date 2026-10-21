@@ -21,8 +21,18 @@ class Option {
 
 	const WHO_MODE = 'who-mode';
 	const TRANSLATE_EVERYTHING = 'translate-everything';
+	const AI_SKIPPED = 'ai-skipped';
+	const TRANSLATE_EVERYTHING_DRAFTS = 'translate-everything-drafts';
+	const HAS_TRANSLATE_EVERYTHING_BEEN_EVER_USED = 'has-translate-everything-been-ever-used';
 	const TRANSLATE_EVERYTHING_COMPLETED = 'translate-everything-completed';
-	const TRANSLATE_EVERYTHING_IS_PAUSED = 'translate-everything-is-paused';
+	const TRANSLATE_EVERYTHING_POSTS = 'translate-everything-posts';
+	const TRANSLATE_EVERYTHING_POSTS_SINCE_DATES = 'translate-everything-posts-since-dates';
+	const SINCE_DATE_ALL       = '0000-00-00';
+	const SINCE_DATE_SKIP_TYPE = '9999-12-31';
+	const TRANSLATE_EVERYTHING_PACKAGES_COMPLETED = 'translate-everything-packages';
+	const TRANSLATE_EVERYTHING_SRTINGS_COMPLETED = 'translate-everything-strings';
+	const TRANSLATE_EVERYTHING_TAXONOMIES_COMPLETED = 'translate-everything-taxonomies';
+	const TRANSLATE_EVERYTHING_TAXONOMY_LABELS_COMPLETED = 'translate-everything-taxonomy-labels';
 	const TM_ALLOWED = 'is-tm-allowed';
 	const REVIEW_MODE = 'review-mode';
 
@@ -55,11 +65,6 @@ class Option {
 		self::set( self::TRANSLATED_LANGS, $langs );
 	}
 
-	/**
-	 * Sets service as default translation mode if there's a default Translation Service linked to this instance.
-	 *
-	 * @param bool $hasPreferredTranslationService
-	 */
 	public static function setDefaultTranslationMode( $hasPreferredTranslationService = false ) {
 		if ( self::get( self::WHO_MODE, null ) === null ) {
 
@@ -76,6 +81,7 @@ class Option {
 
 	public static function setTranslationMode( array $mode ) {
 		self::set( self::WHO_MODE, $mode );
+		self::notifyJobLog( 'translation_mode_changed', [ 'new' => $mode ] );
 	}
 
 	public static function getTranslationMode() {
@@ -84,7 +90,7 @@ class Option {
 
 	public static function setTranslateEverythingDefault() {
 		if ( self::get( self::TRANSLATE_EVERYTHING, null ) === null ) {
-			self::setTranslateEverything( self::getTranslateEverythingDefaultInSetup() );
+			self::setTranslateEverything( false );
 		}
 	}
 
@@ -92,57 +98,40 @@ class Option {
 		return self::get( self::TRANSLATE_EVERYTHING, $default );
 	}
 
-	/** @param bool $state */
 	public static function setTranslateEverything( $state ) {
-		self::set( self::TRANSLATE_EVERYTHING, $state );
+		$tmAllowed  = self::isTMAllowed();
+		$finalValue = $tmAllowed ? $state : false;
+
+		self::set( self::TRANSLATE_EVERYTHING, $finalValue );
+
+		self::notifyJobLog( 'translate_everything_changed', [
+			'new'              => $finalValue,
+			'requested_value'  => $state,
+			'tm_allowed'       => $tmAllowed,
+			'silently_clamped' => $state !== $finalValue,
+		] );
 	}
 
-	/**
-	 * @return bool
-	 */
-	public static function isPausedTranslateEverything() {
-		return self::get( self::TRANSLATE_EVERYTHING_IS_PAUSED, false );
+	public static function setHasTranslateEverythingBeenEverUsed( $state = false ) {
+		self::set( self::HAS_TRANSLATE_EVERYTHING_BEEN_EVER_USED, $state );
 	}
 
-	/** @param bool $state */
-	public static function setIsPausedTranslateEverything( $state ) {
-		self::set( self::TRANSLATE_EVERYTHING_IS_PAUSED, (bool) $state );
+	public static function getHasTranslateEverythingBeenEverUsed() {
+		return self::get( self::HAS_TRANSLATE_EVERYTHING_BEEN_EVER_USED, false );
 	}
 
-	/**
-	 * @return bool
-	 */
 	public static function getTranslateEverything() {
 		return self::get( self::TRANSLATE_EVERYTHING, false );
 	}
 
-	public static function setTranslateEverythingCompleted( $completed ) {
-		self::set( self::TRANSLATE_EVERYTHING_COMPLETED, $completed );
+	public static function getAiSkipped() {
+		return (bool) self::get( self::AI_SKIPPED, false );
 	}
 
-	public static function markPostTypeAsCompleted( $postType, $languages ) {
-		$completed              = self::getTranslateEverythingCompleted();
-		$completed[ $postType ] = $languages;
-
-		self::setTranslateEverythingCompleted( $completed );
+	public static function setAiSkipped( $state ) {
+		self::set( self::AI_SKIPPED, (bool) $state );
 	}
 
-	public static function removePostTypeFromCompleted( $postType ) {
-		$completed = self::getTranslateEverythingCompleted();
-		unset( $completed[ $postType ] );
-
-		self::setTranslateEverythingCompleted( $completed );
-	}
-
-	public static function removeLanguageFromCompleted( $language ) {
-		$removeLanguage = Fns::map( Fns::reject( Relation::equals( $language ) ) );
-
-		self::setTranslateEverythingCompleted( $removeLanguage( self::getTranslateEverythingCompleted() ) );
-	}
-
-	public static function getTranslateEverythingCompleted() {
-		return self::get( self::TRANSLATE_EVERYTHING_COMPLETED, [] );
-	}
 
 	public static function isTMAllowed() {
 		return self::get( self::TM_ALLOWED );
@@ -150,16 +139,22 @@ class Option {
 
 	public static function setTMAllowed( $isTMAllowed ) {
 		self::set( self::TM_ALLOWED, $isTMAllowed );
+		self::notifyJobLog( 'tm_allowed_changed', [ 'new' => $isTMAllowed ] );
 	}
 
 	public static function setReviewMode( $mode ) {
-		$allowedOptions = [ self::PUBLISH_AND_REVIEW, self::NO_REVIEW, self::HOLD_FOR_REVIEW ];
+		$allowedOptions = [ null, self::PUBLISH_AND_REVIEW, self::NO_REVIEW, self::HOLD_FOR_REVIEW ];
 		if ( Lst::includes( $mode, $allowedOptions ) ) {
 			self::set( self::REVIEW_MODE, $mode );
+			self::notifyJobLog( 'review_mode_changed', [ 'new' => $mode ] );
+		} else {
+			self::notifyJobLog( 'review_mode_invalid_value', [
+				'rejected_value' => is_scalar( $mode ) ? (string) $mode : gettype( $mode ),
+			], true );
 		}
 	}
 
-	public static function getReviewMode( $default = self::HOLD_FOR_REVIEW ) {
+	public static function getReviewMode( $default = null ) {
 		return self::get( self::REVIEW_MODE, $default );
 	}
 
@@ -167,18 +162,22 @@ class Option {
 		return self::getReviewMode() !== self::NO_REVIEW;
 	}
 
-	/**
-	 * @return LanguageMapping[]
-	 */
 	public static function getLanguageMappings() {
 		return self::get( self::LANGUAGES_MAPPING, [] );
 	}
 
-	/**
-	 * @param LanguageMapping $languageMapping
-	 */
-	public static function addLanguageMapping( LanguageMapping $languageMapping) {
+	public static function addLanguageMapping( LanguageMapping $languageMapping ) {
 		self::set( self::LANGUAGES_MAPPING, Lst::append( $languageMapping, self::getLanguageMappings() ) );
+	}
+
+	public static function removeLanguageMapping( $sourceCode ) {
+		$kept = array_values( array_filter(
+			self::getLanguageMappings(),
+			function ( $mapping ) use ( $sourceCode ) {
+				return strtolower( (string) $mapping->sourceCode ) !== strtolower( (string) $sourceCode );
+			}
+		) );
+		self::set( self::LANGUAGES_MAPPING, $kept );
 	}
 
 	private static function get( $key, $default = null ) {
@@ -189,16 +188,99 @@ class Option {
 		return ( new OptionManager() )->set( self::OPTION_GROUP, $key, $value );
 	}
 
-	/**
-	 * @param bool $hasPreferredTranslationService
-	 * @return bool
-	 */
 	public static function getTranslateEverythingDefaultInSetup( $hasPreferredTranslationService = false ) {
 		if ( $hasPreferredTranslationService ) {
 			return false;
 		}
+
 		return PostType::getPublishedCount( 'post' ) + PostType::getPublishedCount( 'page' ) > self::POSTS_LIMIT_FOR_AUTOMATIC_TRANSLATION
 			? false
 			: true;
+	}
+
+
+	public static function setTranslateEverythingCompletedPosts( array $completed ) {
+		self::set( self::TRANSLATE_EVERYTHING_POSTS, $completed );
+	}
+
+	public static function getTranslateEverythingCompletedPosts(): array {
+		return self::get( self::TRANSLATE_EVERYTHING_POSTS, [] );
+	}
+
+
+	public static function getTranslateEverythingPostsSinceDates(): array {
+		return self::get( self::TRANSLATE_EVERYTHING_POSTS_SINCE_DATES, [] );
+	}
+
+	public static function getTranslateEverythingPostSinceDate( $type ) {
+		$dates = self::getTranslateEverythingPostsSinceDates();
+
+		return isset( $dates[ $type ] ) ? $dates[ $type ] : self::SINCE_DATE_SKIP_TYPE;
+	}
+
+	public static function getTranslateEverythingPackageKindSinceDate( $kindSlug ) {
+		$kindSlug = strtolower( $kindSlug );
+
+		foreach ( self::getTranslateEverythingPostsSinceDates() as $key => $date ) {
+			if ( strtolower( $key ) === $kindSlug ) {
+				return $date;
+			}
+		}
+
+		return self::SINCE_DATE_ALL;
+	}
+
+
+	public static function setTranslateEverythingCompletedPackages( array $completed ) {
+		self::set( self::TRANSLATE_EVERYTHING_PACKAGES_COMPLETED, $completed );
+	}
+
+	public static function getTranslateEverythingCompletedPackages(): array {
+		return self::get( self::TRANSLATE_EVERYTHING_PACKAGES_COMPLETED, [] );
+	}
+
+	public static function setTranslateEverythingCompletedStrings( array $completed ) {
+		self::set( self::TRANSLATE_EVERYTHING_SRTINGS_COMPLETED, $completed );
+	}
+
+	public static function getTranslateEverythingCompletedStrings(): array {
+		return self::get( self::TRANSLATE_EVERYTHING_SRTINGS_COMPLETED, [] );
+	}
+
+	public static function setTranslateEverythingCompletedTaxonomies( array $completed ) {
+		self::set( self::TRANSLATE_EVERYTHING_TAXONOMIES_COMPLETED, $completed );
+	}
+
+	public static function getTranslateEverythingCompletedTaxonomies(): array {
+		return self::get( self::TRANSLATE_EVERYTHING_TAXONOMIES_COMPLETED, [] );
+	}
+
+	public static function setTranslateEverythingCompletedTaxonomyLabels( array $completed ) {
+		self::set( self::TRANSLATE_EVERYTHING_TAXONOMY_LABELS_COMPLETED, $completed );
+	}
+
+	public static function getTranslateEverythingCompletedTaxonomyLabels(): array {
+		return self::get( self::TRANSLATE_EVERYTHING_TAXONOMY_LABELS_COMPLETED, [] );
+	}
+
+	public static function getTranslateEverythingDrafts() {
+		return self::get( self::TRANSLATE_EVERYTHING_DRAFTS, 0 );
+	}
+
+	public static function setTranslateEverythingDrafts( $isActive ) {
+		$result = self::set( self::TRANSLATE_EVERYTHING_DRAFTS, $isActive );
+		self::notifyJobLog( 'translate_everything_drafts_changed', [ 'new' => $isActive ] );
+		return $result;
+	}
+
+	private static function notifyJobLog( $eventId, array $data, $isError = false ) {
+		if ( ! class_exists( \WPML\TM\Jobs\JobLog::class ) ) {
+			return;
+		}
+		if ( $isError ) {
+			\WPML\TM\Jobs\JobLog::addError( $eventId, $data );
+		} else {
+			\WPML\TM\Jobs\JobLog::add( $eventId, $data );
+		}
 	}
 }

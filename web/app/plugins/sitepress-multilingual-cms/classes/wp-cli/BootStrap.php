@@ -3,17 +3,18 @@
 namespace WPML\CLI\Core;
 
 use WPML\CLI\Core\Commands\ClearCacheFactory;
+use WPML\CLI\Core\Commands\MigrateLanguagesFactory;
+use WPML\CLI\Core\Commands\PullDeliveryFactory;
 use WPML\CLI\Core\Commands\ICommand;
 
 class BootStrap {
 	const MAIN_COMMAND = 'wpml';
 
-	/**
-	 * @throws \Exception The exception thrown by \WP_CLI::add_command.
-	 */
 	public function init() {
 		$commands_factory = [
 			ClearCacheFactory::class,
+			MigrateLanguagesFactory::class,
+			PullDeliveryFactory::class,
 		];
 
 		foreach ( $commands_factory as $command_factory ) {
@@ -25,21 +26,10 @@ class BootStrap {
 		}
 	}
 
-	/**
-	 * @param string   $command_text The subcommand.
-	 * @param callable $command      Command implementation as a class, function or closure.
-	 *
-	 * @throws \Exception The exception thrown by \WP_CLI::add_command.
-	 */
 	private function add_command( $command_text, $command ) {
 		\WP_CLI::add_command( $command_text, $command );
 	}
 
-	/**
-	 * @param ICommand $command Command implementation as a class, function or closure.
-	 *
-	 * @return string The sub command prefixed by the top-level command (all trimmed).
-	 */
 	private function getFullCommand( $command ) {
 		return trim( self::MAIN_COMMAND . ' ' . $command->get_command() );
 	}

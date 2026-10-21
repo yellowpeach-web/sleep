@@ -1,14 +1,19 @@
-<div id="batch-media-translation-wrap" class="batch-media-translation-wrap notice otgs-notice notice-info otgs-is-dismissible" style="display: none">
+<div id="batch-media-translation-wrap" class="batch-media-translation-wrap notice otgs-notice notice-info otgs-is-dismissible" style="display: none"
+     data-was-replaced="{{ strings.was_replaced }}" data-other-posts="{{ strings.other_posts }}" data-without-usage="{{ strings.without_usage }}">
     <span class="notice-dismiss js-close"><span class="screen-reader-text">{{ strings.close }}</span></span>
     <form id="batch-media-translation-form" method="post" action="">
         <input type="hidden" name="action" value="wpml_media_scan_prepare" />
+        <input type="hidden" name="nonce" value="{{ scan_nonce }}" />
+        {# The two texts are written in by createDialog() and cleared by reset():
+           a save that replaced no file must leave no "was replaced" copy anywhere
+           on the screen, hidden or not (wpmldev-8480). #}
         <div class="usage" style="display: none">
-            <p>{{ strings.was_replaced }}</p>
+            <p class="js-was-replaced"></p>
             <ul class="batch-media-translation-post-list"></ul>
-            <p>{{ strings.other_posts }}</p>
+            <p class="js-other-posts"></p>
         </div>
         <div class="no-usage" style="display: none">
-            <p>{{ strings.without_usage }}</p>
+            <p class="js-without-usage"></p>
         </div>
         <div class="batch-media-translation-action-wrap">
         <ul class="batch-media-translation-action-list">

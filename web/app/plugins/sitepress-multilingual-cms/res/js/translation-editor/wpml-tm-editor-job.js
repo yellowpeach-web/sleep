@@ -39,8 +39,22 @@ var WPML_TM = WPML_TM || {};
 				});
 		},
 		progressPercentage: function () {
+			// Count every field the form will submit, not just the ones on
+			// screen. The server completes a job only when EVERY submitted
+			// field carries `finished`, so measuring a different (smaller) set
+			// here lets the editor report 100% - and auto-tick the single
+			// "Translation complete" box - over a job the server then refuses
+			// to complete. With the "hide completed fields" switcher on, the
+			// old `:visible` pair went to 0/0 = NaN once the last row was
+			// ticked and hidden, so a fully finished job saved as still in
+			// progress (wpmldev-7815).
+			var finishedCheckboxes = jQuery('.icl_tm_finished');
 
-			return jQuery('.icl_tm_finished:checked:visible').length / jQuery('.icl_tm_finished:visible').length * 100;
+			if (!finishedCheckboxes.length) {
+				return 0;
+			}
+
+			return finishedCheckboxes.filter(':checked').length / finishedCheckboxes.length * 100;
 		},
 		/**
 		 * Overrides the BackBone url method to use the WordPress ajax endpoint

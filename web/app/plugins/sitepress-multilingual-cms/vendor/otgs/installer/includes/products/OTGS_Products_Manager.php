@@ -4,31 +4,14 @@ use OTGS\Installer\Products\ExternalProductsUrls;
 
 class OTGS_Products_Manager {
 
-	/**
-	 * @var OTGS_Products_Config_Xml
-	 */
 	private $products_config_xml;
 
-	/**
-	 * @var WP_Installer_Channels
-	 */
 	private $installer_channels;
 
-	/**
-	 * @var OTGS_Installer_Logger_Storage
-	 */
 	private $logger_storage;
 
-	/**
-	 * @var ExternalProductsUrls
-	 */
 	private $externalProductUrls;
 
-	/**
-	 * @param OTGS_Products_Config_Xml $products_config_xml
-	 * @param WP_Installer_Channels $installer_channels
-	 * @param OTGS_Installer_Logger_Storage $logger_storage
-	 */
 	public function __construct(
 		OTGS_Products_Config_Xml $products_config_xml,
 		WP_Installer_Channels $installer_channels,
@@ -41,24 +24,23 @@ class OTGS_Products_Manager {
 		$this->externalProductUrls = $externalProductUrls;
 	}
 
-	/**
-	 * @param string       $repository_id
-	 * @param string|false $site_key
-	 * @param string       $site_url
-	 * @param bool         $bypass_buckets
-	 *
-	 * @return string|null
-	 */
 	public function get_products_url( $repository_id, $site_key, $site_url, $bypass_buckets ) {
 		$repo_id_upper = strtoupper( $repository_id );
 		if ( defined( "OTGS_INSTALLER_{$repo_id_upper}_PRODUCTS" ) ) {
 			return constant( "OTGS_INSTALLER_{$repo_id_upper}_PRODUCTS" );
 		}
-		$api_urls = $this->products_config_xml->get_products_api_urls();
-		if ( ! $bypass_buckets && $this->is_on_production_channel( $repository_id ) && isset( $api_urls[ $repository_id ] ) ) {
 
+		$configured_url = $this->products_config_xml->get_repository_products_url( $repository_id );
+
+		$feed_document = $this->get_feed_document_path( $repository_id, $configured_url );
+		if ( $feed_document ) {
+			return $feed_document;
+		}
+
+		$api_url = $this->has_split_feed( $repository_id ) ? null : $this->get_bucket_api_url( $repository_id, $bypass_buckets );
+		if ( $api_url ) {
 			try {
-				$products_url = $this->externalProductUrls->fetchProductUrl( $repository_id, $api_urls[ $repository_id ], $site_key, $site_url );
+				$products_url = $this->externalProductUrls->fetchProductUrl( $repository_id, $api_url, $site_key, $site_url );
 				if ( $products_url ) {
 					return $products_url;
 				}
@@ -67,24 +49,72 @@ class OTGS_Products_Manager {
 			}
 		}
 
-		return $this->products_config_xml->get_repository_products_url( $repository_id );
+		return $configured_url;
 	}
 
-	/**
-	 * @param string $repository_id
-	 *
-	 * @return bool
-	 */
+	public function get_releases_url( $repository_id, $site_key, $site_url, $bypass_buckets ) {
+		$repo_id_upper = strtoupper( $repository_id );
+		if ( defined( "OTGS_INSTALLER_{$repo_id_upper}_RELEASES" ) ) {
+			return constant( "OTGS_INSTALLER_{$repo_id_upper}_RELEASES" );
+		}
+
+		$configured_url = $this->products_config_xml->get_repository_releases_url( $repository_id );
+		if ( ! $configured_url ) {
+			return null;
+		}
+
+		$feed_document = $this->get_feed_document_path( $repository_id, $configured_url );
+		if ( $feed_document ) {
+			return $feed_document;
+		}
+
+		$api_url = $this->get_bucket_api_url( $repository_id, $bypass_buckets );
+		if ( $api_url ) {
+			try {
+				$releases_url = $this->externalProductUrls->fetchReleasesUrl( $repository_id, $api_url, $site_key, $site_url );
+				if ( $releases_url ) {
+					return $releases_url;
+				}
+			} catch ( Exception $e ) {
+				$this->logger_storage->add( $this->prepare_log( $repository_id, $e->getMessage() ) );
+			}
+		}
+
+		return $configured_url;
+	}
+
+	private function get_feed_document_path( $repository_id, $configured_url ) {
+		$constant = 'OTGS_INSTALLER_' . strtoupper( $repository_id ) . '_FEEDS_DIR';
+		if ( ! $configured_url || ! defined( $constant ) ) {
+			return null;
+		}
+
+		$dir = rtrim( (string) constant( $constant ), '/\\' );
+		if ( ! $dir ) {
+			return null;
+		}
+
+		return $dir . '/' . basename( $configured_url );
+	}
+
+	private function has_split_feed( $repository_id ) {
+		return (bool) $this->products_config_xml->get_repository_releases_url( $repository_id );
+	}
+
+	private function get_bucket_api_url( $repository_id, $bypass_buckets ) {
+		if ( $bypass_buckets || ! $this->is_on_production_channel( $repository_id ) ) {
+			return null;
+		}
+
+		$api_urls = $this->products_config_xml->get_products_api_urls();
+
+		return isset( $api_urls[ $repository_id ] ) ? $api_urls[ $repository_id ] : null;
+	}
+
 	private function is_on_production_channel( $repository_id ) {
 		return $this->installer_channels->get_channel( $repository_id ) === WP_Installer_Channels::CHANNEL_PRODUCTION;
 	}
 
-	/**
-	 * @param string $repository_id
-	 * @param string $message
-	 *
-	 * @return OTGS_Installer_Log
-	 */
 	private function prepare_log( $repository_id, $message ) {
 		$message = sprintf(
 			"Installer cannot contact our updates server to get information about the available products of %s and check for new versions. Error message: %s",

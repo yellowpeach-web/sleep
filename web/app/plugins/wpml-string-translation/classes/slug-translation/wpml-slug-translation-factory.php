@@ -53,7 +53,8 @@ class WPML_Slug_Translation_Factory implements IWPML_Frontend_Action_Loader, IWP
 			if ( $global_settings->is_enabled() ) {
 				$hooks['sync_strings'] = new WPML_ST_Slug_Translation_Strings_Sync(
 					$records_factory,
-					$settings_factory
+					$settings_factory,
+					$sitepress
 				);
 			}
 		}

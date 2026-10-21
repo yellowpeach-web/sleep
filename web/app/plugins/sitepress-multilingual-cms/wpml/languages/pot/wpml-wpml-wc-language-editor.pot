@@ -1,0 +1,2142 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-15T11:55:08+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: wpml\n"
+
+#. translators: Notice at the top of the WPML Languages editor, shown when changes from an earlier visit were never saved.
+msgid "You have unsaved language changes from a previous session."
+msgstr ""
+
+#. translators: Button label in the WPML Languages editor that brings back the unsaved changes from an earlier visit. Verb, imperative.
+msgid "Restore changes"
+msgstr ""
+
+#. translators: Button label in the WPML Languages editor that throws the unsaved changes away. Verb, imperative.
+msgid "Discard"
+msgstr ""
+
+#. translators: Notice at the top of the WPML Languages editor, shown when changes from an earlier visit could not be brought back because the site's languages have changed since.
+msgid "Unsaved language changes from a previous session could not be restored, because the site’s languages changed after they were made. Those changes were discarded."
+msgstr ""
+
+#. translators: Button label in the WPML Languages editor that closes the notice about discarded unsaved changes. Verb, imperative.
+msgid "Dismiss"
+msgstr ""
+
+msgid "Impact on existing content"
+msgstr ""
+
+msgid "Checking which content will be affected…"
+msgstr ""
+
+msgid "We couldn’t estimate the impact. You can still apply the change; content will be updated during the save."
+msgstr ""
+
+#. translators: Button label that runs the action again after it failed, used across WPML's screens. Verb, imperative.
+msgid "Try again"
+msgstr ""
+
+msgid "No existing content needs updating."
+msgstr ""
+
+#. translators: One item of the list of what a language change will touch, in the WPML Languages editor. %d: the number of posts.
+#, js-format
+msgid "%d post will be updated."
+msgid_plural "%d posts will be updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: One item of the list of what a language change will touch, in the WPML Languages editor. %d: the number of links.
+#, js-format
+msgid "%d link will be adjusted."
+msgid_plural "%d links will be adjusted."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: One item of the list of what a language change will touch, in the WPML Languages editor. %d: the number of translated strings that get a new key.
+#, js-format
+msgid "%d translated string will be re-keyed."
+msgid_plural "%d translated strings will be re-keyed."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Heading of the dialog that finishes a language change in the WPML Languages editor. %s: the language with its new country, e.g. "Spanish (Venezuela)". Verb, imperative.
+#, js-format
+msgid "Finish the change to %s"
+msgstr ""
+
+#. translators: Heading of the list of things WPML changes by itself, in the dialog that finishes a language change in the WPML Languages editor.
+msgid "What changes automatically"
+msgstr ""
+
+#. translators: One item of that list in the WPML Languages editor. %s: a country name, or the words "International" or "Regional".
+#, js-format
+msgid "The language’s country becomes %s."
+msgstr ""
+
+msgid "Automatic translation will be re-mapped to the new regional variant. Existing translations stay as they are."
+msgstr ""
+
+msgid "Automatic translation will now target the new regional variant. Existing translations stay as they are."
+msgstr ""
+
+#. translators: One item of that list in the WPML Languages editor. %s: the new hreflang tag, e.g. "es-VE". "hreflang" is the name of an HTML attribute; keep it.
+#, js-format
+msgid "The hreflang tag becomes %s."
+msgstr ""
+
+msgid "Also update these?"
+msgstr ""
+
+#. translators: Heading over the choice, in the dialog that finishes a language change in the WPML Languages editor, that can break existing links (the change of the language code in URLs). It is shown apart from the harmless choices and is off unless ticked.
+msgid "Riskier change"
+msgstr ""
+
+#. translators: Button label that closes a dialog or a box without applying anything, used across WPML's screens. Verb, imperative, not the status of a cancelled job.
+msgid "Cancel"
+msgstr ""
+
+#. translators: Button label that puts the choices in a dialog into effect, used across WPML's screens. Verb, imperative.
+msgid "Apply"
+msgstr ""
+
+#. translators: Sentence added to a choice in the WPML Languages editor. %s: the language being added, e.g. "German (Austria)" or "Italian" — it follows "in", so the sentence needs no article before the name.
+#, js-format
+msgid "Anything whose translation group already has a version in %s stays where it is."
+msgstr ""
+
+#. translators: Label of a choice in the WPML Languages editor. %1$d: how many pages there are, %2$s: the name of the language that was removed, e.g. "German".
+#, js-format
+msgid "You have %1$d %2$s page from a language you removed. Bring it here?"
+msgid_plural "You have %1$d %2$s pages from a language you removed. Bring them here?"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Label of the tick box that acknowledges a language change in the WPML Languages editor. %1$s: the language that was removed, %2$s: the language being added.
+#, js-format
+msgid "I understand these items are not %1$s and will be re-labelled as %2$s."
+msgstr ""
+
+#. translators: Explanation under a choice in the WPML Languages editor. %s: the language being added, e.g. "German (Austria)".
+#, js-format
+msgid "Re-labels them as %s, keeping their connections to your other languages."
+msgstr ""
+
+#. translators: Heading of the dialog that offers to move content from a removed language, in the WPML Languages editor.
+msgid "Content from a language you removed"
+msgstr ""
+
+#. translators: Heading above the list of choices in that dialog, in the WPML Languages editor. Verb, imperative.
+msgid "Choose what to bring here"
+msgstr ""
+
+#. translators: Button label that puts the ticked changes into effect, in the WPML Languages editor. Verb, imperative.
+msgid "Apply changes"
+msgstr ""
+
+#. translators: Note at the bottom of that dialog in the WPML Languages editor. "Save" is the label of the editor's own save button; translate it the same way there.
+msgid "These changes are applied when you click Save."
+msgstr ""
+
+#. translators: Label of a choice in the WPML Languages editor. %1$s: the WordPress locale used now, e.g. "es_CO", %2$s: the new one, e.g. "es_VE". "WordPress locale" is the name of a setting; the codes themselves are never translated.
+#, js-format
+msgid "Change the WordPress locale %1$s → %2$s"
+msgstr ""
+
+msgid "WordPress uses this to load admin language packs and plugin / theme translations."
+msgstr ""
+
+#. translators: Why a choice cannot be ticked, in the WPML Languages editor. %s: the name of the language that already has this setting.
+#, js-format
+msgid "Already used by %s."
+msgstr ""
+
+#. translators: Label of a choice in the WPML Languages editor. %1$s: the code used in URLs now, e.g. "/es/", %2$s: the new one, e.g. "/es-ve/". The codes themselves are never translated.
+#, js-format
+msgid "Change the language code in URLs %1$s → %2$s"
+msgstr ""
+
+#. translators: Explanation under a choice in the WPML Languages editor. %s: the code used in URLs now, e.g. "/es/". "404" is the browser's not-found error.
+#, js-format
+msgid "Renames the language code. Existing %s URLs in search engines, bookmarks and external links become 404s unless redirects are set up."
+msgstr ""
+
+#. translators: Label of a choice in the WPML Languages editor. %s: the name of the country, or of the language, whose flag is offered. Verb, imperative.
+#, js-format
+msgid "Use the flag of %s"
+msgstr ""
+
+msgid "You picked the current flag yourself, so WPML keeps it unless you ask."
+msgstr ""
+
+msgid "The flag shown in language switchers and in the admin."
+msgstr ""
+
+#. translators: Label of a choice in the WPML Languages editor. %1$s: the language's name now, %2$s: its new name. Verb, imperative.
+#, js-format
+msgid "Rename the language %1$s → %2$s"
+msgstr ""
+
+msgid "Updates the name in every language of the admin. Labels you edited yourself are kept."
+msgstr ""
+
+#. translators: Label of a choice in the WPML Languages editor. %1$s: the hreflang tag used now, %2$s: the new one. "hreflang" is the name of an HTML attribute and the tags themselves are never translated. Verb, imperative.
+#, js-format
+msgid "Change the hreflang tag %1$s → %2$s"
+msgstr ""
+
+msgid "You customised this tag, so WPML keeps it unless you ask. Search engines read it to serve the right regional version."
+msgstr ""
+
+#. translators: Heading of the dialog that removes a language, in the WPML Languages editor. %s: the language name, e.g. "German".
+#, js-format
+msgid "What should happen to %s?"
+msgstr ""
+
+msgid "Pick the outcome you want. Nothing happens until you confirm below."
+msgstr ""
+
+msgid "Checking for translated content…"
+msgstr ""
+
+msgid "What should happen to this language"
+msgstr ""
+
+msgid "Which content types"
+msgstr ""
+
+#. translators: Label of a tick box that includes one group of content, in the dialog that removes a language. %1$s: the group's name, e.g. "Pages and posts", %2$d: how many items it holds.
+#, js-format
+msgid "%1$s — %2$d item"
+msgid_plural "%1$s — %2$d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Name of a group of content in the dialog that removes a language, in the WPML Languages editor. Plural nouns.
+msgid "Pages and posts"
+msgstr ""
+
+#. translators: Name of a group of content in the dialog that removes a language, in the WPML Languages editor. It means WooCommerce products. Plural noun.
+msgid "Products"
+msgstr ""
+
+#. translators: Name of a group of content in the dialog that removes a language, in the WPML Languages editor. Plural nouns.
+msgid "Categories and tags"
+msgstr ""
+
+#. translators: Name of a group of content in the dialog that removes a language, in the WPML Languages editor. It means the pictures in the media library. Plural noun.
+msgid "Images"
+msgstr ""
+
+#. translators: Name of a group of content in the dialog that removes a language, in the WPML Languages editor. It means the site's navigation menus. Plural noun.
+msgid "Menus"
+msgstr ""
+
+#. translators: Radio button in the dialog that removes a language, in the WPML Languages editor; "them" is the content of that language. Verb, imperative.
+msgid "Delete them permanently now — this cannot be undone"
+msgstr ""
+
+#. translators: Note under the radio buttons in the dialog that removes a language; "those" is the categories, tags and menus just named.
+msgid "Categories, tags and menus have no WordPress Trash, so those are deleted right away either way."
+msgstr ""
+
+#. translators: Statement in the dialog that removes a language, in the WPML Languages editor. %s: the other languages of the site, e.g. "English, French". The words in quotation marks are the name of a WPML setting; translate them the way that setting is translated.
+#, js-format
+msgid "Your site’s setting “when deleting a post, delete its translations too” is on. We will not apply it here, so nothing in %s is deleted."
+msgstr ""
+
+#. translators: Separator between names in a list, as in "German, Spanish and French". Keep the trailing space.
+msgid ", "
+msgstr ""
+
+#. translators: Stands in for the list of language names in the sentence above when the site has none to name. It sits inside that sentence, so it starts in lower case.
+msgid "your other languages"
+msgstr ""
+
+#. translators: One item of the list of what removing a language does, in the WPML Languages editor. %s: the language name, e.g. "German".
+#, js-format
+msgid "%s’s string translations are deleted with it."
+msgstr ""
+
+#. translators: One item of the list of what removing a language does, in the WPML Languages editor; "Its" is that language's.
+msgid "Its queued translation jobs are cancelled without charge; any already in progress are stopped, and the words already sent are still charged."
+msgstr ""
+
+#. translators: Label of the dropdown that picks where the content goes, in the dialog that removes a language. The dropdown finishes the sentence, so there is no full stop.
+msgid "Move this content into"
+msgstr ""
+
+#. translators: First option of the dropdown that picks where the content goes, in the dialog that removes a language. Verb, imperative; keep the ellipsis.
+msgid "Choose a language…"
+msgstr ""
+
+#. translators: Heading of the group of options in that dropdown that are the same language in another country, e.g. Spanish (Mexico) under Spanish.
+msgid "Same language"
+msgstr ""
+
+msgid "A different language"
+msgstr ""
+
+#. translators: Label of the tick box that acknowledges the move, in the dialog that removes a language. %s: the language name, e.g. "German".
+#, js-format
+msgid "I understand these items are not %s and will be re-labelled as the language I pick."
+msgstr ""
+
+#. translators: Note under the move options in the dialog that removes a language. %s: the language name, e.g. "German".
+#, js-format
+msgid "%s is taken off the site when you save, and its content is moved straight after — nothing is deleted either way."
+msgstr ""
+
+#. translators: Error in the dialog that removes a language, in the WPML Languages editor. %s: the language name, e.g. "German".
+#, js-format
+msgid "WPML could not stop translating into %s. Nothing was changed — try again, or pick another goal."
+msgstr ""
+
+#. translators: Button label that lists the items before anything happens, in the dialog that removes a language. %d: how many items would be listed. Verb, imperative.
+#, js-format
+msgid "Review %d item"
+msgid_plural "Review %d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Label of the confirming button in the dialog that removes a language, in the WPML Languages editor. %s: the language name, e.g. "German". Verb, imperative.
+#, js-format
+msgid "Stop translating into %s"
+msgstr ""
+
+#. translators: Label of the confirming button in the dialog that removes a language, in the WPML Languages editor. %1$d: how many items move, %2$s: the language they move into. Verb, imperative.
+#, js-format
+msgid "Move %1$d item into %2$s"
+msgid_plural "Move %1$d items into %2$s"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Label of the confirming button in the dialog that removes a language, in the WPML Languages editor. %d: how many items move. Verb, imperative.
+#, js-format
+msgid "Move %d item"
+msgid_plural "Move %d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Label of the confirming button in the dialog that removes a language, in the WPML Languages editor. %d: how many items go to the Trash. Verb, imperative.
+#, js-format
+msgid "Move %d item to the Trash"
+msgid_plural "Move %d items to the Trash"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Label of the confirming button in the dialog that removes a language, in the WPML Languages editor. %d: how many items are deleted for good. Verb, imperative.
+#, js-format
+msgid "Delete %d item permanently"
+msgid_plural "Delete %d items permanently"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Remove language — nothing is deleted"
+msgstr ""
+
+msgid "What would be removed"
+msgstr ""
+
+msgid "Hide the list"
+msgstr ""
+
+msgid "Reading the list…"
+msgstr ""
+
+msgid "We couldn’t read the list of items. The counts above still stand, and you can go ahead or close this dialog."
+msgstr ""
+
+#. translators: One row of the list of content in the WPML Languages editor. %1$s: the item's title, %2$s: the name of its content type, %3$d: its number. Keep the # before the number.
+#, js-format
+msgid "%1$s — %2$s (#%3$d)"
+msgstr ""
+
+#. translators: Shown in place of the list of content in the WPML Languages editor when nothing is ticked.
+msgid "Nothing is selected right now."
+msgstr ""
+
+#. translators: Range line under the list of content in the WPML Languages editor. %1$d: the first row shown, %2$d: the last row shown, %3$d: how many rows there are altogether.
+#, js-format
+msgid "Showing %1$d–%2$d of %3$d item"
+msgid_plural "Showing %1$d–%2$d of %3$d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Used on WPML's paged lists for the control that goes back one page: the visible button label, and the accessible label (screen readers) of the back arrow.
+msgid "Previous"
+msgstr ""
+
+#. translators: Used on WPML's paged lists for the control that goes forward one page: the visible button label, and the accessible label (screen readers) of the forward arrow.
+msgid "Next"
+msgstr ""
+
+#. translators: Result line in the WPML Languages editor after a language was removed. %s: the language name, e.g. "German". "Removed languages" is the name of a panel on the same screen; translate it the same way there.
+#, js-format
+msgid "%s is off your site, but its content could not be moved. Nothing was deleted — the content is listed under Removed languages, where you can move it from."
+msgstr ""
+
+#. translators: Used in two places on WPML's screens: the heading of the dialog that reports a finished action, and the marker on a step that is already done. It means "finished", not a command.
+msgid "Done"
+msgstr ""
+
+#. translators: Result line in the WPML Languages editor after translation into a language was stopped. %s: the language name, e.g. "German".
+#, js-format
+msgid "%s stays on your site. Its pages keep their addresses and their search rankings, and the language switcher keeps offering it."
+msgstr ""
+
+#. translators: Result line in the WPML Languages editor. %s: the language name, e.g. "German". "Resume translating" is a control on the same screen; translate it the same way there.
+#, js-format
+msgid "WPML has stopped creating new %s translations. To start again, use “Resume translating” on the language’s row."
+msgstr ""
+
+#. translators: Result line in the WPML Languages editor after a language was taken off the site. %1$s: the language name, %2$s: the site's default language.
+#, js-format
+msgid "%1$s is off your site. Nothing was deleted: its addresses now redirect to your %2$s pages, and every item it holds is still in your database and in your admin lists."
+msgstr ""
+
+#. translators: Result line in the WPML Languages editor. %s: the language name, e.g. "German". "Put back" and "Removed languages" are a control and a panel on the same screen; translate them the same way there.
+#, js-format
+msgid "To bring %s back, add it again — or use “Put back” under Removed languages, below."
+msgstr ""
+
+#. translators: Result line in the WPML Languages editor, for a language the site owner created themselves. %s: the language name, e.g. "Aussie English". "custom language" is the editor's own wording for a language the user adds by hand; translate it the same way there.
+#, js-format
+msgid "To bring %s back, add it again as a custom language with the same code — its content is still here."
+msgstr ""
+
+#. translators: Result line in the WPML Languages editor, for a language that has no country on record. %s: the language name, e.g. "German". "language picker" is the search-and-add box on the same screen; translate it the same way there.
+#, js-format
+msgid "To bring %s back, add it again from the language picker — it asks which country the content belongs to, and the content is still here."
+msgstr ""
+
+#. translators: Result line in the WPML Languages editor after content went to the Trash; "They" is that content. %s: the date it is emptied, in the site's own format, e.g. "4/12/2026".
+#, js-format
+msgid "They stay in your Trash until %s."
+msgstr ""
+
+#. translators: Result line in the WPML Languages editor. %s: the language name, e.g. "German".
+#, js-format
+msgid "The deletion of %s’s content finished. WPML could not read back a record of what it removed."
+msgstr ""
+
+#. translators: Button label that closes a dialog, used across WPML's screens. Verb, imperative.
+msgid "Close"
+msgstr ""
+
+msgid "Unavailable until WPML can count this language’s content."
+msgstr ""
+
+msgid "If your site uses one domain per language, that language’s domain is not redirected: while it still points at this site it answers in your site’s default language at the same addresses."
+msgstr ""
+
+#. translators: Explanation under the choice that deletes a language's content, in the WPML Languages editor.
+msgid "The listed items are removed, along with their translation records, their string translations and their translation jobs."
+msgstr ""
+
+#. translators: Explanation under the choice that deletes a language's content, in the WPML Languages editor. %d: how many translation jobs go with it.
+#, js-format
+msgid "The listed items are removed, along with their translation records, their string translations and their %d translation job."
+msgid_plural "The listed items are removed, along with their translation records, their string translations and their %d translation jobs."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "We couldn’t check for translated content. You can still remove the language; its translations are kept. Deleting its content and moving it into another language both need that count, so those two goals are unavailable."
+msgstr ""
+
+#. translators: Read out to screen readers next to the badge on a choice in the WPML Languages editor; "This" is that choice.
+msgid "This can be undone."
+msgstr ""
+
+#. translators: Title of a choice in the dialog that removes a language, in the WPML Languages editor. %s: the language name, e.g. "German". Verb, imperative.
+#, js-format
+msgid "Stop translating into %s, keep its content online."
+msgstr ""
+
+#. translators: Explanation under a choice in the WPML Languages editor. %1$s is the language name, e.g. "German", and appears twice in the sentence.
+#, js-format
+msgid "Your %1$s content stays published at its current addresses and keeps its search rankings. The language switcher keeps offering %1$s."
+msgstr ""
+
+#. translators: Explanation under a choice in the WPML Languages editor. %1$d: how many translated items there are (posts, pages, categories… — the noun stays neutral), %2$s: the language name, which appears twice in the sentence.
+#, js-format
+msgid "Your %1$d %2$s item stays published at its current address and keeps its search ranking. The language switcher keeps offering %2$s."
+msgid_plural "Your %1$d %2$s items stay published at their current addresses and keep their search rankings. The language switcher keeps offering %2$s."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Translations are already paused for this language — nothing more changes."
+msgstr ""
+
+msgid "WPML stops creating new translations."
+msgstr ""
+
+#. translators: Badge on a choice in the dialog that removes a language, in the WPML Languages editor.
+msgid "Nothing is deleted"
+msgstr ""
+
+#. translators: Title of a choice in the dialog that removes a language, in the WPML Languages editor. %s: the language name, e.g. "German". Verb, imperative.
+#, js-format
+msgid "Take %s off the site, but keep everything in case we come back."
+msgstr ""
+
+#. translators: Explanation under a choice in the WPML Languages editor. %1$s: the language name, which appears three times in the sentence, %2$s: the site's default language. "404" is the browser's not-found error.
+#, js-format
+msgid "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. Everything %1$s holds stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was."
+msgstr ""
+
+#. translators: Explanation under a choice in the WPML Languages editor. %1$s: the language name, which appears twice in the sentence, %2$s: the site's default language, %3$d: how many items there are. "404" is the browser's not-found error.
+#, js-format
+msgid "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. The %3$d item stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was."
+msgid_plural "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. The %3$d items stay in your database and in your admin lists, and re-adding %1$s brings them back exactly as they were."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Badge on a choice in the dialog that removes a language, in the WPML Languages editor. It says the choice can be undone. Adjective.
+msgid "Reversible"
+msgstr ""
+
+#. translators: Title of a choice in the dialog that removes a language, in the WPML Languages editor. %s: the language name, e.g. "German". Verb, imperative.
+#, js-format
+msgid "Take %s off the site and delete its content."
+msgstr ""
+
+msgid "Originals in other languages are untouched. Image files stay on disk."
+msgstr ""
+
+#. translators: Badge on the choice that deletes a language's content, in the WPML Languages editor. "the Trash route" is one of the two ways of deleting offered lower in the same dialog.
+msgid "Only reversible if the Trash route is chosen"
+msgstr ""
+
+#. translators: Badge on the choice that deletes a language's content, in the WPML Languages editor, on a site where WordPress keeps no Trash.
+msgid "Not reversible — this site has the Trash disabled"
+msgstr ""
+
+#. translators: Read out to screen readers next to the badge on a choice in the WPML Languages editor; "This" is that choice.
+msgid "This can only be undone when the items go to the Trash."
+msgstr ""
+
+#. translators: Read out to screen readers next to the badge on a choice in the WPML Languages editor, on a site where WordPress keeps no Trash.
+msgid "This site has the Trash disabled, so deleting this content cannot be undone."
+msgstr ""
+
+#. translators: Title of a choice in the dialog that removes a language, in the WPML Languages editor. Verb, imperative.
+msgid "Move this language’s content into another language."
+msgstr ""
+
+#. translators: Explanation under a choice in the WPML Languages editor, used when the item count could not be read.
+msgid "Reassigns this language’s items to a language you pick, keeping their connections to the other languages. For renaming and merging, not retiring."
+msgstr ""
+
+#. translators: Explanation under a choice in the WPML Languages editor. %d: how many items are given to the other language.
+#, js-format
+msgid "Reassigns the %d item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring."
+msgid_plural "Reassigns the %d items to a language you pick, keeping their connections to the other languages. For renaming and merging, not retiring."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "The content is kept, but the move cannot be undone."
+msgstr ""
+
+#. translators: Shown in place of the move panel in the WPML Languages editor when the site has no other language to move the content into.
+msgid "There is no other active language on this site to move the content into."
+msgstr ""
+
+#. translators: Heading of the dialog shown when a language that once existed is added again, in the WPML Languages editor. %s: the language name, e.g. "English".
+#, js-format
+msgid "You have existing content in %s"
+msgstr ""
+
+#. translators: Question under that heading in the WPML Languages editor. %1$d: how many items there are, %2$s: the language name.
+#, js-format
+msgid "This site has %1$d items in %2$s from before. What should happen to them?"
+msgstr ""
+
+#. translators: Radio button in the WPML Languages editor. %1$s: the language name, %2$s: the country, giving e.g. "English (United States)". Verb, imperative.
+#, js-format
+msgid "Bring back my content as %1$s (%2$s)."
+msgstr ""
+
+#. translators: Note under that radio button in the WPML Languages editor. %s: the language code, e.g. "en", which is never translated.
+#, js-format
+msgid "The language keeps its original code (%s). There is no automatic way back."
+msgstr ""
+
+msgid "Start fresh and keep the old content separate."
+msgstr ""
+
+msgid "You can attach the old content to the new language later from WPML → Support."
+msgstr ""
+
+#. translators: Button label that closes a dialog or a panel without doing anything, in the WPML Languages editor. A gentle way of saying "cancel".
+msgid "Never mind"
+msgstr ""
+
+#. translators: Button label that confirms adding the language, in the WPML Languages editor. Verb, imperative.
+msgid "Add language"
+msgstr ""
+
+#. translators: Used in two places in the WPML Languages editor for the same thing: the heading of the dialog that estimates the cost of a new language, and the label of the button that opens it.
+msgid "How much would a new language cost?"
+msgstr ""
+
+msgid "Pick a language to see how many words your content has and what translating them would cost."
+msgstr ""
+
+msgid "These costs apply once you use automatic translation for the new language."
+msgstr ""
+
+msgid "No languages are available to estimate. Every language automatic translation supports is already on your site."
+msgstr ""
+
+#. translators: Label of the dropdown that picks the language to estimate, in the WPML Languages editor. Noun.
+msgid "Language"
+msgstr ""
+
+msgid "Select a language…"
+msgstr ""
+
+#. translators: Button label that works out what the chosen language would cost, in the WPML Languages editor. Verb, imperative.
+msgid "Show cost"
+msgstr ""
+
+#. translators: Heading of the dialog that adds a language of the site's own making, in the WPML Languages editor.
+msgid "Add a custom language"
+msgstr ""
+
+#. translators: Line under that heading in the WPML Languages editor; "this" is the form the dialog shows.
+msgid "Use this only for non-standard dialects or local variants that aren't in the language list."
+msgstr ""
+
+msgid "Most users don't need a custom language. Most variants (e.g., Mexican Spanish, Brazilian Portuguese) already exist in the language list above. Use this form only for genuine custom language variants."
+msgstr ""
+
+msgid "Variant name"
+msgstr ""
+
+#. translators: Placeholder text in the field that names the custom language, in the WPML Languages editor. "Andalusian" is an example; use a language name your readers know.
+msgid "e.g., Andalusian"
+msgstr ""
+
+#. translators: Error under the name field in the dialog that adds a custom language, in the WPML Languages editor. %s: the name of a language the site already has.
+#, js-format
+msgid "“%s” is already the name of one of your languages. Choose a different name, or rename that language first."
+msgstr ""
+
+#. translators: Hint under the name field in the WPML Languages editor. %s: the name of a language WPML already offers. "Search and add a language" is a field on the same screen; translate it the same way there.
+#, js-format
+msgid "“%s” is available in the language list. We recommend adding it with Search and add a language. Continue only if you need your own variant."
+msgstr ""
+
+msgid "Default locale"
+msgstr ""
+
+msgid "Code"
+msgstr ""
+
+#. translators: Placeholder text in a code field in the WPML Languages editor. Two example codes joined by "or"; keep the codes as they are and translate only the word "or".
+msgid "pms or es-an"
+msgstr ""
+
+#. translators: Hint under the code field in the dialog that adds a custom language, in the WPML Languages editor; "this" is that code.
+msgid "Once defined, this cannot be changed."
+msgstr ""
+
+msgid "hreflang"
+msgstr ""
+
+#. translators: Hint in the dialog that adds a custom language, in the WPML Languages editor, shown after the user types the code of a language WPML used to list. %s: that language's name.
+#, js-format
+msgid "WPML no longer lists “%s”, so you can add it here as a custom language. We filled in its usual settings."
+msgstr ""
+
+#. translators: Label of the flag picker in the WPML Languages editor. Noun.
+msgid "Flag"
+msgstr ""
+
+#. translators: Replaces "Upload SVG…" on the same button while the flag file is being sent, in the WPML Languages editor. Keep the ellipsis.
+msgid "Uploading…"
+msgstr ""
+
+#. translators: Button label that picks a flag file to send, in the WPML Languages editor. "SVG" is a picture format; keep it. Keep the ellipsis.
+msgid "Upload SVG…"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the control that picks a flag file, in the WPML Languages editor. "SVG" is a picture format; keep it.
+msgid "Upload a custom flag (SVG)"
+msgstr ""
+
+msgid "The flag could not be uploaded."
+msgstr ""
+
+msgid "SVG recommended for crisp display."
+msgstr ""
+
+msgid "Encode URL?"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "Map to a supported language (recommended)"
+msgstr ""
+
+#. translators: Option in that dropdown in the WPML Languages editor, meaning WPML picks the language itself. Keep the dashes around it.
+msgid "— Match automatically —"
+msgstr ""
+
+#. translators: Error under the locale field in the WPML Languages editor. %s: what was typed. "es_ES" is an example locale; keep it as it is.
+#, js-format
+msgid "The locale “%s” isn’t valid. Use letters, numbers and underscores only, like es_ES."
+msgstr ""
+
+#. translators: Error under the hreflang field in the WPML Languages editor. %1$s: what was typed, %2$d: how many characters are allowed.
+#, js-format
+msgid "The hreflang “%1$s” is too long. Use at most %2$d characters."
+msgstr ""
+
+#. translators: Error about the language code in the WPML Languages editor, shown under the field and again after saving. %1$s: what was typed, %2$d: how many characters are allowed.
+#, js-format
+msgid "The language code “%1$s” is too long. Use at most %2$d characters."
+msgstr ""
+
+#. translators: Error about the language code in the WPML Languages editor, shown under the field and again after saving. %1$s: what was typed, %2$d: how many characters are allowed.
+#, js-format
+msgid "The language code “%1$s” isn’t valid. Use letters, numbers, hyphens and underscores — up to %2$d characters."
+msgstr ""
+
+#. translators: Error in the dialog that adds a custom language, in the WPML Languages editor. %s: the name of a language WPML already offers. "Search" is the field above it on the same screen.
+#, js-format
+msgid "“%s” is already a supported language. Add it from Search instead of creating a custom variant."
+msgstr ""
+
+#. translators: Error under the language code field in the WPML Languages editor. %s: the name of a language the site already has.
+#, js-format
+msgid "This language code is already used by “%s”. Choose a different one."
+msgstr ""
+
+#. translators: Error under the name field in the dialog that adds a custom language, in the WPML Languages editor. Verb, imperative.
+msgid "Enter a name for this language."
+msgstr ""
+
+msgid "Enter a locale."
+msgstr ""
+
+msgid "Enter a language code."
+msgstr ""
+
+#. translators: Heading of the dialog that edits how a language is named, in the WPML Languages editor. %s: the language being edited. Verb, imperative.
+#, js-format
+msgid "Edit labels for %s"
+msgstr ""
+
+#. translators: Line under that heading in the WPML Languages editor. %s: the language being edited.
+#, js-format
+msgid "Set how the “%s” language is named in each of your site languages. Names are prefilled. Edit any to override."
+msgstr ""
+
+#. translators: Shown next to a spinner while the language names are being fetched, in the WPML Languages editor. Keep the ellipsis.
+msgid "Loading names…"
+msgstr ""
+
+#. translators: A noun phrase that stands in for a language's name when WPML has none. It is written inside other sentences, as in "...updating this language", and as the hint on the row being edited. Lower case.
+msgid "this language"
+msgstr ""
+
+#. translators: Button label that saves the language names, in the WPML Languages editor. Verb, imperative.
+msgid "Save labels"
+msgstr ""
+
+#. translators: Shown in the dialog that asks for a language's domain, when the domain is an international domain name, such as bücher.example, and the server cannot convert it. The xn-- form (punycode) is the ASCII spelling of such a name. %s: the domain as the user typed it.
+#, js-format
+msgid "Your server cannot convert international domain names. Enter the xn-- form of %s."
+msgstr ""
+
+#. translators: Shown in the dialog that asks for a language's domain, when the server cannot use the value as a domain name.
+msgid "The domain you have entered is invalid."
+msgstr ""
+
+#. translators: Heading of the dialog that asks for a language's domain, in the WPML Languages editor. %s: the language name.
+#, js-format
+msgid "Set a domain for %s"
+msgstr ""
+
+#. translators: Heading of the dialog that asks for several languages' domains, in the WPML Languages editor.
+msgid "Set a domain for each new language"
+msgstr ""
+
+#. translators: Sentence under that heading. %s: the language name. "different domain per language" is the URL format's name on the same screen; translate it the same way there.
+#, js-format
+msgid "Your site uses a different domain per language. %s is no longer the default language, so it needs a domain of its own. Until it has one, its pages cannot be reached."
+msgstr ""
+
+#. translators: Sentence under that heading. %s: the language name.
+#, js-format
+msgid "Your site uses a different domain per language, so %s needs a domain of its own before it can be visited."
+msgstr ""
+
+msgid "Your site uses a different domain per language, so each new language needs a domain of its own before it can be visited."
+msgstr ""
+
+msgid "This is the site address."
+msgstr ""
+
+#. translators: Link text after that note; the link opens WordPress Settings -> General. Name the menu items as WordPress does.
+msgid "Change it in Settings → General."
+msgstr ""
+
+msgid "Valid"
+msgstr ""
+
+#. translators: Status beside a language domain when the domain loads, but a firewall or a CDN (content delivery network) stopped WPML's check that it shows this site.
+msgid "Blocked by a firewall or CDN"
+msgstr ""
+
+msgid "Not valid"
+msgstr ""
+
+msgid "Validate on save"
+msgstr ""
+
+msgid "This domain is already used by another language or by the site itself."
+msgstr ""
+
+msgid "Enter the domain this language will be served from."
+msgstr ""
+
+#. translators: Preview under the domain field. %s: the full address.
+#, js-format
+msgid "%s will serve this language."
+msgstr ""
+
+#. translators: Sentence after "<domain> loads, but a firewall or CDN blocked WPML's check." It is followed by the "Save anyway" button.
+msgid "If it shows your site, you can save it anyway."
+msgstr ""
+
+#. translators: Refusal shown when two languages would share one domain. %s: the domain. Same wording as the URL format section's refusal.
+#, js-format
+msgid "Two languages cannot use the same domain: %s is already used. Give each language its own domain."
+msgstr ""
+
+#. translators: Shown in the dialog that asks for a language's domain, when the domain loads but a firewall or a CDN (content delivery network) blocked WPML's check that it shows this site. %s: the domain.
+#, js-format
+msgid "%s loads, but a firewall or CDN blocked WPML's check."
+msgstr ""
+
+#. translators: Refusal shown when a domain did not answer the validation request. %s: "language: domain" pairs. Same wording as the URL format section's refusal.
+#, js-format
+msgid "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway."
+msgstr ""
+
+#. translators: Button label after a firewall or a CDN blocked WPML's check of a language domain: it saves the domain without the check. Verb, imperative.
+msgid "Save anyway"
+msgstr ""
+
+#. translators: Button label that saves what is on the screen, used across WPML's screens. Verb, imperative.
+msgid "Save"
+msgstr ""
+
+#. translators: Helper line of a group in the "Reset language defaults" dialog of the WPML Languages editor, shown when that group has nothing to put back. The group's row is greyed out.
+msgid "0 languages — nothing to reset here"
+msgstr ""
+
+#. translators: Heading of the dialog that puts a site's languages back to WPML's catalogue defaults, in the WPML Languages editor.
+msgid "Reset language defaults"
+msgstr ""
+
+#. translators: The whole answer of the "Reset language defaults" dialog in the WPML Languages editor when the check could not be completed — so WPML does not know whether anything differs.
+msgid "WPML couldn’t finish checking your languages."
+msgstr ""
+
+#. translators: Second, lighter line under it. It deliberately does NOT say the site is fine: nothing was established either way.
+msgid "This says nothing about your languages — the check stopped before it could compare them all. Nothing has been changed."
+msgstr ""
+
+#. translators: The whole answer of the "Reset language defaults" dialog in the WPML Languages editor when the site matches WPML's catalogue.
+msgid "All your languages already use WPML’s catalogue defaults."
+msgstr ""
+
+#. translators: Second, lighter line under it, naming the three things that match.
+msgid "Flags, label translations and WordPress locales all match — there is nothing to reset."
+msgstr ""
+
+#. translators: Heading over the three groups in the "Reset language defaults" dialog of the WPML Languages editor.
+msgid "These languages no longer match WPML’s language catalogue. Put back:"
+msgstr ""
+
+#. translators: Title of the first group in the "Reset language defaults" dialog of the WPML Languages editor: the flag each language draws.
+msgid "Flags"
+msgstr ""
+
+#. translators: Helper line of the Flags group in the "Reset language defaults" dialog of the WPML Languages editor. %d: how many languages draw a flag that is not WPML's catalogue default.
+#, js-format
+msgid "%d language using a flag that is not the catalogue default"
+msgid_plural "%d languages using a flag that is not the catalogue default"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Title of the second group in the "Reset language defaults" dialog of the WPML Languages editor: how each language is named in every other language.
+msgid "Labels and their translations"
+msgstr ""
+
+#. translators: Joins two halves of a summary with a comma, in the "Reset language defaults" dialog of the WPML Languages editor. %1$s: the first half, e.g. "3 languages" or "2 edited". %2$s: the second half, e.g. "7 display languages" or "1 missing".
+#, js-format
+msgid "%1$s, %2$s"
+msgstr ""
+
+#. translators: First half of that helper line: how many languages have an edited or missing label. %d: how many.
+#, js-format
+msgid "%d language"
+msgid_plural "%d languages"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: How many display languages, in the "Reset language defaults" dialog of the WPML Languages editor: the second half of the Labels helper line, and the denominator of a per-language summary. %d: how many.
+#, js-format
+msgid "%d display language"
+msgid_plural "%d display languages"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Part of a per-language summary in the "Reset language defaults" dialog of the WPML Languages editor; it counts the display languages whose label was edited. %d: how many.
+#, js-format
+msgid "%d edited"
+msgid_plural "%d edited"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Part of the same per-language summary; it counts the display languages that have no label stored at all. %d: how many.
+#, js-format
+msgid "%d missing"
+msgid_plural "%d missing"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Per-language summary in the "Reset language defaults" dialog of the WPML Languages editor. %1$s: what differs, e.g. "2 edited, 1 missing". %2$s: e.g. "6 display languages" — how many display languages WPML's catalogue can name this language in.
+#, js-format
+msgid "%1$s of %2$s"
+msgstr ""
+
+#. translators: Control that folds a language's detail away again in the "Reset language defaults" dialog of the WPML Languages editor. Verb, imperative.
+msgid "hide"
+msgstr ""
+
+#. translators: Control that opens a language's detail in the "Reset language defaults" dialog of the WPML Languages editor. Verb, imperative.
+msgid "show"
+msgstr ""
+
+#. translators: Stands in for a display label that is not stored at all, in the "Reset language defaults" dialog of the WPML Languages editor.
+msgid "missing"
+msgstr ""
+
+#. translators: Last line of a language's detail in the "Reset language defaults" dialog of the WPML Languages editor, when more labels differ than the dialog lists. %d: how many are not listed.
+#, js-format
+msgid "+ %d more"
+msgid_plural "+ %d more"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Title of the third group in the "Reset language defaults" dialog of the WPML Languages editor. "WP Locale" is the WordPress locale of a language, e.g. fr_CA.
+msgid "WP Locale"
+msgstr ""
+
+#. translators: Helper line of the WP Locale group in the "Reset language defaults" dialog of the WPML Languages editor. %d: how many languages carry a locale that does not match their country.
+#, js-format
+msgid "%d language whose locale does not match its country"
+msgid_plural "%d languages whose locale does not match its country"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Only the groups you tick are changed. Everything else is left exactly as it is."
+msgstr ""
+
+msgid "The check stopped before it could compare everything, so there may be more than this."
+msgstr ""
+
+#. translators: Replaces "Reset selected" on the same button while the reset runs, in the WPML Languages editor. Keep the ellipsis.
+msgid "Resetting…"
+msgstr ""
+
+#. translators: Primary button of the "Reset language defaults" dialog of the WPML Languages editor; it puts back the ticked groups. Verb, imperative.
+msgid "Reset selected"
+msgstr ""
+
+#. translators: Name of a language setting in the WPML Languages editor: the code that appears in the site's URLs. Used both as a field label and in the list of changes about to be saved.
+msgid "Language Code"
+msgstr ""
+
+#. translators: Name of a language setting in the WPML Languages editor: the country the language belongs to. Used both as a field label and in the list of changes about to be saved.
+msgid "Country"
+msgstr ""
+
+#. translators: Name of a language setting in the WPML Languages editor: the WordPress locale, a code such as es_ES. Used both as a field label and in the list of changes about to be saved.
+msgid "Locale"
+msgstr ""
+
+#. translators: Heading of the dialog that confirms language changes, in the WPML Languages editor. %s: the language name. Verb, imperative.
+#, js-format
+msgid "Update the URL code for %s?"
+msgstr ""
+
+#. translators: Heading of the dialog that confirms language changes, in the WPML Languages editor. Verb, imperative.
+msgid "Confirm language changes"
+msgstr ""
+
+msgid "Checking what needs updating…"
+msgstr ""
+
+msgid "We couldn’t check the impact. You can still save — content is updated during the save."
+msgstr ""
+
+#. translators: Heading above the list of what the save will do, in the dialog that confirms language changes.
+msgid "What happens"
+msgstr ""
+
+#. translators: One item of that list in the WPML Languages editor. %d: how many links are rewritten.
+#, js-format
+msgid "%d link on your site is updated to the new address."
+msgid_plural "%d links on your site are updated to the new address."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Old URLs are not redirected automatically. If you need them to keep working, set up the redirects yourself."
+msgstr ""
+
+msgid "This updates your language settings; existing content isn’t rewritten."
+msgstr ""
+
+msgid "Your translations and strings are unchanged."
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+#. translators: Button label that saves what was edited in a dialog, used across WPML's screens. Verb, imperative.
+msgid "Save changes"
+msgstr ""
+
+#. translators: Heading of the dialog that asks for confirmation before a locale is set on a language that has none yet, in the WPML Languages editor.
+msgid "Do you want to set the locale?"
+msgstr ""
+
+#. translators: One note in that dialog; "it" is the locale. "WordPress language pack" is WordPress's own translation package for a locale.
+msgid "WPML uses the locale to download the right WordPress language pack, so setting it switches the admin, theme and plugin texts to that language pack."
+msgstr ""
+
+#. translators: Button label that confirms setting the locale, in the WPML Languages editor. Verb, imperative.
+msgid "Yes, set the locale"
+msgstr ""
+
+#. translators: Heading of the dialog that asks for confirmation before a locked language field is edited, in the WPML Languages editor.
+msgid "Are you sure you want to edit the language code?"
+msgstr ""
+
+#. translators: One warning in that dialog; "it" is the language code named in the heading above.
+msgid "URLs containing it change — WPML fixes linked URLs after saving."
+msgstr ""
+
+msgid "External links / bookmarks to the old URL break unless redirected."
+msgstr ""
+
+#. translators: Button label that confirms editing the language code, in the WPML Languages editor. Verb, imperative.
+msgid "Yes, edit the code"
+msgstr ""
+
+#. translators: Heading of the dialog that asks for confirmation before the language's country is edited, in the WPML Languages editor.
+msgid "Are you sure you want to edit the country?"
+msgstr ""
+
+#. translators: One warning in that dialog; "It" is changing the country. "WordPress.org locale" is the code WordPress uses for its own translations.
+msgid "It may also change the locale (if the new country has a WordPress.org locale)."
+msgstr ""
+
+#. translators: One warning in that dialog; "It" is changing the country. ATE is the Advanced Translation Editor, a WPML product name.
+msgid "It affects ATE automatic-translation mapping."
+msgstr ""
+
+#. translators: Button label that confirms editing the country, in the WPML Languages editor. Verb, imperative.
+msgid "Yes, edit the country"
+msgstr ""
+
+msgid "Are you sure you want to edit the locale?"
+msgstr ""
+
+msgid "WPML uses the locale to download the right WordPress language pack, so changing it switches the admin, theme and plugin texts to the new language pack."
+msgstr ""
+
+msgid "Yes, edit the locale"
+msgstr ""
+
+#. translators: Progress line while language changes are being saved, in the WPML Languages editor. %1$d: the step being run, %2$d: how many steps there are, %3$s: the language being updated, by name or by its URL code.
+#, js-format
+msgid "Step %1$d of %2$d — updating %3$s"
+msgstr ""
+
+#. translators: Progress line while language changes are being saved, in the WPML Languages editor. %1$d: the step being run, %2$d: how many steps there are.
+#, js-format
+msgid "Step %1$d of %2$d"
+msgstr ""
+
+#. translators: Progress line while language changes are being saved, in the WPML Languages editor. %1$d: how many items are done, %2$d: how many there are altogether.
+#, js-format
+msgid "%1$d of %2$d item"
+msgid_plural "%1$d of %2$d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: The figure next to the progress bar in the WPML Languages editor. %d: how far the save has got, as a percentage. The doubled %% is one per cent sign; keep both characters.
+#, js-format
+msgid "%d%%"
+msgstr ""
+
+#. translators: Heading above the list of items the save could not update, in the WPML Languages editor. %d: how many there were. Keep the colon.
+#, js-format
+msgid "%d item could not be updated:"
+msgid_plural "%d items could not be updated:"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "You can retry the save from the Languages page, or fix these items manually."
+msgstr ""
+
+#. translators: Heading of the dialog that reports a save in the WPML Languages editor, when part of it failed.
+msgid "Some changes could not be applied"
+msgstr ""
+
+#. translators: Heading of the dialog that reports a save in the WPML Languages editor, when it finished but left some items alone.
+msgid "Language changes saved with some skipped items"
+msgstr ""
+
+#. translators: Heading of the dialog that reports a finished save in the WPML Languages editor.
+msgid "Language changes saved"
+msgstr ""
+
+#. translators: Heading of the dialog shown while language changes are being saved, in the WPML Languages editor.
+msgid "Updating content"
+msgstr ""
+
+msgid "Keep this tab open until the process finishes. Closing it will pause the save."
+msgstr ""
+
+#. translators: Heading above the list of items the save left alone, in the WPML Languages editor. %d: how many were left alone. Keep the colon.
+#, js-format
+msgid "%d item was skipped so far:"
+msgid_plural "%d items were skipped so far:"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: One row of that list in the WPML Languages editor. %1$s: which part of the save it was, %2$s: the item, %3$s: why it was left alone.
+#, js-format
+msgid "%1$s — %2$s (%3$s)"
+msgstr ""
+
+msgid "Most language changes were applied. Some items could not be updated and were skipped."
+msgstr ""
+
+msgid "All language changes were applied."
+msgstr ""
+
+msgid "The save could not finish. Your existing content was not fully updated — review the languages page and try again."
+msgstr ""
+
+msgid "Don't close this tab until the process finishes."
+msgstr ""
+
+msgid "Content update was paused"
+msgstr ""
+
+#. translators: Hint next to the button that finishes an interrupted save, in the WPML Languages editor.
+msgid "Resume to finish saving your language changes."
+msgstr ""
+
+#. translators: Button label that finishes an interrupted save, in the WPML Languages editor. Verb, imperative.
+msgid "Resume saving"
+msgstr ""
+
+#. translators: Shown in place of the remaining time while WPML is still working it out, in the WPML Languages editor. Keep the ellipsis.
+msgid "Estimating time left…"
+msgstr ""
+
+#. translators: How much longer a save will take, in the WPML Languages editor. %d: the number of seconds.
+#, js-format
+msgid "About %d second left"
+msgid_plural "About %d seconds left"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: How much longer a save will take, in the WPML Languages editor. %d: the number of minutes.
+#, js-format
+msgid "About %d minute left"
+msgid_plural "About %d minutes left"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Reported after a language's country was saved, in the WPML Languages editor, when the automatic-translation mapping could not be updated. %1$s: the language's name, %2$s: the automatic-translation language it should point at, e.g. "es-CO".
+#, js-format
+msgid "Automatic translation for %1$s could not be re-mapped to %2$s. Change the country again later to retry."
+msgstr ""
+
+#. translators: Reported after a language's country was saved, in the WPML Languages editor, when the automatic-translation mapping could not be updated and the target is not known. %1$s: the language's name.
+#, js-format
+msgid "Automatic translation for %1$s could not be re-mapped. Change the country again later to retry."
+msgstr ""
+
+#. translators: Reported after a language's country was saved, in the WPML Languages editor, when automatic translation already pointed where the change would have sent it. %1$s: the language's name, %2$s: the automatic-translation language it points at, e.g. "es-CO".
+#, js-format
+msgid "Automatic translation for %1$s already targeted %2$s; nothing was re-mapped."
+msgstr ""
+
+#. translators: Reported after a language's country was saved, in the WPML Languages editor, when automatic translation has no such regional variant and the previous mapping was left alone. %1$s: the language's name, %2$s: the regional variant that was asked for, e.g. "es-CO". "Edit" and "Country" are the row's Edit control and its Country field on the same screen; translate them the same way there.
+#, js-format
+msgid "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country. Your current mapping was kept."
+msgstr ""
+
+#. translators: Reported after a language's country was saved, in the WPML Languages editor, when automatic translation has no such regional variant and the language had no mapping to keep. %1$s: the language's name, %2$s: the regional variant that was asked for, e.g. "es-CO". "Edit" and "Country" are the row's Edit control and its Country field on the same screen; translate them the same way there.
+#, js-format
+msgid "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country."
+msgstr ""
+
+#. translators: Reported after a language's country was saved, in the WPML Languages editor, when the automatic-translation mapping was left as it was for a reason the server named. %1$s: the language's name, %2$s: the reason, as the server reported it.
+#, js-format
+msgid "Automatic translation for %1$s was not re-mapped: %2$s."
+msgstr ""
+
+#. translators: Reported after a language's country was saved, in the WPML Languages editor. %1$s: the language's name, %2$s: the automatic-translation language it now points at, e.g. "es-CO".
+#, js-format
+msgid "Automatic translation for %1$s now targets %2$s."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor. %s: the language name, or its URL code when the name is not known.
+#, js-format
+msgid "“%s” is already an active language."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, when the language has no name to give.
+msgid "That language is already active."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, in the URL format "A different domain per language". %s: the language name.
+#, js-format
+msgid "%s needs a domain of its own before this can be saved. Set one in the URL format section."
+msgstr ""
+
+msgid "Every language that is not the default needs a domain of its own before this can be saved. Set it in the URL format section."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor. %s: the code that is already taken.
+#, js-format
+msgid "The language code “%s” is already in use. Choose a different one."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, when the code itself cannot be named.
+msgid "That language code is already in use. Choose a different one."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, when the code itself cannot be named. %d: how many characters are allowed.
+#, js-format
+msgid "That language code isn’t valid. Use letters, numbers, hyphens and underscores — up to %d characters."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, when the code itself cannot be named. %d: how many characters are allowed.
+#, js-format
+msgid "That language code is too long. Use at most %d characters."
+msgstr ""
+
+#. translators: Error about the locale in the WPML Languages editor, when the value itself cannot be named. "es_ES" is an example locale; keep it as it is.
+msgid "That locale isn’t valid. Use letters, numbers and underscores only, like es_ES."
+msgstr ""
+
+#. translators: Error about the hreflang tag in the WPML Languages editor, when the value itself cannot be named. %d: how many characters are allowed.
+#, js-format
+msgid "That hreflang is too long. Use at most %d characters."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor. %s: the language identity tag, e.g. "pt-BR", which is never translated.
+#, js-format
+msgid "Another active language already uses the identity “%s”."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, when the identity tag itself cannot be named.
+msgid "Another active language already has this identity."
+msgstr ""
+
+msgid "WPML no longer offers this language and country. Languages you have already added keep working."
+msgstr ""
+
+#. translators: Second sentence of an error after saving in the WPML Languages editor, after "WPML no longer offers this language and country." "add a custom language" is the link under the language search; translate it the same way there.
+msgid "You can still add it with “add a custom language”, using the same code."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor. "SVG" is a picture format; keep it.
+msgid "That flag is not available for this language. Choose one of the offered flags or upload a custom SVG."
+msgstr ""
+
+msgid "That name is already used by one of your languages. Choose a different name."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, when the supported language cannot be named. "Search" is a field on the same screen.
+msgid "That language code is already a supported language. Add it from Search instead of creating a custom variant."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, when the language being added has the same URL code as one the site owner created and removed. %s: that code, e.g. "aussie". "custom language" is the editor's own wording for a language the user adds by hand and "Removed languages" is a panel on the same screen; translate them the same way there.
+#, js-format
+msgid "“%s” is the code of a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, when the code itself cannot be named. "custom language" is the editor's own wording for a language the user adds by hand and "Removed languages" is a panel on the same screen; translate them the same way there.
+msgid "That code belongs to a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first."
+msgstr ""
+
+msgid "Enter a locale for this language."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor. Verb, imperative.
+msgid "Select a country for this language before saving."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, when the chosen language and country do not go together.
+msgid "This language can’t be used with that country."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor. %s: the language code that was asked for. "the list" and "custom language" are controls on the same screen.
+#, js-format
+msgid "“%s” isn’t in the language catalogue. Pick it from the list, or add it as a custom language."
+msgstr ""
+
+msgid "This language isn’t in the language catalogue. Pick it from the list, or add it as a custom language."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, when the language chosen as the site's default is also being removed in the same save.
+msgid "The default language cannot be a language that is being removed."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor or the setup wizard. %s: the language name, or its URL code when the name is not known.
+#, js-format
+msgid "Before “%s” can be saved, choose whether to bring back the content this site has from before in that language or to start fresh."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor or the setup wizard, when the language has no name to give.
+msgid "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, when the WordPress user is not allowed to change languages.
+msgid "You don’t have permission to change languages."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor. %s: the language name, or its URL code when the name is not known.
+#, js-format
+msgid "“%s” couldn’t be added. Please try again."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, when the language has no name to give.
+msgid "The language couldn’t be added. Please try again."
+msgstr ""
+
+#. translators: Error after saving in the WPML Languages editor, when the reason is not known.
+msgid "Couldn’t save the language settings."
+msgstr ""
+
+msgid "One language"
+msgstr ""
+
+#. translators: One item the save could not update, in the WPML Languages editor. %1$s: the language's name, %2$s: the WordPress locale code, e.g. ar_LB.
+#, js-format
+msgid "%1$s: no WordPress language pack exists for %2$s, so the locale was saved without translation files."
+msgstr ""
+
+#. translators: One item the save could not update, in the WPML Languages editor. %1$s: the language's name, %2$s: the WordPress locale code, e.g. fr_LU.
+#, js-format
+msgid "%1$s: the WordPress language pack for %2$s could not be requested, so the locale was saved without translation files."
+msgstr ""
+
+#. translators: One item the save could not update, in the WPML Languages editor. %1$s: the language's name, %2$s: the WordPress locale code, e.g. fr_LU.
+#, js-format
+msgid "%1$s: the WordPress language pack for %2$s could not be downloaded, so the locale was saved without translation files."
+msgstr ""
+
+#. translators: One item the save could not update, in the WPML Languages editor. %1$s: the language's name, %2$s: a post ID.
+#, js-format
+msgid "%1$s: the links in post %2$s did not match the old language code and were left as they were."
+msgstr ""
+
+#. translators: One item the save could not update, in the WPML Languages editor. %1$s: the language's name, %2$s: a post ID.
+#, js-format
+msgid "%1$s: the links in post %2$s could not be rewritten."
+msgstr ""
+
+#. translators: One item the save could not update, in the WPML Languages editor. %1$s: the language's name.
+#, js-format
+msgid "%1$s: some translation jobs could not be cancelled."
+msgstr ""
+
+#. translators: One item the save could not update, in the WPML Languages editor. %1$s: the language's name.
+#, js-format
+msgid "%1$s: one step of the save kept failing and was skipped."
+msgstr ""
+
+#. translators: One item the save could not update, in the WPML Languages editor, for a reason without its own sentence. %1$s: the language's name, %2$s: the reason code, kept so support can look it up.
+#, js-format
+msgid "%1$s: one item could not be updated (%2$s)."
+msgstr ""
+
+msgid "Is this a right-to-left language?"
+msgstr ""
+
+msgid "WPML lays out the admin and the site for this language from right to left, like Arabic or Hebrew."
+msgstr ""
+
+msgid "Reading direction"
+msgstr ""
+
+msgid "Left-to-right"
+msgstr ""
+
+msgid "Right-to-left"
+msgstr ""
+
+msgid "Let WPML decide"
+msgstr ""
+
+msgid "If you cannot find your language in the list, <a>add a custom language</a>."
+msgstr ""
+
+#. translators: Heading above the site's main language in the WPML Languages editor.
+msgid "Default language"
+msgstr ""
+
+#. translators: Question under the "Default language" heading in the WPML Languages editor.
+msgid "What is the current language of your website?"
+msgstr ""
+
+#. translators: Heading above the languages the site is translated into, in the WPML Languages editor.
+msgid "Translation languages"
+msgstr ""
+
+msgid "Which languages do you want to translate your site into?"
+msgstr ""
+
+#. translators: Tooltip and accessible name of the Locale field's lock icon in the WPML Languages editor when the locale is empty.
+msgid "Click the lock to set the locale"
+msgstr ""
+
+#. translators: Shown in the Locale field of the WPML Languages editor when the language has no locale yet; "set" as in "not configured".
+msgid "Not set"
+msgstr ""
+
+msgid "Unlock this field"
+msgstr ""
+
+msgid "Recommended not to change. Click to unlock."
+msgstr ""
+
+#. translators: Shown while a flag picture is being sent, in the WPML Languages editor. Keep the ellipsis.
+msgid "Uploading flag…"
+msgstr ""
+
+#. translators: Label of the field that holds the code shown to visitors, in the WPML Languages editor.
+msgid "Display Code"
+msgstr ""
+
+#. translators: %s is a language code such as de-at. Shown under the Language Code field in the WPML Languages editor when the code stored for the language differs from the one shown in the site's URLs.
+#, js-format
+msgid "Stored code: %s"
+msgstr ""
+
+msgid "Encode URL"
+msgstr ""
+
+msgid "Encode non-Latin characters"
+msgstr ""
+
+msgid "Mapping"
+msgstr ""
+
+msgid "This language is recognized as the same as your site’s default language, so it can’t be translated automatically. To carry your content over, duplicate it instead."
+msgstr ""
+
+msgid "How to Duplicate and Copy Content in WPML"
+msgstr ""
+
+msgid "Edit language labels…"
+msgstr ""
+
+#. translators: Tooltip and accessible label (screen readers) of the disabled bin button on the site's main language, in the WPML Languages editor.
+msgid "The default language can’t be removed."
+msgstr ""
+
+#. translators: Tooltip and accessible label (screen readers) of the bin button that removes a language, in the WPML Languages editor. Verb, imperative.
+msgid "Delete language"
+msgstr ""
+
+#. translators: Shown in place of the list in the add-language picker of the WPML Languages editor when it opens with nothing pre-listed, because the site already uses every language the picker offers up front. Typing searches all the remaining ones.
+msgid "Type to search all languages…"
+msgstr ""
+
+#. translators: Tooltip and accessible label (screen readers) of the star that marks a language row with changes not yet saved, in the WPML Languages editor.
+msgid "Unsaved changes"
+msgstr ""
+
+#. translators: Pill on a language row in the WPML Languages editor; it marks a language the site added itself rather than one WPML offers. Adjective.
+msgid "Custom"
+msgstr ""
+
+#. translators: Tooltip of the "Translation paused" pill on a language row in the WPML Languages editor.
+msgid "This language stays on your site and keeps serving its pages. WPML is not creating new translations into it."
+msgstr ""
+
+#. translators: Pill on a language row in the WPML Languages editor; it says WPML has stopped making new translations into that language. State, not a command.
+msgid "Translation paused"
+msgstr ""
+
+msgid "This language isn’t supported by the automatic translation engine, so its content must be translated manually."
+msgstr ""
+
+#. translators: Marks a language WPML does not translate into because it is the same as the site's default language. Used as a pill in the Languages editor and as a tag under the word-count table.
+msgid "Same as default"
+msgstr ""
+
+#. translators: Pill on a language row in the WPML Languages editor; it says automatic translation cannot handle that language, so it is translated by hand.
+msgid "Manual translation only"
+msgstr ""
+
+#. translators: Tooltip of the "Needs a mapping" pill on a custom language row in the WPML Languages editor. The row's code is also the code of a language WPML offers, so automatic translation needs to be told which language this one is.
+msgid "This custom language uses the code of a language WPML offers. To translate it automatically, map it to a language."
+msgstr ""
+
+#. translators: Pill on a custom language row in the WPML Languages editor; it says the language must be mapped to a language before it can be translated automatically. State, not a command.
+msgid "Needs a mapping"
+msgstr ""
+
+#. translators: Badge on the site's main language row in the WPML Languages editor. Adjective.
+msgid "Default"
+msgstr ""
+
+msgid "Set as default"
+msgstr ""
+
+#. translators: Button on a language row in the WPML Languages editor that starts making translations into that language again. Verb, imperative.
+msgid "Resume translating"
+msgstr ""
+
+#. translators: Used across WPML's screens for a control that hides something: the tick box that keeps a language out of the language switcher, and the button that dismisses a notice. Verb, imperative.
+msgid "Hide"
+msgstr ""
+
+msgid "The default language can’t be hidden."
+msgstr ""
+
+msgid "Completely hide content in this language from visitors and search engines, but keep it visible to yourself. Useful for reviewing translations that are still in progress."
+msgstr ""
+
+msgid "Hide this language from visitors and search engines."
+msgstr ""
+
+msgid "Edit the language code"
+msgstr ""
+
+msgid "Used to build this language’s page URLs (e.g. /en/)."
+msgstr ""
+
+#. translators: Tooltip and accessible label (screen readers) of the bin button on a language row in the WPML Languages editor. Verb, imperative.
+msgid "Remove language"
+msgstr ""
+
+#. translators: Button on a language row in the WPML Languages editor that takes back a removal that has not been saved yet. Verb, imperative.
+msgid "Undo"
+msgstr ""
+
+msgid "Collapse ▴"
+msgstr ""
+
+#. translators: Button on a language row in the WPML Languages editor that folds the row's settings away. Verb, imperative; keep the arrow.
+msgid "Edit ▾"
+msgstr ""
+
+#. translators: Tooltip of the "Same as default" pill on a language row in the WPML Languages editor. The name of the site's default language follows in brackets, added in code.
+msgid "Recognized as the same language as the default"
+msgstr ""
+
+#. translators: One entry of the language list in the WPML Languages editor. %s: the language name; "Regional" marks a language that belongs to no single country, as in "Catalan (Regional)".
+#, js-format
+msgid "%s (Regional)"
+msgstr ""
+
+#. translators: A line in the search results of the add-language picker in the WPML Languages editor, for a language WPML no longer lists. %s: the language name. "add a custom language" is the link under the picker; translate it the same way there.
+#, js-format
+msgid "%s is no longer in this list. Use “add a custom language” below to add it."
+msgstr ""
+
+#. translators: The one text of the control that adds a language in the WPML Languages editor: the label of the closed button, and the placeholder text of the search field it opens. Verb, imperative; keep the ellipsis.
+msgid "Search and add a language…"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the control that adds a language in the WPML Languages editor. Verb, imperative.
+msgid "Search and add a language"
+msgstr ""
+
+#. translators: Shown in place of a country in the WPML Languages editor, for a language that belongs to a region rather than one country. Adjective.
+msgid "Regional"
+msgstr ""
+
+#. translators: Shown in place of a country in the WPML Languages editor, for a language that belongs to no country in particular. Adjective.
+msgid "International"
+msgstr ""
+
+msgid "This language has a single fixed country."
+msgstr ""
+
+#. translators: Placeholder text of the country picker in the WPML Languages editor. Verb, imperative; keep the ellipsis.
+msgid "Select a country…"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the control that picks the site's main language, in the WPML Languages editor. %s: the language it is set to now.
+#, js-format
+msgid "Default language (currently %s)"
+msgstr ""
+
+#. translators: Name of a flag in the flag picker of the WPML Languages editor. %s: the name of a country or of a language, e.g. "Flag of Spain".
+#, js-format
+msgid "Flag of %s"
+msgstr ""
+
+#. translators: Stands in for a flag's name in the WPML Languages editor when the flag belongs to nothing WPML can name. It means the flag the language has now.
+msgid "Current flag"
+msgstr ""
+
+#. translators: Name of a flag in the flag picker of the WPML Languages editor: a picture the site uploaded itself.
+msgid "Custom flag"
+msgstr ""
+
+#. translators: Name of a flag in the flag picker of the WPML Languages editor: a plain globe, used when no flag fits.
+msgid "Neutral globe"
+msgstr ""
+
+#. translators: Name of a flag in the flag picker of the WPML Languages editor: the country's two-letter code drawn in place of a flag.
+msgid "Country code as the flag"
+msgstr ""
+
+#. translators: Name of a flag in the flag picker of the WPML Languages editor: the flag that stands for the language itself rather than for a country.
+msgid "Language flag"
+msgstr ""
+
+#. translators: Placeholder text of the flag picker in the WPML Languages editor. Verb, imperative; keep the ellipsis.
+msgid "Choose a flag…"
+msgstr ""
+
+#. translators: Header of a group of flags in the flag picker of the WPML Languages editor: the flags of countries.
+msgid "Countries"
+msgstr ""
+
+#. translators: Header of a group of flags in the flag picker of the WPML Languages editor: the flags of regions inside a country, such as Catalonia or Scotland.
+msgid "Regions"
+msgstr ""
+
+#. translators: Header of a group of flags in the flag picker of the WPML Languages editor: the flags that stand for a language rather than for a place.
+msgid "Languages"
+msgstr ""
+
+#. translators: Header of a group of flags in the flag picker of the WPML Languages editor: the flags of organisations, such as the European Union.
+msgid "Organisations"
+msgstr ""
+
+#. translators: Last entry of the flag picker in the WPML Languages editor; it opens the file chooser. "SVG" is a picture format; keep it, and keep the ellipsis.
+msgid "Upload a custom SVG…"
+msgstr ""
+
+#. translators: Option in the dropdown that ties a language to one automatic translation supports, in the WPML Languages editor. It means WPML picks the language itself. Verb, imperative.
+msgid "Match automatically"
+msgstr ""
+
+msgid "Map to a supported language"
+msgstr ""
+
+msgid "Choose a language to map to…"
+msgstr ""
+
+#. translators: Shown in place of the list in a picker in the WPML Languages editor when the search finds nothing.
+msgid "No matches"
+msgstr ""
+
+#. translators: Opening line of the panel that deletes a removed language's content, in the WPML Languages editor. %s: the language name, e.g. "German".
+#, js-format
+msgid "The items you include below are removed, along with their translation records. Originals in your other languages are untouched, and image files stay on disk. Comments on these posts are deleted with them. Nothing in %s’s sibling languages is deleted."
+msgstr ""
+
+msgid "Skip them, move everything else."
+msgstr ""
+
+#. translators: Body of the Skip option in the Move collision dialog, in the WPML Languages editor. %1$d: how many rows collide, %2$s: the language they stay under.
+#, js-format
+msgid "%1$d item that already has a %3$s version stays under %2$s. You can deal with it separately."
+msgid_plural "%1$d items that already have a %3$s version stay under %2$s. You can deal with them separately."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Title of the Merge option in the Move collision dialog, in the WPML Languages editor. %s: the target language name, e.g. "French".
+#, js-format
+msgid "Merge them into the %s ones."
+msgstr ""
+
+msgid "Duplicate terms are removed"
+msgstr ""
+
+msgid "Objects and settings move onto the existing version; the duplicate is deleted. Nothing in the target language is deleted."
+msgstr ""
+
+#. translators: Heading of the Move collision dialog, in the WPML Languages editor. %s: the language the items collide under, e.g. "French".
+#, js-format
+msgid "What should happen to the items already in %s?"
+msgstr ""
+
+#. translators: Subtitle of the Move collision dialog, in the WPML Languages editor. %1$d: how many rows collide, %2$s: the source language name.
+#, js-format
+msgid "%1$d item from %2$s already has a version in the language you picked. Pick the outcome you want."
+msgid_plural "%1$d items from %2$s already have a version in the language you picked. Pick the outcome you want."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "What should happen to the colliding items"
+msgstr ""
+
+#. translators: Primary button of the Move collision dialog, in the WPML Languages editor. %s: the target language name. Verb, imperative.
+#, js-format
+msgid "Move into %s"
+msgstr ""
+
+#. translators: Opening line of the panel that moves a removed language's content, in the WPML Languages editor. %1$d: how many items there are, %2$s: the language they are in now.
+#, js-format
+msgid "Reassigns the %1$d %2$s item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring."
+msgid_plural "Reassigns the %1$d %2$s items to a language you pick, keeping their connections to the other languages. For renaming and merging, not retiring."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Standing note in the panel that moves a removed language's content, in the WPML Languages editor. It warns that the move re-tags content only. "WooCommerce Multilingual" is a product name and is not translated.
+msgid "Only the content moves. Per-language settings other plugins keep — for example which currencies WooCommerce Multilingual offers in a language — stay under the old language code and are not carried over."
+msgstr ""
+
+#. translators: Opening line of the result of a move, in the WPML Languages editor. %1$s: the language the content came from, %2$s: the language it went into.
+#, js-format
+msgid "Moved from %1$s into %2$s."
+msgstr ""
+
+#. translators: One line of the result of a move, in the WPML Languages editor. %d: how many content items were moved.
+#, js-format
+msgid "%d content item moved"
+msgid_plural "%d content items moved"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: One line of the result of a move, in the WPML Languages editor. %d: how many links back to the original language were repointed.
+#, js-format
+msgid "%d link to the original language updated"
+msgid_plural "%d links to the original language updated"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: One line of the result of a move, in the WPML Languages editor. %d: how many translations of strings were moved.
+#, js-format
+msgid "%d string translation moved"
+msgid_plural "%d string translations moved"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: One line of the result of a move, in the WPML Languages editor. %d: how many registered strings were moved.
+#, js-format
+msgid "%d string moved"
+msgid_plural "%d strings moved"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line of the result of a move, in the WPML Languages editor. %1$d: how many items stayed where they were, %2$s: the language they would have moved into, %3$s: the language they are in. "Removed languages" is the name of the panel on the same screen.
+#, js-format
+msgid "%1$d item stayed behind: its translation group already has a %2$s version. It is still listed under %3$s in Removed languages."
+msgid_plural "%1$d items stayed behind: their translation group already has a %2$s version. They are still listed under %3$s in Removed languages."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line of the result of a move, in the WPML Languages editor, shown only when the client chose Merge and at least one colliding term was merged. %1$d: how many duplicate terms were merged and removed, %2$s: the target language name.
+#, js-format
+msgid "%1$d duplicate term merged into the %2$s version and removed."
+msgid_plural "%1$d duplicate terms merged into the %2$s version and removed."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line of the result of a move, in the WPML Languages editor, shown only when the client chose Merge and at least one colliding post became its own document. %1$d: how many posts became their own standalone document, %2$s: the target language name.
+#, js-format
+msgid "%1$d item became its own document in %2$s."
+msgid_plural "%1$d items became their own documents in %2$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line of the result of a move, in the WPML Languages editor. Shown when a row of a kind this tool cannot resolve (neither a term nor a post) is still under the source language after the move. %1$d: how many such rows, %2$s: the language they are still in.
+#, js-format
+msgid "%1$d item of a kind this tool does not move or merge is still under %2$s."
+msgid_plural "%1$d items of a kind this tool does not move or merge are still under %2$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Opening line of the deletion record in the WPML Languages editor. %s: the language name, e.g. "German".
+#, js-format
+msgid "What the deletion removed from %s"
+msgstr ""
+
+#. translators: Line of the deletion record in the WPML Languages editor; "those" is the categories, tags and menus just named.
+msgid "The items that have a Trash are in it. Categories, tags and menus have no WordPress Trash, so those were deleted right away."
+msgstr ""
+
+msgid "This site has the Trash disabled, so the item it removed was deleted permanently — there is nothing to restore."
+msgid_plural "This site has the Trash disabled, so the items it removed were deleted permanently — there is nothing to restore."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Nothing was left to remove."
+msgstr ""
+
+#. translators: Name of one line of the deletion record in the WPML Languages editor: the translations of the site's strings. Plural noun.
+msgid "String translations"
+msgstr ""
+
+#. translators: Name of one line of the deletion record in the WPML Languages editor: the jobs sent for translation. Plural noun.
+msgid "Translation jobs"
+msgstr ""
+
+#. translators: Counts on one line of the deletion record in the WPML Languages editor. %1$d: how many items were removed, %2$d: how many were kept, %3$d: how many were left alone. The middle dots separate them.
+#, js-format
+msgid "%1$d removed · %2$d kept · %3$d skipped"
+msgstr ""
+
+#. translators: Added to a line of the deletion record in the WPML Languages editor. %s: a comma-separated list of reasons, in English, as the server reported them.
+#, js-format
+msgid "Skipped because: %s"
+msgstr ""
+
+#. translators: Line of the deletion record in the WPML Languages editor when there was nothing to cancel.
+msgid "No translation jobs needed cancelling."
+msgstr ""
+
+#. translators: Line of the deletion record in the WPML Languages editor. %d: how many translation jobs were cancelled before any work had started.
+#, js-format
+msgid "%d translation job was cancelled without charge."
+msgid_plural "%d translation jobs were cancelled without charge."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line of the deletion record in the WPML Languages editor. %d: how many translation jobs were stopped part-way through.
+#, js-format
+msgid "%d job was stopped mid-work — the words already sent are still charged."
+msgid_plural "%d jobs were stopped mid-work — the words already sent are still charged."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Last line of the deletion record in the WPML Languages editor. %d: how many left-alone items are counted in the totals but not listed one by one.
+#, js-format
+msgid "%d more skipped item is counted above but not listed."
+msgid_plural "%d more skipped items are counted above but not listed."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Date on a row of the Removed languages panel in the WPML Languages editor. %s: the date the language was removed, in the site's own format, e.g. "4/12/2026".
+#, js-format
+msgid "Removed %s"
+msgstr ""
+
+#. translators: Read out to screen readers in place of the removal date, on a row of the Removed languages panel, when the date is not known.
+msgid "Removal date not recorded"
+msgstr ""
+
+#. translators: Count on a row of the Removed languages panel in the WPML Languages editor. %d: how many items that language still holds.
+#, js-format
+msgid "%d item still here"
+msgid_plural "%d items still here"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Tooltip of the disabled "Put back" button on a row of the Removed languages panel, in the WPML Languages editor, when the language is one the site owner created themselves. "custom language" is the editor's own wording for a language the user adds by hand; translate it the same way there.
+msgid "You created this language yourself, so it cannot be put back from here. Add it again as a custom language with the same code and its content comes back with it."
+msgstr ""
+
+#. translators: Tooltip of the disabled "Put back" button on a row of the Removed languages panel, in the WPML Languages editor, when the language is known but the row records no country. "language picker" is the editor's own add-a-language control; translate it the same way there.
+msgid "This language has no country on record. Add it back from the language picker, which asks which country the content belongs to."
+msgstr ""
+
+#. translators: Tooltip of the disabled "Put back" button on a row of the Removed languages panel, in the WPML Languages editor.
+msgid "This language is not in WPML’s language list, so it cannot be added back from here."
+msgstr ""
+
+msgid "Added back — press Save"
+msgstr ""
+
+#. translators: Replaces "Put back" on the same button once the language is queued to come back, in the WPML Languages editor. "Save" is the editor's own save button; translate it the same way there.
+msgid "Put back"
+msgstr ""
+
+#. translators: Button on a row of the Removed languages panel in the WPML Languages editor; it opens the panel that moves that language's content elsewhere. Verb, imperative.
+msgid "Move"
+msgstr ""
+
+#. translators: Button on a row of the Removed languages panel in the WPML Languages editor; it opens the panel that deletes that language's content. Verb, imperative.
+msgid "Delete"
+msgstr ""
+
+#. translators: Title of the panel in the WPML Languages editor that lists the languages taken off the site whose content is still there.
+msgid "Removed languages"
+msgstr ""
+
+msgid "These languages are off your site but still hold content. Removing a language keeps what it holds — from here you can put a language back, move its content into another language, or delete that content for good."
+msgstr ""
+
+#. translators: Shown in place of the Removed languages list when it is empty, in the WPML Languages editor. %s: the title of that panel, "Removed languages"; translate both the same way.
+#, js-format
+msgid "No language is left holding content. %s is now empty."
+msgstr ""
+
+msgid "You do not have permission to move a language’s content."
+msgstr ""
+
+msgid "Pick the language to move this content into, then try again."
+msgstr ""
+
+#. translators: Error under the move panel in the WPML Languages editor, when the language chosen to move into is the one the content is already in.
+msgid "That is the same language. Pick a different one to move the content into."
+msgstr ""
+
+#. translators: Error under the move panel in the WPML Languages editor. %s: the language name, e.g. "German".
+#, js-format
+msgid "%s is back on your site, so there is nothing to move. Refresh the list."
+msgstr ""
+
+#. translators: Error under the move panel in the WPML Languages editor. %s: the language name, e.g. "German".
+#, js-format
+msgid "%s no longer holds any content. Refresh the list."
+msgstr ""
+
+#. translators: Error under the move panel in the WPML Languages editor. %s: the language name, e.g. "French".
+#, js-format
+msgid "%s is not one of your site’s active languages. Pick another one."
+msgstr ""
+
+#. translators: Error under the move panel in the WPML Languages editor, when the tick box below it has not been ticked.
+msgid "Moving content into a different language needs the confirmation below."
+msgstr ""
+
+#. translators: Error under the move panel in the WPML Languages editor. %s: the error code the server returned, in English, e.g. "task_not_found".
+#, js-format
+msgid "WPML could not move this content (%s)."
+msgstr ""
+
+#. translators: Radio button naming the way content is deleted, in the WPML Languages editor; "them" is the content being removed. %d: how many days this site's Trash keeps things. Verb, imperative.
+#, js-format
+msgid "Move them to the Trash — you have %d day to change your mind"
+msgid_plural "Move them to the Trash — you have %d days to change your mind"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Radio button naming the way content is deleted, in the WPML Languages editor, on a site where WordPress keeps no Trash. Verb, imperative.
+msgid "Delete permanently — this site has the Trash disabled"
+msgstr ""
+
+msgid "Trash first, or delete now"
+msgstr ""
+
+msgid "How to delete"
+msgstr ""
+
+msgid "Items already in the Trash are left where they are."
+msgstr ""
+
+#. translators: Read out to screen readers while the WPML Languages editor is still loading.
+msgid "Loading languages"
+msgstr ""
+
+msgid "The name of this language variant as it appears in the language switcher."
+msgstr ""
+
+msgid "Sets the regional variant of the language. Automatic Translation uses this to produce more accurate translations."
+msgstr ""
+
+msgid "The flag shown next to this language in the front-end language switcher."
+msgstr ""
+
+msgid "The WordPress locale, for example en_US. WordPress uses it to load the matching theme and plugin translation files."
+msgstr ""
+
+msgid "Used to build this language’s page URLs, for example /en/."
+msgstr ""
+
+msgid "The hreflang value added to the page HTML. Search engines use it to serve the correct language or regional version."
+msgstr ""
+
+msgid "Determines whether non-Latin characters in URLs are encoded. Leave it off unless your CDN, server, or redirects require ASCII-only URLs."
+msgstr ""
+
+msgid "Maps this custom language variant to a supported language so automatic translation engines can translate it. Choose “Match automatically” to let WPML find the closest supported language itself."
+msgstr ""
+
+#. translators: Error when a flag picture of the wrong kind is chosen, in the WPML Languages editor. "SVG" is a picture format; keep it.
+msgid "Only SVG flags can be uploaded."
+msgstr ""
+
+#. translators: Error when the chosen flag picture is too big, in the WPML Languages editor. %s: the largest size allowed, written out, e.g. "100 KB".
+#, js-format
+msgid "The flag is too large. Maximum size is %s."
+msgstr ""
+
+msgid "The file could not be read."
+msgstr ""
+
+msgid "The flag could not be saved. Please try again."
+msgstr ""
+
+#. translators: Inline message on a language row in the WPML Languages editor, shown when the language just picked in the add-language list is the one this row already carries under a different country. %1$s: the language picked in the add picker. %2$s: the country the holding row is set to, in the admin language, e.g. "Mexico".
+#, js-format
+msgid "%1$s is already active, set to %2$s. Change its country instead of adding it again."
+msgstr ""
+
+#. translators: Inline message on a language row in the WPML Languages editor, shown when the language just picked in the add-language list is the one this row already carries and that row has no country of its own. %1$s: the language picked in the add picker.
+#, js-format
+msgid "%1$s is already active. Change its country instead of adding it again."
+msgstr ""
+
+#. translators: Error in the WPML Languages editor. %1$s: the language WPML wanted to change, %2$s: the language that still has an unsaved change.
+#, js-format
+msgid "WPML couldn’t apply the change it detected for %1$s: %2$s still has an unsaved change. Save or revert it first."
+msgstr ""
+
+msgid "Copied to clipboard."
+msgstr ""
+
+msgid "An earlier language save is paused. Resume or dismiss it first, then save this change."
+msgstr ""
+
+msgid "WPML is still finishing an earlier language save. Wait for it to finish, then apply this change."
+msgstr ""
+
+msgid "Language settings saved."
+msgstr ""
+
+msgid "No changes to save."
+msgstr ""
+
+#. translators: Message shown when WPML could not read what a site's languages differ from its catalogue in, in the WPML Languages editor.
+msgid "Couldn’t check your languages against WPML’s catalogue."
+msgstr ""
+
+#. translators: Message shown after the "Reset language defaults" dialog of the WPML Languages editor has run on a site with more differing languages than the dialog could list. %d: how many languages were not reached.
+#, js-format
+msgid "Reset done. %d more language still differs from WPML’s catalogue — open Reset language defaults again to put it back."
+msgid_plural "Reset done. %d more languages still differ from WPML’s catalogue — open Reset language defaults again to put them back."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Message shown after the "Reset language defaults" dialog of the WPML Languages editor has put the ticked groups back.
+msgid "Your languages are back on WPML’s catalogue defaults."
+msgstr ""
+
+#. translators: Message shown when the "Reset language defaults" run failed, in the WPML Languages editor.
+msgid "Couldn’t reset the language defaults."
+msgstr ""
+
+#. translators: Error under a field in the WPML Languages editor. %1$s: the name of the field, e.g. "Locale", %2$s: what was typed, %3$s: the language that already uses it.
+#, js-format
+msgid "%1$s \"%2$s\" is already used by %3$s."
+msgstr ""
+
+#. translators: Shown in place of the country picker in the WPML Languages editor; "this" is changing the country.
+msgid "The country of a saved language can’t be changed right now — the background save this needs is switched off on this site."
+msgstr ""
+
+#. translators: Heading of the cost estimate for a language about to be added, in the WPML Languages editor. %s: the language name.
+#, js-format
+msgid "Cost to translate your content into %s"
+msgstr ""
+
+#. translators: Heading of the cost estimate when more than one language is about to be added, in the WPML Languages editor.
+msgid "Cost to translate your content into the new languages"
+msgstr ""
+
+#. translators: Button label that confirms adding the language shown in the cost estimate, in the WPML Languages editor. Verb, imperative.
+msgid "Add this language"
+msgstr ""
+
+msgid "Costs are based on your current content settings. Adjust them from the Translations dashboard."
+msgstr ""
+
+msgid "Manage and Hide Site Languages"
+msgstr ""
+
+msgid "Add, remove, configure, and hide your site’s translation languages. Click Edit on any row to edit its country, flag, codes, mapping, and visibility."
+msgstr ""
+
+msgid "WPML couldn’t communicate with our translation system. You can still edit and save your languages. Please contact support if the problem persists."
+msgstr ""
+
+msgid "Please <support>contact our support</support> and provide the error details below."
+msgstr ""
+
+#. translators: Label of the control that opens the details of a save error, in the WPML Languages editor. Verb, imperative.
+msgid "Show more"
+msgstr ""
+
+#. translators: Replaces "Show more" on the same control once the details are open, in the WPML Languages editor. Verb, imperative.
+msgid "Show less"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the button that copies the error details, in the WPML Languages editor. Verb, imperative.
+msgid "Copy error details"
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+#. translators: Tooltip of the block of error details in the WPML Languages editor; clicking it copies the text. Verb, imperative.
+msgid "Click to copy"
+msgstr ""
+
+#. translators: Link on the Save row of the WPML Languages editor; it opens the dialog that puts a site's languages back to WPML's catalogue defaults. Verb, imperative. Keep the ellipsis: it opens a dialog rather than acting.
+msgid "Reset language defaults…"
+msgstr ""
+
+#. translators: Button label while a save is running; it replaces "Save" on the same button. Keep the ellipsis.
+msgid "Saving…"
+msgstr ""
+
+#. translators: Button label in the WPML Languages editor that works out what the new languages would cost before saving. Verb, imperative.
+msgid "Calculate Costs"
+msgstr ""
+
+#. translators: Heading of the panel that reports what happened after a language was added, in the WPML Languages editor.
+msgid "Content brought into the language you added"
+msgstr ""
+
+#. translators: Heading of that same panel when nothing was moved; "Its" is the added language's.
+msgid "The language was added. Its content did not move."
+msgstr ""
+
+msgid "Verifying automatic translation compatibility"
+msgstr ""
+
+msgid "Updating language presets…"
+msgstr ""
+
+msgid "Language changes saved."
+msgstr ""
+
+#. translators: Button label that puts the ticked changes into effect and saves them at once, in the WPML Languages editor. Verb, imperative.
+msgid "Apply and save"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the X button that closes a dialog, on the WPML translation dashboard. Verb, imperative.
+msgid "Close modal"
+msgstr ""

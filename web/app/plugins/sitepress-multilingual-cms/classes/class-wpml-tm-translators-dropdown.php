@@ -1,44 +1,17 @@
 <?php
 
-/**
- * Class WPML_TM_Translators_Dropdown
- */
 class WPML_TM_Translators_Dropdown {
 
-	/**
-	 * @var WPML_TM_Blog_Translators $blog_translators
-	 */
 	private $blog_translators;
 
-	/**
-	 * @param WPML_TM_Blog_Translators $blog_translators
-	 */
 	public function __construct( $blog_translators ) {
 		$this->blog_translators = $blog_translators;
 	}
 
-	/**
-	 * @param array $args
-	 *
-	 * @return string
-	 */
 	public function render( $args = array() ) {
 		$dropdown = '';
 
-		/** @var $from string|false */
-		/** @var $to string|false */
-		/** @var $classes string|false */
-		/** @var $id string|false */
-		/** @var $name string|false */
-		/** @var $selected bool */
-		/** @var $echo bool */
-		/** @var $add_label bool */
-		/** @var $services array */
-		/** @var $disabled bool */
-		/** @var $default_name bool|string */
-		/** @var $local_only bool */
 
-		// set default value for variables
 		$from         = false;
 		$to           = false;
 		$id           = 'translator_id';
@@ -64,11 +37,11 @@ class WPML_TM_Translators_Dropdown {
 			$translation_service_name = TranslationProxy::get_current_service_name();
 			$is_service_authenticated = TranslationProxy::is_service_authenticated();
 
-			// if translation service does not support translators choice, always shows first available
 			if ( isset( $translation_service->id ) && ! TranslationProxy::translator_selection_available() && $is_service_authenticated ) {
 				$translators[] = (object) array(
 					'ID'           => TranslationProxy_Service::get_wpml_translator_id( $translation_service->id ),
-					'display_name' => __( 'First available', 'wpml-translation-management' ),
+					/* translators: First option in the dropdown that picks a translator: whoever is free first takes the job. */
+					'display_name' => __( 'First available', 'sitepress' ),
 					'service'      => $translation_service_name,
 				);
 			} elseif ( in_array( $translation_service_id, $services ) && $is_service_authenticated ) {
@@ -88,7 +61,8 @@ class WPML_TM_Translators_Dropdown {
 						if ( 1 < count( $language_pair['translators'] ) ) {
 							$translators[] = (object) array(
 								'ID'           => TranslationProxy_Service::get_wpml_translator_id( $translation_service->id ),
-								'display_name' => __( 'First available', 'wpml-translation-management' ),
+								/* translators: First option in the dropdown that picks a translator: whoever is free first takes the job. */
+								'display_name' => __( 'First available', 'sitepress' ),
 								'service'      => $translation_service_name,
 							);
 						}
@@ -108,7 +82,8 @@ class WPML_TM_Translators_Dropdown {
 			if ( in_array( 'local', $services ) ) {
 				$translators[] = (object) array(
 					'ID'           => 0,
-					'display_name' => __( 'First available', 'wpml-translation-management' ),
+					/* translators: First option in the dropdown that picks a translator: whoever is free first takes the job. */
+					'display_name' => __( 'First available', 'sitepress' ),
 				);
 				$translators   = array_merge(
 					$translators,
@@ -145,13 +120,15 @@ class WPML_TM_Translators_Dropdown {
 			}
 			$dropdown .= '</select>';
 		} catch ( WPMLTranslationProxyApiException $ex ) {
-			$dropdown .= esc_html__( 'Translation Proxy error', 'wpml-translation-management' ) . ': ' . $ex->getMessage();
+			$dropdown .= esc_html__( 'Translation Proxy error', 'sitepress' ) . ': ' . $ex->getMessage();
 		} catch ( Exception $ex ) {
-			$dropdown .= esc_html__( 'Error', 'wpml-translation-management' ) . ': ' . $ex->getMessage();
+			/* translators: Word in front of the details of something that went wrong; a colon and the details follow it. */
+			$dropdown .= esc_html__( 'Error', 'sitepress' ) . ': ' . $ex->getMessage();
 		}
 
 		if ( $add_label ) {
-			$dropdown = '<label for="' . esc_attr( $id ) . '">' . esc_html__( 'Translation jobs for:', 'wpml-translation-management' ) . '</label>&nbsp;' . $dropdown;
+			/* translators: Label in front of the dropdown that picks whose translation jobs are listed; the names follow the colon. */
+			$dropdown = '<label for="' . esc_attr( $id ) . '">' . esc_html__( 'Translation jobs for:', 'sitepress' ) . '</label>&nbsp;' . $dropdown;
 		}
 
 		if ( $echo ) {

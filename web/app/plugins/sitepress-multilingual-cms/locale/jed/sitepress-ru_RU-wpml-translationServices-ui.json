@@ -3,22 +3,27 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "ru_RU"
          },
          "Connect this site to your %s account": [
-            "Подключите этот сайт к своей учетной записи %s"
+            "Подключите этот сайт к вашему аккаунту %s"
          ],
          "Error": [
             "Ошибка"
          ],
          "« Use a different Translation Service": [
-            "« Использовать другую службу переводов"
+            "« Использовать другой сервис перевода"
          ],
          "Authenticate": [
-            "Авторизовать"
+            "Авторизоваться"
          ],
          "Visit <link_to_service /> to request an API Token. This token allows WPML to connect to <service_name /> to send and receive jobs.": [
-            "Перейдите в <link_to_service />, чтобы сделать запрос на API-ключ. Он позволяет WPML подключаться к <service_name /> для отправки и получения заказов."
+            "Посетите <link_to_service />, чтобы запросить токен API. Этот токен позволяет WPML подключаться к <service_name /> для отправки и получения заданий."
+         ],
+         "Search translation services": [
+            "Поиск сервисов перевода"
          ],
          "Search": [
             "Поиск"
@@ -27,7 +32,16 @@
             "Настройки"
          ],
          "It’s not currently possible to connect a translation service when WPML is set to translate your site’s content automatically. To use a translation service, please change your translation mode on the <LinkToSettingsPage /> page.": [
-            "В настоящее время невозможно подключить службу переводов, если WPML настроен на автоматический перевод контента вашего сайта. Чтобы использовать службу переводов, измените режим перевода на странице <LinkToSettingsPage />."
+            "В настоящее время невозможно подключить сервис перевода, когда в WPML настроен автоматический перевод контента вашего сайта. Чтобы использовать сервис перевода, измените режим перевода на странице <LinkToSettingsPage />."
+         ],
+         "Sort descending": [
+            "Сортировать по убыванию"
+         ],
+         "Sort ascending": [
+            "Сортировать по возрастанию"
+         ],
+         "Cancel sorting": [
+            "Отменить сортировку"
          ],
          "Documentation": [
             "Документация"
@@ -36,7 +50,7 @@
             "Активировать"
          ],
          "Name": [
-            "Имя"
+            "Название"
          ],
          "Description": [
             "Описание"

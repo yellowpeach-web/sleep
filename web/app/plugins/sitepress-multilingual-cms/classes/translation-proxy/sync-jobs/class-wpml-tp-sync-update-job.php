@@ -1,36 +1,69 @@
 <?php
 
-use WPML\FP\Relation;
+use WPML\FP\Obj;
 use \WPML\LIB\WP\Post;
 
 class WPML_TP_Sync_Update_Job {
 
 	private $strategies = array(
 		WPML_TM_Job_Entity::POST_TYPE    => 'update_post_job',
-		WPML_TM_Job_Entity::STRING_TYPE  => 'update_string_job',
 		WPML_TM_Job_Entity::PACKAGE_TYPE => 'update_post_job',
 		WPML_TM_Job_Entity::STRING_BATCH => 'update_post_job',
 	);
 
-	/** @var wpdb */
 	private $wpdb;
 
-	/** @var SitePress */
 	private $sitepress;
 
-	/**
-	 * @param wpdb $wpdb
-	 */
 	public function __construct( wpdb $wpdb, SitePress $sitepress ) {
 		$this->wpdb      = $wpdb;
 		$this->sitepress = $sitepress;
 	}
 
-	/**
-	 * @param WPML_TM_Job_Entity $job
-	 *
-	 * @return WPML_TM_Job_Entity
-	 */
+	public function cancel( WPML_TM_Job_Entity $job, $untranslatedStatus = ICL_TM_NOT_TRANSLATED ) {
+		if ( ! array_key_exists( $job->get_type(), $this->strategies ) ) {
+			return $job;
+		}
+
+		$wpdb = $this->wpdb;
+
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT status, translation_id FROM {$wpdb->prefix}icl_translation_status WHERE rid = %d",
+				$job->get_id()
+			)
+		);
+
+		if ( ! $row ) {
+			return $job;
+		}
+
+		$freshStatus = (int) $row->status;
+
+		if ( in_array( $freshStatus, [ ICL_TM_COMPLETE, ICL_TM_NOT_TRANSLATED, ICL_TM_ATE_CANCELLED ], true ) ) {
+			$job->set_status( $freshStatus );
+
+			return $job;
+		}
+
+		try {
+			$status = \WPML\Translation\PreviousStateServiceFactory::create()->revertToPreviousState(
+				(int) $row->translation_id,
+				(int) $untranslatedStatus
+			);
+		} catch ( \WPML\PHP\Exception\InvalidItemIdException $e ) {
+			return $job;
+		}
+
+		$job->set_status( $status );
+
+		if ( ICL_TM_NOT_TRANSLATED === $status && WPML_TM_Job_Entity::POST_TYPE === $job->get_type() ) {
+			$this->delete_orphan_translation( $job );
+		}
+
+		return $job;
+	}
+
 	public function update_state( WPML_TM_Job_Entity $job ) {
 		if ( ! array_key_exists( $job->get_type(), $this->strategies ) ) {
 			return $job;
@@ -41,54 +74,15 @@ class WPML_TP_Sync_Update_Job {
 		return call_user_func( array( $this, $method ), $job );
 	}
 
-	/**
-	 * @param WPML_TM_Job_Entity $job
-	 *
-	 * @return WPML_TM_Job_Entity
-	 */
-	private function update_string_job( WPML_TM_Job_Entity $job ) {
-		if ( $job->get_tp_id() ) {
-			$this->wpdb->update(
-				$this->wpdb->prefix . 'icl_core_status',
-				array(
-					'status'      => $job->get_status(),
-					'tp_revision' => $job->get_revision(),
-					'ts_status'   => $this->get_ts_status_in_ts_format( $job ),
-				),
-				array( 'rid' => $job->get_tp_id() )
-			);
-		}
 
-		$data = array(
-			'status' => $job->get_status(),
-		);
-		if ( ICL_TM_NOT_TRANSLATED === $job->get_status() ) {
-			$data['translator_id'] = null;
-		}
-
-		$this->wpdb->update(
-			$this->wpdb->prefix . 'icl_string_translations',
-			$data,
-			array( 'id' => $job->get_id() )
-		);
-
-		icl_update_string_status( $job->get_original_element_id() );
-
-		return $job;
-	}
-
-	/**
-	 * @param WPML_TM_Job_Entity $job
-	 *
-	 * @return WPML_TM_Job_Entity
-	 */
 	private function update_post_job( WPML_TM_Job_Entity $job ) {
-		$job_id = $job->get_id();
+		$rid = $job->get_id();
 
 		if ( $job->get_status() === ICL_TM_NOT_TRANSLATED ) {
-			$prev_status = $this->get_job_prev_status( $job_id );
-			if ( $prev_status && Relation::propEq( 'needs_update', '1', $prev_status ) ) {
-				$this->wpdb->update( $this->wpdb->prefix . 'icl_translation_status', $prev_status, [ 'rid' => $job_id ] );
+			$prev_status = \WPML\Translation\PreviousStateServiceFactory::create()->getByRid( $rid );
+      if ( $prev_status && Obj::prop( 'needs_update', $prev_status ) ) {
+				$prev_status['_prevstate'] = null;
+				$this->wpdb->update( $this->wpdb->prefix . 'icl_translation_status', $prev_status, [ 'rid' => $rid ] );
 				$job->set_needs_update( true );
 				return $job;
 			}
@@ -101,44 +95,29 @@ class WPML_TP_Sync_Update_Job {
 				'tp_revision' => $job->get_revision(),
 				'ts_status'   => $this->get_ts_status_in_ts_format( $job ),
 			),
-			array( 'rid' => $job_id )
+			array( 'rid' => $rid )
 		);
 
-		if (
-			ICL_TM_NOT_TRANSLATED === $job->get_status()
-			&& ( $post_type = Post::getType( $job->get_original_element_id() ) )
-		) {
+		if ( ICL_TM_NOT_TRANSLATED === $job->get_status() ) {
+			$this->delete_orphan_translation( $job );
+		}
+
+		return $job;
+	}
+
+	private function delete_orphan_translation( WPML_TM_Job_Entity $job ): void {
+		$post_type = Post::getType( $job->get_original_element_id() );
+
+		if ( $post_type ) {
 			$this->sitepress->delete_orphan_element(
 				$job->get_original_element_id(),
 				'post_' . $post_type,
 				$job->get_target_language()
 			);
 		}
-
-		return $job;
 	}
 
-	private function get_job_prev_status( $job_id ) {
-		$previous_state = $this->wpdb->get_var(
-			$this->wpdb->prepare(
-				"SELECT _prevstate
-					FROM {$this->wpdb->prefix}icl_translation_status
-					WHERE rid=%d
-					LIMIT 1",
-				$job_id
-			)
-		);
 
-		return unserialize( $previous_state );
-	}
-
-	/**
-	 * In the db, we store the exact json format that we get from TS. It includes an extra ts_status key
-	 *
-	 * @param WPML_TM_Job_Entity $job
-	 *
-	 * @return string
-	 */
 	private function get_ts_status_in_ts_format( WPML_TM_Job_Entity $job ) {
 		$ts_status = $job->get_ts_status();
 

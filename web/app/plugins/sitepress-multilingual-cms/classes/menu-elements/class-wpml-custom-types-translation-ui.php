@@ -2,13 +2,10 @@
 
 class WPML_Custom_Types_Translation_UI {
 
-	/** @var array */
 	private $translation_option_class_names;
 
-	/** @var WPML_Translation_Modes $translation_modes */
 	private $translation_modes;
 
-	/** @var WPML_UI_Unlock_Button $unlock_button_ui */
 	private $unlock_button_ui;
 
 	public function __construct( WPML_Translation_Modes $translation_modes, WPML_UI_Unlock_Button $unlock_button_ui ) {
@@ -37,13 +34,19 @@ class WPML_Custom_Types_Translation_UI {
 	public function render_row( $content_label, $name, $content_slug, $disabled, $current_translation_mode, $unlocked, $content_label_singular = false ) {
 		$radio_name    = esc_attr( $name . '[' . $content_slug . ']' );
 		$unlocked_name = esc_attr( $name . '_unlocked[' . $content_slug . ']' );
+		$search_target = '';
+		if ( 'icl_sync_custom_posts' === $name ) {
+			$search_target = 'wpml-search-post-type-' . sanitize_title( $content_slug );
+		} elseif ( 'icl_sync_tax' === $name ) {
+			$search_target = 'wpml-search-taxonomy-' . sanitize_title( $content_slug );
+		}
 		?>
-		<div class="wpml-flex-table-cell name">
+		<div class="wpml-flex-table-cell name"<?php echo $search_target ? ' data-wpml-search-target="' . esc_attr( $search_target ) . '"' : ''; ?>>
 			<?php
 			$this->unlock_button_ui->render( $disabled, $unlocked, $radio_name, $unlocked_name );
 			echo $content_label;
 			?>
-			(<i><?php echo esc_html( $content_slug ); ?></i>)
+			<i>(<?php echo esc_html( $content_slug ); ?>)</i>
 		</div>
 		<?php
 		foreach ( $this->translation_modes->get_options() as $value => $label ) {
@@ -53,11 +56,13 @@ class WPML_Custom_Types_Translation_UI {
 					class="wpml-flex-table-cell text-center <?php echo $this->translation_option_class_names[ $value ]; ?>"
 					data-header="<?php echo esc_attr( $label ); ?>">
 				<input type="radio" name="<?php echo $radio_name; ?>"
-					   class="js-custom-post-mode"
+					   class="wpml-radio-native js-custom-post-mode"
 					   value="<?php echo esc_attr( $value ); ?>" <?php echo $disabled_state_for_mode['html_attribute']; ?>
 					   data-slug="<?php esc_attr_e( $content_slug ) ?>"
 					   data-name="<?php esc_attr_e( $content_label ) ?>"
 					   data-singular-name="<?php esc_attr_e( $content_label_singular ?: $content_label ) ?>"
+					   aria-label="<?php echo __('Select translation option', 'sitepress');?>"
+					   aria-describedby="<?php echo $this->translation_option_class_names[ $value ]; ?>"
 					<?php checked( $value, $current_translation_mode ); ?>
 				/>
 				<?php if ( $disabled_state_for_mode['reason_message'] ) { ?>
@@ -68,14 +73,6 @@ class WPML_Custom_Types_Translation_UI {
 		}
 	}
 
-	/**
-	 * @param bool   $unlocked
-	 * @param bool   $disabled
-	 * @param int    $mode
-	 * @param string $content_slug
-	 *
-	 * @return array
-	 */
 	public static function get_disabled_state_for_mode( $unlocked, $disabled, $mode, $content_slug ) {
 		$disabled_state_for_mode                   = array(
 			'state'          => ! $unlocked && $disabled,
@@ -91,7 +88,8 @@ class WPML_Custom_Types_Translation_UI {
 		foreach ( $this->translation_modes->get_options() as $value => $label ) {
 			?>
 			<div
-					class="wpml-flex-table-cell text-center <?php echo $this->translation_option_class_names[ $value ]; ?>">
+				id="<?php echo $this->translation_option_class_names[ $value ];?>"
+				class="wpml-flex-table-cell text-center <?php echo $this->translation_option_class_names[ $value ]; ?>">
 				<?php echo wp_kses_post( $label ); ?>
 			</div>
 			<?php

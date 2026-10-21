@@ -1,13 +1,7 @@
 <?php
 
-/**
- * Class WPML_Links_Fixed_Status_For_Posts
- *
- * @package wpml-tm
- */
 class WPML_Links_Fixed_Status_For_Posts extends WPML_Links_Fixed_Status {
 
-	/* @var int $translation_id */
 	private $translation_id;
 	private $wpdb;
 
@@ -24,15 +18,22 @@ class WPML_Links_Fixed_Status_For_Posts extends WPML_Links_Fixed_Status {
 
 	public function set( $status ) {
 		$status = $status ? 1 : 0;
+		$wpdb   = $this->wpdb;
 
-		$q          = "UPDATE {$this->wpdb->prefix}icl_translation_status SET links_fixed=%d WHERE translation_id=%d";
-		$q_prepared = $this->wpdb->prepare( $q, array( $status, $this->translation_id ) );
-		$this->wpdb->query($q_prepared);
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}icl_translation_status SET links_fixed=%d WHERE translation_id=%d",
+				$status,
+				$this->translation_id
+			)
+		);
 	}
 
 	public function are_links_fixed() {
-		$state = $this->wpdb->get_var( $this->wpdb->prepare( "SELECT links_fixed
-														FROM {$this->wpdb->prefix}icl_translation_status
+		$wpdb = $this->wpdb;
+
+		$state = $wpdb->get_var( $wpdb->prepare( "SELECT links_fixed
+														FROM {$wpdb->prefix}icl_translation_status
 														WHERE translation_id=%d",
 														$this->translation_id ) );
 		return (bool) $state;

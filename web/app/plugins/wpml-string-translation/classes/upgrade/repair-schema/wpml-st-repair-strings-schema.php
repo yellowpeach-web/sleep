@@ -4,19 +4,14 @@ class WPML_ST_Repair_Strings_Schema {
 
 	const OPTION_HAS_RUN = 'wpml_st_repair_string_schema_has_run';
 
-	/** @var IWPML_St_Upgrade_Command $upgrade_command */
 	private $upgrade_command;
 
-	/** @var WPML_Notices $notices */
 	private $notices;
 
-	/** @var array $args */
 	private $args;
 
-	/** @var string $db_error */
 	private $db_error;
 
-	/** @var array $has_run */
 	private $has_run = array();
 
 	public function __construct( WPML_Notices $notices, array $args, $db_error ) {
@@ -29,7 +24,6 @@ class WPML_ST_Repair_Strings_Schema {
 		$this->upgrade_command = $upgrade_command;
 	}
 
-	/** @return bool */
 	public function run() {
 		$this->has_run = get_option( self::OPTION_HAS_RUN, array() );
 
@@ -46,7 +40,6 @@ class WPML_ST_Repair_Strings_Schema {
 		return false;
 	}
 
-	/** @return bool */
 	private function run_upgrade_command() {
 		if ( ! $this->acquire_lock() ) {
 			return false;
@@ -65,7 +58,6 @@ class WPML_ST_Repair_Strings_Schema {
 		return get_class( $this->upgrade_command );
 	}
 
-	/** @return bool */
 	private function acquire_lock() {
 		if ( get_transient( WPML_ST_Upgrade::TRANSIENT_UPGRADE_IN_PROGRESS ) ) {
 			return false;
@@ -80,9 +72,17 @@ class WPML_ST_Repair_Strings_Schema {
 	}
 
 	private function add_notice() {
+		$support_url = \WPML\ST\OutboundLinks\OutboundLinks::to(
+			'https://app.wpml.org/support',
+			array(
+				'medium'   => 'support',
+				'campaign' => 'support',
+			)
+		);
 		$text = '<p>' . sprintf(
+			/* translators: Notice shown when WPML finds a problem in its database tables. %1$s: opening link tag, %2$s: closing link tag; the words between them become a link to WPML support. */
 			esc_html__( 'We have detected a problem with some tables in the database. Please contact %1$sWPML support%2$s to get this fixed.', 'wpml-string-translation' ),
-			'<a href="https://wpml.org/forums/forum/english-support/" class="otgs-external-link" rel="noopener" target="_blank">',
+			'<a href="' . esc_url( $support_url ) . '" class="otgs-external-link" rel="noopener" target="_blank">',
 			'</a>'
 		) . '</p>';
 

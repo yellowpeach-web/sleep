@@ -1,35 +1,26 @@
 <?php
 
+use ACFML\Helper\MediaFields;
+use ACFML\Helper\MediaTranslation;
+
 class WPML_ACF_Attachments implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
-	/**
-	 * @var array Pairs of original - translation for already processed attachments during custom field copying.
-	 */
+
 	private static $attachment_fields_copied = array();
 
-	/**
-	 * Registers hooks related to attachments.
-	 */
 	public function add_hooks() {
 		add_filter( 'acf/load_value/type=gallery', array( $this, 'load_translated_attachment' ) );
 		add_filter( 'acf/load_value/type=image', array( $this, 'load_translated_attachment' ) );
 		add_filter( 'acf/load_value/type=file', array( $this, 'load_translated_attachment' ) );
 		add_action( 'wpml_after_update_attachment_texts', array( $this, 'copy_attachment_fields_to_translation' ), 10, 2 );
+		add_filter( 'wpml_ids_of_media_used_in_post', array( $this, 'add_media_field_ids' ), 10, 2 );
+
+		if ( MediaTranslation::isEnabled() ) {
+			add_filter( 'wpml_custom_field_values_for_post_signature', array( $this, 'addMediaFieldValuesToSignature' ), 10, 2 );
+		}
 	}
 
-	/**
-	 * @param array|string|int $attachments array of attachment ids or single attachment id
-	 *
-	 * @return array|string|int translated attachemnt id or attachments' ids
-	 */
 	public function load_translated_attachment( $attachments ) {
 
-		/**
-		 * If it detects an ID ( (int)100 or (string)"203") it passes it to `wpml_object_id`
-		 *
-		 * @param mixed $maybeAttachmentId
-		 *
-		 * @return mixed|null
-		 */
 		$safeConvert = function ( $maybeAttachmentId ) {
 			return is_int( $maybeAttachmentId ) || ( $maybeAttachmentId === ( (string) (int) $maybeAttachmentId ) )
 				? apply_filters( 'wpml_object_id', $maybeAttachmentId, 'attachment', true )
@@ -55,34 +46,25 @@ class WPML_ACF_Attachments implements \IWPML_Backend_Action, \IWPML_Frontend_Act
 		return $translatedAttachments;
 	}
 
-	/**
-	 * Copies ACF custom fields from original attachment to translation.
-	 *
-	 * @param int    $original_id Original post ID.
-	 * @param object $translation Translation object.
-	 */
 	public function copy_attachment_fields_to_translation( $original_id, $translation ) {
 		if ( function_exists( 'get_fields' )
 			&& function_exists( 'acf_get_field' )
 
-			/*
-			 * \WPML_Media_Attachments_Duplication::synchronize_attachment_metadata runs duplication twice,
-			 * I don't know why it happens, but no reason to duplicate metadata again for the same attachments pair.
-			 */
 			&& ! isset( self::$attachment_fields_copied[ $original_id ][ $translation->element_id ] ) ) {
-			$acf_fields = get_fields( $original_id );
+			$acf_fields = get_fields( $original_id, false );
 			if ( is_array( $acf_fields ) ) {
 				foreach ( $acf_fields as $acf_field_name => $acf_field_value ) {
 					$acf_field = acf_get_field( $acf_field_name );
 					if ( isset( $acf_field['wpml_cf_preferences'] ) ) {
+						$fieldKey = $acf_field['key'] ?? $acf_field_name;
 						switch ( $acf_field['wpml_cf_preferences'] ) {
 							case ( WPML_COPY_CUSTOM_FIELD ):
-								update_post_meta( $translation->element_id, $acf_field_name, $acf_field_value );
+								update_field( $fieldKey, $acf_field_value, $translation->element_id );
 								break;
 							case ( WPML_COPY_ONCE_CUSTOM_FIELD ):
 								$translated_post_meta = get_post_meta( $translation->element_id, $acf_field_name, true );
 								if ( ! $translated_post_meta ) {
-									update_post_meta( $translation->element_id, $acf_field_name, $acf_field_value );
+									update_field( $fieldKey, $acf_field_value, $translation->element_id );
 								}
 								break;
 						}
@@ -91,5 +73,19 @@ class WPML_ACF_Attachments implements \IWPML_Backend_Action, \IWPML_Frontend_Act
 			}
 			self::$attachment_fields_copied[ $original_id ][ $translation->element_id ] = 1;
 		}
+	}
+
+	public function add_media_field_ids( $media_ids, $post_id ) {
+		return array_values( array_unique( array_merge( $media_ids, MediaFields::getAttachmentIds( $post_id ) ) ) );
+	}
+
+	public function addMediaFieldValuesToSignature( $custom_fields, $post_id ) {
+		foreach ( MediaFields::getValues( $post_id ) as $meta_key => $raw_value ) {
+			if ( ! array_key_exists( $meta_key, $custom_fields ) ) {
+				$custom_fields[ $meta_key ] = $raw_value;
+			}
+		}
+
+		return $custom_fields;
 	}
 }

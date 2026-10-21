@@ -3,19 +3,60 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "ko_KR"
          },
-         "WPML Translation Editor": [
-            "WPML Translation Editor"
+         "Sending for translation": [
+            "번역을 위해 전송 중"
          ],
-         "Use only when you want to translate content from one of the few plugins that are not compatible with WPML’s translation editor or  if you would like to create different designs for the same page in different languages.": [
-            "WPML 번역 편집기와 호환되지 않는 몇 안 되는 플러그인 중 하나의 콘텐츠를 번역하거나 같은 페이지에 대해 다른 언어로 다른 디자인을 만들려는 경우에만 사용합니다."
+         "The translation could not be started because the server did not answer.": [
+            "서버가 응답하지 않아 번역을 시작할 수 없습니다."
+         ],
+         "This translation cannot be opened right now.": [
+            "지금은 이 번역을 열 수 없습니다."
+         ],
+         "Refresh this page": [
+            "이 페이지 새로고침"
+         ],
+         "Translation Dashboard": [
+            "번역 대시보드"
+         ],
+         "WPML Translation Editor": [
+            "WPML 번역 에디터"
          ],
          "WordPress Editor": [
-            "WordPress 편집기"
+            "WordPress 에디터"
          ],
-         "Use the editor to translate:": [
-            "편집기를 사용하여 번역:"
+         "The WordPress Editor doesn't offer Automatic Translation, <b>Translation Memory</b> and other features that make translation easier.": [
+            "WordPress 에디터는 자동 번역, <b>번역 메모리</b> 및 번역을 더 쉽게 만들어 주는 기타 기능을 제공하지 않습니다."
+         ],
+         "Also, switching back to WPML's Translation Editor later will require re-translating content that you translated with the WordPress editor.": [
+            "또한 나중에 WPML 번역 에디터로 다시 전환하면 WordPress 에디터로 번역한 콘텐츠를 다시 번역해야 합니다."
+         ],
+         "This translation was previously created in the WordPress editor. When you switch to WPML Translation Editor, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "이 번역은 이전에 WordPress 에디터에서 생성되었습니다. WPML 번역 에디터로 전환하면 번역된 포스트의 구조가 원본과 일치하도록 업데이트되지만, WPML은 기존 번역을 기반으로 사용하여 톤과 용어가 유지되도록 합니다."
+         ],
+         "This will overwrite content you translated with the WordPress Editor. If you switch now, you'll have to translate selected content again.": [
+            "이렇게 하면 WordPress 에디터로 번역한 콘텐츠를 덮어쓰게 됩니다. 지금 전환하면 선택한 콘텐츠를 다시 번역해야 합니다."
+         ],
+         "I understand, switch to the WordPress Editor": [
+            "이해했습니다, WordPress 에디터로 전환"
+         ],
+         "I understand, switch to %s": [
+            "이해했습니다, %s(으)로 전환"
+         ],
+         "I understand, switch to <b>Translation Dashboard</b>": [
+            "이해했습니다, <b>번역 대시보드</b>로 전환"
+         ],
+         "You are about to translate with the %s": [
+            "%s(으)로 번역하려고 합니다"
+         ],
+         "Translate with the WordPress Editor if you need different designs per language or if the content isn't compatible with WPML's Translation Editor.": [
+            "언어별로 다른 디자인이 필요하거나 콘텐츠가 WPML 번역 에디터와 호환되지 않는 경우 WordPress 에디터로 번역하세요."
+         ],
+         "What do you want to translate?": [
+            "무엇을 번역하시겠습니까?"
          ],
          "Apply": [
             "적용"
@@ -23,14 +64,20 @@
          "Cancel": [
             "취소"
          ],
-         "This %s": [
-            "이 %s"
+         "Only this %s": [
+            "이 %s만"
+         ],
+         "Recommended": [
+            "권장"
          ],
          "All %s": [
             "모든 %s"
          ],
          "All the site's content": [
-            "사이트의 모든 컨텐츠"
+            "사이트의 모든 콘텐츠"
+         ],
+         "Translate items in batch after reviewing the cost of AI translation": [
+            "AI 번역 비용을 검토한 후 항목을 일괄 번역"
          ]
       }
    }

@@ -12,15 +12,24 @@ class RegisteredButtons {
 			$title    = 'title="' . sprintf( esc_attr__( "Site-key was set by %s, most likely in wp-config.php. Please remove the constant before attempting to unregister.", 'installer' ), 'OTGS_INSTALLER_SITE_KEY_' . strtoupper( $model->repoId ) ) . '"';
 		}
 		?>
-			<a class="remove_site_key_js otgs-installer-notice-status-item otgs-installer-notice-status-item-link-unregister"
+		<div class="otgs-installer-notice-status-item">
+		<?php if ( \WP_Installer::site_key_belongs_to_network( $model->repoId ) ) : ?>
+			<p><?php echo \WP_Installer::network_site_key_notice(); ?></p>
+		<?php else : ?>
+		<p>
+			<?php esc_html_e( 'Purchased with another account?', 'installer' ); ?>
+		</p>
+
+		<a class="remove_site_key_js otgs-installer-notice-status-item otgs-installer-notice-status-item-btn"
 			   data-repository="<?php echo $model->repoId ?>"
 			   data-confirmation="<?php esc_attr_e( 'Are you sure you want to unregister?', 'installer' ) ?>"
 			   data-nonce="<?php echo $model->removeSiteKeyNonce ?>"
 				<?php echo $disabled; ?>
 				<?php echo $title; ?>
 			>
-				<?php printf( __( "Unregister %s from this site", 'installer' ), $model->productName ) ?>
+				<?php printf( __( "Unregister current %s site-key.", 'installer' ), $model->productName ) ?>
 			</a>&nbsp;
+		<?php endif; ?>
 
 			<?php if ( ! $model->expired && $model->displayCheckForUpdates ): ?>
 				<a class="update_site_key_js otgs-installer-notice-status-item-btn"
@@ -30,7 +39,7 @@ class RegisteredButtons {
 					<?php _e( 'Check for updates', 'installer' ); ?>
 				</a>
 			<?php endif; ?>
-
+		</div>
 		<?php
 	}
 }

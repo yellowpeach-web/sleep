@@ -1,6 +1,6 @@
 <?php
 
-class WPML_Display_As_Translated_Attachments_Query_Factory implements IWPML_Frontend_Action_Loader {
+class WPML_Display_As_Translated_Attachments_Query_Factory implements IWPML_Frontend_Action_Loader, IWPML_AJAX_Action_Loader {
 
 	public function create() {
 		global $sitepress, $wpml_post_translations;

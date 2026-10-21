@@ -49,7 +49,9 @@ class AdminLanguageSwitcher implements \IWPML_Frontend_Action {
 
 		wp_register_style(
 			'wpml-login-language-switcher',
-			ICL_PLUGIN_URL . '/res/css/login-language-switcher.css'
+			ICL_PLUGIN_URL . '/res/css/login-language-switcher.css',
+			[],
+			ICL_SITEPRESS_SCRIPT_VERSION
 		);
 		wp_enqueue_style( 'wpml-login-language-switcher' );
 
@@ -82,9 +84,6 @@ class AdminLanguageSwitcher implements \IWPML_Frontend_Action {
 		       || Str::includes( 'wp-activate.php', $url );
 	}
 
-	/**
-	 * @return string|false
-	 */
 	private function getSelectedLocale() {
 		return Maybe::of( $_GET )
 			->map( Obj::prop('wpml_lang' ) )
@@ -92,19 +91,10 @@ class AdminLanguageSwitcher implements \IWPML_Frontend_Action {
 			->getOrElse( false );
 	}
 
-	/**
-	 * @return bool
-	 */
 	private function isLanguageSwitcherShown() {
 		return $this->isOnWpLoginPage( site_url( $_SERVER['REQUEST_URI'], 'login' ) ) && WPLoginUrlConverter::isEnabled() && self::isEnabled();
 	}
 
-	/**
-	 * @param $sitepress
-	 * @param string $languageCode
-	 *
-	 * @return string
-	 */
 	private function prepareRedirectLink( $sitepress, $languageCode ) {
 		$redirectTo = $sitepress->convert_url( site_url( 'wp-login.php' ), $languageCode );
 
@@ -129,16 +119,10 @@ class AdminLanguageSwitcher implements \IWPML_Frontend_Action {
 		return $redirectTo;
 	}
 
-	/**
-	 * @param bool $state
-	 */
 	public static function saveState( $state ) {
 		Option::updateWithoutAutoLoad( self::LANGUAGE_SWITCHER_KEY, $state );
 	}
 
-	/**
-	 * @return bool
-	 */
 	public static function isEnabled() {
 		return Option::getOr( self::LANGUAGE_SWITCHER_KEY, true );
 	}

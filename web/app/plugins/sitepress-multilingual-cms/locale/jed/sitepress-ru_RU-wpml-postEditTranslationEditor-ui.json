@@ -3,19 +3,60 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "ru_RU"
          },
+         "Sending for translation": [
+            "Отправка на перевод"
+         ],
+         "The translation could not be started because the server did not answer.": [
+            "Не удалось начать перевод, так как сервер не ответил."
+         ],
+         "This translation cannot be opened right now.": [
+            "Этот перевод сейчас невозможно открыть."
+         ],
+         "Refresh this page": [
+            "Обновите эту страницу"
+         ],
+         "Translation Dashboard": [
+            "Панель управления переводами"
+         ],
          "WPML Translation Editor": [
             "Редактор переводов WPML"
-         ],
-         "Use only when you want to translate content from one of the few plugins that are not compatible with WPML’s translation editor or  if you would like to create different designs for the same page in different languages.": [
-            "Используйте только при необходимости перевести контент из тех немногочисленных плагинов, которые несовместимы с редактором перевода WPML, или если нужна разная компоновка одной и той же страницы на разных языках."
          ],
          "WordPress Editor": [
             "Редактор WordPress"
          ],
-         "Use the editor to translate:": [
-            "Используйте редактор для перевода:"
+         "The WordPress Editor doesn't offer Automatic Translation, <b>Translation Memory</b> and other features that make translation easier.": [
+            "Редактор WordPress не поддерживает автоматический перевод, <b>память переводов</b> и другие функции, упрощающие перевод."
+         ],
+         "Also, switching back to WPML's Translation Editor later will require re-translating content that you translated with the WordPress editor.": [
+            "Кроме того, при последующем возврате к редактору переводов WPML потребуется повторный перевод контента, который вы перевели в редакторе WordPress."
+         ],
+         "This translation was previously created in the WordPress editor. When you switch to WPML Translation Editor, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "Этот перевод ранее был создан в редакторе WordPress. При переключении на редактор переводов WPML структура переведенной записи будет обновлена в соответствии с оригиналом, но WPML будет использовать ваш существующий перевод в качестве основы, чтобы сохранить тон и терминологию."
+         ],
+         "This will overwrite content you translated with the WordPress Editor. If you switch now, you'll have to translate selected content again.": [
+            "Это перезапишет контент, переведенный вами в редакторе WordPress. Если вы переключитесь сейчас, вам придется заново переводить выбранный контент."
+         ],
+         "I understand, switch to the WordPress Editor": [
+            "Я понимаю, переключить на редактор WordPress"
+         ],
+         "I understand, switch to %s": [
+            "Я понимаю, переключить на %s"
+         ],
+         "I understand, switch to <b>Translation Dashboard</b>": [
+            "Я понимаю, переключить на <b>Панель управления переводами</b>"
+         ],
+         "You are about to translate with the %s": [
+            "Вы собираетесь переводить с помощью %s"
+         ],
+         "Translate with the WordPress Editor if you need different designs per language or if the content isn't compatible with WPML's Translation Editor.": [
+            "Используйте редактор WordPress, если вам нужен разный дизайн для каждого языка или если контент несовместим с редактором переводов WPML."
+         ],
+         "What do you want to translate?": [
+            "Что вы хотите перевести?"
          ],
          "Apply": [
             "Применить"
@@ -23,14 +64,20 @@
          "Cancel": [
             "Отмена"
          ],
-         "This %s": [
-            "Этот %s"
+         "Only this %s": [
+            "Только этот %s"
+         ],
+         "Recommended": [
+            "Рекомендуется"
          ],
          "All %s": [
             "Все %s"
          ],
          "All the site's content": [
             "Весь контент сайта"
+         ],
+         "Translate items in batch after reviewing the cost of AI translation": [
+            "Переводить элементы пакетом после проверки стоимости перевода ИИ"
          ]
       }
    }

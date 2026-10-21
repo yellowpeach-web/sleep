@@ -12,4 +12,5 @@ class ToolsetTexts extends Texts {
 	protected static $supportLink = 'https://toolset.com/forums/forum/professional-support/';
 	protected static $publishLink = 'https://toolset.com/account/sites/?publish=';
 	protected static $learnMoreDevKeysLink = 'https://toolset.com/faq/how-to-install-and-register-toolset/?utm_source=plugin&utm_medium=gui&utm_campaign=types#registering-toolset-in-a-development-environment';
+	protected static $renewPath = 'account';
 }

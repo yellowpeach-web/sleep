@@ -17,14 +17,14 @@ class AdminLanguageSwitcherRenderer {
 
                 <label for="language-switcher-locales">
                     <span class="dashicons dashicons-translation" aria-hidden="true"></span>
-                    <span class="screen-reader-text"><?php _e( 'Language' ); ?></span>
+                    <span class="screen-reader-text"><?php /* translators: Column heading and field label in the WPML admin, for the language of a piece of content. Noun, singular. */ esc_html_e( 'Language', 'sitepress' ); ?></span>
                 </label>
                 <select name="wpml_lang" id="wpml-language-switcher-locales">
 					<?php
 					echo implode( '', $languageOptions );
 					?>
                 </select>
-                <input type="submit" class="button" value="<?php esc_attr_e( "Change" ); ?>">
+                <input type="submit" class="button" value="<?php /* translators: Button label beside the language dropdown of the WPML admin language switcher: apply the language that was picked. Verb, imperative. */ esc_attr_e( 'Change', 'sitepress' ); ?>">
 
             </form>
         </div>

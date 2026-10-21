@@ -3,22 +3,24 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "ja"
          },
          "Preparing...": [
-            "準備しています..."
+            "準備中..."
          ],
          "All jobs have been cancelled": [
             "すべてのジョブがキャンセルされました"
          ],
          "There is no more jobs to cancel": [
-            "これ以上キャンセルするジョブはありません"
+            "キャンセルするジョブはもうありません"
          ],
          "The jobs cancellation has failed": [
-            "ジョブのキャンセルが失敗しました"
+            "ジョブのキャンセルに失敗しました"
          ],
          "Cancel in-progress automatic jobs": [
-            "進行中の自動ジョブをキャンセルする"
+            "進行中の自動翻訳ジョブをキャンセルする"
          ],
          "Domain name has been updated": [
             "ドメイン名が更新されました"
@@ -27,13 +29,73 @@
             "ドメイン名の更新に失敗しました"
          ],
          "Update domain name in language switcher settings": [
-            "言語スイッチャー設定でドメイン名を更新する"
+            "言語スイッチャー設定のドメイン名を更新する"
+         ],
+         "Disclaimer: MySQL Disk Space": [
+            "免責事項：MySQL ディスク容量"
+         ],
+         "Cleaning and compressing the wp_icl_translate and wp_icl_translation_status tables reduces its data size, but does not automatically free up disk space in MySQL. To reclaim disk space, a table rebuild is required—a risky operation not performed automatically by this tool.": [
+            "「wp_icl_translate」および「wp_icl_translation_status」テーブルをクリーンアップして圧縮すると、データサイズは縮小されますが、MySQL のディスク容量が自動的に解放されるわけではありません。ディスク容量を回収するにはテーブルの再構築が必要ですが、これはリスクを伴う操作であり、このツールでは自動的に実行されません。"
+         ],
+         "Optimize translation tables": [
+            "翻訳テーブルを最適化する"
+         ],
+         "Previous State Migration": [
+            "以前の状態の移行"
+         ],
+         "Translation Elements Migration": [
+            "翻訳要素の移行"
+         ],
+         "Processed": [
+            "処理済み"
+         ],
+         "Error": [
+            "エラー"
+         ],
+         "Success": [
+            "成功"
+         ],
+         "Database tables optimization completed successfully.": [
+            "データベーステーブルの最適化が正常に完了しました。"
+         ],
+         "Warning": [
+            "警告"
+         ],
+         "This process is resource-intensive and may take a significant amount of time. It is recommended to run this optimization during periods of low traffic.": [
+            "このプロセスはリソースを大量に消費し、かなりの時間がかかる場合があります。この最適化は、トラフィックの少ない時間帯に実行することをお勧めします。"
+         ],
+         "Database Tables Optimization": [
+            "データベーステーブルの最適化"
          ],
          "Refresh license data to recognise license update": [
-            "ライセンス データを最新の状態に更新し、ライセンス アップデートを認識する"
+            "ライセンスの更新を認識するためにライセンスデータを更新する"
          ],
          "WPML License has been refreshed": [
-            "WPML ライセンスが最新の状態に更新されました"
+            "WPML ライセンスが更新されました"
+         ],
+         "Translate Everything Automatically is not active.": [
+            "「すべてを自動翻訳する」が有効になっていません。"
+         ],
+         "Retry stuck automatic translations": [
+            "スタックした自動翻訳を再試行する"
+         ],
+         "Resends translation jobs that couldn't be processed due to a temporary issue while <b>Translate Everything Automatically</b> was active.": [
+            "<b>すべてを自動翻訳する</b>が有効な間に、一時的な問題で処理できなかった翻訳ジョブを再送信します。"
+         ],
+         "Checking for stuck translation jobs...": [
+            "スタックした翻訳ジョブを確認中..."
+         ],
+         "Processing... %s stuck translation found so far": [
+            "処理中... これまでに %s 件のスタックした翻訳が見つかりました"
+         ],
+         "Something went wrong while checking for stuck translation jobs. Please <a>contact WPML support</a>.": [
+            "スタックした翻訳ジョブの確認中に問題が発生しました。<a>WPML サポートにお問い合わせください</a>。"
+         ],
+         "No stuck translation jobs found.": [
+            "スタックした翻訳ジョブは見つかりませんでした。"
+         ],
+         "%s stuck translation job found. WPML will translate it automatically in the background.\nYou can check the progress in the <b>Translation Dashboard</b>.": [
+            "%s 件のスタックした翻訳ジョブが見つかりました。WPML はバックグラウンドでこれらを自動的に翻訳します。\n進捗状況は<b>翻訳ダッシュボード</b>で確認できます。"
          ]
       }
    }

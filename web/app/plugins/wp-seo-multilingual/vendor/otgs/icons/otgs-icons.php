@@ -1,7 +1,4 @@
 <?php
-/**
- * Include this file to use OTGS-Icons
- */
 if( ! defined( 'OTGS_ICONS_ROOT_URL' ) )
 	return;
 

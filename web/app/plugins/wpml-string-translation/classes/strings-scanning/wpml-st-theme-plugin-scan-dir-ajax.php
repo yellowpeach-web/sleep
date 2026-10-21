@@ -1,51 +1,51 @@
 <?php
 
+use WPML\ST\StringsScanning\JS\ScriptRegistry;
+
 class WPML_ST_Theme_Plugin_Scan_Dir_Ajax {
 
-	/** @var WPML_ST_Scan_Dir */
 	private $scan_dir;
 
-	/** @var WPML_ST_File_Hashing */
-	private $file_hashing;
-
-	/**
-	 * WPML_ST_Theme_Plugin_Scan_Dir_Ajax constructor.
-	 *
-	 * @param WPML_ST_Scan_Dir     $scan_dir
-	 * @param WPML_ST_File_Hashing $file_hashing
-	 */
-	public function __construct( WPML_ST_Scan_Dir $scan_dir, WPML_ST_File_Hashing $file_hashing ) {
-		$this->scan_dir     = $scan_dir;
-		$this->file_hashing = $file_hashing;
+	public function __construct( WPML_ST_Scan_Dir $scan_dir ) {
+		$this->scan_dir = $scan_dir;
 	}
 
 	public function add_hooks() {
-		add_action( 'wp_ajax_wpml_get_files_to_scan', array( $this, 'get_files' ) );
+		\WPML\Request\Adapter\Ajax::register( 'wpml_get_files_to_scan', \WPML\Request\Policy\Policy::capability( 'wpml_manage_theme_and_plugin_localization', \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_get_files_to_scan', 'nonce' ) ), array( $this, 'get_files' ) );
 	}
 
 	public function get_files() {
-		$folders = $this->get_folder();
-		$result  = array();
+		if ( ! current_user_can( 'wpml_manage_theme_and_plugin_localization' ) ) {
+			/* translators: Error message shown when the user does not have the rights to do what they asked for. Past participle used as a state, lower case in the source. */
+			wp_send_json_error( __( 'not allowed', 'wpml-string-translation' ) );
+			return;
+		}
 
-		if ( $folders ) {
-			$file_type          = array( 'php', 'inc' );
-			$files_found_chunks = array();
+		list( $type, $id, $folder ) = $this->get_component_data();
+		$files_found_chunks         = [];
+		$result                     = [];
 
-			foreach ( $folders as $folder ) {
-				$files_found_chunks[] = $this->scan_dir->scan(
-					$folder,
-					$file_type,
-					$this->is_one_file_plugin(),
-					$this->get_folders_to_ignore()
-				);
+		if ( $folder ) {
+			$file_type = [ 'php', 'inc' ];
+
+			$files_found_chunks[] = $this->scan_dir->scan(
+				$folder,
+				$file_type,
+				$this->is_one_file_plugin( $type, $id ),
+				$this->get_folders_to_ignore()
+			);
+
+			if ( 'theme' === $type ) {
+				$this->log_files_a_theme_requires_from_outside( $id, $folder, $files_found_chunks[0] );
 			}
 
-			$files = call_user_func_array( 'array_merge', $files_found_chunks );
-			$files = $this->filter_modified_files( $files );
-
-			if ( ! $files ) {
-				$this->clear_items_to_scan_buffer();
+			if ( 'mu-plugin' === $type ) {
+				$files_found_chunks[] = $this->get_files_a_mu_plugin_loads( $id, $file_type );
 			}
+
+			$files_found_chunks[] = ScriptRegistry::getAbsScriptPathsForComponents( $id, $type );
+
+			$files = array_values( array_unique( call_user_func_array( 'array_merge', $files_found_chunks ) ) );
 
 			$result = array(
 				'files'            => $files,
@@ -56,67 +56,114 @@ class WPML_ST_Theme_Plugin_Scan_Dir_Ajax {
 		wp_send_json_success( $result );
 	}
 
-	private function clear_items_to_scan_buffer() {
-		wpml_get_admin_notices()->remove_notice(
-			WPML_ST_Themes_And_Plugins_Settings::NOTICES_GROUP,
-			WPML_ST_Themes_And_Plugins_Updates::WPML_ST_SCAN_NOTICE_ID
-		);
-		delete_option( WPML_ST_Themes_And_Plugins_Updates::WPML_ST_ITEMS_TO_SCAN );
+	private function get_component_data() {
+		$type   = null;
+		$id     = null;
+		$root   = null;
+		$folder = null;
+		$theme_id     = $this->get_posted_component_id( 'theme' );
+		$plugin_id    = $this->get_posted_component_id( 'plugin' );
+		$mu_plugin_id = $this->get_posted_component_id( 'mu-plugin' );
+
+		if ( null !== $theme_id ) {
+			$type = 'theme';
+			$id   = $theme_id;
+			if ( WPML_ST_Path_Confinement::is_theme_identifier( $id ) ) {
+				$theme = wp_get_theme( $id );
+				if ( $theme->exists() ) {
+					$root   = $theme->get_theme_root();
+					$folder = $theme->get_stylesheet_directory();
+				}
+			}
+		} elseif ( null !== $plugin_id ) {
+			$type   = 'plugin';
+			$id     = $plugin_id;
+			$folder = WPML_ST_Path_Confinement::resolve_registered_plugin_root( $id );
+		} elseif ( null !== $mu_plugin_id ) {
+			$type   = 'mu-plugin';
+			$id     = $mu_plugin_id;
+			$root   = WPMU_PLUGIN_DIR;
+			$folder = $this->is_single_path_segment( $id ) ? $root . '/' . $id : null;
+		}
+
+		if ( $folder && $root ) {
+			$confined = WPML_ST_Path_Confinement::resolve_contained( $folder, $root );
+			$folder   = false !== $confined ? $confined : null;
+		}
+
+		return [ $type, $id, $folder ];
 	}
 
-	/**
-	 * @param array $files
-	 *
-	 * @return array
-	 */
-	private function filter_modified_files( $files ) {
-		$modified_files = array();
-		foreach ( $files as $file ) {
-			if ( $this->file_hashing->hash_changed( $file ) ) {
-				$modified_files[] = $file;
+	private function get_posted_component_id( $key ) {
+		if ( ! array_key_exists( $key, $_POST ) || ! is_string( $_POST[ $key ] ) ) {
+			return null;
+		}
+
+		return sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
+	}
+
+	private function is_single_path_segment( $id ) {
+		return '' !== $id && false === strpos( $id, '/' ) && false === strpos( $id, '\\' );
+	}
+
+	private function get_files_a_mu_plugin_loads( $id, array $extensions ) {
+		$scan_paths = WPML_ST_Path_Confinement::resolve_mu_plugin_scan_paths( $id );
+		if ( false === $scan_paths ) {
+			return [];
+		}
+
+		foreach ( $scan_paths['refused'] as $refused ) {
+			error_log(
+				'WPML String Translation: the scan of the must-use plugin "' . $id . '" does not follow "' . $refused['include'] . '": '
+				. $this->describe_refused_include( $refused['reason'] )
+			);
+		}
+
+		$files = [];
+		foreach ( $scan_paths['directories'] as $directory ) {
+			$files = array_merge( $files, $this->scan_dir->scan( $directory, $extensions, false, $this->get_folders_to_ignore() ) );
+		}
+
+		foreach ( $scan_paths['files'] as $file ) {
+			if ( $file !== $scan_paths['file'] && in_array( pathinfo( $file, PATHINFO_EXTENSION ), $extensions, true ) ) {
+				$files[] = $file;
 			}
 		}
 
-		return $modified_files;
+		return $files;
 	}
 
-	/** @return array */
-	private function get_folder() {
-		$folder = array();
-
-		if ( array_key_exists( 'theme', $_POST ) ) {
-			$folder[] = get_theme_root() . '/' . sanitize_text_field( $_POST['theme'] );
-		} elseif ( array_key_exists( 'plugin', $_POST ) ) {
-			$plugin_folder = explode( '/', $_POST['plugin'] );
-			$folder[]      = WPML_PLUGINS_DIR . '/' . sanitize_text_field( $plugin_folder[0] );
-		} elseif ( array_key_exists( 'mu-plugin', $_POST ) ) {
-			$folder[] = WPMU_PLUGIN_DIR . '/' . sanitize_text_field( $_POST['mu-plugin'] );
+	private function log_files_a_theme_requires_from_outside( $id, $folder, array $files ) {
+		foreach ( WPML_ST_Path_Confinement::read_includes_outside_theme( $files, $folder ) as $outside ) {
+			error_log(
+				'WPML String Translation: the scan of the theme "' . $id . '" does not read "' . $outside['include'] . '", which "'
+				. substr( $outside['file'], strlen( $folder ) + 1 ) . '" requires: the scan reads the files of the theme folder only. '
+				. 'Its strings are registered when "Auto register untranslated strings" is on and a page that shows them is visited in a language other than English.'
+			);
 		}
-
-		return $folder;
 	}
 
-	private function is_one_file_plugin() {
-		$is_one_file_plugin = false;
-
-		if ( array_key_exists( 'plugin', $_POST ) ) {
-			$is_one_file_plugin = false === strpos( $_POST['plugin'], 'plugins/' );
+	private function describe_refused_include( $reason ) {
+		switch ( $reason ) {
+			case 'outside':
+				return 'it is outside the must-use plugins directory.';
+			case 'missing':
+				return 'the file does not exist.';
+			default:
+				return 'the path is computed when the code runs, so the scan cannot read it; name the folder like the loader file to have it scanned.';
 		}
-
-		if ( array_key_exists( 'mu-plugin', $_POST ) ) {
-			$is_one_file_plugin = false === strpos( $_POST['mu-plugin'], 'mu-plugins/' );
-		}
-
-		return $is_one_file_plugin;
 	}
 
-	/**
-	 * @return array
-	 */
+	private function is_one_file_plugin( $type, $id ) {
+		return in_array( $type, [ 'plugin', 'mu-plugin' ], true ) && '.' === dirname( $id );
+	}
+
 	private function get_folders_to_ignore() {
 		$folders = [
 			WPML_ST_Scan_Dir::PLACEHOLDERS_ROOT . '/node_modules',
 			WPML_ST_Scan_Dir::PLACEHOLDERS_ROOT . '/tests',
+			WPML_ST_Scan_Dir::PLACEHOLDERS_ROOT . '/*/[Tt]ests',
+			WPML_ST_Scan_Dir::PLACEHOLDERS_ROOT . '/vendor-bin',
 		];
 
 		return $folders;

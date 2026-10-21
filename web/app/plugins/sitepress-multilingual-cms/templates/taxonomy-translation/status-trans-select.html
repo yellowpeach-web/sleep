@@ -1,7 +1,19 @@
-<div class="alignleft">
-	<label for="status-select"><%=labels.Show%></label>
-	<select id="status-select" name="status">
-		<option value="0"><%=labels.all + ' ' + taxonomy.label%></option>
-		<option value="1"><%=labels.untranslated + ' ' + taxonomy.label%></option>
-	</select>
+<div class="alignleft wpml-tt-filter-sentence" data-show-language="<%= showLanguage ? 1 : 0 %>">
+	<% _.each( showLanguage ? labels.filterSentenceWithLanguage : labels.filterSentence, function( segment ) { %>
+		<% if ( segment.type === "text" ) { %>
+			<span class="wpml-tt-filter-sentence-text"><%- segment.text %></span>
+		<% } else if ( segment.control === 1 ) { %>
+			<select id="status-select" name="status" aria-label="<%- labels.filterByStatus %>">
+				<option value="0"<% if ( ! untranslated ) { %> selected="selected"<% } %>><%=labels.all + ' ' + taxonomy.label%></option>
+				<option value="1"<% if ( untranslated ) { %> selected="selected"<% } %>><%=labels.untranslated + ' ' + taxonomy.label%></option>
+			</select>
+		<% } else if ( segment.control === 2 ) { %>
+			<select name="language" id="in-lang" aria-label="<%- labels.filterByLanguage %>">
+				<option value="all"><%= labels.anyLang %></option>
+				<% _.each( langs, function( lang, code ) { %>
+					<option value="<%= code %>"<% if ( language === code ) { %> selected="selected"<% } %>><%= lang.label %></option>
+				<% }); %>
+			</select>
+		<% } %>
+	<% }); %>
 </div>

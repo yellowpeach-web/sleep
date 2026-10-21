@@ -1,43 +1,34 @@
 <?php
 
-/**
- * @author OnTheGo Systems
- */
 class WPML_TM_ATE_Models_Job_Create {
-	/** @var int */
 	public $id;
-	/** @var int */
 	public $deadline;
-	/** @var WPML_TM_ATE_Models_Job_File */
 	public $file;
-	/** @var bool */
 	public $notify_enabled;
-	/** @var string */
 	public $notify_url;
-	/** @var int */
 	public $source_id;
-	/** @var string */
+	public $element_id;
 	public $permalink;
-	/** @var string */
 	public $site_identifier;
-	/** @var WPML_TM_ATE_Models_Language */
 	public $source_language;
-	/** @var WPML_TM_ATE_Models_Language */
 	public $target_language;
-	/** @var string */
 	public $ate_ams_console_url;
-	/** @var int */
 	public $existing_ate_id;
-	/** @var int */
-	public $wpml_chars_count;
 
-	/**
-	 * WPML_TM_ATE_Models_Job_Create constructor.
-	 *
-	 * @param array $args
-	 *
-	 * @throws \Auryn\InjectionException
-	 */
+	public $wpml_words_to_translate_count;
+	public $wpml_automatic_translation_costs;
+	public $ate_previous_job_ids;
+
+	public $wpml_evidence_manifest;
+
+	public $apply_memory;
+
+	public $job_sender;
+
+	public $tier;
+
+	public $rank;
+
 	public function __construct( array $args = array() ) {
 		foreach ( $args as $key => $value ) {
 			$this->$key = $value;

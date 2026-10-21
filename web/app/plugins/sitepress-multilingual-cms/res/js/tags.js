@@ -128,7 +128,9 @@ var iclTagLangSelectBar = {
                     data: '', // wpmlcore-5061
                     success: function(msg){
                         jQuery('#icl_tax_adding_notice').fadeOut();
-                        jQuery('#icl_tax_'+taxonomy+'_lang .inside').html(jQuery(msg).find('#icl_tax_'+taxonomy+'_lang .inside').html());
+                        // wpmldev-5105: markup lifted out of a full-page response.
+                        var inside = jQuery(msg).find('#icl_tax_'+taxonomy+'_lang .inside').html();
+                        jQuery('#icl_tax_'+taxonomy+'_lang .inside').html(WPML_core.purify(inside));
                     }
                 })
             }

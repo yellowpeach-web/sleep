@@ -31,28 +31,41 @@ class NextTranslationLink {
 		};
 
 		$getTranslationPostId = Fns::memorize( self::getTranslationPostId() );
-		$switchToPostLang = function ( $job ) use ( $sitepress, $getTranslationPostId ) {
+
+		$switchedLang     = false;
+		$switchToPostLang = function ( $job ) use ( $sitepress, $getTranslationPostId, &$switchedLang ) {
 			Maybe::of( $job )
 				->chain( $getTranslationPostId )
 				->map( Post::getLang() )
-				->map( [ $sitepress, 'switch_lang' ] );
+				->map( function ( $lang ) use ( $sitepress, &$switchedLang ) {
+					if ( $lang ) {
+						$sitepress->switch_lang( $lang );
+						$switchedLang = true;
+					}
+				} );
 		};
 
-		$restoreLang = function () use ( $sitepress ) {
-			$sitepress->switch_lang( null );
+		$restoreLang = function () use ( $sitepress, &$switchedLang ) {
+			if ( $switchedLang ) {
+				$sitepress->switch_lang( null );
+				$switchedLang = false;
+			}
 		};
 		$getLink = Fns::converge( Fns::liftA2( PreviewLink::getWithLanguagesParam( $filterTargetLanguages ) ), [
 			$getTranslationPostId,
 			Maybe::safe( invoke( 'get_translate_job_id' ) )
 		] );
-		return Maybe::of( $currentJob )
-			->map( self::getNextJob( $filterTargetLanguages ) )
-			->map( Fns::tap( $switchToPostLang ) )
-			->map( Fns::tap( $addPreviewLangFilter ) )
-			->chain( $getLink )
-			->map( Fns::tap( $removePreviewLangFilter ) )
-			->map( Fns::tap( $restoreLang ) )
-			->getOrElse( null );
+		try {
+			return Maybe::fromNullable( $currentJob )
+				->map( self::getNextJob( $filterTargetLanguages ) )
+				->map( Fns::tap( $switchToPostLang ) )
+				->map( Fns::tap( $addPreviewLangFilter ) )
+				->chain( $getLink )
+				->getOrElse( null );
+		} finally {
+			$removePreviewLangFilter();
+			$restoreLang();
+		}
 	}
 
 	private static function getTranslationPostId() {
@@ -64,9 +77,6 @@ class NextTranslationLink {
 		};
 	}
 
-	/**
-	 * @return \Closure :: \stdClass -> \WPML_TM_Post_Job_Entity
-	 */
 	private static function getNextJob( $filterTargetLanguages ) {
 		return function ( $currentJob ) use ( $filterTargetLanguages ) {
 			$getJob = function ( $sourceLanguage, $targetLanguages ) use ( $currentJob ) {
@@ -118,15 +128,9 @@ class NextTranslationLink {
 		};
 	}
 
-	/**
-	 * @param string   $sourceLang
-	 * @param string[] $targetLanguages
-	 *
-	 * @return \WPML_TM_Jobs_Search_Params
-	 */
 	private static function buildSearchParams( $sourceLang, array $targetLanguages ) {
 		return ( new \WPML_TM_Jobs_Search_Params() )
-			->set_custom_where_conditions( [ 'translations.element_type NOT LIKE "package_%"' ] )
+			->set_custom_where_conditions( [ "translations.element_type NOT LIKE 'package_%'" ] )
 			->set_needs_review()
 			->set_source_language( $sourceLang )
 			->set_target_language( $targetLanguages );

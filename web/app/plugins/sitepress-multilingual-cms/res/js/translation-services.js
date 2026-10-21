@@ -1,5 +1,5 @@
 /*jshint browser:true, devel:true */
-/*globals jQuery, ajaxurl*/
+/*globals jQuery, ajaxurl, WPML_core*/
 var WPMLTranslationServicesDialog = function () {
 	"use strict";
 
@@ -29,7 +29,9 @@ var WPMLTranslationServicesDialog = function () {
 		header = self.activeServiceWrapper.find( '.active-service-header' ).val();
 		tip = self.activeServiceWrapper.find( '.active-service-tip' ).val();
 
-		self.serviceDialog = jQuery('<div id="service_dialog"><h4>' + header + '</h4><div class="custom_fields_wrapper"></div><p class="ts-api-tip">' + tip + '</p><div class="tp_response_message icl_ajx_response"></div>');
+		self.serviceDialog = jQuery('<div id="service_dialog"><h4></h4><div class="custom_fields_wrapper"></div><p class="ts-api-tip"></p><div class="tp_response_message icl_ajx_response"></div>');
+		self.serviceDialog.find('h4').text(header);
+		self.serviceDialog.find('.ts-api-tip').html(WPML_core.purify(tip));
 		self.ajaxSpinner.addClass('is-active');
 
 		flushWebsiteDetailsCacheLink = jQuery('.js-flush-website-details-cache');
@@ -122,13 +124,13 @@ var WPMLTranslationServicesDialog = function () {
 			dataType: 'json',
 			success: function(response) {
 				if (response.success && response.data) {
-					var content = jQuery.parseHTML(response.data.active_service_block);
+					var content = jQuery.parseHTML(WPML_core.purify(response.data.active_service_block));
 					activeServiceBlock.fadeOut(400, function() {
 						activeServiceBlock.html(content).fadeIn(content);
 					});
 				} else {
 					refreshMsg.fadeOut(400, function() {
-						refreshMsg.html("<p>" + response.data.message + "</p>").addClass('notice notice-error inline').fadeIn(content);
+						refreshMsg.html("<p>" + WPML_core.purify(response.data.message) + "</p>").addClass('notice notice-error inline').fadeIn(content);
 						activeTsButtons.prop('disabled', false);
 					});
 				}
@@ -242,10 +244,14 @@ var WPMLTranslationServicesDialog = function () {
 			itemId = 'custom_field_' + item.name;
 
 			if (item.type.trim().toLowerCase() !== 'hidden') {
-				itemLabel = jQuery('<label for="' + itemId + '">' + item.label + ':</label>');
+				itemLabel = jQuery('<label></label>').attr('for', itemId).text(item.label + ':');
 				itemLabel.appendTo(customFieldsListItem);
 			}
-			itemInput = jQuery('<input type="' + item.type + '" id="' + itemId + '" class="custom_fields" name="' + item.name + '" />');
+			itemInput = jQuery('<input class="custom_fields" />').attr({
+				type: item.type,
+				id: itemId,
+				name: item.name
+			});
 
 			itemInput.appendTo(customFieldsListItem);
 			if (!firstInput) {
@@ -308,7 +314,7 @@ var WPMLTranslationServicesDialog = function () {
 						}
 					}
 
-					response_message.html( response.message );
+					response_message.html( WPML_core.purify( response.message ) );
 					response_message.show();
 
 					setInterval( function () {

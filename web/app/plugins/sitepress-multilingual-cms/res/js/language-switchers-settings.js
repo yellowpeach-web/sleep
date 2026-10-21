@@ -17,7 +17,12 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
 		additionalCssStyleId = 'wpml-ls-inline-styles-additional-css',
 		dialogInlineStyleId  = 'wpml-ls-inline-styles-dialog',
 		currentItemSlug,
-		slotInlineStylesBackup;
+		slotInlineStylesBackup,
+		displayOptionCheckboxes = [
+			".js-wpml-ls-setting-display_flags",
+			".js-wpml-ls-setting-display_names_in_native_lang",
+			".js-wpml-ls-setting-display_names_in_current_lang"
+		];
 
 	var init = function () {
 		form         	 = $('#wpml-ls-settings-form');
@@ -50,6 +55,7 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
         forceRefreshOnBrowserBackButton();
         setupWizardNextEvent();
         preventClickOnPreviewLinks();
+        attachDisplayCheckboxEvent();
     };
 
 	var maybeInitAdditionalCssStyle = function() {
@@ -120,11 +126,33 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
     };
 
     var attachTooltipEvents = function () {
-        formAndDialogBox.on('click.tooltip', '.js-wpml-ls-tooltip-open', function (e) {
-            e.preventDefault();
-            openTooltip($(this));
+        // The language-switcher help icons can be re-rendered inside the
+        // settings dialog, so delegate from formAndDialogBox. They carry an
+        // optional data-link-* doc link inside the popover.
+        WPMLCore.createHoverableTooltip({
+            context:      formAndDialogBox,
+            trigger:      '.js-wpml-ls-tooltip-open',
+            popover:      '.js-wpml-ls-tooltip',
+            activeClass:  'js-wpml-ls-active-tooltip',
+            pointerClass: 'js-wpml-ls-tooltip wpml-ls-tooltip',
+            withLink:     true
         });
     };
+
+	var attachDisplayCheckboxEvent = function (context) {
+		// Collect checkboxes
+		displayOptionCheckboxes.forEach(function(selector) {
+			if (context) {
+				var checkboxes = $(selector, context); // Search within context
+			} else {
+				var checkboxes = $(selector); // Search whole DOM
+			}
+
+			if (checkboxes.length) {
+				checkboxes.on('change', checkCheckboxes);
+			}
+		});
+	}
 
     var initLanguageSortable = function () {
         $('#wpml-ls-languages-order').sortable({
@@ -261,7 +289,27 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
 				updatePreview(subform);
 			}
 		});
-	};
+    node.find('.js-wpml-ls-colorpicker-wrapper').each(function () {
+      const $wrapper = $(this);
+      const $button = $wrapper.find('.wp-color-result');
+
+      if ($button.length) {
+        // use the heading and the associated Normal or Hover column
+        // to build the aria label for the button
+        const $row = $wrapper.closest('tr');
+        const $labelCell = $row.find('td[id^="color_label_"]');
+        const tdIndex = $wrapper.closest('td').index();
+        const $headerRow = $row.closest('table').find('tr').first();
+        const $schemeHeader = $headerRow.find('th').eq(tdIndex - 1);
+
+        if ($labelCell.length && $schemeHeader.length) {
+          const labelText = $labelCell.text().trim();
+          const schemeText = $schemeHeader.text().trim();
+          $button.attr('aria-label', `${labelText}, ${schemeText}`);
+        }
+      }
+    });
+  };
 
 	var attachDialogEvents = function() {
 		$('.js-wpml-ls-dialog-close').on('click', function(e) {
@@ -289,6 +337,7 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
 				subform = targetNode.find('.js-wpml-ls-subform');
 			}
 
+			attachDisplayCheckboxEvent(subform);
 			cloneSubformIntoDialog(subform);
 		});
 	};
@@ -415,52 +464,6 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
 		$('.js-wpml-ls-preview').on('click', function(e) {
 			e.preventDefault();
 		});
-	};
-
-	var openTooltip = function(triggerNode) {
-		var content = triggerNode.data('content');
-		var link_text = triggerNode.data('link-text');
-		var link_url = triggerNode.data('link-url');
-		var link_target = triggerNode.data('link-target');
-
-		if (link_text.length > 0) {
-			if (link_url.length === 0) {
-				link_url = '#';
-			}
-			var content_link_target = 'target="' + link_target + '"';
-			content += '<br><br><a href="' + link_url + '" ' + content_link_target + '>';
-			content += link_text;
-			content += '</a>';
-		}
-
-		$('.js-wpml-ls-active-tooltip').pointer('close');
-
-		if(triggerNode.length && content) {
-			triggerNode.addClass('js-wpml-ls-active-tooltip');
-			triggerNode.pointer({
-				pointerClass : 'js-wpml-ls-tooltip wpml-ls-tooltip',
-				content:       content,
-				position: {
-					edge:  'bottom',
-					align: 'left'
-				},
-				show: function(event, t){
-					t.pointer.css('marginLeft', '-54px');
-				},
-				close: function(event, t){
-					t.pointer.css('marginLeft', '0');
-				},
-				buttons: function( event, t ) {
-					var button = $('<a class="close" href="#">&nbsp;</a>');
-
-					return button.on( 'click.pointer', function(e) {
-						e.preventDefault();
-						t.element.pointer('close');
-					});
-				},
-
-			}).pointer('open');
-		}
 	};
 
 	var cloneSubformIntoDialog = function(subform) {
@@ -597,7 +600,28 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
 	};
 
 	var missingSlotWarning = function(subform) {
-		subform.find('.js-wpml-ls-available-slots').addClass('wpml-ls-required');
+    const slotsSelect = subform.find( '.js-wpml-ls-available-slots' );
+    slotsSelect.addClass( 'wpml-ls-required' );
+
+    const chooseOptionAlert = $( '<div/>', {
+      class: 'ant-alert ant-alert-error',
+      role: 'alert',
+      'data-show': 'true'
+    } );
+    const alertIcon = $( '<i/>', { class: 'ant-alert-icon otgs-ico otgs-ico-warning-o' } );
+    const alertContent = $( '<div/>', { class: 'ant-alert-content' } );
+    const alertMessage = $( '<div/>', {
+      class: 'ant-alert-message',
+      text: slotsSelect.hasClass( 'js-wpml-ls-available-menus' )
+        ? wpml_ls.strings.menu_option_not_chosen
+        : wpml_ls.strings.widget_option_not_chosen
+    } );
+    const alertDescription = $( '<div/>', { class: 'ant-alert-description' } );
+
+    alertContent.append( alertMessage, alertDescription );
+    chooseOptionAlert.append( alertIcon, alertContent );
+    slotsSelect.after( chooseOptionAlert );
+
 		dialogBox.animate({scrollTop:0}, 300);
 		$('.js-wpml-ls-dialog-save').prop('disabled', false);
 	};
@@ -610,7 +634,7 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
 		row.data('item-type', itemType);
 		row.find('.js-wpml-ls-subform').addBack().data('item-slug', slug);
 		row.find('.js-wpml-ls-subform').data('origin-id', newRowId);
-		row.find('.js-wpml-ls-row-title').html(newTitle);
+		row.find('.js-wpml-ls-row-title').text(newTitle);
 	};
 
 	var replaceSubformElementsAttributes = function(subform, newSlug) {
@@ -802,6 +826,35 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
 
 		return settings;
 	};
+
+	var checkCheckboxes = function() {
+		var triggeredCheckbox = $(this);
+		var resultArray = [triggeredCheckbox];
+
+		// Loop through displayOptionCheckboxes to find siblings and populate resultArray
+		displayOptionCheckboxes.forEach(function(selector) {
+			var siblingCheckbox = triggeredCheckbox.closest('li').siblings('li').find(selector);
+
+			if (siblingCheckbox.length > 0) {
+				resultArray.push(siblingCheckbox);
+			}
+		});
+
+		// Filter the array to keep only checked checkboxes
+		var checkedArray = resultArray.filter(function(jqueryObj) {
+			return jqueryObj.is(':checked');
+		});
+
+		if (checkedArray.length === 1) {
+			// Disable the only checked checkbox
+			checkedArray[0].prop('disabled', true);
+		} else if (checkedArray.length > 1) {
+			// Enable all disabled checkboxes
+			resultArray.forEach(function(jqueryObj) {
+				jqueryObj.prop('disabled', false);
+			});
+		}
+	}
 
 	var showSpinner = function(wrapper) {
 		$('.js-wpml-ls-messages').removeClass('success error').hide().empty();

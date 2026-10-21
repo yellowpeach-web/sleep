@@ -4,10 +4,12 @@ msgstr ""
 "X-Generator: babel-plugin-makepot\n"
 
 #: src/js/translationServices/components/AuthorizeModal.js:22
+#. Title of the dialog that connects the site to a translation service. %s: the name of that service.
 msgid "Connect this site to your %s account"
 msgstr ""
 
 #: src/js/translationServices/components/AuthorizeModal.js:45
+#. Title of an error message box.
 msgid "Error"
 msgstr ""
 
@@ -16,6 +18,7 @@ msgid "« Use a different Translation Service"
 msgstr ""
 
 #: src/js/translationServices/components/AuthorizeModal.js:62
+#. Button label that connects the site to the translation service with what was entered; verb, imperative.
 msgid "Authenticate"
 msgstr ""
 
@@ -25,15 +28,22 @@ msgid ""
 "to connect to <service_name /> to send and receive jobs."
 msgstr ""
 
-#: src/js/translationServices/components/SearchForm.js:13
+#: src/js/translationServices/components/SearchForm.js:10
+msgid "Search translation services"
+msgstr ""
+
+#: src/js/translationServices/components/SearchForm.js:12
+#. Shown in the search box of the translation services list before anything is typed: a noun naming the box, not a command.
 msgid "Search"
 msgstr ""
 
 #: src/js/translationServices/components/Sections.js:16
+#. Link inside the sentence that asks you to change the translation mode; it opens the WPML settings screen.
 msgid "Settings"
 msgstr ""
 
-#: src/js/translationServices/components/Sections.js:42
+#: src/js/translationServices/components/Sections.js:43
+#. Shown in place of the translation services list. Keep <LinkToSettingsPage /> exactly as it is: it becomes a link reading "Settings".
 msgid ""
 "It’s not currently possible to connect a translation service when WPML is "
 "set to translate your site’s content automatically. To use a translation "
@@ -41,22 +51,42 @@ msgid ""
 "page."
 msgstr ""
 
-#: src/js/translationServices/components/ServicesList.js:41
+#: src/js/translationServices/components/ServicesList.js:106
+#. Tooltip of a column heading in a table: verb, imperative (sort the rows from the highest value down).
+msgid "Sort descending"
+msgstr ""
+
+#: src/js/translationServices/components/ServicesList.js:107
+#. Tooltip of a column heading in a table: verb, imperative (sort the rows from the lowest value up).
+msgid "Sort ascending"
+msgstr ""
+
+#: src/js/translationServices/components/ServicesList.js:108
+#. Tooltip of a column heading in a table: verb, imperative (stop sorting by this column).
+msgid "Cancel sorting"
+msgstr ""
+
+#: src/js/translationServices/components/ServicesList.js:42
+#. Link text that opens the WPML documentation. Used under the browser redirect warning and next to each translation service.
 msgid "Documentation"
 msgstr ""
 
-#: src/js/translationServices/components/ServicesList.js:57
+#: src/js/translationServices/components/ServicesList.js:58
+#. Button label that turns a translation service on for this site; verb, imperative.
 msgid "Activate"
 msgstr ""
 
-#: src/js/translationServices/components/ServicesList.js:69
+#: src/js/translationServices/components/ServicesList.js:70
+#. Column heading and field label for the name of a person, a language or a translation service: a noun (the name), not the verb "to name".
 msgid "Name"
 msgstr ""
 
-#: src/js/translationServices/components/ServicesList.js:74
+#: src/js/translationServices/components/ServicesList.js:75
+#. Heading of the table column that describes each translation service.
 msgid "Description"
 msgstr ""
 
-#: src/js/translationServices/components/ServicesList.js:81
+#: src/js/translationServices/components/ServicesList.js:82
+#. Heading of the table column that shows, as stars, how highly each translation service is rated.
 msgid "Ranking"
 msgstr ""

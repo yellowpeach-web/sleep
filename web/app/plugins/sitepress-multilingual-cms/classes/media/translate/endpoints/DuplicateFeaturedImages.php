@@ -22,9 +22,6 @@ class DuplicateFeaturedImages implements IHandler {
 		);
 	}
 
-	/**
-	 * @return bool
-	 */
 	private function shouldDuplicateFeaturedImages() {
 		return (bool) Obj::prop( 'duplicate_featured', Option::getNewContentSettings() );
 	}

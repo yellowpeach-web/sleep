@@ -2,39 +2,19 @@
 
 class WPML_PB_Reuse_Translations {
 
-	/** @var WPML_ST_String_Factory $string_factory */
 	private $string_factory;
 
-	/** @var  array $original_strings */
 	private $original_strings;
 
-	/** @var  array $current_strings */
 	private $current_strings;
 
-	public function __construct( WPML_ST_String_Factory $string_factory ) {
-		$this->string_factory = $string_factory;
+	private $get_previous_forms;
+
+	public function __construct( WPML_ST_String_Factory $string_factory, ?callable $get_previous_forms = null ) {
+		$this->string_factory     = $string_factory;
+		$this->get_previous_forms = $get_previous_forms;
 	}
 
-	/**
-	 * We receive arrays of strings with this structure:
-	 *
-	 * array(
-	 *  'gf4544ds454sds542122sd' => array(
-	 *      'value'      => 'The string value',
-	 *      'context'    => 'the-string-context',
-	 *      'name'       => 'the-string-name',
-	 *      'id'         => 123,
-	 *      'package_id' => 123,
-	 *      'location'   => 123,
-	 *     ),
-	 *  )
-	 *
-	 * The key is the string hash.
-	 *
-	 * @param array[] $original_strings
-	 * @param array[] $current_strings
-	 * @param array[] $leftover_strings
-	 */
 	public function find_and_reuse_translations( array $original_strings, array $current_strings, array $leftover_strings ) {
 		$this->original_strings = $original_strings;
 		$this->current_strings  = $current_strings;
@@ -43,7 +23,6 @@ class WPML_PB_Reuse_Translations {
 		$this->reuse_translations( $new_strings_to_update );
 	}
 
-	/** @return array */
 	private function find_new_strings() {
 		$new_strings = array();
 
@@ -63,26 +42,44 @@ class WPML_PB_Reuse_Translations {
 		return $new_strings;
 	}
 
-	/**
-	 * @param int[]   $new_strings
-	 * @param array[] $leftover_strings
-	 *
-	 * @return int[]
-	 */
 	private function find_existing_strings_for_new_strings( array $new_strings, array $leftover_strings ) {
+
+		list( $found, $leftover_strings ) = $this->find_by_previous_form( $new_strings, $leftover_strings );
+		$new_strings                      = array_diff_key( $new_strings, $found );
 
 		list( $new_strings, $leftover_strings ) = $this->find_by_location( $new_strings, $leftover_strings );
 		$new_strings = $this->find_by_similar_text( $new_strings, $leftover_strings );
 
-		return $new_strings;
+		return $found + $new_strings;
 	}
 
-	/**
-	 * @param int[]   $new_strings
-	 * @param array[] $leftover_strings
-	 *
-	 * @return array[]
-	 */
+	private function find_by_previous_form( array $new_strings, array $leftover_strings ) {
+		$found = array();
+
+		if ( ! $this->get_previous_forms || ! $leftover_strings ) {
+			return array( $found, $leftover_strings );
+		}
+
+		foreach ( $this->current_strings as $current_string ) {
+			$id = $current_string['id'];
+			if ( ! isset( $new_strings[ $id ] ) || isset( $found[ $id ] ) || ! isset( $current_string['value'] ) ) {
+				continue;
+			}
+
+			$forms = call_user_func( $this->get_previous_forms, $current_string['value'] );
+
+			foreach ( $leftover_strings as $key => $leftover_string ) {
+				if ( isset( $leftover_string['value'] ) && in_array( $leftover_string['value'], $forms, true ) ) {
+					$found[ $id ] = $leftover_string['id'];
+					unset( $leftover_strings[ $key ] );
+					break;
+				}
+			}
+		}
+
+		return array( $found, $leftover_strings );
+	}
+
 	private function find_by_location( array $new_strings, array $leftover_strings ) {
 		if ( ! $leftover_strings ) {
 			return array( $new_strings, $leftover_strings );
@@ -107,12 +104,6 @@ class WPML_PB_Reuse_Translations {
 		return array( $new_strings, $leftover_strings );
 	}
 
-	/**
-	 * @param int[]   $new_strings
-	 * @param array[] $leftover_strings
-	 *
-	 * @return int[]
-	 */
 	private function find_by_similar_text( array $new_strings, array $leftover_strings ) {
 
 		if ( $leftover_strings ) {
@@ -137,30 +128,15 @@ class WPML_PB_Reuse_Translations {
 		return $new_strings;
 	}
 
-	/**
-	 * @param array $current_string
-	 * @param array $leftover_string
-	 *
-	 * @return bool
-	 */
 	private function is_same_location_and_different_ids( array $current_string, array $leftover_string ) {
 		return $current_string['location'] === $leftover_string['location']
 		       && $current_string['id'] !== $leftover_string['id'];
 	}
 
-	/**
-	 * @param string $old_text
-	 * @param string $new_text
-	 *
-	 * @return bool
-	 */
 	private function is_similar_text( $old_text, $new_text ) {
 		return WPML_ST_Diff::get_sameness_percent( $old_text, $new_text ) > 50;
 	}
 
-	/**
-	 * @param int[] $strings
-	 */
 	private function reuse_translations( array $strings ) {
 		foreach ( $strings as $new_string_id => $old_string_id ) {
 

@@ -1,10 +1,6 @@
 <?php
 
-/**
- * @author OnTheGo Systems
- */
 class WPML_Custom_XML_UI_Hooks {
-	/** @var WPML_Custom_XML_UI_Resources  */
 	private $resources;
 
 	public function __construct( WPML_Custom_XML_UI_Resources $resources ) {
@@ -17,7 +13,7 @@ class WPML_Custom_XML_UI_Hooks {
 	}
 
 	public function add_items( $tab_items ) {
-		$tab_items['custom-xml-config']['caption']          = __( 'Custom XML Configuration', 'wpml-translation-management' );
+		$tab_items['custom-xml-config']['caption']          = __( 'Custom XML Configuration', 'sitepress' );
 		$tab_items['custom-xml-config']['callback']         = array( $this, 'build_content' );
 		$tab_items['custom-xml-config']['current_user_can'] = 'manage_options';
 

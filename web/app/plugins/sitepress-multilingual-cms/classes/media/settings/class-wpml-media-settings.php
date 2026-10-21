@@ -1,6 +1,7 @@
 <?php
 
 use WPML\LIB\WP\Nonce;
+use WPML\Media\Option;
 
 class WPML_Media_Settings {
 	const ID = 'ml-content-setup-sec-media';
@@ -23,8 +24,8 @@ class WPML_Media_Settings {
 		wp_register_script(
 			$handle,
 			ICL_PLUGIN_URL . '/res/js/media/settings.js',
-			[],
-			ICL_SITEPRESS_VERSION,
+			[ 'wpml-purify', 'sitepress' ],
+			ICL_SITEPRESS_SCRIPT_VERSION,
 			true
 		);
 
@@ -32,170 +33,283 @@ class WPML_Media_Settings {
 			$handle,
 			'wpml_media_settings_data',
 			[
+				'nonce_wpml_media_save_should_handle_media_auto_setting' => wp_create_nonce( 'wpml_media_save_should_handle_media_auto_setting' ),
 				'nonce_wpml_media_scan_prepare'         => wp_create_nonce( 'wpml_media_scan_prepare' ),
-				'nonce_wpml_media_set_initial_language' => wp_create_nonce( 'wpml_media_set_initial_language' ),
 				'nonce_wpml_media_translate_media'      => wp_create_nonce( 'wpml_media_translate_media' ),
 				'nonce_wpml_media_duplicate_featured_images' => wp_create_nonce( 'wpml_media_duplicate_featured_images' ),
 				'nonce_wpml_media_set_content_prepare'  => wp_create_nonce( 'wpml_media_set_content_prepare' ),
 				'nonce_wpml_media_set_content_defaults' => wp_create_nonce( 'wpml_media_set_content_defaults' ),
 				'nonce_wpml_media_duplicate_media'      => wp_create_nonce( 'wpml_media_duplicate_media' ),
 				'nonce_wpml_media_mark_processed'       => wp_create_nonce( 'wpml_media_mark_processed' ),
-            ]
-        );
+				'should_handle_media_auto'              => Option::shouldHandleMediaAuto() ? '1' : '0',
+			]
+		);
 
 		wp_enqueue_script( $handle );
 	}
 
 	public function render() {
-
-		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$has_orphan_attachments = $this->wpdb->get_var(
-			"SELECT ID
-			FROM {$this->wpdb->posts} as posts
-			LEFT JOIN {$this->wpdb->prefix}icl_translations as translations
-			ON posts.ID = translations.element_id
-			WHERE posts.post_type = 'attachment'
-			AND translations.element_id IS NULL
-			LIMIT 0, 1"
+		$is_st_disabled = ! defined( 'WPML_ST_VERSION' );
+		$media_doc_url  = \WPML\OutboundLinks\OutboundLinks::to(
+			'https://wpml.org/documentation/translating-your-contents/media/',
+			array(
+				'medium'   => 'settings',
+				'campaign' => 'media-translation',
+			)
 		);
-		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-		$has_orphan_attachments = $has_orphan_attachments ? 1 : 0;
-
 		?>
 		<div class="wpml-section" id="<?php echo esc_attr( self::ID ); ?>">
-
 			<div class="wpml-section-header">
-				<h3><?php esc_html_e( 'Media Translation', 'sitepress' ); ?></h3>
+				<a href="<?php echo esc_url( $media_doc_url ); ?>" target="_blank" class="wpml-external-link">
+					<span><?php esc_html_e( 'Media Translation Documentation', 'sitepress' ); ?></span>
+				</a>
 			</div>
 
-			<div class="wpml-section-content">
-				<?php if ( $has_orphan_attachments ) : ?>
-
-					<p><?php esc_html_e( "The Media Translation plugin needs to add languages to your site's media. Without this language information, existing media files will not be displayed in the WordPress admin.", 'sitepress' ); ?></p>
-
-				<?php else : ?>
-
-					<p><?php esc_html_e( 'You can check if some attachments can be duplicated to translated content:', 'sitepress' ); ?></p>
-
-				<?php endif ?>
-
-				<form id="wpml_media_options_form">
-					<input type="hidden" name="no_lang_attachments" value="<?php echo (int) $has_orphan_attachments; ?>"/>
-					<input type="hidden" id="wpml_media_options_action"/>
-					<table class="wpml-media-existing-content">
-
-						<tr>
-							<td colspan="2">
-								<ul class="wpml_media_options_language">
-									<li>
-										<label>
-											<input type="checkbox" id="set_language_info" name="set_language_info" value="1"
-											<?php
-												echo $has_orphan_attachments
-													? ' checked="checked"'
-													: ' disabled="disabled"';
+			<div class="wpml-section-content wpml-section-content-wide">
+				<div class="wpml-settings-list" data-testid="wpml-media-translation-should-handle-media-auto">
+					<div role="presentation">
+						<ul class="settings-ul">
+							<li aria-label="ShouldHandleMediaAuto" id="ShouldHandleMediaAuto" class="setting-item <?php echo Option::shouldHandleMediaAuto() ? 'on' : 'off'; ?>">
+								<span class="wpml-blue-badge wpml-green-badge solid">
+									<?php echo /* translators: Badge next to the setting WPML advises, on the media translation and Translation Management settings screens. Past participle used as a label: this is what WPML advises. */ esc_html_e( 'Recommended', 'sitepress' ); ?>
+								</span>
+								<div class="setting-item-title">
+									<span class="setting-item-title-label">
+										<?php echo esc_html_e( 'Automatically detect best options for translating image texts (alt, caption, title)', 'sitepress' ); ?>
+										<span
+											class="wpml-tooltip-button wpml-tooltip-button-inline js-wpml-hoverable-tooltip js-wpml-hoverable-tooltip-wide"
+											data-content="
+                                            <?php
+                                            echo esc_attr__(
+												'This option ensures image texts (like alt, title, and caption) are translatable and displayed on the front-end. ' .
+												'WPML duplicates media only when needed and only during translation, keeping your database clean and avoiding unnecessary entries.',
+												'sitepress'
+                                            );
 											?>
-											/>
-											<?php esc_html_e( 'Set language information for existing media', 'sitepress' ); ?>
-										</label></li>
-									<li><label><input type="checkbox" id="translate_media" name="translate_media" value="1" checked="checked"/>&nbsp;<?php esc_html_e( 'Translate existing media in all languages', 'sitepress' ); ?></label></li>
-									<li><label><input type="checkbox" id="duplicate_media" name="duplicate_media" value="1" checked="checked"/>&nbsp;<?php esc_html_e( 'Duplicate existing media for translated content', 'sitepress' ); ?></label></li>
-									<li><label><input type="checkbox" id="duplicate_featured" name="duplicate_featured" value="1" checked="checked"/>&nbsp;<?php esc_html_e( 'Duplicate the featured images for translated content', 'sitepress' ); ?></label></li>
-								</ul>
-							</td>
+                                            "
+											data-link-text="<?php echo esc_attr__( 'Learn more about translating media with WPML', 'sitepress' ); ?>"
+											data-link-url="<?php echo esc_url( $media_doc_url ); ?>"
+											data-link-target="blank"
+										>
+											<button type="button" class="wpml-button base-btn edit-formality" data-testid="with-tooltip-null"></button>
+										</span>
+									</span>
+									<span class="setting-item-title-sublabel">
+										<?php echo /* translators: Second line under the name of a setting on the media translation screen, explaining what it saves the user. It starts in lower case because it follows that name. */ esc_html_e( 'avoids unnecessary duplicate media fields and missing image translations', 'sitepress' ); ?>
+									</span>
+								</div>
+								<label for="shouldhandlemediaauto" class="wpml-on-off-switch gray-dark">
+									<input id="shouldhandlemediaauto" aria-labelledby="ShouldHandleMediaAuto" type="checkbox" 
+                                    <?php
+                                    if ( Option::shouldHandleMediaAuto() ) :
+										?>
+                                        checked="checked" <?php endif; ?>/>
+									<span aria-hidden="false" class="on"><?php echo /* translators: The state written on a switch on the media translation screen when the setting is turned on. Keep it as short as the English; it has to fit inside the switch. */ esc_attr__( 'ON', 'sitepress' ); ?></span>
+									<span aria-hidden="true" class="off"><?php echo /* translators: The state written on a switch on the media translation screen when the setting is turned off. Keep it as short as the English; it has to fit inside the switch. */ esc_attr__( 'OFF', 'sitepress' ); ?></span>
+									<span class="visually-hidden"></span>
+								</label>
+								<div id="shouldhandlemediaautospinner" style="display: none">
+									<span class="media-spinner"></span>
+								</div>
+								<?php
+                                if ( $is_st_disabled ) :
+									?>
+                                    <div class="disabled-control"></div><?php endif; ?>
+							</li>
+						</ul>
+
+						<div id="wpml-media-translation-should-handle-media-auto-notice" class="warning notice-warning otgs-notice wpml-settings-list-notice" style="display: <?php echo Option::shouldHandleMediaAuto() ? 'none' : 'block'; ?>">
+							<p><?php echo esc_html_e( 'We recommend enabling automatic detection of image texts (alt, caption, title). This helps prevent duplicate media fields and missing translations.', 'sitepress' ); ?>
+								<a href="<?php echo esc_url( $media_doc_url ); ?>" class="external-link" target="_blank"><?php echo /* translators: Link text that opens a page on wpml.org explaining the notice above it. Verb phrase, imperative. */ esc_html_e( 'Learn more', 'sitepress' ); ?></a></p>
+						</div>
+
+						<div class="setup-manually-container"<?php echo \WPML\Media\Option::shouldHandleMediaAuto() ? ' style="display:none"' : ''; ?>>
+							<h4>
+								<button
+									class="wpml-button base-btn text-button"
+									id="show_hide-setup-manually"
+									aria-controls="wpml_media_options_form"
+								>
+									<?php echo /* translators: Button label on the media translation screen that unfolds the settings so they can be chosen one by one. Verb, imperative. */ esc_html__( 'Setup manually', 'sitepress' ); ?>
+								</button>
+							</h4>
+						</div>
+
+						<?php if ( $is_st_disabled ) : ?>
+						<div class="warning notice-warning otgs-notice wpml-settings-list-notice">
+							<p><?php echo wpml_bold_names( __( 'Please install and activate WPML’s String Translation add-on to use this setting.', 'sitepress' ) ); ?>
+								<a href="<?php echo esc_url( admin_url( 'plugins.php' ) ); ?>"><?php echo /* translators: Link text that opens the plugins screen so an add-on can be turned on. Verb, imperative. */ esc_html_e( 'Activate', 'sitepress' ); ?></a></p>
+						</div>
+						<?php endif; ?>
+					</div>
+				</div>
+
+				<?php
+				$auto_detect_on = Option::shouldHandleMediaAuto();
+				$form_class = ' class="collapsed"';
+				?>
+				<form aria-describedby="show_hide-setup-manually" id="wpml_media_options_form"<?php echo $form_class; ?> style="margin-top: 32px;">
+					<input type="hidden" id="wpml_media_options_action"/>
+					<table class="wpml-settings-table wpml-media-existing-content wpml-list-with-tooltips">
+
+						<?php
+							$content_defaults = \WPML\Media\Option::getNewContentSettings();
+
+							$always_translate_media_html_checked = $content_defaults['always_translate_media'] ? 'checked="checked"' : '';
+							$duplicate_media_html_checked        = $content_defaults['duplicate_media'] ? 'checked="checked"' : '';
+							$duplicate_featured_html_checked     = $content_defaults['duplicate_featured'] ? 'checked="checked"' : '';
+						?>
+
+						<tr>
+							<th style="max-width: 230px;"></th>
+							<th>
+								<?php /* translators: Column heading in the media settings table, above the settings that apply to media already on the site. */ esc_html_e( 'Existing content', 'sitepress' ); ?>
+							</th>
+							<th>
+								<?php /* translators: Column heading in the media settings table, above the settings that apply to media added from now on. */ esc_html_e( 'New content', 'sitepress' ); ?>
+							</th>
+						</tr>
+
+						<tr class="header-separator">
+							<td colspan="3"></td>
 						</tr>
 
 						<tr>
-							<td><a href="https://wpml.org/documentation/getting-started-guide/media-translation/?utm_source=plugin&utm_medium=gui&utm_campaign=wpmlcore" target="_blank"><?php esc_html_e( 'Media Translation Documentation', 'sitepress' ); ?></a></td>
-							<td align="right">
-								<input class="button-primary" name="start" type="submit" value="<?php esc_attr_e( 'Start', 'sitepress' ); ?> &raquo;"/>
+							<td style="max-width: 230px;">
+								<?php esc_html_e( 'Duplicate texts (alt, caption, title) for all media to all languages', 'sitepress' ); ?>
+								<span
+									class="wpml-tooltip-button wpml-tooltip-button-inline external-link js-wpml-hoverable-tooltip"
+									style="display: inline-block"
+									data-content="
+                                    <?php
+                                    /* translators: Tooltip next to a setting on the media translation screen. "This" is that setting. */
+                                    echo esc_attr__(
+										'This applies to all types of media items (images, videos, PDFs, etc.) and not just images. WPML will only duplicate media texts (alt, caption, title) and not the media files.',
+										'sitepress'
+                                    );
+									?>
+                                    "
+								>
+									<button type="button" class="wpml-button base-btn tooltip" data-testid="with-tooltip-null"></button>
+								</span>
 							</td>
+							<td style="text-align: center">
+								<input type="checkbox" class="wpml-checkbox-native" id="translate_media" name="translate_media" value="1" checked="checked"/>
+							</td>
+							<td style="text-align: center">
+								<input type="checkbox" class="wpml-checkbox-native" name="content_default_always_translate_media"
+										value="1" <?php echo $always_translate_media_html_checked; ?> />
+							</td>
+						</tr>
 
+						<tr class="row-separator">
+							<td colspan="3"></td>
 						</tr>
 
 						<tr>
-							<td colspan="2">
-								<img class="progress" src="<?php echo ICL_PLUGIN_URL; ?>/res/img/ajax-loader.gif" width="16" height="16" alt="loading" style="display: none;"/>
-								&nbsp;<span class="status"> </span>
+							<td style="max-width: 230px;">
+								<?php esc_html_e( 'Duplicate image texts (alt, caption, title) for all feature images to all languages', 'sitepress' ); ?>
+								<span
+									class="wpml-tooltip-button wpml-tooltip-button-inline external-link js-wpml-hoverable-tooltip"
+									style="display: inline-block"
+									data-content="
+                                    <?php
+                                    /* translators: Tooltip next to a setting on the media translation screen. "This" is that setting. */
+                                    echo esc_attr__(
+										'This applies to all types of media items (images, videos, PDFs, etc.) and not just images. WPML will only duplicate media texts (alt, caption, title) and not the media files.',
+										'sitepress'
+                                    );
+									?>
+                                    "
+								>
+									<button type="button" class="wpml-button base-btn tooltip" data-testid="with-tooltip-null"></button>
+								</span>
+							</td>
+							<td style="text-align: center"><input type="checkbox" class="wpml-checkbox-native" id="duplicate_featured" name="duplicate_featured" value="1" checked="checked"/></td>
+							<td style="text-align: center"><input type="checkbox" class="wpml-checkbox-native" name="content_default_duplicate_featured"
+										value="1" <?php echo $duplicate_featured_html_checked; ?> /></td>
+						</tr>
+
+						<tr class="row-separator">
+							<td colspan="3"></td>
+						</tr>
+
+						<tr>
+							<td colspan="2" style="text-align: left">
+								<div style="margin-top: 25px; max-width: 300px; color: #2F7D92">
+									<img class="content-progress" src="<?php echo ICL_PLUGIN_URL; ?>/res/img/ajax-loader.gif" width="16" height="16" alt="loading" style="display: none;"/>
+									&nbsp;<span class="content-status"> </span>
+								</div>
+							</td>
+							<td colspan="1" style="text-align: right">
+								<span
+									class="wpml-tooltip-button wpml-tooltip-button-inline js-wpml-hoverable-tooltip js-wpml-hoverable-tooltip-wide"
+									data-content="
+                                    <?php
+                                    echo esc_attr__(
+										'This will duplicate media texts (alt, title, caption) to all languages using the options you selected above. ' .
+										'Please stay on this page until the process completes - it may take a few minutes.',
+										'sitepress'
+                                    );
+									?>
+                                    "
+								>
+									<input class="button-primary wpml-button base-btn" name="set_defaults" type="submit" value="<?php esc_attr_e( 'Start the process', 'sitepress' ); ?>" style="margin-top: 30px"/>
+								</span>
 							</td>
 						</tr>
+
 					</table>
 
-
-					<table class="wpml-media-new-content-settings">
+					<table class="wpml-media-new-content-settings wpml-list-with-tooltips wpml-settings-list">
 
 						<tr>
 							<td colspan="2">
-								<h4><?php esc_html_e( 'How to handle media for new content:', 'sitepress' ); ?></h4>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<ul class="wpml_media_options_language">
-									<?php
-									$content_defaults = \WPML\Media\Option::getNewContentSettings();
-
-									$always_translate_media_html_checked = $content_defaults['always_translate_media'] ? 'checked="checked"' : '';
-									$duplicate_media_html_checked        = $content_defaults['duplicate_media'] ? 'checked="checked"' : '';
-									$duplicate_featured_html_checked     = $content_defaults['duplicate_featured'] ? 'checked="checked"' : '';
-									?>
-									<li>
-										<label><input type="checkbox" name="content_default_always_translate_media"
-													  value="1" <?php echo $always_translate_media_html_checked; ?> />&nbsp;<?php esc_html_e( 'When uploading media to the Media library, make it available in all languages', 'sitepress' ); ?></label>
-									</li>
-									<li>
-										<label><input type="checkbox" name="content_default_duplicate_media"
-													  value="1" <?php echo $duplicate_media_html_checked; ?> />&nbsp;<?php esc_html_e( 'Duplicate media attachments for translations', 'sitepress' ); ?></label>
-									</li>
-									<li>
-										<label><input type="checkbox" name="content_default_duplicate_featured"
-													  value="1"  <?php echo $duplicate_featured_html_checked; ?> />&nbsp;<?php esc_html_e( 'Duplicate featured images for translations', 'sitepress' ); ?></label>
-									</li>
-								</ul>
+								<h4 style="margin-bottom: 0"><?php esc_html_e( 'How to handle Media Library texts (alt, caption, title)', 'sitepress' ); ?></h4>
 							</td>
 						</tr>
 
-
-
 						<tr>
 							<td colspan="2">
-								<h4><?php esc_html_e( 'How to handle media library texts:', 'sitepress' ); ?></h4>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<ul class="wpml_media_options_media_library_texts">
-									<?php
-									$translateMediaLibraryTexts = \WPML\Media\Option::getTranslateMediaLibraryTexts() ? 'checked="checked"' : '';
-									?>
-									<li>
-										<label><input type="checkbox" name="translate_media_library_texts"
-													  value="1" <?php echo $translateMediaLibraryTexts; ?> />&nbsp;<?php esc_html_e( 'Translate media library texts with posts', 'sitepress' ); ?></label>
+								<ul class="wpml_media_options_media_library_texts settings-ul">
+									<li aria-label="ShouldHandleMediaAuto" class="setting-item on" style="background-color: unset; border-color: transparent; padding: 0px">
+										<label for="translate_media_library_texts" class="wpml-on-off-switch">
+											<input id="translate_media_library_texts" name="translate_media_library_texts" type="checkbox"
+												<?php
+												if ( \WPML\Media\Option::getTranslateMediaLibraryTexts() ) :
+													?>
+                                                checked="checked"<?php endif; ?>
+											/>
+											<span aria-hidden="false" class="on"><?php echo /* translators: The state written on a switch on the media translation screen when the setting is turned on. Keep it as short as the English; it has to fit inside the switch. */ esc_attr__( 'ON', 'sitepress' ); ?></span>
+											<span aria-hidden="true" class="off"><?php echo /* translators: The state written on a switch on the media translation screen when the setting is turned off. Keep it as short as the English; it has to fit inside the switch. */ esc_attr__( 'OFF', 'sitepress' ); ?></span>
+											<span class="visually-hidden"></span>
+										</label>
+										<div>
+											<span id="translate_media_library_texts_spinner" class="spinner" style="display: none"></span>
+										</div>
+										<div class="setting-item-title">
+											<span class="setting-item-title-label" style="font-weight: normal">
+												<?php echo esc_html_e( 'Translate Media Library texts (alt, caption, title) when translating content', 'sitepress' ); ?>
+												<span
+													class="wpml-tooltip-button wpml-tooltip-button-inline js-wpml-hoverable-tooltip js-wpml-hoverable-tooltip-wide"
+													data-content="
+                                                    <?php
+                                                    echo esc_attr__(
+														'Enable this option to translate image texts (alt, caption, title) for images connected to Media Library. ' .
+														'Such images reuse the same texts across all posts and pages. This setting is required for page builders like Elementor and Divi.',
+														'sitepress'
+                                                    );
+													?>
+                                                    "
+												>
+													<button type="button" class="wpml-button base-btn edit-formality" data-testid="with-tooltip-null"></button>
+												</span>
+											</span>
+										</div>
 									</li>
 								</ul>
 							</td>
 						</tr>
-
-
-
-
-
-						<tr>
-							<td colspan="2" align="right">
-								<input class="button-secondary" name="set_defaults" type="submit" value="<?php esc_attr_e( 'Apply', 'sitepress' ); ?>"/>
-							</td>
-						</tr>
-
-						<tr>
-							<td colspan="2">
-								<img class="content_default_progress" src="<?php echo ICL_PLUGIN_URL; ?>/res/img/ajax-loader.gif" width="16" height="16" alt="loading" style="display: none;"/>
-								&nbsp;<span class="content_default_status"> </span>
-							</td>
-						</tr>
-
-
-
 
 					</table>
 
@@ -211,6 +325,7 @@ class WPML_Media_Settings {
 	}
 
 	public function mcsetup_navigation_links( array $mcsetup_sections ) {
+		/* translators: Name of the media translation section in the Translation Management settings, and its heading. */
 		$mcsetup_sections[ self::ID ] = esc_html__( 'Media Translation', 'sitepress' );
 
 		return $mcsetup_sections;

@@ -1,46 +1,46 @@
 <?php
 use WPML\FP\Obj;
+use WPML\LanguageEditor\Flags\FlagFile;
+use WPML\LanguageEditor\LanguageCodeResolution;
 use WPML\TM\Settings\Flags\Options;
 
-/**
- * Class WPML_Flags
- *
- * @package wpml-core
- */
 class WPML_Flags {
-	/** @var icl_cache  */
+
+	const CODE_GLYPH = '@code';
+
+	const CACHE_NAME = 'flags';
+
 	private $cache;
 
-	/** @var wpdb $wpdb */
 	private $wpdb;
 
-	/** @var WP_Filesystem_Direct */
 	private $filesystem;
 
-	/**
-	 * @param wpdb                 $wpdb
-	 * @param icl_cache            $cache
-	 * @param WP_Filesystem_Direct $filesystem
-	 */
-	public function __construct( $wpdb, icl_cache $cache, WP_Filesystem_Direct $filesystem ) {
+	public function __construct( $wpdb, icl_cache $cache, ?WP_Filesystem_Base $filesystem = null ) {
 		$this->wpdb       = $wpdb;
 		$this->cache      = $cache;
 		$this->filesystem = $filesystem;
 	}
 
-	/**
-	 * @param string $lang_code
-	 *
-	 * @return \stdClass|null
-	 */
+	private function get_filesystem() {
+		if ( ! $this->filesystem ) {
+			$wp_api           = new WPML_WP_API();
+			$this->filesystem = $wp_api->get_wp_filesystem();
+		}
+
+		return $this->filesystem;
+	}
+
 	public function get_flag( $lang_code ) {
+		$wpdb = $this->wpdb;
+
 		$flag = $this->cache->get( $lang_code );
 
 		if ( ! $flag ) {
-			$flag = $this->wpdb->get_row(
-				$this->wpdb->prepare(
+			$flag = $wpdb->get_row(
+				$wpdb->prepare(
 					"SELECT flag, from_template
-                                                    FROM {$this->wpdb->prefix}icl_flags
+                                                    FROM {$wpdb->prefix}icl_flags
                                                     WHERE lang_code=%s",
 					$lang_code
 				)
@@ -52,44 +52,47 @@ class WPML_Flags {
 		return $flag;
 	}
 
-	/**
-	 * @param string $lang_code
-	 *
-	 * @return string
-	 */
 	public function get_flag_url( $lang_code ) {
 		$flag = $this->get_flag( $lang_code );
 		if ( ! $flag ) {
+			return $this->append_path_to_url( self::get_wpml_flags_url(), $this->catalogue_flag_file( $lang_code ) );
+		}
+
+		$name = isset( $flag->flag ) ? trim( (string) $flag->flag ) : '';
+		if ( self::CODE_GLYPH === $name ) {
 			return '';
 		}
 
-		$path = '';
 		if ( $flag->from_template ) {
 			$wp_upload_dir = wp_upload_dir();
-			$base_path     = $wp_upload_dir['basedir'] . '/';
-			$base_url      = $wp_upload_dir['baseurl'];
-			$path          = 'flags/';
-		} else {
-			$base_path = self::get_wpml_flags_directory();
-			$base_url  = self::get_wpml_flags_url();
-		}
-		$path .= $flag->flag;
+			$path          = 'flags/' . $name;
 
-		if ( $this->flag_file_exists( $base_path . $path ) ) {
-			return $this->append_path_to_url( $base_url, $path );
+			if ( '' !== $name && $this->flag_file_exists( $wp_upload_dir['basedir'] . '/' . $path ) ) {
+				return $this->append_path_to_url( $wp_upload_dir['baseurl'], $path );
+			}
+
+			return $this->append_path_to_url( self::get_wpml_flags_url(), FlagFile::resolve( $name ) );
 		}
 
-		return '';
+		$base_url = self::get_wpml_flags_url();
+		if ( ! $this->names_a_directory( $name ) && $this->flag_file_exists( self::get_wpml_flags_directory() . $name ) ) {
+			return $this->append_path_to_url( $base_url, $name );
+		}
+
+		return $this->append_path_to_url( $base_url, FlagFile::resolve( $name ) );
 	}
 
-	/**
-	 * @param string $lang_code
-	 * @param int[]  $size An array describing [ $width, $height ]. It defaults to [18, 12].
-	 * @param string $fallback_text
-	 * @param string[] $css_classes Array of CSS class strings.
-	 *
-	 * @return string
-	 */
+	private function catalogue_flag_file( $lang_code ) {
+		$resolved = LanguageCodeResolution::resolve( $lang_code );
+		$pair     = null !== $resolved && ! empty( $resolved['pair_flag'] ) ? (string) $resolved['pair_flag'] : '';
+
+		return '' === $pair ? FlagFile::NEUTRAL_GLOBE : FlagFile::resolve( $pair );
+	}
+
+	private function names_a_directory( $name ) {
+		return '' === $name || '/' === substr( $name, -1 );
+	}
+
 	public function get_flag_image( $lang_code, $size = [], $fallback_text = '', $css_classes = [] ) {
 		$url = $this->get_flag_url( $lang_code );
 
@@ -105,7 +108,7 @@ class WPML_Flags {
 					width="' . Obj::propOr( 18, 0, $size ) . '"
 					height="' . Obj::propOr( 12, 1, $size ) . '"
 					src="' . esc_url( $url ) . '"
-					alt="' . esc_attr( sprintf( __( 'Flag for %s', 'sitepress' ), $lang_code ) ) . '"
+					alt="' . esc_attr( sprintf( /* translators: Screen reader name of a flag image. %s: the name of the country or language it stands for, as in "Flag for Spain". */ __( 'Flag for %s', 'sitepress' ), $lang_code ) ) . '"
 				/>';
 	}
 
@@ -113,17 +116,23 @@ class WPML_Flags {
 		$this->cache->clear();
 	}
 
-	/**
-	 * @param array $allowed_file_types
-	 *
-	 * @return string[]
-	 */
+	public static function invalidate() {
+		global $wpml_term_translations, $wpml_post_translations;
+
+		if ( ! is_object( $wpml_term_translations ) || ! is_object( $wpml_post_translations ) ) {
+			return;
+		}
+
+		$cache = new icl_cache( self::CACHE_NAME, true );
+		$cache->clear();
+	}
+
 	public function get_wpml_flags( $allowed_file_types = null ) {
 		if ( null === $allowed_file_types ) {
 			$allowed_file_types = array( 'gif', 'jpeg', 'png', 'svg' );
 		}
 
-		$files = $this->filesystem->dirlist( $this->get_wpml_flags_directory(), false );
+		$files = $this->get_filesystem()->dirlist( $this->get_wpml_flags_directory(), false );
 
 		if ( ! $files ) {
 			return [];
@@ -137,49 +146,26 @@ class WPML_Flags {
 		return $result;
 	}
 
-	/**
-	 * @return string
-	 */
 	final public function get_wpml_flags_directory() {
 		return WPML_PLUGIN_PATH . '/res/flags/';
 	}
 
-	/**
-	 * @return string
-	 */
 	final public static function get_wpml_flags_url() {
 		return ICL_PLUGIN_URL . '/res/flags/';
 	}
 
-	/**
-	 * @return string
-	 */
 	final public static function get_wpml_flags_by_locales_url() {
 		return ICL_PLUGIN_URL . '/res/flags_by_locales.json';
 	}
 
-	/**
-	 * @return string
-	 */
 	final public static function get_wpml_flag_image_ext() {
 		return Options::getFormat();
 	}
 
-	/**
-	 * @param string $path
-	 *
-	 * @return bool
-	 */
 	private function flag_file_exists( $path ) {
-		return $this->filesystem->exists( $path );
+		return $this->get_filesystem()->exists( $path );
 	}
 
-	/**
-	 * @param array $allowed_file_types
-	 * @param array $files
-	 *
-	 * @return array
-	 */
 	private function filter_flag_files( $allowed_file_types, $files ) {
 		$result = array();
 		foreach ( $files as $file ) {
@@ -195,12 +181,6 @@ class WPML_Flags {
 		return $result;
 	}
 
-	/**
-	 * @param string $base_url
-	 * @param string $path
-	 *
-	 * @return string
-	 */
 	private function append_path_to_url( $base_url, $path ) {
 		$base_url_parts = wp_parse_url( $base_url );
 

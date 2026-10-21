@@ -1,18 +1,15 @@
 <?php
 
+use WPML\SuperGlobals\Server;
+
 class WPML_Lang_Domain_Filters {
 
 	private $wpml_url_converter;
 	private $wpml_wp_api;
 	private $debug_backtrace;
-	private $domains = array();
 
-	/**
-	 * WPML_Lang_Domain_Filters constructor.
-	 *
-	 * @param \WPML_URL_Converter $wpml_url_converter
-	 * @param \WPML_WP_API $wpml_wp_api
-	 */
+	private $hosts_by_language = null;
+
 	public function __construct(
 		WPML_URL_Converter $wpml_url_converter,
 		WPML_WP_API $wpml_wp_api,
@@ -30,26 +27,46 @@ class WPML_Lang_Domain_Filters {
 		add_filter( 'option_siteurl', array( $this, 'siteurl_callback' ) );
 		add_filter( 'content_url', array( $this, 'siteurl_callback' ) );
 		add_filter( 'plugins_url', array( $this, 'siteurl_callback' ) );
-		add_filter( 'login_url', array( $this, 'convert_url' ) );
+		add_filter( 'login_url', array( $this, 'convert_auth_url' ) );
 		add_filter( 'logout_url', array( $this, 'convert_logout_url' ) );
 		add_filter( 'admin_url', array( $this, 'admin_url_filter' ), 10, 2 );
-		add_filter( 'login_redirect', array( $this, 'convert_url' ), 1, 1 );
+		add_filter( 'login_redirect', array( $this, 'convert_auth_url' ), 1, 1 );
 	}
 
-	/**
-	 * @param string $url
-	 *
-	 * @return string
-	 */
+	public function remove_hooks() {
+		remove_filter( 'upload_dir', array( $this, 'upload_dir_filter_callback' ) );
+		remove_filter( 'stylesheet_uri', array( $this, 'convert_url' ) );
+		remove_filter( 'option_siteurl', array( $this, 'siteurl_callback' ) );
+		remove_filter( 'content_url', array( $this, 'siteurl_callback' ) );
+		remove_filter( 'plugins_url', array( $this, 'siteurl_callback' ) );
+		remove_filter( 'login_url', array( $this, 'convert_auth_url' ) );
+		remove_filter( 'logout_url', array( $this, 'convert_logout_url' ) );
+		remove_filter( 'admin_url', array( $this, 'admin_url_filter' ), 10 );
+		remove_filter( 'login_redirect', array( $this, 'convert_auth_url' ), 1 );
+	}
+
 	public function convert_url( $url ) {
 		return $this->wpml_url_converter->convert_url( $url );
 	}
 
-	/**
-	 * @param array $upload_dir
-	 *
-	 * @return array
-	 */
+	public function convert_auth_url( $url ) {
+		return $this->wpml_url_converter->convert_url( $url, $this->get_request_language() );
+	}
+
+	private function get_request_language() {
+		$host = $this->get_request_host();
+		if ( '' === $host ) {
+			return null;
+		}
+
+		$language = array_search( $host, $this->get_hosts_by_language(), true );
+		if ( false !== $language ) {
+			return (string) $language;
+		}
+
+		return $host === $this->get_home_host() ? (string) wpml_get_setting( 'default_language' ) : null;
+	}
+
 	public function upload_dir_filter_callback( $upload_dir ) {
 		$convertWithMatchingTrailingSlash = function ( $url ) {
 			$hasTrailingSlash = '/' === substr( $url, -1 );
@@ -64,102 +81,62 @@ class WPML_Lang_Domain_Filters {
 		return $upload_dir;
 	}
 
-	/**
-	 * @param string $url
-	 *
-	 * @return string
-	 */
 	public function siteurl_callback( $url ) {
 		$getting_network_site_url = $this->debug_backtrace->is_function_in_call_stack( 'get_admin_url' ) && is_multisite();
 
-		if ( ! $this->debug_backtrace->is_function_in_call_stack( 'get_home_path', false ) && ! $getting_network_site_url ) {
-			$parsed_url = wpml_parse_url( $url );
-			$host       = is_array( $parsed_url ) && isset( $parsed_url['host'] );
-			if ( $host && isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] ) {
-				$domain_from_global = $this->get_host_from_HTTP_HOST();
-				if ( $domain_from_global ) {
-					$url = str_replace( $parsed_url['host'], $domain_from_global, $url );
-				}
-			}
+		if ( $this->debug_backtrace->is_function_in_call_stack( 'get_home_path', false ) || $getting_network_site_url ) {
+			return $url;
 		}
 
-		return $url;
-	}
+		$parsed_url = wpml_parse_url( $url );
 
-	/**
-	 * @return string
-	 */
-	private function get_host_from_HTTP_HOST() {
-		$host = $_SERVER['HTTP_HOST'];
-
-		if ( false !== strpos( $_SERVER['HTTP_HOST'], ':' ) ) {
-			$host = explode( ':', $_SERVER['HTTP_HOST'] );
-			$host = $host[0];
+		if ( ! is_array( $parsed_url ) || empty( $parsed_url['host'] ) ) {
+			return $url;
 		}
 
-		return $this->is_host_valid( $host ) ? $host : null;
-	}
+		$host = $this->get_request_host();
 
-	/**
-	 * @param string $host
-	 *
-	 * @return bool
-	 */
-	private function is_host_valid( $host ) {
-		$valid = false;
-
-		foreach ( $this->get_domains() as $domain ) {
-			if ( $domain === $host ) {
-				$valid = true;
-				break;
-			}
+		if ( '' === $host || ! $this->is_own_host( $host ) ) {
+			return $url;
 		}
 
-		return $valid;
+		return str_replace( $parsed_url['host'], $host, $url );
 	}
 
-	/**
-	 * @return array
-	 */
-	private function get_domains() {
-		if ( ! $this->domains ) {
-			$this->domains   = wpml_get_setting( 'language_domains' );
-			$home_parsed     = wp_parse_url( $this->wpml_url_converter->get_abs_home() );
-			$this->domains[] = $home_parsed['host'];
+	private function is_own_host( $host ) {
+		return in_array( $host, $this->get_hosts_by_language(), true ) || $host === $this->get_home_host();
+	}
+
+	private function get_request_host() {
+		return strtolower( (string) strtok( (string) Server::getServerName(), ':' ) );
+	}
+
+	private function get_hosts_by_language() {
+		if ( null === $this->hosts_by_language ) {
+			$this->hosts_by_language = WPML_Language_Domains::hostsOf( wpml_get_setting( 'language_domains' ) );
 		}
 
-		return $this->domains;
+		return $this->hosts_by_language;
 	}
 
-	/**
-	 * @param string $url
-	 * @param string $path
-	 *
-	 * @return string
-	 */
+	private function get_home_host() {
+		return WPML_Language_Domains::hostOf( (string) $this->wpml_url_converter->get_abs_home() );
+	}
+
 	public function admin_url_filter( $url, $path ) {
 		if ( ( strpos( $url, 'http://' ) === 0
 			   || strpos( $url, 'https://' ) === 0 )
 			 && 'admin-ajax.php' === $path && $this->wpml_wp_api->is_front_end()
 		) {
-			global $sitepress;
-
-			$url = $this->wpml_url_converter->convert_url( $url, $sitepress->get_current_language() );
+			$url = $this->convert_auth_url( $url );
 		}
 
 		return $url;
 	}
 
-	/**
-	 * Convert logout url only for front-end.
-	 *
-	 * @param string $logout_url
-	 *
-	 * @return string
-	 */
 	public function convert_logout_url( $logout_url ) {
 		if ( $this->wpml_wp_api->is_front_end() ) {
-			$logout_url = $this->wpml_url_converter->convert_url( $logout_url );
+			$logout_url = $this->convert_auth_url( $logout_url );
 		}
 
 		return $logout_url;

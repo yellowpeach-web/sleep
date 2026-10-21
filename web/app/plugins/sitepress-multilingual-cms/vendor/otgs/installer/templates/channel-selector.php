@@ -12,17 +12,17 @@
             <?php _e("To select different update channels (beta, development) you must update your existing products to their most recent stable versions.", 'installer') ?>
         </span>
         <span class="spinner spinner-with-text">
-            <?php _e( "Updating the plugins on your site. Please don't close this page or navigate away.", 'installer' ); ?>
+            <?php _e( "Switching the channel and refreshing the list of plugins.", 'installer' ); ?>
         </span>
         <span class="installer-channel-update-ok" data-text="<?php
-            esc_attr_e( sprintf("Update completed. You are now using the %s channel of %s.",
+            esc_attr_e( sprintf("You are now using the %s channel of %s. The list shows the versions this channel offers: select the plugins to change and press Download.",
 	        '%CHANNEL%', WP_Installer()->get_generic_product_name( $repository_id ) ) ) ?>">
         </span>
         <span class="installer-channel-update-fail" data-text-unstable="<?php
-        $support_url  = $repository_id ==='toolset' ? 'https://toolset.com/forums/forum/professional-support/' : 'https://wpml.org/forums/forum/english-support/';
-        $download_url = $repository_id ==='toolset' ? 'https://toolset.com/account/downloads/' : 'https://wpml.org/account/downloads/';
+        $support_url  = $repository_id ==='toolset' ? 'https://toolset.com/forums/forum/professional-support/' : \OTGS\Installer\OutboundLink::to( 'https://app.wpml.org/support', [ 'medium' => 'settings', 'campaign' => 'support' ] );
+        $download_url = $repository_id ==='toolset' ? 'https://toolset.com/account/downloads/' : \OTGS\Installer\OutboundLink::to( 'https://app.wpml.org/account/downloads', [ 'medium' => 'settings', 'campaign' => 'account' ] );
         echo esc_attr( sprintf(
-            __( "Something went wrong and we could not install all updates from the %s channel. Click here to %stry again%s. If the errors persist, please switch back to the Production channel and contact the %s%s support%s.", 'installer' ),
+            __( "Something went wrong while switching to the %s channel and refreshing the list. Click here to %stry again%s. If the errors persist, please switch back to the Production channel and contact the %s%s support%s.", 'installer' ),
 	        '%CHANNEL%',
 	        '<a href="#" class="installer-channel-retry"><strong>',
 	        '</strong></a>',
@@ -48,7 +48,7 @@
             <button class="button-primary js-proceed"><?php _e("Switch", 'installer') ?></button>
         </p>
         <p>
-            <?php _e( 'The plugins will update to the most recent version in the channel that you selected.', 'installer') ?>
+            <?php _e( 'The list will show the versions available in the channel you select. Nothing is installed until you press Download.', 'installer') ?>
         </p>
         <label>
             <input type="checkbox" value="1" class="js-remember"/>

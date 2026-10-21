@@ -8,10 +8,6 @@ use WPML\FP\Lst;
 use WPML\FP\Obj;
 use function WPML\FP\curryN;
 
-/**
- * @method static callable|int fromJobId( ...$job_id )
- * @method static callable|int|null fromRid( ...$rid )
- */
 class Map {
 	use Macroable;
 
@@ -43,6 +39,10 @@ class Map {
 
 			return $jobId;
 		} ) );
+	}
+
+	public static function rememberJobIdForRid( $rid, $jobId ) {
+		self::$rid_to_jobId[ (int) $rid ] = (int) $jobId;
 	}
 
 	public static function jobIdFromDB( $rid ) {

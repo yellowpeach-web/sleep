@@ -31,21 +31,20 @@
 			var needsCorrection = false;
 			var correctParentText = false;
 			var parentName = TaxonomyTranslation.classes.taxonomy.getTermName(parent);
+			var removedParent = '';
+			var addedParent = '';
 			_.each(syncData, function (correction) {
 				if (correction.translated_id == ttid) {
 					found = true;
 
-					var oldParent = '';
 					if (parent !== 0) {
-						oldParent = '<span style="background-color:#F55959;">-' + TaxonomyTranslation.classes.taxonomy.getTermName(parent) + '</span>';
+						removedParent = TaxonomyTranslation.classes.taxonomy.getTermName(parent);
 						jQuery('.wpml-parent-removed').show();
 					}
-					var newParent = '';
 					if (correction.correct_parent !== 0) {
-						newParent = '<span style="background-color:#CCFF99;">+' + TaxonomyTranslation.classes.taxonomy.getTermName(correction.correct_parent) + '</span>';
+						addedParent = TaxonomyTranslation.classes.taxonomy.getTermName(correction.correct_parent);
 						jQuery('.wpml-parent-added').show();
 					}
-					parentName = oldParent + '   ' + newParent;
 					needsCorrection = true;
 				}
 			});
@@ -64,7 +63,9 @@
 					level: self.model.get("level"),
 					correctedLevel: self.model.get("level"),
 					correctParent: correctParentText,
-					parent: parentName
+					parent: parentName,
+					removedParent: removedParent,
+					addedParent: addedParent
 				})
 			);
 
@@ -77,25 +78,58 @@
 			var self = this;
 
 			self.needsCorrection = false;
-			if ( ! self.model.get( "name" ) ) {
+			var langs = TaxonomyTranslation.data.activeLanguages;
+			var lang = self.model.get( "language_code" );
+			var langLabel = ( langs && langs[ lang ] && langs[ lang ].label ) ? langs[ lang ].label : lang;
+			var name = self.model.get( "name" );
+			var stateLabel = '';
+
+			if ( self.model.get( "inProgress" ) && ! self.model.isOriginal() ) {
+				self.template = WPML_core[ "templates/taxonomy-translation/term-in-progress.html" ];
+			} else if ( self.model.get( "needsUpdate" ) && ! self.model.isOriginal() ) {
+				self.template = WPML_core[ "templates/taxonomy-translation/term-needs-update.html" ];
+				stateLabel = self.buildStateLabel( langLabel, name, labels.needsUpdateOfTerm, labels.needsUpdate );
+			} else if ( ! name ) {
 				self.template = WPML_core[ "templates/taxonomy-translation/term-not-translated.html" ];
 			} else if ( self.model.isOriginal() ) {
 				self.template = WPML_core[ "templates/taxonomy-translation/term-original-disabled.html" ];
 			} else {
 				self.template = WPML_core[ "templates/taxonomy-translation/term-translated.html" ];
+				stateLabel = self.buildStateLabel( langLabel, name, labels.editTranslationOfTerm, labels.editTranslation );
 			}
 
 			var html = self.template({
 					trid: self.model.get("trid"),
-					lang: self.model.get("language_code"),
-					name: self.model.get("name"),
+					lang: lang,
+					name: name,
 					level: self.model.get("level"),
 					correctedLevel: self.model.get("level"),
-					langs: TaxonomyTranslation.data.activeLanguages
+					langs: langs,
+					stateLabel: stateLabel
 				});
 			self.$el.html( html );
 
 			return self;
+		},
+		/**
+		 * The name of one per-language control in a term row.
+		 *
+		 * The control is an icon on its own, so this text is everything a
+		 * screen reader announces and everything a hover shows. Where there
+		 * is a translation it carries the translation itself, which is the
+		 * one thing the row could not say before. `withTerm` is a label with
+		 * %language% and %term% placeholders; `withoutTerm` is the plain
+		 * state name, used only for the case where the state says there is a
+		 * translation and no term text came with it.
+		 */
+		buildStateLabel: function ( langLabel, name, withTerm, withoutTerm ) {
+			if ( name && withTerm ) {
+				return String( withTerm )
+					.replace( '%language%', langLabel )
+					.replace( '%term%', name );
+			}
+
+			return langLabel + ': ' + withoutTerm;
 		},
 		openPopUpTerm: function (e) {
 			var self = this;

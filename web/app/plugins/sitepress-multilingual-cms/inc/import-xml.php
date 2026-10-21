@@ -16,6 +16,7 @@ function icl_import_xml() {
 	}
 	$default = $sitepress->get_default_language();
 	
+		/* translators: Heading above the dropdown that picks the language of the content being brought in. */
 		$out = '<h3>' . esc_html__('Select Language', 'sitepress') . '</h3><p><select name="icl_post_language">';
 		foreach ($langs as $lang) {
 			$out .= '<option value="' . esc_attr( $lang['code'] ) . '"';
@@ -37,7 +38,9 @@ function icl_import_xml() {
 
 add_action('import_start', 'icl_import_xml_start', 0);
 function icl_import_xml_start() {
-	set_time_limit( 0 );
+	if ( function_exists( 'set_time_limit' ) ) {
+		set_time_limit( 0 );
+	}
 	$post_languages = isset( $_POST['icl_post_language'] ) ? $_POST['icl_post_language'] : array();
 
 	$_POST['icl_tax_post_tag_language'] = $_POST['icl_tax_category_language'] = $_POST['icl_tax_language'] = $post_languages;

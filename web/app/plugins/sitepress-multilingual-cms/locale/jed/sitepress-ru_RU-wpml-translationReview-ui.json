@@ -3,13 +3,15 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
+            "lang": "ru_RU"
          },
          "Accepted": [
             "Принято"
          ],
          "Approved!": [
-            "Утверждено!"
+            "Одобрено!"
          ],
          "Loading the next translation for review...": [
             "Загрузка следующего перевода для проверки..."
@@ -18,19 +20,16 @@
             "Назад"
          ],
          "Turn off to not automatically load the next translation after finishing this review.": [
-            "Выключите, чтобы не загружать следующий перевод автоматически после завершения этой проверки."
+            "Отключите, чтобы не загружать следующий перевод автоматически после завершения этой проверки."
          ],
          "Turn on to automatically load the next translation after finishing this  .": [
-            "Включите, чтобы автоматически загружать следующий перевод после завершения этого."
+            "Включите, чтобы автоматически загружать следующий перевод после завершения этой проверки."
          ],
          "Edit": [
             "Изменить"
          ],
          "Edit translation": [
-            "Редактировать перевод"
-         ],
-         "Please wait, applying translation..": [
-            "Подождите, применяется перевод..."
+            "Изменить перевод"
          ],
          "Next review": [
             "Следующая проверка"
@@ -44,11 +43,14 @@
          "Published!": [
             "Опубликовано!"
          ],
-         "Someone is already reviewing this translation. Please try again later.": [
-            "Кто-то уже просматривает этот перевод. Пожалуйста, повторите попытку позже."
+         "Please wait, applying translation..": [
+            "Пожалуйста, подождите, применение перевода..."
          ],
          "There was an error in applying translation.": [
-            "Во время применения перевода произошла ошибка."
+            "Произошла ошибка при применении перевода."
+         ],
+         "Someone is already reviewing this translation. Please try again later.": [
+            "Кто-то уже проверяет этот перевод. Пожалуйста, попробуйте позже."
          ]
       }
    }

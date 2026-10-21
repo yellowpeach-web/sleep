@@ -2,17 +2,13 @@
 
 class WPML_TM_Jobs_Daily_Summary_Report_Model implements WPML_TM_Jobs_Summary_Report_Model {
 
-	/**
-	 * @return string
-	 */
 	public function get_subject() {
-		return __( 'Translation updates for %1$s for %2$s', 'wpml-translation-management' );
+		/* translators: Subject of the daily email WPML sends about translation work. %1$s: the name of the site, %2$s: the date the email covers. */
+		return __( 'Translation updates for %1$s for %2$s', 'sitepress' );
 	}
 
-	/**
-	 * @return string
-	 */
 	public function get_summary_text() {
-		return __( 'Today %1$s had the following %2$s translation updates', 'wpml-translation-management' );
+		/* translators: First line of the daily email WPML sends about translation work. %1$s: the name of the site, %2$s: how many translations were updated. */
+		return __( 'Today %1$s had the following %2$s translation updates', 'sitepress' );
 	}
 }

@@ -22,6 +22,13 @@ class WPML_TM_Ajax_Factory extends WPML_Ajax_Factory {
 		);
 	}
 
+	public function get_policy( $class_name ) {
+		return \WPML\Request\Policy\Policy::capability(
+			array( 'wpml_manage_support', 'manage_translations' ),
+			\WPML\Request\Policy\Authenticity::actionNonce( 'WPML_Ajax_Update_Link_Targets', 'nonce' )
+		);
+	}
+
 	public function create( $class_name ) {
 		global $ICL_Pro_Translation;
 
@@ -33,7 +40,7 @@ class WPML_TM_Ajax_Factory extends WPML_Ajax_Factory {
 						$this->wpdb,
 						$ICL_Pro_Translation
 					),
-					defined( 'WPML_ST_VERSION' )
+					wpml_is_st_loaded()
 						? new WPML_Translate_Link_Targets_In_Strings_Global(
 							new WPML_Translate_Link_Target_Global_State( $this->sitepress ),
 							$this->wpdb,

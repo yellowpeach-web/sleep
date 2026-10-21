@@ -4,19 +4,59 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "no"
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "zh_CN"
          },
-         "WPML Translation Editor": [
-            "WPML翻译编辑器"
+         "Sending for translation": [
+            "正在发送翻译"
          ],
-         "Use only when you want to translate content from one of the few plugins that are not compatible with WPML’s translation editor or  if you would like to create different designs for the same page in different languages.": [
-            "仅当你想要翻译与 WPML 的翻译编辑器不兼容的少数插件之一的内容时，或者如果你想要使用其他语言为同一页面创建不同设计时，才使用它。"
+         "The translation could not be started because the server did not answer.": [
+            "由于服务器未响应，无法开始翻译。"
+         ],
+         "This translation cannot be opened right now.": [
+            "目前无法打开此翻译。"
+         ],
+         "Refresh this page": [
+            "刷新此页面"
+         ],
+         "Translation Dashboard": [
+            "翻译仪表板"
+         ],
+         "WPML Translation Editor": [
+            "WPML 翻译编辑器"
          ],
          "WordPress Editor": [
             "WordPress 编辑器"
          ],
-         "Use the editor to translate:": [
-            "使用编辑器翻译:"
+         "The WordPress Editor doesn't offer Automatic Translation, <b>Translation Memory</b> and other features that make translation easier.": [
+            "WordPress 编辑器不提供自动翻译、<b>翻译记忆库</b>以及其他使翻译更轻松的功能。"
+         ],
+         "Also, switching back to WPML's Translation Editor later will require re-translating content that you translated with the WordPress editor.": [
+            "此外，稍后切换回 WPML 翻译编辑器将需要重新翻译您使用 WordPress 编辑器翻译的内容。"
+         ],
+         "This translation was previously created in the WordPress editor. When you switch to WPML Translation Editor, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
+            "此翻译之前是在 WordPress 编辑器中创建的。当您切换到 WPML 翻译编辑器时，翻译后的文章结构将更新以与原文匹配，但 WPML 将使用您现有的翻译作为基础，以便保留语气和术语。"
+         ],
+         "This will overwrite content you translated with the WordPress Editor. If you switch now, you'll have to translate selected content again.": [
+            "这将覆盖您使用 WordPress 编辑器翻译的内容。如果您现在切换，则必须再次翻译所选内容。"
+         ],
+         "I understand, switch to the WordPress Editor": [
+            "我明白，切换到 WordPress 编辑器"
+         ],
+         "I understand, switch to %s": [
+            "我明白，切换到 %s"
+         ],
+         "I understand, switch to <b>Translation Dashboard</b>": [
+            "我明白，切换到 <b>翻译仪表板</b>"
+         ],
+         "You are about to translate with the %s": [
+            "您即将使用 %s 进行翻译"
+         ],
+         "Translate with the WordPress Editor if you need different designs per language or if the content isn't compatible with WPML's Translation Editor.": [
+            "如果您需要为每种语言使用不同的设计，或者内容与 WPML 翻译编辑器不兼容，请使用 WordPress 编辑器进行翻译。"
+         ],
+         "What do you want to translate?": [
+            "您想翻译什么？"
          ],
          "Apply": [
             "应用"
@@ -24,14 +64,20 @@
          "Cancel": [
             "取消"
          ],
-         "This %s": [
-            "此%s"
+         "Only this %s": [
+            "仅此 %s"
+         ],
+         "Recommended": [
+            "推荐"
          ],
          "All %s": [
-            "所有%s"
+            "所有 %s"
          ],
          "All the site's content": [
-            "所有网站内容"
+            "站点的所有内容"
+         ],
+         "Translate items in batch after reviewing the cost of AI translation": [
+            "在查看 AI 翻译费用后批量翻译项目"
          ]
       }
    }

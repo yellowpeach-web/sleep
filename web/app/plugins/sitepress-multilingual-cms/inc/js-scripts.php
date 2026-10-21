@@ -1,16 +1,16 @@
 <?php
 
-/**
- * Registers scripts so that they can be reused throughout WPML plugins
- * Hooked to `admin_enqueue_scripts`
- */
 function wpml_register_js_scripts() {
 	wp_register_script( 'wpml-underscore-template-compiler',
 		ICL_PLUGIN_URL . '/res/js/shared/wpml-template-compiler.js',
-		array( "underscore" ) );
+		array( "underscore" ),
+		ICL_SITEPRESS_SCRIPT_VERSION
+	);
 	wp_register_script( 'wpml-domain-validation',
 		ICL_PLUGIN_URL . '/res/js/settings/wpml-domain-validation.js',
-		array( "jquery" ) );
+		array( "jquery" ),
+		ICL_SITEPRESS_SCRIPT_VERSION
+	);
 
 }
 

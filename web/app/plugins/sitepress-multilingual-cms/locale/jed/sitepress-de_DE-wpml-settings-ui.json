@@ -3,53 +3,251 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "de_DE"
          },
-         "You can choose which posts to translate from the <strong>Translation Management Dashboard</strong>.": [
-            "Sie können im <strong>Dashboard für die Übersetzungsverwaltung</strong> auswählen, welche Beiträge übersetzt werden sollen."
-         ],
-         "Yes, translate <b>existing</b> and <b>future</b> content automatically": [
-            "Ja, <b>vorhandene</b> und <b>zukünftige</b> Inhalte automatisch übersetzen"
-         ],
-         "Yes, but only translate <b>future</b> content automatically": [
-            "Ja, aber <b>zukünftige</b> Inhalte nur automatisch übersetzen"
-         ],
-         "Yes, translate <b>future</b> content automatically": [
-            "Ja, <b>zukünftige</b> Inhalte automatisch übersetzen"
-         ],
-         "No, I want to translate some of these posts, but not all": [
-            "Nein, nur einige dieser Beiträge übersetzen"
+         "%1$s and %2$s": [
+            "%1$s und %2$s"
          ],
          "You must use the Advanced Translation Editor if you want to translate your content automatically.": [
-            "Sie müssen den erweiterten Übersetzungs-Editor verwenden, wenn Sie Ihren Inhalt automatisch übersetzen wollen."
+            "Du musst den Erweiterten Übersetzungs-Editor verwenden, wenn Du Deine Inhalte automatisch übersetzen möchtest."
          ],
          "Synchronize translators and translation managers with ATE": [
-            "Synchronisieren Sie Übersetzer und Übersetzungs-Manager mit ATE"
+            "Übersetzer und Übersetzungsmanager mit ATE synchronisieren"
          ],
-         "Please try again in a few minutes. If the problem persists, please contact %sWPML support%s.": [
-            "Bitte versuchen Sie es in einigen Minuten erneut. Wenn das Problem weiterhin besteht, kontaktieren Sie bitte den %sWPML-Support%s. "
+         "Please try again in a few minutes. If the problem persists, please contact %1$sWPML support%2$s.": [
+            "Bitte versuche es in ein paar Minuten erneut. Wenn das Problem weiterhin besteht, kontaktiere bitte den %1$sWPML-Support%2$s."
          ],
-         "Are you OK with paying for this?": [
-            "Ist es für Sie in Ordnung, wenn Sie dafür bezahlen?"
+         "The number of translated terms carrying %s could not be counted.": [
+            "Die Anzahl der übersetzten Begriffe, die %s enthalten, konnte nicht gezählt werden."
+         ],
+         "There are no translated terms carrying %s yet that need translating again. The change applies to new translations.": [
+            "Es gibt noch keine übersetzten Begriffe, die %s enthalten und erneut übersetzt werden müssen. Die Änderung gilt für neue Übersetzungen."
+         ],
+         "%1$s translated term carries %2$s — only new translations are affected.": [
+            "%1$s übersetzter Begriff enthält %2$s – nur neue Übersetzungen sind betroffen.",
+            "%1$s übersetzte Begriffe enthalten %2$s – nur neue Übersetzungen sind betroffen."
+         ],
+         "The number of translated posts carrying %s could not be counted.": [
+            "Die Anzahl der übersetzten Beiträge, die %s enthalten, konnte nicht gezählt werden."
+         ],
+         "There are no translated posts carrying %s yet that need translating again. The change applies to new translations.": [
+            "Es gibt noch keine übersetzten Beiträge, die %s enthalten und erneut übersetzt werden müssen. Die Änderung gilt für neue Übersetzungen."
+         ],
+         "%1$s translated post carries %2$s — it will be marked as needing a translation update.": [
+            "%1$s übersetzter Beitrag enthält %2$s – er wird als aktualisierungsbedürftig markiert.",
+            "%1$s übersetzte Beiträge enthalten %2$s – sie werden als aktualisierungsbedürftig markiert."
+         ],
+         "%1$s translated post carries %2$s — its translation will show the original's value from now on.": [
+            "%1$s übersetzter Beitrag enthält %2$s – seine Übersetzung zeigt ab jetzt den Wert des Originals an.",
+            "%1$s übersetzte Beiträge enthalten %2$s – ihre Übersetzungen zeigen ab jetzt den Wert des Originals an."
+         ],
+         "%1$s translated post carries %2$s — translations without a value get the original's once.": [
+            "%1$s übersetzter Beitrag enthält %2$s – Übersetzungen ohne Wert erhalten einmalig den Wert des Originals.",
+            "%1$s übersetzte Beiträge enthalten %2$s – Übersetzungen ohne Wert erhalten einmalig den Wert des Originals."
+         ],
+         "%1$s translated post carries %2$s — it is no longer translated and what its translations hold stays as it is.": [
+            "%1$s übersetzter Beitrag enthält %2$s – er wird nicht mehr übersetzt und der Inhalt seiner Übersetzungen bleibt unverändert.",
+            "%1$s übersetzte Beiträge enthalten %2$s – sie werden nicht mehr übersetzt und der Inhalt ihrer Übersetzungen bleibt unverändert."
+         ],
+         "Review these translation setting changes": [
+            "Überprüfen Sie diese Änderungen der Übersetzungseinstellungen"
          ],
          "Cancel": [
             "Abbrechen"
          ],
-         "Make translatable": [
-            "Übersetzbar machen"
+         "Save changes": [
+            "Änderungen speichern"
+         ],
+         "Also update the existing posts now": [
+            "Jetzt auch die bestehenden Beiträge aktualisieren"
+         ],
+         "Also update the %s existing post now": [
+            "Jetzt auch den %s bestehenden Beitrag aktualisieren",
+            "Jetzt auch die %s bestehenden Beiträge aktualisieren"
+         ],
+         "Only apply to new translations": [
+            "Nur auf neue Übersetzungen anwenden"
+         ],
+         "Once saved, WPML automatically sends new and updated posts with this field to translation. This may use translation words.": [
+            "Nach dem Speichern sendet WPML neue und aktualisierte Beiträge mit diesem Feld automatisch zur Übersetzung. Dies kann Wörter verbrauchen.",
+            "Nach dem Speichern sendet WPML neue und aktualisierte Beiträge mit diesen Feldern automatisch zur Übersetzung. Dies kann Wörter verbrauchen."
+         ],
+         "Once saved, WPML automatically sends new and updated terms with this key to translation. This may use translation words.": [
+            "Nach dem Speichern sendet WPML neue und aktualisierte Begriffe mit diesem Schlüssel automatisch zur Übersetzung. Dies kann Wörter verbrauchen.",
+            "Nach dem Speichern sendet WPML neue und aktualisierte Begriffe mit diesen Schlüsseln automatisch zur Übersetzung. Dies kann Wörter verbrauchen."
+         ],
+         "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "In beiden Fällen wird die neue Einstellung gespeichert. Bei „Nur auf neue Übersetzungen anwenden“ bleibt jede bestehende Übersetzung genau so, wie sie ist."
+         ],
+         "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
+            "%1$s benutzerdefiniertes Feld wurde außerhalb dieses Bildschirms als übersetzbar markiert: %2$s. Entscheiden Sie, was mit den bereits vorhandenen Übersetzungen geschehen soll.",
+            "%1$s benutzerdefinierte Felder wurden außerhalb dieses Bildschirms als übersetzbar markiert: %2$s. Entscheiden Sie, was mit den bereits vorhandenen Übersetzungen geschehen soll."
+         ],
+         "Review this field": [
+            "Dieses Feld überprüfen",
+            "Diese Felder überprüfen"
          ],
          "Save": [
             "Speichern"
          ],
-         "Please confirm this translation setting": [
-            "Bitte bestätigen Sie diese Übersetzungseinstellung."
+         "Calculate Costs": [
+            "Kosten berechnen"
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate the %1$d existing item.": [
-            "Ihre Website ist so eingestellt, dass alle Inhalte automatisch übersetzt werden. Wenn Sie <PostTypesNames /> übersetzbar machen, übersetzt WPML automatisch das vorhandene %1$d-Element.",
-            "Ihre Website ist so eingestellt, dass alle Inhalte automatisch übersetzt werden. Wenn Sie <PostTypesNames /> übersetzbar machen, übersetzt WPML automatisch die %1$d vorhandenen Elemente."
+         "WPML will automatically translate %1$s into %2$s.": [
+            "WPML wird automatisch %1$s in %2$s übersetzen."
          ],
-         "Your site is set to translate all content automatically. When you make <PostTypesNames /> translatable, WPML will automatically translate all future content.": [
-            "Ihre Website ist so eingestellt, dass alle Inhalte automatisch übersetzt werden. Wenn Sie <PostTypesNames /> übersetzbar machen, übersetzt WPML automatisch alle zukünftigen Inhalte."
+         "Automatic translation uses translation words.": [
+            "Die automatische Übersetzung verbraucht Wörter."
+         ],
+         "Are you OK with this?": [
+            "Bist Du damit einverstanden?"
+         ],
+         "Are you sure you want to change the translation option?": [
+            "Bist Du sicher, dass Du die Übersetzungsoption ändern möchtest?"
+         ],
+         "Yes, continue": [
+            "Ja, fortfahren"
+         ],
+         "No, go back": [
+            "Nein, zurückgehen"
+         ],
+         "%d term": [
+            "%d Begriff",
+            "%d Begriffe"
+         ],
+         "%d language": [
+            "%d Sprache",
+            "%d Sprachen"
+         ],
+         "%s will be translated.": [
+            "%s werden übersetzt."
+         ],
+         "Change the URLs of existing translations?": [
+            "URLs bestehender Übersetzungen ändern?"
+         ],
+         "Counting the existing translations this affects… %1$s of %2$s posts.": [
+            "Bestehende Übersetzungen werden gezählt… %1$s von %2$s Beiträgen."
+         ],
+         "Counting the existing translations this affects…": [
+            "Bestehende Übersetzungen werden gezählt…"
+         ],
+         "Also update the %s existing translation now — its URL changes": [
+            "Jetzt auch die %s bestehende Übersetzung aktualisieren – ihre URL ändert sich",
+            "Jetzt auch die %s bestehenden Übersetzungen aktualisieren – ihre URLs ändern sich"
+         ],
+         "Either way the setting is saved. With \"Only apply to new translations\" every existing translation keeps its slug.": [
+            "In beiden Fällen wird die Einstellung gespeichert. Bei „Nur auf neue Übersetzungen anwenden“ behält jede bestehende Übersetzung ihren Slug."
+         ],
+         "No existing translation gets a different URL from this option. It does not apply to new translations either. None of your active languages has \"Encode URL\" turned on.": [
+            "Keine bestehende Übersetzung erhält durch diese Option eine andere URL. Sie gilt auch nicht für neue Übersetzungen. Bei keiner Ihrer aktiven Sprachen ist „URL kodieren“ aktiviert."
+         ],
+         "No existing translation gets a different URL from this option. It applies to new translations.": [
+            "Keine bestehende Übersetzung erhält durch diese Option eine andere URL. Sie gilt für neue Übersetzungen."
+         ],
+         "%s existing translation in a language with encoded URLs would get the original's slug.": [
+            "%s bestehende Übersetzung in einer Sprache mit kodierten URLs würde den Slug des Originals erhalten.",
+            "%s bestehende Übersetzungen in Sprachen mit kodierten URLs würden den Slug des Originals erhalten."
+         ],
+         "%s existing translation would get a slug regenerated from its title.": [
+            "%s bestehende Übersetzung würde einen aus ihrem Titel neu generierten Slug erhalten.",
+            "%s bestehende Übersetzungen würden aus ihren Titeln neu generierte Slugs erhalten."
+         ],
+         "This changes the URL of %s published translation. Links to it from your other translations are updated. Search engines and links from elsewhere keep the old address until you redirect it.": [
+            "Dies ändert die URL von %s veröffentlichter Übersetzung. Links zu ihr aus Ihren anderen Übersetzungen werden aktualisiert. Suchmaschinen und Links von anderen Stellen behalten die alte Adresse, bis Sie diese umleiten.",
+            "Dies ändert die URLs von %s veröffentlichten Übersetzungen. Links zu ihnen aus Ihren anderen Übersetzungen werden aktualisiert. Suchmaschinen und Links von anderen Stellen behalten die alten Adressen, bis Sie diese umleiten."
+         ],
+         "Retry": [
+            "Wiederholen"
+         ],
+         "Updating %1$s of %2$s translation…": [
+            "%1$s von %2$s Übersetzung wird aktualisiert…",
+            "%1$s von %2$s Übersetzungen werden aktualisiert…"
+         ],
+         "Updating %1$s of %2$s posts…": [
+            "%1$s von %2$s Beiträgen werden aktualisiert…"
+         ],
+         "%1$s %2$s updated.": [
+            "%1$s %2$s aktualisiert."
+         ],
+         "%s post updated.": [
+            "%s Beitrag aktualisiert.",
+            "%s Beiträge aktualisiert."
+         ],
+         "%s marked as needing a translation update.": [
+            "%s als aktualisierungsbedürftig markiert."
+         ],
+         "%1$s sent to translation and %2$s outside Translate Everything's range marked for later.": [
+            "%1$s zur Übersetzung gesendet und %2$s außerhalb des Bereichs von „Alles automatisch übersetzen“ für später markiert."
+         ],
+         "%s sent to translation.": [
+            "%s zur Übersetzung gesendet."
+         ],
+         "Nothing was sent. %s outside Translate Everything's range marked for later.": [
+            "Nichts wurde gesendet. %s außerhalb des Bereichs von „Alles automatisch übersetzen“ für später markiert."
+         ],
+         "Nothing was sent.": [
+            "Nichts wurde gesendet."
+         ],
+         "%s in a language Translate Everything does not send marked for later.": [
+            "%s in einer Sprache, die nicht von „Alles automatisch übersetzen“ unterstützt wird, für später markiert."
+         ],
+         "The URL of %s translation was updated.": [
+            "Die URL von %s Übersetzung wurde aktualisiert.",
+            "Die URLs von %s Übersetzungen wurden aktualisiert."
+         ],
+         "No URL was changed.": [
+            "Es wurde keine URL geändert."
+         ],
+         "%s translation no longer needed a change.": [
+            "%s Übersetzung benötigte keine Änderung mehr.",
+            "%s Übersetzungen benötigten keine Änderung mehr."
+         ],
+         "The update continues in the background. The admin bar shows its progress.": [
+            "Die Aktualisierung wird im Hintergrund fortgesetzt. Die Admin-Leiste zeigt den Fortschritt an."
+         ],
+         "Counting the words this sends…": [
+            "Wörter werden gezählt…"
+         ],
+         "Counting the words this sends… %1$s of %2$s posts.": [
+            "Wörter werden gezählt… %1$s von %2$s Beiträgen."
+         ],
+         "The number of words this sends could not be estimated. The Translation Dashboard shows the cost once the posts are queued.": [
+            "Die Anzahl der zu sendenden Wörter konnte nicht geschätzt werden. Das Übersetzungs-Dashboard zeigt die Kosten an, sobald die Beiträge in der Warteschlange sind."
+         ],
+         "This sends %s word of content that could not be priced. The Translation Dashboard shows the cost once the posts are queued.": [
+            "Dies sendet %s Wort an Inhalt, für das kein Preis ermittelt werden konnte. Das Übersetzungs-Dashboard zeigt die Kosten an, sobald die Beiträge in der Warteschlange sind.",
+            "Dies sendet %s Wörter an Inhalt, für die kein Preis ermittelt werden konnte. Das Übersetzungs-Dashboard zeigt die Kosten an, sobald die Beiträge in der Warteschlange sind."
+         ],
+         "Sending it again to %2$s languages uses about %1$s word.": [
+            "Das erneute Senden an %2$s Sprachen verbraucht etwa %1$s Wort.",
+            "Das erneute Senden an %2$s Sprachen verbraucht etwa %1$s Wörter."
+         ],
+         "Sending them again to %2$s languages uses about %1$s word.": [
+            "Das erneute Senden an %2$s Sprachen verbraucht etwa %1$s Wort.",
+            "Das erneute Senden an %2$s Sprachen verbraucht etwa %1$s Wörter."
+         ],
+         "Sending it again uses about %s word.": [
+            "Das erneute Senden verbraucht etwa %s Wort.",
+            "Das erneute Senden verbraucht etwa %s Wörter."
+         ],
+         "Sending them again uses about %s word.": [
+            "Das erneute Senden verbraucht etwa %s Wort.",
+            "Das erneute Senden verbraucht etwa %s Wörter."
+         ],
+         "%s of the posts is outside Translate Everything's range: its translations will be marked without being sent.": [
+            "%s der Beiträge liegt außerhalb des Bereichs von „Alles übersetzen“: Die Übersetzungen werden markiert, ohne gesendet zu werden.",
+            "%s der Beiträge liegen außerhalb des Bereichs von „Alles übersetzen“: Die Übersetzungen werden markiert, ohne gesendet zu werden."
+         ],
+         "Your choice for the existing translations was not recorded.": [
+            "Ihre Auswahl für die bestehenden Übersetzungen wurde nicht aufgezeichnet."
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "Unser Übersetzungssystem hat diese Anfrage nicht akzeptiert (Antwort: %d). Warten Sie eine Minute und versuchen Sie es erneut. Kontaktieren Sie den WPML-Support, falls das Problem weiterhin besteht."
+         ],
+         "several post types listed\u0004%1$s %2$s updated.": [
+            "%1$s %2$s aktualisiert."
          ]
       }
    }

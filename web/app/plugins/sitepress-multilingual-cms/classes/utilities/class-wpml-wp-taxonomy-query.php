@@ -32,6 +32,6 @@ class WPML_WP_Taxonomy_Query {
 		if ( isset( $this->taxonomies_query_vars ) && is_array( $this->taxonomies_query_vars ) ) {
 			$tax = array_search( $taxonomy, $this->taxonomies_query_vars );
 		}
-		return $tax;
+		return false === $tax ? false : (string) $tax;
 	}
 }

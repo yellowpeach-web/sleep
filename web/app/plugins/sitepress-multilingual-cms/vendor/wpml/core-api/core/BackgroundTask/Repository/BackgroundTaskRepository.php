@@ -2,26 +2,24 @@
 
 namespace WPML\Core\BackgroundTask\Repository;
 
+use WPML\Core\BackgroundTask\Command\DeleteBackgroundTask;
 use WPML\Core\BackgroundTask\Model\BackgroundTask;
+use WPML\Core\BackgroundTask\Model\TaskEndpointInterface;
 use WPML\FP\Fns;
 use WPML\FP\Obj;
 
+use function WPML\Container\make;
+
 class BackgroundTaskRepository {
-	/** @var \wpdb $wpdb */
 	protected $wpdb;
 
-	/**
-	 * @param \wpdb $wpdb
-	 */
-	public function __construct( \wpdb $wpdb ) {
+	private $deleteBackgroundTaskCommand;
+
+	public function __construct( \wpdb $wpdb, DeleteBackgroundTask $deleteBackgroundTaskCommand ) {
 		$this->wpdb = $wpdb;
+		$this->deleteBackgroundTaskCommand = $deleteBackgroundTaskCommand;
 	}
 
-	/**
-	 * @param int $task_id
-	 *
-	 * @return BackgroundTask
-	 */
 	public function getByTaskId( $task_id ) {
 		$table = BackgroundTask::TABLE_NAME;
 		$query = $this->wpdb->prepare( "SELECT * FROM {$this->wpdb->prefix}{$table} WHERE task_id = %s LIMIT 1", $task_id );
@@ -31,14 +29,10 @@ class BackgroundTaskRepository {
 		return $model;
 	}
 
-	/**
-	 * @param string $task_type
-	 *
-	 * @return BackgroundTask|null
-	 */
-	public function getLastIncompletedByType( $task_type ) {
+	public function getLastIncompletedByType( $task_type, $payload = null ) {
 		$table = BackgroundTask::TABLE_NAME;
-		$query = $this->wpdb->prepare( "SELECT * FROM {$this->wpdb->prefix}{$table} WHERE task_type = %s AND task_status != %s LIMIT 1", $task_type, BackgroundTask::TASK_STATUS_COMPLETED );
+		$and_payload = $payload ? $this->wpdb->prepare( "AND payload = %s", maybe_serialize( $payload ) ) : '';
+		$query = $this->wpdb->prepare( "SELECT * FROM {$this->wpdb->prefix}{$table} WHERE task_type = %s {$and_payload} AND task_status != %s ORDER BY task_id DESC LIMIT 1", $task_type, BackgroundTask::TASK_STATUS_COMPLETED );
 		$row   = $this->wpdb->get_row( $query, 'ARRAY_A' );
 		if ( ! $row ) {
 			return null;
@@ -48,35 +42,90 @@ class BackgroundTaskRepository {
 		return $model;
 	}
 
-	/**
-	 * @param array $statuses
-	 * 
-	 * @return BackgroundTask[]
-	 */
+	public function getLastResumableByType( $task_type, $payload = null ) {
+		$table       = BackgroundTask::TABLE_NAME;
+		$and_payload = $payload ? $this->wpdb->prepare( "AND payload = %s", maybe_serialize( $payload ) ) : '';
+		$statuses    = wpml_prepare_in(
+			[ BackgroundTask::TASK_STATUS_PENDING, BackgroundTask::TASK_STATUS_INPROGRESS ],
+			'%d'
+		);
+		$query       = $this->wpdb->prepare(
+			"SELECT * FROM {$this->wpdb->prefix}{$table} WHERE task_type = %s {$and_payload} AND task_status IN ({$statuses}) ORDER BY task_id DESC LIMIT 1",
+			$task_type
+		);
+		$row         = $this->wpdb->get_row( $query, 'ARRAY_A' );
+		if ( ! $row ) {
+			return null;
+		}
+
+		return $this->createFromQueryResult( $row );
+	}
+
 	public function getAllByTaskStatus( array $statuses ) {
 		$fields_in = wpml_prepare_in( $statuses, '%s' );
 
 		$table = $this->wpdb->prefix . BackgroundTask::TABLE_NAME;
 		$preparedQuery = $this->wpdb->prepare( "SELECT * FROM {$table} WHERE task_status IN ({$fields_in}) AND 1=%d", 1 );
+		$allTasks = $this->wpdb->get_results( $preparedQuery, 'ARRAY_A' );
 
-		return Fns::map(function($row) {
-			return $this->createFromQueryResult( $row );
-		}, $this->wpdb->get_results( $preparedQuery, 'ARRAY_A' ) );
+		$taskHandlers = [];
+		$uniqueTasks = [];
+		$duplicatedTasks = [];
+
+		foreach ( $allTasks as $task ) {
+			if (
+				! array_key_exists( 'task_id', $task )
+				|| ! array_key_exists( 'task_type', $task )
+				|| ! array_key_exists( 'task_status', $task )
+				|| ! array_key_exists( 'payload', $task )
+			) {
+				continue;
+			}
+
+			if ( ! array_key_exists( $task['task_type'], $taskHandlers ) ) {
+				$taskHandler = make( $task['task_type'] );
+				$taskHandlers[ $task['task_type'] ] = $taskHandler;
+			} else {
+				$taskHandler = $taskHandlers[ $task['task_type'] ];
+			}
+
+			if ( ! $taskHandler instanceof TaskEndpointInterface ) {
+				$this->deleteBackgroundTaskCommand->run( $task['task_id'] );
+				continue;
+			}
+
+			if ( ! $taskHandler->isValidTask( $task['task_id'] ) ) {
+				continue;
+			}
+
+			$key = $task['task_status'] . md5( $task['task_type'] . serialize( $task['payload'] ) );
+			if ( $task['task_status'] !== BackgroundTask::TASK_STATUS_COMPLETED && array_key_exists( $key, $uniqueTasks ) ) {
+				$duplicatedTasks[] = $task['task_id'];
+				continue;
+			}
+
+			$uniqueTasks[ $key ] = $this->createFromQueryResult( $task );
+		}
+
+		if ( ! empty( $duplicatedTasks ) ) {
+			$table        = $this->wpdb->prefix . BackgroundTask::TABLE_NAME;
+			$placeholders = implode( ', ', array_fill( 0, count( $duplicatedTasks ), '%d' ) );
+			$query        = $this->wpdb->prepare(
+				"DELETE FROM {$table} WHERE task_id IN ({$placeholders})",
+				$duplicatedTasks
+			);
+
+			$this->wpdb->query( $query );
+		}
+
+		return array_values( $uniqueTasks );
 	}
 
-	/**
-	 * @return BackgroundTask[]
-	 */
 	public function getAllRunnableTasks() {
 		return $this->getAllByTaskStatus( [ BackgroundTask::TASK_STATUS_INPROGRESS, BackgroundTask::TASK_STATUS_PENDING, BackgroundTask::TASK_STATUS_PAUSED ] );
 	}
 
 
-	/**
-	 * @param array     $statuses
-	 * 
-	 * @return int
-	 */
 	private function getCountByTaskStatus( array $statuses ) {
 		$fields_in = wpml_prepare_in( $statuses, '%s' );
 
@@ -85,20 +134,16 @@ class BackgroundTaskRepository {
 		return (int) $this->wpdb->get_var( $preparedQuery );
 	}
 
-	/**
-	 * @return int
-	 */
 	public function getCountRunnableTasks() {
 		return $this->getCountByTaskStatus([ BackgroundTask::TASK_STATUS_INPROGRESS, BackgroundTask::TASK_STATUS_PENDING, BackgroundTask::TASK_STATUS_PAUSED ] );
 	}
 
 
-	/**
-	 * @param array $data
-	 *
-	 * @return BackgroundTask
-	 */
-	public function createFromQueryResult( array $data ) {
+	public function createFromQueryResult( $data ) {
+		if ( ! is_array( $data ) ) {
+			return null;
+		}
+
 		$get = Obj::propOr(null, Fns::__, $data);
 
 		$task = new BackgroundTask();

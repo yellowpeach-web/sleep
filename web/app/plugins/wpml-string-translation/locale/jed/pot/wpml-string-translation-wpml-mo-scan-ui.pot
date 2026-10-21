@@ -3,39 +3,23 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/js/mo-scan/LocalizationPageUI.js:20
-msgid "WPML has detected changed or new MO files"
-msgstr ""
-
-#: src/js/mo-scan/LocalizationPageUI.js:26
-msgid ""
-"There are new or updated .mo files. WPML needs to scan them to find strings "
-"for translation."
-msgstr ""
-
-#: src/js/mo-scan/LocalizationPageUI.js:30
-#: src/js/mo-scan/texts.js:14
-msgid "Scan translation files"
-msgstr ""
-
-#: src/js/mo-scan/LocalizationPageUI.js:31
-#: src/js/mo-scan/texts.js:15
-msgid "Scanned %1$d of %2$d files..."
-msgstr ""
-
 #: src/js/mo-scan/pre-generate/UI.js:41
+#. Progress line while WPML writes translation files across a network of sites. %1$d: how many sites are done, %2$d: how many there are altogether.
 msgid "Generated files for %1$d of %2$d sites..."
 msgstr ""
 
 #: src/js/mo-scan/pre-generate/UI.js:42
+#. Progress line while WPML writes the translation files. %1$d: how many files are done, %2$d: how many there are altogether.
 msgid "Generated %1$d of %2$d files..."
 msgstr ""
 
 #: src/js/mo-scan/pre-generate/UI.js:46
+#. Title of the dialog that asks the user to let WPML write the translation files.
 msgid "WPML needs to generate .mo files"
 msgstr ""
 
-#: src/js/mo-scan/pre-generate/textProvider.js:10
+#: src/js/mo-scan/pre-generate/textProvider.js:29
+#. Text in the dialog that asks the user to let WPML write the translation files, when the folder for those files cannot be written to. The product name stays in English.
 msgid ""
 "WPML String Translation uses .mo files instead of database calls. WPML "
 "needs to generate these .mo files in order for translations to appear on "
@@ -43,96 +27,57 @@ msgid ""
 "open for writing."
 msgstr ""
 
-#: src/js/mo-scan/pre-generate/textProvider.js:13
+#: src/js/mo-scan/pre-generate/textProvider.js:32
+#. Line above the path of the folder that has to be made writable, in the dialog that asks the user to let WPML write the translation files.
 msgid ""
 "Please use your admin control panel or an FTP program to make the following "
 "folder writeable:"
 msgstr ""
 
-#: src/js/mo-scan/pre-generate/textProvider.js:23
+#: src/js/mo-scan/pre-generate/textProvider.js:42
+#. Heading in the dialog that asks the user to let WPML write the translation files, shown when writing them failed.
 msgid "There was a problem creating the .mo files"
 msgstr ""
 
-#: src/js/mo-scan/pre-generate/textProvider.js:26
-msgid "You can try again now or try again later by going to "
+#: src/js/mo-scan/pre-generate/textProvider.js:46
+#. Line under the heading "There was a problem creating the .mo files". "Admin Texts Translation" is the name of a WPML admin page; the words between the <a> tags become a link to it.
+msgid ""
+"You can try again now or try again later on the <a><b>Admin Texts "
+"Translation</b></a> page."
 msgstr ""
 
-#: src/js/mo-scan/pre-generate/textProvider.js:34
+#: src/js/mo-scan/pre-generate/textProvider.js:55
+#. Heading in the dialog that asks the user to let WPML write the translation files, shown when the user closes it without letting WPML write them.
 msgid "Translations are missing from the front-end until you generate .mo files"
 msgstr ""
 
-#: src/js/mo-scan/pre-generate/textProvider.js:37
+#: src/js/mo-scan/pre-generate/textProvider.js:59
+#. Line under the heading "Translations are missing from the front-end until you generate .mo files". "Admin Texts Translation" is the name of a WPML admin page; the words between the <a> tags become a link to it.
 msgid ""
 "Your site doesn't have the .mo files that WPML needs in order to display "
 "translated strings on the front-end. To generate these .mo files, remember "
-"to go to "
+"to go to the <a><b>Admin Texts Translation</b></a> page."
 msgstr ""
 
-#: src/js/mo-scan/pre-generate/textProvider.js:38
-msgid "WPML->Theme and plugins localization."
-msgstr ""
-
-#: src/js/mo-scan/pre-generate/textProvider.js:43
+#: src/js/mo-scan/pre-generate/textProvider.js:66
+#. Text in the dialog that asks the user to let WPML write the translation files, before anything has gone wrong. The product name stays in English.
 msgid ""
 "WPML String Translation uses .mo files instead of database calls. WPML "
 "needs to generate these .mo files in order for translations to appear on "
 "the front-end."
 msgstr ""
 
-#: src/js/mo-scan/pre-generate/textProvider.js:51
+#: src/js/mo-scan/pre-generate/textProvider.js:74
+#. Button label in the dialog that asks the user to let WPML write the translation files, shown after writing them failed: it tries once more. Verb phrase, imperative.
 msgid "Try again"
 msgstr ""
 
-#: src/js/mo-scan/pre-generate/textProvider.js:54
+#: src/js/mo-scan/pre-generate/textProvider.js:77
+#. Button label that lets WPML write the translation files, in the dialog that asks for it. Verb phrase, imperative.
 msgid "Generate .mo files"
 msgstr ""
 
-#: src/js/mo-scan/pre-generate/textProvider.js:59
+#: src/js/mo-scan/pre-generate/textProvider.js:82
+#. Button label that closes the dialog asking the user to let WPML write the translation files. Verb phrase, imperative.
 msgid "Close this message"
-msgstr ""
-
-#: src/js/mo-scan/texts.js:10
-msgid ""
-"Find additional texts that WordPress, the theme and plugins created and "
-"choose which ones to translate"
-msgstr ""
-
-#: src/js/mo-scan/texts.js:11
-msgid "Choose texts for translation"
-msgstr ""
-
-#: src/js/mo-scan/texts.js:12
-msgid "Some of the translations have changed"
-msgstr ""
-
-#: src/js/mo-scan/texts.js:13
-msgid "Scan the selected components to make new texts available for translation."
-msgstr ""
-
-#: src/js/mo-scan/texts.js:3
-msgid "Select all"
-msgstr ""
-
-#: src/js/mo-scan/texts.js:4
-msgid "Plugins:"
-msgstr ""
-
-#: src/js/mo-scan/texts.js:5
-msgid "Themes:"
-msgstr ""
-
-#: src/js/mo-scan/texts.js:6
-msgid "Core:"
-msgstr ""
-
-#: src/js/mo-scan/texts.js:7
-msgid "Can't find the strings you're looking to translate?"
-msgstr ""
-
-#: src/js/mo-scan/texts.js:8
-msgid "Most likely you cannot see the strings you want to translate because:"
-msgstr ""
-
-#: src/js/mo-scan/texts.js:9
-msgid "Texts are not selected for translation"
 msgstr ""

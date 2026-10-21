@@ -10,16 +10,10 @@ use WPML\TM\Settings\Flags\Options;
 use WPML\TM\Settings\Flags\FlagsRepository;
 
 class ConvertFlags {
-	/** @var \wpdb */
 	private $wpdb;
 
-	/** @var FlagsRepository */
 	private $flags_repository;
 
-	/**
-	 * @param \wpdb $wpdb
-	 * @param FlagsRepository $flags_repository
-	 */
 	public function __construct(
 		\wpdb $wpdb,
 		FlagsRepository $flags_repository
@@ -28,11 +22,6 @@ class ConvertFlags {
 		$this->flags_repository = $flags_repository;
 	}
 
-	/**
-	 * @param string $targetExt
-	 *
-	 * @return Left<string>|Right<string>
-	 */
 	public function run( $targetExt = 'svg' ) {
 		if ( ! Lst::includes( $targetExt, Options::getAllowedFormats() ) ) {
 			return Either::left( 'Invalid target extension' );
@@ -40,35 +29,37 @@ class ConvertFlags {
 
 		$flags = $this->flags_repository->getItemsInstalledByDefault();
 		if ( ! is_array( $flags ) || ( is_array( $flags ) && 0 === count( $flags ) ) ) {
-			// DB was manipulated. Return true to not try upgrading again.
 			return Either::left( 'There is no flags in DB. Your data are corrupted' );
 		}
 
+		$written = 0;
+
 		foreach ( $flags as $flag ) {
-			// Get flag name from current flag column (.png file).
-			$flagName = pathinfo( $flag->flag, PATHINFO_FILENAME );
-			if ( empty( $flagName ) ) {
-				// DB entry was manipulated.
+			if ( false !== strpos( (string) $flag->flag, '/' ) ) {
 				continue;
 			}
 
-			// Update flag to svg or png version.
+			$flagName = pathinfo( $flag->flag, PATHINFO_FILENAME );
+			if ( empty( $flagName ) ) {
+				continue;
+			}
+
 			$flagFilename = $flagName . '.' . $targetExt;
 			if ( file_exists( WPML_PLUGIN_PATH . '/res/flags/' . $flagFilename ) ) {
 				$this->updateFlagFile( $flagFilename, $flag );
+				++$written;
 			}
 		}
 
-		icl_cache_clear();
+		if ( $written ) {
+			\WPML_Flags::invalidate();
+		}
+
+		icl_cache_clear_preserving_language_names();
 
 		return Either::of( $targetExt );
 	}
 
-	/**
-	 * @param \stdClass $flag
-	 *
-	 * @return bool
-	 */
 	private function is_custom_flag( $flag ) {
 		return '1' === $flag->from_template;
 	}

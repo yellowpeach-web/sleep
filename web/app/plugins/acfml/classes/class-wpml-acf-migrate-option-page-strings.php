@@ -15,10 +15,6 @@ class WPML_ACF_Migrate_Option_Page_Strings implements \IWPML_Backend_Action, \IW
 		}
 	}
 
-	/**
-	 * Function moves ACF Option Pages' values translations from icl tables back to wp_options (where ACF stored this
-	 * before ACFML 1.2)
-	 */
 	private function revert_options_page_handling() {
 		$original_strings = $this->get_all_original_strings();
 		if ( $original_strings ) {
@@ -33,7 +29,7 @@ class WPML_ACF_Migrate_Option_Page_Strings implements \IWPML_Backend_Action, \IW
 				}
 				$this->all_string_translations_moved( $original_string );
 			}
-		} else { // no more strings in icl_strings so migration is done or user actually didn't translate any string
+		} else {
 			update_option( 'acfml_options_page_revert_done', true );
 		}
 	}
@@ -65,11 +61,10 @@ class WPML_ACF_Migrate_Option_Page_Strings implements \IWPML_Backend_Action, \IW
 		return $string_translations;
 	}
 
-	private function move_translation( $string_translation, $original_string ) { // from icl_string_translations to wp_options
+	private function move_translation( $string_translation, $original_string ) {
 		if ( $string_translation->status == ICL_TM_COMPLETE ) {
 			$translated_wp_options_name = self::OPTION_PREFIX . "_" . $string_translation->language . "_" . $original_string->name;
 			update_option( $translated_wp_options_name, $string_translation->value );
-			// string translation have to be deleted as well
 			$this->wpdb->delete( $this->wpdb->prefix . 'icl_string_translations',
 				array( 'id' => $string_translation->id ),
 				array( '%d' ) );
@@ -77,7 +72,6 @@ class WPML_ACF_Migrate_Option_Page_Strings implements \IWPML_Backend_Action, \IW
 	}
 
 	private function all_string_translations_moved( $original_string ) {
-		// each string have to be deleted from icl_strings
 		$this->wpdb->delete( $this->wpdb->prefix . 'icl_strings',
 			array( 'id' => $original_string->id ),
 			array( '%d' ) );

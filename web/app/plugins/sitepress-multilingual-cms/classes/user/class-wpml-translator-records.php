@@ -2,27 +2,19 @@
 
 class WPML_Translator_Records extends WPML_Translation_Roles_Records {
 
-	/**
-	 * @return string
-	 */
+	protected function prepare_hooks() {
+		add_action( 'user_register', [ $this, 'on_user_register' ], 10, 2 );
+		add_filter( 'update_user_metadata', [ $this, 'on_user_meta_update' ], 10, 4 );
+	}
+
 	protected function get_capability() {
 		return \WPML\LIB\WP\User::CAP_TRANSLATE;
 	}
 
-	/**
-	 * @return array
-	 */
 	protected function get_required_wp_roles() {
 		return array();
 	}
 
-	/**
-	 * @param string $source_language
-	 * @param array  $target_languages
-	 * @param bool   $require_all_languages - Translator must have all target languages if true otherwise they need at least one.
-	 *
-	 * @return array
-	 */
 	public function get_users_with_languages( $source_language, $target_languages, $require_all_languages = true ) {
 		$translators = $this->get_users_with_capability();
 
@@ -49,5 +41,27 @@ class WPML_Translator_Records extends WPML_Translation_Roles_Records {
 
 		return $translators_with_langs;
 	}
+
+	public function on_user_register( $id, $data = [] ) {
+		$this->administratorRoleManager->verifyUserId( $id );
+	}
+
+	public function on_user_meta_update( $check, $user_id, $meta_key, $meta_value ) {
+		if ( $this->wpdb->prefix . 'capabilities' !== $meta_key ) {
+			return $check;
+		}
+
+		if (
+			is_array( $meta_value ) &&
+			! array_key_exists( $this->get_capability(), $meta_value ) &&
+			array_key_exists( 'administrator', $meta_value ) &&
+			! \WPML\Troubleshooting\ResetWindow::isOpen()
+		) {
+			$this->administratorRoleManager->verifyUserId( $user_id, true );
+		}
+
+		return $check;
+	}
+
 
 }

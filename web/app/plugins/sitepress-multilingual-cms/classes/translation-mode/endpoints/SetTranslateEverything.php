@@ -3,45 +3,61 @@
 namespace WPML\TranslationMode\Endpoint;
 
 use WPML\Ajax\IHandler;
-use WPML\API\PostTypes;
 use WPML\Collect\Support\Collection;
-use WPML\Element\API\Languages;
-use WPML\FP\Fns;
+use WPML\Core\Component\ATE\Application\Service\TranslateEverythingPrerequisites;
+use WPML\FP\Left;
 use WPML\FP\Right;
+use WPML\PostHog\RefreshRecording;
 use WPML\Setup\Option;
-use function WPML\FP\partialRight;
+use WPML\TM\ATE\TranslateEverything\Preflight;
+use WPML\WP\OptionManager;
 
 class SetTranslateEverything implements IHandler {
 
+	const KEY_TRANSLATE_EVERYTHING_CHOSEN = 'translate-everything-chosen';
+
 	public function run( Collection $data ) {
-		if ( $data->has( 'translateEverything' ) ) {
-			$useTranslateEverything = $data->get( 'translateEverything' );
+		$useTranslateEverything = (bool) $data->get( 'translateEverything' );
+		$fireAction             = $data->get( 'fireAction', true );
+		$fireAction             = is_bool( $fireAction ) ? $fireAction : ( 'false' !== $fireAction && (bool) $fireAction );
 
-			if ( ! $useTranslateEverything ) {
-				// Translate Some is enabled, reset pause of Translate Everything.
-				Option::setIsPausedTranslateEverything( false );
+		if ( $useTranslateEverything ) {
+			$refusalKey = $this->getRefusalKey();
+			if ( $refusalKey !== null ) {
+				return Left::of( [ 'key' => $refusalKey ] );
 			}
+		}
 
-			Option::setTranslateEverything( $useTranslateEverything );
+		$advisories = $useTranslateEverything ? Preflight::collect() : array();
+
+		Option::setTranslateEverything( $useTranslateEverything );
+		( new OptionManager() )->set( Option::OPTION_GROUP, self::KEY_TRANSLATE_EVERYTHING_CHOSEN, true );
+		if ( $fireAction ) {
 			do_action( 'wpml_set_translate_everything', $useTranslateEverything );
 		}
 
-		if ( $data->has( 'onlyNew' ) ) {
-			$markAsComplete = partialRight(
-				[ Option::class, 'markPostTypeAsCompleted' ],
-				$data->get( 'onlyNew', false ) ? Languages::getSecondaryCodes() : []
+		RefreshRecording::forceRefresh(
+			[
+				'during_setup'     => true,
+				'setup_tea_choice' => $useTranslateEverything ? 'tea' : 'manual',
+			]
+		);
+
+		return Right::of( $advisories ? array( 'advisories' => $advisories ) : true );
+	}
+
+
+	private function getRefusalKey() {
+		global $wpml_dic;
+
+		if ( ! $wpml_dic ) {
+			throw new \RuntimeException(
+				'The WPML container is not available, so the Translate Everything prerequisites cannot be checked.'
 			);
-			Fns::map( Fns::unary( $markAsComplete ), PostTypes::getAutomaticTranslatable() );
 		}
 
-		if ( $data->has( 'reviewMode' ) ) {
-			Option::setReviewMode( $data->get( 'reviewMode' ) );
-		}
+		$prerequisites = $wpml_dic->make( TranslateEverythingPrerequisites::class );
 
-		if ( $data->has( 'whoMode' ) ) {
-			Option::setTranslationMode( $data->get( 'whoMode' ) );
-		}
-
-		return Right::of( true );
+		return $prerequisites->getRefusalKey();
 	}
 }

@@ -2,27 +2,15 @@
 
 class WPML_TM_Sync_Jobs_Revision {
 
-	/** @var WPML_TM_Jobs_Repository */
 	private $jobs_repository;
 
-	/** @var WPML_TP_Jobs_API */
 	private $tp_api;
 
-	/**
-	 * WPML_TM_Sync_Jobs_Revision constructor.
-	 *
-	 * @param WPML_TM_Jobs_Repository $jobs_repository
-	 * @param WPML_TP_Jobs_API        $tp_api
-	 */
 	public function __construct( WPML_TM_Jobs_Repository $jobs_repository, WPML_TP_Jobs_API $tp_api ) {
 		$this->jobs_repository = $jobs_repository;
 		$this->tp_api          = $tp_api;
 	}
 
-	/**
-	 * @return WPML_TM_Job_Entity[]
-	 * @throws WPML_TP_API_Exception
-	 */
 	public function sync() {
 		$result = array();
 
@@ -40,13 +28,20 @@ class WPML_TM_Sync_Jobs_Revision {
 				)
 			);
 
-			/** @var WPML_TM_Job_Entity $job */
 			foreach ( $this->jobs_repository->get( $job_search ) as $job ) {
 
 				if ( isset( $revised_jobs[ $job->get_tp_id() ] ) && $job->get_revision() < $revised_jobs[ $job->get_tp_id() ] ) {
 
 					$job->set_status( WPML_TP_Job_States::map_tp_state_to_local( WPML_TP_Job_States::TRANSLATION_READY ) );
 					$job->set_revision( $revised_jobs[ $job->get_tp_id() ] );
+
+					\WPML\TM\Jobs\JobLog::add(
+						'tp_job_revised',
+						array(
+							'tp_id'    => $job->get_tp_id(),
+							'revision' => $revised_jobs[ $job->get_tp_id() ],
+						)
+					);
 
 					$result[] = $job;
 

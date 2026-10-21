@@ -8,27 +8,14 @@ class WPML_TM_ICL_Translations extends WPML_TM_Record_User {
 
 	private $related = array();
 
-	/** @var wpdb $wpdb */
 	private $wpdb;
 
 	private $translation_id = 0;
 
-	/** @var  WPML_Frontend_Post_Actions | WPML_Admin_Post_Actions $post_translations */
 	private $post_translations;
 
-	/** @var WPML_Term_Translation $term_translations */
 	private $term_translations;
 
-	/**
-	 * WPML_TM_ICL_Translations constructor.
-	 *
-	 * @throws InvalidArgumentException if given data does not correspond to a
-	 * record in icl_translations
-	 *
-	 * @param WPML_TM_Records $tm_records
-	 * @param int|array       $id
-	 * @param string          $type translation id, trid_lang or id_prefix for now
-	 */
 	public function __construct( &$tm_records, $id, $type = 'translation_id' ) {
 		$this->wpdb              = $tm_records->wpdb();
 		$this->post_translations = $tm_records->get_post_translations();
@@ -42,7 +29,15 @@ class WPML_TM_ICL_Translations extends WPML_TM_Record_User {
 		} elseif ( $type === 'trid_lang' && isset( $id['trid'] ) && isset( $id['language_code'] ) ) {
 			$this->build_from_trid( $id );
 		} else {
-			throw new InvalidArgumentException( 'Unknown column: ' . $type . ' or invalid id: ' . serialize( $id ) );
+			throw new InvalidArgumentException(
+				esc_html(
+					sprintf(
+						'Unknown column: %s or invalid id: %s',
+						(string) $type,
+						(string) wp_json_encode( $id )
+					)
+				)
+			);
 		}
 	}
 
@@ -55,7 +50,7 @@ class WPML_TM_ICL_Translations extends WPML_TM_Record_User {
 		}
 		if ( ! $this->translation_id ) {
 			$this->select_translation_id(
-				' element_id = %d AND element_type LIKE %s ',
+				'element',
 				array( $id['element_id'], $id['type_prefix'] . '%' )
 			);
 		}
@@ -63,16 +58,50 @@ class WPML_TM_ICL_Translations extends WPML_TM_Record_User {
 
 	private function build_from_trid( $id ) {
 		$this->select_translation_id(
-			' trid = %d AND language_code = %s ',
+			'trid',
 			array( $id['trid'], $id['language_code'] )
 		);
 	}
 
-	/**
-	 * @return WPML_TM_ICL_Translations[]
-	 */
+	public static function prime_translations_cache( $wpdb, array $trids ) {
+		$cache = new WPML_WP_Cache( 'WPML_TM_ICL_Translations::translations' );
+
+		$missing = array();
+		foreach ( array_unique( array_filter( array_map( 'intval', $trids ) ) ) as $trid ) {
+			$found = false;
+			$cache->get( $trid, $found );
+			if ( ! $found ) {
+				$missing[] = $trid;
+			}
+		}
+
+		if ( ! $missing ) {
+			return;
+		}
+
+		$grouped = array_fill_keys( $missing, array() );
+
+		$rows = $wpdb->get_results(
+			"SELECT translation_id, language_code, trid
+			 FROM {$wpdb->prefix}icl_translations
+			 WHERE trid IN (" . implode( ',', $missing ) . ')'
+		);
+
+		foreach ( (array) $rows as $row ) {
+			$grouped[ (int) $row->trid ][] = (object) array(
+				'translation_id' => $row->translation_id,
+				'language_code'  => $row->language_code,
+			);
+		}
+
+		foreach ( $grouped as $trid => $translation_ids ) {
+			$cache->set( $trid, $translation_ids );
+		}
+	}
+
 	public function translations() {
 		if ( false === (bool) $this->related ) {
+			$wpdb = $this->wpdb;
 			$trid = $this->trid();
 
 			$found           = false;
@@ -81,9 +110,12 @@ class WPML_TM_ICL_Translations extends WPML_TM_Record_User {
 
 			if ( ! $found ) {
 				$translation_ids = $this->wpdb->get_results(
-					"SELECT translation_id, language_code
-				    FROM {$this->wpdb->prefix}{$this->table}
-				    WHERE trid = " . $trid
+					$wpdb->prepare(
+						"SELECT translation_id, language_code
+						FROM {$wpdb->prefix}icl_translations
+						WHERE trid = %d",
+						$trid
+					)
 				);
 
 				$cache->set( $trid, $translation_ids );
@@ -106,39 +138,24 @@ class WPML_TM_ICL_Translations extends WPML_TM_Record_User {
 		return $result;
 	}
 
-	/**
-	 * @return null|int
-	 */
 	public function trid() {
 		return $this->select_by( 'get_trid_from_translation_id', 'trid' );
 	}
 
-	/**
-	 * @return int
-	 */
 	public function translation_id() {
 
 		return $this->translation_id;
 	}
 
-	/**
-	 * @return null|int
-	 */
 	public function element_id() {
 		return $this->select_by( 'get_element_from_translation_id', 'element_id' );
 	}
 
-	/**
-	 * @return string|null
-	 */
 	public function language_code() {
 
 		return $this->select_field( 'language_code' );
 	}
 
-	/**
-	 * @return string|null
-	 */
 	public function source_language_code() {
 
 		$lang = $this->post_translations->get_source_lang_from_translation_id( $this->translation_id );
@@ -147,10 +164,6 @@ class WPML_TM_ICL_Translations extends WPML_TM_Record_User {
 		return $lang;
 	}
 
-	/**
-	 *
-	 * @return $this
-	 */
 	public function delete() {
 		$this->tm_records
 			->icl_translation_status_by_translation_id( $this->translation_id )
@@ -164,11 +177,15 @@ class WPML_TM_ICL_Translations extends WPML_TM_Record_User {
 	}
 
 	private function select_field( $field ) {
+		$wpdb = $this->wpdb;
+		if ( ! in_array( $field, array( 'trid', 'element_id', 'language_code', 'source_language_code' ), true ) ) {
+			return null;
+		}
 
-		$this->fields[ $field ] = isset( $this->fields[ $field ] ) ? $this->fields[ $field ] : $this->wpdb->get_var(
-			$this->wpdb->prepare(
-				" SELECT {$field}
-										FROM {$this->wpdb->prefix}{$this->table}
+		$this->fields[ $field ] = isset( $this->fields[ $field ] ) ? $this->fields[ $field ] : $wpdb->get_var(
+			$wpdb->prepare(
+				' SELECT ' . esc_sql( $field ) . "
+										FROM {$wpdb->prefix}icl_translations
 										WHERE translation_id = %d
 										LIMIT 1",
 				$this->translation_id
@@ -183,14 +200,40 @@ class WPML_TM_ICL_Translations extends WPML_TM_Record_User {
 		return array( 'translation_id' => $this->translation_id );
 	}
 
-	private function select_translation_id( $where, $prepare_args ) {
-		$this->translation_id = $this->wpdb->get_var(
-			"SELECT translation_id FROM {$this->wpdb->prefix}{$this->table}
-			 WHERE" . $this->wpdb->prepare( $where, $prepare_args )
-			. ' LIMIT 1'
-		);
+	private function select_translation_id( $lookup, $prepare_args ) {
+		$wpdb = $this->wpdb;
+
+		if ( 'element' === $lookup ) {
+			$this->translation_id = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT translation_id FROM {$wpdb->prefix}icl_translations
+					WHERE element_id = %d AND element_type LIKE %s
+					LIMIT 1",
+					$prepare_args[0],
+					$prepare_args[1]
+				)
+			);
+		} else {
+			$this->translation_id = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT translation_id FROM {$wpdb->prefix}icl_translations
+					WHERE trid = %d AND language_code = %s
+					LIMIT 1",
+					$prepare_args[0],
+					$prepare_args[1]
+				)
+			);
+		}
 		if ( ! $this->translation_id ) {
-			throw new InvalidArgumentException( 'No translation entry found for query: ' . serialize( $where ) . serialize( $prepare_args ) );
+			throw new InvalidArgumentException(
+				esc_html(
+					sprintf(
+						'No translation entry found for %s lookup: %s',
+						$lookup,
+						(string) wp_json_encode( $prepare_args )
+					)
+				)
+			);
 		}
 	}
 }

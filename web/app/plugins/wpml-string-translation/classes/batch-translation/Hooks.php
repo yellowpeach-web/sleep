@@ -43,25 +43,54 @@ class Hooks {
 			->then( spreadArgs( StringTranslations::addExisting() ) );
 	}
 
+	public static function addOrphanedBatchSweepHooks( OrphanedBatchSweep $sweep ) {
+		\add_action( 'wpml_tm_ate_retry_cadence', function () use ( $sweep ) {
+			$sweep->run();
+		} );
+	}
+
 	public static function addStringTranslationStatusHooks(
 		callable $updateTranslationStatus,
 		callable $initializeTranslation
 	) {
-		WPHooks::onAction( 'wpml_tm_added_translation_element', 10, 2 )->then( spreadArgs( $initializeTranslation ) );
+		self::initializeStringTranslationStatusHooks( $initializeTranslation );
+
 		WPHooks::onAction( 'wpml_tm_job_in_progress', 10, 2 )->then( spreadArgs( $updateTranslationStatus ) );
 		WPHooks::onAction( 'wpml_tm_job_cancelled', 10, 1 )->then( spreadArgs( StringTranslations::cancelTranslations() ) );
 		WPHooks::onAction( 'wpml_tm_jobs_cancelled', 10, 1 )->then( spreadArgs( function ( $jobs ) {
-			/**
-			 * We need this check because if we pass only one job to the hook:
-			 *  do_action( 'wpml_tm_jobs_cancelled', [ $job ] )
-			 * then WordPress converts it to $job.
-			 */
 			if ( is_object( $jobs ) ) {
 				$jobs = [ $jobs ];
 			}
 
 			Fns::map( StringTranslations::cancelTranslations(), $jobs );
 		} ) );
+	}
+
+	private static function initializeStringTranslationStatusHooks( callable $initializeTranslation ) {
+		$deferredInitializeTranslations = [];
+		$deferAddedTranslationElement   = function ( $element, $post ) use ( $initializeTranslation, &$deferredInitializeTranslations ) {
+			$deferredInitializeTranslations[] = function () use ( $element, $post, $initializeTranslation ) {
+				$initializeTranslation( $element, $post );
+			};
+		};
+
+		$callDeferredInitializeTranslations = function () use ( &$deferredInitializeTranslations ) {
+			try {
+				foreach ( $deferredInitializeTranslations as $fn ) {
+					try {
+						$fn();
+					} catch ( \Throwable $e ) {
+						do_action( 'wpml_st_batch_status_init_failed', $e );
+					}
+				}
+			} finally {
+				$deferredInitializeTranslations = [];
+			}
+		};
+
+		WPHooks::onAction( 'wpml_tm_added_translation_element', 10, 2 )->then( spreadArgs( $deferAddedTranslationElement ) );
+
+		WPHooks::onAction( 'wpml_added_translation_jobs', 11, 0 )->then( $callDeferredInitializeTranslations );
 	}
 }
 

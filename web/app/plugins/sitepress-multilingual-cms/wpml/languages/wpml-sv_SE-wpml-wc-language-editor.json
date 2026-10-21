@@ -1,0 +1,1573 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "sv_SE"
+         },
+         "You have unsaved language changes from a previous session.": [
+            "Du har osparade språkändringar från en tidigare session."
+         ],
+         "Restore changes": [
+            "Återställ ändringar"
+         ],
+         "Discard": [
+            "Släng"
+         ],
+         "Unsaved language changes from a previous session could not be restored, because the site’s languages changed after they were made. Those changes were discarded.": [
+            "Osparade språkändringar från en tidigare session kunde inte återställas eftersom webbplatsens språk ändrades efter att de gjordes. Dessa ändringar har slängts."
+         ],
+         "Dismiss": [
+            "Avvisa"
+         ],
+         "Impact on existing content": [
+            "Inverkan på befintligt innehåll"
+         ],
+         "Checking which content will be affected…": [
+            "Kontrollerar vilket innehåll som kommer att påverkas…"
+         ],
+         "We couldn’t estimate the impact. You can still apply the change; content will be updated during the save.": [
+            "Vi kunde inte uppskatta inverkan. Du kan fortfarande tillämpa ändringen; innehållet kommer att uppdateras när du sparar."
+         ],
+         "Try again": [
+            "Försök igen"
+         ],
+         "No existing content needs updating.": [
+            "Inget befintligt innehåll behöver uppdateras."
+         ],
+         "%d post will be updated.": [
+            "%d inlägg kommer att uppdateras.",
+            "%d inlägg kommer att uppdateras."
+         ],
+         "%d link will be adjusted.": [
+            "%d länk kommer att justeras.",
+            "%d länkar kommer att justeras."
+         ],
+         "%d translated string will be re-keyed.": [
+            "%d översatt sträng kommer att få en ny nyckel.",
+            "%d översatta strängar kommer att få nya nycklar."
+         ],
+         "Finish the change to %s": [
+            "Slutför ändringen till %s"
+         ],
+         "What changes automatically": [
+            "Vad som ändras automatiskt"
+         ],
+         "The language’s country becomes %s.": [
+            "Språkets land blir %s."
+         ],
+         "Automatic translation will be re-mapped to the new regional variant. Existing translations stay as they are.": [
+            "Automatisk översättning kommer att mappas om till den nya regionala varianten. Befintliga översättningar förblir som de är."
+         ],
+         "Automatic translation will now target the new regional variant. Existing translations stay as they are.": [
+            "Automatisk översättning kommer nu att riktas mot den nya regionala varianten. Befintliga översättningar förblir som de är."
+         ],
+         "The hreflang tag becomes %s.": [
+            "hreflang-taggen blir %s."
+         ],
+         "Also update these?": [
+            "Ska även dessa uppdateras?"
+         ],
+         "Riskier change": [
+            "Riskfylld ändring"
+         ],
+         "Cancel": [
+            "Avbryt"
+         ],
+         "Apply": [
+            "Använd"
+         ],
+         "Anything whose translation group already has a version in %s stays where it is.": [
+            "Allt vars översättningsgrupp redan har en version i %s stannar där det är."
+         ],
+         "You have %1$d %2$s page from a language you removed. Bring it here?": [
+            "Du har %1$d %2$s-sida från ett språk du tagit bort. Vill du flytta hit den?",
+            "Du har %1$d %2$s-sidor från ett språk du tagit bort. Vill du flytta hit dem?"
+         ],
+         "I understand these items are not %1$s and will be re-labelled as %2$s.": [
+            "Jag förstår att dessa objekt inte är %1$s och kommer att märkas om som %2$s."
+         ],
+         "Re-labels them as %s, keeping their connections to your other languages.": [
+            "Märker om dem som %s och behåller deras kopplingar till dina andra språk."
+         ],
+         "Content from a language you removed": [
+            "Innehåll från ett språk som du tagit bort"
+         ],
+         "Choose what to bring here": [
+            "Välj vad som ska flyttas hit"
+         ],
+         "Apply changes": [
+            "Använd ändringar"
+         ],
+         "These changes are applied when you click Save.": [
+            "Dessa ändringar tillämpas när du klickar på Spara."
+         ],
+         "Change the WordPress locale %1$s → %2$s": [
+            "Ändra WordPress-locale %1$s → %2$s"
+         ],
+         "WordPress uses this to load admin language packs and plugin / theme translations.": [
+            "WordPress använder detta för att ladda språkpaket för admin samt översättningar för tillägg och teman."
+         ],
+         "Already used by %s.": [
+            "Används redan av %s."
+         ],
+         "Change the language code in URLs %1$s → %2$s": [
+            "Ändra språkkoden i URL:er %1$s → %2$s"
+         ],
+         "Renames the language code. Existing %s URLs in search engines, bookmarks and external links become 404s unless redirects are set up.": [
+            "Byter namn på språkkoden. Befintliga %s-URL:er i sökmotorer, bokmärken och externa länkar blir 404-fel om inte omdirigeringar ställs in."
+         ],
+         "Use the flag of %s": [
+            "Använd flaggan för %s"
+         ],
+         "You picked the current flag yourself, so WPML keeps it unless you ask.": [
+            "Du valde den nuvarande flaggan själv, så WPML behåller den om du inte ber om något annat."
+         ],
+         "The flag shown in language switchers and in the admin.": [
+            "Flaggan som visas i språkväljare och i adminpanelen."
+         ],
+         "Rename the language %1$s → %2$s": [
+            "Byt namn på språket %1$s → %2$s"
+         ],
+         "Updates the name in every language of the admin. Labels you edited yourself are kept.": [
+            "Uppdaterar namnet på alla språk i adminpanelen. Etiketter som du har redigerat själv behålls."
+         ],
+         "Change the hreflang tag %1$s → %2$s": [
+            "Ändra hreflang-taggen %1$s → %2$s"
+         ],
+         "You customised this tag, so WPML keeps it unless you ask. Search engines read it to serve the right regional version.": [
+            "Du har anpassat den här taggen, så WPML behåller den om du inte ber om något annat. Sökmotorer läser den för att visa rätt regional version."
+         ],
+         "What should happen to %s?": [
+            "Vad ska hända med %s?"
+         ],
+         "Pick the outcome you want. Nothing happens until you confirm below.": [
+            "Välj önskat resultat. Ingenting händer förrän du bekräftar nedan."
+         ],
+         "Checking for translated content…": [
+            "Letar efter översatt innehåll…"
+         ],
+         "What should happen to this language": [
+            "Vad som ska hända med detta språk"
+         ],
+         "Which content types": [
+            "Vilka innehållstyper"
+         ],
+         "%1$s — %2$d item": [
+            "%1$s — %2$d objekt",
+            "%1$s — %2$d objekt"
+         ],
+         "Pages and posts": [
+            "Sidor och inlägg"
+         ],
+         "Products": [
+            "Produkter"
+         ],
+         "Categories and tags": [
+            "Kategorier och taggar"
+         ],
+         "Images": [
+            "Bilder"
+         ],
+         "Menus": [
+            "Menyer"
+         ],
+         "Delete them permanently now — this cannot be undone": [
+            "Radera dem permanent nu – detta kan inte ångras"
+         ],
+         "Categories, tags and menus have no WordPress Trash, so those are deleted right away either way.": [
+            "Kategorier, taggar och menyer har ingen papperskorg i WordPress, så de raderas omedelbart oavsett vilket."
+         ],
+         "Your site’s setting “when deleting a post, delete its translations too” is on. We will not apply it here, so nothing in %s is deleted.": [
+            "Webbplatsens inställning ”när ett inlägg raderas, radera även dess översättningar” är aktiverad. Vi kommer inte att tillämpa den här, så ingenting i %s raderas."
+         ],
+         ", ": [
+            ", "
+         ],
+         "your other languages": [
+            "dina andra språk"
+         ],
+         "%s’s string translations are deleted with it.": [
+            "Strängöversättningar för %s raderas tillsammans med det."
+         ],
+         "Its queued translation jobs are cancelled without charge; any already in progress are stopped, and the words already sent are still charged.": [
+            "Dess köade översättningsjobb avbryts utan kostnad; alla som redan pågår stoppas, och de ord som redan skickats debiteras fortfarande."
+         ],
+         "Move this content into": [
+            "Flytta detta innehåll till"
+         ],
+         "Choose a language…": [
+            "Välj ett språk…"
+         ],
+         "Same language": [
+            "Samma språk"
+         ],
+         "A different language": [
+            "Ett annat språk"
+         ],
+         "I understand these items are not %s and will be re-labelled as the language I pick.": [
+            "Jag förstår att dessa objekt inte är %s och kommer att märkas om som det språk jag väljer."
+         ],
+         "%s is taken off the site when you save, and its content is moved straight after — nothing is deleted either way.": [
+            "%s tas bort från webbplatsen när du sparar, och dess innehåll flyttas direkt efteråt – ingenting raderas oavsett vilket."
+         ],
+         "WPML could not stop translating into %s. Nothing was changed — try again, or pick another goal.": [
+            "WPML kunde inte sluta översätta till %s. Ingenting ändrades – försök igen eller välj ett annat mål."
+         ],
+         "Review %d item": [
+            "Granska %d objekt",
+            "Granska %d objekt"
+         ],
+         "Stop translating into %s": [
+            "Sluta översätta till %s"
+         ],
+         "Move %1$d item into %2$s": [
+            "Flytta %1$d objekt till %2$s",
+            "Flytta %1$d objekt till %2$s"
+         ],
+         "Move %d item": [
+            "Flytta %d objekt",
+            "Flytta %d objekt"
+         ],
+         "Move %d item to the Trash": [
+            "Flytta %d objekt till papperskorgen",
+            "Flytta %d objekt till papperskorgen"
+         ],
+         "Delete %d item permanently": [
+            "Radera %d objekt permanent",
+            "Radera %d objekt permanent"
+         ],
+         "Remove language — nothing is deleted": [
+            "Ta bort språk – ingenting raderas"
+         ],
+         "What would be removed": [
+            "Vad som skulle tas bort"
+         ],
+         "Hide the list": [
+            "Dölj listan"
+         ],
+         "Reading the list…": [
+            "Läser listan…"
+         ],
+         "We couldn’t read the list of items. The counts above still stand, and you can go ahead or close this dialog.": [
+            "Vi kunde inte läsa listan över objekt. Antalen ovan gäller fortfarande, och du kan fortsätta eller stänga denna dialogruta."
+         ],
+         "%1$s — %2$s (#%3$d)": [
+            "%1$s — %2$s (#%3$d)"
+         ],
+         "Nothing is selected right now.": [
+            "Ingenting är valt just nu."
+         ],
+         "Showing %1$d–%2$d of %3$d item": [
+            "Visar %1$d–%2$d av %3$d objekt",
+            "Visar %1$d–%2$d av %3$d objekt"
+         ],
+         "Previous": [
+            "Föregående"
+         ],
+         "Next": [
+            "Nästa"
+         ],
+         "%s is off your site, but its content could not be moved. Nothing was deleted — the content is listed under Removed languages, where you can move it from.": [
+            "%s är borttaget från din webbplats, men dess innehåll kunde inte flyttas. Ingenting raderades – innehållet listas under Borttagna språk, där du kan flytta det ifrån."
+         ],
+         "Done": [
+            "Klar"
+         ],
+         "%s stays on your site. Its pages keep their addresses and their search rankings, and the language switcher keeps offering it.": [
+            "%s stannar kvar på din webbplats. Dess sidor behåller sina adresser och sin sökrankning, och språkväljaren fortsätter att erbjuda det."
+         ],
+         "WPML has stopped creating new %s translations. To start again, use “Resume translating” on the language’s row.": [
+            "WPML har slutat skapa nya översättningar för %s. För att börja igen, använd ”Återuppta översättning” på språkets rad."
+         ],
+         "%1$s is off your site. Nothing was deleted: its addresses now redirect to your %2$s pages, and every item it holds is still in your database and in your admin lists.": [
+            "%1$s är borttaget från din webbplats. Ingenting raderades: dess adresser omdirigeras nu till dina %2$s-sidor, och varje objekt det innehåller finns kvar i din databas och i dina listor i adminpanelen."
+         ],
+         "To bring %s back, add it again — or use “Put back” under Removed languages, below.": [
+            "För att få tillbaka %s, lägg till det igen – eller använd ”Återställ” under Borttagna språk nedan."
+         ],
+         "To bring %s back, add it again as a custom language with the same code — its content is still here.": [
+            "För att få tillbaka %s, lägg till det igen som ett anpassat språk med samma kod – dess innehåll finns fortfarande kvar."
+         ],
+         "To bring %s back, add it again from the language picker — it asks which country the content belongs to, and the content is still here.": [
+            "För att få tillbaka %s, lägg till det igen från språkväljaren – den frågar vilket land innehållet tillhör, och innehållet finns fortfarande kvar."
+         ],
+         "They stay in your Trash until %s.": [
+            "De ligger kvar i papperskorgen till %s."
+         ],
+         "The deletion of %s’s content finished. WPML could not read back a record of what it removed.": [
+            "Raderingen av innehållet för %s är klar. WPML kunde inte läsa tillbaka en post över vad som togs bort."
+         ],
+         "Close": [
+            "Stäng"
+         ],
+         "Unavailable until WPML can count this language’s content.": [
+            "Otillgängligt tills WPML kan räkna detta språks innehåll."
+         ],
+         "If your site uses one domain per language, that language’s domain is not redirected: while it still points at this site it answers in your site’s default language at the same addresses.": [
+            "Om din webbplats använder en domän per språk omdirigeras inte det språkets domän: så länge den fortfarande pekar på denna webbplats svarar den på webbplatsens standardspråk på samma adresser."
+         ],
+         "The listed items are removed, along with their translation records, their string translations and their translation jobs.": [
+            "De listade objekten tas bort, tillsammans med deras översättningsposter, deras strängöversättningar och deras översättningsjobb."
+         ],
+         "The listed items are removed, along with their translation records, their string translations and their %d translation job.": [
+            "De listade objekten tas bort, tillsammans med deras översättningsposter, deras strängöversättningar och deras %d översättningsjobb.",
+            "De listade objekten tas bort, tillsammans med deras översättningsposter, deras strängöversättningar och deras %d översättningsjobb."
+         ],
+         "We couldn’t check for translated content. You can still remove the language; its translations are kept. Deleting its content and moving it into another language both need that count, so those two goals are unavailable.": [
+            "Vi kunde inte leta efter översatt innehåll. Du kan fortfarande ta bort språket; dess översättningar behålls. Att radera dess innehåll och att flytta det till ett annat språk kräver båda det antalet, så de två målen är otillgängliga."
+         ],
+         "This can be undone.": [
+            "Detta kan ångras."
+         ],
+         "Stop translating into %s, keep its content online.": [
+            "Sluta översätta till %s, behåll dess innehåll online."
+         ],
+         "Your %1$s content stays published at its current addresses and keeps its search rankings. The language switcher keeps offering %1$s.": [
+            "Ditt innehåll på %1$s förblir publicerat på sina nuvarande adresser och behåller sina sökrankningar. Språkväljaren fortsätter att visa %1$s."
+         ],
+         "Your %1$d %2$s item stays published at its current address and keeps its search ranking. The language switcher keeps offering %2$s.": [
+            "Ditt %1$d %2$s-objekt förblir publicerat på sin nuvarande adress och behåller sin sökrankning. Språkväljaren fortsätter att visa %2$s.",
+            "Dina %1$d %2$s-objekt förblir publicerade på sina nuvarande adresser och behåller sina sökrankningar. Språkväljaren fortsätter att visa %2$s."
+         ],
+         "Translations are already paused for this language — nothing more changes.": [
+            "Översättningar är redan pausade för detta språk – inget mer ändras."
+         ],
+         "WPML stops creating new translations.": [
+            "WPML slutar skapa nya översättningar."
+         ],
+         "Nothing is deleted": [
+            "Ingenting raderas"
+         ],
+         "Take %s off the site, but keep everything in case we come back.": [
+            "Ta bort %s från webbplatsen, men behåll allt ifall vi vill gå tillbaka."
+         ],
+         "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. Everything %1$s holds stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was.": [
+            "Besökare slutar se %1$s; dess adresser omdirigeras till dina %2$s-sidor så att ingenting returnerar en 404. Allt som %1$s innehåller stannar kvar i din databas och i dina listor i adminpanelen, och om du lägger till %1$s igen kommer det tillbaka exakt som det var."
+         ],
+         "Visitors stop seeing %1$s; its addresses redirect to your %2$s pages so nothing returns a 404. The %3$d item stays in your database and in your admin lists, and re-adding %1$s brings it back exactly as it was.": [
+            "Besökare slutar se %1$s; dess adresser omdirigeras till dina %2$s-sidor så att ingenting returnerar en 404. %3$d objekt stannar kvar i din databas och i dina listor i adminpanelen, och om du lägger till %1$s igen kommer det tillbaka exakt som det var.",
+            "Besökare slutar se %1$s; dess adresser omdirigeras till dina %2$s-sidor så att ingenting returnerar en 404. De %3$d objekten stannar kvar i din databas och i dina listor i adminpanelen, och om du lägger till %1$s igen kommer de tillbaka exakt som de var."
+         ],
+         "Reversible": [
+            "Reversibel"
+         ],
+         "Take %s off the site and delete its content.": [
+            "Ta bort %s från webbplatsen och radera dess innehåll."
+         ],
+         "Originals in other languages are untouched. Image files stay on disk.": [
+            "Original på andra språk påverkas inte. Bildfiler stannar kvar på disken."
+         ],
+         "Only reversible if the Trash route is chosen": [
+            "Endast reversibel om papperskorgen väljs"
+         ],
+         "Not reversible — this site has the Trash disabled": [
+            "Inte reversibel – denna webbplats har papperskorgen inaktiverad"
+         ],
+         "This can only be undone when the items go to the Trash.": [
+            "Detta kan endast ångras när objekten hamnar i papperskorgen."
+         ],
+         "This site has the Trash disabled, so deleting this content cannot be undone.": [
+            "Denna webbplats har papperskorgen inaktiverad, så radering av detta innehåll kan inte ångras."
+         ],
+         "Move this language’s content into another language.": [
+            "Flytta detta språks innehåll till ett annat språk."
+         ],
+         "Reassigns this language’s items to a language you pick, keeping their connections to the other languages. For renaming and merging, not retiring.": [
+            "Tilldelar detta språks objekt till ett språk du väljer och behåller deras kopplingar till de andra språken. För namnbyte och sammanslagning, inte avveckling."
+         ],
+         "Reassigns the %d item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring.": [
+            "Tilldelar %d objekt till ett språk du väljer och behåller dess kopplingar till de andra språken. För namnbyte och sammanslagning, inte avveckling.",
+            "Tilldelar %d objekt till ett språk du väljer och behåller deras kopplingar till de andra språken. För namnbyte och sammanslagning, inte avveckling."
+         ],
+         "The content is kept, but the move cannot be undone.": [
+            "Innehållet behålls, men flytten kan inte ångras."
+         ],
+         "There is no other active language on this site to move the content into.": [
+            "Det finns inget annat aktivt språk på denna webbplats att flytta innehållet till."
+         ],
+         "You have existing content in %s": [
+            "Du har befintligt innehåll i %s"
+         ],
+         "This site has %1$d items in %2$s from before. What should happen to them?": [
+            "Denna webbplats har %1$d objekt i %2$s sedan tidigare. Vad ska hända med dem?"
+         ],
+         "Bring back my content as %1$s (%2$s).": [
+            "Återställ mitt innehåll som %1$s ((%2$s))."
+         ],
+         "The language keeps its original code (%s). There is no automatic way back.": [
+            "Språket behåller sin ursprungliga kod (%s). Det finns inget automatiskt sätt att gå tillbaka."
+         ],
+         "Start fresh and keep the old content separate.": [
+            "Börja om på nytt och håll det gamla innehållet separat."
+         ],
+         "You can attach the old content to the new language later from WPML → Support.": [
+            "Du kan koppla det gamla innehållet till det nya språket senare från WPML → Support."
+         ],
+         "Never mind": [
+            "Glöm det"
+         ],
+         "Add language": [
+            "Lägg till språk"
+         ],
+         "How much would a new language cost?": [
+            "Hur mycket skulle ett nytt språk kosta?"
+         ],
+         "Pick a language to see how many words your content has and what translating them would cost.": [
+            "Välj ett språk för att se hur många ord ditt innehåll har och vad det skulle kosta att översätta dem."
+         ],
+         "These costs apply once you use automatic translation for the new language.": [
+            "Dessa kostnader tillämpas när du använder automatisk översättning för det nya språket."
+         ],
+         "No languages are available to estimate. Every language automatic translation supports is already on your site.": [
+            "Inga språk är tillgängliga för uppskattning. Varje språk som automatisk översättning stödjer finns redan på din webbplats."
+         ],
+         "Language": [
+            "Språk"
+         ],
+         "Select a language…": [
+            "Välj ett språk…"
+         ],
+         "Show cost": [
+            "Visa kostnad"
+         ],
+         "Add a custom language": [
+            "Lägg till ett anpassat språk"
+         ],
+         "Use this only for non-standard dialects or local variants that aren't in the language list.": [
+            "Använd detta endast för icke-standardiserade dialekter eller lokala varianter som inte finns i språklistan."
+         ],
+         "Most users don't need a custom language. Most variants (e.g., Mexican Spanish, Brazilian Portuguese) already exist in the language list above. Use this form only for genuine custom language variants.": [
+            "De flesta användare behöver inte ett anpassat språk. De flesta varianter (t.ex. mexikansk spanska, brasiliansk portugisiska) finns redan i språklistan ovan. Använd detta formulär endast för genuint anpassade språkvarianter."
+         ],
+         "Variant name": [
+            "Variantnamn"
+         ],
+         "e.g., Andalusian": [
+            "t.ex. skånska"
+         ],
+         "“%s” is already the name of one of your languages. Choose a different name, or rename that language first.": [
+            "”%s” är redan namnet på ett av dina språk. Välj ett annat namn, eller byt namn på det språket först."
+         ],
+         "“%s” is available in the language list. We recommend adding it with Search and add a language. Continue only if you need your own variant.": [
+            "”%s” finns tillgängligt i språklistan. Vi rekommenderar att du lägger till det med Sök och lägg till ett språk. Fortsätt endast om du behöver din egen variant."
+         ],
+         "Default locale": [
+            "Standard-locale"
+         ],
+         "Code": [
+            "Kod"
+         ],
+         "pms or es-an": [
+            "pms eller es-an"
+         ],
+         "Once defined, this cannot be changed.": [
+            "När den väl har definierats kan den inte ändras."
+         ],
+         "hreflang": [
+            "hreflang"
+         ],
+         "WPML no longer lists “%s”, so you can add it here as a custom language. We filled in its usual settings.": [
+            "WPML listar inte längre ”%s”, så du kan lägga till det här som ett anpassat språk. Vi har fyllt i dess vanliga inställningar."
+         ],
+         "Flag": [
+            "Flagga"
+         ],
+         "Uploading…": [
+            "Laddar upp…"
+         ],
+         "Upload SVG…": [
+            "Ladda upp SVG…"
+         ],
+         "Upload a custom flag (SVG)": [
+            "Ladda upp en anpassad flagga (SVG)"
+         ],
+         "The flag could not be uploaded.": [
+            "Flaggan kunde inte laddas upp."
+         ],
+         "SVG recommended for crisp display.": [
+            "SVG rekommenderas för skarp visning."
+         ],
+         "Encode URL?": [
+            "Koda URL?"
+         ],
+         "No": [
+            "Nej"
+         ],
+         "Yes": [
+            "Ja"
+         ],
+         "Map to a supported language (recommended)": [
+            "Mappa till ett språk som stöds (rekommenderas)"
+         ],
+         "— Match automatically —": [
+            "— Matcha automatiskt —"
+         ],
+         "The locale “%s” isn’t valid. Use letters, numbers and underscores only, like es_ES.": [
+            "Locale-koden ”%s” är inte giltig. Använd endast bokstäver, siffror och understreck, som es_ES."
+         ],
+         "The hreflang “%1$s” is too long. Use at most %2$d characters.": [
+            "hreflang-taggen ”%1$s” är för lång. Använd högst %2$d tecken."
+         ],
+         "The language code “%1$s” is too long. Use at most %2$d characters.": [
+            "Språkkoden ”%1$s” är för lång. Använd högst %2$d tecken."
+         ],
+         "The language code “%1$s” isn’t valid. Use letters, numbers, hyphens and underscores — up to %2$d characters.": [
+            "Språkkoden ”%1$s” är inte giltig. Använd bokstäver, siffror, bindestreck och understreck – upp till %2$d tecken."
+         ],
+         "“%s” is already a supported language. Add it from Search instead of creating a custom variant.": [
+            "”%s” är redan ett språk som stöds. Lägg till det från Sök istället för att skapa en anpassad variant."
+         ],
+         "This language code is already used by “%s”. Choose a different one.": [
+            "Denna språkkod används redan av ”%s”. Välj en annan."
+         ],
+         "Enter a name for this language.": [
+            "Ange ett namn för detta språk."
+         ],
+         "Enter a locale.": [
+            "Ange en locale."
+         ],
+         "Enter a language code.": [
+            "Ange en språkkod."
+         ],
+         "Edit labels for %s": [
+            "Redigera etiketter för %s"
+         ],
+         "Set how the “%s” language is named in each of your site languages. Names are prefilled. Edit any to override.": [
+            "Ställ in hur språket ”%s” namnges på vart och ett av dina webbplatsspråk. Namnen är förifyllda. Redigera valfritt namn för att åsidosätta."
+         ],
+         "Loading names…": [
+            "Laddar namn…"
+         ],
+         "this language": [
+            "detta språk"
+         ],
+         "Save labels": [
+            "Spara etiketter"
+         ],
+         "Your server cannot convert international domain names. Enter the xn-- form of %s.": [
+            "Servern kan inte konvertera internationella domännamn. Ange xn---formen av %s."
+         ],
+         "The domain you have entered is invalid.": [
+            "Domänen du har angett är ogiltig."
+         ],
+         "Set a domain for %s": [
+            "Ange en domän för %s"
+         ],
+         "Set a domain for each new language": [
+            "Ange en domän för varje nytt språk"
+         ],
+         "Your site uses a different domain per language. %s is no longer the default language, so it needs a domain of its own. Until it has one, its pages cannot be reached.": [
+            "Din webbplats använder en separat domän per språk. %s är inte längre standardspråket, så det behöver en egen domän. Innan det har en domän kan dess sidor inte nås."
+         ],
+         "Your site uses a different domain per language, so %s needs a domain of its own before it can be visited.": [
+            "Din webbplats använder en separat domän per språk, så %s behöver en egen domän innan det kan besökas."
+         ],
+         "Your site uses a different domain per language, so each new language needs a domain of its own before it can be visited.": [
+            "Din webbplats använder en separat domän per språk, så varje nytt språk behöver en egen domän innan det kan besökas."
+         ],
+         "This is the site address.": [
+            "Detta är webbplatsadressen."
+         ],
+         "Change it in Settings → General.": [
+            "Ändra den i Inställningar → Allmänt."
+         ],
+         "Valid": [
+            "Giltig"
+         ],
+         "Blocked by a firewall or CDN": [
+            "Blockerad av en brandvägg eller ett CDN"
+         ],
+         "Not valid": [
+            "Ogiltig"
+         ],
+         "Validate on save": [
+            "Validera vid sparning"
+         ],
+         "This domain is already used by another language or by the site itself.": [
+            "Denna domän används redan av ett annat språk eller av själva webbplatsen."
+         ],
+         "Enter the domain this language will be served from.": [
+            "Ange domänen som detta språk ska visas från."
+         ],
+         "%s will serve this language.": [
+            "%s kommer att visa detta språk."
+         ],
+         "If it shows your site, you can save it anyway.": [
+            "Om den visar din webbplats kan du spara den ändå."
+         ],
+         "Two languages cannot use the same domain: %s is already used. Give each language its own domain.": [
+            "Två språk kan inte använda samma domän: %s används redan. Ge varje språk en egen domän."
+         ],
+         "%s loads, but a firewall or CDN blocked WPML's check.": [
+            "%s läses in, men en brandvägg eller ett CDN blockerade WPML:s kontroll."
+         ],
+         "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
+            "Domänen kunde inte valideras: %s. Kontrollera att den pekar på denna webbplats, eller avmarkera ”Validera vid sparning” för att spara ändå."
+         ],
+         "Save anyway": [
+            "Spara ändå"
+         ],
+         "Save": [
+            "Spara"
+         ],
+         "0 languages — nothing to reset here": [
+            "0 språk – inget att återställa här"
+         ],
+         "Reset language defaults": [
+            "Återställ språkstandarder"
+         ],
+         "WPML couldn’t finish checking your languages.": [
+            "WPML kunde inte slutföra kontrollen av dina språk."
+         ],
+         "This says nothing about your languages — the check stopped before it could compare them all. Nothing has been changed.": [
+            "Detta säger ingenting om dina språk – kontrollen avbröts innan den hann jämföra alla. Ingenting har ändrats."
+         ],
+         "All your languages already use WPML’s catalogue defaults.": [
+            "Alla dina språk använder redan WPML:s katalogstandarder."
+         ],
+         "Flags, label translations and WordPress locales all match — there is nothing to reset.": [
+            "Flaggor, översättningar av etiketter och WordPress-språkinställningar matchar alla – det finns inget att återställa."
+         ],
+         "These languages no longer match WPML’s language catalogue. Put back:": [
+            "Dessa språk matchar inte längre WPML:s språkkatalog. Återställ:"
+         ],
+         "Flags": [
+            "Flaggor"
+         ],
+         "%d language using a flag that is not the catalogue default": [
+            "%d språk använder en flagga som inte är katalogstandard",
+            "%d språk använder en flagga som inte är katalogstandard"
+         ],
+         "Labels and their translations": [
+            "Etiketter och deras översättningar"
+         ],
+         "%1$s, %2$s": [
+            "%1$s, %2$s"
+         ],
+         "%d language": [
+            "%d språk",
+            "%d språk"
+         ],
+         "%d display language": [
+            "%d visningsspråk",
+            "%d visningsspråk"
+         ],
+         "%d edited": [
+            "%d redigerat",
+            "%d redigerade"
+         ],
+         "%d missing": [
+            "%d saknas",
+            "%d saknas"
+         ],
+         "%1$s of %2$s": [
+            "%1$s av %2$s"
+         ],
+         "hide": [
+            "dölj"
+         ],
+         "show": [
+            "visa"
+         ],
+         "missing": [
+            "saknas"
+         ],
+         "+ %d more": [
+            "+ %d till",
+            "+ %d till"
+         ],
+         "WP Locale": [
+            "WP-språkinställning"
+         ],
+         "%d language whose locale does not match its country": [
+            "%d språk vars språkinställning inte matchar dess land",
+            "%d språk vars språkinställning inte matchar dess land"
+         ],
+         "Only the groups you tick are changed. Everything else is left exactly as it is.": [
+            "Endast de grupper du markerar ändras. Allt annat lämnas exakt som det är."
+         ],
+         "The check stopped before it could compare everything, so there may be more than this.": [
+            "Kontrollen avbröts innan den hann jämföra allt, så det kan finnas mer än detta."
+         ],
+         "Resetting…": [
+            "Återställer…"
+         ],
+         "Reset selected": [
+            "Återställ valda"
+         ],
+         "Language Code": [
+            "Språkkod"
+         ],
+         "Country": [
+            "Land"
+         ],
+         "Locale": [
+            "Locale"
+         ],
+         "Update the URL code for %s?": [
+            "Uppdatera URL-koden för %s?"
+         ],
+         "Confirm language changes": [
+            "Bekräfta språkändringar"
+         ],
+         "Checking what needs updating…": [
+            "Kontrollerar vad som behöver uppdateras…"
+         ],
+         "We couldn’t check the impact. You can still save — content is updated during the save.": [
+            "Vi kunde inte kontrollera inverkan. Du kan fortfarande spara – innehållet uppdateras under sparandet."
+         ],
+         "What happens": [
+            "Vad som händer"
+         ],
+         "%d link on your site is updated to the new address.": [
+            "%d länk på din webbplats uppdateras till den nya adressen.",
+            "%d länkar på din webbplats uppdateras till den nya adressen."
+         ],
+         "Old URLs are not redirected automatically. If you need them to keep working, set up the redirects yourself.": [
+            "Gamla URL:er omdirigeras inte automatiskt. Om du behöver att de fortsätter fungera får du ställa in omdirigeringarna själv."
+         ],
+         "This updates your language settings; existing content isn’t rewritten.": [
+            "Detta uppdaterar dina språkinställningar; befintligt innehåll skrivs inte om."
+         ],
+         "Your translations and strings are unchanged.": [
+            "Dina översättningar och strängar är oförändrade."
+         ],
+         "Update": [
+            "Uppdatera"
+         ],
+         "Save changes": [
+            "Spara ändringar"
+         ],
+         "Do you want to set the locale?": [
+            "Vill du ställa in språkvarianten?"
+         ],
+         "WPML uses the locale to download the right WordPress language pack, so setting it switches the admin, theme and plugin texts to that language pack.": [
+            "WPML använder språkvarianten för att ladda ner rätt språkpaket för WordPress, så genom att ställa in den ändras texterna för adminpanelen, teman och tillägg till det språkpaketet."
+         ],
+         "Yes, set the locale": [
+            "Ja, ställ in språkvarianten"
+         ],
+         "Are you sure you want to edit the language code?": [
+            "Är du säker på att du vill redigera språkkoden?"
+         ],
+         "URLs containing it change — WPML fixes linked URLs after saving.": [
+            "URL:er som innehåller den kommer att ändras – WPML fixar länkade URL:er efter att du har sparat."
+         ],
+         "External links / bookmarks to the old URL break unless redirected.": [
+            "Externa länkar/bokmärken till den gamla URL:en kommer att sluta fungera om de inte omdirigeras."
+         ],
+         "Yes, edit the code": [
+            "Ja, redigera koden"
+         ],
+         "Are you sure you want to edit the country?": [
+            "Är du säker på att du vill redigera landet?"
+         ],
+         "It may also change the locale (if the new country has a WordPress.org locale).": [
+            "Det kan också ändra språkvarianten (om det nya landet har en språkvariant på WordPress.org)."
+         ],
+         "It affects ATE automatic-translation mapping.": [
+            "Det påverkar mappningen för automatisk översättning i ATE."
+         ],
+         "Yes, edit the country": [
+            "Ja, redigera landet"
+         ],
+         "Are you sure you want to edit the locale?": [
+            "Är du säker på att du vill redigera språkvarianten?"
+         ],
+         "WPML uses the locale to download the right WordPress language pack, so changing it switches the admin, theme and plugin texts to the new language pack.": [
+            "WPML använder språkvarianten för att ladda ner rätt språkpaket för WordPress, så genom att ändra den byts texterna för adminpanelen, teman och tillägg till det nya språkpaketet."
+         ],
+         "Yes, edit the locale": [
+            "Ja, redigera språkvarianten"
+         ],
+         "Step %1$d of %2$d — updating %3$s": [
+            "Steg %1$d av %2$d – uppdaterar %3$s"
+         ],
+         "Step %1$d of %2$d": [
+            "Steg %1$d av %2$d"
+         ],
+         "%1$d of %2$d item": [
+            "%1$d av %2$d objekt",
+            "%1$d av %2$d objekt"
+         ],
+         "%d%%": [
+            "%d%%"
+         ],
+         "%d item could not be updated:": [
+            "%d objekt kunde inte uppdateras:",
+            "%d objekt kunde inte uppdateras:"
+         ],
+         "You can retry the save from the Languages page, or fix these items manually.": [
+            "Du kan försöka spara igen från språksidan eller åtgärda dessa objekt manuellt."
+         ],
+         "Some changes could not be applied": [
+            "Vissa ändringar kunde inte tillämpas"
+         ],
+         "Language changes saved with some skipped items": [
+            "Språkändringar sparades med vissa hoppade objekt"
+         ],
+         "Language changes saved": [
+            "Språkändringar sparades"
+         ],
+         "Updating content": [
+            "Uppdaterar innehåll"
+         ],
+         "Keep this tab open until the process finishes. Closing it will pause the save.": [
+            "Håll den här fliken öppen tills processen är klar. Om du stänger den pausas sparandet."
+         ],
+         "%d item was skipped so far:": [
+            "%d objekt har hoppats över hittills:",
+            "%d objekt har hoppats över hittills:"
+         ],
+         "%1$s — %2$s (%3$s)": [
+            "%1$s — %2$s ((%3$s))"
+         ],
+         "Most language changes were applied. Some items could not be updated and were skipped.": [
+            "De flesta språkändringar tillämpades. Vissa objekt kunde inte uppdateras och hoppades över."
+         ],
+         "All language changes were applied.": [
+            "Alla språkändringar tillämpades."
+         ],
+         "The save could not finish. Your existing content was not fully updated — review the languages page and try again.": [
+            "Sparandet kunde inte slutföras. Ditt befintliga innehåll uppdaterades inte helt – granska språksidan och försök igen."
+         ],
+         "Don't close this tab until the process finishes.": [
+            "Stäng inte den här fliken förrän processen är klar."
+         ],
+         "Content update was paused": [
+            "Innehållsuppdateringen pausades"
+         ],
+         "Resume to finish saving your language changes.": [
+            "Återuppta för att slutföra sparandet av dina språkändringar."
+         ],
+         "Resume saving": [
+            "Återuppta sparande"
+         ],
+         "Estimating time left…": [
+            "Beräknar återstående tid…"
+         ],
+         "About %d second left": [
+            "Ungefär %d sekund kvar",
+            "Ungefär %d sekunder kvar"
+         ],
+         "About %d minute left": [
+            "Ungefär %d minut kvar",
+            "Ungefär %d minuter kvar"
+         ],
+         "Automatic translation for %1$s could not be re-mapped to %2$s. Change the country again later to retry.": [
+            "Automatisk översättning för %1$s kunde inte mappas om till %2$s. Ändra landet igen senare för att försöka på nytt."
+         ],
+         "Automatic translation for %1$s could not be re-mapped. Change the country again later to retry.": [
+            "Automatisk översättning för %1$s kunde inte mappas om. Ändra landet igen senare för att försöka på nytt."
+         ],
+         "Automatic translation for %1$s already targeted %2$s; nothing was re-mapped.": [
+            "Automatisk översättning för %1$s var redan riktad mot %2$s; ingenting mappades om."
+         ],
+         "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country. Your current mapping was kept.": [
+            "Automatisk översättning är inte tillgänglig för %2$s. För att översätta %1$s automatiskt, välj ett land som stöds av automatisk översättning under Redigera → Land. Din nuvarande mappning behölls."
+         ],
+         "Automatic translation is not available for %2$s. To translate %1$s automatically, pick a country that automatic translation supports under Edit → Country.": [
+            "Automatisk översättning är inte tillgänglig för %2$s. För att översätta %1$s automatiskt, välj ett land som stöds av automatisk översättning under Redigera → Land."
+         ],
+         "Automatic translation for %1$s was not re-mapped: %2$s.": [
+            "Automatisk översättning för %1$s mappades inte om: %2$s."
+         ],
+         "Automatic translation for %1$s now targets %2$s.": [
+            "Automatisk översättning för %1$s är nu riktad mot %2$s."
+         ],
+         "“%s” is already an active language.": [
+            "“%s” är redan ett aktivt språk."
+         ],
+         "That language is already active.": [
+            "Det språket är redan aktivt."
+         ],
+         "%s needs a domain of its own before this can be saved. Set one in the URL format section.": [
+            "%s behöver en egen domän innan detta kan sparas. Ange en i avsnittet för URL-format."
+         ],
+         "Every language that is not the default needs a domain of its own before this can be saved. Set it in the URL format section.": [
+            "Varje språk som inte är standardspråket behöver en egen domän innan detta kan sparas. Ange det i avsnittet för URL-format."
+         ],
+         "The language code “%s” is already in use. Choose a different one.": [
+            "Språkkoden “%s” används redan. Välj en annan."
+         ],
+         "That language code is already in use. Choose a different one.": [
+            "Den språkkoden används redan. Välj en annan."
+         ],
+         "That language code isn’t valid. Use letters, numbers, hyphens and underscores — up to %d characters.": [
+            "Den språkkoden är inte giltig. Använd bokstäver, siffror, bindestreck och understreck – upp till %d tecken."
+         ],
+         "That language code is too long. Use at most %d characters.": [
+            "Den språkkoden är för lång. Använd högst %d tecken."
+         ],
+         "That locale isn’t valid. Use letters, numbers and underscores only, like es_ES.": [
+            "Den språkvarianten är inte giltig. Använd endast bokstäver, siffror och understreck, som es_ES."
+         ],
+         "That hreflang is too long. Use at most %d characters.": [
+            "Den hreflang-taggen är för lång. Använd högst %d tecken."
+         ],
+         "Another active language already uses the identity “%s”.": [
+            "Ett annat aktivt språk använder redan identiteten “%s”."
+         ],
+         "Another active language already has this identity.": [
+            "Ett annat aktivt språk har redan denna identitet."
+         ],
+         "WPML no longer offers this language and country. Languages you have already added keep working.": [
+            "WPML erbjuder inte längre detta språk och land. Språk som du redan har lagt till fortsätter att fungera."
+         ],
+         "You can still add it with “add a custom language”, using the same code.": [
+            "Du kan fortfarande lägga till det med ”lägg till ett anpassat språk” med samma kod."
+         ],
+         "That flag is not available for this language. Choose one of the offered flags or upload a custom SVG.": [
+            "Den flaggan är inte tillgänglig för detta språk. Välj en av de föreslagna flaggorna eller ladda upp en anpassad SVG."
+         ],
+         "That name is already used by one of your languages. Choose a different name.": [
+            "Det namnet används redan av ett av dina språk. Välj ett annat namn."
+         ],
+         "That language code is already a supported language. Add it from Search instead of creating a custom variant.": [
+            "Den språkkoden är redan ett språk som stöds. Lägg till det från Sök istället för att skapa en anpassad variant."
+         ],
+         "“%s” is the code of a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first.": [
+            "“%s” är koden för ett språk som du själv har skapat och sedan tagit bort. Lägg till det igen som ett anpassat språk för att få tillbaka det, eller ta bort det från panelen Borttagna språk först."
+         ],
+         "That code belongs to a language you created yourself and then removed. Add it again as a custom language to bring it back, or delete it from the Removed languages panel first.": [
+            "Den koden tillhör ett språk som du själv har skapat och sedan tagit bort. Lägg till det igen som ett anpassat språk för att få tillbaka det, eller ta bort det från panelen Borttagna språk först."
+         ],
+         "Enter a locale for this language.": [
+            "Ange en språkvariant för detta språk."
+         ],
+         "Select a country for this language before saving.": [
+            "Välj ett land för detta språk innan du sparar."
+         ],
+         "This language can’t be used with that country.": [
+            "Detta språk kan inte användas med det landet."
+         ],
+         "“%s” isn’t in the language catalogue. Pick it from the list, or add it as a custom language.": [
+            "“%s” finns inte i språkkatalogen. Välj det från listan eller lägg till det som ett anpassat språk."
+         ],
+         "This language isn’t in the language catalogue. Pick it from the list, or add it as a custom language.": [
+            "Detta språk finns inte i språkkatalogen. Välj det från listan eller lägg till det som ett anpassat språk."
+         ],
+         "The default language cannot be a language that is being removed.": [
+            "Standardspråket kan inte vara ett språk som håller på att tas bort."
+         ],
+         "Before “%s” can be saved, choose whether to bring back the content this site has from before in that language or to start fresh.": [
+            "Innan ”%s” kan sparas måste du välja om innehållet som webbplatsen tidigare haft på det språket ska återställas eller om du vill börja om på nytt."
+         ],
+         "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
+            "Innan det här språket kan sparas måste du välja om innehållet som webbplatsen tidigare haft på det ska återställas eller om du vill börja om på nytt."
+         ],
+         "You don’t have permission to change languages.": [
+            "Du har inte behörighet att ändra språk."
+         ],
+         "“%s” couldn’t be added. Please try again.": [
+            "“%s” kunde inte läggas till. Försök igen."
+         ],
+         "The language couldn’t be added. Please try again.": [
+            "Språket kunde inte läggas till. Försök igen."
+         ],
+         "Couldn’t save the language settings.": [
+            "Kunde inte spara språkinställningarna."
+         ],
+         "One language": [
+            "Ett språk"
+         ],
+         "%1$s: no WordPress language pack exists for %2$s, so the locale was saved without translation files.": [
+            "%1$s: det finns inget språkpaket för WordPress för %2$s, så språkvarianten sparades utan översättningsfiler."
+         ],
+         "%1$s: the WordPress language pack for %2$s could not be requested, so the locale was saved without translation files.": [
+            "%1$s: språkpaketet för WordPress för %2$s kunde inte begäras, så språkvarianten sparades utan översättningsfiler."
+         ],
+         "%1$s: the WordPress language pack for %2$s could not be downloaded, so the locale was saved without translation files.": [
+            "%1$s: språkpaketet för WordPress för %2$s kunde inte laddas ner, så språkvarianten sparades utan översättningsfiler."
+         ],
+         "%1$s: the links in post %2$s did not match the old language code and were left as they were.": [
+            "%1$s: länkarna i inlägget %2$s matchade inte den gamla språkkoden och lämnades som de var."
+         ],
+         "%1$s: the links in post %2$s could not be rewritten.": [
+            "%1$s: länkarna i inlägget %2$s kunde inte skrivas om."
+         ],
+         "%1$s: some translation jobs could not be cancelled.": [
+            "%1$s: vissa översättningsjobb kunde inte avbrytas."
+         ],
+         "%1$s: one step of the save kept failing and was skipped.": [
+            "%1$s: ett steg i sparandet misslyckades upprepade gånger och hoppades över."
+         ],
+         "%1$s: one item could not be updated (%2$s).": [
+            "%1$s: ett objekt kunde inte uppdateras (%2$s)."
+         ],
+         "Is this a right-to-left language?": [
+            "Är detta ett höger-till-vänster-språk?"
+         ],
+         "WPML lays out the admin and the site for this language from right to left, like Arabic or Hebrew.": [
+            "WPML anpassar layouten för adminpanelen och webbplatsen för detta språk från höger till vänster, som arabiska eller hebreiska."
+         ],
+         "Reading direction": [
+            "Läsriktning"
+         ],
+         "Left-to-right": [
+            "Vänster-till-höger"
+         ],
+         "Right-to-left": [
+            "Höger-till-vänster"
+         ],
+         "Let WPML decide": [
+            "Låt WPML bestämma"
+         ],
+         "If you cannot find your language in the list, <a>add a custom language</a>.": [
+            "Om du inte hittar ditt språk i listan kan du <a>lägga till ett anpassat språk</a>."
+         ],
+         "Default language": [
+            "Standardspråk"
+         ],
+         "What is the current language of your website?": [
+            "Vilket är det nuvarande språket på din webbplats?"
+         ],
+         "Translation languages": [
+            "Översättningsspråk"
+         ],
+         "Which languages do you want to translate your site into?": [
+            "Vilka språk vill du översätta din webbplats till?"
+         ],
+         "Click the lock to set the locale": [
+            "Klicka på låset för att ställa in språkvarianten"
+         ],
+         "Not set": [
+            "Inte inställd"
+         ],
+         "Unlock this field": [
+            "Lås upp detta fält"
+         ],
+         "Recommended not to change. Click to unlock.": [
+            "Rekommenderas att inte ändras. Klicka för att låsa upp."
+         ],
+         "Uploading flag…": [
+            "Laddar upp flagga…"
+         ],
+         "Display Code": [
+            "Visningskod"
+         ],
+         "Stored code: %s": [
+            "Lagrad kod: %s"
+         ],
+         "Encode URL": [
+            "Koda URL"
+         ],
+         "Encode non-Latin characters": [
+            "Koda icke-latinska tecken"
+         ],
+         "Mapping": [
+            "Mappning"
+         ],
+         "This language is recognized as the same as your site’s default language, so it can’t be translated automatically. To carry your content over, duplicate it instead.": [
+            "Detta språk känns igen som samma som din webbplats standardspråk, så det kan inte översättas automatiskt. För att föra över ditt innehåll kan du duplicera det istället."
+         ],
+         "How to Duplicate and Copy Content in WPML": [
+            "Hur man duplicerar och kopierar innehåll i WPML"
+         ],
+         "Edit language labels…": [
+            "Redigera språketiketter…"
+         ],
+         "The default language can’t be removed.": [
+            "Standardspråket kan inte tas bort."
+         ],
+         "Delete language": [
+            "Ta bort språk"
+         ],
+         "Type to search all languages…": [
+            "Skriv för att söka bland alla språk…"
+         ],
+         "Unsaved changes": [
+            "Osparade ändringar"
+         ],
+         "Custom": [
+            "Anpassat"
+         ],
+         "This language stays on your site and keeps serving its pages. WPML is not creating new translations into it.": [
+            "Detta språk stannar kvar på din webbplats och dess sidor fortsätter att visas. WPML skapar inga nya översättningar till det."
+         ],
+         "Translation paused": [
+            "Översättning pausad"
+         ],
+         "This language isn’t supported by the automatic translation engine, so its content must be translated manually.": [
+            "Detta språk stöds inte av motorn för automatisk översättning, så dess innehåll måste översättas manuellt."
+         ],
+         "Same as default": [
+            "Samma som standard"
+         ],
+         "Manual translation only": [
+            "Endast manuell översättning"
+         ],
+         "This custom language uses the code of a language WPML offers. To translate it automatically, map it to a language.": [
+            "Det här anpassade språket använder koden för ett språk som WPML erbjuder. Om du vill översätta det automatiskt mappar du det till ett språk."
+         ],
+         "Needs a mapping": [
+            "Kräver mappning"
+         ],
+         "Default": [
+            "Standard"
+         ],
+         "Set as default": [
+            "Ange som standard"
+         ],
+         "Resume translating": [
+            "Återuppta översättning"
+         ],
+         "Hide": [
+            "Dölj"
+         ],
+         "The default language can’t be hidden.": [
+            "Standardspråket kan inte döljas."
+         ],
+         "Completely hide content in this language from visitors and search engines, but keep it visible to yourself. Useful for reviewing translations that are still in progress.": [
+            "Dölj innehåll på detta språk helt för besökare och sökmotorer, men håll det synligt för dig själv. Användbart för att granska översättningar som fortfarande pågår."
+         ],
+         "Hide this language from visitors and search engines.": [
+            "Dölj detta språk för besökare och sökmotorer."
+         ],
+         "Edit the language code": [
+            "Redigera språkkoden"
+         ],
+         "Used to build this language’s page URLs (e.g. /en/).": [
+            "Används för att bygga detta språks sid-URL:er (t.ex. /en/)."
+         ],
+         "Remove language": [
+            "Ta bort språk"
+         ],
+         "Undo": [
+            "Ångra"
+         ],
+         "Collapse ▴": [
+            "Fäll ihop ▴"
+         ],
+         "Edit ▾": [
+            "Redigera ▾"
+         ],
+         "Recognized as the same language as the default": [
+            "Identifieras som samma språk som standardspråket"
+         ],
+         "%s (Regional)": [
+            "%s (regionalt)"
+         ],
+         "%s is no longer in this list. Use “add a custom language” below to add it.": [
+            "%s finns inte längre i den här listan. Använd ”lägg till ett anpassat språk” nedan för att lägga till det."
+         ],
+         "Search and add a language…": [
+            "Sök och lägg till ett språk…"
+         ],
+         "Search and add a language": [
+            "Sök och lägg till ett språk"
+         ],
+         "Regional": [
+            "Regionalt"
+         ],
+         "International": [
+            "Internationellt"
+         ],
+         "This language has a single fixed country.": [
+            "Detta språk har ett enda fast land."
+         ],
+         "Select a country…": [
+            "Välj ett land…"
+         ],
+         "Default language (currently %s)": [
+            "Standardspråk (för närvarande %s)"
+         ],
+         "Flag of %s": [
+            "Flagga för %s"
+         ],
+         "Current flag": [
+            "Nuvarande flagga"
+         ],
+         "Custom flag": [
+            "Anpassad flagga"
+         ],
+         "Neutral globe": [
+            "Neutral jordglob"
+         ],
+         "Country code as the flag": [
+            "Landskod som flagga"
+         ],
+         "Language flag": [
+            "Språkflagga"
+         ],
+         "Choose a flag…": [
+            "Välj en flagga…"
+         ],
+         "Countries": [
+            "Länder"
+         ],
+         "Regions": [
+            "Regioner"
+         ],
+         "Languages": [
+            "Språk"
+         ],
+         "Organisations": [
+            "Organisationer"
+         ],
+         "Upload a custom SVG…": [
+            "Ladda upp en anpassad SVG…"
+         ],
+         "Match automatically": [
+            "Matcha automatiskt"
+         ],
+         "Map to a supported language": [
+            "Mappa till ett språk som stöds"
+         ],
+         "Choose a language to map to…": [
+            "Välj ett språk att mappa till…"
+         ],
+         "No matches": [
+            "Inga träffar"
+         ],
+         "The items you include below are removed, along with their translation records. Originals in your other languages are untouched, and image files stay on disk. Comments on these posts are deleted with them. Nothing in %s’s sibling languages is deleted.": [
+            "Objekten du inkluderar nedan tas bort, tillsammans med deras översättningsposter. Original på dina andra språk lämnas orörda, och bildfiler stannar kvar på disken. Kommentarer på dessa inlägg tas bort tillsammans med dem. Ingenting i syskonspråken till %s tas bort."
+         ],
+         "Skip them, move everything else.": [
+            "Hoppa över dem, flytta allt annat."
+         ],
+         "%1$d item that already has a %3$s version stays under %2$s. You can deal with it separately.": [
+            "%1$d objekt som redan har en %3$s version stannar under %2$s. Du kan hantera det separat.",
+            "%1$d objekt som redan har en %3$s version stannar under %2$s. Du kan hantera dem separat."
+         ],
+         "Merge them into the %s ones.": [
+            "Slå ihop dem med de för %s."
+         ],
+         "Duplicate terms are removed": [
+            "Dubbletter av termer tas bort"
+         ],
+         "Objects and settings move onto the existing version; the duplicate is deleted. Nothing in the target language is deleted.": [
+            "Objekt och inställningar flyttas till den befintliga versionen; dubbletten raderas. Ingenting i målspråket raderas."
+         ],
+         "What should happen to the items already in %s?": [
+            "Vad ska hända med de objekt som redan finns på %s?"
+         ],
+         "%1$d item from %2$s already has a version in the language you picked. Pick the outcome you want.": [
+            "%1$d objekt från %2$s har redan en version på det språk du valde. Välj det resultat du vill ha.",
+            "%1$d objekt från %2$s har redan en version på det språk du valde. Välj det resultat du vill ha."
+         ],
+         "What should happen to the colliding items": [
+            "Vad ska hända med de kolliderande objekten"
+         ],
+         "Move into %s": [
+            "Flytta till %s"
+         ],
+         "Reassigns the %1$d %2$s item to a language you pick, keeping its connections to the other languages. For renaming and merging, not retiring.": [
+            "Tilldelar om %1$d %2$s-objekt till ett språk du väljer, och behåller dess kopplingar till de andra språken. För namnbyte och sammanslagning, inte avveckling.",
+            "Tilldelar om de %1$d %2$s-objekten till ett språk du väljer, och behåller deras kopplingar till de andra språken. För namnbyte och sammanslagning, inte avveckling."
+         ],
+         "Only the content moves. Per-language settings other plugins keep — for example which currencies WooCommerce Multilingual offers in a language — stay under the old language code and are not carried over.": [
+            "Endast innehållet flyttas. Språkspecifika inställningar som andra tillägg sparar – till exempel vilka valutor WooCommerce Multilingual erbjuder på ett språk – stannar kvar under den gamla språkkoden och förs inte över."
+         ],
+         "Moved from %1$s into %2$s.": [
+            "Flyttat från %1$s till %2$s."
+         ],
+         "%d content item moved": [
+            "%d innehållsobjekt flyttat",
+            "%d innehållsobjekt flyttade"
+         ],
+         "%d link to the original language updated": [
+            "%d länk till originalspråket uppdaterad",
+            "%d länkar till originalspråket uppdaterade"
+         ],
+         "%d string translation moved": [
+            "%d strängöversättning flyttad",
+            "%d strängöversättningar flyttade"
+         ],
+         "%d string moved": [
+            "%d sträng flyttad",
+            "%d strängar flyttade"
+         ],
+         "%1$d item stayed behind: its translation group already has a %2$s version. It is still listed under %3$s in Removed languages.": [
+            "%1$d objekt blev kvar: dess översättningsgrupp har redan en %2$s-version. Det listas fortfarande under %3$s i Borttagna språk.",
+            "%1$d objekt blev kvar: deras översättningsgrupp har redan en %2$s-version. De listas fortfarande under %3$s i Borttagna språk."
+         ],
+         "%1$d duplicate term merged into the %2$s version and removed.": [
+            "%1$d dubblettterm slogs ihop med versionen för %2$s och togs bort.",
+            "%1$d dubbletttermer slogs ihop med versionen för %2$s och togs bort."
+         ],
+         "%1$d item became its own document in %2$s.": [
+            "%1$d objekt blev ett eget dokument på %2$s.",
+            "%1$d objekt blev egna dokument på %2$s."
+         ],
+         "%1$d item of a kind this tool does not move or merge is still under %2$s.": [
+            "%1$d objekt av en typ som detta verktyg inte flyttar eller slår ihop är fortfarande under %2$s.",
+            "%1$d objekt av en typ som detta verktyg inte flyttar eller slår ihop är fortfarande under %2$s."
+         ],
+         "What the deletion removed from %s": [
+            "Vad borttagningen tog bort från %s"
+         ],
+         "The items that have a Trash are in it. Categories, tags and menus have no WordPress Trash, so those were deleted right away.": [
+            "Objekt som har en papperskorg ligger i den. Kategorier, taggar och menyer har ingen papperskorg i WordPress, så de raderades omedelbart."
+         ],
+         "This site has the Trash disabled, so the item it removed was deleted permanently — there is nothing to restore.": [
+            "Denna webbplats har papperskorg iaktiverad, så objektet som togs bort raderades permanent – det finns ingenting att återställa.",
+            "Denna webbplats har papperskorg inaktiverad, så objekten som togs bort raderades permanent – det finns ingenting att återställa."
+         ],
+         "Nothing was left to remove.": [
+            "Ingenting fanns kvar att ta bort."
+         ],
+         "String translations": [
+            "Strängöversättningar"
+         ],
+         "Translation jobs": [
+            "Översättningsjobb"
+         ],
+         "%1$d removed · %2$d kept · %3$d skipped": [
+            "%1$d borttagna · %2$d behållna · %3$d hoppades över"
+         ],
+         "Skipped because: %s": [
+            "Hoppades över på grund av: %s"
+         ],
+         "No translation jobs needed cancelling.": [
+            "Inga översättningsjobb behövde avbrytas."
+         ],
+         "%d translation job was cancelled without charge.": [
+            "%d översättningsjobb avbröts utan kostnad.",
+            "%d översättningsjobb avbröts utan kostnad."
+         ],
+         "%d job was stopped mid-work — the words already sent are still charged.": [
+            "%d jobb stoppades mitt i arbetet – de ord som redan skickats debiteras fortfarande.",
+            "%d jobb stoppades mitt i arbetet – de ord som redan skickats debiteras fortfarande."
+         ],
+         "%d more skipped item is counted above but not listed.": [
+            "Ytterligare %d hoppat objekt räknas ovan men listas inte.",
+            "Ytterligare %d hoppade objekt räknas ovan men listas inte."
+         ],
+         "Removed %s": [
+            "Tog bort %s"
+         ],
+         "Removal date not recorded": [
+            "Borttagningsdatum inte registrerat"
+         ],
+         "%d item still here": [
+            "%d objekt kvar här",
+            "%d objekt kvar här"
+         ],
+         "You created this language yourself, so it cannot be put back from here. Add it again as a custom language with the same code and its content comes back with it.": [
+            "Du skapade detta språk själv, så det kan inte återställas härifrån. Lägg till det igen som ett anpassat språk med samma kod så kommer dess innehåll tillbaka med det."
+         ],
+         "This language has no country on record. Add it back from the language picker, which asks which country the content belongs to.": [
+            "Detta språk har inget registrerat land. Lägg tillbaka det från språkväljaren, som frågar vilket land innehållet tillhör."
+         ],
+         "This language is not in WPML’s language list, so it cannot be added back from here.": [
+            "Detta språk finns inte i WPML:s språklista, så det kan inte läggas tillbaka härifrån."
+         ],
+         "Added back — press Save": [
+            "Tillagt igen – tryck på Spara"
+         ],
+         "Put back": [
+            "Lägg tillbaka"
+         ],
+         "Move": [
+            "Flytta"
+         ],
+         "Delete": [
+            "Radera"
+         ],
+         "Removed languages": [
+            "Borttagna språk"
+         ],
+         "These languages are off your site but still hold content. Removing a language keeps what it holds — from here you can put a language back, move its content into another language, or delete that content for good.": [
+            "Dessa språk är borttagna från din webbplats men innehåller fortfarande innehåll. Att ta bort ett språk behåller vad det innehåller – härifrån kan du lägga tillbaka ett språk, flytta dess innehåll till ett annat språk eller radera innehållet för gott."
+         ],
+         "No language is left holding content. %s is now empty.": [
+            "Inga språk har något innehåll kvar. %s är nu tom."
+         ],
+         "You do not have permission to move a language’s content.": [
+            "Du har inte behörighet att flytta ett språks innehåll."
+         ],
+         "Pick the language to move this content into, then try again.": [
+            "Välj vilket språk du vill flytta innehållet till och försök igen."
+         ],
+         "That is the same language. Pick a different one to move the content into.": [
+            "Det är samma språk. Välj ett annat språk att flytta innehållet till."
+         ],
+         "%s is back on your site, so there is nothing to move. Refresh the list.": [
+            "%s finns åter på din webbplats, så det finns inget att flytta. Uppdatera listan."
+         ],
+         "%s no longer holds any content. Refresh the list.": [
+            "%s innehåller inte längre något innehåll. Uppdatera listan."
+         ],
+         "%s is not one of your site’s active languages. Pick another one.": [
+            "%s är inte ett av din webbplats aktiva språk. Välj ett annat."
+         ],
+         "Moving content into a different language needs the confirmation below.": [
+            "För att flytta innehåll till ett annat språk krävs bekräftelsen nedan."
+         ],
+         "WPML could not move this content (%s).": [
+            "WPML kunde inte flytta detta innehåll ((%s))."
+         ],
+         "Move them to the Trash — you have %d day to change your mind": [
+            "Flytta dem till papperskorgen – du har %d dag på dig att ångra dig",
+            "Flytta dem till papperskorgen – du har %d dagar på dig att ångra dig"
+         ],
+         "Delete permanently — this site has the Trash disabled": [
+            "Radera permanent – papperskorgen är inaktiverad på denna webbplats"
+         ],
+         "Trash first, or delete now": [
+            "Lägg i papperskorgen först, eller radera nu"
+         ],
+         "How to delete": [
+            "Hur du vill radera"
+         ],
+         "Items already in the Trash are left where they are.": [
+            "Objekt som redan ligger i papperskorgen lämnas kvar där de är."
+         ],
+         "Loading languages": [
+            "Laddar språk"
+         ],
+         "The name of this language variant as it appears in the language switcher.": [
+            "Namnet på denna språkvariant så som det visas i språkväljaren."
+         ],
+         "Sets the regional variant of the language. Automatic Translation uses this to produce more accurate translations.": [
+            "Anger språkets regionala variant. Automatisk översättning använder detta för att skapa mer exakta översättningar."
+         ],
+         "The flag shown next to this language in the front-end language switcher.": [
+            "Flaggan som visas bredvid detta språk i språkväljaren på webbplatsens publika del."
+         ],
+         "The WordPress locale, for example en_US. WordPress uses it to load the matching theme and plugin translation files.": [
+            "WordPress locale, till exempel en_US. WordPress använder den för att ladda matchande översättningsfiler för teman och tillägg."
+         ],
+         "Used to build this language’s page URLs, for example /en/.": [
+            "Används för att bygga detta språks sid-URL:er, till exempel /en/."
+         ],
+         "The hreflang value added to the page HTML. Search engines use it to serve the correct language or regional version.": [
+            "Värdet för hreflang som läggs till i sidans HTML. Sökmotorer använder det för att visa rätt språk eller regional version."
+         ],
+         "Determines whether non-Latin characters in URLs are encoded. Leave it off unless your CDN, server, or redirects require ASCII-only URLs.": [
+            "Avgör om tecken som inte tillhör det latinska alfabetet ska kodas i URL:er. Låt detta vara avstängt om inte ditt CDN, din server eller dina omdirigeringar kräver URL:er med endast ASCII-tecken."
+         ],
+         "Maps this custom language variant to a supported language so automatic translation engines can translate it. Choose “Match automatically” to let WPML find the closest supported language itself.": [
+            "Kopplar denna anpassade språkvariant till ett språk som stöds så att motorer för automatisk översättning kan översätta den. Välj ”Matcha automatiskt” för att låta WPML hitta det närmaste språket som stöds."
+         ],
+         "Only SVG flags can be uploaded.": [
+            "Endast SVG-flaggor kan laddas upp."
+         ],
+         "The flag is too large. Maximum size is %s.": [
+            "Flaggan är för stor. Maximal storlek är %s."
+         ],
+         "The file could not be read.": [
+            "Filen kunde inte läsas."
+         ],
+         "The flag could not be saved. Please try again.": [
+            "Flaggan kunde inte sparas. Försök igen."
+         ],
+         "%1$s is already active, set to %2$s. Change its country instead of adding it again.": [
+            "%1$s är redan aktivt, inställt på %2$s. Ändra dess land istället för att lägga till det igen."
+         ],
+         "%1$s is already active. Change its country instead of adding it again.": [
+            "%1$s är redan aktivt. Ändra dess land istället för att lägga till det igen."
+         ],
+         "WPML couldn’t apply the change it detected for %1$s: %2$s still has an unsaved change. Save or revert it first.": [
+            "WPML kunde inte tillämpa ändringen som upptäcktes för %1$s: %2$s har fortfarande en osparad ändring. Spara eller återställ den först."
+         ],
+         "Copied to clipboard.": [
+            "Kopierat till urklipp."
+         ],
+         "An earlier language save is paused. Resume or dismiss it first, then save this change.": [
+            "En tidigare sparande av språk har pausats. Återuppta eller avvisa det först, och spara sedan denna ändring."
+         ],
+         "WPML is still finishing an earlier language save. Wait for it to finish, then apply this change.": [
+            "WPML slutför fortfarande ett tidigare sparande av språk. Vänta tills det är klart och använd sedan denna ändring."
+         ],
+         "Language settings saved.": [
+            "Språkinställningar sparade."
+         ],
+         "No changes to save.": [
+            "Inga ändringar att spara."
+         ],
+         "Couldn’t check your languages against WPML’s catalogue.": [
+            "Kunde inte kontrollera dina språk mot WPML:s katalog."
+         ],
+         "Reset done. %d more language still differs from WPML’s catalogue — open Reset language defaults again to put it back.": [
+            "Återställning klar. %d till språk skiljer sig fortfarande från WPML:s katalog – öppna Återställ språkstandarder igen för att återställa det.",
+            "Återställning klar. %d till språk skiljer sig fortfarande från WPML:s katalog – öppna Återställ språkstandarder igen för att återställa dem."
+         ],
+         "Your languages are back on WPML’s catalogue defaults.": [
+            "Dina språk är nu återställda till WPML:s katalogstandarder."
+         ],
+         "Couldn’t reset the language defaults.": [
+            "Kunde inte återställa språkstandarderna."
+         ],
+         "%1$s \"%2$s\" is already used by %3$s.": [
+            "%1$s ”%2$s” används redan av %3$s."
+         ],
+         "The country of a saved language can’t be changed right now — the background save this needs is switched off on this site.": [
+            "Landet för ett sparat språk kan inte ändras just nu – det bakgrundssparande som krävs är inaktiverat på denna webbplats."
+         ],
+         "Cost to translate your content into %s": [
+            "Kostnad för att översätta ditt innehåll till %s"
+         ],
+         "Cost to translate your content into the new languages": [
+            "Kostnad för att översätta ditt innehåll till de nya språken"
+         ],
+         "Add this language": [
+            "Lägg till detta språk"
+         ],
+         "Costs are based on your current content settings. Adjust them from the Translations dashboard.": [
+            "Kostnaderna baseras på dina nuvarande inställningar för innehåll. Justera dem i översättningspanelen."
+         ],
+         "Manage and Hide Site Languages": [
+            "Hantera och dölj webbplatsens språk"
+         ],
+         "Add, remove, configure, and hide your site’s translation languages. Click Edit on any row to edit its country, flag, codes, mapping, and visibility.": [
+            "Lägg till, ta bort, konfigurera och dölj din webbplats översättningsspråk. Klicka på Redigera på valfri rad för att redigera land, flagga, koder, kopplingar och synlighet."
+         ],
+         "WPML couldn’t communicate with our translation system. You can still edit and save your languages. Please contact support if the problem persists.": [
+            "WPML kunde inte kommunicera med vårt översättningssystem. Du kan fortfarande redigera och spara dina språk. Kontakta supporten om problemet kvarstår."
+         ],
+         "Please <support>contact our support</support> and provide the error details below.": [
+            "Vänligen <support>kontakta vår support</support> och ange feldetaljerna nedan."
+         ],
+         "Show more": [
+            "Visa mer"
+         ],
+         "Show less": [
+            "Visa mindre"
+         ],
+         "Copy error details": [
+            "Kopiera feldetaljer"
+         ],
+         "Copy": [
+            "Kopiera"
+         ],
+         "Click to copy": [
+            "Klicka för att kopiera"
+         ],
+         "Reset language defaults…": [
+            "Återställ språkstandarder…"
+         ],
+         "Saving…": [
+            "Sparar…"
+         ],
+         "Calculate Costs": [
+            "Beräkna kostnader"
+         ],
+         "Content brought into the language you added": [
+            "Innehåll som flyttats till språket du lade till"
+         ],
+         "The language was added. Its content did not move.": [
+            "Språket lades till. Dess innehåll flyttades inte."
+         ],
+         "Verifying automatic translation compatibility": [
+            "Verifierar kompatibilitet för automatisk översättning"
+         ],
+         "Updating language presets…": [
+            "Uppdaterar förinställda språk…"
+         ],
+         "Language changes saved.": [
+            "Språkändringar sparade."
+         ],
+         "Apply and save": [
+            "Använd och spara"
+         ],
+         "Close modal": [
+            "Stäng dialogruta"
+         ]
+      }
+   }
+}

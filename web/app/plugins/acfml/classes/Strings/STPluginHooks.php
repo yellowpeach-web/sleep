@@ -12,75 +12,50 @@ class STPluginHooks implements \IWPML_Backend_Action {
 	const PLUGIN_STATUS_ACTIVATED   = 'activated';
 	const PLUGIN_STATUS_DEACTIVATED = 'deactivated';
 
-	/**
-	 * @var Translator
-	 */
-	private $translator;
+	private $backFill;
 
-	/**
-	 * @param Translator $translator
-	 */
-	public function __construct( Translator $translator ) {
-		$this->translator = $translator;
+	public function __construct( BackFill $backFill ) {
+		$this->backFill = $backFill;
 	}
 
-	/**
-	 * @return void
-	 */
 	public function add_hooks() {
 		if ( wp_doing_ajax() ) {
 			return;
 		}
 
 		Hooks::onAction( 'wp_loaded' )
-			->then( [ $this, 'maybeRegisterFieldGroupsStrings' ] );
+			->then( [ $this, 'maybeRegisterMissingStrings' ] );
 	}
 
-	/**
-	 * @param array $fieldGroup
-	 *
-	 * @return bool
-	 */
-	public function hasPackage( $fieldGroup ) {
-		return Package::STATUS_NOT_REGISTERED !== Package::create( $fieldGroup['ID'] )->getStatus();
-	}
-
-	/**
-	 * @return void
-	 */
-	public function maybeRegisterFieldGroupsStrings() {
+	public function maybeRegisterMissingStrings() {
 		$isStActivated           = HooksFactory::isStActivated();
 		$isPluginStatusActivated = self::getPluginStatus() === self::PLUGIN_STATUS_ACTIVATED;
 
-		if ( ! $isStActivated && $isPluginStatusActivated ) {
-			self::setPluginStatus( self::PLUGIN_STATUS_DEACTIVATED );
-		} elseif ( $isStActivated && ! $isPluginStatusActivated ) {
-			$this->registerFieldGroupsStrings();
-			self::setPluginStatus( self::PLUGIN_STATUS_ACTIVATED );
+		if ( ! $isStActivated ) {
+			if ( $isPluginStatusActivated ) {
+				self::setPluginStatus( self::PLUGIN_STATUS_DEACTIVATED );
+			}
+			return;
 		}
+
+		if ( ! $isPluginStatusActivated || Activation::isBackFillPending() ) {
+			$this->backFill->registerMissing();
+			BackFill::markDone();
+			self::setPluginStatus( self::PLUGIN_STATUS_ACTIVATED );
+			Activation::clearBackFillPending();
+			$this->backFill->copyOnce();
+			return;
+		}
+
+		$this->backFill->runOnce();
+
+		$this->backFill->copyOnce();
 	}
 
-	/**
-	 * @return void
-	 */
-	private function registerFieldGroupsStrings() {
-		wpml_collect( acf_get_field_groups() )
-			->reject( [ $this, 'hasPackage' ] )
-			->map( [ $this->translator, 'registerGroupAndFieldsAndLayouts' ] );
-	}
-
-	/**
-	 * @return string|null
-	 */
 	private static function getPluginStatus() {
 		return Options::get( self::PLUGIN_STATUS_KEY );
 	}
 
-	/**
-	 * @param string $status
-	 *
-	 * @return void
-	 */
 	private static function setPluginStatus( $status ) {
 		Options::set( self::PLUGIN_STATUS_KEY, $status );
 	}

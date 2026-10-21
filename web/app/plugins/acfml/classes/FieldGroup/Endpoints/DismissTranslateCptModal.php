@@ -11,15 +11,21 @@ use WPML\FP\Fns;
 
 class DismissTranslateCptModal implements IHandler {
 
-	/**
-	 * @param \WPML\Collect\Support\Collection<mixed> $data
-	 *
-	 * @return \WPML\FP\Either
-	 */
+	public function authorize( Collection $data ) {
+		return self::canDismiss( (int) $data->get( 'fieldGroupId' ) );
+	}
+
 	public function run( Collection $data ) {
 		return Either::fromNullable( $data->get( 'fieldGroupId' ) )
 			->map( Cast::toInt() )
+			->filter( [ self::class, 'canDismiss' ] )
 			->map( [ DetectNonTranslatableLocations::class, 'dismiss' ] )
 			->map( Fns::always( true ) );
+	}
+
+	public static function canDismiss( $fieldGroupId ) {
+		return $fieldGroupId > 0
+			&& 'acf-field-group' === get_post_type( $fieldGroupId )
+			&& current_user_can( 'edit_post', $fieldGroupId );
 	}
 }

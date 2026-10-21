@@ -11,11 +11,12 @@ use WPML\LIB\WP\Hooks as WPHooks;
 
 class UI implements \IWPML_Backend_Action_Loader {
 
-	/**
-	 * @return callable|null
-	 */
 	public function create() {
-		if ( Relation::propEq( 'page', WPML_ST_FOLDER . '/menu/string-translation.php', $_GET ) ) {
+		if (
+			Relation::propEq( 'page', WPML_ST_FOLDER . '/menu/string-translation.php', $_GET )
+			&& ! \WPML_PO_Import_Strings::is_review_render_request()
+			&& current_user_can( 'manage_options' )
+		) {
 
 			return function () {
 				WPHooks::onAction( 'admin_enqueue_scripts' )

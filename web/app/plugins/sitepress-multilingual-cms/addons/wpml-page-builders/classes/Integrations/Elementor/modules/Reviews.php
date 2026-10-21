@@ -1,7 +1,4 @@
 <?php
-/**
- * Reviews
- */
 namespace WPML\PB\Elementor\Modules;
 
 class Reviews extends \WPML_Elementor_Module_With_Items {
@@ -9,15 +6,20 @@ class Reviews extends \WPML_Elementor_Module_With_Items {
     protected function get_title( $field ) {
         switch ( $field ) {
             case 'content':
-                return esc_html__( 'Comment Contents', 'sitepress' );
+				/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
+                return esc_html__( 'Reviews: Comment Contents', 'sitepress' );
             case 'name':
-                return esc_html__( 'Commenter Name', 'sitepress' );
+				/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
+                return esc_html__( 'Reviews: Commenter Name', 'sitepress' );
             case 'title':
-                return esc_html__( 'Comment Title', 'sitepress' );
+				/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
+                return esc_html__( 'Reviews: Comment Title', 'sitepress' );
             case 'image':
-                return esc_html__( 'Comment Image', 'sitepress' );
+				/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
+                return esc_html__( 'Reviews: Comment Image', 'sitepress' );
             case 'url':
-                return esc_html__( 'Comment Link', 'sitepress' );
+				/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
+                return esc_html__( 'Reviews: Comment Link', 'sitepress' );
             default:
                 return '';
         }

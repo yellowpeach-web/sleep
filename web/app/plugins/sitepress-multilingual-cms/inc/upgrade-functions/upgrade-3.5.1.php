@@ -15,8 +15,6 @@ function update_icl_strings_charset_and_collations() {
 
 	$language_data = upgrade_3_5_1_get_language_charset_and_collation();
 
-	$sql_template = "ALTER TABLE `{$wpdb->prefix}%s` MODIFY `%s` VARCHAR(%d) CHARACTER SET %s %s";
-
 	$fields = array(
 		array(
 			'table'     => 'icl_strings',
@@ -42,10 +40,17 @@ function update_icl_strings_charset_and_collations() {
 	);
 
 	foreach ( $fields as $setting ) {
-		if ( $wpdb->query( "SHOW TABLES LIKE '{$wpdb->prefix}{$setting['table']}'" ) ) {
-			$sql = sprintf( $sql_template, $setting['table'], $setting['column'], $setting['size'], $setting['charset'], $setting['collation'] );
-
-			if ( $wpdb->query( $sql ) === false ) {
+		if ( $wpdb->query( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . $setting['table'] ) ) ) {
+			if ( $wpdb->query(
+				sprintf(
+					"ALTER TABLE `{$wpdb->prefix}%s` MODIFY `%s` VARCHAR(%d) CHARACTER SET %s %s",
+					esc_sql( $setting['table'] ),
+					esc_sql( $setting['column'] ),
+					absint( $setting['size'] ),
+					esc_sql( $setting['charset'] ),
+					esc_sql( $setting['collation'] )
+				)
+			) === false ) {
 				throw new Exception( $wpdb->last_error );
 			}
 		}

@@ -2,13 +2,10 @@
 
 class WPML_Resolve_Absolute_Url implements IWPML_Resolve_Object_Url {
 
-	/** @var SitePress $sitepress */
 	private $sitepress;
 
-	/** @var WPML_Translate_Link_Targets */
 	private $translate_link_targets;
 
-	/** @var bool */
 	private $lock;
 
 	public function __construct( SitePress $sitepress, WPML_Translate_Link_Targets $translate_link_targets ) {
@@ -16,19 +13,12 @@ class WPML_Resolve_Absolute_Url implements IWPML_Resolve_Object_Url {
 		$this->translate_link_targets = $translate_link_targets;
 	}
 
-	/**
-	 * @param string $url
-	 * @param string $lang
-	 *
-	 * @return string|false
-	 */
 	public function resolve_object_url( $url, $lang ) {
 		if ( $this->lock ) {
 			return false;
 		}
 
-		$this->lock   = true;
-		$current_lang = $this->sitepress->get_current_language();
+		$this->lock = true;
 		$this->sitepress->switch_lang( $lang );
 
 		try {
@@ -39,9 +29,10 @@ class WPML_Resolve_Absolute_Url implements IWPML_Resolve_Object_Url {
 			}
 		} catch ( Exception $e ) {
 			$new_url = false;
+		} finally {
+			$this->sitepress->switch_lang();
 		}
 
-		$this->sitepress->switch_lang( $current_lang );
 		$this->lock = false;
 
 		return $new_url;

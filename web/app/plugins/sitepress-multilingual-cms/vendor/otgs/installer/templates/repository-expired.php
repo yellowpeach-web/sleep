@@ -25,6 +25,7 @@ class Expired {
                             <?php
                             EndUsers::render( $withProduct, $model );
                             RegisteredButtons::render( $model );
+                            Register::renderEnterSiteKeyItem( $model );
                             ?>
                         </div>
                     </div>
@@ -40,5 +41,8 @@ class Expired {
             </div>
         </div>
         <?php
+        if ( ! \WP_Installer::site_key_belongs_to_network( $model->repoId ) ) {
+            echo Register::getRegistrationForm( $model );
+        }
     }
 }

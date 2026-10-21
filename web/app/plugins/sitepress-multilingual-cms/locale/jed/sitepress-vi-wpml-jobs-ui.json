@@ -4,19 +4,35 @@
       "messages": {
          "": {
             "domain": "messages",
-            "lang": "en"
+            "plural_forms": "nplurals=1; plural=0;",
+            "lang": "vi"
          },
-         "Draft — Pending review": [
-            "Bản nháp - Đang chờ rà soát"
+         "%1$s and %2$s": [
+            "%1$s và %2$s"
          ],
-         "Complete": [
-            "Hoàn thành"
+         "Start batch sync": [
+            "Bắt đầu đồng bộ hóa đợt"
          ],
-         "Insufficient funds": [
-            "Không đủ tiền"
+         "Cancel job": [
+            "Hủy công việc"
+         ],
+         "Continue reviewing": [
+            "Tiếp tục đánh giá"
+         ],
+         "Start downloading XLIFF file": [
+            "Bắt đầu tải xuống tệp XLIFF"
          ],
          "Edit": [
-            "Sửa"
+            "Chỉnh sửa"
+         ],
+         "Get translation": [
+            "Nhận bản dịch"
+         ],
+         "Edit Translation": [
+            "Chỉnh sửa bản dịch"
+         ],
+         "Continue Translating": [
+            "Tiếp tục dịch"
          ],
          "Resign": [
             "Từ bỏ"
@@ -27,32 +43,458 @@
          "Translate": [
             "Dịch"
          ],
+         "Take and Translate": [
+            "Nhận và dịch"
+         ],
+         "This job was created by Translate Everything and cannot be cancelled on its own. To stop it, turn off Translate Everything from the Translation Dashboard.": [
+            "Công việc này được tạo bởi Dịch mọi thứ và không thể tự hủy. Để dừng công việc này, hãy tắt Dịch mọi thứ từ Bảng điều khiển dịch thuật."
+         ],
          "View": [
             "Xem"
          ],
-         "Delete Translations": [
-            "Xóa các bản dịch"
-         ],
-         "Keep Translations as Draft": [
-            "Giữ các bản dịch dưới dạng Bản nháp"
-         ],
          "Never mind. I want to review these translations.": [
-            "Không sao. Tôi muốn rà soát các bản dịch này."
+            "Đừng bận tâm. Tôi muốn đánh giá các bản dịch này."
          ],
          "Cancel": [
             "Hủy"
          ],
          "This will remove the selected jobs from the Translations Queue without publishing them. What would you like to do with the translations?": [
-            "Việc này sẽ xóa các công việc đã chọn khỏi Hàng chờ Bản dịch mà không đăng tải chúng. Bạn muốn làm gì với các bản dịch?"
+            "Hành động này sẽ xóa các công việc đã chọn khỏi Hàng đợi dịch mà không xuất bản chúng. Bạn muốn làm gì với các bản dịch này?"
          ],
          "Cancel Translation Review": [
-            "Hủy việc rà soát bản dịch"
+            "Hủy đánh giá bản dịch"
+         ],
+         "Delete Translations": [
+            "Xóa bản dịch"
+         ],
+         "Keep Translations as Draft": [
+            "Giữ bản dịch dưới dạng bản nháp"
+         ],
+         "Bulk actions": [
+            "Hành động hàng loạt"
+         ],
+         "Apply": [
+            "Áp dụng"
+         ],
+         "Actions applied to multiple translation jobs can take a few seconds. Please do not leave the page.": [
+            "Các hành động được áp dụng cho nhiều công việc dịch thuật có thể mất vài giây. Vui lòng không rời khỏi trang."
+         ],
+         "Actions applied to multiple translation jobs can take a few minutes. Please do not leave the page.": [
+            "Các hành động được áp dụng cho nhiều công việc dịch thuật có thể mất vài phút. Vui lòng không rời khỏi trang."
+         ],
+         "Select translator": [
+            "Chọn người dịch"
+         ],
+         "Assign": [
+            "Gán"
+         ],
+         "Cancelled": [
+            "Đã hủy"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "Dịch tự động đã thất bại nhiều lần và WPML đã ngừng thử lại. Hãy gửi lại hoặc hủy bỏ công việc từ Bảng điều khiển dịch thuật, hoặc hủy bỏ tại đây."
+         ],
+         "Needs translation": [
+            "Cần dịch"
+         ],
+         "Needs update": [
+            "Cần cập nhật"
+         ],
+         "Translation ready to download": [
+            "Bản dịch đã sẵn sàng để tải xuống"
+         ],
+         "Completed": [
+            "Đã hoàn thành"
+         ],
+         "Failed - needs attention": [
+            "Thất bại - cần chú ý"
+         ],
+         "%s terms are published immediately because they don't support draft mode.": [
+            "%s mục được xuất bản ngay lập tức vì chúng không hỗ trợ chế độ bản nháp."
+         ],
+         "%s are immediately published because they don't support draft mode.": [
+            "%s được xuất bản ngay lập tức vì chúng không hỗ trợ chế độ bản nháp."
+         ],
+         "Published — Pending review": [
+            "Đã xuất bản — Chờ đánh giá"
+         ],
+         "Draft — Pending review": [
+            "Bản nháp — Chờ đánh giá"
+         ],
+         "Review in progress": [
+            "Đang đánh giá"
+         ],
+         "Published — Review in progress": [
+            "Đã xuất bản — Đang đánh giá"
+         ],
+         "Draft — Review in progress": [
+            "Bản nháp — Đang đánh giá"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "Đang chờ thanh toán Trả theo mức sử dụng của bạn"
+         ],
+         "Waiting for payment": [
+            "Đang chờ thanh toán"
+         ],
+         "Insufficient funds": [
+            "Không đủ tiền"
+         ],
+         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
+            "Dịch tự động đã bị tạm dừng do lỗi tạm thời và sẽ tự động thử lại — không cần thực hiện hành động nào. Nếu trạng thái không thay đổi trong khoảng 30 phút, hãy liên hệ với bộ phận hỗ trợ của WPML."
+         ],
+         "In progress": [
+            "Đang tiến hành"
+         ],
+         "View original": [
+            "Xem bản gốc"
+         ],
+         "(no title)": [
+            "(không có tiêu đề)"
+         ],
+         "Automatic translation": [
+            "Dịch tự động"
+         ],
+         "TP ID: %d": [
+            "TP ID: %d"
+         ],
+         "Reset": [
+            "Đặt lại"
+         ],
+         "Filter": [
+            "Lọc"
+         ],
+         "Reference ID (%s)": [
+            "ID tham chiếu (%s)"
+         ],
+         "Job ID (%s)": [
+            "ID công việc (%s)"
+         ],
+         "Title (%s)": [
+            "Tiêu đề (%s)"
+         ],
+         "Type (%s)": [
+            "Loại (%s)"
+         ],
+         "Language (%s)": [
+            "Ngôn ngữ (%s)"
+         ],
+         "Batch name (%s)": [
+            "Tên đợt (%s)"
+         ],
+         "Status (%s)": [
+            "Trạng thái (%s)"
+         ],
+         "Translated by (%s)": [
+            "Được dịch bởi (%s)"
+         ],
+         "Sent date (%s)": [
+            "Ngày gửi (%s)"
+         ],
+         "Deadline (%s)": [
+            "Hạn chót (%s)"
+         ],
+         "Clear all filters": [
+            "Xóa tất cả bộ lọc"
+         ],
+         "Any Translation Service": [
+            "Bất kỳ dịch vụ dịch thuật nào"
+         ],
+         "Any WordPress Translator": [
+            "Bất kỳ người dịch WordPress nào"
+         ],
+         "From": [
+            "Từ"
+         ],
+         "To": [
+            "Đến"
+         ],
+         "Anyone": [
+            "Bất kỳ ai"
+         ],
+         "Include jobs from translation services": [
+            "Bao gồm các công việc từ các dịch vụ dịch thuật"
+         ],
+         "All types": [
+            "Tất cả các loại"
+         ],
+         "Select visible columns": [
+            "Chọn các cột hiển thị"
+         ],
+         "No Data": [
+            "Không có dữ liệu"
+         ],
+         "Sort descending": [
+            "Sắp xếp giảm dần"
+         ],
+         "Sort ascending": [
+            "Sắp xếp tăng dần"
+         ],
+         "Cancel sorting": [
+            "Hủy sắp xếp"
+         ],
+         "The bulk action is running...": [
+            "Hành động hàng loạt đang chạy..."
+         ],
+         "Export all jobs to XLIFF 1.0": [
+            "Xuất tất cả công việc sang XLIFF 1.0"
+         ],
+         "Export all filtered jobs to XLIFF 1.0": [
+            "Xuất tất cả công việc đã lọc sang XLIFF 1.0"
+         ],
+         "Export all jobs to XLIFF 1.1": [
+            "Xuất tất cả công việc sang XLIFF 1.1"
+         ],
+         "Export all filtered jobs to XLIFF 1.1": [
+            "Xuất tất cả công việc đã lọc sang XLIFF 1.1"
+         ],
+         "Export all jobs to XLIFF 1.2": [
+            "Xuất tất cả công việc sang XLIFF 1.2"
+         ],
+         "Export all filtered jobs to XLIFF 1.2": [
+            "Xuất tất cả công việc đã lọc sang XLIFF 1.2"
+         ],
+         "Export": [
+            "Xuất"
+         ],
+         "Select File": [
+            "Chọn tệp"
+         ],
+         ".xliff .zip": [
+            ".xliff .zip"
+         ],
+         "Importing": [
+            "Đang nhập"
+         ],
+         "Import": [
+            "Nhập"
+         ],
+         "Import / Export XLIFF": [
+            "Nhập / Xuất XLIFF"
+         ],
+         "Actions": [
+            "Hành động"
+         ],
+         "Batch name": [
+            "Tên đợt"
+         ],
+         "Filter by %s": [
+            "Lọc theo %s"
+         ],
+         "WPML's id for this translation. It stays the same when the job is sent again.": [
+            "ID tham chiếu của WPML cho bản dịch này. Nó giữ nguyên khi công việc được gửi lại."
+         ],
+         "The number in exported XLIFF file names. It changes when the job is sent again.": [
+            "Số trong tên tệp XLIFF được xuất. Nó thay đổi khi công việc được gửi lại."
+         ],
+         "Title": [
+            "Tiêu đề"
+         ],
+         "Approve translation reviews": [
+            "Phê duyệt đánh giá bản dịch"
+         ],
+         "Cancel jobs": [
+            "Hủy công việc"
+         ],
+         "Cancel translation reviews": [
+            "Hủy đánh giá bản dịch"
+         ],
+         "Export to XLIFF %s": [
+            "Xuất sang XLIFF %s"
+         ],
+         "Get translations": [
+            "Nhận bản dịch"
+         ],
+         "This action does not apply to any of the selected translation jobs": [
+            "Hành động này không áp dụng cho bất kỳ công việc dịch thuật nào đã chọn"
+         ],
+         "%d translation is still in progress. You will not be charged for it.": [
+            "%d bản dịch vẫn đang được tiến hành. Bạn sẽ không bị tính phí cho chúng."
+         ],
+         "usage ledger": [
+            "lịch sử sử dụng"
+         ],
+         "Cancelled. %1$d translation was in progress; its %2$s words are back on your account. Details:": [
+            "Đã hủy. %1$d bản dịch đã được tiến hành; %2$s từ của chúng đã được hoàn lại vào tài khoản của bạn. Chi tiết:"
+         ],
+         "Cancelled. We asked to return the words for %d translation in progress; the usage ledger shows it once confirmed.": [
+            "Đã hủy. Chúng tôi đã yêu cầu hoàn lại số từ cho %d bản dịch đang tiến hành; lịch sử sử dụng sẽ hiển thị chúng sau khi được xác nhận."
+         ],
+         "Translations have been downloaded": [
+            "Các bản dịch đã được tải xuống"
+         ],
+         "Translation has been downloaded": [
+            "Bản dịch đã được tải xuống"
+         ],
+         "Translations could not be downloaded": [
+            "Không thể tải xuống các bản dịch"
+         ],
+         "Translation could not be downloaded": [
+            "Không thể tải xuống bản dịch"
+         ],
+         "paused after repeated failures, will be retried automatically — %s": [
+            "đã tạm dừng sau nhiều lần thất bại, sẽ tự động thử lại — %s"
+         ],
+         "%d translation could not be downloaded": [
+            "%d bản dịch không thể tải xuống"
+         ],
+         "%d translation has been downloaded": [
+            "%d bản dịch đã được tải xuống"
+         ],
+         "No valid jobs selected to approve translations reviews!": [
+            "Không có công việc hợp lệ nào được chọn để phê duyệt đánh giá bản dịch!"
+         ],
+         "%1$s (%2$s)": [
+            "%1$s (%2$s)"
+         ],
+         "%s was not approved because it is still open for editing.": [
+            "%s không được phê duyệt vì vẫn đang mở để chỉnh sửa."
+         ],
+         "Approving it now would publish the translation without the edits.": [
+            "Việc phê duyệt chúng bây giờ sẽ xuất bản các bản dịch mà không có nội dung đã chỉnh sửa."
+         ],
+         "Click Continue reviewing, finish the edits and click Complete in the editor.": [
+            "Nhấp vào Tiếp tục đánh giá, hoàn tất các chỉnh sửa và nhấp vào Hoàn thành trong trình biên tập."
+         ],
+         "Then approve the translation here.": [
+            "Sau đó phê duyệt các bản dịch tại đây."
+         ],
+         "If the editor does not open, send the content to translation again from the Translation Dashboard.": [
+            "Nếu trình biên tập không mở, hãy gửi lại nội dung để dịch từ Bảng điều khiển dịch thuật."
+         ],
+         "Approving translations reviews failed!": [
+            "Phê duyệt đánh giá bản dịch không thành công!"
+         ],
+         "Failed approving translations for the following posts: ": [
+            "Phê duyệt bản dịch không thành công cho các bài viết sau: "
+         ],
+         "Translations reviews approved successfully!": [
+            "Đã phê duyệt đánh giá bản dịch thành công!"
+         ],
+         "The translator has been assigned to the job": [
+            "Người dịch đã được gán cho công việc"
+         ],
+         "The translator could not be assigned to the job": [
+            "Không thể gán người dịch cho công việc"
+         ],
+         "The jobs have been cancelled": [
+            "Các công việc đã được hủy"
+         ],
+         "The job has been cancelled": [
+            "Công việc đã được hủy"
+         ],
+         "The jobs could not be cancelled": [
+            "Không thể hủy các công việc"
+         ],
+         "The job could not be cancelled": [
+            "Không thể hủy công việc"
+         ],
+         "Translation reviews have been canceled": [
+            "Các đánh giá bản dịch đã được hủy"
+         ],
+         "Translation review has been canceled": [
+            "Đánh giá bản dịch đã được hủy"
+         ],
+         "Translation reviews could not be canceled": [
+            "Không thể hủy các đánh giá bản dịch"
+         ],
+         "Translation review could not be canceled": [
+            "Không thể hủy đánh giá bản dịch"
+         ],
+         "Translated by": [
+            "Được dịch bởi"
+         ],
+         "Sent on": [
+            "Đã gửi vào"
+         ],
+         "Deadline": [
+            "Hạn chót"
+         ],
+         "Status": [
+            "Trạng thái"
          ],
          "Pending review": [
-            "Đang chờ đánh giá"
+            "Chờ đánh giá"
+         ],
+         "Reference ID": [
+            "ID tham chiếu"
+         ],
+         "Job ID": [
+            "ID công việc"
+         ],
+         "Type": [
+            "Loại"
          ],
          "Languages": [
             "Ngôn ngữ"
+         ],
+         "Download XLIFF file couldn't be finished": [
+            "Không thể hoàn thành việc tải xuống tệp XLIFF"
+         ],
+         "Could not load jobs for export": [
+            "Không thể tải các công việc để xuất"
+         ],
+         "The export to XLIFF failed": [
+            "Xuất sang XLIFF thất bại"
+         ],
+         "Imported %d jobs": [
+            "Đã nhập %d công việc"
+         ],
+         "Imported one job": [
+            "Đã nhập một công việc"
+         ],
+         "Could not import any job": [
+            "Không thể nhập bất kỳ công việc nào"
+         ],
+         "Import failed!": [
+            "Nhập thất bại!"
+         ],
+         "Loading translations queue": [
+            "Đang tải hàng đợi dịch"
+         ],
+         "Loading translation jobs": [
+            "Đang tải các công việc dịch thuật"
+         ],
+         "Jobs could not be loaded": [
+            "Không thể tải các công việc"
+         ],
+         "This translator cannot translate this language pair.": [
+            "Người dịch này không thể dịch cặp ngôn ngữ này."
+         ],
+         "This translator is no longer available. Reload the page and choose a translator again.": [
+            "Người dịch này không còn khả dụng. Hãy tải lại trang và chọn lại người dịch."
+         ],
+         "Specify some jobs to resign": [
+            "Chỉ định một số công việc để từ bỏ"
+         ],
+         "We could not resign jobs: %s": [
+            "Chúng tôi không thể từ bỏ các công việc: %s"
+         ],
+         "Resigned from jobs": [
+            "Đã từ bỏ các công việc"
+         ],
+         "Resigned from job": [
+            "Đã từ bỏ công việc"
+         ],
+         "Failed to resign from jobs": [
+            "Từ bỏ các công việc thất bại"
+         ],
+         "The Advanced Editor jobs synchronization has failed": [
+            "Đồng bộ hóa các công việc của Trình biên tập nâng cao đã thất bại"
+         ],
+         "Synchronization with the Professional Translation service has failed": [
+            "Đồng bộ hóa với dịch vụ Dịch thuật chuyên nghiệp đã thất bại"
+         ],
+         "%d batches are still being processed by the translation service. Check again in a few minutes.": [
+            "%d đợt vẫn đang được xử lý bởi dịch vụ dịch thuật. Hãy kiểm tra lại sau vài phút."
+         ],
+         "Batch sync finished successfully!": [
+            "Đồng bộ hóa đợt đã hoàn thành thành công!"
+         ],
+         "Batch sync couldn't be finished": [
+            "Không thể hoàn thành đồng bộ hóa đợt"
+         ],
+         "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
+            "Hệ thống dịch thuật của chúng tôi đã không chấp nhận yêu cầu này (phản hồi là %d). Vui lòng đợi một lát rồi thử lại và liên hệ với bộ phận hỗ trợ của WPML nếu tình trạng này vẫn tiếp diễn."
          ]
       }
    }

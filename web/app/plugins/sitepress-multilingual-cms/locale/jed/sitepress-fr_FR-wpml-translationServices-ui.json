@@ -4,6 +4,7 @@
       "messages": {
          "": {
             "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n > 1);",
             "lang": "fr_FR"
          },
          "Connect this site to your %s account": [
@@ -16,19 +17,31 @@
             "« Utiliser un autre service de traduction"
          ],
          "Authenticate": [
-            "Authentifier"
+            "S'authentifier"
          ],
          "Visit <link_to_service /> to request an API Token. This token allows WPML to connect to <service_name /> to send and receive jobs.": [
-            "Consultez <link_to_service /> pour demander un jeton API. Ce jeton permet à WPML de se connecter à <service_name /> pour envoyer et recevoir des travaux."
+            "Visitez <link_to_service /> pour demander un jeton d'API. Ce jeton permet à WPML de se connecter à <service_name /> pour envoyer et recevoir des travaux."
+         ],
+         "Search translation services": [
+            "Rechercher des services de traduction"
          ],
          "Search": [
             "Recherche"
          ],
          "Settings": [
-            "Paramètres"
+            "Réglages"
          ],
          "It’s not currently possible to connect a translation service when WPML is set to translate your site’s content automatically. To use a translation service, please change your translation mode on the <LinkToSettingsPage /> page.": [
-            "Il n'est actuellement pas possible d’établir une connexion avec un service de traduction quand WPML est configuré pour traduire les contenus de votre site automatiquement. Pour avoir recours à un service de traduction, veuillez modifier le mode de traduction sur la page <LinkToSettingsPage />."
+            "Il n’est actuellement pas possible de connecter un service de traduction lorsque WPML est configuré pour traduire automatiquement le contenu de votre site. Pour utiliser un service de traduction, veuillez modifier votre mode de traduction sur la page <LinkToSettingsPage />."
+         ],
+         "Sort descending": [
+            "Tri décroissant"
+         ],
+         "Sort ascending": [
+            "Tri croissant"
+         ],
+         "Cancel sorting": [
+            "Annuler le tri"
          ],
          "Documentation": [
             "Documentation"

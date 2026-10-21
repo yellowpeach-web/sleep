@@ -1,12 +1,6 @@
 <?php
 
-/**
- * @author OnTheGo Systems
- */
 class WPML_XML_Config_Validate {
-	/**
-	 * @var \LibXMLError[]
-	 */
 	private $errors = [];
 	private $path_to_xsd;
 
@@ -14,18 +8,10 @@ class WPML_XML_Config_Validate {
 		$this->path_to_xsd = $path_to_xsd ? realpath( $path_to_xsd ) : null;
 	}
 
-	/**
-	 * @return \LibXMLError[]
-	 */
 	public function get_errors() {
 		return $this->errors;
 	}
 
-	/**
-	 * @param string $file_full_path
-	 *
-	 * @return bool
-	 */
 	function from_file( $file_full_path ) {
 		$this->errors = array();
 
@@ -34,11 +20,6 @@ class WPML_XML_Config_Validate {
 		return $xml ? $this->from_string( $xml ) : false;
 	}
 
-	/**
-	 * @param string $xml
-	 *
-	 * @return bool
-	 */
 	function from_string( $xml ) {
 		if ( '' === preg_replace( '/(\W)+/', '', $xml ) ) {
 			return false;
@@ -46,23 +27,21 @@ class WPML_XML_Config_Validate {
 
 		$this->errors = array();
 
-		libxml_use_internal_errors( true );
+		$previous_use_internal_errors = libxml_use_internal_errors( true );
 
-		$xml_object = $this->get_xml( $xml );
-		if ( $this->path_to_xsd && ! $xml_object->schemaValidate( $this->path_to_xsd ) ) {
-			$this->errors = libxml_get_errors();
+		try {
+			$xml_object = $this->get_xml( $xml );
+			if ( $this->path_to_xsd && ! $xml_object->schemaValidate( $this->path_to_xsd ) ) {
+				$this->errors = libxml_get_errors();
+			}
+		} finally {
+			libxml_clear_errors();
+			libxml_use_internal_errors( $previous_use_internal_errors );
 		}
-
-		libxml_clear_errors();
 
 		return count($this->errors) === 0;
 	}
 
-	/**
-	 * @param string $content The string representation of the XML file
-	 *
-	 * @return DOMDocument
-	 */
 	private function get_xml( $content ) {
 		$xml = new DOMDocument();
 		$xml->loadXML( $content );

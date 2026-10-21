@@ -1,5 +1,5 @@
 <a class="icl_tt_term_name"	id="<%=trid + '-' + lang%>">
-	<span class="wpml-title-flag"><img src="<%= langs[ lang ].flag %>"></span>
+	<span class="wpml-title-flag"><img src="<%= langs[ lang ].flag %>" alt="<%- langs[ lang ].label %>"></span>
 	<strong>
 		<% if(!name){ %>
 			<%=labels.lowercaseTranslate%>
@@ -7,7 +7,7 @@
 			<% if ( level > 0 ) { %>
 				<%=Array(level+1).join('—') + " "%>
 			<% } %>
-			<%=name%>
+			<%- name %>
 		<% } %>
 	</strong>
 </a>

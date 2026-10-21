@@ -2,22 +2,18 @@
 
 namespace WPML\PB\Elementor\Config\DynamicElements;
 
-use WPML\FP\Logic;
 use WPML\FP\Obj;
-use WPML\FP\Relation;
+use WPML\PB\Elementor\Helper\Path;
 
 class LoopGrid {
 
-	/**
-	 * @return array
-	 */
 	public static function get() {
 		$loopIdPath = [ 'settings', 'template_id' ];
 
-		$hasLoop = Logic::allPass( [
-			Relation::propEq( 'widgetType', 'loop-grid' ),
-			Obj::path( $loopIdPath ),
-		] );
+		$hasLoop = function ( $item ) use ( $loopIdPath ) {
+			return Path::prop( 'widgetType', $item ) === 'loop-grid'
+				&& Path::get( $loopIdPath, $item );
+		};
 
 		$loopIdLens = Obj::lensPath( $loopIdPath );
 

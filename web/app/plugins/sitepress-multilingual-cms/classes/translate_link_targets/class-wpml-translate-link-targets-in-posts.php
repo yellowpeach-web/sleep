@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Class WPML_Translate_Link_Targets_In_Posts
- *
- * @package wpml-tm
- *
- * Disable phpcs warnings for prepare. Everything is escaped properly.
- * phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
- */
 class WPML_Translate_Link_Targets_In_Posts extends WPML_Translate_Link_Targets_In_Content {
 
 	protected function get_contents_with_links_needing_fix( $start_id = 0, $count = 0 ) {
@@ -32,7 +24,7 @@ class WPML_Translate_Link_Targets_In_Posts extends WPML_Translate_Link_Targets_I
 	protected function get_sql( $start_id, $count, $return_count_only ) {
 		$limit = '';
 		if ( $count > 0 ) {
-			$limit = ' LIMIT ' . $count;
+			$limit = ' LIMIT ' . (int) $count;
 		}
 
 		if ( $return_count_only ) {
@@ -40,6 +32,8 @@ class WPML_Translate_Link_Targets_In_Posts extends WPML_Translate_Link_Targets_I
 		} else {
 			$sql = 'SELECT t.element_id, t.language_code';
 		}
+
+		$order_by = $return_count_only ? '' : 'ORDER BY t.element_id ASC';
 
 		$sql = $this->wpdb->prepare(
 			$sql .
@@ -49,9 +43,10 @@ class WPML_Translate_Link_Targets_In_Posts extends WPML_Translate_Link_Targets_I
 			WHERE ts.links_fixed = 0
 			AND t.element_id IS NOT NULL
 			AND t.element_id >= %d
-			AND t.element_type LIKE 'post_%%'
-			ORDER BY t.element_id ASC" . $limit,
-			$start_id
+			AND t.element_type LIKE %s
+			" . $order_by . $limit,
+			$start_id,
+			'post_%'
 		);
 
 		return $sql;
