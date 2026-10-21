@@ -30,8 +30,9 @@ web/.htaccess
 !.htpasswd
 
 # Composer
+# Leading slash: repo root only. An unanchored "vendor", "lib/", or "log/"
+# also matches those directories inside the committed WPML plugins.
 /vendor
-vendor
 !web/app/plugins/acfml
 !web/app/plugins/acfml/vendor
 !web/app/plugins/sitepress-multilingual-cms
@@ -43,9 +44,8 @@ vendor
 !web/app/plugins/wpml-string-translation
 !web/app/plugins/wpml-string-translation/vendor
 
-lib/
+/lib/
 /log/
-log/
 node_modules
 
 # Editor directories and files
