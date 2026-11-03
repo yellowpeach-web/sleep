@@ -21,6 +21,16 @@
                         {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
                         class:'headline-small'} %}
                         {% include 'components/content.twig' with {class: 'm-0 body-small'} %}
+                        {% if (fields.button is iterable and fields.button.url) or (fields.secondary_button is iterable and fields.secondary_button.url) %}
+                        <div class="btn-set">
+                              {% if fields.button is iterable and fields.button.url %}
+                              {% include "components/button.twig" with {button: fields.button, class: 'primary'} %}
+                              {% endif %}
+                              {% if fields.secondary_button is iterable and fields.secondary_button.url %}
+                              {% include "components/button.twig" with {button: fields.secondary_button, class: 'secondary'} %}
+                              {% endif %}
+                        </div>
+                        {% endif %}
                   </div>
                   <div class="w-fit relative flex size-[180px] xl:size-[240px] shrink-0 grow-0">
                         {{ responsive_img(
@@ -41,12 +51,12 @@
                   {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
                   class:'headline-small text-center'} %}
                   {% include 'components/content.twig' with {class: 'm-0 body-small text-center'} %}
-                  {% if fields.button or fields.secondary_button %}
+                  {% if (fields.button is iterable and fields.button.url) or (fields.secondary_button is iterable and fields.secondary_button.url) %}
                   <div class="btn-set justify-center">
-                        {% if fields.button %}
+                        {% if fields.button is iterable and fields.button.url %}
                         {% include "components/button.twig" with {button: fields.button, class: 'primary'} %}
                         {% endif %}
-                        {% if fields.secondary_button %}
+                        {% if fields.secondary_button is iterable and fields.secondary_button.url %}
                         {% include "components/button.twig" with {button: fields.secondary_button, class: 'secondary'} %}
                         {% endif %}
                   </div>
