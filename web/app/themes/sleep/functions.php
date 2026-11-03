@@ -31,6 +31,7 @@ GutenbergBlocks::init();
 HelperFunctions::init();
 Images::init();
 Security::init();
+StructuredData::init();
 TimberSetup::init();
 ThemeSetup::init();
 Ajax::init();

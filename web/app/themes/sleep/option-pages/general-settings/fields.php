@@ -22,6 +22,39 @@ $general_settings
         'rows' => '3'
     ])
     ->endRepeater()
+    ->addRepeater('schema_locations', [
+        'label' => 'Schema locations',
+        'instructions' => 'Used for search markup only. Not shown on the site. Put the street and number in Street address, and the city, region, postcode, and country in their own fields.',
+        'button_label' => 'Add location',
+        'layout' => 'block',
+    ])
+    ->addText('name', [
+        'label' => 'Office name',
+        'instructions' => 'For example, North American Head Office',
+    ])
+    ->addText('legal_name', [
+        'label' => 'Legal name',
+    ])
+    ->addText('street_address', [
+        'label' => 'Street address',
+        'instructions' => 'Street and number only.',
+    ])
+    ->addText('locality', [
+        'label' => 'City',
+    ])
+    ->addText('region', [
+        'label' => 'Region',
+        'instructions' => 'State or region, such as CA. Leave blank if there is none.',
+    ])
+    ->addText('postal_code', [
+        'label' => 'Postcode',
+    ])
+    ->addText('country', [
+        'label' => 'Country code',
+        'instructions' => 'Two-letter code, such as US, IE, or DE.',
+        'maxlength' => 2,
+    ])
+    ->endRepeater()
     ->addUrl('instagram_url', [
         'label' => 'Instagram URL'
     ])

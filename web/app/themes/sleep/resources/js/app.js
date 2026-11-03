@@ -12,10 +12,10 @@ import { initPortraitVideoModal } from "./portrait-video-modal.js";
 import { initAjaxFilter } from "./ajax.js";
 // import AOS from 'aos';
 $(document).ready(function () {
-  masonryFilterData();
   simpleFilterData();
-  initAccordions();
   initStatsCounter();
+  masonryFilterData();
+  initAccordions();
   initHoverImageCursor();
   navVisibility();
   initSwipers();

@@ -103,6 +103,8 @@ export function simpleFilterData() {
           btn.classList.remove("active");
         }
       });
+
+      document.dispatchEvent(new CustomEvent("sleep:stats-refresh"));
     }
 
     // on mount...

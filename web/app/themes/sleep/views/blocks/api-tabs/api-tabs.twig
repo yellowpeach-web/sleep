@@ -79,13 +79,7 @@
                               {% if item.number %}
                               <span class="stat-number" data-target-number="{{ item.number }}" role="status"
                                     itemprop="value"
-                                    aria-label="{{ item.prefix ~ ' ' ~ item.number ~ ' ' ~ item.postfix }}">
-                                    {% if fn('is_admin') %}
-                                    {{ item.number }}
-                                    {% else %}
-                                    0
-                                    {% endif %}
-                              </span>
+                                    aria-label="{{ item.prefix ~ ' ' ~ item.number ~ ' ' ~ item.postfix }}">{{ item.number }}</span>
                               {% endif %}
                               {% if item.postfix %}
                               <span class="append" aria-hidden="true" itemprop="unitText">{{ item.postfix }}</span>

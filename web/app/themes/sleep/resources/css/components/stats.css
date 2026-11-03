@@ -1,8 +1,11 @@
 .append {
   transition: opacity 0.4s ease;
+}
+
+.is-counting > .append:not(.active) {
   @apply opacity-0;
 }
 
 .append.active {
-  @apply !opacity-100;
+  @apply opacity-100;
 }
