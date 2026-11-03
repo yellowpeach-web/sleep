@@ -41,8 +41,15 @@
                   {% include 'components/heading.twig' with {tag: fields.tag, heading: fields.heading,
                   class:'headline-small text-center'} %}
                   {% include 'components/content.twig' with {class: 'm-0 body-small text-center'} %}
-                  {% if fields.button %}
-                  {% include "components/button.twig" with {button: fields.button, class: 'primary'} %}
+                  {% if fields.button or fields.secondary_button %}
+                  <div class="btn-set justify-center">
+                        {% if fields.button %}
+                        {% include "components/button.twig" with {button: fields.button, class: 'primary'} %}
+                        {% endif %}
+                        {% if fields.secondary_button %}
+                        {% include "components/button.twig" with {button: fields.secondary_button, class: 'secondary'} %}
+                        {% endif %}
+                  </div>
                   {% endif %}
             </div>
             {% endif %}

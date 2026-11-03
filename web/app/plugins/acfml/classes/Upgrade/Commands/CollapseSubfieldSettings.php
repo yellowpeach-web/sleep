@@ -119,6 +119,10 @@ class CollapseSubfieldSettings implements Command {
 
 		$orphaned = [];
 		foreach ( FieldReferences::fieldKeysByMetaKey( array_keys( $keysByReferenceMetaKey ), $type ) as $referenceMetaKey => $fieldReferences ) {
+			// Meta key lookups are case-insensitive, so a stored key can differ in case from the map key.
+			if ( ! isset( $keysByReferenceMetaKey[ $referenceMetaKey ] ) ) {
+				continue;
+			}
 			if ( ! array_filter( $fieldReferences, fn( $fieldReference ) => FieldReferences::pointsToAnExistingField( $fieldReference ) ) ) {
 				$orphaned = array_merge( $orphaned, $keysByReferenceMetaKey[ $referenceMetaKey ] );
 			}
