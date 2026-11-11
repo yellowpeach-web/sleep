@@ -36,6 +36,7 @@ TimberSetup::init();
 ThemeSetup::init();
 Ajax::init();
 LayoutOptions::init();
+CampaignLanding::init();
 
 
 class Theme
