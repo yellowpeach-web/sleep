@@ -1,0 +1,204 @@
+/*
+ * The "Translation editor and method" section of WPML → Settings after the site's cutover
+ * (wpmldev-11185). Steps 1 and 2 are today's table of editors, with today's styles
+ * (translation-options.css).
+ */
+
+.wpml-translation-policy-settings__step + .wpml-translation-policy-settings__step,
+.wpml-translation-policy-settings form + .wpml-translation-policy-settings__step {
+	margin-top: 24px;
+}
+
+.wpml-translation-policy-settings__heading {
+	margin: 0 0 12px;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 24px;
+}
+
+.wpml-translation-policy-settings__number {
+	margin-right: 4px;
+}
+
+.wpml-translation-policy-settings__site-note {
+	margin-top: 8px;
+}
+
+/*
+ * Step 2: the table of step 1, with the same column widths, so the two steps line up. Its
+ * last row holds the radios, so it closes the box. Step 1 has no checkbox row after the
+ * cutover (wpmldev-12664, `t_method__table--closed`): its radio row closes it the same way.
+ */
+.wpml-translation-policy-settings .t_method__table {
+	table-layout: fixed;
+}
+
+.wpml-translation-policy-settings .t_method__table thead th:first-child {
+	width: 34%;
+}
+
+.wpml-translation-policy-settings__method-table thead th {
+	vertical-align: bottom;
+}
+
+.wpml-translation-policy-settings__method-table tbody .check-td {
+	padding: 12px 20px;
+	font-size: 13px;
+	line-height: 20px;
+}
+
+.wpml-translation-policy-settings__method-table tbody tr:nth-last-child(2) .check-td::after {
+	width: 100%;
+}
+
+.wpml-translation-policy-settings__method-table.t_method__table tbody .choose-method.left,
+.t_method__table--closed.t_method__table tbody .choose-method.left {
+	border-width: 0 0 1px 1px;
+	border-radius: 0 0 5px 5px;
+}
+
+.wpml-translation-policy-settings__method-table.t_method__table tbody .choose-method.right,
+.t_method__table--closed.t_method__table tbody .choose-method.right {
+	border-width: 0 1px 1px;
+	border-radius: 0 0 5px 5px;
+}
+
+.wpml-translation-policy-settings__method-table.t_method__table.t_method__ate-editor tbody .choose-method.left,
+.wpml-translation-policy-settings__method-table.t_method__table.t_method__classic-editor tbody .choose-method.right,
+.t_method__table--closed.t_method__table.t_method__ate-editor tbody .choose-method.left,
+.t_method__table--closed.t_method__table.t_method__classic-editor tbody .choose-method.right {
+	border-width: 0 2px 2px;
+}
+
+.wpml-translation-policy-settings__hint {
+	margin-top: 12px;
+}
+
+.wpml-translation-policy-settings__status:not(:empty) {
+	margin-left: 4px;
+	color: #1c7d6b;
+	font-weight: 500;
+}
+
+.wpml-translation-policy-settings__status.is-error {
+	color: #d63638;
+	font-weight: 400;
+}
+
+/* Step 3: a toggle row, closed by default, with its summary pinned right. */
+.wpml-translation-policy-settings__toggle {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	width: 100%;
+	max-width: 760px;
+	padding: 12px 16px;
+	border: 1px solid rgba(47, 125, 146, .2);
+	border-radius: 5px;
+	background: #fff;
+	color: inherit;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+}
+
+.wpml-translation-policy-settings__toggle .dashicons {
+	transition: transform .15s;
+}
+
+.wpml-translation-policy-settings__toggle[aria-expanded="true"] .dashicons {
+	transform: rotate(90deg);
+}
+
+.wpml-translation-policy-settings__toggle-label {
+	white-space: nowrap;
+}
+
+.wpml-translation-policy-settings__summary {
+	margin-left: auto;
+	padding-left: 16px;
+	text-align: right;
+	color: #757575;
+	font-size: 13px;
+	font-weight: 400;
+}
+
+.wpml-translation-policy-settings__panel {
+	max-width: 760px;
+	margin-top: 12px;
+}
+
+.wpml-translation-policy-settings__table {
+	table-layout: fixed;
+}
+
+.wpml-translation-policy-settings__table thead th:first-child {
+	width: 28%;
+}
+
+.wpml-translation-policy-settings__table select {
+	width: 100%;
+	max-width: 100%;
+}
+
+.wpml-translation-policy-settings__table select.is-following-site {
+	color: #757575;
+}
+
+.wpml-translation-policy-settings__table tr.has-note th,
+.wpml-translation-policy-settings__table tr.has-note td {
+	border-bottom: 0;
+	padding-bottom: 0;
+}
+
+.wpml-translation-policy-settings__note-row td {
+	padding-top: 4px;
+}
+
+.wpml-translation-policy-settings__note-row .description {
+	margin: 0;
+}
+
+.wpml-translation-policy-settings__locked .dashicons,
+.wpml-translation-policy-settings__note-row .dashicons,
+.wpml-translation-policy-settings__site-note .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	vertical-align: text-bottom;
+}
+
+.wpml-translation-policy-settings__others tr:first-child th,
+.wpml-translation-policy-settings__others tr:first-child td {
+	border-top: 1px solid #c3c4c7;
+}
+
+/* wpmldev-12717: the dialog "Translate with PTC?" */
+.wpml-translation-policy-settings__ptc-confirm {
+	max-width: 480px;
+	padding: 16px 24px;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	box-shadow: 0 3px 30px rgba(0, 0, 0, 0.2);
+}
+
+.wpml-translation-policy-settings__ptc-confirm::backdrop {
+	background: rgba(0, 0, 0, 0.35);
+}
+
+.wpml-translation-policy-settings__ptc-confirm h2 {
+	margin-top: 0;
+}
+
+.wpml-translation-policy-settings__ptc-confirm-warning {
+	padding: 8px 12px;
+	border-left: 4px solid #dba617;
+	background: #fcf9e8;
+}
+
+.wpml-translation-policy-settings__ptc-confirm-buttons {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-bottom: 0;
+}

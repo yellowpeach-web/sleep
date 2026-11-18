@@ -7,6 +7,15 @@ class WPML_Support_Info {
 	}
 
 
+	public function get_db_server_version() {
+		$version = is_callable( array( $this->wpdb, 'get_var' ) )
+			? (string) $this->wpdb->get_var( 'SELECT VERSION()' )
+			: '';
+		$version = (string) preg_replace( '/^5\.5\.5-/', '', $version );
+
+		return '' !== $version ? $version : (string) $this->wpdb->db_version();
+	}
+
 	public function is_suhosin_active() {
 		return extension_loaded( 'suhosin' );
 	}

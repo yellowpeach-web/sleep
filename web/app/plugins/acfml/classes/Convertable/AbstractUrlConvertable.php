@@ -55,7 +55,7 @@ abstract class AbstractUrlConvertable implements \WPML_ACF_Convertable {
 		}
 
 		if ( $this->isValidResolution( $resolution ) ) {
-			return [
+			$coreResult = [
 				'url'                => $resolution['url'],
 				'source_post_id'     => $resolution['source_post_id']
 					? (int) $resolution['source_post_id']
@@ -67,9 +67,110 @@ abstract class AbstractUrlConvertable implements \WPML_ACF_Convertable {
 					? $resolution['resolution_state']
 					: $this->inferResolutionState( $url, $resolution['url'] ),
 			];
+
+			if ( $this->isUnchangedWithoutPost( $coreResult ) && $this->followsPermalinkOfNoPost( $url, $targetLang, $sourceLang ) ) {
+				$coreResult['url']              = apply_filters( 'wpml_permalink', $url, $targetLang, true );
+				$coreResult['resolution_state'] = $this->inferResolutionState( $url, $coreResult['url'] );
+			}
+
+			return $this->withStoredQueryAndFragment( $url, $coreResult );
 		}
 
-		return $this->resolveUrlLegacy( $url, $targetLang );
+		return $this->withStoredQueryAndFragment( $url, $this->resolveUrlLegacy( $url, $targetLang ) );
+	}
+
+	private function withStoredQueryAndFragment( $storedUrl, array $result ) {
+		$resolvedUrl = $result['url'];
+
+		if (
+			( ! $result['source_post_id'] && ! $result['translated_post_id'] )
+			|| ! is_string( $resolvedUrl )
+			|| '' === $resolvedUrl
+			|| $resolvedUrl === $storedUrl
+			|| ( false === strpos( $storedUrl, '?' ) && false === strpos( $storedUrl, '#' ) )
+			|| false !== strpos( $resolvedUrl, '?' )
+			|| false !== strpos( $resolvedUrl, '#' )
+		) {
+			return $result;
+		}
+
+		$query    = wp_parse_url( $storedUrl, PHP_URL_QUERY );
+		$fragment = wp_parse_url( $storedUrl, PHP_URL_FRAGMENT );
+
+		if ( is_string( $query ) && '' !== $query ) {
+			$resolvedUrl .= '?' . $query;
+		}
+		if ( is_string( $fragment ) && '' !== $fragment ) {
+			$resolvedUrl .= '#' . $fragment;
+		}
+
+		$result['url'] = $resolvedUrl;
+
+		return $result;
+	}
+
+	private function isUnchangedWithoutPost( array $result ) {
+		return self::RESOLUTION_STATE_UNCHANGED === $result['resolution_state']
+			&& ! $result['source_post_id']
+			&& ! $result['translated_post_id'];
+	}
+
+	private function followsPermalinkOfNoPost( string $url, string $targetLang, ?string $sourceLang ): bool {
+		if ( 1 !== preg_match( '#^https?://#i', $url ) || ! $this->isOnSiteHost( $url ) ) {
+			return false;
+		}
+
+		$urlPath = wp_parse_url( $url, PHP_URL_PATH );
+		$urlPath = is_string( $urlPath ) ? $urlPath : '';
+
+		if ( ! $this->isInHomePath( $urlPath ) || $this->isFilePath( $urlPath ) ) {
+			return false;
+		}
+
+		foreach ( [ content_url(), includes_url(), admin_url() ] as $directoryUrl ) {
+			if ( $this->isInDirectory( $urlPath, $directoryUrl ) ) {
+				return false;
+			}
+		}
+
+		return false !== apply_filters( 'wpml_should_resolve_single_url', true, $url, $targetLang, $sourceLang )
+			&& ! $this->resolvePostId( $url );
+	}
+
+	private function isOnSiteHost( string $url ): bool {
+		$languageDomains = apply_filters( 'wpml_setting', [], 'language_domains' );
+		$siteHosts       = array_merge( [ wp_parse_url( home_url(), PHP_URL_HOST ) ], is_array( $languageDomains ) ? $languageDomains : [] );
+		$host            = wp_parse_url( $url, PHP_URL_HOST );
+
+		foreach ( $siteHosts as $siteHost ) {
+			if ( is_string( $host ) && is_string( $siteHost ) && 0 === strcasecmp( $host, (string) preg_replace( '#[:/].*$#', '', $siteHost ) ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private function isInHomePath( string $urlPath ): bool {
+		$homePath = wp_parse_url( (string) get_option( 'home' ), PHP_URL_PATH );
+
+		return ! is_string( $homePath ) || '' === trim( $homePath, '/' ) || $this->isInDirectory( $urlPath, $homePath );
+	}
+
+	private function isFilePath( string $urlPath ): bool {
+		return '/' !== substr( $urlPath, -1 ) && 1 === preg_match( '#\.[a-z0-9]+$#i', basename( $urlPath ) );
+	}
+
+	private function isInDirectory( string $urlPath, string $directoryUrl ): bool {
+		$directoryPath = wp_parse_url( $directoryUrl, PHP_URL_PATH );
+
+		if ( ! is_string( $directoryPath ) || '' === trim( $directoryPath, '/' ) ) {
+			return false;
+		}
+
+		$directoryPath = '/' . trim( $directoryPath, '/' );
+
+		return $directoryPath === rtrim( $urlPath, '/' ) || 0 === strpos( $urlPath, $directoryPath . '/' );
 	}
 
 	private function isDeferredResolution( $resolution ) {

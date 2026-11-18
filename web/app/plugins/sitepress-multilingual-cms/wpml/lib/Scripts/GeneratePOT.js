@@ -38,6 +38,10 @@ const handleExceptions = {
     handle: 'wpml_warning_translation_edit',
     source: 'WarningTranslationEditController.php',
   },
+  'language-panel-classic.js': {
+    handle: 'wpml-language-panel-classic',
+    source: 'ClassicBox.php',
+  },
 };
 
 // The configs call __() and use WPML constants and classes, so they are

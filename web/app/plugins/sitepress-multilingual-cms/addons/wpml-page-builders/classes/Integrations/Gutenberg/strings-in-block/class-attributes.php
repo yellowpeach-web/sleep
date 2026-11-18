@@ -3,6 +3,8 @@
 namespace WPML\PB\Gutenberg\StringsInBlock;
 
 use WPML\FP\Obj;
+use WPML\Compatibility\Divi\V5\CustomAttributeItem;
+use WPML\PB\Gutenberg\NeverTextKeys;
 
 class Attributes extends Base {
 
@@ -22,6 +24,10 @@ class Attributes extends Base {
 		$strings = [];
 
 		foreach ( $attrs as $attr_key => $attr_value ) {
+			if ( $this->isCodeAttributeItemValue( $attrs, $attr_key, (string) $block->blockName ) ) {
+				continue;
+			}
+
 			$matching_key = $this->getMatchingConfigKey( $attr_key, $config_keys );
 
 			if ( ! $matching_key ) {
@@ -32,8 +38,8 @@ class Attributes extends Base {
 				continue;
 			}
 
-			if ( $this->hasJsonEncoding( $attr_key, $config_keys ) ) {
-				$attr_value = json_decode( urldecode( $attr_value ), true );
+			if ( is_string( $attr_value ) && $this->hasJsonEncoding( $matching_key, $config_keys ) ) {
+				$attr_value = $this->decodeUrlEncodedValue( $attr_value, $this->decodeUrlEncodedJson( $attr_value ) );
 			}
 
 			if ( is_array( $attr_value ) ) {
@@ -44,9 +50,9 @@ class Attributes extends Base {
 					$this->findStringsRecursively( $attr_value, $children_config_keys, $block )
 				);
 			} elseif ( ! is_numeric( $attr_value ) ) {
-				$type      = $this->get_attribute_string_type( $attr_value, $attr_key, $config_keys );
+				$type      = $this->get_attribute_string_type( $attr_value, $matching_key, $config_keys );
 				$string_id = $this->get_string_id( $block->blockName, $attr_value );
-				$label     = isset( $config_keys[ $attr_key ]['label'] ) ? $config_keys[ $attr_key ]['label'] : $this->get_block_label( $block );
+				$label     = $config_keys[ $matching_key ]['label'] ?? $this->get_block_label( $block );
 				$strings[] = $this->build_string( $string_id, $label, $attr_value, $type );
 			}
 		}
@@ -54,8 +60,25 @@ class Attributes extends Base {
 		return $strings;
 	}
 
-	private function get_attribute_string_type( $attr_value, $attr_key, $config_keys ) {
-		$config_type = $config_keys[ $attr_key ]['type'] ?? null;
+	private function isCodeAttributeItemValue( array $attrs, $attr_key, string $block_name ) {
+		if (
+			'value' !== $attr_key
+			|| ! isset( $attrs['name'] )
+			|| ! is_string( $attrs['name'] )
+			|| ! is_scalar( $attrs['value'] )
+		) {
+			return false;
+		}
+
+		if ( CustomAttributeItem::is( $block_name, $attrs ) ) {
+			return ! CustomAttributeItem::isTextKey( $attrs, $attr_key );
+		}
+
+		return NeverTextKeys::matches( $attrs['name'], false );
+	}
+
+	private function get_attribute_string_type( $attr_value, $matching_key, $config_keys ) {
+		$config_type = $config_keys[ $matching_key ]['type'] ?? null;
 
 		if ( 'link' === $config_type ) {
 			return \WPML_TM_Page_Builders::FIELD_STYLE_LINK;
@@ -115,38 +138,63 @@ class Attributes extends Base {
 
 	public function updateStringsRecursively( array $attrs, array $config_keys, array $translations, $lang, $block_name ) {
 		foreach ( $attrs as $attr_key => $attr_value ) {
+			if ( $this->isCodeAttributeItemValue( $attrs, $attr_key, (string) $block_name ) ) {
+				continue;
+			}
+
 			$matching_key = $this->getMatchingConfigKey( $attr_key, $config_keys );
 
 			if ( ! $matching_key ) {
 				continue;
 			}
 
-			if ( $this->hasJsonEncoding( $attr_key, $config_keys ) ) {
-				$attr_value = json_decode( urldecode( $attr_value ), true );
+			$is_url_encoded = is_string( $attr_value ) && $this->hasJsonEncoding( $matching_key, $config_keys );
+			$decoded_json   = null;
+
+			if ( $is_url_encoded ) {
+				$decoded_json = $this->decodeUrlEncodedJson( $attr_value );
+				$attr_value   = $this->decodeUrlEncodedValue( $attr_value, $decoded_json );
 			}
 
 			if ( is_array( $attr_value ) ) {
 				$children_config_keys = $this->getChildrenConfigKeys( $config_keys, $matching_key );
-				$attrs[ $attr_key ]   = $this->updateStringsRecursively( $attr_value, $children_config_keys, $translations, $lang, $block_name );
-			} else {
-				$string_id = $this->get_string_id( $block_name, $attr_value );
+				$translated_value     = $this->updateStringsRecursively( $attr_value, $children_config_keys, $translations, $lang, $block_name );
+				$attrs[ $attr_key ]   = $is_url_encoded ? rawurlencode( wp_json_encode( $translated_value ) ) : $translated_value;
 
-				if (
-					isset( $translations[ $string_id ][ $lang ] ) &&
-					ICL_TM_COMPLETE === (int) $translations[ $string_id ][ $lang ]['status']
-				) {
-					$attrs[ $attr_key ] = $translations[ $string_id ][ $lang ]['value'];
-				} else {
-					$attrs[ $attr_key ] = $this->updateShortcodeStrings( $attr_value, $lang );
-				}
+				continue;
 			}
 
-			if ( $this->hasJsonEncoding( $attr_key, $config_keys ) ) {
-				$attrs[ $attr_key ] = rawurlencode( wp_json_encode( $attrs[ $attr_key ] ) );
+			$translated_value = $this->translateValue( $attr_value, $translations, $lang, $block_name );
+
+			if ( ! $is_url_encoded ) {
+				$attrs[ $attr_key ] = $translated_value;
+			} elseif ( $translated_value !== $attr_value ) {
+				$attrs[ $attr_key ] = rawurlencode( null === $decoded_json ? $translated_value : wp_json_encode( $translated_value ) );
 			}
 		}
 
 		return $attrs;
+	}
+
+	private function translateValue( $value, array $translations, $lang, $block_name ) {
+		$string_id = $this->get_string_id( $block_name, $value );
+
+		if (
+			isset( $translations[ $string_id ][ $lang ] ) &&
+			ICL_TM_COMPLETE === (int) $translations[ $string_id ][ $lang ]['status']
+		) {
+			return $translations[ $string_id ][ $lang ]['value'];
+		}
+
+		return $this->updateShortcodeStrings( $value, $lang );
+	}
+
+	private function decodeUrlEncodedValue( string $encoded_value, $decoded_json ) {
+		return null === $decoded_json ? rawurldecode( $encoded_value ) : $decoded_json;
+	}
+
+	private function decodeUrlEncodedJson( string $encoded_value ) {
+		return json_decode( urldecode( $encoded_value ), true );
 	}
 
 	private function updateShortcodeStrings( $attr_value, $lang ) {
@@ -157,8 +205,8 @@ class Attributes extends Base {
 		return apply_filters( 'wpml_pb_update_translations_in_content', $attr_value, $lang );
 	}
 
-	private function hasJsonEncoding( $attr_key, $config_keys ) {
-		return 'json' === Obj::path( [ $attr_key, 'encoding' ], $config_keys );
+	private function hasJsonEncoding( $matching_key, $config_keys ) {
+		return 'json' === Obj::path( [ $matching_key, 'encoding' ], $config_keys );
 	}
 
 	private function getAttributes( \WP_Block_Parser_Block $block ) {

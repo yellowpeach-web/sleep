@@ -25,14 +25,19 @@ class RegisterTaxonomyItemSection implements \IWPML_Backend_Action, \IWPML_REST_
 	}
 
 	public function injectTaxonomyData( array $data ): array {
-		$data['taxonomyData'] = ( new TaxonomyDashboardData() )->get();
+		$data['taxonomyData'] = $this->makeDashboardData()->get();
 		$data['taxonomyApi']  = [
 			'rowsUrl'         => rest_url( 'wpml/v1/dashboard/taxonomies' ),
 			'rescanLabelsUrl' => rest_url( 'wpml/v1/dashboard/taxonomies/rescan-labels' ),
+			'taxonomiesUrl'   => rest_url( 'wpml/v1/dashboard/taxonomies/' ),
 			'nonce'           => wp_create_nonce( 'wp_rest' ),
 		];
 
 		return $data;
+	}
+
+	protected function makeDashboardData(): TaxonomyDashboardData {
+		return new TaxonomyDashboardData();
 	}
 
 	private function makeSectionViewModel() {
@@ -44,7 +49,7 @@ class RegisterTaxonomyItemSection implements \IWPML_Backend_Action, \IWPML_REST_
 			__( 'Taxonomy Terms', 'sitepress' ),
 			/* translators: Column heading and label for the kind of grouping a term belongs to, for example Category or Tag. Singular. */
 			__( 'Taxonomy', 'sitepress' ),
-			/* translators: Heading above the kinds of grouping a term can belong to, for example Categories and Tags. Plural. */
+			/* translators: Plural. Heading above the kinds of grouping a term can belong to, for example Categories and Tags, and the name of the group that holds the taxonomy terms of a translation job in the Advanced Translation Editor. */
 			__( 'Taxonomies', 'sitepress' ),
 			self::KIND_ID,
 			false,

@@ -9,6 +9,7 @@ use WPML\FP\Fns;
 use WPML\FP\Lst;
 use WPML\FP\Obj;
 use WPML\Infrastructure\WordPress\Component\StringPackage\Application\Query\PackageDefinitionQuery;
+use WPML\Infrastructure\WordPress\Component\StringPackage\Application\Query\UntranslatedTypesCountQuery;
 use WPML\Setup\Option;
 use WPML\TM\API\ATE\CachedLanguageMappings;
 use WPML\TM\API\ATE\LanguageMappings;
@@ -59,18 +60,28 @@ class UntranslatedPackages extends AbstractUntranslatedElements {
 
 		$ownerPostCondition = Cutoff::ownerPostSql( 'owner_post' );
 
+		$ridesOwner          = apply_filters( 'wpml_string_package_rides_owner_sql', '', 'packages' );
+		$ridesOwnerCondition = $ridesOwner ? 'AND NOT (' . $ridesOwner . ')' : '';
+
 		$unbuildable          = array_map( 'strval', array_keys( $this->getUnbuildablePackages() ) );
 		$unbuildableCondition = $unbuildable
 			? "AND CONCAT( original_element.element_id, ':', languages.code ) NOT IN ( " . implode( ', ', array_fill( 0, count( $unbuildable ), '%s' ) ) . ' )'
 			: '';
 
-		$language_parts      = $this->buildLanguagesUnion( $languages );
-		$acceptable_statuses = ICL_TM_NOT_TRANSLATED . ', ' . ICL_TM_ATE_CANCELLED;
+		$excluded          = UntranslatedTypesCountQuery::excludedPackageIds( [ $type ], $languages );
+		$excludedCondition = $excluded
+			? 'AND original_element.element_id NOT IN ( ' . implode( ', ', array_fill( 0, count( $excluded ), '%d' ) ) . ' )'
+			: '';
+
+		$language_parts = $this->buildLanguagesUnion( $languages );
+		$pairNotRefused = $this->pairNotRefusedSql( 'original_element.language_code', $languages );
 
 		$oldEditorCondition = $this->buildOldEditorCondition();
 
-		$discardedJob     = DiscardedAutomaticJob::joinSql( $this->wpdb->prefix, 'translation_status' );
-		$notADiscardedJob = DiscardedAutomaticJob::whereSql( 'translation_status' );
+		$discardedJob     = $this->toSend()->joinSql( 'translation_status' );
+		$notADiscardedJob = $this->toSend()->notDiscardedSql( 'translation_status' );
+
+		$notOpenForReview = $this->notOpenForReviewInAteSql( 'translation_status' );
 
 		$sql = "
 			SELECT original_element.element_id, original_element.language_code, languages.code
@@ -86,10 +97,14 @@ class UntranslatedPackages extends AbstractUntranslatedElements {
 			WHERE original_element.element_type like %s
 				AND {$ownerPostCondition}
 				{$unbuildableCondition}
+				{$excludedCondition}
+				{$ridesOwnerCondition}
 				AND original_element.source_language_code IS NULL
 				AND original_element.language_code != languages.code
-    		AND ( translation_status.status IS NULL OR translation_status.status IN ({$acceptable_statuses}) OR translation_status.needs_update = 1)
+				{$pairNotRefused}
+				AND {$this->toSend()->sql( 'translation_status' )}
 				{$notADiscardedJob}
+				{$notOpenForReview}
 				{$oldEditorCondition}
 			ORDER BY original_element.element_id, languages.code
 			LIMIT %d
@@ -98,10 +113,18 @@ class UntranslatedPackages extends AbstractUntranslatedElements {
 		$result = $this->wpdb->get_results(
 			$this->wpdb->prepare(
 				$sql,
-				...array_merge( [ 'package_' . $type, $sinceDate ], $unbuildable, [ $queueSize ] )
+				...array_merge( [ 'package_' . $type, $sinceDate ], $unbuildable, $excluded, [ $this->toSend()->joblessCutoff(), $queueSize ] )
 			),
 			ARRAY_N
 		);
+
+		if ( $excluded ) {
+			JobLog::add( 'tea_packages_excluded_by_filter', [
+				'type'           => $type,
+				'excluded_count' => count( $excluded ),
+				'package_ids'    => array_slice( $excluded, 0, UntranslatedPosts::EXCLUDED_IDS_LOG_CAP ),
+			] );
+		}
 
 		return Fns::map( Obj::evolve( [ 0 => Cast::toInt() ] ), $result );
 	}

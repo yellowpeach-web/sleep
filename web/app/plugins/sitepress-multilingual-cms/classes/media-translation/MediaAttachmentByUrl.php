@@ -7,7 +7,7 @@ class MediaAttachmentByUrl {
 	private $url;
 	private $language;
 
-	const SIZE_SUFFIX_REGEXP = '/-([0-9]+)x([0-9]+)\.([a-z]{3,4})$/';
+	const SIZE_SUFFIX_REGEXP = '/-([0-9]+)x([0-9]+)\.([a-z]{3,4})$/i';
 
 	const CACHE_KEY_PREFIX = 'attachment-id-from-guid-';
 	const CACHE_GROUP      = 'wpml-media-setup';

@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=1; plural=0;",
             "lang": "vi"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "Chuyển sang Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "Chuyển sang PTC"
+         ],
+         "Switching…": [
+            "Đang chuyển đổi…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "Chúng tôi không thể xác nhận việc chuyển đổi. Hãy thử lại hoặc tải lại để xem công cụ hiện tại."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Không thể tải các điều khiển công cụ dịch thuật. Tải lại trang và thử lại."
+         ],
+         "Loading translation engine settings…": [
+            "Đang tải cài đặt công cụ dịch thuật…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "Điền ngữ cảnh trang web của bạn ở trên trước khi chuyển sang PTC."
+         ],
+         "Reload page": [
+            "Tải lại trang"
+         ],
+         "Could not fetch engines data": [
+            "Không thể lấy dữ liệu các công cụ"
+         ],
          "Error in updating since dates for types.": [
             "Lỗi khi cập nhật ngày kể từ cho các loại."
          ],
@@ -133,9 +160,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "Đã áp dụng mức giá cũ. %s là một công cụ dịch thuật cũ, không được khuyến nghị cho các trang web mới và sẽ bị ngừng hỗ trợ. Các trang web hiện tại vẫn giữ tỷ lệ từ đã điều chỉnh cho công cụ này."
          ],
-         "Switch to PTC": [
-            "Chuyển sang PTC"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Đây là số lượng từ cần để dịch nội dung hiện tại của bạn hôm nay. Số lượng này không bao gồm một số văn bản do các plugin khác thêm vào, chẳng hạn như biểu mẫu hoặc thanh trượt, vốn sẽ được tính sau khi hoàn tất thiết lập. Chuỗi trang web từ giao diện và plugin của bạn cũng được tính sau khi thiết lập và thường thêm vào vài trăm từ. Sau đó, việc chỉnh sửa là miễn phí. Bạn chỉ trả tiền thêm cho các từ bạn thêm mới."
          ],
@@ -151,8 +175,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Số lượng này tính các trang, bài viết và sản phẩm cùng với các trường tùy chỉnh, văn bản của trình tạo trang và văn bản đa phương tiện của chúng, cũng như các chuyên mục, thẻ và thuộc tính mà chúng sử dụng."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Số lượng này tính các trang, bài viết và sản phẩm cùng với các trường tùy chỉnh, văn bản của trình tạo trang và văn bản đa phương tiện của chúng, các chuyên mục, thẻ và thuộc tính mà chúng sử dụng, cũng như các chuỗi của trang web. Một thuật ngữ được tính trong mọi mục sử dụng nó và một lần độc lập, vì nó được gửi đi dịch theo cả hai cách."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Tổng số này tính các trang, bài viết và sản phẩm cùng các trường tùy chỉnh của chúng, văn bản của trình tạo trang và văn bản của phương tiện, các chuyên mục, thẻ và thuộc tính mà chúng sử dụng, cũng như các chuỗi trang web. Mỗi chuyên mục, thẻ hoặc thuộc tính được tính một lần trong hàng Các phân loại và không tính lại ở các mục sử dụng chúng."
          ],
          "Total items": [
             "Tổng số mục"
@@ -225,6 +249,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "Để bắt đầu <b>Dịch mọi thứ tự động</b>, hãy kích hoạt <b>Trả theo mức sử dụng</b> hoặc mua từ trả trước."
+         ],
+         "Translation quality:": [
+            "Chất lượng bản dịch:"
          ],
          "Select payment method": [
             "Chọn phương thức thanh toán"
@@ -357,6 +384,30 @@
          ],
          "Close modal": [
             "Đóng cửa sổ"
+         ],
+         "Obvious mistakes": [
+            "Lỗi rõ ràng"
+         ],
+         "Mistakes visible": [
+            "Có lỗi hiển thị"
+         ],
+         "Ready to publish": [
+            "Sẵn sàng để xuất bản"
+         ],
+         "Your engine": [
+            "Công cụ của bạn"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Chất lượng bản dịch (thang điểm 50-100): %1$s đạt %2$d điểm, %3$s đạt %4$d điểm."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Điểm số dựa trên nghiên cứu chất lượng dịch thuật MQM nội bộ của WPML."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC dịch với chất lượng cao hơn và mang lại cho bạn kết quả sẵn sàng để xuất bản."
          ]
       }
    }

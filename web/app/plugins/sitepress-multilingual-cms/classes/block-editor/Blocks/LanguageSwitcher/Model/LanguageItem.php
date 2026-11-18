@@ -17,7 +17,9 @@ class LanguageItem {
 
 	private $flagAlt;
 
-	public function __construct( $displayName, $nativeName, $code, $url, $flagUrl, $flagTitle, $flagAlt ) {
+	private $hreflang;
+
+	public function __construct( $displayName, $nativeName, $code, $url, $flagUrl, $flagTitle, $flagAlt, $hreflang = '' ) {
 		$this->displayName = $displayName;
 		$this->nativeName = $nativeName;
 		$this->code = $code;
@@ -25,6 +27,7 @@ class LanguageItem {
 		$this->flagUrl = $flagUrl;
 		$this->flagTitle = $flagTitle;
 		$this->flagAlt = $flagAlt;
+		$this->hreflang = (string) $hreflang;
 	}
 
 	public function getDisplayName() {
@@ -53,6 +56,10 @@ class LanguageItem {
 
 	public function getFlagAlt() {
 		return $this->flagAlt;
+	}
+
+	public function getHreflang() {
+		return '' !== $this->hreflang ? $this->hreflang : $this->code;
 	}
 
 }

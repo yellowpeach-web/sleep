@@ -22,7 +22,7 @@ class ApplyJob implements \IWPML_Backend_Action, \IWPML_REST_Action, \IWPML_AJAX
 	private static $excluded_from_review = [ 'st-batch', 'package' ];
 
 	public function add_hooks() {
-		if ( \WPML_TM_ATE_Status::is_enabled_and_activated() ) {
+		if ( \WPML_TM_ATE_Status::is_account_usable() ) {
 			self::addJobStatusHook();
 			self::addTranslationCompleteHook();
 			self::addTranslationPreSaveHook();
@@ -39,16 +39,24 @@ class ApplyJob implements \IWPML_Backend_Action, \IWPML_REST_Action, \IWPML_AJAX
 		return Option::NO_REVIEW !== self::reviewModeOf( $job );
 	}
 
-	private static function isHeldForReviewUnderOwnMode( $job ) {
+	public static function isHeldForReviewUnderOwnMode( $job ) {
 		return Option::HOLD_FOR_REVIEW === self::reviewModeOf( $job );
 	}
 
 	private static function addJobStatusHook() {
 		$applyReviewStatus = function ( $status, $job = null ) {
-			if (
-				$status === ICL_TM_COMPLETE
-				&& ( self::shouldBeReviewed( $job ) || self::isReviewersEditOfAPost( $job ) )
-			) {
+			if ( $status !== ICL_TM_COMPLETE || ! is_object( $job ) ) {
+				return $status;
+			}
+
+			$accepted = ReviewRulesFactory::create()->acceptOnCompletion(
+				$job,
+				function () use ( $job ) {
+					return self::isPersonsCompletionOfAPost( $job );
+				}
+			);
+
+			if ( ! $accepted && ( self::shouldBeReviewed( $job ) || self::isReviewersEditOfAPost( $job ) ) ) {
 				Jobs::setReviewStatus(
 					(int) $job->job_id,
                     ReviewStatus::NEEDS_REVIEW
@@ -121,7 +129,7 @@ class ApplyJob implements \IWPML_Backend_Action, \IWPML_REST_Action, \IWPML_AJAX
 			return false;
 		}
 
-		$isAutomatic = Obj::prop( 'automatic', $job ) || self::isBoundManualByAnAutomaticSend( $job );
+		$isAutomatic = self::isAutomaticWork( $job );
 		if ( ! $isAutomatic ) {
 			return false;
 		}
@@ -168,6 +176,15 @@ class ApplyJob implements \IWPML_Backend_Action, \IWPML_REST_Action, \IWPML_AJAX
 		return is_object( $job )
 			&& ReviewStatus::EDITING === Obj::prop( 'review_status', $job )
 			&& Str::startsWith( 'post_', (string) Obj::prop( 'original_post_type', $job ) );
+	}
+
+	private static function isPersonsCompletionOfAPost( $job ): bool {
+		return ! self::isAutomaticWork( $job )
+			&& Str::startsWith( 'post_', (string) Obj::prop( 'original_post_type', $job ) );
+	}
+
+	public static function isAutomaticWork( $job ): bool {
+		return Obj::prop( 'automatic', $job ) || self::isBoundManualByAnAutomaticSend( $job );
 	}
 
 	private static function excludeElementTypes( $job ): bool {

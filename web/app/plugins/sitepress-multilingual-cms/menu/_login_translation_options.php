@@ -55,7 +55,7 @@ global $sitepress, $sitepress_settings;
 			<div class="wpml-section-content-inner">
 				<p class="buttons-wrap">
 					<span class="icl_ajx_response" id="icl_ajx_response_login"></span>
-					<input class="button-primary wpml-button base-btn" name="save" value="<?php /* translators: Button label that keeps what was entered. Verb, imperative. */ esc_attr_e( 'Save', 'sitepress' ); ?>"
+					<input class="button-primary wpml-button base-btn" name="save" value="<?php /* translators: Button label that keeps what was entered, for example in the Translation delivery box's "Settings for support" and in the "Translation editor and method" section of WPML → Settings. Verb, imperative. */ esc_attr_e( 'Save', 'sitepress' ); ?>"
 						   type="submit"/>
 				</p>
 			</div>

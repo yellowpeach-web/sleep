@@ -20,6 +20,7 @@ class ConfigExcludedPostTypesQuery implements ConfigExcludedPostTypesQueryInterf
       || ! class_exists( 'WPML_XML_Config_Read_File' )
       || ! class_exists( 'WPML_Config_Display_As_Translated' )
       || ! defined( 'WPML_CONTENT_TYPE_TRANSLATE' )
+      || ! defined( 'WPML_CONTENT_TYPE_DONT_TRANSLATE' )
     ) {
       return $this->memo;
     }
@@ -31,7 +32,7 @@ class ConfigExcludedPostTypesQuery implements ConfigExcludedPostTypesQueryInterf
         $name = $this->declaredName( $declaration );
         $mode = $this->declaredMode( $declaration );
 
-        if ( '' !== $name && (int) WPML_CONTENT_TYPE_TRANSLATE !== $mode ) {
+        if ( '' !== $name && (int) WPML_CONTENT_TYPE_DONT_TRANSLATE === $mode ) {
           $excluded[] = $name;
         }
       }

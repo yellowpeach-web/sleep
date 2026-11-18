@@ -2,7 +2,6 @@
 
 namespace WPML\Core\BackgroundTask\Model;
 
-use WPML\FP\Obj;
 
 class BackgroundTask {
 	const TABLE_NAME = 'icl_background_task';

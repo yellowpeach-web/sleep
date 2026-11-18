@@ -27,7 +27,21 @@ class JobLog {
 
 	const GROUP_ID_RETRANSLATION = 7;
 
-	const MAX_DEPTH         = 10;
+	const GROUP_ID_CANCELS = 8;
+
+	const GROUP_ID_RETRIES = 9;
+
+	const GROUP_ID_EDITOR_OPEN = 10;
+
+	const GROUP_ID_LOCAL_SAVES = 11;
+
+	const GROUP_ID_UPGRADE_COMMANDS = 12;
+
+	const GROUP_ID_MAINTENANCE = 13;
+
+	const GROUP_ID_XLIFF_EXPORT = 14;
+
+	const MAX_DEPTH        = 10;
 	const MAX_STRING_LENGTH = 1000;
 	const MAX_ARRAY_ITEMS   = 1000;
 
@@ -80,6 +94,8 @@ class JobLog {
 	private static $requestStartTime;
 
 	private static $groupId;
+
+	private static $parentGroups = [];
 
 	private static $extraLogData = [];
 
@@ -262,7 +278,7 @@ class JobLog {
 	}
 
 	public static function onSourcePostSaved( $post_id, $trid = null, $language_code = null, $source_language = null ) {
-		if ( ! self::canLog() ) {
+		if ( ! self::isEnabled() ) {
 			return;
 		}
 		if ( ! empty( $source_language ) ) {
@@ -351,26 +367,23 @@ class JobLog {
 			return;
 		}
 
-		$ownsGroup = ! self::isGroupOpen();
-		if ( $ownsGroup ) {
-			self::createNewGroup( self::GROUP_ID_JOB_LIFECYCLE, 'Source post saved with pending translations', [] );
+		$payload = [
+			'post_id'           => (int) $post_id,
+			'trid'              => (int) $trid,
+			'source_lang'       => $language_code,
+			'pending_job_count' => $pendingJobCount,
+		];
+		if ( $verbose ) {
+			$payload['pending_jobs'] = $pending;
 		}
-		try {
-			$payload = [
-				'post_id'           => (int) $post_id,
-				'trid'              => (int) $trid,
-				'source_lang'       => $language_code,
-				'pending_job_count' => $pendingJobCount,
-			];
-			if ( $verbose ) {
-				$payload['pending_jobs'] = $pending;
+
+		self::runInGroup(
+			self::GROUP_ID_JOB_LIFECYCLE,
+			'Source post saved with pending translations',
+			function () use ( $payload ) {
+				self::addError( 'source_edited_with_pending_translation', $payload );
 			}
-			self::addError( 'source_edited_with_pending_translation', $payload );
-		} finally {
-			if ( $ownsGroup ) {
-				self::finishCurrentGroup();
-			}
-		}
+		);
 	}
 
 	public static function resetForTests() {
@@ -387,6 +400,7 @@ class JobLog {
 		self::$logUid                 = null;
 		self::$requestStartTime       = null;
 		self::$groupId                = null;
+		self::$parentGroups           = [];
 		self::$extraLogData           = [];
 		self::$stringBatchIds         = [];
 		self::$alreadyAddedToLog      = [];
@@ -494,6 +508,54 @@ class JobLog {
 		return true;
 	}
 
+	public static function runAsBackgroundWork( $label, callable $work ) {
+		if ( ! self::wasRequestInitialised() ) {
+			if ( self::isCliOrCronContext() && empty( $_SERVER['REQUEST_URI'] ) && self::maybeInitBackgroundRequest( $label ) ) {
+				try {
+					return $work();
+				} finally {
+					self::flushBackgroundRequest();
+				}
+			}
+
+			self::maybeInitRequest();
+		}
+
+		if ( self::canLog() || ! self::isCliOrCronContext() || ! self::wasRequestInitialised() ) {
+			return $work();
+		}
+
+		$wasBackgroundRequest      = self::$isBackgroundRequest;
+		self::$isBackgroundRequest = true;
+		self::$isEnabled           = null;
+
+		try {
+			return $work();
+		} finally {
+			if ( self::canLog() ) {
+				self::shutdown();
+
+				self::$fp                      = null;
+				self::$inProgressPath          = null;
+				self::$streamOpenAttempted     = false;
+				self::$streamOpenFailed        = false;
+				self::$requestStartedWritten   = false;
+				self::$requestFinishedWritten  = false;
+				self::$logUid                  = uniqid();
+				self::$hasRequestAnyErrorLog   = false;
+				self::$idsTouched              = [];
+				self::$stringBatchIds          = [];
+				self::$alreadyAddedToLog       = [];
+				self::$seenTraceHashes         = [];
+				self::$logEventCount           = 0;
+				self::$eventsTruncatedReported = false;
+			}
+
+			self::$isBackgroundRequest = $wasBackgroundRequest;
+			self::$isEnabled           = null;
+		}
+	}
+
 	public static function flushBackgroundRequest() {
 		if ( ! self::$isBackgroundRequest ) {
 			return;
@@ -509,6 +571,7 @@ class JobLog {
 		self::$logUid                 = null;
 		self::$requestStartTime       = null;
 		self::$groupId                = null;
+		self::$parentGroups           = [];
 		self::$extraLogData           = [];
 		self::$stringBatchIds         = [];
 		self::$seenTraceHashes        = [];
@@ -535,6 +598,18 @@ class JobLog {
 			return;
 		}
 
+		if ( self::$groupId !== null && count( self::$parentGroups ) >= self::MAX_DEPTH ) {
+			self::finishCurrentGroup();
+		}
+
+		$parentGroupId = self::$groupId;
+		if ( $parentGroupId !== null ) {
+			self::$parentGroups[] = [
+				'groupId'      => $parentGroupId,
+				'extraLogData' => self::$extraLogData,
+			];
+		}
+
 		self::$groupId = $groupId;
 
 		self::$alreadyAddedToLog = [];
@@ -543,15 +618,18 @@ class JobLog {
 			self::recordEntityIds( $groupData );
 		}
 
-		self::writeLine(
-            [
-				'type'    => 'group_started',
-				'ts'      => microtime( true ),
-				'groupId' => $groupId,
-				'label'   => $groupLabel,
-				'data'    => self::dataToArray( $groupData ),
-			]
-        );
+		$line = [
+			'type'    => 'group_started',
+			'ts'      => microtime( true ),
+			'groupId' => $groupId,
+		];
+		if ( $parentGroupId !== null ) {
+			$line['parentGroupId'] = $parentGroupId;
+		}
+		$line['label'] = $groupLabel;
+		$line['data']  = self::dataToArray( $groupData );
+
+		self::writeLine( $line );
 	}
 
 	public static function finishCurrentGroup() {
@@ -564,8 +642,7 @@ class JobLog {
 		}
 
 		if ( ! self::ensureStreamOpen() ) {
-			self::$groupId      = null;
-			self::$extraLogData = [];
+			self::returnToParentGroup();
 			return;
 		}
 
@@ -577,9 +654,20 @@ class JobLog {
 			]
         );
 
-		self::$groupId = null;
+		self::returnToParentGroup();
+	}
 
-		self::$extraLogData = [];
+	private static function returnToParentGroup() {
+		$parent = array_pop( self::$parentGroups );
+
+		if ( $parent === null ) {
+			self::$groupId      = null;
+			self::$extraLogData = [];
+			return;
+		}
+
+		self::$groupId      = $parent['groupId'];
+		self::$extraLogData = $parent['extraLogData'];
 	}
 
 	public static function addExtraLogData( $key, $value ) {
@@ -636,6 +724,27 @@ class JobLog {
 
 		try {
 			self::add( $id, $data );
+		} finally {
+			if ( $ownsGroup ) {
+				self::finishCurrentGroup();
+			}
+		}
+	}
+
+	public static function runInGroup( $groupId, $label, callable $work, array $groupData = [] ) {
+		self::maybeInitRequest();
+
+		if ( ! self::canLog() ) {
+			return $work();
+		}
+
+		$ownsGroup = ! self::isGroupOpen();
+		if ( $ownsGroup ) {
+			self::createNewGroup( $groupId, $label, $groupData );
+		}
+
+		try {
+			return $work();
 		} finally {
 			if ( $ownsGroup ) {
 				self::finishCurrentGroup();
@@ -803,7 +912,7 @@ class JobLog {
 			return;
 		}
 
-		if ( self::$groupId !== null ) {
+		while ( self::$groupId !== null ) {
 			self::finishCurrentGroup();
 		}
 

@@ -11,6 +11,7 @@ class Config {
 		return [
 			'\WPML_Translation_Job_Factory'         => 'wpml_tm_load_job_factory',
 			\WPML_TM_ATE_Job_Repository::class      => 'wpml_tm_get_ate_jobs_repository',
+			\WPML\TM\Editor\Dispatch\DispatchPlan::class => [ \WPML\TM\Editor\Dispatch\DispatchPlanFactory::class, 'create' ],
 			\WPML_TM_Email_Notification_View::class => function () {
 				$factory = new \WPML_TM_Email_Twig_Template_Factory();
 
@@ -28,7 +29,6 @@ class Config {
 			'\WPML_TM_AMS_ATE_Console_Section',
 			'\WPML_TM_Admin_Sections',
 			'\WPML_Translator_Records',
-			'\WPML_Translator_Admin_Records',
 			'\WPML_Translation_Manager_Records',
 			'\WPML_TM_MCS_ATE_Strings',
 			'\WPML_TM_AMS_Users',
@@ -37,6 +37,7 @@ class Config {
 			'\WPML_TM_AMS_Check_Website_ID',
 			'\WPML_Translation_Job_Factory',
 			\WPML_TM_Translation_Status::class,
+			\WPML\TM\PostEditScreen\TranslationEditorPostSettings::class,
 			Storage::class,
 			ApiCommunication::class,
 		];

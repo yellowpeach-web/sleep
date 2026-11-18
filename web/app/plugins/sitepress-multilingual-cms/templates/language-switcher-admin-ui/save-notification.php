@@ -1,0 +1,4 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+?>
+<span class="js-wpml-ls-messages wpml-ls-messages"></span><span class="spinner"></span>

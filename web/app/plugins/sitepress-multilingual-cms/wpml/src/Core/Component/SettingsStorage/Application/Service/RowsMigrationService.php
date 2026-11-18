@@ -38,6 +38,7 @@ class RowsMigrationService {
         return;
       }
       $this->resyncFromBlobIfDrifted( $version );
+      $this->query->stopAutoloadingStoredBlob();
 
       return;
     }
@@ -56,6 +57,7 @@ class RowsMigrationService {
     }
 
     $this->explode( $blob, $version );
+    $this->query->stopAutoloadingStoredBlob();
   }
 
 

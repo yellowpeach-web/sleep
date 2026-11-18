@@ -84,18 +84,19 @@ class FingerprintGenerator {
 
 		global $sitepress;
 
-		$host    = $this->hostOf( $url );
+		$address = $this->addressOf( $url );
 		$domains = $sitepress->get_setting( 'language_domains' );
 		$domains = is_array( $domains ) ? $domains : [];
 
-		$hosts = array_map( [ $this, 'hostOf' ], $domains );
+		$addresses = array_map( [ $this, 'addressOf' ], $domains );
 
-		$hosts[] = $this->hostOf( $this->ownSiteUrl() );
+		$addresses[] = $this->addressOf( $this->ownSiteUrl() );
+		$addresses[] = $this->addressOf( get_home_url( get_current_blog_id() ) );
 
-		return '' !== $host && in_array( $host, $hosts, true );
+		return '' !== $address && in_array( $address, $addresses, true );
 	}
 
-	private function hostOf( $url ) {
+	private function addressOf( $url ) {
 		$url = trim( (string) $url );
 
 		if ( '' === $url ) {
@@ -108,6 +109,12 @@ class FingerprintGenerator {
 
 		$parsed = wp_parse_url( $url );
 
-		return is_array( $parsed ) && isset( $parsed['host'] ) ? (string) $parsed['host'] : '';
+		if ( ! is_array( $parsed ) || empty( $parsed['host'] ) ) {
+			return '';
+		}
+
+		$path = isset( $parsed['path'] ) ? rtrim( (string) $parsed['path'], '/' ) : '';
+
+		return strtolower( (string) $parsed['host'] ) . $path;
 	}
 }

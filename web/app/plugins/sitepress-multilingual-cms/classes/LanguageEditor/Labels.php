@@ -6,8 +6,8 @@ use WPML\Element\API\Languages;
 
 class Labels {
 
-	public function get( $code, array $targetCodes, $fallback = '' ) {
-		$saved   = $this->getSaved( $code );
+	public function get( $code, array $targetCodes, $fallback = '', $saved = null ) {
+		$saved   = is_array( $saved ) ? $saved : $this->getSaved( $code );
 		$builtIn = $this->getBuiltIn( $code );
 		$miss    = '' !== trim( (string) $fallback ) ? (string) $fallback : $this->fallbackName( $code );
 

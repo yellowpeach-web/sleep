@@ -4,6 +4,7 @@ class WPML_ST_String_Positions_In_Page extends WPML_ST_String_Positions {
 
 	const KIND = ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_PAGE;
 	const KIND_FRONTEND = ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND;
+	const KIND_FRONTEND_WHERE = ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND_WHERE;
 	const TEMPLATE = 'positions-in-page.twig';
 
 	private $string_factory;
@@ -37,15 +38,26 @@ class WPML_ST_String_Positions_In_Page extends WPML_ST_String_Positions {
 		$urls = $this->get_mapper()->get_positions_by_string_and_kind( $string_id, self::KIND );
 		$urls = array_merge(
 			$urls,
-			$this->get_mapper()->get_positions_by_string_and_kind( $string_id, self::KIND_FRONTEND )
+			$this->get_mapper()->get_positions_by_string_and_kind( $string_id, self::KIND_FRONTEND ),
+			$this->get_mapper()->get_positions_by_string_and_kind( $string_id, self::KIND_FRONTEND_WHERE )
+		);
+		$urls = array_values( array_unique( $urls ) );
+
+		$urls = array_values(
+			array_filter(
+				$urls,
+				function ( $address ) {
+					return $this->is_safe_address( $address );
+				}
+			)
 		);
 
 		foreach ( $urls as $url ) {
 			$pages[] = array(
 				'iframe_url' => add_query_arg(
 					array(
-						'icl_string_track_value'   => $value,
-						'icl_string_track_context' => $context,
+						'icl_string_track_value'   => rawurlencode( (string) $value ),
+						'icl_string_track_context' => rawurlencode( (string) $context ),
 					),
 					$url
 				),
@@ -54,5 +66,17 @@ class WPML_ST_String_Positions_In_Page extends WPML_ST_String_Positions {
 		}
 
 		return $pages;
+	}
+
+	private function is_safe_address( $address ) {
+		if ( ! is_string( $address ) || '' === $address || preg_match( '/[\x00-\x1F\x7F]/', $address ) ) {
+			return false;
+		}
+
+		if ( '/' === $address[0] ) {
+			return 1 === strlen( $address ) || ( '/' !== $address[1] && '\\' !== $address[1] );
+		}
+
+		return 1 === preg_match( '#^https?://[^/\\\\?\#@\s]+(?:[/?\#]|$)#i', $address );
 	}
 }

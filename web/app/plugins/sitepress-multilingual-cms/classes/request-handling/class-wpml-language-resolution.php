@@ -56,7 +56,11 @@ class WPML_Language_Resolution {
 				}
 
 				$this->resolving[ $asked ][ $level ] = $lang;
-				$this->current_request_lang          = $this->filter_for_legal_langs( $lang );
+				$resolved_language                   = $this->filter_for_legal_langs( $lang );
+				if ( $this->is_switched_to_another_site() ) {
+					return $resolved_language;
+				}
+				$this->current_request_lang = $resolved_language;
 			} finally {
 				array_pop( $this->resolving[ $asked ] );
 				if ( ! $this->resolving[ $asked ] ) {
@@ -73,9 +77,9 @@ class WPML_Language_Resolution {
 	}
 
 	public function get_active_language_codes() {
-		$this->maybe_reload();
+		list( , $active_language_codes ) = $this->maybe_reload();
 
-		return array_keys( $this->active_language_codes );
+		return array_keys( $active_language_codes );
 	}
 
 	public function is_language_hidden( $lang_code ) {
@@ -90,23 +94,38 @@ class WPML_Language_Resolution {
 
 	public function is_language_active( $lang_code, $is_all_active = false ) {
 		global $wpml_request_handler;
-		$this->maybe_reload();
+		list( , $active_language_codes ) = $this->maybe_reload();
 
 		if ( null === $lang_code ) {
 			return false;
 		}
 
 		return ( $is_all_active === true && $lang_code === 'all' )
-			   || isset( $this->active_language_codes[ $lang_code ] )
+			   || isset( $active_language_codes[ $lang_code ] )
 			   || ( $wpml_request_handler->show_hidden() && $this->is_language_hidden( $lang_code ) )
 			   || \WPML\Languages\RemovedLanguages::browsableInAdminList( $lang_code );
 	}
 
 	private function maybe_reload() {
-		$this->default_lang          = $this->default_lang
+		if ( $this->default_lang && $this->active_language_codes ) {
+			return [ $this->default_lang, $this->active_language_codes ];
+		}
+
+		$default_language      = $this->default_lang
 			? $this->default_lang : wpml_get_setting_filter( false, 'default_language' );
-		$this->active_language_codes = (bool) $this->active_language_codes === true
+		$active_language_codes = $this->active_language_codes
 			? $this->active_language_codes : array_fill_keys( wpml_reload_active_languages_setting( true ), 1 );
+
+		if ( ! $this->is_switched_to_another_site() ) {
+			$this->default_lang          = $default_language;
+			$this->active_language_codes = $active_language_codes;
+		}
+
+		return [ $default_language, $active_language_codes ];
+	}
+
+	private function is_switched_to_another_site(): bool {
+		return is_multisite() && ms_is_switched();
 	}
 
 	public function get_referrer_language_code() {
@@ -123,25 +142,32 @@ class WPML_Language_Resolution {
 	}
 
 	private function filter_for_legal_langs( $lang ) {
-		$this->maybe_reload();
+		list( $default_language, $active_language_codes ) = $this->maybe_reload();
 
 		$is_wp_cli_request = defined( 'WP_CLI' ) && WP_CLI;
-		if ( $lang === 'all' && ( is_admin() || $is_wp_cli_request ) ) {
+		if ( $lang === 'all' && ( is_admin() || $is_wp_cli_request || $this->rest_request_may_work_in_all_languages() ) ) {
 			return 'all';
 		}
 
 		if ( null === $lang ) {
-			$lang = $this->default_lang ? $this->default_lang : icl_get_setting( 'default_language' );
+			$lang = $default_language ? $default_language : icl_get_setting( 'default_language' );
 		}
 
 		if ( null !== $lang
 			 && ! isset( $this->hidden_lang_codes[ $lang ] )
-			 && ! isset( $this->active_language_codes[ $lang ] )
+			 && ! isset( $active_language_codes[ $lang ] )
 			 && ! \WPML\Languages\RemovedLanguages::browsableInAdminList( $lang ) ) {
-			$lang = $this->default_lang ? $this->default_lang : icl_get_setting( 'default_language' );
+			$lang = $default_language ? $default_language : icl_get_setting( 'default_language' );
 		}
 
 		return $lang;
+	}
+
+	public function rest_request_may_work_in_all_languages() {
+		return function_exists( 'wpml_is_rest_request' )
+			   && wpml_is_rest_request()
+			   && did_action( 'init' )
+			   && current_user_can( 'manage_options' );
 	}
 
 	private function use_cookie_language() {

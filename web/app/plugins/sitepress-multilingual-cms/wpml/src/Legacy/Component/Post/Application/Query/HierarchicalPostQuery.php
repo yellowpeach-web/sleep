@@ -77,7 +77,7 @@ class HierarchicalPostQuery implements HierarchicalPostQueryInterface {
     );
 
     $searchPart = $criteria->getSearch() ?
-      $this->queryPrepare->prepare( 'AND wpp.post_title LIKE %s', '%' . $criteria->getSearch() . '%' ) : '';
+      $this->queryPrepare->prepare( 'AND wpp.post_title LIKE %s ESCAPE \'|\'', \WPML\Utils\LikeEscape::contains( $criteria->getSearch() ) ) : '';
 
     $limitPart = $criteria->getLimit() > 0 ?
       $this->queryPrepare->prepare( 'LIMIT %d', $criteria->getLimit() ) : '';

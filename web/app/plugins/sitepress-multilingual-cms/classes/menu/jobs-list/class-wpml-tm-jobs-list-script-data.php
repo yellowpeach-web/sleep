@@ -46,15 +46,7 @@ class WPML_TM_Jobs_List_Script_Data {
 		$this->language_names = $language_names;
 
 		if ( ! $translators ) {
-			global $wpdb;
-			$translators = new WPML_TM_Jobs_List_Translators(
-				new WPML_Translator_Records(
-					$wpdb,
-					new WPML_WP_User_Query_Factory(),
-					wp_roles(),
-					new \WPML\TranslationRoles\Service\AdministratorRoleManager()
-				)
-			);
+			$translators = new WPML_TM_Jobs_List_Translators( \WPML\Container\make( WPML_Translator_Records::class ) );
 		}
 
 		if ( ! $services ) {
@@ -85,7 +77,7 @@ class WPML_TM_Jobs_List_Script_Data {
 			];
 		}
 
-		$isATEEnabled = \WPML_TM_ATE_Status::is_enabled_and_activated();
+		$isATEEnabled = \WPML_TM_ATE_Status::is_account_usable();
 		$isTranslationQueue = UIPage::isTranslationQueue( $_GET );
 		$localTranslators = $isTranslationQueue
 			? $this->translators->getWithSelfTranslator()

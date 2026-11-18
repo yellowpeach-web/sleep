@@ -49,7 +49,64 @@ abstract class Base implements StringsInBlock {
 			return array_values( array_unique( array_merge( $namespace_config, $block_config ), SORT_REGULAR ) );
 		}
 
-		return array_merge( $namespace_config, $block_config );
+		return $this->mergeKeyTrees( $namespace_config, $block_config );
+	}
+
+	private function mergeKeyTrees( array $namespace_keys, array $block_keys ): array {
+		$merged = [];
+
+		foreach ( array_keys( $namespace_keys + $block_keys ) as $name ) {
+			$in_namespace = array_key_exists( $name, $namespace_keys );
+			$in_block     = array_key_exists( $name, $block_keys );
+
+			if ( $in_namespace && $in_block ) {
+				$merged[ $name ] = $this->mergeKey( $namespace_keys[ $name ], $block_keys[ $name ] );
+			} elseif ( $in_namespace ) {
+				$merged[ $name ] = $this->mergeWildcardInto( $namespace_keys[ $name ], $name, $block_keys );
+			} else {
+				$merged[ $name ] = $this->mergeWildcardInto( $block_keys[ $name ], $name, $namespace_keys );
+			}
+		}
+
+		return $merged;
+	}
+
+	private function mergeKey( $lower, $winner ) {
+		if ( ! is_array( $lower ) || ! is_array( $winner ) ) {
+			return $winner;
+		}
+
+		$merged_key      = array_merge( $lower, $winner );
+		$lower_children  = $this->getChildren( $lower );
+		$winner_children = $this->getChildren( $winner );
+
+		if ( null !== $lower_children || null !== $winner_children ) {
+			$merged_key['children'] = $this->mergeKeyTrees(
+				null !== $lower_children ? $lower_children : $this->getMatchAllChildren( $lower ),
+				null !== $winner_children ? $winner_children : $this->getMatchAllChildren( $winner )
+			);
+		}
+
+		return $merged_key;
+	}
+
+	private function mergeWildcardInto( $key, $name, array $other_keys ) {
+		if ( '*' === (string) $name || ! array_key_exists( '*', $other_keys ) ) {
+			return $key;
+		}
+
+		return $this->mergeKey( $other_keys['*'], $key );
+	}
+
+	private function getChildren( array $key ) {
+		return isset( $key['children'] ) && is_array( $key['children'] ) ? $key['children'] : null;
+	}
+
+	private function getMatchAllChildren( array $leaf ): array {
+		unset( $leaf['children'] );
+		$leaf['search-method'] = \WPML_Gutenberg_Config_Option::SEARCH_METHOD_WILDCARD;
+
+		return [ '*' => $leaf ];
 	}
 
 	private function isList( array $config ): bool {

@@ -127,6 +127,9 @@
          "Delete language pair(s)": [
             "Dil çiftlerini sil"
          ],
+         "Can translate to and from all languages": [
+            "Tüm diller arasında çeviri yapabilir"
+         ],
          "An error occurred. Please try again.": [
             "Bir hata oluştu. Lütfen tekrar deneyin."
          ],
@@ -153,6 +156,60 @@
          ],
          "Back to Step %1$s: %2$s": [
             "Adım %1$s'e geri dön: %2$s"
+         ],
+         "Available": [
+            "Mevcut"
+         ],
+         "Not available": [
+            "Mevcut değil"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "Sitenizin konusunu, hedef kitlesini ve tonunu anlar"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "Garantimizle desteklenen, yayına hazır kalite"
+         ],
+         "Review before publishing": [
+            "Yayınlamadan önce inceleyin"
+         ],
+         "Pay once per page – only added words are charged": [
+            "Sayfa başına bir kez ödeyin – yalnızca eklenen kelimeler ücretlendirilir"
+         ],
+         "Per word, changes included": [
+            "Kelime başına, değişiklikler dahil"
+         ],
+         "A legacy engine": [
+            "Eski bir motor"
+         ],
+         "<button>Switch to a different engine</button> if you prefer — no quality guarantee and no free translation edits with other engines.": [
+            "Tercih ederseniz <button>farklı bir motora geçin</button> — diğer motorlarda kalite garantisi ve ücretsiz çeviri düzenlemeleri sunulmaz."
+         ],
+         "Your content will be translated by <strong>Private Translation Cloud (PTC)</strong>, WPML's own AI engine. PTC lets you translate the entire site automatically, in one click, offering free translation edits.": [
+            "İçeriğiniz, WPML'nin kendi yapay zeka motoru olan <strong>Private Translation Cloud (PTC)</strong> tarafından çevrilecektir. PTC, tüm siteyi tek tıkla otomatik olarak çevirmenizi sağlar ve ücretsiz çeviri düzenlemeleri sunar."
+         ],
+         "Couldn't save — try again": [
+            "Kaydedilemedi; tekrar deneyin"
+         ],
+         "Your content will be translated by <strong>%s</strong>, a machine translation engine. You pay per word, including changes to content that's already translated.": [
+            "İçeriğiniz, bir makine çevirisi motoru olan <strong>%s</strong> tarafından çevrilecektir. Zaten çevrilmiş içeriklerdeki değişiklikler de dahil olmak üzere, kelime başına ödeme yaparsınız."
+         ],
+         "Switch to PTC": [
+            "PTC motoruna geç"
+         ],
+         "Switch away from PTC?": [
+            "PTC'den çıkılsın mı?"
+         ],
+         "DeepL, Google Translate or Microsoft Translator": [
+            "DeepL, Google Translate veya Microsoft Translator"
+         ],
+         "Your engine now": [
+            "Şu anki motorunuz"
+         ],
+         "Switch away from PTC": [
+            "PTC'den çık"
+         ],
+         "Stay with PTC": [
+            "PTC'de kal"
          ],
          "Technical Details (for WPML Support)": [
             "Teknik detaylar (WPML desteği için)"
@@ -186,6 +243,45 @@
          ],
          " and provide the technical details below (use the Copy button to copy them).": [
             " ile iletişime geçin ve aşağıdaki teknik detayları sağlayın (kopyalamak için Kopyala düğmesini kullanın)."
+         ],
+         "Publish without review": [
+            "İncelemeden yayınla"
+         ],
+         "Translations go live immediately in the target language.": [
+            "Çeviriler hedef dilde anında yayına girer."
+         ],
+         "Wait for review before publishing": [
+            "Yayınlamadan önce inceleme bekle"
+         ],
+         "Translations stay as drafts until a translation manager approves them.": [
+            "Çeviriler, bir çeviri yöneticisi onaylayana kadar taslak olarak kalır."
+         ],
+         "Recommended": [
+            "Önerilen"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "DeepL, Google ve Microsoft için doğru olduklarını onaylamak adına bir insan incelemesi öneririz. PTC, bağlamı anlayan İnsandan Daha İyi Çeviriler sunar, böylece inceleme sürecini güvenle atlayabilirsiniz."
+         ],
+         "Publish and mark for review": [
+            "Yayınla ve inceleme için işaretle"
+         ],
+         "Translations go live but appear in a \"needs review\" queue.": [
+            "Çeviriler yayına girer ancak “inceleme bekleniyor” kuyruğunda görünür."
+         ],
+         "After auto-translation": [
+            "Otomatik çeviriden sonra"
+         ],
+         "What happens to content once %s has translated it.": [
+            "%s içeriği çevirdikten sonra ne yapılacağı."
+         ],
+         "Wait for review": [
+            "İnceleme için bekle"
+         ],
+         "%1$s (<strong>%2$s</strong>)": [
+            "%1$s (<strong>%2$s</strong>)"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "WPML içeriğinizi otomatik olarak çevirmeyi bitirdiğinde ne yapmak istersiniz?"
          ],
          "Loading AI Translation...": [
             "Yapay zeka çevirisi yükleniyor..."
@@ -328,6 +424,15 @@
          "adding a custom language": [
             "özel bir dil ekleme"
          ],
+         "I will fix my server settings to display languages in directories later.": [
+            "Dilleri dizinlerde görüntülemek için sunucu ayarlarımı daha sonra düzelteceğim."
+         ],
+         "We could not verify your server's URL-rewrite support.": [
+            "Sunucunuzun URL yeniden yazma (URL-rewrite) desteği doğrulanamadı."
+         ],
+         "Learn more about required server settings to display languages in directories": [
+            "Dilleri dizinlerde görüntülemek için gereken sunucu ayarları hakkında daha fazla bilgi edinin"
+         ],
          "I will change the permalink structure later.": [
             "Kalıcı bağlantı yapısını daha sonra değiştireceğim."
          ],
@@ -367,8 +472,15 @@
          "This domain does not show this site.": [
             "Bu alan adı bu siteyi göstermiyor."
          ],
+         "This address belongs to another site on this network.": [
+            "Bu adres bu ağdaki başka bir siteye ait."
+         ],
          "WPML could not reach this domain.": [
             "WPML bu alan adına ulaşamadı."
+         ],
+         "If you choose this, these URLs will open a sub-site: %s.": [
+            "Bunu seçerseniz, bu URL'ler bir alt site açacaktır: %s.",
+            "Bunu seçerseniz, bu URL'ler bir alt site açacaktır: %s."
          ],
          "The domain you have entered is invalid.": [
             "Girdiğiniz alan adı geçersiz."
@@ -387,15 +499,6 @@
          ],
          "The URL rewrite is not configured in your server.": [
             "URL yeniden yazma sunucunuzda yapılandırılmamış."
-         ],
-         "I will fix my server settings to display languages in directories later.": [
-            "Dilleri dizinlerde görüntülemek için sunucu ayarlarımı daha sonra düzelteceğim."
-         ],
-         "We could not verify your server's URL-rewrite support.": [
-            "Sunucunuzun URL yeniden yazma (URL-rewrite) desteği doğrulanamadı."
-         ],
-         "Learn more about required server settings to display languages in directories": [
-            "Dilleri dizinlerde görüntülemek için gereken sunucu ayarları hakkında daha fazla bilgi edinin"
          ],
          "your pages": [
             "sayfalarınız"
@@ -421,11 +524,17 @@
          "Translate your posts": [
             "Yazılarınızı çevirin"
          ],
-         "the Translation Dashboard": [
-            "Çeviri Paneli"
+         "%s will translate your whole site and keep new content translated from now on. You're charged per word, including later changes.": [
+            "%s tüm sitenizi çevirecek ve bundan sonra yeni içerikleri çevrilmiş olarak tutacaktır. Sonraki değişiklikler de dahil olmak üzere kelime başına ücretlendirilirsiniz."
          ],
          "Private Translation Cloud (PTC) will translate your whole site and keep new content translated from now on. You pay once for what's translated — editing it afterward is free.": [
             "Private Translation Cloud (PTC) tüm sitenizi çevirecek ve bundan sonra yeni içerikleri çevrilmiş halde tutacaktır. Çevrilen içerik için bir kez ödeme yaparsınız; sonrasında düzenleme yapmak ücretsizdir."
+         ],
+         "Automatic translation will translate your whole site and keep new content translated from now on.": [
+            "Otomatik çeviri tüm sitenizi çevirecek ve bundan sonra yeni içerikleri çevrilmiş olarak tutacaktır."
+         ],
+         "the Translation Dashboard": [
+            "Çeviri Paneli"
          ],
          "Apply settings and start site's translation": [
             "Ayarları uygula ve sitenin çevirisini başlat"
@@ -439,8 +548,14 @@
          "the WooCommerce Multilingual setup": [
             "WooCommerce Multilingual kurulumu"
          ],
+         "%s will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "%s sitenizi çevirmeye şimdi başlayacak ve bundan sonra yeni içerikleri çevrilmiş olarak tutacaktır. Ardından, çok dilli mağazanızı kuracaksınız. WooCommerce Multilingual kurulumunu tamamladığınızda ürünleriniz çevrilmeye başlar."
+         ],
          "Private Translation Cloud (PTC) will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup. You pay once for what's translated. Editing it afterward is free.": [
             "Private Translation Cloud (PTC) sitenizi şimdi çevirmeye başlayacak ve bundan sonra yeni içerikleri çevrilmiş halde tutacaktır. Ardından, çok dilli mağazanızı kuracaksınız. Ürünleriniz, WooCommerce Multilingual kurulumunu bitirdiğinizde çevrilmeye başlar. Çevrilen içerik için bir kez ödeme yaparsınız. Sonrasında düzenleme yapmak ücretsizdir."
+         ],
+         "Automatic translation will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "Otomatik çeviri sitenizi çevirmeye şimdi başlayacak ve bundan sonra yeni içerikleri çevrilmiş olarak tutacaktır. Ardından, çok dilli mağazanızı kuracaksınız. WooCommerce Multilingual kurulumunu tamamladığınızda ürünleriniz çevrilmeye başlar."
          ],
          "Continue to WooCommerce Multilingual Setup while translation begins": [
             "Çeviri başlarken WooCommerce Multilingual Kurulumuna devam et"
@@ -484,8 +599,14 @@
          "Applying your setup choices": [
             "Kurulum seçimleriniz uygulanıyor"
          ],
+         "%s is translating your content. There's nothing else you need to do here.": [
+            "%s içeriğinizi çeviriyor. Burada başka bir şey yapmanıza gerek yoktur."
+         ],
          "PTC is translating your content. There's nothing else you need to do here.": [
             "PTC içeriğinizi çeviriyor. Burada yapmanız gereken başka bir şey yok."
+         ],
+         "Your content is being translated. There's nothing else you need to do here.": [
+            "İçeriğiniz çevriliyor. Burada başka bir şey yapmanıza gerek yoktur."
          ],
          "We're applying all your setup choices and preparing WPML. This is a one-time process.": [
             "Tüm kurulum seçimlerinizi uyguluyoruz ve WPML'yi hazırlıyoruz. Bu tek seferlik bir işlemdir."
@@ -580,38 +701,8 @@
          "Full details of the info we’re proposing to share": [
             "Paylaşmayı önerdiğimiz bilgilerin tüm detayları"
          ],
-         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
-            "Siteniz için en iyi modu seçerek <LinkToTheDifferentWaysYouCanTranslateYourSite/>."
-         ],
-         "How would you like to translate your content?": [
-            "İçeriğinizi nasıl çevirmek istersiniz?"
-         ],
-         "Recommended": [
-            "Önerilen"
-         ],
-         "Translate Everything Automatically": [
-            "Her şeyi otomatik olarak çevir"
-         ],
-         "Full-site automatic translation needs AI translation set up.": [
-            "Tam site otomatik çevirisi için yapay zeka çevirisinin ayarlanması gerekir."
-         ],
-         "Set up AI translation": [
-            "Yapay zeka çevirisini ayarla"
-         ],
-         "Translate Some: You Choose What to Translate": [
-            "Bazılarını çevir: neyin çevrileceğini siz seçin"
-         ],
-         "Select this option": [
-            "Bu seçeneği belirleyin"
-         ],
          "How it works": [
             "Nasıl çalışır"
-         ],
-         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
-            "PTC (Private Translation Cloud), WPML'nin kendi yapay zeka çeviri motorudur. Tüm sitenizi seçtiğiniz her dile arka planda çevirir. Herhangi bir çeviriyi düzenleyebilir ve yazı türlerini hariç tutabilirsiniz."
-         ],
-         "Can't decide?": [
-            "Karar veremiyor musunuz?"
          ],
          "You select and submit what to translate.": [
             "Neyin çevrileceğini siz seçer ve gönderirsiniz."
@@ -619,32 +710,35 @@
          "Costs": [
             "Maliyetler"
          ],
-         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
-            "Çevrilen toplam içerik için bir kez ödeyin.<br/><strong>Revizyonlar ücretsizdir</strong> — sadece eklenen içerik ücretlendirilir."
-         ],
          "Pay per translation job submitted.<br/>Each update or new content batch is a separate charge.": [
             "Gönderilen çeviri işi başına ödeme yapın.<br/>Her güncelleme veya yeni içerik grubu ayrı bir ücrettir."
-         ],
-         "Translation quality": [
-            "Çeviri kalitesi"
-         ],
-         "WPML ensures excellent quality. Bad translations are refunded.": [
-            "WPML mükemmel kalite sağlar. Kötü çeviriler iade edilir."
          ],
          "Ideal for": [
             "Şunun için idealdir:"
          ],
-         "Known upfront costs": [
-            "Bilinen ön maliyetler"
+         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "PTC (Private Translation Cloud), WPML'nin kendi yapay zeka çeviri motorudur. Tüm sitenizi seçtiğiniz her dile arka planda çevirir. Herhangi bir çeviriyi düzenleyebilir ve yazı türlerini hariç tutabilirsiniz."
          ],
-         "Unlimited post-translation editing": [
-            "Sınırsız çeviri sonrası düzenleme"
+         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
+            "Çevrilen toplam içerik için bir kez ödeyin.<br/><strong>Revizyonlar ücretsizdir</strong> — sadece eklenen içerik ücretlendirilir."
          ],
-         "Marketing optimization": [
-            "Pazarlama optimizasyonu"
+         "Included with PTC": [
+            "PTC ile dahildir"
          ],
-         "Turn-key solutions": [
-            "Anahtar teslim çözümler"
+         "Only with PTC — not with %s": [
+            "Yalnızca PTC ile — %s ile değil"
+         ],
+         "your current engine": [
+            "mevcut motorunuz"
+         ],
+         "%s translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "%s tüm sitenizi seçtiğiniz her dile arka planda çevirir. İstediğiniz çeviriyi düzenleyebilir ve yazı türlerini hariç tutabilirsiniz."
+         ],
+         "Charged per word, including changes to content that's already translated.": [
+            "Zaten çevrilmiş içeriklerdeki değişiklikler de dahil olmak üzere, kelime başına ücretlendirilir."
+         ],
+         "You choose what to translate, from the Translation Dashboard or with \"+\" next to each page. PTC translates it.": [
+            "Neyin çevrileceğini Çeviri Panosu'ndan veya her sayfanın yanındaki “+” simgesiyle siz seçersiniz. PTC çevirir."
          ],
          "Partial site translation": [
             "Kısmi site çevirisi"
@@ -652,11 +746,98 @@
          "Maximum control": [
             "Maksimum kontrol"
          ],
+         "Quality without the work": [
+            "Zahmetsiz kalite"
+         ],
+         "You choose what to translate. You or your translators write each translation in the Advanced Translation Editor.": [
+            "Neyin çevrileceğini siz seçersiniz. Siz veya çevirmenleriniz her çeviriyi Gelişmiş Çeviri Düzenleyicisi'nde yazar."
+         ],
+         "No words used, unless you start from a machine translation in the editor.": [
+            "Düzenleyicide bir makine çevirisiyle başlamadığınız sürece kelime kullanılmaz."
+         ],
+         "Your own translators": [
+            "Kendi çevirmenleriniz"
+         ],
+         "Texts that need a human touch": [
+            "İnsan dokunuşu gerektiren metinler"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "PTC translates what you send. You review.": [
+            "PTC gönderdiklerinizi çevirir. Siz incelersiniz."
+         ],
+         "I translate": [
+            "Ben çeviriyorum"
+         ],
+         "You or your translators write it.": [
+            "Siz veya çevirmenleriniz yazar."
+         ],
+         "When you start a translation, who translates?": [
+            "Bir çeviri başlattığınızda kim çevirsin?"
+         ],
+         "Who translates": [
+            "Kim çeviriyor"
+         ],
          "Contact our support team for help": [
             "Yardım için destek ekibimizle iletişime geçin"
          ],
+         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
+            "Siteniz için en iyi modu seçerek <LinkToTheDifferentWaysYouCanTranslateYourSite/>."
+         ],
+         "How would you like to translate your content?": [
+            "İçeriğinizi nasıl çevirmek istersiniz?"
+         ],
+         "Translate Everything Automatically": [
+            "Her şeyi otomatik olarak çevir"
+         ],
+         "Translations always in sync": [
+            "Çeviriler her zaman senkronize kalır"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "Tam site otomatik çevirisi için yapay zeka çevirisinin ayarlanması gerekir."
+         ],
+         "New and updated content translated automatically": [
+            "Yeni ve güncellenen içerikler otomatik çevrilir"
+         ],
+         "Set up AI translation": [
+            "Yapay zeka çevirisini ayarla"
+         ],
+         "Sites that publish often": [
+            "Sık içerik yayımlayan siteler"
+         ],
+         "All your languages at once": [
+            "Tüm dilleriniz aynı anda"
+         ],
+         "Translate Some: You Choose What to Translate": [
+            "Bazılarını çevir: neyin çevrileceğini siz seçin"
+         ],
+         "Select this option": [
+            "Bu seçeneği belirleyin"
+         ],
+         "WPML uses the Advanced Translation Editor. You can change the editor later in WPML > Settings > Translation editor and method.": [
+            "WPML, Gelişmiş Çeviri Düzenleyicisi'ni kullanır. Düzenleyiciyi daha sonra WPML > Ayarlar > Çeviri düzenleyici ve yöntemi bölümünden değiştirebilirsiniz."
+         ],
+         "Quality guarantee, bad translations refunded": [
+            "Kalite garantisi, kötü çevirilerde ücret iadesi"
+         ],
+         "Can't decide?": [
+            "Karar veremiyor musunuz?"
+         ],
+         "Pay once — revisions are free": [
+            "Bir kez ödeyin — revizyonlar ücretsizdir"
+         ],
+         "Known upfront costs": [
+            "Bilinen ön maliyetler"
+         ],
+         "Publish-ready results, no review needed": [
+            "Yayına hazır sonuçlar, incelemeye gerek yok"
+         ],
+         "Marketing optimization based on your site and audience": [
+            "Sitenize ve hedef kitlenize göre pazarlama optimizasyonu"
+         ],
          "Calculate Translation Costs": [
-            "Çeviri maliyetlerini hesaplayın"
+            "Çeviri maliyetlerini hesapla"
          ],
          "Review your site content and estimate the translation cost based on what you choose to translate.": [
             "Site içeriğinizi inceleyin ve çevirmeyi seçtiğiniz öğelere göre çeviri maliyetini tahmin edin."
@@ -668,7 +849,7 @@
             "Her şeyi çevirmeden önce"
          ],
          "You can continue without them. Nothing here stops the setup.": [
-            "Onlar olmadan devam edebilirsiniz. Buradaki hiçbir şey kurulumu durdurmaz."
+            "Bunlar olmadan devam edebilirsiniz. Buradaki hiçbir şey kurulumu engellemez."
          ],
          "Translation Contributors": [
             "Çeviriye katkıda bulunanlar"
@@ -888,6 +1069,9 @@
          ],
          "Ranking": [
             "Sıralama"
+         ],
+         "language URL directory and language name\u0004%1$s (%2$s)": [
+            "%1$s (%2$s)"
          ]
       }
    }

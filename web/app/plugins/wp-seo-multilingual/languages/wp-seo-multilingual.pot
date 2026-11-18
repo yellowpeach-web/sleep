@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WPML SEO plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WPML SEO 5.2.0\n"
+"Project-Id-Version: WPML SEO 5.4.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-seo-multilingual\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-19T11:55:18+00:00\n"
+"POT-Creation-Date: 2026-11-12T07:50:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wp-seo-multilingual\n"
@@ -87,4 +87,10 @@ msgstr ""
 
 #: classes/YoastSEO/Terms/Meta/DashboardHooks.php:30
 msgid "This section has the Yoast SEO texts of your categories, tags and other taxonomy terms."
+msgstr ""
+
+#. translators: %s: the plugin's name.
+#: plugin.php:42
+#, php-format
+msgid "%s is incomplete: some of its files are missing, probably after an interrupted update. Please reinstall the plugin."
 msgstr ""

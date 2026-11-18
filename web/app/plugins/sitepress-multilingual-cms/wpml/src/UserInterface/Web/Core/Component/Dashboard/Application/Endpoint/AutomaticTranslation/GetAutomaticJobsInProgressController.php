@@ -27,6 +27,7 @@ class GetAutomaticJobsInProgressController implements EndpointInterface {
       $results['data'] = [
         'automaticJobsInProgressCount' => $this->jobQuery->countAutomaticInProgress(),
         'chargedJobsInProgress'        => $this->jobQuery->getInFlightChargedAutomatic(),
+        'hasJobsToCancel'              => (bool) apply_filters( 'wpml_tea_disable_has_jobs_to_cancel', false ),
       ];
     } catch ( DatabaseErrorException $exception ) {
       $results['success']  = false;

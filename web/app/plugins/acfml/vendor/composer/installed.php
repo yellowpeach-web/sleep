@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-7693ec743010f65568a0e0613e0836fc60a40140',
-        'version' => 'dev-7693ec743010f65568a0e0613e0836fc60a40140',
+        'pretty_version' => 'dev-d07cea5a5288ece655fab8656e409145e8b4c43f',
+        'version' => 'dev-d07cea5a5288ece655fab8656e409145e8b4c43f',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '7693ec743010f65568a0e0613e0836fc60a40140',
+        'reference' => 'd07cea5a5288ece655fab8656e409145e8b4c43f',
         'name' => 'acfml/advanced-custom-fields-multilingual',
         'dev' => false,
     ),
     'versions' => array(
         'acfml/advanced-custom-fields-multilingual' => array(
-            'pretty_version' => 'dev-7693ec743010f65568a0e0613e0836fc60a40140',
-            'version' => 'dev-7693ec743010f65568a0e0613e0836fc60a40140',
+            'pretty_version' => 'dev-d07cea5a5288ece655fab8656e409145e8b4c43f',
+            'version' => 'dev-d07cea5a5288ece655fab8656e409145e8b4c43f',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '7693ec743010f65568a0e0613e0836fc60a40140',
+            'reference' => 'd07cea5a5288ece655fab8656e409145e8b4c43f',
             'dev_requirement' => false,
         ),
         'wpml-shared/wpml-lib-dependencies' => array(

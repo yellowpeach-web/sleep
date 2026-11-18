@@ -20,10 +20,15 @@ class DownloadsList {
 		$checked = $download['is_preselected_plugin'] ? 'checked' : '';
 
 		$upToDateClass = '';
+		$release       = $download;
 		if ( $v = OTGS_Installer()->plugin_is_installed( $download['name'], $download['slug'] ) ) {
+			$stableAboveRow = self::isStableVersionAboveRow( $v, $download );
+			if ( $stableAboveRow ) {
+				$release = self::getInstalledRelease( $v, $download['slug'], $repository_id );
+			}
 
 			$class = version_compare( $v, $download['version'], '>=' ) ? 'installer-green-text' : 'installer-red-text';
-			$class .= version_compare( $v, $download['version'], '>' ) ? ' unstable' : '';
+			$class .= version_compare( $v, $download['version'], '>' ) && ! $stableAboveRow ? ' unstable' : '';
 
 			$upToDateClass = '<span class="' . $class . '">' . $v . '</span>';
 
@@ -56,11 +61,25 @@ class DownloadsList {
 							<span class="spinner"></span>
 						</div>
 	                </td>
-	                <td class="installer_version">' . $download['version'] . '</td>
-	                <td class="installer_release_date">' . date_i18n( 'F j, Y', strtotime( $download['date'] ) ) . '</td>
+	                <td class="installer_version">' . $release['version'] . '</td>
+	                <td class="installer_release_date">' . ( $release['date'] ? date_i18n( 'F j, Y', strtotime( $release['date'] ) ) : '' ) . '</td>
 	                <td></td>
-					<td>' . self::getReleaseNotesHandle( $download_id, $download ) . '</td>
-	            </tr>' . self::getReleaseNotesRow( $download_id, $download );
+					<td>' . self::getReleaseNotesHandle( $download_id, $release ) . '</td>
+	            </tr>' . self::getReleaseNotesRow( $download_id, $release );
+	}
+
+	private static function isStableVersionAboveRow( $installedVersion, $download ) {
+		return isset( $download['channel'] )
+			&& \WP_Installer_Channels::CHANNEL_PRODUCTION === $download['channel']
+			&& version_compare( $installedVersion, $download['version'], '>' )
+			&& ! \WP_Installer_Channels::is_pre_release( $installedVersion )
+			&& ! OTGS_Installer()->plugin_is_embedded_version( $download['name'], $download['slug'] );
+	}
+
+	private static function getInstalledRelease( $version, $slug, $repository_id ) {
+		$release = OTGS_Installer()->get_master_release( $repository_id, $slug, $version );
+
+		return $release ?: [ 'version' => $version, 'date' => '', 'release-notes' => '' ];
 	}
 
 	public static function getUnavailableRow( $download_id, $download ) {

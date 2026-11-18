@@ -117,7 +117,11 @@ class DomainsLocalesMapper {
 			function( $entry ) {
 				return false !== $entry->locale;
 			}
-		)->unique( [ self::class, 'entityKey' ] )->values();
+		)->unique(
+			function ( $entity ) {
+				return self::entityKey( $entity );
+			}
+		)->values();
 	}
 
 	public static function entityKey( $entity ) {

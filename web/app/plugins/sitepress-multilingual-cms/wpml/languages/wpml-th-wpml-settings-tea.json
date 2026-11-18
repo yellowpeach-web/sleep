@@ -127,11 +127,11 @@
          "Legacy engine": [
             "เอนจินรุ่นเก่า"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "ใช้อัตราภาษารุ่นเก่า %s เป็นเอนจินการแปลรุ่นเก่า ไม่แนะนำสำหรับไซต์ใหม่และจะถูกยกเลิกการใช้งาน ไซต์ที่มีอยู่จะยังคงใช้อัตราคำที่ปรับแล้วสำหรับเอนจินนี้"
-         ],
          "Switch to PTC": [
             "สลับเป็น PTC"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "ใช้อัตราภาษารุ่นเก่า %s เป็นเอนจินการแปลรุ่นเก่า ไม่แนะนำสำหรับไซต์ใหม่และจะถูกยกเลิกการใช้งาน ไซต์ที่มีอยู่จะยังคงใช้อัตราคำที่ปรับแล้วสำหรับเอนจินนี้"
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "นี่คือจำนวนที่ต้องใช้ในการแปลเนื้อหาปัจจุบันของคุณในวันนี้ ยอดนี้ยังไม่รวมข้อความบางส่วนที่เพิ่มโดยปลั๊กอินอื่น ๆ เช่น ฟอร์มหรือสไลเดอร์ ซึ่งจะถูกนับหลังจากตั้งค่าเสร็จสมบูรณ์แล้ว สตริงของไซต์จากธีมและปลั๊กอินของคุณจะถูกนับหลังจากการตั้งค่าเช่นกัน และโดยทั่วไปจะเพิ่มขึ้นอีกสองถึงสามร้อยคำ หลังจากนั้น การแก้ไขจะไม่เสียค่าใช้จ่าย คุณจะจ่ายอีกครั้งเฉพาะคำที่คุณเพิ่มเท่านั้น"
@@ -148,8 +148,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "ยอดรวมนี้จะนับหน้า โพสต์ และสินค้า รวมถึงฟิลด์ที่กำหนดเอง ข้อความตัวสร้างเพจ และข้อความของสื่อ ตลอดจนหมวดหมู่ แท็ก และแอตทริบิวต์ที่รายการเหล่านั้นใช้"
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "ยอดรวมนี้จะนับหน้า โพสต์ และสินค้า รวมถึงฟิลด์ที่กำหนดเอง ข้อความตัวสร้างเพจ และข้อความของสื่อ ตลอดจนหมวดหมู่ แท็ก และแอตทริบิวต์ที่รายการเหล่านั้นใช้ และสตริงของไซต์ โดยคำศัพท์จะถูกนับในทุกรายการที่ใช้งานและนับแยกต่างหากอีกหนึ่งครั้ง เนื่องจากคำศัพท์จะถูกส่งไปแปลทั้งสองแบบ"
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "การนับนี้จะรวมหน้า โพสต์ และสินค้า พร้อมด้วยฟิลด์ที่กำหนดเอง ข้อความจากเครื่องมือสร้างหน้า และข้อความของสื่อ หมวดหมู่ แท็ก และแอตทริบิวต์ที่รายการเหล่านั้นใช้ ตลอดจนสตริงของไซต์ โดยแต่ละหมวดหมู่ แท็ก หรือแอตทริบิวต์จะถูกนับเพียงครั้งเดียวในแถว “อนุกรมวิธาน” และจะไม่ถูกนับซ้ำกับรายการที่ใช้งานสิ่งเหล่านั้น"
          ],
          "Total items": [
             "รายการทั้งหมด"
@@ -371,7 +371,7 @@
             "มี %1$s%2$s คำ%3$s ในบัญชี WPML ของคุณ"
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "มี %1$s%2$s คำที่ใช้งานได้ในบัญชี WPML ของคุณ%3$s"
+            "มี %1$s%2$s คำ%3$sที่พร้อมใช้งานในบัญชี WPML ของคุณ"
          ],
          "(Only the WPML account owner can do this.)": [
             "(เฉพาะเจ้าของบัญชี WPML เท่านั้นที่สามารถดำเนินการนี้ได้)"

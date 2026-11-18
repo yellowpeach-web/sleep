@@ -1,6 +1,8 @@
 <?php
 
-class WPML_Config_Shortcode_List extends WPML_WP_Option implements IWPML_Action, IWPML_Backend_Action_Loader, IWPML_AJAX_Action_Loader {
+class WPML_Config_Shortcode_List extends WPML_WP_Option implements IWPML_Action, IWPML_Backend_Action_Loader, IWPML_Frontend_Action_Loader, IWPML_AJAX_Action_Loader {
+
+	private $shortcodes;
 
 	public function create() {
 		return $this;
@@ -26,11 +28,16 @@ class WPML_Config_Shortcode_List extends WPML_WP_Option implements IWPML_Action,
 		}
 
 		$this->set( $shortcode_data, false );
+		$this->shortcodes = (array) $shortcode_data;
 
 		return $config_data;
 	}
 
 	public function filter_shortcode_list( $shortcodes ) {
-		return array_unique( array_merge( $shortcodes, $this->get() ) );
+		if ( null === $this->shortcodes ) {
+			$this->shortcodes = (array) $this->get();
+		}
+
+		return array_unique( array_merge( $shortcodes, $this->shortcodes ) );
 	}
 }

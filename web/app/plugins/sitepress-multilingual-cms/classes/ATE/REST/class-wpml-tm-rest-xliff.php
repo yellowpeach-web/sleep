@@ -44,7 +44,7 @@ class WPML_TM_REST_XLIFF extends WPML_TM_ATE_Required_Rest_Base {
 			);
 		}
 
-		$writer = ( new WPML_TM_Xliff_Writer( $wpml_translation_job_factory ) )->withDeclaredPlaceholders();
+		$writer = ( new WPML_TM_Xliff_Writer( $wpml_translation_job_factory ) )->withDeclaredPlaceholders()->withOutdatedFieldSegments();
 		$xliff  = $writer->generate_job_xliff_or_null( $job_id );
 
 		if ( null === $xliff ) {

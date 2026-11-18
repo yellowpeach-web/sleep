@@ -3,6 +3,7 @@ require_once WPML_TM_PATH . '/inc/translation-jobs/jobs/wpml-element-translation
 require_once WPML_TM_PATH . '/inc/translation-jobs/jobs/wpml-external-translation-job.class.php';
 require_once WPML_TM_PATH . '/inc/translation-jobs/jobs/wpml-post-translation-job.class.php';
 require_once WPML_TM_PATH . '/inc/translation-jobs/jobs/wpml-string-translation-job.class.php';
+require_once WPML_TM_PATH . '/inc/translation-jobs/jobs/StringBatchTranslationJob.php';
 
 class WPML_Translation_Jobs_Collection extends WPML_Abstract_Job_Collection {
 
@@ -105,8 +106,11 @@ class WPML_Translation_Jobs_Collection extends WPML_Abstract_Job_Collection {
 	}
 
 	private function get_jobs_in_db( array $args = array(), ?array $pagination_args = null ) {
-		$where_jobs       = $this->build_where_clause( $args );
-		$jobs_table_union = $this->get_jobs_union_table_sql( $where_jobs, $args );
+		$where_jobs = $this->build_where_clause( $args, false, 'o' );
+		$where_string_batches = empty( $args['title'] ) && empty( $args['type'] )
+			? $this->build_where_clause( $args, true )
+			: '';
+		$jobs_table_union     = $this->get_jobs_union_table_sql( $where_jobs, $args, $where_string_batches );
 
 		$count_sql = 'SELECT COUNT(*) FROM ' . $jobs_table_union;
 		$found_rows = (int) $this->wpdb->get_var( $count_sql );
@@ -185,7 +189,7 @@ class WPML_Translation_Jobs_Collection extends WPML_Abstract_Job_Collection {
 		);
 	}
 
-	private function get_jobs_union_table_sql( $where_jobs, $args ) {
+	private function get_jobs_union_table_sql( $where_jobs, $args, $where_string_batches = '' ) {
 		$union_sql      = '';
 		$sql_statements = array();
 
@@ -204,6 +208,7 @@ class WPML_Translation_Jobs_Collection extends WPML_Abstract_Job_Collection {
 				JOIN {$this->wpdb->prefix}icl_translations o
 					ON o.trid = t.trid
 						AND o.language_code = t.source_language_code
+						AND o.element_type <> 'st-batch_strings'
 				JOIN " . apply_filters( 'wpml_post_translation_original_table', $this->wpdb->posts ) . " p
 					ON o.element_id = p.ID
 						AND ( o.element_type = CONCAT('post_', p.post_type) OR p.post_type IS NULL )
@@ -212,6 +217,25 @@ class WPML_Translation_Jobs_Collection extends WPML_Abstract_Job_Collection {
                         AND tr_rows.field_type = 'original_id'
                         AND tr_rows.field_data = o.element_id
 				WHERE " . $where_jobs;
+		}
+
+		if ( $where_string_batches ) {
+			$sql_statements[] = "SELECT s.translator_id,
+						j.job_id,
+						'string-batch' AS element_type_prefix,
+						NULL AS post_type,
+						s.batch_id
+				FROM {$this->wpdb->prefix}icl_translation_status s
+				JOIN {$this->wpdb->prefix}icl_translations t
+					ON t.translation_id = s.translation_id
+				JOIN {$this->wpdb->prefix}icl_translate_job j
+					ON j.rid = s.rid
+						AND j.revision IS NULL
+				JOIN {$this->wpdb->prefix}icl_translations o
+					ON o.trid = t.trid
+						AND o.language_code = t.source_language_code
+						AND o.element_type = 'st-batch_strings'
+				WHERE " . $where_string_batches;
 		}
 
 		$sql_statements = apply_filters( 'wpml_tm_jobs_union_table_sql', $sql_statements, $args );

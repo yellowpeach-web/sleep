@@ -1,8 +1,5 @@
 <?php
 
-use PhpMyAdmin\SqlParser\Parser;
-use PhpMyAdmin\SqlParser\Statements\SelectStatement;
-
 class WPML_DB_Chunk {
 	private $wpdb;
 
@@ -34,22 +31,29 @@ class WPML_DB_Chunk {
 	}
 
 	private function validate_query( $query ) {
-		$parser = new Parser( $query );
+		if ( ! is_string( $query ) || false !== strpos( $query, '\\' ) ) {
+			throw new InvalidArgumentException( 'Chunked database reads require exactly one valid SELECT statement.' );
+		}
+
+		$masked = preg_replace( '/\'(?:[^\']|\'\')*\'|"(?:[^"]|"")*"|`(?:[^`]|``)*`/', ' ', $query );
 
 		if (
-			! empty( $parser->errors )
-			|| 1 !== count( $parser->statements )
-			|| ! $parser->statements[0] instanceof SelectStatement
+			! is_string( $masked )
+			|| preg_match( '/[\'"`;#]|--|\/\*/', $masked )
+			|| ! preg_match( '/^\s*SELECT\b/i', $masked )
 		) {
 			throw new InvalidArgumentException( 'Chunked database reads require exactly one valid SELECT statement.' );
 		}
 
-		$statement = $parser->statements[0];
-		if ( ! empty( $statement->limit ) ) {
+		if ( preg_match( '/\bFOR\s+(?:UPDATE|SHARE)\b|\bLOCK\s+IN\s+SHARE\s+MODE\b/i', $masked ) ) {
+			throw new InvalidArgumentException( 'Chunked database reads require exactly one valid SELECT statement.' );
+		}
+
+		if ( preg_match( '/\b(?:LIMIT|OFFSET)\b/i', $masked ) ) {
 			throw new InvalidArgumentException( "Query can't contain OFFSET or LIMIT keyword" );
 		}
 
-		if ( ! empty( $statement->into ) || ! empty( $statement->procedure ) ) {
+		if ( preg_match( '/\b(?:INTO|PROCEDURE)\b/i', $masked ) ) {
 			throw new InvalidArgumentException( 'Chunked SELECT statements cannot write files or invoke procedures.' );
 		}
 	}

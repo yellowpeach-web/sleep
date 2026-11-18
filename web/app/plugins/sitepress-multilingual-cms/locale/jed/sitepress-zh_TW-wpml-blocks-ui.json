@@ -52,17 +52,32 @@
          "Language padding": [
             "語言內距"
          ],
-         "Display": [
-            "顯示"
-         ],
          "Show flag": [
             "顯示國旗"
          ],
-         "Show language name": [
-            "顯示語言名稱"
+         "Show current language": [
+            "顯示目前語言"
          ],
-         "Display language name in": [
-            "顯示語言名稱於"
+         "Not available while the flag is hidden. Enable Show flag to hide the language name.": [
+            "隱藏國旗時無法使用。請啟用「顯示國旗」以隱藏語言名稱。"
+         ],
+         "Must be enabled while the language name is hidden. Enable Full name or Code to hide the flag.": [
+            "隱藏語言名稱時必須啟用。請啟用「全名」或「代碼」以隱藏國旗。"
+         ],
+         "Not available in the Dropdown layout. Switch the layout to List to hide the current language.": [
+            "下拉式選單版型中無法使用。請將版型切換為「清單」以隱藏目前語言。"
+         ],
+         "Example:": [
+            "範例："
+         ],
+         "Display": [
+            "顯示"
+         ],
+         "Language name": [
+            "語言名稱"
+         ],
+         "Full name written in": [
+            "全名顯示語言"
          ],
          "Style": [
             "樣式"
@@ -89,7 +104,7 @@
             "允許換行至多行"
          ],
          "Open on click": [
-            "點擊時開啟"
+            "點選時開啟"
          ],
          "Show arrow": [
             "顯示箭頭"
@@ -133,6 +148,24 @@
          "Code": [
             "代碼"
          ],
+         "Native": [
+            "母語名稱"
+         ],
+         "Translated": [
+            "已翻譯"
+         ],
+         "Both": [
+            "兩者皆顯示"
+         ],
+         "Hidden": [
+            "隱藏"
+         ],
+         "Dropdown": [
+            "下拉選單"
+         ],
+         "List": [
+            "清單"
+         ],
          "Justify items left": [
             "項目靠左對齊"
          ],
@@ -175,11 +208,11 @@
          "Small": [
             "小"
          ],
-         "Displays the WPML Language Switcher.": [
-            "顯示 WPML 語言切換器。"
-         ],
          "displays the WPML Language Switcher": [
             "顯示 WPML 語言切換器"
+         ],
+         "Displays the WPML Language Switcher.": [
+            "顯示 WPML 語言切換器。"
          ],
          "Navigation Language Switcher": [
             "導覽語言切換器"

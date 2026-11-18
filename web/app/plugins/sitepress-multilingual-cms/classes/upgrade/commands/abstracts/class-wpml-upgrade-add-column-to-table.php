@@ -14,25 +14,32 @@ abstract class WPML_Upgrade_Add_Column_To_Table implements IWPML_Upgrade_Command
 		$this->upgrade_schema = $args[0];
 	}
 
-	private function run() {
-		$this->upgrade_schema->ensure_columns(
-			$this->get_table(),
-			[ $this->get_column() => $this->get_column_definition() ]
-		);
+	private function run( $given_up ) {
+		$schema = $this->upgrade_schema;
+		$table  = $this->get_table();
+		$column = $this->get_column();
 
-		return true;
+		if ( $schema->add_column_gave_up( $table, $column ) ) {
+			return $given_up;
+		}
+
+		if ( ! $schema->does_table_exist( $table ) || $schema->does_column_exist( $table, $column ) ) {
+			return true;
+		}
+
+		return false !== $schema->add_column( $table, $column, $this->get_column_definition() );
 	}
 
 	public function run_admin() {
-		return $this->run();
+		return (bool) $this->run( false );
 	}
 
 	public function run_ajax() {
-		return $this->run();
+		return $this->run( null );
 	}
 
 	public function run_frontend() {
-		return $this->run();
+		return $this->run( null );
 	}
 
 	public function get_results() {

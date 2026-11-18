@@ -17,18 +17,14 @@ class FindBySearchCriteriaQueryBuilder extends QueryBuilder {
 	}
 
 	private function buildSortingQueryPart( SearchCriteria $criteria ): string {
-		$allowedSortingDirections = [ 'DESC', 'ASC' ];
-		$direction                = $allowedSortingDirections[0];
+		$direction = 'DESC';
 
 		$queryPart = 'ORDER BY MAX(strings.string_type) DESC, strings.id';
 
 		if ( $criteria->getSorting() ) {
 			$sortingCriteria = $criteria->getSorting();
-			$sortingOrder    = strtoupper( $sortingCriteria['order'] );
 
-			$direction = in_array( $sortingOrder, $allowedSortingDirections ) ?
-				$sortingOrder :
-				$direction;
+			$direction = 'ASC' === strtoupper( $sortingCriteria['order'] ) ? 'ASC' : 'DESC';
 
 			if ( $sortingCriteria['by'] === 'title' ) {
 				$queryPart = 'ORDER BY MAX(strings.string_type) DESC, MAX(strings.value)';

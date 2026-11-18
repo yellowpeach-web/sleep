@@ -131,7 +131,6 @@ class JobErrorRepository implements JobErrorRepositoryInterface {
                 OR (
                     (
                         errors.error_type = 'SyncError'
-                        OR (errors.error_type = 'DownloadError' AND errors.counter >= 3)
                         OR (errors.error_type = 'ApplyError' AND errors.counter >= 1)
                     )
                     AND status.status IN (1, 2)

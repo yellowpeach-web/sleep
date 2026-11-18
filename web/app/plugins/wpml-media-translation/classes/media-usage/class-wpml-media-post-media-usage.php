@@ -24,9 +24,16 @@ class WPML_Media_Post_Media_Usage implements IWPML_Action {
 	}
 
 	public function update_media_usage( $post_id, $post = null, $media_ids = null ) {
+		if ( (int) $post_id <= 0 ) {
+			return;
+		}
 
 		if ( null === $post ) {
 			$post = get_post( $post_id );
+		}
+
+		if ( ! $post ) {
+			return;
 		}
 
 		if ( $this->sitepress->get_wp_api()->constant( 'DOING_AUTOSAVE' )

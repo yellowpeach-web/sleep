@@ -42,6 +42,16 @@ class Resources implements \IWPML_Backend_Action {
 			ICL_SITEPRESS_SCRIPT_VERSION
 		);
 
+		\wp_localize_script(
+			'wpml-tm-ts-admin-section',
+			'wpml_tm_ts_strings',
+			[
+				'cancel' => \__( 'Cancel', 'sitepress' ),
+				/* translators: Button in the dialog that asks for a translation service's credentials: sends them. */
+				'submit' => \__( 'Submit', 'sitepress' ),
+			]
+		);
+
 		LibResources::enqueueWithDeps(
 			'translationServices',
 			WPML_TM_URL,

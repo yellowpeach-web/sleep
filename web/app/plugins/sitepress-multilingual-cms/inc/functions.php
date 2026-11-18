@@ -89,6 +89,10 @@ function icl_set_setting( $key, $value, $save_now = false ) {
 
 	$result = true;
 
+	if ( 'translation-management' === $key ) {
+		$value = \WPML\TranslationPolicy\LatchGuard::keep( $value, $sitepress_settings[ $key ] ?? null );
+	}
+
 	$sitepress_settings[ $key ] = $value;
 	VirtualSettingsOption::recordSetterValue( (string) $key, $value );
 
@@ -98,6 +102,29 @@ function icl_set_setting( $key, $value, $save_now = false ) {
 	}
 
 	return $result;
+}
+
+function wpml_save_setting_onto_stored( $key, callable $change ) {
+	wp_cache_delete( 'icl_sitepress_settings', 'options' );
+	wp_cache_delete( 'alloptions', 'options' );
+
+	$settings = get_option( 'icl_sitepress_settings' );
+	if ( ! is_array( $settings ) ) {
+		return false;
+	}
+
+	$stored = isset( $settings[ $key ] ) ? $settings[ $key ] : null;
+	$value  = $change( $stored );
+	if ( $value === $stored ) {
+		return false;
+	}
+
+	$settings[ $key ] = $value;
+	VirtualSettingsOption::recordSetterValue( (string) $key, $value );
+	$saved = update_option( 'icl_sitepress_settings', $settings );
+	do_action( 'icl_save_settings', $settings );
+
+	return $saved;
 }
 
 function icl_save_settings() {
@@ -133,10 +160,12 @@ function _icl_deprecated_icl_debug_mode() {
 
 if ( ! function_exists( 'icl_js_escape' ) ) {
 	function icl_js_escape( $str ) {
-		$str = esc_js( $str );
-		$str = htmlspecialchars_decode( $str );
+		$json = wp_json_encode(
+			htmlspecialchars_decode( (string) $str, ENT_QUOTES ),
+			JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+		);
 
-		return $str;
+		return is_string( $json ) ? substr( $json, 1, -1 ) : '';
 	}
 }
 
@@ -694,7 +723,7 @@ if ( ! function_exists( 'wpml_get_flag_file_name' ) ) {
 
 
 function wpml_is_st_loaded(): bool {
-	return defined( 'WPML_ST_VERSION' );
+	return defined( 'WPML_ST_VERSION' ) && ! WPML_Plugins_Check::isStOutdated();
 }
 
 function wpml_trigger_error( $function_name, $message, $error_level = E_USER_NOTICE ) {

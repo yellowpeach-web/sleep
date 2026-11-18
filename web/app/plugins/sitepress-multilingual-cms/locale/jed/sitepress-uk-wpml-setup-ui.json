@@ -127,6 +127,9 @@
          "Delete language pair(s)": [
             "Видалити мовні пари"
          ],
+         "Can translate to and from all languages": [
+            "Може перекладати на всі мови та з усіх мов"
+         ],
          "An error occurred. Please try again.": [
             "Сталася помилка. Будь ласка, спробуйте ще раз."
          ],
@@ -153,6 +156,60 @@
          ],
          "Back to Step %1$s: %2$s": [
             "Назад до кроку %1$s: %2$s"
+         ],
+         "Available": [
+            "Доступно"
+         ],
+         "Not available": [
+            "Недоступно"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "Розуміє тематику, аудиторію та тон вашого сайту"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "Якість, готова до публікації, підкріплена нашою гарантією"
+         ],
+         "Review before publishing": [
+            "Перевірка перед публікацією"
+         ],
+         "Pay once per page – only added words are charged": [
+            "Платіть один раз за сторінку — оплачуються лише додані слова"
+         ],
+         "Per word, changes included": [
+            "За слово, зміни включено"
+         ],
+         "A legacy engine": [
+            "Застарілий рушій"
+         ],
+         "<button>Switch to a different engine</button> if you prefer — no quality guarantee and no free translation edits with other engines.": [
+            "<button>Перейдіть на іншу систему</button>, якщо бажаєте — для інших систем немає гарантії якості та безкоштовного редагування перекладів."
+         ],
+         "Your content will be translated by <strong>Private Translation Cloud (PTC)</strong>, WPML's own AI engine. PTC lets you translate the entire site automatically, in one click, offering free translation edits.": [
+            "Ваш вміст перекладатиме <strong>Private Translation Cloud (PTC)</strong>, власна ШІ-система WPML. PTC дозволяє автоматично перекласти весь сайт в один клік і пропонує безкоштовне редагування перекладів."
+         ],
+         "Couldn't save — try again": [
+            "Не вдалося зберегти — спробуйте ще раз"
+         ],
+         "Your content will be translated by <strong>%s</strong>, a machine translation engine. You pay per word, including changes to content that's already translated.": [
+            "Ваш вміст перекладатиме <strong>%s</strong>, система машинного перекладу. Ви платите за кожне слово, включно зі змінами у вже перекладеному вмісті."
+         ],
+         "Switch to PTC": [
+            "Перейти на PTC"
+         ],
+         "Switch away from PTC?": [
+            "Відмовитися від PTC?"
+         ],
+         "DeepL, Google Translate or Microsoft Translator": [
+            "DeepL, Google Translate або Microsoft Translator"
+         ],
+         "Your engine now": [
+            "Ваш поточний рушій"
+         ],
+         "Switch away from PTC": [
+            "Відмовитися від PTC"
+         ],
+         "Stay with PTC": [
+            "Залишитися з PTC"
          ],
          "Technical Details (for WPML Support)": [
             "Технічні деталі (для служби підтримки WPML)"
@@ -182,10 +239,49 @@
             "Будь ласка, зверніться до "
          ],
          "WPML Support": [
-            "WPML Support"
+            "служби підтримки WPML"
          ],
          " and provide the technical details below (use the Copy button to copy them).": [
             " і надайте технічні деталі нижче (скористайтеся кнопкою «Копіювати», щоб скопіювати їх)."
+         ],
+         "Publish without review": [
+            "Публікувати без перевірки"
+         ],
+         "Translations go live immediately in the target language.": [
+            "Переклади негайно публікуються цільовою мовою."
+         ],
+         "Wait for review before publishing": [
+            "Чекати на перевірку перед публікацією"
+         ],
+         "Translations stay as drafts until a translation manager approves them.": [
+            "Переклади залишаються чернетками, доки менеджер перекладів не схвалить їх."
+         ],
+         "Recommended": [
+            "Рекомендовано"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "Для DeepL, Google та Microsoft ми рекомендуємо перевірку людиною, щоб підтвердити їхню правильність. PTC забезпечує переклади кращі за людські, які розуміють контекст, тому ви можете впевнено пропустити процес перевірки."
+         ],
+         "Publish and mark for review": [
+            "Опублікувати та позначити для перевірки"
+         ],
+         "Translations go live but appear in a \"needs review\" queue.": [
+            "Переклади публікуються, але з’являються в черзі «потребує перевірки»."
+         ],
+         "After auto-translation": [
+            "Після автоперекладу"
+         ],
+         "What happens to content once %s has translated it.": [
+            "Що відбувається з умістом після того, як %s перекладе його."
+         ],
+         "Wait for review": [
+            "Чекати на перевірку"
+         ],
+         "%1$s (<strong>%2$s</strong>)": [
+            "%1$s (<strong>%2$s</strong>)"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "Що ви хотіли б зробити, коли WPML завершить автоматичний переклад вашого контенту?"
          ],
          "Loading AI Translation...": [
             "Завантаження перекладу AI..."
@@ -328,6 +424,15 @@
          "adding a custom language": [
             "додавання власної мови"
          ],
+         "I will fix my server settings to display languages in directories later.": [
+            "Я виправлю налаштування сервера для відображення мов у каталогах пізніше."
+         ],
+         "We could not verify your server's URL-rewrite support.": [
+            "Нам не вдалося перевірити підтримку перенаправлення URL-адрес вашим сервером."
+         ],
+         "Learn more about required server settings to display languages in directories": [
+            "Докладніше про необхідні налаштування сервера для відображення мов у каталогах"
+         ],
          "I will change the permalink structure later.": [
             "Я зміню структуру постійних посилань пізніше."
          ],
@@ -367,8 +472,16 @@
          "This domain does not show this site.": [
             "Цей домен не показує цей сайт."
          ],
+         "This address belongs to another site on this network.": [
+            "Ця адреса належить іншому сайту в цій мережі."
+         ],
          "WPML could not reach this domain.": [
             "WPML не вдалося отримати доступ до цього домену."
+         ],
+         "If you choose this, these URLs will open a sub-site: %s.": [
+            "Якщо вибрати цей варіант, цей URL відкриватиме підсайт: %s.",
+            "Якщо вибрати цей варіант, ці URL відкриватимуть підсайт: %s.",
+            "Якщо вибрати цей варіант, ці URL відкриватимуть підсайт: %s."
          ],
          "The domain you have entered is invalid.": [
             "Введений вами домен недійсний."
@@ -387,15 +500,6 @@
          ],
          "The URL rewrite is not configured in your server.": [
             "Перенаправлення URL-адрес не налаштовано на вашому сервері."
-         ],
-         "I will fix my server settings to display languages in directories later.": [
-            "Я виправлю налаштування сервера для відображення мов у каталогах пізніше."
-         ],
-         "We could not verify your server's URL-rewrite support.": [
-            "Нам не вдалося перевірити підтримку перенаправлення URL-адрес вашим сервером."
-         ],
-         "Learn more about required server settings to display languages in directories": [
-            "Докладніше про необхідні налаштування сервера для відображення мов у каталогах"
          ],
          "your pages": [
             "ваші сторінки"
@@ -421,11 +525,17 @@
          "Translate your posts": [
             "Перекласти ваші дописи"
          ],
-         "the Translation Dashboard": [
-            "панель керування перекладами"
+         "%s will translate your whole site and keep new content translated from now on. You're charged per word, including later changes.": [
+            "%s перекладе весь ваш сайт і надалі перекладатиме новий вміст. Оплата здійснюється за кожне слово, включно з наступними змінами."
          ],
          "Private Translation Cloud (PTC) will translate your whole site and keep new content translated from now on. You pay once for what's translated — editing it afterward is free.": [
             "Private Translation Cloud (PTC) перекладе весь ваш сайт і надалі підтримуватиме переклад нового вмісту. Ви платите один раз за те, що перекладено — подальше редагування безкоштовне."
+         ],
+         "Automatic translation will translate your whole site and keep new content translated from now on.": [
+            "Автоматичний переклад перекладе весь ваш сайт і надалі перекладатиме новий вміст."
+         ],
+         "the Translation Dashboard": [
+            "панель керування перекладами"
          ],
          "Apply settings and start site's translation": [
             "Застосувати налаштування та почати переклад сайту"
@@ -439,8 +549,14 @@
          "the WooCommerce Multilingual setup": [
             "налаштування WooCommerce Multilingual"
          ],
+         "%s will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "%s почне перекладати ваш сайт просто зараз і надалі перекладатиме новий вміст. Далі ви налаштуєте свій багатомовний магазин. Переклад ваших товарів почнеться одразу після завершення налаштування WooCommerce Multilingual."
+         ],
          "Private Translation Cloud (PTC) will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup. You pay once for what's translated. Editing it afterward is free.": [
             "Private Translation Cloud (PTC) почне перекладати ваш сайт зараз і надалі підтримуватиме переклад нового вмісту. Далі ви налаштуєте свій багатомовний магазин. Ваші товари почнуть перекладатися, як тільки ви завершите налаштування WooCommerce Multilingual. Ви платите один раз за те, що перекладено. Подальше редагування безкоштовне."
+         ],
+         "Automatic translation will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "Автоматичний переклад почне перекладати ваш сайт просто зараз і надалі перекладатиме новий вміст. Далі ви налаштуєте свій багатомовний магазин. Переклад ваших товарів почнеться одразу після завершення налаштування WooCommerce Multilingual."
          ],
          "Continue to WooCommerce Multilingual Setup while translation begins": [
             "Продовжити налаштування WooCommerce Multilingual під час початку перекладу"
@@ -484,8 +600,14 @@
          "Applying your setup choices": [
             "Застосування ваших параметрів налаштування"
          ],
+         "%s is translating your content. There's nothing else you need to do here.": [
+            "%s перекладає ваш вміст. Більше тут нічого робити не потрібно."
+         ],
          "PTC is translating your content. There's nothing else you need to do here.": [
             "PTC перекладає ваш вміст. Вам більше нічого не потрібно тут робити."
+         ],
+         "Your content is being translated. There's nothing else you need to do here.": [
+            "Ваш вміст перекладається. Більше тут нічого робити не потрібно."
          ],
          "We're applying all your setup choices and preparing WPML. This is a one-time process.": [
             "Ми застосовуємо всі ваші параметри налаштування та готуємо WPML. Це одноразовий процес."
@@ -580,38 +702,8 @@
          "Full details of the info we’re proposing to share": [
             "Повна інформація про дані, якими ми пропонуємо поділитися"
          ],
-         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
-            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> з вибором найкращого режиму для вашого сайту."
-         ],
-         "How would you like to translate your content?": [
-            "Як би ви хотіли перекладати свій вміст?"
-         ],
-         "Recommended": [
-            "Рекомендовано"
-         ],
-         "Translate Everything Automatically": [
-            "Перекладати все автоматично"
-         ],
-         "Full-site automatic translation needs AI translation set up.": [
-            "Для автоматичного перекладу всього сайту потрібне налаштування перекладу AI."
-         ],
-         "Set up AI translation": [
-            "Налаштувати переклад AI"
-         ],
-         "Translate Some: You Choose What to Translate": [
-            "Перекладати частину: ви вибираєте, що перекладати"
-         ],
-         "Select this option": [
-            "Вибрати цей варіант"
-         ],
          "How it works": [
             "Як це працює"
-         ],
-         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
-            "PTC (Private Translation Cloud) — це власний механізм перекладу AI від WPML. Він перекладає весь ваш сайт на кожну вибрану вами мову у фоновому режимі. Ви можете редагувати будь-який переклад і виключати типи дописів."
-         ],
-         "Can't decide?": [
-            "Не можете визначитися?"
          ],
          "You select and submit what to translate.": [
             "Ви вибираєте та надсилаєте те, що потрібно перекласти."
@@ -619,32 +711,35 @@
          "Costs": [
             "Вартість"
          ],
-         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
-            "Платіть один раз за весь перекладений вміст.<br/><strong>Виправлення безкоштовні</strong> — оплачується лише додавання нового вмісту."
-         ],
          "Pay per translation job submitted.<br/>Each update or new content batch is a separate charge.": [
             "Платіть за кожне надіслане завдання на переклад.<br/>Кожне оновлення або новий пакет вмісту оплачується окремо."
-         ],
-         "Translation quality": [
-            "Якість перекладу"
-         ],
-         "WPML ensures excellent quality. Bad translations are refunded.": [
-            "WPML гарантує відмінну якість. Кошти за погані переклади повертаються."
          ],
          "Ideal for": [
             "Ідеально для"
          ],
-         "Known upfront costs": [
-            "Відомих заздалегідь витрат"
+         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "PTC (Private Translation Cloud) — це власний механізм перекладу AI від WPML. Він перекладає весь ваш сайт на кожну вибрану вами мову у фоновому режимі. Ви можете редагувати будь-який переклад і виключати типи дописів."
          ],
-         "Unlimited post-translation editing": [
-            "Необмеженого редагування після перекладу"
+         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
+            "Платіть один раз за весь перекладений вміст.<br/><strong>Виправлення безкоштовні</strong> — оплачується лише додавання нового вмісту."
          ],
-         "Marketing optimization": [
-            "Маркетингової оптимізації"
+         "Included with PTC": [
+            "Включено в PTC"
          ],
-         "Turn-key solutions": [
-            "Готові рішення"
+         "Only with PTC — not with %s": [
+            "Лише з PTC — не з %s"
+         ],
+         "your current engine": [
+            "ваша поточна система"
+         ],
+         "%s translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "%s перекладає весь ваш сайт усіма вибраними мовами у фоновому режимі. Ви можете редагувати будь-який переклад і виключати типи записів."
+         ],
+         "Charged per word, including changes to content that's already translated.": [
+            "Оплата за слово, включно зі змінами у вже перекладеному вмісті."
+         ],
+         "You choose what to translate, from the Translation Dashboard or with \"+\" next to each page. PTC translates it.": [
+            "Ви обираєте, що перекладати: на панелі керування перекладом або за допомогою «+» біля кожної сторінки. PTC виконує переклад."
          ],
          "Partial site translation": [
             "Часткового перекладу сайту"
@@ -652,8 +747,95 @@
          "Maximum control": [
             "Максимальний контроль"
          ],
+         "Quality without the work": [
+            "Якість без зайвих зусиль"
+         ],
+         "You choose what to translate. You or your translators write each translation in the Advanced Translation Editor.": [
+            "Ви обираєте, що перекладати. Ви або ваші перекладачі створюєте кожен переклад у Advanced Translation Editor."
+         ],
+         "No words used, unless you start from a machine translation in the editor.": [
+            "Слова не витрачаються, якщо ви не починаєте з машинного перекладу в редакторі."
+         ],
+         "Your own translators": [
+            "Власні перекладачі"
+         ],
+         "Texts that need a human touch": [
+            "Тексти, які потребують людського підходу"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "PTC translates what you send. You review.": [
+            "PTC перекладає те, що ви надсилаєте. Ви переглядаєте."
+         ],
+         "I translate": [
+            "Перекладаю самостійно"
+         ],
+         "You or your translators write it.": [
+            "Ви або ваші перекладачі пишете переклад."
+         ],
+         "When you start a translation, who translates?": [
+            "Коли ви починаєте переклад, хто його виконує?"
+         ],
+         "Who translates": [
+            "Хто перекладає"
+         ],
          "Contact our support team for help": [
             "Зверніться по допомогу до нашої служби підтримки"
+         ],
+         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
+            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> з вибором найкращого режиму для вашого сайту."
+         ],
+         "How would you like to translate your content?": [
+            "Як би ви хотіли перекладати свій вміст?"
+         ],
+         "Translate Everything Automatically": [
+            "Перекладати все автоматично"
+         ],
+         "Translations always in sync": [
+            "Переклади завжди синхронізовані"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "Для автоматичного перекладу всього сайту потрібне налаштування перекладу AI."
+         ],
+         "New and updated content translated automatically": [
+            "Новий і оновлений вміст перекладається автоматично"
+         ],
+         "Set up AI translation": [
+            "Налаштувати переклад AI"
+         ],
+         "Sites that publish often": [
+            "Сайти, які часто публікують вміст"
+         ],
+         "All your languages at once": [
+            "Усі ваші мови одночасно"
+         ],
+         "Translate Some: You Choose What to Translate": [
+            "Перекладати частину: ви вибираєте, що перекладати"
+         ],
+         "Select this option": [
+            "Вибрати цей варіант"
+         ],
+         "WPML uses the Advanced Translation Editor. You can change the editor later in WPML > Settings > Translation editor and method.": [
+            "WPML використовує Advanced Translation Editor. Ви можете змінити редактор пізніше в WPML > Налаштування > Редактор і метод перекладу."
+         ],
+         "Quality guarantee, bad translations refunded": [
+            "Гарантія якості, повернення коштів за невдалі переклади"
+         ],
+         "Can't decide?": [
+            "Не можете визначитися?"
+         ],
+         "Pay once — revisions are free": [
+            "Платіть один раз — виправлення безкоштовні"
+         ],
+         "Known upfront costs": [
+            "Відомих заздалегідь витрат"
+         ],
+         "Publish-ready results, no review needed": [
+            "Готові до публікації результати, перевірка не потрібна"
+         ],
+         "Marketing optimization based on your site and audience": [
+            "Маркетингова оптимізація з урахуванням вашого сайту й аудиторії"
          ],
          "Calculate Translation Costs": [
             "Розрахувати вартість перекладу"
@@ -668,7 +850,7 @@
             "Перед автоматичним перекладом усього"
          ],
          "You can continue without them. Nothing here stops the setup.": [
-            "Ви можете продовжити без них. Ніщо тут не зупиняє налаштування."
+            "Ви можете продовжити без них. Ніщо тут не перешкоджає налаштуванню."
          ],
          "Translation Contributors": [
             "Учасники перекладу"
@@ -888,6 +1070,9 @@
          ],
          "Ranking": [
             "Рейтинг"
+         ],
+         "language URL directory and language name\u0004%1$s (%2$s)": [
+            "%1$s (%2$s)"
          ]
       }
    }

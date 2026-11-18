@@ -6,13 +6,7 @@ use WPML\FP\Obj;
 
 class FieldGroupPackageTitles {
 
-	private $wpdb;
-
 	private $fieldGroupsByKey;
-
-	public function __construct( $wpdb ) {
-		$this->wpdb = $wpdb;
-	}
 
 	public function titleOf( array $fieldGroup ) {
 		if ( null === $this->fieldGroupsByKey ) {
@@ -74,13 +68,13 @@ class FieldGroupPackageTitles {
 	}
 
 	private function readStoredPackages() {
-		$wpdb = $this->wpdb;
+		$packages = apply_filters( 'wpml_pt_all_packages', [] );
 
-		return (array) $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT ID, name, title FROM {$wpdb->prefix}icl_string_packages WHERE kind_slug = %s",
-				Package::FIELD_GROUP_PACKAGE_KIND_SLUG
-			)
+		return array_filter(
+			is_array( $packages ) ? $packages : [],
+			function ( $package ) {
+				return is_object( $package ) && Package::FIELD_GROUP_PACKAGE_KIND_SLUG === ( $package->kind_slug ?? null );
+			}
 		);
 	}
 

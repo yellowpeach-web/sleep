@@ -1,13 +1,12 @@
 <?php
 
+use WPML\TranslationPolicy\Duplicate\DuplicateControls;
 use WPML\TranslationRoles\LangPairPermissions;
 
 class WPML_Meta_Boxes_Post_Edit_HTML {
 
 	const FLAG_HAS_MEDIA_OPTIONS = 'wpml_has_media_options';
 	const WRAPPER_ID = 'icl_div';
-
-	const MINOR_EDIT_TRACE_LIMIT = 8;
 
 	private $sitepress;
 	private $post_translation;
@@ -55,7 +54,6 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 			$this->media_options( $post );
 		}
 
-		$this->minor_edit();
 
 		do_action( 'icl_post_languages_options_after' );
 		$contents = ob_get_clean();
@@ -71,7 +69,7 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 				/* translators: Notice at the top of the editing screen of a post that WPML keeps as a copy of another one. %s: a link, already wrapped in its tags, whose text is the title of the original post. */
 				printf( esc_html__( 'This document is a duplicate of %s and it is maintained by WPML.', 'sitepress' ), '<a href="' . esc_url( get_edit_post_link( $duplicate_original_id ) ) . '">' . esc_html( get_the_title( $duplicate_original_id ) ) . '</a>' );
 				?>
-				<?php /* translators: Button label on the editing screen of a post that WPML keeps as a copy: stop keeping it as a copy and translate it on its own. Verb, imperative. */ ?>
+				<?php /* translators: Bulk action on a list of posts, and a button on the editing screen of a post WPML keeps as a copy: stop keeping the duplicate as a copy of its original and translate it on its own. Verb, imperative. */ ?>
 				<p><input id="icl_translate_independent" class="button-secondary" type="button" value="<?php esc_html_e( 'Translate independently', 'sitepress' ) ?>"/></p>
 				<?php wp_nonce_field( 'reset_duplication_nonce', '_icl_nonce_rd' ) ?>
 			</div>
@@ -140,7 +138,7 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 		if ( 'auto-draft' !== $this->post->post_status ) {
 			$trid             = $this->get_trid();
 			$current_language = $this->sitepress->get_current_language();
-			if ( count( $this->get_translations() ) === 1 && $this->sitepress->has_orphan_translations( $this->post->post_type, $current_language ) ) {
+			if ( $trid && 1 === $this->sitepress->count_translation_group_members( $trid, $this->post->post_type ) && $this->sitepress->has_orphan_translations( $this->post->post_type, $current_language ) ) {
 				$args                  = array();
 				$args['language_code'] = $this->selected_language;
 				$args['display_code']  = $this->sitepress->get_default_language();
@@ -175,8 +173,9 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
                     <div id="connect_translations_dialog"
                          title="<?php esc_attr_e( sprintf( 'Choose a %s to assign', $post_type_object->labels->singular_name ), 'sitepress' ); ?>"
                          data-set_as_source-text="<?php echo esc_attr( sprintf( /* translators: Button label in the dialog that connects a post to its translations. %1$s: the name of a language, %2$s: the name of the content type, for example post or page. */ __( 'Make %1$s the original language for this %2$s', 'sitepress' ), $language_name, $this->post->post_type ) ); ?>"
+                         data-original-stays-text="<?php /* translators: Shown in the "Connect with translations" dialog under the "Make ... the original language" box while it is not ticked. %s: the post that stays the original of the chosen translation group, as the dialog lists it: its language code in brackets and its title, for example "[it] Ciao". */ esc_attr_e( '%s stays the original.', 'sitepress' ); ?>"
                          data-alert-text="<?php esc_attr_e( "Please make sure to save your post, if you've made any change, before proceeding with this action!", 'sitepress' ); ?>"
-                         data-cancel-label="<?php /* translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation". */ esc_attr_e( 'Cancel', 'sitepress' ); ?>"
+                         data-cancel-label="<?php /* translators: Button label that closes a dialog without doing anything, or stops what is going on, for example in the dialog "Translate with PTC?" (keep the previous choice). Verb, imperative, not the noun "a cancellation". */ esc_attr_e( 'Cancel', 'sitepress' ); ?>"
                          data-ok-label="<?php /* translators: Button label that confirms a dialog, and the answer sent back when a request went through. */ esc_attr_e( 'Ok', 'sitepress' ); ?>">
                         <p class="js-ajax-loader ajax-loader">
 							<?php /* translators: Text shown while the dialog on the post editing screen is waiting for data; three dots follow it. */ esc_html_e( 'Loading', 'sitepress' ); ?>&hellip; <span class="spinner"></span>
@@ -192,7 +191,7 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
                     </div>
                     <div id="connect_translations_dialog_confirm"
                          title="<?php esc_attr_e( 'Connect this post?', 'sitepress' ); ?>"
-                         data-cancel-label="<?php /* translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation". */ esc_attr_e( 'Cancel', 'sitepress' ); ?>"
+                         data-cancel-label="<?php /* translators: Button label that closes a dialog without doing anything, or stops what is going on, for example in the dialog "Translate with PTC?" (keep the previous choice). Verb, imperative, not the noun "a cancellation". */ esc_attr_e( 'Cancel', 'sitepress' ); ?>"
                          data-assign-label="<?php /* translators: Button label in the dialog that connects a post to its translations: carry the connection out. Verb, imperative. */ esc_attr_e( 'Assign', 'sitepress' ); ?>"
                          data-connect-failed-text="<?php /* translators: Shown in the "Connect with translations" dialog on the post editing screen when connecting the post failed and the server gave no reason. */ esc_attr_e( 'This post was not connected. Reload the page and try again.', 'sitepress' ); ?>">
                         <p>
@@ -246,16 +245,6 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 
 		<br clear="all"/>
 	<?php
-	}
-
-	private function minor_edit() {
-		if ( $this->get_minor_edit_backtrace()->is_function_in_call_stack( 'the_block_editor_meta_boxes' ) ) {
-			do_action( 'wpml_minor_edit_for_gutenberg' );
-		}
-	}
-
-	private function get_minor_edit_backtrace() {
-		return new WPML\Utils\DebugBackTrace( self::MINOR_EDIT_TRACE_LIMIT );
 	}
 
 	private function languages_actions() {
@@ -331,6 +320,7 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 	}
 
 	private function languages_table( $status_display ) {
+		$is_duplicate_offered = DuplicateControls::offered();
 		?>
 		<p style="clear:both;"><b><?php esc_html_e( 'Translate this Document', 'sitepress' ); ?></b></p>
 
@@ -341,9 +331,11 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 		<table width="100%" id="icl_untranslated_table" class="icl_translations_table">
 			<tr>
 				<th>&nbsp;</th>
-				<?php /* translators: Option in the dropdown that says what happens to a field, and the heading of the column of the post editing screen where a translation is started: the text is translated. Verb, imperative. */ ?>
+				<?php /* translators: Verb, imperative: an option in the dropdown that says what happens to a field, the heading of the column of the post editing screen where a translation is started, and the heading of the list of languages without a translation in the post editor's Language box. */ ?>
 				<th align="right"><?php esc_html_e( 'Translate', 'sitepress' ) ?></th>
+				<?php if ( $is_duplicate_offered ) : ?>
 				<th align="right" width="10" style="padding-left:8px;"><?php echo /* translators: Column heading and button label on the post editing screen: make a copy of this post in another language. Verb, imperative. */ esc_html_x( 'Duplicate', 'button: make a copy', 'sitepress' ); ?></th>
+				<?php endif; ?>
 			</tr>
 			<?php
 			$active_langs = $this->sitepress->get_active_languages();
@@ -357,8 +349,10 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 				)
 			);
 			foreach ( $active_langs as $lang ) {
-				$this->translate_option( $lang, $status_display );
+				$this->translate_option( $lang, $status_display, $is_duplicate_offered );
 			}
+
+			if ( $is_duplicate_offered ) :
 			?>
 			<tr>
 				<td colspan="3" align="right">
@@ -375,6 +369,7 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 					/>
 				</td>
 			</tr>
+			<?php endif; ?>
 		</table>
 		<?php
 		if (
@@ -467,7 +462,7 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 		}
 	}
 
-	private function translate_option( $lang, $status_display ) {
+	private function translate_option( $lang, $status_display, bool $is_duplicate_offered ) {
 
 		static $row = 0;
 
@@ -489,6 +484,7 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 				<td align="right">
 					<?php echo $status_display->get_status_html( $this->post->ID, $lang[ 'code' ] ); ?>
 				</td>
+				<?php if ( $is_duplicate_offered ) : ?>
 				<td align="right">
 				    <?php
 				    $disabled_duplication       = false;
@@ -532,6 +528,7 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 						aria-label="<?php echo esc_attr( $duplication_label ); ?>"
 					/>
 				</td>
+				<?php endif; ?>
 
 			<?php
 			}
@@ -576,29 +573,29 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 	}
 
 	private function copy_from_original( $post ) {
-		$trid        = $this->get_trid();
-		$source_lang = filter_var( isset( $_GET['source_lang'] ) ? $_GET['source_lang'] : '', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		$source_lang = 'all' === $source_lang ? $this->sitepress->get_default_language() : $source_lang;
-		$lang        = filter_var( isset( $_GET['lang'] ) ? $_GET['lang'] : '', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$trid            = $this->get_trid();
+		$source_language = filter_var( isset( $_GET['source_lang'] ) ? wp_unslash( $_GET['source_lang'] ) : '', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$source_language = 'all' === $source_language ? $this->sitepress->get_default_language() : $source_language;
+		$language        = filter_var( isset( $_GET['lang'] ) ? wp_unslash( $_GET['lang'] ) : '', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
-		if ( ! $lang ) {
-			$lang = $this->sitepress->get_language_for_element( $post->ID, 'post_' . $post->post_type );
+		if ( ! $language ) {
+			$language = $this->sitepress->get_language_for_element( $post->ID, 'post_' . $post->post_type );
 		}
 
-		$source_lang = ! $source_lang && isset( $_GET['post'] ) && $lang !== $this->sitepress->get_default_language()
-				? $this->post_translation->get_source_lang_code( $post->ID ) : $source_lang;
+		$source_language = ! $source_language && isset( $_GET['post'] ) && $language !== $this->sitepress->get_default_language()
+				? $this->post_translation->get_source_lang_code( $post->ID ) : $source_language;
 
-		if ( $trid && $source_lang && $source_lang !== $lang ) {
-			$_lang_details    = $this->sitepress->get_language_details( $source_lang );
-			$source_lang_name = $_lang_details['display_name'];
-			$this->display_copy_from_button( $source_lang, $source_lang_name, $post, $trid );
+		if ( $trid && $source_language && $source_language !== $language ) {
+			$source_language_details = $this->sitepress->get_language_details( $source_language );
+			$source_language_name    = $source_language_details['display_name'];
+			$this->display_copy_from_button( $source_language, $source_language_name, $post, $trid );
 
-			if ( ! \WPML\LanguageEditor\TranslationPause::isPaused( $lang ) ) {
-				$this->display_set_as_dupl_btn(
+			if ( ! \WPML\LanguageEditor\TranslationPause::isPaused( $language ) ) {
+				$this->display_overwrite_with_original_button(
 					$post,
-					$source_lang_name,
-					$this->post_translation->get_element_id( $source_lang, $trid ),
-					$lang
+					$source_language_name,
+					$this->post_translation->get_element_id( $source_language, $trid ),
+					$language
 				);
 			}
 		}
@@ -635,7 +632,7 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 		}
 
 		$doc_url  = \WPML\OutboundLinks\OutboundLinks::to(
-			'https://wpml.org/documentation/translating-your-contents/media/',
+			'https://wpml.org/documentation/translating-your-contents/media/#different-file-per-language',
 			[
 				'medium'   => 'post-editor',
 				'campaign' => 'media-translation',
@@ -677,26 +674,27 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 		   title="<?php echo  esc_html__("This operation copies the content from the original language onto this translation. It's meant for when you want to start with the original content, but keep translating in this language. This button is only enabled when there's no content in the editor.",'sitepress');?>"></i>
 	<?php }
 
-	private function display_set_as_dupl_btn( $post, $source_lang_name, $original_post_id, $post_lang ) {
+	private function display_overwrite_with_original_button( $post, $source_language_name, $original_post_id, $post_language ) {
 		wp_nonce_field( 'set_duplication_nonce', '_icl_nonce_sd' );
 		/* translators: Button label on the post editing screen: replace the text of this translation with the text of the original language. %s: the name of the original language. */
-		$overwrite_label = sprintf( esc_html__( 'Overwrite with %s content.', 'sitepress' ), $source_lang_name );
+		$overwrite_label   = sprintf( esc_html__( 'Overwrite with %s content.', 'sitepress' ), $source_language_name );
+		$overwrite_warning = sprintf(
+			/* translators: Question asked before the text of a translation is replaced with the text of the original language. %1$s: the name of the content type, for example post or page, %2$s: the name of the original language. */
+			__( 'The current content of this %1$s will be permanently lost. WPML will copy the %2$s content and replace the current content.', 'sitepress' ),
+			$post->post_type,
+			$source_language_name
+		);
 		?>
 		<input id="icl_set_duplicate" type="button" class="button-secondary"
 		       value="<?php echo esc_attr( $overwrite_label ); ?>"
 		       data-wpml_original_post_id="<?php echo absint( $original_post_id ); ?>"
-		       data-post_lang="<?php echo esc_attr( $post_lang ); ?>"/>
-		<span style="display: none;"><?php echo esc_js(
-					sprintf(
-							/* translators: Question asked before the text of a translation is replaced with the text of the original language. %1$s: the name of the content type, for example post or page, %2$s: the name of the original language. */
-							__(
-									'The current content of this %1$s will be permanently lost. WPML will copy the %2$s content and replace the current content.',
-									'sitepress'
-							),
-							$post->post_type,
-							esc_html( $source_lang_name )
-					)
-			); ?></span>
+		       data-post_lang="<?php echo esc_attr( $post_language ); ?>"/>
+		<div id="icl_set_duplicate_confirmation" hidden
+		     title="<?php /* translators: Title of the dialog that asks before the text of a translation is replaced with the text of the original language, on the post editing screen. */ esc_attr_e( 'Overwrite this translation?', 'sitepress' ); ?>"
+		     data-cancel-label="<?php /* translators: Button label that closes a dialog without doing anything, or stops what is going on, for example in the dialog "Translate with PTC?" (keep the previous choice). Verb, imperative, not the noun "a cancellation". */ esc_attr_e( 'Cancel', 'sitepress' ); ?>"
+		     data-overwrite-label="<?php /* translators: Button label in the dialog on the post editing screen: replace the text of this translation with the text of the original language. Verb, imperative. */ esc_attr_e( 'Overwrite', 'sitepress' ); ?>">
+			<p><?php echo esc_html( $overwrite_warning ); ?></p>
+		</div>
 		<i class="otgs-ico-help js-otgs-popover-tooltip"
 		   data-tippy-zindex="999999"
 		   <?php /* translators: Tooltip of the button that keeps this translation the same as the original, on the post editing screen. "It" is that button. */ ?>
@@ -751,13 +749,6 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 		$this->init_source_element_data();
 		$this->remember_pending_translation_group();
 
-		global $icl_meta_box_globals;
-		$icl_meta_box_globals = array(
-				'active_languages'  => $this->sitepress->get_active_languages(),
-				'translations'      => $this->get_translations(),
-				'selected_language' => $this->selected_language
-		);
-
 		$this->post_type_label = wpml_mb_strtolower( $wp_post_types[ $this->post->post_type ]->labels->singular_name
 		                                             != "" ? $wp_post_types[ $this->post->post_type ]->labels->singular_name : $wp_post_types[ $this->post->post_type ]->labels->name );
 	}
@@ -801,10 +792,15 @@ class WPML_Meta_Boxes_Post_Edit_HTML {
 			return;
 		}
 
-		( new \WPML\Infrastructure\WordPress\Component\Translation\Application\Repository\PendingTranslationGroupRepository() )->remember(
-			(int) $this->post->ID,
-			new \WPML\Core\Component\Translation\Domain\PendingTranslationGroup( (int) $this->trid, (string) $this->source_language )
-		);
+		$repository = new \WPML\Infrastructure\WordPress\Component\Translation\Application\Repository\PendingTranslationGroupRepository();
+		$group      = new \WPML\Core\Component\Translation\Domain\PendingTranslationGroup( (int) $this->trid, (string) $this->source_language );
+
+		$written = $repository->find( (int) $this->post->ID );
+		if ( $written && $written->getTrid() === $group->getTrid() && $written->getSourceLanguageCode() === $group->getSourceLanguageCode() ) {
+			return;
+		}
+
+		$repository->remember( (int) $this->post->ID, $group );
 	}
 
 	private function init_trid_and_selected_language() {

@@ -38,7 +38,10 @@ class ProviderBeforeSetup implements ProviderInterface {
     }
 
     $term->setPreWpmlSetupWordsToTranslate(
-      $this->wordsToTranslate->forContent( [ (string) $term->getContent() ], $langs[0] )
+      $this->wordsToTranslate->forFieldContents(
+        $term->getFieldContents() ?? [ 'content' => (string) $term->getContent() ],
+        $langs[0]
+      )
     );
 
     return $term;

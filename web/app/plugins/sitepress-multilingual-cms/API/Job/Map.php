@@ -16,7 +16,7 @@ class Map {
 	public static function init() {
 		self::$rid_to_jobId = [];
 
-		self::macro( 'fromJobId', curryN( 1, Fns::memorize( function ( $jobId ) {
+		$ridFromJobId = curryN( 1, Fns::memorize( function ( $jobId ) {
 			$rid = Obj::prop( $jobId, array_flip( array_filter( self::$rid_to_jobId ) ) );
 			if ( $rid ) {
 				return $rid;
@@ -26,9 +26,9 @@ class Map {
 			self::$rid_to_jobId[$rid] = $jobId;
 
 			return $rid;
-		})));
+		}));
 
-		self::macro( 'fromRid', curryN( 1, function ( $rid ) {
+		$jobIdFromRid = curryN( 1, function ( $rid ) {
 			$jobId = Obj::prop( $rid, self::$rid_to_jobId );
 			if ( $jobId ) {
 				return $jobId;
@@ -38,7 +38,13 @@ class Map {
 			self::$rid_to_jobId[ $rid ] = $jobId;
 
 			return $jobId;
-		} ) );
+		} );
+
+		self::macro( 'ridFromJobId', $ridFromJobId );
+		self::macro( 'jobIdFromRid', $jobIdFromRid );
+
+		self::macro( 'fromJobId', $ridFromJobId );
+		self::macro( 'fromRid', $jobIdFromRid );
 	}
 
 	public static function rememberJobIdForRid( $rid, $jobId ) {

@@ -21,8 +21,31 @@ class StringLanguage {
 		return is_string( $language ) && '' !== $language ? $language : null;
 	}
 
-	public function apply( array $languageByStringName ) {
+	public function apply( array $languageByStringName, $termTaxonomyId = null ) {
 		if ( ! $languageByStringName || ! class_exists( \WPML_ST_String_Factory::class ) ) {
+			return;
+		}
+
+		if ( \WPML\WPSEO\YoastSEO\Loaders::supportsPerTermPackages() ) {
+			if ( ! $termTaxonomyId ) {
+				return;
+			}
+			$factory    = \WPML\Container\make( \WPML_ST_String_Factory::class );
+			$changedIds = [];
+			foreach ( $languageByStringName as $name => $language ) {
+				$stringId = (int) apply_filters( 'wpml_string_id', null, [ 'context' => Hooks::stringContext( $termTaxonomyId ), 'name' => $name ] );
+				if ( ! $stringId ) {
+					continue;
+				}
+				$string = $factory->find_by_id( $stringId );
+				if ( $language !== $string->get_language() ) {
+					$string->set_language( $language );
+					$changedIds[] = $stringId;
+				}
+			}
+			if ( $changedIds ) {
+				do_action( 'wpml_st_language_of_strings_changed', $changedIds );
+			}
 			return;
 		}
 

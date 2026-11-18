@@ -7,6 +7,9 @@
             "plural_forms": "nplurals=2; plural=(n != 1);",
             "lang": "sv_SE"
          },
+         "(no title)": [
+            "(ingen titel)"
+         ],
          "Untranslated strings that I encounter on front-end while logged in": [
             "Oöversatta strängar som jag stöter på i webbplatsens publika del när jag är inloggad"
          ],
@@ -38,6 +41,16 @@
          "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
             "Vi skickade om %1$d av %2$d objekt, men %3$d misslyckades. Ladda om sidan och försök igen."
          ],
+         "We resent %1$d of %2$d items.": [
+            "Vi skickade %1$d av %2$d objekt igen."
+         ],
+         "%1$s from %2$s": [
+            "%1$s från %2$s"
+         ],
+         "%1$d item can't be translated automatically: %2$s. Choose another translation method for it, or change your engines.": [
+            "%1$d element kan inte översättas automatiskt: %2$s. Välj en annan översättningsmetod för det eller byt motorer.",
+            "%1$d element kan inte översättas automatiskt: %2$s. Välj en annan översättningsmetod för dem eller byt motorer."
+         ],
          "Error in fetching default translation batch name": [
             "Fel vid hämtning av standardnamn för översättningsbatch"
          ],
@@ -52,6 +65,9 @@
          ],
          "Validation failed": [
             "Valideringen misslyckades"
+         ],
+         "The translation service batch could not be committed. Continue sending to try again.": [
+            "Batchen för översättningstjänsten kunde inte verkställas. Fortsätt att skicka för att försöka igen."
          ],
          "%s: labels and slug": [
             "%s: etiketter och slug"
@@ -93,6 +109,12 @@
          "They are still waiting and will be tried again on the next download.": [
             "De väntar fortfarande och kommer att försöka igen vid nästa nedladdning."
          ],
+         "Job %d": [
+            "Översättningsjobb %d"
+         ],
+         "and %d more": [
+            "och %d till"
+         ],
          "Status: ": [
             "Status: "
          ],
@@ -133,11 +155,11 @@
          "Switching…": [
             "Växlar…"
          ],
-         "Translation engine controls couldn't load. Reload the page and try again.": [
-            "Inställningar för översättningsmotor kunde inte laddas. Ladda om sidan och försök igen."
-         ],
          "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
             "Vi kunde inte bekräfta växlingen. Försök igen, eller ladda om för att se aktuell motor."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Inställningar för översättningsmotor kunde inte laddas. Ladda om sidan och försök igen."
          ],
          "Loading translation engine settings…": [
             "Laddar inställningar för översättningsmotor…"
@@ -295,14 +317,20 @@
          "Select %s": [
             "Välj %s"
          ],
-         "(no title)": [
-            "(ingen titel)"
+         "Appears on the site": [
+            "Visas på webbplatsen"
+         ],
+         "Not shown yet": [
+            "Visas inte ännu"
          ],
          "Image": [
             "Bild"
          ],
          "%s Title": [
             "%s titel"
+         ],
+         "Source": [
+            "Källa"
          ],
          "%s Date": [
             "%s datum"
@@ -334,9 +362,6 @@
          "Show selected items": [
             "Visa valda objekt"
          ],
-         "Looking for more items...": [
-            "Letar efter fler objekt..."
-         ],
          " / page": [
             " / sida"
          ],
@@ -345,6 +370,9 @@
          ],
          "Next": [
             "Nästa"
+         ],
+         "Looking for more items...": [
+            "Letar efter fler objekt..."
          ],
          "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
             "Din webbplats innehåll är för omfattande för en enda översättningsbatch. Använd filter för att minska urvalet och välj sedan ”markera alla”."
@@ -376,11 +404,30 @@
          "Select all %ss": [
             "Markera alla %s"
          ],
+         "%d not shown on the site yet": [
+            "%d visas inte på webbplatsen än",
+            "%d visas inte på webbplatsen än"
+         ],
+         "Show them": [
+            "Visa dem"
+         ],
+         "Hide them": [
+            "Dölj dem"
+         ],
          "Save note": [
             "Spara anteckning"
          ],
-         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
-            "Följande målspråk stödjer inte automatisk översättning: %s. <a>Koppla till kända språk</a> för att aktivera automatisk översättning."
+         "%1$s and %2$s": [
+            "%1$s och %2$s"
+         ],
+         "The following target languages do not support automatic translation: %s.": [
+            "Följande målspråk stöder inte automatisk översättning: %s."
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "Automatisk översättning är inte tillgänglig mellan %1$s och %2$s eftersom de identifieras som samma språk. Välj ”Duplicera” istället för att kopiera över innehållet."
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "Automatisk översättning är inte tillgänglig mellan %1$s och %2$s eftersom de identifieras som samma språk."
          ],
          "The site's default language %s doesn't support automatic translation.": [
             "Webbplatsens standardspråk %s stödjer inte automatisk översättning."
@@ -424,8 +471,8 @@
          "Raise the cap": [
             "Höj taket"
          ],
-         "Only the account owner can do this.": [
-            "Endast kontoägaren kan göra detta."
+         "You can raise it on the AI Translation: billing and usage page.": [
+            "Du kan höja det på sidan AI-översättning: fakturering och användning."
          ],
          "Show strings in:": [
             "Visa strängar i:"
@@ -448,9 +495,6 @@
          "Domain": [
             "Domän"
          ],
-         "Source": [
-            "Källa"
-         ],
          "Type": [
             "Typ"
          ],
@@ -466,11 +510,8 @@
          "All sources": [
             "Alla källor"
          ],
-         "Frontend (viewed)": [
-            "Webbplatsens publika del (visad)"
-         ],
-         "Backend (viewed)": [
-            "Adminpanel (visad)"
+         "Seen in the admin": [
+            "Syns i admin"
          ],
          "Unknown": [
             "Okänd"
@@ -484,17 +525,11 @@
          "Search string or a name": [
             "Sök sträng eller ett namn"
          ],
-         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
-            "Detta filter är endast tillgängligt om källan är inställd på ”Webbplatsens publika del” eller ”Adminpanel”."
+         "%1$s, %2$s and %3$s": [
+            "%1$s, %2$s och %3$s"
          ],
-         "front-end": [
-            "webbplatsens publika del"
-         ],
-         "back-end": [
-            "adminpanel"
-         ],
-         "viewed": [
-            "visad"
+         "This filter is available only when Source is \"Appears on the site\" or \"Seen in the admin\".": [
+            "Det här filtret är endast tillgängligt när Källa är ”Visas på webbplatsen” eller ”Syns i admin”."
          ],
          "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
             "Öppnar sidan för lokalisering av teman och tillägg, där du kan skanna ditt tema och dina tillägg efter strängar som ännu inte är registrerade och göra dem tillgängliga för översättning här."
@@ -587,7 +622,7 @@
             "Lär dig hur du använder autoregistrering"
          ],
          "recommended": [
-            "rekommenderas"
+            "Rekommenderas"
          ],
          "Also register strings from the website's back-end": [
             "Registrera även strängar från webbplatsens adminpanel"
@@ -610,8 +645,8 @@
          "You can only translate %1$s from the site's default language (%2$s).": [
             "Du kan bara översätta %1$s från webbplatsens standardspråk (%2$s)."
          ],
-         "Search taxonomy or a name": [
-            "Sök taxonomi eller ett namn"
+         "Search taxonomies and terms": [
+            "Sök taxonomier och termer"
          ],
          "Filter by post type": [
             "Filtrera efter inläggstyp"
@@ -626,6 +661,9 @@
          "No translatable taxonomies match the current filters.": [
             "Inga översättningsbara taxonomier matchar de nuvarande filtren."
          ],
+         "Words in the terms, in %s": [
+            "Ord i termerna, på %s"
+         ],
          "Select all taxonomies": [
             "Välj alla taxonomier"
          ],
@@ -635,11 +673,21 @@
          "Terms in": [
             "Termer i"
          ],
-         "Post types": [
-            "Inläggstyper"
+         "Used on": [
+            "Används på"
          ],
-         "Translated / Total terms": [
-            "Översatta / Totalt antal termer"
+         "Terms": [
+            "Termer"
+         ],
+         "Words": [
+            "Ord",
+            "Ord"
+         ],
+         "Hide terms": [
+            "Dölj termer"
+         ],
+         "Choose terms": [
+            "Välj termer"
          ],
          "translated": [
             "översatt"
@@ -665,11 +713,32 @@
          "%1$s: %2$s": [
             "%1$s: %2$s"
          ],
-         "Open %s in the Taxonomy Translation tab": [
-            "Öppna %s i fliken Taxonomiöversättning"
+         "Translated": [
+            "Översatt"
+         ],
+         "Partially translated": [
+            "Delvis översatt"
+         ],
+         "Translation needs update": [
+            "Översättning behöver uppdateras"
+         ],
+         "Preparing for translation": [
+            "Förbereder för översättning"
+         ],
+         "Translation stalled": [
+            "Översättningen har stannat upp"
+         ],
+         "Not translated": [
+            "Inte översatt"
+         ],
+         "Status icons": [
+            "Statusikoner"
          ],
          "Taxonomy labels and slug": [
             "Taxonomietiketter och slug"
+         ],
+         "The taxonomy's own texts: its singular and plural names and its URL slug. Not its terms.": [
+            "Taxonomins egna texter: dess singular- och pluralnamn samt dess URL-slug. Inte dess termer."
          ],
          "WPML String Translation is not active.": [
             "WPML String Translation är inte aktivt."
@@ -701,15 +770,131 @@
          "Rescan": [
             "Skanna igen"
          ],
-         "%d Taxonomy selected": [
-            "%d taxonomi vald",
-            "%d taxonomier valda"
+         "Send categories, tags and other terms for translation, a whole taxonomy or the terms you pick.": [
+            "Skicka kategorier, taggar och andra termer för översättning, en hel taxonomi eller de termer du väljer."
          ],
-         "<b>Translate Everything Automatically</b> (TEA) is active.": [
-            "<b>Översätt allt automatiskt</b> (TEA) är aktivt."
+         "Edit translations manually": [
+            "Redigera översättningar manuellt"
          ],
-         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
-            "Nya och uppdaterade termer i översättningsbara taxonomier köas automatiskt. Välj taxonomier nedan för att skicka ett engångsjobb för eventuella återstående oöversatta termer."
+         "(opens in a new tab)": [
+            "(öppnas i en ny flik)"
+         ],
+         "To edit one term's translation by hand: <link/>": [
+            "För att redigera en terms översättning manuellt: <link/>"
+         ],
+         "There is nothing to send. New and changed terms will show up here.": [
+            "Det finns inget att skicka. Nya och ändrade termer kommer att visas här."
+         ],
+         "Every term is translated into every language.": [
+            "Alla termer är översatta till alla språk."
+         ],
+         "No taxonomy or term matches “%s”.": [
+            "Ingen taxonomi eller term matchar ”%s”."
+         ],
+         "Clear search": [
+            "Rensa sökning"
+         ],
+         "<b>Translate Everything</b> is on. It translates every term of every translatable taxonomy automatically. You do not need to send terms or pick them.": [
+            "<b>Översätt allt</b> är aktiverat. Funktionen översätter varje term i varje översättningsbar taxonomi automatiskt. Du behöver inte skicka eller välja termer."
+         ],
+         "Use this section to see their status, or to send terms to a translator or a translation service.": [
+            "Använd det här avsnittet för att se deras status eller för att skicka termer till en översättare eller en översättningstjänst."
+         ],
+         "%1$d sub-term, %2$d not translated": [
+            "%1$d underordnad term, %2$d inte översatt",
+            "%1$d underordnade termer, %2$d inte översatta"
+         ],
+         "%d sub-term, all translated": [
+            "%d underordnad term, alla översatta",
+            "%d underordnade termer, alla översatta"
+         ],
+         "%1$s and its %2$d sub-term selected.": [
+            "%1$s och dess %2$d underordnade term markerades.",
+            "%1$s och dess %2$d underordnade termer markerades."
+         ],
+         "%1$s and its %2$d sub-term cleared.": [
+            "%1$s och dess %2$d underordnade term avmarkerades.",
+            "%1$s och dess %2$d underordnade termer avmarkerades."
+         ],
+         "Select %1$s, in %2$s": [
+            "Välj %1$s, i %2$s"
+         ],
+         "Hide sub-terms of %s": [
+            "Dölj underordnade termer för %s"
+         ],
+         "Show sub-terms of %s": [
+            "Visa underordnade termer för %s"
+         ],
+         "in": [
+            "på"
+         ],
+         "Added because a sub-term is selected": [
+            "Tillagd eftersom en underordnad term är markerad"
+         ],
+         "The terms could not be loaded.": [
+            "Termerna kunde inte läsas in."
+         ],
+         "Showing %1$d term matching “%2$s”": [
+            "Visar %1$d term som matchar ”%2$s”",
+            "Visar %1$d termer som matchar ”%2$s”"
+         ],
+         "Showing roots %1$d to %2$d of %3$d": [
+            "Visar toppnivåtermer %1$d till %2$d av %3$d"
+         ],
+         "Showing %1$d to %2$d of %3$d": [
+            "Visar %1$d till %2$d av %3$d"
+         ],
+         "%s: terms": [
+            "%s: termer"
+         ],
+         "All terms are selected until you untick some.": [
+            "Alla termer är markerade tills du avmarkerar några."
+         ],
+         "Terms matching “%s”, found by the section search.": [
+            "Termer som matchar ”%s”, hittades via sektionssökningen."
+         ],
+         "%1$s: %2$d term matches the section search.": [
+            "%1$s: %2$d term matchar sektionssökningen.",
+            "%1$s: %2$d termer matchar sektionssökningen."
+         ],
+         "Show all terms": [
+            "Visa alla termer"
+         ],
+         "Select all %d terms": [
+            "Markera alla %d termer"
+         ],
+         "Ticking a parent selects its sub-terms.": [
+            "Om du markerar en överordnad markeras även dess underordnade termer."
+         ],
+         "Expand all": [
+            "Expandera alla"
+         ],
+         "Collapse all": [
+            "Fäll ihop alla"
+         ],
+         "Select all terms on this page": [
+            "Markera alla termer på den här sidan"
+         ],
+         "Term": [
+            "Term"
+         ],
+         "No term matches “%s”.": [
+            "Ingen term matchar ”%s”."
+         ],
+         "%1$d of %2$d": [
+            "%1$d av %2$d"
+         ],
+         "Pages of %s terms": [
+            "Sidor med termer för %s"
+         ],
+         "All %d terms selected": [
+            "Alla %d termer markerade"
+         ],
+         "%1$d of %2$d terms selected": [
+            "%1$d av %2$d termer markerade"
+         ],
+         "No terms selected": [
+            "Inga termer markerade"
          ],
          "Switch Now": [
             "Byt nu"
@@ -754,7 +939,7 @@
             "Uppfattat"
          ],
          "See your pricing": [
-            "Se din prissättning"
+            "Se dina priser"
          ],
          "You’re all set. The new pricing is active.": [
             "Allt är klart. Den nya prissättningen är aktiv."
@@ -895,8 +1080,20 @@
          "Not now": [
             "Inte nu"
          ],
+         "This site is not registered with our translation system yet. Register it on WPML → Activate & Update to use automatic translation.": [
+            "Den här webbplatsen är inte registrerad i vårt översättningssystem ännu. Registrera den under WPML → Aktivera och uppdatera för att använda automatisk översättning."
+         ],
          "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
             "Anslutningsfel. Vänta en minut och ladda om sidan. Om problemet kvarstår, kontakta WPML-supporten."
+         ],
+         "Posts": [
+            "Inlägg"
+         ],
+         "Taxonomy terms": [
+            "Taxonomitermer"
+         ],
+         "Words required:": [
+            "Ord som krävs:"
          ],
          "You don’t have enough prepaid words to translate this content.": [
             "Du har inte tillräckligt med förbetalda ord för att översätta detta innehåll."
@@ -910,15 +1107,8 @@
          "Automatic translation costs:": [
             "Kostnad för automatisk översättning:"
          ],
-         "Words": [
-            "Ord",
-            "Ord"
-         ],
          "Words to translate automatic": [
             "Ord att översätta automatiskt"
-         ],
-         "Words required:": [
-            "Ord som krävs:"
          ],
          "Pricing": [
             "Prissättning"
@@ -939,17 +1129,36 @@
             "%s ord tilldelat till denna webbplats.",
             "%s ord tilldelade till denna webbplats."
          ],
-         "Leave existing translations as they are": [
-            "Lämna befintliga översättningar som de är"
-         ],
-         "Overwrite existing translations": [
-            "Skriv över befintliga översättningar"
-         ],
          "Some of the content you want to translate is already translated": [
             "En del av innehållet du vill översätta är redan översatt"
          ],
          "What do you want to do with the content that's already translated?": [
             "Vad vill du göra med det innehåll som redan är översatt?"
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Translate from scratch\" translates them again from the start.": [
+            "Objekt som ändrades efter att de översattes skickas oavsett vilket. “Lämna kvar” översätter endast det som ändrats. “Översätt från början” översätter dem på nytt från start."
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Overwrite\" translates them again from the start.": [
+            "Objekt som ändrades efter att de översattes skickas oavsett vilket. ”Lämna” översätter endast det som har ändrats. ”Skriv över” översätter dem på nytt från början."
+         ],
+         "\"Translate from scratch\" replaces the edits made to these translations:": [
+            "“Översätt från början” ersätter ändringarna som gjorts i dessa översättningar:"
+         ],
+         "And %s more item.": [
+            "Och ytterligare %s objekt.",
+            "Och ytterligare %s objekt."
+         ],
+         "Leave existing translations as they are": [
+            "Lämna befintliga översättningar som de är"
+         ],
+         "Translate from scratch": [
+            "Översätt från början"
+         ],
+         "Replaces the existing translations, including the edits made to them": [
+            "Ersätter befintliga översättningar, inklusive ändringar som gjorts i dem"
+         ],
+         "Overwrite existing translations": [
+            "Skriv över befintliga översättningar"
          ],
          "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
             "Översättningar från DeepL, Google Translate och Microsoft Translator bör granskas före publicering."
@@ -984,8 +1193,17 @@
          " Checking ": [
             " Kontrollerar "
          ],
+         "To translate automatically, WPML needs an active automatic translation account. Turn on automatic translation, or choose a different translation option.": [
+            "För att översätta automatiskt behöver WPML ett aktivt konto för automatisk översättning. Aktivera automatisk översättning, eller välj ett annat översättningsalternativ."
+         ],
          "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
             "För att kunna översätta automatiskt måste du först <enable_ate>aktivera WPML:s <b>avancerade översättningsredigerare</b></enable_ate>.<br/>Aktivera den <b>avancerade översättningsredigeraren</b> och klicka på <check_again>kontrollera igen</check_again> eller välj ett annat översättningsalternativ."
+         ],
+         "Turn on automatic translation": [
+            "Aktivera automatisk översättning"
+         ],
+         "Learn more": [
+            "Läs mer"
          ],
          "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
             "Valt innehåll översattes med <b>Classic Translation Editor</b> och kan inte skickas för automatisk översättning. För att tillåta detta, aktivera ”Använd även för gamla översättningar” på sidan <wpmlSettingLink>WPML-inställningar</wpmlSettingLink>."
@@ -1056,11 +1274,14 @@
          "WPML does not support duplicating %1$s elements and strings.": [
             "WPML stödjer inte duplicering av %1$s-element och strängar."
          ],
-         "WPML does not support duplicating taxonomies.": [
-            "WPML stödjer inte duplicering av taxonomier."
+         "Taxonomy terms cannot be duplicated. Translate them instead. When you duplicate posts, WPML copies their terms that have no translation yet and lists these copies as not translated until they are translated.": [
+            "Taxonomitermer kan inte dupliceras. Översätt dem i stället. När du duplicerar inlägg kopierar WPML de termer som ännu saknar översättning och anger dessa kopior som oöversatta tills de översätts."
          ],
-         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
-            "WPML stödjer inte duplicering av taxonomier. Ditt val att duplicera taxonomier till %1$s kommer att ignoreras om du fortsätter med översättningen."
+         "Taxonomy terms cannot be duplicated, so the terms you selected will not be duplicated to %1$s. The posts you duplicate get copies of their terms that have no translation yet. WPML lists these copies as not translated until they are translated.": [
+            "Taxonomitermer kan inte dupliceras, så termerna du valde kommer inte att dupliceras till %1$s. Inläggen du duplicerar får kopior av termer som ännu saknar översättning. WPML anger dessa kopior som oöversatta tills de översätts."
+         ],
+         "If the editor is set to translate automatically when it opens, it starts from a machine translation that uses your words. Undo translation in the editor clears it.": [
+            "Om redigeraren är inställd på att översätta automatiskt när den öppnas, utgår den från en maskinöversättning som använder dina ord. Att ångra översättningen i redigeraren tar bort den."
          ],
          "Finish setting up %s on your site": [
             "Slutför konfigurationen av %s på din webbplats"
@@ -1068,14 +1289,26 @@
          "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
             "Du behöver autentisera %s för att skicka innehåll till dem för översättning.<br/>Besök <a>fliken Översättare</a> för att slutföra konfigurationen och klicka på <check_again>kontrollera igen</check_again> eller välj ett annat översättningsalternativ."
          ],
+         "WPML will not send these items. A reviewer has their translation open:": [
+            "WPML skickar inte dessa objekt. En granskare har deras översättning öppen:"
+         ],
+         "To send them, finish or cancel the review in Translation Tasks first.": [
+            "För att skicka dem, slutför eller avbryt granskningen i Översättningsuppgifter först."
+         ],
          "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
             "En del av det valda innehållet har en översättning öppen för granskning. Om du skickar det igen ersätts den översättningen."
          ],
          "You selected multiple translation methods for content across different languages:": [
             "Du valde flera översättningsmetoder för innehåll på olika språk:"
          ],
+         "Translation Service": [
+            "Översättningstjänst"
+         ],
          "Sent for translation": [
             "Skickat för översättning"
+         ],
+         "Some content was not sent": [
+            "Visst innehåll skickades inte"
          ],
          "Some items were not sent for translation": [
             "Vissa objekt skickades inte för översättning"
@@ -1103,6 +1336,9 @@
          ],
          "Continue sending": [
             "Fortsätt skicka"
+         ],
+         "Open Translations": [
+            "Öppna översättningar"
          ],
          "Ok": [
             "Ok"
@@ -1173,6 +1409,15 @@
          "WPML could not count the words of these items.": [
             "WPML kunde inte räkna orden för dessa objekt."
          ],
+         "WPML could not get the price of automatic translation from our translation system. Try again in a few minutes.": [
+            "WPML kunde inte hämta priset för automatisk översättning från vårt översättningssystem. Försök igen om några minuter."
+         ],
+         "No translation engine translates this content from %1$s into %2$s.": [
+            "Ingen översättningsmotor översätter detta innehåll från %1$s till %2$s."
+         ],
+         "WPML did not send these items. A reviewer has their translation open. Finish or cancel the review in Translation Tasks, then send them again.": [
+            "WPML skickade inte dessa objekt. En granskare har deras översättning öppen. Slutför eller avbryt granskningen i Översättningsuppgifter och skicka dem sedan igen."
+         ],
          "Some content couldn't be sent to translation.": [
             "Visst innehåll kunde inte skickas för översättning."
          ],
@@ -1209,6 +1454,92 @@
          "Items already sent will be translated and delivered normally.": [
             "Objekt som redan har skickats kommer att översättas och levereras som vanligt."
          ],
+         "%d post": [
+            "%d inlägg",
+            "%d inlägg"
+         ],
+         "%1$s and %2$d term": [
+            "%1$s och %2$d term",
+            "%1$s och %2$d termer"
+         ],
+         "%d term": [
+            "%d term",
+            "%d termer"
+         ],
+         "%1$s: %2$s is assigned to %3$s. They find it in their Translations queue.": [
+            "%1$s: %2$s har tilldelats %3$s. Den finns i deras översättningskö.",
+            "%1$s: %2$s har tilldelats %3$s. De finns i deras översättningskö."
+         ],
+         "First available": [
+            "Första tillgängliga"
+         ],
+         "%1$s: %2$s is waiting for you in Translations.": [
+            "%1$s: %2$s väntar på dig i Översättningar.",
+            "%1$s: %2$s väntar på dig i Översättningar."
+         ],
+         "%1$s: %2$s is sent to %3$s.": [
+            "%1$s: %2$s har skickats till %3$s.",
+            "%1$s: %2$s har skickats till %3$s."
+         ],
+         "%1$s: %2$s is being translated automatically.": [
+            "%1$s: %2$s översätts automatiskt.",
+            "%1$s: %2$s översätts automatiskt."
+         ],
+         "%1$s and %2$d of %3$d term": [
+            "%1$s och %2$d av %3$d term",
+            "%1$s och %2$d av %3$d termer"
+         ],
+         "%1$d of %2$d term": [
+            "%1$d av %2$d term",
+            "%1$d av %2$d termer"
+         ],
+         "%1$s: %2$s sent for automatic translation.": [
+            "%1$s: %2$s skickat för automatisk översättning."
+         ],
+         "%1$s: %2$s sent for translation.": [
+            "%1$s: %2$s skickat för översättning."
+         ],
+         "The term names could not be read.": [
+            "Termnamnen kunde inte läsas."
+         ],
+         "%s, and more": [
+            "%s, med flera"
+         ],
+         "Already translated: %s": [
+            "Redan översatta: %s"
+         ],
+         "In translation: %s": [
+            "Under översättning: %s"
+         ],
+         "In translation with their posts: %s": [
+            "Under översättning med sina inlägg: %s"
+         ],
+         "Which terms were not sent again": [
+            "Vilka termer som inte skickades igen"
+         ],
+         "Terms not sent again: %1$d already translated and %2$d in translation (%3$d with their posts).": [
+            "Termer som inte skickas igen: %1$d redan översatta och %2$d under översättning (%3$d med sina inlägg)."
+         ],
+         "The terms could not be sent.": [
+            "Termerna kunde inte skickas."
+         ],
+         "%1$s: %2$d term": [
+            "%1$s: %2$d term",
+            "%1$s: %2$d termer"
+         ],
+         "%1$s: not sent. %2$s no longer translates from %3$s to %4$s. <a>Choose another translator</a> at Step 2, then send again.": [
+            "%1$s: skickades inte. %2$s översätter inte längre från %3$s till %4$s. <a>Välj en annan översättare</a> i steg 2 och skicka sedan igen."
+         ],
+         "Not sent (%s)": [
+            "Skickades inte: (%s)"
+         ],
+         "%1$s: %2$d term (%3$s).": [
+            "%1$s: %2$d term (%3$s).",
+            "%1$s: %2$d termer (%3$s)."
+         ],
+         "%1$s %2$d": [
+            "%1$s %2$d"
+         ],
          "Continue to %s": [
             "Fortsätt till %s"
          ],
@@ -1217,9 +1548,6 @@
          ],
          "<p><a><s>Contact WPML support for help</s></a></p>": [
             "<p><a><s>Kontakta WPML-supporten för hjälp</s></a></p>"
-         ],
-         "Translation Service": [
-            "Översättningstjänst"
          ],
          "sending for professional translation..": [
             "skickar för professionell översättning.."
@@ -1239,6 +1567,12 @@
          ],
          "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
             "Den valda översättningsredigeraren stödjer inte automatisk översättning. Du måste aktivera den <b>avancerade översättningsredigeraren</b> för att skicka innehåll för automatisk översättning.<br/> Kontrollera dina inställningar på <wpml_settings>WPML:s inställningssida</wpml_settings>."
+         ],
+         "WPML cannot translate automatically: automatic translation is off for this site. Click \"Turn on automatic translation\" on the dashboard, then send again.": [
+            "WPML kan inte översätta automatiskt: automatisk översättning är inaktiverad för denna webbplats. Klicka på ”Aktivera automatisk översättning” i adminpanelen och skicka sedan igen."
+         ],
+         "%1$s cannot be translated automatically from %2$s with your translation engines. Choose another translation method for it, or change your engines.": [
+            "%1$s kan inte översättas automatiskt från %2$s med dina översättningsmotorer. Välj en annan översättningsmetod för det eller byt motorer."
          ],
          "Validation error happened during send to translation.": [
             "Ett valideringsfel uppstod när innehållet skulle skickas för översättning."
@@ -1309,20 +1643,100 @@
          "No, I will split jobs myself": [
             "Nej, jag delar upp jobben själv"
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
-            "Vissa taxonomitermer har inte skickats ännu. De som skickades håller på att översättas – klicka på Fortsätt skicka för att skicka resten."
+         "%d not translated": [
+            "%d inte översatt",
+            "%d inte översatta"
+         ],
+         "%d needs an update": [
+            "%d behöver en uppdatering",
+            "%d behöver en uppdatering"
+         ],
+         "%d picked": [
+            "%d vald",
+            "%d valda"
+         ],
+         "plus %d parent term": [
+            "plus %d överordnad term",
+            "plus %d överordnade termer"
+         ],
+         "%d of them a parent term": [
+            "%d av dem en överordnad term",
+            "%d av dem överordnade termer"
+         ],
+         "%1$s, %2$s": [
+            "%1$s, %2$s"
+         ],
+         "What will be sent": [
+            "Vad som kommer att skickas"
+         ],
+         "Target language": [
+            "Målspråk"
+         ],
+         "Terms sent now": [
+            "Termer som skickas nu"
+         ],
+         "Terms not sent again: already translated": [
+            "Termer som inte skickas igen: redan översatta"
+         ],
+         "Terms not sent again: queued or in translation": [
+            "Termer som inte skickas igen: i kö eller under översättning"
+         ],
+         "Terms not sent again: in translation": [
+            "Termer som inte skickas igen: under översättning"
+         ],
+         "%d with their posts": [
+            "%d tillsammans med sina inlägg"
+         ],
+         "queued by Translate Everything": [
+            "lades i kö av Översätt allt"
+         ],
+         "Terms Translate Everything has queued are counted and not sent again. They are translated automatically.": [
+            "Termer som köats av Översätt allt räknas och skickas inte igen. De översätts automatiskt."
+         ],
+         "Terms in translation, with their posts or from this section, are counted but not sent again. Their translation arrives with the job that has them.": [
+            "Termer under översättning, med sina inlägg eller från den här sektionen, räknas med men skickas inte igen. Deras översättning anländer med jobbet som innehåller dem."
+         ],
+         "Terms you send from here are not sent again when their posts are translated.": [
+            "Termer du skickar härifrån skickas inte igen när deras inlägg översätts."
+         ],
+         "This send creates %d job for the translation service from the selected terms.": [
+            "Denna sändning skapar %d jobb för översättningstjänsten från de valda termerna.",
+            "Denna sändning skapar %d jobb för översättningstjänsten från de valda termerna."
+         ],
+         "%d term you did not select is not sent.": [
+            "%d term du inte valde skickas inte.",
+            "%d termer du inte valde skickas inte."
+         ],
+         "A picked term whose parent is not translated takes its parent along, so the hierarchy is kept: plus %1$d parent term (%2$s).": [
+            "En vald term vars överordnade inte är översatt tar med sin överordnade, så hierarkin bibehålls: plus %1$d överordnad term (%2$s).",
+            "En vald term vars överordnade inte är översatt tar med sin överordnade, så hierarkin bibehålls: plus %1$d överordnade termer (%2$s)."
+         ],
+         "Translate automatically": [
+            "Översätt automatiskt"
+         ],
+         "Translate myself": [
+            "Översätt själv"
+         ],
+         "Assign a translator": [
+            "Tilldela en översättare"
+         ],
+         "Assign translation service": [
+            "Tilldela översättningstjänst"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Click Continue sending to send the rest.": [
+            "Vissa taxonomitermer har inte skickats ännu. De som skickades håller på att översättas. Klicka på Fortsätt skicka för att skicka resten."
          ],
          "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
             "Taxonomitermerna har inte skickats ännu. Klicka på Fortsätt skicka för att skicka dem."
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
-            "Vissa taxonomitermer har inte skickats ännu. De som skickades håller på att översättas – försök skicka de ej skickade objekten igen för att skicka resten."
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Retry the not-sent items to send the rest.": [
+            "Vissa taxonomitermer har inte skickats ännu. De som skickades håller på att översättas. Försök igen med objekten som inte skickades för att skicka resten."
          ],
          "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
             "Taxonomitermerna har inte skickats ännu. Försök skicka de ej skickade objekten igen för att skicka dem."
          ],
-         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
-            "Vissa taxonomitermer skickades inte för översättning. De som skickades håller på att översättas – skicka resten igen för att slutföra."
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated. Send the rest again to finish.": [
+            "Vissa taxonomitermer skickades inte för översättning. De som skickades håller på att översättas. Skicka resten igen för att slutföra."
          ],
          "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
             "WPML kunde inte skicka taxonomitermerna för översättning, så inga av dem skickades. Försök igen."
@@ -1339,6 +1753,9 @@
          "Existing content": [
             "Befintligt innehåll"
          ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$sTotalt:%2$s %3$s"
+         ],
          "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
             "Du har valt att översätta strängar som finns i %1$s. Endast dessa strängar kommer att översättas till %2$s."
          ],
@@ -1348,14 +1765,8 @@
          "Source language": [
             "Källspråk"
          ],
-         "Target language": [
-            "Målspråk"
-         ],
          "Words to translate": [
             "Ord att översätta"
-         ],
-         "%1$sTotal:%2$s %3$s": [
-            "%1$sTotalt:%2$s %3$s"
          ],
          "Translation service additional options": [
             "Ytterligare alternativ för översättningstjänst"
@@ -1366,20 +1777,34 @@
          "Fetching translation service data...": [
             "Hämtar data från översättningstjänst..."
          ],
+         "%1$s: all %2$d terms": [
+            "%1$s: alla %2$d termer"
+         ],
+         "%1$s: %2$d of %3$d terms": [
+            "%1$s: %2$d av %3$d termer"
+         ],
+         "%1$d Taxonomy (%2$s)": [
+            "%1$d taxonomi (%2$s)",
+            "%1$d taxonomier (%2$s)"
+         ],
+         "Selected: %1$s · %2$s": [
+            "Markerat: %1$s · %2$s"
+         ],
+         "%d Post": [
+            "%d inlägg",
+            "%d inlägg"
+         ],
+         "Selected: %s": [
+            "Valda: %s"
+         ],
+         "Change": [
+            "Ändra"
+         ],
+         "The term counts could not be read.": [
+            "Antalet termer kunde inte läsas."
+         ],
          "-": [
             "-"
-         ],
-         "Translate automatically": [
-            "Översätt automatiskt"
-         ],
-         "Translate myself": [
-            "Översätt själv"
-         ],
-         "Assign a translator": [
-            "Tilldela en översättare"
-         ],
-         "Assign translation service": [
-            "Tilldela översättningstjänst"
          ],
          "Do nothing": [
             "Gör ingenting"
@@ -1389,9 +1814,6 @@
          ],
          "Choose a translator": [
             "Välj en översättare"
-         ],
-         "First available": [
-            "Första tillgängliga"
          ],
          "(Me)": [
             "(jag)"
@@ -1411,9 +1833,6 @@
          "Minimize": [
             "Minimera"
          ],
-         "PTC translates at higher quality and gives you publish-ready results.": [
-            "PTC översätter med högre kvalitet och ger dig resultat som är redo att publiceras."
-         ],
          "Step 2": [
             "Steg 2"
          ],
@@ -1422,54 +1841,6 @@
          ],
          "Set up AI translation": [
             "Konfigurera AI-översättning"
-         ],
-         "Keep a wp-admin window open until WPML finishes translating": [
-            "Håll ett wp-admin-fönster öppet tills WPML har översatt klart"
-         ],
-         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
-            "WPML översätter vanligtvis ditt innehåll i bakgrunden utan att du behöver vara kvar i WordPress adminpanel. WPML kan dock inte nå den här webbplatsen, så översättningarna hämtas medan ett wp-admin-fönster är öppet."
-         ],
-         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
-            "Du kan fortsätta arbeta var som helst i WordPress adminpanel. Lämna bara ett fönster öppet tills översättningen är klar."
-         ],
-         "Next check for translations in %s.": [
-            "Nästa kontroll efter översättningar om %s."
-         ],
-         "Hide details": [
-            "Dölj detaljer"
-         ],
-         "What could be blocking it, and how to fix it": [
-            "Vad som kan blockera det och hur man fixar det"
-         ],
-         "Check these on your site": [
-            "Kontrollera detta på din webbplats"
-         ],
-         "The site might be on a private network, in staging, or only reachable through a VPN.": [
-            "Webbplatsen kan vara på ett privat nätverk, i en staging-miljö eller endast nåbar via VPN."
-         ],
-         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
-            "HTTP Basic-autentisering eller en IP-vitlista kan blockera externa anrop."
-         ],
-         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
-            "Ett säkerhetstillägg, en brandvägg eller WAF kan avvisa anrop från WPML."
-         ],
-         "The site might be in maintenance mode.": [
-            "Webbplatsen kan vara i underhållsläge."
-         ],
-         "Already fixed this on your site?": [
-            "Har du redan fixat detta på din webbplats?"
-         ],
-         "Check again whether the site is reachable": [
-            "Kontrollera igen om webbplatsen är nåbar"
-         ],
-         "Checking…": [
-            "Kontrollerar…"
-         ],
-         "Check again": [
-            "Kontrollera igen"
-         ],
-         "Still couldn't reach your site.": [
-            "Kunde fortfarande inte nå din webbplats."
          ],
          "Automatic translations completed": [
             "Automatiska översättningar klara"
@@ -1494,61 +1865,12 @@
          "Map the language": [
             "Koppla språket"
          ],
-         "%d second": [
-            "%d sekund",
-            "%d sekunder"
+         "%d translation picked up.": [
+            "%d översättning hämtades.",
+            "%d översättningar hämtades."
          ],
-         "%d minute": [
-            "%d minut",
-            "%d minuter"
-         ],
-         "%d hour": [
-            "%d timme",
-            "%d timmar"
-         ],
-         "%d day": [
-            "%d dag",
-            "%d dagar"
-         ],
-         "%d translation": [
-            "%d översättning",
-            "%d översättningar"
-         ],
-         "checking now": [
-            "kontrollerar nu"
-         ],
-         "next check in %s": [
-            "nästa kontroll om %s"
-         ],
-         "WPML stopped checking for delivered translations after repeated failures.": [
-            "WPML slutade söka efter levererade översättningar efter upprepade fel."
-         ],
-         "Receiving translations: last received %1$s ago · %2$s": [
-            "Tar emot översättningar: senaste mottogs för %1$s sedan · %2$s"
-         ],
-         "Receiving translations: last received %s ago": [
-            "Tar emot översättningar: senaste mottogs för %s sedan"
-         ],
-         "Receiving translations: no translations received yet · %s": [
-            "Tar emot översättningar: inga översättningar har tagits emot än · %s"
-         ],
-         "Receiving translations: no translations received yet": [
-            "Tar emot översättningar: inga översättningar har tagits emot än"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
-            "Tar emot översättningar: senaste mottogs för %1$s sedan · %2$s väntar · %3$s"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting": [
-            "Tar emot översättningar: senaste mottogs för %1$s sedan · %2$s väntar"
-         ],
-         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
-            "Tar emot översättningar: inga översättningar mottagna ännu · %1$s väntar · %2$s"
-         ],
-         "Receiving translations: no translations received yet · %s waiting": [
-            "Tar emot översättningar: inga översättningar mottagna ännu · %s väntar"
-         ],
-         "These translations are taking longer than they should to arrive.": [
-            "Dessa översättningar tar längre tid än de borde att anlända."
+         "Nothing new to pick up yet.": [
+            "Inget nytt att hämta ännu."
          ],
          "Picking up translations…": [
             "Hämtar översättningar…"
@@ -1607,8 +1929,8 @@
          "New content is ready to translate": [
             "Nytt innehåll är redo att översättas"
          ],
-         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
-            "%s blev översättningsbara efter att du granskat översättningskostnaden, så Översätt allt inkluderade dem inte. Granska kostnaden och inkludera dem för att hålla din webbplats helt översatt."
+         "%s became translatable after Translate Everything was set up, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "%s blev översättningsbara efter att Översätt allt konfigurerades, så Översätt allt inkluderade inte dem. Granska kostnaden och inkludera dem för att hålla din webbplats helt översatt."
          ],
          "Review cost and include": [
             "Granska kostnad och inkludera"
@@ -1627,15 +1949,6 @@
          ],
          "PTC can translate your software right inside your Git workflow.": [
             "PTC kan översätta din programvara direkt i ditt Git-arbetsflöde."
-         ],
-         "The following target languages do not support automatic translations: %s": [
-            "Följande målspråk stödjer inte automatiska översättningar: %s"
-         ],
-         "To enable automatic translation map them to known languages.": [
-            "För att aktivera automatisk översättning behöver du koppla dem till kända språk."
-         ],
-         "Map to known languages": [
-            "Koppla till kända språk"
          ],
          "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
             "För att få hjälp, vänligen <supportLink>öppna ett ärende i vår forumtråd (Maiya)</supportLink>, klicka på knappen ”Kopiera alla” för att hämta felsökningsinformationen och ”klistra in” den till vår Maiya-agent. Om du fortfarande har problem kan du använda <logsLink>loggverktyget</logsLink> för att samla in mer data."
@@ -1728,6 +2041,9 @@
          ],
          "Add your site description before you can turn this on.": [
             "Lägg till din webbplatsbeskrivning innan du kan slå på detta."
+         ],
+         "Translate Everything needs an active automatic translation account.": [
+            "Translate Everything kräver ett aktivt konto för automatisk översättning."
          ],
          "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
             "Du måste aktivera Advanced Translation Editor för att aktivera Översätt allt automatiskt."
@@ -1903,13 +2219,8 @@
          "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
             "WPML kommer att sluta översätta nytt och redigerat innehåll automatiskt. Översättningar som redan levererats förblir som de är."
          ],
-         "%d translation is still in progress. You will not be charged for it.": [
-            "%d översättning pågår fortfarande. Du kommer inte att debiteras för den.",
-            "%d översättningar pågår fortfarande. Du kommer inte att debiteras för dem."
-         ],
-         "%d translation is currently in progress and will be cancelled.": [
-            "%d översättning pågår för närvarande och kommer att avbrytas.",
-            "%d översättningar pågår för närvarande och kommer att avbrytas."
+         "Translations in progress will be cancelled and refunded. When you switch back on, changed pages will be sent again.": [
+            "Pågående översättningar kommer att avbrytas och återbetalas. När funktionen aktiveras igen skickas ändrade sidor på nytt."
          ],
          "You can adjust the content limits once Translate Everything finishes the current translation run.": [
             "Du kan justera innehållsgränserna när Översätt allt är klar med den nuvarande översättningskörningen."
@@ -2219,6 +2530,9 @@
          "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
             "Det här objektet behöver en översättningsuppdatering men översattes tidigare med WordPress-redigeraren. Om du använder WPML:s översättningsredigerare kommer den befintliga översättningen att skrivas över."
          ],
+         "%s: review in progress": [
+            "%s: granskning pågår"
+         ],
          "%1$s: %2$s%3$s": [
             "%1$s: %2$s%3$s"
          ],
@@ -2311,9 +2625,6 @@
          "Same as default": [
             "Samma som standard"
          ],
-         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
-            "Automatisk översättning är inte tillgänglig mellan %1$s och %2$s eftersom de identifieras som samma språk."
-         ],
          "Translation paused": [
             "Översättning pausad"
          ],
@@ -2356,8 +2667,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Den räknar sidor, inlägg och produkter med deras anpassade fält, sidbyggartexter och medietexter, samt kategorierna, taggarna och attributen de använder."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Den räknar sidor, inlägg och produkter med deras anpassade fält, sidbyggartexter och medietexter, kategorierna, taggarna och attributen de använder, samt webbplatsens strängar. En term räknas i varje objekt som använder den och en gång för sig själv, eftersom den skickas för översättning på båda sätten."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Det räknar sidor, inlägg och produkter inklusive deras anpassade fält, sidbyggartexter och medietexter, de kategorier, taggar och attribut de använder, samt webbplatssträngar. Varje kategori, tagg eller attribut räknas en gång, i raden Taxonomier, och inte igen med de element som använder dem."
          ],
          "Total items": [
             "Totalt antal objekt"
@@ -2397,6 +2708,9 @@
          ],
          "To use prepaid words, register WPML on this site.": [
             "För att använda förbetalda ord måste du registrera WPML på denna webbplats."
+         ],
+         "Checking…": [
+            "Kontrollerar…"
          ],
          "We could not reach our translation system.": [
             "Vi kunde inte nå vårt översättningssystem."
@@ -2508,9 +2822,6 @@
          "Connect your sites to share translation memory, glossary and word quota.": [
             "Anslut dina webbplatser för att dela översättningsminne, ordlista och ordkvot."
          ],
-         "Learn more": [
-            "Läs mer"
-         ],
          "Copy your migration code:": [
             "Kopiera din migreringskod:"
          ],
@@ -2563,7 +2874,7 @@
             "Det finns %1$s%2$s ord%3$s på ditt WPML-konto."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "Det finns %1$s%2$s tillgängliga på ditt WPML-konto%3$s"
+            "Det finns %1$s%2$s tillgängliga på ditt WPML-konto.%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(Endast ägaren av WPML-kontot kan göra detta.)"
@@ -2575,7 +2886,7 @@
             "Fortfarande inte tillräckligt med ord. Uppdatera igen om %d sekunder."
          ],
          "Already assigned?": [
-            "Redan tilldelad?"
+            "Redan tilldelade?"
          ],
          "Collapse": [
             "Fäll ihop"
@@ -2597,6 +2908,9 @@
          ],
          "Scores based on WPML's internal MQM translation quality study.": [
             "Poängen baseras på WPML:s interna MQM-studie om översättningskvalitet."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC översätter med högre kvalitet och ger dig resultat som är redo att publiceras."
          ],
          "Select an item": [
             "Välj ett objekt"

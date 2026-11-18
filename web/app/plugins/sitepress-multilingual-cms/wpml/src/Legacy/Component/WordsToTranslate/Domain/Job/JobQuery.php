@@ -30,23 +30,8 @@ class JobQuery implements JobQueryInterface {
   }
 
 
-  private function fetchPreviousAteJobIds( $rid ) {
-    $wpdb = $GLOBALS['wpdb'];
-
-    $previousAteJobIds = $wpdb->get_col(
-      $wpdb->prepare(
-        "SELECT editor_job_id
-        FROM {$wpdb->prefix}icl_translate_job j
-        WHERE rid = %d
-        AND j.completed_date IS NOT NULL
-        AND j.editor_job_id > 0
-        ORDER BY j.completed_date DESC
-        LIMIT 15",
-        $rid
-      )
-    );
-
-    return array_map( 'intval', $previousAteJobIds );
+  private function fetchPreviousAteJobIds( int $rid ) {
+    return ( new \WPML\TM\Jobs\PreviousAteJobIds( $GLOBALS['wpdb'] ) )->of( $rid );
   }
 
 

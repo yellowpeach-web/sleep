@@ -16,6 +16,11 @@ class WPML_Post_Edit_Screen {
 
 	function scripts_setup() {
 		wp_enqueue_style( 'wp-jquery-ui-dialog' );
+
+		if ( WPML_Block_Editor_Helper::is_block_editor_screen() || $this->is_posts_list() ) {
+			return;
+		}
+
 		wp_enqueue_style( 'sitepress-post-edit',
 		                  ICL_PLUGIN_URL . '/res/css/post-edit.css',
 		                  array(),
@@ -24,6 +29,20 @@ class WPML_Post_Edit_Screen {
 		                   ICL_PLUGIN_URL . '/res/js/post-edit.js',
 		                   array( 'jquery-ui-dialog', 'jquery-ui-autocomplete' ),
 		                   ICL_SITEPRESS_SCRIPT_VERSION );
+	}
+
+	private function is_posts_list() {
+		if ( isset( $GLOBALS['pagenow'] ) && 'edit.php' === $GLOBALS['pagenow'] ) {
+			return true;
+		}
+
+		if ( ! function_exists( 'get_current_screen' ) ) {
+			return false;
+		}
+
+		$screen = get_current_screen();
+
+		return is_object( $screen ) && isset( $screen->base ) && 'edit' === $screen->base;
 	}
 
 	public function preview_post_link_filter( $link ) {

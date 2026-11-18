@@ -1,2 +1,0 @@
-<?php
-require_once __DIR__ . '/../../../../../../../../../../../../wpml/src/Infrastructure/WordPress/SharedKernel/WpmlOrgClient/Domain/Api/Endpoints/PluginReport/PluginReport.php';

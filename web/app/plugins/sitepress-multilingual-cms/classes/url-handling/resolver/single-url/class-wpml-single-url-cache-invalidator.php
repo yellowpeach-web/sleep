@@ -7,6 +7,8 @@ class WPML_Single_Url_Cache_Invalidator implements IWPML_Action {
 
 	const AUTHOR_RENAME_CRON_HOOK = 'wpml_single_url_resolution_author_rename';
 
+	const REWRITE_FINGERPRINT_OPTION = 'wpml_single_url_resolution_rewrite_rules_fingerprint';
+
 	private $wpdb;
 
 	private $repository;
@@ -400,9 +402,43 @@ class WPML_Single_Url_Cache_Invalidator implements IWPML_Action {
 	}
 
 	public function route_option_updated( $old_value, $new_value, $option = '' ) {
+		if ( 'rewrite_rules' === $option ) {
+			$this->rewrite_rules_updated( $old_value, $new_value );
+			return;
+		}
+
 		if ( $old_value !== $new_value ) {
 			$this->invalidate_all( 'option_' . sanitize_key( $option ) );
 		}
+	}
+
+	private function rewrite_rules_updated( $old_value, $new_value ) {
+		$recorded = (string) get_option( self::REWRITE_FINGERPRINT_OPTION, '' );
+		$known    = '' === $recorded && ! empty( $old_value )
+			? $this->rewrite_rules_fingerprint( $old_value )
+			: $recorded;
+
+		if ( empty( $new_value ) ) {
+			if ( '' === $recorded && '' !== $known ) {
+				update_option( self::REWRITE_FINGERPRINT_OPTION, $known, false );
+			}
+			return;
+		}
+
+		$fingerprint = $this->rewrite_rules_fingerprint( $new_value );
+		if ( $fingerprint !== $recorded ) {
+			update_option( self::REWRITE_FINGERPRINT_OPTION, $fingerprint, false );
+		}
+
+		if ( '' !== $known && $known === $fingerprint ) {
+			return;
+		}
+
+		$this->invalidate_all( 'option_rewrite_rules' );
+	}
+
+	private function rewrite_rules_fingerprint( $rules ) {
+		return md5( serialize( $this->normalize_for_fingerprint( $rules ) ) );
 	}
 
 	public function sitepress_settings_updated( $old_settings, $new_settings, $option = '' ) {
@@ -424,6 +460,15 @@ class WPML_Single_Url_Cache_Invalidator implements IWPML_Action {
 			return;
 		}
 
+		if (
+			! $force
+			&& ! $this->is_operator_request()
+			&& true === $this->generation->defer_advance( (string) $reason )
+		) {
+			$this->generation_bumped[ $blog_id ] = true;
+			return;
+		}
+
 		$old_generation = $this->generation->get();
 		$new_generation = $this->generation->bump();
 
@@ -435,6 +480,14 @@ class WPML_Single_Url_Cache_Invalidator implements IWPML_Action {
 			$new_generation,
 			(string) $reason
 		);
+	}
+
+	private function is_operator_request() {
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			return true;
+		}
+
+		return function_exists( 'current_user_can' ) && true === current_user_can( 'manage_options' );
 	}
 
 	private function invalidate_post_tree( $post_id, $post_type ) {
@@ -511,14 +564,12 @@ class WPML_Single_Url_Cache_Invalidator implements IWPML_Action {
 		}
 
 		$this->invalidated_objects[ $blog_id ][ $key ] = true;
-		$cache_keys                                    = $this->repository->invalidate_object( $kind, $object_id );
-
-		if ( count( $cache_keys ) > self::MAX_TARGETED_OBJECTS ) {
-			$this->invalidate_all( $kind . '_fanout', $force );
-			return;
-		}
-
+		$cache_keys = $this->repository->invalidate_object( $kind, $object_id );
 		$this->cache->delete_object_cache_keys( $cache_keys );
+
+		if ( false === $this->repository->last_invalidation_complete() ) {
+			$this->invalidate_all( $kind . '_fanout', $force );
+		}
 	}
 
 	private function invalidate_trid( $trid ) {
@@ -532,14 +583,12 @@ class WPML_Single_Url_Cache_Invalidator implements IWPML_Action {
 		}
 
 		$this->invalidated_trids[ $blog_id ][ $trid ] = true;
-		$cache_keys                                   = $this->repository->invalidate_trid( $trid );
-
-		if ( count( $cache_keys ) > self::MAX_TARGETED_OBJECTS ) {
-			$this->invalidate_all( 'trid_fanout' );
-			return;
-		}
-
+		$cache_keys = $this->repository->invalidate_trid( $trid );
 		$this->cache->delete_object_cache_keys( $cache_keys );
+
+		if ( false === $this->repository->last_invalidation_complete() ) {
+			$this->invalidate_all( 'trid_fanout' );
+		}
 	}
 
 	private function post_descendants( $post_id, $post_type ) {

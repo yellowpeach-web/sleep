@@ -2,6 +2,7 @@
 
 namespace WPML\UserInterface\Web\Core\Component\Dashboard\Application\Endpoint\GetWordsToTranslate;
 
+use WPML\Core\Component\WordsToTranslate\Application\Service\WordsForLang;
 use WPML\Core\Component\WordsToTranslate\Application\Service\WordsToTranslateService;
 use WPML\Core\Port\Endpoint\EndpointInterface;
 use WPML\PHP\Exception\InvalidArgumentException;
@@ -10,9 +11,15 @@ class GetWordsToTranslateForItemsController implements EndpointInterface {
 
   private $wordsToTranslateService;
 
+  private $wordsForLang;
 
-  public function __construct( WordsToTranslateService $wordsToTranslateServices ) {
+
+  public function __construct(
+    WordsToTranslateService $wordsToTranslateServices,
+    WordsForLang $wordsForLang
+  ) {
     $this->wordsToTranslateService = $wordsToTranslateServices;
+    $this->wordsForLang            = $wordsForLang;
   }
 
 
@@ -64,18 +71,14 @@ class GetWordsToTranslateForItemsController implements EndpointInterface {
       if ( ! empty( $langs ) ) {
         $item = $this->wordsToTranslateService->getForIdAndType( $id, $kind, $langs );
         foreach ( $langs as $lang ) {
-          $resultItem['langs'][ $lang ] = [
-            'wordsToTranslate' => $item->getWordsToTranslate( $lang ),
-          ];
+          $resultItem['langs'][ $lang ] = $this->wordsForLang->of( $item, $lang );
         }
       }
 
       if ( ! empty( $langsFresh ) ) {
         $item = $this->wordsToTranslateService->getForIdAndType( $id, $kind, $langsFresh, true );
         foreach ( $langsFresh as $lang ) {
-          $resultItem['langs'][ $lang ] = [
-            'wordsToTranslate' => $item->getWordsToTranslate( $lang ),
-          ];
+          $resultItem['langs'][ $lang ] = $this->wordsForLang->of( $item, $lang );
         }
       }
 

@@ -108,7 +108,7 @@ class LanguageDomains {
 		return null;
 	}
 
-	public static function refusalForSave( \SitePress $sitepress, array $languages, $defaultCode, array $postedDomains ) {
+	public static function refusalForSave( \SitePress $sitepress, array $languages, $defaultCode, array $postedDomains, $existingCodeOf = null ) {
 		$missing = array();
 
 		$demoted = self::demoted( $sitepress, $defaultCode );
@@ -121,9 +121,16 @@ class LanguageDomains {
 		foreach ( $languages as $row ) {
 			$row  = (array) $row;
 			$code = isset( $row['code'] ) ? (string) $row['code'] : '';
-			if ( '' !== $code && ! in_array( $code, $activeCodes, true ) ) {
-				$newCodes[] = $code;
+			if ( '' === $code || in_array( $code, $activeCodes, true ) ) {
+				continue;
 			}
+			if ( is_callable( $existingCodeOf ) ) {
+				$existing = call_user_func( $existingCodeOf, $row );
+				if ( is_string( $existing ) && '' !== $existing ) {
+					continue;
+				}
+			}
+			$newCodes[] = $code;
 		}
 		$missing = array_merge( $missing, self::withoutDomain( $sitepress, $newCodes, $defaultCode ) );
 

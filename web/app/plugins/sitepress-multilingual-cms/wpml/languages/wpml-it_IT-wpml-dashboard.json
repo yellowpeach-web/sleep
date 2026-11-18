@@ -7,6 +7,9 @@
             "plural_forms": "nplurals=2; plural=(n != 1);",
             "lang": "it_IT"
          },
+         "(no title)": [
+            "(nessun titolo)"
+         ],
          "Untranslated strings that I encounter on front-end while logged in": [
             "Stringhe non tradotte che incontro nel front-end mentre ho effettuato l'accesso"
          ],
@@ -38,6 +41,16 @@
          "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
             "Abbiamo reinviato %1$d di %2$d elementi, ma %3$d non sono riusciti. Ricarica la pagina e riprova."
          ],
+         "We resent %1$d of %2$d items.": [
+            "Abbiamo reinviato %1$d elementi su %2$d."
+         ],
+         "%1$s from %2$s": [
+            "%1$s da %2$s"
+         ],
+         "%1$d item can't be translated automatically: %2$s. Choose another translation method for it, or change your engines.": [
+            "Impossibile tradurre automaticamente %1$d elemento: %2$s. Scegli un altro metodo di traduzione per questo elemento o cambia i tuoi motori.",
+            "Impossibile tradurre automaticamente %1$d elementi: %2$s. Scegli un altro metodo di traduzione per questi elementi o cambia i tuoi motori."
+         ],
          "Error in fetching default translation batch name": [
             "Errore nel recupero del nome predefinito del lotto di traduzione"
          ],
@@ -52,6 +65,9 @@
          ],
          "Validation failed": [
             "Validazione fallita"
+         ],
+         "The translation service batch could not be committed. Continue sending to try again.": [
+            "Impossibile confermare il batch del servizio di traduzione. Continua l'invio per riprovare."
          ],
          "%s: labels and slug": [
             "%s: etichette e slug"
@@ -93,6 +109,12 @@
          "They are still waiting and will be tried again on the next download.": [
             "Sono ancora in attesa e verranno riprovate al prossimo download."
          ],
+         "Job %d": [
+            "Lavoro %d"
+         ],
+         "and %d more": [
+            "e altri %d"
+         ],
          "Status: ": [
             "Stato: "
          ],
@@ -133,11 +155,11 @@
          "Switching…": [
             "Passaggio in corso…"
          ],
-         "Translation engine controls couldn't load. Reload the page and try again.": [
-            "Impossibile caricare i controlli del motore di traduzione. Ricarica la pagina e riprova."
-         ],
          "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
             "Non abbiamo potuto confermare il passaggio. Riprova o ricarica per vedere il motore attuale."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Impossibile caricare i controlli del motore di traduzione. Ricarica la pagina e riprova."
          ],
          "Loading translation engine settings…": [
             "Caricamento delle impostazioni del motore di traduzione…"
@@ -295,14 +317,20 @@
          "Select %s": [
             "Seleziona %s"
          ],
-         "(no title)": [
-            "(nessun titolo)"
+         "Appears on the site": [
+            "Compare sul sito"
+         ],
+         "Not shown yet": [
+            "Non ancora mostrato"
          ],
          "Image": [
             "Immagine"
          ],
          "%s Title": [
             "Titolo %s"
+         ],
+         "Source": [
+            "Origine"
          ],
          "%s Date": [
             "Data %s"
@@ -334,9 +362,6 @@
          "Show selected items": [
             "Mostra elementi selezionati"
          ],
-         "Looking for more items...": [
-            "Ricerca di altri elementi..."
-         ],
          " / page": [
             " / pagina"
          ],
@@ -345,6 +370,9 @@
          ],
          "Next": [
             "Successivo"
+         ],
+         "Looking for more items...": [
+            "Ricerca di altri elementi..."
          ],
          "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
             "Il contenuto del tuo sito è troppo vasto per un singolo lotto di traduzione. Usa i filtri per ridurre la selezione, quindi “seleziona tutto”."
@@ -376,11 +404,30 @@
          "Select all %ss": [
             "Seleziona tutti i %s"
          ],
+         "%d not shown on the site yet": [
+            "%d non ancora mostrato sul sito",
+            "%d non ancora mostrati sul sito"
+         ],
+         "Show them": [
+            "Mostrali"
+         ],
+         "Hide them": [
+            "Nascondili"
+         ],
          "Save note": [
             "Salva nota"
          ],
-         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
-            "Le seguenti lingue di destinazione non supportano la traduzione automatica: %s. <a>Mappale a lingue conosciute</a> per abilitare la traduzione automatica."
+         "%1$s and %2$s": [
+            "%1$s e %2$s"
+         ],
+         "The following target languages do not support automatic translation: %s.": [
+            "Le seguenti lingue di destinazione non supportano la traduzione automatica: %s."
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "La traduzione automatica non è disponibile tra %1$s e %2$s perché sono riconosciute come la stessa lingua. Scegli invece “Duplica” per copiare i contenuti."
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "La traduzione automatica non è disponibile tra %1$s e %2$s perché sono riconosciute come la stessa lingua."
          ],
          "The site's default language %s doesn't support automatic translation.": [
             "La lingua predefinita del sito %s non supporta la traduzione automatica."
@@ -424,8 +471,8 @@
          "Raise the cap": [
             "Alza il limite"
          ],
-         "Only the account owner can do this.": [
-            "Solo il proprietario dell'account può farlo."
+         "You can raise it on the AI Translation: billing and usage page.": [
+            "Puoi aumentarlo nella pagina Traduzione IA: fatturazione e utilizzo."
          ],
          "Show strings in:": [
             "Mostra stringhe in:"
@@ -448,9 +495,6 @@
          "Domain": [
             "Dominio"
          ],
-         "Source": [
-            "Origine"
-         ],
          "Type": [
             "Tipo"
          ],
@@ -466,11 +510,8 @@
          "All sources": [
             "Tutte le origini"
          ],
-         "Frontend (viewed)": [
-            "Frontend (visualizzato)"
-         ],
-         "Backend (viewed)": [
-            "Backend (visualizzato)"
+         "Seen in the admin": [
+            "Visibile nell'admin"
          ],
          "Unknown": [
             "Sconosciuto"
@@ -484,17 +525,11 @@
          "Search string or a name": [
             "Cerca stringa o nome"
          ],
-         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
-            "Questo filtro è disponibile solo se l'origine è impostata su “Frontend” o “Backend”."
+         "%1$s, %2$s and %3$s": [
+            "%1$s, %2$s e %3$s"
          ],
-         "front-end": [
-            "front-end"
-         ],
-         "back-end": [
-            "back-end"
-         ],
-         "viewed": [
-            "visualizzato"
+         "This filter is available only when Source is \"Appears on the site\" or \"Seen in the admin\".": [
+            "Questo filtro è disponibile solo quando Origine è “Compare sul sito” o “Visibile nell'admin”."
          ],
          "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
             "Apre la pagina di localizzazione di temi e plugin, dove puoi scansionare il tuo tema e i tuoi plugin per le stringhe non ancora registrate e renderle disponibili per la traduzione qui."
@@ -587,7 +622,7 @@
             "Scopri come usare la registrazione automatica"
          ],
          "recommended": [
-            "consigliato"
+            "Consigliato"
          ],
          "Also register strings from the website's back-end": [
             "Registra anche le stringhe dal back-end del sito web"
@@ -610,8 +645,8 @@
          "You can only translate %1$s from the site's default language (%2$s).": [
             "Puoi tradurre %1$s solo dalla lingua predefinita del sito (%2$s)."
          ],
-         "Search taxonomy or a name": [
-            "Cerca tassonomia o un nome"
+         "Search taxonomies and terms": [
+            "Cerca tassonomie e termini"
          ],
          "Filter by post type": [
             "Filtra per tipo di post"
@@ -626,6 +661,9 @@
          "No translatable taxonomies match the current filters.": [
             "Nessuna tassonomia traducibile corrisponde ai filtri correnti."
          ],
+         "Words in the terms, in %s": [
+            "Parole nei termini, in %s"
+         ],
          "Select all taxonomies": [
             "Seleziona tutte le tassonomie"
          ],
@@ -635,11 +673,21 @@
          "Terms in": [
             "Termini in"
          ],
-         "Post types": [
-            "Tipi di post"
+         "Used on": [
+            "In uso in"
          ],
-         "Translated / Total terms": [
-            "Termini tradotti / totali"
+         "Terms": [
+            "Termini"
+         ],
+         "Words": [
+            "Parola",
+            "Parole"
+         ],
+         "Hide terms": [
+            "Nascondi termini"
+         ],
+         "Choose terms": [
+            "Scegli termini"
          ],
          "translated": [
             "tradotto"
@@ -665,11 +713,32 @@
          "%1$s: %2$s": [
             "%1$s: %2$s"
          ],
-         "Open %s in the Taxonomy Translation tab": [
-            "Apri %s nella scheda Traduzione delle tassonomie"
+         "Translated": [
+            "Tradotto"
+         ],
+         "Partially translated": [
+            "Parzialmente tradotto"
+         ],
+         "Translation needs update": [
+            "La traduzione necessita di un aggiornamento"
+         ],
+         "Preparing for translation": [
+            "In preparazione per la traduzione"
+         ],
+         "Translation stalled": [
+            "Traduzione bloccata"
+         ],
+         "Not translated": [
+            "Non tradotto"
+         ],
+         "Status icons": [
+            "Icone di stato"
          ],
          "Taxonomy labels and slug": [
             "Etichette e slug della tassonomia"
+         ],
+         "The taxonomy's own texts: its singular and plural names and its URL slug. Not its terms.": [
+            "I testi della tassonomia: i suoi nomi singolare e plurale e il suo slug URL. Non i suoi termini."
          ],
          "WPML String Translation is not active.": [
             "WPML String Translation non è attivo."
@@ -701,15 +770,131 @@
          "Rescan": [
             "Scansiona di nuovo"
          ],
-         "%d Taxonomy selected": [
-            "%d tassonomia selezionata",
-            "%d tassonomie selezionate"
+         "Send categories, tags and other terms for translation, a whole taxonomy or the terms you pick.": [
+            "Invia categorie, tag e altri termini per la traduzione, un'intera tassonomia o i termini che scegli tu."
          ],
-         "<b>Translate Everything Automatically</b> (TEA) is active.": [
-            "<b>Traduci tutto automaticamente</b> (TEA) è attivo."
+         "Edit translations manually": [
+            "Modifica traduzioni manualmente"
          ],
-         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
-            "I termini nuovi e aggiornati nelle tassonomie traducibili vengono messi in coda automaticamente. Seleziona le tassonomie qui sotto per inviare un lavoro collettivo una tantum per eventuali termini rimanenti non tradotti."
+         "(opens in a new tab)": [
+            "(si apre in una nuova scheda)"
+         ],
+         "To edit one term's translation by hand: <link/>": [
+            "Per modificare manualmente la traduzione di un termine: <link/>"
+         ],
+         "There is nothing to send. New and changed terms will show up here.": [
+            "Non c'è nulla da inviare. I termini nuovi e modificati verranno mostrati qui."
+         ],
+         "Every term is translated into every language.": [
+            "Ogni termine è tradotto in ogni lingua."
+         ],
+         "No taxonomy or term matches “%s”.": [
+            "Nessuna tassonomia e nessun termine corrispondono a “%s”."
+         ],
+         "Clear search": [
+            "Cancella ricerca"
+         ],
+         "<b>Translate Everything</b> is on. It translates every term of every translatable taxonomy automatically. You do not need to send terms or pick them.": [
+            "<b>Traduci tutto</b> è attivo. Traduce automaticamente ogni termine di ogni tassonomia traducibile. Non è necessario inviare o selezionare i termini."
+         ],
+         "Use this section to see their status, or to send terms to a translator or a translation service.": [
+            "Usa questa sezione per visualizzare il loro stato o per inviare i termini a un traduttore o a un servizio di traduzione."
+         ],
+         "%1$d sub-term, %2$d not translated": [
+            "%1$d sottotermine, %2$d non tradotto",
+            "%1$d sottotermini, %2$d non tradotti"
+         ],
+         "%d sub-term, all translated": [
+            "%d sottotermine, tutti tradotti",
+            "%d sottotermini, tutti tradotti"
+         ],
+         "%1$s and its %2$d sub-term selected.": [
+            "%1$s e il suo %2$d sottotermine selezionato.",
+            "%1$s e i suoi %2$d sottotermini selezionati."
+         ],
+         "%1$s and its %2$d sub-term cleared.": [
+            "%1$s e il suo %2$d sottotermine deselezionato.",
+            "%1$s e i suoi %2$d sottotermini deselezionati."
+         ],
+         "Select %1$s, in %2$s": [
+            "Seleziona %1$s, in %2$s"
+         ],
+         "Hide sub-terms of %s": [
+            "Nascondi i sottotermini di %s"
+         ],
+         "Show sub-terms of %s": [
+            "Mostra i sottotermini di %s"
+         ],
+         "in": [
+            "in"
+         ],
+         "Added because a sub-term is selected": [
+            "Aggiunto perché è selezionato un sottotermine"
+         ],
+         "The terms could not be loaded.": [
+            "Impossibile caricare i termini."
+         ],
+         "Showing %1$d term matching “%2$s”": [
+            "Visualizzazione di %1$d termine corrispondente a “%2$s”",
+            "Visualizzazione di %1$d termini corrispondenti a “%2$s”"
+         ],
+         "Showing roots %1$d to %2$d of %3$d": [
+            "Visualizzazione dei termini principali da %1$d a %2$d di %3$d"
+         ],
+         "Showing %1$d to %2$d of %3$d": [
+            "Visualizzazione da %1$d a %2$d di %3$d"
+         ],
+         "%s: terms": [
+            "%s: termini"
+         ],
+         "All terms are selected until you untick some.": [
+            "Tutti i termini sono selezionati finché non ne deselezioni alcuni."
+         ],
+         "Terms matching “%s”, found by the section search.": [
+            "Termini corrispondenti a “%s”, trovati tramite la ricerca della sezione."
+         ],
+         "%1$s: %2$d term matches the section search.": [
+            "%1$s: %2$d termine corrisponde alla ricerca nella sezione.",
+            "%1$s: %2$d termini corrispondono alla ricerca nella sezione."
+         ],
+         "Show all terms": [
+            "Mostra tutti i termini"
+         ],
+         "Select all %d terms": [
+            "Seleziona tutti i %d termini"
+         ],
+         "Ticking a parent selects its sub-terms.": [
+            "Selezionando un termine principale vengono selezionati i relativi sottotermini."
+         ],
+         "Expand all": [
+            "Espandi tutto"
+         ],
+         "Collapse all": [
+            "Comprimi tutto"
+         ],
+         "Select all terms on this page": [
+            "Seleziona tutti i termini in questa pagina"
+         ],
+         "Term": [
+            "Termine"
+         ],
+         "No term matches “%s”.": [
+            "Nessun termine corrisponde a “%s”."
+         ],
+         "%1$d of %2$d": [
+            "%1$d di %2$d"
+         ],
+         "Pages of %s terms": [
+            "Pagine di termini di %s"
+         ],
+         "All %d terms selected": [
+            "Tutti i %d termini selezionati"
+         ],
+         "%1$d of %2$d terms selected": [
+            "%1$d di %2$d termini selezionati"
+         ],
+         "No terms selected": [
+            "Nessun termine selezionato"
          ],
          "Switch Now": [
             "Passa ora"
@@ -754,7 +939,7 @@
             "Capito"
          ],
          "See your pricing": [
-            "Vedi i tuoi prezzi"
+            "Visualizza i prezzi"
          ],
          "You’re all set. The new pricing is active.": [
             "È tutto pronto. Il nuovo prezzo è attivo."
@@ -895,8 +1080,20 @@
          "Not now": [
             "Non ora"
          ],
+         "This site is not registered with our translation system yet. Register it on WPML → Activate & Update to use automatic translation.": [
+            "Questo sito non è ancora registrato nel nostro sistema di traduzione. Registralo in WPML → Attiva e aggiorna per usare la traduzione automatica."
+         ],
          "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
             "Errore di connessione. Attendi un minuto e ricarica la pagina. Se il problema persiste, contatta il supporto WPML."
+         ],
+         "Posts": [
+            "Articoli"
+         ],
+         "Taxonomy terms": [
+            "Termini della tassonomia"
+         ],
+         "Words required:": [
+            "Parole richieste:"
          ],
          "You don’t have enough prepaid words to translate this content.": [
             "Non hai abbastanza parole prepagate per tradurre questo contenuto."
@@ -910,15 +1107,8 @@
          "Automatic translation costs:": [
             "Costi della traduzione automatica:"
          ],
-         "Words": [
-            "Parola",
-            "Parole"
-         ],
          "Words to translate automatic": [
             "Parole da tradurre automaticamente"
-         ],
-         "Words required:": [
-            "Parole richieste:"
          ],
          "Pricing": [
             "Prezzi"
@@ -939,17 +1129,36 @@
             "%s parola assegnata a questo sito.",
             "%s parole assegnate a questo sito."
          ],
-         "Leave existing translations as they are": [
-            "Lascia le traduzioni esistenti così come sono"
-         ],
-         "Overwrite existing translations": [
-            "Sovrascrivi le traduzioni esistenti"
-         ],
          "Some of the content you want to translate is already translated": [
             "Parte del contenuto che vuoi tradurre è già tradotto"
          ],
          "What do you want to do with the content that's already translated?": [
             "Cosa vuoi fare con il contenuto che è già stato tradotto?"
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Translate from scratch\" translates them again from the start.": [
+            "Gli elementi modificati dopo essere stati tradotti vengono comunque inviati. “Lascia” traduce solo le modifiche. “Traduci da zero” traduce di nuovo tutto dall'inizio."
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Overwrite\" translates them again from the start.": [
+            "Gli elementi modificati dopo essere stati tradotti vengono inviati in ogni caso. “Lascia” traduce solo le modifiche. “Sovrascrivi” li traduce nuovamente dall'inizio."
+         ],
+         "\"Translate from scratch\" replaces the edits made to these translations:": [
+            "“Traduci da zero” sostituisce le modifiche apportate a queste traduzioni:"
+         ],
+         "And %s more item.": [
+            "E %s altro elemento.",
+            "E altri %s elementi."
+         ],
+         "Leave existing translations as they are": [
+            "Lascia le traduzioni esistenti così come sono"
+         ],
+         "Translate from scratch": [
+            "Traduci da zero"
+         ],
+         "Replaces the existing translations, including the edits made to them": [
+            "Sostituisce le traduzioni esistenti, comprese le modifiche apportate"
+         ],
+         "Overwrite existing translations": [
+            "Sovrascrivi le traduzioni esistenti"
          ],
          "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
             "Le traduzioni di DeepL, Google Translate e Microsoft Translator dovrebbero essere revisionate prima della pubblicazione."
@@ -984,8 +1193,17 @@
          " Checking ": [
             " Controllo in corso "
          ],
+         "To translate automatically, WPML needs an active automatic translation account. Turn on automatic translation, or choose a different translation option.": [
+            "Per tradurre automaticamente, WPML richiede un account di traduzione automatica attivo. Attiva la traduzione automatica o scegli un'altra opzione di traduzione."
+         ],
          "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
             "Per tradurre automaticamente, devi prima <enable_ate>abilitare l'<b>Editor di traduzione avanzato</b> di WPML</enable_ate>.<br/>Abilita l'<b>Editor di traduzione avanzato</b> e fai clic su <check_again>controlla di nuovo</check_again> o scegli un'opzione di traduzione diversa."
+         ],
+         "Turn on automatic translation": [
+            "Attiva la traduzione automatica"
+         ],
+         "Learn more": [
+            "Scopri di più"
          ],
          "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
             "Il contenuto selezionato è stato tradotto utilizzando l'<b>Editor di traduzione classico</b> e non può essere inviato per la traduzione automatica. Per consentirlo, abilita “Usa anche per le vecchie traduzioni” nella pagina delle <wpmlSettingLink>Impostazioni WPML</wpmlSettingLink>."
@@ -1056,11 +1274,14 @@
          "WPML does not support duplicating %1$s elements and strings.": [
             "WPML non supporta la duplicazione degli elementi %1$s e delle stringhe."
          ],
-         "WPML does not support duplicating taxonomies.": [
-            "WPML non supporta la duplicazione delle tassonomie."
+         "Taxonomy terms cannot be duplicated. Translate them instead. When you duplicate posts, WPML copies their terms that have no translation yet and lists these copies as not translated until they are translated.": [
+            "I termini delle tassonomie non possono essere duplicati. Traducili invece. Quando duplichi gli articoli, WPML copia i relativi termini non ancora tradotti e li contrassegna come non tradotti finché non vengono tradotti."
          ],
-         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
-            "WPML non supporta la duplicazione delle tassonomie. La tua selezione di duplicare le tassonomie in %1$s verrà ignorata se procedi con la traduzione."
+         "Taxonomy terms cannot be duplicated, so the terms you selected will not be duplicated to %1$s. The posts you duplicate get copies of their terms that have no translation yet. WPML lists these copies as not translated until they are translated.": [
+            "I termini delle tassonomie non possono essere duplicati, pertanto i termini selezionati non verranno duplicati in %1$s. Gli articoli duplicati riceveranno copie dei termini non ancora tradotti. WPML contrassegna queste copie come non tradotte finché non vengono tradotte."
+         ],
+         "If the editor is set to translate automatically when it opens, it starts from a machine translation that uses your words. Undo translation in the editor clears it.": [
+            "Se l'editor è impostato per tradurre automaticamente all'apertura, parte da una traduzione automatica che consuma le tue parole. L'annullamento della traduzione nell'editor la cancella."
          ],
          "Finish setting up %s on your site": [
             "Termina la configurazione di %s sul tuo sito"
@@ -1068,14 +1289,26 @@
          "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
             "Devi autenticare %s per inviare loro i contenuti da tradurre.<br/>Visita la <a>scheda Traduttori</a> per terminare la configurazione e fai clic su <check_again>controlla di nuovo</check_again> o scegli un'opzione di traduzione diversa."
          ],
+         "WPML will not send these items. A reviewer has their translation open:": [
+            "WPML non invierà questi elementi. Un revisore ha la traduzione aperta:"
+         ],
+         "To send them, finish or cancel the review in Translation Tasks first.": [
+            "Per inviarli, completa o annulla prima la revisione in Attività di traduzione."
+         ],
          "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
             "Parte del contenuto selezionato ha una traduzione aperta per la revisione. L'invio di nuovo sostituirà quella traduzione."
          ],
          "You selected multiple translation methods for content across different languages:": [
             "Hai selezionato più metodi di traduzione per contenuti in diverse lingue:"
          ],
+         "Translation Service": [
+            "Servizio di traduzione"
+         ],
          "Sent for translation": [
             "Inviato per la traduzione"
+         ],
+         "Some content was not sent": [
+            "Alcuni contenuti non sono stati inviati"
          ],
          "Some items were not sent for translation": [
             "Alcuni elementi non sono stati inviati per la traduzione"
@@ -1103,6 +1336,9 @@
          ],
          "Continue sending": [
             "Continua l'invio"
+         ],
+         "Open Translations": [
+            "Apri Traduzioni"
          ],
          "Ok": [
             "Ok"
@@ -1173,6 +1409,15 @@
          "WPML could not count the words of these items.": [
             "WPML non è riuscito a conteggiare le parole di questi elementi."
          ],
+         "WPML could not get the price of automatic translation from our translation system. Try again in a few minutes.": [
+            "WPML non è riuscito a ottenere il prezzo della traduzione automatica dal nostro sistema di traduzione. Riprova tra qualche minuto."
+         ],
+         "No translation engine translates this content from %1$s into %2$s.": [
+            "Nessun motore di traduzione traduce questo contenuto da %1$s a %2$s."
+         ],
+         "WPML did not send these items. A reviewer has their translation open. Finish or cancel the review in Translation Tasks, then send them again.": [
+            "WPML non ha inviato questi elementi. Un revisore ha la traduzione aperta. Completa o annulla la revisione in Attività di traduzione, poi inviali di nuovo."
+         ],
          "Some content couldn't be sent to translation.": [
             "Impossibile inviare alcuni contenuti alla traduzione."
          ],
@@ -1209,6 +1454,92 @@
          "Items already sent will be translated and delivered normally.": [
             "Gli elementi già inviati verranno tradotti e consegnati normalmente."
          ],
+         "%d post": [
+            "%d articolo",
+            "%d articoli"
+         ],
+         "%1$s and %2$d term": [
+            "%1$s e %2$d termine",
+            "%1$s e %2$d termini"
+         ],
+         "%d term": [
+            "%d termine",
+            "%d termini"
+         ],
+         "%1$s: %2$s is assigned to %3$s. They find it in their Translations queue.": [
+            "%1$s: %2$s è assegnato a %3$s. Lo troverà nella propria coda delle traduzioni.",
+            "%1$s: %2$s sono assegnati a %3$s. Li troverà nella propria coda delle traduzioni."
+         ],
+         "First available": [
+            "Primo disponibile"
+         ],
+         "%1$s: %2$s is waiting for you in Translations.": [
+            "%1$s: %2$s ti attende in Traduzioni.",
+            "%1$s: %2$s ti attendono in Traduzioni."
+         ],
+         "%1$s: %2$s is sent to %3$s.": [
+            "%1$s: %2$s è inviato a %3$s.",
+            "%1$s: %2$s sono inviati a %3$s."
+         ],
+         "%1$s: %2$s is being translated automatically.": [
+            "%1$s: %2$s viene tradotto automaticamente.",
+            "%1$s: %2$s vengono tradotti automaticamente."
+         ],
+         "%1$s and %2$d of %3$d term": [
+            "%1$s e %2$d di %3$d termine",
+            "%1$s e %2$d di %3$d termini"
+         ],
+         "%1$d of %2$d term": [
+            "%1$d di %2$d termine",
+            "%1$d di %2$d termini"
+         ],
+         "%1$s: %2$s sent for automatic translation.": [
+            "%1$s: %2$s inviati per la traduzione automatica."
+         ],
+         "%1$s: %2$s sent for translation.": [
+            "%1$s: %2$s inviato per la traduzione."
+         ],
+         "The term names could not be read.": [
+            "Impossibile leggere i nomi dei termini."
+         ],
+         "%s, and more": [
+            "%s e altri"
+         ],
+         "Already translated: %s": [
+            "Già tradotto: %s"
+         ],
+         "In translation: %s": [
+            "In corso di traduzione: %s"
+         ],
+         "In translation with their posts: %s": [
+            "In corso di traduzione con i relativi articoli: %s"
+         ],
+         "Which terms were not sent again": [
+            "Quali termini non sono stati inviati di nuovo"
+         ],
+         "Terms not sent again: %1$d already translated and %2$d in translation (%3$d with their posts).": [
+            "Termini non inviati di nuovo: %1$d già tradotti e %2$d in corso di traduzione (%3$d con i relativi articoli)."
+         ],
+         "The terms could not be sent.": [
+            "Impossibile inviare i termini."
+         ],
+         "%1$s: %2$d term": [
+            "%1$s: %2$d termine",
+            "%1$s: %2$d termini"
+         ],
+         "%1$s: not sent. %2$s no longer translates from %3$s to %4$s. <a>Choose another translator</a> at Step 2, then send again.": [
+            "%1$s: non inviato. %2$s non traduce più da %3$s a %4$s. <a>Scegli un altro traduttore</a> al Passaggio 2, poi invia di nuovo."
+         ],
+         "Not sent (%s)": [
+            "Non inviati: (%s)"
+         ],
+         "%1$s: %2$d term (%3$s).": [
+            "%1$s: %2$d termine (%3$s).",
+            "%1$s: %2$d termini (%3$s)."
+         ],
+         "%1$s %2$d": [
+            "%1$s %2$d"
+         ],
          "Continue to %s": [
             "Continua su %s"
          ],
@@ -1217,9 +1548,6 @@
          ],
          "<p><a><s>Contact WPML support for help</s></a></p>": [
             "<p><a><s>Contatta il supporto WPML per aiuto</s></a></p>"
-         ],
-         "Translation Service": [
-            "Servizio di traduzione"
          ],
          "sending for professional translation..": [
             "invio per la traduzione professionale.."
@@ -1239,6 +1567,12 @@
          ],
          "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
             "L'editor di traduzione attualmente selezionato non supporta la traduzione automatica. Devi abilitare l'<b>Editor di traduzione avanzato</b> per inviare contenuti per la traduzione automatica.<br/> Controlla le tue impostazioni nella <wpml_settings>pagina delle impostazioni di WPML</wpml_settings>."
+         ],
+         "WPML cannot translate automatically: automatic translation is off for this site. Click \"Turn on automatic translation\" on the dashboard, then send again.": [
+            "WPML non può tradurre automaticamente: la traduzione automatica è disattivata per questo sito. Fai clic su “Attiva la traduzione automatica” nella bacheca, poi invia di nuovo."
+         ],
+         "%1$s cannot be translated automatically from %2$s with your translation engines. Choose another translation method for it, or change your engines.": [
+            "Impossibile tradurre automaticamente %1$s da %2$s con i tuoi motori di traduzione. Scegli un altro metodo di traduzione o cambia i tuoi motori."
          ],
          "Validation error happened during send to translation.": [
             "Si è verificato un errore di convalida durante l'invio alla traduzione."
@@ -1309,20 +1643,100 @@
          "No, I will split jobs myself": [
             "No, suddividerò i lavori io stesso"
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
-            "Alcuni termini della tassonomia non sono ancora stati inviati. Quelli inviati sono in fase di traduzione - fai clic su Continua l'invio per inviare i restanti."
+         "%d not translated": [
+            "%d non tradotto",
+            "%d non tradotti"
+         ],
+         "%d needs an update": [
+            "%d richiede un aggiornamento",
+            "%d richiedono un aggiornamento"
+         ],
+         "%d picked": [
+            "%d selezionato",
+            "%d selezionati"
+         ],
+         "plus %d parent term": [
+            "più %d termine principale",
+            "più %d termini principali"
+         ],
+         "%d of them a parent term": [
+            "%d di essi è un termine principale",
+            "%d di essi sono termini principali"
+         ],
+         "%1$s, %2$s": [
+            "%1$s, %2$s"
+         ],
+         "What will be sent": [
+            "Cosa verrà inviato"
+         ],
+         "Target language": [
+            "Lingua di destinazione"
+         ],
+         "Terms sent now": [
+            "Termini inviati ora"
+         ],
+         "Terms not sent again: already translated": [
+            "Termini non inviati di nuovo: già tradotti"
+         ],
+         "Terms not sent again: queued or in translation": [
+            "Termini non inviati di nuovo: in coda o in corso di traduzione"
+         ],
+         "Terms not sent again: in translation": [
+            "Termini non inviati di nuovo: in corso di traduzione"
+         ],
+         "%d with their posts": [
+            "%d con i relativi articoli"
+         ],
+         "queued by Translate Everything": [
+            "in coda da Traduci tutto"
+         ],
+         "Terms Translate Everything has queued are counted and not sent again. They are translated automatically.": [
+            "I termini inseriti in coda da Traduci tutto vengono conteggiati e non inviati di nuovo. Vengono tradotti automaticamente."
+         ],
+         "Terms in translation, with their posts or from this section, are counted but not sent again. Their translation arrives with the job that has them.": [
+            "I termini in corso di traduzione, con i relativi articoli o da questa sezione, vengono conteggiati ma non inviati di nuovo. La loro traduzione arriva con il lavoro corrispondente."
+         ],
+         "Terms you send from here are not sent again when their posts are translated.": [
+            "I termini inviati da qui non vengono inviati di nuovo quando i relativi articoli vengono tradotti."
+         ],
+         "This send creates %d job for the translation service from the selected terms.": [
+            "Questo invio crea %d lavoro per il servizio di traduzione a partire dai termini selezionati.",
+            "Questo invio crea %d lavori per il servizio di traduzione a partire dai termini selezionati."
+         ],
+         "%d term you did not select is not sent.": [
+            "%d termine non selezionato non viene inviato.",
+            "%d termini non selezionati non vengono inviati."
+         ],
+         "A picked term whose parent is not translated takes its parent along, so the hierarchy is kept: plus %1$d parent term (%2$s).": [
+            "Un termine selezionato il cui termine principale non è tradotto include anche quest'ultimo per mantenere la gerarchia: più %1$d termine principale (%2$s).",
+            "Un termine selezionato il cui termine principale non è tradotto include anche quest'ultimo per mantenere la gerarchia: più %1$d termini principali (%2$s)."
+         ],
+         "Translate automatically": [
+            "Traduci automaticamente"
+         ],
+         "Translate myself": [
+            "Traduco io"
+         ],
+         "Assign a translator": [
+            "Assegna un traduttore"
+         ],
+         "Assign translation service": [
+            "Assegna un servizio di traduzione"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Click Continue sending to send the rest.": [
+            "Alcuni termini della tassonomia non sono ancora stati inviati. Quelli inviati sono in corso di traduzione. Fai clic su \"Continua l'invio\" per inviare i restanti."
          ],
          "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
             "I termini della tassonomia non sono ancora stati inviati. Fai clic su Continua l'invio per inviarli."
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
-            "Alcuni termini della tassonomia non sono ancora stati inviati. Quelli inviati sono in fase di traduzione - riprova con gli elementi non inviati per inviare i restanti."
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Retry the not-sent items to send the rest.": [
+            "Alcuni termini della tassonomia non sono ancora stati inviati. Quelli inviati sono in corso di traduzione. Riprova con gli elementi non inviati per inviare i restanti."
          ],
          "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
             "I termini della tassonomia non sono ancora stati inviati. Riprova con gli elementi non inviati per inviarli."
          ],
-         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
-            "Alcuni termini della tassonomia non sono stati inviati per la traduzione. Quelli inviati sono in fase di traduzione: invia di nuovo i restanti per completare."
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated. Send the rest again to finish.": [
+            "Alcuni termini della tassonomia non sono stati inviati per la traduzione. Quelli inviati sono in corso di traduzione. Invia nuovamente i restanti per completare."
          ],
          "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
             "WPML non ha potuto inviare i termini della tassonomia per la traduzione, quindi non ne è stato inviato nessuno. Riprova."
@@ -1339,6 +1753,9 @@
          "Existing content": [
             "Contenuto esistente"
          ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$sTotale:%2$s %3$s"
+         ],
          "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
             "Hai selezionato di tradurre le stringhe che sono in %1$s. Solo queste stringhe verranno tradotte in %2$s."
          ],
@@ -1348,14 +1765,8 @@
          "Source language": [
             "Lingua di origine"
          ],
-         "Target language": [
-            "Lingua di destinazione"
-         ],
          "Words to translate": [
             "Parole da tradurre"
-         ],
-         "%1$sTotal:%2$s %3$s": [
-            "%1$sTotale:%2$s %3$s"
          ],
          "Translation service additional options": [
             "Opzioni aggiuntive del servizio di traduzione"
@@ -1366,20 +1777,34 @@
          "Fetching translation service data...": [
             "Recupero dei dati del servizio di traduzione..."
          ],
+         "%1$s: all %2$d terms": [
+            "%1$s: tutti i %2$d termini"
+         ],
+         "%1$s: %2$d of %3$d terms": [
+            "%1$s: %2$d di %3$d termini"
+         ],
+         "%1$d Taxonomy (%2$s)": [
+            "%1$d tassonomia (%2$s)",
+            "%1$d tassonomie (%2$s)"
+         ],
+         "Selected: %1$s · %2$s": [
+            "Selezionati: %1$s · %2$s"
+         ],
+         "%d Post": [
+            "%d articolo",
+            "%d articoli"
+         ],
+         "Selected: %s": [
+            "Selezionato: %s"
+         ],
+         "Change": [
+            "Cambia"
+         ],
+         "The term counts could not be read.": [
+            "Impossibile leggere il conteggio dei termini."
+         ],
          "-": [
             "-"
-         ],
-         "Translate automatically": [
-            "Traduci automaticamente"
-         ],
-         "Translate myself": [
-            "Traduco io"
-         ],
-         "Assign a translator": [
-            "Assegna un traduttore"
-         ],
-         "Assign translation service": [
-            "Assegna un servizio di traduzione"
          ],
          "Do nothing": [
             "Non fare nulla"
@@ -1389,9 +1814,6 @@
          ],
          "Choose a translator": [
             "Scegli un traduttore"
-         ],
-         "First available": [
-            "Primo disponibile"
          ],
          "(Me)": [
             "(io)"
@@ -1411,9 +1833,6 @@
          "Minimize": [
             "Riduci"
          ],
-         "PTC translates at higher quality and gives you publish-ready results.": [
-            "PTC traduce con una qualità superiore e ti offre risultati pronti per la pubblicazione."
-         ],
          "Step 2": [
             "Passaggio 2"
          ],
@@ -1422,54 +1841,6 @@
          ],
          "Set up AI translation": [
             "Configura la traduzione IA"
-         ],
-         "Keep a wp-admin window open until WPML finishes translating": [
-            "Tieni aperta una finestra di wp-admin finché WPML non finisce di tradurre"
-         ],
-         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
-            "WPML normalmente traduce i tuoi contenuti in background, senza che tu debba rimanere nell'area di amministrazione di WordPress. Tuttavia, WPML non riesce a raggiungere questo sito, quindi recupera le traduzioni mentre una finestra di wp-admin è aperta."
-         ],
-         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
-            "Puoi continuare a lavorare ovunque nell'area di amministrazione di WordPress. Lascia solo una finestra aperta fino al termine della traduzione."
-         ],
-         "Next check for translations in %s.": [
-            "Prossimo controllo delle traduzioni tra %s."
-         ],
-         "Hide details": [
-            "Nascondi dettagli"
-         ],
-         "What could be blocking it, and how to fix it": [
-            "Cosa potrebbe bloccarlo e come risolvere"
-         ],
-         "Check these on your site": [
-            "Controlla questi elementi sul tuo sito"
-         ],
-         "The site might be on a private network, in staging, or only reachable through a VPN.": [
-            "Il sito potrebbe trovarsi su una rete privata, in staging o essere raggiungibile solo tramite VPN."
-         ],
-         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
-            "L'autenticazione HTTP di base o una allowlist di IP potrebbero bloccare le richieste esterne."
-         ],
-         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
-            "Un plugin di sicurezza, un firewall o un WAF potrebbero rifiutare le richieste da WPML."
-         ],
-         "The site might be in maintenance mode.": [
-            "Il sito potrebbe essere in modalità manutenzione."
-         ],
-         "Already fixed this on your site?": [
-            "Hai già risolto il problema sul tuo sito?"
-         ],
-         "Check again whether the site is reachable": [
-            "Controlla di nuovo se il sito è raggiungibile"
-         ],
-         "Checking…": [
-            "Controllo in corso…"
-         ],
-         "Check again": [
-            "Controlla di nuovo"
-         ],
-         "Still couldn't reach your site.": [
-            "Ancora non è stato possibile raggiungere il tuo sito."
          ],
          "Automatic translations completed": [
             "Traduzioni automatiche completate"
@@ -1494,61 +1865,12 @@
          "Map the language": [
             "Mappa la lingua"
          ],
-         "%d second": [
-            "%d secondo",
-            "%d secondi"
+         "%d translation picked up.": [
+            "%d traduzione recuperata.",
+            "%d traduzioni recuperate."
          ],
-         "%d minute": [
-            "%d minuto",
-            "%d minuti"
-         ],
-         "%d hour": [
-            "%d ora",
-            "%d ore"
-         ],
-         "%d day": [
-            "%d giorno",
-            "%d giorni"
-         ],
-         "%d translation": [
-            "%d traduzione",
-            "%d traduzioni"
-         ],
-         "checking now": [
-            "controllo in corso"
-         ],
-         "next check in %s": [
-            "prossimo controllo tra %s"
-         ],
-         "WPML stopped checking for delivered translations after repeated failures.": [
-            "WPML ha smesso di verificare la presenza di traduzioni recapitate dopo ripetuti tentativi falliti."
-         ],
-         "Receiving translations: last received %1$s ago · %2$s": [
-            "Ricezione delle traduzioni: l'ultima è stata ricevuta %1$s fa · %2$s"
-         ],
-         "Receiving translations: last received %s ago": [
-            "Ricezione delle traduzioni: l'ultima è stata ricevuta %s fa"
-         ],
-         "Receiving translations: no translations received yet · %s": [
-            "Ricezione delle traduzioni: nessuna traduzione ancora ricevuta · %s"
-         ],
-         "Receiving translations: no translations received yet": [
-            "Ricezione delle traduzioni: nessuna traduzione ancora ricevuta"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
-            "Ricezione delle traduzioni: l'ultima è stata ricevuta %1$s fa · %2$s in attesa · %3$s"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting": [
-            "Ricezione delle traduzioni: l'ultima è stata ricevuta %1$s fa · %2$s in attesa"
-         ],
-         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
-            "Ricezione delle traduzioni: nessuna traduzione ancora ricevuta · %1$s in attesa · %2$s"
-         ],
-         "Receiving translations: no translations received yet · %s waiting": [
-            "Ricezione delle traduzioni: nessuna traduzione ancora ricevuta · %s in attesa"
-         ],
-         "These translations are taking longer than they should to arrive.": [
-            "Queste traduzioni stanno impiegando più tempo del previsto per arrivare."
+         "Nothing new to pick up yet.": [
+            "Ancora nulla di nuovo da recuperare."
          ],
          "Picking up translations…": [
             "Recupero delle traduzioni in corso…"
@@ -1596,10 +1918,10 @@
             "Testi (stringhe) provenienti da: %s."
          ],
          "WPML will not translate existing content for these post types and texts but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
-            "WPML non tradurrà i contenuti esistenti per questi tipi di post e testi, ma ogni nuovo contenuto creato verrà tradotto automaticamente. Se preferisci, puoi iniziare a <button />."
+            "WPML non tradurrà i contenuti esistenti per questi tipi di post e testi, ma qualsiasi nuovo contenuto creato verrà tradotto automaticamente. Se preferisci, puoi avviare <button />."
          ],
          "WPML will not translate existing content for these post types but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
-            "WPML non tradurrà i contenuti esistenti per questi tipi di post, ma ogni nuovo contenuto creato verrà tradotto automaticamente. Se preferisci, puoi iniziare a <button />."
+            "WPML non tradurrà i contenuti esistenti per questi tipi di post, ma qualsiasi nuovo contenuto creato verrà tradotto automaticamente. Se preferisci, puoi avviare <button />."
          ],
          "start translating existing content now": [
             "tradurre i contenuti esistenti ora"
@@ -1607,11 +1929,11 @@
          "New content is ready to translate": [
             "Il nuovo contenuto è pronto per essere tradotto"
          ],
-         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
-            "%s sono diventati traducibili dopo che hai revisionato il costo della traduzione, quindi Traduci tutto non li ha inclusi. Revisiona il costo e includili per mantenere il tuo sito completamente tradotto."
+         "%s became translatable after Translate Everything was set up, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "%s sono diventati traducibili dopo la configurazione di Traduci tutto, pertanto Traduci tutto non li ha inclusi. Verifica i costi e includili per mantenere il sito completamente tradotto."
          ],
          "Review cost and include": [
-            "Revisiona il costo e includi"
+            "Rivedi il costo e includi"
          ],
          "Learn more →": [
             "Scopri di più →"
@@ -1627,15 +1949,6 @@
          ],
          "PTC can translate your software right inside your Git workflow.": [
             "PTC può tradurre il tuo software direttamente all'interno del tuo flusso di lavoro Git."
-         ],
-         "The following target languages do not support automatic translations: %s": [
-            "Le seguenti lingue di destinazione non supportano le traduzioni automatiche: %s"
-         ],
-         "To enable automatic translation map them to known languages.": [
-            "Per abilitare la traduzione automatica, mappale su lingue conosciute."
-         ],
-         "Map to known languages": [
-            "Mappa su lingue conosciute"
          ],
          "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
             "Per ricevere assistenza, <supportLink>apri un ticket nel nostro thread del forum (Maiya)</supportLink>, fai clic sul pulsante “Copia tutto” per ottenere le informazioni di debug e “incollatele” nel nostro agente Maiya. Se riscontri ancora problemi, utilizza lo <logsLink>strumento di log</logsLink> per raccogliere ulteriori dati."
@@ -1728,6 +2041,9 @@
          ],
          "Add your site description before you can turn this on.": [
             "Aggiungi la descrizione del tuo sito prima di poter attivare questa opzione."
+         ],
+         "Translate Everything needs an active automatic translation account.": [
+            "Traduci tutto richiede un account di traduzione automatica attivo."
          ],
          "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
             "Devi abilitare l'Editor di traduzione avanzato per attivare Traduci tutto automaticamente."
@@ -1903,13 +2219,8 @@
          "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
             "WPML smetterà di tradurre automaticamente i contenuti nuovi e modificati. Le traduzioni già consegnate rimarranno così come sono."
          ],
-         "%d translation is still in progress. You will not be charged for it.": [
-            "%d traduzione è ancora in corso. Non ti verrà addebitata.",
-            "%d traduzioni sono ancora in corso. Non ti verranno addebitate."
-         ],
-         "%d translation is currently in progress and will be cancelled.": [
-            "%d traduzione è attualmente in corso e verrà annullata.",
-            "%d traduzioni sono attualmente in corso e verranno annullate."
+         "Translations in progress will be cancelled and refunded. When you switch back on, changed pages will be sent again.": [
+            "Le traduzioni in corso verranno annullate e rimborsate. Quando riattiverai la funzione, le pagine modificate verranno inviate di nuovo."
          ],
          "You can adjust the content limits once Translate Everything finishes the current translation run.": [
             "Potrai regolare i limiti dei contenuti una volta che Traduci tutto avrà terminato il ciclo di traduzione corrente."
@@ -2219,6 +2530,9 @@
          "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
             "Questo elemento necessita di un aggiornamento della traduzione ma è stato precedentemente tradotto utilizzando l'editor di WordPress. L'uso dell'Editor di traduzione di WPML sovrascriverà la traduzione esistente."
          ],
+         "%s: review in progress": [
+            "%s: revisione in corso"
+         ],
          "%1$s: %2$s%3$s": [
             "%1$s: %2$s%3$s"
          ],
@@ -2244,7 +2558,7 @@
             "Includi"
          ],
          "These settings can be changed on the Translations dashboard.": [
-            "Queste impostazioni possono essere modificate nella bacheca delle traduzioni."
+            "Queste impostazioni possono essere modificate nella Dashboard di traduzione."
          ],
          "Items": [
             "Elementi"
@@ -2311,9 +2625,6 @@
          "Same as default": [
             "Uguale alla predefinita"
          ],
-         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
-            "La traduzione automatica non è disponibile tra %1$s e %2$s perché sono riconosciute come la stessa lingua."
-         ],
          "Translation paused": [
             "Traduzione in pausa"
          ],
@@ -2354,10 +2665,10 @@
             "Questo è ciò che serve oggi per tradurre i tuoi contenuti attuali. Alla tariffa per parola di %s; le modifiche alle pagine tradotte vengono addebitate di nuovo."
          ],
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
-            "Conta pagine, post e prodotti con i rispettivi campi personalizzati, testi dei page builder e testi dei media, oltre a categorie, tag e attributi utilizzati."
+            "Conta pagine, articoli e prodotti con i rispettivi campi personalizzati, testi dei page builder e testi dei media, oltre a categorie, tag e attributi utilizzati."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Conta pagine, post e prodotti con i rispettivi campi personalizzati, testi dei page builder e testi dei media, le categorie, i tag e gli attributi utilizzati, nonché le stringhe del sito. Un termine viene conteggiato in ogni elemento che lo utilizza e una volta a parte, poiché viene inviato per la traduzione in entrambe le modalità."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Include pagine, articoli e prodotti con i relativi campi personalizzati, testi dei page builder e dei media, le categorie, i tag e gli attributi che utilizzano, oltre alle stringhe del sito. Ogni categoria, tag o attributo viene conteggiato una sola volta, nella riga Tassonomie, e non viene riconteggiato con gli elementi che lo utilizzano."
          ],
          "Total items": [
             "Elementi totali"
@@ -2397,6 +2708,9 @@
          ],
          "To use prepaid words, register WPML on this site.": [
             "Per usare le parole prepagate, registra WPML su questo sito."
+         ],
+         "Checking…": [
+            "Controllo in corso…"
          ],
          "We could not reach our translation system.": [
             "Non è stato possibile raggiungere il nostro sistema di traduzione."
@@ -2508,9 +2822,6 @@
          "Connect your sites to share translation memory, glossary and word quota.": [
             "Connetti i tuoi siti per condividere la memoria di traduzione, il glossario e la quota di parole."
          ],
-         "Learn more": [
-            "Scopri di più"
-         ],
          "Copy your migration code:": [
             "Copia il tuo codice di migrazione:"
          ],
@@ -2597,6 +2908,9 @@
          ],
          "Scores based on WPML's internal MQM translation quality study.": [
             "Punteggi basati sullo studio interno della qualità della traduzione MQM di WPML."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC traduce con una qualità superiore e ti offre risultati pronti per la pubblicazione."
          ],
          "Select an item": [
             "Seleziona un elemento"

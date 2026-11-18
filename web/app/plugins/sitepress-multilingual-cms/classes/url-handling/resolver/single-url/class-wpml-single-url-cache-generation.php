@@ -5,6 +5,8 @@ class WPML_Single_Url_Cache_Generation {
 	const OPTION_KEY       = 'wpml_single_url_resolution_generation';
 	const MAX_CAS_ATTEMPTS = 5;
 
+	const MIN_INTERVAL = 60;
+
 	private $wpdb;
 
 	private $algorithm_version;
@@ -44,6 +46,7 @@ class WPML_Single_Url_Cache_Generation {
 			$new   = [
 				'generation'        => $state['generation'] + 1,
 				'algorithm_version' => $this->algorithm_version,
+				'advanced_at'       => $this->now(),
 			];
 
 			if ( $this->compare_and_swap( $raw, $this->encode_state( $new ) ) ) {
@@ -54,6 +57,58 @@ class WPML_Single_Url_Cache_Generation {
 
 		$this->reset_request_cache();
 		return $this->synchronize_algorithm_version();
+	}
+
+	public function defer_advance( $reason ) {
+		$interval = $this->min_interval();
+		if ( $interval < 1 ) {
+			return false;
+		}
+
+		for ( $attempt = 0; $attempt < self::MAX_CAS_ATTEMPTS; ++$attempt ) {
+			$raw = $this->read_raw_option();
+			if ( null === $raw ) {
+				return false;
+			}
+
+			$state = $this->decode_state( $raw );
+			if (
+				! $state['tracked']
+				|| $state['advanced_at'] < 1
+				|| $this->now() - $state['advanced_at'] >= $interval
+			) {
+				return false;
+			}
+
+			if ( $state['pending'] ) {
+				return true;
+			}
+
+			$state['pending'] = [
+				'reason' => (string) $reason,
+				'since'  => $this->now(),
+			];
+
+			if ( $this->compare_and_swap( $raw, $this->encode_state( $state ) ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public function min_interval() {
+		return max( 0, (int) apply_filters( 'wpml_single_url_cache_generation_min_interval', self::MIN_INTERVAL ) );
+	}
+
+	public function read_current() {
+		$raw = $this->read_raw_option();
+
+		return null === $raw ? 0 : $this->decode_state( $raw )['generation'];
+	}
+
+	protected function now() {
+		return time();
 	}
 
 	public function synchronize_algorithm_version() {
@@ -70,6 +125,27 @@ class WPML_Single_Url_Cache_Generation {
 
 			$state = $this->decode_state( $raw );
 			if ( $state['tracked'] && $this->algorithm_version === $state['algorithm_version'] ) {
+				if ( $state['pending'] && $this->now() - $state['advanced_at'] >= $this->min_interval() ) {
+					$new = [
+						'generation'        => $state['generation'] + 1,
+						'algorithm_version' => $this->algorithm_version,
+						'advanced_at'       => $this->now(),
+					];
+					if ( ! $this->compare_and_swap( $raw, $this->encode_state( $new ) ) ) {
+						continue;
+					}
+
+					$this->request_cache[ get_current_blog_id() ] = $new['generation'];
+					do_action(
+						'wpml_single_url_resolution_cache_generation_changed',
+						$state['generation'],
+						$new['generation'],
+						'coalesced_' . $state['pending']['reason']
+					);
+
+					return $new['generation'];
+				}
+
 				$this->request_cache[ get_current_blog_id() ] = $state['generation'];
 				return $state['generation'];
 			}
@@ -186,10 +262,19 @@ class WPML_Single_Url_Cache_Generation {
 			is_array( $decoded )
 			&& isset( $decoded['generation'], $decoded['algorithm_version'] )
 		) {
+			$pending = isset( $decoded['pending'] ) && is_array( $decoded['pending'] )
+				? [
+					'reason' => isset( $decoded['pending']['reason'] ) ? (string) $decoded['pending']['reason'] : '',
+					'since'  => isset( $decoded['pending']['since'] ) ? (int) $decoded['pending']['since'] : 0,
+				]
+				: null;
+
 			return [
 				'generation'        => max( 1, (int) $decoded['generation'] ),
 				'algorithm_version' => (string) $decoded['algorithm_version'],
 				'tracked'           => true,
+				'advanced_at'       => isset( $decoded['advanced_at'] ) ? (int) $decoded['advanced_at'] : 0,
+				'pending'           => $pending,
 			];
 		}
 
@@ -197,15 +282,23 @@ class WPML_Single_Url_Cache_Generation {
 			'generation'        => max( 1, (int) $raw ),
 			'algorithm_version' => '',
 			'tracked'           => false,
+			'advanced_at'       => 0,
+			'pending'           => null,
 		];
 	}
 
 	private function encode_state( array $state ) {
-		return (string) wp_json_encode(
-			[
-				'generation'        => max( 1, (int) $state['generation'] ),
-				'algorithm_version' => (string) $state['algorithm_version'],
-			]
-		);
+		$encoded = [
+			'generation'        => max( 1, (int) $state['generation'] ),
+			'algorithm_version' => (string) $state['algorithm_version'],
+		];
+		if ( ! empty( $state['advanced_at'] ) ) {
+			$encoded['advanced_at'] = (int) $state['advanced_at'];
+		}
+		if ( ! empty( $state['pending'] ) ) {
+			$encoded['pending'] = $state['pending'];
+		}
+
+		return (string) wp_json_encode( $encoded );
 	}
 }

@@ -2,6 +2,8 @@
 
 namespace WPML\Legacy\Component\WordsToTranslate\Domain\Post;
 
+use WPML\Legacy\Component\WordsToTranslate\Domain\StringRegistrationCapture;
+
 class BeforeSetupPackageContributors {
 
   private static $registered = false;
@@ -15,6 +17,7 @@ class BeforeSetupPackageContributors {
 
     self::registerMediaTexts();
     self::registerBlockStrings();
+    self::registerPageBuilderStrings();
 
     return true;
   }
@@ -144,6 +147,83 @@ class BeforeSetupPackageContributors {
     $package['contents']['body']['translate'] = 0;
 
     return $package;
+  }
+
+
+  private static function registerPageBuilderStrings() {
+    add_filter( 'wpml_tm_translation_job_data', [ self::class, 'pageBuilderStringsInsteadOfTheBody' ], 21, 2 );
+  }
+
+
+  public static function pageBuilderStringsInsteadOfTheBody( $package, $post ) {
+    if ( ! is_array( $package ) || ! is_object( $post ) || ! isset( $post->ID ) || ! $post->ID ) {
+      return $package;
+    }
+
+    $strings = self::pageBuilderStringsOf( $post, (int) $post->ID );
+
+    if ( ! $strings ) {
+      return $package;
+    }
+
+    $index = 0;
+    foreach ( $strings as $value ) {
+      $package['contents'][ 'package-string-estimate-pb-' . $index ] = [
+        'translate' => 1,
+        'data'      => base64_encode( $value ),
+        'format'    => 'base64',
+      ];
+      $index++;
+    }
+
+    if ( isset( $package['contents']['body'] ) ) {
+      $package['contents']['body']['translate'] = 0;
+    }
+
+    return $package;
+  }
+
+
+  private static function pageBuilderStringsOf( $post, $postId ) {
+    $kinds = apply_filters( 'wpml_page_builder_support_required', [] );
+
+    if ( ! is_array( $kinds ) ) {
+      return [];
+    }
+
+    $kinds = array_filter(
+      $kinds,
+      function ( $kind ) {
+        return is_string( $kind ) && $kind !== '' && $kind !== 'Gutenberg';
+      }
+    );
+
+    if ( ! $kinds ) {
+      return [];
+    }
+
+    $captured = StringRegistrationCapture::run(
+      function () use ( $post, $kinds, $postId ) {
+        foreach ( $kinds as $kind ) {
+          do_action(
+            'wpml_page_builder_register_strings',
+            $post,
+            [
+              'kind'    => $kind,
+              'name'    => $postId,
+              'title'   => 'Page Builder Page ' . $postId . ': ' . $kind,
+              'post_id' => $postId,
+              'owner'   => [
+                'type' => 'post',
+                'id'   => $postId,
+              ],
+            ]
+          );
+        }
+      }
+    );
+
+    return array_column( $captured, 'value' );
   }
 
 

@@ -147,8 +147,8 @@ class View {
 					</div>
 					<div class="job-log-cap-modal-error" id="job-log-cap-modal-error" style="display:none"></div>
 					<div class="job-log-cap-modal-actions">
-						<button type="button" class="button wpml-button base-btn wpml-button--outlined" id="job-log-cap-cancel"><?php /* translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation". */ esc_html_e( 'Cancel', 'sitepress' ); ?></button>
-						<button type="button" class="button button-primary wpml-button base-btn" id="job-log-cap-save"><?php /* translators: Button label that keeps what was entered. Verb, imperative. */ esc_html_e( 'Save', 'sitepress' ); ?></button>
+						<button type="button" class="button wpml-button base-btn wpml-button--outlined" id="job-log-cap-cancel"><?php /* translators: Button label that closes a dialog without doing anything, or stops what is going on, for example in the dialog "Translate with PTC?" (keep the previous choice). Verb, imperative, not the noun "a cancellation". */ esc_html_e( 'Cancel', 'sitepress' ); ?></button>
+						<button type="button" class="button button-primary wpml-button base-btn" id="job-log-cap-save"><?php /* translators: Button label that keeps what was entered, for example in the Translation delivery box's "Settings for support" and in the "Translation editor and method" section of WPML → Settings. Verb, imperative. */ esc_html_e( 'Save', 'sitepress' ); ?></button>
 						<span class="job-log-cap-modal-loader spinner" style="float:none;margin:0 0 0 8px;display:none"></span>
 					</div>
 				</div>
@@ -374,21 +374,28 @@ class View {
 		$i = 0;
 		foreach ( $groups as $group ) {
 			++$i;
-			$this->renderGroup( $i, $group );
+			$this->renderGroup( (string) $i, $group );
 		}
 	}
 
-	private function renderGroup( $index, array $group ) {
+	private function renderGroup( $number, array $group ) {
 		echo '<div class="job-log-group">';
 		echo '<strong>'
 			/* translators: Column heading in the menu synchronization table, and the word before the number of a step in the details of one request in the job log, as in "Action 1:". Noun: the thing that will be done. */
-			. esc_html__( 'Action', 'sitepress' ) . ' ' . (int) $index . ': '
+			. esc_html__( 'Action', 'sitepress' ) . ' ' . esc_html( (string) $number ) . ': '
 			. esc_html( (string) ( $group['label'] ?? '' ) )
 			. '</strong><br>';
 		echo '<div class="job-log-group-body">';
 
 		$groupId = $group['groupId'] ?? null;
 		$logs    = isset( $group['logs'] ) && is_array( $group['logs'] ) ? $group['logs'] : [];
+
+		$child = 0;
+		foreach ( $logs as $k => $log ) {
+			if ( isset( $log['childGroup'] ) ) {
+				$logs[ $k ]['childNumber'] = $number . '.' . ( ++$child );
+			}
+		}
 
 		if ( JobLog::isSendJobsLogsGroup( $groupId ) ) {
 			$this->renderSendJobsLogs( $logs );
@@ -404,13 +411,36 @@ class View {
 	}
 
 	private function collectGroups( $logUid ) {
+		$collected = self::groupEvents( JobLog::getEvents( $logUid ) );
+		$finished  = $collected['finished'];
+
+		if ( is_array( $finished ) && isset( $finished['stringIdsByBatchId'] ) && is_array( $finished['stringIdsByBatchId'] ) ) {
+			$this->applyStringBatchEnrichment( $collected['groups'], $finished['stringIdsByBatchId'] );
+		}
+
+		return $collected;
+	}
+
+	public static function groupEvents( $events ) {
 		$started      = null;
 		$finished     = null;
 		$hasErrorLogs = false;
 		$groups       = [];
 		$current      = null;
+		$parents      = [];
 
-		foreach ( JobLog::getEvents( $logUid ) as $event ) {
+		$close = static function () use ( &$current, &$parents, &$groups ) {
+			$parent = array_pop( $parents );
+			if ( $parent === null ) {
+				$groups[] = $current;
+				$current  = null;
+				return;
+			}
+			$parent['logs'][] = [ 'childGroup' => $current ];
+			$current          = $parent;
+		};
+
+		foreach ( $events as $event ) {
 			if ( ! isset( $event['type'] ) ) {
 				continue;
 			}
@@ -421,12 +451,23 @@ class View {
 					break;
 
 				case 'group_started':
-					$current = [
+					$group = [
 						'groupId' => $event['groupId'] ?? null,
 						'label'   => $event['label'] ?? '',
 						'data'    => isset( $event['data'] ) && is_array( $event['data'] ) ? $event['data'] : [],
 						'logs'    => [],
 					];
+
+					$parentGroupId = $event['parentGroupId'] ?? null;
+					if ( $current !== null && $parentGroupId !== null && $parentGroupId === $current['groupId'] ) {
+						$group['parentGroupId'] = $parentGroupId;
+						$parents[]              = $current;
+					} else {
+						while ( $current !== null ) {
+							$close();
+						}
+					}
+					$current = $group;
 					break;
 
 				case 'log':
@@ -436,6 +477,7 @@ class View {
 							'label'   => '',
 							'data'    => [],
 							'logs'    => [],
+							'orphan'  => true,
 						];
 					}
 					$current['logs'][] = $event;
@@ -446,8 +488,7 @@ class View {
 
 				case 'group_finished':
 					if ( $current !== null ) {
-						$groups[] = $current;
-						$current  = null;
+						$close();
 					}
 					break;
 
@@ -460,12 +501,8 @@ class View {
 			}
 		}
 
-		if ( $current !== null ) {
-			$groups[] = $current;
-		}
-
-		if ( is_array( $finished ) && isset( $finished['stringIdsByBatchId'] ) && is_array( $finished['stringIdsByBatchId'] ) ) {
-			$this->applyStringBatchEnrichment( $groups, $finished['stringIdsByBatchId'] );
+		while ( $current !== null ) {
+			$close();
 		}
 
 		return [
@@ -476,13 +513,18 @@ class View {
 		];
 	}
 
-	private function applyStringBatchEnrichment( array &$groups, array $stringIdsByBatchId ) {
-		$alreadyAdded = [];
+	private function applyStringBatchEnrichment( array &$groups, array $stringIdsByBatchId, array &$alreadyAdded = [] ) {
 		foreach ( $groups as &$group ) {
 			if ( ! isset( $group['logs'] ) || ! is_array( $group['logs'] ) ) {
 				continue;
 			}
 			foreach ( $group['logs'] as &$log ) {
+				if ( isset( $log['childGroup'] ) && is_array( $log['childGroup'] ) ) {
+					$children = [ $log['childGroup'] ];
+					$this->applyStringBatchEnrichment( $children, $stringIdsByBatchId, $alreadyAdded );
+					$log['childGroup'] = $children[0];
+					continue;
+				}
 				if ( ! isset( $log['type'] ) || $log['type'] !== 'st-batch' || ! isset( $log['element_id'] ) ) {
 					continue;
 				}
@@ -564,6 +606,11 @@ class View {
 	}
 
 	private function renderLog( $i, $logs, $log ) {
+		if ( isset( $log['childGroup'] ) && is_array( $log['childGroup'] ) ) {
+			$this->renderGroup( (string) ( $log['childNumber'] ?? '' ), $log['childGroup'] );
+			return ++$i;
+		}
+
 		if ( ! isset( $log['apiCall'] ) ) {
 			$this->renderLogItem( $log, $i );
 			return ++$i;
@@ -663,7 +710,7 @@ class View {
 	private function getToggleButtonHtml( $section_id ) {
 		/* translators: Button label in the job log that unfolds a section, and the wording that button shows while the section is folded. Verb, imperative. */
 		$text_open  = esc_attr__( 'Open', 'sitepress' );
-		/* translators: Label of the control that closes an open section or dialog. Verb, imperative, not the adjective meaning near. */
+		/* translators: Label of the button or control that closes something: a message or a bar on a page of the site, an open section, or a dialog. Verb, imperative, not the adjective meaning near. */
 		$text_close = esc_attr__( 'Close', 'sitepress' );
 		$section_id = esc_attr( $section_id );
 

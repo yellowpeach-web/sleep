@@ -1,7 +1,7 @@
 <div id="icl_show_source_top">
     {% for key, page in pages %}
         {% set number = key + 1 %}
-        <a href="#" onclick="jQuery('#icl_string_track_frame_wrap iframe').attr('src','{{ page.iframe_url }}'); jQuery('#icl_string_track_url a').html('{{ page.url }}').attr('href', '{{ page.url }}'); return false;">{{ number }}</a><br />
+        <a href="#" data-iframe-url="{{ page.iframe_url }}" data-url="{{ page.url }}" onclick="var link = jQuery(this); jQuery('#icl_string_track_frame_wrap iframe').attr('src', link.attr('data-iframe-url')); jQuery('#icl_string_track_url a').text(link.attr('data-url')).attr('href', link.attr('data-url')); return false;">{{ number }}</a><br />
     {% endfor %}
 </div>
 <div id="icl_string_track_frame_wrap">

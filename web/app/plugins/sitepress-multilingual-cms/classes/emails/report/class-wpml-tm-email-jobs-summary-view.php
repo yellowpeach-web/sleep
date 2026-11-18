@@ -174,7 +174,7 @@ class WPML_TM_Email_Jobs_Summary_View extends WPML_TM_Email_View {
 	private function get_closing_sentence() {
 		$sentence = null;
 
-		if ( WPML_TM_ATE_Status::is_enabled_and_activated() ) {
+		if ( WPML_TM_ATE_Status::is_editor_ate() && WPML_TM_ATE_Status::is_account_usable() ) {
 			$link = '<a href="' . esc_url( \WPML\OutboundLinks\OutboundLinks::to( 'https://wpml.org/documentation/translating-your-contents/advanced-translation-editor/', array( 'medium' => 'notice', 'campaign' => 'translation-management' ) ) ) . '">' . __( "WPML's Advanced Translation Editor", 'sitepress' ) . '</a>';
 
 			/* translators: %s: link to documentation. */

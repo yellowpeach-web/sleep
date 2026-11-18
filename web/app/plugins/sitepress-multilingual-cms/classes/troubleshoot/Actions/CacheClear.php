@@ -8,6 +8,8 @@ use WPML_WP_API;
 
 class CacheClear {
 
+	const CLEAR_ALL_ACTION = 'wpml_clear_all_caches';
+
 	const TRANSIENT_OPTION_PREFIXES = array(
 		'_transient_wpml_' => true,
 		'_transient_wpml-' => true,
@@ -58,6 +60,10 @@ class CacheClear {
 
 		do_action( 'wpml_comment_counts_mark_out_of_date' );
 
+		$this->refresh_translation_services();
+
+		do_action( self::CLEAR_ALL_ACTION );
+
 		if ( function_exists( 'wp_cache_flush' ) ) {
 			wp_cache_flush();
 		}
@@ -71,6 +77,28 @@ class CacheClear {
 
 	protected function delete_roles_cache() {
 		WPML_Translation_Roles_Records::delete_cache();
+	}
+
+	private function refresh_translation_services() {
+		try {
+			$services = $this->translation_services();
+			if ( $services ) {
+				$services->refresh_cache();
+			}
+		} catch ( \Throwable $e ) {
+			return;
+		}
+	}
+
+	protected function translation_services() {
+		if (
+			! class_exists( \WPML_TP_Client_Factory::class )
+			|| ( class_exists( 'WPML_Settings_Failsafe_Loader' ) && \WPML_Settings_Failsafe_Loader::isUnrecoverable() )
+		) {
+			return null;
+		}
+
+		return ( new \WPML_TP_Client_Factory() )->create()->services();
 	}
 
 	private function delete_option_backed_transients() {

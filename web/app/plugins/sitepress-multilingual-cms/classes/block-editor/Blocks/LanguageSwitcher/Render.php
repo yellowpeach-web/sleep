@@ -7,6 +7,7 @@ use WPML\BlockEditor\Blocks\LanguageSwitcher\Model\LanguageItem;
 use WPML\BlockEditor\Blocks\LanguageSwitcher\Model\LanguageItemTemplate;
 use WPML\BlockEditor\Blocks\LanguageSwitcher\Model\LanguageSwitcherTemplate;
 use WPML\FP\Obj;
+use WPML\LanguageSwitcher\LandmarkLabels;
 use WPML\LanguageSwitcher\SubmenuIds;
 
 class Render {
@@ -26,10 +27,11 @@ class Render {
 	}
 
 	public function render_block( $blockAttrs, $savedHTML, $parentBlock ) {
-		$model            = $this->repository->getModel();
-		$languageSwitcher = $this->repository->getCurrentLanguageSwitcher( $model );
+		$showCurrentLanguage = $this->showCurrentLanguage( $blockAttrs );
+		$model               = $this->repository->getModel( $showCurrentLanguage );
+		$languageSwitcher    = $this->repository->getCurrentLanguageSwitcher( $model );
 
-		if ( $this->hidesWhenNothingToSwitch( $languageSwitcher, $model ) ) {
+		if ( $this->hidesWhenNothingToSwitch( $languageSwitcher, $model, $showCurrentLanguage ) ) {
 			return '';
 		}
 
@@ -70,13 +72,36 @@ class Render {
 		return $this->getBodyHTML( $languageSwitcherTemplate->getDOMDocument() );
 	}
 
+	private function showCurrentLanguage( $blockAttrs ) {
+		return 'list' !== Obj::propOr( 'dropdown', 'layoutMode', $blockAttrs )
+			|| false !== Obj::propOr( true, 'showCurrentLanguage', $blockAttrs );
+	}
+
 	private function restoreScreenReaderLabels( \DOMXPath $domXPath ) {
-		$this->addAriaLabelUnlessSet(
-			$domXPath,
-			'//*[@role="navigation"]',
-			/* translators: Screen reader name of the language switcher on the site, and the name of the language switcher widget. */
-			__( 'Language Switcher', 'sitepress' )
-		);
+		/* translators: The name of the WPML language switcher: the name of the Language Switcher block and widget, a keyword for finding the block in the editor, and the text read out by screen readers for the switcher on the site. */
+		$plain = __( 'Language Switcher', 'sitepress' );
+
+		$landmarks = $domXPath->query( '//*[@role="navigation"]' );
+
+		if ( $landmarks ) {
+			foreach ( $landmarks as $landmark ) {
+				if ( ! $landmark instanceof \DOMElement ) {
+					continue;
+				}
+
+				$saved = $landmark->getAttribute( 'aria-label' );
+
+				if ( '' !== $saved ) {
+					LandmarkLabels::take( $saved );
+					continue;
+				}
+
+				$label = LandmarkLabels::unique( $plain, $plain );
+				$label = apply_filters( 'wpml_ls_aria_label', $label, null, LandmarkLabels::instances() );
+
+				$landmark->setAttribute( 'aria-label', $label );
+			}
+		}
 		$this->addAriaLabelUnlessSet(
 			$domXPath,
 			"//*[contains(concat(' ', normalize-space(@class), ' '), ' wp-block-navigation-submenu__toggle ')]"
@@ -105,8 +130,12 @@ class Render {
 		}
 	}
 
-	private function hidesWhenNothingToSwitch( Model\LanguageSwitcher $languageSwitcher, $model ) {
-		if ( ! $languageSwitcher->getLanguageItems() || $languageSwitcher->hasAlternatives() ) {
+	private function hidesWhenNothingToSwitch( Model\LanguageSwitcher $languageSwitcher, $model, $showCurrentLanguage = true ) {
+		if ( ! $languageSwitcher->getLanguageItems() ) {
+			return ! $showCurrentLanguage;
+		}
+
+		if ( $languageSwitcher->hasAlternatives() ) {
 			return false;
 		}
 
@@ -302,6 +331,7 @@ class Render {
 		if ( $linkQuery->length > 0 ) {
 			$link = $linkQuery->item( $linkQuery->length - 1 );
 			$link->setAttribute( 'href', $languageItem->getUrl() );
+			$link->setAttribute( 'hreflang', $languageItem->getHreflang() );
 			/* translators: Screen reader name of an item of the language switcher. %s: the name of the language it switches to. */
 			$ariaLabel = sprintf( __( 'Switch to %s', 'sitepress' ), $languageItem->getNativeName() );
 			$link->setAttribute( 'aria-label', $ariaLabel );
@@ -312,8 +342,8 @@ class Render {
 			$labelQuery = $languageSwitcherTemplate->getDOMXPath()->query( $XPathPrefix . '/' . Parser::PATH_ITEM_LABEL );
 			if ( $labelQuery->length > 0 ) {
 				$label = $labelQuery->item( $labelQuery->length - 1 );
-				if ( $label ) {
-					$label->textContent = $languageItemTemplate->getLabelTemplate()->getDisplayName( $languageItem );
+				if ( $label instanceof \DOMElement ) {
+					$languageItemTemplate->getLabelTemplate()->writeLabel( $label, $languageItem );
 				}
 			} else {
 				$textTarget->textContent = $languageItemTemplate->getLabelTemplate()->getDisplayName( $languageItem );

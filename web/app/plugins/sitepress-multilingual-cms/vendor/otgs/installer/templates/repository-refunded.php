@@ -20,26 +20,46 @@ class Refunded {
 		};
 
 		$headerTitle = sprintf( __( '%s registration needs your attention', 'installer' ), $model->productName );
-		$headerIntro = sprintf(
-			__( 'Your %1$s order was refunded, so this site no longer has an active license. Your translations are safe — pick the option below that matches your situation to keep %1$s working.', 'installer' ),
-			$model->productName
-		);
-
-		$card1Title = __( 'I need to use a different wpml.org account', 'installer' );
-		$card1Desc  = __( 'Use this if you bought WPML on a different account, you\'re taking over a site from someone else, or ownership is being transferred. We\'ll remove the current site key so you can register a new one.', 'installer' );
-
-		$card2Title    = __( "I've already bought WPML again", 'installer' );
-		$card2Desc     = __( 'If you re-purchased WPML on the same wpml.org account, sync this site to refresh its license.', 'installer' );
 		$card2Button   = __( 'Check my order status', 'installer' );
 		$card2Footnote = __( 'Bought it on a different account? See option 1 above.', 'installer' );
 
-		$card3Title = __( 'I want to renew WPML now', 'installer' );
+		if ( 'toolset' === $model->repoId ) {
+			$headerIntro = __( 'Your Toolset order was refunded. This site no longer has an active Toolset license. Pick the option that matches your situation.', 'installer' );
+
+			$card1Title = __( 'I want to remove this Toolset site key', 'installer' );
+			$card1Desc  = __( 'Use this if you no longer use Toolset or you bought it on a different toolset.com account. It also applies if you took over this site. We\'ll remove the current site key. You can register a new one afterwards.', 'installer' );
+
+			$card2Title = __( "I've already bought Toolset again", 'installer' );
+			$card2Desc  = __( 'If you bought Toolset again on the same toolset.com account, sync this site to refresh its license.', 'installer' );
+
+			$card3Title = __( 'I want to renew Toolset now', 'installer' );
+
+			$confirmText = __( 'This unregisters this site from the refunded Toolset account. You can then enter a new key.', 'installer' );
+		} else {
+			$headerIntro = sprintf(
+				__( 'Your %1$s order was refunded, so this site no longer has an active license. Your translations are safe — pick the option below that matches your situation to keep %1$s working.', 'installer' ),
+				$model->productName
+			);
+
+			$card1Title = __( 'I need to use a different wpml.org account', 'installer' );
+			$card1Desc  = __( 'Use this if you bought WPML on a different account, you\'re taking over a site from someone else, or ownership is being transferred. We\'ll remove the current site key so you can register a new one.', 'installer' );
+
+			$card2Title = __( "I've already bought WPML again", 'installer' );
+			$card2Desc  = __( 'If you re-purchased WPML on the same wpml.org account, sync this site to refresh its license.', 'installer' );
+
+			$card3Title = __( 'I want to renew WPML now', 'installer' );
+
+			$confirmText = __( 'This unregisters this site from the refunded WPML account so you can enter a new key. Your translations are not affected.', 'installer' );
+		}
 		?>
 		<div class="otgs-installer-refund-header">
 			<span class="dashicons dashicons-warning" aria-hidden="true"></span>
 			<div class="otgs-installer-refund-header-text">
 				<h2><?php echo esc_html( $headerTitle ); ?></h2>
 				<p><?php echo esc_html( $headerIntro ); ?></p>
+				<?php if ( 'toolset' === $model->repoId && ! empty( $model->coveredByWpml ) ) : ?>
+					<p><?php esc_html_e( 'Your WPML account still covers Toolset Types. It keeps getting updates after you unregister.', 'installer' ); ?></p>
+				<?php endif; ?>
 			</div>
 		</div>
 
@@ -78,7 +98,7 @@ class Refunded {
 							<div class="otgs-installer-refund-confirm" style="display:none;">
 								<p>
 									<strong><?php esc_html_e( 'Remove the current site key?', 'installer' ); ?></strong><br />
-									<?php esc_html_e( 'This unregisters this site from the refunded WPML account so you can enter a new key. Your translations are not affected.', 'installer' ); ?>
+									<?php echo esc_html( $confirmText ); ?>
 								</p>
 								<button type="button" class="button js-otgs-unregister-cancel">
 									<?php esc_html_e( 'Cancel', 'installer' ); ?>

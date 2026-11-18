@@ -14,7 +14,7 @@ class Sync implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 	}
 
 	public function add_hooks() {
-		if ( ! SitekeyConfirmationFlag::isCompleted() && \WPML_TM_ATE_Status::is_enabled_and_activated() ) {
+		if ( ! SitekeyConfirmationFlag::isCompleted() && \WPML_TM_ATE_Status::is_account_usable() ) {
 			$this->backgroundTaskService->addOnce(
 				make( Endpoint::class ),
 				wpml_collect( [] )

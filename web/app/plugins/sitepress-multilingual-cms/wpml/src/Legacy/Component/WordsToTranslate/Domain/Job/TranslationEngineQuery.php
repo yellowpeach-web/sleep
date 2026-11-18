@@ -10,6 +10,7 @@ use WPML\Element\API\Languages;
 use WPML\TM\API\ATE\CachedLanguageMappings;
 use WPML\TM\ATE\API\CacheStorage\Transient;
 use WPML\TM\ATE\API\CachedAMSAPI;
+use WPML\TM\ATE\Registration\AutoRegister;
 use function WPML\Container\make;
 
 class TranslationEngineQuery implements TranslationEngineQueryInterface {
@@ -19,6 +20,8 @@ class TranslationEngineQuery implements TranslationEngineQueryInterface {
   private $languages = [];
 
   private $engines;
+
+  private $registrationChecked = false;
 
   private function amsApi() {
     if ( $this->_amsApi === null ) {
@@ -34,6 +37,8 @@ class TranslationEngineQuery implements TranslationEngineQueryInterface {
 
 
   public function getCostsPerWordForLang( string $langCode, $sourceLang = null ) {
+    $this->registerIfNotRegistered();
+
     $languages = $this->getLanguages( $sourceLang );
 
     if ( ! array_key_exists( $langCode, $languages ) ) {
@@ -118,6 +123,16 @@ class TranslationEngineQuery implements TranslationEngineQueryInterface {
 
 
     return $this->engines;
+  }
+
+
+  private function registerIfNotRegistered() {
+    if ( $this->registrationChecked ) {
+      return;
+    }
+    $this->registrationChecked = true;
+
+    AutoRegister::attemptForJob();
   }
 
 }

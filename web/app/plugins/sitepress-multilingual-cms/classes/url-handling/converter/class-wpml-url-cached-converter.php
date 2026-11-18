@@ -4,7 +4,7 @@ class WPML_URL_Cached_Converter extends WPML_URL_Converter {
 
 	const CACHE_GROUP = 'convert_url';
 
-	const CACHE_KEY_VERSION = 2;
+	const CACHE_KEY_VERSION = 4;
 
 	private $cache;
 
@@ -15,6 +15,14 @@ class WPML_URL_Cached_Converter extends WPML_URL_Converter {
 
 		if ( ! $lang_code ) {
 			$lang_code = $sitepress->get_current_language();
+		}
+
+		if (
+			$url
+			&& $this->get_language_to_convert_from( $url ) === $lang_code
+			&& $this->keeps_same_language_url( $lang_code )
+		) {
+			return $url;
 		}
 
 		$negotiation_type = $sitepress->get_setting( 'language_negotiation_type' );
@@ -29,6 +37,13 @@ class WPML_URL_Cached_Converter extends WPML_URL_Converter {
 		$skip_convert_url_string = $this->get_strategy()->skip_convert_url_string( $url, $lang_code );
 
 		$cache_key_args = array( $url, $lang_code, $negotiation_type, $skip_convert_url_string, self::CACHE_KEY_VERSION );
+
+		$strategy       = $this->get_strategy();
+		$root_url_state = $strategy instanceof WPML_URL_Converter_Subdir_Strategy ? $strategy->get_root_url_state() : '';
+		if ( '' !== $root_url_state ) {
+			$cache_key_args[] = $root_url_state;
+		}
+
 		$cache_key      = md5( (string) wp_json_encode( $cache_key_args ) );
 		$cache_found    = false;
 		$cache          = new WPML_WP_Cache( self::CACHE_GROUP );

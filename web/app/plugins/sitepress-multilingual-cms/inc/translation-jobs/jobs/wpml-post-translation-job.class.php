@@ -1,13 +1,17 @@
 <?php
 
 use WPML\FP\Obj;
+use WPML\TM\ATE\TranslateEverything\TermWriteRefusal;
 use WPML\TM\Jobs\FieldId;
+use WPML\TM\Jobs\JobLog;
 use WPML\TM\Jobs\TermMeta;
 use WPML\Translation\TranslationElements\FieldCompression;
 
 require_once WPML_TM_PATH . '/inc/translation-jobs/jobs/wpml-translation-job.class.php';
 
 class WPML_Post_Translation_Job extends WPML_Element_Translation_Job {
+
+	const TERM_NAME_TOO_LONG_REASON = 'The translated term name is %1$d characters long, and WordPress stores at most %2$d characters in a term name (term %3$d, into %4$s). The post translation was saved without this term.';
 
 	function get_original_document() {
 
@@ -86,7 +90,7 @@ class WPML_Post_Translation_Job extends WPML_Element_Translation_Job {
 				$unread[] = $element;
 				continue;
 			}
-			if ( $this->stored_text( $element ) !== (string) $field_data ) {
+			if ( ! $this->is_same_text( $this->stored_text( $element ), (string) $field_data ) ) {
 				return true;
 			}
 		}
@@ -98,7 +102,7 @@ class WPML_Post_Translation_Job extends WPML_Element_Translation_Job {
 				continue;
 			}
 			$stored = $this->stored_text( $element );
-			if ( $stored !== (string) $field_data && ! $this->is_delivered_custom_field_text( $element, $stored, $job_fields ) ) {
+			if ( ! $this->is_same_text( $stored, (string) $field_data ) && ! $this->is_delivered_custom_field_text( $element, $stored, $job_fields ) ) {
 				return true;
 			}
 		}
@@ -108,6 +112,18 @@ class WPML_Post_Translation_Job extends WPML_Element_Translation_Job {
 
 	private function stored_text( $element ) {
 		return (string) FieldCompression::decompress( (string) $element->field_data_translated, true );
+	}
+
+	private function is_same_text( string $stored, string $field_data ): bool {
+		if ( $stored === $field_data ) {
+			return true;
+		}
+
+		$as_lf = function ( $encoded ) {
+			return str_replace( [ "\r\n", "\r" ], "\n", base64_decode( $encoded ) );
+		};
+
+		return $as_lf( $stored ) === $as_lf( $field_data );
 	}
 
 	private function translated_field_data_from_post( $element, $post, array $term_names, array $job_fields = [] ) {
@@ -323,24 +339,73 @@ class WPML_Post_Translation_Job extends WPML_Element_Translation_Job {
 		global $sitepress, $wpdb;
 
 		$lang_code = $this->get_language_code();
+		$refused   = [];
 
 		if ( $sitepress->get_setting( 'tm_block_retranslating_terms' ) ) {
 			$this->load_terms_from_post_into_job( true );
 		}
 		$terms = $this->get_terms_in_job_rows();
 		foreach ( $terms as $term ) {
+			$translated_name = base64_decode( $term->field_data_translated );
+			$too_long        = TermWriteRefusal::nameOverLimit( $translated_name, $term->taxonomy, $wpdb );
+			if ( $too_long ) {
+				$source    = $this->source_term( $term );
+				$refused[] = $this->term_not_written(
+					$term,
+					$source,
+					TermWriteRefusal::tooLongReason( self::TERM_NAME_TOO_LONG_REASON, $translated_name, $term->taxonomy, $source ? $source->term_id : 0, (string) $lang_code, $wpdb ),
+					sprintf(
+						/* translators: 1: the name of the term in the original language, 2: the length of its translated name, 3: the longest term name WordPress stores. */
+						__( 'The translation was saved without the term "%1$s". Its translated name is %2$d characters long, and WordPress stores at most %3$d characters in a term name. Shorten the name in the original language, or translate the term by hand with a shorter name.', 'sitepress' ),
+						$source ? TermWriteRefusal::plainName( $source->name ) : '',
+						$too_long[0],
+						$too_long[1]
+					)
+				);
+				continue;
+			}
+
 			$is_new_term     = ! $sitepress->term_translations()->element_id_in( (int) $term->term_taxonomy_id, $lang_code );
 			$new_term_action = new WPML_Update_Term_Action( $wpdb, $sitepress, [
-				'term'        => base64_decode( $term->field_data_translated ),
-				'description' => TermMeta::getTermDescription( $this->get_id(), $term->term_taxonomy_id ),
+				'term'        => $translated_name,
+				'description' => wp_kses_post( TermMeta::getTermDescription( $this->get_id(), $term->term_taxonomy_id ) ),
 				'lang_code'   => $lang_code,
 				'trid'        => $term->trid,
 				'taxonomy'    => $term->taxonomy
 			] );
-			$new_term = $new_term_action->execute();
-			if ( ! empty( $new_term['term_taxonomy_id'] ) ) {
-				( new WPML_Sync_Term_Meta_Action( $sitepress, (int) $new_term['term_taxonomy_id'], $is_new_term ) )->run();
+			$kses_priority = has_filter( 'pre_term_description', 'wp_filter_kses' );
+			remove_filter( 'pre_term_description', 'wp_filter_kses' );
+			try {
+				$new_term = $new_term_action->execute();
+			} finally {
+				if ( false !== $kses_priority ) {
+					add_filter( 'pre_term_description', 'wp_filter_kses', (int) $kses_priority );
+				}
 			}
+			if ( empty( $new_term['term_taxonomy_id'] ) ) {
+				$source    = $this->source_term( $term );
+				$error     = $new_term_action->get_error();
+				$refused[] = $this->term_not_written(
+					$term,
+					$source,
+					TermWriteRefusal::fromWriteError( $error, $source ? $source->term_id : 0, $source ? $source->name : '', (string) $lang_code ),
+					$error instanceof WP_Error
+						? sprintf(
+							/* translators: 1: the name of the term in the original language, 2: WordPress's error message. */
+							__( 'The translation was saved without the term "%1$s". WordPress did not write its translation: %2$s', 'sitepress' ),
+							$source ? TermWriteRefusal::plainName( $source->name ) : '',
+							TermWriteRefusal::plainName( (string) preg_replace( '/<[^>]*>/', '', $error->get_error_message() ) )
+						)
+						: sprintf(
+							/* translators: %s: the name of the term in the original language. */
+							__( 'The translation was saved without the term "%s". WordPress did not write its translation.', 'sitepress' ),
+							$source ? TermWriteRefusal::plainName( $source->name ) : ''
+						)
+				);
+				continue;
+			}
+
+			( new WPML_Sync_Term_Meta_Action( $sitepress, (int) $new_term['term_taxonomy_id'], $is_new_term ) )->run();
 
 			foreach ( TermMeta::getTermMeta( $this->get_id(), $term->term_taxonomy_id ) as $meta ) {
 				update_term_meta( $new_term['term_id'], FieldId::getTermMetaKey( (string) $meta->field_type ), $meta->field_data_translated );
@@ -349,6 +414,35 @@ class WPML_Post_Translation_Job extends WPML_Element_Translation_Job {
 
 		$term_helper = wpml_get_term_translation_util();
 		$term_helper->sync_terms( $this->get_original_element_id(), $this->get_language_code() );
+
+		return $refused;
+	}
+
+	private function source_term( $term ) {
+		$source = get_term_by( 'term_taxonomy_id', (int) $term->term_taxonomy_id, (string) $term->taxonomy );
+
+		return $source instanceof WP_Term ? $source : null;
+	}
+
+	private function term_not_written( $term, $source, $reason, $message ) {
+		JobLog::addError(
+			'save_translation_term_not_written',
+			[
+				'job_id'           => (int) $this->get_id(),
+				'term_taxonomy_id' => (int) $term->term_taxonomy_id,
+				'taxonomy'         => (string) $term->taxonomy,
+				'lang'             => (string) $this->get_language_code(),
+				'reason'           => $reason,
+			]
+		);
+
+		return [
+			'term_taxonomy_id' => (int) $term->term_taxonomy_id,
+			'taxonomy'         => (string) $term->taxonomy,
+			'name'             => $source ? (string) $source->name : '',
+			'reason'           => $reason,
+			'message'          => $message,
+		];
 	}
 
 	function load_terms_from_post_into_job( $delete = null ) {
@@ -472,19 +566,38 @@ class WPML_Post_Translation_Job extends WPML_Element_Translation_Job {
 
 		$job_id                         = $this->get_id();
 
-		$term_values = $wpdb->get_results( $wpdb->prepare("
-		SELECT
-		    {$wpdb->terms}.name,
-		    {$wpdb->term_taxonomy}.description,
-		    SUBSTR(translate.field_type, 3) original_term_id,
-		    {$wpdb->terms}.term_id translated_term_id
-		FROM {$wpdb->prefix}icl_translate translate
-			INNER JOIN {$wpdb->prefix}icl_translations original_translation ON original_translation.element_id = SUBSTR(translate.field_type, 3)
-			INNER JOIN {$wpdb->prefix}icl_translations translation ON translation.trid = original_translation.trid AND translation.language_code = %s
-			INNER JOIN {$wpdb->term_taxonomy} ON {$wpdb->term_taxonomy}.term_taxonomy_id = translation.element_id AND CONCAT('tax_', {$wpdb->term_taxonomy}.taxonomy) = translation.element_type
-			INNER JOIN {$wpdb->terms} ON {$wpdb->terms}.term_id = {$wpdb->term_taxonomy}.term_id
-		WHERE translate.job_id = %d AND translate.field_type LIKE %s
-		", $this->get_language_code(), $job_id, $term_field_pattern ) );
+		$original_ids = array_map(
+			function ( $field_type ) {
+				return (int) substr( (string) $field_type, 2 );
+			},
+			(array) $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT field_type FROM {$wpdb->prefix}icl_translate WHERE job_id = %d AND field_type LIKE %s",
+					$job_id,
+					$term_field_pattern
+				)
+			)
+		);
+		$term_values  = [];
+		foreach ( \WPML\TM\Jobs\TermTranslationInLanguage::translations( $original_ids, (string) $this->get_language_code() ) as $original_id => $translated_id ) {
+			$translated = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT {$wpdb->terms}.name, {$wpdb->term_taxonomy}.description, {$wpdb->terms}.term_id
+					FROM {$wpdb->term_taxonomy}
+					INNER JOIN {$wpdb->terms} ON {$wpdb->terms}.term_id = {$wpdb->term_taxonomy}.term_id
+					WHERE {$wpdb->term_taxonomy}.term_taxonomy_id = %d",
+					$translated_id
+				)
+			);
+			if ( $translated ) {
+				$term_values[] = (object) [
+					'name'               => $translated->name,
+					'description'        => $translated->description,
+					'original_term_id'   => $original_id,
+					'translated_term_id' => (int) $translated->term_id,
+				];
+			}
+		}
 		foreach ( $term_values as $term ) {
 			if ( $delete ) {
 				$wpdb->query(

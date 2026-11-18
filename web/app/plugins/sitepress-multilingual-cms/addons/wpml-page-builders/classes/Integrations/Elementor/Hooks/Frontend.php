@@ -15,6 +15,7 @@ class Frontend implements \IWPML_Frontend_Action {
 
 	public function add_hooks() {
 		add_action( 'elementor_pro/search_form/after_input', [ $this, 'addLanguageFormField' ] );
+		add_action( 'elementor_pro/search/after_input', [ $this, 'addLanguageFormField' ] );
 		add_filter( 'elementor/widget/render_content', [ $this, 'addLanguageFieldToForm' ], 10, 2 );
 		if ( Str::includes( self::PERMALINKS_CATEGORY_PATTERN, get_option( 'permalink_structure' ) ) ) {
 			add_filter( 'post_link_category', Fns::memorize( [ $this, 'fixLanguageSwitcherPermalink' ] ), 10, 3 );

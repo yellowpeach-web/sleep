@@ -565,6 +565,9 @@
          "Blocked by a firewall or CDN": [
             "Bị chặn bởi tường lửa hoặc CDN"
          ],
+         "Used by another site": [
+            "Được sử dụng bởi một trang web khác"
+         ],
          "Not valid": [
             "Không hợp lệ"
          ],
@@ -588,6 +591,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s tải được, nhưng tường lửa hoặc CDN đã chặn kiểm tra của WPML."
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "Được sử dụng bởi một trang web khác trên mạng này: %s. Nhập một tên miền khác để lưu."
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "Không thể xác thực tên miền: %s. Hãy kiểm tra xem nó có trỏ đến trang web này không, hoặc bỏ chọn “Xác thực khi lưu” để vẫn lưu tên miền đó."
@@ -931,6 +937,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "Trước khi có thể lưu ngôn ngữ này, hãy chọn khôi phục nội dung trước đây của trang web bằng ngôn ngữ đó hoặc bắt đầu lại từ đầu."
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "Không thể liên kết một ngôn ngữ với ngôn ngữ mặc định của trang web. Thay vào đó, hãy chọn “Khớp tự động”."
+         ],
          "You don’t have permission to change languages.": [
             "Bạn không có quyền thay đổi ngôn ngữ."
          ],
@@ -991,6 +1000,9 @@
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "Nếu bạn không thể tìm thấy ngôn ngữ của mình trong danh sách, hãy <a>thêm một ngôn ngữ tùy chỉnh</a>."
          ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s đã được di chuyển đến vị trí %2$d trong tổng số %3$d."
+         ],
          "Default language": [
             "Ngôn ngữ mặc định"
          ],
@@ -1047,6 +1059,12 @@
          ],
          "Delete language": [
             "Xóa ngôn ngữ"
+         ],
+         "Move %s. Use the up and down arrow keys.": [
+            "Di chuyển %s. Sử dụng các phím mũi tên lên và xuống."
+         ],
+         "Drag to change the order": [
+            "Kéo để thay đổi thứ tự"
          ],
          "Type to search all languages…": [
             "Nhập để tìm kiếm tất cả các ngôn ngữ…"
@@ -1119,6 +1137,9 @@
          ],
          "Recognized as the same language as the default": [
             "Được nhận diện là cùng ngôn ngữ với ngôn ngữ mặc định"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "Dịch tự động đang tắt: không có công cụ dịch nào được bật. Để bật một công cụ, hãy đi tới <link>WPML → Cài đặt → Dịch thuật AI</link>."
          ],
          "%s (Regional)": [
             "%s (vùng)"
@@ -1382,7 +1403,7 @@
             "Thiết lập biến thể vùng của ngôn ngữ. Dịch tự động sử dụng thông tin này để tạo ra các bản dịch chính xác hơn."
          ],
          "The flag shown next to this language in the front-end language switcher.": [
-            "Cờ hiển thị bên cạnh ngôn ngữ này trong bộ chuyển đổi ngôn ngữ ở frontend."
+            "Cờ hiển thị bên cạnh ngôn ngữ này trong bộ chuyển đổi ngôn ngữ ở giao diện người dùng."
          ],
          "The WordPress locale, for example en_US. WordPress uses it to load the matching theme and plugin translation files.": [
             "Locale WordPress, ví dụ en_US. WordPress sử dụng nó để tải các tệp dịch giao diện và plugin tương ứng."
@@ -1469,7 +1490,7 @@
             "Quản lý và ẩn ngôn ngữ trang web"
          ],
          "Add, remove, configure, and hide your site’s translation languages. Click Edit on any row to edit its country, flag, codes, mapping, and visibility.": [
-            "Thêm, xóa, cấu hình và ẩn các ngôn ngữ dịch thuật trên trang web của bạn. Nhấp vào Chỉnh sửa trên bất kỳ hàng nào để sửa quốc gia, cờ, mã, ánh xạ và khả năng hiển thị của ngôn ngữ đó."
+            "Thêm, xóa, định cấu hình và ẩn ngôn ngữ dịch của trang web. Nhấp vào Chỉnh sửa trên hàng bất kỳ để chỉnh sửa quốc gia, cờ, mã, ánh xạ và chế độ hiển thị."
          ],
          "WPML couldn’t communicate with our translation system. You can still edit and save your languages. Please contact support if the problem persists.": [
             "WPML không thể kết nối với hệ thống dịch thuật của chúng tôi. Bạn vẫn có thể chỉnh sửa và lưu các ngôn ngữ của mình. Vui lòng liên hệ với bộ phận hỗ trợ nếu sự cố vẫn tiếp diễn."

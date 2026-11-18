@@ -127,11 +127,11 @@
          "Legacy engine": [
             "레거시 엔진"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "레거시 가격이 적용되었습니다. %s은(는) 레거시 번역 엔진으로, 새 사이트에는 권장되지 않으며 곧 중단될 예정입니다. 기존 사이트에는 이에 대한 조정된 단어 요율이 유지됩니다."
-         ],
          "Switch to PTC": [
             "PTC로 전환"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "레거시 가격이 적용되었습니다. %s은(는) 레거시 번역 엔진으로, 새 사이트에는 권장되지 않으며 곧 중단될 예정입니다. 기존 사이트에는 이에 대한 조정된 단어 요율이 유지됩니다."
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "현재 콘텐츠를 번역하는 데 지금 필요한 단어 수입니다. 양식이나 슬라이더와 같이 다른 플러그인이 추가한 일부 텍스트는 포함되지 않으며, 이러한 텍스트는 설정 완료 후 집계됩니다. 테마 및 플러그인의 사이트 문구도 설정 후에 계산되며 대개 수백 단어가 추가됩니다. 그 이후의 편집은 무료입니다. 새로 추가하는 단어에 대해서만 다시 비용을 지불하면 됩니다."
@@ -146,10 +146,10 @@
             "현재 콘텐츠를 번역하는 데 필요한 단어 수입니다. %s의 단어당 요율이 적용되며, 번역된 페이지를 수정하면 다시 비용이 청구됩니다."
          ],
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
-            "페이지, 포스트, 상품과 함께 사용자 정의 필드, 페이지 빌더 텍스트, 미디어 텍스트, 그리고 사용된 카테고리, 태그, 속성을 계산합니다."
+            "페이지, 글, 상품과 함께 사용자 정의 필드, 페이지 빌더 텍스트, 미디어 텍스트, 그리고 사용된 카테고리, 태그, 속성을 계산합니다."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "페이지, 포스트, 상품과 함께 사용자 정의 필드, 페이지 빌더 텍스트, 미디어 텍스트, 사용된 카테고리, 태그, 속성 및 사이트 문구를 계산합니다. 용어는 양방향으로 번역을 위해 전송되므로 이를 사용하는 모든 항목에서 계산되고 단독으로 한 번 더 계산됩니다."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "페이지, 글, 상품과 관련 사용자 정의 필드, 페이지 빌더 텍스트 및 미디어 텍스트, 사용된 카테고리, 태그, 속성, 그리고 사이트 문구를 집계합니다. 각 카테고리, 태그 또는 속성은 “분류 체계” 행에서 한 번만 집계되며, 이를 사용하는 항목에서 다시 집계되지 않습니다."
          ],
          "Total items": [
             "총 항목"
@@ -371,7 +371,7 @@
             "WPML 계정에 %1$s%2$s 단어%3$s가 있습니다."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "WPML 계정에 %1$s%2$s개를 사용할 수 있습니다.%3$s"
+            "WPML 계정에서 %1$s%2$s개의 단어%3$s를 사용할 수 있습니다."
          ],
          "(Only the WPML account owner can do this.)": [
             "(WPML 계정 소유자만 이 작업을 수행할 수 있습니다.)"
@@ -383,7 +383,7 @@
             "여전히 단어가 부족합니다. %d초 후에 다시 새로고침하세요."
          ],
          "Already assigned?": [
-            "이미 할당하셨나요?"
+            "이미 할당하셨습니까?"
          ],
          "Close modal": [
             "모달 닫기"

@@ -8,7 +8,7 @@ class BillingPageRequirements implements PageRequirementsInterface {
 
 
   public function requirementsMet() {
-    return \WPML_TM_ATE_Status::is_enabled();
+    return \WPML_TM_ATE_Status::is_ate_account_wanted();
   }
 
 

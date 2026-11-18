@@ -50,7 +50,7 @@ class WPML_Display_As_Translated_Message_For_New_Post implements IWPML_Action {
 			)
 		);
 		$output .= '<br /><br />';
-		$output .= '<a href="' . esc_url( \WPML\OutboundLinks\OutboundLinks::to( 'https://wpml.org/documentation/translating-your-contents/displaying-untranslated-content-on-pages-in-secondary-languages/', array( 'medium' => 'notice', 'campaign' => 'display-as-translated' ) ) ) . '" target="_blank">' . esc_html__( 'Read how this works', 'sitepress' ) . '</a>';
+		$output .= '<a href="' . esc_url( \WPML\OutboundLinks\OutboundLinks::to( 'https://wpml.org/documentation/translating-your-contents/displaying-untranslated-content-on-pages-in-secondary-languages/#fallback-content', array( 'medium' => 'notice', 'campaign' => 'display-as-translated' ) ) ) . '" target="_blank">' . esc_html__( 'Read how this works', 'sitepress' ) . '</a>';
 
 		return $output;
 

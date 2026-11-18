@@ -136,6 +136,10 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 				clean_post_cache( $post->ID );
 
 			}
+
+			if ( $this->is_updated_from_media_translation_menu() && has_blocks( $post->post_content ) ) {
+				do_action( 'wpml_pb_translate_media_in_translation', $post->ID, $post );
+			}
 		} elseif ( $this->is_updated_from_media_translation_menu() ) {
 			do_action( 'wpml_pb_resave_post_translation', $post_element );
 		}
@@ -174,8 +178,10 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 
 	public function translate_url_in_post( $attachment_id, $posts = array() ) {
 		if ( ! $posts ) {
-			$media_usage = $this->media_usage_factory->create( $attachment_id );
-			$posts       = $media_usage->get_posts();
+			$posts = WPML_Media_Posts_Using_File::get(
+				$attachment_id,
+				(array) $this->media_usage_factory->create( $attachment_id )->get_posts()
+			);
 		}
 
 		foreach ( $posts as $post_id ) {

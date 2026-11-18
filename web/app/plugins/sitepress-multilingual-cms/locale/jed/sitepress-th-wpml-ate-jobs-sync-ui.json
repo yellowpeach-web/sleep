@@ -13,11 +13,26 @@
          "The translation could not be started because the server did not answer.": [
             "ไม่สามารถเริ่มการแปลได้เนื่องจากเซิร์ฟเวอร์ไม่ตอบสนอง"
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "เซสชันของคุณหมดอายุแล้ว โปรดรีเฟรชหน้านี้แล้วลองใหม่อีกครั้ง"
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "PTC กำลังแปล ตัวแก้ไขจะเปิดขึ้นเมื่อพร้อม"
+         ],
          "This translation cannot be opened right now.": [
             "ไม่สามารถเปิดคำแปลนี้ได้ในขณะนี้"
          ],
          "Refresh this page": [
             "รีเฟรชหน้านี้"
+         ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "มีคำแบบชำระเงินล่วงหน้าไม่เพียงพอที่จะแปลสิ่งนี้โดยอัตโนมัติ เพิ่มคำให้มากขึ้น แล้วลองอีกครั้ง"
+         ],
+         "Get more words": [
+            "รับคำเพิ่มเติม"
+         ],
+         "Close": [
+            "ปิด"
          ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
             "เนื้อหานี้กำลังถูกแปลโดยอัตโนมัติ หากคุณต้องการดำเนินการอย่างอื่น โปรดยกเลิกงานแปลก่อน"
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "กำลังแปลเนื้อหาของคุณ"
+         ],
+         "Translate Everything is active": [
+            "แปลทุกอย่างเปิดใช้งานอยู่"
          ],
          "%d translation notice": [
             "การแจ้งเตือนการแปล %d รายการ"
@@ -50,13 +68,13 @@
             "เราพบสิ่งที่ไม่คาดคิดในกิจกรรมการแปลล่าสุดของคุณ และได้ระงับการแปลอัตโนมัติในบัญชีของคุณ โปรดติดต่อฝ่ายสนับสนุนและเราจะตรวจสอบร่วมกับคุณ"
          ],
          "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
-            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> ถูกระงับ: ถึงวงเงินการใช้จ่ายรายเดือนแล้ว"
+            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> ถูกระงับ: ถึงขีดจำกัดการจ่ายรายเดือนแล้ว"
          ],
          "Automatic translation is paused: monthly spending cap reached": [
-            "การแปลอัตโนมัติถูกระงับ: ถึงวงเงินการใช้จ่ายรายเดือนแล้ว"
+            "การแปลอัตโนมัติถูกระงับ: ถึงขีดจำกัดการจ่ายรายเดือนแล้ว"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "เว็บไซต์นี้ถึงวงเงินการใช้จ่ายรายเดือนที่ตั้งไว้แล้ว การแปลจะดำเนินต่อเมื่อมีการเพิ่มวงเงิน หรือเมื่อมีการรีเซ็ตวงเงิน เฉพาะเจ้าของบัญชีเท่านั้นที่สามารถดำเนินการนี้ได้"
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "เว็บไซต์นี้ถึงขีดจำกัดการจ่ายรายเดือนที่ตั้งไว้แล้ว การแปลจะดำเนินการต่อเมื่อมีการเพิ่มขีดจำกัด หรือเมื่อมีการรีเซ็ตขีดจำกัด คุณสามารถเพิ่มขีดจำกัดได้ที่หน้า การเรียกเก็บเงินและการใช้งานการแปลด้วย AI"
          ],
          "Preparing content for translation": [
             "กำลังเตรียมเนื้อหาสำหรับการแปล"
@@ -70,8 +88,8 @@
          "Your language, %s, must be mapped to a supported language in order to use automatic translation.": [
             "ภาษาต่อไปนี้ในไซต์ของคุณต้องถูกจับคู่กับภาษาที่รองรับเพื่อใช้งานการแปลอัตโนมัติ: %s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "เนื้อหาในภาษาเหล่านี้: %s ไม่สามารถแปลโดยอัตโนมัติได้ เว้นแต่คุณจะจับคู่กับภาษาที่แตกต่างจากภาษาเริ่มต้น"
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "การแปลอัตโนมัติไม่พร้อมใช้งานระหว่าง %1$s และภาษาเหล่านี้ เนื่องจากระบบรับรู้ว่าเป็นภาษาเดียวกัน: %2$s ให้เลือก “ทำสำเนา” แทนเพื่อคัดลอกเนื้อหาข้ามไป"
          ],
          "%d translation waiting for review": [
             "การแปล %d รายการกำลังรอการตรวจสอบ"
@@ -147,9 +165,6 @@
          ],
          "Pay now": [
             "ชำระเงินตอนนี้"
-         ],
-         "Get more words": [
-            "รับคำเพิ่มเติม"
          ],
          "Assign words": [
             "จัดสรรคำ"

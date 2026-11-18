@@ -13,6 +13,7 @@ use WPML\UserInterface\Web\Core\SharedKernel\Component\TeaCalculation\Applicatio
 use WPML\UserInterface\Web\Core\SharedKernel\Component\TeaCalculation\Application\Endpoint\DiscardPendingTranslatableOffer;
 use WPML\UserInterface\Web\Core\SharedKernel\Component\TeaCalculation\Application\Endpoint\DismissParkedTypesOffer;
 use WPML\UserInterface\Web\Core\SharedKernel\Component\TeaCalculation\Application\TeaCalculationScriptController;
+use WPML\UserInterface\Web\Core\Component\Preferences\Application\Endpoint\GetEngines\GetEnginesController;
 
 return [
   'wpml-tea-calculation' => [
@@ -36,6 +37,12 @@ return [
         'handler'    => UpdateTypesIncludeBatch::class,
         'method'     => 'POST',
         'capability' => WPML_CAP_MANAGE_TRANSLATIONS,
+        'args'       => [
+          'types' => [
+            'type'  => 'array',
+            'items' => [ 'type' => 'object' ],
+          ],
+        ],
       ],
       'teacalculationdiscardpendingoffer' => [
         'path'       => '/tea-calculation-discard-pending-offer',
@@ -60,6 +67,15 @@ return [
         'handler'    => GetItemsEndpoint::class,
         'method'     => 'POST',
         'capability' => WPML_CAP_MANAGE_TRANSLATIONS,
+      ],
+    ],
+  ],
+  'wpml-translation-engines' => [
+    'endpoints' => [
+      'getengines' => [
+        'path'    => '/get-engines',
+        'handler' => GetEnginesController::class,
+        'method'  => 'GET',
       ],
     ],
   ],

@@ -6,6 +6,8 @@ class CreateTable {
 
 	const OPTION = 'wpml_create_table_refusals';
 
+	private static $lastRefusal = null;
+
 	public static function charsetCollate() {
 		return (string) \SitePress_Setup::get_charset_collate();
 	}
@@ -14,12 +16,27 @@ class CreateTable {
 		$query = rtrim( (string) $statement ) . ' ' . self::charsetCollate();
 
 		if ( false === $wpdb->query( $query ) ) {
-			self::recordRefusal( $table, $query, isset( $wpdb->last_error ) ? (string) $wpdb->last_error : '' );
+			$error = isset( $wpdb->last_error ) ? (string) $wpdb->last_error : '';
+
+			self::$lastRefusal = [
+				'table' => (string) $table,
+				'error' => $error,
+			];
+			self::recordRefusal( $table, $query, $error );
+			$wpdb->last_error = $error;
 
 			return false;
 		}
 
 		return true;
+	}
+
+	public static function lastRefusal() {
+		return self::$lastRefusal;
+	}
+
+	public static function forgetLastRefusal() {
+		self::$lastRefusal = null;
 	}
 
 	public static function refusals() {

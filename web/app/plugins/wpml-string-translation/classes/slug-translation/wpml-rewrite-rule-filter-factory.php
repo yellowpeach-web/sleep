@@ -17,6 +17,11 @@ class WPML_Rewrite_Rule_Filter_Factory {
 					$sitepress,
 					$slug_records_factory->create( WPML_Slug_Translation_Factory::POST ),
 					$slug_translations
+				),
+				new WPML_ST_Slug_Custom_Type_Factory(
+					$sitepress,
+					$slug_records_factory->create( WPML_Slug_Translation_Factory::POST_ARCHIVE ),
+					$slug_translations
 				)
 			),
 			new WPML_ST_Slug_Translation_Taxonomy_Custom_Types_Repository(

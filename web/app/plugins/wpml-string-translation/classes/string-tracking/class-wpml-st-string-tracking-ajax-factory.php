@@ -1,8 +1,5 @@
 <?php
 
-use WPML\Core\Twig_Loader_Filesystem;
-use WPML\Core\Twig_Environment;
-
 class WPML_ST_String_Tracking_AJAX_Factory implements IWPML_AJAX_Action_Loader {
 
 	const ACTION_POSITION_IN_SOURCE = 'view_string_in_source';
@@ -56,16 +53,8 @@ class WPML_ST_String_Tracking_AJAX_Factory implements IWPML_AJAX_Action_Loader {
 	}
 
 	private function get_template_service() {
-		$loader = new Twig_Loader_Filesystem( array( WPML_ST_PATH . WPML_ST_String_Positions::TEMPLATE_PATH ) );
+		$loader = new WPML_Twig_Template_Loader( array( WPML_ST_PATH . WPML_ST_String_Positions::TEMPLATE_PATH ) );
 
-		$options = array();
-
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			$options['debug'] = true;
-		}
-
-		$twig_env = new Twig_Environment( $loader, $options );
-
-		return new WPML_Twig_Template( $twig_env );
+		return $loader->get_template();
 	}
 }

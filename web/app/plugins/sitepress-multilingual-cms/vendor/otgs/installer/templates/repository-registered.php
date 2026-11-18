@@ -42,7 +42,7 @@ class Registered {
 
 	}
 
-	private static function getMaskedSiteKey( $repoId ) {
+	public static function getMaskedSiteKey( $repoId ) {
 		$siteKey = \WP_Installer()->get_site_key( $repoId );
 		return str_repeat('*', strlen( $siteKey ) - 4 ) . substr( $siteKey, -4 );
 	}

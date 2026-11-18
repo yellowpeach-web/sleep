@@ -1,5 +1,7 @@
 <?php
 
+use WPML\PB\TranslationBody\RendersTranslationBody;
+
 class WPML_Page_Builders_Update {
 
 	protected $data_settings;
@@ -14,23 +16,101 @@ class WPML_Page_Builders_Update {
 	}
 
 	public function save( $post_id, $original_post_id, $converted_data ) {
-		$this->copy_meta_fields( $post_id, $original_post_id, $this->data_settings->get_fields_to_copy() );
+		$fields_to_copy = $this->data_settings->get_fields_to_copy();
+		$body_renderer  = $this->data_settings instanceof RendersTranslationBody ? $this->data_settings : null;
+		$this->copy_meta_fields(
+			$post_id,
+			$original_post_id,
+			$body_renderer ? array_diff( $fields_to_copy, [ 'post_content' ] ) : $fields_to_copy
+		);
 
-		$mayKeepRawHtml = apply_filters( 'wpml_pb_grant_unfiltered_html', false );
+		$fields_to_save = $this->data_settings->get_fields_to_save();
+		$prepared_data  = $this->data_settings->prepare_data_for_saving( $converted_data );
 
-		if ( $mayKeepRawHtml ) {
+		$this->save_builder_data( $post_id, $fields_to_save, $prepared_data );
+
+		if ( ! $body_renderer ) {
+			return;
+		}
+
+		$should_copy_original_body = in_array( 'post_content', $fields_to_copy, true );
+		$is_body_written           = $this->update_body( $body_renderer, $post_id, $original_post_id, $should_copy_original_body );
+
+		if ( $is_body_written ) {
+			$this->save_builder_data( $post_id, $fields_to_save, $prepared_data );
+		}
+	}
+
+	private function save_builder_data( $post_id, $fields, $prepared_data ) {
+		$this->run_with_unfiltered_html_grant(
+			function () use ( $post_id, $fields, $prepared_data ) {
+				$this->save_data( $post_id, $fields, $prepared_data );
+			}
+		);
+	}
+
+	protected function run_with_unfiltered_html_grant( callable $write ) {
+		$isAteDelivery = apply_filters( \WPML\TM\ATE\Receive\UnfilteredHtmlGrant::FILTER_DELIVERY, false );
+		$isKsesActive  = $isAteDelivery && false !== has_filter( 'content_save_pre', 'wp_filter_post_kses' );
+
+		if ( $isAteDelivery ) {
 			add_filter( 'user_has_cap', [ __CLASS__, 'grant_unfiltered_html' ] );
 			add_filter( 'map_meta_cap', [ __CLASS__, 'allow_unfiltered_html_on_multisite' ], 10, 3 );
+			kses_init();
 		}
 
 		try {
-			$this->save_data( $post_id, $this->data_settings->get_fields_to_save(), $this->data_settings->prepare_data_for_saving( $converted_data ) );
+			return $write();
 		} finally {
-			if ( $mayKeepRawHtml ) {
+			if ( $isAteDelivery ) {
 				remove_filter( 'user_has_cap', [ __CLASS__, 'grant_unfiltered_html' ] );
 				remove_filter( 'map_meta_cap', [ __CLASS__, 'allow_unfiltered_html_on_multisite' ] );
+				$isKsesActive ? kses_init_filters() : kses_remove_filters();
 			}
 		}
+	}
+
+	private function update_body( RendersTranslationBody $renderer, $post_id, $original_post_id, $should_copy_original_body ) {
+		$original_post = get_post( $original_post_id );
+		$body          = $original_post instanceof WP_Post
+			? $renderer->render_translation_body( $post_id, $original_post )
+			: null;
+
+		if ( is_string( $body ) ) {
+			if ( \WPML\PB\Helper\TranslationContent::isStored( $post_id, $this->as_kses_stores_it( $body ) ) ) {
+				return false;
+			}
+
+			return $this->write_body( $post_id, $body );
+		}
+
+		if ( $should_copy_original_body && $original_post instanceof WP_Post ) {
+			return $this->write_body( $post_id, $original_post->post_content );
+		}
+
+		return false;
+	}
+
+	private function as_kses_stores_it( $body ) {
+		if ( false === has_filter( 'content_save_pre', 'wp_filter_post_kses' ) ) {
+			return $body;
+		}
+
+		return wp_unslash( wp_filter_post_kses( wp_slash( $body ) ) );
+	}
+
+	private function write_body( $post_id, $body ) {
+		$postarr = [
+			'ID'           => $post_id,
+			'post_content' => $body,
+		];
+		if ( ! \WPML\PB\Helper\TranslationContent::update( $postarr ) ) {
+			return false;
+		}
+
+		\WPML\PB\Helper\TranslationContent::followRecord( $post_id );
+
+		return true;
 	}
 
 	public static function grant_unfiltered_html( $allcaps ) {
@@ -69,13 +149,7 @@ class WPML_Page_Builders_Update {
 		foreach ( $meta_fields as $meta_key ) {
 			if ( 'post_content' === $meta_key ) {
 				$original_post = get_post( $original_post_id );
-				$postarr = [
-					'ID'           => $translated_post_id,
-					'post_content' => $original_post->post_content,
-				];
-				if ( \WPML\PB\Helper\TranslationContent::update( $postarr ) ) {
-					\WPML\PB\Helper\TranslationContent::followRecord( $translated_post_id );
-				}
+				$this->write_body( $translated_post_id, $original_post->post_content );
 			} else {
 				$value = get_post_meta( $original_post_id, $meta_key, true );
 				update_post_meta(

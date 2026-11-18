@@ -90,12 +90,13 @@ class RootPageNotice {
 		$urls         = icl_get_setting( 'urls' );
 		$root_page_id = isset( $urls['root_page'] ) ? (int) $urls['root_page'] : 0;
 		$root_page    = $root_page_id > 0 ? get_post( $root_page_id ) : null;
+		$state        = \WPML_Root_Page_Actions::root_page_state( $root_page );
 
-		if ( \WPML_Root_Page_Actions::is_usable_root_page( $root_page ) ) {
+		if ( \WPML_Root_Page_Actions::ROOT_PAGE_USABLE === $state ) {
 			return null;
 		}
 
-		if ( ! $root_page ) {
+		if ( \WPML_Root_Page_Actions::ROOT_PAGE_MISSING === $state ) {
 			return [
 				esc_html__( 'No root page is set.', 'sitepress' ),
 				sprintf(
@@ -106,15 +107,15 @@ class RootPageNotice {
 			];
 		}
 
-		if ( 'trash' === $root_page->post_status ) {
+		if ( \WPML_Root_Page_Actions::ROOT_PAGE_TRASHED === $state ) {
 			if ( ! current_user_can( 'delete_post', $root_page_id ) ) {
 				return [
 					esc_html__( 'The root page is in the Trash.', 'sitepress' ),
-					esc_html__( 'Ask an administrator to restore it, then publish it.', 'sitepress' ),
+					esc_html__( 'Ask an administrator to restore it, then publish it.', 'sitepress' ) . ' ' . $this->opt_out_sentence(),
 				];
 			}
 
-			$restore_url  = wp_nonce_url( admin_url( 'post.php?post=' . $root_page_id . '&action=untrash' ), 'untrash-post_' . $root_page_id );
+			$restore_url  = \WPML_Root_Page_Actions::restore_url( $root_page_id );
 			$restore_link = '<a href="' . esc_url( $restore_url ) . '">'
 				/* translators: Link text inside the sentence "Restore {the root page}, then publish it." It restores the page from the Trash. */
 				. esc_html_x( 'the root page', 'Restore {the root page}, then publish it - 2/2', 'sitepress' )
@@ -126,7 +127,7 @@ class RootPageNotice {
 					/* translators: %s: a link, already wrapped in its tags, whose text is "the root page". */
 					esc_html_x( 'Restore %s, then publish it.', 'Restore {the root page}, then publish it - 1/2', 'sitepress' ),
 					$restore_link
-				),
+				) . ' ' . $this->opt_out_sentence(),
 			];
 		}
 
@@ -141,8 +142,16 @@ class RootPageNotice {
 				/* translators: %s: a link, already wrapped in its tags, whose text is "the root page". */
 				esc_html_x( 'Publish %s to show it at your site\'s root.', 'Publish {the root page} to show it at your site root - 1/2', 'sitepress' ),
 				$page_link
-			),
+			) . ' ' . $this->opt_out_sentence(),
 		];
+	}
+
+	private function opt_out_sentence() {
+		return sprintf(
+			/* translators: %s: a link, already wrapped in its tags, whose text is the menu path "WPML > Settings > URLs and SEO". "Use directory for default language" is the label of an option on that screen; use the same words as its translation. */
+			esc_html_x( 'If you don\'t want a root page, turn off "Use directory for default language" in %s.', 'If you don\'t want a root page, turn off "Use directory for default language" in {WPML > Settings > URLs and SEO} - 1/2', 'sitepress' ),
+			$this->settings_link()
+		);
 	}
 
 	private function settings_link() {
@@ -181,7 +190,9 @@ class RootPageNotice {
 		$notice_id = $this->deleted_notice_id( $flag );
 		$notice    = $this->build_deleted_notice( $notice_id );
 
-		$root_chosen_again = \WPML_Root_Page::uses_html_root() || \WPML_Root_Page::uses_page_root();
+		$root_chosen_again = \WPML_Root_Page::uses_html_root()
+			|| \WPML_Root_Page::uses_page_root()
+			|| \WPML_Root_Page::uses_redirect_root();
 
 		if ( $root_chosen_again || $this->admin_notices->is_notice_dismissed( $notice ) ) {
 			$this->admin_notices->remove_notice( self::NOTICE_GROUP, $notice_id );

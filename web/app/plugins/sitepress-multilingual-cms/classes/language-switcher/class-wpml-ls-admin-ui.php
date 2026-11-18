@@ -2,6 +2,7 @@
 
 use WPML\API\Sanitize;
 use WPML\Core\Component\PostHog\Application\Service\Event\EventInstanceService;
+use WPML\Utilities\FormString;
 
 class WPML_LS_Admin_UI extends WPML_Templates_Factory {
 
@@ -92,7 +93,7 @@ class WPML_LS_Admin_UI extends WPML_Templates_Factory {
 				'sidebars'      => $this->settings->get_registered_sidebars(),
 				'color_schemes' => $this->settings->get_default_color_schemes(),
 				'strings'       => $this->get_javascript_strings(),
-				'templates'     => $this->templates->get_all_templates_data(),
+				'templates'     => $this->templates->get_all_templates_data() + $this->get_uploads_stand_ins_data(),
 			);
 
 			wp_localize_script( 'wpml-language-switcher-settings', 'wpml_language_switcher_admin', $js_vars );
@@ -205,7 +206,7 @@ class WPML_LS_Admin_UI extends WPML_Templates_Factory {
 			return array();
 		}
 
-		parse_str( self::undo_html_escaping( $form ), $fields );
+		$fields = FormString::parse( $form );
 
 		if ( ! array_intersect_key( $fields, array_flip( self::SETTINGS_FORM_KEYS ) ) ) {
 			return array();
@@ -242,14 +243,6 @@ class WPML_LS_Admin_UI extends WPML_Templates_Factory {
 		}
 
 		return $settings;
-	}
-
-	private static function undo_html_escaping( $form ) {
-		return (string) preg_replace(
-			array( '/&(?:amp|#0*38|#x0*26);/i', '/&(?:apos|#0*39|#x0*27);/i' ),
-			array( '&', "'" ),
-			$form
-		);
 	}
 
 	private static function read_slot_group( $slots ) {
@@ -381,6 +374,9 @@ class WPML_LS_Admin_UI extends WPML_Templates_Factory {
 
 	public function get_main_ui_model() {
 		$slot_factory = new WPML_LS_Slot_Factory();
+		$screen       = $this->templates->get_settings_screen_choices( $this->settings->get_settings_model() );
+		$settings     = $screen['settings'];
+		$templates    = $screen['stand_ins'] + $this->templates->get_templates();
 
 		$model = array(
 			'strings'                  => array(
@@ -395,12 +391,12 @@ class WPML_LS_Admin_UI extends WPML_Templates_Factory {
 				'shortcode_actions' => $this->get_shortcode_actions_strings(),
 			),
 			'data'                     => array(
-				'templates' => $this->templates->get_templates(),
+				'templates' => $templates,
 				'menus'     => $this->settings->get_available_menus(),
 				'sidebars'  => $this->settings->get_registered_sidebars(),
 			),
 			'ordered_languages'        => $this->settings->get_ordered_languages(),
-			'settings'                 => $this->settings->get_settings_model(),
+			'settings'                 => $settings,
 			'settings_slug'            => $this->settings->get_settings_base_slug(),
 			'previews'                 => $this->get_all_previews(),
 			'color_schemes'            => $this->settings->get_default_color_schemes(),
@@ -414,6 +410,16 @@ class WPML_LS_Admin_UI extends WPML_Templates_Factory {
 		return $model;
 	}
 
+	private function get_uploads_stand_ins_data() {
+		$data = array();
+
+		foreach ( $this->templates->get_uploads_stand_ins() as $slug => $template ) {
+			$data[ $slug ] = $template->get_template_data();
+		}
+
+		return $data;
+	}
+
 	public function get_misc_strings() {
 		return array(
 			'no_templates'                          => __( 'There are no templates available.', 'sitepress' ),
@@ -421,9 +427,9 @@ class WPML_LS_Admin_UI extends WPML_Templates_Factory {
 			'label_position'                        => _x( 'Position', 'Language switcher preview', 'sitepress' ),
 			'label_actions'                         => _x( 'Actions', 'Language switcher preview', 'sitepress' ),
 			'label_action'                          => _x( 'Action', 'Language switcher preview', 'sitepress' ),
-			/* translators: Button label that keeps what was entered. Verb, imperative. */
+			/* translators: Button label that keeps what was entered, for example in the Translation delivery box's "Settings for support" and in the "Translation editor and method" section of WPML → Settings. Verb, imperative. */
 			'button_save'                           => __( 'Save', 'sitepress' ),
-			/* translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation". */
+			/* translators: Button label that closes a dialog without doing anything, or stops what is going on, for example in the dialog "Translate with PTC?" (keep the previous choice). Verb, imperative, not the noun "a cancellation". */
 			'button_cancel'                         => __( 'Cancel', 'sitepress' ),
 			'title_what_to_include'                 => __( 'What to include in the language switcher:', 'sitepress' ),
 			/* translators: Label of the checkbox that includes the flag image in the language switcher, and column heading in the table of languages. Noun: the flag picture of a country or language, never the verb "to flag". */
@@ -488,7 +494,7 @@ class WPML_LS_Admin_UI extends WPML_Templates_Factory {
 				'link' => array(
 					'text'   => __( 'Styling the language switcher with additional CSS', 'sitepress' ),
 					'url'    => \WPML\OutboundLinks\OutboundLinks::to(
-						'https://wpml.org/documentation/getting-started-guide/language-switcher-options/how-to-fix-styling-and-css-issues-for-the-language-switchers/',
+						'https://wpml.org/documentation/getting-started-guide/language-switcher-options/how-to-fix-styling-and-css-issues-for-the-language-switchers/#customizing-a-language-switcher-with-css',
 						array(
 							'medium'   => 'settings',
 							'campaign' => 'language-switcher',
@@ -587,7 +593,7 @@ class WPML_LS_Admin_UI extends WPML_Templates_Factory {
 			'flat'                  => __( 'List of languages', 'sitepress' ),
 			/* translators: Second line under the "List of languages" menu style, shown as an explanation of that style. Starts in lower case because it follows the style name. */
 			'flat_desc'             => __( 'good for menus that display items as a list', 'sitepress' ),
-			/* translators: Name of a menu style on the language switcher settings screen: the languages open from the current language as a drop-down. */
+			/* translators: Name of the language switcher style where the languages open as a dropdown from the current language, on WPML → Languages; in the Elementor language switcher widget, the heading of the color settings for that list of languages. */
 			'hierarchical'          => __( 'Dropdown', 'sitepress' ),
 			/* translators: Second line under the "Dropdown" menu style, shown as an explanation of that style. Starts in lower case because it follows the style name. */
 			'hierarchical_desc'     => __( 'good for menus that support drop-downs', 'sitepress' ),

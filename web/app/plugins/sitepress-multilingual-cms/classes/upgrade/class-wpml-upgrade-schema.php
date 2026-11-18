@@ -77,7 +77,11 @@ class WPML_Upgrade_Schema {
 		$wpdb        = $this->wpdb;
 		$table_name  = $this->get_prefixed_table_name( $table_name );
 
-		return $wpdb->query( "ALTER TABLE `{$table_name}` ADD `{$column_name}` {$attribute_string}" );
+		$alter = function () use ( $wpdb, $table_name, $column_name, $attribute_string ) {
+			return $wpdb->query( "ALTER TABLE `{$table_name}` ADD `{$column_name}` {$attribute_string}" );
+		};
+
+		return \WPML\Upgrade\AddColumn::run( $wpdb, $table_name, $column_name, $alter );
 	}
 
 	public function modify_column( $table_name, $column_name, $attribute_string ) {
@@ -217,6 +221,10 @@ class WPML_Upgrade_Schema {
 
 	public function get_wpdb() {
 		return $this->wpdb;
+	}
+
+	public function add_column_gave_up( $table_name, $column_name ) {
+		return \WPML\Upgrade\AddColumn::gaveUp( $this->get_prefixed_table_name( $table_name ), $column_name );
 	}
 
 	private function get_prefixed_table_name( $table_name ) {

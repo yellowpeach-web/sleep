@@ -225,13 +225,10 @@ class DefaultTermRecreation {
 	protected function clearTranslationCaches( $trid, $elementType ) {
 		global $wpml_term_translations;
 
-		$this->sitepress->get_translations_cache()->clear();
+		\WPML_Set_Language::flush_element_language_details_cache();
 		$this->sitepress->clear_elements_cache( [], '' );
 		if ( $wpml_term_translations ) {
 			$wpml_term_translations->reload();
-		}
-		foreach ( $this->members( $trid, $elementType ) as $ttid ) {
-			wp_cache_delete( ...\WPML_Set_Language::get_cache_ref( $ttid, $elementType ) );
 		}
 
 		do_action( 'wpml_translation_update', [ 'type' => 'update', 'trid' => $trid, 'element_type' => $elementType, 'context' => 'tax' ] );

@@ -5,6 +5,7 @@ namespace WPML\TM\ATE\PullDelivery;
 use WPML\Core\Security\ExecutionContext\ExecutionContext;
 use WPML\Core\Security\ExecutionContext\ExecutionContextHolder;
 use WPML\TM\API\ATE;
+use WPML\TM\ATE\Log\HostLog;
 use WPML\TM\ATE\Receive\SingleJobDelivery;
 use WPML\TM\ATE\Receive\TranslationApplier;
 use WPML\TM\ATE\SyncLock;
@@ -54,35 +55,22 @@ class ReturnDelivery {
 		} catch ( \Throwable $e ) {
 			$outcome = SingleJobDelivery::APPLY_FAILED;
 
+			HostLog::caught( 'editor-return', $e, $wpmlJobId, $ateJobId );
 			JobLog::addError(
 				'return_delivery_uncaught_exception',
 				[
 					'ate_job_id' => $ateJobId,
 					'rid'        => $wpmlJobId,
 					'message'    => $e->getMessage(),
-					'origin'     => $e->getFile() . ':' . $e->getLine(),
+					'origin'     => HostLog::origin( $e ),
 				]
 			);
 		} finally {
 			JobLog::finishCurrentGroup();
 		}
 
-		$state = State::onReturnDelivery( $ateJobId, $outcome, $this->pendingJobs->summary() );
-
-		if ( SingleJobDelivery::isRetryable( $outcome ) ) {
-			JobLog::maybeInitRequest();
-			JobLog::createNewGroup( JobLog::GROUP_ID_DOWNLOAD_JOBS, 'ATE editor return (fallback armed)' );
-			JobLog::add(
-				'return_delivery_fallback_armed',
-				[
-					'ate_job_id'  => $ateJobId,
-					'outcome'     => $outcome,
-					'mode'        => $state['mode'],
-					'next_due_at' => $state['next_due_at'],
-				]
-			);
-			JobLog::finishCurrentGroup();
-		}
+		$summary = $this->pendingJobs->summary();
+		\WPML\TM\ATE\Handshake\State::recordInFlightSummary( $summary );
 
 		return $outcome;
 	}

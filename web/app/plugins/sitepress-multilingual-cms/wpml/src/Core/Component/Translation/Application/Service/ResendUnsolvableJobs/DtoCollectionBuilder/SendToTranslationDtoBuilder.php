@@ -32,7 +32,8 @@ class SendToTranslationDtoBuilder {
       $elementsByType['packages'],
       $elementsByType['strings'],
       $extraInformation,
-      $elementsByType['taxonomies']
+      $elementsByType['taxonomies'],
+      $this->extractTaxonomyTargets( $translations )
     );
   }
 
@@ -83,6 +84,25 @@ class SendToTranslationDtoBuilder {
     }
 
     return array_keys( $targetLanguages );
+  }
+
+
+  private function extractTaxonomyTargets( array $translations ): array {
+    $targets = [];
+
+    foreach ( $translations as $translation ) {
+      if ( TranslationType::TAXONOMY !== $translation->getType()->get() ) {
+        continue;
+      }
+
+      $termTaxonomyId = $translation->getOriginalElementId();
+      $targetLanguage = $translation->getTargetLanguageCode();
+      if ( ! in_array( $termTaxonomyId, $targets[ $targetLanguage ] ?? [], true ) ) {
+        $targets[ $targetLanguage ][] = $termTaxonomyId;
+      }
+    }
+
+    return $targets;
   }
 
 

@@ -9,6 +9,8 @@ use WPML\UserInterface\Web\Core\SharedKernel\Config\PageRenderInterface;
 
 class SettingsSectionDispatcher implements PageRenderInterface, ScriptDataProviderInterface {
 
+  const PAGE_SLUG = 'tm/menu/settings';
+
   private $landing;
 
   private $customFields;
@@ -144,6 +146,10 @@ class SettingsSectionDispatcher implements PageRenderInterface, ScriptDataProvid
     $this->wcml                = $wcml;
     $this->multicurrency       = $multicurrency;
 
+    if ( ! self::isSettingsPageRequest() ) {
+      return;
+    }
+
     $this->aliasLegacySubmenuParam();
     $this->aliasLegacyPageOnEnqueue();
   }
@@ -202,13 +208,15 @@ class SettingsSectionDispatcher implements PageRenderInterface, ScriptDataProvid
     $data  = $this->landing->initialScriptData();
     $index = isset( $data['index'] ) && is_array( $data['index'] ) ? $data['index'] : array();
 
-    $index = apply_filters( 'wpml_settings_search_index', $index );
+    $index = SettingsSectionAccess::index( $index );
+
+    $index = \WPML\TranslationPolicy\Settings\Loader::searchIndex( $index );
 
     // Drop the sections that the old GUI never exposed on a blog license
     // (see `$blogLicenseHiddenSections`). Filtering here also gates
     $index = $this->filterIndexForBlogLicense( $index );
 
-    return self::filterIndexByCapability( $index );
+    return SettingsSectionAccess::filterIndex( $index, SettingsSectionAccess::canOpenPage() );
   }
 
 
@@ -218,9 +226,9 @@ class SettingsSectionDispatcher implements PageRenderInterface, ScriptDataProvid
    * TM-enabled site the index is returned unchanged. Index keys are
    * renumbered so the JS-side `index[]` shape stays a packed array.
    *
-   * @param array<int, array<string, mixed>> $index
+   * @param array<int, mixed> $index
    *
-   * @return array<int, array<string, mixed>>
+   * @return array<int, mixed>
    */
   private function filterIndexForBlogLicense( array $index ): array {
     if ( $this->tmAllowed->requirementsMet() ) {
@@ -231,13 +239,10 @@ class SettingsSectionDispatcher implements PageRenderInterface, ScriptDataProvid
       array_filter(
         $index,
         static function ( $section ) {
-          if ( ! is_array( $section ) || ! isset( $section['href'] ) || ! is_string( $section['href'] ) ) {
+          if ( ! is_array( $section ) ) {
             return false;
           }
-          $query = (string) wp_parse_url( $section['href'], PHP_URL_QUERY );
-          $args  = array();
-          wp_parse_str( $query, $args );
-          $slug = isset( $args['section'] ) && is_string( $args['section'] ) ? $args['section'] : '';
+          $slug = SettingsSectionAccess::sectionSlugOf( $section );
           return ! in_array( $slug, self::$blogLicenseHiddenSections, true );
         }
       )
@@ -246,41 +251,10 @@ class SettingsSectionDispatcher implements PageRenderInterface, ScriptDataProvid
 
 
   private function accessibleSectionSlugs(): array {
-    if ( $this->accessibleSlugs !== null ) {
-      return $this->accessibleSlugs;
+    if ( $this->accessibleSlugs === null ) {
+      $this->accessibleSlugs = SettingsSectionAccess::sectionSlugs( $this->accessibleIndex() );
     }
-    $slugs = array();
-    foreach ( $this->accessibleIndex() as $row ) {
-      if ( ! is_array( $row ) || ! isset( $row['href'] ) || ! is_string( $row['href'] ) ) {
-        continue;
-      }
-      $query = (string) wp_parse_url( $row['href'], PHP_URL_QUERY );
-      $args  = array();
-      wp_parse_str( $query, $args );
-      if ( isset( $args['section'] ) && is_string( $args['section'] ) && $args['section'] !== '' ) {
-        $slugs[] = $args['section'];
-      }
-    }
-    $this->accessibleSlugs = $slugs;
-    return $slugs;
-  }
-
-
-  private static function filterIndexByCapability( array $index ): array {
-    return array_values(
-      array_filter(
-        $index,
-        static function ( $section ) {
-          if ( ! is_array( $section ) ) {
-            return false;
-          }
-          $cap = isset( $section['capability'] ) && is_string( $section['capability'] ) && $section['capability'] !== ''
-            ? $section['capability']
-            : 'manage_translations';
-          return current_user_can( $cap );
-        }
-      )
-    );
+    return $this->accessibleSlugs;
   }
 
 
@@ -317,6 +291,13 @@ class SettingsSectionDispatcher implements PageRenderInterface, ScriptDataProvid
       'multi-currency'       => $this->multicurrency,
     );
     return $map[ $section ] ?? null;
+  }
+
+
+  private static function isSettingsPageRequest(): bool {
+    global $plugin_page;
+
+    return $plugin_page === self::PAGE_SLUG;
   }
 
 

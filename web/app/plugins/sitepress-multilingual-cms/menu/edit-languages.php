@@ -273,7 +273,7 @@ class SitePress_EditLanguages {
 											   <?php
 					endif;
 						?>
-					><?php /* translators: Option in a dropdown, and the value shown in a table cell, meaning that the setting is turned on. */ esc_html_e( 'Yes', 'sitepress' ); ?></option>
+					><?php /* translators: Meaning that a setting is on or that a row applies: an option in a dropdown, the value in a table cell, and the screen reader name of the tick in the table of the "Who translates" step of WPML → Settings. */ esc_html_e( 'Yes', 'sitepress' ); ?></option>
 				</select>
 			</td>
 
@@ -329,7 +329,7 @@ class SitePress_EditLanguages {
 		$result = [];
 
 		$active_languages = Languages::withFlags( Languages::getActive() );
-		if ( \WPML_TM_ATE_Status::is_enabled_and_activated() ) {
+		if ( \WPML_TM_ATE_Status::is_account_usable() ) {
 			$active_languages = LanguageMappings::withCanBeTranslatedAutomatically( LanguageMappings::withMapping( $active_languages ) );
 		}
 
@@ -434,7 +434,7 @@ class SitePress_EditLanguages {
 
 				icl_cache_clear( false );
 
-				$sitepress->get_translations_cache()->clear();
+				WPML_Set_Language::flush_element_language_details_cache();
 				$sitepress->clear_flags_cache();
 				$sitepress->get_language_name_cache()->clear();
 				wpml_reload_active_languages_setting( true );

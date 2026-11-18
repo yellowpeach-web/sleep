@@ -22,6 +22,18 @@ class WPML_ST_Admin_Option_Translation extends WPML_SP_User {
 		$this->language    = $language ? $language : $this->st_instance->get_current_string_language( $option_name );
 	}
 
+	public function is_original_in_another_language( $new_value ) {
+		if ( ! is_scalar( $new_value ) ) {
+			return false;
+		}
+
+		$string = $this->st_instance->string_factory()->find_admin_by_name( $this->option_name );
+
+		return $string->string_id()
+			&& $this->language !== $string->get_language()
+			&& (string) $new_value === (string) $string->get_value();
+	}
+
 	public function update_option(
 		$option_name = '',
 		$new_value = null,
@@ -54,6 +66,10 @@ class WPML_ST_Admin_Option_Translation extends WPML_SP_User {
 				$string_id = $string->string_id();
 				if ( $string_id ) {
 					if ( $this->language !== $string->get_language() ) {
+						if ( (string) $value === (string) $string->get_value() ) {
+							continue;
+						}
+
 						$updated[] = $string->set_translation(
 							$this->language,
 							$value,

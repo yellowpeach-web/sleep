@@ -8,6 +8,8 @@ class TpBatchState {
 
 	private static $state;
 
+	private static $batchNameOverride;
+
 	private static function get() {
 		if ( ! isset( self::$state ) ) {
 			self::$state = get_option( self::OPTION, [] );
@@ -62,12 +64,39 @@ class TpBatchState {
 	}
 
 	public static function getBatchName() {
+		if ( null !== self::$batchNameOverride ) {
+			return self::$batchNameOverride;
+		}
+
+		return self::getPinnedBatchName();
+	}
+
+	private static function getPinnedBatchName() {
 		$state = self::get();
 
 		return isset( $state['name'] ) ? $state['name'] : false;
 	}
 
-	public static function clear() {
+	public static function forgetBatch() {
+		$state = self::get();
+		unset( $state['name'], $state['batch'] );
+		self::save( $state );
+	}
+
+	public static function withBatchName( $batchName, callable $callback ) {
+		$previous = self::$batchNameOverride;
+		self::$batchNameOverride = $batchName;
+		try {
+			return $callback();
+		} finally {
+			self::$batchNameOverride = $previous;
+		}
+	}
+
+	public static function clear( $batchName = null ) {
+		if ( null !== $batchName && (string) $batchName !== (string) self::getPinnedBatchName() ) {
+			return;
+		}
 		$state = self::get();
 		unset( $state['name'], $state['batch'], $state['remote_target_languages'] );
 		self::save( $state );

@@ -5,6 +5,7 @@ namespace WPML\Infrastructure\WordPress\Component\SettingsStorage;
 use WPML\Core\Component\SettingsStorage\Application\Repository\StorageQueryInterface;
 use WPML\Core\Component\SettingsStorage\Application\Service\RowsMigrationService;
 use WPML\Infrastructure\WordPress\Component\CustomFieldPreferences\ContainerFreeServices;
+use WPML\Infrastructure\WordPress\Port\Persistence\DatabaseWrite;
 use WPML\Infrastructure\WordPress\Port\Persistence\Options;
 use WPML\Infrastructure\WordPress\Port\Persistence\QueryHandler;
 use WPML\Infrastructure\WordPress\Port\Persistence\QueryPrepare;
@@ -73,7 +74,7 @@ class SettingsRowsMigration {
 
     return new RowsMigrationService(
       VirtualSettingsOption::service(),
-      new StorageQuery( new QueryHandler( $wpdb ), new QueryPrepare( $wpdb ) ),
+      new StorageQuery( new QueryHandler( $wpdb ), new QueryPrepare( $wpdb ), new DatabaseWrite( $wpdb ) ),
       new Options(),
       ContainerFreeServices::state()
     );

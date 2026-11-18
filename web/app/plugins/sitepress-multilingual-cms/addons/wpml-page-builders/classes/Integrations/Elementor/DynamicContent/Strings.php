@@ -28,6 +28,10 @@ class Strings {
 		'shortcode',
 	];
 
+	private static $tagInfoResolver;
+
+	private static $registeredTags = [];
+
 	public static function filter( array $strings, $nodeId, array $element ) {
 
 		$dynamicFields = self::getDynamicFields( $element );
@@ -116,12 +120,60 @@ class Strings {
 			->first();
 	}
 
-	private static function getFields( array $data, $nodeId, $itemId = '' ) {
+	public static function setTagInfoResolver( $resolver = null ) {
+		self::$tagInfoResolver = is_callable( $resolver ) ? $resolver : null;
+		self::$registeredTags  = [];
+	}
+
+	private static function getFields( $data, $nodeId, $itemId = '' ) {
+		$isDynamicTag = function ( $tagValue ) {
+			return is_string( $tagValue )
+				&& false !== strpos( $tagValue, '[elementor-tag' )
+				&& self::isRegisteredTag( $tagValue );
+		};
+
 		$buildField = function ( $tagValue, $tagKey ) use ( $nodeId, $itemId ) {
 			return new Field( $tagValue, $tagKey, $nodeId, $itemId );
 		};
 
-		return wpml_collect( $data )->map( $buildField );
+		return wpml_collect( is_array( $data ) ? $data : [] )
+			->filter( $isDynamicTag )
+			->map( $buildField );
+	}
+
+	private static function isRegisteredTag( $tagValue ) {
+		$name = preg_match( '/name="(.*?(?="))"/', $tagValue, $matches ) ? $matches[1] : '';
+
+		if ( array_key_exists( $name, self::$registeredTags ) ) {
+			return self::$registeredTags[ $name ];
+		}
+
+		$resolver = self::$tagInfoResolver ?: self::getElementorTagInfoResolver();
+		if ( ! $resolver ) {
+			return true;
+		}
+
+		try {
+			$isRegistered = ! empty( call_user_func( $resolver, $name ) );
+		} catch ( \Throwable $e ) {
+			return true;
+		}
+
+		self::$registeredTags[ $name ] = $isRegistered;
+
+		return $isRegistered;
+	}
+
+	private static function getElementorTagInfoResolver() {
+		if ( ! class_exists( '\Elementor\Plugin', false ) || ! isset( \Elementor\Plugin::$instance ) ) {
+			return null;
+		}
+
+		$dynamicTags = isset( \Elementor\Plugin::$instance->dynamic_tags ) ? \Elementor\Plugin::$instance->dynamic_tags : null;
+
+		return is_object( $dynamicTags ) && method_exists( $dynamicTags, 'get_tag_info' )
+			? [ $dynamicTags, 'get_tag_info' ]
+			: null;
 	}
 
 	private static function isModuleWithItems( array $element ) {

@@ -35,6 +35,7 @@ class HooksFactory implements \IWPML_Backend_Action_Loader, \IWPML_Deferred_Acti
 
 		if ( $shuffled instanceof Post ) {
 			$hooks[] = new PostHooks( $shuffled, $checkboxCondition );
+			$hooks[] = new PanelHooks( $shuffled, $checkboxCondition );
 		} elseif ( $shuffled instanceof Term ) {
 			$hooks[] = new TermHooks( $shuffled );
 		} elseif ( $shuffled instanceof OptionsPage ) {

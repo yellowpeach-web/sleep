@@ -7,6 +7,7 @@ use WPML\TM\Geolocalization;
 use function WPML\Container\make;
 use function WPML\FP\partial;
 use function WPML\FP\partialRight;
+use function WPML\FP\pipe;
 
 class SectionFactory implements \IWPML_TM_Admin_Section_Factory {
 	public function create() {
@@ -35,7 +36,7 @@ class SectionFactory implements \IWPML_TM_Admin_Section_Factory {
 		$getServicesTabs = partial(
 			ServicesRetriever::class . '::get',
 			$this->getTpApiServices(),
-			Geolocalization::getCountryByIp( Http::post() ),
+			pipe( Geolocalization::getCountryByIp( Http::post() ), [ CountryName::class, 'localize' ] ),
 			partialRight(
 				[ ServiceMapper::class, 'map' ],
 				[ ActiveServiceRepository::class, 'getId' ]

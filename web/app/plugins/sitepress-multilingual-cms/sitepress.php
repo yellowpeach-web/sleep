@@ -2,10 +2,11 @@
 /**
  * Plugin Name: WPML Multilingual CMS
  * Plugin URI: https://wpml.org/
- * Description: WPML Multilingual CMS | <a href="https://wpml.org/documentation/">Documentation</a> | <a href="https://wpml.org/version/wpml-5-2-0/">WPML 5.2.0 release notes</a>
+ * Description: WPML Multilingual CMS | <a href="https://wpml.org/documentation/">Documentation</a> | <a href="https://wpml.org/version/wpml-5-4-0/">WPML 5.4.0 release notes</a>
  * Author: OnTheGoSystems
  * Author URI: http://www.onthegosystems.com/
- * Version: 5.2.0
+ * Version: 5.4.0
+ * Requires PHP: 7.4
  * Plugin Slug: sitepress-multilingual-cms
  *
  * @package WPML\Core
@@ -38,6 +39,13 @@ if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
 	return;
 }
 
+if ( ! class_exists( 'WPML\Requirements\PHP', false ) ) {
+	require_once __DIR__ . '/classes/requirements/PHP.php';
+}
+if ( ! \WPML\Requirements\PHP::checkMinimumRequiredVersion() ) {
+	return;
+}
+
 if ( ! class_exists( 'WPML\Troubleshooting\ResetWindow', false ) ) {
 	require_once __DIR__ . '/classes/troubleshoot/ResetWindow.php';
 }
@@ -46,12 +54,53 @@ if ( ( (bool) get_option( '_wpml_inactive' ) && $is_not_network_admin ) || WPML\
 	return;
 }
 
+if ( ! class_exists( 'WPML\Troubleshooting\BootOptions', false ) ) {
+	require_once __DIR__ . '/classes/troubleshoot/BootOptions.php';
+}
+WPML\Troubleshooting\BootOptions::prime();
+
+if ( $is_not_network_admin && function_exists( 'is_multisite' ) && is_multisite() ) {
+	if ( ! class_exists( 'WPML\Language\WpmlPresence', false ) ) {
+		require_once __DIR__ . '/classes/language/WpmlPresence.php';
+	}
+	if ( WPML\Language\WpmlPresence::tablesMissingOnCurrentBlog() ) {
+		if ( ! class_exists( 'WPML\Language\TablesMissingNotice', false ) ) {
+			require_once __DIR__ . '/classes/language/TablesMissingNotice.php';
+		}
+		add_action( 'admin_notices', [ WPML\Language\TablesMissingNotice::class, 'render' ] );
+
+		return;
+	}
+}
+
 require_once __DIR__ . '/classes/requirements/WordPress.php';
 if ( ! \WPML\Requirements\WordPress::checkMinimumRequiredVersion() ) {
 	return;
 }
 
-define( 'ICL_SITEPRESS_VERSION', '5.2.0' );
+if ( ! is_file( __DIR__ . '/vendor/autoload.php' ) || ! is_file( __DIR__ . '/vendor/composer/autoload_real.php' ) ) {
+	$wpml_incomplete_plugin_notice = function () {
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			return;
+		}
+		printf(
+			'<div class="notice notice-error"><p>%s</p></div>',
+			esc_html(
+				sprintf(
+					/* translators: %s: the plugin's name. */
+					__( '%s is incomplete: some of its files are missing, probably after an interrupted update. Please reinstall the plugin.', 'sitepress' ),
+					'WPML Multilingual CMS'
+				)
+			)
+		);
+	};
+	add_action( 'admin_notices', $wpml_incomplete_plugin_notice );
+	add_action( 'network_admin_notices', $wpml_incomplete_plugin_notice );
+	unset( $wpml_incomplete_plugin_notice );
+	return;
+}
+
+define( 'ICL_SITEPRESS_VERSION', '5.4.0' );
 
 add_filter(
 	'option_icl_sitepress_settings',
@@ -65,7 +114,7 @@ add_filter(
 	2
 );
 
-define( 'ICL_SITEPRESS_SCRIPT_VERSION', '520000' );
+define( 'ICL_SITEPRESS_SCRIPT_VERSION', '540000' );
 
 define( 'WPML_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'WPML_PLUGIN_FOLDER', dirname( WPML_PLUGIN_BASENAME ) );
@@ -107,11 +156,23 @@ add_action( 'wp_delete_site', [ 'WPML_Settings_Failsafe_Loader', 'clearNetworkFa
 add_filter( 'rest_request_before_callbacks', [ Initializer::class, 'rejectQuarantinedWpmlRestRequest' ], -PHP_INT_MAX, 3 );
 add_action( 'admin_init', [ Initializer::class, 'rejectQuarantinedWpmlAjaxRequestOnAdminInit' ], PHP_INT_MAX );
 
-add_action( 'switch_blog', [ RequestSettings::class, 'reloadAfterBlogSwitch' ], -PHP_INT_MAX, 0 );
+add_action( 'switch_blog', [ RequestSettings::class, 'reloadAfterBlogSwitch' ], -PHP_INT_MAX, 2 );
+foreach ( [ 'add_option_', 'update_option_', 'delete_option_' ] as $wpml_settings_write_hook ) {
+	foreach ( [ WPML_Settings_Failsafe_Loader::OPTION, WPML_Settings_Failsafe_Loader::REGISTRY_OPTION ] as $wpml_settings_option ) {
+		add_action( $wpml_settings_write_hook . $wpml_settings_option, [ 'WPML_Settings_Failsafe_Loader', 'forgetKeptSettingsOfCurrentBlog' ], -PHP_INT_MAX, 0 );
+	}
+}
+unset( $wpml_settings_write_hook, $wpml_settings_option );
 
 add_action( 'switch_blog', [ \WPML\Language\WpmlPresence::class, 'recordAfterBlogSwitch' ], -PHP_INT_MAX + 1, 1 );
 
 PerRequestLanguageMemos::addHooks();
+
+add_action( 'switch_blog', [ \WPML\TranslationPolicy\FeatureSwitch::class, 'resetRequestCache' ], \WPML\TranslationPolicy\FeatureSwitch::PRIORITY_AFTER_SETTINGS_RELOAD, 0 );
+\WPML\TranslationPolicy\LatchGuard::addHooks();
+\WPML\TranslationPolicy\Policy\Policy::addHooks();
+$wpml_late_legacy_writes = new \WPML\TranslationPolicy\Migration\LateLegacyWrites();
+$wpml_late_legacy_writes->addHooks();
 
 \WPML\Upgrade\SchemaFacts::keepAcrossRequests();
 
@@ -177,6 +238,7 @@ function wpml_get_acfml_version() {
 
 $WPML_Dependencies = WPML_Dependencies::get_instance();
 \WPML\Notices\UpdateIncompleteNoticeTexts::handTo( $WPML_Dependencies );
+\WPML\Plugins\DependenciesSnapshotWrites::register( $WPML_Dependencies );
 
 require_once __DIR__ . '/inc/wpml-private-actions.php';
 require_once __DIR__ . '/inc/functions.php';
@@ -215,6 +277,7 @@ define( 'ICL_PLUGIN_URL', $icl_plugin_url );
 
 require_once __DIR__ . '/inc/template-functions.php';
 require_once __DIR__ . '/inc/functions-ls-templates.php';
+require_once __DIR__ . '/inc/functions-views.php';
 require_once __DIR__ . '/inc/js-scripts.php';
 require_once __DIR__ . '/inc/lang-data.php';
 require_once __DIR__ . '/inc/setup/sitepress-setup.class.php';
@@ -284,6 +347,7 @@ $wpml_cache_factory = new WPML_Cache_Factory();
 
 WPML\Container\share( Config::getSharedInstances() );
 WPML\Container\share( Config::getSharedClasses() );
+WPML\Container\share( [ $wpml_late_legacy_writes ] );
 WPML\Container\alias( Config::getAliases() );
 WPML\Container\delegate( Config::getDelegated() );
 $sitepress = WPML\Container\make( '\SitePress' );
@@ -298,8 +362,11 @@ $action_filter_loader->load(
 		\WPML\QueryFiltering\ProductVariationTranslationPrefetcher::class,
 		\WPML\QueryFiltering\TermTranslationPrefetcher::class,
 		\WPML\QueryFiltering\CommentLanguageCacheInvalidator::class,
+		\WPML\Translation\TranslationsCacheInvalidator::class,
+		\WPML\TM\Dashboard\Taxonomy\TaxonomyMetricsStore::class,
 		'WPML_Pre_Setup_Upgrade_Loader_Factory',
 		\WPML\Upgrade\CreateTableRefusalNotice::class,
+		\WPML\Upgrade\AddColumnRefusalNotice::class,
 		'WPML_Hide_Legacy_Top_Level_Menu',
 		'WPML_Strings_Tab_Page_Alias',
 		'WPML_Translation_Tasks_Tab_Page_Alias',
@@ -310,12 +377,20 @@ $action_filter_loader->load(
 		'WPML_Legacy_Page_Redirects',
 		\WPML\Setup\FunnelRedirect::class,
 		\WPML\Setup\PreSetupPages::class,
+		\WPML\TranslationPolicy\ConstantNotice::class,
+		\WPML\TranslationPolicy\Duplicate\RetiredNotice::class,
+		\WPML\TranslationPolicy\Settings\Loader::class,
+		\WPML\TranslationPolicy\Dashboard\Loader::class,
+		\WPML\TranslationPolicy\Panel\Loader::class,
 		'WPML_Legacy_Languages_Menu_Highlight',
 		\WPML\Troubleshooting\Actions\Dispatcher::class,
 		\WPML\UserInterface\Web\Infrastructure\WordPress\Component\Wcml\BondedTargetUrl::class,
 		\WPML\UserInterface\Web\Infrastructure\WordPress\Component\Wcml\WcmlSettingsSearchIndex::class,
 		\WPML\UserInterface\Web\Infrastructure\WordPress\Component\Settings\AiSettingsSearchIndex::class,
 		\WPML\UserInterface\Web\Infrastructure\WordPress\Component\Settings\ContentTypesSettingsSearchIndex::class,
+		\WPML\UserInterface\Web\Infrastructure\WordPress\Component\Settings\StringScanSettingsSearchIndex::class,
+		\WPML\UserInterface\Web\Infrastructure\WordPress\Component\Settings\SlugTranslationsSettingsSearchIndex::class,
+		\WPML\UserInterface\Web\Infrastructure\WordPress\Component\Settings\SettingsMenuCapability::class,
 		\WPML\UserInterface\Web\Infrastructure\WordPress\Component\Capabilities\ManageTranslationsImpliesTranslate::class,
 		\WPML\UserInterface\Web\Infrastructure\WordPress\Component\Capabilities\StringTranslationManagerReachesStrings::class,
 		\WPML\Roles::class,
@@ -358,14 +433,17 @@ if ( $sitepress->is_setup_complete() ) {
 		'WPML_WP_Options_General_Hooks_Factory',
 		'WPML_WP_In_Subdir_URL_Filters_Factory',
 		'WPML_Table_Collate_Fix',
+		\WPML\Troubleshooting\TranslationsTableKeysNotice::class,
 		\WPML\Options\Reset::class,
 		\WPML\Comments\Counts\Hooks::class,
+		\WPML\EditHistory\HousekeepingFactory::class,
+		\WPML\EditHistory\SendFactory::class,
+		\WPML\EditHistory\PanelFactory::class,
+		\WPML\EditHistory\PostLinksFactory::class,
 		'\WPML\Ajax\Locale',
 		\WPML\PostTranslation\SpecialPage\Hooks::class,
 		\WPML\LanguageSwitcher\AjaxNavigation\Hooks::class,
-		\WPML\BrowserLanguageRedirect\Dialog::class,
 		\WPML\UrlHandling\WPLoginUrlConverterFactory::class,
-		\WPML\Languages\UI::class,
 		\WPML\Settings\UI::class,
 		\WPML\AdminMenu\Redirect::class,
 		\WPML\Core\Menu\Translate::class,
@@ -375,11 +453,16 @@ if ( $sitepress->is_setup_complete() ) {
 		\WPML\TaxonomyTermTranslation\DefaultTermOption::class,
 		\WPML\TaxonomyTermTranslation\DefaultCategoryRecreation::class,
 		\WPML\TaxonomyTermTranslation\WritingScreenCategoryControls::class,
+		\WPML\TaxonomyTermTranslation\CopiedTermMarker::class,
+		\WPML\Notices\LanguagePanelEditWarning::class,
 		\WPML\TM\ATE\TranslateEverything\UntranslatedTermsHooks::class,
 		\WPML\TM\ATE\TranslateEverything\UntranslatedPackagesHooks::class,
+		\WPML\Knowledge\AppearanceService::class,
+		\WPML\TM\ATE\TranslateEverything\AppearedOnSite::class,
 		\WPML\TM\ATE\TranslateEverything\TaxonomyJobsCanceller::class,
 		\WPML\Legacy\Component\Translation\Sender\Taxonomy\TaxonomySendOperationCleanupCron::class,
 		\WPML\TM\ATE\JobCreation\AteCreateMarksPrune::class,
+		\WPML\TM\ATE\TranslateEverything\JoblessStatusRecovery::class,
 		\WPML\TM\Dashboard\Taxonomy\RegisterTaxonomyItemSection::class,
 		\WPML\TM\Dashboard\Taxonomy\PopulatedTaxonomySectionFilter::class,
 		\WPML\TM\Dashboard\Taxonomy\TaxonomyDashboardEndpoint::class,
@@ -388,6 +471,7 @@ if ( $sitepress->is_setup_complete() ) {
 		\WPML\TaxonomyTermTranslation\Hooks::class,
 		\WPML\BlockEditor\Loader::class,
 		\WPML\TM\ATE\Hooks\LanguageMappingCache::class,
+		\WPML\TM\ATE\Hooks\LanguageMappingsOnDefaultChange::class,
 		\WPML\TM\ATE\Dashboard\ATEDashboardScriptEnqueuer::class,
 		\WPML\BackgroundTask\BackgroundTaskLoader::class,
 		\WPML\LanguageEditor\Save\CrossPageNotice::class,
@@ -413,6 +497,8 @@ if ( $sitepress->is_setup_complete() ) {
 		\WPML\TM\ATE\ClonedSites\ReconnectDriver::class,
 		\WPML\TM\ATE\ClonedSites\ReconnectNotice::class,
 		\WPML\TM\ATE\ClonedSites\ReconnectActions::class,
+		\WPML\TM\ATE\ClonedSites\TranslateEverythingOnNewRecord::class,
+		\WPML\TM\ATE\ClonedSites\TranslateEverythingBackOn::class,
 		\WPML\TM\ATE\Network\SubsiteAttachHooks::class,
 		\WPML\TM\ATE\ClonedSites\Rebind\Notice::class,
 		\WPML\TM\ATE\ClonedSites\Rebind\Actions::class,
@@ -421,7 +507,11 @@ if ( $sitepress->is_setup_complete() ) {
 		\WPML\TM\ATE\TranslateEverything\PendingOfferHooksFactory::class,
 		'WPML_Media_Attachments_Query_Factory',
 		\WPML\Request\Hooks::class,
-		'WPML_Block_Editor_Translation_Connect',
+		\WPML\TM\PostEditScreen\PendingTranslationGroupOnLoad::class,
+		\WPML\TM\PostEditScreen\StaleAddTranslationGuard::class,
+		\WPML\UrlHandling\SubsiteClash\ReservedNames::class,
+		\WPML\UrlHandling\SubsiteClash\ClashNotice::class,
+		\WPML\PostTranslation\BulkTranslateIndependently::class,
 	];
 	$action_filter_loader->load( $actions );
 
@@ -445,6 +535,8 @@ if ( $sitepress->is_setup_complete() ) {
 	$rest_factories = [
 		'WPML_REST_Posts_Hooks_Factory',
 		'WPML\Core\REST\RewriteRules',
+		\WPML\BlockEditor\SiteEditor\TemplateListFallback::class,
+		\WPML\BlockEditor\SiteEditor\TemplateSaveLanguage::class,
 		\WPML\REST\XMLConfig\Custom\Factory::class,
 	];
 
@@ -509,7 +601,7 @@ if ( ( defined( 'DOING_CRON' ) && DOING_CRON ) || is_admin() || ( defined( 'WP_C
 	}
 }
 
-if ( ! empty( $sitepress_settings['automatic_redirect'] ) ) {
+if ( WPML_Browser_Redirect::is_enabled( $sitepress_settings ) ) {
 	$wpml_browser_redirect = new WPML_Browser_Redirect( $sitepress );
 	$wpml_browser_redirect->init_hooks();
 }

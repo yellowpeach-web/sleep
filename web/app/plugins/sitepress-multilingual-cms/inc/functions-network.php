@@ -60,7 +60,7 @@ function icl_network_deactivate_wpml( $blog_id = false ) {
 		restore_current_blog();
 	}
 
-	wp_redirect( network_admin_url( 'admin.php?page=' . WPML_PLUGIN_FOLDER . '/menu/network.php&updated=true&action=deactivatewpml' ) );
+	wp_safe_redirect( network_admin_url( 'admin.php?page=' . WPML_PLUGIN_FOLDER . '/menu/network.php&updated=true&action=deactivatewpml' ) );
 }
 
 function icl_network_activate_wpml( $blog_id = false ) {
@@ -87,6 +87,6 @@ function icl_network_activate_wpml( $blog_id = false ) {
 		restore_current_blog();
 	}
 
-	wp_redirect( network_admin_url( 'admin.php?page=' . WPML_PLUGIN_FOLDER . '/menu/network.php&updated=true&action=activatewpml' ) );
+	wp_safe_redirect( network_admin_url( 'admin.php?page=' . WPML_PLUGIN_FOLDER . '/menu/network.php&updated=true&action=activatewpml' ) );
 	exit();
 }

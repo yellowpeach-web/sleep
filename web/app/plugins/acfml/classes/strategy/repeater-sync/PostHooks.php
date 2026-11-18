@@ -31,7 +31,7 @@ class PostHooks implements \IWPML_Backend_Action {
 	}
 
 	public function addMetaBox( $postType, $post, $fieldGroups ) {
-		if ( ! $this->checkboxCondition->isMet( $post->ID, $fieldGroups ) ) {
+		if ( self::isBlockEditorScreen() || ! $this->checkboxCondition->isMet( $post->ID, $fieldGroups ) ) {
 			return;
 		}
 
@@ -39,6 +39,12 @@ class PostHooks implements \IWPML_Backend_Action {
 			$this->shuffled->getTrid( $post->ID ),
 			$post->post_type
 		);
+	}
+
+	private static function isBlockEditorScreen() {
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+
+		return $screen && $screen->is_block_editor();
 	}
 
 	public function resetFieldValues() {

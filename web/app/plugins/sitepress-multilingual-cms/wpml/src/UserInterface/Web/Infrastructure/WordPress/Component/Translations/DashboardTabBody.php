@@ -25,7 +25,7 @@ class DashboardTabBody implements PageRenderInterface {
 
 
   private static function ateEnabled(): bool {
-    return \WPML_TM_ATE_Status::is_enabled();
+    return \WPML_TM_ATE_Status::is_ate_account_wanted();
   }
 
 

@@ -69,6 +69,10 @@ class Jobs {
 				: null;
 		} ) );
 
+		self::macro( 'resetRetryCount', curryN( 1, function ( $jobId ) {
+			return self::updateTranslationStatusField( $jobId, 'ate_comm_retry_count', 0 );
+		} ) );
+
 		self::macro( 'getTranslation', curryN( 1, Fns::converge( Obj::prop(), [
 			Obj::prop( 'language_code' ),
 			pipe( Obj::prop( 'original_doc_id' ), Fns::memorize( PostTranslations::get() ) )
@@ -90,7 +94,7 @@ class Jobs {
 		self::macro( 'delete', curryN( 1, function ( $jobId ) {
 			global $wpdb;
 
-			$rid           = Map::fromJobId( $jobId );
+			$rid           = Map::ridFromJobId( $jobId );
 
 			$wpdb->delete(
 				$wpdb->prefix . 'icl_translation_status',
@@ -211,7 +215,7 @@ class Jobs {
 			$wpdb->prepare(
 				"SELECT COALESCE(
 					MAX( wpml_words_to_translate_count_lifetime_max ),
-					MAX( wpml_words_to_translate_count ),
+					MAX( CASE WHEN wpml_words_to_translate_count_unconfirmed_max IS NULL THEN wpml_words_to_translate_count END ),
 					0
 				)
 				FROM {$wpdb->prefix}icl_translate_job
@@ -225,6 +229,22 @@ class Jobs {
 
 	public static function setWordsLifetimeMax( $jobId, $count ) {
 		return self::updateTranslateJobField( $jobId, 'wpml_words_to_translate_count_lifetime_max', (int) $count );
+	}
+
+	public static function restoreWordsLifetimeMax( $jobId, $count ) {
+		return self::updateTranslateJobField(
+			$jobId,
+			'wpml_words_to_translate_count_lifetime_max',
+			null === $count ? null : (int) $count
+		);
+	}
+
+	public static function setWordsUnconfirmedMax( $jobId, $count ) {
+		return self::updateTranslateJobField(
+			$jobId,
+			'wpml_words_to_translate_count_unconfirmed_max',
+			null === $count ? null : (int) $count
+		);
 	}
 
 	public static function wasCreatedByTEA( $jobId ) {
@@ -340,6 +360,25 @@ class Jobs {
 	}
 
 	public static function isCancelled( int $jobId ): bool {
+		$row = self::newestJobState( $jobId );
+
+		if ( ! $row ) {
+			return false;
+		}
+
+		$status = (int) $row->status;
+
+		return ICL_TM_ATE_CANCELLED === $status
+			|| ( ! (int) $row->translated && in_array( $status, [ ICL_TM_NOT_TRANSLATED, ICL_TM_COMPLETE, ICL_TM_DUPLICATE ], true ) );
+	}
+
+	public static function isApplied( int $jobId ): bool {
+		$row = self::newestJobState( $jobId );
+
+		return $row && (int) $row->translated && ICL_TM_COMPLETE === (int) $row->status;
+	}
+
+	private static function newestJobState( int $jobId ) {
 		global $wpdb;
 
 		$row = $wpdb->get_row(
@@ -352,14 +391,7 @@ class Jobs {
 			)
 		);
 
-		if ( ! is_object( $row ) ) {
-			return false;
-		}
-
-		$status = (int) $row->status;
-
-		return ICL_TM_ATE_CANCELLED === $status
-			|| ( ! (int) $row->translated && in_array( $status, [ ICL_TM_NOT_TRANSLATED, ICL_TM_COMPLETE, ICL_TM_DUPLICATE ], true ) );
+		return is_object( $row ) ? $row : null;
 	}
 
 	public static function isAutomatic( $jobId ) {

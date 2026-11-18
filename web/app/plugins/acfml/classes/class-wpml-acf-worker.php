@@ -208,7 +208,7 @@ class WPML_ACF_Worker implements \IWPML_Backend_Action, \IWPML_Frontend_Action, 
 
 	private function afterCopyObjectField( $objectFromId, $objectToId, $metaKey, $metaType, $objectType, $valuesAfter = null ) {
 		if ( is_array( $valuesAfter ) ) {
-			$metaValue = count( $valuesAfter ) ? maybe_unserialize( $valuesAfter[0] ) : '';
+			$metaValue = count( $valuesAfter ) ? \WPML\Utils\Unserialize::maybe( $valuesAfter[0] ) : '';
 		} else {
 			$metaValue = get_metadata( $metaType, $objectToId, $metaKey, true );
 		}
@@ -252,7 +252,7 @@ class WPML_ACF_Worker implements \IWPML_Backend_Action, \IWPML_Frontend_Action, 
 	private function connectTermsInTargetLanguage( int $postId, string $taxonomy, $termIds, string $targetLang ) {
 		$isInTargetLanguage = fn( int $termId ) => $termId === (int) apply_filters( 'wpml_object_id', $termId, $taxonomy, false, $targetLang );
 
-		$copiedTermIds           = array_map( 'intval', (array) maybe_unserialize( $termIds ) );
+		$copiedTermIds           = array_map( 'intval', (array) \WPML\Utils\Unserialize::maybe( $termIds ) );
 		$termIdsInTargetLanguage = array_values( array_filter( $copiedTermIds, $isInTargetLanguage ) );
 
 		if ( $termIdsInTargetLanguage ) {

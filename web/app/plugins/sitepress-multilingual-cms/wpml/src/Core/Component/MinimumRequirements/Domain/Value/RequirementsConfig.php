@@ -10,7 +10,7 @@ class RequirementsConfig {
   const MINIMUM_MYSQL_VERSION = '5.6';
   const MINIMUM_MARIADB_VERSION = '10.1';
 
-  const MINIMUM_PHP_VERSION = '7.0';
+  const MINIMUM_PHP_VERSION = '7.4';
 
   const MINIMUM_WP_VERSION = '6.0.0';
 

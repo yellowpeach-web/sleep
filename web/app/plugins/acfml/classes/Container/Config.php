@@ -32,7 +32,6 @@ class Config {
 			\WPML_ACF_Repeater_Shuffle::class,
 			\WPML_ACF_Translatable_Groups_Checker::class,
 			\WPML_ACF_Worker::class,
-			\WPML_ACF_Xliff::class,
 		];
 	}
 }

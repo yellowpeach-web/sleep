@@ -80,7 +80,6 @@ class GetWordsToTranslateForTypesController implements EndpointInterface {
           continue;
         }
 
-        $item = $this->wordsToTranslateService->getForIdAndType( $id, $wttKind, $langs );
         foreach ( $langs as $lang ) {
           $resultType['wordsToTranslate'][ $lang ] =
             ( $resultType['wordsToTranslate'][ $lang ] ?? 0 ) + $item->getWordsToTranslate( $lang );

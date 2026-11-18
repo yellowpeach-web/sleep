@@ -119,6 +119,10 @@ class OTGS_Installer_Repositories {
 		return $this->installer->refresh_repositories_data( $bypass_bucket );
 	}
 
+	public function get_stored_site_key( $repository_id ) {
+		return $this->installer->get_site_key( $repository_id );
+	}
+
 	public function save_subscription( OTGS_Installer_Repository $repository ) {
 		$subscription = $repository->get_subscription();
 		$settings     = $this->installer->get_settings();

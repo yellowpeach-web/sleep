@@ -13,6 +13,7 @@ use WPML\TM\ATE\Receive\SingleJobDelivery;
 use WPML\TM\ATE\ReturnToken;
 use WPML\TM\ATE\ReturnUrl;
 use WPML\TM\Jobs\Authorization\AuthorizedJobResolver;
+use WPML\TM\Jobs\JobLog;
 
 class ReturnCommand implements \IWPML_Action {
 
@@ -24,6 +25,9 @@ class ReturnCommand implements \IWPML_Action {
 	const RETURN_VERIFIER = 'ate-return-token';
 
 	const ATE_PARAMS = [ 'ate_original_id', 'complete', 'complete_no_changes', 'ate_status', 'back', 'ate_job_id', 'message' ];
+
+	const COMPLETED_MARKER_PREFIX = 'wpml_ate_return_completed_';
+	const COMPLETED_MARKER_TTL    = 10 * MINUTE_IN_SECONDS;
 
 	private $removeTranslationDuplicateStatus;
 
@@ -120,10 +124,9 @@ class ReturnCommand implements \IWPML_Action {
 		$message       = isset( $_GET['message'] ) && is_string( $_GET['message'] ) ? sanitize_text_field( wp_unslash( $_GET['message'] ) ) : '';
 
 		if ( $completed && $ateOriginalId > 0 && call_user_func( $this->jobIsCancelled, $ateOriginalId ) ) {
-			\WPML\TM\Jobs\JobLog::add( 'ate_return_for_cancelled_job', [
-				'ate_job_id'  => $ateOriginalId,
-				'wpml_job_id' => $this->signedJobId(),
-			] );
+			$this->logReturnForCancelledJob( $ateOriginalId, $this->signedJobId() );
+
+			$this->clearCompleted( get_current_user_id(), $this->signedJobId() );
 
 			call_user_func(
 				$this->redirect,
@@ -145,7 +148,13 @@ class ReturnCommand implements \IWPML_Action {
 			$outcome     = call_user_func( $this->deliverCompletedJob, $ateOriginalId, $context );
 			$destination = $this->destinationWithDeliveryNotice( $destination, $outcome );
 
+			if ( $this->deliveryLandedOrPending( $outcome ) ) {
+				$this->markCompleted( get_current_user_id(), $this->signedJobId() );
+			}
+
 			do_action( 'wpml_on_back_from_ate_manual_translation', $ateOriginalId, $context );
+		} else {
+			$this->clearCompleted( get_current_user_id(), $this->signedJobId() );
 		}
 
 		if ( '' !== $message ) {
@@ -164,13 +173,42 @@ class ReturnCommand implements \IWPML_Action {
 		call_user_func( $this->redirect, $destination );
 	}
 
-	private function destinationWithDeliveryNotice( $destination, $outcome ) {
-		switch ( $outcome ) {
-			case SingleJobDelivery::APPLIED:
-			case SingleJobDelivery::NOT_READY:
-			case SingleJobDelivery::LOCK_BUSY:
-				return $destination;
+	private function logReturnForCancelledJob( $ateJobId, $wpmlJobId ) {
+		JobLog::maybeInitRequest();
 
+		$ownsGroup = ! JobLog::isGroupOpen();
+		if ( $ownsGroup ) {
+			JobLog::createNewGroup(
+				JobLog::GROUP_ID_DOWNLOAD_JOBS,
+				'ATE editor return (job cancelled in WPML)',
+				[
+					'ate_job_id' => $ateJobId,
+					'job_id'     => $wpmlJobId,
+				]
+			);
+		}
+
+		try {
+			JobLog::add(
+				'ate_return_for_cancelled_job',
+				[
+					'ate_job_id'  => $ateJobId,
+					'wpml_job_id' => $wpmlJobId,
+				]
+			);
+		} finally {
+			if ( $ownsGroup ) {
+				JobLog::finishCurrentGroup();
+			}
+		}
+	}
+
+	private function destinationWithDeliveryNotice( $destination, $outcome ) {
+		if ( $this->deliveryLandedOrPending( $outcome ) ) {
+			return $destination;
+		}
+
+		switch ( $outcome ) {
 			case SingleJobDelivery::CANCELLED:
 			case SingleJobDelivery::JOB_MISSING:
 				return add_query_arg( [ 'ateJobCreationError' => \WPML\TM\Editor\Editor::ATE_JOB_CANCELLED_IN_WPML ], $destination );
@@ -184,6 +222,34 @@ class ReturnCommand implements \IWPML_Action {
 					$destination
 				);
 		}
+	}
+
+	private function deliveryLandedOrPending( $outcome ) {
+		return in_array(
+			$outcome,
+			[ SingleJobDelivery::APPLIED, SingleJobDelivery::ALREADY_APPLIED, SingleJobDelivery::NOT_READY, SingleJobDelivery::LOCK_BUSY ],
+			true
+		);
+	}
+
+	public static function completedMarkerKey( $userId, $wpmlJobId ) {
+		return self::COMPLETED_MARKER_PREFIX . (int) $userId . '_' . (int) $wpmlJobId;
+	}
+
+	private function markCompleted( $userId, $wpmlJobId ) {
+		if ( $userId < 1 || $wpmlJobId < 1 ) {
+			return;
+		}
+
+		set_transient( self::completedMarkerKey( $userId, $wpmlJobId ), 1, self::COMPLETED_MARKER_TTL );
+	}
+
+	private function clearCompleted( $userId, $wpmlJobId ) {
+		if ( $userId < 1 || $wpmlJobId < 1 ) {
+			return;
+		}
+
+		delete_transient( self::completedMarkerKey( $userId, $wpmlJobId ) );
 	}
 
 	private function verifiedReturnContext() {

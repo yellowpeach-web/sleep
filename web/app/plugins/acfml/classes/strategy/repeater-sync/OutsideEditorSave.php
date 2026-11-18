@@ -95,7 +95,7 @@ class OutsideEditorSave {
 	}
 
 	public function finishAfterWpmlPostSave( $postId ) {
-		remove_filter( 'wpml_custom_fields_to_sync_on_post_save', [ $this, 'holdBackRowsOfAnInsert' ], 10 );
+		remove_filter( 'wpml_custom_fields_to_sync_on_post_save', [ $this, 'holdBackRowsOfAnInsert' ], \WPML_ACF_Repeater_Shuffle::PRIORITY_HOLD_BACK );
 		remove_action( 'wpml_after_save_post', [ $this, 'finishAfterWpmlPostSave' ] );
 
 		if ( ! $this->isEntity( $postId ) ) {
@@ -120,7 +120,7 @@ class OutsideEditorSave {
 	}
 
 	private function leaveTheCopyToTheRunningPostSave() {
-		add_filter( 'wpml_custom_fields_to_sync_on_post_save', [ $this, 'holdBackRowsOfAnInsert' ], 10, 2 );
+		add_filter( 'wpml_custom_fields_to_sync_on_post_save', [ $this, 'holdBackRowsOfAnInsert' ], \WPML_ACF_Repeater_Shuffle::PRIORITY_HOLD_BACK, 2 );
 		add_action( 'wpml_after_save_post', [ $this, 'finishAfterWpmlPostSave' ] );
 	}
 
@@ -129,8 +129,44 @@ class OutsideEditorSave {
 
 		$metaKeys = $this->holdBackRowsOfAnInsert( $metaKeys, $this->entityId );
 
+		if ( $this->rowSync && $this->shuffled instanceof Post ) {
+			$metaKeys = ( new ArrivingRowsHooks( $this->shuffled ) )->addKeysOfArrivingRows( $metaKeys, $this->entityId );
+		}
+
 		foreach ( $metaKeys as $metaKey ) {
 			do_action( 'wpml_sync_custom_field', (int) $this->entityId, $metaKey );
+		}
+
+		$this->keepRowsHeldBackOnTheNextPostSave();
+	}
+
+	private function keepRowsHeldBackOnTheNextPostSave() {
+		if ( ! $this->rowSync || ! $this->rowSync->holdsRowsBack() ) {
+			return;
+		}
+
+		add_filter( 'wpml_custom_fields_to_sync_on_post_save', [ $this, 'holdBackRowsOnThePostSave' ], \WPML_ACF_Repeater_Shuffle::PRIORITY_HOLD_BACK, 2 );
+		add_action( 'wpml_after_save_post', [ $this, 'releaseAfterThePostSave' ] );
+	}
+
+	public function holdBackRowsOnThePostSave( $metaKeys, $postId = 0 ) {
+		if ( ! $this->rowSync || ! $this->isEntity( $postId ) ) {
+			return $metaKeys;
+		}
+
+		if ( ! is_array( $metaKeys ) ) {
+			$this->rowSync->holdBackHeldRowsFromEveryTranslation( $this->entityId );
+
+			return $metaKeys;
+		}
+
+		return $this->rowSync->holdBackRowsOfAnInsert( $metaKeys, $postId );
+	}
+
+	public function releaseAfterThePostSave( $postId ) {
+		if ( $this->isEntity( $postId ) ) {
+			remove_filter( 'wpml_custom_fields_to_sync_on_post_save', [ $this, 'holdBackRowsOnThePostSave' ], \WPML_ACF_Repeater_Shuffle::PRIORITY_HOLD_BACK );
+			remove_action( 'wpml_after_save_post', [ $this, 'releaseAfterThePostSave' ] );
 		}
 	}
 }

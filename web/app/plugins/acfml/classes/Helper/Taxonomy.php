@@ -17,8 +17,8 @@ class Taxonomy implements ContentType {
 
 	public function getObjectSlug( $internalPostId ) {
 		$internalPostContent = get_post_field( 'post_content', $internalPostId, 'raw' );
-		$objectSettings      = maybe_unserialize( $internalPostContent );
-		return Obj::propOr( null, 'taxonomy', $objectSettings );
+		$objectSettings = \WPML\Utils\Unserialize::maybe( $internalPostContent );
+		return is_array( $objectSettings ) ? Obj::propOr( null, 'taxonomy', $objectSettings ) : null;
 	}
 
 	public function getLabelTranslationsPackageSlug() {

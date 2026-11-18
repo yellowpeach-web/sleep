@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=2; plural=(n != 1);",
             "lang": "nl_NL"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "Overschakelen naar Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "Overschakelen naar PTC"
+         ],
+         "Switching…": [
+            "Overschakelen…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "We konden de overschakeling niet bevestigen. Probeer het opnieuw of laad de pagina opnieuw om de huidige machine te zien."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Bedieningselementen van de vertaalmachine konden niet worden geladen. Laad de pagina opnieuw en probeer het nogmaals."
+         ],
+         "Loading translation engine settings…": [
+            "Instellingen van de vertaalmachine laden…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "Vul hierboven uw sitecontext in voordat u overschakelt naar PTC."
+         ],
+         "Reload page": [
+            "Pagina herladen"
+         ],
+         "Could not fetch engines data": [
+            "Kon engine-gegevens niet ophalen"
+         ],
          "Error in updating since dates for types.": [
             "Fout bij het bijwerken van de 'sinds'-datums voor types."
          ],
@@ -138,9 +165,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "Legacy prijzen toegepast. %s is een legacy vertaalmachine, wordt niet aanbevolen voor nieuwe sites en zal worden uitgefaseerd. Bestaande sites behouden hiervoor een aangepast woordtarief."
          ],
-         "Switch to PTC": [
-            "Overschakelen naar PTC"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Dit is wat er vandaag nodig is om uw huidige inhoud te vertalen. Bepaalde teksten die door andere plugins zijn toegevoegd, zoals formulieren of sliders, zijn hierbij niet inbegrepen; deze worden geteld nadat de installatie is voltooid. Sitestrings van uw thema en plugins worden ook na de installatie geteld en voegen doorgaans enkele honderden woorden toe. Daarna zijn bewerkingen gratis. U betaalt alleen opnieuw voor woorden die u toevoegt."
          ],
@@ -156,8 +180,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Hierbij worden pagina’s, berichten en producten geteld, inclusief hun aangepaste velden, pagebuilder-teksten en mediateksten, evenals de categorieën, tags en attributen die ze gebruiken."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Hierbij worden pagina’s, berichten en producten geteld, inclusief hun aangepaste velden, pagebuilder-teksten en mediateksten, de categorieën, tags en attributen die ze gebruiken, evenals sitestrings. Een term wordt geteld in elk item dat deze gebruikt én eenmaal afzonderlijk, omdat deze voor beide manieren ter vertaling wordt verzonden."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Het telt pagina's, berichten en producten met hun aangepaste velden, pagebuilder-teksten en mediateksten, de categorieën, tags en attributen die ze gebruiken, en sitestrings. Elke categorie, tag of attribuut wordt één keer geteld, in de rij Taxonomieën, en niet nogmaals bij de items die deze gebruiken."
          ],
          "Total items": [
             "Totaal aantal items"
@@ -230,6 +254,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "Activeer <b>Betalen naar gebruik</b> of koop vooraf betaalde woorden om te beginnen met <b>Translate Everything Automatically</b>."
+         ],
+         "Translation quality:": [
+            "Vertaalkwaliteit:"
          ],
          "Select payment method": [
             "Selecteer betaalmethode"
@@ -346,7 +373,7 @@
             "Er staan %1$s%2$s woorden%3$s op uw WPML-account."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "Er zijn er %1$s%2$s beschikbaar op uw WPML-account.%3$s"
+            "Er zijn %1$s%2$s beschikbaar op uw WPML-account.%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(Alleen de eigenaar van het WPML-account kan dit doen.)"
@@ -362,6 +389,30 @@
          ],
          "Close modal": [
             "Dialoogvenster sluiten"
+         ],
+         "Obvious mistakes": [
+            "Duidelijke fouten"
+         ],
+         "Mistakes visible": [
+            "Fouten zichtbaar"
+         ],
+         "Ready to publish": [
+            "Gereed voor publicatie"
+         ],
+         "Your engine": [
+            "Uw engine"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Vertaalkwaliteit (schaal 50-100): %1$s scoort %2$d, %3$s scoort %4$d."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Scores gebaseerd op WPML's interne MQM-onderzoek naar vertaalkwaliteit."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC vertaalt met een hogere kwaliteit en geeft u resultaten die gereed zijn voor publicatie."
          ]
       }
    }

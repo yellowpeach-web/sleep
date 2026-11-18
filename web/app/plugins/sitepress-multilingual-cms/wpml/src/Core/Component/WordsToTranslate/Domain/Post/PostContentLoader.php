@@ -44,7 +44,7 @@ class PostContentLoader {
     }
 
     foreach ( $langs as $lang ) {
-      if ( ! $freshTranslation && $this->translationQuery->isTranslatedCompletely( $post, $lang ) ) {
+      if ( ! $freshTranslation && $this->needsNoWords( $post, $lang ) ) {
         $lastTranslation = $this->lastTranslationFactory->createForItem( $post, $lang );
         $lastTranslation->setWordsToTranslate( 0 );
         $post->addLastTranslation( $lastTranslation );
@@ -84,6 +84,16 @@ class PostContentLoader {
 
   public function getJobQuery() {
     return $this->jobQuery;
+  }
+
+
+  protected function needsNoWords( Post $post, $lang ) {
+    return $this->translationQuery->isTranslatedCompletely( $post, $lang );
+  }
+
+
+  protected function getTranslationQuery() {
+    return $this->translationQuery;
   }
 
 

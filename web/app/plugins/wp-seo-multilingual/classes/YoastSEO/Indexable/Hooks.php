@@ -24,6 +24,7 @@ class Hooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC
 	public function add_hooks() {
 		add_action( 'icl_pro_translation_completed', [ $this, 'invalidateIndexables' ], 10, 3 );
 		add_action( 'wpml_st_add_string_translation', [ $this, 'invalidateTermIndexableOnStringTranslation' ], 10, 4 );
+		add_action( 'wpml_taxonomy_term_owned_strings_applied', [ $this, 'rebuildTermIndexablesForOwnedStrings' ], 10, 2 );
 		add_action( 'update_option_page_on_front', [ $this, 'invalidateStaticFrontPageIndexables' ], 10, 2 );
 		add_action( 'update_option_show_on_front', [ $this, 'invalidateCurrentStaticFrontPageIndexables' ] );
 		add_action( 'wpml_st_language_of_strings_changed', [ $this, 'invalidateTranslationsOfChangedStrings' ] );
@@ -157,7 +158,60 @@ class Hooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC
 		}
 	}
 
+	public function rebuildTermIndexablesForOwnedStrings( $targetTermId, array $stringIds ) {
+		if ( ! $this->getTermMetaStringNames( array_map( 'intval', $stringIds ) ) ) {
+			return;
+		}
+
+		$this->invalidateTermIndexablesForSavedStrings();
+		$this->rebuildTermIndexable( (int) $targetTermId );
+	}
+
+	public function rebuildTermIndexable( $termId ) {
+		if ( ! $termId || ! function_exists( 'YoastSEO' ) || ! class_exists( '\Yoast\WP\SEO\Repositories\Indexable_Repository' ) ) {
+			return;
+		}
+
+		try {
+			$yoastSEO = YoastSEO();
+			$classes    = $yoastSEO->classes;
+			$repository = $classes->get( Indexable_Repository::class );
+			$indexable  = $repository->find_by_id_and_type( $termId, 'term', false );
+			if ( $indexable ) {
+				$indexable->version = 0;
+				$indexable->save();
+
+				$rebuild = function () use ( $repository, $termId ) {
+					TermMetaHooks::withoutTermAdjustId(
+						function () use ( $repository, $termId ) {
+							$repository->find_by_id_and_type( $termId, 'term' );
+						}
+					);
+				};
+
+				TermMetaHooks::withForcedTranslation( $rebuild );
+			}
+		} catch ( \Throwable $e ) {
+			return;
+		}
+	}
+
 	private function getTermMetaStringNames( array $stringIds ) {
+		if ( \WPML\WPSEO\YoastSEO\Loaders::supportsPerTermPackages() ) {
+			if ( ! $stringIds || ! class_exists( \WPML_ST_String_Factory::class ) ) {
+				return [];
+			}
+			$factory = \WPML\Container\make( \WPML_ST_String_Factory::class );
+			$names   = [];
+			foreach ( $stringIds as $stringId ) {
+				$string = $factory->find_by_id( $stringId );
+				if ( preg_match( '/^yoast-seo-term-\d+$/', (string) $string->get_context() ) ) {
+					$names[ $stringId ] = $string->get_name();
+				}
+			}
+			return $names;
+		}
+
 		$in = wpml_prepare_in( $stringIds, '%d' );
 
 		$rows = $this->wpdb->get_results(

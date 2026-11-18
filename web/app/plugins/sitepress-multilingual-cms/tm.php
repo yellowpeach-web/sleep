@@ -32,6 +32,7 @@ function wpml_tm_load( $sitepress = null ) {
 
 	require_once WPML_TM_PATH . '/inc/constants-tm.php';
 	require_once WPML_TM_PATH . '/inc/functions-load.php';
+	require_once WPML_TM_PATH . '/classes/TM/OwnedPackages/registerCoreCapabilities.php';
 	if ( $is_backend ) {
 		require_once WPML_TM_PATH . '/inc/translation-proxy/wpml-pro-translation.class.php';
 		require_once WPML_TM_PATH . '/inc/js-tm-scripts.php';
@@ -53,6 +54,8 @@ function wpml_tm_load( $sitepress = null ) {
 	if ( ! $sitepress || ! $sitepress instanceof SitePress || ! $sitepress->is_setup_complete() ) {
 		return;
 	}
+
+	wpml_tm_register_core_capabilities();
 
 	$is_plain_cli = wpml_is_cli() && ! $is_admin;
 
@@ -106,8 +109,7 @@ function wpml_tm_load( $sitepress = null ) {
 		\WPML\ATE\Proxies\Dashboard::class,
 		\WPML\TM\ATE\ClonedSites\AliasDomainCheckHandler::class,
 		\WPML\TM\ATE\Release\HooksFactory::class,
-		\WPML\TM\ATE\Release\BlockEditorNoticeFactory::class,
-		\WPML\TM\ATE\PullDelivery\Hooks::class,
+		\WPML\TM\ATE\Handshake\Hooks::class,
 		\WPML\TM\ATE\SiteName\Hooks::class,
 	];
 	$action_filter_loader->load( $global_actions );
@@ -138,6 +140,9 @@ function wpml_tm_load( $sitepress = null ) {
 			\WPML\TM\ATE\Sitekey\UnassignDirectSync::class,
 			\WPML\TM\ATE\Sitekey\UnassignSync::class,
 			\WPML\TM\ATE\Review\ReviewCompletedNotice::class,
+			\WPML\TM\ATE\Handshake\Notice::class,
+			\WPML\TM\ATE\Handshake\Support\Loader::class,
+			\WPML\TM\ATE\Cancel\FailedCancelNotice::class,
 			\WPML\TM\Settings\CustomFieldChangeDetector::class,
 			\WPML\TM\Settings\ChecksumFieldHistory::class,
 			\WPML\MediaTranslation\AddMediaDataToTranslationPackageFactory::class,
@@ -176,9 +181,11 @@ function wpml_tm_load( $sitepress = null ) {
 			\WPML\TM\ATE\Loader::class,
 			\WPML\TM\Jobs\Loader::class,
 			\WPML\TM\ATE\Review\ApplyJob::class,
+			\WPML\TM\ATE\Review\TermSaveAcceptsReview::class,
 			\WPML\TM\ATE\Review\PackageJob::class,
 			\WPML\TM\ATE\Review\StatusIcons::class,
 			\WPML\TM\ATE\Review\GhostTranslationCleanup::class,
+			\WPML\TM\PostEditScreen\GhostTranslationOnLoad::class,
 			\WPML\TM\ATE\StatusIcons::class,
 			\WPML\TM\Editor\ManualJobCreationErrorNotice::class,
 			\WPML\Support\ATE\Hooks::class,

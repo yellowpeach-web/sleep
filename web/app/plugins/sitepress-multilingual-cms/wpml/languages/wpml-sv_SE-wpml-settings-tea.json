@@ -132,11 +132,11 @@
          "Legacy engine": [
             "Äldre motor"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "Prissättning för äldre motor tillämpas. %s är en äldre översättningsmotor som inte rekommenderas för nya webbplatser och kommer att fasas ut. Befintliga webbplatser behåller en justerad ordtaxa för den."
-         ],
          "Switch to PTC": [
             "Byt till PTC"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Prissättning för äldre motor tillämpas. %s är en äldre översättningsmotor som inte rekommenderas för nya webbplatser och kommer att fasas ut. Befintliga webbplatser behåller en justerad ordtaxa för den."
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Detta är vad som krävs för att översätta ditt nuvarande innehåll idag. Det inkluderar inte vissa texter som lagts till av andra tillägg, såsom formulär eller bildspel/sliders, vilka räknas efter att installationen är klar. Webbplatssträngar från ditt tema och dina tillägg räknas också efter installationen och lägger vanligtvis till flera hundra ord. Därefter är ändringar gratis. Du betalar först igen för ord du lägger till."
@@ -153,8 +153,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Den räknar sidor, inlägg och produkter med deras anpassade fält, sidbyggartexter och medietexter samt kategorierna, taggarna och attributen de använder."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Den räknar sidor, inlägg och produkter med deras anpassade fält, sidbyggartexter och medietexter, kategorierna, taggarna och attributen de använder samt webbplatsens strängar. En term räknas i varje objekt som använder den och en gång för sig själv, eftersom den skickas för översättning på båda sätten."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Den räknar sidor, inlägg och produkter med deras anpassade fält, sidbyggartexter och medietexter, de kategorier, taggar och attribut de använder samt webbplatssträngar. Varje kategori, tagg eller attribut räknas en gång, i raden Taxonomier, och inte igen tillsammans med de objekt som använder dem."
          ],
          "Total items": [
             "Totalt antal objekt"

@@ -2,99 +2,107 @@
 
 namespace WPML\StringTranslation\Application\StringCore\Query\Dto;
 
+use WPML\StringTranslation\Application\StringCore\Legacy\OldVersionInMemory;
 use WPML\StringTranslation\Application\Translation\Query\Dto\TranslationStatusDto;
 
-class StringDto {
+require_once __DIR__ . '/../../Legacy/OldVersionInMemory.php';
 
-	protected $id;
+if ( OldVersionInMemory::isBeforeNow( OldVersionInMemory::TRANSLATION_PRIORITY_REMOVED ) ) {
+	require_once __DIR__ . '/Legacy/StringDto510.php';
+	class_alias( Legacy\StringDto510::class, StringDto::class );
+} else {
+	class StringDto {
 
-	protected $language;
+		protected $id;
 
-	protected $domain;
+		protected $language;
 
-	protected $context;
+		protected $domain;
 
-	protected $name;
+		protected $context;
 
-	protected $value;
+		protected $name;
 
-	protected $status;
+		protected $value;
 
-	protected $wordCount;
+		protected $status;
 
-	protected $kind;
+		protected $wordCount;
 
-	protected $type;
+		protected $kind;
 
-	protected $sources;
+		protected $type;
 
-	public function __construct(
-		int $id,
-		string $language,
-		string $domain,
-		string $context,
-		string $name,
-		string $value,
-		int $status,
-		int $wordCount,
-		int $kind,
-		int $type,
-		array $sources = []
-	) {
-		$this->id                  = $id;
-		$this->language            = $language;
-		$this->domain              = $domain;
-		$this->context             = $context;
-		$this->name                = $name;
-		$this->value               = $value;
-		$this->status              = $status;
-		$this->wordCount           = $wordCount;
-		$this->kind                = $kind;
-		$this->type                = $type;
-		$this->sources             = $sources;
-	}
+		protected $sources;
 
-	public function getId(): int {
-		return $this->id;
-	}
+		public function __construct(
+			int $id,
+			string $language,
+			string $domain,
+			string $context,
+			string $name,
+			string $value,
+			int $status,
+			int $wordCount,
+			int $kind,
+			int $type,
+			array $sources = []
+		) {
+			$this->id                  = $id;
+			$this->language            = $language;
+			$this->domain              = $domain;
+			$this->context             = $context;
+			$this->name                = $name;
+			$this->value               = $value;
+			$this->status              = $status;
+			$this->wordCount           = $wordCount;
+			$this->kind                = $kind;
+			$this->type                = $type;
+			$this->sources             = $sources;
+		}
 
-	public function getLanguage(): string {
-		return $this->language;
-	}
+		public function getId(): int {
+			return $this->id;
+		}
 
-	public function getDomain(): string {
-		return $this->domain;
-	}
+		public function getLanguage(): string {
+			return $this->language;
+		}
 
-	public function getContext(): string {
-		return $this->context;
-	}
+		public function getDomain(): string {
+			return $this->domain;
+		}
 
-	public function getName(): string {
-		return $this->name;
-	}
+		public function getContext(): string {
+			return $this->context;
+		}
 
-	public function getValue(): string {
-		return $this->value;
-	}
+		public function getName(): string {
+			return $this->name;
+		}
 
-	public function getStatus(): int {
-		return $this->status;
-	}
+		public function getValue(): string {
+			return $this->value;
+		}
 
-	public function getWordCount(): int {
-		return $this->wordCount;
-	}
+		public function getStatus(): int {
+			return $this->status;
+		}
 
-	public function getKind(): int {
-		return $this->kind;
-	}
+		public function getWordCount(): int {
+			return $this->wordCount;
+		}
 
-	public function getType(): int {
-		return $this->type;
-	}
+		public function getKind(): int {
+			return $this->kind;
+		}
 
-	public function getSources(): array {
-		return $this->sources;
+		public function getType(): int {
+			return $this->type;
+		}
+
+		public function getSources(): array {
+			return $this->sources;
+		}
 	}
 }

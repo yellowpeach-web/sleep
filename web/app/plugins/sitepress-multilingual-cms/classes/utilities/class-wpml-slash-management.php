@@ -36,7 +36,7 @@ class WPML_Slash_Management {
 
 		$url_parts['path'] = $new_path;
 
-		return http_build_url( $url_parts );
+		return \WPML\UrlHandling\UrlBuilder::build( $url_parts );
 	}
 
 	private function has_lang_param( $url ) {
@@ -70,7 +70,7 @@ class WPML_Slash_Management {
 			$url_parts['path'] = $this->user_trailingslashit( $path );
 		}
 
-		return http_build_url( $url_parts );
+		return \WPML\UrlHandling\UrlBuilder::build( $url_parts );
 	}
 
 	private function user_trailingslashit( $path ) {

@@ -15,7 +15,8 @@ class WPML_Twig_Template_Loader {
 		return new WPML_Twig_Template_Deferred(
 			function () {
 				return $this->build_template();
-			}
+			},
+			$this->paths
 		);
 	}
 

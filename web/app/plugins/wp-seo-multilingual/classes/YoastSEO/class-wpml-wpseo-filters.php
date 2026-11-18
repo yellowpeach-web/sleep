@@ -1,5 +1,6 @@
 <?php
 
+use WPML\WPSEO\YoastSEO\Meta\DuplicateCanonicalHooks;
 use WPML\WPSEO\YoastSEO\Utils;
 
 class WPML_WPSEO_Filters implements IWPML_Action {
@@ -58,7 +59,12 @@ class WPML_WPSEO_Filters implements IWPML_Action {
 
 	public function must_translate_canonical_url_filter( $should_translate, $post_element ) {
 		$post_id = $post_element->get_element_id();
-		if ( $post_id && get_post_meta( $post_id, '_yoast_wpseo_canonical', true ) ) {
+		if ( ! $post_id ) {
+			return $should_translate;
+		}
+
+		$canonical = get_post_meta( $post_id, DuplicateCanonicalHooks::KEY_CANONICAL, true );
+		if ( $canonical && get_post_meta( $post_id, DuplicateCanonicalHooks::KEY_WRITTEN_CANONICAL, true ) !== $canonical ) {
 			return false;
 		}
 

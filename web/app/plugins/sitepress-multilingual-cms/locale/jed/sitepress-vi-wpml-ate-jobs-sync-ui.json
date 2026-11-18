@@ -13,11 +13,26 @@
          "The translation could not be started because the server did not answer.": [
             "Không thể bắt đầu bản dịch vì máy chủ không phản hồi."
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "Phiên làm việc của bạn đã hết hạn. Hãy làm mới trang này và thử lại."
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "PTC đang dịch. Trình biên tập sẽ mở khi sẵn sàng."
+         ],
          "This translation cannot be opened right now.": [
             "Không thể mở bản dịch này ngay bây giờ."
          ],
          "Refresh this page": [
             "Tải lại trang này"
+         ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "Không đủ từ trả trước để dịch tự động nội dung này. Hãy thêm từ rồi thử lại."
+         ],
+         "Get more words": [
+            "Lấy thêm từ"
+         ],
+         "Close": [
+            "Đóng"
          ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
             "Nội dung này đang được dịch tự động. Nếu bạn muốn thực hiện thao tác khác với nội dung này, hãy hủy các công việc dịch thuật trước."
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "Đang dịch nội dung của bạn"
+         ],
+         "Translate Everything is active": [
+            "Dịch mọi thứ đang hoạt động"
          ],
          "%d translation notice": [
             "%d thông báo dịch thuật"
@@ -55,8 +73,8 @@
          "Automatic translation is paused: monthly spending cap reached": [
             "Dịch tự động đã tạm dừng: đã đạt đến hạn mức chi tiêu hàng tháng"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "Trang web này đã đạt đến hạn mức chi tiêu hàng tháng được thiết lập. Việc dịch thuật sẽ tiếp tục khi hạn mức được tăng lên hoặc khi hạn mức được đặt lại. Chỉ chủ tài khoản mới có thể thực hiện việc này."
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "Trang web này đã đạt đến hạn mức chi tiêu hàng tháng được thiết lập. Quá trình dịch sẽ tiếp tục khi hạn mức được nâng lên hoặc khi hạn mức được đặt lại. Bạn có thể nâng hạn mức trên trang Dịch thuật AI: thanh toán và sử dụng."
          ],
          "Preparing content for translation": [
             "Đang chuẩn bị nội dung để dịch"
@@ -70,8 +88,8 @@
          "Your language, %s, must be mapped to a supported language in order to use automatic translation.": [
             "Các ngôn ngữ sau trên trang web của bạn phải được ánh xạ tới một ngôn ngữ được hỗ trợ để sử dụng dịch tự động: %s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "Nội dung trong các ngôn ngữ này: %s, không thể được dịch tự động trừ khi bạn ánh xạ chúng tới một ngôn ngữ khác với ngôn ngữ mặc định."
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "Dịch tự động không khả dụng giữa %1$s và các ngôn ngữ này vì chúng được nhận dạng là cùng một ngôn ngữ: %2$s. Hãy chọn “Nhân bản” để thay thế nhằm sao chép nội dung."
          ],
          "%d translation waiting for review": [
             "%d bản dịch đang chờ đánh giá"
@@ -131,7 +149,7 @@
             "Dịch tự động đã tạm dừng — không đủ từ"
          ],
          "Translation will resume automatically once you assign more words.": [
-            "Việc dịch thuật sẽ tự động tiếp tục sau khi bạn gán thêm từ."
+            "Bản dịch sẽ tự động tiếp tục sau khi bạn gán thêm từ."
          ],
          "You have %s prepaid translation words in your WPML account. Assign these words to this site to resume automatic translation": [
             "Bạn có %s từ dịch thuật trả trước trong tài khoản WPML của mình. Hãy gán những từ này cho trang web này để tiếp tục dịch tự động"
@@ -147,9 +165,6 @@
          ],
          "Pay now": [
             "Thanh toán ngay"
-         ],
-         "Get more words": [
-            "Lấy thêm từ"
          ],
          "Assign words": [
             "Gán từ"

@@ -127,11 +127,11 @@
          "Legacy engine": [
             "舊版引擎"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "已套用舊版定價。%s 是舊版翻譯引擎，不建議新網站使用且即將停用。現有網站將保留其調整後的字數費率。"
-         ],
          "Switch to PTC": [
             "切換至 PTC"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "已套用舊版定價。%s 是舊版翻譯引擎，不建議新網站使用且即將停用。現有網站將保留其調整後的字數費率。"
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "這是目前翻譯現有內容所需的字數。此數值不包含由其他外掛程式新增的某些文字（例如表單或輪播），這些文字會在設定完成後才計算。來自佈景主題與外掛程式的網站字串也會在設定完成後計算，通常會額外增加數百字。之後進行編輯均為免費，您只需為新增的字數付費。"
@@ -148,8 +148,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "這會計算頁面、文章和產品及其自訂欄位、頁面編輯器文字與媒體文字，以及它們所使用的分類、標籤和屬性。"
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "這會計算頁面、文章和產品及其自訂欄位、頁面編輯器文字與媒體文字，以及它們所使用的分類、標籤、屬性與網站字串。由於分類項目會同時以這兩種方式傳送翻譯，因此會在每個使用它的項目中計算一次，並單獨計算一次。"
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "這會計算頁面、文章和產品及其自訂欄位、頁面編輯器文字和媒體文字，以及它們使用的分類、標籤和屬性與網站字串。每個分類、標籤或屬性僅在「分類法」列計算一次，不會在引用它的項目中重複計算。"
          ],
          "Total items": [
             "項目總數"

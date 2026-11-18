@@ -37,14 +37,32 @@
          "Removing strings from <b>String Translation</b> table": [
             "Eliminando cadenas de la tabla de <b>Traducción de cadenas</b>"
          ],
+         "%s string waiting for translation was kept.": [
+            "Se mantuvo %s cadena en espera de traducción.",
+            "Se mantuvieron %s cadenas en espera de traducción."
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "Para volver a añadir cadenas a la tabla de <b>Traducción de cadenas</b>, es posible que deba volver a escanear los archivos de traducción o registrar las cadenas como traducibles."
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "Lea más sobre cómo <a>escanear su sitio en busca de cadenas y registrarlas como traducibles</a>."
          ],
-         "Successfully removed strings": [
-            "Cadenas eliminadas correctamente"
+         "Nothing removed: %s string is waiting for translation": [
+            "No se eliminó nada: %s cadena está en espera de traducción",
+            "No se eliminó nada: %s cadenas están en espera de traducción"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "No se eliminó nada: los dominios seleccionados no tienen cadenas sin traducir"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "Para eliminarlas también, seleccione «Eliminar también las cadenas en espera de traducción» y vuelva a hacer clic en Eliminar."
+         ],
+         "OK": [
+            "Aceptar"
+         ],
+         "Removed %s string": [
+            "%s cadena eliminada",
+            "%s cadenas eliminadas"
          ],
          "OK, Great": [
             "Aceptar, genial"
@@ -60,6 +78,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "La eliminación de cadenas se detuvo antes de finalizar. Las cadenas que no se eliminaron siguen en la tabla. Intente eliminarlas de nuevo."
+         ],
+         "Successfully removed strings": [
+            "Cadenas eliminadas correctamente"
          ]
       }
    }

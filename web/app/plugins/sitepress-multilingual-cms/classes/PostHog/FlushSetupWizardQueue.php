@@ -3,7 +3,7 @@
 namespace WPML\PostHog;
 
 use WPML\Core\Component\PostHog\Application\Repository\SetupWizardEventQueueRepositoryInterface;
-use WPML\Infrastructure\WordPress\Component\PostHog\Application\Event\SetupWizardEventQueueReplayScheduler;
+use WPML\Infrastructure\WordPress\Component\PostHog\Application\Event\SetupWizardEventQueueReplayHandler;
 use WPML\Infrastructure\WordPress\Component\PostHog\Application\Repository\SetupWizardEventQueueRepository;
 
 class FlushSetupWizardQueue {
@@ -18,7 +18,7 @@ class FlushSetupWizardQueue {
 		}
 
 		for ( $i = 0; $i < self::MAX_ROUNDS; $i++ ) {
-			do_action( SetupWizardEventQueueReplayScheduler::REPLAY_HOOK );
+			do_action( SetupWizardEventQueueReplayHandler::REPLAY_HOOK );
 
 			if ( ! self::hasPendingRows() ) {
 				break;
@@ -26,7 +26,7 @@ class FlushSetupWizardQueue {
 		}
 
 		if ( ! self::hasPendingRows() ) {
-			wp_clear_scheduled_hook( SetupWizardEventQueueReplayScheduler::REPLAY_HOOK );
+			wp_clear_scheduled_hook( SetupWizardEventQueueReplayHandler::REPLAY_HOOK );
 		}
 
 		return true;

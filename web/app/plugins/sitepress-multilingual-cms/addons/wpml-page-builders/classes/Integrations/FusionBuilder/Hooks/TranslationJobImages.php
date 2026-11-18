@@ -14,7 +14,7 @@ class TranslationJobImages implements \IWPML_Frontend_Action, \IWPML_Backend_Act
 		Hooks::onFilter( 'wpml_pb_shortcode_string_title', 10, 2 )
 			->then( spreadArgs( [ $this, 'filterStringTitle' ] ) );
 		Hooks::onFilter( 'wpml_pb_image_module_patterns' )
-			->then( spreadArgs( Lst::append( '/Image-(\d+)-\d+$/' ) ) );
+			->then( spreadArgs( Lst::append( '/Image-(\d+)$/' ) ) );
 	}
 
 	public function filterStringTitle( $title, $shortcode ) {

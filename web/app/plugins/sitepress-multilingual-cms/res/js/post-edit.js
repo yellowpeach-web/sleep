@@ -6,6 +6,38 @@
  * Time: 17:28
  */
 
+/**
+ * wpmldev-11287: how the Connect with translations confirmation reads the
+ * chosen group (the members wpml_ajx_get_posts_from_trid answers, each with
+ * language, title and source_language). A group has an original when one of
+ * its members has no source language; a group of one post always has one:
+ * that post. "Make <language> the original language" would replace that
+ * original, so it is ticked by default only when the group has none.
+ */
+var WPML_Connect_Translations = window.WPML_Connect_Translations || {}
+
+WPML_Connect_Translations.groupOriginal = function ( posts ) {
+  for ( var i = 0; i < posts.length; i++ ) {
+    if ( posts[ i ] && !posts[ i ].source_language ) {
+      return posts[ i ]
+    }
+  }
+  return null
+}
+
+WPML_Connect_Translations.setAsSourceByDefault = function ( posts ) {
+  return null === WPML_Connect_Translations.groupOriginal( posts )
+}
+
+WPML_Connect_Translations.originalLine = function ( text, original ) {
+  var name = '[' + original.language + '] ' + original.title
+  var line = String( text )
+  // Sliced, not String.replace: older engines (PhantomJS, which runs the QUnit
+  // suite) expand `$&` in a replacer function's return value.
+  var at = line.indexOf( '%s' )
+  return at < 0 ? line : line.slice( 0, at ) + name + line.slice( at + 2 )
+}
+
 jQuery( function ( $ ) {
   setupCopyButtons()
 
@@ -206,15 +238,10 @@ jQuery( function ( $ ) {
           $list.empty()
           const $ul = $( '<ul />' ).appendTo( $list )
 
-          let translation_set_has_source_language = false
-
           $.each( posts, function () {
             const $li = $( '<li>' ).append( '<span></span>' )
             $li.find( 'span' ).text( '[' + this.language + '] ' + this.title )
             $li.appendTo( $ul )
-            if ( this.source_language && !translation_set_has_source_language ) {
-              translation_set_has_source_language = true
-            }
           } )
 
           const alert = $( '<p>' ).append( jQuery( '<strong></strong>' ).html( postEdit.$connect_translations_dialog.data( 'alert-text' ) ) )
@@ -222,11 +249,22 @@ jQuery( function ( $ ) {
 
           const set_as_source_checkbox = $( '<input type="checkbox" value="1" name="set_as_source" />' )
 
-          if ( !translation_set_has_source_language ) {
-            set_as_source_checkbox.prop( 'checked', true )
-          }
+          // wpmldev-11287: ticked only when the chosen group has no original.
+          set_as_source_checkbox.prop( 'checked', WPML_Connect_Translations.setAsSourceByDefault( posts ) )
           const action = $( '<label>' ).append( set_as_source_checkbox ).append( postEdit.$connect_translations_dialog.data( 'set_as_source-text' ) )
           action.appendTo( $list )
+
+          // Name the post that stays the original while the box is not ticked.
+          const original = WPML_Connect_Translations.groupOriginal( posts )
+          if ( original ) {
+            const $original_line = $( '<p class="js-connect-translations-original"></p>' )
+              .text( WPML_Connect_Translations.originalLine( postEdit.$connect_translations_dialog.data( 'original-stays-text' ), original ) )
+              .prop( 'hidden', set_as_source_checkbox.is( ':checked' ) )
+            $original_line.appendTo( $list )
+            set_as_source_checkbox.on( 'change', function () {
+              $original_line.prop( 'hidden', set_as_source_checkbox.is( ':checked' ) )
+            } )
+          }
 
           postEdit.$connect_translations_error.empty().prop( 'hidden', true )
 
@@ -326,13 +364,13 @@ jQuery( function ( $ ) {
    * Remove when WooCommerce does not include jquery-ui smoothness anymore
    **/
   const jQueryUI = $( '#jquery-ui-style-css[href*="smoothness"]' )
-  let jQuerySmoothnessHref
+  var jQuerySmoothnessHref
 
   // if jquery ui smoothness css is loaded
   if ( jQueryUI.length ) {
     // click on Connect with translations
     $( 'body' ).on( 'click', '#icl_document_connect_translations_dropdown .js-set-post-as-source', function () {
-      const connectDialog = $( '[aria-describedby="connect_translations_dialog"]' ); let intervalCheckDialog
+      const connectDialog = $( '[aria-describedby="connect_translations_dialog"]' ); var intervalCheckDialog
 
       // abort if dialog does not exists
       if ( !connectDialog.length ) return false
@@ -360,7 +398,7 @@ jQuery( function ( $ ) {
   /* HOTFIX END */
 
   const classic_wp_editor_form = $( '#post' )
-  let is_duplicate_post = typeof icl_duplicate_data !== 'undefined' && icl_duplicate_data.duplicate_post
+  var is_duplicate_post =typeof icl_duplicate_data !== 'undefined' && icl_duplicate_data.duplicate_post
   const classic_editor_duplicate_post_changed = classic_wp_editor_form.length && is_duplicate_post && icl_duplicate_data.wp_classic_editor_changed
 
   const post_form_callback = function ( e ) {
@@ -417,41 +455,69 @@ function setupCopyButtons () {
       }
     } )
   } )
-  jQuery( '#icl_set_duplicate' ).click( function () {
-    if ( confirm( jQuery( this ).next().html() ) ) {
-      jQuery( this ).attr( 'disabled', 'disabled' ).after( icl_ajxloaderimg )
-      const icl_set_duplicate = jQuery( '#icl_set_duplicate' )
-      const wpml_original_post_id = icl_set_duplicate.data( 'wpml_original_post_id' )
-      const post_lang = icl_set_duplicate.data( 'post_lang' )
-      jQuery.ajax( {
-        type: 'POST',
-        url: ajaxurl,
-        data: 'action=wpml_ajx_set_duplication&wpml_original_post_id=' + wpml_original_post_id + '&_icl_nonce=' + jQuery( '#_icl_nonce_sd' ).val() + '&post_lang=' + post_lang,
-        success: function ( msg ) {
-          // Two answers reach here without a post to open, and both used to
-          // navigate to `&post=undefined` / `&post=0` and land the editor on
-          // nothing:
-          //
-          //  - the paused refusal (wpmldev-8026): the server answers
-          //    wp_send_json_error with a reason instead of an id. The button is
-          //    not rendered for a paused language, so this is the stale page;
-          //  - id 0 - set_duplicate()'s long-standing "nothing to do" answer,
-          //    reported as a SUCCESS carrying id 0. That case is not new and is
-          //    not about pausing; it is swallowed here for the same reason,
-          //    because 0 is not a post to open either.
-          //
-          // Neither says anything to the user beyond putting the button back:
-          // no new string is minted on this branch, and a refusal the user
-          // cannot have triggered from a current page needs no sentence.
-          if ( !msg || !msg.success || !msg.data || !msg.data.id ) {
-            icl_set_duplicate.next( 'img' ).remove()
-            icl_set_duplicate.removeAttr( 'disabled' )
-            return
-          }
-          location.replace(
-            location.href.replace( 'post-new.php', 'post.php' ).replace( /&trid=([0-9]+)/, '' ) + '&post=' + msg.data.id + '&action=edit' )
+  setupOverwriteConfirmation()
+}
+
+function setupOverwriteConfirmation () {
+  const $overwriteButton = jQuery( '#icl_set_duplicate' )
+  const $confirmation = jQuery( '#icl_set_duplicate_confirmation' )
+  if ( !$confirmation.length ) {
+    return
+  }
+  $confirmation.dialog( {
+    dialogClass: 'wpml-dialog otgs-ui-dialog',
+    resizable: false,
+    width: 'auto',
+    modal: true,
+    autoOpen: false,
+    closeOnEscape: true,
+    open: focusDialogInsteadOfCancel,
+    buttons: [
+      {
+        text: $confirmation.data( 'cancel-label' ),
+        class: 'wpml-button base-btn cancel-button alignleft',
+        click: function () {
+          $confirmation.dialog( 'close' )
         }
-      } )
+      }, {
+        text: $confirmation.data( 'overwrite-label' ),
+        class: 'wpml-button base-btn js-confirm-overwrite',
+        click: function () {
+          $confirmation.dialog( 'close' )
+          overwriteWithOriginalContent( $overwriteButton )
+        }
+      }
+    ]
+  } )
+  $overwriteButton.click( function () {
+    $confirmation.dialog( 'open' )
+  } )
+}
+
+function focusDialogInsteadOfCancel () {
+  jQuery( this ).closest( '.ui-dialog' ).trigger( 'focus' )
+}
+
+function overwriteWithOriginalContent ( $overwriteButton ) {
+  const originalPostId = $overwriteButton.data( 'wpml_original_post_id' )
+  const postLanguage = $overwriteButton.data( 'post_lang' )
+  $overwriteButton.attr( 'disabled', 'disabled' ).after( icl_ajxloaderimg )
+  jQuery.ajax( {
+    type: 'POST',
+    url: ajaxurl,
+    data: 'action=wpml_ajx_set_duplication&wpml_original_post_id=' + originalPostId + '&_icl_nonce=' + jQuery( '#_icl_nonce_sd' ).val() + '&post_lang=' + postLanguage,
+    success: function ( response ) {
+      if ( !isDuplicateToOpen( response ) ) {
+        $overwriteButton.next( 'img' ).remove()
+        $overwriteButton.removeAttr( 'disabled' )
+        return
+      }
+      location.replace(
+        location.href.replace( 'post-new.php', 'post.php' ).replace( /&trid=([0-9]+)/, '' ) + '&post=' + response.data.id + '&action=edit' )
     }
   } )
+}
+
+function isDuplicateToOpen ( response ) {
+  return !!( response && response.success && response.data && response.data.id )
 }

@@ -12,6 +12,7 @@ use WPML\TM\API\ATE\LanguageMappings;
 use WPML\TM\ATE\API\CacheStorage\StaticVariable;
 use WPML\TM\ATE\API\CacheStorage\Storage;
 use WPML\TM\ATE\API\CacheStorage\Transient;
+use WPML\TM\ATE\ClonedSites\ApiCommunication;
 use function WPML\FP\curryN;
 
 class CachedATEAPI {
@@ -19,6 +20,8 @@ class CachedATEAPI {
 	const CACHE_OPTION = 'wpml-tm-ate-api-cache';
 
 	const ENTRY_TTL = Transient::TTL;
+
+	const UNSUPPORTED_ANSWER_TTL = self::ENTRY_TTL <= 3600 ? self::ENTRY_TTL : 3600;
 
 	const REQUEST_MEMO_OPTION = 'wpml-tm-ate-api-cache-request';
 
@@ -40,7 +43,7 @@ class CachedATEAPI {
 	}
 
 	private function callWithCache( $fnName, $args ) {
-		$key = $this->getKey( $args );
+		$key = $this->getKey( $this->withSharedSource( $fnName, $args ) );
 
 		$stored = $this->readLiveEntry( $this->storage, self::CACHE_OPTION, $fnName, $key );
 		if ( null !== $stored && $this->hasAnswerShape( $fnName, $stored['value'] ) ) {
@@ -54,7 +57,7 @@ class CachedATEAPI {
 				: Maybe::of( $memo['value'] );
 		}
 
-		if ( \WPML_TM_ATE_API::isUnreachableWindowLive() ) {
+		if ( \WPML_TM_ATE_API::isUnreachableWindowLive() || ApiCommunication::wouldRefuse() ) {
 			$this->memoValue( $fnName, $key, self::NOTHING_MARKER );
 
 			return Maybe::nothing();
@@ -65,14 +68,49 @@ class CachedATEAPI {
 		$this->memoValue( $fnName, $key, Fns::isNothing( $answer ) ? self::NOTHING_MARKER : $answer->get() );
 
 		return $answer->map(
-			function ( $result ) use ( $fnName, $args ) {
-				if ( $this->isResultCacheable( $fnName, $args, $result ) ) {
-					$this->cacheValue( $fnName, $args, $result );
+			function ( $result ) use ( $fnName, $args, $key ) {
+				$ttl = $this->storedLifetime( $fnName, $args, $result );
+				if ( null !== $ttl ) {
+					$this->writeEntry( $this->storage, self::CACHE_OPTION, $fnName, $key, $result, $ttl );
+					$this->shareEntry( $fnName, $key, $result, $ttl );
 				}
 
 				return $result;
 			}
 		);
+	}
+
+	private function withSharedSource( $fnName, array $args ) {
+		if ( 'get_languages_supported_by_automatic_translations' !== $fnName || empty( $args[1] ) ) {
+			return $args;
+		}
+
+		$default = (string) Languages::getDefaultCode();
+		if ( '' !== $default && (string) $args[1] === $default ) {
+			$args[1] = null;
+		}
+
+		return $args;
+	}
+
+	private function shareEntry( $fnName, $key, $result, $ttl ) {
+		if ( $this->storage instanceof Transient ) {
+			return;
+		}
+
+		$this->writeEntry( new Transient(), self::CACHE_OPTION, $fnName, $key, $result, $ttl );
+	}
+
+	private function storedLifetime( $fnName, $args, $result ) {
+		if ( $this->isResultCacheable( $fnName, $args, $result ) ) {
+			return self::ENTRY_TTL;
+		}
+
+		if ( 'get_languages_supported_by_automatic_translations' === $fnName && ( is_object( $result ) || is_array( $result ) ) ) {
+			return self::UNSUPPORTED_ANSWER_TTL;
+		}
+
+		return null;
 	}
 
 	private function memoValue( $fnName, $key, $value ) {
@@ -110,7 +148,7 @@ class CachedATEAPI {
 		return $stamp === $current || $stamp === strstr( $current, '|', true ) . '|';
 	}
 
-	private function writeEntry( Storage $storage, $option, $fnName, $key, $value ) {
+	private function writeEntry( Storage $storage, $option, $fnName, $key, $value, $ttl = self::ENTRY_TTL ) {
 		$now     = time();
 		$entries = [];
 
@@ -124,7 +162,7 @@ class CachedATEAPI {
 
 		$entries[ $fnName ][ $key ] = [
 			'value'      => $value,
-			'expires_at' => $now + self::ENTRY_TTL,
+			'expires_at' => $now + $ttl,
 		];
 
 		$storage->save( $option, [
@@ -199,7 +237,7 @@ class CachedATEAPI {
 
 	public function cacheValue( $fnName = null, $args = null, $result = null ) {
 		$fn = curryN( 3, function ( $fnName, $args, $result ) {
-			$this->writeEntry( $this->storage, self::CACHE_OPTION, $fnName, $this->getKey( $args ), $result );
+			$this->writeEntry( $this->storage, self::CACHE_OPTION, $fnName, $this->getKey( $this->withSharedSource( $fnName, (array) $args ) ), $result );
 
 			return $result;
 		} );
@@ -211,6 +249,9 @@ class CachedATEAPI {
 		StaticVariable::getInstance()->delete( self::CACHE_OPTION );
 		StaticVariable::getInstance()->delete( self::REQUEST_MEMO_OPTION );
 		( new Transient() )->delete( self::CACHE_OPTION );
+		if ( class_exists( \WPML\TM\ATE\AutomaticPairSupport::class ) ) {
+			\WPML\TM\ATE\AutomaticPairSupport::reset();
+		}
 	}
 
 	private function getKey( $args ) {

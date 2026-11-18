@@ -67,7 +67,7 @@ class AteResendGuard implements AteResendGuardInterface {
 
 
   public function prepare( TranslationBatch $batch, bool $isRetry, bool $sendAnyway = false ): AteResendGuardResult {
-    if ( ! \WPML_TM_ATE_Status::is_enabled() ) {
+    if ( ! \WPML_TM_ATE_Status::can_ate_job_exist() ) {
       return new AteResendGuardResult( $batch );
     }
 

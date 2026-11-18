@@ -299,6 +299,30 @@ final class LanguageCodeResolution {
 		return null !== $confirmed ? $confirmed : (string) $code;
 	}
 
+	public static function confidentHead( $code ) {
+		$key = str_replace( '_', '-', strtolower( trim( (string) $code ) ) );
+		if ( '' === $key ) {
+			return null;
+		}
+
+		self::loadStoredTags();
+		if ( ! isset( self::$storedTags[ $key ] ) ) {
+			return null;
+		}
+
+		$fromTag = self::confirmedParseHead( $key );
+		if ( null === $fromTag ) {
+			return null;
+		}
+		$fromTag = LanguageDerivation::languageHead( $fromTag );
+
+		if ( null !== self::resolve( $key ) && LanguageDerivation::languageHead( self::head( $key ) ) !== $fromTag ) {
+			return null;
+		}
+
+		return $fromTag;
+	}
+
 	private static function confirmedParseHead( $code ) {
 		$head = self::proposedHead( (string) $code );
 		if ( '' === $head ) {
@@ -588,7 +612,9 @@ final class LanguageCodeResolution {
 
 		$hasRtl = SchemaFacts::hasColumn( self::PRESETS_TABLE, 'rtl' );
 
-		$columns = 'code, english_name, script, type, wp_code' . ( $hasLanguage ? ', language' : '' ) . ( $hasRtl ? ', rtl' : '' );
+		$hasWpCode = SchemaFacts::hasColumn( self::PRESETS_TABLE, 'wp_code' );
+
+		$columns = 'code, english_name, script, type' . ( $hasWpCode ? ', wp_code' : '' ) . ( $hasLanguage ? ', language' : '' ) . ( $hasRtl ? ', rtl' : '' );
 		$rows = $wpdb->get_results( "SELECT {$columns} FROM `{$table}`" );
 		SchemaFacts::forgetIfQueryFailed( $wpdb );
 
@@ -599,7 +625,7 @@ final class LanguageCodeResolution {
 				'english_name' => (string) $row->english_name,
 				'script'       => $script,
 				'type'         => (string) $row->type,
-				'wp_code'      => null !== $row->wp_code && '' !== (string) $row->wp_code ? (string) $row->wp_code : null,
+				'wp_code'      => $hasWpCode && isset( $row->wp_code ) && '' !== (string) $row->wp_code ? (string) $row->wp_code : null,
 				'language'     => $hasLanguage && null !== $row->language ? strtolower( trim( (string) $row->language ) ) : '',
 				'rtl'          => $hasRtl && isset( $row->rtl ) ? (bool) (int) $row->rtl : null,
 			];

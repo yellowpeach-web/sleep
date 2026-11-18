@@ -6,6 +6,8 @@ class WPML_Cornerstone_Media_Node_Provider {
 
 	private $nodes = array();
 
+	private $background;
+
 	public function __construct( IWPML_PB_Media_Find_And_Translate $media_translate ) {
 		$this->media_translate = $media_translate;
 	}
@@ -22,6 +24,24 @@ class WPML_Cornerstone_Media_Node_Provider {
 		switch ( $type ) {
 			case 'image':
 				$node = new WPML_Cornerstone_Media_Node_Image( $this->media_translate );
+				break;
+
+			case 'card':
+				$node = new \WPML\PB\Cornerstone\Media\Modules\CardNode( $this->media_translate );
+				break;
+
+			case 'video':
+			case 'audio':
+				$node = new \WPML\PB\Cornerstone\Media\Modules\MediaPlayerNode( $this->media_translate );
+				break;
+
+			case 'headline':
+			case 'button':
+			case 'creative-cta':
+			case 'social':
+			case 'testimonial':
+			case 'quote':
+				$node = new \WPML\PB\Cornerstone\Media\Modules\GraphicNode( $this->media_translate, \WPML\PB\Cornerstone\Media\Modules\GraphicNode::PREFIXES_BY_TYPE[ $type ] );
 				break;
 
 			case 'classic:creative-cta':
@@ -49,6 +69,14 @@ class WPML_Cornerstone_Media_Node_Provider {
 		}
 
 		$this->nodes[ $type ] = $node;
+	}
+
+	public function getBackground() {
+		if ( null === $this->background ) {
+			$this->background = new \WPML\PB\Cornerstone\Media\Modules\BackgroundNode( $this->media_translate );
+		}
+
+		return $this->background;
 	}
 
 	public function get_media() {

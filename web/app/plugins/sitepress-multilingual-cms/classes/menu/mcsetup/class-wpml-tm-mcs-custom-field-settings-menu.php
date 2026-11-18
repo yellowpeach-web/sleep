@@ -39,7 +39,7 @@ abstract class WPML_TM_MCS_Custom_Field_Settings_Menu {
 			WPML_COPY_CUSTOM_FIELD      => __( 'Copy from original to translation', 'sitepress' ),
 			/* translators: Option in the dropdown that says what happens to a field: put the value in the translation once, and leave it alone afterwards. Verb phrase, imperative. */
 			WPML_COPY_ONCE_CUSTOM_FIELD => __( 'Copy once', 'sitepress' ),
-			/* translators: Option in the dropdown that says what happens to a field, and the heading of the column of the post editing screen where a translation is started: the text is translated. Verb, imperative. */
+			/* translators: Verb, imperative: an option in the dropdown that says what happens to a field, the heading of the column of the post editing screen where a translation is started, and the heading of the list of languages without a translation in the post editor's Language box. */
 			WPML_TRANSLATE_CUSTOM_FIELD => __( 'Translate', 'sitepress' ),
 		);
 	}
@@ -148,7 +148,7 @@ abstract class WPML_TM_MCS_Custom_Field_Settings_Menu {
 							<input type="submit"
 								   id="wpml_<?php echo esc_attr( $this->kind_shorthand() ); ?>_translation_save_legacy"
 								   class="button-primary wpml-button base-btn"
-								   value="<?php echo /* translators: Button label that keeps what was entered. Verb, imperative. */ esc_attr__( 'Save', 'sitepress' ); ?>"
+								   value="<?php echo /* translators: Button label that keeps what was entered, for example in the Translation delivery box's "Settings for support" and in the "Translation editor and method" section of WPML → Settings. Verb, imperative. */ esc_attr__( 'Save', 'sitepress' ); ?>"
 								   style="display:none"
 							/>
 							<span id="wpml_<?php echo esc_attr( $this->kind_shorthand() ); ?>_translation_save" style="display:inline-block"></span>
@@ -233,7 +233,7 @@ abstract class WPML_TM_MCS_Custom_Field_Settings_Menu {
 				</div>
 				<div class="wpml-flex-table-cell text-center">
 					<span id="translate">
-						<?php echo /* translators: Option in the dropdown that says what happens to a field, and the heading of the column of the post editing screen where a translation is started: the text is translated. Verb, imperative. */ esc_html__( 'Translate', 'sitepress' ); ?>
+						<?php echo /* translators: Verb, imperative: an option in the dropdown that says what happens to a field, the heading of the column of the post editing screen where a translation is started, and the heading of the list of languages without a translation in the post editor's Language box. */ esc_html__( 'Translate', 'sitepress' ); ?>
 					</span>
 					<?php $this->render_outcome( $outcomes[ WPML_TRANSLATE_CUSTOM_FIELD ] ); ?>
 				</div>

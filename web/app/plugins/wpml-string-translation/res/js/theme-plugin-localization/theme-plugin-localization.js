@@ -490,6 +490,10 @@ jQuery(function($) {
 		scanAllSections: function() {
 			var self = this;
 			this.triggerElement.prop('disabled', true);
+			// One id per click on Scan, sent with every files request of this scan
+			// (retries included), so the server clears a text domain's old source
+			// positions once per scan and not once per request (wpmldev-9012).
+			this.scanId = Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
 
 			$( this.spinner ).addClass('is-active');
 			$( this.progressMsg ).show();
@@ -637,6 +641,7 @@ jQuery(function($) {
 			// files chunk of the component is sent with, so the flag rides
 			// each request and store_results() reads it on each of them.
 			ajaxFilesChunk.own_domains_only = $('#wpml_st_own_domains_only').prop('checked') ? 1 : 0;
+			ajaxFilesChunk.scan_id = this.scanId;
 
 			filesChunks = this.buildFilesChunks(dirFiles);
 

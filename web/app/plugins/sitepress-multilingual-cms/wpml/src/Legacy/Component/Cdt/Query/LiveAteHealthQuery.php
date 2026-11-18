@@ -8,7 +8,7 @@ use WPML\Core\Port\Persistence\OptionsInterface;
 
 class LiveAteHealthQuery implements LiveAteHealthQueryInterface {
 
-  const PULL_DELIVERY_STATE   = 'wpml_pull_delivery_state';
+  const HANDSHAKE_STATE       = 'wpml_ate_handshake_state';
   const RECONNECT_CODE_LENGTH = 32;
 
   private $options;
@@ -23,16 +23,14 @@ class LiveAteHealthQuery implements LiveAteHealthQueryInterface {
 
 
   public function getLateMode(): string {
-    $state = $this->state();
-
-    return LateMode::normalize( $state['mode'] ?? null );
+    return LateMode::PUSH_OK;
   }
 
 
   public function getOldestPendingHours( int $now ): ?float {
-    $state  = $this->state();
-    $oldest = isset( $state['oldest_automatic_pending_at'] ) && is_numeric( $state['oldest_automatic_pending_at'] )
-      ? (int) $state['oldest_automatic_pending_at']
+    $state  = $this->options->get( self::HANDSHAKE_STATE, [] );
+    $oldest = is_array( $state ) && isset( $state['oldest_automatic_sent_at'] ) && is_numeric( $state['oldest_automatic_sent_at'] )
+      ? (int) $state['oldest_automatic_sent_at']
       : 0;
 
     if ( $oldest <= 0 ) {
@@ -48,13 +46,6 @@ class LiveAteHealthQuery implements LiveAteHealthQueryInterface {
     $code = is_string( $code ) ? (string) substr( $code, 0, self::RECONNECT_CODE_LENGTH ) : '';
 
     return $code === '' ? null : $code;
-  }
-
-
-  private function state(): array {
-    $state = $this->options->get( self::PULL_DELIVERY_STATE, [] );
-
-    return is_array( $state ) ? $state : [];
   }
 
 

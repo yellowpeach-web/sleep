@@ -47,7 +47,7 @@
             "Overnemen en vertalen"
          ],
          "This job was created by Translate Everything and cannot be cancelled on its own. To stop it, turn off Translate Everything from the Translation Dashboard.": [
-            "Deze taak is gemaakt door Alles automatisch vertalen en kan niet afzonderlijk worden geannuleerd. Om deze te stoppen, schakelt u Alles automatisch vertalen uit op het vertaaldashboard."
+            "Deze taak is gemaakt door Alles automatisch vertalen en kan niet afzonderlijk worden geannuleerd. Om deze te stoppen, schakelt u Alles automatisch vertalen uit via het Vertaaldashboard."
          ],
          "View": [
             "Weergeven"
@@ -91,23 +91,107 @@
          "Cancelled": [
             "Geannuleerd"
          ],
-         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
-            "De automatische vertaling is herhaaldelijk mislukt en WPML is gestopt met het opnieuw proberen. Verzend de taak opnieuw of verwijder deze uit het vertaaldashboard, of annuleer de taak hier."
+         "Published — Pending review": [
+            "Gepubliceerd — Wacht op controle"
          ],
          "Needs translation": [
             "Vertaling vereist"
          ],
-         "Needs update": [
-            "Update vereist"
+         "Review in progress": [
+            "Controle in uitvoering"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "Wachten op uw “Betalen naar gebruik”-betaling"
          ],
          "Translation ready to download": [
             "Vertaling gereed voor downloaden"
          ],
+         "Waiting for payment": [
+            "Wachten op betaling"
+         ],
+         "Waiting for words": [
+            "Wachten op woorden"
+         ],
          "Completed": [
             "Voltooid"
          ],
+         "Insufficient funds": [
+            "Onvoldoende saldo"
+         ],
+         "Sending": [
+            "Verzenden"
+         ],
+         "Automatic translation is off, so this job is not retried. Resend it, or switch Translate Everything on.": [
+            "Automatische vertaling staat uit, waardoor deze taak niet opnieuw wordt geprobeerd. Verzend deze opnieuw of schakel Translate Everything in."
+         ],
+         "Waiting for you": [
+            "Wachten op u"
+         ],
          "Failed - needs attention": [
             "Mislukt - aandacht vereist"
+         ],
+         "You can also resend the content or open the job in the Translation Queue.": [
+            "U kunt de content ook opnieuw verzenden of de taak openen in de vertaalwachtrij."
+         ],
+         "If it keeps failing for about a day, the job is marked as needing your attention.": [
+            "Als het ongeveer een dag blijft mislukken, wordt de taak gemarkeerd als actie vereist."
+         ],
+         "In progress": [
+            "In uitvoering"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "De automatische vertaling is herhaaldelijk mislukt en WPML is gestopt met het opnieuw proberen. Verzend de taak opnieuw of verwijder deze uit het vertaaldashboard, of annuleer de taak hier."
+         ],
+         "Needs update": [
+            "Update vereist"
+         ],
+         "Scheduled — Pending review": [
+            "Gepland — Wacht op controle"
+         ],
+         "Private — Pending review": [
+            "Privé — Wacht op controle"
+         ],
+         "Draft — Pending review": [
+            "Concept — Wacht op controle"
+         ],
+         "Published — Review in progress": [
+            "Gepubliceerd — Controle in uitvoering"
+         ],
+         "Scheduled — Review in progress": [
+            "Gepland — Controle wordt uitgevoerd"
+         ],
+         "Private — Review in progress": [
+            "Privé — Controle wordt uitgevoerd"
+         ],
+         "Draft — Review in progress": [
+            "Concept — Controle in uitvoering"
+         ],
+         "WPML could not reach our translation system.": [
+            "WPML kon ons vertaalsysteem niet bereiken."
+         ],
+         "Our translation system did not accept this job.": [
+            "Ons vertaalsysteem heeft deze taak niet geaccepteerd."
+         ],
+         "WPML could not calculate the word count for this job.": [
+            "WPML kon het aantal woorden voor deze taak niet berekenen."
+         ],
+         "WPML could not read the price of automatic translation for this job.": [
+            "WPML kon de prijs van automatische vertaling voor deze taak niet ophalen."
+         ],
+         "WPML could not prepare this job for automatic translation.": [
+            "WPML kon deze taak niet voorbereiden voor automatische vertaling."
+         ],
+         "Sending this job to automatic translation failed.": [
+            "Het verzenden van deze taak naar automatische vertaling is mislukt."
+         ],
+         "WPML tries again within a minute.": [
+            "WPML probeert het binnen een minuut opnieuw."
+         ],
+         "WPML tries again in about %d minutes.": [
+            "WPML probeert het over ongeveer %d minuten opnieuw."
+         ],
+         "WPML tries again in about %d hours.": [
+            "WPML probeert het over ongeveer %d uur opnieuw."
          ],
          "%s terms are published immediately because they don't support draft mode.": [
             "%s termen worden onmiddellijk gepubliceerd omdat ze de conceptmodus niet ondersteunen."
@@ -115,41 +199,14 @@
          "%s are immediately published because they don't support draft mode.": [
             "%s worden onmiddellijk gepubliceerd omdat ze de conceptmodus niet ondersteunen."
          ],
-         "Published — Pending review": [
-            "Gepubliceerd — Wacht op controle"
+         "(no title)": [
+            "(geen titel)"
          ],
-         "Draft — Pending review": [
-            "Concept — Wacht op controle"
-         ],
-         "Review in progress": [
-            "Controle in uitvoering"
-         ],
-         "Published — Review in progress": [
-            "Gepubliceerd — Controle in uitvoering"
-         ],
-         "Draft — Review in progress": [
-            "Concept — Controle in uitvoering"
-         ],
-         "Waiting for your Pay-As-You-Go payment": [
-            "Wachten op uw “Betalen naar gebruik”-betaling"
-         ],
-         "Waiting for payment": [
-            "Wachten op betaling"
-         ],
-         "Insufficient funds": [
-            "Onvoldoende saldo"
-         ],
-         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
-            "Automatische vertaling is gepauzeerd door een tijdelijke fout en wordt automatisch opnieuw geprobeerd — geen actie vereist. Als de status na ongeveer 30 minuten niet is veranderd, neem dan contact op met WPML-support."
-         ],
-         "In progress": [
-            "In uitvoering"
+         "%1$s (ID %2$d)": [
+            "%1$s (ID %2$d)"
          ],
          "View original": [
             "Origineel weergeven"
-         ],
-         "(no title)": [
-            "(geen titel)"
          ],
          "Automatic translation": [
             "Automatische vertaling"
@@ -486,9 +543,6 @@
          "Failed to resign from jobs": [
             "Teruggeven van opdrachten mislukt"
          ],
-         "The Advanced Editor jobs synchronization has failed": [
-            "De synchronisatie van de Advanced Editor-opdrachten is mislukt"
-         ],
          "Synchronization with the Professional Translation service has failed": [
             "Synchronisatie met de professionele vertaalservice is mislukt"
          ],
@@ -501,8 +555,40 @@
          "Batch sync couldn't be finished": [
             "Batch-synchronisatie kon niet worden voltooid"
          ],
+         "More details": [
+            "Meer details"
+         ],
+         "%s job was left out of the export.": [
+            "%s taak is niet meegenomen in de export.",
+            "%s taken zijn niet meegenomen in de export."
+         ],
+         "%s job could not be exported. No file was downloaded.": [
+            "%s taak kon niet worden geëxporteerd. Er is geen bestand gedownload.",
+            "%s taken konden niet worden geëxporteerd. Er is geen bestand gedownload."
+         ],
+         "This job was saved while this server had the PHP zlib extension, so its text is stored compressed. PHP on this server has no zlib now, so WPML cannot read it. Ask your hosting provider to enable the PHP zlib extension, then export it again.": [
+            "Deze taak is opgeslagen terwijl deze server de PHP zlib-extensie had, waardoor de tekst gecomprimeerd is opgeslagen. PHP op deze server heeft nu geen zlib, waardoor WPML deze niet kan lezen. Vraag uw hostingprovider om de PHP zlib-extensie in te schakelen en exporteer de taak vervolgens opnieuw.",
+            "Deze taken zijn opgeslagen terwijl deze server de PHP zlib-extensie had, waardoor de tekst gecomprimeerd is opgeslagen. PHP op deze server heeft nu geen zlib, waardoor WPML deze niet kan lezen. Vraag uw hostingprovider om de PHP zlib-extensie in te schakelen en exporteer de taken vervolgens opnieuw."
+         ],
+         "This job could not be exported.": [
+            "Deze taak kon niet worden geëxporteerd.",
+            "Deze taken konden niet worden geëxporteerd."
+         ],
+         "%1$s (job %2$s)": [
+            "%1$s (taak %2$s)"
+         ],
+         "Job %s": [
+            "Taak %s"
+         ],
+         "and %s more job": [
+            "en nog %s taak",
+            "en nog %s taken"
+         ],
          "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
             "Ons vertaalsysteem heeft dit verzoek niet geaccepteerd (het antwoord was %d). Wacht een minuut en probeer het opnieuw. Neem contact op met de WPML-support als dit blijft gebeuren."
+         ],
+         "The site stopped answering before this translation was confirmed. If it was not saved, the next download takes it again.": [
+            "De site reageerde niet meer voordat deze vertaling werd bevestigd. Als de vertaling niet is opgeslagen, wordt deze bij de volgende download opnieuw opgehaald."
          ]
       }
    }

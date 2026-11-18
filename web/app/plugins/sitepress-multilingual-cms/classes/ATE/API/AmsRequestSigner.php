@@ -2,6 +2,8 @@
 
 namespace WPML\TM\ATE\API;
 
+use WPML\UrlHandling\UrlBuilder;
+
 class AmsRequestSigner {
 
 	private $wpHttp;
@@ -33,7 +35,7 @@ class AmsRequestSigner {
 		$query          = array_merge( $queryParams, $query );
 		$url_parts['query'] = \wpml_http_build_query( $query );
 
-		$url        = http_build_url( $url_parts );
+		$url        = UrlBuilder::build( $url_parts );
 		$signed_url = $this->auth->signUrl( $method, $url, null, $secret );
 
 		return $this->wpHttp->request( $signed_url, [

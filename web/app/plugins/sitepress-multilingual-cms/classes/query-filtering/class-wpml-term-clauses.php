@@ -40,7 +40,6 @@ class WPML_Term_Clauses {
 			|| ( class_exists( 'WPML\TaxonomyTermTranslation\Hooks' ) && TermTranslationHooks::shouldSkip( $args ) )
 			|| $this->debug_backtrace->are_functions_in_call_stack(
 				[
-					'_get_term_hierarchy',
 					[ 'WPML_Term_Translation_Utils', 'synchronize_terms' ],
 					'wp_get_object_terms',
 					'get_term_by',

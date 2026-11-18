@@ -1,5 +1,8 @@
 <?php
 
+use WPML\EditHistory\DeliveryAnswer;
+use WPML\EditHistory\DeliveryFactory;
+use WPML\EditHistory\InternalWrite;
 use WPML\FP\Cast;
 use WPML\FP\Maybe;
 use WPML\TM\API\Jobs;
@@ -19,6 +22,10 @@ class WPML_TM_ATE_Jobs {
 	const SKIPPED_NOT_AWAITING_DELIVERY = null;
 
 	private $records;
+
+	private static $lastUnsavedReason = '';
+
+	private static $lastUnsavedData = [];
 
 	public function __construct( JobRecords $records ) {
 		$this->records = $records;
@@ -43,8 +50,10 @@ class WPML_TM_ATE_Jobs {
 		$this->records->store( (int) $wpml_job_id, $ate_job_data );
 	}
 
-	public function apply( $xliff, $expectedJobId = null, $deliveringAteJobId = null ) {
+	public function apply( $xliff, $expectedJobId = null, $deliveringAteJobId = null, $ateAnswer = null ) {
 		\WPML\TM\ATE\TranslateEverything\TaxonomyTermJobApplier::clearLastFailureReason();
+		self::$lastUnsavedReason = '';
+		self::$lastUnsavedData   = [];
 
 		if ( null !== $expectedJobId ) {
 			$requestRow = \WPML\TM\Jobs\TranslationRecord::requestRowOf( (int) $expectedJobId, $deliveringAteJobId );
@@ -58,7 +67,7 @@ class WPML_TM_ATE_Jobs {
 			}
 		}
 
-		if ( \WPML\TM\XLIFF\TaxonomyTermXliffReader::isTermXliff( $xliff ) ) {
+		if ( \WPML\TM\XLIFF\TermBundleXliffReader::isTermBatchXliff( $xliff ) || \WPML\TM\XLIFF\TaxonomyTermXliffReader::isTermXliff( $xliff ) ) {
 			global $wpdb, $sitepress;
 
 			return ( new \WPML\TM\ATE\TranslateEverything\TaxonomyTermJobApplier( $wpdb, $sitepress ) )->apply( $xliff, $expectedJobId, $deliveringAteJobId );
@@ -69,6 +78,11 @@ class WPML_TM_ATE_Jobs {
 				'job_id'     => (int) $expectedJobId,
 				'ate_job_id' => (int) $deliveringAteJobId,
 			] );
+			self::skipped(
+				/* translators: %d: the job ID in the Advanced Translation Editor. */
+				sprintf( __( 'No job on this site holds ATE job %d any more, so its translation was not applied.', 'sitepress' ), (int) $deliveringAteJobId ),
+				'skipped_ate_job_of_no_row'
+			);
 
 			return self::SKIPPED_NOT_AWAITING_DELIVERY;
 		}
@@ -76,7 +90,11 @@ class WPML_TM_ATE_Jobs {
 		$factory       = wpml_tm_load_job_factory();
 		$xliff_factory = new WPML_TM_Xliff_Reader_Factory( $factory );
 		$xliff_reader  = $xliff_factory->general_xliff_reader();
-		$job_data      = $xliff_reader->get_data( $xliff );
+		$delivery      = DeliveryFactory::delivery();
+		if ( $delivery ) {
+			$xliff_reader->set_carried_history( [ $delivery, 'carriedHistory' ] );
+		}
+		$job_data = $xliff_reader->get_data( $xliff );
 
 		if ( ! is_wp_error( $job_data )
 		     && null !== $expectedJobId
@@ -90,12 +108,30 @@ class WPML_TM_ATE_Jobs {
 			$job_data = $xliff_reader->get_data_for_job( $xliff, (int) $expectedJobId );
 		}
 
-		if ( is_wp_error( $job_data ) ) {
-			throw new RequestException(
-				$job_data->get_error_message(),
-				$job_data->get_error_code()
-			);
+		if ( is_wp_error( $job_data ) && null !== $expectedJobId ) {
+			$declaredJobId = $xliff_reader->cleaned_job_declared_for_original_of( $xliff, (int) $expectedJobId );
+			if ( $declaredJobId && $this->isRequestMadeFrom( (int) $expectedJobId, $declaredJobId ) ) {
+				JobLog::add( 'apply_bound_to_request_row_after_cleanup', [
+					'declared_job_id' => $declaredJobId,
+					'request_job_id'  => (int) $expectedJobId,
+				] );
+
+				$job_data = $xliff_reader->get_data_for_job( $xliff, (int) $expectedJobId );
+			}
 		}
+
+		if ( is_wp_error( $job_data ) ) {
+			$refusalData = $job_data->get_error_data();
+			$refusal     = new RequestException(
+				$job_data->get_error_message(),
+				$job_data->get_error_code(),
+				is_array( $refusalData ) && $refusalData ? $refusalData : null
+			);
+			throw $refusal;
+		}
+
+		$answer = DeliveryAnswer::read( $ateAnswer )->withAbsent( (array) ( $job_data['absent_units'] ?? [] ) );
+		unset( $job_data['absent_units'] );
 
 		kses_remove_filters();
 		$job_data    = $this->filterJobData( $job_data );
@@ -124,12 +160,39 @@ class WPML_TM_ATE_Jobs {
 					'status' => $blocking_status,
 				]
 			);
+			self::skipped(
+				/* translators: %d: translation job ID. */
+				sprintf( __( 'Job %d is not waiting for a translation on this site (it was cancelled or reset), so its translation was not applied.', 'sitepress' ), (int) $wpml_job_id ),
+				'skipped_not_awaiting_delivery'
+			);
+
+			return self::SKIPPED_NOT_AWAITING_DELIVERY;
+		}
+
+		$decision = $delivery ? $delivery->decide( (int) $wpml_job_id, (int) $deliveringAteJobId, $answer ) : null;
+		if ( $decision && ! $decision->writes() ) {
+			kses_init();
+
+			JobLog::add(
+				'edit_history_delivery_skipped',
+				[
+					'job_id'     => (int) $wpml_job_id,
+					'ate_job_id' => $decision->ateJobId,
+					'reason'     => $decision->reason,
+				]
+			);
+			self::skipped(
+				/* translators: %1$d: translation job ID, %2$s: why the site's edit history kept the translation it has (English). */
+				sprintf( __( 'The translation of job %1$d was not applied: %2$s.', 'sitepress' ), (int) $wpml_job_id, (string) $decision->reason ),
+				'skipped_by_edit_history'
+			);
 
 			return self::SKIPPED_NOT_AWAITING_DELIVERY;
 		}
 
 		try {
-			$is_saved = wpml_tm_save_data( $job_data, false );
+			$write    = fn() => wpml_tm_save_data( $job_data, false );
+			$is_saved = InternalWrite::run( InternalWrite::ATE_DELIVERY, $decision ? fn() => $delivery->apply( $decision, $write ) : $write );
 		} catch ( Exception $e ) {
 			throw new Exception(
 				'The XLIFF file could not be applied to the content of the job ID: ' . $wpml_job_id,
@@ -140,7 +203,40 @@ class WPML_TM_ATE_Jobs {
 
 		kses_init();
 
+		if ( $is_saved && $decision ) {
+			$delivery->record( $decision );
+		}
+
+		if ( ! $is_saved ) {
+			$unsaved                 = self::unsavedReason( (int) $wpml_job_id );
+			self::$lastUnsavedReason = $unsaved['sentence'];
+			self::$lastUnsavedData   = $unsaved['data'];
+		}
+
 		return $is_saved ? $wpml_job_id : false;
+	}
+
+	public static function lastUnsavedReason() {
+		return self::$lastUnsavedReason;
+	}
+
+	private static function skipped( $sentence, $reasonCode ) {
+		self::$lastUnsavedReason = $sentence;
+		self::$lastUnsavedData   = [ 'reasonCode' => $reasonCode, 'jobData' => [] ];
+	}
+
+	public static function lastUnsavedData() {
+		return self::$lastUnsavedData;
+	}
+
+	private static function unsavedReason( $jobId ) {
+		global $wpdb;
+
+		if ( ! $wpdb instanceof wpdb ) {
+			return [ 'sentence' => '', 'data' => [] ];
+		}
+
+		return ( new \WPML\TM\XLIFF\MismatchReason( $wpdb ) )->unsavedDetails( $jobId );
 	}
 
 	private function getStatusBlockingDelivery( $wpml_job_id ) {

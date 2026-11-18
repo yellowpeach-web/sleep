@@ -118,7 +118,7 @@ class PreflightDeletion implements IHandler {
 			return false;
 		}
 
-		return (int) get_post_meta( (int) $post_id, '_icl_lang_duplicate_of', true ) > 0;
+		return \WPML\TranslationPolicy\Duplicate\DuplicateReaders::isKeptInStep( (int) $post_id );
 	}
 
 	private function term( Collection $data ) {

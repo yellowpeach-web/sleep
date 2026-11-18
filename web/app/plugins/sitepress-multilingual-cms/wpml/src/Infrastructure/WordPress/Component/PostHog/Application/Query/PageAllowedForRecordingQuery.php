@@ -24,6 +24,7 @@ class PageAllowedForRecordingQuery implements PageAllowedForRecordingQueryInterf
     'sitepress-multilingual-cms/menu/debug-information.php',
     'wpml-tm-ate-log',
     'otgs-installer-support',
+    'wpml-ai-translation-billing',
   ];
 
   private $filterAllowedPages;

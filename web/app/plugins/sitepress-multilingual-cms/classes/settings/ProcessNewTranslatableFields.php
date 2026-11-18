@@ -10,6 +10,9 @@ use WPML\Core\BackgroundTask\Service\BackgroundTaskService;
 use WPML\Element\API\PostTranslations;
 use WPML\FP\Obj;
 use WPML\TM\AutomaticTranslation\Actions\Actions as AutotranslateActions;
+use WPML\TM\Jobs\JobLog;
+use WPML\Utilities\AdvisoryLockFactory;
+use function WPML\Container\make;
 
 class ProcessNewTranslatableFields extends AbstractTaskEndpoint {
 	const LOCK_TIME              = 60;
@@ -17,6 +20,9 @@ class ProcessNewTranslatableFields extends AbstractTaskEndpoint {
 	const DESCRIPTION            = 'Updating affected posts for changes in translatable fields %s.';
 	const POSTS_PER_REQUEST      = 10;
 	const UNKNOWN_TOTAL_SENTINEL = 1;
+
+	const POST_LOCK_WAIT_SECONDS = 300;
+	const POST_LOCK_TTL_SECONDS  = 360;
 
 	private $wpdb;
 
@@ -26,18 +32,22 @@ class ProcessNewTranslatableFields extends AbstractTaskEndpoint {
 
 	private $eligibility;
 
+	private $lockFactory;
+
 	public function __construct(
 		\wpdb $wpdb,
 		\WPML_TM_Post_Actions $postActions,
 		AutotranslateActions $autotranslateActions,
 		UpdateBackgroundTask $updateBackgroundTask,
 		BackgroundTaskService $backgroundTaskService,
-		?ReapplyEligibility $eligibility = null
+		?ReapplyEligibility $eligibility = null,
+		?AdvisoryLockFactory $lockFactory = null
 	) {
 		$this->wpdb                      = $wpdb;
 		$this->postActions               = $postActions;
 		$this->autotranslateActions      = $autotranslateActions;
 		$this->eligibility               = $eligibility ?: new ReapplyEligibility( $autotranslateActions );
+		$this->lockFactory               = $lockFactory ?: make( AdvisoryLockFactory::class );
 
 		parent::__construct( $updateBackgroundTask, $backgroundTaskService );
 	}
@@ -95,40 +105,50 @@ class ProcessNewTranslatableFields extends AbstractTaskEndpoint {
 		);
 	}
 
-	public function updateNeedsUpdate( array $postIds ) {
+	public function updateNeedsUpdate( array $postIds, $force = false ) {
 		$counts = [ 'marked' => 0, 'sent' => 0, 'heldRange' => 0, 'heldLanguage' => 0 ];
 
 		foreach ( $postIds as $postId ) {
-			if ( ! $this->markNeedsUpdate( (int) $postId ) ) {
+			$lock = $this->lockFactory->create( 'ProcessNewTranslatableFields.post.' . (int) $postId, self::POST_LOCK_TTL_SECONDS );
+			if ( ! $lock->acquire( self::POST_LOCK_WAIT_SECONDS ) ) {
+				JobLog::add( 'reapply_post_held_by_another_request', [ 'post_id' => (int) $postId ] );
 				continue;
 			}
-			$counts['marked']++;
 
-			$eligibility = $this->eligibility->forPost( (int) $postId );
-			if ( ! $eligibility['sendable'] ) {
-				$counts[ empty( $eligibility['withinRange'] ) ? 'heldRange' : 'heldLanguage' ]++;
-				continue;
+			try {
+				if ( ! $this->markNeedsUpdate( (int) $postId, (bool) $force ) ) {
+					continue;
+				}
+				$counts['marked']++;
+
+				$eligibility = $this->eligibility->forPost( (int) $postId );
+				if ( ! $eligibility['sendable'] ) {
+					$counts[ empty( $eligibility['withinRange'] ) ? 'heldRange' : 'heldLanguage' ]++;
+					continue;
+				}
+				$counts['sent']++;
+
+				$this->autotranslateActions->createNewTranslationJobs(
+					$eligibility['source'],
+					array_map(
+						function ( $lang ) use ( $postId ) {
+							return [ (int) $postId, $lang ];
+						},
+						$eligibility['sendable']
+					),
+					$eligibility['elementType']
+				);
+			} finally {
+				$lock->release();
 			}
-			$counts['sent']++;
-
-			$this->autotranslateActions->createNewTranslationJobs(
-				$eligibility['source'],
-				array_map(
-					function ( $lang ) use ( $postId ) {
-						return [ (int) $postId, $lang ];
-					},
-					$eligibility['sendable']
-				),
-				$eligibility['elementType']
-			);
 		}
 
 		return $counts;
 	}
 
-	private function markNeedsUpdate( $postId ) {
+	private function markNeedsUpdate( $postId, $force ) {
 		$translations = PostTranslations::getIfOriginal( $postId );
-		$updater      = $this->postActions->get_translation_statuses_updater( $postId, $translations );
+		$updater      = $this->postActions->get_translation_statuses_updater( $postId, $translations, $force );
 
 		return (bool) $updater();
 	}

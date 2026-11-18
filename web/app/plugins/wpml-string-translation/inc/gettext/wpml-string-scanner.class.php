@@ -16,7 +16,11 @@ class WPML_String_Scanner {
 
 	private $own_jed_domains = array();
 
-	private $domains;
+	const SCAN_MEMORY_SECONDS = 3600;
+
+	private $cleared_domains;
+
+	private $scan_id = '';
 	private $registered_strings;
 	private $lang_codes;
 	private $currently_scanning;
@@ -39,7 +43,7 @@ class WPML_String_Scanner {
 	public function __construct( WP_Filesystem_Base $wp_filesystem ) {
 		global $wpdb;
 
-		$this->domains            = array();
+		$this->cleared_domains    = array();
 		$this->registered_strings = array();
 		$this->lang_codes         = array();
 		$this->domains_found      = array();
@@ -58,6 +62,27 @@ class WPML_String_Scanner {
 		$this->own_jed_domains                            = array();
 		$this->own_domains_only = ! empty( $_POST['own_domains_only'] )
 			&& (bool) check_ajax_referer( WPML_ST_Theme_Plugin_Scan_Files_Ajax_Factory::AJAX_ACTION, 'nonce', false );
+
+		$scan_id       = isset( $_POST['scan_id'] ) && is_string( $_POST['scan_id'] )
+			? substr( (string) preg_replace( '/[^a-z0-9]/', '', sanitize_key( wp_unslash( $_POST['scan_id'] ) ) ), 0, 32 )
+			: '';
+		$this->scan_id = $scan_id && check_ajax_referer( WPML_ST_Theme_Plugin_Scan_Files_Ajax_Factory::AJAX_ACTION, 'nonce', false )
+			? $scan_id
+			: '';
+	}
+
+	private function was_cleared_earlier_in_this_scan( $domain ) {
+		return $this->scan_id && get_transient( $this->scan_memory_name( $domain ) );
+	}
+
+	private function remember_cleared_in_this_scan( $domain ) {
+		if ( $this->scan_id ) {
+			set_transient( $this->scan_memory_name( $domain ), 1, self::SCAN_MEMORY_SECONDS );
+		}
+	}
+
+	private function scan_memory_name( $domain ) {
+		return 'wpml_st_scan_' . $this->scan_id . '_' . md5( $domain );
 	}
 
 	protected function scan_response( $stats ) {
@@ -278,18 +303,23 @@ class WPML_String_Scanner {
 			$this->domains_found[ $this->currently_scanning ] [ $domain ] += 1;
 		}
 
-		if ( ! in_array( $domain, $this->domains ) ) {
-			$this->domains[] = $domain;
+		if ( ! isset( $this->cleared_domains[ $domain ] ) ) {
+			$this->cleared_domains[ $domain ] = true;
 
-			$wpdb->query(
-				$wpdb->prepare(
-					"DELETE FROM {$wpdb->prefix}icl_string_positions WHERE string_id IN
+			if ( ! $this->was_cleared_earlier_in_this_scan( $domain ) ) {
+				$cleared = $wpdb->query(
+					$wpdb->prepare(
+						"DELETE FROM {$wpdb->prefix}icl_string_positions WHERE string_id IN
                 (SELECT id FROM {$wpdb->prefix}icl_strings WHERE context = %s)
                 AND kind = %s",
-					$domain,
-					ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_SOURCE
-				)
-			);
+						$domain,
+						ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_SOURCE
+					)
+				);
+				if ( false !== $cleared ) {
+					$this->remember_cleared_in_this_scan( $domain );
+				}
+			}
 		}
 
 		$string = str_replace( '\n', "\n", $string );

@@ -4,7 +4,7 @@ if ( ! isset( $vendor_root_url ) ) {
 	return;
 }
 
-$otg_icons_version = 101;
+$otg_icons_version = 108;
 
 
 global $otg_icons_versions;
@@ -24,13 +24,13 @@ if ( ! function_exists( 'otgs_icons_register' ) ) {
 	function otgs_icons_register() {
 		global $otg_icons_versions;
 		$latest = 0;
-		
+
 		foreach ( $otg_icons_versions as $version => $root_utl ) {
 			if ( $version > $latest ) {
 				$latest = $version;
 			}
 		}
-		
+
 		require_once( $otg_icons_versions[ $latest ]['path'] . '/register.php' );
         otgs_icons_register_assets( $otg_icons_versions[ $latest ], $latest );
 	}

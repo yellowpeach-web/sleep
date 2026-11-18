@@ -8,4 +8,7 @@ interface StoreReadinessInterface {
   public function isReady(): bool;
 
 
+  public function tableIsMissing(): bool;
+
+
 }

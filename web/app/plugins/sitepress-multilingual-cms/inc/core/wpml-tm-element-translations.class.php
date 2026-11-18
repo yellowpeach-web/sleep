@@ -1,5 +1,8 @@
 <?php
 
+use WPML\TM\API\Job\Map;
+use WPML\TM\AutomaticTranslation\Actions\DeferredDispatch;
+
 class WPML_TM_Element_Translations extends WPML_TM_Record_User {
 
 	private $trid_cache;
@@ -59,7 +62,13 @@ class WPML_TM_Element_Translations extends WPML_TM_Record_User {
 		$trid          = $args['trid'];
 		$language_code = $args['language_code'];
 
-		return $this->get_translation_status( $trid, $language_code );
+		$status = $this->get_translation_status( $trid, $language_code );
+
+		if ( ICL_TM_ATE_NEEDS_RETRY === $status && isset( $this->job_id_cache[ $trid ][ $language_code ] ) ) {
+			$status = (int) DeferredDispatch::statusForEditorByRid( $status, Map::ridFromDB( (int) $this->job_id_cache[ $trid ][ $language_code ] ) );
+		}
+
+		return $status;
 	}
 	public function get_translation_status( $trid, $language_code ) {
 		if ( isset( $this->translation_status_cache[ $trid ][ $language_code ] ) ) {

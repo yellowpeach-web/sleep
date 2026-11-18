@@ -30,7 +30,7 @@ class TaxonomySendOperationCleanupCron implements \IWPML_Backend_Action, \IWPML_
 
   public function run(): void {
     try {
-      ( $this->sweeper ?: new TaxonomySendOperationSweeper() )->sweep();
+      ( $this->sweeper ?: new TaxonomySendOperationSweeper() )->sweep( 0, true );
     } catch ( \Throwable $e ) {
       if ( class_exists( '\\WPML\\TM\\Jobs\\JobLog' ) ) {
         \WPML\TM\Jobs\JobLog::maybeInitRequest();

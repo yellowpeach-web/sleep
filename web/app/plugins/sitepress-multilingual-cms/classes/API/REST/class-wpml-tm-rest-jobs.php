@@ -190,8 +190,8 @@ class WPML_TM_REST_Jobs extends WPML_REST_Base {
 			$criteria = $this->criteria_parser->build_criteria( $request );
 
 			$model = $this->view_model->build(
-				$this->jobs_repository->get( $criteria ),
-				$this->jobs_repository->get_count( $criteria ),
+				$this->jobs_repository->get_or_fail( $criteria ),
+				$this->jobs_repository->get_count_or_fail( $criteria ),
 				$criteria,
 				(string) $request->get_param( 'pageName' )
 			);
@@ -290,7 +290,7 @@ class WPML_TM_REST_Jobs extends WPML_REST_Base {
 			);
 
 			$cancelJobsService = CancelJobsServiceFactory::create();
-			$result            = $cancelJobsService->cancelJobs( $jobIds, true );
+			$result            = $cancelJobsService->cancelJobs( $jobIds, true, \WPML\TM\ATE\Cancel\CancelSource::DASHBOARD );
 
 			JobLog::add( 'cancel_jobs_service_done', [
 				'jobs'   => $jobInfoList,

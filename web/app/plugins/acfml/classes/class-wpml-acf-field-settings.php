@@ -1,6 +1,7 @@
 <?php
 
 use ACFML\FieldGroup\Mode;
+use ACFML\FieldPreferences\ModeWrites;
 use ACFML\Helper\FieldGroup;
 use ACFML\Helper\Fields;
 use WPML\FP\Fns;
@@ -13,7 +14,7 @@ class WPML_ACF_Field_Settings implements \IWPML_Backend_Action, \IWPML_Frontend_
 
 	private $translation_management;
 
-	private $new_preference_set = false;
+	private $pendingModes = [];
 
 	private $pendingDefinitionFields = [];
 
@@ -280,6 +281,44 @@ class WPML_ACF_Field_Settings implements \IWPML_Backend_Action, \IWPML_Frontend_
 		return null !== \ACFML\FieldPreferences\SubfieldRules::resolveKey( $field['name'], $type );
 	}
 
+	private function is_rule_covered_subfield_definition( $field ) {
+		$fieldKey  = (string) Obj::propOr( '', 'key', $field );
+		$fieldName = (string) Obj::propOr( '', 'name', $field );
+
+		if ( ! \ACFML\FieldPreferences\SubfieldRules::isCoreResolutionAvailable()
+			|| '' === $fieldKey
+			|| '' === $fieldName
+			|| ! Obj::prop( 'parent', $field )
+			|| ! function_exists( 'acf_get_fields' )
+		) {
+			return false;
+		}
+
+		$fieldGroupKey = FieldGroup::getKey( Obj::prop( 'parent', $field ) );
+		$fieldGroup    = $fieldGroupKey ? acf_get_field_group( $fieldGroupKey ) : null;
+
+		if ( ! is_array( $fieldGroup ) ) {
+			return false;
+		}
+
+		$patterns = Fields::patternsByFieldKey( acf_get_fields( $fieldGroup ) );
+		$pattern  = isset( $patterns[ $fieldKey ] ) ? $patterns[ $fieldKey ] : null;
+
+		if ( null === $pattern || preg_quote( $fieldName ) === $pattern ) {
+			return false;
+		}
+
+		$rowKey = Fields::representativeKey( $pattern );
+
+		foreach ( \ACFML\FieldPreferences\SubfieldRules::elementTypesForGroup( $fieldGroup ) as $type ) {
+			if ( null === \ACFML\FieldPreferences\SubfieldRules::resolveKey( $rowKey, $type ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	private function is_field_parsable( $field ) {
 		return ( isset( $field['wpml_cf_preferences'], $field['name'] ) && $this->isValidFieldPreference( $field['wpml_cf_preferences'] ) && $field['name'] )
 			|| $this->field_should_be_set_to_copy_once( $field );
@@ -295,6 +334,10 @@ class WPML_ACF_Field_Settings implements \IWPML_Backend_Action, \IWPML_Frontend_
 
 	private function save_field_settings( $field, $post_id = null ) {
 		if ( isset( $field['wpml_cf_preferences'] ) ) {
+			if ( null === $post_id && $this->is_rule_covered_subfield_definition( $field ) ) {
+				return;
+			}
+
 			$setting_indexes = null === $post_id
 				? $this->get_setting_indexes_for_definition( $field )
 				: [ $this->get_setting_index_for_context( $post_id ) ];
@@ -307,19 +350,37 @@ class WPML_ACF_Field_Settings implements \IWPML_Backend_Action, \IWPML_Frontend_
 
 			$this->write_preference_to_indexes( $field, $setting_indexes );
 
-			if ( $this->new_preference_set ) {
-				$this->translation_management->save_settings();
-				$this->new_preference_set = false;
-			}
+			$this->save_preferences();
 		}
 	}
 
 	private function write_preference_to_indexes( $field, $setting_indexes ) {
 		foreach ( $setting_indexes as $setting_index ) {
+			$locked     = $this->get_config_locked_preference( $field['name'], $setting_index );
+			$preference = null === $locked ? $field['wpml_cf_preferences'] : $locked;
+
 			$this->maybe_set_new_preference( $setting_index, $field['name'], $field['wpml_cf_preferences'] );
-			if ( WPML_IGNORE_CUSTOM_FIELD !== (int) $field['wpml_cf_preferences'] ) {
+			if ( WPML_IGNORE_CUSTOM_FIELD !== (int) $preference ) {
 				$this->update_corresponding_system_field_settings( $field, $field['name'], $setting_index );
 			}
+		}
+	}
+
+	private function get_config_locked_preference( $field_name, $setting_index ) {
+		try {
+			$isTerm  = $this->tm_setting_index[1] === $setting_index;
+			$factory = $this->translation_management->settings_factory();
+			$setting = $isTerm ? $factory->term_meta_setting( $field_name ) : $factory->post_meta_setting( $field_name );
+
+			if ( ! $setting->is_read_only() || $setting->is_unlocked() ) {
+				return null;
+			}
+
+			$source = apply_filters( \ACFML\FieldGroup\PreferenceSource::SOURCE_FILTER, null, $field_name, $isTerm ? 'term' : 'post' );
+
+			return is_array( $source ) ? (int) $setting->status() : null;
+		} catch ( \Throwable $e ) {
+			return null;
 		}
 	}
 
@@ -334,15 +395,70 @@ class WPML_ACF_Field_Settings implements \IWPML_Backend_Action, \IWPML_Frontend_
 
 	public function processPendingDefinitionWrites() {
 		foreach ( $this->pendingDefinitionFields as $field ) {
+			if ( $this->is_rule_covered_subfield_definition( $field ) ) {
+				continue;
+			}
 			$setting_indexes = $this->get_setting_indexes_for_definition( $field );
 			$this->write_preference_to_indexes( $field, null === $setting_indexes ? [ $this->tm_setting_index[0] ] : $setting_indexes );
 		}
 		$this->pendingDefinitionFields = [];
 
-		if ( $this->new_preference_set ) {
-			$this->translation_management->save_settings();
-			$this->new_preference_set = false;
+		$this->save_preferences();
+	}
+
+	public function writeMissingCodeGroupPreferences( array $codeGroups ) {
+		$candidates = [];
+		foreach ( $codeGroups as $codeGroup ) {
+			$group = (array) Obj::propOr( [], 'group', $codeGroup );
+			foreach ( (array) Obj::propOr( [], 'fields', $codeGroup ) as $field ) {
+				if ( ! isset( $field['wpml_cf_preferences'], $field['name'] ) || '' === (string) $field['name'] ) {
+					continue;
+				}
+				$preference = (int) $field['wpml_cf_preferences'];
+				if ( WPML_IGNORE_CUSTOM_FIELD === $preference || ! $this->isValidFieldPreference( $preference ) ) {
+					continue;
+				}
+				foreach ( \ACFML\FieldPreferences\SubfieldRules::elementTypesForGroup( $group ) as $type ) {
+					$index = 'term' === $type ? $this->tm_setting_index[1] : $this->tm_setting_index[0];
+
+					$candidates[ $index ][ (string) $field['name'] ] = [ $preference, $this->get_companion_preference( $group ) ];
+				}
+			}
 		}
+
+		$missing = [];
+		foreach ( $candidates as $index => $fields ) {
+			$names  = array_map( 'strval', array_keys( $fields ) );
+			$stored = \ACFML\FieldPreferences\ModeWrites::storedModes(
+				$this->translation_management,
+				$index,
+				array_merge( $names, array_map( function ( $name ) {
+					return '_' . $name;
+				}, $names ) )
+			);
+
+			foreach ( $fields as $name => list( $preference, $companion ) ) {
+				$name = (string) $name;
+				if ( null !== $stored[ $name ] || null !== $this->get_config_locked_preference( $name, $index ) ) {
+					continue;
+				}
+				$missing[ $index ][ $name ] = $preference;
+				if ( null === $stored[ '_' . $name ] && null === $this->get_config_locked_preference( '_' . $name, $index ) ) {
+					$missing[ $index ][ '_' . $name ] = $companion;
+				}
+			}
+		}
+
+		$written = (int) array_sum( array_map( 'count', $missing ) );
+		if ( $written ) {
+			\ACFML\FieldPreferences\ModeWrites::save( $this->translation_management, $missing );
+		}
+
+		return $written;
+	}
+
+	private function get_companion_preference( $fieldGroup ) {
+		return Mode::LOCALIZATION === Mode::getMode( $fieldGroup ) ? WPML_COPY_ONCE_CUSTOM_FIELD : WPML_COPY_CUSTOM_FIELD;
 	}
 
 	private function get_setting_indexes_for_definition( $field ) {
@@ -476,7 +592,7 @@ class WPML_ACF_Field_Settings implements \IWPML_Backend_Action, \IWPML_Frontend_
 		}
 		$field_post = get_post( $field_object_id );
 		if ( is_object( $field_post ) ) {
-			$field_post_content = maybe_unserialize( $field_post->post_content );
+			$field_post_content = self::without_objects( \WPML\Utils\Unserialize::maybe( $field_post->post_content ) );
 			if ( is_array( $field_post_content ) ) {
 				if ( isset( $field_post_content['wpml_cf_preferences'] )
 					&& (int) $field_post_content['wpml_cf_preferences'] === (int) $field_preferences
@@ -493,6 +609,24 @@ class WPML_ACF_Field_Settings implements \IWPML_Backend_Action, \IWPML_Frontend_
 				( new \ACFML\FieldPreferences\SubfieldRules() )->invalidate();
 			}
 		}
+	}
+
+	private static function without_objects( $value ) {
+		if ( is_object( $value ) ) {
+			return null;
+		}
+		if ( ! is_array( $value ) ) {
+			return $value;
+		}
+
+		$clean = [];
+		foreach ( $value as $key => $member ) {
+			if ( ! is_object( $member ) ) {
+				$clean[ $key ] = self::without_objects( $member );
+			}
+		}
+
+		return $clean;
 	}
 
 	private function is_field_object_valid( $field_object ) {
@@ -526,7 +660,7 @@ class WPML_ACF_Field_Settings implements \IWPML_Backend_Action, \IWPML_Frontend_
 	private function update_corresponding_system_field_settings( $field, $field_name, $setting_index ) {
 		$fieldGroupKey = FieldGroup::getKey( Obj::prop( 'parent', $field ) );
 		if ( $fieldGroupKey ) {
-			$preference = Mode::LOCALIZATION === Mode::getMode( acf_get_field_group( $fieldGroupKey ) ) ? WPML_COPY_ONCE_CUSTOM_FIELD : WPML_COPY_CUSTOM_FIELD;
+			$preference = $this->get_companion_preference( acf_get_field_group( $fieldGroupKey ) );
 
 			$corresponding_field_name = '_' . $field_name;
 			$this->maybe_set_new_preference( $setting_index, $corresponding_field_name, $preference );
@@ -569,12 +703,21 @@ class WPML_ACF_Field_Settings implements \IWPML_Backend_Action, \IWPML_Frontend_
 	}
 
 	private function maybe_set_new_preference( $setting_index, $field, $preference ) {
-		if ( ! isset( $this->translation_management->settings[ $setting_index ][ $field ] )
-			|| $this->translation_management->settings[ $setting_index ][ $field ] !== $preference
-		) {
-			$this->translation_management->settings[ $setting_index ][ $field ] = $preference;
-			$this->new_preference_set = true;
+		if ( null !== $this->get_config_locked_preference( $field, $setting_index ) ) {
+			return;
 		}
+		$stored = $this->pendingModes[ $setting_index ][ $field ]
+			?? $this->translation_management->settings[ $setting_index ][ $field ]
+			?? null;
+		if ( $stored !== $preference ) {
+			$this->pendingModes[ $setting_index ][ $field ] = $preference;
+		}
+	}
+
+	private function save_preferences() {
+		$pending            = $this->pendingModes;
+		$this->pendingModes = [];
+		ModeWrites::save( $this->translation_management, $pending );
 	}
 
 	public function processSubfieldsQueue() {
@@ -637,10 +780,7 @@ class WPML_ACF_Field_Settings implements \IWPML_Backend_Action, \IWPML_Frontend_
 			acf_disable_local();
 		}
 
-		if ( $this->new_preference_set ) {
-			$this->translation_management->save_settings();
-			$this->new_preference_set = false;
-		}
+		$this->save_preferences();
 	}
 
 	private function updateSubfieldsByPatterns( $fieldPattern, $preference, $fieldGroupKey, $definitionNames ) {
@@ -672,8 +812,10 @@ class WPML_ACF_Field_Settings implements \IWPML_Backend_Action, \IWPML_Frontend_
 				if ( ! Str::match( '#^' . $fieldPattern . '$#', $fieldName ) ) {
 					continue;
 				}
-				$this->translation_management->settings[ $settingIndex ][ $fieldName ] = $newPreference;
-				$this->new_preference_set = true;
+				if ( null !== $this->get_config_locked_preference( (string) $fieldName, $settingIndex ) ) {
+					return;
+				}
+				$this->pendingModes[ $settingIndex ][ $fieldName ] = $newPreference;
 			}
 		};
 

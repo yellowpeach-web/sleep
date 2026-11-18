@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Advanced Custom Fields Multilingual plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advanced Custom Fields Multilingual 5.2.0\n"
+"Project-Id-Version: Advanced Custom Fields Multilingual 5.3.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/acfml\n"
 "Last-Translator: PTC (Private Translation Cloud)\n"
 "Language-Team: Korean\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-20 11:30+0000\n"
-"PO-Revision-Date: 2026-10-20 11:30+0000\n"
+"POT-Creation-Date: 2026-11-12 08:57+0000\n"
+"PO-Revision-Date: 2026-11-12 08:57+0000\n"
 "X-Generator: PTC (Private Translation Cloud)\n"
 "X-Domain: acfml\n"
 "Language: ko_KR\n"
@@ -64,79 +64,79 @@ msgid "ACF field type:"
 msgstr "ACF 필드 유형:"
 
 #. translators: Label of the radio group on an ACF field that sets how the field is translated.
-#: classes/class-wpml-acf-field-settings.php:99
+#: classes/class-wpml-acf-field-settings.php:98
 msgid "Translation preferences"
 msgstr "번역 설정"
 
 #. translators: Explanation under the translation-preferences radio group of an ACF field.
-#: classes/class-wpml-acf-field-settings.php:101
+#: classes/class-wpml-acf-field-settings.php:100
 msgid "What to do with field's value when post/page is going to be translated"
-msgstr "포스트/페이지를 번역할 때 필드 값을 처리하는 방법"
+msgstr "글/페이지를 번역할 때 필드 값을 처리하는 방법"
 
 #. translators: Option kept on a field that was already set to Translate, for a field type where the option is no longer offered. "Translate" is the preference's name, translated the same way in the preference list.
-#: classes/class-wpml-acf-field-settings.php:243
+#: classes/class-wpml-acf-field-settings.php:242
 msgid "Translate (your current setting, no longer offered for this field type)"
 msgstr "번역 (현재 설정이며, 이 필드 유형에는 더 이상 제공되지 않음)"
 
 #. translators: Explanation under the Translate option that was kept on a field type where it is no longer offered.
-#: classes/class-wpml-acf-field-settings.php:334
+#: classes/class-wpml-acf-field-settings.php:333
 msgid "Kept because it is your current setting. This value is no longer offered for this field type."
 msgstr "현재 설정이기 때문에 유지되었습니다. 이 값은 이 필드 유형에 대해 더 이상 제공되지 않습니다."
 
 #. translators: Warning under a translation preference that WPML advises against for the field being edited.
-#: classes/class-wpml-acf-field-settings.php:339
+#: classes/class-wpml-acf-field-settings.php:338
 msgid "Not recommended for this field type."
 msgstr "이 필드 유형에는 권장되지 않습니다."
 
 #. translators: First line describing the "Don't translate" preference of an ACF field.
-#: classes/class-wpml-acf-field-settings.php:354
+#: classes/class-wpml-acf-field-settings.php:353
 msgid "Translated pages start without this content."
 msgstr "번역된 페이지는 이 콘텐츠 없이 시작됩니다."
 
 #. translators: Second line describing the "Don't translate" preference of an ACF field.
-#: classes/class-wpml-acf-field-settings.php:356
+#: classes/class-wpml-acf-field-settings.php:355
 msgid "Editable in other languages, and starts empty."
 msgstr "다른 언어에서 편집 가능하며 비어 있는 상태로 시작됩니다."
 
 #. translators: First line describing the "Copy" preference of an ACF field.
-#: classes/class-wpml-acf-field-settings.php:360
+#: classes/class-wpml-acf-field-settings.php:359
 msgid "Visitors in every language always see exactly what the original shows."
 msgstr "모든 언어의 방문자에게 항상 원본과 정확히 동일한 내용이 표시됩니다."
 
 #. translators: Second line describing the "Copy" preference of an ACF field; "it" is the field.
-#: classes/class-wpml-acf-field-settings.php:362
+#: classes/class-wpml-acf-field-settings.php:361
 msgid "Shown locked in other languages, so it cannot be edited there."
 msgstr "다른 언어에서는 잠긴 상태로 표시되므로 해당 언어에서는 편집할 수 없습니다."
 
 #. translators: First line describing the "Copy once" preference of an ACF field.
-#: classes/class-wpml-acf-field-settings.php:366
+#: classes/class-wpml-acf-field-settings.php:365
 msgid "Starts the same as the original, then each language goes its own way."
 msgstr "원본과 동일하게 시작한 다음 각 언어별로 고유한 콘텐츠를 유지합니다."
 
 #. translators: Second line describing the "Copy once" preference of an ACF field.
-#: classes/class-wpml-acf-field-settings.php:368
+#: classes/class-wpml-acf-field-settings.php:367
 msgid "Editable in every language, and permanently yours to maintain by hand."
 msgstr "모든 언어에서 편집 가능하며 직접 수동으로 관리할 수 있습니다."
 
 #. translators: First line describing the "Translate" preference of an ACF field; "this" is the field's value.
-#: classes/class-wpml-acf-field-settings.php:372
+#: classes/class-wpml-acf-field-settings.php:371
 msgid "Visitors see this in their own language."
 msgstr "방문자에게 해당 언어로 표시됩니다."
 
 #. translators: Second line describing the "Translate" preference of an ACF field.
-#: classes/class-wpml-acf-field-settings.php:374
+#: classes/class-wpml-acf-field-settings.php:373
 msgid "Filled by the translation and edited in the translation editor."
 msgstr "번역으로 채워지며 번역 에디터에서 편집됩니다."
 
 #. translators: Tooltip of the warning icon next to a field whose translation preference has not been chosen.
-#: classes/class-wpml-acf-field-settings.php:900
+#: classes/class-wpml-acf-field-settings.php:1106
 msgid "Edit the field to set the translation preference."
 msgstr "필드를 편집하여 번역 설정을 지정하세요."
 
 #. translators: Admin notice shown while the plugin updates preferences in the background. "ACFML" is the plugin's short name and "Gutenberg" is the WordPress editor's name; both stay in English.
 #: classes/class-wpml-acf-migrate-block-preferences.php:67
 msgid "ACFML is updating translation preferences for strings in Gutenberg Blocks. Keep using your site as usual. This notice will disappear when the process is done."
-msgstr "ACFML이 구텐베르크 블록에 있는 문자열의 번역 설정을 업데이트하고 있습니다. 사이트를 평소처럼 계속 사용해 주세요. 프로세스가 완료되면 이 알림이 사라집니다."
+msgstr "ACFML이 Gutenberg 블록의 문자열 번역 기본 설정을 업데이트하고 있습니다. 평소처럼 사이트를 계속 사용하셔도 됩니다. 이 작업이 완료되면 이 알림은 사라집니다."
 
 #. translators: Admin notice shown when the plugin is active but WPML is not; "It" is this plugin.
 #: classes/class-wpml-acf-requirements.php:30
@@ -159,57 +159,52 @@ msgid "Install Advanced Custom Fields"
 msgstr "Advanced Custom Fields 설치"
 
 #. translators: First sentence of the admin notice about the ACF field group post type being translatable. The quoted word is the setting's value in WPML and is translated the same way there.
-#: classes/class-wpml-acf-translatable-groups-checker.php:160
+#: classes/class-wpml-acf-translatable-groups-checker.php:161
 msgid "Field groups are set to \"Translatable\" in WPML settings, which prevents ACF fields from being translated."
 msgstr "필드 그룹이 WPML 설정에서 “번역 가능”으로 설정되어 있어 ACF 필드가 번역되지 않습니다."
 
 #. translators: Second sentence of that notice; "This" is the field groups being set to Translatable.
-#: classes/class-wpml-acf-translatable-groups-checker.php:162
+#: classes/class-wpml-acf-translatable-groups-checker.php:163
 msgid "This is almost never intended."
 msgstr "이것은 거의 의도되지 않은 설정입니다."
 
 #. translators: Line in that notice when the setting comes from a file. Keep the file name in English; "Not translatable" is the setting's value in WPML.
-#: classes/class-wpml-acf-translatable-groups-checker.php:168
+#: classes/class-wpml-acf-translatable-groups-checker.php:169
 msgid "A configuration file (wpml-config.xml) controls this setting on this site, so it cannot be changed from here. Edit that file, or ask whoever maintains it to set the ACF field group post type to Not translatable."
-msgstr "구성 파일(wpml-config.xml)이 이 사이트의 설정을 제어하므로 여기에서 변경할 수 없습니다. 해당 파일을 편집하거나 관리자에게 ACF 필드 그룹 포스트 타입을 번역하지 않음으로 설정하도록 요청하세요."
+msgstr "구성 파일(wpml-config.xml)이 이 사이트의 이 설정을 제어하므로 여기에서 변경할 수 없습니다. 해당 파일을 편집하거나 관리자에게 ACF 필드 그룹 글 유형을 번역 불가능으로 설정하도록 요청하세요."
 
 #. translators: Last line of that notice; "them" are the copies of the field groups.
-#: classes/class-wpml-acf-translatable-groups-checker.php:172
+#: classes/class-wpml-acf-translatable-groups-checker.php:173
 msgid "Field group copies already created in other languages stay on the site. Changing this setting does not delete them."
 msgstr "다른 언어로 이미 생성된 필드 그룹 복사본은 사이트에 유지됩니다. 이 설정을 변경해도 삭제되지 않습니다."
 
 #. translators: Button in the admin notice about translatable field groups; it applies the fix. "Not translatable" is the setting's value in WPML and is translated the same way there. Verb phrase, imperative.
-#: classes/class-wpml-acf-translatable-groups-checker.php:194
+#: classes/class-wpml-acf-translatable-groups-checker.php:195
 msgid "Set field groups to Not translatable"
 msgstr "필드 그룹을 번역하지 않음으로 설정"
-
-#. translators: Link in that notice; it opens the ACFML documentation.
-#: classes/class-wpml-acf-translatable-groups-checker.php:205
-msgid "Why this matters"
-msgstr "이것이 중요한 이유"
 
 #. translators: %d is the number of posts using this field group.
 #: classes/FieldGroup/AttachedPosts.php:108
 #, php-format
 msgid "If any field is set to \"Translatable\", WPML will re-translate the %d posts using this field group."
-msgstr "필드가 “번역”으로 설정된 경우, WPML은 이 필드 그룹을 사용하는 %d개의 포스트를 다시 번역합니다."
+msgstr "필드가 “번역 가능”으로 설정된 경우, WPML은 이 필드 그룹을 사용하는 %d개의 글을 다시 번역합니다."
 
 #. translators: Warning shown before a field group's translation option is changed, when the update will take under a minute.
 #: classes/FieldGroup/AttachedPosts.php:121
 msgid "Some posts using this field group have translations. Once you change the translation option, WPML needs to update the translation status of the posts. This can take up to 1 minute."
-msgstr "이 필드 그룹을 사용하는 일부 포스트에 번역이 있습니다. 번역 옵션을 변경하면 WPML이 포스트의 번역 상태를 업데이트해야 합니다. 이 작업은 최대 1분 정도 걸릴 수 있습니다."
+msgstr "이 필드 그룹을 사용하는 일부 글에 번역본이 있습니다. 번역 옵션을 변경하면 WPML이 글의 번역 상태를 업데이트해야 합니다. 최대 1분이 걸릴 수 있습니다."
 
 #. translators: %d is the number of hours.
 #: classes/FieldGroup/AttachedPosts.php:124
 #, php-format
 msgid "Some posts using this field group have translations. Once you change the translation option, WPML needs to update the translation status of the posts. This can take up to %d hours."
-msgstr "이 필드 그룹을 사용하는 일부 포스트에 번역이 있습니다. 번역 옵션을 변경하면 WPML이 포스트의 번역 상태를 업데이트해야 합니다. 이 작업은 최대 %d시간이 걸릴 수 있습니다."
+msgstr "이 필드 그룹을 사용하는 일부 글에 번역본이 있습니다. 번역 옵션을 변경하면 WPML이 글의 번역 상태를 업데이트해야 합니다. 최대 %d시간이 걸릴 수 있습니다."
 
 #. translators: %d is the number of minutes.
 #: classes/FieldGroup/AttachedPosts.php:128
 #, php-format
 msgid "Some posts using this field group have translations. Once you change the translation option, WPML needs to update the translation status of the posts. This can take up to %d minutes."
-msgstr "이 필드 그룹을 사용하는 일부 포스트에 번역이 있습니다. 번역 옵션을 변경하면 WPML이 포스트의 번역 상태를 업데이트해야 합니다. 이 작업은 최대 %d분이 걸릴 수 있습니다."
+msgstr "이 필드 그룹을 사용하는 일부 글에 번역본이 있습니다. 번역 옵션을 변경하면 WPML이 글의 번역 상태를 업데이트해야 합니다. 최대 %d분이 걸릴 수 있습니다."
 
 #. translators: Tooltip of the padlock next to a post type's translation setting that WPML holds; "it" is that setting.
 #: classes/FieldGroup/CptLockHooks.php:162
@@ -224,7 +219,7 @@ msgstr "연결된 택소노미에 대한 번역 설정 지정"
 #. translators: Title of the notice on a field group whose post type cannot be translated yet. Verb phrase, imperative.
 #: classes/FieldGroup/DetectNonTranslatableLocations.php:156
 msgid "Set translation preferences for the attached post type"
-msgstr "연결된 포스트 타입에 대한 번역 설정 지정"
+msgstr "연결된 글 유형의 번역 기본 설정 지정"
 
 #. translators: Body of the notice on a field group whose taxonomy cannot be translated yet. Keep the trailing space: a link follows on the same line.
 #: classes/FieldGroup/DetectNonTranslatableLocations.php:178
@@ -235,7 +230,7 @@ msgstr "필드를 번역하려면 WPML 설정 페이지로 이동하여 이 필�
 #: classes/FieldGroup/DetectNonTranslatableLocations.php:181
 #, php-format
 msgid "If you want to translate your fields, go to the WPML Settings page and %1$smake the post type attached to this field group translatable%2$s."
-msgstr "필드를 번역하려면 WPML 설정 페이지로 이동하여 %1$s이 필드 그룹에 연결된 포스트 타입을 번역 가능하게 설정%2$s하세요."
+msgstr "필드를 번역하려면 WPML 설정 페이지로 이동하여 %1$s이 필드 그룹에 연결된 글 유형을 번역 가능하도록 설정하세요%2$s."
 
 #. translators: Name of the field group translation mode where each field's preference is set by hand. Noun used as a mode name.
 #: classes/FieldGroup/Mode.php:62
@@ -293,187 +288,187 @@ msgid "This value is read by your theme or plugin code. A translated value can s
 msgstr "이 값은 테마 또는 플러그인 코드에서 읽습니다. 번역된 값은 코드에서 기대하는 값과 일치하지 않을 수 있습니다."
 
 #. translators: Line in the tooltip of a field whose translation preference comes from a wpml-config.xml file; "this" is the preference.
-#: classes/FieldGroup/PreferenceSource.php:354
+#: classes/FieldGroup/PreferenceSource.php:403
 msgid "The file decides this again on every import, so changes made elsewhere do not stick."
 msgstr "파일이 가져올 때마다 이를 다시 결정하므로 다른 곳에서 변경한 사항은 유지되지 않습니다."
 
 #. translators: %s is a configuration file path, for example themes/acme/wpml-config.xml.
-#: classes/FieldGroup/PreferenceSource.php:357
+#: classes/FieldGroup/PreferenceSource.php:406
 #, php-format
 msgid "Edit %s, or remove the entry there, to manage this field on this screen."
 msgstr "이 화면에서 이 필드를 관리하려면 %s을 편집하거나 해당 항목을 제거하세요."
 
 #. translators: Last line of the tooltip of a field whose preference comes from a configuration file whose path is unknown.
-#: classes/FieldGroup/PreferenceSource.php:359
+#: classes/FieldGroup/PreferenceSource.php:408
 msgid "Edit the configuration file, or remove the entry there, to manage this field on this screen."
 msgstr "이 화면에서 이 필드를 관리하려면 구성 파일을 편집하거나 해당 항목을 제거하세요."
 
 #. translators: Warning in the tooltip when the stored preference of a field differs from the one now chosen on the screen.
-#: classes/FieldGroup/PreferenceSource.php:371
+#: classes/FieldGroup/PreferenceSource.php:420
 msgid "That is not the value selected above. Saving this field group applies the value above."
 msgstr "위에서 선택한 값과 다릅니다. 이 필드 그룹을 저장하면 위의 값이 적용됩니다."
 
 #. translators: %s is a local JSON file path, for example acf-json/group_640ab1.json.
-#: classes/FieldGroup/PreferenceSource.php:377
+#: classes/FieldGroup/PreferenceSource.php:426
 #, php-format
 msgid "This field group is also in %s. That file re-applies these settings the next time the group is synced."
 msgstr "이 필드 그룹은 %s에도 있습니다. 해당 파일은 다음에 그룹이 동기화될 때 이 설정들을 다시 적용합니다."
 
 #. translators: First line of the tooltip of a field whose translation preference the theme sets. Keep the file name in English.
-#: classes/FieldGroup/PreferenceSource.php:397
+#: classes/FieldGroup/PreferenceSource.php:446
 msgid "Locked. Managed by your theme, in its wpml-config.xml file."
 msgstr "잠김. 테마의 wpml-config.xml 파일에 의해 관리됩니다."
 
 #. translators: First line of the tooltip of a field whose translation preference a plugin sets. Keep the file name in English.
-#: classes/FieldGroup/PreferenceSource.php:401
+#: classes/FieldGroup/PreferenceSource.php:450
 msgid "Locked. Managed by a plugin, in its wpml-config.xml file."
 msgstr "잠김. 플러그인의 wpml-config.xml 파일에 의해 관리됩니다."
 
 #. translators: First line of the tooltip of a field whose translation preference comes from a configuration file WPML fetched.
-#: classes/FieldGroup/PreferenceSource.php:405
+#: classes/FieldGroup/PreferenceSource.php:454
 msgid "Locked. Managed by a configuration file WPML downloaded for one of your plugins or themes."
 msgstr "잠김. WPML이 플러그인 또는 테마 중 하나를 위해 다운로드한 구성 파일에 의해 관리됩니다."
 
 #. translators: First line of the tooltip of a field whose translation preference comes from the XML the site owner pasted into WPML's settings.
-#: classes/FieldGroup/PreferenceSource.php:409
+#: classes/FieldGroup/PreferenceSource.php:458
 msgid "Locked. Managed by the custom XML configuration saved in WPML settings."
 msgstr "잠김. WPML 설정에 저장된 사용자 정의 XML 구성에 의해 관리됩니다."
 
 #. translators: First line of the tooltip of a field whose translation preference comes from a configuration file WPML cannot name.
-#: classes/FieldGroup/PreferenceSource.php:413
+#: classes/FieldGroup/PreferenceSource.php:462
 msgid "Locked. Managed by a configuration file on this site."
 msgstr "잠김. 이 사이트의 구성 파일에 의해 관리됩니다."
 
 #. translators: %s is another field group's title.
-#: classes/FieldGroup/PreferenceSource.php:428
+#: classes/FieldGroup/PreferenceSource.php:477
 #, php-format
 msgid "Set in the field group \"%s\", which uses the same field name."
 msgstr "동일한 필드 이름을 사용하는 “%s” 필드 그룹에서 설정되었습니다."
 
 #. translators: Line in the tooltip saying where a field's translation preference comes from, when the JSON file's path is unknown.
-#: classes/FieldGroup/PreferenceSource.php:439
+#: classes/FieldGroup/PreferenceSource.php:488
 msgid "Set in the field group's local JSON file."
 msgstr "필드 그룹의 로컬 JSON 파일에서 설정되었습니다."
 
 #. translators: %s is a local JSON file path, for example acf-json/group_640ab1.json.
-#: classes/FieldGroup/PreferenceSource.php:442
+#: classes/FieldGroup/PreferenceSource.php:491
 #, php-format
 msgid "Set in the field group's local JSON file, %s."
 msgstr "필드 그룹의 로컬 JSON 파일 %s에서 설정되었습니다."
 
 #. translators: Line in the tooltip saying where a field's translation preference comes from.
-#: classes/FieldGroup/PreferenceSource.php:448
+#: classes/FieldGroup/PreferenceSource.php:497
 msgid "Registered with PHP by your theme or a plugin."
 msgstr "테마 또는 플러그인에 의해 PHP로 등록되었습니다."
 
 #. translators: Link in the tooltip saying where a field's translation preference comes from; "Custom Fields Translation" is the name of the section on that screen.
-#: classes/FieldGroup/PreferenceSource.php:453
+#: classes/FieldGroup/PreferenceSource.php:502
 msgid "Set on the WPML Settings screen (Custom Fields Translation)."
 msgstr "WPML 설정 화면(사용자 정의 필드 번역)에서 설정되었습니다."
 
 #. translators: Line in the tooltip saying that a field's translation preference was set on the field group screen the reader is looking at.
-#: classes/FieldGroup/PreferenceSource.php:458
+#: classes/FieldGroup/PreferenceSource.php:507
 msgid "Set here, on this screen."
 msgstr "이 화면에서 설정되었습니다."
 
 #. translators: Line in the tooltip saying what a field's current translation preference does.
-#: classes/FieldGroup/PreferenceSource.php:481
+#: classes/FieldGroup/PreferenceSource.php:530
 msgid "Right now this field is translated, so visitors see it in their own language."
 msgstr "현재 이 필드는 번역되어 방문자에게 해당 언어로 표시됩니다."
 
 #. translators: Line in the tooltip saying what a field's current translation preference does.
-#: classes/FieldGroup/PreferenceSource.php:485
+#: classes/FieldGroup/PreferenceSource.php:534
 msgid "Right now this field stays identical in every language."
 msgstr "현재 이 필드는 모든 언어에서 동일하게 유지됩니다."
 
 #. translators: Line in the tooltip saying what a field's current translation preference does.
-#: classes/FieldGroup/PreferenceSource.php:489
+#: classes/FieldGroup/PreferenceSource.php:538
 msgid "Right now this field starts as a copy in every language, then each language keeps its own."
 msgstr "현재 이 필드는 모든 언어에서 복사본으로 시작한 다음 각 언어별로 고유하게 유지됩니다."
 
 #. translators: Line in the tooltip saying what a field's current translation preference does.
-#: classes/FieldGroup/PreferenceSource.php:493
+#: classes/FieldGroup/PreferenceSource.php:542
 msgid "Right now this field stays out of translations."
 msgstr "현재 이 필드는 번역에서 제외됩니다."
 
 #. translators: Name of the translation preference that leaves a field out of translations. Verb phrase, imperative.
-#: classes/FieldGroup/PreferenceSource.php:509
+#: classes/FieldGroup/PreferenceSource.php:558
 msgid "Don't translate"
 msgstr "번역하지 않음"
 
 #. translators: Name of the translation preference that gives every language the original's value. Verb, imperative: the action, not a duplicate.
-#: classes/FieldGroup/PreferenceSource.php:511
+#: classes/FieldGroup/PreferenceSource.php:560
 msgid "Copy"
 msgstr "복사"
 
 #. translators: Name of the translation preference that seeds each language from the original and then lets it diverge. Verb phrase, imperative.
-#: classes/FieldGroup/PreferenceSource.php:513
+#: classes/FieldGroup/PreferenceSource.php:562
 msgid "Copy once"
 msgstr "한 번만 복사"
 
 #. translators: Name of the translation preference that sends a field for translation. Verb, imperative: the action, not the noun "translation".
-#: classes/FieldGroup/PreferenceSource.php:515
+#: classes/FieldGroup/PreferenceSource.php:564
 msgid "Translate"
 msgstr "번역"
 
 #. translators: Label of the count of ACF field groups on the setup notice. Noun, plural.
-#: classes/FieldGroup/PreflightHooks.php:111
+#: classes/FieldGroup/PreflightHooks.php:113
 msgid "Field groups"
 msgstr "필드 그룹"
 
 #. translators: Label of the count of ACF fields on the setup notice, and the column heading for that count on the translation setup screen. Noun, plural.
-#: classes/FieldGroup/PreflightHooks.php:113
+#: classes/FieldGroup/PreflightHooks.php:115
 #: classes/FieldGroup/SetupScreen.php:188
 msgid "Fields"
 msgstr "필드"
 
 #. translators: Label of the count of posts using these field groups, on the setup notice. Noun, plural.
-#: classes/FieldGroup/PreflightHooks.php:115
+#: classes/FieldGroup/PreflightHooks.php:117
 msgid "Posts"
-msgstr "포스트"
+msgstr "글"
 
 #. translators: Button on the setup notice that opens the ACF field-groups list; "them" are the field groups. Verb phrase, imperative.
-#: classes/FieldGroup/PreflightHooks.php:124
+#: classes/FieldGroup/PreflightHooks.php:126
 msgid "Review them one by one"
 msgstr "하나씩 검토하기"
 
 #. translators: %d is the number of field groups that have no translation setup.
-#: classes/FieldGroup/PreflightHooks.php:140
+#: classes/FieldGroup/PreflightHooks.php:142
 #, php-format
 msgid "Apply the recommended setup to %d group"
 msgid_plural "Apply the recommended setup to all %d"
 msgstr[0] "%d개 전체에 권장 설정 적용"
 
 #. translators: %d is the number of ACF field groups with no translation setup.
-#: classes/FieldGroup/PreflightHooks.php:160
+#: classes/FieldGroup/PreflightHooks.php:162
 #, php-format
 msgid "%d ACF field group is not configured for translation."
 msgid_plural "%d ACF field groups are not configured for translation."
 msgstr[0] "%d개의 ACF 필드 그룹이 번역용으로 구성되지 않았습니다."
 
 #. translators: %d is a number of posts.
-#: classes/FieldGroup/PreflightHooks.php:174
+#: classes/FieldGroup/PreflightHooks.php:176
 #, php-format
 msgid "%d post"
 msgid_plural "%d posts"
 msgstr[0] "%d개의 글"
 
 #. translators: %1$s is the number of fields in these field groups, %2$s is "41 posts", %3$s the site's default language.
-#: classes/FieldGroup/PreflightHooks.php:184
+#: classes/FieldGroup/PreflightHooks.php:186
 #, php-format
 msgid "%1$s field, used on %2$s, would be skipped and stay in %3$s."
 msgid_plural "%1$s fields, used on %2$s, would be skipped and stay in %3$s."
 msgstr[0] "%2$s에 사용된 %1$s개의 필드를 건너뛰고 %3$s 언어로 유지됩니다."
 
 #. translators: %1$s is the number of fields in these field groups, %2$s is "41 posts".
-#: classes/FieldGroup/PreflightHooks.php:199
+#: classes/FieldGroup/PreflightHooks.php:201
 #, php-format
 msgid "%1$s field, used on %2$s, would be skipped and stay untranslated."
 msgid_plural "%1$s fields, used on %2$s, would be skipped and stay untranslated."
 msgstr[0] "%2$s에 사용된 %1$s개의 필드를 건너뛰고 번역되지 않은 상태로 유지됩니다."
 
 #. translators: Error page shown when the logged-in user may not change the field groups' translation setup.
-#: classes/FieldGroup/PreflightHooks.php:328
+#: classes/FieldGroup/PreflightHooks.php:330
 msgid "You are not allowed to change the translation setup of ACF field groups."
 msgstr "ACF 필드 그룹의 번역 설정을 변경할 권한이 없습니다."
 
@@ -880,10 +875,10 @@ msgstr "필드 라벨 번역 방법 »"
 msgid "This setup translates field values."
 msgstr "이 설정은 필드 값을 번역합니다."
 
-#. translators: Line in the Multilingual Setup panel about translating the fields' names. "ACF Field Group" is the type the Translation Dashboard shows for these strings; keep the bold tags around the screen name.
+#. translators: Line in the Multilingual Setup panel about translating the fields' names. "ACF Field Groups" is the Translation Dashboard's section heading for these strings; keep the bold tags around the screen name.
 #: classes/FieldGroup/UIHooks.php:337
-msgid "Translate field labels and dropdown choice labels separately. Find them under ACF Field Group in the <b>Translation Dashboard</b>."
-msgstr "필드 라벨과 드롭다운 선택 항목 라벨은 별도로 번역하세요. <b>번역 대시보드</b>의 ACF Field Group에서 찾을 수 있습니다."
+msgid "Translate field labels and dropdown choice labels separately. Find them under ACF Field Groups in the <b>Translation Dashboard</b>."
+msgstr "필드 레이블과 드롭다운 선택 항목 레이블을 별도로 번역합니다. <b>번역 대시보드</b>의 ACF 필드 그룹에서 찾을 수 있습니다."
 
 #. translators: Title of the dialog listing what saving the field group will change. Verb phrase, imperative.
 #: classes/FieldGroup/UIHooks.php:364
@@ -919,7 +914,7 @@ msgstr "설정되지 않음"
 #. translators: Line in that dialog when no translated post uses the field group.
 #: classes/FieldGroup/UIHooks.php:389
 msgid "No posts with translations use this field group yet, so nothing has to be sent again."
-msgstr "이 필드 그룹을 사용하는 번역된 포스트가 아직 없으므로 다시 보낼 항목이 없습니다."
+msgstr "아직 번역본이 있는 글 중 이 필드 그룹을 사용하는 글이 없으므로 다시 보낼 항목이 없습니다."
 
 #. translators: Line in that dialog when no translated category, tag or other term uses the field group.
 #: classes/FieldGroup/UIHooks.php:391
@@ -929,7 +924,7 @@ msgstr "이 필드 그룹을 사용하는 번역된 용어가 아직 없으므�
 #. translators: Line in that dialog when neither a translated post nor a translated term uses the field group.
 #: classes/FieldGroup/UIHooks.php:393
 msgid "No posts or terms with translations use this field group yet, so nothing has to be sent again."
-msgstr "이 필드 그룹을 사용하는 번역된 포스트나 용어가 아직 없으므로 다시 보낼 항목이 없습니다."
+msgstr "아직 번역본이 있는 글이나 용어 중 이 필드 그룹을 사용하는 항목이 없으므로 다시 보낼 항목이 없습니다."
 
 #. translators: Label of the option that leaves existing translations alone. Verb phrase, imperative.
 #: classes/FieldGroup/UIHooks.php:395
@@ -1021,25 +1016,25 @@ msgstr[0] "기존 %d개의 용어도 업데이트"
 #: classes/FieldGroup/UIHooks.php:576
 #, php-format
 msgid "Also update the %1$d existing posts and %2$d terms"
-msgstr "기존 %1$d개의 포스트와 %2$d개의 용어도 업데이트"
+msgstr "기존 글 %1$d개 및 용어 %2$d개도 업데이트"
 
 #. translators: %1$d is a number of posts, %2$d a number of terms.
 #: classes/FieldGroup/UIHooks.php:578
 #, php-format
 msgid "Also update the %1$d existing post and %2$d terms"
-msgstr "기존 %1$d개의 포스트와 %2$d개의 용어도 업데이트"
+msgstr "기존 글 %1$d개 및 용어 %2$d개도 업데이트"
 
 #. translators: %1$d is a number of posts, %2$d a number of terms.
 #: classes/FieldGroup/UIHooks.php:580
 #, php-format
 msgid "Also update the %1$d existing posts and %2$d term"
-msgstr "기존 %1$d개의 포스트와 %2$d개의 용어도 업데이트"
+msgstr "기존 글 %1$d개 및 용어 %2$d개도 업데이트"
 
 #. translators: %1$d is a number of posts, %2$d a number of terms.
 #: classes/FieldGroup/UIHooks.php:582
 #, php-format
 msgid "Also update the %1$d existing post and %2$d term"
-msgstr "기존 %1$d개의 포스트와 %2$d개의 용어도 업데이트"
+msgstr "기존 글 %1$d개 및 용어 %2$d개도 업데이트"
 
 #. translators: First sentence of the notice on a field group attached to an ACF options page. "Options page" is ACF's own name for that screen.
 #: classes/FieldGroup/UIHooks.php:598
@@ -1074,41 +1069,41 @@ msgid "That content is translated in the %1$sWPML Translation Dashboard%2$s, and
 msgstr "해당 콘텐츠는 %1$sWPML 번역 대시보드%2$s에서 번역되며, 여기서 선택하는 옵션에 따라 각 필드의 동작 방식이 결정됩니다."
 
 #. translators: Name of the WPML screen that decides which post types are translated, used inside the panel that links to it.
-#: classes/Helper/Cpt.php:75
+#: classes/Helper/Cpt.php:78
 msgid "Post Type Translation"
 msgstr "포스트 유형 번역"
 
 #. translators: Row label in the Multilingual Setup panel, saying how the names of a post type, taxonomy or options page are translated.
-#: classes/Helper/Cpt.php:83
-#: classes/Helper/OptionsPage.php:82
-#: classes/Helper/Taxonomy.php:83
+#: classes/Helper/Cpt.php:86
+#: classes/Helper/OptionsPage.php:85
+#: classes/Helper/Taxonomy.php:85
 msgid "Labels Translation"
 msgstr "라벨 번역"
 
 #. translators: Name of the WPML screen that decides which taxonomies are translated, used inside the panel that links to it.
-#: classes/Helper/Taxonomy.php:75
+#: classes/Helper/Taxonomy.php:77
 msgid "Taxonomy Translation"
 msgstr "분류 체계 번역"
 
 #. translators: Heading of the admin notice shown after the plugin is switched on. Keep the bold tags around the panel's name. Verb phrase, imperative.
-#: classes/Notice/ActivationNotice.php:71
+#: classes/Notice/ActivationNotice.php:78
 msgid "Finish the ACF <b>Multilingual Setup</b>"
 msgstr "ACF <b>다국어 설정</b> 완료"
 
 #. translators: Body of that admin notice; "Field Group" is ACF's own name for the screen.
-#: classes/Notice/ActivationNotice.php:73
+#: classes/Notice/ActivationNotice.php:80
 msgid "Before you can start translating, you need to edit each ACF Field Group to set a translation option for the fields inside it."
 msgstr "번역을 시작하려면 각 ACF 필드 그룹을 편집하여 내부 필드에 대한 번역 옵션을 설정해야 합니다."
 
 #. translators: The placeholders are replaced by an HTML link pointing to the documentation.
-#: classes/Notice/ActivationNotice.php:76
+#: classes/Notice/ActivationNotice.php:83
 #: classes/Notice/FieldGroupModes.php:61
 #, php-format
 msgid "Read more about %1$show to translate your ACF custom fields%2$s"
 msgstr "%1$sACF 사용자 정의 필드 번역 방법%2$s에 대해 자세히 알아보기"
 
 #. translators: The placeholders are replaced by an HTML link pointing to field groups list.
-#: classes/Notice/ActivationNotice.php:83
+#: classes/Notice/ActivationNotice.php:90
 #, php-format
 msgid "%1$sSet translation options%2$s"
 msgstr "%1$s번역 옵션 설정%2$s"
@@ -1152,50 +1147,50 @@ msgid "See both fields"
 msgstr "두 필드 모두 보기"
 
 #. translators: Button in the admin notice about untranslated media texts; it opens WPML's Media Translation settings. Verb phrase, imperative.
-#: classes/Notice/MediaTexts.php:57
+#: classes/Notice/MediaTexts.php:65
 msgid "Go to Media Translation settings"
 msgstr "미디어 번역 설정으로 이동"
 
 #. translators: Body of the admin notice about untranslated media texts. The quoted text is the name of a WPML setting and is translated the same way there.
-#: classes/Notice/MediaTexts.php:110
+#: classes/Notice/MediaTexts.php:114
 msgid "This content has ACF image, gallery, or file fields, but the alt text, caption, and title of their media will not be sent for translation. To include them, turn on \"Translate Media Library texts when translating content\" in WPML Media Translation settings."
 msgstr "이 콘텐츠에는 ACF 이미지, 갤러리 또는 파일 필드가 포함되어 있지만, 해당 미디어의 대체 텍스트, 캡션 및 제목은 번역을 위해 전송되지 않습니다. 이를 포함하려면 WPML Media Translation 설정에서 “콘텐츠를 번역할 때 미디어 라이브러리 텍스트 번역”을 켜세요."
 
 #. translators: Heading of the admin notice about untranslated media texts.
-#: classes/Notice/MediaTexts.php:122
+#: classes/Notice/MediaTexts.php:126
 msgid "Media texts are not being translated"
 msgstr "미디어 텍스트가 번역되지 않고 있습니다"
 
 #. translators: The placeholders are replaced by an HTML link pointing to the WPML Media settings page.
-#: classes/Notice/MediaTexts.php:126
+#: classes/Notice/MediaTexts.php:130
 #, php-format
 msgid "%1$sGo to Media Translation settings%2$s"
 msgstr "%1$s미디어 번역 설정으로 이동%2$s"
 
 #. translators: Heading of the admin notice on an ACF options page. Keep the bold tags around the WPML screen name; "Options page" is ACF's own name for that screen. Verb, imperative.
-#: classes/Options/EditorHooks.php:502
+#: classes/Options/EditorHooks.php:509
 msgid "Translate this Options page from the <b>Translation Dashboard</b>"
 msgstr "<b>번역 대시보드</b>에서 이 옵션 페이지를 번역하세요"
 
 #. translators: Text in the notice on an ACF options page in a secondary language. %1$s: opening link tag, %2$s: closing link tag; the link opens WPML's Translation Dashboard.
-#: classes/Options/EditorHooks.php:505
+#: classes/Options/EditorHooks.php:512
 #, php-format
 msgid "You no longer need to switch the admin language to translate options manually. Translate all your options from the %1$sTranslation Dashboard%2$s."
 msgstr "더 이상 옵션을 수동으로 번역하기 위해 관리자 언어를 전환할 필요가 없습니다. %1$s번역 대시보드%2$s에서 모든 옵션을 번역하세요."
 
 #. translators: Tooltip of the link in that notice; it opens WPML's Translation Dashboard.
-#: classes/Options/EditorHooks.php:507
+#: classes/Options/EditorHooks.php:514
 msgid "Go to the Translation Dashboard"
 msgstr "번역 대시보드로 이동"
 
 #. translators: Text in the notice on an ACF options page in a secondary language. %1$s: opening link tag, %2$s: closing link tag; the link opens WPML's Translation Jobs list. "Edit Translation" is the tooltip of the pencil icon in that list: use the same words as WPML's own translation of that tooltip.
-#: classes/Options/EditorHooks.php:512
+#: classes/Options/EditorHooks.php:519
 #, php-format
 msgid "To change a finished translation, go to %1$sTranslation Jobs%2$s and click on the Edit Translation icon."
 msgstr "완료된 번역을 변경하려면 %1$s번역 작업%2$s으로 이동하여 번역 편집 아이콘을 클릭하십시오."
 
 #. translators: Tooltip of the link in that notice; it opens WPML's Translation Jobs list.
-#: classes/Options/EditorHooks.php:514
+#: classes/Options/EditorHooks.php:521
 msgid "Go to Translation Jobs"
 msgstr "번역 작업으로 이동"
 
@@ -1211,48 +1206,48 @@ msgid "Save blocked to prevent data loss"
 msgstr "데이터 손실을 방지하기 위해 저장이 차단되었습니다"
 
 #. translators: %1$s: opening <a> tag, %2$s: closing </a> tag.
-#: classes/Post/MixedFieldGroupModesHooks.php:119
+#: classes/Post/MixedFieldGroupModesHooks.php:122
 #, php-format
 msgid "You need to %1$stranslate this post manually%2$s because the field groups attached to it use different translation options:"
-msgstr "이 포스트에 연결된 필드 그룹이 서로 다른 번역 옵션을 사용하므로 %1$s이 포스트를 수동으로 번역%2$s해야 합니다:"
+msgstr "연결된 필드 그룹이 서로 다른 번역 옵션을 사용하므로 %1$s이 글을 수동으로 번역해야 합니다%2$s:"
 
 #. translators: %d: number of additional field groups not listed.
-#: classes/Post/MixedFieldGroupModesHooks.php:141
+#: classes/Post/MixedFieldGroupModesHooks.php:144
 #, php-format
 msgid "and %d more."
 msgstr "외 %d개 더 보기."
 
 #. translators: Link and button that open the ACF field-groups list, in the notice about field groups set up differently from one another. Verb phrase, imperative.
-#: classes/Post/MixedFieldGroupModesHooks.php:144
-#: classes/Post/MixedFieldGroupModesHooks.php:224
+#: classes/Post/MixedFieldGroupModesHooks.php:147
+#: classes/Post/MixedFieldGroupModesHooks.php:227
 msgid "Show all field groups"
 msgstr "모든 필드 그룹 표시"
 
 #. translators: %d: number of additional field groups not listed.
-#: classes/Post/MixedFieldGroupModesHooks.php:193
+#: classes/Post/MixedFieldGroupModesHooks.php:196
 #, php-format
 msgid "and %d more"
 msgstr "외 %d개 더 보기"
 
 #. translators: %s: comma-separated list of field groups with their translation options.
-#: classes/Post/MixedFieldGroupModesHooks.php:198
+#: classes/Post/MixedFieldGroupModesHooks.php:201
 #, php-format
 msgid "You need to translate this post manually because the field groups attached to it use different translation options: %s."
-msgstr "이 포스트에 연결된 필드 그룹이 서로 다른 번역 옵션을 사용하므로 이 포스트를 수동으로 번역해야 합니다: %s."
+msgstr "연결된 필드 그룹이 서로 다른 번역 옵션을 사용하므로 이 글을 수동으로 번역해야 합니다: %s."
 
 #. translators: %s: field group name.
-#: classes/Post/MixedFieldGroupModesHooks.php:215
+#: classes/Post/MixedFieldGroupModesHooks.php:218
 #, php-format
 msgid "Edit %s"
 msgstr "%s 편집"
 
 #. translators: Button in that notice; it opens the ACFML documentation. Verb phrase, imperative.
-#: classes/Post/MixedFieldGroupModesHooks.php:231
+#: classes/Post/MixedFieldGroupModesHooks.php:234
 msgid "Go to documentation"
 msgstr "문서로 이동"
 
 #. translators: Tooltip of a field locked in the WordPress editor of a translation.
-#: classes/Post/NativeEditorTranslationHooks.php:210
+#: classes/Post/NativeEditorTranslationHooks.php:274
 msgid "This field value is copied from the default language and will be kept in sync across languages."
 msgstr "이 필드 값은 기본 언어에서 복사되었으며 언어 간에 동기화된 상태로 유지됩니다."
 
@@ -1263,13 +1258,35 @@ msgstr "번역 동기화"
 
 #. translators: Label of that checkbox; "repeater" and "flexible" are ACF field types.
 #: classes/strategy/repeater-sync/CheckboxUI.php:26
+#: classes/strategy/repeater-sync/PanelHooks.php:113
 msgid "Keep repeater and flexible sub-fields in the same order as the default language."
 msgstr "리피터 및 유연한 하위 필드를 기본 언어와 동일한 순서로 유지합니다."
 
 #. translators: Title of the panel holding that checkbox in the post editor. "ACFML" is the plugin's short name and stays in English.
 #: classes/strategy/repeater-sync/CheckboxUI.php:43
+#: classes/strategy/repeater-sync/PanelHooks.php:111
 msgid "ACFML Synchronise translations"
 msgstr "ACFML 번역 동기화"
+
+#. translators: Error shown in the editor sidebar when the synchronisation choice could not be stored.
+#: classes/strategy/repeater-sync/PanelHooks.php:115
+msgid "The synchronisation setting could not be saved."
+msgstr "동기화 설정을 저장할 수 없습니다."
+
+#. translators: Description of a REST API argument. "trid" is WPML's translation group ID; keep it as is.
+#: classes/strategy/repeater-sync/Rest/SetSyncOptionController.php:55
+msgid "The translation group (trid) the original post belongs to."
+msgstr "원본 글이 속한 번역 그룹(trid)입니다."
+
+#. translators: Description of a REST API argument. "repeater" and "flexible" are ACF field types.
+#: classes/strategy/repeater-sync/Rest/SetSyncOptionController.php:61
+msgid "Whether repeater and flexible sub-fields of the translations keep the order of the default language."
+msgstr "번역의 반복기 및 유연한 하위 필드가 기본 언어의 순서를 유지할지 여부입니다."
+
+#. translators: REST API error shown when the user may not change the synchronisation setting of a post.
+#: classes/strategy/repeater-sync/Rest/SetSyncOptionController.php:139
+msgid "Sorry, you are not allowed to change the synchronisation of this post."
+msgstr "죄송하지만 이 글의 동기화를 변경할 권한이 없습니다."
 
 #. translators: Title of the WPML tool that registers fields defined outside the database. "Local JSON" is ACF's own name for that storage. Verb phrase, imperative.
 #: classes/Tools/LocalUI.php:41
@@ -1280,7 +1297,7 @@ msgstr "ACF 로컬 JSON 및 PHP 등록 필드 번역"
 #: classes/Tools/LocalUI.php:60
 #, php-format
 msgid "ACF allows you to %1$sregister fields via PHP%2$s or %3$ssave field settings as JSON files%4$s. You can also save post types, taxonomies, or options pages settings to JSON files."
-msgstr "ACF를 사용하면 %1$sPHP를 통해 필드를 등록%2$s하거나 %3$s필드 설정을 JSON 파일로 저장%4$s할 수 있습니다. 포스트 타입, 택소노미 또는 옵션 페이지 설정도 JSON 파일로 저장할 수 있습니다."
+msgstr "ACF를 사용하면 %1$sPHP를 통해 필드를 등록%2$s하거나 %3$s필드 설정을 JSON 파일로 저장%4$s할 수 있습니다. 글 유형, 분류 체계 또는 옵션 페이지 설정도 JSON 파일로 저장할 수 있습니다."
 
 #. translators: Line under the tool's heading; "these items" are the field groups, post types, taxonomies and options pages defined in code or in acf-json files.
 #: classes/Tools/LocalUI.php:69
@@ -1315,7 +1332,7 @@ msgstr "번역을 위한 라벨 등록"
 #. translators: Explanation under that heading. Keep "acf-json" in English: it is a folder name.
 #: classes/Tools/LocalUI.php:104
 msgid "Scans post types, taxonomies, options pages, and field groups stored in the \"acf-json\" directory, then registers their labels with WPML so you can translate them."
-msgstr "“acf-json” 디렉토리에 저장된 포스트 타입, 택소노미, 옵션 페이지 및 필드 그룹을 스캔한 다음, 번역할 수 있도록 해당 라벨을 WPML에 등록합니다."
+msgstr "“acf-json” 디렉토리에 저장된 글 유형, 분류 체계, 옵션 페이지 및 필드 그룹을 스캔한 다음, 레이블을 WPML에 등록하여 번역할 수 있도록 합니다."
 
 #. translators: First option of the label-registration setting: leave the names alone.
 #: classes/Tools/LocalUI.php:113
@@ -1359,7 +1376,7 @@ msgstr[0] "%s개 그룹"
 #, php-format
 msgid "%s post type"
 msgid_plural "%s post types"
-msgstr[0] "%s개 포스트 타입"
+msgstr[0] "%s개 글 유형"
 
 #. translators: Item in the list of what the tool registered, joined with the others by "and". %s: how many taxonomies.
 #: classes/Tools/LocalUI.php:241
@@ -1378,7 +1395,7 @@ msgstr[0] "%s개 옵션 페이지"
 #. translators: Result shown when the tool found nothing defined in code or in acf-json files.
 #: classes/Tools/LocalUI.php:258
 msgid "No local field groups, post types, taxonomies, or Options pages were found."
-msgstr "로컬 필드 그룹, 포스트 타입, 택소노미 또는 옵션 페이지를 찾을 수 없습니다."
+msgstr "로컬 필드 그룹, 글 유형, 분류 체계 또는 옵션 페이지를 찾을 수 없습니다."
 
 #. translators: The word joining the only two items of a list, inside the sentence saying what the tool registered. Keep the space on each side.
 #: classes/Tools/LocalUI.php:270
@@ -1432,6 +1449,17 @@ msgstr "가능한 경우 번역 사용 또는 기본 언어로 대체"
 
 #. translators: %1$s: ACF field group name.
 #: classes/TranslationEditor/DisableHooks.php:46
+#: classes/TranslationPolicy/LabelHooks.php:39
 #, php-format
 msgid "This content must be translated manually due to the translation option you selected for the \"%1$s\" field group."
 msgstr "“%1$s” 필드 그룹에 대해 선택한 번역 옵션으로 인해 이 콘텐츠는 수동으로 번역해야 합니다."
+
+#: classes/TranslationPolicy/LabelHooks.php:34
+msgid "This content must be translated manually due to the translation option you selected for its ACF field group."
+msgstr "해당 ACF 필드 그룹에 대해 선택한 번역 옵션으로 인해 이 콘텐츠는 수동으로 번역해야 합니다."
+
+#. translators: %s: the plugin's name.
+#: wpml-acf.php:31
+#, php-format
+msgid "%s is incomplete: some of its files are missing, probably after an interrupted update. Please reinstall the plugin."
+msgstr "%s이(가) 완전하지 않습니다. 업데이트가 중단되어 일부 파일이 누락되었을 수 있습니다. 플러그인을 다시 설치해 주세요."

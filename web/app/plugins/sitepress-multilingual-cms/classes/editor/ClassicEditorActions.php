@@ -4,6 +4,12 @@ namespace WPML\TM\Editor;
 
 class ClassicEditorActions {
 
+	private $request;
+
+	public function __construct( ?ClassicEditorRequest $request = null ) {
+		$this->request = $request;
+	}
+
 	public function addHooks() {
 		\WPML\Request\Adapter\Ajax::register( 'wpml_save_job_ajax', \WPML\Request\Policy\Policy::capability( [ 'translate', 'manage_translations' ], \WPML\Request\Policy\Authenticity::wpmlActionNonce( 'wpml_save_job' ) ), [ $this, 'saveJob' ] );
 		\WPML\Request\Adapter\AdminPost::register(
@@ -53,9 +59,8 @@ class ClassicEditorActions {
 			return;
 		}
 
-		$data      = [];
 		$post_data = \WPML_TM_Post_Data::strip_slashes_for_single_quote( $_POST['data'] );
-		parse_str( $post_data, $data );
+		$data      = \WPML\Utilities\FormString::parse( $post_data );
 
 		$data = apply_filters( 'wpml_translation_editor_save_job_data', $data );
 
@@ -78,6 +83,23 @@ class ClassicEditorActions {
 			return;
 		}
 
+		$data = $this->request()->forSave( $data );
+		if ( null === $data ) {
+			/* translators: Error of the Classic Translation Editor when WPML cannot start the new translation round on a save. */
+			wp_send_json_error( __( 'The translation could not be saved.', 'sitepress' ) );
+
+			return;
+		}
+
+		if ( (int) $data['job_id'] !== (int) $jobId ) {
+			if ( ! \WPML\TM\Jobs\Authorization\JobAuthorization::currentUserCanTranslateJob( $data['job_id'] ) ) {
+				wp_send_json_error( 'Permission denied.' );
+
+				return;
+			}
+			$jobId = $data['job_id'];
+		}
+
 		$job = \WPML\Container\make( \WPML_TM_Editor_Job_Save::class );
 
 		$job_details = [
@@ -92,5 +114,13 @@ class ClassicEditorActions {
 		$ajax_response = $job->save( $data );
 		$ajax_response->send_json();
 
+	}
+
+	private function request() {
+		if ( ! $this->request ) {
+			$this->request = \WPML\Container\make( ClassicEditorRequest::class );
+		}
+
+		return $this->request;
 	}
 }

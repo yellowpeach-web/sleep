@@ -18,6 +18,12 @@ class WPML_TM_AMS_Synchronize_Actions implements IWPML_Action {
 
 	private static $last_error = null;
 
+	private static $batch_depth = 0;
+
+	private static $pending_translators = null;
+
+	private static $pending_managers = null;
+
 	public function __construct(
 		WPML_TM_AMS_API $ams_api,
 		WPML_TM_AMS_Users $ams_user_records,
@@ -42,6 +48,12 @@ class WPML_TM_AMS_Synchronize_Actions implements IWPML_Action {
 	}
 
 	public function synchronize_translators() {
+		if ( self::$batch_depth > 0 ) {
+			self::$pending_translators = $this;
+
+			return;
+		}
+
 		$result           = $this->ams_api->synchronize_translators( $this->ams_user_records->get_translators() );
 		self::$last_error = is_wp_error( $result ) ? $result : null;
 		if ( ! is_wp_error( $result ) ) {
@@ -50,8 +62,39 @@ class WPML_TM_AMS_Synchronize_Actions implements IWPML_Action {
 	}
 
 	public function synchronize_managers() {
+		if ( self::$batch_depth > 0 ) {
+			self::$pending_managers = $this;
+
+			return;
+		}
+
 		$result           = $this->ams_api->synchronize_managers( $this->ams_user_records->get_managers() );
 		self::$last_error = is_wp_error( $result ) ? $result : null;
+	}
+
+	public static function openBatch() {
+		self::$batch_depth++;
+	}
+
+	public static function closeBatch() {
+		if ( self::$batch_depth > 0 ) {
+			self::$batch_depth--;
+		}
+		if ( self::$batch_depth > 0 ) {
+			return;
+		}
+
+		$translators               = self::$pending_translators;
+		$managers                  = self::$pending_managers;
+		self::$pending_translators = null;
+		self::$pending_managers    = null;
+
+		if ( $translators ) {
+			$translators->synchronize_translators();
+		}
+		if ( $managers ) {
+			$managers->synchronize_managers();
+		}
 	}
 
 	public static function get_last_error() {

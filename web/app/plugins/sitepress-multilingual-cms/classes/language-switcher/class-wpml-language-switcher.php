@@ -21,6 +21,8 @@ class WPML_Language_Switcher extends WPML_SP_User {
 		$this->dependencies->actions()->init_hooks();
 		$this->dependencies->inline_styles()->init_hooks();
 
+		add_filter( 'icl_get_extra_debug_info', array( $this, 'add_templates_debug_information' ) );
+
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( $this, 'refresh_custom_twig_templates_notice' ) );
 
@@ -34,6 +36,15 @@ class WPML_Language_Switcher extends WPML_SP_User {
 
 	public function refresh_custom_twig_templates_notice() {
 		( new \WPML\LanguageSwitcher\CustomTwigTemplatesNotice( $this->dependencies->settings(), $this->dependencies->templates() ) )->refresh();
+	}
+
+	public function add_templates_debug_information( $info ) {
+		$templates = $this->dependencies->templates();
+
+		return ( new \WPML\LanguageSwitcher\TemplatesDebugInformation(
+			new \WPML\LanguageSwitcher\CustomTemplates( $this->dependencies->settings(), $templates ),
+			$templates
+		) )->add( $info );
 	}
 
 	public function init_admin_hooks() {

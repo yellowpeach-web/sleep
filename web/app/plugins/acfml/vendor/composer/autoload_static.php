@@ -3,11 +3,12 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit41d94c4831899c161e342e2b4ef44116
+class ComposerStaticInitd405f64cda2adf9b72219181dcde109b
 {
     public static $classMap = array (
         'ACFML\\Ajax\\LanguageScope' => __DIR__ . '/../..' . '/classes/Ajax/LanguageScope.php',
         'ACFML\\Cache\\Flush' => __DIR__ . '/../..' . '/classes/Cache/Flush.php',
+        'ACFML\\Cache\\InternalPostKeyFlush' => __DIR__ . '/../..' . '/classes/Cache/InternalPostKeyFlush.php',
         'ACFML\\Container\\Config' => __DIR__ . '/../..' . '/classes/Container/Config.php',
         'ACFML\\Convertable\\AbstractIdsConvertable' => __DIR__ . '/../..' . '/classes/Convertable/AbstractIdsConvertable.php',
         'ACFML\\Convertable\\AbstractUrlConvertable' => __DIR__ . '/../..' . '/classes/Convertable/AbstractUrlConvertable.php',
@@ -30,8 +31,10 @@ class ComposerStaticInit41d94c4831899c161e342e2b4ef44116
         'ACFML\\FieldGroup\\HooksFactory' => __DIR__ . '/../..' . '/classes/FieldGroup/HooksFactory.php',
         'ACFML\\FieldGroup\\InlineBlockGroupModes' => __DIR__ . '/../..' . '/classes/FieldGroup/InlineBlockGroupModes.php',
         'ACFML\\FieldGroup\\InlineBlockHooks' => __DIR__ . '/../..' . '/classes/FieldGroup/InlineBlockHooks.php',
+        'ACFML\\FieldGroup\\LanguagePanelDataHooks' => __DIR__ . '/../..' . '/classes/FieldGroup/LanguagePanelDataHooks.php',
         'ACFML\\FieldGroup\\Mode' => __DIR__ . '/../..' . '/classes/FieldGroup/Mode.php',
         'ACFML\\FieldGroup\\ModeDefaults' => __DIR__ . '/../..' . '/classes/FieldGroup/ModeDefaults.php',
+        'ACFML\\FieldGroup\\ModePreferenceStamp' => __DIR__ . '/../..' . '/classes/FieldGroup/ModePreferenceStamp.php',
         'ACFML\\FieldGroup\\ModeValidity' => __DIR__ . '/../..' . '/classes/FieldGroup/ModeValidity.php',
         'ACFML\\FieldGroup\\NameCollisions' => __DIR__ . '/../..' . '/classes/FieldGroup/NameCollisions.php',
         'ACFML\\FieldGroup\\PreferenceOrigin' => __DIR__ . '/../..' . '/classes/FieldGroup/PreferenceOrigin.php',
@@ -39,6 +42,7 @@ class ComposerStaticInit41d94c4831899c161e342e2b4ef44116
         'ACFML\\FieldGroup\\PreferenceSource' => __DIR__ . '/../..' . '/classes/FieldGroup/PreferenceSource.php',
         'ACFML\\FieldGroup\\PreflightHooks' => __DIR__ . '/../..' . '/classes/FieldGroup/PreflightHooks.php',
         'ACFML\\FieldGroup\\RegisterAbilityHooks' => __DIR__ . '/../..' . '/classes/FieldGroup/RegisterAbilityHooks.php',
+        'ACFML\\FieldGroup\\RestHooksFactory' => __DIR__ . '/../..' . '/classes/FieldGroup/RestHooksFactory.php',
         'ACFML\\FieldGroup\\SaveHooks' => __DIR__ . '/../..' . '/classes/FieldGroup/SaveHooks.php',
         'ACFML\\FieldGroup\\SetCptNotTranslatable' => __DIR__ . '/../..' . '/classes/FieldGroup/SetCptNotTranslatable.php',
         'ACFML\\FieldGroup\\SetDefaultsFactory' => __DIR__ . '/../..' . '/classes/FieldGroup/SetDefaultsFactory.php',
@@ -57,7 +61,9 @@ class ComposerStaticInit41d94c4831899c161e342e2b4ef44116
         'ACFML\\FieldGroup\\TranslationStatusService' => __DIR__ . '/../..' . '/classes/FieldGroup/TranslationStatusService.php',
         'ACFML\\FieldGroup\\UIHooks' => __DIR__ . '/../..' . '/classes/FieldGroup/UIHooks.php',
         'ACFML\\FieldGroup\\UnconfiguredGroups' => __DIR__ . '/../..' . '/classes/FieldGroup/UnconfiguredGroups.php',
+        'ACFML\\FieldPreferences\\BeforeSetupPreferences' => __DIR__ . '/../..' . '/classes/FieldPreferences/BeforeSetupPreferences.php',
         'ACFML\\FieldPreferences\\FieldReferences' => __DIR__ . '/../..' . '/classes/FieldPreferences/FieldReferences.php',
+        'ACFML\\FieldPreferences\\ModeWrites' => __DIR__ . '/../..' . '/classes/FieldPreferences/ModeWrites.php',
         'ACFML\\FieldPreferences\\SubfieldRules' => __DIR__ . '/../..' . '/classes/FieldPreferences/SubfieldRules.php',
         'ACFML\\FieldPreferences\\TranslationJobs' => __DIR__ . '/../..' . '/classes/FieldPreferences/TranslationJobs.php',
         'ACFML\\FieldReferenceAdjuster' => __DIR__ . '/../..' . '/classes/class-wpml-acf-field-reference-adjuster.php',
@@ -75,6 +81,7 @@ class ComposerStaticInit41d94c4831899c161e342e2b4ef44116
         'ACFML\\Field\\IdsListingQueryTrait' => __DIR__ . '/../..' . '/classes/Field/IdsListingQueryTrait.php',
         'ACFML\\Field\\LinkJobAttributes' => __DIR__ . '/../..' . '/classes/Field/LinkJobAttributes.php',
         'ACFML\\Field\\LinkUrlLoadHooks' => __DIR__ . '/../..' . '/classes/Field/LinkUrlLoadHooks.php',
+        'ACFML\\Field\\LinkUrlSaveHooks' => __DIR__ . '/../..' . '/classes/Field/LinkUrlSaveHooks.php',
         'ACFML\\Field\\MetaKeyPatterns' => __DIR__ . '/../..' . '/classes/Field/MetaKeyPatterns.php',
         'ACFML\\Field\\OrphanRowValues' => __DIR__ . '/../..' . '/classes/Field/OrphanRowValues.php',
         'ACFML\\Field\\ReferenceKeyLoadHooks' => __DIR__ . '/../..' . '/classes/Field/ReferenceKeyLoadHooks.php',
@@ -84,6 +91,7 @@ class ComposerStaticInit41d94c4831899c161e342e2b4ef44116
         'ACFML\\FilteredAcfFieldReferenceTrait' => __DIR__ . '/../..' . '/classes/FilteredAcfFieldReferenceTrait.php',
         'ACFML\\Helper\\AcfPostId' => __DIR__ . '/../..' . '/classes/Helper/AcfPostId.php',
         'ACFML\\Helper\\BoldNames' => __DIR__ . '/../..' . '/classes/Helper/BoldNames.php',
+        'ACFML\\Helper\\ClonedFields' => __DIR__ . '/../..' . '/classes/Helper/ClonedFields.php',
         'ACFML\\Helper\\ContentType' => __DIR__ . '/../..' . '/classes/Helper/ContentType.php',
         'ACFML\\Helper\\Cpt' => __DIR__ . '/../..' . '/classes/Helper/Cpt.php',
         'ACFML\\Helper\\FieldGroup' => __DIR__ . '/../..' . '/classes/Helper/FieldGroup.php',
@@ -106,14 +114,18 @@ class ComposerStaticInit41d94c4831899c161e342e2b4ef44116
         'ACFML\\OptionsPage\\HooksFactory' => __DIR__ . '/../..' . '/classes/OptionsPage/HooksFactory.php',
         'ACFML\\Options\\CurrentLanguageHooks' => __DIR__ . '/../..' . '/classes/Options/CurrentLanguageHooks.php',
         'ACFML\\Options\\CustomNamespacesHooks' => __DIR__ . '/../..' . '/classes/Options/CustomNamespacesHooks.php',
+        'ACFML\\Options\\DefaultLanguageFallbackHooks' => __DIR__ . '/../..' . '/classes/Options/DefaultLanguageFallbackHooks.php',
         'ACFML\\Options\\EditorHooks' => __DIR__ . '/../..' . '/classes/Options/EditorHooks.php',
         'ACFML\\Options\\FieldStringData' => __DIR__ . '/../..' . '/classes/Options/FieldStringData.php',
         'ACFML\\Options\\HooksFactory' => __DIR__ . '/../..' . '/classes/Options/HooksFactory.php',
         'ACFML\\Options\\StorageLanguage' => __DIR__ . '/../..' . '/classes/Options/StorageLanguage.php',
         'ACFML\\Options\\StringTranslationHooks' => __DIR__ . '/../..' . '/classes/Options/StringTranslationHooks.php',
+        'ACFML\\Options\\TranslatedValue' => __DIR__ . '/../..' . '/classes/Options/TranslatedValue.php',
         'ACFML\\Options\\TranslationJobHooks' => __DIR__ . '/../..' . '/classes/Options/TranslationJobHooks.php',
         'ACFML\\Options\\ValueCopy' => __DIR__ . '/../..' . '/classes/Options/ValueCopy.php',
         'ACFML\\Options\\ValueRegistration' => __DIR__ . '/../..' . '/classes/Options/ValueRegistration.php',
+        'ACFML\\PageBuilders\\BeaverBuilder\\AcfBlockHooks' => __DIR__ . '/../..' . '/classes/PageBuilders/BeaverBuilder/AcfBlockHooks.php',
+        'ACFML\\PageBuilders\\BeaverBuilder\\AcfBlockModule' => __DIR__ . '/../..' . '/classes/PageBuilders/BeaverBuilder/AcfBlockModule.php',
         'ACFML\\Post\\AutoTranslateHooks' => __DIR__ . '/../..' . '/classes/Post/AutoTranslateHooks.php',
         'ACFML\\Post\\BlockEditorAcfForm' => __DIR__ . '/../..' . '/classes/Post/BlockEditorAcfForm.php',
         'ACFML\\Post\\CopyOnceBlockEditorHooks' => __DIR__ . '/../..' . '/classes/Post/CopyOnceBlockEditorHooks.php',
@@ -132,10 +144,12 @@ class ComposerStaticInit41d94c4831899c161e342e2b4ef44116
         'ACFML\\Repeater\\Shuffle\\Strategy' => __DIR__ . '/../..' . '/classes/strategy/repeater-shuffle/strategy.php',
         'ACFML\\Repeater\\Shuffle\\Term' => __DIR__ . '/../..' . '/classes/strategy/repeater-shuffle/term.php',
         'ACFML\\Repeater\\Shuffle\\TranslatableValue' => __DIR__ . '/../..' . '/classes/strategy/repeater-shuffle/TranslatableValue.php',
+        'ACFML\\Repeater\\Sync\\ArrivingRowsHooks' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/ArrivingRowsHooks.php',
         'ACFML\\Repeater\\Sync\\CheckboxCondition' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/CheckboxCondition.php',
         'ACFML\\Repeater\\Sync\\CheckboxHooks' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/CheckboxHooks.php',
         'ACFML\\Repeater\\Sync\\CheckboxOption' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/CheckboxOption.php',
         'ACFML\\Repeater\\Sync\\CheckboxUI' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/CheckboxUI.php',
+        'ACFML\\Repeater\\Sync\\ChoiceChecksumHooks' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/ChoiceChecksumHooks.php',
         'ACFML\\Repeater\\Sync\\Condition' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/Condition.php',
         'ACFML\\Repeater\\Sync\\HooksFactory' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/HooksFactory.php',
         'ACFML\\Repeater\\Sync\\JobHooks' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/JobHooks.php',
@@ -144,7 +158,11 @@ class ComposerStaticInit41d94c4831899c161e342e2b4ef44116
         'ACFML\\Repeater\\Sync\\OutsideEditorSave' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/OutsideEditorSave.php',
         'ACFML\\Repeater\\Sync\\OutsideEditorSaveHooks' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/OutsideEditorSaveHooks.php',
         'ACFML\\Repeater\\Sync\\OutsideEditorSaveHooksFactory' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/OutsideEditorSaveHooksFactory.php',
+        'ACFML\\Repeater\\Sync\\PanelHooks' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/PanelHooks.php',
         'ACFML\\Repeater\\Sync\\PostHooks' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/PostHooks.php',
+        'ACFML\\Repeater\\Sync\\RestHooksFactory' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/RestHooksFactory.php',
+        'ACFML\\Repeater\\Sync\\Rest\\DefaultChoiceHooks' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/Rest/DefaultChoiceHooks.php',
+        'ACFML\\Repeater\\Sync\\Rest\\SetSyncOptionController' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/Rest/SetSyncOptionController.php',
         'ACFML\\Repeater\\Sync\\SignatureHooks' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/SignatureHooks.php',
         'ACFML\\Repeater\\Sync\\StaleJobs' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/StaleJobs.php',
         'ACFML\\Repeater\\Sync\\TermHooks' => __DIR__ . '/../..' . '/classes/strategy/repeater-sync/TermHooks.php',
@@ -195,9 +213,15 @@ class ComposerStaticInit41d94c4831899c161e342e2b4ef44116
         'ACFML\\TranslationDataTrait' => __DIR__ . '/../..' . '/classes/TranslationDataTrait.php',
         'ACFML\\TranslationEditor\\DisableHooks' => __DIR__ . '/../..' . '/classes/TranslationEditor/DisableHooks.php',
         'ACFML\\TranslationEditor\\JobFilter' => __DIR__ . '/../..' . '/classes/TranslationEditor/JobFilter.php',
+        'ACFML\\TranslationPolicy\\HooksFactory' => __DIR__ . '/../..' . '/classes/TranslationPolicy/HooksFactory.php',
+        'ACFML\\TranslationPolicy\\LabelHooks' => __DIR__ . '/../..' . '/classes/TranslationPolicy/LabelHooks.php',
+        'ACFML\\TranslationPolicy\\LockHooks' => __DIR__ . '/../..' . '/classes/TranslationPolicy/LockHooks.php',
+        'ACFML\\TranslationPolicy\\LockRows' => __DIR__ . '/../..' . '/classes/TranslationPolicy/LockRows.php',
+        'ACFML\\TranslationPolicy\\WriteLocks' => __DIR__ . '/../..' . '/classes/TranslationPolicy/WriteLocks.php',
         'ACFML\\Upgrade\\CommandsProvider' => __DIR__ . '/../..' . '/classes/Upgrade/CommandsProvider.php',
         'ACFML\\Upgrade\\Commands\\CollapseSubfieldSettings' => __DIR__ . '/../..' . '/classes/Upgrade/Commands/CollapseSubfieldSettings.php',
         'ACFML\\Upgrade\\Commands\\Command' => __DIR__ . '/../..' . '/classes/Upgrade/Commands/Command.php',
+        'ACFML\\Upgrade\\Commands\\MergeStrayLinkOptions' => __DIR__ . '/../..' . '/classes/Upgrade/Commands/MergeStrayLinkOptions.php',
         'ACFML\\Upgrade\\Commands\\MigrateToV2' => __DIR__ . '/../..' . '/classes/Upgrade/Commands/MigrateToV2.php',
         'ACFML\\Upgrade\\Commands\\MigrateToV2_1' => __DIR__ . '/../..' . '/classes/Upgrade/Commands/MigrateToV2_1.php',
         'ACFML\\Upgrade\\Commands\\MigrateToV2_2' => __DIR__ . '/../..' . '/classes/Upgrade/Commands/MigrateToV2_2.php',
@@ -242,7 +266,6 @@ class ComposerStaticInit41d94c4831899c161e342e2b4ef44116
         'WPML_ACF_Url_Field' => __DIR__ . '/../..' . '/classes/class-wpml-acf-url-field.php',
         'WPML_ACF_Void_Field' => __DIR__ . '/../..' . '/classes/class-wpml-acf-void-field.php',
         'WPML_ACF_Worker' => __DIR__ . '/../..' . '/classes/class-wpml-acf-worker.php',
-        'WPML_ACF_Xliff' => __DIR__ . '/../..' . '/classes/class-wpml-acf-xliff.php',
         'WPML_Core_Version_Check' => __DIR__ . '/..' . '/wpml-shared/wpml-lib-dependencies/src/dependencies/class-wpml-core-version-check.php',
         'WPML_Dependencies' => __DIR__ . '/..' . '/wpml-shared/wpml-lib-dependencies/src/dependencies/class-wpml-dependencies.php',
         'WPML_Dependencies_Default_Texts' => __DIR__ . '/..' . '/wpml-shared/wpml-lib-dependencies/src/dependencies/class-wpml-dependencies-default-texts.php',
@@ -253,7 +276,7 @@ class ComposerStaticInit41d94c4831899c161e342e2b4ef44116
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit41d94c4831899c161e342e2b4ef44116::$classMap;
+            $loader->classMap = ComposerStaticInitd405f64cda2adf9b72219181dcde109b::$classMap;
 
         }, null, ClassLoader::class);
     }

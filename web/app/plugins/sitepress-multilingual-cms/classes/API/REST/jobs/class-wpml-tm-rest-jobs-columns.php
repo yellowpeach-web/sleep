@@ -7,7 +7,7 @@ class WPML_TM_Rest_Jobs_Columns {
 			'id'         => __( 'Reference ID', 'sitepress' ),
 			/* translators: Column heading in the table of translation jobs: the number that stands for the job itself. */
 			'job_id'     => __( 'Job ID', 'sitepress' ),
-			/* translators: Column heading in the table of translation jobs, and the label of the title field in the translation editor: the title of the piece of content. */
+			/* translators: Column heading and field label for the title of a piece of content: in the table of translation jobs, in the translation editor, and in the table of changes on the "Translation updates" screen. Noun. */
 			'title'      => __( 'Title', 'sitepress' ),
 			/* translators: Name of the Languages screen: in the WPML menu, as the title of that screen, and as a column heading listing the languages of a piece of content. Plural noun. */
 			'languages'  => __( 'Languages', 'sitepress' ),
@@ -30,11 +30,11 @@ class WPML_TM_Rest_Jobs_Columns {
 			'id'            => __( 'Reference ID', 'sitepress' ),
 			/* translators: Column heading in the table of translation jobs: the number that stands for the job itself. */
 			'job_id'        => __( 'Job ID', 'sitepress' ),
-			/* translators: Column heading in the table of translation jobs, and the label of the title field in the translation editor: the title of the piece of content. */
+			/* translators: Column heading and field label for the title of a piece of content: in the table of translation jobs, in the translation editor, and in the table of changes on the "Translation updates" screen. Noun. */
 			'title'         => __( 'Title', 'sitepress' ),
 			/* translators: Column heading in the table of translation jobs: the name given to the group of jobs sent together. */
 			'batch_name'    => __( 'Batch name', 'sitepress' ),
-			/* translators: Column heading and field label in the WPML admin, for the language of a piece of content. Noun, singular. */
+			/* translators: Column heading and field label in the WPML admin, for the language of a piece of content, for example on the Updated translations page (the language of the updated translation). Noun, singular. */
 			'language'      => __( 'Language', 'sitepress' ),
 			/* translators: Column heading in the table of translation jobs: the date the job was sent to be translated. */
 			'sent_date'     => __( 'Sent on', 'sitepress' ),

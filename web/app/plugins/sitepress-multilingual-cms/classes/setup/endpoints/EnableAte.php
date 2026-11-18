@@ -15,7 +15,7 @@ class EnableAte implements IHandler {
 			return Either::left( __( 'The user does not have a proper license to enable ATE.', 'sitepress' ) );
 		}
 
-		if ( \WPML_TM_ATE_Status::is_enabled_and_activated() ) {
+		if ( \WPML_TM_ATE_Status::is_account_usable() ) {
 			return Either::of( true );
 		}
 		Option::setTranslateEverythingDefault();

@@ -158,13 +158,18 @@ class WPML_Media_Set_Posts_Media_Flag implements IWPML_Action {
 		}, $posts );
 		$attached_media_ids = $this->get_attached_media_ids_by_batch( $post_ids );
 
-		$media_ids_by_post = [];
+		$posts_with_media_files = [];
 		foreach ( $post_ids as $post_id ) {
-			$post_id                = (int) $post_id;
-			$post_with_media_files  = $this->post_with_media_files_factory->create(
+			$posts_with_media_files[ $post_id ] = $this->post_with_media_files_factory->create(
 				$post_id,
 				$attached_media_ids[ $post_id ]
 			);
+		}
+
+		WPML_Media_Post_With_Media_Files::prefetch_media_of_posts( $posts_with_media_files );
+
+		$media_ids_by_post = [];
+		foreach ( $posts_with_media_files as $post_id => $post_with_media_files ) {
 			$media_ids_by_post[ $post_id ] = $post_with_media_files->get_media_ids();
 		}
 
@@ -200,6 +205,10 @@ class WPML_Media_Set_Posts_Media_Flag implements IWPML_Action {
 	}
 
 	public function update_post_flag( $post_id, $media_ids = null ) {
+
+		if ( wp_is_post_revision( $post_id ) ) {
+			return;
+		}
 
 		if ( null === $media_ids ) {
 			$media_ids = $this->post_with_media_files_factory->create( $post_id )->get_media_ids();

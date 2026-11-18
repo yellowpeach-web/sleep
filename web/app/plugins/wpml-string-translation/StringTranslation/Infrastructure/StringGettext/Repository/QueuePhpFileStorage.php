@@ -76,14 +76,32 @@ class QueuePhpFileStorage implements QueueStorageInterface {
 		}
 
 		if ( ! is_readable( $realpath ) ) {
-			$this->quarantineFile( $phpFilepath );
+			$this->quarantineIfStillUnreadable( $phpFilepath );
 			return $invalidResult;
 		}
 
+		$openFailed      = false;
+		$previousHandler = null;
+		$previousHandler = set_error_handler(
+			function ( $errno, $errstr, $errfile = '', ...$rest ) use ( $realpath, &$openFailed, &$previousHandler ) {
+				if ( $errfile !== $realpath ) {
+					$openFailed = true;
+					return true;
+				}
+
+				return is_callable( $previousHandler ) ? $previousHandler( $errno, $errstr, $errfile, ...$rest ) : false;
+			}
+		);
 		try {
 			$result = include $realpath;
 		} catch ( \Throwable $e ) {
 			$this->quarantineFile( $phpFilepath );
+			return $invalidResult;
+		} finally {
+			restore_error_handler();
+		}
+		if ( $openFailed && false === $result ) {
+			$this->quarantineIfStillUnreadable( $phpFilepath );
 			return $invalidResult;
 		}
 		if ( ! $result || ! is_array( $result ) ) {
@@ -100,6 +118,12 @@ class QueuePhpFileStorage implements QueueStorageInterface {
 			'valid' => true,
 			'items' => $result['items'],
 		];
+	}
+
+	private function quarantineIfStillUnreadable( string $phpFilepath ) {
+		if ( file_exists( $phpFilepath ) && ! is_readable( $phpFilepath ) ) {
+			$this->quarantineFile( $phpFilepath );
+		}
 	}
 
 	private function quarantineFile( string $phpFilepath, string $reason = 'corrupt' ) : bool {

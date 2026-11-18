@@ -18,6 +18,20 @@ class LinkInBio extends \WPML_Elementor_Media_Node {
 			}
 		}
 
+		if ( isset( $settings['cta_link'] ) && is_array( $settings['cta_link'] ) ) {
+			foreach ( $settings['cta_link'] as &$link ) {
+				$link = $this->translate_image_property( $link, 'cta_link_file', $target_lang, $source_lang );
+			}
+			unset( $link );
+		}
+
+		$settings = $this->translate_image_property( $settings, 'cta_link_file', $target_lang, $source_lang );
+
+		$backgrounds = AllNodes::getDeviceFields( [ 'background_border_background_group_image', 'background_border_background_overlay_group_image' ] );
+		foreach ( $backgrounds as $field ) {
+			$settings = $this->translate_image_property( $settings, $field, $target_lang, $source_lang );
+		}
+
 		return $settings;
 	}
 

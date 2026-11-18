@@ -4,6 +4,7 @@ namespace WPML\TM\ATE\REST;
 
 use WP_REST_Request;
 use WPML\LIB\WP\User;
+use WPML\TM\ATE\API\ClientRestrictionState;
 use WPML\TM\ATE\Retry\Arguments;
 use WPML\TM\ATE\Retry\Process;
 use WPML\TM\ATE\Retry\Result;
@@ -54,6 +55,13 @@ class Retry extends Base {
 			}
 		}
 
-		return (array) make( Process::class )->run( $jobsToProcess );
+		$answer = (array) make( Process::class )->run( $jobsToProcess );
+
+		if ( ClientRestrictionState::isRestricted() ) {
+			$answer['action'] = 'wait';
+			$answer['reason'] = 'client-restricted';
+		}
+
+		return $answer;
 	}
 }

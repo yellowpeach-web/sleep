@@ -13,6 +13,8 @@ use WPML\PHP\Exception\InvalidArgumentException;
 
 class CancelJobsController implements EndpointInterface {
 
+    const CANCEL_SOURCE = 'dashboard';
+
     private $cancelJobsService;
 
     private $unsolvableJobsQuery;
@@ -52,7 +54,13 @@ class CancelJobsController implements EndpointInterface {
 
       $releaseMark = ReleaseLedger::instance()->mark();
 
-      $result = $this->cancelJobsService->cancelJobs( $listedJobIds, true );
+      $result = \WPML\TM\Jobs\JobLog::runInGroup(
+          \WPML\TM\Jobs\JobLog::GROUP_ID_CANCELS,
+          'Cancel jobs (Translation Dashboard: Discard jobs)',
+          function () use ( $listedJobIds ) {
+              return $this->cancelJobsService->cancelJobs( $listedJobIds, true, self::CANCEL_SOURCE );
+          }
+      );
 
     if ( $notListedJobIds ) {
         $this->unsolvableJobIdsSnapshot->forget( $notListedJobIds );

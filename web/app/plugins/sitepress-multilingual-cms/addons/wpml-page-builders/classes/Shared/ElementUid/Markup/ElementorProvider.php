@@ -44,7 +44,7 @@ class ElementorProvider implements Provider {
 				continue;
 			}
 
-			if ( Node::isTranslatable( $element ) && ! empty( $element['id'] ) ) {
+			if ( $nodes->is_translatable_element( $element ) && ! empty( $element['id'] ) ) {
 				$strings = \WPML_Elementor_Translatable_Nodes::with_active_element_settings_cache(
 					function () use ( $nodes, $element ) {
 						return $nodes->get( $element['id'], $element );

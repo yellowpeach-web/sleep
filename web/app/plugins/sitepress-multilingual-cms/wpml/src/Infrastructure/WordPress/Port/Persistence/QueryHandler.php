@@ -21,7 +21,7 @@ class QueryHandler implements QueryHandlerInterface {
   public function query( string $query ) {
     ReadStatement::assert( $query );
 
-    $data = $this->wpdb->get_results( $query, ARRAY_A );
+    $data = (array) $this->wpdb->get_results( $query, ARRAY_A );
 
     if ( $this->wpdb->last_error ) {
       throw new DatabaseErrorException( 'Database query failed.' );

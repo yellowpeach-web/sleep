@@ -155,9 +155,11 @@ abstract class WPML_Elementor_Module_With_Items implements IWPML_Page_Builders_M
 	}
 
 	private function is_repeater_field_inactive( $activeItem, $field ) {
+		$control = explode( self::FIELD_SEPARATOR, $field )[0];
+
 		return is_array( $activeItem )
-			&& array_key_exists( $field, $activeItem )
-			&& null === $activeItem[ $field ];
+			&& array_key_exists( $control, $activeItem )
+			&& null === $activeItem[ $control ];
 	}
 
 	public function get_field_path( $key ) {

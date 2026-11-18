@@ -6,6 +6,7 @@ use WPML\FP\Obj;
 use WPML\LIB\WP\User;
 use WPML\TM\API\Job\Map;
 use WPML\TM\API\Jobs;
+use WPML\TM\ATE\Review\ReviewStatus;
 use WPML\Translation\PreviousStateServiceFactory;
 
 class TranslationRecord {
@@ -46,7 +47,7 @@ class TranslationRecord {
 		if ( ! $details || empty( $details->source_language_code ) || empty( $details->trid ) ) {
 			return 0;
 		}
-		if ( get_post_meta( $postId, '_icl_lang_duplicate_of', true ) ) {
+		if ( \WPML\TranslationPolicy\Duplicate\DuplicateReaders::isKeptInStep( $postId ) ) {
 			return 0;
 		}
 
@@ -164,9 +165,12 @@ class TranslationRecord {
 
 		$this->cancelInATE( $request );
 
-		$translationId = $this->translationIdOf( (int) $request['rid'] );
+		$recordJobId    = (int) Obj::prop( 'job_id', $request['record'] );
+		$reviewReopened = false;
+		$translationId  = $this->translationIdOf( (int) $request['rid'] );
 		if ( $translationId > 0 ) {
 			$this->restoreOrClearPreviousState( $translationId );
+			$reviewReopened = $this->endReviewEdit( $translationId, $recordJobId );
 			$this->db()->query(
 				$this->db()->prepare(
 					"UPDATE {$this->db()->prefix}icl_translation_status SET status = %d, translator_id = %d WHERE translation_id = %d AND status IN ( %d, %d )",
@@ -180,16 +184,33 @@ class TranslationRecord {
 		}
 
 		JobLog::add( 'request_closed_on_record', [
-			'request_job_id' => (int) $request['job_id'],
-			'record_job_id'  => (int) Obj::prop( 'job_id', $request['record'] ),
-			'rid'            => (int) $request['rid'],
-			'ate_job_id'     => (int) Obj::prop( 'editor_job_id', $request ),
+			'request_job_id'  => (int) $request['job_id'],
+			'record_job_id'   => $recordJobId,
+			'rid'             => (int) $request['rid'],
+			'ate_job_id'      => (int) Obj::prop( 'editor_job_id', $request ),
+			'review_reopened' => $reviewReopened,
 		] );
 
 		return true;
 	}
 
 	public function closeOpenOfRecord( $requestJobId, $recordJobId = 0, $evenIfOutOfDate = false, $onlyOfRecordsTranslator = false ) {
+		if ( ! $this->opensRecord( $requestJobId, $evenIfOutOfDate, $onlyOfRecordsTranslator ) ) {
+			return false;
+		}
+
+		return $this->closeRequest( $requestJobId, $recordJobId );
+	}
+
+	public function opensRecordAsItStood( $jobId ) {
+		if ( ! $this->opensRecord( $jobId, false, true ) ) {
+			return false;
+		}
+
+		return self::isCompleted( Jobs::getPreviousJob( (int) $jobId ) );
+	}
+
+	private function opensRecord( $requestJobId, $evenIfOutOfDate, $onlyOfRecordsTranslator ) {
 		$wpdb = $this->db();
 		$row = $wpdb->get_row(
 			$wpdb->prepare(
@@ -212,11 +233,8 @@ class TranslationRecord {
 		}
 
 		$saved = PreviousStateServiceFactory::create()->get( (int) $row['translation_id'] );
-		if ( ! $saved || ( ! $evenIfOutOfDate && ! empty( $saved['needs_update'] ) ) ) {
-			return false;
-		}
 
-		return $this->closeRequest( $requestJobId, $recordJobId );
+		return $saved && ( $evenIfOutOfDate || empty( $saved['needs_update'] ) );
 	}
 
 	private function openRequestOnRecord( $requestJobId, $recordJobId ) {
@@ -277,7 +295,7 @@ class TranslationRecord {
 		$job->set_editor( \WPML_TM_Editors::ATE );
 		$job->set_editor_job_id( $ateJobId );
 
-		$this->announceCancelled( $job );
+		$this->announceCancelled( $job, \WPML\TM\ATE\Cancel\CancelSource::REQUEST_CLOSED );
 
 		set_transient( self::CLOSED_CLONE . (int) Obj::prop( 'job_id', $request['record'] ), $ateJobId, 7 * DAY_IN_SECONDS );
 	}
@@ -286,14 +304,27 @@ class TranslationRecord {
 		return (int) get_transient( self::CLOSED_CLONE . (int) $recordJobId );
 	}
 
-	protected function announceCancelled( \WPML_TM_Post_Job_Entity $job ) {
-		do_action( 'wpml_tm_job_cancelled', $job, \WPML_TM_ATE_API::CANCEL_REASON_CANCELLED );
+	protected function announceCancelled( \WPML_TM_Post_Job_Entity $job, $source ) {
+		do_action( 'wpml_tm_job_cancelled', $job, \WPML_TM_ATE_API::CANCEL_REASON_CANCELLED, $source );
 	}
 
 	private function translationIdOf( $rid ) {
 		$wpdb = $this->db();
 
 		return (int) $wpdb->get_var( $wpdb->prepare( "SELECT translation_id FROM {$wpdb->prefix}icl_translation_status WHERE rid = %d", $rid ) );
+	}
+
+	private function endReviewEdit( $translationId, $recordJobId ) {
+		$wpdb = $this->db();
+
+		$reviewStatus = $wpdb->get_var( $wpdb->prepare( "SELECT review_status FROM {$wpdb->prefix}icl_translation_status WHERE translation_id = %d", $translationId ) );
+		if ( ReviewStatus::EDITING !== $reviewStatus ) {
+			return false;
+		}
+
+		Jobs::setReviewStatus( $recordJobId, ReviewStatus::NEEDS_REVIEW );
+
+		return true;
 	}
 
 	private function restoreOrClearPreviousState( $translationId ) {
@@ -400,8 +431,64 @@ class TranslationRecord {
 	public static function rowToOpen( $jobId ) {
 		$jobId  = (int) $jobId;
 		$newest = self::newerRowOf( $jobId );
+		if ( ! $newest ) {
+			return $jobId;
+		}
 
-		return $newest ? (int) Obj::prop( 'job_id', $newest ) : $jobId;
+		$newestId = (int) Obj::prop( 'job_id', $newest );
+
+		$record = self::recordUnderClosedRequest( $newestId );
+
+		return $record ? (int) Obj::prop( 'job_id', $record ) : $newestId;
+	}
+
+	public static function isClosedRequestOnRecord( $jobId ) {
+		return null !== self::recordUnderClosedRequest( $jobId );
+	}
+
+	public static function recordUnderClosedRequest( $jobId ) {
+		global $wpdb;
+
+		$jobId = (int) $jobId;
+		if ( $jobId <= 0 ) {
+			return null;
+		}
+
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT j.translated, j.completed_date, j.editor, j.editor_job_id, s.status FROM {$wpdb->prefix}icl_translate_job j
+				 INNER JOIN {$wpdb->prefix}icl_translation_status s ON s.rid = j.rid
+				 WHERE j.job_id = %d",
+				$jobId
+			),
+			ARRAY_A
+		);
+
+		if (
+			! is_array( $row )
+			|| ! self::isRequestWithAteJob( $row )
+			|| ICL_TM_COMPLETE !== (int) Obj::prop( 'status', $row )
+		) {
+			return null;
+		}
+
+		$previous = Jobs::getPreviousJob( $jobId );
+		while ( $previous && ! self::isCompleted( $previous ) ) {
+			$previousId = (int) Obj::prop( 'job_id', $previous );
+			if ( $previousId <= 0 || $previousId >= $jobId || ! self::isRequestWithAteJob( $previous ) ) {
+				return null;
+			}
+			$jobId    = $previousId;
+			$previous = Jobs::getPreviousJob( $jobId );
+		}
+
+		return $previous ? (object) $previous : null;
+	}
+
+	private static function isRequestWithAteJob( $row ) {
+		return ! self::isCompleted( $row )
+			&& \WPML_TM_Editors::ATE === Obj::prop( 'editor', $row )
+			&& (int) Obj::prop( 'editor_job_id', $row ) > 0;
 	}
 
 	private static function openRequestRowOf( $recordJobId ) {
@@ -558,6 +645,13 @@ class TranslationRecord {
 		);
 
 		return $this->savePreviousState( $translationId, (int) $rid );
+	}
+
+	public function restorePreviousStateForRid( $rid ) {
+		$translationId = $this->translationIdOf( (int) $rid );
+		if ( $translationId > 0 ) {
+			$this->restoreOrClearPreviousState( $translationId );
+		}
 	}
 
 	private function ensureRecordIsNumbered( $rid, $recordId ) {

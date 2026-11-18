@@ -25,9 +25,11 @@ class NativeEditorTranslationHooks implements \IWPML_Backend_Action {
 	}
 
 	public function add_hooks() {
-		$postId           = isset( $_GET['post'] ) ? (int) $_GET['post'] : null;
-		$trid             = isset( $_GET['trid'] ) ? (int) $_GET['trid'] : null;
-		$postType         = Sanitize::stringProp( 'post_type', $_GET );
+		self::showEveryRowOfCopiedRepeatersOnSave();
+
+		$postId   = isset( $_GET['post'] ) ? (int) $_GET['post'] : null;
+		$trid     = isset( $_GET['trid'] ) ? (int) $_GET['trid'] : null;
+		$postType = Sanitize::stringProp( 'post_type', $_GET );
 
 		if ( $trid ) {
 			Hooks::onFilter( 'acf/load_value', PHP_INT_MAX, 3 )
@@ -58,6 +60,13 @@ class NativeEditorTranslationHooks implements \IWPML_Backend_Action {
 		) {
 			self::loadFieldLockFilters();
 
+			if ( $isNewTranslation ) {
+				Hooks::onFilter( 'acf/load_field/type=repeater' )
+					->then( spreadArgs( [ self::class, 'showEveryRowOfACopiedRepeater' ] ) );
+				Hooks::onAction( 'acf/render_field/type=repeater' )
+					->then( spreadArgs( [ self::class, 'renderUnpaginatedRepeaterMarker' ] ) );
+			}
+
 			Hooks::onAction( 'admin_enqueue_scripts' )
 				->then( [ self::class, 'enqueueAssets' ] );
 		}
@@ -69,6 +78,42 @@ class NativeEditorTranslationHooks implements \IWPML_Backend_Action {
 
 		Hooks::onFilter( 'acf/get_field_label', 10, 2 )
 			->then( spreadArgs( [ self::class, 'addClassToFieldLabel' ] ) );
+	}
+
+	public static function showEveryRowOfACopiedRepeater( $field ) {
+		return self::hasCopyPreference( $field ) ? Obj::assoc( 'pagination', 0, $field ) : $field;
+	}
+
+	public static function renderUnpaginatedRepeaterMarker( $field ) {
+		if ( isset( $field['key'] ) && self::hasCopyPreference( $field ) ) {
+			echo '<input type="hidden" name="acfml_unpaginated_repeaters[]" value="' . esc_attr( $field['key'] ) . '">';
+		}
+	}
+
+	public static function showEveryRowOfCopiedRepeatersOnSave() {
+		$fieldKeys = acf_maybe_get_POST( 'acfml_unpaginated_repeaters', [] );
+
+		if ( ! is_array( $fieldKeys ) || ! (int) acf_maybe_get_POST( 'post_ID' ) ) {
+			return;
+		}
+
+		foreach ( $fieldKeys as $fieldKey ) {
+			if ( ! is_string( $fieldKey ) ) {
+				continue;
+			}
+
+			$fieldKey = sanitize_key( $fieldKey );
+			if ( '' === $fieldKey ) {
+				continue;
+			}
+
+			Hooks::onFilter( 'acf/load_field/key=' . $fieldKey )
+				->then( spreadArgs( [ self::class, 'showEveryRowOfACopiedRepeater' ] ) );
+		}
+	}
+
+	private static function hasCopyPreference( $field ) {
+		return Lst::includes( Obj::prop( 'wpml_cf_preferences', $field ), [ WPML_COPY_ONCE_CUSTOM_FIELD, WPML_COPY_CUSTOM_FIELD ] );
 	}
 
 	private function preFillPostTranslationField( $trid ) {

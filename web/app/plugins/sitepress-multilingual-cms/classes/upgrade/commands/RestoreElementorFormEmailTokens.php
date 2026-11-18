@@ -20,21 +20,28 @@ class RestoreElementorFormEmailTokens implements \IWPML_Upgrade_Command {
 
 	private $result = false;
 
+	private $placeholders;
+
 	public function __construct( array $args ) {
-		$this->schema = $args[0];
+		$this->schema       = $args[0];
+		$this->placeholders = new FormEmailPlaceholders();
 	}
 
 	public function run_admin() {
 		if ( $this->getState()['done'] ) {
-			delete_option( self::STATE_OPTION );
+			delete_option( static::STATE_OPTION );
 			$this->result = true;
 
 			return true;
 		}
 
-		add_action( 'wp_loaded', [ $this, 'runBatch' ] );
+		add_action( 'wp_loaded', [ $this, 'runBatchOnLoad' ] );
 
 		return false;
+	}
+
+	public function runBatchOnLoad() {
+		$this->runBatch();
 	}
 
 	public function runBatch(): bool {
@@ -64,7 +71,7 @@ class RestoreElementorFormEmailTokens implements \IWPML_Upgrade_Command {
 					if ( $this->lostAToken( $string, (string) $translation->value ) ) {
 						icl_add_string_translation( (int) $string->id, $translation->language, $string->value, ICL_TM_NEEDS_UPDATE );
 						$restored++;
-						$restoredPosts[ (int) $string->post_id ][ $translation->language ] = true;
+						$restoredPosts[ (int) $string->post_id ][ (string) $translation->language ] = true;
 						$this->log( $string, $translation->language );
 					}
 				}
@@ -92,15 +99,15 @@ class RestoreElementorFormEmailTokens implements \IWPML_Upgrade_Command {
 				INNER JOIN {$wpdb->prefix}icl_string_packages p ON p.ID = s.string_package_id
 				WHERE p.kind_slug = 'elementor'
 					AND s.id > %d
-					AND ( s.name LIKE %s OR s.name LIKE %s )
-					AND ( s.value LIKE %s OR s.value LIKE %s )
+					AND ( s.name LIKE %s OR s.name LIKE %s OR s.name LIKE %s )
+					AND s.value LIKE %s
 				ORDER BY s.id
 				LIMIT %d",
 				$lastId,
 				$wpdb->esc_like( 'email_' ) . '%',
+				$wpdb->esc_like( 'email>' ) . '%',
 				$wpdb->esc_like( 'redirect_to-' ) . '%',
-				'%' . $wpdb->esc_like( '[all-fields]' ) . '%',
-				'%' . $wpdb->esc_like( '[field' ) . '%',
+				'%' . $wpdb->esc_like( '[' ) . '%',
 				self::BATCH_SIZE
 			)
 		);
@@ -187,11 +194,11 @@ class RestoreElementorFormEmailTokens implements \IWPML_Upgrade_Command {
 	}
 
 	private function lostAToken( \stdClass $string, string $translation ): bool {
-		if ( '' === $translation || ! preg_match( FormEmailPlaceholders::STRING_NAME_PATTERN, (string) $string->name ) ) {
+		if ( '' === $translation ) {
 			return false;
 		}
 
-		foreach ( $this->getTokens( (string) $string->value ) as $token ) {
+		foreach ( $this->getTokens( $string ) as $token ) {
 			if ( false === strpos( $translation, $token ) ) {
 				return true;
 			}
@@ -200,19 +207,37 @@ class RestoreElementorFormEmailTokens implements \IWPML_Upgrade_Command {
 		return false;
 	}
 
-	private function getTokens( string $text ): array {
+	protected function getPatternsByStringName(): array {
+		return FormEmailPlaceholders::PATTERNS_BY_STRING_NAME;
+	}
+
+	private function getTokens( \stdClass $string ): array {
+		$name   = (string) $string->name;
 		$tokens = [];
 
-		foreach ( FormEmailPlaceholders::PLACEHOLDER_PATTERNS as $pattern ) {
-			preg_match_all( $pattern, $text, $matches );
-			$tokens = array_merge( $tokens, $matches[0] );
+		foreach ( $this->getPatternsByStringName() as $namePattern => $placeholderPatterns ) {
+			if ( ! preg_match( $namePattern, $name ) ) {
+				continue;
+			}
+
+			if ( preg_match( FormEmailPlaceholders::V4_STRING_NAME_PATTERN, $name ) ) {
+				$placeholderPatterns = array_merge(
+					$placeholderPatterns,
+					$this->placeholders->getV4CssIdPatterns( $name, (int) $string->post_id )
+				);
+			}
+
+			foreach ( $placeholderPatterns as $pattern ) {
+				preg_match_all( $pattern, (string) $string->value, $matches );
+				$tokens = array_merge( $tokens, $matches[0] );
+			}
 		}
 
 		return array_unique( $tokens );
 	}
 
 	private function getState(): array {
-		$state = get_option( self::STATE_OPTION, [] );
+		$state = get_option( static::STATE_OPTION, [] );
 
 		return [
 			'lastId' => (int) ( $state['lastId'] ?? 0 ),
@@ -221,7 +246,7 @@ class RestoreElementorFormEmailTokens implements \IWPML_Upgrade_Command {
 	}
 
 	private function saveState( array $state ) {
-		update_option( self::STATE_OPTION, $state, false );
+		update_option( static::STATE_OPTION, $state, false );
 	}
 
 	private function log( \stdClass $string, string $language ) {

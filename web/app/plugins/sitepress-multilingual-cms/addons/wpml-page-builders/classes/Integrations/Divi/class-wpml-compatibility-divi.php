@@ -5,6 +5,8 @@ class WPML_Compatibility_Divi implements \IWPML_DIC_Action, \IWPML_Backend_Actio
 	const REGEX_REMOVE_OPENING_PARAGRAPH = '/(<p>[\n\r]*)([\n\r]{1}\[\/et_)/m';
 	const REGEX_REMOVE_CLOSING_PARAGRAPH = '/(\[et_.*\][\n\r]{1})([\n\r]*<\/p>)/m';
 
+	const PRIORITY_SHOULD_HANDLE_CONTENT = 10;
+
 	private $sitepress;
 
 	private $pb_shortcode_settings = null;
@@ -21,7 +23,7 @@ class WPML_Compatibility_Divi implements \IWPML_DIC_Action, \IWPML_Backend_Actio
 
 			add_action( 'admin_init', [ $this, 'display_warning_notice' ], 10, 0 );
 
-			add_filter( 'wpml_pb_should_handle_content', [ $this, 'should_handle_shortcode_content' ], 10, 2 );
+			add_filter( 'wpml_pb_should_handle_content', [ $this, 'should_handle_shortcode_content' ], self::PRIORITY_SHOULD_HANDLE_CONTENT, 2 );
 			add_filter( 'wpml_pb_shortcode_content_for_translation', [ $this, 'cleanup_global_layout_content' ], 10, 2 );
 
 			add_filter( 'icl_job_elements', [ $this, 'remove_old_content_from_translation' ], 10, 2 );
@@ -121,21 +123,16 @@ class WPML_Compatibility_Divi implements \IWPML_DIC_Action, \IWPML_Backend_Actio
 
 	private function register_layouts() {
 		if ( function_exists( 'et_builder_should_load_framework' ) && ! et_builder_should_load_framework() ) {
-			if ( function_exists( 'et_builder_register_layouts' ) ) {
-				et_builder_register_layouts();
-			} else {
+			if ( ! class_exists( 'ET_Builder_Library' ) && defined( 'ET_BUILDER_DIR' ) ) {
 				$lib_file = ET_BUILDER_DIR . 'feature/Library.php';
 
-				if ( ! class_exists( 'ET_Builder_Library' )
-					&& defined( 'ET_BUILDER_DIR' )
-					&& file_exists( $lib_file )
-				) {
+				if ( file_exists( $lib_file ) ) {
 					require_once $lib_file;
 				}
+			}
 
-				if ( class_exists( 'ET_Builder_Library' ) ) {
-					ET_Builder_Library::instance();
-				}
+			if ( class_exists( 'ET_Builder_Library' ) ) {
+				ET_Builder_Library::instance();
 			}
 		}
 	}

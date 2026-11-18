@@ -90,13 +90,23 @@ class LanguageSwitcher {
 
 	private function getLanguageSwitcherLocalisedData() {
 		$languages = Obj::values( Languages::withFlags( Languages::getActive() ) );
-		$activeLanguage = Lst::find( Relation::propEq( 'code', Languages::getCurrentCode() ), $languages );
+		$activeLanguage = $this->getActiveLanguage( $languages );
 		$data      = [
 			'languages'      => $languages,
 			'activeLanguage' => $activeLanguage,
 			'isRtl'			 => Languages::isRtl( strval( Obj::prop( 'code', $activeLanguage ) ) ),
 		];
 		return ['languageSwitcher' => $data ];
+	}
+
+	private function getActiveLanguage( array $languages ) {
+		$withCode = function ( $code ) use ( $languages ) {
+			return Lst::find( Relation::propEq( 'code', $code ), $languages );
+		};
+
+		return $withCode( Languages::getCurrentCode() )
+			?: $withCode( Languages::getDefaultCode() )
+			?: ( $languages ? $languages[0] : null );
 	}
 
 }

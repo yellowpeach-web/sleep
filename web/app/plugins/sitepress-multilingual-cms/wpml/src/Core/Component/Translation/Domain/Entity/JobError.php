@@ -8,12 +8,16 @@ class JobError {
   const TYPE_DOWNLOAD = 'DownloadError';
   const TYPE_APPLY    = 'ApplyError';
 
+  const TYPE_CREATE   = 'CreateError';
+
   const ERROR_DATA_SOURCE_MD5 = 'source_md5';
+
+  const ERROR_DATA_MEMBER_SOURCE_MD5 = 'member_source_md5';
 
   const RETRY_LIMITS = [
     self::TYPE_SYNC     => 1,
-    self::TYPE_DOWNLOAD => 3,
     self::TYPE_APPLY    => 3,
+    self::TYPE_CREATE   => 144,
   ];
 
 

@@ -57,8 +57,8 @@ class TranslatorsQuery implements TranslatorsQueryInterface {
 
   private function getTranslators( string $whereClause = '', array $whereParams = [] ) {
     $sql = "SELECT user.ID, user.display_name, user.user_nicename
-      FROM {$this->queryPrepare->prefix()}users user
-      INNER JOIN {$this->queryPrepare->prefix()}usermeta umeta
+      FROM {$this->queryPrepare->usersTable()} user
+      INNER JOIN {$this->queryPrepare->usermetaTable()} umeta
       ON umeta.user_id = user.ID
       AND CAST(umeta.meta_key AS BINARY)=%s
       AND umeta.meta_value LIKE %s" . $whereClause;

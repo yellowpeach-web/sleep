@@ -182,7 +182,7 @@ abstract class WPML_TM_AMS_Translation_Abstract_Console_Section {
 			'restNonce'            => wp_create_nonce( 'wp_rest' ),
 			'authCookie'           => [
 				'name'  => LOGGED_IN_COOKIE,
-				'value' => $_COOKIE[ LOGGED_IN_COOKIE ],
+				'value' => isset( $_COOKIE[ LOGGED_IN_COOKIE ] ) ? sanitize_text_field( wp_unslash( $_COOKIE[ LOGGED_IN_COOKIE ] ) ) : '',
 			],
 			'languages'            => $noCreditPopup->getLanguagesData(),
 		];

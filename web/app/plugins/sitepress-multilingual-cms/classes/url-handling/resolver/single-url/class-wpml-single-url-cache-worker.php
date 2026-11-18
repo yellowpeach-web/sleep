@@ -10,6 +10,9 @@ class WPML_Single_Url_Cache_Worker {
 	const REBUILD_BATCH  = 100;
 	const CLEANUP_BATCH  = 500;
 
+	const REBUILD_RESTART_LIMIT  = 10;
+	const REBUILD_RESTART_WINDOW = 3600;
+
 	private $repository;
 
 	private $generation;
@@ -159,7 +162,7 @@ class WPML_Single_Url_Cache_Worker {
 			$this->scheduler->schedule_recovery( get_current_blog_id(), $next_work );
 		}
 
-		return [
+		$result = [
 			'processed'  => $processed,
 			'failed'     => $failed,
 			'locked'     => false,
@@ -167,6 +170,13 @@ class WPML_Single_Url_Cache_Worker {
 			'seeding'    => $seeding,
 			'cleaned'    => count( $cleanup['cache_keys'] ),
 		];
+
+		$stored = $this->generation->read_current();
+		if ( is_int( $stored ) && $stored > 0 && $stored !== (int) $generation ) {
+			$result['generation_moved'] = true;
+		}
+
+		return $result;
 	}
 
 	private function seed_rebuild() {
@@ -260,6 +270,36 @@ class WPML_Single_Url_Cache_Worker {
 
 		if ( $target_generation <= $current_target ) {
 			return $state;
+		}
+
+		if ( ! empty( $state['abandoned'] ) ) {
+			$state['new_generation'] = $target_generation;
+			$state['updated_at']     = current_time( 'mysql', true );
+
+			return $state;
+		}
+
+		if ( empty( $state['seed_complete'] ) ) {
+			$now          = time();
+			$window_start = isset( $state['restart_window'] ) ? (int) $state['restart_window'] : 0;
+			$restarts     = isset( $state['restarts'] ) ? (int) $state['restarts'] : 0;
+			if ( $now - $window_start >= self::REBUILD_RESTART_WINDOW ) {
+				$window_start = $now;
+				$restarts     = 0;
+			}
+			$state['restart_window'] = $window_start;
+			$state['restarts']       = $restarts + 1;
+
+			if ( $state['restarts'] > self::REBUILD_RESTART_LIMIT ) {
+				$state['new_generation'] = $target_generation;
+				$state['cursor']         = '';
+				$state['seed_complete']  = true;
+				$state['abandoned']      = true;
+				$state['active']         = true;
+				$state['updated_at']     = current_time( 'mysql', true );
+
+				return $state;
+			}
 		}
 
 		$counted = ! empty( $state['counted'] );

@@ -153,8 +153,7 @@ class WPML_Query_Parser {
 
 	private function prefetch_term_translations( $values ) {
 		$ttids = array();
-		foreach ( $values as $id ) {
-			$ttid = (int) $this->term_translations->adjust_ttid_for_term_id( abs( (int) $id ) );
+		foreach ( $this->term_translations->ttids_for_term_ids( array_map( 'abs', array_map( 'intval', $values ) ) ) as $ttid ) {
 			if ( $ttid > 0 ) {
 				$ttids[] = $ttid;
 			}
@@ -208,7 +207,7 @@ class WPML_Query_Parser {
 		return $q;
 	}
 
-	private function adjust_taxonomy_query( $q ) {
+	private function adjust_taxonomy_query( $q, $lang ) {
 		if ( isset( $q->query_vars['tax_query'], $q->tax_query->queries, $q->query['tax_query'] ) &&
 			 is_array( $q->query_vars['tax_query'] ) &&
 			 is_array( $q->tax_query->queries ) &&
@@ -216,7 +215,11 @@ class WPML_Query_Parser {
 			 ! $this->opt_out->is_stand_down_requested( $q )
 		) {
 
-			$new_conditions             = $this->adjust_tax_query_conditions( $q->query['tax_query'] );
+			$translate_values           = $this->opt_out->is_id_adjustment_opted_out( $q );
+			$new_conditions             = $this->adjust_tax_query_conditions( $q->query['tax_query'], $lang, $translate_values );
+			if ( $this->keeps_untranslated_terms( $q, $lang ) ) {
+				$new_conditions = $this->keep_untranslated_terms( $new_conditions, $lang );
+			}
 			$q->query['tax_query']      = $new_conditions;
 			$q->tax_query->queries      = $new_conditions;
 			$q->query_vars['tax_query'] = $new_conditions;
@@ -225,14 +228,201 @@ class WPML_Query_Parser {
 		return $q;
 	}
 
-	private function adjust_tax_query_conditions( $conditions ) {
+	const UNTRANSLATED_TERM_ID_VARS = [
+		'cat'              => [ 'category', null, true ],
+		'category__in'     => [ 'category', 'IN', false ],
+		'category__not_in' => [ 'category', 'NOT IN', false ],
+		'tag_id'           => [ 'post_tag', 'IN', false ],
+		'tag__in'          => [ 'post_tag', 'IN', false ],
+		'tag__not_in'      => [ 'post_tag', 'NOT IN', false ],
+	];
+
+	private function keeps_untranslated_terms( $q, $lang ) {
+		return $lang !== $this->sitepress->get_default_language()
+			&& ! $q->is_main_query()
+			&& $this->lists_only_display_as_translated_posts( $q );
+	}
+
+	private function lists_only_display_as_translated_posts( $q ) {
+		$post_types = isset( $q->query_vars['post_type'] ) ? $q->query_vars['post_type'] : '';
+		if ( ! $post_types ) {
+			if ( $q->is_tax ) {
+				return false;
+			}
+			$post_types = 'post';
+		}
+
+		if ( 'any' === $post_types ) {
+			return false;
+		}
+
+		foreach ( (array) $post_types as $post_type ) {
+			if ( ! is_string( $post_type ) || ! $this->sitepress->is_display_as_translated_post_type( $post_type ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private function keep_untranslated_terms( $conditions, $lang ) {
+		foreach ( $conditions as $key => $condition ) {
+			if ( ! is_array( $condition ) ) {
+				continue;
+			}
+
+			if ( ! isset( $condition['terms'] ) ) {
+				$conditions[ $key ] = $this->keep_untranslated_terms( $condition, $lang );
+			} elseif ( $this->names_an_untranslated_term( $condition, $lang ) ) {
+				$conditions[ $key ] = $this->resolve_clause_to_ttids( $condition );
+			}
+		}
+
+		return $conditions;
+	}
+
+	private function keep_untranslated_terms_of_id_vars( $q, $lang ) {
+		if ( ! $this->keeps_untranslated_terms( $q, $lang ) ) {
+			return $q;
+		}
+
+		$clauses = [];
+		foreach ( self::UNTRANSLATED_TERM_ID_VARS as $var => $how ) {
+			if ( empty( $q->query_vars[ $var ] ) ) {
+				continue;
+			}
+
+			list( $taxonomy, $operator, $include_children ) = $how;
+			list( $values )                                 = $this->parse_scalar_values_in_query_vars( $q, $var, 'ids' );
+
+			$untranslated = [];
+			foreach ( $values as $index => $value ) {
+				$id          = (int) $value;
+				$id_operator = $operator ? $operator : ( $id < 0 ? 'NOT IN' : 'IN' );
+				$clause      = [
+					'taxonomy'         => $taxonomy,
+					'field'            => 'term_id',
+					'terms'            => [ abs( $id ) ],
+					'operator'         => $id_operator,
+					'include_children' => $include_children,
+				];
+
+				if ( $id && $this->names_an_untranslated_term( $clause, $lang ) ) {
+					$untranslated[ $index ] = $id_operator;
+				}
+			}
+
+			$moves_every_in = in_array( 'IN', $untranslated, true );
+
+			$kept  = [];
+			$moved = [];
+			foreach ( $values as $index => $value ) {
+				$id          = (int) $value;
+				$id_operator = $operator ? $operator : ( $id < 0 ? 'NOT IN' : 'IN' );
+
+				if ( $id && ( isset( $untranslated[ $index ] ) || ( $moves_every_in && 'IN' === $id_operator ) ) ) {
+					$moved[ $id_operator ][] = abs( $id );
+				} else {
+					$kept[] = $value;
+				}
+			}
+
+			if ( ! $moved ) {
+				continue;
+			}
+
+			foreach ( $moved as $id_operator => $ids ) {
+				$clauses[] = $this->resolve_clause_to_ttids(
+					[
+						'taxonomy'         => $taxonomy,
+						'field'            => 'term_id',
+						'terms'            => $ids,
+						'operator'         => $id_operator,
+						'include_children' => $include_children,
+					]
+				);
+			}
+
+			$q->query_vars[ $var ] = is_array( $q->query_vars[ $var ] ) ? $kept : implode( ',', $kept );
+		}
+
+		if ( $clauses ) {
+			$tax_query                  = isset( $q->query_vars['tax_query'] ) && is_array( $q->query_vars['tax_query'] ) ? $q->query_vars['tax_query'] : [];
+			$q->query_vars['tax_query'] = array_merge( $tax_query, $clauses );
+			if ( isset( $q->query['tax_query'] ) && is_array( $q->query['tax_query'] ) ) {
+				$q->query['tax_query'] = array_merge( $q->query['tax_query'], $clauses );
+			}
+		}
+
+		return $q;
+	}
+
+	private function names_an_untranslated_term( $condition, $lang ) {
+		$field    = isset( $condition['field'] ) ? $condition['field'] : 'term_id';
+		$operator = isset( $condition['operator'] ) && is_string( $condition['operator'] ) ? strtoupper( $condition['operator'] ) : 'IN';
+		$taxonomy = isset( $condition['taxonomy'] ) ? $condition['taxonomy'] : null;
+
+		if (
+			! in_array( $field, [ 'term_id', 'id', 'term_taxonomy_id' ], true )
+			|| ! in_array( $operator, [ 'IN', 'NOT IN' ], true )
+			|| ! is_string( $taxonomy )
+			|| ! $this->sitepress->is_translated_taxonomy( $taxonomy )
+			|| $this->sitepress->is_display_as_translated_taxonomy( $taxonomy )
+		) {
+			return false;
+		}
+
+		foreach ( $this->clause_ttids( $condition ) as $ttid ) {
+			$term_lang = $this->term_translations->get_element_lang_code( $ttid );
+			if ( $term_lang && $term_lang !== $lang && ! $this->term_translations->element_id_in( $ttid, $lang ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private function clause_ttids( $condition ) {
+		$field = isset( $condition['field'] ) ? $condition['field'] : 'term_id';
+		$ttids = [];
+		foreach ( wp_parse_id_list( $condition['terms'] ) as $id ) {
+			$ttids[] = 'term_taxonomy_id' === $field ? (int) $id : (int) $this->term_translations->adjust_ttid_for_term_id( $id );
+		}
+
+		return array_values( array_filter( $ttids ) );
+	}
+
+	private function resolve_clause_to_ttids( $condition ) {
+		$taxonomy = $condition['taxonomy'];
+		$ttids    = $this->clause_ttids( $condition );
+
+		$with_children = ! isset( $condition['include_children'] ) || $condition['include_children'];
+		if ( $with_children && is_taxonomy_hierarchical( $taxonomy ) ) {
+			foreach ( $ttids as $ttid ) {
+				$children = get_term_children( (int) $this->term_translations->adjust_term_id_for_ttid( $ttid ), $taxonomy );
+				foreach ( is_array( $children ) ? $children : [] as $child ) {
+					$ttids[] = (int) $this->term_translations->adjust_ttid_for_term_id( $child );
+				}
+			}
+		}
+
+		$condition['terms']            = array_values( array_unique( array_filter( $ttids ) ) );
+		$condition['field']            = 'term_taxonomy_id';
+		$condition['include_children'] = false;
+
+		return $condition;
+	}
+
+	private function adjust_tax_query_conditions( $conditions, $lang, $translate_values ) {
 
 		foreach ( $conditions as $key => $condition ) {
 
 			if ( ! is_array( $condition ) ) {
 				continue;
 			} elseif ( ! isset( $condition['terms'] ) ) {
-				$conditions[ $key ] = $this->adjust_tax_query_conditions( $condition );
+				$conditions[ $key ] = $this->adjust_tax_query_conditions( $condition, $lang, $translate_values );
+			} elseif ( $translate_values && $this->is_value_clause_on_translated_taxonomy( $condition ) ) {
+				$conditions[ $key ]['terms'] = $this->translate_clause_values( $condition, $lang );
 			} elseif ( is_array( $condition['terms'] ) ) {
 
 				foreach ( $condition['terms'] as $value ) {
@@ -269,6 +459,86 @@ class WPML_Query_Parser {
 		return $conditions;
 	}
 
+	private function is_value_clause_on_translated_taxonomy( $condition ) {
+		return isset( $condition['field'], $condition['taxonomy'] )
+			&& in_array( $condition['field'], array( 'slug', 'name' ), true )
+			&& is_string( $condition['taxonomy'] )
+			&& $this->sitepress->is_translated_taxonomy( $condition['taxonomy'] );
+	}
+
+	private function translate_clause_values( $condition, $lang ) {
+		$taxonomy = $condition['taxonomy'];
+		$values   = array_values( (array) $condition['terms'] );
+
+		if ( 'slug' === $condition['field'] ) {
+			$translated = $this->translate_term_values( $values, 'slugs', $taxonomy, $lang );
+		} else {
+			$translated = array();
+			foreach ( $values as $name ) {
+				$translated[] = $this->translate_term_name( $name, $taxonomy, $lang );
+			}
+		}
+
+		foreach ( $translated as $index => $value ) {
+			if ( null === $value || '' === $value ) {
+				$translated[ $index ] = $values[ $index ];
+			}
+		}
+
+		return is_array( $condition['terms'] ) ? $translated : reset( $translated );
+	}
+
+	private function translate_term_name( $name, $taxonomy, $lang ) {
+		if ( ! is_scalar( $name ) ) {
+			return $name;
+		}
+
+		$wpdb    = $this->wpdb;
+		$db_name = stripslashes( (string) sanitize_term_field( 'name', (string) $name, 0, $taxonomy, 'db' ) );
+		$ids     = array_map(
+			'intval',
+			(array) $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT t.term_id
+					FROM {$wpdb->terms} t
+					JOIN {$wpdb->term_taxonomy} tt ON tt.term_id = t.term_id
+					WHERE tt.taxonomy = %s AND t.name = %s
+					ORDER BY t.term_id",
+					$taxonomy,
+					$db_name
+				)
+			)
+		);
+
+		foreach ( $ids as $candidate ) {
+			if ( $this->term_translations->lang_code_by_termid( $candidate ) === $lang ) {
+				return $name;
+			}
+		}
+
+		if ( ! $ids ) {
+			return $name;
+		}
+
+		$id      = $ids[0];
+		$term_id = (int) $this->term_translations->term_id_in( $id, $lang, true );
+
+		if ( $term_id && $term_id !== $id ) {
+			$translated = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT name FROM {$wpdb->terms} WHERE term_id = %d LIMIT 1",
+					$term_id
+				)
+			);
+
+			if ( is_string( $translated ) && '' !== $translated ) {
+				return $translated;
+			}
+		}
+
+		return $name;
+	}
+
 	private function maybe_redirect_to_translated_taxonomy( $q, $current_lang ) {
 		if ( ! $q->is_main_query() ) {
 			return $q;
@@ -289,6 +559,10 @@ class WPML_Query_Parser {
 					: null;
 
 				if ( $new_url && ! is_wp_error( $new_url ) ) {
+					if ( $this->is_current_request( $new_url ) ) {
+						continue;
+					}
+
 					global $wpml_wp_api;
 					$wpml_wp_api->wp_safe_redirect( $new_url, 301 );
 
@@ -298,6 +572,40 @@ class WPML_Query_Parser {
 		}
 
 		return $q;
+	}
+
+	private function is_current_request( $url ) {
+		$request_uri = (string) filter_var(
+			(string) preg_replace_callback(
+				'/[\x80-\xff]/',
+				function ( $byte ) {
+					return rawurlencode( $byte[0] );
+				},
+				(string) Obj::prop( 'REQUEST_URI', $_SERVER )
+			),
+			FILTER_SANITIZE_URL
+		);
+		if ( '' === $request_uri ) {
+			return false;
+		}
+
+		$target_path  = wpml_parse_url( $url, PHP_URL_PATH );
+		$request_path = wpml_parse_url( $request_uri, PHP_URL_PATH );
+		if ( ! is_string( $target_path ) || ! is_string( $request_path ) ) {
+			return false;
+		}
+
+		$path = function ( $address_path ) {
+			return rtrim( rawurldecode( $address_path ), '/' );
+		};
+		$lang = function ( $address ) {
+			$args = array();
+			parse_str( (string) wpml_parse_url( $address, PHP_URL_QUERY ), $args );
+
+			return isset( $args['lang'] ) && is_scalar( $args['lang'] ) ? (string) $args['lang'] : '';
+		};
+
+		return $path( $target_path ) === $path( $request_path ) && $lang( $url ) === $lang( $request_uri );
 	}
 
 	private function get_page_at_path_in_language( $path, $post_type, $language ) {
@@ -467,7 +775,11 @@ class WPML_Query_Parser {
 			}
 			$q->query_vars['meta_query'] = isset( $q->query_vars['meta_query'] ) ? $q->query_vars['meta_query'] : array();
 
-			$q = $this->adjust_taxonomy_query( $q );
+			$q = $this->adjust_taxonomy_query( $q, $current_language );
+
+			if ( ! $this->opt_out->is_stand_down_requested( $q ) ) {
+				$q = $this->keep_untranslated_terms_of_id_vars( $q, $current_language );
+			}
 		}
 
 		$q = apply_filters( 'wpml_post_parse_query', $q );
@@ -523,6 +835,11 @@ class WPML_Query_Parser {
 
 	private function maybe_adjust_name_var( $q ) {
 		$redirect = false;
+
+		if ( 'revision' === $q->get( 'post_type' ) ) {
+			return array( $q, $redirect );
+		}
+
 		if ( ( (bool) ( $name_in_q = $q->get( 'name' ) ) === true
 			 || (bool) ( $name_in_q = $q->get( 'pagename' ) ) === true )
 			 && (bool) $q->get( 'page_id' ) === false

@@ -16,7 +16,7 @@ class WPML_TM_Upgrade_WPML_Site_ID_ATE implements IWPML_Upgrade_Command {
 
 
 	private function must_run() {
-		return WPML_TM_ATE_Status::is_enabled_and_activated() && (bool) get_option( WPML_TM_Wizard_Options::WIZARD_COMPLETE_FOR_MANAGER, false ) && $this->site_id_ate_does_not_exist();
+		return WPML_TM_ATE_Status::is_account_usable() && (bool) get_option( WPML_TM_Wizard_Options::WIZARD_COMPLETE_FOR_MANAGER, false ) && $this->site_id_ate_does_not_exist();
 	}
 
 	protected function site_id_ate_does_not_exist() {

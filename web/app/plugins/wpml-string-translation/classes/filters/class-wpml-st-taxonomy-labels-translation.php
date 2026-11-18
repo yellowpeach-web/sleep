@@ -13,6 +13,8 @@ class WPML_ST_Taxonomy_Labels_Translation implements IWPML_Action {
 
 	private $active_languages;
 
+	private $label_batch_states = null;
+
 	public function __construct(
 		WPML_ST_Taxonomy_Strings $taxonomy_strings,
 		WPML_ST_Tax_Slug_Translation_Settings $slug_translation_settings,
@@ -28,8 +30,8 @@ class WPML_ST_Taxonomy_Labels_Translation implements IWPML_Action {
 	public function add_hooks() {
 		add_filter( 'gettext_with_context', array( $this, 'block_translation_and_init_strings' ), PHP_INT_MAX, 4 );
 		add_filter( 'wpml_label_translation_data', array( $this, 'get_label_translations' ), self::PRIORITY_GET_LABEL, 2 );
-		\WPML\Request\Adapter\Ajax::register( 'wpml_tt_save_labels_translation', \WPML\Request\Policy\Policy::capability( 'wpml_manage_taxonomy_translation', \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_taxonomy_translation_nonce', 'nonce' ) ), array( $this, 'save_label_translations' ) );
-		\WPML\Request\Adapter\Ajax::register( 'wpml_tt_change_tax_strings_language', \WPML\Request\Policy\Policy::capability( 'wpml_manage_taxonomy_translation', \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_taxonomy_translation_nonce', 'nonce' ) ), array( $this, 'change_taxonomy_strings_language' ) );
+		\WPML\Request\Adapter\Ajax::register( 'wpml_tt_save_labels_translation', \WPML\Request\Policy\Policy::capability( [ 'wpml_manage_taxonomy_translation', 'manage_translations' ], \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_taxonomy_translation_nonce', 'nonce' ) ), array( $this, 'save_label_translations' ) );
+		\WPML\Request\Adapter\Ajax::register( 'wpml_tt_change_tax_strings_language', \WPML\Request\Policy\Policy::capability( [ 'wpml_manage_taxonomy_translation', 'manage_translations' ], \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_taxonomy_translation_nonce', 'nonce' ) ), array( $this, 'change_taxonomy_strings_language' ) );
 	}
 
 	public function block_translation_and_init_strings( $translation, $text, $gettext_context, $domain ) {
@@ -124,31 +126,68 @@ class WPML_ST_Taxonomy_Labels_Translation implements IWPML_Action {
 			return false;
 		}
 
+		$states = $this->read_label_batch_states();
+		$flag   = $needs_update ? 'needs_update' : 'in_progress';
+
+		foreach ( $string_ids as $string_id ) {
+			if ( ! empty( $states[ $string_id ][ $lang ][ $flag ] ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private function read_label_batch_states() {
+		if ( null !== $this->label_batch_states ) {
+			return $this->label_batch_states;
+		}
+
 		global $wpdb;
 
-		$ids_in     = implode( ',', array_map( 'intval', $string_ids ) );
-		$batch_name = \WPML\StringTranslation\Infrastructure\TranslateEverything\TaxonomyLabelJobDispatcher::BATCH_NAME_PREFIX . $lang;
+		$prefix = \WPML\StringTranslation\Infrastructure\TranslateEverything\TaxonomyLabelJobDispatcher::BATCH_NAME_PREFIX;
 
-		$job_join  = $needs_update
-			? "LEFT JOIN {$wpdb->prefix}icl_translate_job j ON j.rid = ts.rid AND j.translated = 0"
-			: "INNER JOIN {$wpdb->prefix}icl_translate_job j ON j.rid = ts.rid AND j.translated = 0";
-		$condition = $needs_update ? 'AND ts.needs_update = 1 AND j.rid IS NULL' : '';
-
-		return (bool) $wpdb->get_var(
+		$rows = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT 1
+				"SELECT sb.string_id, tgt.language_code, b.batch_name, ts.needs_update,
+					MAX( CASE WHEN j.rid IS NULL THEN 0 ELSE 1 END ) AS pending
 				FROM {$wpdb->prefix}icl_string_batches sb
 				INNER JOIN {$wpdb->prefix}icl_translation_batches b ON b.id = sb.batch_id
 				INNER JOIN {$wpdb->prefix}icl_translations src ON src.element_type = 'st-batch_strings' AND src.element_id = b.id
-				INNER JOIN {$wpdb->prefix}icl_translations tgt ON tgt.trid = src.trid AND tgt.language_code = %s
+				INNER JOIN {$wpdb->prefix}icl_translations tgt ON tgt.trid = src.trid
 				INNER JOIN {$wpdb->prefix}icl_translation_status ts ON ts.translation_id = tgt.translation_id
-				{$job_join}
-				WHERE sb.string_id IN ({$ids_in}) AND b.batch_name = %s {$condition}
-				LIMIT 1",
-				$lang,
-				$batch_name
+				LEFT JOIN {$wpdb->prefix}icl_translate_job j ON j.rid = ts.rid AND j.translated = 0
+				WHERE b.batch_name LIKE %s
+				GROUP BY sb.string_id, tgt.language_code, b.batch_name, ts.rid, ts.needs_update",
+				$wpdb->esc_like( $prefix ) . '%'
 			)
 		);
+
+		$states = array();
+		foreach ( is_array( $rows ) ? $rows : array() as $row ) {
+			$lang = (string) $row->language_code;
+			if ( $prefix . $lang !== (string) $row->batch_name ) {
+				continue;
+			}
+
+			$string_id = (int) $row->string_id;
+			$pending   = (bool) (int) $row->pending;
+			$current   = isset( $states[ $string_id ][ $lang ] )
+				? $states[ $string_id ][ $lang ]
+				: array(
+					'in_progress'  => false,
+					'needs_update' => false,
+				);
+
+			$states[ $string_id ][ $lang ] = array(
+				'in_progress'  => $current['in_progress'] || $pending,
+				'needs_update' => $current['needs_update'] || ( 1 === (int) $row->needs_update && ! $pending ),
+			);
+		}
+
+		$this->label_batch_states = $states;
+
+		return $this->label_batch_states;
 	}
 
 	private function get_translations( WPML_ST_String $string ) {
@@ -180,7 +219,7 @@ class WPML_ST_Taxonomy_Labels_Translation implements IWPML_Action {
 	}
 
 	public function save_label_translations() {
-		if ( ! current_user_can( 'wpml_manage_taxonomy_translation' ) ) {
+		if ( ! $this->current_user_can_translate_labels() ) {
 			/* translators: Error message shown when the user does not have the rights to do what they asked for. Past participle used as a state, lower case in the source. */
 			wp_send_json_error( __( 'not allowed', 'wpml-string-translation' ) );
 			return;
@@ -238,7 +277,7 @@ class WPML_ST_Taxonomy_Labels_Translation implements IWPML_Action {
 	}
 
 	public function change_taxonomy_strings_language() {
-		if ( ! current_user_can( 'wpml_manage_taxonomy_translation' ) ) {
+		if ( ! $this->current_user_can_translate_labels() ) {
 			/* translators: Error message shown when the user does not have the rights to do what they asked for. Past participle used as a state, lower case in the source. */
 			wp_send_json_error( __( 'not allowed', 'wpml-string-translation' ) );
 			return;
@@ -278,6 +317,10 @@ class WPML_ST_Taxonomy_Labels_Translation implements IWPML_Action {
 	private function get_string_var_from_post( $key, $filter = FILTER_SANITIZE_FULL_SPECIAL_CHARS, $options = null ) {
 		$value = $this->super_globals->post( $key, $filter, $options );
 		return null !== $value ? sanitize_text_field( $value ) : false;
+	}
+
+	private function current_user_can_translate_labels() {
+		return current_user_can( 'wpml_manage_taxonomy_translation' ) || current_user_can( 'manage_translations' );
 	}
 
 	private function check_nonce() {

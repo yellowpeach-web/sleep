@@ -5,6 +5,9 @@ class WPML_Single_Url_Cache_Admin_Service {
 	const REBUILD_LOCK_OPTION = 'wpml_single_url_resolution_rebuild_admin_lock';
 	const REBUILD_LOCK_TTL    = 30;
 
+	const CHANGE_LOG_OPTION = 'wpml_single_url_resolution_generation_log';
+	const CHANGE_LOG_SIZE   = 50;
+
 	private $repository;
 
 	private $generation;
@@ -57,6 +60,7 @@ class WPML_Single_Url_Cache_Admin_Service {
 			$old_generation = $this->generation->get();
 			$new_generation = $this->generation->bump();
 
+			$this->record_generation_change( $old_generation, $new_generation, 'troubleshooting_rebuild' );
 			$this->begin_generation_rebuild( $old_generation, $new_generation );
 
 			return $this->get_status();
@@ -85,6 +89,7 @@ class WPML_Single_Url_Cache_Admin_Service {
 			}
 
 			$this->scheduler->schedule( get_current_blog_id() );
+			$this->repository->delete_superseded( (int) $new_generation );
 			return;
 		}
 
@@ -113,6 +118,119 @@ class WPML_Single_Url_Cache_Admin_Service {
 		if ( $has_rows ) {
 			$this->scheduler->schedule( get_current_blog_id() );
 		}
+
+		$this->repository->delete_superseded( (int) $new_generation );
+	}
+
+	public function record_generation_change( $old_generation, $new_generation, $reason, $context = null ) {
+		$context = is_array( $context ) ? $context : self::change_context();
+		$log     = $this->generation_changes();
+
+		array_unshift(
+			$log,
+			[
+				'time'    => current_time( 'mysql', true ),
+				'from'    => (int) $old_generation,
+				'to'      => (int) $new_generation,
+				'reason'  => (string) $reason,
+				'hook'    => isset( $context['hook'] ) ? (string) $context['hook'] : '',
+				'request' => isset( $context['request'] ) ? (string) $context['request'] : '',
+				'source'  => isset( $context['source'] ) ? (string) $context['source'] : '',
+			]
+		);
+
+		update_option( self::CHANGE_LOG_OPTION, array_slice( $log, 0, self::CHANGE_LOG_SIZE ), false );
+	}
+
+	public function generation_changes() {
+		$log = get_option( self::CHANGE_LOG_OPTION, [] );
+
+		return is_array( $log ) ? array_values( array_filter( $log, 'is_array' ) ) : [];
+	}
+
+	public static function change_context() {
+		global $wp_current_filter;
+
+		$hooks = array_values(
+			array_filter(
+				is_array( $wp_current_filter ) ? $wp_current_filter : [],
+				function( $hook ) {
+					return 'wpml_single_url_resolution_cache_generation_changed' !== $hook;
+				}
+			)
+		);
+		$hook  = $hooks ? (string) reset( $hooks ) : '';
+		if ( count( $hooks ) > 1 ) {
+			$hook .= ' > ' . (string) end( $hooks );
+		}
+
+		return [
+			'hook'    => $hook,
+			'request' => self::request_kind(),
+			'source'  => self::calling_component(),
+		];
+	}
+
+	private static function request_kind() {
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			return 'cli';
+		}
+		if ( function_exists( 'wp_doing_cron' ) && wp_doing_cron() ) {
+			return 'cron';
+		}
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return 'rest';
+		}
+		if ( function_exists( 'wp_doing_ajax' ) && wp_doing_ajax() ) {
+			return 'ajax';
+		}
+
+		return function_exists( 'is_admin' ) && is_admin() ? 'admin' : 'front';
+	}
+
+	private static function calling_component() {
+		$normalize = function( $path ) {
+			return rtrim( str_replace( '\\', '/', (string) $path ), '/' ) . '/';
+		};
+		$roots     = [];
+		if ( defined( 'WPMU_PLUGIN_DIR' ) ) {
+			$roots['mu-plugin'] = $normalize( WPMU_PLUGIN_DIR );
+		}
+		if ( defined( 'WP_PLUGIN_DIR' ) ) {
+			$roots['plugin'] = $normalize( WP_PLUGIN_DIR );
+		}
+		$theme_root = function_exists( 'get_theme_root' ) ? get_theme_root() : '';
+		if ( is_string( $theme_root ) && '' !== $theme_root ) {
+			$roots['theme'] = $normalize( $theme_root );
+		}
+		$roots = array_filter(
+			$roots,
+			function( $root ) {
+				return '/' !== $root;
+			}
+		);
+		if ( ! $roots ) {
+			return '';
+		}
+
+		$own = $normalize( __DIR__ );
+		foreach ( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 40 ) as $frame ) {
+			$file = isset( $frame['file'] ) ? str_replace( '\\', '/', (string) $frame['file'] ) : '';
+			if ( '' === $file || 0 === strpos( $file, $own ) ) {
+				continue;
+			}
+
+			foreach ( $roots as $kind => $root ) {
+				if ( 0 === strpos( $file, $root ) ) {
+					$relative = substr( $file, strlen( $root ) );
+					$parts    = explode( '/', $relative );
+
+					return $kind . ':' . $parts[0];
+				}
+			}
+		}
+
+		return 'core';
 	}
 
 	public function process_batch() {
@@ -159,6 +277,7 @@ class WPML_Single_Url_Cache_Admin_Service {
 				'cron_disabled' => defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON,
 				'table_missing' => empty( $database['available'] ),
 			],
+			'generation_changes' => $this->generation_changes(),
 		];
 	}
 

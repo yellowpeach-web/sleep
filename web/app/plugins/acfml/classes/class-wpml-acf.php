@@ -12,6 +12,7 @@ class WPML_ACF {
 		( new \WPML_Action_Filter_Loader() )->load( [
 			\ACFML\FieldGroup\SetDefaultsFactory::class,
 			\ACFML\FieldGroup\PreflightHooks::class,
+			\ACFML\FieldPreferences\BeforeSetupPreferences::class,
 		] );
 
 		if ( self::isWpmlSetupComplete() ) {
@@ -20,19 +21,20 @@ class WPML_ACF {
 			$loaders = wpml_collect(
 				[
 					\ACFML\Strings\HooksFactory::class                      => true,
+					\ACFML\Cache\InternalPostKeyFlush::class                => true,
 					\ACFML\FieldPreferences\TranslationJobs::class          => true,
 					\ACFML\FieldPreferences\SubfieldRules::class            => true,
 					\ACFML\FieldGroup\InlineBlockHooks::class               => true,
 					\WPML_ACF_Migrate_Option_Page_Strings::class            => true,
 					\ACFML\MigrateBlockPreferences::class                   => true,
 					\WPML_ACF_Field_Groups::class                           => true,
-					\WPML_ACF_Xliff::class                                  => $this->can_create_xliff(),
 					\WPML_ACF_Pro::class                                    => true,
 					\WPML_ACF_Field_Annotations::class                      => true,
 					\WPML_ACF_Location_Rules::class                         => true,
 					\WPML_ACF_Attachments::class                            => true,
 					\WPML_ACF_Field_Settings::class                         => true,
 					\WPML_ACF_Blocks::class                                 => true,
+					\ACFML\PageBuilders\BeaverBuilder\AcfBlockHooks::class  => true,
 					\WPML_ACF_Editor_Hooks::class                           => true,
 					\WPML_ACF_Display_Translated::class                     => true,
 					\WPML_ACF_Worker::class                                 => true,
@@ -46,6 +48,7 @@ class WPML_ACF {
 					\ACFML\Field\FrontendHooks::class                       => true,
 					\ACFML\Field\LinkUrlLoadHooks::class                    => true,
 					\ACFML\Field\LinkJobAttributes::class                   => true,
+					\ACFML\Field\LinkUrlSaveHooks::class                    => true,
 					\ACFML\Field\OrphanRowValues::class                     => true,
 					\ACFML\Field\MetaKeyPatterns::class                     => true,
 					\ACFML\Field\FlexibleLayoutJobFields::class             => true,
@@ -54,6 +57,7 @@ class WPML_ACF {
 					\ACFML\User\LanguageValueHooks::class                   => true,
 					\ACFML\Field\BidirectionalTranslationHooks::class       => true,
 					\ACFML\FieldGroup\HooksFactory::class                   => true,
+					\ACFML\FieldGroup\RestHooksFactory::class               => true,
 					\ACFML\FieldGroup\SaveHooks::class                      => true,
 					\ACFML\FieldGroup\RegisterAbilityHooks::class           => true,
 					\ACFML\FieldGroup\BlockPreferenceReapplyHooks::class    => true,
@@ -71,14 +75,16 @@ class WPML_ACF {
 					\ACFML\Post\SchemaLanguageHooks::class                  => true,
 					\ACFML\Post\CopyOnceBlockEditorHooks::class             => true,
 					\ACFML\Ajax\LanguageScope::class                        => true,
-					\ACFML\TranslationEditor\DisableHooks::class            => true,
+					\ACFML\TranslationPolicy\HooksFactory::class            => true,
 					\ACFML\Post\AutoTranslateHooks::class                   => true,
 					\ACFML\Post\JobReviewHooks::class                       => true,
 					\ACFML\TranslationEditor\JobFilter::class               => true,
 					\ACFML\Repeater\Sync\HooksFactory::class                => true,
+					\ACFML\Repeater\Sync\RestHooksFactory::class            => true,
 					\ACFML\Repeater\Sync\OutsideEditorSaveHooksFactory::class => true,
 					\ACFML\Repeater\Sync\JobHooks::class                    => true,
 					\ACFML\Repeater\Sync\SignatureHooks::class              => true,
+					\ACFML\Repeater\Sync\ChoiceChecksumHooks::class         => true,
 					\ACFML\Cache\Flush::class                               => true,
 				]
 			)
@@ -102,10 +108,6 @@ class WPML_ACF {
 
 	public static function isWpmlSetupComplete() {
 		return (bool) apply_filters( 'wpml_setting', false, 'setup_complete' );
-	}
-
-	private function can_create_xliff() {
-		return defined( 'WPML_ACF_XLIFF_SUPPORT' ) && WPML_ACF_XLIFF_SUPPORT && is_admin() && class_exists( 'acf' );
 	}
 
 	private function areOptionPagesAvailable() {

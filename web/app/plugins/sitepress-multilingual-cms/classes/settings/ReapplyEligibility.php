@@ -96,7 +96,7 @@ class ReapplyEligibility {
 	}
 
 	protected function isTranslateEverythingActive() {
-		return \WPML_TM_ATE_Status::is_enabled_and_activated() && Option::shouldTranslateEverything();
+		return \WPML_TM_ATE_Status::is_account_usable() && Option::shouldTranslateEverything();
 	}
 
 	protected function isWithinRange( $postId ) {

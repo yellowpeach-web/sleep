@@ -4,7 +4,9 @@ namespace WPML\PB\Elementor\Hooks;
 
 use WPML\FP\Obj;
 use WPML\PB\Elementor\Config\DynamicElements\Provider;
+use WPML\PB\Elementor\Helper\DynamicTag;
 use WPML\PB\Elementor\Helper\ElementTree;
+use WPML\PB\Elementor\Helper\Template;
 use function WPML\FP\curryN;
 use function WPML\FP\spreadArgs;
 
@@ -92,28 +94,16 @@ class DynamicElements implements \IWPML_Frontend_Action, \IWPML_DIC_Action {
 			return $tagString;
 		}
 
-		preg_match( '/name="(.*?(?="))"/', $tagString, $tagNameMatch );
-
-		if ( ! $tagNameMatch || ! in_array( $tagNameMatch[1], (array) $allowedTag, true ) ) {
-			return $tagString;
-		}
-
-		return preg_replace_callback( '/settings="(.*?(?="]))/', function( array $matches ) use ( $idKey ) {
-			$settings = json_decode( urldecode( $matches[1] ), true );
-
-			if ( ! isset( $settings[ $idKey ] ) ) {
-				return $matches[0];
-			}
-
-			$settings[ $idKey ] = self::convertId( $settings[ $idKey ] );
-			$replace            = urlencode( json_encode( $settings ) );
-
-			return str_replace( $matches[1], $replace, $matches[0] );
-
-		}, $tagString );
+		return DynamicTag::mapSetting( $tagString, (array) $allowedTag, $idKey, [ __CLASS__, 'convertId' ] );
 	}
 
 	public static function convertId( $elementId ) {
-		return apply_filters( 'wpml_object_id', $elementId, get_post_type( $elementId ), true );
+		$postType = get_post_type( $elementId );
+
+		return Template::fallBackWhenUnpublished(
+			$elementId,
+			apply_filters( 'wpml_object_id', $elementId, $postType, true ),
+			$postType
+		);
 	}
 }

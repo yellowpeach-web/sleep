@@ -9,15 +9,59 @@ class OrphanRowValues implements \IWPML_Backend_Action, \IWPML_Frontend_Action, 
 
 	const ROW_INDEX_PATTERN = '/_(\d+)(?=_)/';
 
+	const PRIORITY_AFTER_DELIVERY_WRITES = 30;
+
 	private $containerRows;
 
-	public function __construct( ContainerRows $containerRows ) {
-		$this->containerRows = $containerRows;
+	private $metaKeyPatterns;
+
+	public function __construct( ContainerRows $containerRows, MetaKeyPatterns $metaKeyPatterns ) {
+		$this->containerRows   = $containerRows;
+		$this->metaKeyPatterns = $metaKeyPatterns;
 	}
 
 	public function add_hooks() {
 		add_filter( 'wpml_tm_translation_job_data', [ $this, 'removeOrphanRowValues' ], 10, 2 );
 		add_action( 'acf/delete_value/type=clone', [ $this, 'deleteClonedValues' ], 10, 3 );
+		add_action( 'wpml_pro_translation_completed', [ $this, 'deleteOrphanRowValuesOfTranslation' ], self::PRIORITY_AFTER_DELIVERY_WRITES, 1 );
+	}
+
+	public function deleteOrphanRowValuesOfTranslation( $postId ) {
+		$postId = (int) $postId;
+		if ( $postId <= 0 || ! get_post( $postId ) instanceof \WP_Post ) {
+			return;
+		}
+
+		$meta = get_post_meta( $postId );
+		if ( ! is_array( $meta ) || ! $meta || ! acf_get_field_groups( [ 'post_id' => $postId ] ) ) {
+			return;
+		}
+
+		foreach ( array_keys( $meta ) as $metaKey ) {
+			$metaKey = (string) $metaKey;
+			if ( 0 === strpos( $metaKey, '_' ) || ! $this->matchesAField( $metaKey ) ) {
+				continue;
+			}
+
+			if ( $this->isOrphanRowValue( $postId, $metaKey ) ) {
+				delete_post_meta( $postId, $metaKey );
+				delete_post_meta( $postId, '_' . $metaKey );
+			}
+		}
+	}
+
+	private function matchesAField( string $metaKey ): bool {
+		if ( $this->metaKeyPatterns->matchesAValueField( $metaKey ) ) {
+			return true;
+		}
+
+		foreach ( Fields::WRAPPER_FIELDS as $wrapperType ) {
+			if ( $this->metaKeyPatterns->matches( $wrapperType, $metaKey ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public function removeOrphanRowValues( $package, $post ) {

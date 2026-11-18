@@ -25,7 +25,7 @@ function load_essential_globals( $is_admin = null ) {
 
 		if ( wpml_is_setup_complete() ) {
 			$active_plugins        = get_option( 'active_plugins' );
-			$wpmu_sitewide_plugins = (array) get_site_option( 'active_sitewide_plugins' );
+			$wpmu_sitewide_plugins = is_multisite() ? (array) get_site_option( 'active_sitewide_plugins' ) : [];
 
 			if ( in_array(
 				WPML_PLUGIN_BASENAME,
@@ -183,6 +183,7 @@ function setup_admin_menus() {
 	}
 
 	( new \WPML\Notices\RootPageNotice( wpml_get_admin_notices() ) )->add_hooks();
+	( new \WPML\Notices\TranslationTasksHireReviewerNotice( wpml_get_admin_notices() ) )->add_hooks();
 }
 
 function maybe_load_translated_tax_screen() {
@@ -219,15 +220,66 @@ function wpml_reload_active_languages_setting( $override = false ) {
 			return $codes;
 		};
 
-		if ( $normalize( $stored ) !== $normalize( $active_languages ) ) {
+		$changed = $normalize( $stored ) !== $normalize( $active_languages );
+		$refusal = $changed ? wpml_active_languages_read_refusal( (array) $active_languages ) : '';
+		if ( '' !== $refusal ) {
+			wpml_log_active_languages_read_refusal( $refusal, $stored, (array) $active_languages );
+			$active_languages = $stored;
+		} elseif ( $changed ) {
 			$sitepress_settings['active_languages'] = $active_languages;
-			icl_set_setting( 'active_languages', $active_languages, true );
+			wpml_save_setting_onto_stored(
+				'active_languages',
+				function ( $stored_languages ) use ( $active_languages, $normalize ) {
+					return $normalize( $stored_languages ) === $normalize( $active_languages ) ? $stored_languages : $active_languages;
+				}
+			);
 		}
 	} else {
 		$active_languages = [];
 	}
 
 	return (array) $active_languages;
+}
+
+function wpml_active_languages_read_refusal( array $active_languages ) {
+	global $sitepress_settings;
+
+	if ( ! wpml_is_setup_complete() ) {
+		return '';
+	}
+
+	if ( ! $active_languages ) {
+		return 'the read of the active languages returned no rows';
+	}
+
+	$default_language = isset( $sitepress_settings['default_language'] ) ? (string) $sitepress_settings['default_language'] : '';
+	if ( '' !== $default_language && ! in_array( $default_language, array_map( 'strval', $active_languages ), true ) ) {
+		return sprintf( 'the read of the active languages lacks the default language %s', $default_language );
+	}
+
+	return '';
+}
+
+function wpml_log_active_languages_read_refusal( $reason, array $stored, array $read ) {
+	if ( ! empty( $GLOBALS['wpml_active_languages_refusal_logged'] ) ) {
+		return;
+	}
+	$GLOBALS['wpml_active_languages_refusal_logged'] = true;
+
+	error_log(
+		sprintf(
+			'WPML: the active languages were not updated, because %s. Kept: %s. Read: %s.',
+			$reason,
+			implode( ', ', array_map( 'strval', $stored ) ),
+			$read ? implode( ', ', array_map( 'strval', $read ) ) : '(none)'
+		)
+	);
+}
+
+function wpml_setting_is_stored_but_unreadable( $key ) {
+	$storage = \WPML\Infrastructure\WordPress\Component\SettingsStorage\VirtualSettingsOption::class;
+
+	return class_exists( $storage ) && $storage::isStoredButUnreadable( (string) $key );
 }
 
 function wpml_get_setup_instance() {
@@ -261,6 +313,10 @@ function wpml_get_create_post_helper() {
 	global $sitepress;
 
 	return new WPML_Create_Post_Helper( $sitepress );
+}
+
+function wpml_translation_policy_enabled() {
+	return \WPML\TranslationPolicy\FeatureSwitch::isOn();
 }
 
 function wpml_load_core_tm() {

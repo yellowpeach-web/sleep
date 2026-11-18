@@ -12,7 +12,6 @@ use WPML\LIB\WP\Hooks;
 use WPML\Setup\Option;
 use WPML\TM\ATE\AutomaticTranslationCapabilities;
 use WPML\TM\ATE\AutoTranslate\Endpoint\GetNumberOfPosts;
-use WPML\TM\ATE\AutoTranslate\Endpoint\SetForPostType;
 use WPML\TM\Settings\CountPageUrlSlugChanges;
 use WPML\TM\Settings\CountSettingsChange;
 use WPML\TM\Settings\EstimateReapplyCost;
@@ -130,7 +129,6 @@ class UI implements \IWPML_Backend_Action {
 			'data' => [
 				'endpoints'                 => [
 					'getCount'               => GetNumberOfPosts::class,
-					'setAutomatic'           => SetForPostType::class,
 					'ateDashboardScript'     => ATEDashboardScript::class,
 					'getCountForCustomField' => CountAffectedPostsForCustomField::class,
 					'getCountForTermMeta'    => GetNumberOfTermsForCustomField::class,
@@ -143,6 +141,7 @@ class UI implements \IWPML_Backend_Action {
 				],
 				'shouldTranslateEverything' => AutomaticTranslationCapabilities::shouldTranslateEverything(),
 				'pendingPreferenceRulings'  => CustomFieldChangeDetector::pending(),
+				'pendingRetiredTaskFields'  => CustomFieldChangeDetector::pendingFromRetiredTask(),
 				'settingsUrl'               => admin_url( UIPage::getSettings() ),
 				'existingPostTypes'         => PostTypes::getOnlyTranslatable(),
 				'isTMLoaded'                => ! wpml_is_setup_complete() || Option::isTMAllowed(),

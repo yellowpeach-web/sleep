@@ -2,6 +2,7 @@
 
 use WPML\Element\API\TranslationsRepository;
 use WPML\Posts\ListScreenRows;
+use WPML\Troubleshooting\TranslationsTableKeysNotice;
 
 class WPML_Custom_Columns implements IWPML_Action {
 	const COLUMN_KEY              = 'icl_translations';
@@ -12,6 +13,8 @@ class WPML_Custom_Columns implements IWPML_Action {
 	public $post_status_display;
 
 	private $duplicate_of_map;
+
+	private static $translation_data_preloaded = false;
 
 	public function __construct( SitePress $sitepress ) {
 		$this->sitepress = $sitepress;
@@ -77,7 +80,7 @@ class WPML_Custom_Columns implements IWPML_Action {
 			$post_id = $post->ID;
 		}
 
-		if ( self::COLUMN_KEY !== $column_name ) {
+		if ( self::COLUMN_KEY !== $column_name || $this->is_root_page_without_language( $post_id ) ) {
 			return;
 		}
 
@@ -90,6 +93,28 @@ class WPML_Custom_Columns implements IWPML_Action {
 			$icon_html = $this->post_status_display->get_status_html( $post_id, $language_data['code'] );
 			echo $icon_html;
 		}
+	}
+
+	private function is_root_page_without_language( $post_id ) {
+		global $wpml_post_translations;
+
+		$urls = $this->sitepress->get_setting( 'urls' );
+		if ( empty( $urls['root_page'] ) || (int) $urls['root_page'] !== (int) $post_id ) {
+			return false;
+		}
+
+		return (int) $post_id === WPML_Root_Page_Actions::root_page_without_language( $urls, $wpml_post_translations );
+	}
+
+	public function add_root_page_post_state( $post_states, $post ) {
+		$root_id = wpml_get_root_page_actions_obj()->get_edited_root_page_id();
+
+		if ( ! $root_id || ! isset( $post->ID ) || (int) $root_id !== (int) $post->ID ) {
+			return $post_states;
+		}
+
+		/* translators: Label next to a page's title in the Pages list, like "Draft": the page shown at the site's root address (the domain with no language folder). */
+		return array( 'wpml_root_page' => esc_html_x( 'Root page', 'page label', 'sitepress' ) ) + (array) $post_states;
 	}
 
 	public function show_management_column_content( $post_type ) {
@@ -137,6 +162,10 @@ class WPML_Custom_Columns implements IWPML_Action {
 				)
 			);
 
+			if ( 'page' === $post_type ) {
+				add_filter( 'display_post_states', array( $this, 'add_root_page_post_state' ), 10, 2 );
+			}
+
 			$show_management_column_content = $this->show_management_column_content( $post_type );
 			if ( $show_management_column_content ) {
 				if ( is_post_type_hierarchical( $post_type ) ) {
@@ -158,13 +187,55 @@ class WPML_Custom_Columns implements IWPML_Action {
 
 				add_action( 'manage_posts_custom_column', [ $this, 'preloadTranslationData' ], 1, 0 );
 				add_action( 'manage_pages_custom_column', [ $this, 'preloadTranslationData' ], 1, 0 );
+
+				add_filter( 'post_row_actions', [ $this, 'add_edit_duplicate_row_actions' ], 10, 2 );
+				add_filter( 'page_row_actions', [ $this, 'add_edit_duplicate_row_actions' ], 10, 2 );
 			}
 		}
 	}
 
+	public function add_edit_duplicate_row_actions( $actions, $post ) {
+		global $wpml_post_translations;
+
+		if ( ! $post instanceof WP_Post || ! $wpml_post_translations || ! is_array( $actions ) ) {
+			return $actions;
+		}
+
+		if ( ! $wpml_post_translations->get_element_trid( $post->ID ) || $wpml_post_translations->get_source_lang_code( $post->ID ) ) {
+			return $actions;
+		}
+
+		$this->preloadTranslationData();
+
+		foreach ( $this->get_filtered_active_languages() as $code => $language ) {
+			$duplicate_id = (int) $wpml_post_translations->element_id_in( $post->ID, $code );
+			if ( ! $duplicate_id || $duplicate_id === (int) $post->ID || ! $wpml_post_translations->is_a_duplicate( $duplicate_id ) ) {
+				continue;
+			}
+
+			$link = current_user_can( 'edit_post', $duplicate_id ) ? get_edit_post_link( $duplicate_id, 'raw' ) : '';
+			if ( ! $link ) {
+				continue;
+			}
+
+			$actions[ 'wpml-edit-duplicate-' . $code ] = sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( $link ),
+				esc_html(
+					sprintf(
+						/* translators: Link under the title of a post or page in the lists of content. %s: the name of a language. It opens the edit screen of the duplicate in that language, which stays a duplicate. */
+						__( 'Edit the %s duplicate', 'sitepress' ),
+						$language['display_name']
+					)
+				)
+			);
+		}
+
+		return $actions;
+	}
+
 	public function preloadTranslationData() {
-		static $loaded = false;
-		if ( $loaded ) {
+		if ( self::$translation_data_preloaded ) {
 			return;
 		}
 
@@ -173,10 +244,12 @@ class WPML_Custom_Columns implements IWPML_Action {
 
 		if ( is_array( $posts ) ) {
 			$posts = ListScreenRows::of( $posts );
-			TranslationsRepository::preloadForPosts( $posts );
+			if ( ! TranslationsTableKeysNotice::isKnownBroken() ) {
+				TranslationsRepository::preloadForPosts( $posts );
+			}
 			$this->preloadDuplicateOfMeta( $posts );
 			$this->preloadStatusData( $posts );
-			$loaded = true;
+			self::$translation_data_preloaded = true;
 		}
 	}
 

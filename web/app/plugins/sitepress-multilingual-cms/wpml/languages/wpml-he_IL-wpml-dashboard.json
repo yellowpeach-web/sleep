@@ -7,11 +7,14 @@
             "plural_forms": "nplurals=2; plural=(n != 1);",
             "lang": "he_IL"
          },
+         "(no title)": [
+            "(ללא כותרת)"
+         ],
          "Untranslated strings that I encounter on front-end while logged in": [
-            "מחרוזות שלא תורגמו שבהן אני נתקל בחזית האתר בזמן שאני מחובר"
+            "מחרוזות שלא תורגמו בהן אני נתקל בצד הלקוח בעת שאני מחובר"
          ],
          "Untranslated strings that all front-end users encounter": [
-            "מחרוזות שלא תורגמו שבהן נתקלים כל משתמשי חזית האתר"
+            "מחרוזות שלא תורגמו שבהן נתקלים כל משתמשי צד הלקוח"
          ],
          "Disable auto-registration of strings": [
             "בטל רישום אוטומטי של מחרוזות"
@@ -38,6 +41,16 @@
          "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
             "שלחנו מחדש %1$d מתוך %2$d פריטים, אך %3$d נכשלו. אנא רענן את העמוד ונסה שוב."
          ],
+         "We resent %1$d of %2$d items.": [
+            "שלחנו שוב %1$d מתוך %2$d פריטים."
+         ],
+         "%1$s from %2$s": [
+            "%1$s מ-%2$s"
+         ],
+         "%1$d item can't be translated automatically: %2$s. Choose another translation method for it, or change your engines.": [
+            "לא ניתן לתרגם פריט %1$d באופן אוטומטי: %2$s. בחר שיטת תרגום אחרת עבורו, או שנה את המנועים שלך.",
+            "לא ניתן לתרגם %1$d פריטים באופן אוטומטי: %2$s. בחר שיטת תרגום אחרת עבורם, או שנה את המנועים שלך."
+         ],
          "Error in fetching default translation batch name": [
             "שגיאה באחזור שם ברירת המחדל של סדרת התרגום"
          ],
@@ -53,6 +66,9 @@
          "Validation failed": [
             "האימות נכשל"
          ],
+         "The translation service batch could not be committed. Continue sending to try again.": [
+            "לא ניתן היה לאשר את אצוות שירות התרגום. המשך בשליחה כדי לנסות שוב."
+         ],
          "%s: labels and slug": [
             "%s: תוויות וסלאג (slug)"
          ],
@@ -60,13 +76,13 @@
             "%1$s (%2$s)"
          ],
          "Translation jobs couldn’t be cancelled": [
-            "לא ניתן היה לבטל את עבודות התרגום"
+            "לא ניתן היה לבטל את משימות התרגום"
          ],
          "Reload the page and try again.": [
             "רענן את העמוד ונסה שוב."
          ],
          "All unfinished translation jobs were cancelled": [
-            "כל עבודות התרגום שלא הושלמו בוטלו"
+            "כל משימות התרגום שלא הושלמו בוטלו"
          ],
          "WPML could not display the Translations dashboard.": [
             "WPML לא הצליח להציג את לוח בקרת התרגום."
@@ -93,6 +109,12 @@
          "They are still waiting and will be tried again on the next download.": [
             "הם עדיין ממתינים וניסיון נוסף יתבצע בהורדה הבאה."
          ],
+         "Job %d": [
+            "משימת תרגום %d"
+         ],
+         "and %d more": [
+            "ו-%d נוספים"
+         ],
          "Status: ": [
             "סטטוס: "
          ],
@@ -103,7 +125,7 @@
             "עבודות שבוטלו: "
          ],
          "none of your translation jobs have been completed": [
-            "אף אחת מעבודות התרגום שלך לא הושלמה"
+            "אף אחת ממשימות התרגום שלך לא הושלמה"
          ],
          "The download did not finish, so some translations may still be waiting. Please try again.": [
             "ההורדה לא הסתיימה, לכן ייתכן שחלק מהתרגומים עדיין ממתינים. אנא נסה שוב."
@@ -112,11 +134,11 @@
             "%d סדרות עדיין מעובדות על ידי שירות התרגום. בדוק שוב בעוד מספר דקות."
          ],
          "Checking translation jobs status. Please don't close this page!": [
-            "בודק סטטוס עבודות תרגום. אנא אל תסגור עמוד זה!"
+            "בודק את סטטוס משימות התרגום. נא לא לסגור דף זה!"
          ],
          "<strong>%d translation job</strong> has been sent to remote translators": [
-            "<strong>עבודת תרגום %d</strong> נשלחה למתרגמים מרוחקים",
-            "<strong>%d עבודות תרגום</strong> נשלחו למתרגמים מרוחקים"
+            "<strong>משימת תרגום %d</strong> נשלחה למתרגמים מרוחקים",
+            "<strong>%d משימות תרגום</strong> נשלחו למתרגמים מרוחקים"
          ],
          "Last check: %s": [
             "בדיקה אחרונה: %s"
@@ -133,11 +155,11 @@
          "Switching…": [
             "מתחבר..."
          ],
-         "Translation engine controls couldn't load. Reload the page and try again.": [
-            "לא ניתן היה לטעון את פקדי מנוע התרגום. רענן את העמוד ונסה שוב."
-         ],
          "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
             "לא הצלחנו לאשר את המעבר. נסה שוב, או רענן כדי לראות את המנוע הנוכחי."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "לא ניתן היה לטעון את פקדי מנוע התרגום. רענן את העמוד ונסה שוב."
          ],
          "Loading translation engine settings…": [
             "טוען הגדרות מנוע תרגום..."
@@ -295,14 +317,20 @@
          "Select %s": [
             "בחר %s"
          ],
-         "(no title)": [
-            "(ללא כותרת)"
+         "Appears on the site": [
+            "מופיע באתר"
+         ],
+         "Not shown yet": [
+            "טרם הוצג"
          ],
          "Image": [
             "תמונה"
          ],
          "%s Title": [
             "כותרת %s"
+         ],
+         "Source": [
+            "מקור"
          ],
          "%s Date": [
             "תאריך %s"
@@ -334,9 +362,6 @@
          "Show selected items": [
             "הצג פריטים שנבחרו"
          ],
-         "Looking for more items...": [
-            "מחפש פריטים נוספים..."
-         ],
          " / page": [
             " / עמוד"
          ],
@@ -345,6 +370,9 @@
          ],
          "Next": [
             "הבא"
+         ],
+         "Looking for more items...": [
+            "מחפש פריטים נוספים..."
          ],
          "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
             "תוכן האתר שלך גדול מדי עבור סדרת תרגום אחת. השתמש במסננים כדי לצמצם את הבחירה, ואז בחר ב־”בחר הכל“."
@@ -376,11 +404,30 @@
          "Select all %ss": [
             "בחר את כל ה־%s"
          ],
+         "%d not shown on the site yet": [
+            "עדיין לא מוצג באתר: %d",
+            "עדיין לא מוצגים באתר: %d"
+         ],
+         "Show them": [
+            "הצג אותם"
+         ],
+         "Hide them": [
+            "הסתר אותם"
+         ],
          "Save note": [
             "שמור הערה"
          ],
-         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
-            "שפות היעד הבאות אינן תומכות בתרגום אוטומטי: %s. <a>מפה לשפות מוכרות</a> כדי לאפשר תרגום אוטומטי."
+         "%1$s and %2$s": [
+            "%1$s ו-%2$s"
+         ],
+         "The following target languages do not support automatic translation: %s.": [
+            "שפות היעד הבאות אינן תומכות בתרגום אוטומטי: %s."
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "תרגום אוטומטי אינו זמין בין %1$s לבין %2$s מכיוון שהן מזוהות כאותה שפה. בחר ”שכפול“ במקום זאת כדי להעתיק את התוכן."
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "תרגום אוטומטי אינו זמין בין %1$s ל-%2$s מכיוון שהן מזוהות כאותה שפה."
          ],
          "The site's default language %s doesn't support automatic translation.": [
             "שפת ברירת המחדל של האתר %s אינה תומכת בתרגום אוטומטי."
@@ -422,10 +469,10 @@
             "נותרו <strong>%1$s</strong> מילים ב־<strong>מגבלת ההוצאה החודשית</strong> שהוגדרה עבור <site>%2$s</site> (‏<figure>%3$s</figure> מתוך <figure>%4$s</figure> כבר נוצלו). אתה יכול להפעיל זאת כעת והתוכן יתורגם עד להגעה למגבלה. השאר יתורגם כאשר המגבלה תועלה, או כאשר המגבלה תתאפס ב־<strong>%5$s</strong>."
          ],
          "Raise the cap": [
-            "העלה את המגבלה"
+            "העלאת המגבלה"
          ],
-         "Only the account owner can do this.": [
-            "רק בעל החשבון יכול לבצע זאת."
+         "You can raise it on the AI Translation: billing and usage page.": [
+            "תוכל להעלות אותה בדף תרגום AI: חיוב ושימוש."
          ],
          "Show strings in:": [
             "הצג מחרוזות ב:"
@@ -448,9 +495,6 @@
          "Domain": [
             "דומיין"
          ],
-         "Source": [
-            "מקור"
-         ],
          "Type": [
             "סוג"
          ],
@@ -466,11 +510,8 @@
          "All sources": [
             "כל המקורות"
          ],
-         "Frontend (viewed)": [
-            "חזית האתר (נצפה)"
-         ],
-         "Backend (viewed)": [
-            "ממשק הניהול (נצפה)"
+         "Seen in the admin": [
+            "נראה בממשק הניהול"
          ],
          "Unknown": [
             "לא ידוע"
@@ -484,29 +525,23 @@
          "Search string or a name": [
             "חפש מחרוזת או שם"
          ],
-         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
-            "מסנן זה זמין רק אם המקור מוגדר כ־”חזית האתר“ או ”ממשק הניהול“."
+         "%1$s, %2$s and %3$s": [
+            "%1$s, %2$s ו־%3$s"
          ],
-         "front-end": [
-            "חזית האתר"
-         ],
-         "back-end": [
-            "ממשק הניהול"
-         ],
-         "viewed": [
-            "נצפה"
+         "This filter is available only when Source is \"Appears on the site\" or \"Seen in the admin\".": [
+            "מסנן זה זמין רק כאשר המקור הוא ”מופיע באתר“ או ”נראה בממשק הניהול“."
          ],
          "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
             "פותח את דף הלוקליזציה של ערכות עיצוב ותוספים, שבו תוכל לסרוק את ערכת העיצוב והתוספים שלך עבור מחרוזות שטרם נרשמו ולהפוך אותן לזמינות לתרגום כאן."
          ],
          "Finding strings in themes and plugins": [
-            "מציאת מחרוזות בערכות עיצוב ותוספים"
+            "איתור מחרוזות בערכות עיצוב ובתוספים"
          ],
          "Strings in the theme and plugins": [
             "מחרוזות בערכת העיצוב ובתוספים"
          ],
          "Translate front-end texts you can customize from the WordPress admin like footer text, copyright notices, plugin options and settings, time format, widget texts, and more.": [
-            "תרגם טקסטים של חזית האתר שניתן להתאים אישית מממשק הניהול של WordPress, כמו טקסט כותרת תחתונה, הודעות זכויות יוצרים, אפשרויות והגדרות של תוספים, פורמט זמן, טקסטי וידג'טים ועוד."
+            "תרגם טקסטים של צד הלקוח שבאפשרותך להתאים אישית מממשק הניהול של WordPress, כגון טקסט כותרת תחתונה, הודעות זכויות יוצרים, אפשרויות והגדרות של תוספים, פורמט שעה, טקסטים של וידג'טים ועוד."
          ],
          "Translating Strings From Admin and Settings": [
             "תרגום מחרוזות מממשק הניהול ומההגדרות"
@@ -524,10 +559,10 @@
             "תרגם מחרוזות פרופיל משתמש"
          ],
          "No strings have been registered for translation yet. Open your site's front-end (<a/>) and WPML will automatically detect the untranslated strings and list them here. ": [
-            "טרם נרשמו מחרוזות לתרגום. פתח את חזית האתר שלך (<a/>) ו־WPML יזהה אוטומטית את המחרוזות שלא תורגמו ויציג אותן כאן. "
+            "עדיין לא נרשמו מחרוזות לתרגום. פתח את צד הלקוח של האתר שלך (<a/>) ו-WPML יזהה אוטומטית את המחרוזות שלא תורגמו ויציג אותן כאן. "
          ],
          "hide details": [
-            "הסתר פרטים"
+            "הסתרת פרטים"
          ],
          "more details": [
             "עוד פרטים"
@@ -610,8 +645,8 @@
          "You can only translate %1$s from the site's default language (%2$s).": [
             "ניתן לתרגם את %1$s רק משפת ברירת המחדל של האתר, (%2$s)."
          ],
-         "Search taxonomy or a name": [
-            "חפש טקסונומיה או שם"
+         "Search taxonomies and terms": [
+            "חיפוש טקסונומיות ומונחים"
          ],
          "Filter by post type": [
             "סנן לפי סוג פוסט"
@@ -626,6 +661,9 @@
          "No translatable taxonomies match the current filters.": [
             "אין טקסונומיות ניתנות לתרגום התואמות למסננים הנוכחיים."
          ],
+         "Words in the terms, in %s": [
+            "מילים במונחים, ב-%s"
+         ],
          "Select all taxonomies": [
             "בחר את כל הטקסונומיות"
          ],
@@ -635,11 +673,21 @@
          "Terms in": [
             "מונחים בתוך"
          ],
-         "Post types": [
-            "סוגי פוסטים"
+         "Used on": [
+            "בשימוש ב-"
          ],
-         "Translated / Total terms": [
-            "מונחים שתורגמו / סך הכל"
+         "Terms": [
+            "מונחים"
+         ],
+         "Words": [
+            "מילים",
+            "מילים"
+         ],
+         "Hide terms": [
+            "הסתרת מונחים"
+         ],
+         "Choose terms": [
+            "בחירת מונחים"
          ],
          "translated": [
             "תורגם"
@@ -665,11 +713,32 @@
          "%1$s: %2$s": [
             "%1$s: %2$s"
          ],
-         "Open %s in the Taxonomy Translation tab": [
-            "פתח את %s בלשונית תרגום טקסונומיה"
+         "Translated": [
+            "תורגם"
+         ],
+         "Partially translated": [
+            "מתורגם חלקית"
+         ],
+         "Translation needs update": [
+            "נדרש עדכון"
+         ],
+         "Preparing for translation": [
+            "בהכנה לתרגום"
+         ],
+         "Translation stalled": [
+            "התרגום נתקע"
+         ],
+         "Not translated": [
+            "לא תורגם"
+         ],
+         "Status icons": [
+            "סמלי סטטוס"
          ],
          "Taxonomy labels and slug": [
             "תוויות ומזהי כתובת של טקסונומיה"
+         ],
+         "The taxonomy's own texts: its singular and plural names and its URL slug. Not its terms.": [
+            "הטקסטים של הטקסונומיה עצמה: שמות היחיד והרבים שלה ומזהה הכתובת (slug) שלה. לא המונחים שלה."
          ],
          "WPML String Translation is not active.": [
             "WPML String Translation אינו פעיל."
@@ -701,15 +770,131 @@
          "Rescan": [
             "סרוק מחדש"
          ],
-         "%d Taxonomy selected": [
-            "%d טקסונומיה נבחרה",
-            "%d טקסונומיות נבחרו"
+         "Send categories, tags and other terms for translation, a whole taxonomy or the terms you pick.": [
+            "שלח קטגוריות, תגיות ומונחים אחרים לתרגום — טקסונומיה שלמה או המונחים שתבחר."
          ],
-         "<b>Translate Everything Automatically</b> (TEA) is active.": [
-            "<b>תרגם הכל אוטומטית</b> (TEA) פעיל."
+         "Edit translations manually": [
+            "ערוך תרגומים באופן ידני"
          ],
-         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
-            "מונחים חדשים ומעודכנים בטקסונומיות ניתנות לתרגום נכנסים לתור באופן אוטומטי. בחר טקסונומיות להלן כדי לשלוח עבודת תרגום מרוכזת חד-פעמית עבור כל המונחים שנותרו ללא תרגום."
+         "(opens in a new tab)": [
+            "(נפתח בלשונית חדשה)"
+         ],
+         "To edit one term's translation by hand: <link/>": [
+            "כדי לערוך ידנית תרגום של מונח מסוים: <link/>"
+         ],
+         "There is nothing to send. New and changed terms will show up here.": [
+            "אין מה לשלוח. מונחים חדשים ומונחים שהשתנו יופיעו כאן."
+         ],
+         "Every term is translated into every language.": [
+            "כל מונח מתורגם לכל שפה."
+         ],
+         "No taxonomy or term matches “%s”.": [
+            "אף טקסונומיה או מונח אינם תואמים ל-“%s”."
+         ],
+         "Clear search": [
+            "נקה חיפוש"
+         ],
+         "<b>Translate Everything</b> is on. It translates every term of every translatable taxonomy automatically. You do not need to send terms or pick them.": [
+            "<b>תרגם הכל</b> מופעל. המצב מתרגם אוטומטית כל מונח בכל טקסונומיה שניתנת לתרגום. אין צורך לשלוח מונחים או לבחור בהם."
+         ],
+         "Use this section to see their status, or to send terms to a translator or a translation service.": [
+            "השתמש בחלק זה כדי לראות את הסטטוס שלהם, או כדי לשלוח מונחים למתרגם או לשירות תרגום."
+         ],
+         "%1$d sub-term, %2$d not translated": [
+            "מונח משנה %1$d, %2$d לא תורגם",
+            "%1$d מונחי משנה, %2$d לא תורגמו"
+         ],
+         "%d sub-term, all translated": [
+            "מונח משנה %d, כולם תורגמו",
+            "%d מונחי משנה, כולם תורגמו"
+         ],
+         "%1$s and its %2$d sub-term selected.": [
+            "%1$s ומונח המשנה ה-%2$d שלו נבחרו.",
+            "%1$s ו-%2$d מונחי המשנה שלו נבחרו."
+         ],
+         "%1$s and its %2$d sub-term cleared.": [
+            "בוטלה הבחירה ב-%1$s ובמונח המשנה ה-%2$d שלו.",
+            "בוטלה הבחירה ב-%1$s וב-%2$d מונחי המשנה שלו."
+         ],
+         "Select %1$s, in %2$s": [
+            "בחר את %1$s, בתוך %2$s"
+         ],
+         "Hide sub-terms of %s": [
+            "הסתרת מונחי המשנה של %s"
+         ],
+         "Show sub-terms of %s": [
+            "הצגת מונחי המשנה של %s"
+         ],
+         "in": [
+            "ב-"
+         ],
+         "Added because a sub-term is selected": [
+            "נוסף מכיוון שנבחר מונח משנה"
+         ],
+         "The terms could not be loaded.": [
+            "לא ניתן היה לטעון את המונחים."
+         ],
+         "Showing %1$d term matching “%2$s”": [
+            "מציג מונח %1$d התואם ל-\"%2$s\"",
+            "מציג %1$d מונחים התואמים ל-\"%2$s\""
+         ],
+         "Showing roots %1$d to %2$d of %3$d": [
+            "מציג מונחי שורש %1$d עד %2$d מתוך %3$d"
+         ],
+         "Showing %1$d to %2$d of %3$d": [
+            "מציג %1$d עד %2$d מתוך %3$d"
+         ],
+         "%s: terms": [
+            "%s: מונחים"
+         ],
+         "All terms are selected until you untick some.": [
+            "כל המונחים נבחרים עד שתבטל את הבחירה בחלק מהם."
+         ],
+         "Terms matching “%s”, found by the section search.": [
+            "מונחים התואמים ל-\"%s\", שנמצאו בחיפוש במקטע."
+         ],
+         "%1$s: %2$d term matches the section search.": [
+            "%1$s: מונח %2$d תואם לחיפוש במקטע.",
+            "%1$s: ‏%2$d מונחים תואמים לחיפוש במקטע."
+         ],
+         "Show all terms": [
+            "הצג את כל המונחים"
+         ],
+         "Select all %d terms": [
+            "בחר את כל %d המונחים"
+         ],
+         "Ticking a parent selects its sub-terms.": [
+            "סימון מונח אב יבחר את מונחי המשנה שלו."
+         ],
+         "Expand all": [
+            "הרחב הכל"
+         ],
+         "Collapse all": [
+            "כווץ הכל"
+         ],
+         "Select all terms on this page": [
+            "בחר את כל המונחים בעמוד זה"
+         ],
+         "Term": [
+            "מונח"
+         ],
+         "No term matches “%s”.": [
+            "לא נמצא מונח התואם ל-”%s“."
+         ],
+         "%1$d of %2$d": [
+            "%1$d מתוך %2$d"
+         ],
+         "Pages of %s terms": [
+            "עמודים של מונחי %s"
+         ],
+         "All %d terms selected": [
+            "כל %d המונחים נבחרו"
+         ],
+         "%1$d of %2$d terms selected": [
+            "%1$d מתוך %2$d מונחים נבחרו"
+         ],
+         "No terms selected": [
+            "לא נבחרו מונחים"
          ],
          "Switch Now": [
             "החלף כעת"
@@ -754,7 +939,7 @@
             "הבנתי"
          ],
          "See your pricing": [
-            "צפה בתמחור שלך"
+            "הצגת התמחור שלך"
          ],
          "You’re all set. The new pricing is active.": [
             "הכל מוכן. התמחור החדש פעיל."
@@ -895,8 +1080,20 @@
          "Not now": [
             "לא עכשיו"
          ],
+         "This site is not registered with our translation system yet. Register it on WPML → Activate & Update to use automatic translation.": [
+            "אתר זה עדיין אינו רשום במערכת התרגום שלנו. רשום אותו ב-WPML ← הפעלה ועדכון כדי להשתמש בתרגום אוטומטי."
+         ],
          "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
             "שגיאת התחברות. המתן דקה וטען מחדש עמוד זה. אם הבעיה נמשכת, פנה לתמיכה של WPML."
+         ],
+         "Posts": [
+            "פוסטים"
+         ],
+         "Taxonomy terms": [
+            "מונחי טקסונומיה"
+         ],
+         "Words required:": [
+            "מילים נדרשות:"
          ],
          "You don’t have enough prepaid words to translate this content.": [
             "אין לך מספיק מילים בתשלום מראש כדי לתרגם תוכן זה."
@@ -905,20 +1102,13 @@
             "יש לך %1$s מילים בתשלום מראש — נדרשות עוד %2$s מילים כדי לתרגם תוכן זה"
          ],
          "You’re missing %1$s prepaid words for the translation jobs in progress — %2$s are needed in total": [
-            "חסרות לך %1$s מילים בתשלום מראש עבור עבודות התרגום שבתהליך — נדרשות %2$s מילים בסך הכל"
+            "חסרות לך %1$s מילים בתשלום מראש עבור משימות התרגום שבתהליך — בסך הכל דרושות %2$s"
          ],
          "Automatic translation costs:": [
             "עלות תרגום אוטומטי:"
          ],
-         "Words": [
-            "מילים",
-            "מילים"
-         ],
          "Words to translate automatic": [
             "מילים לתרגום אוטומטי"
-         ],
-         "Words required:": [
-            "מילים נדרשות:"
          ],
          "Pricing": [
             "תמחור"
@@ -939,17 +1129,36 @@
             "%s מילה הוקצתה לאתר זה.",
             "%s מילים הוקצו לאתר זה."
          ],
-         "Leave existing translations as they are": [
-            "השאר תרגומים קיימים כפי שהם"
-         ],
-         "Overwrite existing translations": [
-            "דרוס תרגומים קיימים"
-         ],
          "Some of the content you want to translate is already translated": [
             "חלק מהתוכן שברצונך לתרגם כבר מתורגם"
          ],
          "What do you want to do with the content that's already translated?": [
             "מה ברצונך לעשות עם התוכן שכבר מתורגם?"
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Translate from scratch\" translates them again from the start.": [
+            "פריטים שהשתנו לאחר שתורגמו נשלחים בכל מקרה. ”השאר“ מתרגם רק את מה שהשתנה. ”תרגם מאפס“ מתרגם אותם שוב מההתחלה."
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Overwrite\" translates them again from the start.": [
+            "פריטים שהשתנו לאחר שתורגמו נשלחים בכל מקרה. ”השאר“ מתרגם רק את מה שהשתנה. ”דרוס“ מתרגם אותם שוב מההתחלה."
+         ],
+         "\"Translate from scratch\" replaces the edits made to these translations:": [
+            "”תרגם מאפס“ מחליף את העריכות שבוצעו בתרגומים אלה:"
+         ],
+         "And %s more item.": [
+            "ועוד פריט %s נוסף.",
+            "ועוד %s פריטים נוספים."
+         ],
+         "Leave existing translations as they are": [
+            "השאר תרגומים קיימים כפי שהם"
+         ],
+         "Translate from scratch": [
+            "תרגם מאפס"
+         ],
+         "Replaces the existing translations, including the edits made to them": [
+            "מחליף את התרגומים הקיימים, כולל העריכות שבוצעו בהם"
+         ],
+         "Overwrite existing translations": [
+            "דרוס תרגומים קיימים"
          ],
          "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
             "מומלץ לסקור תרגומים מ-DeepL, Google Translate ו-Microsoft Translator לפני הפרסום."
@@ -984,8 +1193,17 @@
          " Checking ": [
             " בודק "
          ],
+         "To translate automatically, WPML needs an active automatic translation account. Turn on automatic translation, or choose a different translation option.": [
+            "כדי לתרגם אוטומטית, WPML זקוק לחשבון תרגום אוטומטי פעיל. הפעל תרגום אוטומטי, או בחר באפשרות תרגום אחרת."
+         ],
          "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
             "כדי לתרגם אוטומטית, עליך תחילה <enable_ate>להפעיל את <b>עורך התרגום המתקדם</b> של WPML</enable_ate>.<br/>הפעל את <b>עורך התרגום המתקדם</b> ולחץ על <check_again>בדוק שוב</check_again> או בחר באפשרות תרגום אחרת."
+         ],
+         "Turn on automatic translation": [
+            "הפעל תרגום אוטומטי"
+         ],
+         "Learn more": [
+            "למידע נוסף"
          ],
          "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
             "התוכן שנבחר תורגם באמצעות <b>עורך התרגום הקלאסי</b> ולא ניתן לשלוח אותו לתרגום אוטומטי. כדי לאפשר זאת, הפעל את האפשרות ”השתמש גם עבור תרגומים ישנים“ בדף <wpmlSettingLink>הגדרות WPML</wpmlSettingLink>."
@@ -1056,11 +1274,14 @@
          "WPML does not support duplicating %1$s elements and strings.": [
             "WPML אינו תומך בשכפול אלמנטים ומחרוזות מסוג %1$s."
          ],
-         "WPML does not support duplicating taxonomies.": [
-            "WPML אינו תומך בשכפול טקסונומיות."
+         "Taxonomy terms cannot be duplicated. Translate them instead. When you duplicate posts, WPML copies their terms that have no translation yet and lists these copies as not translated until they are translated.": [
+            "לא ניתן לשכפל מונחי טקסונומיה. תרגם אותם במקום זאת. כאשר משכפלים פוסטים, WPML מעתיק את המונחים שלהם שעדיין אין להם תרגום ומציג עותקים אלה כלא מתורגמים עד שיתורגמו."
          ],
-         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
-            "WPML אינו תומך בשכפול טקסונומיות. הבחירה שלך לשכפל טקסונומיות אל %1$s תבוטל אם תמשיך בתרגום."
+         "Taxonomy terms cannot be duplicated, so the terms you selected will not be duplicated to %1$s. The posts you duplicate get copies of their terms that have no translation yet. WPML lists these copies as not translated until they are translated.": [
+            "לא ניתן לשכפל מונחי טקסונומיה, לכן המונחים שבחרת לא ישוכפלו אל %1$s. הפוסטים שתשכפל יקבלו עותקים של המונחים שלהם שעדיין אין להם תרגום. WPML מציג עותקים אלה כלא מתורגמים עד שיתורגמו."
+         ],
+         "If the editor is set to translate automatically when it opens, it starts from a machine translation that uses your words. Undo translation in the editor clears it.": [
+            "אם העורך מוגדר לתרגם אוטומטית בעת פתיחתו, הוא מתחיל מתרגום מכונה שמשתמש במילים שלך. ביטול התרגום בעורך מנקה אותו."
          ],
          "Finish setting up %s on your site": [
             "סיים את הגדרת %s באתר שלך"
@@ -1068,14 +1289,26 @@
          "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
             "עליך לאמת את %s כדי לשלוח להם תוכן לתרגום.<br/>בקר ב<a>לשונית מתרגמים</a> כדי לסיים את ההגדרה ולחץ על <check_again>בדוק שוב</check_again> או בחר באפשרות תרגום אחרת."
          ],
+         "WPML will not send these items. A reviewer has their translation open:": [
+            "WPML לא ישלח פריטים אלה. בודק פתח את התרגום שלהם:"
+         ],
+         "To send them, finish or cancel the review in Translation Tasks first.": [
+            "כדי לשלוח אותם, סיימו או בטלו תחילה את הסקירה במשימות תרגום."
+         ],
          "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
             "חלק מהתוכן שנבחר כולל תרגום הפתוח לסקירה. שליחתו שוב תחליף תרגום זה."
          ],
          "You selected multiple translation methods for content across different languages:": [
             "בחרת מספר שיטות תרגום עבור תוכן בשפות שונות:"
          ],
+         "Translation Service": [
+            "שירות תרגום"
+         ],
          "Sent for translation": [
             "נשלח לתרגום"
+         ],
+         "Some content was not sent": [
+            "חלק מהתוכן לא נשלח"
          ],
          "Some items were not sent for translation": [
             "חלק מהפריטים לא נשלחו לתרגום"
@@ -1103,6 +1336,9 @@
          ],
          "Continue sending": [
             "המשך שליחה"
+         ],
+         "Open Translations": [
+            "פתח את 'תרגומים'"
          ],
          "Ok": [
             "אישור"
@@ -1173,6 +1409,15 @@
          "WPML could not count the words of these items.": [
             "ל־WPML לא הייתה אפשרות לספור את המילים של פריטים אלה."
          ],
+         "WPML could not get the price of automatic translation from our translation system. Try again in a few minutes.": [
+            "ל-WPML לא הייתה אפשרות לקבל את מחיר התרגום האוטומטי ממערכת התרגום שלנו. נסה שוב בעוד מספר דקות."
+         ],
+         "No translation engine translates this content from %1$s into %2$s.": [
+            "אין מנוע תרגום שמתרגם תוכן זה מ-%1$s ל-%2$s."
+         ],
+         "WPML did not send these items. A reviewer has their translation open. Finish or cancel the review in Translation Tasks, then send them again.": [
+            "WPML לא שלח פריטים אלה. בודק פתח את התרגום שלהם. סיימו או בטלו את הסקירה במשימות תרגום, ולאחר מכן שלחו אותם שוב."
+         ],
          "Some content couldn't be sent to translation.": [
             "לא ניתן היה לשלוח חלק מהתוכן לתרגום."
          ],
@@ -1209,6 +1454,92 @@
          "Items already sent will be translated and delivered normally.": [
             "פריטים שכבר נשלחו יתורגמו ויסופקו כרגיל."
          ],
+         "%d post": [
+            "פוסט %d",
+            "%d פוסטים"
+         ],
+         "%1$s and %2$d term": [
+            "%1$s ומונח %2$d",
+            "%1$s ו־%2$d מונחים"
+         ],
+         "%d term": [
+            "%d מונח",
+            "%d מונחים"
+         ],
+         "%1$s: %2$s is assigned to %3$s. They find it in their Translations queue.": [
+            "%1$s: %2$s מוקצה אל %3$s. הפריט יופיע בתור התרגומים שלו.",
+            "%1$s: %2$s מוקצים אל %3$s. הפריטים יופיעו בתור התרגומים שלו."
+         ],
+         "First available": [
+            "הראשון שפנוי"
+         ],
+         "%1$s: %2$s is waiting for you in Translations.": [
+            "%1$s: %2$s ממתין לך במסך תרגומים.",
+            "%1$s: %2$s ממתינים לך במסך תרגומים."
+         ],
+         "%1$s: %2$s is sent to %3$s.": [
+            "%1$s: %2$s נשלח אל %3$s.",
+            "%1$s: %2$s נשלחו אל %3$s."
+         ],
+         "%1$s: %2$s is being translated automatically.": [
+            "%1$s: %2$s מתורגם באופן אוטומטי.",
+            "%1$s: %2$s מתורגמים באופן אוטומטי."
+         ],
+         "%1$s and %2$d of %3$d term": [
+            "%1$s ומונח %2$d מתוך %3$d",
+            "%1$s ו־%2$d מתוך %3$d מונחים"
+         ],
+         "%1$d of %2$d term": [
+            "מונח %1$d מתוך %2$d",
+            "%1$d מתוך %2$d מונחים"
+         ],
+         "%1$s: %2$s sent for automatic translation.": [
+            "%1$s: %2$s נשלחו לתרגום אוטומטי."
+         ],
+         "%1$s: %2$s sent for translation.": [
+            "%1$s: %2$s נשלחו לתרגום."
+         ],
+         "The term names could not be read.": [
+            "לא ניתן היה לקרוא את שמות המונחים."
+         ],
+         "%s, and more": [
+            "%s, ועוד"
+         ],
+         "Already translated: %s": [
+            "כבר תורגמו: %s"
+         ],
+         "In translation: %s": [
+            "בתהליך תרגום: %s"
+         ],
+         "In translation with their posts: %s": [
+            "בתהליך תרגום יחד עם הפוסטים שלהם: %s"
+         ],
+         "Which terms were not sent again": [
+            "אילו מונחים לא נשלחו שוב"
+         ],
+         "Terms not sent again: %1$d already translated and %2$d in translation (%3$d with their posts).": [
+            "מונחים שלא נשלחו שוב: %1$d כבר תורגמו ו־%2$d בתהליך תרגום (%3$d יחד עם הפוסטים שלהם)."
+         ],
+         "The terms could not be sent.": [
+            "לא ניתן היה לשלוח את המונחים."
+         ],
+         "%1$s: %2$d term": [
+            "%1$s: %2$d מונח",
+            "%1$s: ‏%2$d מונחים"
+         ],
+         "%1$s: not sent. %2$s no longer translates from %3$s to %4$s. <a>Choose another translator</a> at Step 2, then send again.": [
+            "%1$s: לא נשלח. %2$s כבר אינו מתרגם מ-%3$s ל-%4$s. <a>בחר מתרגם אחר</a> בשלב 2, ולאחר מכן שלח שוב."
+         ],
+         "Not sent (%s)": [
+            "לא נשלחו (%s)"
+         ],
+         "%1$s: %2$d term (%3$s).": [
+            "%1$s: מונח %2$d (%3$s).",
+            "%1$s: ‏%2$d מונחים (%3$s)."
+         ],
+         "%1$s %2$d": [
+            "%1$s %2$d"
+         ],
          "Continue to %s": [
             "המשך אל %s"
          ],
@@ -1217,9 +1548,6 @@
          ],
          "<p><a><s>Contact WPML support for help</s></a></p>": [
             "<p><a><s>פנה לתמיכה של WPML לקבלת עזרה</s></a></p>"
-         ],
-         "Translation Service": [
-            "שירות תרגום"
          ],
          "sending for professional translation..": [
             "שולח לתרגום מקצועי..."
@@ -1239,6 +1567,12 @@
          ],
          "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
             "עורך התרגום שנבחר כרגע אינו תומך בתרגום אוטומטי. עליך להפעיל את <b>עורך התרגום המתקדם</b> כדי לשלוח תוכן לתרגום אוטומטי.<br/> בדוק את ההגדרות שלך ב<wpml_settings>דף הגדרות WPML</wpml_settings>."
+         ],
+         "WPML cannot translate automatically: automatic translation is off for this site. Click \"Turn on automatic translation\" on the dashboard, then send again.": [
+            "ל-WPML אין אפשרות לתרגם אוטומטית: התרגום האוטומטי מושבת עבור אתר זה. לחצו על ”הפעל תרגום אוטומטי“ בלוח הבקרה, ולאחר מכן שלחו שוב."
+         ],
+         "%1$s cannot be translated automatically from %2$s with your translation engines. Choose another translation method for it, or change your engines.": [
+            "לא ניתן לתרגם את %1$s מ-%2$s באופן אוטומטי באמצעות מנועי התרגום שלך. בחר שיטת תרגום אחרת עבורו, או שנה את המנועים שלך."
          ],
          "Validation error happened during send to translation.": [
             "אירעה שגיאת אימות במהלך השליחה לתרגום."
@@ -1295,7 +1629,7 @@
             "השאר דף זה פתוח בזמן ש-WPML שולח את התוכן שלך לתרגום. עזיבה כעת תפסיק את שליחת הפריטים הנותרים."
          ],
          "Sending content for translation": [
-            "שולח תוכן לתרגום"
+            "שליחת תוכן לתרגום"
          ],
          "<s>%1$s</s> cannot process more than <s>%2$d</s> jobs in a single batch. WPML will automatically split your jobs into separate batches to ensure an error-free delivery to <s>%3$s</s>. <br/><br/> Do you want to proceed?": [
             "<s>%1$s</s> אינו יכול לעבד יותר מ-<s>%2$d</s> עבודות בסדרה אחת. WPML יפצל אוטומטית את העבודות שלך לסדרות נפרדות כדי להבטיח מסירה ללא שגיאות ל-<s>%3$s</s>. <br/><br/> האם ברצונך להמשיך?"
@@ -1309,20 +1643,100 @@
          "No, I will split jobs myself": [
             "לא, אפצל את העבודות בעצמי"
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
-            "חלק ממונחי הטקסונומיה טרם נשלחו. אלו שנשלחו נמצאים בתהליך תרגום - לחץ על ”המשך שליחה“ כדי לשלוח את השאר."
+         "%d not translated": [
+            "%d לא תורגם",
+            "%d לא תורגמו"
+         ],
+         "%d needs an update": [
+            "עבור %d נדרש עדכון",
+            "עבור %d נדרשים עדכונים"
+         ],
+         "%d picked": [
+            "%d נבחר",
+            "%d נבחרו"
+         ],
+         "plus %d parent term": [
+            "בתוספת %d מונח אב",
+            "בתוספת %d מונחי אב"
+         ],
+         "%d of them a parent term": [
+            "%d מהם הוא מונח אב",
+            "%d מהם הם מונחי אב"
+         ],
+         "%1$s, %2$s": [
+            "%1$s, %2$s"
+         ],
+         "What will be sent": [
+            "מה יישלח"
+         ],
+         "Target language": [
+            "שפת יעד"
+         ],
+         "Terms sent now": [
+            "מונחים שנשלחים כעת"
+         ],
+         "Terms not sent again: already translated": [
+            "מונחים שלא נשלחים שוב: כבר תורגמו"
+         ],
+         "Terms not sent again: queued or in translation": [
+            "מונחים שלא נשלחים שוב: בתור או בתהליך תרגום"
+         ],
+         "Terms not sent again: in translation": [
+            "מונחים שלא נשלחים שוב: בתהליך תרגום"
+         ],
+         "%d with their posts": [
+            "%d יחד עם הפוסטים שלהם"
+         ],
+         "queued by Translate Everything": [
+            "נוסף לתור על ידי 'תרגם הכל'"
+         ],
+         "Terms Translate Everything has queued are counted and not sent again. They are translated automatically.": [
+            "מונחים שנוספו לתור על ידי 'תרגם הכל' נספרים ולא נשלחים שוב. הם מתורגמים אוטומטית."
+         ],
+         "Terms in translation, with their posts or from this section, are counted but not sent again. Their translation arrives with the job that has them.": [
+            "מונחים בתהליך תרגום, בין אם עם הפוסטים שלהם או מחלק זה, נספרים אך לא נשלחים שוב. התרגום שלהם יגיע עם משימת התרגום שכוללת אותם."
+         ],
+         "Terms you send from here are not sent again when their posts are translated.": [
+            "מונחים שנשלחים מכאן לא נשלחים שוב בעת תרגום הפוסטים שלהם."
+         ],
+         "This send creates %d job for the translation service from the selected terms.": [
+            "שליחה זו יוצרת משימת תרגום %d עבור שירות התרגום מתוך המונחים שנבחרו.",
+            "שליחה זו יוצרת %d משימות תרגום עבור שירות התרגום מתוך המונחים שנבחרו."
+         ],
+         "%d term you did not select is not sent.": [
+            "%d מונח שלא בחרת לא נשלח.",
+            "%d מונחים שלא בחרת לא נשלחים."
+         ],
+         "A picked term whose parent is not translated takes its parent along, so the hierarchy is kept: plus %1$d parent term (%2$s).": [
+            "מונח שנבחר והאב שלו אינו מתורגם כולל גם את האב שלו, כדי לשמור על ההיררכיה: בתוספת מונח אב %1$d (%2$s).",
+            "מונח שנבחר והאב שלו אינו מתורגם כולל גם את האב שלו, כדי לשמור על ההיררכיה: בתוספת %1$d מונחי אב (%2$s)."
+         ],
+         "Translate automatically": [
+            "תרגם אוטומטית"
+         ],
+         "Translate myself": [
+            "אתרגם בעצמי"
+         ],
+         "Assign a translator": [
+            "הקצה מתרגם"
+         ],
+         "Assign translation service": [
+            "הקצה שירות תרגום"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Click Continue sending to send the rest.": [
+            "חלק ממונחי הטקסונומיה עדיין לא נשלחו. המונחים שנשלחו נמצאים בתהליך תרגום. לחץ על ”המשך שליחה“ כדי לשלוח את השאר."
          ],
          "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
             "מונחי הטקסונומיה טרם נשלחו. לחץ על ”המשך שליחה“ כדי לשלוח אותם."
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
-            "חלק ממונחי הטקסונומיה טרם נשלחו. אלו שנשלחו נמצאים בתהליך תרגום - נסה שוב את הפריטים שלא נשלחו כדי לשלוח את השאר."
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Retry the not-sent items to send the rest.": [
+            "חלק ממונחי הטקסונומיה עדיין לא נשלחו. המונחים שנשלחו נמצאים בתהליך תרגום. נסה שוב את הפריטים שלא נשלחו כדי לשלוח את השאר."
          ],
          "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
             "מונחי הטקסונומיה טרם נשלחו. נסה שוב את הפריטים שלא נשלחו כדי לשלוח אותם."
          ],
-         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
-            "חלק ממונחי הטקסונומיה לא נשלחו לתרגום. אלו שנשלחו נמצאים בתהליך תרגום – שלח את השאר שוב כדי לסיים."
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated. Send the rest again to finish.": [
+            "חלק ממונחי הטקסונומיה לא נשלחו לתרגום. המונחים שנשלחו נמצאים בתהליך תרגום. שלח את השאר שוב כדי לסיים."
          ],
          "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
             "WPML לא הצליח לשלוח את מונחי הטקסונומיה לתרגום, ולכן אף אחד מהם לא נשלח. אנא נסה שוב."
@@ -1339,6 +1753,9 @@
          "Existing content": [
             "תוכן קיים"
          ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$sסה”כ:%2$s %3$s"
+         ],
          "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
             "בחרת לתרגם מחרוזות שנמצאות ב-%1$s. רק מחרוזות אלו יתורגמו ל-%2$s."
          ],
@@ -1348,14 +1765,8 @@
          "Source language": [
             "שפת מקור"
          ],
-         "Target language": [
-            "שפת יעד"
-         ],
          "Words to translate": [
             "מילים לתרגום"
-         ],
-         "%1$sTotal:%2$s %3$s": [
-            "%1$sסה”כ:%2$s %3$s"
          ],
          "Translation service additional options": [
             "אפשרויות נוספות של שירות התרגום"
@@ -1366,20 +1777,34 @@
          "Fetching translation service data...": [
             "מאחזר נתונים משירות התרגום..."
          ],
+         "%1$s: all %2$d terms": [
+            "%1$s: כל %2$d המונחים"
+         ],
+         "%1$s: %2$d of %3$d terms": [
+            "%1$s: %2$d מתוך %3$d מונחים"
+         ],
+         "%1$d Taxonomy (%2$s)": [
+            "טקסונומיה %1$d (%2$s)",
+            "%1$d טקסונומיות (%2$s)"
+         ],
+         "Selected: %1$s · %2$s": [
+            "נבחרו: %1$s · %2$s"
+         ],
+         "%d Post": [
+            "%d פוסט",
+            "%d פוסטים"
+         ],
+         "Selected: %s": [
+            "נבחרו: %s"
+         ],
+         "Change": [
+            "שנה"
+         ],
+         "The term counts could not be read.": [
+            "לא ניתן היה לקרוא את ספירת המונחים."
+         ],
          "-": [
             "-"
-         ],
-         "Translate automatically": [
-            "תרגם אוטומטית"
-         ],
-         "Translate myself": [
-            "אתרגם בעצמי"
-         ],
-         "Assign a translator": [
-            "הקצה מתרגם"
-         ],
-         "Assign translation service": [
-            "הקצה שירות תרגום"
          ],
          "Do nothing": [
             "אל תעשה כלום"
@@ -1389,9 +1814,6 @@
          ],
          "Choose a translator": [
             "בחר מתרגם"
-         ],
-         "First available": [
-            "הראשון שפנוי"
          ],
          "(Me)": [
             "(אני)"
@@ -1411,9 +1833,6 @@
          "Minimize": [
             "מזער"
          ],
-         "PTC translates at higher quality and gives you publish-ready results.": [
-            "PTC מתרגם באיכות גבוהה יותר ומספק לך תוצאות מוכנות לפרסום."
-         ],
          "Step 2": [
             "שלב 2"
          ],
@@ -1422,54 +1841,6 @@
          ],
          "Set up AI translation": [
             "הגדר תרגום AI"
-         ],
-         "Keep a wp-admin window open until WPML finishes translating": [
-            "השאר חלון wp-admin פתוח עד ש-WPML יסיים לתרגם"
-         ],
-         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
-            "WPML מתרגם בדרך כלל את התוכן שלך ברקע, מבלי שתצטרך להישאר בממשק הניהול של WordPress. עם זאת, WPML אינו יכול להגיע לאתר זה, ולכן הוא אוסף את התרגומים שלך בזמן שחלון wp-admin פתוח."
-         ],
-         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
-            "אתה יכול להמשיך לעבוד בכל מקום בממשק הניהול של WordPress. פשוט השאר חלון אחד פתוח עד לסיום התרגום."
-         ],
-         "Next check for translations in %s.": [
-            "הבדיקה הבאה לתרגומים בעוד %s."
-         ],
-         "Hide details": [
-            "הסתר פרטים"
-         ],
-         "What could be blocking it, and how to fix it": [
-            "מה עלול לחסום זאת, ואיך לתקן זאת"
-         ],
-         "Check these on your site": [
-            "בדוק את אלו באתר שלך"
-         ],
-         "The site might be on a private network, in staging, or only reachable through a VPN.": [
-            "ייתכן שהאתר נמצא ברשת פרטית, בסביבת בדיקות (staging), או נגיש רק דרך VPN."
-         ],
-         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
-            "אימות HTTP בסיסי או רשימת היתרי IP עלולים לחסום בקשות חיצוניות."
-         ],
-         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
-            "תוסף אבטחה, חומת אש או WAF עלולים לדחות בקשות מ-WPML."
-         ],
-         "The site might be in maintenance mode.": [
-            "ייתכן שהאתר נמצא במצב תחזוקה."
-         ],
-         "Already fixed this on your site?": [
-            "כבר תיקנת זאת באתר שלך?"
-         ],
-         "Check again whether the site is reachable": [
-            "בדוק שוב אם האתר נגיש"
-         ],
-         "Checking…": [
-            "בודק..."
-         ],
-         "Check again": [
-            "בדוק שוב"
-         ],
-         "Still couldn't reach your site.": [
-            "עדיין לא ניתן היה להגיע לאתר שלך."
          ],
          "Automatic translations completed": [
             "תרגומים אוטומטיים הושלמו"
@@ -1494,70 +1865,21 @@
          "Map the language": [
             "מפה את השפה"
          ],
-         "%d second": [
-            "שנייה %d",
-            "%d שניות"
+         "%d translation picked up.": [
+            "תרגום %d נאסף.",
+            "%d תרגומים נאספו."
          ],
-         "%d minute": [
-            "דקה %d",
-            "%d דקות"
-         ],
-         "%d hour": [
-            "שעה %d",
-            "%d שעות"
-         ],
-         "%d day": [
-            "יום %d",
-            "%d ימים"
-         ],
-         "%d translation": [
-            "תרגום %d",
-            "%d תרגומים"
-         ],
-         "checking now": [
-            "בודק כעת"
-         ],
-         "next check in %s": [
-            "בדיקה הבאה בעוד %s"
-         ],
-         "WPML stopped checking for delivered translations after repeated failures.": [
-            "WPML הפסיק לבדוק אם נמסרו תרגומים עקב כשלים חוזרים ונשנים."
-         ],
-         "Receiving translations: last received %1$s ago · %2$s": [
-            "קבלת תרגומים: התקבלו לאחרונה לפני %1$s · %2$s"
-         ],
-         "Receiving translations: last received %s ago": [
-            "קבלת תרגומים: התקבלו לאחרונה לפני %s"
-         ],
-         "Receiving translations: no translations received yet · %s": [
-            "קבלת תרגומים: טרם התקבלו תרגומים · %s"
-         ],
-         "Receiving translations: no translations received yet": [
-            "קבלת תרגומים: טרם התקבלו תרגומים"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
-            "מקבל תרגומים: התקבלו לאחרונה לפני %1$s · %2$s בהמתנה · %3$s"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting": [
-            "מקבל תרגומים: התקבלו לאחרונה לפני %1$s · %2$s בהמתנה"
-         ],
-         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
-            "מקבל תרגומים: טרם התקבלו תרגומים · %1$s בהמתנה · %2$s"
-         ],
-         "Receiving translations: no translations received yet · %s waiting": [
-            "מקבל תרגומים: טרם התקבלו תרגומים · %s בהמתנה"
-         ],
-         "These translations are taking longer than they should to arrive.": [
-            "לתרגומים אלו לוקח זמן רב מהרגיל להגיע."
+         "Nothing new to pick up yet.": [
+            "אין עדיין תרגומים חדשים לאיסוף."
          ],
          "Picking up translations…": [
-            "אוסף תרגומים..."
+            "אוסף תרגומים…"
          ],
          "Pick up translations now": [
             "אסוף תרגומים כעת"
          ],
          "%d translations ": [
-            "‏%d תרגומים "
+            "%d תרגומים "
          ],
          "%d translation ": [
             "תרגום %d "
@@ -1596,7 +1918,7 @@
             "טקסטים (מחרוזות) המגיעים מ: %s."
          ],
          "WPML will not translate existing content for these post types and texts but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
-            "WPML לא יתרגם תוכן קיים עבור סוגי פוסטים וטקסטים אלו, אך כל תוכן חדש שתיצור יתורגם אוטומטית. אם תעדיף, תוכל להתחיל <button />."
+            "WPML לא יתרגם תוכן קיים עבור סוגי פוסטים וטקסטים אלה, אך כל תוכן חדש שייווצר יתורגם באופן אוטומטי. באפשרותך להתחיל <button /> אם ברצונך בכך."
          ],
          "WPML will not translate existing content for these post types but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
             "WPML לא יתרגם תוכן קיים עבור סוגי פוסטים אלו, אך כל תוכן חדש שתיצור יתורגם אוטומטית. אם תעדיף, תוכל להתחיל <button />."
@@ -1607,11 +1929,11 @@
          "New content is ready to translate": [
             "תוכן חדש מוכן לתרגום"
          ],
-         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
-            "‏%s הפכו לניתנים לתרגום לאחר שסקרת את עלות התרגום, ולכן ”תרגם הכל“ לא כלל אותם. סקור את העלות וכלול אותם כדי לשמור על האתר שלך מתורגם במלואו."
+         "%s became translatable after Translate Everything was set up, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "%s הפכו לניתנים לתרגום לאחר הגדרת תרגם הכל, ולכן תרגם הכל לא כלל אותם. בדוק את העלות וכלול אותם כדי לשמור על האתר שלך מתורגם במלואו."
          ],
          "Review cost and include": [
-            "סקור עלות וכלול"
+            "סקירת עלות והכללה"
          ],
          "Learn more →": [
             "למידע נוסף ←"
@@ -1627,15 +1949,6 @@
          ],
          "PTC can translate your software right inside your Git workflow.": [
             "PTC יכול לתרגם את התוכנה שלך ישירות בתוך זרימת העבודה של Git."
-         ],
-         "The following target languages do not support automatic translations: %s": [
-            "שפות היעד הבאות אינן תומכות בתרגומים אוטומטיים: %s"
-         ],
-         "To enable automatic translation map them to known languages.": [
-            "כדי לאפשר תרגום אוטומטי, מפה אותן לשפות מוכרות."
-         ],
-         "Map to known languages": [
-            "מפה לשפות מוכרות"
          ],
          "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
             "כדי לקבל עזרה, אנא <supportLink>פתח קריאה בפורום שלנו (Maiya)</supportLink>, לחץ על כפתור ”העתק הכל“ כדי לקבל את פרטי הניפוי ו”הדבק“ אותם לסוכן ה-Maiya שלנו. אם אתה עדיין נתקל בבעיות, השתמש ב<logsLink>כלי היומנים</logsLink> כדי לאסוף נתונים נוספים."
@@ -1714,7 +2027,7 @@
             "זמן נותר: <s>פחות מדקה אחת</s>"
          ],
          "Remaining time: <s>%d minute</s>": [
-            "זמן נותר: <s>דקה %d</s>",
+            "זמן נותר: <s>%d דקה</s>",
             "זמן נותר: <s>%d דקות</s>"
          ],
          "Default language does not support automatic translations.": [
@@ -1728,6 +2041,9 @@
          ],
          "Add your site description before you can turn this on.": [
             "הוסף את תיאור האתר שלך לפני שתוכל להפעיל זאת."
+         ],
+         "Translate Everything needs an active automatic translation account.": [
+            "התכונה ”תרגם הכל“ דורשת חשבון תרגום אוטומטי פעיל."
          ],
          "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
             "יש להפעיל את עורך התרגום המתקדם כדי להפעיל את תרגם הכל אוטומטית."
@@ -1883,7 +2199,7 @@
             "סקור את תוכן האתר שלך וקבל את עלות התרגום בהתאם למה שתבחר לתרגם."
          ],
          "Select payment method": [
-            "בחר אמצעי תשלום"
+            "בחירת אמצעי תשלום"
          ],
          "Translate Everything Automatically - disabled": [
             "תרגם הכל אוטומטית - כבוי"
@@ -1903,13 +2219,8 @@
          "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
             "WPML יפסיק לתרגם אוטומטית תוכן חדש וערוך. תרגומים שכבר נמסרו יישארו כפי שהם."
          ],
-         "%d translation is still in progress. You will not be charged for it.": [
-            "תרגום %d אחד עדיין בתהליך. לא תחויב עליו.",
-            "‏%d תרגומים עדיין בתהליך. לא תחויב עליהם."
-         ],
-         "%d translation is currently in progress and will be cancelled.": [
-            "תרגום %d אחד נמצא כעת בתהליך ויבוטל.",
-            "‏%d תרגומים נמצאים כעת בתהליך ויבוטלו."
+         "Translations in progress will be cancelled and refunded. When you switch back on, changed pages will be sent again.": [
+            "תרגומים בתהליך יבוטלו ויזוכו. בעת הפעלה מחדש, עמודים שהשתנו יישלחו שוב."
          ],
          "You can adjust the content limits once Translate Everything finishes the current translation run.": [
             "תוכל להתאים את מגבלות התוכן ברגע ש’תרגם הכל‘ יסיים את סבב התרגום הנוכחי."
@@ -2219,6 +2530,9 @@
          "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
             "פריט זה זקוק לעדכון תרגום אך תורגם בעבר באמצעות עורך WordPress. שימוש בעורך התרגום של WPML יחליף את התרגום הקיים."
          ],
+         "%s: review in progress": [
+            "%s: סקירה בעיצומה"
+         ],
          "%1$s: %2$s%3$s": [
             "‏%1$s: %2$s%3$s"
          ],
@@ -2311,9 +2625,6 @@
          "Same as default": [
             "זהה לברירת המחדל"
          ],
-         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
-            "תרגום אוטומטי אינו זמין בין %1$s ל-%2$s מכיוון שהן מזוהות כאותה שפה."
-         ],
          "Translation paused": [
             "התרגום הושהה"
          ],
@@ -2345,7 +2656,7 @@
             "זה מה שדרוש כיום לצורך תרגום התוכן הנוכחי שלך. הנתון אינו כולל טקסטים מסוימים שנוספו על ידי תוספים אחרים, כגון טפסים או סליידרים, אשר נספרים לאחר השלמת ההגדרה. מחרוזות אתר מערכת העיצוב שלך ומהתוספים נספרות גם הן לאחר ההגדרה, ובדרך כלל מוסיפות כמה מאות מילים. לאחר מכן, עריכות הן בחינם. אתה משלם שוב רק על מילים שתוסיף."
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
-            "זה מה שנדרש לתרגום התוכן הנוכחי שלך היום. זה לא כולל טקסטים מסוימים שנוספו על ידי תוספים אחרים, כגון טפסים או סליידרים, שנספרים לאחר השלמת ההגדרה. מחרוזות אתר מתבנית העיצוב ומהתוספים שלך נספרות גם הן לאחר ההגדרה ובדרך כלל מוסיפות כמה מאות מילים. בתעריף לפי מילה של %s; שינויים בעמודים מתורגמים יחויבו שוב."
+            "זהו היקף המילים הנדרש כיום לתרגום התוכן הנוכחי שלך. הנתון אינו כולל טקסטים מסוימים שנוספו על ידי תוספים אחרים, כגון טפסים או מצגות (סליידרים), הנספרים לאחר השלמת ההגדרה. מחרוזות אתר מערכת העיצוב ומהתוספים נספרות גם הן לאחר ההגדרה ובדרך כלל מוסיפות כמה מאות מילים. בתעריף לפי מילה של %s; שינויים בעמודים מתורגמים יחויבו שוב."
          ],
          "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
             "זה מה שדרוש כיום לצורך תרגום התוכן הנוכחי שלך. לאחר מכן, עריכות הן בחינם. אתה משלם שוב רק על מילים שתוסיף."
@@ -2356,8 +2667,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "הספירה כוללת עמודים, פוסטים ומוצרים יחד עם השדות המותאמים אישית שלהם, טקסטים מבוני עמודים וטקסטים של מדיה, וכן את הקטגוריות, התגים והמאפיינים שבהם הם משתמשים."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "הספירה כוללת עמודים, פוסטים ומוצרים יחד עם השדות המותאמים אישית שלהם, טקסטים מבוני עמודים וטקסטים של מדיה, את הקטגוריות, התגים והמאפיינים שבהם הם משתמשים, וכן מחרוזות באתר. מונח נספר בכל פריט שמשתמש בו ופעם נוספת בפני עצמו, מכיוון שהוא נשלח לתרגום בשני האופנים."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "החישוב כולל עמודים, פוסטים ומוצרים יחד עם השדות המותאמים אישית שלהם, טקסטים של בוני עמודים וטקסטים של מדיה, הקטגוריות, התגים והמאפיינים שבהם הם משתמשים, ומחרוזות אתר. כל קטגוריה, תג או מאפיין נספרים פעם אחת, בשורה ”טקסונומיות“, ולא שוב עם הפריטים שמשתמשים בהם."
          ],
          "Total items": [
             "סה\"כ פריטים"
@@ -2397,6 +2708,9 @@
          ],
          "To use prepaid words, register WPML on this site.": [
             "כדי להשתמש במילים בתשלום מראש, רשום את WPML באתר זה."
+         ],
+         "Checking…": [
+            "בודק..."
          ],
          "We could not reach our translation system.": [
             "לא הצלחנו להתחבר למערכת התרגום שלנו."
@@ -2491,7 +2805,7 @@
             "המשך בלשונית החדשה"
          ],
          "Activate <b>Pay-As-You-Go</b>": [
-            "הפעל את ה-<b>תשלום לפי שימוש</b>"
+            "הפעלת <b>תשלום לפי שימוש</b>"
          ],
          "<b>Pay-As-You-Go</b> is not active yet.": [
             "<b>תשלום לפי שימוש</b> עדיין לא פעיל."
@@ -2503,13 +2817,10 @@
             "חבר אתר זה אליו"
          ],
          "Activate Pay-As-You-Go": [
-            "הפעל תשלום לפי שימוש"
+            "הפעלת תשלום לפי שימוש"
          ],
          "Connect your sites to share translation memory, glossary and word quota.": [
             "חבר את האתרים שלך כדי לשתף זיכרון תרגום, מילון מונחים ומכסת מילים."
-         ],
-         "Learn more": [
-            "למידע נוסף"
          ],
          "Copy your migration code:": [
             "העתק את קוד ההגירה שלך:"
@@ -2563,7 +2874,7 @@
             "יש %1$s%2$s מילים%3$s בחשבון ה-WPML שלך."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "יש %1$s%2$s זמינות בחשבון ה-WPML שלך.%3$s"
+            "יש %1$s%2$s מילים זמינות בחשבון ה-WPML שלך.%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(רק בעל חשבון ה-WPML יכול לעשות זאת.)"
@@ -2597,6 +2908,9 @@
          ],
          "Scores based on WPML's internal MQM translation quality study.": [
             "הציונים מבוססים על מחקר איכות התרגום הפנימי (MQM) של WPML."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC מתרגם באיכות גבוהה יותר ומספק לך תוצאות מוכנות לפרסום."
          ],
          "Select an item": [
             "בחר פריט"

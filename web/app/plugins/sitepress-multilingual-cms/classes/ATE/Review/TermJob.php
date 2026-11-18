@@ -6,6 +6,7 @@ use WPML\FP\Obj;
 use WPML\FP\Relation;
 use WPML\Setup\Option;
 use WPML\TM\API\Jobs;
+use WPML\TM\ATE\TranslateEverything\TermBundle;
 
 class TermJob {
 
@@ -13,6 +14,10 @@ class TermJob {
 
 	public static function isTermJob( $job ) {
 		return (bool) $job && Relation::propEq( 'element_type_prefix', self::ELEMENT_TYPE_PREFIX, $job );
+	}
+
+	public static function isTermBundle( $job ) {
+		return (bool) $job && Relation::propEq( 'element_type', TermBundle::ELEMENT_TYPE, $job );
 	}
 
 	public static function flagAcceptedJobs( array $wpmlJobIds ) {
@@ -46,9 +51,14 @@ class TermJob {
 			return;
 		}
 
+		if ( ! self::isAutomatic( $job ) ) {
+			ReviewRulesFactory::create()->acceptOnTermCompletion( (int) Obj::prop( 'rid', $job ) );
+
+			return;
+		}
+
 		if (
 			null === $reviewStatus
-			&& self::isAutomatic( $job )
 			&& self::reviewIsOn()
 			&& self::isReviewedUnderOwnMode( $job )
 			&& ! self::isExcluded( (string) Obj::prop( 'element_type', $job ) )
@@ -57,11 +67,19 @@ class TermJob {
 		}
 	}
 
+	public static function onNothingDelivered( $jobId ) {
+		$job = self::get( (int) $jobId );
+		if ( $job && ReviewStatus::NEEDS_REVIEW === Obj::prop( 'review_status', $job ) ) {
+			Jobs::setReviewStatus( (int) $jobId, null );
+		}
+	}
+
 	public static function get( $jobId ) {
 		$rows = self::readJobs( [ (int) $jobId ] );
 		$row  = is_array( $rows ) && $rows ? reset( $rows ) : null;
 
-		if ( ! is_object( $row ) || 0 !== strpos( (string) Obj::prop( 'element_type', $row ), self::ELEMENT_TYPE_PREFIX . '_' ) ) {
+		$elementType = is_object( $row ) ? (string) Obj::prop( 'element_type', $row ) : '';
+		if ( ! is_object( $row ) || ( TermBundle::ELEMENT_TYPE !== $elementType && 0 !== strpos( $elementType, self::ELEMENT_TYPE_PREFIX . '_' ) ) ) {
 			return null;
 		}
 
@@ -102,7 +120,7 @@ class TermJob {
 	}
 
 	private static function reviewIsOn() {
-		return \WPML_TM_ATE_Status::is_enabled_and_activated();
+		return \WPML_TM_ATE_Status::is_account_usable();
 	}
 
 	private static function isReviewedUnderOwnMode( $row ) {

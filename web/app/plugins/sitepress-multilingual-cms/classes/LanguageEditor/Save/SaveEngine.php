@@ -165,6 +165,7 @@ class SaveEngine {
 		}
 
 		if ( $this->guardAlreadyDone( $task ) ) {
+			$this->recordRefusedDefaultDeletes( $task );
 			$task->setStatus(
 				empty( $task->getCursor( 'skipped', [] ) ) ? SaveTask::STATUS_COMPLETED : SaveTask::STATUS_COMPLETED_WITH_SKIPS
 			);
@@ -332,6 +333,36 @@ class SaveEngine {
 		$units = $task->getCursor( 'units', [] );
 		if ( $unitIdx >= count( $units ) ) {
 			$this->finish( $task );
+		}
+	}
+
+	private function recordRefusedDefaultDeletes( SaveTask $task ) {
+		$units     = $task->getCursor( 'units', [] );
+		$unitIdx   = (int) $task->getCursor( 'unitIdx', 0 );
+		$unitCount = count( $units );
+
+		for ( $i = $unitIdx; $i < $unitCount; $i++ ) {
+			$unit = $units[ $i ];
+			if ( ! isset( $unit['phase'] ) || DeleteContentPhase::ID !== $unit['phase'] ) {
+				continue;
+			}
+
+			$change = $this->unitChange( $task, $unit );
+			if ( '' === DeleteContentPhase::defaultLanguageIn( $change ) ) {
+				continue;
+			}
+
+			$unitKey    = $this->unitKey( $unit );
+			$unitStatus = $task->getCursor( 'unitStatus', [] );
+			if ( isset( $unitStatus[ $unitKey ] ) ) {
+				continue;
+			}
+
+			$offset = $i === $unitIdx ? (int) $task->getCursor( 'offset', 0 ) : 0;
+			$this->recordSkip( $task, $unitKey, $offset, DeleteContentPhase::REFUSED_DEFAULT );
+			$this->recordUnitStatus( $task, $unitKey, 'skipped' );
+
+			DeleteContentPhase::closeRecordForRefusal( $change );
 		}
 	}
 

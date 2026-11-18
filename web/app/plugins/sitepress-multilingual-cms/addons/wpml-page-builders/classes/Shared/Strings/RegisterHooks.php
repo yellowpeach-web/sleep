@@ -2,6 +2,8 @@
 
 namespace WPML\PB\Strings;
 
+use WPML\PB\TranslationJob\Editor;
+
 class RegisterHooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action {
 
 	public function add_hooks() {
@@ -9,9 +11,7 @@ class RegisterHooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action {
 	}
 
 	public function changeVisualStringType( array $nodes ) {
-		$translationEditor = apply_filters( 'wpml_sub_setting', false, 'translation-management', 'doc_translation_method' );
-
-		if ( 'ATE' !== $translationEditor ) {
+		if ( ! Editor::isATE() ) {
 			return $nodes;
 		}
 

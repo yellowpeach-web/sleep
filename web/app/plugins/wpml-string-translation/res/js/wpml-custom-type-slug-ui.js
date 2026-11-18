@@ -11,16 +11,19 @@ WPML_String_Translation.CustomTypeSlugUI = function () {
     };
 	
 	var change_original_lang = function () {
-		var new_lang = jQuery(this).val();
-		
-		jQuery(this).closest('.js-custom-type-slugs').find('input').each( function() {
-			var input_lang = jQuery(this).data('lang');
-			if (input_lang == new_lang) {
+		var new_language = jQuery(this).val();
+		var table = jQuery(this).closest('.js-custom-type-slugs');
+
+		table.find('input[data-lang]').each( function() {
+			var input_language = jQuery(this).data('lang');
+			if (input_language == new_language) {
 				jQuery(this).closest('tr').hide();
 			} else {
 				jQuery(this).closest('tr').show();
 			}
-		})
+		});
+
+		table.find('.js-archive-slug-original').hide();
 	};
 
 	var toggle_slugs_table = function(e) {

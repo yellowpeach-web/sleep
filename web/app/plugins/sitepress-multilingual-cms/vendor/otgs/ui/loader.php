@@ -1,6 +1,6 @@
 <?php
 
-$otg_ui_version = 11000;
+$otg_ui_version = 11002;
 
 
 global $otg_ui_versions;

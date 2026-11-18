@@ -55,6 +55,8 @@ class Factory implements \IWPML_AJAX_Action {
 					$data instanceof Collection ? $data : wpml_collect( is_array( $data ) ? $data : [] )
 				) ) {
 					$result = Either::left( Authorization::ERROR );
+				} elseif ( \WPML\Setup\Initializer::refusesOnASetUpSite( $endpoint ) ) {
+					$result = Either::left( \WPML\Setup\Endpoint\FinishStep::alreadySetUpError() );
 				} else {
 					$result = ExecutionContextHolder::within(
 						ExecutionContext::request( ExecutionContextHolder::currentPrincipalId(), (string) $endpoint ),

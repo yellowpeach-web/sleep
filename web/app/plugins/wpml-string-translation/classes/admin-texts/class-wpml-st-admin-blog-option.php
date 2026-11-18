@@ -26,6 +26,10 @@ class WPML_ST_Admin_Blog_Option extends WPML_SP_User {
 		}
 		WPML_Config::load_config_run();
 
+		if ( $this->admin_option->is_original_in_another_language( $new_value ) ) {
+			return $old_value;
+		}
+
 		return $this->admin_option->update_option(
 			'',
 			$new_value,

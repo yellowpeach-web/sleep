@@ -12,7 +12,7 @@ class MigrateAteRepository implements \IWPML_Upgrade_Command {
 
 	private $schema;
 
-	private $result = false;
+	protected $result = false;
 
 	public function __construct( array $args ) {
 		$this->schema = $args[0];
@@ -28,7 +28,7 @@ class MigrateAteRepository implements \IWPML_Upgrade_Command {
 		return $this->result;
 	}
 
-	private function addColumnsToJobsTable() {
+	protected function addColumnsToJobsTable() {
 		$result = true;
 
 		if ( ! $this->schema->does_column_exist( self::TABLE_NAME, self::COLUMN_EDITOR_JOB_ID ) ) {
@@ -38,8 +38,9 @@ class MigrateAteRepository implements \IWPML_Upgrade_Command {
 		return $result;
 	}
 
-	private function migrateOldRepository() {
-		$records = get_option( self::OPTION_NAME_REPO );
+	protected function migrateOldRepository() {
+		$records  = get_option( self::OPTION_NAME_REPO );
+		$migrated = true;
 
 		if ( is_array( $records ) && $records ) {
 			$wpdb   = $this->schema->get_wpdb();
@@ -47,7 +48,7 @@ class MigrateAteRepository implements \IWPML_Upgrade_Command {
 			$cases  = $this->getAteJobIdCaseArgs( $records );
 
 			if ( ! $cases ) {
-				$wpdb->query(
+				$migrated = false !== $wpdb->query(
 					$wpdb->prepare(
 						"UPDATE {$wpdb->prefix}icl_translate_job
 						SET editor_job_id = 0
@@ -57,12 +58,12 @@ class MigrateAteRepository implements \IWPML_Upgrade_Command {
 					)
 				);
 			} else {
-				$wpdb->query(
+				$migrated = false !== $wpdb->query(
 					$wpdb->prepare(
 						"UPDATE {$wpdb->prefix}icl_translate_job
 						SET editor_job_id = (
 							CASE job_id
-								" . implode( ' ', array_fill( 0, count( $cases ) / 2, 'WHEN %d THEN %d' ) ) . '
+								" . implode( ' ', array_fill( 0, intval( max( 0, intdiv( count( $cases ), 2 ) ) ), 'WHEN %d THEN %d' ) ) . '
 								ELSE 0
 							END
 						)
@@ -75,6 +76,8 @@ class MigrateAteRepository implements \IWPML_Upgrade_Command {
 		}
 
 		$this->disableAutoloadOnOldOption();
+
+		return $migrated;
 	}
 
 	private function getAteJobIdCaseArgs( array $records ) {

@@ -1,5 +1,7 @@
 <?php
 
+use WPML\ST\SlugTranslation\PostArchive\Records;
+
 class WPML_ST_Slug_Translation_Strings_Sync implements IWPML_Action {
 
 	private $slug_records_factory;
@@ -33,17 +35,38 @@ class WPML_ST_Slug_Translation_Strings_Sync implements IWPML_Action {
 		if ( isset( $post_type_object->rewrite['slug'] ) && $post_type_object->rewrite['slug'] ) {
 			$this->sync_element_slug( trim( $post_type_object->rewrite['slug'], '/' ), $post_type, WPML_Slug_Translation_Factory::POST );
 		}
+
+		$archive_slug = Records::get_registered_archive_slug( $post_type_object );
+		if ( '' === $archive_slug ) {
+			return;
+		}
+
+		$settings = $this->slug_settings_factory->create( WPML_Slug_Translation_Factory::POST );
+		if ( ! $settings->is_translated( $post_type ) ) {
+			return;
+		}
+
+		$archive_records = $this->slug_records_factory->create( WPML_Slug_Translation_Factory::POST_ARCHIVE );
+		if ( $archive_records->get_slug( $post_type )->get_original_id() ) {
+			$this->sync_slug( $archive_slug, $post_type, $settings, $archive_records );
+		}
 	}
 
 	public function sync_element_slug( $rewrite_slug, $type, $element_type ) {
-		$settings = $this->slug_settings_factory->create( $element_type );
+		$this->sync_slug(
+			$rewrite_slug,
+			$type,
+			$this->slug_settings_factory->create( $element_type ),
+			$this->slug_records_factory->create( $element_type )
+		);
+	}
 
+	private function sync_slug( string $rewrite_slug, string $type, WPML_ST_Slug_Translation_Settings $settings, WPML_Slug_Translation_Records $records ) {
 		if ( ! $settings->is_translated( $type ) ) {
 			return;
 		}
 
-		$records = $this->slug_records_factory->create( $element_type );
-		$slug    = $records->get_slug( $type );
+		$slug = $records->get_slug( $type );
 
 		if (
 			$slug->get_original_value() !== $rewrite_slug
@@ -64,9 +87,25 @@ class WPML_ST_Slug_Translation_Strings_Sync implements IWPML_Action {
 			return true;
 		}
 
+		$default_language = (string) $this->sitepress->get_default_language();
+
+		if ( ! $this->is_request_language( [ $string_lang, $default_language ] ) ) {
+			return false;
+		}
+
 		$request_locale = determine_locale();
 
 		return $request_locale === $string_locale
-			|| $request_locale === $this->sitepress->get_locale( (string) $this->sitepress->get_default_language() );
+			|| $request_locale === $this->sitepress->get_locale( $default_language );
+	}
+
+	private function is_request_language( array $languages ) {
+		$request_language = (string) $this->sitepress->get_current_language();
+
+		if ( '' === $request_language || \WPML\Language\RequestedLanguage::ALL === $request_language ) {
+			$request_language = (string) $this->sitepress->get_admin_language_cookie();
+		}
+
+		return '' === $request_language || in_array( $request_language, $languages, true );
 	}
 }

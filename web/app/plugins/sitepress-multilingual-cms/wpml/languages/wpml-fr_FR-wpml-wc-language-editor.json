@@ -38,8 +38,8 @@
             "Aucun contenu existant ne nécessite de mise à jour."
          ],
          "%d post will be updated.": [
-            "%d publication sera mise à jour.",
-            "%d publications seront mises à jour."
+            "%d article sera mis à jour.",
+            "%d articles seront mis à jour."
          ],
          "%d link will be adjusted.": [
             "%d lien sera ajusté.",
@@ -160,7 +160,7 @@
             "%1$s — %2$d éléments"
          ],
          "Pages and posts": [
-            "Pages et publications"
+            "Pages et articles"
          ],
          "Products": [
             "Produits"
@@ -181,7 +181,7 @@
             "Les catégories, les étiquettes et les menus n'ont pas de corbeille WordPress, ils sont donc supprimés immédiatement dans tous les cas."
          ],
          "Your site’s setting “when deleting a post, delete its translations too” is on. We will not apply it here, so nothing in %s is deleted.": [
-            "Le réglage de votre site « lors de la suppression d'une publication, supprimer également ses traductions » est activé. Nous ne l'appliquerons pas ici, donc rien dans %s n'est supprimé."
+            "Le réglage de votre site « lors de la suppression d’un article, supprimer également ses traductions » est activé. Nous ne l'appliquerons pas ici, de sorte que rien dans %s ne sera supprimé."
          ],
          ", ": [
             ", "
@@ -193,7 +193,7 @@
             "Les traductions de chaînes de %s sont supprimées avec elle."
          ],
          "Its queued translation jobs are cancelled without charge; any already in progress are stopped, and the words already sent are still charged.": [
-            "Ses travaux de traduction en attente sont annulés sans frais ; ceux déjà en cours sont arrêtés, et les mots déjà envoyés sont toujours facturés."
+            "Ses tâches de traduction en file d'attente sont annulées sans frais ; celles déjà en cours sont interrompues, et les mots déjà envoyés restent facturés."
          ],
          "Move this content into": [
             "Déplacer ce contenu vers"
@@ -310,11 +310,11 @@
             "Si votre site utilise un domaine par langue, le domaine de cette langue n'est pas redirigé : tant qu'il pointe toujours vers ce site, il répond dans la langue par défaut de votre site aux mêmes adresses."
          ],
          "The listed items are removed, along with their translation records, their string translations and their translation jobs.": [
-            "Les éléments listés sont supprimés, ainsi que leurs enregistrements de traduction, leurs traductions de chaînes et leurs travaux de traduction."
+            "Les éléments répertoriés sont supprimés, ainsi que leurs enregistrements de traduction, leurs traductions de chaînes et leurs tâches de traduction."
          ],
          "The listed items are removed, along with their translation records, their string translations and their %d translation job.": [
-            "Les éléments listés sont supprimés, ainsi que leurs enregistrements de traduction, leurs traductions de chaînes et leur %d travail de traduction.",
-            "Les éléments listés sont supprimés, ainsi que leurs enregistrements de traduction, leurs traductions de chaînes et leurs %d travaux de traduction."
+            "Les éléments répertoriés sont supprimés, ainsi que leurs enregistrements de traduction, leurs traductions de chaînes et leur %d tâche de traduction.",
+            "Les éléments répertoriés sont supprimés, ainsi que leurs enregistrements de traduction, leurs traductions de chaînes et leurs %d tâches de traduction."
          ],
          "We couldn’t check for translated content. You can still remove the language; its translations are kept. Deleting its content and moving it into another language both need that count, so those two goals are unavailable.": [
             "Nous n'avons pas pu vérifier le contenu traduit. Vous pouvez toujours supprimer la langue ; ses traductions sont conservées. La suppression de son contenu et son déplacement vers une autre langue nécessitent tous deux ce décompte, ces deux objectifs sont donc indisponibles."
@@ -580,6 +580,9 @@
          "Blocked by a firewall or CDN": [
             "Bloqué par un pare-feu ou un CDN"
          ],
+         "Used by another site": [
+            "Utilisé par un autre site"
+         ],
          "Not valid": [
             "Non valide"
          ],
@@ -603,6 +606,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s se charge, mais un pare-feu ou un CDN a bloqué la vérification de WPML."
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "Utilisé par un autre site sur ce réseau : %s. Saisissez un domaine différent pour enregistrer."
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "Le domaine n'a pas pu être validé : %s. Vérifiez qu'il pointe vers ce site, ou décochez « Valider lors de l'enregistrement » pour l'enregistrer quand même."
@@ -959,6 +965,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "Avant de pouvoir enregistrer cette langue, choisissez de récupérer le contenu que ce site avait auparavant dans celle-ci ou de repartir de zéro."
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "Une langue ne peut pas être associée à la langue par défaut de votre site. Choisissez plutôt « Faire correspondre automatiquement »."
+         ],
          "You don’t have permission to change languages.": [
             "Vous n'avez pas la permission de modifier les langues."
          ],
@@ -984,13 +993,13 @@
             "%1$s : le pack de langue WordPress pour %2$s n'a pas pu être téléchargé, la version locale a donc été enregistrée sans fichiers de traduction."
          ],
          "%1$s: the links in post %2$s did not match the old language code and were left as they were.": [
-            "%1$s : les liens dans la publication %2$s ne correspondaient pas à l'ancien code de langue et ont été laissés tels quels."
+            "%1$s : les liens de l'article %2$s ne correspondaient pas à l'ancien code de langue et ont été laissés tels quels."
          ],
          "%1$s: the links in post %2$s could not be rewritten.": [
-            "%1$s : les liens dans la publication %2$s n'ont pas pu être réécrits."
+            "%1$s : les liens de l'article %2$s n'ont pas pu être réécrits."
          ],
          "%1$s: some translation jobs could not be cancelled.": [
-            "%1$s : certains travaux de traduction n'ont pas pu être annulés."
+            "%1$s : certaines tâches de traduction n'ont pas pu être annulées."
          ],
          "%1$s: one step of the save kept failing and was skipped.": [
             "%1$s : une étape de l'enregistrement a échoué à plusieurs reprises et a été ignorée."
@@ -1018,6 +1027,9 @@
          ],
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "Si vous ne trouvez pas votre langue dans la liste, <a>ajoutez une langue personnalisée</a>."
+         ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s déplacé en position %2$d sur %3$d."
          ],
          "Default language": [
             "Langue par défaut"
@@ -1076,6 +1088,12 @@
          "Delete language": [
             "Supprimer la langue"
          ],
+         "Move %s. Use the up and down arrow keys.": [
+            "Déplacer %s. Utilisez les touches fléchées vers le haut et vers le bas."
+         ],
+         "Drag to change the order": [
+            "Faites glisser pour modifier l'ordre"
+         ],
          "Type to search all languages…": [
             "Saisissez du texte pour rechercher parmi toutes les langues…"
          ],
@@ -1110,7 +1128,7 @@
             "Par défaut"
          ],
          "Set as default": [
-            "Définir par défaut"
+            "Définir comme langue par défaut"
          ],
          "Resume translating": [
             "Reprendre la traduction"
@@ -1147,6 +1165,9 @@
          ],
          "Recognized as the same language as the default": [
             "Reconnue comme identique à la langue par défaut"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "La traduction automatique est désactivée : aucun moteur de traduction n'est activé. Pour en activer un, accédez à <link>WPML → Réglages → Traduction IA</link>."
          ],
          "%s (Regional)": [
             "%s (régional)"
@@ -1224,7 +1245,7 @@
             "Aucune correspondance"
          ],
          "The items you include below are removed, along with their translation records. Originals in your other languages are untouched, and image files stay on disk. Comments on these posts are deleted with them. Nothing in %s’s sibling languages is deleted.": [
-            "Les éléments que vous incluez ci-dessous sont supprimés, ainsi que leurs enregistrements de traduction. Les originaux dans vos autres langues ne sont pas touchés et les fichiers image restent sur le disque. Les commentaires sur ces publications sont supprimés avec elles. Rien n'est supprimé dans les langues sœurs de %s."
+            "Les éléments que vous incluez ci-dessous sont supprimés, ainsi que leurs enregistrements de traduction. Les originaux dans vos autres langues restent intacts et les fichiers image restent sur le disque. Les commentaires sur ces articles sont supprimés en même temps. Rien dans les langues sœurs de %s n'est supprimé."
          ],
          "Skip them, move everything else.": [
             "Les ignorer, déplacer tout le reste."
@@ -1314,7 +1335,7 @@
             "Traductions de chaînes"
          ],
          "Translation jobs": [
-            "Travaux de traduction"
+            "Tâches de traduction"
          ],
          "%1$d removed · %2$d kept · %3$d skipped": [
             "%1$d supprimés · %2$d conservés · %3$d ignorés"
@@ -1323,11 +1344,11 @@
             "Ignoré car : %s"
          ],
          "No translation jobs needed cancelling.": [
-            "Aucun travail de traduction n'a dû être annulé."
+            "Aucune tâche de traduction n'a eu besoin d'être annulée."
          ],
          "%d translation job was cancelled without charge.": [
-            "%d travail de traduction a été annulé sans frais.",
-            "%d travaux de traduction ont été annulés sans frais."
+            "%d tâche de traduction a été annulée sans frais.",
+            "%d tâches de traduction ont été annulées sans frais."
          ],
          "%d job was stopped mid-work — the words already sent are still charged.": [
             "%d travail a été arrêté en cours de route — les mots déjà envoyés sont toujours facturés.",
@@ -1427,7 +1448,7 @@
             "Définit la variante régionale de la langue. La traduction automatique utilise ceci pour produire des traductions plus précises."
          ],
          "The flag shown next to this language in the front-end language switcher.": [
-            "Le drapeau affiché à côté de cette langue dans le sélecteur de langue du front-end."
+            "Le drapeau affiché à côté de cette langue dans le sélecteur de langue de l'interface publique."
          ],
          "The WordPress locale, for example en_US. WordPress uses it to load the matching theme and plugin translation files.": [
             "La version locale de WordPress, par exemple en_US. WordPress l'utilise pour charger les fichiers de traduction correspondants du thème et des extensions."

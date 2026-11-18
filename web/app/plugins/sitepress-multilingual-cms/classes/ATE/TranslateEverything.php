@@ -197,12 +197,14 @@ class TranslateEverything implements CompletedTranslationsInterface {
 
 						if ( ! $untranslated->getElementsToProcess( $languages, $types, $queueSize ) ) {
 							if ( $untranslated instanceof AbstractUntranslatedElements ) {
-								$untranslated->markTypeAsCompleted( $types, $languages, $queueSize );
+								$typeCompleted = false !== $untranslated->markTypeAsCompleted( $types, $languages, $queueSize );
 							} else {
 								$untranslated->markTypeAsCompleted( $types );
+								$typeCompleted = true;
 							}
-							$typeCompleted = true;
-							JobLog::add( 'tea_strategy_type_completed', [ 'types' => $types ] );
+							if ( $typeCompleted ) {
+								JobLog::add( 'tea_strategy_type_completed', [ 'types' => $types ] );
+							}
 						} else {
 							$deferred = true;
 							JobLog::add( 'tea_strategy_completion_deferred', [ 'types' => $types ] );
@@ -240,6 +242,15 @@ class TranslateEverything implements CompletedTranslationsInterface {
 						break;
 					}
 
+					if ( null === $created && ! $typeCompleted && ! $deferred ) {
+						JobLog::add( 'tea_strategy_completion_refused', [ 'types' => $types ] );
+						if ( $untranslated instanceof AbstractUntranslatedElements
+							&& AbstractUntranslatedElements::COMPLETION_REFUSAL_CARRIED_PAIR === $untranslated->getCompletionRefusalReason( $types ) ) {
+							continue;
+						}
+						break;
+					}
+
 					if ( $deferred ) {
 						$typeKey = is_array( $types ) ? implode( ',', $types ) : (string) $types;
 						if ( isset( $staleRefetched[ $typeKey ] ) ) {
@@ -252,6 +263,9 @@ class TranslateEverything implements CompletedTranslationsInterface {
 						$staleRefetched[ $typeKey ] = true;
 					}
 				}
+			} catch ( TranslateEverything\StrategyReadFailed $error ) {
+				JobLog::addError( 'tea_strategy_read_failed', [ 'types' => $types ?? null ] );
+				break;
 			} finally {
 				JobLog::removeExtraLogData( 'strategy' );
 			}

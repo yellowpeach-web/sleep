@@ -47,8 +47,8 @@ class WPML_TP_Jobs_API extends WPML_TP_API {
 
 		if ( $archived ) {
 			$filter['filter']['archived'] = (int) $archived;
-			$request->set_params( $filter );
 		}
+		$request->set_params( $filter );
 
 		return $this->client->send_request( $request );
 	}

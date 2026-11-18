@@ -16,7 +16,7 @@ class WPML_Media_String_Images_Translation_Factory implements IWPML_Backend_Acti
 			$image_updater    = new WPML_Media_Translated_Images_Update( new \WPML\Media\Factories\WPML_Media_Element_Parser_Factory(), $image_translator, new WPML_Media_Sizes() );
 			$string_factory   = new WPML_ST_String_Factory( $wpdb );
 
-			return new WPML_Media_String_Images_Translation( $image_updater, $string_factory );
+			return new WPML_Media_String_Images_Translation( $image_updater, $string_factory, $image_translator );
 		}
 
 		return null;

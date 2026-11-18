@@ -20,7 +20,7 @@ class WPML_ST_Upgrade {
 	}
 
 	public function run() {
-		if ( get_transient( self::TRANSIENT_UPGRADE_IN_PROGRESS ) ) {
+		if ( get_transient( self::TRANSIENT_UPGRADE_IN_PROGRESS ) || $this->st_settings_unreadable() ) {
 			return;
 		}
 
@@ -59,12 +59,15 @@ class WPML_ST_Upgrade {
 		$this->maybe_run( 'WPML_ST_Upgrade_MO_Scanning' );
 		$this->maybe_run( 'WPML_ST_Upgrade_DB_String_Name_Index' );
 		$this->maybe_run( \WPML\ST\Upgrade\Command\AddStringPackagesUniqueKey::class );
+		$this->maybe_run( \WPML\ST\Upgrade\Command\AddStringPackageOwnerColumns::class );
 		$this->maybe_run( 'WPML_ST_Upgrade_DB_Longtext_String_Value' );
 		$this->maybe_run( 'WPML_ST_Upgrade_DB_String_Packages_Word_Count' );
 		$this->maybe_run( 'WPML_ST_Upgrade_DB_String_Packages_Translator_Note' );
 		$this->maybe_run( '\WPML\ST\Upgrade\Command\RegenerateMoFilesWithStringNames' );
 		$this->maybe_run( \WPML\ST\Upgrade\Command\RegenerateDefaultMoForWpRouting::class );
 		$this->maybe_run( \WPML\ST\Upgrade\Command\RegenerateMoFilesWithoutNativeCopies::class );
+		$this->maybe_run( \WPML\ST\Upgrade\Command\RegenerateAdminTextsMoFiles::class );
+		$this->maybe_run( \WPML\ST\Upgrade\Command\RegenerateMoFilesWithNativeCopies::class );
 		$this->maybe_run( \WPML\ST\Upgrade\Command\MigrateMultilingualWidgets::class );
 		$this->maybe_run( \WPML\ST\Upgrade\Command\UpgradeAutoregisteringStrings::class );
 		$this->queue_deferred_steps();
@@ -72,14 +75,24 @@ class WPML_ST_Upgrade {
 		$this->maybe_run( \WPML\ST\Upgrade\Command\AlignTaxonomyLabelSourceLanguage::class );
 		$this->maybe_run( \WPML\ST\Upgrade\Command\RemoveSameLanguageTranslations::class );
 		$this->maybe_run( \WPML\ST\Upgrade\Command\ReopenStringsPassForAdminTexts::class );
+		$this->maybe_run( \WPML\ST\Upgrade\Command\RewriteRulesWrittenAgain::class );
+		$this->maybe_run( \WPML\ST\Upgrade\Command\RestoreAutoregisterModeEndedByHorizon::class );
+		$this->maybe_run( \WPML\ST\Upgrade\Command\MigrateFrontendStringPositionsToAppearances::class );
+		$this->maybe_run( \WPML\ST\Upgrade\Command\CreateStringCarriersOption::class );
 	}
 
 	public function queue_deferred_steps() {
+		if ( $this->st_settings_unreadable() ) {
+			return;
+		}
 		if ( ! $this->has_command_been_executed( \WPML\ST\Upgrade\Command\UpgradeWpSettingsStrings::class ) ) {
 			\WPML\ST\Upgrade\Deferred\Runner::queue( \WPML\ST\Upgrade\Deferred\Runner::STEP_WP_SETTINGS_STRINGS );
 		}
 		if ( ! $this->has_command_been_executed( \WPML\ST\Upgrade\Command\RecomputeStatusesZeroedByOutdatedHandler::class ) ) {
 			\WPML\ST\Upgrade\Deferred\Runner::queue( \WPML\ST\Upgrade\Deferred\Runner::STEP_RECOMPUTE_STRING_STATUSES );
+		}
+		if ( ! $this->has_command_been_executed( \WPML\ST\Upgrade\Command\ReleaseStringsOfEndedBatches::class ) ) {
+			\WPML\ST\Upgrade\Deferred\Runner::queue( \WPML\ST\Upgrade\Deferred\Runner::STEP_RELEASE_ENDED_STRING_BATCHES );
 		}
 	}
 
@@ -91,6 +104,8 @@ class WPML_ST_Upgrade {
 		$this->maybe_run( 'WPML_ST_Upgrade_MO_Scanning' );
 		$this->maybe_run( 'WPML_ST_Upgrade_DB_String_Packages_Word_Count' );
 		$this->maybe_run( 'WPML_ST_Upgrade_DB_String_Packages_Translator_Note' );
+		$this->maybe_run( \WPML\ST\Upgrade\Command\MigrateFrontendStringPositionsToAppearances::class );
+		$this->maybe_run( \WPML\ST\Upgrade\Command\CreateStringCarriersOption::class );
 	}
 
 	private function run_front_end() {
@@ -99,9 +114,12 @@ class WPML_ST_Upgrade {
 		$this->maybe_run( 'WPML_ST_Upgrade_MO_Scanning' );
 		$this->maybe_run( 'WPML_ST_Upgrade_DB_String_Packages_Word_Count' );
 		$this->maybe_run( 'WPML_ST_Upgrade_DB_String_Packages_Translator_Note' );
+		$this->maybe_run( \WPML\ST\Upgrade\Command\CreateStringCarriersOption::class );
 		if ( $this->sitepress->get_wp_api()->constant( 'WP_CLI' ) ) {
 			$this->maybe_run( \WPML\ST\Upgrade\Command\AddStringPackagesUniqueKey::class );
+			$this->maybe_run( \WPML\ST\Upgrade\Command\AddStringPackageOwnerColumns::class );
 		}
+		$this->maybe_run( \WPML\ST\Upgrade\Command\MigrateFrontendStringPositionsToAppearances::class );
 	}
 
 	private function maybe_run( $class ) {
@@ -170,6 +188,10 @@ class WPML_ST_Upgrade {
 	}
 
 	public function run_deferred_command( $class ) {
+		if ( $this->st_settings_unreadable() ) {
+			return false;
+		}
+
 		if ( $this->has_command_been_executed( $class ) ) {
 			return true;
 		}
@@ -181,6 +203,19 @@ class WPML_ST_Upgrade {
 		}
 
 		return false;
+	}
+
+	private function st_settings_unreadable() {
+		if ( ! function_exists( 'wpml_setting_is_stored_but_unreadable' ) || ! wpml_setting_is_stored_but_unreadable( 'st' ) ) {
+			return false;
+		}
+
+		if ( empty( $GLOBALS['wpml_st_upgrade_unreadable_settings_logged'] ) ) {
+			$GLOBALS['wpml_st_upgrade_unreadable_settings_logged'] = true;
+			error_log( 'WPML String Translation: the upgrade commands did not run, because the String Translation settings are stored but could not be read in this request. Nothing was written; they run on a request that reads them.' );
+		}
+
+		return true;
 	}
 
 	protected function filter_nonce_parameter() {

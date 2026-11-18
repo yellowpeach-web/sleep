@@ -18,6 +18,7 @@ use WPML\LanguageEditor\LanguagesOrder;
 use WPML\LanguageEditor\PageData;
 use WPML\LanguageEditor\PostAddSetup;
 use WPML\LanguageEditor\SetupWizardAnalytics;
+use WPML\Setup\Option;
 use WPML\TM\ATE\AutoTranslate\Endpoint\ActivateLanguage;
 use function WPML\Container\make;
 
@@ -42,8 +43,16 @@ class SaveLanguages implements IHandler {
 			$posted        = $data->get( 'languageDomains', [] );
 			$postedDomains = $domainMode ? LanguageDomains::posted( $posted, LanguageDomains::stored( $sitepress ) ) : [];
 			$domainRefusal = $domainMode ? LanguageDomains::refusalForInvalid( $postedDomains, $posted ) : null;
+
+			$service = new SaveLanguagesService(
+				new LanguageRepository(),
+				new Settings(),
+				new AteMapping(),
+				new LabelsRepository()
+			);
+
 			if ( null === $domainRefusal && $domainMode ) {
-				$domainRefusal = LanguageDomains::refusalForSave( $sitepress, $languages, $defaultCode, $postedDomains );
+				$domainRefusal = LanguageDomains::refusalForSave( $sitepress, $languages, $defaultCode, $postedDomains, [ $service, 'existingCodeFor' ] );
 			}
 			if ( null !== $domainRefusal ) {
 				return Either::left( $domainRefusal );
@@ -52,13 +61,6 @@ class SaveLanguages implements IHandler {
 			if ( null !== $demoted && isset( $postedDomains[ $demoted ] ) ) {
 				LanguageDomains::assign( $sitepress, $demoted, $postedDomains[ $demoted ], false );
 			}
-
-			$service = new SaveLanguagesService(
-				new LanguageRepository(),
-				new Settings(),
-				new AteMapping(),
-				new LabelsRepository()
-			);
 
 			$result = $service->run( $languages, $defaultCode );
 
@@ -89,24 +91,8 @@ class SaveLanguages implements IHandler {
 				PostAddSetup::syncSiteLocaleOption();
 			}
 
-			$translationScopes = (array) $data->get( 'translationScopes', [] );
-			foreach ( (array) ( $payload['added'] ?? [] ) as $clientCode => $activatedCode ) {
-				$scope = $translationScopes[ $clientCode ]
-					?? $translationScopes[ $activatedCode ]
-					?? null;
-
-				if ( null === $scope ) {
-					continue;
-				}
-
-				make( ActivateLanguage::class )->run(
-					wpml_collect(
-						[
-							'languages'                  => [ (string) $activatedCode ],
-							'translate-existing-content' => 'existing' === $scope,
-						]
-					)
-				);
+			if ( $addedCodes && Option::shouldTranslateEverything() ) {
+				make( ActivateLanguage::class )->run( wpml_collect( [ 'languages' => $addedCodes ] ) );
 			}
 
 			$displayCodeErrors = [];
@@ -120,7 +106,10 @@ class SaveLanguages implements IHandler {
 			Cache::flush( $oldActiveLanguages );
 
 			if ( $sitepress ) {
-				LanguagesOrder::sync( $sitepress );
+				LanguagesOrder::sync(
+					$sitepress,
+					self::postedOrder( $data->get( 'languagesOrder' ), $languages, (array) ( $payload['added'] ?? [] ), $service )
+				);
 			}
 
 			$active  = PageData::active();
@@ -159,6 +148,7 @@ class SaveLanguages implements IHandler {
 				[
 					'active'  => $active,
 					'default' => $default,
+					'languagesOrder' => PageData::languagesOrder( (array) $active ),
 					'kept'    => self::keptClientCodes(
 						array_values( (array) $data->get( 'languages', [] ) ),
 						(array) ( $payload['added'] ?? [] ),
@@ -170,6 +160,26 @@ class SaveLanguages implements IHandler {
 		} catch ( \Throwable $e ) {
 			return Either::left( self::exceptionPayload( $e ) );
 		}
+	}
+
+	private static function postedOrder( $posted, array $languages, array $added, SaveLanguagesService $service ) {
+		if ( ! is_array( $posted ) || ! $posted ) {
+			return [];
+		}
+
+		$clientCodes = array_map( 'strval', $added );
+		foreach ( $languages as $row ) {
+			$row  = (array) $row;
+			$code = isset( $row['code'] ) ? (string) $row['code'] : '';
+			if ( '' !== $code && ! isset( $clientCodes[ $code ] ) ) {
+				$existing = $service->existingCodeFor( $row );
+				if ( null !== $existing ) {
+					$clientCodes[ $code ] = $existing;
+				}
+			}
+		}
+
+		return LanguagesOrder::fromPosted( $posted, $clientCodes );
 	}
 
 	private static function keptClientCodes( array $languages, array $added, array $active ) {

@@ -166,8 +166,10 @@ class WPML_Translation_Job_Factory extends WPML_Abstract_Job_Collection {
 	}
 
 	private function build_order_by_clause( array $args, $include_unassigned, $default_sort_jobs ) {
-		$order_by = isset( $args['order_by'] ) ? $args['order_by'] : array();
+		$order_by = isset( $args['order_by'] ) ? $args['order_by'] : '';
 		$order    = isset( $args['order'] ) ? $args['order'] : false;
+
+		$clause_items = array();
 
 		if ( $order_by && $order ) {
 
@@ -182,8 +184,6 @@ class WPML_Translation_Job_Factory extends WPML_Abstract_Job_Collection {
 					$clause_items[] = "j.job_id $order";
 					break;
 			}
-		} else {
-			$clause_items = is_scalar( $order_by ) ? array( $order_by ) : $order_by;
 		}
 
 		if ( $default_sort_jobs ) {

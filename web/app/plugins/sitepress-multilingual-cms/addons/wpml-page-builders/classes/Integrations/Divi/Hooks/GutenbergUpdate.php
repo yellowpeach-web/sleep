@@ -15,7 +15,7 @@ class GutenbergUpdate implements \IWPML_Backend_Action {
 	}
 
 	public static function isPostBuiltWithShortcodes( $builtWithShortcodes, $post ) {
-		if ( ! self::isDiviPost( $post->ID ) ) {
+		if ( ! Helper::isDiviPost( $post->ID ) ) {
 			return $builtWithShortcodes;
 		}
 
@@ -28,9 +28,5 @@ class GutenbergUpdate implements \IWPML_Backend_Action {
 		}
 
 		return true;
-	}
-
-	private static function isDiviPost( $postId ) {
-		return 'on' === get_post_meta( $postId, '_et_pb_use_builder', true );
 	}
 }

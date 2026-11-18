@@ -62,7 +62,11 @@ if ( class_exists( 'WPML_ST_Slug_Translation_UI_Factory' ) ) {
 }
 
 if ( $custom_posts ) {
-	$notice = prepare_synchronization_needed_warning( $custom_posts_sync_not_set, 'custom posts' );
+	$notice = prepare_synchronization_needed_warning(
+		$custom_posts_sync_not_set,
+		/* translators: The group of items a notice on the screen where content types are set up is about; it fills "You haven't set your synchronization preferences for these %1$s". Plural noun, lower case. */
+		__( 'custom posts', 'sitepress' )
+	);
 
 	?>
 
@@ -125,7 +129,7 @@ if ( $custom_posts ) {
 					<input type="submit"
 							id="wpml_post_type_save_legacy"
 							class="button-primary js_element_type_sync_button wpml-button base-btn"
-							value="<?php /* translators: Button label that keeps what was entered. Verb, imperative. */ esc_attr_e( 'Save', 'sitepress' ); ?>"
+							value="<?php /* translators: Button label that keeps what was entered, for example in the Translation delivery box's "Settings for support" and in the "Translation editor and method" section of WPML → Settings. Verb, imperative. */ esc_attr_e( 'Save', 'sitepress' ); ?>"
                             style="display:none"
                     />
 					<span id="wpml_post_type_save" style="display: inline-block"></span>
@@ -142,7 +146,11 @@ if ( $custom_posts ) {
 }
 
 if ( $custom_taxonomies ) {
-	$notice = prepare_synchronization_needed_warning( $tax_sync_not_set, 'taxonomies' );
+	$notice = prepare_synchronization_needed_warning(
+		$tax_sync_not_set,
+		/* translators: The group of items a notice on the screen where content types are set up is about; it fills "You haven't set your synchronization preferences for these %1$s". Plural noun, lower case. */
+		__( 'taxonomies', 'sitepress' )
+	);
 
 	?>
 	<div class="wpml-section" id="ml-content-setup-sec-8">
@@ -206,7 +214,7 @@ if ( $custom_taxonomies ) {
 					<input type="submit"
 							id="wpml_taxonomy_save_legacy"
 							class="button-primary js_element_type_sync_button wpml-button base-btn"
-							value="<?php /* translators: Button label that keeps what was entered. Verb, imperative. */ esc_attr_e( 'Save', 'sitepress' ); ?>"
+							value="<?php /* translators: Button label that keeps what was entered, for example in the Translation delivery box's "Settings for support" and in the "Translation editor and method" section of WPML → Settings. Verb, imperative. */ esc_attr_e( 'Save', 'sitepress' ); ?>"
 							style="display:none"
 					/>
 					<span id="wpml_taxonomy_save" style="display: inline-block"></span>

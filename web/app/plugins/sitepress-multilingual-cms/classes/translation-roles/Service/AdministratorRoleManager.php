@@ -19,10 +19,14 @@ class AdministratorRoleManager {
 	}
 
 	public function initializeAllAdministrators() {
-		$administrators = get_users( [ 'role' => 'administrator' ] );
-		foreach ( $administrators as $administrator ) {
-			$this->initializeAdministrator( $administrator->ID );
-		}
+		SyncBatch::run(
+			function () {
+				$administrators = get_users( [ 'role' => 'administrator' ] );
+				foreach ( $administrators as $administrator ) {
+					$this->initializeAdministrator( $administrator->ID );
+				}
+			}
+		);
 	}
 
 	private function verifyUser( $user, $skipRoleCheck = false ) {
@@ -38,15 +42,9 @@ class AdministratorRoleManager {
 	}
 
 	private function initializeAdministrator( $user_id ) {
-		$user = User::get( $user_id );
-		$user->add_cap( \WPML\LIB\WP\User::CAP_TRANSLATE );
-		User::updateMeta( $user->ID, \WPML_TM_Wizard_Options::ONLY_I_USER_META, true );
-		User::updateMeta( $user->ID, self::USER_METAKEY_INITIALIZED, true );
+		User::updateMeta( $user_id, self::USER_METAKEY_INITIALIZED, true );
 
-		make( \WPML_Language_Pair_Records::class )->store(
-			$user->ID,
-			\WPML_All_Language_Pairs::get()
-		);
+		make( TranslatorCapability::class )->grant( (int) $user_id, [], TranslatorCapability::PAIRS_ALL );
 	}
 
 }

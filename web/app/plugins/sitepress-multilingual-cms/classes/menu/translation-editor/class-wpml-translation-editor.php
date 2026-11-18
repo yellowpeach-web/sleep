@@ -63,12 +63,12 @@ class WPML_Translation_Editor extends WPML_WPDB_And_SP_User {
 				'You have unsaved work. Are you sure you want to close without saving?',
 				'sitepress'
 			),
-			/* translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation". */
+			/* translators: Button label that closes a dialog without doing anything, or stops what is going on, for example in the dialog "Translate with PTC?" (keep the previous choice). Verb, imperative, not the noun "a cancellation". */
 			'cancel'                    => __(
 				'Cancel',
 				'sitepress'
 			),
-			/* translators: Button label that keeps what was entered. Verb, imperative. */
+			/* translators: Button label that keeps what was entered, for example in the Translation delivery box's "Settings for support" and in the "Translation editor and method" section of WPML → Settings. Verb, imperative. */
 			'save'                      => __(
 				'Save',
 				'sitepress'

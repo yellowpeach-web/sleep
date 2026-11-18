@@ -27,6 +27,8 @@ final class TranslationStatusDto implements ConstructableFromArrayInterface {
 
   private $ateJobId;
 
+  private $translatedElementId;
+
 
   public function __construct(
     int $status,
@@ -36,7 +38,8 @@ final class TranslationStatusDto implements ConstructableFromArrayInterface {
     $editor = TranslationEditorType::NONE,
     bool $isTranslated = false,
     ?int $translatorId = null,
-    ?int $ateJobId = null
+    ?int $ateJobId = null,
+    ?int $translatedElementId = null
   ) {
     $this->status       = $status;
     $this->reviewStatus = $reviewStatus;
@@ -46,6 +49,8 @@ final class TranslationStatusDto implements ConstructableFromArrayInterface {
     $this->isTranslated = $isTranslated;
     $this->translatorId = $translatorId;
     $this->ateJobId     = $ateJobId;
+
+    $this->translatedElementId = $translatedElementId && $translatedElementId > 0 ? $translatedElementId : null;
   }
 
 
@@ -79,16 +84,22 @@ final class TranslationStatusDto implements ConstructableFromArrayInterface {
   }
 
 
+  public function getTranslatedElementId() {
+    return $this->translatedElementId;
+  }
+
+
   public function toArray(): array {
     return [
-      'status'       => $this->status,
-      'reviewStatus' => $this->reviewStatus,
-      'jobId'        => $this->jobId,
-      'method'       => $this->method,
-      'editor'       => $this->editor,
-      'isTranslated' => $this->isTranslated,
-      'translatorId' => $this->translatorId,
-      'ateJobId'     => $this->ateJobId
+      'status'              => $this->status,
+      'reviewStatus'        => $this->reviewStatus,
+      'jobId'               => $this->jobId,
+      'method'              => $this->method,
+      'editor'              => $this->editor,
+      'isTranslated'        => $this->isTranslated,
+      'translatorId'        => $this->translatorId,
+      'ateJobId'            => $this->ateJobId,
+      'translatedElementId' => $this->translatedElementId,
     ];
   }
 

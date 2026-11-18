@@ -14,6 +14,8 @@ final class TaxonomyTermDispatchResult {
 
   private $uncertainJobIds;
 
+  private $failedJobIds;
+
   private $errorCode;
 
   private $errorMessage;
@@ -26,13 +28,15 @@ final class TaxonomyTermDispatchResult {
     ?string $errorCode = null,
     ?string $errorMessage = null,
     array $remainingJobIds = [],
-    array $uncertainJobIds = []
+    array $uncertainJobIds = [],
+    array $failedJobIds = []
   ) {
     $this->acceptedMappings = $acceptedMappings;
     $this->blockedMappings  = $blockedMappings;
     $this->rejectedJobIds   = array_values( array_unique( array_map( 'intval', $rejectedJobIds ) ) );
     $this->remainingJobIds  = array_values( array_unique( array_map( 'intval', $remainingJobIds ) ) );
     $this->uncertainJobIds  = array_values( array_unique( array_map( 'intval', $uncertainJobIds ) ) );
+    $this->failedJobIds     = array_values( array_unique( array_map( 'intval', $failedJobIds ) ) );
     $this->errorCode        = $errorCode;
     $this->errorMessage     = $errorMessage;
   }
@@ -73,6 +77,16 @@ final class TaxonomyTermDispatchResult {
   }
 
 
+  public function getFailedJobIds(): array {
+    return $this->failedJobIds;
+  }
+
+
+  public function getParkedJobIds(): array {
+    return array_values( array_unique( array_merge( $this->uncertainJobIds, $this->failedJobIds ) ) );
+  }
+
+
   public function getAcceptedCount(): int {
     return count( $this->acceptedMappings );
   }
@@ -93,7 +107,8 @@ final class TaxonomyTermDispatchResult {
       || [] !== $this->blockedMappings
       || [] !== $this->rejectedJobIds
       || [] !== $this->remainingJobIds
-      || [] !== $this->uncertainJobIds;
+      || [] !== $this->uncertainJobIds
+      || [] !== $this->failedJobIds;
   }
 
 }

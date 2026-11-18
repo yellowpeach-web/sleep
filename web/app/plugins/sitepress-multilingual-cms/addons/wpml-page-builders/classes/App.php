@@ -14,6 +14,7 @@ class App {
 			&& has_action( 'wpml_before_init', 'load_wpml_st_basics' )
 		) {
 			self::loadTMHooks( $sitepress );
+			( new \WPML\TM\OwnedPackages\OwnerNeedsUpdate( $sitepress, $wpdb ) )->add_hooks();
 
 			$app = new \WPML_Page_Builders_App( new \WPML_Page_Builders_Defined() );
 			$app->add_hooks();

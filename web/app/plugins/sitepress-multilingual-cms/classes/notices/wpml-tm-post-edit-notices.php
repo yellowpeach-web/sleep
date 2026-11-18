@@ -4,6 +4,7 @@ use WPML\API\Sanitize;
 use WPML\Notices\BlockEditorNotice;
 use WPML\TM\API\Jobs;
 use WPML\TM\ATE\Release\InFlightChargedJobs;
+use WPML\TranslationPolicy\Policy\Policy;
 
 class WPML_TM_Post_Edit_Notices {
 
@@ -106,14 +107,11 @@ class WPML_TM_Post_Edit_Notices {
 		}
 
 		if ( $trid ) {
-			$translations_in_progress = $is_original && ! $translations_are_sent_automatically
-				? $this->get_translations_in_progress( $post_element )
-				: [];
+			$is_carrying_edits = Policy::carriesEditsMadeOutsideWpml();
 
-			if (
-				! empty( $translations_in_progress ) &&
-				$this->should_display_it_to_user( self::DO_NOT_SHOW_AGAIN_EDIT_ORIGINAL_TRANSLATION_IN_PROGRESS_ACTION )
-			) {
+			$translations_in_progress = $this->translations_in_progress_to_warn( $post_element, $is_original, $translations_are_sent_automatically );
+
+			if ( $translations_in_progress ) {
 				$translations_in_progress =
 					$this->prepare_translations_for_gui (
 						$translations_in_progress
@@ -155,26 +153,10 @@ class WPML_TM_Post_Edit_Notices {
 				);
 
 				echo $this->template_render->show( $model, self::TEMPLATE_EDIT_ORIGINAL_TRANSLATION_IN_PROGRESS );
-			} elseif (
-				! $is_original
-				&& in_array( (int) $this->post_status->get_status( $post_id, $trid, $lang ), InFlightChargedJobs::IN_FLIGHT_STATUSES, true )
-				&& ! WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( $post_id )
-				&& $this->in_flight_ate_job( $trid, $lang )
-			) {
-				$this->display_save_cancels_ate_job_notice( false );
-			} elseif (
-				! $translations_are_sent_automatically
-				&& $this->is_waiting_for_a_translation( (int) $this->post_status->get_status( $post_id, $trid, $lang ) )
-				&& ! WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( $post_id )
-			) {
-				$model = array(
-					'warning' => sprintf(
-						/* translators: Warning on the post editing screen when the site is set up to translate in the WPML editor. %1$s: the opening tag that puts the word Warning in bold, %2$s: its closing tag. */
-						__( '%1$sWarning:%2$s You are about to edit your translation using the standard WordPress editor but your site is configured to use the WPML Translation Editor. Any edits you do here will be lost if you later open it in the WPML Translation Editor.', 'sitepress' ),
-						'<strong>',
-						'</strong>'
-					),
-				);
+			} elseif ( $this->save_cancels_in_flight_ate_job( $is_original, $post_id, $trid, $lang ) ) {
+				$this->display_save_cancels_ate_job_notice( false, $is_carrying_edits );
+			} elseif ( $this->warns_loss_in_wpml_editor( $is_carrying_edits, $translations_are_sent_automatically, $post_element, $post_id, $trid, $lang ) ) {
+				$model = array( 'warning' => $this->loss_in_wpml_editor_warning() );
 
 				$this->render_notice(
 					$model,
@@ -182,41 +164,28 @@ class WPML_TM_Post_Edit_Notices {
 					array( 'text' => wp_strip_all_tags( $model['warning'] ) )
 				);
 
-			} elseif (
-				! $is_original &&
-				! WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( $post_id ) &&
-				apply_filters( 'wpml_tm_show_page_builders_translation_editor_warning', true, $post_id ) &&
-			    $this->should_display_it( self::DO_NOT_SHOW_AGAIN_USE_PREFERABLY_TE_ACTION )
-			) {
+			} elseif ( $this->offers_edits_lost_dialog( $is_original, $post_id, $is_carrying_edits ) ) {
 
-				$model = array(
-					'warning_line_1' => sprintf(
-						/* translators: Title of the warning shown before leaving the post editing screen when the edits would be lost. %1$s: the opening tag around the word Warning, %2$s: its closing tag. */
-						__( '%1$sWarning:%2$s Edits you\'re about to make will be lost', 'sitepress' ),
-						'<span>',
-						'</span>'
-					),
-					'warning_line_2' 						=> __( 'You are about to edit this translation using the standard WordPress editor.', 'sitepress' ),
-					'warning_line_3' 						=> __( 'Any changes you make will be lost the next time you send this page for translation.', 'sitepress' ),
-					/* translators: Button label in that warning: return to the screen the user came from. Verb, imperative. */
-					'go_back_button'						=> __( 'Go Back', 'sitepress' ),
-					'edit_anyway_button'				=> __( 'Edit Anyway (Not Recommended)', 'sitepress' ),
-					'open_in_te_button'					=> __( 'Edit in Advanced Translation Editor', 'sitepress' ),
-					'translation_editor_url'		=> $this->get_translation_editor_link( $post_element ),
-					'do_not_show_again'					=> __( "Don't show this warning again", 'sitepress' ),
-					'do_not_show_again_action'	=> self::DO_NOT_SHOW_AGAIN_USE_PREFERABLY_TE_ACTION,
-					'nonce'                  		=> wp_nonce_field(
-						self::DO_NOT_SHOW_AGAIN_USE_PREFERABLY_TE_ACTION,
-						self::DO_NOT_SHOW_AGAIN_USE_PREFERABLY_TE_ACTION,
-						true,
-						false
-					),
+				$model = array_merge(
+					$this->edits_lost_dialog_texts(),
+					array(
+						'translation_editor_url'   => $this->get_translation_editor_link( $post_element ),
+						'do_not_show_again'        => __( "Don't show this warning again", 'sitepress' ),
+						'do_not_show_again_action' => self::DO_NOT_SHOW_AGAIN_USE_PREFERABLY_TE_ACTION,
+						'nonce'                    => wp_nonce_field(
+							self::DO_NOT_SHOW_AGAIN_USE_PREFERABLY_TE_ACTION,
+							self::DO_NOT_SHOW_AGAIN_USE_PREFERABLY_TE_ACTION,
+							true,
+							false
+						),
+					)
 				);
 
 				echo $this->template_render->show( $model, self::TEMPLATE_USE_PREFERABLY_TE );
 			}
 
 		} elseif ( ! $translations_are_sent_automatically
+		           && ! $this->is_block_editor_screen()
 		           && $post_element->is_translatable()
 		           && ! WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( $post_id )
 		           && (int) $post_id !== (int) \WPML_Root_Page::get_root_id()
@@ -272,28 +241,56 @@ class WPML_TM_Post_Edit_Notices {
 		return $is_ate ? $job : null;
 	}
 
-	private function display_save_cancels_ate_job_notice( $is_new_translation ) {
-		$warning = $is_new_translation
-			? sprintf(
-				/* translators: Warning on the screen that creates a translation by hand while WPML's Advanced Translation Editor is still translating it. %1$s: the opening tag that puts the word Warning in bold, %2$s: its closing tag. */
-				__( '%1$sWarning:%2$s This translation is in progress in the WPML Translation Editor. If you save a translation here, the translation in progress will be cancelled and you will not be charged for it.', 'sitepress' ),
-				'<strong>',
-				'</strong>'
-			)
-			: sprintf(
-				/* translators: Warning on the post editing screen of a translation that WPML's Advanced Translation Editor is still translating. %1$s: the opening tag that puts the word Warning in bold, %2$s: its closing tag. */
-				__( '%1$sWarning:%2$s A translation of this page is in progress in the WPML Translation Editor. If you save your edits here, the translation in progress will be cancelled and you will not be charged for it. Any edits you do here will be lost if you later open it in the WPML Translation Editor.', 'sitepress' ),
-				'<strong>',
-				'</strong>'
-			);
+	private function is_loss_in_wpml_editor_true( bool $is_carrying_edits, bool $translations_are_sent_automatically, $post_element, $post_id, $trid, $lang ): bool {
+		if ( $is_carrying_edits ) {
+			return $this->is_waiting_in_classic_translation_editor( (int) $trid, $lang ? (string) $lang : (string) $post_element->get_language_code() );
+		}
 
-		$model = array( 'warning' => $warning );
+		return ! $translations_are_sent_automatically
+			&& $this->is_waiting_for_a_translation( (int) $this->post_status->get_status( $post_id, $trid, $lang ) );
+	}
+
+	private function is_waiting_in_classic_translation_editor( int $trid, string $lang ): bool {
+		$job = Jobs::getTridJob( $trid, $lang );
+
+		return is_object( $job )
+			&& isset( $job->editor, $job->status )
+			&& WPML_TM_Editors::WPML === $job->editor
+			&& in_array( (int) $job->status, [ ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_IN_PROGRESS ], true );
+	}
+
+	private function display_save_cancels_ate_job_notice( $is_new_translation, bool $is_carrying_edits = false ) {
+		$warning = $this->save_cancels_ate_job_warning( $is_new_translation, $is_carrying_edits );
+		$model   = array( 'warning' => $warning );
 
 		$this->render_notice(
 			$model,
 			self::TEMPLATE_TRANSLATION_IN_PROGRESS,
 			array( 'text' => wp_strip_all_tags( $warning ) )
 		);
+	}
+
+	private function save_cancels_ate_job_warning( $is_new_translation, bool $is_carrying_edits ) {
+		return $is_new_translation
+			? sprintf(
+				/* translators: Warning on the screen that creates a translation by hand while WPML's Advanced Translation Editor is still translating it. %1$s: the opening tag that puts the word Warning in bold, %2$s: its closing tag. */
+				__( '%1$sWarning:%2$s This translation is in progress in the WPML Translation Editor. If you save a translation here, the translation in progress will be cancelled and you will not be charged for it.', 'sitepress' ),
+				'<strong>',
+				'</strong>'
+			)
+			: ( $is_carrying_edits
+				? sprintf(
+					/* translators: Warning on the post editing screen of a translation that WPML's Advanced Translation Editor is still translating. %1$s: the opening tag that puts the word Warning in bold, %2$s: its closing tag. */
+					__( '%1$sWarning:%2$s A translation of this page is in progress in the WPML Translation Editor. If you save your edits here, the translation in progress will be cancelled and you will not be charged for it.', 'sitepress' ),
+					'<strong>',
+					'</strong>'
+				)
+				: sprintf(
+					/* translators: Warning on the post editing screen of a translation that WPML's Advanced Translation Editor is still translating. %1$s: the opening tag that puts the word Warning in bold, %2$s: its closing tag. */
+					__( '%1$sWarning:%2$s A translation of this page is in progress in the WPML Translation Editor. If you save your edits here, the translation in progress will be cancelled and you will not be charged for it. Any edits you do here will be lost if you later open it in the WPML Translation Editor.', 'sitepress' ),
+					'<strong>',
+					'</strong>'
+				) );
 	}
 
 	private function render_notice( array $model, $template, array $block_editor_notice ) {
@@ -407,6 +404,28 @@ class WPML_TM_Post_Edit_Notices {
 		}
 
 		return $translations_in_progress;
+	}
+
+	private function without_job_just_completed_in_ate( array $translations_in_progress ) {
+		$returned_job_id = (int) $this->super_globals->get( 'ate-return-job', FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE );
+
+		if ( $returned_job_id < 1 || empty( $translations_in_progress ) ) {
+			return $translations_in_progress;
+		}
+
+		$marker = \WPML\TM\ATE\Hooks\ReturnCommand::completedMarkerKey( get_current_user_id(), $returned_job_id );
+		if ( false === get_transient( $marker ) ) {
+			return $translations_in_progress;
+		}
+
+		return array_values(
+			array_filter(
+				$translations_in_progress,
+				function ( $job ) use ( $returned_job_id ) {
+					return ! ( $job && isset( $job->job_id ) && (int) $job->job_id === $returned_job_id );
+				}
+			)
+		);
 	}
 
 	private function prepare_translations_for_gui( $translations ) {
@@ -585,6 +604,129 @@ class WPML_TM_Post_Edit_Notices {
 		       && $translation_status > 0
 		       && $translation_status != ICL_TM_DUPLICATE
 		       && $translation_status < ICL_TM_COMPLETE;
+	}
+
+	public function get_edit_warning( $post_id, $lang = null ) {
+		$post_id = (int) $post_id;
+		if ( $post_id <= 0 ) {
+			return null;
+		}
+
+		$post_element = $this->element_factory->create( $post_id, 'post' );
+		$trid         = $post_element->get_trid();
+		if ( ! $trid ) {
+			return null;
+		}
+
+		$lang                                = $lang ? (string) $lang : (string) $post_element->get_language_code();
+		$is_original                         = ! $post_element->get_source_language_code();
+		$translations_are_sent_automatically = \WPML\Setup\Option::shouldTranslateEverything();
+		$is_carrying_edits                   = Policy::carriesEditsMadeOutsideWpml();
+		$warning                             = null;
+
+		if ( $this->translations_in_progress_to_warn( $post_element, $is_original, $translations_are_sent_automatically ) ) {
+			$warning = array(
+				'text'    => wp_strip_all_tags( $this->wait_before_editing_warning() ),
+				'actions' => array(),
+			);
+		} elseif ( $this->save_cancels_in_flight_ate_job( $is_original, $post_id, $trid, $lang ) ) {
+			$warning = array(
+				'text'    => wp_strip_all_tags( $this->save_cancels_ate_job_warning( false, $is_carrying_edits ) ),
+				'actions' => array(),
+			);
+		} elseif ( $this->warns_loss_in_wpml_editor( $is_carrying_edits, $translations_are_sent_automatically, $post_element, $post_id, $trid, $lang ) ) {
+			$warning = array(
+				'text'    => wp_strip_all_tags( $this->loss_in_wpml_editor_warning() ),
+				'actions' => array(),
+			);
+		} elseif ( $this->offers_edits_lost_dialog( $is_original, $post_id, $is_carrying_edits ) ) {
+			$texts   = $this->edits_lost_dialog_texts();
+			$warning = array(
+				'text'    => wp_strip_all_tags( $texts['warning_line_1'] . '. ' . $texts['warning_line_2'] . ' ' . $texts['warning_line_3'] ),
+				'actions' => array(
+					array(
+						'label' => $texts['open_in_te_button'],
+						'url'   => $this->get_translation_editor_link( $post_element ),
+					),
+				),
+			);
+		}
+
+		if ( ! $warning ) {
+			return null;
+		}
+
+		return array_merge( array( 'id' => 'wpml-tm-post-edit-warning-' . $post_id ), $warning );
+	}
+
+	private function translations_in_progress_to_warn( $post_element, bool $is_original, bool $translations_are_sent_automatically ) {
+		if ( ! $is_original || $translations_are_sent_automatically ) {
+			return [];
+		}
+
+		$translations_in_progress = $this->without_job_just_completed_in_ate( $this->get_translations_in_progress( $post_element ) );
+
+		return $translations_in_progress && $this->should_display_it_to_user( self::DO_NOT_SHOW_AGAIN_EDIT_ORIGINAL_TRANSLATION_IN_PROGRESS_ACTION )
+			? $translations_in_progress
+			: [];
+	}
+
+	private function wait_before_editing_warning() {
+		return sprintf(
+			/* translators: Title of the notice on the post editing screen shown while the translation is being made. %1$s: the opening tag that puts the line in bold, %2$s: its closing tag. */
+			__( '%1$sTranslation in progress - wait before editing%2$s', 'sitepress' ),
+			'<strong>',
+			'</strong>'
+		)
+		. ' '
+		/* translators: Text of the notice on the post editing screen shown while the translation is being made. "It's best" is advice to the reader. */
+		. __( 'This page that you are editing is being translated right now. If you edit now, some or all of the translation for this page may be missing. It\'s best to wait until translation completes, then edit and update the translation.', 'sitepress' );
+	}
+
+	private function save_cancels_in_flight_ate_job( bool $is_original, $post_id, $trid, $lang ) {
+		return ! $is_original
+			&& in_array( (int) $this->post_status->get_status( $post_id, $trid, $lang ), InFlightChargedJobs::IN_FLIGHT_STATUSES, true )
+			&& ! WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( (int) $post_id )
+			&& (bool) $this->in_flight_ate_job( $trid, $lang );
+	}
+
+	private function warns_loss_in_wpml_editor( bool $is_carrying_edits, bool $translations_are_sent_automatically, $post_element, $post_id, $trid, $lang ) {
+		return $this->is_loss_in_wpml_editor_true( $is_carrying_edits, $translations_are_sent_automatically, $post_element, $post_id, $trid, $lang )
+			&& ! WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( (int) $post_id );
+	}
+
+	private function loss_in_wpml_editor_warning() {
+		return sprintf(
+			/* translators: Warning on the post editing screen when the site is set up to translate in the WPML editor. %1$s: the opening tag that puts the word Warning in bold, %2$s: its closing tag. */
+			__( '%1$sWarning:%2$s You are about to edit your translation using the standard WordPress editor but your site is configured to use the WPML Translation Editor. Any edits you do here will be lost if you later open it in the WPML Translation Editor.', 'sitepress' ),
+			'<strong>',
+			'</strong>'
+		);
+	}
+
+	private function offers_edits_lost_dialog( bool $is_original, $post_id, bool $is_carrying_edits ) {
+		return ! $is_original
+			&& ! WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( (int) $post_id )
+			&& ! $is_carrying_edits
+			&& apply_filters( 'wpml_tm_show_page_builders_translation_editor_warning', true, $post_id )
+			&& $this->should_display_it( self::DO_NOT_SHOW_AGAIN_USE_PREFERABLY_TE_ACTION );
+	}
+
+	private function edits_lost_dialog_texts() {
+		return array(
+			'warning_line_1'     => sprintf(
+				/* translators: Title of the warning shown before leaving the post editing screen when the edits would be lost. %1$s: the opening tag around the word Warning, %2$s: its closing tag. */
+				__( '%1$sWarning:%2$s Edits you\'re about to make will be lost', 'sitepress' ),
+				'<span>',
+				'</span>'
+			),
+			'warning_line_2'     => __( 'You are about to edit this translation using the standard WordPress editor.', 'sitepress' ),
+			'warning_line_3'     => __( 'Any changes you make will be lost the next time you send this page for translation.', 'sitepress' ),
+			/* translators: Button label in that warning: return to the screen the user came from. Verb, imperative. */
+			'go_back_button'     => __( 'Go Back', 'sitepress' ),
+			'edit_anyway_button' => __( 'Edit Anyway (Not Recommended)', 'sitepress' ),
+			'open_in_te_button'  => __( 'Edit in Advanced Translation Editor', 'sitepress' ),
+		);
 	}
 
 	private function get_translation_editor_link( $post_element ) {

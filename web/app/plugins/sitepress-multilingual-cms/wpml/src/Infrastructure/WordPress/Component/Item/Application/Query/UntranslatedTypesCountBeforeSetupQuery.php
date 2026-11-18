@@ -6,6 +6,7 @@ use WPML\Core\Port\Persistence\Exception\DatabaseErrorException;
 use WPML\Core\SharedKernel\Component\Item\Application\Query\Dto\UntranslatedTypeCountDto;
 use WPML\Core\SharedKernel\Component\Item\Application\Query\ConfigExcludedPostTypesQueryInterface;
 use WPML\Core\SharedKernel\Component\Item\Application\Query\UntranslatedTypesCountQueryInterface;
+use WPML\Core\SharedKernel\Component\Post\Application\Query\PublishedPostStatusesQueryInterface;
 
 
 class UntranslatedTypesCountBeforeSetupQuery implements UntranslatedTypesCountQueryInterface {
@@ -21,9 +22,15 @@ class UntranslatedTypesCountBeforeSetupQuery implements UntranslatedTypesCountQu
 
   private $configExcludedPostTypes;
 
+  private $publishedPostStatusesQuery;
 
-  public function __construct( ConfigExcludedPostTypesQueryInterface $configExcludedPostTypes ) {
-    $this->configExcludedPostTypes = $configExcludedPostTypes;
+
+  public function __construct(
+    ConfigExcludedPostTypesQueryInterface $configExcludedPostTypes,
+    PublishedPostStatusesQueryInterface $publishedPostStatusesQuery
+  ) {
+    $this->configExcludedPostTypes    = $configExcludedPostTypes;
+    $this->publishedPostStatusesQuery = $publishedPostStatusesQuery;
   }
 
 
@@ -42,23 +49,26 @@ class UntranslatedTypesCountBeforeSetupQuery implements UntranslatedTypesCountQu
       $this->configExcludedPostTypes->get()
     ) );
 
-    if ( ! $searchablePostTypes ) {
+    $publishedPostStatuses = $this->publishedPostStatusesQuery->get();
+
+    if ( ! $searchablePostTypes || ! $publishedPostStatuses ) {
       return [];
     }
 
-    $postTypesIn = implode( ',', array_fill( 0, count( $searchablePostTypes ), '%s' ) );
+    $postStatusesIn = $this->placeholders( $publishedPostStatuses );
+    $postTypesIn    = $this->placeholders( $searchablePostTypes );
 
     $sql = "
       SELECT
           p.post_type,
           COUNT(DISTINCT p.ID) AS total_items
       FROM {$wpdb->prefix}posts AS p
-      WHERE p.post_status = 'publish'
+      WHERE p.post_status IN ({$postStatusesIn})
       AND p.post_type IN ({$postTypesIn})
       GROUP BY p.post_type
       ORDER BY total_items DESC
     ";
-    $results = $wpdb->get_results( $wpdb->prepare( $sql, $searchablePostTypes ), ARRAY_A );
+    $results = $wpdb->get_results( $wpdb->prepare( $sql, array_merge( $publishedPostStatuses, $searchablePostTypes ) ), ARRAY_A );
 
     $dtos = [];
     foreach ( $results as $result ) {
@@ -79,24 +89,32 @@ class UntranslatedTypesCountBeforeSetupQuery implements UntranslatedTypesCountQu
   public function getSomeIds( $numberOfIdsToFetch, $offset, $type ) {
     $wpdb = $GLOBALS['wpdb'];
 
+    $publishedPostStatuses = $this->publishedPostStatusesQuery->get();
+    if ( ! $publishedPostStatuses ) {
+      return [];
+    }
+
 		try {
 			$ids = $wpdb->get_col(
 				$wpdb->prepare(
 					"SELECT p.ID
 					FROM {$wpdb->prefix}posts AS p
 					WHERE p.post_type = %s
-						AND p.post_status = 'publish'
+						AND p.post_status IN (" . implode( ',', array_fill( 0, count( $publishedPostStatuses ), '%s' ) ) . ")
 					ORDER BY p.ID ASC
 					LIMIT %d OFFSET %d",
-          $type,
-          $numberOfIdsToFetch,
-          $offset
-        )
+					...array_merge( [ $type ], $publishedPostStatuses, [ $numberOfIdsToFetch, $offset ] )
+				)
       );
       return $ids;
     } catch ( DatabaseErrorException $e ) {
       return [];
     }
+  }
+
+
+  private function placeholders( array $values ): string {
+    return implode( ',', array_fill( 0, count( $values ), '%s' ) );
   }
 
 

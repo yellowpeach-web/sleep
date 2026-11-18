@@ -7,6 +7,10 @@ use WPML\FP\Obj;
 
 abstract class WPML_Request {
 
+	const DEFAULT_POST_EDIT_ACTIONS = [ 'edit' ];
+
+	const NON_EDIT_POST_ACTIONS = [ 'trash', 'untrash', 'delete' ];
+
 	protected $url_converter;
 	protected $active_languages;
 	protected $default_language;
@@ -63,6 +67,10 @@ abstract class WPML_Request {
 		return $this->language_from_referer;
 	}
 
+	public function get_language_to_save( $request_language ) {
+		return $request_language;
+	}
+
 	protected function get_referer_lang() {
 		$this->language_from_referer = false;
 
@@ -73,14 +81,14 @@ abstract class WPML_Request {
 
 		$args  = $query['args'];
 		$rules = [
+			function () use ( $args, $query ) {
+				return 'post.php' === $query['path'] && isset( $args['action'], $args['post'] ) && $this->is_post_edit_action( $args['action'] )
+					? $this->get_post_lang( $args['post'] )
+					: null;
+			},
 			function () use ( $args ) {
 				return isset( $args['lang'] ) && is_string( $args['lang'] ) && 'all' !== $args['lang']
 					? \WPML\Language\ActiveLanguagesReadModel::canonical( $args['lang'] )
-					: null;
-			},
-			function () use ( $args, $query ) {
-				return 'post.php' === $query['path'] && isset( $args['action'], $args['post'] ) && 'edit' === $args['action']
-					? $this->get_post_lang( $args['post'] )
 					: null;
 			},
 			function () use ( $args ) {
@@ -190,6 +198,18 @@ abstract class WPML_Request {
 
 	private function strip_scheme( $url ) {
 		return (string) preg_replace( '#^[a-z][a-z0-9+.\-]*://#i', '', $url );
+	}
+
+	protected function get_post_edit_actions() {
+		$actions = apply_filters( 'wpml_post_edit_screen_actions', self::DEFAULT_POST_EDIT_ACTIONS );
+
+		return is_array( $actions )
+			? array_values( array_diff( array_filter( $actions, 'is_string' ), self::NON_EDIT_POST_ACTIONS ) )
+			: self::DEFAULT_POST_EDIT_ACTIONS;
+	}
+
+	protected function is_post_edit_action( $action ) {
+		return is_string( $action ) && in_array( $action, $this->get_post_edit_actions(), true );
 	}
 
 	protected function get_admin_referer_query() {

@@ -14,11 +14,20 @@ class WPML_Cache_Factory {
 		'WPML_Post_Status::needs_update'                => [
 			'clear_actions' => [ 'wpml_translation_status_update' ],
 		],
+
+		WPML_Set_Language::ELEMENT_LANGUAGE_DETAILS_CACHE_GROUP => [
+			'clear_actions' => [ 'wpml_translation_update' ],
+			'flush'         => [ WPML_Set_Language::class, 'flush_element_language_details_cache' ],
+		],
 	];
 
 	public function __construct() {
 		foreach ( $this->valid_caches as $cache_name => $clear_actions ) {
-			$this->init_clear_actions( $cache_name, $clear_actions['clear_actions'] );
+			$this->init_clear_actions(
+				$cache_name,
+				$clear_actions['clear_actions'],
+				isset( $clear_actions['flush'] ) ? $clear_actions['flush'] : null
+			);
 		}
 	}
 
@@ -41,11 +50,17 @@ class WPML_Cache_Factory {
 		$this->init_clear_actions( $cache_name, $clear_actions );
 	}
 
-	private function init_clear_actions( $cache_name, array $clear_actions ) {
+	private function init_clear_actions( $cache_name, array $clear_actions, $flush = null ) {
 		foreach ( $clear_actions as $clear_action ) {
 			add_action(
 				$clear_action,
-				function () use ( $cache_name ) {
+				function () use ( $cache_name, $flush ) {
+					if ( $flush ) {
+						call_user_func( $flush );
+
+						return;
+					}
+
 					$cache = new WPML_WP_Cache( $cache_name );
 					$cache->flush_group_cache();
 				}

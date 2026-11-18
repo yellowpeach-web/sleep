@@ -2,6 +2,12 @@
 
 class WPML_TP_Apply_Translations {
 
+	const FATAL_ERROR_TYPES = array( E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR, E_RECOVERABLE_ERROR );
+
+	private static $job_in_flight = null;
+
+	private static $fatal_watch_registered = false;
+
 	private $last_failures = array();
 	private $jobs_repository;
 
@@ -35,18 +41,16 @@ class WPML_TP_Apply_Translations {
 
 		$job_started = false;
 
-		foreach ( $jobs->filter_by_status( [ ICL_TM_TRANSLATION_READY_TO_DOWNLOAD, ICL_TM_COMPLETE ] ) as $job ) {
+		foreach ( $this->failed_jobs_last( $jobs->filter_by_status( [ ICL_TM_TRANSLATION_READY_TO_DOWNLOAD, ICL_TM_COMPLETE ] ) ) as $job ) {
 			$tp_id    = (int) $job->get_tp_id();
 			$previous = \WPML\TM\TranslationProxy\ApplyFailureStore::get( $tp_id );
 
 			if ( $job_started && microtime( true ) >= $deadline ) {
-				$this->last_failures[] = array(
-					'id'       => $job->get_id(),
-					'type'     => $job->get_type(),
-					'tp_id'    => $tp_id,
-					'reason'   => __( 'Not attempted yet: the request ran out of time.', 'sitepress' ),
-					'kind'     => 'deferred',
-					'attempts' => $previous ? (int) $previous['count'] : 0,
+				$this->last_failures[] = $this->failure_entry(
+					$job,
+					__( 'Not attempted yet: the request ran out of time.', 'sitepress' ),
+					'deferred',
+					$previous ? (int) $previous['count'] : 0
 				);
 				continue;
 			}
@@ -76,30 +80,31 @@ class WPML_TP_Apply_Translations {
 							'retry_at' => $retry_at,
 						)
 					);
-					$this->last_failures[] = array(
-						'id'       => $job->get_id(),
-						'type'     => $job->get_type(),
-						'tp_id'    => $tp_id,
-						'reason'   => (string) $previous['reason'],
-						'kind'     => 'skipped',
-						'attempts' => (int) $previous['count'],
-						'retryAt'  => $retry_at,
-					);
+					$this->last_failures[] = $this->failure_entry( $job, (string) $previous['reason'], 'skipped', (int) $previous['count'] ) + array( 'retryAt' => $retry_at );
 					continue;
 				}
 			}
 
 			$job_started = true;
 
+			$attempts = ( $previous ? (int) $previous['count'] : 0 ) + 1;
+			$cycles = $previous && isset( $previous['cycles'] ) ? (int) $previous['cycles'] : 0;
+
+			$attempt_record = array(
+				'count'  => $attempts,
+				'last'   => time(),
+				'reason' => self::unfinished_save_reason(),
+				'cycles' => $cycles,
+			);
+			\WPML\TM\TranslationProxy\ApplyFailureStore::put( $tp_id, $attempt_record );
+			$this->watch_for_fatal( $tp_id, $attempt_record );
+
 			try {
 				$applied[] = $this->apply_single_job->apply( $job );
 
-				if ( $previous ) {
-					\WPML\TM\TranslationProxy\ApplyFailureStore::forget( $tp_id );
-				}
+				\WPML\TM\TranslationProxy\ApplyFailureStore::forget( $tp_id );
 			} catch ( \Throwable $e ) {
-				$reason   = $this->sanitize_failure_reason( $e );
-				$attempts = ( $previous ? (int) $previous['count'] : 0 ) + 1;
+				$reason = $this->sanitize_failure_reason( $e );
 
 				\WPML\TM\TranslationProxy\ApplyFailureStore::put(
 					$tp_id,
@@ -107,18 +112,11 @@ class WPML_TP_Apply_Translations {
 						'count'  => $attempts,
 						'last'   => time(),
 						'reason' => $reason,
-						'cycles' => $previous && isset( $previous['cycles'] ) ? (int) $previous['cycles'] : 0,
+						'cycles' => $cycles,
 					)
 				);
 
-				$this->last_failures[] = array(
-					'id'       => $job->get_id(),
-					'type'     => $job->get_type(),
-					'tp_id'    => $tp_id,
-					'reason'   => $reason,
-					'kind'     => 'failed',
-					'attempts' => $attempts,
-				);
+				$this->last_failures[] = $this->failure_entry( $job, $reason, 'failed', $attempts );
 
 				\WPML\TM\Jobs\JobLog::addError(
 					'tp_apply_job_failed',
@@ -129,6 +127,8 @@ class WPML_TP_Apply_Translations {
 						'error'    => $e->getMessage(),
 					)
 				);
+			} finally {
+				self::$job_in_flight = null;
 			}
 		}
 
@@ -141,6 +141,84 @@ class WPML_TP_Apply_Translations {
 
 	public function getLastFailures() {
 		return $this->last_failures;
+	}
+
+	private function failed_jobs_last( WPML_TM_Jobs_Collection $jobs ) {
+		$clean  = array();
+		$failed = array();
+
+		foreach ( $jobs as $job ) {
+			if ( \WPML\TM\TranslationProxy\ApplyFailureStore::get( (int) $job->get_tp_id() ) ) {
+				$failed[] = $job;
+			} else {
+				$clean[] = $job;
+			}
+		}
+
+		return array_merge( $clean, $failed );
+	}
+
+	private function failure_entry( WPML_TM_Job_Entity $job, $reason, $kind, $attempts ) {
+		return array(
+			'id'       => $job->get_id(),
+			'type'     => $job->get_type(),
+			'tp_id'    => (int) $job->get_tp_id(),
+			'title'    => (string) $job->get_title(),
+			'language' => (string) $job->get_target_language(),
+			'reason'   => $reason,
+			'kind'     => $kind,
+			'attempts' => $attempts,
+		);
+	}
+
+	public static function unfinished_save_reason() {
+		return __( 'The save did not finish: the server stopped while saving this translation, usually because of a memory or time limit. The PHP error log has the details.', 'sitepress' );
+	}
+
+	private function watch_for_fatal( $tp_id, array $record ) {
+		self::$job_in_flight = array(
+			'tp_id'  => $tp_id,
+			'record' => $record,
+		);
+
+		if ( ! self::$fatal_watch_registered ) {
+			self::$fatal_watch_registered = true;
+			register_shutdown_function( array( __CLASS__, 'record_fatal_of_job_in_flight' ) );
+		}
+	}
+
+	public static function record_fatal_of_job_in_flight( $error = null ) {
+		$in_flight = self::$job_in_flight;
+		$error     = null === $error ? error_get_last() : $error;
+
+		if ( ! $in_flight || ! is_array( $error ) || ! in_array( (int) $error['type'], self::FATAL_ERROR_TYPES, true ) ) {
+			return;
+		}
+
+		self::$job_in_flight = null;
+
+		$message = trim( (string) strtok( (string) $error['message'], "\n" ) );
+		if ( false !== strpos( $message, 'Allowed memory size' ) ) {
+			$limit  = wp_convert_hr_to_bytes( (string) ini_get( 'memory_limit' ) );
+			$wanted = memory_get_usage( true ) + 16 * 1024 * 1024;
+			if ( $limit > 0 && $wanted > $limit ) {
+				ini_set( 'memory_limit', (string) $wanted );
+			}
+		}
+
+		$max = \WPML\TM\TranslationProxy\SendTuning::MAX_FAILURE_REASON_LENGTH;
+		if ( strlen( $message ) > $max ) {
+			$message = substr( $message, 0, $max ) . ' …[truncated]';
+		}
+
+		$record           = $in_flight['record'];
+		$record['reason'] = sprintf(
+			/* translators: Reason shown on the WPML translation dashboard for a translation whose save crashed. %s: PHP's error message, in English, e.g. "Allowed memory size of 268435456 bytes exhausted". */
+			__( 'The save did not finish: the server stopped while saving this translation (%s).', 'sitepress' ),
+			$message
+		);
+
+		\WPML\TM\TranslationProxy\ApplyFailureStore::put( $in_flight['tp_id'], $record );
 	}
 
 	private function sanitize_failure_reason( $e ) {

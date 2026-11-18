@@ -3,6 +3,7 @@
 namespace WPML\PB\SiteOrigin\Modules;
 
 use WPML\FP\Obj;
+use WPML\PB\SiteOrigin\TranslatableNodes;
 
 abstract class ModuleWithItems implements \IWPML_Page_Builders_Module {
 
@@ -24,7 +25,7 @@ abstract class ModuleWithItems implements \IWPML_Page_Builders_Module {
 				if ( $string_value ) {
 					$strings[] = new \WPML_PB_String(
 						$string_value,
-						$this->get_string_name( $node_id, $this->get_items_field(), $key, $field ),
+						$this->get_string_name( $node_id, $settings, $key, $field ),
 						$this->get_title( $field ),
 						$this->get_editor_type( $field )
 					);
@@ -38,7 +39,7 @@ abstract class ModuleWithItems implements \IWPML_Page_Builders_Module {
 	public function update( $node_id, $element, \WPML_PB_String $pbString ) {
 		foreach ( $this->get_items( $element ) as $key => $item ) {
 			foreach ( $this->get_fields() as $field ) {
-				if ( $this->get_string_name( $node_id, $this->get_items_field(), $key, $field ) === $pbString->get_name() ) {
+				if ( $this->get_string_name( $node_id, $element, $key, $field ) === $pbString->get_name() ) {
 					$pathInFlatField   = explode( self::FIELD_SEPARATOR, $field );
 					$stringInFlatField = Obj::path( $pathInFlatField, $item );
 					if ( is_string( $stringInFlatField ) ) {
@@ -52,8 +53,11 @@ abstract class ModuleWithItems implements \IWPML_Page_Builders_Module {
 		return [ null, null ];
 	}
 
-	private function get_string_name( $node_id, $type, $key, $field ) {
-		return $node_id . '-' . $type . '-' . $key . '-' . $field;
+	private function get_string_name( $node_id, $settings, $key, $field ) {
+		$widgetId = (string) Obj::pathOr( '', [ TranslatableNodes::SETTINGS_FIELD, TranslatableNodes::WIDGET_ID_FIELD ], $settings );
+		$widget   = '' !== $widgetId ? $node_id . '-' . $widgetId : $node_id;
+
+		return $widget . '-' . $this->get_items_field() . '-' . $key . '-' . $field;
 	}
 
 	public function get_field_path( $key ) {

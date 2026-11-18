@@ -2,6 +2,7 @@
 
 namespace WPML\Core\Component\WordsToTranslate\Domain\Strings;
 
+use WPML\Core\Component\WordsToTranslate\Domain\BareUrl;
 use WPML\Core\Component\WordsToTranslate\Domain\Calculator\WordsToTranslate;
 use WPML\Core\Component\WordsToTranslate\Domain\Item;
 use WPML\Core\Component\WordsToTranslate\Domain\LastTranslationFactory;
@@ -49,6 +50,14 @@ class Provider implements ProviderInterface {
       if ( $lang === $string->getSourceLang() ) {
         $lastTranslation->setOriginalContent( $string->getContent() ?: '' );
         $lastTranslation->setWordsToTranslate( 0 );
+        $string->addLastTranslation( $lastTranslation );
+        continue;
+      }
+
+      if ( BareUrl::matches( $string->getContent() ?: '' ) ) {
+        $lastTranslation->setOriginalContent( $string->getContent() ?: '' );
+        $lastTranslation->setWordsToTranslate( 0 );
+        $string->setContentCount( 0 );
         $string->addLastTranslation( $lastTranslation );
         continue;
       }

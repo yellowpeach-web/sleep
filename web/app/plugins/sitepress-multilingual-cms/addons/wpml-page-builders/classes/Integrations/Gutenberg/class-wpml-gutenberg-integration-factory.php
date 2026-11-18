@@ -29,6 +29,14 @@ class WPML_Gutenberg_Integration_Factory {
 			)
 		);
 
+		$integrations->add( make( \WPML\PB\Gutenberg\Navigation\Fallback::class ) );
+
+		if ( \WPML\TranslationPolicy\FeatureSwitch::isOn() ) {
+			foreach ( $this->create_edit_history_integrations( $sitepress ) as $integration ) {
+				$integrations->add( $integration );
+			}
+		}
+
 		if ( $this->should_translate_reusable_blocks() ) {
 			$integrations->add(
 				make( '\WPML\PB\Gutenberg\ReusableBlocks\Integration' )
@@ -71,10 +79,31 @@ class WPML_Gutenberg_Integration_Factory {
 		);
 
 		$integrations->add(
+			make( \WPML\PB\Gutenberg\Hooks\RawHtmlSetting::class )
+		);
+
+		$integrations->add(
 			new \WPML\PB\Gutenberg\MediaHooksIntegration( $mainIntegration->get_config_option() )
 		);
 
 		return $integrations;
+	}
+
+	private function create_edit_history_integrations( $sitepress ) {
+		global $wpdb;
+
+		$log        = new \WPML\EditHistory\WpdbEntryLog( $wpdb );
+		$store      = new \WPML\EditHistory\WpdbStateStore( $wpdb );
+		$normaliser = \WPML\EditHistory\Normaliser::create();
+		$recorder   = new \WPML\EditHistory\Recorder( $log, $store, $normaliser, null, new \WPML\EditHistory\Cap( $log, $store ) );
+		$units      = new \WPML\EditHistory\PostUnits( [ new \WPML\PB\Gutenberg\BlockStrings( $this->strings_in_block ), 'units' ], new \WPML_Element_Translation_Package() );
+		$strings    = new WPML_ST_String_Factory( $wpdb );
+
+		return [
+			new \WPML\PB\Gutenberg\EditHistoryHooks( $recorder, $units, $sitepress ),
+			new \WPML\PB\Gutenberg\RebuildGuardHooks( new \WPML\EditHistory\RebuildGuard( $store, $log ), $recorder, $units, $normaliser ),
+			new \WPML\PB\Gutenberg\DeliveryRemovalHooks( $this->strings_in_block, fn( int $id ) => $strings->find_by_id( $id )->get_name() ),
+		];
 	}
 
 	public function create_gutenberg_integration() {

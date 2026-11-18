@@ -21,6 +21,8 @@ class WPML_ST_Blog_Name_And_Description_Hooks implements \IWPML_Action {
 		add_action( 'wpml_st_language_of_strings_changed', [ self::class, 'on_strings_language_changed' ], 10, 1 );
 		add_action( 'wpml_st_before_remove_strings', [ self::class, 'on_strings_removed' ], 10, 1 );
 		add_action( 'wpml_st_string_unregistered', [ self::class, 'on_strings_removed' ], 10, 0 );
+		add_action( 'wpml_st_string_carriers_changed', [ self::class, 'on_strings_removed' ], 10, 0 );
+		add_action( 'wpml_clear_all_caches', [ self::class, 'on_clear_all_caches' ], 10, 0 );
 
 		if ( ! $this->is_customize_page() ) {
 			add_filter( 'option_blogname', [ $this, 'option_blogname_filter' ] );
@@ -58,7 +60,7 @@ class WPML_ST_Blog_Name_And_Description_Hooks implements \IWPML_Action {
 
 	private function get_translation( $name, $value ) {
 		if ( ! self::is_listening() ) {
-			return wpml_get_string_current_translation( $value, self::STRING_DOMAIN, $name );
+			return self::lookup( $value, $name );
 		}
 
 		global $WPML_String_Translation;
@@ -72,13 +74,30 @@ class WPML_ST_Blog_Name_And_Description_Hooks implements \IWPML_Action {
 			return $stored['translations'][ $language ][ $name ][1];
 		}
 
-		$translation = wpml_get_string_current_translation( $value, self::STRING_DOMAIN, $name );
+		$translation = self::lookup( $value, $name, $language );
 
 		if ( ! is_customize_preview() ) {
 			$this->store( $language, $name, $value, $translation );
 		}
 
 		return $translation;
+	}
+
+	private static function lookup( $value, $name, $language = null ) {
+		$carriers = WPML_ST_Package_String_Carriers::get();
+
+		if ( $carriers->forTarget( self::STRING_DOMAIN, $name ) ) {
+			if ( null === $language ) {
+				global $WPML_String_Translation;
+				$language = $WPML_String_Translation->get_current_string_language( $name );
+			}
+
+			$translation = $carriers->translation( self::STRING_DOMAIN, $name, (string) $language );
+
+			return null === $translation ? $value : $translation;
+		}
+
+		return wpml_get_string_current_translation( $value, self::STRING_DOMAIN, $name );
 	}
 
 	private function store( $language, $name, $value, $translation ) {
@@ -89,7 +108,7 @@ class WPML_ST_Blog_Name_And_Description_Hooks implements \IWPML_Action {
 		}
 
 		$stored = self::valid_or_new(
-			maybe_unserialize(
+			\WPML\Utils\Unserialize::maybe(
 				$wpdb->get_var(
 					$wpdb->prepare(
 						"SELECT option_value FROM {$wpdb->options} WHERE option_name = %s LIMIT 1",
@@ -151,6 +170,10 @@ class WPML_ST_Blog_Name_And_Description_Hooks implements \IWPML_Action {
 		}
 	}
 
+	public static function on_clear_all_caches() {
+		self::forget();
+	}
+
 	private static function is_listening() {
 		return false !== has_action( 'wpml_st_add_string_translation', [ self::class, 'on_string_translation_saved' ] );
 	}
@@ -161,6 +184,11 @@ class WPML_ST_Blog_Name_And_Description_Hooks implements \IWPML_Action {
 	}
 
 	private static function concerns_our_strings( array $string_ids ) {
+		$carrier_ids = WPML_ST_Package_String_Carriers::get()->carrierStringIds();
+		if ( $carrier_ids && array_intersect( array_map( 'intval', $string_ids ), $carrier_ids ) ) {
+			return true;
+		}
+
 		$ids = get_option( self::STRING_IDS_OPTION, false );
 
 		if ( ! is_array( $ids ) || ! isset( $ids[ self::STRING_NAME_BLOGNAME ], $ids[ self::STRING_NAME_BLOGDESCRIPTION ] ) ) {

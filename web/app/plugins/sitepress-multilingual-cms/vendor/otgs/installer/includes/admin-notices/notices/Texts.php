@@ -102,7 +102,7 @@ class Texts {
 			'productName'                 => static::$product,
 			'repoId'                      => $repo,
 			'siteUrl'                     => home_url(),
-			'productUrl'                  => static::$productURL,
+			'productUrl'                  => $install->get_product_data( $repo, 'url' ),
 			'siteKeysManagementUrl'       => $install->get_product_data( $repo, 'site_keys_management_url' ),
 			'updateSiteKeyNonce'          => wp_create_nonce( 'update_site_key_' . $repo ),
 			'saveSiteKeyNonce'            => wp_create_nonce( 'save_site_key_' . $repo ),
@@ -251,26 +251,32 @@ class Texts {
 	}
 
 	protected static function getExpiredButtons() {
-		$checkOrderStatusUrl = wp_nonce_url( \WP_Installer::menu_url() . '&validate_repository=' . static::$repo, 'validate_repository_' . static::$repo );
+		$checkOrderStatusUrl = \WP_Installer::check_order_status_url( static::$repo );
 		$accountButton       = sprintf( __( 'Purchase %s', 'installer' ), static::$product );
 		$checkButton         = __( 'Check my order status', 'installer' );
 		$statusText          = __( 'Got renewal already?', 'installer' );
 
 		return self::getPrimaryButtonHTML( static::getPurchaseUrl(), $accountButton ) .
-		       self::getStatusHTML( $statusText ) .
-		       self::getRefreshButtonHTML( $checkOrderStatusUrl, $checkButton );
+		       self::getCheckOrderStatusHTML( $statusText, $checkOrderStatusUrl, $checkButton );
 	}
 
 	protected static function getInGraceButtons() {
-		$checkOrderStatusUrl = wp_nonce_url( \WP_Installer::menu_url() . '&validate_repository=' . static::$repo, 'validate_repository_' . static::$repo );
+		$checkOrderStatusUrl = \WP_Installer::check_order_status_url( static::$repo );
 		$accountButton       = __( 'Renew your account', 'installer' );
 		$checkButton         = __( 'Check my order status', 'installer' );
 		$statusText          = __( 'Got renewal already?', 'installer' );
 
 		return self::getPrimaryButtonHTML( static::getRenewUrl(), $accountButton ) .
-		    self::getStatusHTML( $statusText ) .
-		    self::getRefreshButtonHTML( $checkOrderStatusUrl, $checkButton );
-    }
+		       self::getCheckOrderStatusHTML( $statusText, $checkOrderStatusUrl, $checkButton );
+	}
+
+	protected static function getCheckOrderStatusHTML( $statusText, $url, $text ) {
+		if ( ! \WP_Installer::current_user_can_check_order_status() ) {
+			return '';
+		}
+
+		return self::getStatusHTML( $statusText ) . self::getRefreshButtonHTML( $url, $text );
+	}
 
 	public static function getPurchaseUrl() {
 		$productUrl = \WP_Installer::instance()->get_product_data( static::$repo, 'url' );

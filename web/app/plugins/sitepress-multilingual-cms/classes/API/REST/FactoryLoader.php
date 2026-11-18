@@ -12,8 +12,6 @@ use \WPML\TM\ATE\REST\FixJob;
 use WPML\TM\ATE\REST\Download;
 use WPML\TM\ATE\REST\PublicCreate;
 use WPML\TM\ATE\REST\PublicReceive;
-use WPML\TM\ATE\REST\PullCollect;
-use WPML\TM\ATE\REST\PullPing;
 use WPML\TM\ATE\TranslateEverything;
 use WPML\TM\AutomaticTranslation\Actions\Actions;
 use function WPML\Container\make;
@@ -34,8 +32,6 @@ class FactoryLoader implements IWPML_REST_Action_Loader, IWPML_Deferred_Action_L
 			PublicReceive::class => make( PublicReceive::class ),
 			PublicCreate::class  => $this->makePublicCreate(),
 			FixJob::class        => make( FixJob::class ),
-			PullCollect::class   => make( PullCollect::class ),
-			PullPing::class      => make( PullPing::class ),
 		];
 	}
 

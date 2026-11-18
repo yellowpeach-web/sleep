@@ -2,11 +2,12 @@
 
 namespace WPML\UserInterface\Web\Core\Component\Dashboard\Application\Endpoint\TranslationProxy;
 
+use WPML\Core\Component\Translation\Application\Service\Taxonomy\TaxonomySendOperationRepository;
+use WPML\Core\Component\TranslationProxy\Application\Service\SendLockInterface;
 use WPML\Core\Component\TranslationProxy\Application\Service\SendTranslationProxyCommitRequestException;
 use WPML\Core\Component\TranslationProxy\Application\Service\SendTranslationProxyCommitRequestIndeterminateException;
 use WPML\Core\Component\TranslationProxy\Application\Service\TranslationProxyServiceInterface;
 use WPML\Core\Port\Endpoint\EndpointInterface;
-use WPML\Legacy\Component\TranslationProxy\Application\Service\SendLock;
 
 class SendCommitRequestController implements EndpointInterface {
 
@@ -14,13 +15,17 @@ class SendCommitRequestController implements EndpointInterface {
 
   private $sendLock;
 
+  private $taxonomySendOperationRepository;
+
 
   public function __construct(
     TranslationProxyServiceInterface $translationProxyService,
-    SendLock $sendLock
+    SendLockInterface $sendLock,
+    ?TaxonomySendOperationRepository $taxonomySendOperationRepository = null
   ) {
-    $this->translationProxyService = $translationProxyService;
-    $this->sendLock                = $sendLock;
+    $this->translationProxyService         = $translationProxyService;
+    $this->sendLock                        = $sendLock;
+    $this->taxonomySendOperationRepository = $taxonomySendOperationRepository ?: new TaxonomySendOperationRepository();
   }
 
 
@@ -38,9 +43,33 @@ class SendCommitRequestController implements EndpointInterface {
     }
 
     try {
-      return [
-        'batchJobId' => $this->translationProxyService->sendCommitRequest(),
-      ];
+      $batchName = is_array( $requestData ) && is_string( $requestData['batchName'] ?? null )
+        ? $requestData['batchName']
+        : '';
+      $batchId   = is_array( $requestData ) && is_numeric( $requestData['batchId'] ?? null )
+        ? (int) $requestData['batchId']
+        : 0;
+      $hasIdentity = '' !== $batchName && $batchId > 0;
+      $operationId = is_array( $requestData ) && is_string( $requestData['operationId'] ?? null )
+        ? $requestData['operationId']
+        : '';
+      $hasOperation = 1 === preg_match( '/^[a-f0-9]{32}$/', $operationId );
+      if ( $hasIdentity && $hasOperation
+        && $this->taxonomySendOperationRepository->isTpBatchCommitted( $operationId, $batchName, $batchId )
+      ) {
+        return [ 'batchJobId' => $batchId ];
+      }
+
+      $batchJobId = $hasIdentity
+        ? $this->translationProxyService->sendCommitRequest( $batchName, $batchId )
+        : $this->translationProxyService->sendCommitRequest();
+      if ( $batchJobId && $hasIdentity && $hasOperation ) {
+        if ( $this->taxonomySendOperationRepository->markTpBatchCommitted( $operationId, $batchName, $batchId ) ) {
+          $this->taxonomySendOperationRepository->deleteCommittedOperation( $operationId, $batchName, $batchId );
+        }
+      }
+
+      return [ 'batchJobId' => $batchJobId ];
     } catch ( SendTranslationProxyCommitRequestIndeterminateException $e ) {
       return [
         'batchJobId' => false,

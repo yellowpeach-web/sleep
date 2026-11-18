@@ -19,6 +19,8 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
   const TABLE      = 'icl_meta_settings';
   const CHUNK_SIZE = 500;
 
+  private static $tableMissing = [];
+
   private $queryHandler;
 
   private $queryPrepare;
@@ -42,6 +44,9 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
 
 
   public function getMap( string $type ): array {
+    if ( self::tableMissingThisRequest() ) {
+      return [];
+    }
     try {
       $rows = $this->queryHandler->query(
         $this->queryPrepare->prepare(
@@ -50,7 +55,7 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
         )
       )->getResults();
     } catch ( DatabaseErrorException $e ) {
-      error( 'WPML meta-settings map read failed: ' . $e->getMessage() );
+      self::reportFailure( 'map read', $e );
       return [];
     }
 
@@ -63,12 +68,15 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
 
 
   public function getMaps(): array {
+    if ( self::tableMissingThisRequest() ) {
+      return [];
+    }
     try {
       $rows = $this->queryHandler->query(
         'SELECT element_type, name, mode FROM ' . $this->table() . ' ORDER BY id'
       )->getResults();
     } catch ( DatabaseErrorException $e ) {
-      error( 'WPML meta-settings maps read failed: ' . $e->getMessage() );
+      self::reportFailure( 'maps read', $e );
       return [];
     }
 
@@ -89,6 +97,9 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
 
 
   public function getMode( string $type, string $name ) {
+    if ( self::tableMissingThisRequest() ) {
+      return null;
+    }
     try {
       $mode = $this->queryHandler->querySingle(
         $this->queryPrepare->prepare(
@@ -98,7 +109,7 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
         )
       );
     } catch ( DatabaseErrorException $e ) {
-      error( 'WPML meta-settings mode read failed: ' . $e->getMessage() );
+      self::reportFailure( 'mode read', $e );
       return null;
     }
 
@@ -115,13 +126,14 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
   public function getModes( string $type, array $names ): array {
     $names = array_values( array_unique( array_map( 'strval', $names ) ) );
     $modes = array_fill_keys( $names, null );
-    if ( ! $names ) {
+    if ( ! $names || self::tableMissingThisRequest() ) {
       return $modes;
     }
 
     $found = [];
     foreach ( array_chunk( $names, self::CHUNK_SIZE ) as $chunk ) {
       $placeholders = implode( ',', array_fill( 0, count( $chunk ), '%s' ) );
+      $rows         = [];
       try {
         $rows = $this->queryHandler->query(
           $this->queryPrepare->prepare(
@@ -132,7 +144,9 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
           )
         )->getResults();
       } catch ( DatabaseErrorException $e ) {
-        error( 'WPML meta-settings modes read failed: ' . $e->getMessage() );
+        if ( self::reportFailure( 'modes read', $e ) ) {
+          break;
+        }
         continue;
       }
 
@@ -158,6 +172,9 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
     if ( ! $storable ) {
       return true;
     }
+    if ( self::tableMissingThisRequest() ) {
+      return false;
+    }
 
     $ok = true;
     foreach ( array_chunk( $storable, self::CHUNK_SIZE, true ) as $chunk ) {
@@ -173,8 +190,10 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
       try {
         $this->databaseWrite->upsertMany( self::TABLE, $rows, [ 'mode' ] );
       } catch ( DatabaseErrorException | \InvalidArgumentException $e ) {
-        error( 'WPML meta-settings upsert failed: ' . $e->getMessage() );
         $ok = false;
+        if ( self::reportFailure( 'upsert', $e ) ) {
+          break;
+        }
       }
     }
     return $ok;
@@ -184,6 +203,9 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
   public function deleteMany( string $type, array $names ): bool {
     if ( ! $names ) {
       return true;
+    }
+    if ( self::tableMissingThisRequest() ) {
+      return false;
     }
 
     $ok = true;
@@ -203,8 +225,10 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
           )
         );
       } catch ( DatabaseErrorException $e ) {
-        error( 'WPML meta-settings delete failed: ' . $e->getMessage() );
         $ok = false;
+        if ( self::reportFailure( 'delete', $e ) ) {
+          break;
+        }
       }
     }
     return $ok;
@@ -212,6 +236,9 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
 
 
   public function countByType( string $type ): int {
+    if ( self::tableMissingThisRequest() ) {
+      return 0;
+    }
     try {
       $count = $this->queryHandler->querySingle(
         $this->queryPrepare->prepare(
@@ -221,9 +248,49 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
       );
       return (int) $count;
     } catch ( DatabaseErrorException $e ) {
-      error( 'WPML meta-settings count failed: ' . $e->getMessage() );
+      self::reportFailure( 'count', $e );
       return 0;
     }
+  }
+
+
+  public static function tableMissingThisRequest(): bool {
+    return ! empty( self::$tableMissing[ self::blogId() ] );
+  }
+
+
+  public static function forgetMissingTable() {
+    self::$tableMissing = [];
+  }
+
+
+  private static function reportFailure( string $what, \Exception $e ): bool {
+    if ( ! self::lastErrorIsMissingTable() ) {
+      error( 'WPML meta-settings ' . $what . ' failed: ' . $e->getMessage() );
+      return false;
+    }
+    self::$tableMissing[ self::blogId() ] = true;
+    error(
+      'WPML meta-settings ' . $what . ' failed: the table ' . self::TABLE . ' does not exist. '
+      . 'Further reads and writes of this request are skipped; the next WordPress admin page load recreates the table.'
+    );
+
+    return true;
+  }
+
+
+  private static function lastErrorIsMissingTable(): bool {
+    $wpdb  = isset( $GLOBALS['wpdb'] ) && is_object( $GLOBALS['wpdb'] ) ? $GLOBALS['wpdb'] : null;
+    $error = $wpdb && isset( $wpdb->last_error ) && is_string( $wpdb->last_error ) ? $wpdb->last_error : '';
+
+    return '' !== $error
+      && false !== strpos( $error, self::TABLE )
+      && false !== strpos( $error, "doesn't exist" );
+  }
+
+
+  private static function blogId(): int {
+    return function_exists( 'get_current_blog_id' ) ? \get_current_blog_id() : 0;
   }
 
 
@@ -235,7 +302,7 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
     $wpdb  = $GLOBALS['wpdb'];
     $table = $wpdb->prefix . self::TABLE;
 
-    return CreateTable::create(
+    $created = CreateTable::create(
       $wpdb,
       $table,
       "CREATE TABLE IF NOT EXISTS `{$table}` (
@@ -248,6 +315,11 @@ class PreferenceRepository implements PreferenceRepositoryInterface {
         KEY `type_name_lookup` (`element_type`, `name`(191))
       )"
     );
+    if ( $created ) {
+      self::forgetMissingTable();
+    }
+
+    return $created;
   }
 
 

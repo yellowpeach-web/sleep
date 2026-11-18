@@ -3,6 +3,7 @@
 namespace WPML\Infrastructure\WordPress\Component\Translation\Application\Event\Links;
 
 use WPML\Core\Component\Translation\Application\Event\Links\ItemUpdateListener;
+use WPML\Core\Component\Translation\Domain\Links\ContentLinks;
 use WPML\Core\Component\Translation\Domain\Links\Item;
 use WPML\Core\Component\Translation\Domain\Links\ResolvedLinksCacheInterface;
 use WPML\Infrastructure\WordPress\Component\Translation\Domain\Links\Repository;
@@ -11,7 +12,13 @@ use WPML\PHP\Exception\InvalidTypeException;
 use WPML\WordPress\Term;
 use WP_Post;
 
+if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
+  require_once __DIR__ . '/../../../../../../../../../inc/upgrade-autoload-shim.php';
+}
+
 class ItemUpdateEventListenerAdapter {
+
+  const LINKS_SIGNATURE_META = '_wpml_links_signature';
 
   private $itemUpdateListener;
 
@@ -47,6 +54,9 @@ class ItemUpdateEventListenerAdapter {
     $this->setDefaultsForPost( $postId );
     $this->updatedPosts[ $postId ]['statusBefore'] = $postBeforeSave->post_status;
     $this->updatedPosts[ $postId ]['nameBefore'] = $postBeforeSave->post_name;
+    $this->updatedPosts[ $postId ]['linksBefore'] = ContentLinks::signature(
+      $postBeforeSave->post_content . $postBeforeSave->post_excerpt
+    );
   }
 
 
@@ -64,6 +74,7 @@ class ItemUpdateEventListenerAdapter {
       'post' => null,
       'statusBefore' => '',
       'nameBefore' => '',
+      'linksBefore' => null,
     ];
   }
 
@@ -110,7 +121,22 @@ class ItemUpdateEventListenerAdapter {
           $post['nameBefore']
         );
 
+        $linksNow = ContentLinks::signature(
+          $post['post']->post_content . $post['post']->post_excerpt
+        );
+        $unchanged = is_array( $post['linksBefore'] )
+          && $post['linksBefore'] === $linksNow
+          && get_post_meta( $post['post']->ID, self::LINKS_SIGNATURE_META, true ) === wp_json_encode( $linksNow );
+
+        if ( $unchanged ) {
+          $item->markContentLinksUnchanged();
+        }
+
         $this->itemUpdateListener->onItemSave( $item );
+
+        if ( ! $unchanged && $item->isOriginal() && $item->isPublishable() && $item->canLinkToOtherItems() ) {
+          update_post_meta( $post['post']->ID, self::LINKS_SIGNATURE_META, wp_slash( wp_json_encode( $linksNow ) ) );
+        }
       } catch ( InvalidTypeException $e ) {
         continue;
       }

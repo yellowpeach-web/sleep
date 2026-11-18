@@ -90,6 +90,15 @@ class CompositionRoot {
     foreach ( $this->config->getInterfaceMappings() as $interface => $class ) {
       $this->dic->alias( $interface, $class );
     }
+    \WPML\Infrastructure\WordPress\Port\Translation\PackageOwnerLegacyBinding::register();
+    if ( class_exists( \WPML\Container\Container::class ) ) {
+      \WPML\Container\Container::alias( [
+        \WPML\Core\SharedKernel\Component\Translation\Domain\TaxonomyBatchCommitterInterface::class =>
+          \WPML\Legacy\Component\TranslationProxy\Application\Service\TranslationProxyService::class,
+        \WPML\Core\SharedKernel\Component\Translator\Domain\Query\TranslatorsQueryInterface::class =>
+          \WPML\Legacy\Component\Translator\Domain\Query\TranslatorsQuery::class,
+      ] );
+    }
   }
 
 

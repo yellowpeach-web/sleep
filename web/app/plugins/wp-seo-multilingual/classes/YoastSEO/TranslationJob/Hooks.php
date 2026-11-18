@@ -12,6 +12,18 @@ class Hooks extends BaseHooks {
 
 	const OPTION_PREFIX = 'wpseo_';
 
+	public function add_hooks() {
+		parent::add_hooks();
+		add_filter( 'wpml_tm_xliff_unit_placeholders', [ $this, 'addPlaceholderPatterns' ], 10, 3 );
+	}
+
+	public function addPlaceholderPatterns( $patterns, $element, $extraData ) {
+		if ( ! empty( $extraData['is_xliff_for_ate'] ) && TermsMetaHooks::PACKAGE['kind'] === ( $extraData['group'] ?? '' ) ) {
+			$patterns[] = '/%%[a-zA-Z0-9_\-]+%%/';
+		}
+		return array_values( array_unique( $patterns ) );
+	}
+
 	protected function getFieldPrefix() {
 		return 'field-_yoast_wpseo_';
 	}

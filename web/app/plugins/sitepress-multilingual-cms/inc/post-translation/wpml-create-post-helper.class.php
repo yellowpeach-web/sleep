@@ -19,6 +19,10 @@ class WPML_Create_Post_Helper {
 
 		try {
 			if ( isset( $postarr['ID'] ) ) {
+				if ( ! array_key_exists( 'page_template', $postarr ) ) {
+					$postarr['page_template'] = '';
+				}
+
 				$returnTrue = \WPML\FP\Fns::always( true );
 				add_filter( 'wpml_disable_term_adjust_id', $returnTrue );
 				$new_post_id = wp_update_post( $postarr, $wp_error );

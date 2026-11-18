@@ -83,13 +83,29 @@ class WPML_PB_Shortcode_Encoding {
 	}
 
 	public function get_effective_encoding( $content, $encoding ) {
-		if ( self::ENCODE_TYPES_BASE64 !== $encoding || ! is_string( $content ) ) {
+		if ( ! is_string( $content ) ) {
 			return $encoding;
 		}
 
+		if ( self::ENCODE_TYPES_BASE64 === $encoding ) {
+			return $this->is_base64_text( $content ) ? $encoding : '';
+		}
+
+		if ( self::ENCODE_TYPES_VISUAL_COMPOSER_LINK === $encoding ) {
+			return $this->is_visual_composer_link( $content ) ? $encoding : '';
+		}
+
+		return $encoding;
+	}
+
+	private function is_base64_text( string $content ): bool {
 		$decoded = base64_decode( wp_strip_all_tags( $content ), true );
 
-		return false !== $decoded && $this->is_text( $decoded ) ? $encoding : '';
+		return false !== $decoded && $this->is_text( $decoded );
+	}
+
+	private function is_visual_composer_link( string $content ): bool {
+		return '' === $content || 1 === preg_match( '/^(?:url|title|target|rel):/', $content );
 	}
 
 	private function is_text( $value ) {

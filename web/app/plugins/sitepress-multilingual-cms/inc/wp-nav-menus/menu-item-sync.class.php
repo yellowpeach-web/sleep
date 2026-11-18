@@ -71,10 +71,13 @@ class WPML_Menu_Item_Sync extends WPML_Menu_Sync_Functionality {
 						return array_intersect( $nav_menu_option['auto_add'], wp_get_nav_menus( [ 'fields' => 'ids' ] ) );
 					};
 
-					$disableAdjustTermIds        = Fns::always( true );
-					$nav_menu_option['auto_add'] = Hooks::callWithFilter( $filterUnExistingMenuIds, 'wpml_disable_term_adjust_id', $disableAdjustTermIds );
+					$disableAdjustTermIds = Fns::always( true );
+					$auto_add             = array_values( Hooks::callWithFilter( $filterUnExistingMenuIds, 'wpml_disable_term_adjust_id', $disableAdjustTermIds ) );
 
-					update_option( 'nav_menu_options', array_filter( $nav_menu_option ) );
+					$nav_menu_option             = array_filter( $nav_menu_option );
+					$nav_menu_option['auto_add'] = $auto_add;
+
+					update_option( 'nav_menu_options', $nav_menu_option );
 					wp_defer_term_counting( false );
 					do_action( 'wp_update_nav_menu', $translated_menu_id );
 				}

@@ -16,4 +16,21 @@ class BothLanguages implements LabelTemplateInterface {
 			? $languageItem->getDisplayName()
 			: sprintf( '%s (%s)', $languageItem->getNativeName(), $languageItem->getDisplayName() );
 	}
+
+	public function writeLabel( \DOMElement $label, LanguageItem $languageItem ) {
+		if ( $languageItem->getNativeName() === $languageItem->getDisplayName() || ! $label->ownerDocument ) {
+			( new NativeLanguage() )->writeLabel( $label, $languageItem );
+			return;
+		}
+
+		$document           = $label->ownerDocument;
+		$label->textContent = '';
+
+		$native = $document->createElement( 'span' );
+		$native->appendChild( $document->createTextNode( $languageItem->getNativeName() ) );
+		NativeLanguage::markLanguage( $native, $languageItem );
+
+		$label->appendChild( $native );
+		$label->appendChild( $document->createTextNode( sprintf( ' (%s)', $languageItem->getDisplayName() ) ) );
+	}
 }

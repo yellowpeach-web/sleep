@@ -9,7 +9,6 @@ use WPML\FP\Either;
 use WPML\FP\Fns;
 use WPML\FP\Lst;
 use WPML\FP\Obj;
-use function WPML\FP\invoke;
 
 class FindAvailableByRole implements IHandler {
 
@@ -21,12 +20,15 @@ class FindAvailableByRole implements IHandler {
 			'translator' => \WPML_Translator_Records::class,
 			'manager'    => \WPML_Translation_Manager_Records::class,
 		];
-		$exact_match = $data->get( 'exactMatch' );
+
+		$searchUsers = function ( \WPML_Translation_Roles_Records $roleRecords ) use ( $search ) {
+			return $roleRecords->search_for_users_without_capability( $search, self::USER_SEARCH_LIMIT, HighUserCount::isHigh() );
+		};
 
 		return Either::of( $data->get( 'role' ) )
 		             ->filter( Lst::includes( Fns::__, Obj::keys( $records ) ) )
 		             ->map( Obj::prop( Fns::__, $records ) )
 		             ->map( Fns::make() )
-		             ->map( invoke( 'search_for_users_without_capability' )->with( $search, self::USER_SEARCH_LIMIT, $exact_match) );
+		             ->map( $searchUsers );
 	}
 }

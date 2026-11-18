@@ -20,6 +20,37 @@ class Cache implements \IWPML_Frontend_Action, \IWPML_Backend_Action {
 			->then( spreadArgs( [ $this, 'flushAll' ] ) );
 		Hooks::onAction( 'wpml_pb_resave_post_translation' )
 			->then( spreadArgs( [ $this, 'flushForElement' ] ) );
+		Hooks::onAction( \WPML\PB\Shutdown\Hooks::ACTION_TRANSLATION_WRITTEN )
+			->then( spreadArgs( [ $this, 'flushAll' ] ) );
+		Hooks::onAction( 'transition_post_status', 10, 3 )
+			->then( fn( $args ) => $this->flushElementsOnTemplateStatus( ...$args ) );
+	}
+
+	public function flushElementsOnTemplateStatus( $newStatus, $oldStatus, $post ) {
+		$isPublishChange = ( 'publish' === $newStatus ) !== ( 'publish' === $oldStatus );
+
+		if (
+			! $isPublishChange
+			|| self::TEMPLATES_POST_TYPE !== Obj::prop( 'post_type', $post )
+			|| ! $this->isTranslation( $post )
+		) {
+			return;
+		}
+
+		delete_post_meta_by_key( self::ELEMENT_CACHE_KEY );
+	}
+
+	private function isTranslation( $post ) {
+		$details = apply_filters(
+			'wpml_element_language_details',
+			null,
+			[
+				'element_id'   => $post->ID,
+				'element_type' => self::TEMPLATES_POST_TYPE,
+			]
+		);
+
+		return (bool) Obj::prop( 'source_language_code', $details );
 	}
 
 	public function flushForElement( $postElement ) {
@@ -35,17 +66,23 @@ class Cache implements \IWPML_Frontend_Action, \IWPML_Backend_Action {
 
 	private function flushCss( $postId ) {
 		$post = get_post( $postId );
-		if (
-			self::TEMPLATES_POST_TYPE === Obj::prop( 'post_type', $post )
-			&& class_exists( \Elementor\Core\Files\CSS\Post::class )
-		) {
-			try {
-				$cssFile = \WPML\Container\make( \Elementor\Core\Files\CSS\Post::class, [ ':post_id' => $postId ] );
-				if ( method_exists( $cssFile, 'delete' ) ) {
-					$cssFile->delete();
-				}
-			} catch ( \Exception $e ) {
+		if ( self::TEMPLATES_POST_TYPE === Obj::prop( 'post_type', $post ) ) {
+			self::deletePostCss( $postId );
+		}
+	}
+
+	public static function deletePostCss( $postId ) {
+		if ( ! class_exists( \Elementor\Core\Files\CSS\Post::class ) ) {
+			return;
+		}
+
+		try {
+			$cssFile = \WPML\Container\make( \Elementor\Core\Files\CSS\Post::class, [ ':post_id' => $postId ] );
+			if ( method_exists( $cssFile, 'delete' ) ) {
+				$cssFile->delete();
 			}
+		} catch ( \Exception $e ) {
+			return;
 		}
 	}
 

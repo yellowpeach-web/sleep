@@ -13,11 +13,26 @@
          "The translation could not be started because the server did not answer.": [
             "Non è stato possibile avviare la traduzione perché il server non ha risposto."
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "La tua sessione è scaduta. Aggiorna questa pagina e riprova."
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "PTC sta traducendo. L'editor si aprirà quando sarà pronto."
+         ],
          "This translation cannot be opened right now.": [
             "Impossibile aprire questa traduzione in questo momento."
          ],
          "Refresh this page": [
             "Aggiorna questa pagina"
+         ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "Parole prepagate insufficienti per tradurre automaticamente questo contenuto. Aggiungi altre parole, poi riprova."
+         ],
+         "Get more words": [
+            "Ottieni altre parole"
+         ],
+         "Close": [
+            "Chiudi"
          ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
             "Questo contenuto è in fase di traduzione automatica. Se desideri eseguire un'operazione diversa, annulla prima i lavori di traduzione."
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "Traduzione del tuo contenuto in corso"
+         ],
+         "Translate Everything is active": [
+            "Traduci tutto è attivo"
          ],
          "%d translation notice": [
             "%d avviso di traduzione",
@@ -56,8 +74,8 @@
          "Automatic translation is paused: monthly spending cap reached": [
             "La traduzione automatica è in pausa: limite di spesa mensile raggiunto"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "Questo sito web ha raggiunto il limite di spesa mensile impostato. La traduzione continuerà quando il limite verrà alzato o quando verrà azzerato. Solo il proprietario dell'account può farlo."
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "Questo sito web ha raggiunto il limite di spesa mensile impostato. La traduzione continuerà quando il limite verrà aumentato o quando verrà reimpostato. Puoi aumentarlo nella pagina Traduzione IA: fatturazione e utilizzo."
          ],
          "Preparing content for translation": [
             "Preparazione del contenuto per la traduzione"
@@ -72,8 +90,9 @@
             "La tua lingua, %s, deve essere mappata su una lingua supportata per poter utilizzare la traduzione automatica.",
             "Le seguenti lingue sul tuo sito devono essere mappate su una lingua supportata per poter utilizzare la traduzione automatica: %s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "I contenuti in queste lingue: %s, non possono essere tradotti automaticamente a meno che non vengano mappati su una lingua diversa da quella predefinita."
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "La traduzione automatica non è disponibile tra %1$s e %2$s perché sono riconosciute come la stessa lingua. Scegli invece “Duplica” per copiare il contenuto.",
+            "La traduzione automatica non è disponibile tra %1$s e queste lingue perché sono riconosciute come la stessa lingua: %2$s. Scegli invece “Duplica” per copiare il contenuto."
          ],
          "%d translation waiting for review": [
             "%d traduzione in attesa di revisione",
@@ -153,9 +172,6 @@
          ],
          "Pay now": [
             "Paga ora"
-         ],
-         "Get more words": [
-            "Ottieni altre parole"
          ],
          "Assign words": [
             "Assegna parole"

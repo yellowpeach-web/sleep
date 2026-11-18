@@ -44,6 +44,26 @@ class WPML_Block_Editor_Helper {
 		return false;
 	}
 
+	public static function is_block_editor_screen() {
+		if ( ! function_exists( 'get_current_screen' ) ) {
+			return false;
+		}
+
+		$current_screen = get_current_screen();
+
+		return (bool) ( $current_screen && self::is_block_editor( $current_screen ) );
+	}
+
+	public static function is_site_editor_screen() {
+		if ( ! function_exists( 'get_current_screen' ) ) {
+			return false;
+		}
+
+		$current_screen = get_current_screen();
+
+		return (bool) ( $current_screen && isset( $current_screen->id ) && 'site-editor' === $current_screen->id );
+	}
+
 	public static function is_block_editor( $current_screen ) {
 		if ( version_compare( $GLOBALS['wp_version'], '5.0-beta', '>' ) ) {
 			return $current_screen->is_block_editor();

@@ -8,6 +8,13 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 	const CACHE_EXPIRE           = 0;
 	const CACHE_GROUP            = 'wpml_term_translation';
 
+	const SLUG_WARMUP_MAX = 1000;
+
+	const SLUG_WARM_STATE_PREFIX     = '#slug_warm_state:';
+	const SLUG_WARM_STATE_FIRST_MISS = 'first_miss';
+	const SLUG_WARM_STATE_WARMED     = 'warmed';
+	const SLUG_WARM_STATE_PER_SLUG   = 'per_slug';
+
 	protected $cache_max_warmup_count = self::CACHE_MAX_WARMUP_COUNT;
 
 	private static $keys_in_cache = array();
@@ -41,6 +48,8 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 			wp_cache_delete( $key, self::CACHE_GROUP );
 		}
 		self::$keys_in_cache = array();
+
+		WPML_Non_Persistent_Cache::flush_group( __CLASS__ );
 	}
 
 	private function get_from_cache( $key ) {
@@ -59,29 +68,96 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 	}
 
 	public function term_ids_by_slug( $slug, $taxonomy ) {
-		$wpdb      = $this->wpdb;
 		$cache_key = $taxonomy . ':' . $slug;
+		$found     = false;
 
-		return WPML_Non_Persistent_Cache::execute_and_cache(
-			$cache_key,
-			function () use ( $slug, $taxonomy, $wpdb ) {
-				return array_map(
-					'intval',
-					(array) $wpdb->get_col(
-						$wpdb->prepare(
-							"SELECT t.term_id
-							FROM {$wpdb->terms} t
-							JOIN {$wpdb->term_taxonomy} tt ON tt.term_id = t.term_id
-							WHERE tt.taxonomy = %s AND t.slug = %s
-							ORDER BY t.term_id",
-							$taxonomy,
-							$slug
-						)
-					)
-				);
-			},
-			__CLASS__
+		$ids = WPML_Non_Persistent_Cache::get( $cache_key, __CLASS__, $found );
+		if ( $found ) {
+			return $ids;
+		}
+
+		$state_key = self::SLUG_WARM_STATE_PREFIX . $taxonomy;
+		$state     = WPML_Non_Persistent_Cache::get( $state_key, __CLASS__ );
+
+		if ( self::SLUG_WARM_STATE_FIRST_MISS === $state ) {
+			$this->warm_slugs( $taxonomy, $state_key );
+			$ids = WPML_Non_Persistent_Cache::get( $cache_key, __CLASS__, $found );
+			if ( $found ) {
+				return $ids;
+			}
+		} elseif ( false === $state ) {
+			WPML_Non_Persistent_Cache::set( $state_key, self::SLUG_WARM_STATE_FIRST_MISS, __CLASS__ );
+		}
+
+		$ids = $this->read_term_ids_by_slug( $slug, $taxonomy );
+		WPML_Non_Persistent_Cache::set( $cache_key, $ids, __CLASS__ );
+
+		return $ids;
+	}
+
+	private function read_term_ids_by_slug( $slug, $taxonomy ) {
+		$wpdb = $this->wpdb;
+
+		return array_map(
+			'intval',
+			(array) $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT t.term_id
+					FROM {$wpdb->terms} t
+					JOIN {$wpdb->term_taxonomy} tt ON tt.term_id = t.term_id
+					WHERE tt.taxonomy = %s AND t.slug = %s
+					ORDER BY t.term_id",
+					$taxonomy,
+					$slug
+				)
+			)
 		);
+	}
+
+	private function warm_slugs( $taxonomy, $state_key ) {
+		$wpdb = $this->wpdb;
+
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT t.term_id, t.slug, tt.term_taxonomy_id
+				FROM {$wpdb->terms} t
+				JOIN {$wpdb->term_taxonomy} tt ON tt.term_id = t.term_id
+				WHERE tt.taxonomy = %s
+				ORDER BY t.term_id
+				LIMIT %d",
+				$taxonomy,
+				self::SLUG_WARMUP_MAX + 1
+			),
+			ARRAY_A
+		);
+
+		if ( ! is_array( $rows ) || $this->last_query_failed() || count( $rows ) > self::SLUG_WARMUP_MAX ) {
+			WPML_Non_Persistent_Cache::set( $state_key, self::SLUG_WARM_STATE_PER_SLUG, __CLASS__ );
+
+			return;
+		}
+
+		$ids_by_slug = [];
+		$ttids       = [];
+		foreach ( $rows as $row ) {
+			$ids_by_slug[ (string) $row['slug'] ][] = (int) $row['term_id'];
+			$ttids[ (int) $row['term_id'] ]         = (int) $row['term_taxonomy_id'];
+		}
+
+		foreach ( $ids_by_slug as $slug => $ids ) {
+			WPML_Non_Persistent_Cache::set( $taxonomy . ':' . $slug, $ids, __CLASS__ );
+		}
+		WPML_Non_Persistent_Cache::set( $state_key, self::SLUG_WARM_STATE_WARMED, __CLASS__ );
+
+		$this->prefetch_ids( array_values( $ttids ) );
+
+		foreach ( $ttids as $term_id => $ttid ) {
+			$key = 'ttid_by_termid_' . $term_id;
+			if ( $this->get_from_cache( $key )->isJust() ) {
+				continue;
+			}
+			$this->set_in_cache( $key, $ttid );
+		}
 	}
 
 	private function set_data_to_cache( array $data ) {
@@ -102,25 +178,13 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 			return $term_id;
 		}
 
-		$key_prefix = 'ttid_by_termid_';
-		$key        = $key_prefix . $term_id;
+		$key = 'ttid_by_termid_' . $term_id;
 
-		$get_ttid_or_fallback_to_term_id = function() use ( $key_prefix, $key, $term_id, $count ) {
-			if ( $this->is_cache_type_select_all_items_in_one_query( $count ) ) {
-				return $term_id;
-			}
-
-			$data = $this->get_maybe_warm_term_id_cache_data( ' AND tax.term_id = %d', array( $term_id ) );
-			if ( count( $data ) ) {
-				$this->set_data_to_cache( $data );
-			} else {
-				$this->set_in_cache( $key_prefix . $term_id, $term_id );
-			}
-
-			return $this->get_from_cache( $key )->getOrElse( $term_id );
+		$read_missing_term = function() use ( $key, $term_id ) {
+			return $this->read_missing_term( $key, $term_id, 'term_taxonomy_id', 'tax.term_id = %d', array( $term_id ) );
 		};
 
-		return $this->get_from_cache( $key )->getOrElse( $get_ttid_or_fallback_to_term_id );
+		return $this->get_from_cache( $key )->getOrElse( $read_missing_term );
 	}
 
 	public function adjust_term_id_for_ttid( $ttid ) {
@@ -129,61 +193,218 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 			return $ttid;
 		}
 
-		$key_prefix = 'termid_by_ttid_';
-		$key        = $key_prefix . $ttid;
+		$key = 'termid_by_ttid_' . $ttid;
 
-		$get_term_id_or_fallback_to_ttid = function() use ( $key_prefix, $key, $ttid, $count ) {
-			if ( $this->is_cache_type_select_all_items_in_one_query( $count ) ) {
-				return $ttid;
-			}
-
-			$data = $this->get_maybe_warm_term_id_cache_data( ' AND tax.term_taxonomy_id = %d', array( $ttid ) );
-			if ( count( $data ) ) {
-				$this->set_data_to_cache( $data );
-			} else {
-				$this->set_in_cache( $key_prefix . $ttid, $ttid );
-			}
-
-			return $this->get_from_cache( $key )->getOrElse( $ttid );
+		$read_missing_term = function() use ( $key, $ttid ) {
+			return $this->read_missing_term( $key, $ttid, 'term_id', 'tax.term_taxonomy_id = %d', array( $ttid ) );
 		};
 
-		return $this->get_from_cache( $key )->getOrElse( $get_term_id_or_fallback_to_ttid );
+		return $this->get_from_cache( $key )->getOrElse( $read_missing_term );
 	}
 
-	public function term_id_in( $term_id, $lang_code, $original_fallback = false ) {
+	public function term_id_in( $term_id, $lang_code, $original_fallback = false, $taxonomy = null ) {
+		$ttid = is_string( $taxonomy ) && '' !== $taxonomy
+			? $this->adjust_ttid_for_term_id_in_taxonomy( $term_id, $taxonomy )
+			: $this->adjust_ttid_for_term_id( $term_id );
 
 		return $this->adjust_term_id_for_ttid(
-			$this->element_id_in( (int) $this->adjust_ttid_for_term_id( $term_id ), $lang_code, $original_fallback )
+			$this->element_id_in( (int) $ttid, $lang_code, $original_fallback )
 		);
 	}
 
 	public function trid_from_tax_and_id( $term_id, $taxonomy ) {
+		return $this->get_element_trid( $this->adjust_ttid_for_term_id_in_taxonomy( $term_id, $taxonomy ) );
+	}
+
+	private function adjust_ttid_for_term_id_in_taxonomy( $term_id, $taxonomy ) {
 		$count = $this->maybe_warm_term_id_cache();
 		if ( 0 === $count ) {
-			return $this->get_element_trid( $term_id );
+			return $term_id;
 		}
 
-		$key_prefix = 'ttid_by_termidtaxonomy_';
-		$key        = $key_prefix . $term_id . $taxonomy;
+		$key = 'ttid_by_termidtaxonomy_' . $term_id . $taxonomy;
 
-		$get_term_id = function() use ( $key_prefix, $key, $term_id, $taxonomy, $count ) {
-			if ( $this->is_cache_type_select_all_items_in_one_query( $count ) ) {
-				return $term_id;
-			}
-
-			$data = $this->get_maybe_warm_term_id_cache_data( ' AND tax.term_id = %d AND tax.taxonomy = %s', array( $term_id, $taxonomy ) );
-			if ( count( $data ) ) {
-				$this->set_data_to_cache( $data );
-			} else {
-				$this->set_in_cache( $key_prefix . $term_id . $taxonomy, $term_id );
-			}
-
-			return $this->get_from_cache( $key )->getOrElse( $term_id );
+		$read_missing_term = function() use ( $key, $term_id, $taxonomy ) {
+			return $this->read_missing_term(
+				$key,
+				$term_id,
+				'term_taxonomy_id',
+				'tax.term_id = %d AND tax.taxonomy = %s',
+				array( $term_id, $taxonomy )
+			);
 		};
 
-		$ttid = $this->get_from_cache( $key )->getOrElse( $get_term_id );
+		return $this->get_from_cache( $key )->getOrElse( $read_missing_term );
+	}
 
-		return $this->get_element_trid( $ttid );
+	private function read_missing_term( $key, $fallback, $column, $where, array $params ) {
+		$wpdb = $this->wpdb;
+
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT tax.term_taxonomy_id, tax.term_id, tax.taxonomy, wpml_translations.translation_id
+				FROM {$wpdb->term_taxonomy} tax
+				LEFT JOIN {$wpdb->prefix}icl_translations wpml_translations
+					ON wpml_translations.element_id = tax.term_taxonomy_id
+						AND wpml_translations.element_type = CONCAT('tax_', tax.taxonomy)
+				WHERE {$where}",
+				$params
+			),
+			ARRAY_A
+		);
+
+		if ( $this->last_query_failed() ) {
+			return $fallback;
+		}
+		$rows = is_array( $rows ) ? $rows : array();
+
+		foreach ( $this->missing_term_writes( $key, $fallback, $column, $rows ) as $write_key => $value ) {
+			$this->set_in_cache( $write_key, $value );
+		}
+
+		return $this->get_from_cache( $key )->getOrElse( $fallback );
+	}
+
+	private function missing_term_writes( $key, $fallback, $column, array $rows ) {
+		$rows   = array_values( $rows );
+		$writes = array();
+		foreach ( $rows as $row ) {
+			if ( null !== $row['translation_id'] && (int) $row['term_id'] !== (int) $row['term_taxonomy_id'] ) {
+				$writes[ 'ttid_by_termid_' . $row['term_id'] ]                        = (int) $row['term_taxonomy_id'];
+				$writes[ 'ttid_by_termidtaxonomy_' . $row['term_id'] . $row['taxonomy'] ] = (int) $row['term_taxonomy_id'];
+				$writes[ 'termid_by_ttid_' . $row['term_taxonomy_id'] ]               = (int) $row['term_id'];
+			}
+		}
+
+		if ( ! $writes ) {
+			$writes[ $key ] = 1 === count( $rows ) ? (int) $rows[0][ $column ] : $fallback;
+		}
+
+		return $writes;
+	}
+
+	private function read_missing_terms( array $ids, $by = 'term_taxonomy_id' ) {
+		$wpdb = $this->wpdb;
+		$by   = 'term_id' === $by ? 'term_id' : 'term_taxonomy_id';
+
+		foreach ( $this->prefetch_batches( $ids ) as $batch ) {
+			if ( 'term_id' === $by ) {
+				$rows = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT DISTINCT tax.term_taxonomy_id, tax.term_id, tax.taxonomy, wpml_translations.translation_id
+					FROM {$wpdb->term_taxonomy} sel
+					JOIN {$wpdb->term_taxonomy} tax ON tax.term_id = sel.term_id
+					LEFT JOIN {$wpdb->prefix}icl_translations wpml_translations
+						ON wpml_translations.element_id = tax.term_taxonomy_id
+							AND wpml_translations.element_type = CONCAT('tax_', tax.taxonomy)
+					WHERE sel.term_id IN (" . implode( ',', array_fill( 0, count( $batch ), '%d' ) ) . ')',
+						$batch
+					),
+					ARRAY_A
+				);
+			} else {
+				$rows = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT DISTINCT tax.term_taxonomy_id, tax.term_id, tax.taxonomy, wpml_translations.translation_id
+					FROM {$wpdb->term_taxonomy} sel
+					JOIN {$wpdb->term_taxonomy} tax ON tax.term_id = sel.term_id
+					LEFT JOIN {$wpdb->prefix}icl_translations wpml_translations
+						ON wpml_translations.element_id = tax.term_taxonomy_id
+							AND wpml_translations.element_type = CONCAT('tax_', tax.taxonomy)
+					WHERE sel.term_taxonomy_id IN (" . implode( ',', array_fill( 0, count( $batch ), '%d' ) ) . ')',
+						$batch
+					),
+					ARRAY_A
+				);
+			}
+
+			if ( ! is_array( $rows ) || $this->last_query_failed() ) {
+				continue;
+			}
+
+			$by_term = array();
+			foreach ( $rows as $row ) {
+				$by_term[ (int) $row['term_id'] ][ (int) $row['term_taxonomy_id'] ] = $row;
+			}
+
+			$found = array();
+			foreach ( $by_term as $term_id => $term_rows ) {
+				$this->write_missing_term( 'ttid_by_termid_' . $term_id, $term_id, 'term_taxonomy_id', $term_rows );
+
+				$by_taxonomy = array();
+				foreach ( $term_rows as $ttid => $row ) {
+					$found[ $ttid ]                         = true;
+					$by_taxonomy[ $row['taxonomy'] ][ $ttid ] = $row;
+					$this->write_missing_term( 'termid_by_ttid_' . $ttid, $ttid, 'term_id', array( $row ) );
+				}
+				foreach ( $by_taxonomy as $taxonomy => $taxonomy_rows ) {
+					$this->write_missing_term( 'ttid_by_termidtaxonomy_' . $term_id . $taxonomy, $term_id, 'term_taxonomy_id', $taxonomy_rows );
+				}
+			}
+
+			foreach ( $batch as $id ) {
+				$id = (int) $id;
+				if ( 'term_id' === $by ) {
+					if ( ! isset( $by_term[ $id ] ) ) {
+						$this->write_missing_term( 'ttid_by_termid_' . $id, $id, 'term_taxonomy_id', array() );
+					}
+				} elseif ( ! isset( $found[ $id ] ) ) {
+					$this->write_missing_term( 'termid_by_ttid_' . $id, $id, 'term_id', array() );
+				}
+			}
+		}
+	}
+
+	private function write_missing_term( $key, $fallback, $column, array $rows ) {
+		if ( $this->get_from_cache( $key )->isJust() ) {
+			return;
+		}
+		$writes = $this->missing_term_writes( $key, $fallback, $column, $rows );
+		if ( array_key_exists( $key, $writes ) ) {
+			$this->set_in_cache( $key, $writes[ $key ] );
+		}
+	}
+
+	public function prefetch_ids( $element_ids ) {
+		parent::prefetch_ids( $element_ids );
+
+		if ( 0 === $this->maybe_warm_term_id_cache() ) {
+			return;
+		}
+
+		$missing = array();
+		foreach ( (array) $element_ids as $ttid ) {
+			$ttid = (int) $ttid;
+			if ( $ttid > 0 && ! isset( $missing[ $ttid ] ) && ! $this->get_from_cache( 'termid_by_ttid_' . $ttid )->isJust() ) {
+				$missing[ $ttid ] = $ttid;
+			}
+		}
+
+		if ( $missing ) {
+			$this->read_missing_terms( array_values( $missing ) );
+		}
+	}
+
+	public function ttids_for_term_ids( array $term_ids ) {
+		if ( 0 !== $this->maybe_warm_term_id_cache() ) {
+			$missing = array();
+			foreach ( $term_ids as $term_id ) {
+				$term_id = (int) $term_id;
+				if ( $term_id > 0 && ! isset( $missing[ $term_id ] ) && ! $this->get_from_cache( 'ttid_by_termid_' . $term_id )->isJust() ) {
+					$missing[ $term_id ] = $term_id;
+				}
+			}
+			if ( $missing ) {
+				$this->read_missing_terms( array_values( $missing ), 'term_id' );
+			}
+		}
+
+		$ttids = array();
+		foreach ( $term_ids as $term_id ) {
+			$ttids[] = (int) $this->adjust_ttid_for_term_id( (int) $term_id );
+		}
+
+		return $ttids;
 	}
 
 	public function get_taxonomy_post_types( $taxonomy ) {
@@ -223,9 +444,13 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 			$data  = $this->wpdb->get_results( $sql, ARRAY_A );
 			$count = is_array( $data ) ? count( $data ) : 0;
 
+			if ( $this->last_query_failed() ) {
+				$count = $this->get_cache_max_warmup_count() + 1;
+			}
+
 			$this->set_in_cache( $key, $count );
 
-			if ( $count > 0 && $count <= $this->get_cache_max_warmup_count() ) {
+			if ( $count > 0 && $this->is_cache_type_select_all_items_in_one_query( $count ) ) {
 				$data = $this->get_maybe_warm_term_id_cache_data();
 				$this->set_data_to_cache( $data );
 			}
@@ -236,12 +461,12 @@ class WPML_Term_Translation extends WPML_Element_Translation {
 		return $this->get_from_cache( $key )->getOrElse( $get_count );
 	}
 
-	private function get_maybe_warm_term_id_cache_data( $where_sql = '', $where_sql_params = array() ) {
-		$sql = $this->get_query_sql();
+	private function last_query_failed() {
+		return isset( $this->wpdb->last_error ) && '' !== (string) $this->wpdb->last_error;
+	}
 
-		if ( count( $where_sql_params ) > 0 ) {
-			$sql = $this->wpdb->prepare( $sql . $where_sql, $where_sql_params );
-		}
+	private function get_maybe_warm_term_id_cache_data() {
+		$sql = $this->get_query_sql();
 
 		$data = $this->wpdb->get_results( $sql, ARRAY_A );
 

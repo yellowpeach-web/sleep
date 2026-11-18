@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=2; plural=(n != 1);",
             "lang": "pt_BR"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "Mudar para o Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "Mudar para o PTC"
+         ],
+         "Switching…": [
+            "Mudando…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "Não conseguimos confirmar a mudança. Tente novamente ou recarregue para ver o mecanismo atual."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Não foi possível carregar os controles do mecanismo de tradução. Recarregue a página e tente novamente."
+         ],
+         "Loading translation engine settings…": [
+            "Carregando configurações do mecanismo de tradução…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "Preencha o contexto do seu site acima antes de mudar para o PTC."
+         ],
+         "Reload page": [
+            "Recarregar página"
+         ],
+         "Could not fetch engines data": [
+            "Não foi possível buscar os dados dos mecanismos"
+         ],
          "Error in updating since dates for types.": [
             "Erro ao atualizar as datas de início para os tipos."
          ],
@@ -138,9 +165,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "Preços legados aplicados. %s é um mecanismo de tradução legado, não recomendado para novos sites e será descontinuado. Sites existentes mantêm uma taxa de palavras ajustada para ele."
          ],
-         "Switch to PTC": [
-            "Mudar para o PTC"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Isto é o que a tradução do seu conteúdo atual precisa hoje. Não inclui alguns textos adicionados por outros plugins, como formulários ou sliders, que são contabilizados após a conclusão da configuração. As strings do site do seu tema e plugins também são contabilizadas após a configuração e geralmente acrescentam algumas centenas de palavras. Depois disso, as edições são gratuitas. Você só paga novamente pelas palavras que adicionar."
          ],
@@ -156,8 +180,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Ele conta páginas, posts e produtos com seus campos personalizados, textos de construtores de páginas e de mídia, além das categorias, tags e atributos que eles usam."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Ele conta páginas, posts e produtos com seus campos personalizados, textos de construtores de páginas e de mídia, as categorias, tags e atributos que eles usam, além das strings do site. Um termo é contabilizado em cada item que o utiliza e uma vez por si só, pois é enviado para tradução de ambas as formas."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Ele conta páginas, posts e produtos com seus campos personalizados, textos de construtores de páginas e de mídia, as categorias, tags e atributos que utilizam, e as strings do site. Cada categoria, tag ou atributo é contado uma vez, na linha Taxonomias, e não novamente com os itens que os utilizam."
          ],
          "Total items": [
             "Total de itens"
@@ -231,8 +255,11 @@
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "Para iniciar o <b>Traduzir tudo automaticamente</b>, ative o <b>Pagamento por uso</b> ou compre palavras pré-pagas."
          ],
+         "Translation quality:": [
+            "Qualidade da tradução:"
+         ],
          "Select payment method": [
-            "Selecionar método de pagamento"
+            "Selecionar forma de pagamento"
          ],
          "%1$sCheck pricing%2$s.": [
             "%1$sVerificar preços%2$s."
@@ -346,7 +373,7 @@
             "Existem %1$s%2$s palavras%3$s em sua conta do WPML."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "Existem %1$s%2$s disponíveis na sua conta do WPML.%3$s"
+            "Há %1$s%2$s disponíveis em sua conta do WPML.%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(Apenas o proprietário da conta do WPML pode fazer isso.)"
@@ -362,6 +389,30 @@
          ],
          "Close modal": [
             "Fechar modal"
+         ],
+         "Obvious mistakes": [
+            "Erros óbvios"
+         ],
+         "Mistakes visible": [
+            "Erros visíveis"
+         ],
+         "Ready to publish": [
+            "Pronto para publicar"
+         ],
+         "Your engine": [
+            "Seu mecanismo"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Qualidade da tradução (escala de 50 a 100): %1$s pontua %2$d, %3$s pontua %4$d."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Pontuações baseadas no estudo interno de qualidade de tradução MQM do WPML."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "O PTC traduz com qualidade superior e oferece resultados prontos para publicação."
          ]
       }
    }

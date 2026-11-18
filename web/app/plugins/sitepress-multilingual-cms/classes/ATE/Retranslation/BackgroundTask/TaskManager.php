@@ -17,6 +17,8 @@ class TaskManager {
 	const CREATE_LOCK_TIMEOUT = 10;
 	const SYNC_TIMEOUT        = 86400;
 
+	const ATE_PROCESSING_TIMEOUT = 7200;
+
 	private $repository;
 
 	private $persistCommand;
@@ -393,6 +395,22 @@ class TaskManager {
 		}
 
 		$payload = $task->getPayload();
+		$age     = isset( $payload['created_at'] ) ? time() - (int) $payload['created_at'] : 0;
+		if ( RetranslationTask::PHASE_ATE_PROCESSING === ( $payload['phase'] ?? null ) && $age > self::ATE_PROCESSING_TIMEOUT ) {
+			$payload['outcome'] = RetranslationTask::OUTCOME_NOT_COMPLETED;
+			$task->setPayload( $payload );
+			$this->finishAtCurrentCount( $task );
+
+			JobLog::addRetranslationEvent( 'retranslation_task_sweep', [
+				'result'    => 'completed_after_ate_processing_timeout',
+				'timed_out' => true,
+				'age'       => $age,
+				'task'      => $this->getTaskLogData( $task ),
+			] );
+
+			return $task;
+		}
+
 		if ( RetranslationTask::PHASE_WPML_SYNCING !== ( $payload['phase'] ?? null ) ) {
 			JobLog::addRetranslationEvent( 'retranslation_task_sweep', [
 				'result' => 'not_syncing',

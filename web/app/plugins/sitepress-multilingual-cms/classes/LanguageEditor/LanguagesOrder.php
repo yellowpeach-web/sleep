@@ -33,7 +33,18 @@ class LanguagesOrder {
 		return array_values( $order );
 	}
 
-	public static function sync( \SitePress $sitepress ) {
+	public static function fromPosted( $posted, array $clientCodes = [] ) {
+		$order = [];
+		foreach ( is_array( $posted ) ? $posted : [] as $code ) {
+			if ( is_string( $code ) && '' !== $code ) {
+				$order[] = $clientCodes[ $code ] ?? $code;
+			}
+		}
+
+		return $order;
+	}
+
+	public static function sync( \SitePress $sitepress, array $preferred = [] ) {
 		$currentOrder = $sitepress->get_setting( 'languages_order', [] );
 		if ( ! is_array( $currentOrder ) ) {
 			$currentOrder = [];
@@ -47,7 +58,7 @@ class LanguagesOrder {
 			}
 		}
 
-		$order = self::reconcile( $currentOrder, $activeCodes );
+		$order = self::reconcile( array_merge( $preferred, $currentOrder ), $activeCodes );
 
 		if ( $order === array_values( array_map( 'strval', $currentOrder ) ) ) {
 			return false;

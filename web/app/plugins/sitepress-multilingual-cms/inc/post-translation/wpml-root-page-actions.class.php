@@ -1,10 +1,16 @@
 <?php
 
+use WPML\Notices\RootPageNotice;
 use WPML\UrlHandling\RootPage\RootPageCommand;
 
 class WPML_Root_Page_Actions {
 
 	const DELETED_ROOT_FLAG = 'wpml_root_page_deleted';
+
+	const ROOT_PAGE_MISSING     = 'missing';
+	const ROOT_PAGE_TRASHED     = 'trashed';
+	const ROOT_PAGE_UNPUBLISHED = 'unpublished';
+	const ROOT_PAGE_USABLE      = 'usable';
 
 	private $sp_settings;
 
@@ -116,9 +122,17 @@ class WPML_Root_Page_Actions {
 
 			$root_id = $this->get_edited_root_page_id();
 			if ( ! empty( $_GET['wpml_root_page'] ) && ! empty( $root_id ) ) {
-				$rp = get_post( $root_id );
-				if ( $rp && $rp->post_status != 'trash' ) {
-					wp_redirect( get_edit_post_link( $root_id, 'no-display' ) );
+				$root_state = self::root_page_state( get_post( $root_id ) );
+				if ( self::ROOT_PAGE_USABLE === $root_state || self::ROOT_PAGE_UNPUBLISHED === $root_state ) {
+					$edit_link = get_edit_post_link( $root_id, 'no-display' );
+					if ( $edit_link ) {
+						wp_safe_redirect( $edit_link );
+					}
+					exit;
+				}
+
+				if ( self::ROOT_PAGE_TRASHED === $root_state ) {
+					wp_safe_redirect( admin_url( 'admin.php?page=' . RootPageNotice::SETTINGS_PAGE . '&section=' . RootPageNotice::SETTINGS_SECTION ) );
 					exit;
 				}
 			}
@@ -184,9 +198,13 @@ class WPML_Root_Page_Actions {
 	}
 
 	function wpml_home_url_language_box_setup() {
+		if ( WPML_Block_Editor_Helper::is_block_editor_screen() ) {
+			return;
+		}
+
 		add_meta_box(
 			WPML_Meta_Boxes_Post_Edit_HTML::WRAPPER_ID,
-			/* translators: Column heading and field label in the WPML admin, for the language of a piece of content. Noun, singular. */
+			/* translators: Column heading and field label in the WPML admin, for the language of a piece of content, for example on the Updated translations page (the language of the updated translation). Noun, singular. */
 			__( 'Language', 'sitepress' ),
 			array( $this, 'wpml_home_url_language_box' ),
 			'page',
@@ -327,6 +345,97 @@ class WPML_Root_Page_Actions {
 		return is_object( $post ) && isset( $post->post_status ) && 'publish' === $post->post_status;
 	}
 
+	public static function root_page_state( $post ) {
+		if ( ! is_object( $post ) ) {
+			return self::ROOT_PAGE_MISSING;
+		}
+
+		if ( self::is_usable_root_page( $post ) ) {
+			return self::ROOT_PAGE_USABLE;
+		}
+
+		return isset( $post->post_status ) && 'trash' === $post->post_status
+			? self::ROOT_PAGE_TRASHED
+			: self::ROOT_PAGE_UNPUBLISHED;
+	}
+
+	public static function restore_url( $page_id ) {
+		$page_id = (int) $page_id;
+
+		return wp_nonce_url( admin_url( 'post.php?post=' . $page_id . '&action=untrash' ), 'untrash-post_' . $page_id );
+	}
+
+	public static function settings_root_page_link( $post ) {
+		$state = self::root_page_state( $post );
+
+		if ( self::ROOT_PAGE_USABLE === $state || self::ROOT_PAGE_UNPUBLISHED === $state ) {
+			return [
+				'url'  => (string) get_edit_post_link( $post->ID ),
+				'text' => __( 'Edit root page.', 'sitepress' ),
+			];
+		}
+
+		if ( self::ROOT_PAGE_TRASHED === $state ) {
+			if ( ! self::can_restore_root_page( $post ) ) {
+				return [
+					'url'  => '',
+					/* translators: Shown on WPML > Settings > URLs and SEO, under "A page", to a user who may not restore the root page from the Trash. */
+					'text' => __( 'The root page is in the Trash. Ask an administrator to restore it.', 'sitepress' ),
+				];
+			}
+
+			return [
+				'url'  => self::restore_url( $post->ID ),
+				/* translators: Link on WPML > Settings > URLs and SEO, under "A page". It restores the root page from the Trash as a draft. */
+				'text' => __( 'Restore the root page.', 'sitepress' ),
+			];
+		}
+
+		return [
+			'url'  => admin_url( 'post-new.php?post_type=page&wpml_root_page=1' ),
+			'text' => __( 'Create root page.', 'sitepress' ),
+		];
+	}
+
+	private static function can_restore_root_page( $post ) {
+		return current_user_can( 'delete_post', $post->ID );
+	}
+
+	public static function root_page_save_error( $post ) {
+		switch ( self::root_page_state( $post ) ) {
+			case self::ROOT_PAGE_USABLE:
+				return '';
+			case self::ROOT_PAGE_UNPUBLISHED:
+				return __( 'The root page is not published. Use the "Edit root page" link above to publish it, then save.', 'sitepress' );
+			case self::ROOT_PAGE_TRASHED:
+				if ( ! self::can_restore_root_page( $post ) ) {
+					/* translators: Error when saving "A page" on WPML > Settings > URLs and SEO while the root page is in the Trash, shown to a user who may not restore it from the Trash. */
+					return __( 'The root page is in the Trash. Ask an administrator to restore it, then publish it.', 'sitepress' );
+				}
+
+				/* translators: Error when saving "A page" on WPML > Settings > URLs and SEO while the root page is in the Trash. "Restore the root page" is the text of the link above the error. */
+				return __( 'The root page is in the Trash. Use the "Restore the root page" link above, publish the page, then save.', 'sitepress' );
+			default:
+				return __( 'Please create a root page before saving. Use the "Create root page" link above.', 'sitepress' );
+		}
+	}
+
+	public static function root_page_without_language( $urls, $post_translations ) {
+		$urls    = (array) $urls;
+		$root_id = isset( $urls['root_page'] ) ? (int) $urls['root_page'] : 0;
+
+		if ( $root_id <= 0 ) {
+			return 0;
+		}
+
+		$post = get_post( $root_id );
+		if ( self::ROOT_PAGE_MISSING === self::root_page_state( $post ) || ! isset( $post->post_type ) || 'page' !== $post->post_type ) {
+			return 0;
+		}
+
+		return $post_translations->get_element_lang_code( $root_id ) ? 0 : $root_id;
+	}
+
 	public function get_root_page_post( $page_id ) {
 		$post = $page_id ? get_post( (int) $page_id ) : null;
 
@@ -375,5 +484,7 @@ function wpml_home_url_ls_hide_check() {
 	       && ! empty( $urls['directory_for_default_language'] )
 	       && isset( $urls['show_on_root'] ) && $urls['show_on_root'] === 'page'
 	       && ! empty( $urls['hide_language_switchers'] )
+	       && ( $root_page_actions = wpml_get_root_page_actions_obj() )
+	       && null !== $root_page_actions->get_root_page_post( $root_page_actions->get_root_page_id() )
 	       && WPML_Root_Page::is_current_request_root();
 }

@@ -14,8 +14,11 @@ class WPML_Compatibility_Plugin_Fusion_Global_Element_Hooks extends BaseHooks im
 	const LAYOUTS_SCREEN_ID           = 'avada_page_avada-layouts';
 	const LAYOUTS_SCREEN_ID_BEFORE_V7 = 'fusion-builder_page_fusion-layouts';
 
-	const SECTIONS_SCREEN_ID           = 'avada-layout-sections';
+	const SECTIONS_SCREEN_ID           = 'avada_page_avada-layout-sections';
 	const SECTIONS_SCREEN_ID_BEFORE_V7 = 'fusion-builder_page_fusion-layout-sections';
+
+	private const OFF_CANVAS_PAGE      = 'avada-off-canvas';
+	private const OFF_CANVAS_POST_TYPE = 'awb_off_canvas';
 
 	private $current_language;
 
@@ -59,6 +62,9 @@ class WPML_Compatibility_Plugin_Fusion_Global_Element_Hooks extends BaseHooks im
 
 			add_filter( 'manage_fusion_form_posts_columns', [ $this, 'add_language_column_header' ] );
 			add_action( 'manage_fusion_form_custom_column', [ $this, 'add_language_column_content' ], 10, 2 );
+
+			add_filter( 'manage_fusion_custom_off_canvas_columns', [ $this, 'add_language_column_header' ] );
+			add_action( 'manage_fusion_off_canvas_custom_column', [ $this, 'add_language_column_content' ], 10, 2 );
 
 			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 			\WPML\PB\Request\Ajax::register(
@@ -118,6 +124,10 @@ class WPML_Compatibility_Plugin_Fusion_Global_Element_Hooks extends BaseHooks im
 	}
 
 	private function getLibraryPostTypeTranslatable() {
+		if ( isset( $_GET['page'] ) && self::OFF_CANVAS_PAGE === $_GET['page'] ) {
+			return apply_filters( 'wpml_is_translated_post_type', false, self::OFF_CANVAS_POST_TYPE );
+		}
+
 		if ( ! isset( $_GET['type'] ) ) {
 			return true;
 		}

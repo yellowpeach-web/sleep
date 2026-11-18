@@ -2,7 +2,10 @@
 
 namespace WPML\Core\Component\Translation\Domain\Links;
 
+use WPML\PHP\Exception\InvalidTypeException;
+
 class HandleUpdateOriginal {
+  const TYPE_POST = 'post';
 
   private $collector;
 
@@ -31,7 +34,54 @@ class HandleUpdateOriginal {
   }
 
 
+  public function handleOriginalOf( Item $translation ) {
+    $idOriginal = $translation->getIdOriginal();
+
+    if (
+      $idOriginal === null
+      || self::TYPE_POST !== $translation->getType()
+      || ! $translation->isPublishable()
+      || $this->repository->isCollected( new Item( $idOriginal, self::TYPE_POST ) )
+    ) {
+      return [];
+    }
+
+    return $this->collectIfNotCollected(
+      $this->repository->get( $idOriginal, self::TYPE_POST )
+    );
+  }
+
+
+  public function collectIfNotCollected( Item $original ) {
+    if (
+      self::TYPE_POST !== $original->getType()
+      || ! $original->isOriginal()
+      || $original->isDeleted()
+      || ! $original->isPublishable()
+      || $this->repository->isCollected( $original )
+    ) {
+      return [];
+    }
+
+    $added = [];
+    if (
+      $original->canLinkToOtherItems()
+      && ! $this->repository->hasRelationshipsFrom( $original )
+    ) {
+      $added = $this->collectRelationships( $original );
+    }
+
+    $this->repository->markAsCollected( $original );
+
+    return $added;
+  }
+
+
   private function collectRelationships( Item $item ) {
+    if ( $item->contentLinksUnchanged() ) {
+      return [];
+    }
+
     $itemContent = $item->getContent() ?? '';
     $itemExcerpt = $item->getExcerpt() ?? '';
 
@@ -44,12 +94,12 @@ class HandleUpdateOriginal {
     );
 
     if ( ! $linksNow && ! $linksBefore ) {
-      return;
+      return [];
     }
 
     if ( ! $linksNow ) {
       $this->repository->deleteAllRelationshipsFrom( $item );
-      return;
+      return [];
     }
 
     $diffItems = function( Item $a, Item $b ): int {
@@ -63,13 +113,17 @@ class HandleUpdateOriginal {
     }
 
     $linksToAdd = array_udiff( $linksNow, $linksBefore, $diffItems );
+    $added = [];
     foreach ( $linksToAdd as $itemTo ) {
       if ( $itemTo->isDeleted() ) {
         continue;
       }
 
       $this->repository->addRelationship( $item, $itemTo );
+      $added[] = $itemTo;
     }
+
+    return $added;
   }
 
 

@@ -152,8 +152,12 @@ class TemplateLocalizer {
 			return null;
 		}
 
-		$read = function () use ( $translatedId, $taxonomy ) {
-			return get_term_field( 'slug', (int) $translatedId, $taxonomy );
+		return self::readTermSlug( (int) $translatedId, $taxonomy );
+	}
+
+	public static function readTermSlug( $termId, $taxonomy ) {
+		$read = function () use ( $termId, $taxonomy ) {
+			return get_term_field( 'slug', (int) $termId, $taxonomy );
 		};
 
 		global $sitepress;

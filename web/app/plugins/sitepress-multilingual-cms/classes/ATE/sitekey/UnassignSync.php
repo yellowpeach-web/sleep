@@ -20,7 +20,7 @@ class UnassignSync implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		if (
 			StoredSitekey::get()
 			&& ! $this->sitekeyProvider->hasSitekey()
-			&& \WPML_TM_ATE_Status::is_enabled_and_activated()
+			&& \WPML_TM_ATE_Status::is_account_usable()
 		) {
 			$this->backgroundTaskService->addOnce(
 				make( UnassignEndpoint::class ),

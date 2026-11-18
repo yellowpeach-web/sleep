@@ -7,55 +7,55 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-19T08:43:25+00:00\n"
+"POT-Creation-Date: 2026-11-12T07:54:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wpml\n"
 
 #. translators: Name of the WPML Translations screen: the admin menu item and the page heading.
-#: src/config-admin-pages.php:139
-#: src/config-admin-pages.php:141
+#: src/config-admin-pages.php:144
+#: src/config-admin-pages.php:146
 #: src/UserInterface/Web/Core/Component/Translations/Application/TranslationsController.php:20
 msgid "Translations"
 msgstr ""
 
 #. translators: Title of the WPML setup wizard screen.
-#: src/config-admin-pages.php:466
+#: src/config-admin-pages.php:514
 msgid "WPML Setup"
 msgstr ""
 
 #. translators: Name of the WPML Support screen: the admin menu item, the page heading, and the back-link that returns to it. Noun (help from the WPML support team), not the verb "to support".
-#: src/config-admin-pages.php:505
-#: src/config-admin-pages.php:507
+#: src/config-admin-pages.php:553
+#: src/config-admin-pages.php:555
 #: src/UserInterface/Web/Core/Component/Support/Application/SupportController.php:26
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:143
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:158
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportSubPageDispatcher.php:187
 msgid "Support"
 msgstr ""
 
 #. translators: Name of the WPML Settings screen: the admin menu item, the page heading, and the back-link that returns to it.
-#: src/config-admin-pages.php:638
-#: src/config-admin-pages.php:640
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/SettingsSectionDispatcher.php:657
+#: src/config-admin-pages.php:702
+#: src/config-admin-pages.php:704
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/SettingsSectionDispatcher.php:639
 msgid "Settings"
 msgstr ""
 
 #. translators: Name of the WPML billing screen: the admin menu item and the page heading.
-#: src/config-admin-pages.php:674
-#: src/config-admin-pages.php:676
+#: src/config-admin-pages.php:738
+#: src/config-admin-pages.php:740
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Billing/BillingController.php:56
 msgid "AI Translation: billing and usage"
 msgstr ""
 
 #. translators: Name of the WPML Activate & Update screen: the admin menu item and the page heading.
-#: src/config-admin-pages.php:699
-#: src/config-admin-pages.php:701
+#: src/config-admin-pages.php:763
+#: src/config-admin-pages.php:765
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/ActivateUpdate/ActivateUpdateController.php:42
 msgid "Activate & Update"
 msgstr ""
 
-#: src/config-admin-pages.php:731
-#: src/config-admin-pages.php:732
+#: src/config-admin-pages.php:795
+#: src/config-admin-pages.php:796
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/AdminTextsTranslationController.php:158
 msgid "Admin Texts Translation"
 msgstr ""
@@ -120,7 +120,7 @@ msgstr ""
 
 #. translators: Name of one requirement on the notice WPML shows when the server does not meet its requirements, and a row label in the system information table on WPML → Support: how much memory PHP may use.
 #: src/Core/Component/MinimumRequirements/Domain/Entity/MemoryLimitRequirement.php:56
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:713
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:747
 msgid "Memory limit"
 msgstr ""
 
@@ -246,7 +246,7 @@ msgid "Please update your WordPress installation to version %s or higher."
 msgstr ""
 
 #: src/Core/Component/Translation/Application/Service/Dto/SendToTranslationDto.php:252
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:799
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:913
 msgid "Language pairs cannot be empty"
 msgstr ""
 
@@ -260,6 +260,7 @@ msgid "Batch name cannot be empty"
 msgstr ""
 
 #: src/Core/Component/Translation/Application/Service/Dto/SendToTranslationDto.php:269
+#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/AutomaticTranslation/GetAutomaticTranslationSupportController.php:46
 msgid "Source language code cannot be empty"
 msgstr ""
 
@@ -284,34 +285,75 @@ msgstr ""
 msgid "Element IDs must be positive integers."
 msgstr ""
 
-#: src/Core/Component/Translation/Application/Service/Taxonomy/TaxonomySendOperationRepository.php:105
-#: src/Core/Component/Translation/Application/Service/Taxonomy/TaxonomySendOperationRepository.php:113
+#: src/Core/Component/Translation/Application/Service/Taxonomy/TaxonomySendOperationRepository.php:115
+#: src/Core/Component/Translation/Application/Service/Taxonomy/TaxonomySendOperationRepository.php:125
 msgid "This translation send has expired. Start a new send to continue."
 msgstr ""
 
-#: src/Core/Component/Translation/Application/Service/Taxonomy/TaxonomySendOperationRepository.php:119
+#: src/Core/Component/Translation/Application/Service/Taxonomy/TaxonomySendOperationRepository.php:131
 msgid "This translation send belongs to another user."
 msgstr ""
 
-#: src/Core/Component/Translation/Application/Service/Taxonomy/TaxonomySendOperationRepository.php:250
+#: src/Core/Component/Translation/Application/Service/Taxonomy/TaxonomySendOperationRepository.php:473
 msgid "The translation send identifier is not valid."
 msgstr ""
 
+#: src/Infrastructure/WordPress/Component/LanguagePanel/Rest/SaveFlagsArgs.php:111
+msgid "WPML: a minor edit, which does not mark the translations as needing an update and sends no automatic translation."
+msgstr ""
+
+#: src/Infrastructure/WordPress/Component/LanguagePanel/Rest/SaveFlagsArgs.php:116
+msgid "WPML: use the same media attachments in the translations (read when wpml_has_media_options is sent, on a save from the post editor)."
+msgstr ""
+
+#: src/Infrastructure/WordPress/Component/LanguagePanel/Rest/SaveFlagsArgs.php:121
+msgid "WPML: use the same featured image in the translations (read when wpml_has_media_options is sent, on a save from the post editor)."
+msgstr ""
+
+#: src/Infrastructure/WordPress/Component/LanguagePanel/Rest/SaveFlagsArgs.php:126
+msgid "WPML: the save from the post editor carries a media-duplication choice; without it the stored choice is left alone."
+msgstr ""
+
+#: src/Infrastructure/WordPress/Component/LanguagePanel/Rest/SaveFlagsArgs.php:131
+msgid "WPML: the editor will save the screen's meta boxes in a second request right after this one; automatic translation waits for that request."
+msgstr ""
+
+#: src/Infrastructure/WordPress/Component/LanguagePanel/RestField/PostLanguagePanelRestField.php:99
+msgid "The WPML Language panel data of the post, present on the editor's own save only."
+msgstr ""
+
 #. translators: Plural name of a kind of content on the Translate Everything word-count list: texts that come from the theme, the plugins and the widgets rather than from pages.
-#: src/Infrastructure/WordPress/Component/String/Application/Query/UntranslatedTypesCountQuery.php:132
+#: src/Infrastructure/WordPress/Component/String/Application/Query/UntranslatedTypesCountQuery.php:161
 msgid "Frontend Strings"
 msgstr ""
 
 #. translators: Singular of the same name on the Translate Everything word-count list: one text that comes from the theme, a plugin or a widget.
-#: src/Infrastructure/WordPress/Component/String/Application/Query/UntranslatedTypesCountQuery.php:134
+#: src/Infrastructure/WordPress/Component/String/Application/Query/UntranslatedTypesCountQuery.php:163
 msgid "Frontend String"
+msgstr ""
+
+#. translators: Generic content type used when the owner type has no singular label.
+#: src/Infrastructure/WordPress/Port/Translation/PackageOwner.php:38
+msgid "content"
+msgstr ""
+
+#. translators: %s is the singular post type or taxonomy label of the content whose translation carries this text.
+#: src/Infrastructure/WordPress/Port/Translation/PackageOwner.php:42
+#, php-format
+msgid "Translated together with the %s it belongs to."
+msgstr ""
+
+#. translators: %1$s is the singular post type or taxonomy label, %2$s is the content title.
+#: src/Infrastructure/WordPress/Port/Translation/PackageOwner.php:45
+#, php-format
+msgid "Translated together with the %1$s \"%2$s\"."
 msgstr ""
 
 #: src/Legacy/Component/ATE/Application/Query/Account.php:23
 msgid "Error getting words"
 msgstr ""
 
-#: src/Legacy/Component/ATE/Application/Query/Account.php:85
+#: src/Legacy/Component/ATE/Application/Query/Account.php:88
 msgid "Error getting account balances"
 msgstr ""
 
@@ -319,12 +361,60 @@ msgstr ""
 msgid "Error getting glossary data"
 msgstr ""
 
-#: src/Legacy/Component/ATE/Application/Service/EnginesService.php:377
+#: src/Legacy/Component/ATE/Application/Service/EnginesService.php:437
 msgid "Error fetching translation engines"
 msgstr ""
 
-#: src/Legacy/Component/ATE/Application/Service/EnginesService.php:400
+#: src/Legacy/Component/ATE/Application/Service/EnginesService.php:460
 msgid "Error fetching available formalities"
+msgstr ""
+
+#: src/Legacy/Component/Post/Application/LanguagePanel/LegacyGateway.php:432
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:330
+msgid "Advanced Translation Editor"
+msgstr ""
+
+#: src/Legacy/Component/Post/Application/LanguagePanel/LegacyGateway.php:433
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:334
+msgid "Classic Translation Editor"
+msgstr ""
+
+#. translators: First option in the language dropdown of the WPML admin: show the content of every language at once.
+#: src/Legacy/Component/Post/Application/LanguagePanel/LegacyGateway.php:620
+msgid "All languages"
+msgstr ""
+
+#. translators: %s: language name, e.g. "French".
+#: src/Legacy/Component/Post/Application/LanguagePanel/PostLanguagePanelQuery.php:486
+#, php-format
+msgid "%s (inactive)"
+msgstr ""
+
+#. translators: First option in the dropdown that picks the original post this one is a translation of: no post chosen. The dashes keep it apart from the post titles.
+#: src/Legacy/Component/Post/Application/LanguagePanel/PostLanguagePanelQuery.php:528
+msgid "--None--"
+msgstr ""
+
+#: src/Legacy/Component/Post/Application/LanguagePanel/PostLanguagePanelQuery.php:562
+msgid "Post without a title"
+msgstr ""
+
+#. translators: Name of the checkbox that makes a copy of the post in another language, used as its tooltip and, with the language name, as its screen reader name. Verb, imperative.
+#: src/Legacy/Component/Post/Application/LanguagePanel/PostLanguagePanelQuery.php:615
+msgid "Create duplicate"
+msgstr ""
+
+#: src/Legacy/Component/Post/Application/LanguagePanel/PostLanguagePanelQuery.php:623
+msgid "This post is already duplicated."
+msgstr ""
+
+#: src/Legacy/Component/Post/Application/LanguagePanel/PostLanguagePanelQuery.php:624
+msgid "Can't create a duplicate. A translation is in progress."
+msgstr ""
+
+#: src/Legacy/Component/Post/Application/LanguagePanel/PostLanguagePanelQuery.php:630
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/MakeDuplicatesController.php:69
+msgid "You don't have the rights to duplicate to this language."
 msgstr ""
 
 #: src/Legacy/Component/Translation/Sender/ErrorMapper/ErrorMapper.php:36
@@ -347,906 +437,1088 @@ msgstr ""
 msgid "The selected translation service doesn't support the following languages: %s"
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:104
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:109
 msgid "The taxonomy send action is not valid."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:290
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:333
 msgid "Some taxonomy labels were not sent for translation. Select them and try again."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:320
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:339
+msgid "Some selected taxonomy terms were deleted before they could be sent. The remaining terms were not affected."
+msgstr ""
+
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:367
 msgid "WPML stopped this taxonomy send because it was not finishing."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:427
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:521
 msgid "Choose a translation method before sending taxonomy terms."
 msgstr ""
 
 #. translators: %s is a taxonomy slug.
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:435
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:529
 #, php-format
 msgid "The taxonomy “%s” is no longer available for translation."
 msgstr ""
 
 #. translators: %s is a target language code.
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:454
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:548
 #, php-format
 msgid "Choose a translation method for %s before sending taxonomy terms."
 msgstr ""
 
-#. translators: %s is a target language code.
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:462
-#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:117
-#, php-format
-msgid "Taxonomy terms were not sent to %s because terms currently support Automatic translation only."
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:562
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:891
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:897
+msgid "The taxonomy selection is not valid."
 msgstr ""
 
 #. translators: %s is a taxonomy slug.
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:482
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:578
 #, php-format
 msgid "The taxonomy labels for “%s” are no longer available for translation."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:499
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:595
 msgid "Choose a supported translation method before sending taxonomy labels."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:504
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:600
 msgid "Taxonomy labels could not be prepared in String Translation."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:582
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:692
 msgid "This translation send has retryable taxonomy terms. Retry those exact terms before continuing."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:777
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:783
-msgid "The taxonomy selection is not valid."
-msgstr ""
-
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:817
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:931
 msgid "A target language or translation method is not valid."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:820
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:934
 msgid "A target language can have only one translation method."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:846
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:867
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:960
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:981
 msgid "A taxonomy target language choice is not valid."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:874
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:881
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:988
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:995
 msgid "Taxonomy target choices do not match the translation request."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:1009
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomySendOperationCoordinator.php:1123
 msgid "A translation send continuation cannot add new work."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:171
-msgid "This taxonomy term is already being sent in another translation operation. Try again."
-msgstr ""
-
-#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:210
-#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:326
-msgid "Our translation system may already have received this taxonomy term. It was not sent again to avoid a duplicate charge."
-msgstr ""
-
-#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:241
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomyTermBundleRounds.php:97
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomyTermBundleRounds.php:143
+#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:344
+#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:372
 msgid "The taxonomy term could not be prepared for translation. Try again."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:291
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomyTermBundleRounds.php:163
+#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:444
 msgid "The taxonomy term was not accepted by our translation system. Try again."
 msgstr ""
 
-#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:307
-msgid "The taxonomy term is waiting for automatic translation to become available."
-msgstr ""
-
-#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:342
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomyTermBundleRounds.php:169
+#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:495
 msgid "The taxonomy term was not sent because an earlier translation batch failed. Try again."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Dashboard/Application/DashboardController.php:363
-#: src/UserInterface/Web/Core/Component/Dashboard/Application/DashboardController.php:364
-#: src/UserInterface/Web/Core/Component/Dashboard/Application/DashboardController.php:365
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomyTermBundleRounds.php:176
+#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:460
+msgid "The taxonomy term is waiting for automatic translation to become available."
+msgstr ""
+
+#: src/Legacy/Component/Translation/Sender/Taxonomy/TaxonomyTermBundleRounds.php:183
+#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:308
+#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:479
+msgid "Our translation system may already have received this taxonomy term. It was not sent again to avoid a duplicate charge."
+msgstr ""
+
+#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:175
+msgid "The assigned translator is no longer available for this language pair. Choose another translator and try again."
+msgstr ""
+
+#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:216
+msgid "The taxonomy term could not be checked for an existing post translation job. Try again."
+msgstr ""
+
+#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:256
+msgid "This taxonomy term is already being sent in another translation operation. Try again."
+msgstr ""
+
+#. translators: %1$s is the singular post type label, %2$s is the carrying post's title.
+#: src/Legacy/Component/Translation/Sender/TaxonomyTermBatchSender.php:633
+#, php-format
+msgid "This taxonomy term is already being translated with the %1$s \"%2$s\"."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/Dashboard/Application/DashboardController.php:387
+#: src/UserInterface/Web/Core/Component/Dashboard/Application/DashboardController.php:388
+#: src/UserInterface/Web/Core/Component/Dashboard/Application/DashboardController.php:389
 msgid "Other texts (Strings)"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/SendToTranslation/SendToTranslationController.php:77
+#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/SendToTranslation/SendToTranslationController.php:101
 msgid "Another translation send is already in progress. Please try again in a moment."
 msgstr ""
 
 #. translators: %s is the validation error returned for the request.
-#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/SendToTranslation/SendToTranslationController.php:147
+#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/SendToTranslation/SendToTranslationController.php:171
 #, php-format
 msgid "The request data for SendToTranslation is not valid: %s"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/TranslateEverything/EnableController.php:78
-msgid "In order to translate automatically, you first need to enable WPML's Advanced Translation Editor"
-msgstr ""
-
-#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/TranslateEverything/EnableController.php:132
+#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/TranslateEverything/EnableController.php:129
 msgid "WPML could not check with our translation system if your default language can be translated automatically. Try again in a moment."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/TranslateEverything/EnableController.php:202
+#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/TranslateEverything/EnableController.php:205
+msgid "Translate Everything needs an active automatic translation account. Open WPML > AI Translation: billing and usage to connect it, then try again."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/TranslateEverything/EnableController.php:220
+msgid "In order to translate automatically, you first need to enable WPML's Advanced Translation Editor"
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/TranslateEverything/EnableController.php:241
 msgid "Add your site description before you can turn this on."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/TranslateEverything/EnableController.php:212
+#: src/UserInterface/Web/Core/Component/Dashboard/Application/Endpoint/TranslateEverything/EnableController.php:251
 msgid "Full-site automatic translation needs AI translation set up. Set it up under WPML > Settings > AI translation first."
 msgstr ""
 
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/AbstractPostWriteController.php:73
+msgid "A positive post id is required."
+msgstr ""
+
+#. translators: %d: the id of a post that does not exist.
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/AbstractPostWriteController.php:90
+#, php-format
+msgid "There is no post %d."
+msgstr ""
+
+#. translators: %s: the name of a request parameter.
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/AbstractPostWriteController.php:111
+#, php-format
+msgid "%s: a non-empty value is required."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/AbstractPostWriteController.php:206
+msgid "Another user is editing this post right now."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/AssignRootPageController.php:29
+msgid "Only a page can be the root page."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/AssignRootPageController.php:33
+msgid "You are not allowed to change the root page."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/AssignRootPageController.php:40
+msgid "You are not allowed to edit this page."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/MakeDuplicatesController.php:50
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/ResetDuplicationController.php:48
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetDuplicationController.php:58
+msgid "You are not allowed to edit this post."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/MakeDuplicatesController.php:74
+msgid "You are not allowed to overwrite the existing translation."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/MakeDuplicatesController.php:103
+msgid "languages: a list of language codes is required."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/MakeDuplicatesController.php:109
+msgid "languages: every item must be a language code."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/MakeDuplicatesController.php:116
+msgid "languages: at least one language code is required."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/MakeDuplicatesController.php:126
+msgid "languages: every item must be the code of an active language."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/ResetDuplicationController.php:44
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetDuplicationController.php:54
+msgid "You are not allowed to duplicate posts."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetDuplicationController.php:50
+msgid "Only a translation can be overwritten with its original."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetDuplicationController.php:70
+msgid "Translation into this language is paused."
+msgstr ""
+
+#. translators: %s: the accepted values, comma separated.
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetEditorModeController.php:41
+#, php-format
+msgid "editor: one of %s is required."
+msgstr ""
+
+#. translators: %s: the accepted values, comma separated.
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetEditorModeController.php:50
+#, php-format
+msgid "scope: one of %s is required."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetEditorModeController.php:59
+msgid "You are not allowed to change the translation editor at this scope."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetTranslationOfController.php:36
+msgid "The post has no language yet; set its language first."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetTranslationOfController.php:59
+msgid "This post is the original of its translations and cannot be moved to another group while they exist."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetTranslationOfController.php:70
+msgid "A post cannot be a translation of itself."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetTranslationOfController.php:75
+msgid "There is no post of this type with that id."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetTranslationOfController.php:81
+msgid "That post has no language."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetTranslationOfController.php:85
+msgid "That post is in the same language as this one."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetTranslationOfController.php:93
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SwitchLanguageController.php:46
+msgid "A translation in this language already exists in the group."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetTranslationOfController.php:98
+msgid "You are not allowed to connect this post to that translation group."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SetTranslationOfController.php:121
+msgid "original_id: a positive post id or \"none\" is required."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/SwitchLanguageController.php:32
+msgid "language: the code of an active language is required."
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/ToggleShowTranslationsController.php:25
+msgid "You are not allowed to change this setting."
+msgstr ""
+
+#. translators: %s: the accepted values, comma separated.
+#: src/UserInterface/Web/Core/Component/LanguagePanel/Application/Endpoint/TranslateController.php:47
+#, php-format
+msgid "verb: one of %s is required."
+msgstr ""
+
 #. translators: Name of the Languages section of WPML → Settings: its entry in the settings search list and its heading.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:43
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/LanguagesController.php:100
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:46
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/LanguagesController.php:67
 msgid "Languages"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:47
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:50
 msgid "Site languages, hide languages, language mapping for translation engines."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:50
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:53
 msgid "Manage and Hide Site Languages"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:54
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:57
 msgid "Change default language"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:59
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:62
 msgid "Add / Remove languages"
 msgstr ""
 
 #. translators: Name of the Language Switchers section of WPML → Settings: its entry in the settings search list and its heading.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:67
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:70
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/LanguageSwitchersController.php:101
 msgid "Language Switchers"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:71
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:74
 msgid "Menu, widget, footer language switchers, switcher options and ordering."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:74
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:77
 msgid "Menu language switcher"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:78
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:81
 msgid "Widget language switcher"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:82
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:85
 msgid "Footer language switcher"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:86
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:89
 msgid "Default flag format"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:90
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:93
 msgid "Language switcher options"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:94
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:97
 msgid "Order of languages"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:98
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:101
 msgid "How to handle languages without translation"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:102
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:105
 msgid "Skip language"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:106
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:109
 msgid "Link to home of language for missing translations"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:110
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:113
 msgid "Preserve URL arguments"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:114
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:117
 msgid "Additional CSS"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:118
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:121
 msgid "Backwards compatibility"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:122
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:125
 msgid "Skip backwards compatibility"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:126
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:129
 msgid "Show language switcher in footer"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:130
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:133
 msgid "Links to translation of posts"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:134
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:137
 msgid "Show links above or below posts, offering them in other languages"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:138
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:141
 msgid "Custom language switchers"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:142
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:145
 msgid "Enable"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:146
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:149
 msgid "Choose the image file type for flags"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:150
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:153
 msgid "PNG format"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:154
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:157
 msgid "SVG format"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:160
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/UrlsAndSeoController.php:64
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:163
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/UrlsAndSeoController.php:82
 msgid "URLs and SEO"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:164
-msgid "Language URL format, page URL, slug translations, SEO, browser redirect."
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:167
+msgid "Language URL format, page URL, slug translations, SEO, visitor language."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:167
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:170
 msgid "Language URL format"
 msgstr ""
 
 #. translators: Name of the Page URL section of WPML → Settings: its entry in the settings search list, its heading, and a row label in the worked example under it.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:172
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:175
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/UrlsAndSeo/PageUrl/NonLatinSlugNote.php:171
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/UrlsAndSeoController.php:155
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/UrlsAndSeoController.php:176
 msgid "Page URL"
 msgstr ""
 
 #. translators: Entry in the settings search list of WPML → Settings, pointing at the Slug translations block. A slug is the part of a web address that names one page.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:177
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:180
 msgid "Slug translations"
 msgstr ""
 
 #. translators: Entry in the settings search list of WPML → Settings, pointing at the SEO options block.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:182
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:185
 msgid "SEO Options"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:186
+#. translators: Entry in the settings search list of WPML → Settings, pointing at the block about which language visitors see the site in.
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:190
+msgid "Visitor language"
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:192
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:277
 msgid "Browser language redirect"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:190
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:195
 msgid "Choose how to determine which language visitors see contents in"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:194
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:199
 msgid "Different languages in directories"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:199
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:204
 msgid "Use directory for default language"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:204
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:209
 msgid "A different domain per language"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:209
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:214
 msgid "Language name added as a parameter"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:213
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:218
 msgid "Auto-generate once from the title (WordPress default)"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:218
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:223
 msgid "Always auto-generate from the title"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:223
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:228
 msgid "Translate the slug in the translation editor"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:228
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:233
 msgid "Copy the original slug for languages with encoded URLs"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:233
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:238
 msgid "Translate base slugs of custom post types and taxonomies"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:237
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:242
 msgid "Display alternative languages in the HEAD section."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:241
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:246
 msgid "Position of hreflang links"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:245
-msgid "Disable browser language redirect"
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:250
+msgid "Show the site in the language they last picked in the language switcher"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:249
-msgid "Redirect visitors based on browser language only if translations exist"
+#. translators: Entry in the settings search list of WPML → Settings, pointing at the field that sets for how many days the language a visitor picked is remembered.
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:256
+msgid "Remember their choice for days"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:253
-msgid "Always redirect visitors based on browser language (redirect to home page if translations are missing)"
-msgstr ""
-
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:257
-msgid "Remember visitors' language preference for hours"
-msgstr ""
-
-#. translators: Name of the AI Translation section of WPML → Settings: its entry in the settings search list and its heading.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:265
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:147
-msgid "AI Translation"
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:263
+msgid "Keep them on the page they opened"
 msgstr ""
 
 #: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:268
+msgid "Show a bar that offers the page in their language"
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:271
+msgid "Language suggestion"
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:274
+msgid "Redirect them automatically to the page in their language"
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:280
+msgid "Send them to the home page in their language"
+msgstr ""
+
+#. translators: Entry in the settings search list of WPML → Settings, pointing at the field that sets how often the same visitor can be redirected by their browser language.
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:287
+msgid "Redirect each visitor at most once every hours"
+msgstr ""
+
+#. translators: Entry in the settings search list of WPML → Settings, pointing at the field that sets how long the bar suggesting the page in the visitor's language stays hidden after the visitor closes it.
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:294
+msgid "After a visitor closes the bar, hide it for hours"
+msgstr ""
+
+#. translators: Name of the AI Translation section of WPML → Settings: its entry in the settings search list and its heading.
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:304
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:162
+msgid "AI Translation"
+msgstr ""
+
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:307
 msgid "Translation engine, automatic translation behavior, access control."
 msgstr ""
 
 #. translators: Name of the Translation Editor section of WPML → Settings: its entry in the settings search list and its heading.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:281
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslationEditorController.php:31
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:320
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslationEditorController.php:34
 msgid "Translation Editor"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:284
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:323
 msgid "Advanced and Classic Translation Editor, glossary, memory, spell checker."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:287
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:326
 msgid "Choose translation editor"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:291
-msgid "Advanced Translation Editor"
-msgstr ""
-
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:295
-msgid "Classic Translation Editor"
-msgstr ""
-
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:299
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:338
 msgid "Use also for old translations created with the classic editor"
 msgstr ""
 
 #. translators: Name of the Translators section of WPML → Settings: its entry in the settings search list and its heading. The people who translate the site.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:307
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:346
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatorsController.php:51
 msgid "Translators"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:310
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:349
 msgid "Local translators, translation managers, notifications, translation services."
 msgstr ""
 
 #. translators: Entry in the settings search list of WPML → Settings, pointing at the block for translators who are users of this site.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:314
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:353
 msgid "Local translators"
 msgstr ""
 
 #. translators: Entry in the settings search list of WPML → Settings, pointing at the block about e-mails sent to translators.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:319
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:358
 msgid "Translation Notifications"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:323
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:362
 msgid "Translation pickup mode"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:327
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:366
 msgid "XLIFF file options"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:331
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:370
 msgid "Translation Services"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:335
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:374
 msgid "Notifications"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:339
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:378
 msgid "Notification emails to translators"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:343
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:382
 msgid "Notify translators when new jobs are waiting for them"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:347
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:386
 msgid "Limit number of jobs included in the email to"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:351
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:390
 msgid "Include XLIFF files in the notification emails"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:355
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:394
 msgid "Notify translators when jobs are removed from their queue"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:359
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:398
 msgid "Notification emails to the translation manager"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:363
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:402
 msgid "Send the translation manager a completed-jobs summary"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:367
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:406
 msgid "Notify the translation manager when a translator resigns from a job"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:371
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:410
 msgid "Notify the translation manager when the translation service updates or cancels a job"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:375
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:414
 msgid "Notify the translation manager when jobs are late by 7 days"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:379
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:418
 msgid "XLIFF version"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:383
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:422
 msgid "Choose default format for XLIFF file:"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:387
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:426
 msgid "New lines character"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:391
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:430
 msgid "Do nothing - all new line characters will stay untouched."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:395
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:434
 msgid "All new lines should be replaced by HTML element <br class=\"xliff-newline\" />."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:401
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:440
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/PostsAndPagesSyncController.php:24
 msgid "Posts and Pages Synchronization"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:405
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:444
 msgid "How original posts and pages stay in sync with their translations."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:408
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:447
 msgid "Posts and pages synchronization"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:412
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:451
 msgid "Synchronize page order for translations"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:417
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:456
 msgid "Set page parent for translation according to page parent of the original language"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:422
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:461
 msgid "Synchronize page template"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:427
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:466
 msgid "Synchronize comment status"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:429
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:468
 msgid "Sync comment status"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:433
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:472
 msgid "Synchronize ping status"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:438
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:477
 msgid "Synchronize sticky flag"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:443
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:482
 msgid "Synchronize password for password protected posts"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:448
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:487
 msgid "Synchronize private flag"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:453
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:492
 msgid "Synchronize posts format"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:458
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:497
 msgid "Copy taxonomy to translations"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:463
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:502
 msgid "Copy publishing date to translations"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:468
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:507
 msgid "Synchronize comments on duplicate content"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:473
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:512
 msgid "Page builders options"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:477
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:516
 msgid "Send to translation the content of raw HTML cells"
 msgstr ""
 
 #. translators: Name of the Deleting content section of WPML → Settings: its entry in the settings search list, its sub-entry and its heading.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:485
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:493
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:524
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:532
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/DeletingContentController.php:39
 msgid "Deleting content"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:489
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:528
 msgid "What happens to the other languages when you delete a page, an image, a category or a menu."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:497
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:536
 msgid "Pages and posts"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:501
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:540
 msgid "Images"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:505
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:544
 msgid "Categories and tags"
 msgstr ""
 
 #. translators: Name of the Menus tab of WPML → Translations: the site's navigation menus.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:509
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:335
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:548
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:349
 msgid "Menus"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:513
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:552
 msgid "Patterns"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:517
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:556
 msgid "Navigation Menus"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:521
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:560
 msgid "Templates"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:525
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:564
 msgid "Deleting an original"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:529
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:568
 msgid "Deleting a translation"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:533
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:572
 msgid "Ask me"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:537
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:576
 msgid "Only that one"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:541
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:580
 msgid "Delete all languages"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:547
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:586
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TaxonomiesTranslationController.php:85
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatedDocumentsOptionsController.php:40
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatedDocumentsOptionsController.php:38
 msgid "Translated Documents Options"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:551
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:590
 msgid "The status of translations when you receive them and when the status of the original changes."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:554
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:593
 msgid "Translated documents options"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:558
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:597
 msgid "When you receive completed translations"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:562
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:601
 msgid "Publish the translated post when original is also published (default)"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:567
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:606
 msgid "Save the translated post as a draft"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:572
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:611
 msgid "When you change the status of the original post"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:576
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:615
 msgid "Translations get the same status as the original"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:581
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:620
 msgid "Translations keep their own status"
 msgstr ""
 
 #. translators: Heading of the block on WPML → Settings that lists which categories and tags are translated.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:586
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:625
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatedTaxonomiesToggle.php:63
 msgid "Translated taxonomies"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:590
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:673
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:629
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:712
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatedTaxonomiesToggle.php:158
 msgid "Show translated taxonomies in Translation Editor"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:597
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:636
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/PostTypesTranslationController.php:139
 msgid "Post Types Translation"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:600
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:639
 msgid "Choose which post types are translatable."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:603
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:642
 msgid "Custom posts synchronization options"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:607
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:646
 msgid "Post types"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:611
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:657
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:650
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:696
 msgid "Translatable"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:615
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:661
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:654
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:700
 msgid "Not translatable"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:619
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:665
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:658
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:704
 msgid "only show translated items"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:623
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:669
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:662
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:708
 msgid "use translation if available or fallback to default language"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:629
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:668
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/CustomFieldsTranslationController.php:39
 msgid "Custom Fields Translation"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:632
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:671
 msgid "Translation preferences for custom fields."
 msgstr ""
 
 #. translators: Entry in the settings search list of WPML → Settings, pointing at the block about custom fields — the extra fields attached to a page or a post.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:636
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:675
 msgid "Field translation preferences"
 msgstr ""
 
 #. translators: Name of the Taxonomies Translation section of WPML → Settings: its entry in the settings search list, and link text pointing at it.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:643
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatedDocumentsOptionsController.php:93
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:682
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatedDocumentsOptionsController.php:92
 msgid "Taxonomies Translation"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:646
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:685
 msgid "Categories, tags, custom taxonomies."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:649
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:688
 msgid "Custom taxonomies synchronization options"
 msgstr ""
 
 #. translators: Singular name of a kind of content: a category, a tag or another way of grouping content. Used as a tab title on WPML → Translations and on the Translate Everything word-count list.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:653
-#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Service/TypesService.php:101
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:353
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:692
+#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Service/TypesService.php:136
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:369
 msgid "Taxonomy"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:680
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:719
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/CustomTermMetaTranslationController.php:25
 msgid "Custom Term Meta Translation"
 msgstr ""
 
 #. translators: Description of a section of WPML → Settings. A term is a category or a tag; term meta are the extra fields attached to it.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:684
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:723
 msgid "Term meta translation preferences."
 msgstr ""
 
 #. translators: Entry in the settings search list of WPML → Settings, pointing at that same section. A term is a category or a tag; term meta are the extra fields attached to it.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:688
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:727
 msgid "Term meta translation preferences"
 msgstr ""
 
 #. translators: Name of the Media Translation section of WPML → Settings: its entry in the settings search list and its heading.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:695
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:734
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/MediaTranslationSettingsController.php:38
 msgid "Media Translation"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:698
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:737
 msgid "Image text detection, duplication, Media Library texts."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:701
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:740
 msgid "Automatically detect best options for translating image texts (alt, caption, title)"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:706
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:745
 msgid "Translate Media Library texts (alt, caption, title) when translating content"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:711
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:750
 msgid "Duplicate texts (alt, caption, title) for all media to all languages"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:716
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:755
 msgid "Duplicate image texts (alt, caption, title) for all feature images to all languages"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:721
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:760
 msgid "How to handle Media Library texts (alt, caption, title)"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:725
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:764
 msgid "Start the process"
 msgstr ""
 
 #. translators: Name of the String Translation section of WPML → Settings: its entry in the settings search list and its heading.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:733
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:772
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/StringTranslationController.php:52
 msgid "String Translation"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:737
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:776
 msgid "Site-wide string discovery preferences. The full list of strings is available under WPML → Translations → String Translation."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:740
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:779
 msgid "Detect strings in JavaScript files"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:746
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:785
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/CustomXmlConfigurationController.php:34
 msgid "Custom XML Configuration"
 msgstr ""
 
 #. translators: Description of a section of WPML → Settings. It is a noun phrase with no verb. wpml-config.xml is a file name and stays as it is.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:751
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:790
 msgid "wpml-config.xml override and remote XML config."
 msgstr ""
 
 #. translators: Name of the Compatibility section of WPML → Settings: its entry in the settings search list and its heading.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:756
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:795
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/CompatibilityController.php:71
 msgid "Compatibility"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:760
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:799
 msgid "Theme and plugin localization options, login pages, AJAX language filtering."
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:765
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:804
 msgid "Theme and plugins localization"
 msgstr ""
 
 #. translators: Entry in the settings search list of WPML → Settings, pointing at the Localization options block.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:770
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:809
 msgid "Localization options"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:774
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:813
 msgid "Automatically load the theme's .mo file using 'load_textdomain'"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:779
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:818
 msgid "Enter textdomain:"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:784
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:823
 msgid "Use theme or plugin text domains when gettext calls do not use a string literal"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:788
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:827
 msgid "Make themes work multilingual"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:792
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:831
 msgid "Adjust IDs for multilingual functionality"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:797
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:836
 msgid "Language filtering for AJAX operations"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:801
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:840
 msgid "Store a language cookie for visitors"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:805
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:844
 msgid "Login and registration pages"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:809
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:848
 msgid "Allow translating the login and registration pages"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:814
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:853
 msgid "Show Language Switcher on login and registration pages"
 msgstr ""
 
 #. translators: Name of the Data sharing section of WPML → Settings: its entry in the settings search list and its heading.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:824
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:863
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/DataSharingController.php:39
 msgid "Data sharing"
 msgstr ""
 
 #. translators: Description of a section of WPML → Settings. It is a noun phrase with no verb.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:829
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:868
 msgid "Plugin, theme and content-stats reporting to wpml.org."
 msgstr ""
 
 #. translators: Heading of the opt-in in the Data sharing section of WPML → Settings: its entry in the settings search list.
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:833
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:872
 msgid "Information shared with wpml.org"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:836
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:875
 msgid "data sharing"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:838
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:877
 msgid "statistics"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:839
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:878
 msgid "plugins and themes"
 msgstr ""
 
-#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:840
+#: src/UserInterface/Web/Core/Component/Settings/Application/SearchIndex.php:879
 msgid "privacy"
 msgstr ""
 
@@ -1266,6 +1538,11 @@ msgstr ""
 msgid "There is no pending alias domain to enable."
 msgstr ""
 
+#. translators: Error shown when a subsite of a WordPress network is declared to be another subsite of the same network under a different address.
+#: src/UserInterface/Web/Core/Component/Troubleshooting/Application/Endpoint/EnableAliasDomainController.php:54
+msgid "This address belongs to another site in this network, so this site cannot use it as its original address. A site created by duplicating another site connects to our translation system as a site of its own: reset its alias domains under WPML → Support and let it connect again."
+msgstr ""
+
 #: src/UserInterface/Web/Core/Component/Troubleshooting/Application/Endpoint/RegisterAliasDomainController.php:40
 msgid "Please enter a valid URL."
 msgstr ""
@@ -1280,36 +1557,42 @@ msgid "We could not verify that the URL points to the same WordPress installatio
 msgstr ""
 
 #. translators: Plural of the same name on the Translate Everything word-count list: categories, tags and other ways of grouping content.
-#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Service/TypesService.php:103
+#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Service/TypesService.php:138
 msgid "Taxonomies"
 msgstr ""
 
-#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Validator/TypeIncludeRules.php:57
+#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Validator/TypeIncludeRules.php:56
 msgid "Type and since date are required."
 msgstr ""
 
 #. translators: Validation error about a kind of content picked for automatic translation. %s: the name of that kind of content, for example product_variation.
-#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Validator/TypeIncludeRules.php:63
+#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Validator/TypeIncludeRules.php:62
 #, php-format
 msgid "Type %s is translated with the content it belongs to and cannot be picked on its own."
 msgstr ""
 
 #. translators: Validation error about a kind of content picked for automatic translation. %s: the name of that kind of content, for example post or page.
-#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Validator/TypeIncludeRules.php:75
+#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Validator/TypeIncludeRules.php:74
 #, php-format
 msgid "Type %s must always include all items."
 msgstr ""
 
 #. translators: Validation error about a kind of content picked for automatic translation. %s: the name of that kind of content. "Since" is the name of a setting shown next to it.
-#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Validator/TypeIncludeRules.php:88
+#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Validator/TypeIncludeRules.php:87
 #, php-format
 msgid "Type %s cannot have \"Since\" option."
 msgstr ""
 
 #. translators: Validation error about a kind of content picked for automatic translation. %s: the name of that kind of content. YYYY-MM-DD is a date format and stays as it is.
-#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Validator/TypeIncludeRules.php:103
+#: src/UserInterface/Web/Core/SharedKernel/Component/TeaCalculation/Application/Validator/TypeIncludeRules.php:102
 #, php-format
 msgid "Type %s has an invalid since date. Expected format: YYYY-MM-DD."
+msgstr ""
+
+#. translators: %d: how much of the update is done, from 0 to 99
+#: src/UserInterface/Web/Infrastructure/CompositionRoot/Config/Updates/ProgressNotice.php:44
+#, php-format
+msgid "WPML is still updating its data after the upgrade: %d%% done. This continues in the background."
 msgstr ""
 
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/ActivateUpdate/ActivateUpdateController.php:44
@@ -1322,6 +1605,31 @@ msgstr ""
 
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Billing/BillingController.php:81
 msgid "Loading billing information…"
+msgstr ""
+
+#. translators: Heading of the notice about the new automatic translation pricing, shown on the WordPress Dashboard and on WPML's AI Translation pages.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Notices/TeaUpgrade/TeaUpgradeCompactNoticeRenderer.php:53
+msgid "Your automatic translation pricing has been upgraded"
+msgstr ""
+
+#. translators: Body of the notice about the new automatic translation pricing. PTC is a product name. "Translations Dashboard" is the WPML → Translations → Dashboard page.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Notices/TeaUpgrade/TeaUpgradeCompactNoticeRenderer.php:57
+msgid "Automatic translation has new, lower pricing with PTC. See what changes on the Translations Dashboard."
+msgstr ""
+
+#. translators: Button in the notice about the new automatic translation pricing. It opens the Translations Dashboard, which explains the setup.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Notices/TeaUpgrade/TeaUpgradeCompactNoticeRenderer.php:61
+msgid "Show me how"
+msgstr ""
+
+#. translators: Button in the notice about the new automatic translation pricing. It hides the notice for good, for the current user only.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Notices/TeaUpgrade/TeaUpgradeCompactNoticeRenderer.php:67
+msgid "Don't show again"
+msgstr ""
+
+#. translators: Status next to the "Don't show again" button in the notice about the new automatic translation pricing, when hiding the notice did not work.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Notices/TeaUpgrade/TeaUpgradeCompactNoticeRenderer.php:99
+msgid "Couldn't hide the notice. Try again."
 msgstr ""
 
 #. translators: Name of the card on WPML → Settings that shows which service translates the site: its heading and its entry in the settings search list.
@@ -1362,32 +1670,32 @@ msgid "Automatically translate content when the Translation Editor opens"
 msgstr ""
 
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiSettingsSearchIndex.php:87
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:528
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:548
 msgid "Translate drafts automatically"
 msgstr ""
 
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiSettingsSearchIndex.php:91
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:646
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:788
 msgid "After auto-translation"
 msgstr ""
 
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiSettingsSearchIndex.php:93
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:573
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:715
 msgid "Publish without review"
 msgstr ""
 
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiSettingsSearchIndex.php:98
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:597
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:739
 msgid "Wait for review before publishing"
 msgstr ""
 
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiSettingsSearchIndex.php:103
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:608
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:750
 msgid "Publish and mark for review"
 msgstr ""
 
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiSettingsSearchIndex.php:107
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:298
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:315
 msgid "Who can use Automatic Translation"
 msgstr ""
 
@@ -1424,155 +1732,203 @@ msgstr ""
 msgid "Formality changes"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:148
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:163
 msgid "Tell the AI about your site and choose how automatic translation behaves."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:196
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:211
 msgid "Loading automatic translation settings…"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:301
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:318
 msgid "Disable automatic translation for specific translators."
 msgstr ""
 
 #. translators: %s: the PTC engine product name.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:429
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:452
 #, php-format
 msgid "Switch to %s"
 msgstr ""
 
 #. translators: Title of the dialog on WPML → Settings that moves the site off the PTC translation engine. PTC is a product name; keep it.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:436
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:459
 msgid "Switch away from PTC?"
 msgstr ""
 
 #. translators: Label of the button, and of the notice heading, that switch the site's automatic translation engine to Private Translation Cloud (PTC). Verb, imperative. PTC is a product name; keep it.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:437
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:460
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:576
 msgid "Switch to PTC"
 msgstr ""
 
 #. translators: Label of the button that confirms moving the site off the PTC translation engine. Verb, imperative. PTC is a product name; keep it.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:439
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:462
 msgid "Switch away from PTC"
 msgstr ""
 
 #. translators: Label of the button that dismisses the dialog and leaves the site on the PTC translation engine. Verb, imperative. PTC is a product name; keep it.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:441
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:464
 msgid "Stay with PTC"
 msgstr ""
 
 #. translators: Subline under the left column of the engine comparison table on WPML → Settings. That column is the engine the site translates with today.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:447
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:470
 msgid "Your active engine"
 msgstr ""
 
 #. translators: Button label on WPML → Settings, and the title of the dialog it opens, for switching the site to a translation engine. Verb, imperative. %s: the name of the translation engine, for example PTC.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:452
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:475
 #, php-format
 msgid "Activate %s"
 msgstr ""
 
 #. translators: Button label on WPML → Settings that switches the site to the PTC translation engine. Verb, imperative. PTC is a product name and stays as it is.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:456
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:479
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:595
 msgid "Activate PTC"
 msgstr ""
 
 #. translators: Status shown next to the Save button on WPML → Settings while the settings are being stored.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:458
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:835
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:481
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:986
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/UsageTrackingController.php:89
 msgid "Saving…"
 msgstr ""
 
 #. translators: Status shown next to the Save button on WPML → Settings once the settings have been stored. Past participle (they have been saved), not an instruction.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:460
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:837
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:483
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:988
 msgid "Saved"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:461
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:484
 msgid "Couldn't load the translation engine settings — check your connection."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:462
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:485
 msgid "Couldn't save — try again"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:463
-msgid "Fill in your site context above before switching to PTC."
-msgstr ""
-
-#. translators: Label of the button in the engine-switch dialog when the site's context is still missing. It takes the reader to the context fields. Verb, imperative.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:465
-msgid "Fill in the context"
-msgstr ""
-
 #. translators: Explanation on WPML → Settings. "This" is translating drafts as they are saved. %1$s: opening bold tag, %2$s: closing bold tag. Keep the <b> tags around the setting name.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:536
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:556
 #, php-format
 msgid "WPML translates each draft %1$swhen you save it%2$s. This requires <b>Translate Everything Automatically</b> to be on."
 msgstr ""
 
 #. translators: Message on WPML → Settings. %1$s: opening bold tag, %2$s: closing bold tag. Keep the <b> tags around the screen name.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:549
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:569
 #, php-format
 msgid "Drafts saved before you enabled this option %1$sare not automatically translated%2$s. To translate them, save them again or manually send them for translation from the <b>Translation Dashboard</b>."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:574
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:625
+msgid "Translate what visitors see"
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:629
+msgid "WPML translates these surfaces when they appear on the site. Turn a surface off to translate all of its items right away."
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:633
+msgid "Detection is off for this site, so every surface is translated right away."
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:639
+msgid "Surface"
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:640
+msgid "Translate when it appears on the site"
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:641
+msgid "Not shown yet"
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:662
+msgid "On, for admins"
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:664
+msgid "On, for all visitors"
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:666
+msgid "Off"
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:676
+msgid "Change in String Translation settings"
+msgstr ""
+
+#. translators: Value in the system information table on WPML → Support when a version, a server name or the REST API check has no answer. Lower case because it sits among other values.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:685
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:658
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:663
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:676
+msgid "unknown"
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:696
+msgid "Strings follow the detection setting of String Translation."
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:716
 msgid "Translations go live immediately in the target language."
 msgstr ""
 
 #. translators: Label on the option WPML advises you to pick on WPML → Settings. Past participle used as a label (this is what we advise), not a verb.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:578
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:602
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:720
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:744
 msgid "Recommended"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:579
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:721
 msgid "PTC provides Better Than Human Translations that rarely need improvements, so you can confidently skip the review process."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:591
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:733
 msgid "Recommended with PTC"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:592
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:734
 msgid "PTC provides Better Than Human Translations that rarely need improvements, so you can confidently skip the review process. For other translation engines, a human review is recommended to confirm accuracy."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:598
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:740
 msgid "Translations stay as drafts until a translation manager approves them."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:603
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:745
 msgid "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:609
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:751
 msgid "Translations go live but appear in a \"needs review\" queue."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:650
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:792
 msgid "What happens to content once the AI has translated it."
 msgstr ""
 
 #. translators: Button label on WPML → Settings. Verb phrase, imperative.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:822
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:973
 msgid "Save settings"
 msgstr ""
 
 #. translators: Status shown next to the Save button on WPML → Settings when something on the page was changed and not yet stored.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:839
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:990
 msgid "Unsaved changes"
 msgstr ""
 
 #. translators: Status shown next to the Save button on WPML → Settings when storing the settings failed. Verb, imperative.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:841
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:992
 msgid "Couldn't save. Try again."
+msgstr ""
+
+#. translators: Status shown next to the Save button on WPML → Settings when WPML's translation system refused the site's connection and the settings were not stored. "Our translation system" is WPML's own service; keep it generic.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationController.php:994
+msgid "Our translation system did not accept this site's connection, so your settings were not saved. Reload the page and save again. If this keeps happening, contact WPML support."
 msgstr ""
 
 #. translators: Shown on WPML → Settings while the page is finding out which translation engine the site uses.
@@ -1586,7 +1942,7 @@ msgstr ""
 
 #. translators: Button label shown after something failed, to repeat it. Verb phrase, imperative.
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:162
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:879
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:875
 msgid "Try again"
 msgstr ""
 
@@ -1625,13 +1981,13 @@ msgstr ""
 
 #. translators: Header of the left column of the engine comparison table on WPML → Settings, when the exact engine is not known yet. It stands for any of the older engines.
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:326
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:863
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:859
 msgid "A legacy engine"
 msgstr ""
 
 #. translators: Subline under the left column of the engine comparison table on WPML → Settings, naming the older engines. These are product names; keep them.
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:328
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:865
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:861
 msgid "DeepL, Google Translate or Microsoft Translator"
 msgstr ""
 
@@ -1711,17 +2067,17 @@ msgid "Per word, changes included"
 msgstr ""
 
 #. translators: Accessible label (screen readers) of the button that closes a dialog on WPML → Settings. Verb, imperative, not the adjective "near".
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:849
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:845
 msgid "Close"
 msgstr ""
 
 #. translators: Subline under the PTC column of the engine comparison table in the dialog that switches the site away from PTC. It says PTC is what the site uses at this moment.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:867
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:863
 msgid "Your engine now"
 msgstr ""
 
 #. translators: Shown while a dialog or a panel is still fetching what it has to show.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:873
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/AiTranslationEngineCard.php:869
 msgid "Loading…"
 msgstr ""
 
@@ -1757,7 +2113,7 @@ msgstr ""
 
 #. translators: The WPML Glossary: the terms that must always be translated the same way. It names the Glossary tab of WPML → Translations and appears in the list of Advanced Translation Editor features.
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/ClassicEditorActiveCallout.php:86
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:438
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:471
 msgid "Glossary"
 msgstr ""
 
@@ -1823,15 +2179,15 @@ msgstr ""
 msgid "Deleting-content settings are unavailable until WPML setup completes."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/LanguagesController.php:98
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/LanguagesController.php:65
 msgid "Choose which languages your site supports, hide languages that are still in progress, and control how they're mapped to translation engines."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/LanguagesController.php:112
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/LanguagesController.php:79
 msgid "Languages settings are unavailable until WPML setup completes."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/LanguagesController.php:122
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/LanguagesController.php:89
 msgid "No Languages sections are available on this site."
 msgstr ""
 
@@ -1889,6 +2245,56 @@ msgstr ""
 msgid "You can adjust the content limits once Translate Everything finishes the current translation run."
 msgstr ""
 
+#. translators: Entry in the settings search list of WPML → Settings. It opens the section of the Admin Texts Translation page that scans the theme, the plugins and WordPress for texts to translate.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/StringScanSettingsSearchIndex.php:78
+msgid "Scan themes and plugins for strings"
+msgstr ""
+
+#. translators: Search words for the scan of themes and plugins in the settings search of WPML → Settings. Not shown on screen; give the words a user of your language would type.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/StringScanSettingsSearchIndex.php:84
+msgid "scan strings"
+msgstr ""
+
+#. translators: Search words for the scan of themes and plugins in the settings search of WPML → Settings. Not shown on screen; give the words a user of your language would type.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/StringScanSettingsSearchIndex.php:86
+msgid "scan plugin"
+msgstr ""
+
+#. translators: Search words for the scan of themes and plugins in the settings search of WPML → Settings. Not shown on screen; give the words a user of your language would type.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/StringScanSettingsSearchIndex.php:88
+msgid "string scan"
+msgstr ""
+
+#. translators: Search words for the scan of themes and plugins in the settings search of WPML → Settings. Not shown on screen; give the words a user of your language would type.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/StringScanSettingsSearchIndex.php:90
+msgid "theme strings"
+msgstr ""
+
+#. translators: Search words for the scan of themes and plugins in the settings search of WPML → Settings. Not shown on screen; give the words a user of your language would type.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/StringScanSettingsSearchIndex.php:92
+msgid "plugin strings"
+msgstr ""
+
+#. translators: Search words for the scan of themes and plugins in the settings search of WPML → Settings. Not shown on screen; give the words a user of your language would type.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/StringScanSettingsSearchIndex.php:94
+msgid "WordPress strings"
+msgstr ""
+
+#. translators: Search words for the scan of themes and plugins in the settings search of WPML → Settings. Not shown on screen; give the words a user of your language would type.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/StringScanSettingsSearchIndex.php:96
+msgid "strings in themes and plugins"
+msgstr ""
+
+#. translators: Search words for the scan of themes and plugins in the settings search of WPML → Settings. Not shown on screen; give the words a user of your language would type.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/StringScanSettingsSearchIndex.php:98
+msgid "register strings"
+msgstr ""
+
+#. translators: Search words for the scan of themes and plugins in the settings search of WPML → Settings. Not shown on screen; give the words a user of your language would type.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/StringScanSettingsSearchIndex.php:100
+msgid "localization"
+msgstr ""
+
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/StringTranslationController.php:42
 msgid "WPML → Translations → String Translation"
 msgstr ""
@@ -1916,15 +2322,15 @@ msgstr ""
 msgid "No translatable taxonomies are registered."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatedDocumentsOptionsController.php:41
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatedDocumentsOptionsController.php:39
 msgid "Control the publish state of translations and what appears in the Translation Editor."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatedDocumentsOptionsController.php:46
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatedDocumentsOptionsController.php:44
 msgid "Translated documents options are unavailable until WPML setup completes."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatedDocumentsOptionsController.php:57
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatedDocumentsOptionsController.php:56
 msgid "Translated documents section is not available on this site."
 msgstr ""
 
@@ -1937,19 +2343,19 @@ msgstr ""
 
 #. translators: Label on the Save button of a settings section. Verb, imperative.
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslatedTaxonomiesToggle.php:86
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/UrlsAndSeoController.php:222
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/UrlsAndSeoController.php:243
 msgid "Save"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslationEditorController.php:32
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslationEditorController.php:35
 msgid "Choose between the Advanced and Classic editors, and configure editor-wide preferences."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslationEditorController.php:37
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslationEditorController.php:40
 msgid "Translation Editor settings are unavailable until WPML setup completes."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslationEditorController.php:44
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/TranslationEditorController.php:47
 msgid "Translation Editor section is not available on this site."
 msgstr ""
 
@@ -1997,11 +2403,11 @@ msgstr ""
 msgid "Search engines index one clean, unique URL for each language."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/UrlsAndSeoController.php:65
-msgid "How translated URLs are built, how search engines are told about them, and whether visitors are redirected by their browser language."
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/UrlsAndSeoController.php:83
+msgid "How translated URLs are built, how search engines are told about them, and which language visitors see when they arrive."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/UrlsAndSeoController.php:70
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Settings/UrlsAndSeoController.php:88
 msgid "URLs and SEO settings are unavailable until WPML setup completes."
 msgstr ""
 
@@ -2016,235 +2422,245 @@ msgid "WooCommerce Multilingual & Multicurrency. Settings that control how WooCo
 msgstr ""
 
 #. translators: Name of a Support tool: its entry in the tool list on WPML → Support and the heading of its own screen.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:127
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:101
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:139
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:107
 msgid "System check"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:128
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:140
 msgid "Debug information for support and connectivity tests to WPML servers"
 msgstr ""
 
 #. translators: Name of a section of the System check tool on WPML → Support: its heading and its entry in the Support search list.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:135
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:172
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:147
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:178
 msgid "Debug information"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:136
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:148
 msgid "Copy system info to clipboard"
 msgstr ""
 
 #. translators: Name of a section of the System check tool on WPML → Support: its entry in the Support search list. It checks the part of WPML that installs and updates plugins.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:138
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:150
 msgid "Installer support"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:139
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:151
 msgid "Check connectivity to WPML servers"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:140
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:277
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:152
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:283
 msgid "Required PHP libraries"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:141
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:263
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:153
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:269
 msgid "Refresh license data"
 msgstr ""
 
 #. translators: Name of the Clear cache Support tool: its entry in the tool list on WPML → Support, the heading of its screen and the button that runs it. Verb phrase, imperative.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:147
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:159
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/FixTranslationsController.php:41
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/FixTranslationsController.php:60
 msgid "Clear cache"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:150
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:156
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:162
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:168
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/FixTranslationsController.php:50
 msgid "Clear the cache in WPML"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:165
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:177
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/OrphanLanguageCodesController.php:372
 msgid "Content from unknown languages"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:166
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:178
 msgid "Some content is assigned to language codes this site does not define. See which codes, and what carries them."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:173
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:185
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/OrphanLanguageCodesController.php:108
 msgid "Unknown language codes found"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:174
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:186
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/OrphanLanguageCodesController.php:200
 msgid "What you can do"
 msgstr ""
 
 #. translators: Name of a Support tool: its entry in the tool list on WPML → Support and the heading of its own screen. It records the traffic between the site and the translation services.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:187
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:199
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/CommunicationLogController.php:32
 msgid "Communication log"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:188
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:200
 msgid "API traffic between your site and the translation services"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:194
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:206
 msgid "Translation proxy requests and responses"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:195
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:207
 msgid "TP communication trace"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:203
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:215
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/ATEErrorLogsController.php:38
 msgid "Advanced Translation Editor error logs"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:204
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:216
 msgid "Server-side errors encountered by the Advanced Translation Editor"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:211
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:223
 msgid "Automatic translation errors"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:212
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:224
 msgid "ATE client error trace"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:217
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:229
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/JobLogsController.php:43
 msgid "Translation job logs"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:218
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:230
 msgid "Lifecycle of translation jobs sent through WPML"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:225
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:237
 msgid "Per-job audit trail"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:226
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:238
 msgid "Translation pipeline history"
 msgstr ""
 
 #. translators: Name of a Support tool: its entry in the tool list on WPML → Support and the heading of its own screen.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:232
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:244
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/InstallerLogController.php:32
 msgid "Installer log"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:233
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:245
 msgid "Licensing and subscription-update calls made by WPML's installer"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:239
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:251
 msgid "Plugin install and update history"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:240
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:252
 msgid "OTGS Installer events"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:245
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:257
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/RemoteXMLConfigLogController.php:46
 msgid "Remote XML config log"
 msgstr ""
 
 #. translators: Description of a Support tool in the tool list on WPML → Support. A noun phrase with no verb. wpml-config.xml is a file name and stays as it is.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:247
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:259
 msgid "wpml-config.xml files WPML has read from themes and plugins"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:253
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:265
 msgid "Remote language-configuration fetches"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:254
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:266
 msgid "XML config retrieval history"
 msgstr ""
 
 #. translators: Name of a Support tool: its entry in the tool list on WPML → Support and the heading of its own screen. Other web addresses that reach the same site.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:270
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:282
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/AliasDomainsController.php:41
 msgid "Alias domains"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:271
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:283
 msgid "Register alternative URLs that point to this same WordPress installation"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:278
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:290
 msgid "Register an alias domain"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:279
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:291
 msgid "Reset registered alias domains"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:280
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:292
 msgid "Use an alternative URL for the same WordPress installation"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:285
+#. translators: Description of a Support tool in the tool list on WPML → Support. "The table" is the database table where WPML records which content is a translation of which.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:301
+msgid "The table that links your content to its translations lost its keys. Restore them."
+msgstr ""
+
+#. translators: Description of a Support tool in the tool list on WPML → Support. "page_id" is a technical word in a web address and stays as it is.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:317
+msgid "Find internal links that older WPML versions rewrote to page_id addresses, and point them to the right pages."
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:328
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/UsageTrackingController.php:37
 msgid "Usage tracking and reporting"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:286
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:329
 msgid "Send WPML performance and error reports to help support diagnose issues"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:292
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:335
 msgid "Enable or disable anonymous usage tracking"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:293
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:336
 msgid "PostHog telemetry toggle"
 msgstr ""
 
 #. translators: Name of a Support tool: its entry in the tool list on WPML → Support and the heading of its own screen. WCML is the short name of WooCommerce Multilingual.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:316
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:359
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/WcmlStatusController.php:30
 msgid "WCML status"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:317
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:360
 msgid "WooCommerce store-pages, products and taxonomies translation status; multicurrency, plugins, media checks"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:325
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:368
 msgid "WooCommerce store-pages translation status"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:326
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:369
 msgid "Products and taxonomies translation status"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:327
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:370
 msgid "Multicurrency / plugins / media checks"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:332
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:375
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/WcmlConfigLogController.php:29
 msgid "WCML configuration log"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:333
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:376
 msgid "Read-only snapshot of the WooCommerce Multilingual configuration; copy when WPML Support asks for the WCML state"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:341
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/CoreSupportTools.php:384
 msgid "Read-only WCML configuration snapshot"
 msgstr ""
 
@@ -2312,7 +2728,7 @@ msgstr ""
 
 #. translators: Link or button text on WPML → Support and its tool pages that opens the WPML → Activate & Update screen. Verb phrase, imperative. "Activate & Update" is that screen's name.
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/MissingRepairToolPage.php:118
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:930
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:999
 msgid "Go to Activate & Update"
 msgstr ""
 
@@ -2326,154 +2742,154 @@ msgstr ""
 msgid "WPML Troubleshooting could not be activated. Use Activate & Update instead."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:227
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:242
 msgid "See all WPML minimum requirements ↗"
 msgstr ""
 
 #. translators: Label of the search box on WPML → Support, used both for screen readers and as the placeholder text inside the box. Verb phrase, imperative (search the Support screen).
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:238
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:245
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:253
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:260
 msgid "Search Support"
 msgstr ""
 
 #. translators: Accessible label (screen readers) of the button that empties the search box on WPML → Support. Verb phrase, imperative.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:251
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:266
 msgid "Clear search"
 msgstr ""
 
 #. translators: Accessible label (screen readers) of the list of search results on WPML → Support. Noun phrase.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:261
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:276
 msgid "Search results"
 msgstr ""
 
 #. translators: Message on WPML → Support when the tool search finds nothing. %s: the words the user typed.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:268
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:283
 #, php-format
 msgid "No troubleshooting tools match \"%s\""
 msgstr ""
 
 #. translators: %s is the URL to the WPML support forum.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:277
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:292
 #, php-format
 msgid "Try a different keyword, or %s."
 msgstr ""
 
 #. translators: Link text inside the sentence "Try a different keyword, or open a support request." on WPML → Support. Lower case because it sits inside that sentence.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:279
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:294
 msgid "open a support request"
 msgstr ""
 
 #. translators: Heading of the block on WPML → Support that opens a support ticket. Verb phrase, imperative.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:296
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:315
 msgid "Request support"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:299
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:318
 msgid "Can't find what you need below? Open a support request and our team will help."
 msgstr ""
 
 #. translators: Message on WPML → Support. "It" is registering WPML.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:303
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:322
 msgid "To open a support request, first register WPML on this site. It only takes a minute."
 msgstr ""
 
 #. translators: Link text on WPML → Support that opens the registration screen. Verb phrase, imperative (register WPML on this site).
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:307
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:326
 msgid "Register WPML"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:312
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:331
 msgid "Your WPML account has expired. Support is available while your account is active. Renew it, then come back here to open your support request."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:320
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:339
 msgid "Open a support request"
 msgstr ""
 
 #. translators: Note on WPML → Support. "This" is sending that information.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:327
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:346
 msgid "Opening a support request sends WPML.org information about your server setup, active theme, and plugins. This is required for support. No passwords or personal information are sent."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:356
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:375
 msgid "Safe to run yourself"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:395
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:414
 msgid "Logs — read only"
 msgstr ""
 
 #. translators: Text on the badge that marks the risky tools on WPML → Support. A noun followed by a warning; there is no verb.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:429
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:448
 msgid "Advanced — only when WPML Support asks you to"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:434
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:453
 msgid "These tools are rarely needed and can cause data loss or break your multilingual site if used incorrectly. Use them only when instructed by WPML Support — do not experiment."
 msgstr ""
 
 #. translators: Heading above the plugin table on WPML → Support.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:480
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:499
 msgid "Installed plugins"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:484
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:503
 msgid "Support frequently asks about the plugins running on your site. Use this list when opening a ticket."
 msgstr ""
 
 #. translators: Column heading in the plugin table on WPML → Support: the name of the plugin.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:490
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:509
 msgid "Plugin"
 msgstr ""
 
 #. translators: Column heading in a table on WPML → Support: the version number.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:491
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:827
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:510
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:955
 msgid "Version"
 msgstr ""
 
 #. translators: Column heading in the plugin table on WPML → Support: whether the plugin is switched on.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:492
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:511
 msgid "Status"
 msgstr ""
 
 #. translators: Value in the plugin table on WPML → Support: the plugin is installed and switched on. Adjective describing the plugin.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:510
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:529
 msgid "Active"
 msgstr ""
 
 #. translators: Value in the plugin table on WPML → Support: the plugin is installed but switched off. Adjective describing the plugin.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:515
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:534
 msgid "Inactive"
 msgstr ""
 
 #. translators: Value in the plugin table on WPML → Support: the plugin is not present on the site. Adjective phrase describing the plugin, not an instruction.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:519
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:538
 msgid "Not installed"
 msgstr ""
 
 #. translators: Error on WPML → Support, shown after the support page opened in a new tab without the site's debug information. %1$s: opening link tag to the wpml.org support page, %2$s: closing link tag.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:718
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:737
 #, php-format
 msgid "We could not send your site information, so the support page opened without it. You can continue there, or try again later to attach it: %1$sopen the support page%2$s."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:723
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:742
 msgid "Preparing your support request…"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:724
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:743
 msgid "Taking you to WPML.org…"
 msgstr ""
 
 #. translators: Line on WPML → Support, shown when the address bar asked for a Support tool that is part of the WPML Troubleshooting plugin and that plugin is not installed. %s: the tool's identifier from the address bar, e.g. "reset". WPML Troubleshooting is a plugin name and stays as it is.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:921
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:990
 #, php-format
 msgid "The tool you asked for (%s) is part of WPML Troubleshooting."
 msgstr ""
 
 #. translators: Line on WPML → Support where the repair tools used to be listed, shown when the WPML Troubleshooting plugin is not installed. WPML Troubleshooting is a plugin name and stays as it is.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:927
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/SupportLandingController.php:996
 msgid "Repair tools are now a separate plugin, WPML Troubleshooting."
 msgstr ""
 
@@ -2764,6 +3180,144 @@ msgstr ""
 msgid "no content found"
 msgstr ""
 
+#. translators: Intro of a Support tool on WPML → Support. "page_id" is a technical word in a web address and stays as it is.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:39
+msgid "Older WPML versions could rewrite internal links in translations to addresses with several page_id parts. This tool finds them and points each one to the address of the page it was meant to open."
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:43
+msgid "Back up your site first."
+msgstr ""
+
+#. translators: Button on WPML → Support that counts the broken links without changing anything.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:53
+msgid "Check"
+msgstr ""
+
+#. translators: Button on WPML → Support that repairs the links the Check found.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:62
+msgid "Repair"
+msgstr ""
+
+#. translators: Name of a Support tool on WPML → Support and the heading of its screen. "page_id" is a technical word in a web address and stays as it is. Verb phrase, imperative.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:152
+msgid "Repair links rewritten to page_id addresses"
+msgstr ""
+
+#. translators: Status shown on WPML → Support while a check or a test runs.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:164
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:354
+msgid "Checking…"
+msgstr ""
+
+#. translators: Status shown on WPML → Support while a repair runs.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:166
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:87
+msgid "Repairing…"
+msgstr ""
+
+#. translators: Status on WPML → Support when a request failed.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:168
+msgid "The request failed. Reload the page and try again."
+msgstr ""
+
+#. translators: On WPML → Support, when the Check found no link to repair.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:170
+msgid "No links to repair were found."
+msgstr ""
+
+#. translators: Heading of the Check's result on WPML → Support.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:172
+msgid "Links to repair"
+msgstr ""
+
+#. translators: Heading of the Repair's result on WPML → Support.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:174
+msgid "Links repaired"
+msgstr ""
+
+#. translators: Line of the result on WPML → Support. %d: number of links.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:176
+#, php-format
+msgid "In page content: %d"
+msgstr ""
+
+#. translators: Line of the result on WPML → Support. %d: number of links.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:178
+#, php-format
+msgid "In excerpts: %d"
+msgstr ""
+
+#. translators: Line of the result on WPML → Support. %d: number of links in the settings of blocks (the block editor).
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:180
+#, php-format
+msgid "In block settings: %d"
+msgstr ""
+
+#. translators: Line of the result on WPML → Support. %d: number of links in translated strings.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:182
+#, php-format
+msgid "In string translations: %d"
+msgstr ""
+
+#. translators: Line of the Check's result on WPML → Support. %d: pages, posts and strings the Repair will update.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:184
+#, php-format
+msgid "Items to update: %d"
+msgstr ""
+
+#. translators: Line of the Repair's result on WPML → Support. %d: pages, posts and strings updated.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:186
+#, php-format
+msgid "Items updated: %d"
+msgstr ""
+
+#. translators: On WPML → Support. %d: links that look broken but are not changed. "page_id" stays as it is.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:188
+#, php-format
+msgid "Links left as they are: %d. They are not in the shape older WPML versions wrote."
+msgstr ""
+
+#. translators: On WPML → Support. %d: links that are not changed.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:190
+#, php-format
+msgid "Links left as they are: %d. The page they point to no longer exists."
+msgstr ""
+
+#. translators: On WPML → Support. %d: links with several page_id parts that are not changed because they start with another site's address. "page_id" stays as it is.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:192
+#, php-format
+msgid "Links left as they are: %d. They have several page_id parts but start with another site address, for example a copy of your site moved to another domain."
+msgstr ""
+
+#. translators: On WPML → Support. %d: blocks or texts too large for the tool to read, whose links were not checked.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:194
+#, php-format
+msgid "Not checked: %d. Some content was too large to read, so its links were not checked or repaired."
+msgstr ""
+
+#. translators: Heading of the list of the first items on WPML → Support.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:196
+msgid "First items"
+msgstr ""
+
+#. translators: One item on WPML → Support. %1$s: page or post title, %2$s: language code, %3$d: number of links.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:198
+#, php-format
+msgid "%1$s (%2$s). Links: %3$d"
+msgstr ""
+
+#. translators: One item on WPML → Support. %1$s: string name, %2$s: language code, %3$d: number of links.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:200
+#, php-format
+msgid "String %1$s (%2$s). Links: %3$d"
+msgstr ""
+
+#. translators: On WPML → Support, after the Repair.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/PageIdLinkRepairController.php:202
+msgid "Done. Each updated page and post has a revision you can restore."
+msgstr ""
+
 #. translators: Description of a Support tool on WPML → Support. %1$s: the file name "wpml-config.xml", shown in a code box, %2$s: a link reading "Settings → Custom XML Configuration".
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/RemoteXMLConfigLogController.php:52
 #, php-format
@@ -2816,289 +3370,446 @@ msgstr ""
 msgid "Could not remove the log. Please retry."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:104
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:110
 msgid "Export system information for support and test connectivity to WPML's servers."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:110
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:116
 msgid "Your Automatic Translation account id is"
 msgstr ""
 
 #. translators: Heading of the section on WPML → Support that lists the server and site details.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:121
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:127
 msgid "Environment"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:124
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:130
 msgid "Supporters ask about these versions first. Copy this block along with Debug information below when opening a ticket."
 msgstr ""
 
 #. translators: Heading of the list of version numbers on WPML → Support.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:130
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:136
 msgid "Versions"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:141
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:147
 msgid "PHP limits & runtime"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:156
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:187
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:162
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:193
 msgid "Copy to clipboard"
 msgstr ""
 
 #. translators: %s is the minimum-requirements help page link.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:162
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:168
 #, php-format
 msgid "Status icons reflect a real check against WPML's minimum requirements where one exists; other rows are informational only — see %s for the canonical list."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:163
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:169
 msgid "wpml.org/home/minimum-requirements"
 msgstr ""
 
 #. translators: Note above the debug information on WPML → Support. "It" is the information in the box below.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:175
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:181
 msgid "Copy this information and paste it into your support ticket. It lists versions and settings only — no passwords or personal data."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:190
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:196
 msgid "How to share debug info with support ↗"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:198
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:204
 msgid "Connectivity to WPML servers"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:201
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:207
 msgid "Checks that your site can reach the servers it needs for licensing, updates, and automatic translation."
 msgstr ""
 
 #. translators: Button label on WPML → Support that tests the connection to the WPML servers. Verb phrase, imperative.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:211
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:217
 msgid "Check now"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:223
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:229
 msgid "WPML API server"
 msgstr ""
 
 #. translators: Value on WPML → Support shown before the connection test has been run. Past participle: nobody has tested it yet.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:224
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:233
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:230
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:239
 msgid "Not checked"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:232
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:238
 msgid "Toolset API server"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:239
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:245
 msgid "Ask your hosting provider to allow these domains:"
 msgstr ""
 
 #. translators: Link text inside the sentence "If your site still cannot connect, please open a support ticket." It starts in lower case because it sits inside that sentence.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:246
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:252
 msgid "open a support ticket"
 msgstr ""
 
 #. translators: Offer shown on WPML > Support when a server cannot be reached. %s: a link, already wrapped in its tags, whose text is "open a support ticket".
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:252
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:258
 #, php-format
 msgid "If your site still cannot connect, please %s."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:266
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:272
 msgid "Re-checks your WPML subscription with wpml.org and updates the license details cached on this site. Useful after renewing, upgrading, or moving the site to a different account."
 msgstr ""
 
 #. translators: Button label on WPML → Support that fetches the site's registration again. Verb phrase, imperative.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:271
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:277
 msgid "Refresh license"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:289
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:295
 msgid "WPML installer instances on this site"
 msgstr ""
 
 #. translators: Confirmation that flashes on a copy button on WPML → Support once the text has been placed on the clipboard. Past participle (it has been copied).
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:330
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:338
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:336
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:344
 msgid "Copied!"
 msgstr ""
 
-#. translators: Status shown on WPML → Support while the connection test is running.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:348
-msgid "Checking…"
+#. translators: Status of one server in the connection test on WPML → Support: it answered.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:363
+msgid "OK"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:397
+#. translators: Status of one server in the connection test on WPML → Support: it did not answer.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:367
+msgid "Unreachable"
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:403
 msgid "All servers reachable"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:398
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:404
 msgid "One or more servers unreachable"
 msgstr ""
 
 #. translators: Status shown on WPML → Support while the site's registration is being fetched again.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:447
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:450
 msgid "Refreshing…"
 msgstr ""
 
 #. translators: Status shown on WPML → Support once the site's registration has been fetched again.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:466
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:470
 msgid "License refreshed."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:468
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:472
 msgid "Could not refresh — please retry."
 msgstr ""
 
-#. translators: Value in the system information table on WPML → Support when a version, a server name or the REST API check has no answer. Lower case because it sits among other values.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:624
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:629
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:642
-msgid "unknown"
-msgstr ""
-
 #. translators: Value in the system information table on WPML → Support: the answer is yes for the property named on the left, such as "Multisite" or "REST enabled".
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:634
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:647
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:686
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:668
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:681
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:720
 msgid "Yes"
 msgstr ""
 
 #. translators: Value in the system information table on WPML → Support: the answer is no for the property named on the left, such as "Multisite" or "REST enabled".
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:636
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:649
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:688
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:670
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:683
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:722
 msgid "No"
 msgstr ""
 
 #. translators: Row label in the system information table on WPML → Support: the WordPress version. Product name: keep it as it is.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:657
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:691
 msgid "WordPress"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:658
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:692
 msgid "WPML Multilingual CMS"
 msgstr ""
 
 #. translators: Row label in the system information table on WPML → Support: the PHP version. Keep the name as it is.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:660
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:694
 msgid "PHP"
 msgstr ""
 
 #. translators: Row label in the system information table on WPML → Support: the database version. Keep the name as it is.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:662
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:696
 msgid "MySQL"
 msgstr ""
 
 #. translators: Row label in the system information table on WPML → Support: which web server the site runs on.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:664
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:698
 msgid "Web server"
 msgstr ""
 
 #. translators: Row label in the system information table on WPML → Support: whether the site is part of a WordPress multisite network.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:666
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:700
 msgid "Multisite"
 msgstr ""
 
 #. translators: Row label in the system information table on WPML → Support: whether the WordPress REST API answers on this site.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:670
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:704
 msgid "REST enabled"
 msgstr ""
 
 #. translators: Value in the system information table on WPML → Support: the PHP feature named on the left is switched on. Adjective, not a verb.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:697
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:731
 msgid "Enabled"
 msgstr ""
 
 #. translators: Value in the system information table on WPML → Support: the PHP feature named on the left is switched off. Adjective, not a verb.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:699
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:733
 msgid "Disabled"
 msgstr ""
 
 #. translators: Value in the system information table on WPML → Support: the PHP extension named on the left is present and in use. Past participle, not a verb.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:702
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:707
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:736
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:741
 msgid "Loaded"
 msgstr ""
 
 #. translators: Value in the system information table on WPML → Support: the PHP extension named on the left is not installed. Adjective, not the gerund of "to miss".
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:704
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:709
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:738
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:743
 msgid "Missing"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:714
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:748
 msgid "Max upload size"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:715
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:749
 msgid "Max post size"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:716
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:750
 msgid "Max execution time"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:717
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:751
 msgid "Max input vars"
 msgstr ""
 
 #. translators: Row label in the system information table on WPML → Support: a PHP feature that speeds up code. Keep the name as it is.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:719
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:753
 msgid "OPCache"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:720
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:754
 msgid "PHP memory used"
 msgstr ""
 
 #. translators: Row label in the system information table on WPML → Support: a character set of the database. Keep the name utf8mb4 as it is.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:722
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:756
 msgid "Utf8mb4 charset"
 msgstr ""
 
 #. translators: Row label in the system information table on WPML → Support: a PHP extension. Keep the extension name as it is.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:724
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:758
 msgid "SimpleXML extension"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:725
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:759
 msgid "Multibyte String extension"
 msgstr ""
 
+#. translators: Row label in the system information table on WPML → Support: whether WPML keeps its compiled page templates in a cache folder.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:780
+msgid "WPML template cache"
+msgstr ""
+
+#. translators: Note under the WPML template cache row on WPML → Support, when the cache is off. "Clear cache" is the label of a button and "Clear the cache in WPML" the heading of the section it is in, on WPML → Support: use the same words as they are translated there.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:783
+msgid "To turn it back on, click Clear cache in the \"Clear the cache in WPML\" section of WPML → Support."
+msgstr ""
+
+#. translators: Value of the WPML template cache row on WPML → Support: the cache is off because of a setting an older version of WPML saved.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:788
+msgid "Off (an old WPML setting)"
+msgstr ""
+
+#. translators: Value of the WPML template cache row on WPML → Support: the cache is off, and turns itself back on within a day.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:794
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:807
+msgid "Off for up to a day"
+msgstr ""
+
+#. translators: Note under the WPML template cache row on WPML → Support: WPML does not know why the cache was turned off.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:797
+msgid "The reason was not recorded."
+msgstr ""
+
+#. translators: Value of the WPML template cache row on WPML → Support. %s: the date and time, in the site's format, when the cache turns itself back on.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:805
+#, php-format
+msgid "Off until %s"
+msgstr ""
+
+#. translators: Value of the WPML template cache row on WPML → Support: the cache is on, but WPML cannot write the folder it keeps it in.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:813
+msgid "On, but WPML cannot write its folder"
+msgstr ""
+
+#. translators: Note under the WPML template cache row on WPML → Support. %s: the path of the folder on the server.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:817
+#, php-format
+msgid "The cache folder is %s. Make it, or the folder it goes in, writable by the web server."
+msgstr ""
+
+#. translators: Note under the WPML template cache row on WPML → Support. %s: the error WordPress reports about its uploads folder.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:819
+#, php-format
+msgid "WordPress cannot use its uploads folder: %s"
+msgstr ""
+
+#. translators: Note under the WPML template cache row on WPML → Support, when WPML cannot write the cache folder.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:821
+msgid "Until then, the next page that uses the cache turns it off for a day."
+msgstr ""
+
+#. translators: Value of the WPML template cache row on WPML → Support: the cache is on, and WPML makes its folder the first time it needs it.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:827
+msgid "On (its folder is made on first use)"
+msgstr ""
+
+#. translators: Value of the WPML template cache row on WPML → Support: WPML keeps its compiled page templates in a cache folder.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:833
+msgid "On"
+msgstr ""
+
+#. translators: Note under the WPML template cache row on WPML → Support. %s: the error, or the path of the folder WPML could not create.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:845
+#, php-format
+msgid "WPML could not create its cache folder: %s"
+msgstr ""
+
+#. translators: Note under the WPML template cache row on WPML → Support.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:847
+msgid "WPML could not create its cache folder."
+msgstr ""
+
+#. translators: Note under the WPML template cache row on WPML → Support. %s: the error message, which names the folder.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:852
+#, php-format
+msgid "WPML could not write a compiled template: %s"
+msgstr ""
+
+#. translators: Note under the WPML template cache row on WPML → Support.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:854
+msgid "WPML could not write a compiled template."
+msgstr ""
+
 #. translators: Value of the "Memory limit" row in the system information table on WPML → Support, shown when the two limits differ. %1$s: the memory limit set in the php.ini file, such as 120M. %2$s: the memory limit in use on this page, such as 256M. Keep "php.ini" as it is.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:746
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:874
 #, php-format
 msgid "%1$s in php.ini, %2$s at runtime"
 msgstr ""
 
 #. translators: Shown in the box on the WPML System check page that normally holds the debug information to copy. %s: the error message PHP reported.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:787
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:915
 #, php-format
 msgid "WPML could not collect the debug information. Error: %s"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:818
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:946
 msgid "No installer instances detected."
 msgstr ""
 
 #. translators: Column heading in the loaded-files table on WPML → Support: where the file sits on the server.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:826
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:954
 msgid "Path"
 msgstr ""
 
 #. translators: Column heading in the loaded-files table on WPML → Support: whether the file is loaded before the others.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:828
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:956
 msgid "High priority"
 msgstr ""
 
 #. translators: Column heading in the loaded-files table on WPML → Support: whether the file's work is handed over to another file. Adjective, not a verb.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:829
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/SystemCheckController.php:957
 msgid "Delegated"
+msgstr ""
+
+#. translators: Status shown under the repair button on WPML → Support when the request failed before the repair could answer.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:88
+msgid "The repair could not run. Reload the page and try again."
+msgstr ""
+
+#. translators: Name of a Support tool on WPML → Support, the heading of its screen and the button that runs it. "The translations table" is the database table where WPML records which content is a translation of which. Verb phrase, imperative.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:128
+msgid "Repair the translations table"
+msgstr ""
+
+#. translators: On WPML → Support, when rows of the translations table have no ID but the table has its keys.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:141
+msgid "Some rows of the table that links your content to its translations have no ID, so WPML cannot use them. WPML saves a copy of the table, then gives those rows an ID."
+msgstr ""
+
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:144
+msgid "The table that links your content to its translations lost its keys. WPML saves a copy of the table, then restores the keys and gives an ID to the rows that lost theirs."
+msgstr ""
+
+#. translators: Line of the dry read on WPML → Support. %1$d: rows of the translations table whose ID is 0, %2$d: the records they become after the repair (the plural follows this number).
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:159
+#, php-format
+msgid "Rows without an ID: %1$d. They become %2$d record."
+msgid_plural "Rows without an ID: %1$d. They become %2$d records."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Line of the dry read on WPML → Support. %d: rows that repeat another row and are removed by the repair.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:165
+#, php-format
+msgid "Duplicate rows to remove: %d."
+msgstr ""
+
+#. translators: Line of the dry read on WPML → Support. %d: how many keys and indexes of the table the repair adds back.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:170
+#, php-format
+msgid "Keys to add: %d."
+msgstr ""
+
+#. translators: Line of the dry read on WPML → Support. %d: translation statuses that name a row with ID 0, which no repaired row can be matched to.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:178
+#, php-format
+msgid "Translation statuses that point to no row: %d. They are left as they are."
+msgstr ""
+
+#. translators: Result of the repair on WPML → Support. %1$d: rows given an ID, %2$d: duplicate rows removed, %3$d: keys and indexes added, %4$s: the name of the database table that holds the copy made before the repair.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:196
+#, php-format
+msgid "Done. Rows given an ID: %1$d. Duplicate rows removed: %2$d. Keys added: %3$d. A copy of the table from before the repair is saved as %4$s."
+msgstr ""
+
+#. translators: On WPML → Support, when the translations table has its keys.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:215
+msgid "The translations table has all its keys. There is nothing to repair."
+msgstr ""
+
+#. translators: On WPML → Support, when the repair refuses to run because rows of the translations table cannot be told apart safely.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:219
+msgid "Some rows of the translations table cannot be told apart safely, so nothing was changed. Contact WPML support."
+msgstr ""
+
+#. translators: On WPML → Support, when the repair could not save a copy of the table first. %s: the error the database reported.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:223
+#, php-format
+msgid "WPML could not save a copy of the table, so nothing was changed. The database reported: %s"
+msgstr ""
+
+#. translators: On WPML → Support, when the repair stopped after it saved its copy. %1$s: the error the database reported, %2$s: the name of the database table that holds the copy made before the repair.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/TranslationsTableKeysController.php:229
+#, php-format
+msgid "The repair stopped. The database reported: %1$s. The table from before the repair is saved as %2$s."
 msgstr ""
 
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Support/Tool/UsageTrackingController.php:40
@@ -3159,7 +3870,7 @@ msgstr ""
 #. translators: Name of the Strings tab of WPML → Translations: the texts of the theme, the plugins and the site. Also used as link text and as a back-link to that tab.
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/AdminTextsTranslationController.php:163
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/AdminTextsTranslationController.php:191
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:343
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:359
 msgid "Strings"
 msgstr ""
 
@@ -3225,8 +3936,14 @@ msgstr ""
 msgid "String Translation requires the WPML String Translation plugin."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TaxonomyTabBody.php:105
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TaxonomyTabBody.php:116
 msgid "Taxonomy translation is unavailable until WPML setup completes."
+msgstr ""
+
+#. translators: Line under the Taxonomy tab title on WPML → Translations. %1$s and %2$s are the start and end of a link to the Translation Dashboard.
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TaxonomyTabBody.php:161
+#, php-format
+msgid "Edit term translations by hand, one term at a time. To send terms for translation, use the %1$sTranslation Dashboard%2$s."
 msgstr ""
 
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationJobsTabBody.php:35
@@ -3241,73 +3958,73 @@ msgstr ""
 
 #. translators: Name of the Translation Tasks tab of WPML → Translations, also used as link text pointing at it.
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationJobsTabBody.php:50
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:400
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:432
 msgid "Translation Tasks"
 msgstr ""
 
 #. translators: Name of the Dashboard tab of WPML → Translations.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:316
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:330
 msgid "Dashboard"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:317
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:331
 msgid "Central hub for translating all your site content."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:336
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:350
 msgid "Align menus in translated languages with your default menu structure."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:344
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:360
 msgid "Translate interface strings from themes, plugins, and your site directly."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:354
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:370
 msgid "Manually translate taxonomy terms independently of posts."
 msgstr ""
 
 #. translators: Name of a tab of WPML → Translations: the web addresses of the WooCommerce shop pages. Noun phrase (the addresses of the store), not an instruction to store addresses.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:361
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:377
 msgid "Store URLs"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:362
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:378
 msgid "Translate WooCommerce slugs for shop, products, categories and tags."
 msgstr ""
 
 #. translators: Name of the Media tab of WPML → Translations: the images and other files in the media library.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:373
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:389
 msgid "Media"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:374
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:390
 msgid "Translate captions, alt text, and descriptions of media library items."
 msgstr ""
 
 #. translators: Name of the Translation Jobs tab of WPML → Translations, also used as link text pointing at it.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:383
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:399
 #: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationTasksTabBody.php:63
 msgid "Translation Jobs"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:384
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:400
 msgid "Track and manage all translation jobs sent from this site."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:401
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:433
 msgid "Tasks waiting for your review or translation."
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:439
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:472
 msgid "Define how specific terms should always be translated."
 msgstr ""
 
 #. translators: Name of the Improve Translations tab of WPML → Translations. Verb phrase, imperative.
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:450
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:483
 msgid "Improve Translations"
 msgstr ""
 
-#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:451
+#: src/UserInterface/Web/Infrastructure/WordPress/Component/Translations/TranslationsTabStripDispatcher.php:484
 msgid "Review and improve your automatic translations."
 msgstr ""
 

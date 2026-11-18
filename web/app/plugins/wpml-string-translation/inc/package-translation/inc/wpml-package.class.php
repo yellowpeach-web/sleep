@@ -19,6 +19,8 @@ class WPML_Package {
 	public $name;
 	public $translation_element_type;
 	public $post_id;
+	public $owner_kind;
+	public $owner_element_id;
 	public $translator_note;
 
 	private $element_type_prefix;
@@ -26,6 +28,7 @@ class WPML_Package {
 	private $translate_only = false;
 
 	private $inserted = false;
+	private $owner_declared = false;
 
 	function __construct( $data_item ) {
 		$this->element_type_prefix = 'package';
@@ -289,13 +292,18 @@ class WPML_Package {
 			'view_link' => $this->view_link,
 			'post_id'   => $this->post_id,
 		);
+		$data = array_merge( $data, $this->ownerData() );
 
 		$wereSuppressed = $wpdb->suppress_errors( true );
 		$this->inserted = false !== $wpdb->insert( $wpdb->prefix . 'icl_string_packages', $data );
 		$wpdb->suppress_errors( $wereSuppressed );
+		self::forget_all_packages_list();
 
 		if ( $this->inserted ) {
 			$this->ID = (int) $wpdb->insert_id;
+			if ( $this->owner_kind ) {
+				\WPML\ST\PackageTranslation\Ownership::recordChange( $this->owner_kind, $this->owner_element_id, $this->ID );
+			}
 		} else {
 			$error    = $wpdb->last_error;
 			$this->ID = $this->stored_package_id();
@@ -307,12 +315,28 @@ class WPML_Package {
 		return $this->ID;
 	}
 
+	private function ownerData( $apply = true ) {
+		$data = ( new \WPML\ST\PackageTranslation\Ownership() )->registrationData( $this->post_id, $this->owner ?? null );
+		if ( $apply ) {
+			foreach ( $data as $key => $value ) {
+				$this->$key = $value;
+			}
+		}
+		return $data;
+	}
+
+	public function has_owner_change() {
+		$current = [ 'post_id' => $this->post_id, 'owner_kind' => $this->owner_kind ?? null, 'owner_element_id' => $this->owner_element_id ?? null ];
+		$data = $this->owner_declared ? $this->ownerData( false ) : [];
+		return $data && array_diff_assoc( $data, $current );
+	}
+
 	public function update_package_record() {
 		$result = false;
 
 		if ( $this->ID && self::packages_table_exists() ) {
 			global $wpdb;
-
+			$owner_changed = $this->has_owner_change();
 			$update_data  = array(
 				'kind_slug' => $this->kind_slug,
 				'kind'      => $this->kind,
@@ -324,10 +348,21 @@ class WPML_Package {
 			$update_where = array(
 				'ID' => $this->ID,
 			);
-			$result       = $wpdb->update( $wpdb->prefix . 'icl_string_packages', $update_data, $update_where );
+			if ( $owner_changed ) {
+				$update_data = array_merge( $update_data, $this->ownerData() );
+			}
+			$result = $wpdb->update( $wpdb->prefix . 'icl_string_packages', $update_data, $update_where );
+			self::forget_all_packages_list();
+			if ( false !== $result && $owner_changed && $this->owner_kind ) {
+				\WPML\ST\PackageTranslation\Ownership::recordChange( $this->owner_kind, $this->owner_element_id, $this->ID );
+			}
 		}
 
 		return $result;
+	}
+
+	private static function forget_all_packages_list() {
+		wp_cache_delete( 'get_all_packages', 'string_package' );
 	}
 
 	public function get_package_id() {
@@ -413,6 +448,7 @@ class WPML_Package {
 	}
 
 	private function init_from_array( $args ) {
+		$this->owner_declared = array_key_exists( 'owner', $args ) || array_key_exists( 'post_id', $args );
 		foreach ( $args as $key => $value ) {
 			if ( 'id' == $key ) {
 				$key = 'ID';
@@ -530,6 +566,9 @@ class WPML_Package {
 		$this->title     = $package->title;
 		$this->edit_link = $package->edit_link;
 		$this->view_link = $package->view_link;
+		$this->post_id = $this->owner_declared ? ( $package->post_id ?? $this->post_id ) : $this->post_id;
+		$this->owner_kind = $package->owner_kind ?? null;
+		$this->owner_element_id = $package->owner_element_id ?? null;
 	}
 
 	private function get_kind_from_slug() {
@@ -565,7 +604,13 @@ class WPML_Package {
 	}
 
 	public function get_package_language() {
-		global $sitepress;
+		global $sitepress, $wpdb;
+		if ( $this->owner_kind ) {
+			$owner = ( new \WPML\ST\PackageTranslation\Ownership() )->owner( null, $this );
+			if ( $owner['language'] ?? null ) {
+				return $owner['language'];
+			}
+		}
 
 		if ( $this->post_id ) {
 			$details = null;

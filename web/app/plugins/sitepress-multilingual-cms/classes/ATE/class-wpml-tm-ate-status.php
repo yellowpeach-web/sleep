@@ -1,8 +1,25 @@
 <?php
 
 use WPML\Setup\Option;
+use WPML\TM\ATE\AutomaticTranslationCapabilities;
 
 class WPML_TM_ATE_Status {
+
+	public static function is_account_usable() {
+		return AutomaticTranslationCapabilities::isAvailable();
+	}
+
+	public static function is_editor_ate() {
+		return \WPML\TranslationPolicy\Policy\Policy::isSiteEditorAte();
+	}
+
+	public static function is_ate_account_wanted() {
+		return \WPML\TranslationPolicy\Policy\Policy::siteWantsAteAccount();
+	}
+
+	public static function can_ate_job_exist() {
+		return self::is_account_usable() || self::is_editor_ate();
+	}
 
 	public static function is_enabled() {
 		return wpml_get_tm_sub_setting( 'doc_translation_method', null ) === ICL_TM_TMETHOD_ATE;

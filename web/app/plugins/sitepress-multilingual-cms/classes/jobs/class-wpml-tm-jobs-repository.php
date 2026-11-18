@@ -2,15 +2,21 @@
 
 use \WPML\TM\Jobs\Query\Query;
 use WPML\FP\Fns;
+use WPML\TM\Jobs\StringBatchTitles;
+use WPML\Upgrade\TranslationStatusSchema;
 
 class WPML_TM_Jobs_Repository {
-	const TAXONOMY_LABEL_BATCH_NAME_PREFIX = 'translate everything|taxonomy-label|';
+	const TAXONOMY_LABEL_BATCH_NAME_PREFIX = StringBatchTitles::TAXONOMY_LABEL_BATCH_NAME_PREFIX;
 
 	private $wpdb;
 
 	private $query_builder;
 
 	private $elements_repository;
+
+	private $string_batch_titles;
+
+	private $status_columns_checked = false;
 
 	public function __construct(
 		wpdb $wpdb,
@@ -20,22 +26,74 @@ class WPML_TM_Jobs_Repository {
 		$this->wpdb                = $wpdb;
 		$this->query_builder       = $query_builder;
 		$this->elements_repository = $elements_repository;
+		$this->string_batch_titles = new StringBatchTitles( $wpdb );
 	}
 
 	public function get( WPML_TM_Jobs_Search_Params $params ) {
 		$query = $this->query_builder->get_data_query( $params );
+		$wpdb  = $this->wpdb;
 
 		if ( $params->get_columns_to_select() ) {
-			return $this->wpdb->get_results( $query );
+			return $this->read(
+				function () use ( $wpdb, $query ) {
+					return $wpdb->get_results( $query );
+				}
+			);
 		}
 
-		$results = $this->wpdb->get_results( $query );
+		$results = $this->read(
+			function () use ( $wpdb, $query ) {
+				return $wpdb->get_results( $query );
+			}
+		);
 		return is_array( $results )
 			? new WPML_TM_Jobs_Collection( array_map(
 				array( $this, 'build_job_entity' ),
 				$results
 			  ) )
 			: new WPML_TM_Jobs_Collection( [] );
+	}
+
+	public function get_or_fail( WPML_TM_Jobs_Search_Params $params ) {
+		$this->wpdb->last_error = '';
+		$result                 = $this->get( $params );
+		$this->fail_on_statement_error( 'list' );
+
+		return $result;
+	}
+
+	public function get_count_or_fail( WPML_TM_Jobs_Search_Params $params ) {
+		$this->wpdb->last_error = '';
+		$count                  = $this->get_count( $params );
+		$this->fail_on_statement_error( 'count' );
+
+		return $count;
+	}
+
+	private function read( callable $read ) {
+		$result = $read();
+		$error  = (string) $this->wpdb->last_error;
+
+		if ( ! $this->status_columns_checked && false !== stripos( $error, 'Unknown column' ) ) {
+			$this->status_columns_checked = true;
+			$query                        = $this->wpdb->last_query;
+			if ( TranslationStatusSchema::healMissingColumns( $this->wpdb ) ) {
+				return $read();
+			}
+			$this->wpdb->last_error = $error;
+			$this->wpdb->last_query = $query;
+		}
+
+		return $result;
+	}
+
+	private function fail_on_statement_error( $statement ) {
+		$error = (string) $this->wpdb->last_error;
+		if ( '' !== $error ) {
+			\WPML\PHP\Logger\error( sprintf( 'The translation jobs %s statement failed: %s', $statement, $error ) );
+
+			throw new \RuntimeException( 'list' === $statement ? 'The translation jobs list statement failed.' : 'The translation jobs count statement failed.' );
+		}
 	}
 
 	public function get_collection( WPML_TM_Jobs_Search_Params $params ) {
@@ -64,14 +122,24 @@ class WPML_TM_Jobs_Repository {
 
 	public function get_count( WPML_TM_Jobs_Search_Params $params ) {
 		$query = $this->query_builder->get_count_query( $params );
+		$wpdb  = $this->wpdb;
 
-		return (int) $this->wpdb->get_var( $query );
+		return (int) $this->read(
+			function () use ( $wpdb, $query ) {
+				return $wpdb->get_var( $query );
+			}
+		);
 	}
 
 	public function exists( WPML_TM_Jobs_Search_Params $params ) {
 		$query = $this->query_builder->get_exists_query( $params );
+		$wpdb  = $this->wpdb;
 
-		return (bool) $this->wpdb->get_var( $query );
+		return (bool) $this->read(
+			function () use ( $wpdb, $query ) {
+				return $wpdb->get_var( $query );
+			}
+		);
 	}
 
 	public function get_job( $local_job_id, $job_type ) {
@@ -80,7 +148,12 @@ class WPML_TM_Jobs_Repository {
 		$params->set_job_types( $job_type );
 
 		$query = $this->query_builder->get_data_query( $params );
-		$data = $this->wpdb->get_row( $query );
+		$wpdb  = $this->wpdb;
+		$data  = $this->read(
+			function () use ( $wpdb, $query ) {
+				return $wpdb->get_row( $query );
+			}
+		);
 		if ( is_object( $data )  ) {
 			$data = $this->build_job_entity( $data );
 		}
@@ -142,36 +215,11 @@ class WPML_TM_Jobs_Repository {
 	}
 
 	private function get_job_title( $raw_data ) {
-		if (
-			WPML_TM_Job_Entity::STRING_BATCH === $raw_data->type
-			&& 0 === strpos( (string) $raw_data->title, self::TAXONOMY_LABEL_BATCH_NAME_PREFIX )
-		) {
-			$labels = $this->get_taxonomy_label_batch_title( (int) $raw_data->original_element_id );
-			if ( '' !== $labels ) {
-				return $labels;
-			}
+		if ( WPML_TM_Job_Entity::STRING_BATCH === $raw_data->type ) {
+			return $this->string_batch_titles->title( (int) $raw_data->original_element_id, (string) $raw_data->title );
 		}
 
 		return $raw_data->title;
-	}
-
-	private function get_taxonomy_label_batch_title( $batch_id ) {
-		$wpdb   = $this->wpdb;
-		$values = $wpdb->get_col(
-			$wpdb->prepare(
-				"SELECT strings.value
-				FROM {$wpdb->prefix}icl_string_batches string_batches
-				INNER JOIN {$wpdb->prefix}icl_strings strings
-					ON strings.id = string_batches.string_id
-				WHERE string_batches.batch_id = %d
-				ORDER BY string_batches.id ASC",
-				$batch_id
-			)
-		);
-
-		$values = array_values( array_unique( array_filter( array_map( 'trim', (array) $values ) ) ) );
-
-		return implode( ', ', $values );
 	}
 
 	private function get_deadline( $raw_data ) {

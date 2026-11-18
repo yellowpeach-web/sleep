@@ -199,6 +199,12 @@ jQuery(function ($) {
       radio = $('input[name="' + radio_name + '"]'),
       unlocked_name = $(this).data('unlocked-name');
 
+    // A row whose modes an integration disabled with a reason (wpml_disable_translation_mode_radio) stays as it
+    // is: unlocking it would offer modes that the integration overrides (wpmldev-12178, Divi's Theme Builder).
+    if ($(this).closest('.js-type-translation-row').find('.js-disabled-externally').length) {
+      return false;
+    }
+
     $(this)
       .prop('disabled', true)
       .find('i').removeClass('otgs-ico-lock').addClass('otgs-ico-unlock');

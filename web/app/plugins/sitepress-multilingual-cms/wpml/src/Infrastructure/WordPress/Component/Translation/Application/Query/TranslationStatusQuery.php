@@ -7,6 +7,7 @@ use WPML\Core\Component\Translation\Application\Query\TranslationQueryInterface;
 use WPML\Core\Component\Translation\Application\Query\TranslationStatusQueryInterface;
 use WPML\Core\Component\Translation\Application\String\StringBatchToStringsTranslationsMapper;
 use WPML\Core\Component\Translation\Domain\Translation;
+use WPML\Core\SharedKernel\Component\Translation\Domain\TranslationStatus;
 
 class TranslationStatusQuery implements TranslationStatusQueryInterface {
 
@@ -33,12 +34,17 @@ class TranslationStatusQuery implements TranslationStatusQueryInterface {
     return array_map(
       function ( Translation $translation ) {
         $reviewStatus = $translation->getReviewStatus();
+        $status       = $translation->getStatus()->get();
+
+        if ( $status === TranslationStatus::COMPLETE && $translation->needsUpdate() ) {
+          $status = TranslationStatus::NEEDS_UPDATE;
+        }
 
         return new TranslationStatusDto(
           $translation->getOriginalElementId(),
           $translation->getType()->get(),
           $translation->getTargetLanguageCode(),
-          $translation->getStatus()->get(),
+          $status,
           $reviewStatus ? $reviewStatus->getValue() : null
         );
       },

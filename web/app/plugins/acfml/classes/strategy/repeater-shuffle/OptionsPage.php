@@ -41,6 +41,8 @@ class OptionsPage extends Strategy {
 	}
 
 	public function getAllMeta( $id ) {
+		acf_get_store( 'values' )->reset();
+
 		$options = [];
 		$fields  = get_fields( $id );
 		$fields  = $fields ? $fields : [];

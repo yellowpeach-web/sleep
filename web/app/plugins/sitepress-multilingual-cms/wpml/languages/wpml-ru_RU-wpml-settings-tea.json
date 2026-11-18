@@ -61,7 +61,7 @@
             "На основе оставшегося непереведенного контента на всех языках."
          ],
          "Estimated from the selected source volume multiplied by the target languages.": [
-            "Рассчитано на основе выбранного исходного объема, умноженного на количество целевых языков."
+            "Рассчитано на основе выбранного объема оригинала, умноженного на количество языков перевода."
          ],
          "%1$s source words × %2$s language": [
             "%1$s исходное слово × %2$s язык",
@@ -137,11 +137,11 @@
          "Legacy engine": [
             "Устаревшая система"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "Применены устаревшие расценки. %s — это устаревшая система перевода, она не рекомендуется для новых сайтов и скоро будет выведена из эксплуатации. Для существующих сайтов сохраняется скорректированный тариф за слово."
-         ],
          "Switch to PTC": [
             "Перейти на PTC"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Применены устаревшие расценки. %s — это устаревшая система перевода, она не рекомендуется для новых сайтов и скоро будет выведена из эксплуатации. Для существующих сайтов сохраняется скорректированный тариф за слово."
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Столько требуется для перевода вашего текущего контента на данный момент. Сюда не входят некоторые тексты, добавленные другими плагинами (например, формы или слайдеры), которые подсчитываются после завершения настройки. Строки сайта из вашей темы и плагинов также подсчитываются после настройки и обычно добавляют несколько сотен слов. После этого правки бесплатны. Вы платите снова только за добавленные слова."
@@ -156,10 +156,10 @@
             "Это то, что требуется для перевода вашего текущего контента на сегодняшний день. По тарифу за слово %s; изменения на переведенных страницах оплачиваются повторно."
          ],
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
-            "Учитываются страницы, записи и товары с их произвольными полями, текстами конструктора страниц и медиафайлов, а также используемые ими рубрики, метки и атрибуты."
+            "Подсчитываются страницы, записи и товары вместе с их произвольными полями, текстами конструктора страниц и текстами медиафайлов, а также используемые ими рубрики, метки и атрибуты."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Учитываются страницы, записи и товары с их произвольными полями, текстами конструктора страниц и медиафайлов, используемые ими рубрики, метки и атрибуты, а также строки сайта. Термин учитывается в каждом элементе, где он используется, и отдельно сам по себе, поскольку он отправляется на перевод обоими способами."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Учитываются страницы, записи и товары вместе с их произвольными полями, текстами конструктора страниц и медиафайлов, используемые ими рубрики, метки и атрибуты, а также строки сайта. Каждая рубрика, метка или атрибут учитывается один раз в строке «Таксономии» и повторно не подсчитывается вместе с элементами, где они используются."
          ],
          "Total items": [
             "Всего элементов"
@@ -383,7 +383,7 @@
             "В вашем аккаунте WPML %1$s%2$s слов%3$s."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "В вашей учетной записи WPML доступно %1$s%2$s.%3$s"
+            "В вашей учетной записи WPML доступно %1$s%2$s%3$s."
          ],
          "(Only the WPML account owner can do this.)": [
             "(Это может сделать только владелец учетной записи WPML.)"

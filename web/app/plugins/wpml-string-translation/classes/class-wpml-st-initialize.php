@@ -17,8 +17,9 @@ class WPML_ST_Initialize {
 		$this->configureDIC();
 
 		if ( has_action( 'wpml_before_init', 'load_wpml_st_basics' ) !== false ) {
-			$this->loadEarlyHooks();
 			$app = new \WPML\StringTranslation\Application( $this->config );
+			$app->loadSettingFilter();
+			$this->loadEarlyHooks();
 			$app->run();
 		}
 	}

@@ -28,6 +28,8 @@ final class SearchCriteria {
 
   private $heldOut;
 
+  private $appearedOnly;
+
 
   public function __construct(
     string $type,
@@ -41,7 +43,8 @@ final class SearchCriteria {
     int $limit = 10,
     int $offset = 0,
     ?array $sorting = null,
-    bool $heldOut = false
+    bool $heldOut = false,
+    bool $appearedOnly = true
   ) {
     $this->type                = $type;
     $this->title               = $title;
@@ -57,11 +60,25 @@ final class SearchCriteria {
       new SortingCriteria( $sorting['by'], $sorting['order'] ) :
       null;
     $this->heldOut             = $heldOut;
+    $this->appearedOnly        = $appearedOnly;
   }
 
 
   public function isHeldOut(): bool {
     return $this->heldOut;
+  }
+
+
+  public function isAppearedOnly(): bool {
+    return $this->appearedOnly;
+  }
+
+
+  public function withAppearedOnly( bool $appearedOnly ): self {
+    $copy               = clone $this;
+    $copy->appearedOnly = $appearedOnly;
+
+    return $copy;
   }
 
 

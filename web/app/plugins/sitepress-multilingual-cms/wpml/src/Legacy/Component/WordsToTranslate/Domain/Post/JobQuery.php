@@ -16,6 +16,8 @@ class JobQuery implements JobQueryInterface {
 
   private $jobPackages = [];
 
+  private $jobContentItems = [];
+
 
   public function getContentToTranslateForLang( Post $post, string $lang ) {
     $jobPackage = $this->getJobPackage( $post, $lang );
@@ -90,7 +92,7 @@ class JobQuery implements JobQueryInterface {
 
       $term = isset( $terms[ $termId ] )
         ? $terms[ $termId ]
-        : new Term( $termId );
+        : $this->newTerm( $termId );
 
       $term->addContent( $termContent );
 
@@ -100,6 +102,18 @@ class JobQuery implements JobQueryInterface {
     }
 
     return $terms;
+  }
+
+
+  private function newTerm( $termTaxonomyId ): Term {
+    $term = new Term( $termTaxonomyId );
+
+    $wpTerm = function_exists( 'get_term_by' ) ? get_term_by( 'term_taxonomy_id', $termTaxonomyId ) : null;
+    if ( $wpTerm instanceof \WP_Term ) {
+      $term->setTaxonomy( $wpTerm->taxonomy );
+    }
+
+    return $term;
   }
 
 
@@ -160,6 +174,12 @@ class JobQuery implements JobQueryInterface {
     }
 
     $this->jobPackages[ $idItem ] = $data;
+    $this->jobContentItems[ $idItem ] = true;
+  }
+
+
+  public function carriesJobContent( Post $post ) {
+    return isset( $this->jobContentItems[ $post->getId() ] );
   }
 
 

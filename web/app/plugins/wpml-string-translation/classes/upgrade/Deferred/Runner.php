@@ -13,6 +13,8 @@ class Runner {
 
 	const STEP_RECOMPUTE_STRING_STATUSES = 'recompute-string-statuses';
 
+	const STEP_RELEASE_ENDED_STRING_BATCHES = 'release-ended-string-batches';
+
 	private static $st_upgrade = null;
 
 	public static function register( \WPML_ST_Upgrade $st_upgrade ) {
@@ -125,6 +127,11 @@ class Runner {
 			case self::STEP_RECOMPUTE_STRING_STATUSES:
 				return self::$st_upgrade
 					? self::$st_upgrade->run_deferred_command( \WPML\ST\Upgrade\Command\RecomputeStatusesZeroedByOutdatedHandler::class )
+					: false;
+
+			case self::STEP_RELEASE_ENDED_STRING_BATCHES:
+				return self::$st_upgrade
+					? self::$st_upgrade->run_deferred_command( \WPML\ST\Upgrade\Command\ReleaseStringsOfEndedBatches::class )
 					: false;
 
 			case self::STEP_SETTINGS_ROWS_MIGRATION:

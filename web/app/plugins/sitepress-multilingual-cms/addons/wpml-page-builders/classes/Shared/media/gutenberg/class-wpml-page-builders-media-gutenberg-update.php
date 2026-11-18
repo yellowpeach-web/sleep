@@ -37,7 +37,7 @@ class WPML_Page_Builders_Media_Gutenberg_Update implements IWPML_PB_Media_Update
 
 		$blocks = $this->translate_blocks_recursive( $blocks );
 
-		$source_element = $element->get_source_element();
+		$source_element = $element->get_source_element( true );
 
 		if ( $this->media_usage && $source_element ) {
 			$this->media_usage->update( $source_element->get_id() );

@@ -16,22 +16,32 @@ use WPML\TM\Settings\PreferenceResolver;
 use function WPML\FP\pipe;
 
 class Manual {
+
+	const IN_PROGRESS_STATUSES = [ ICL_TM_IN_PROGRESS, ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_ATE_NEEDS_RETRY ];
 	public function createOrReuse( array $params ) {
 		$jobId    = (int) filter_var( Obj::propOr( 0, 'job_id', $params ), FILTER_SANITIZE_NUMBER_INT );
 		$isReview = (bool) filter_var( Obj::propOr( 0, 'preview', $params ), FILTER_SANITIZE_NUMBER_INT );
 
-		list( $jobId, $trid, $updateNeeded, $targetLanguageCode, $elementType ) = $this->get_job_data_for_restore( $jobId, $params );
+		list( $jobId, $trid, $updateNeeded, $targetLanguageCode, $elementType, $job, $reuseVetoed ) = $this->get_job_data_for_restore( $jobId, $params );
 		$sourceLangCode = filter_var( Obj::prop( 'source_language_code', $params ), FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		list( $sourcePostId, $sourceLangCode ) = $trid && $targetLanguageCode
 			? $this->getJobSource( $trid, $targetLanguageCode, $sourceLangCode )
 			: [ 0, $sourceLangCode ];
 
+		$fieldsNoLongerTranslated = null;
 		if ( $jobId && ! $updateNeeded && ! $isReview ) {
-			$updateNeeded = $this->jobSnapshotIsStale( $jobId, $sourcePostId, $targetLanguageCode, $elementType )
-				|| $this->jobTranslatesFieldsNoLongerTranslated( $jobId, $elementType );
+			$updateNeeded = $this->jobSnapshotIsStale( $jobId, $sourcePostId, $targetLanguageCode, $elementType );
+			if ( ! $updateNeeded ) {
+				$fieldsNoLongerTranslated = $this->jobTranslatesFieldsNoLongerTranslated( $jobId, $elementType );
+				$updateNeeded             = $fieldsNoLongerTranslated;
+			}
 		}
 
 		$needsUpdateAndIsNotReviewMode = $updateNeeded && ! $isReview;
+
+		if ( $needsUpdateAndIsNotReviewMode && $this->keepsWorkInProgress( $jobId, $job, $elementType, $reuseVetoed, $fieldsNoLongerTranslated ) ) {
+			$needsUpdateAndIsNotReviewMode = false;
+		}
 
 		if ( $trid && $targetLanguageCode && ( $needsUpdateAndIsNotReviewMode || ! $jobId ) ) {
 			$postId = $sourcePostId;
@@ -39,7 +49,7 @@ class Manual {
 			if ( $postId && $this->can_user_translate( $sourceLangCode, $targetLanguageCode, $postId ) ) {
 				BaselineJobCreator::build()->create_missing( $postId, BaselineJobCreator::TRIGGER_EDITOR_OPEN );
 
-				$createdJob = $this->markJobAsManual( $this->createLocalJob( $postId, $sourceLangCode, $targetLanguageCode, $elementType ) );
+				$createdJob = $this->markJobAsManual( $this->createLocalJob( $postId, $sourceLangCode, $targetLanguageCode, $elementType, $this->classicTranslatorToKeep( $job ) ) );
 				if ( $createdJob ) {
 					JobLog::add( 'manual_editor_job_prepared', [
 						'job_id'      => JobLog::safeCall( $createdJob, 'get_id' ),
@@ -85,9 +95,9 @@ class Manual {
 
 	public function maybeGetDataIfTranslationCreatedInNativeEditorViaConnection( array $params ) {
 		$jobId = (int) filter_var( Obj::propOr( 0, 'job_id', $params ), FILTER_SANITIZE_NUMBER_INT );
-		list( , $trid, , $targetLanguageCode ) = $this->get_job_data_for_restore( $jobId, $params );
+		list( , $trid, , $targetLanguageCode, $elementType ) = $this->get_job_data_for_restore( $jobId, $params );
 
-		if ( $trid && $targetLanguageCode ) {
+		if ( $trid && $targetLanguageCode && $this->isPostGroup( $trid, $elementType ) ) {
 			$originalPostId = $this->getOriginalPostId( $trid );
 			if (
 				$this->isDuplicate( $originalPostId, $targetLanguageCode )
@@ -113,6 +123,12 @@ class Manual {
 		}
 
 		return null;
+	}
+
+	private function isPostGroup( $trid, $elementType ) {
+		$elementType = $elementType ?: Obj::path( [ 0, 'element_type' ], TranslationRecords::getByTrid( $trid ) );
+
+		return 0 === strpos( (string) $elementType, 'post_' );
 	}
 
 	private function getOriginalPostId( $trid ) {
@@ -207,9 +223,9 @@ class Manual {
 
 	public function maybeGetDataForNewTranslationInNativeEditor( array $params ) {
 		$jobId = (int) filter_var( Obj::propOr( 0, 'job_id', $params ), FILTER_SANITIZE_NUMBER_INT );
-		list( , $trid, , $targetLanguageCode ) = $this->get_job_data_for_restore( $jobId, $params );
+		list( , $trid, , $targetLanguageCode, $elementType ) = $this->get_job_data_for_restore( $jobId, $params );
 
-		if ( ! $trid || ! $targetLanguageCode ) {
+		if ( ! $trid || ! $targetLanguageCode || ! $this->isPostGroup( $trid, $elementType ) ) {
 			return null;
 		}
 
@@ -259,10 +275,7 @@ class Manual {
 		$translationService = Obj::prop( 'translation_service', $job );
 		$isRemote           = $translationService && 'local' !== $translationService;
 
-		$inProgress = Lst::includes(
-			(int) Obj::prop( 'status', $job ),
-			[ ICL_TM_IN_PROGRESS, ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_ATE_NEEDS_RETRY ]
-		);
+		$inProgress = Lst::includes( (int) Obj::prop( 'status', $job ), self::IN_PROGRESS_STATUSES );
 
 		return $inProgress && ! $isRemote;
 	}
@@ -293,23 +306,82 @@ class Manual {
 			$job          = null;
 		}
 
+		$record = is_object( $job ) ? TranslationRecord::recordUnderClosedRequest( (int) Obj::prop( 'job_id', $job ) ) : null;
+		if ( $record ) {
+			JobLog::add( 'manual_editor_closed_request_skipped_for_record', [
+				'request_job_id' => (int) Obj::prop( 'job_id', $job ),
+				'ate_job_id'     => (int) Obj::prop( 'editor_job_id', $job ),
+				'record_job_id'  => (int) Obj::prop( 'job_id', $record ),
+			] );
+
+			$job = Jobs::get( (int) Obj::prop( 'job_id', $record ) );
+		}
+
 		if ( is_object( $job ) ) {
 			$jobTrid     = Obj::prop( 'trid', $job );
 			$jobLanguage = Obj::prop( 'language_code', $job );
+			$vetoed      = $this->pluginVetoesReuse( $job, $jobTrid, $jobLanguage );
 
 			return [
 				Obj::prop( 'job_id', $job ),
 				$jobTrid,
-				$this->rebuildJobUnlessReusable( Obj::prop( 'needs_update', $job ), $job, $jobTrid, $jobLanguage ),
+				$vetoed ? true : Obj::prop( 'needs_update', $job ),
 				$jobLanguage,
-				Obj::prop( 'original_post_type', $job )
+				Obj::prop( 'original_post_type', $job ),
+				$job,
+				$vetoed,
 			];
 		}
 
 		$elementType  = $trid ? Obj::path( [ 0, 'element_type' ], TranslationRecords::getByTrid( $trid ) ) : null;
 		$updateNeeded = $this->rebuildJobUnlessReusable( $updateNeeded, null, $trid, $languageCode );
 
-		return [ $jobId, $trid, $updateNeeded, $languageCode, $elementType, ];
+		return [ $jobId, $trid, $updateNeeded, $languageCode, $elementType, null, false ];
+	}
+
+	private function keepsWorkInProgress( $jobId, $job, $elementType, $reuseVetoed, $fieldsNoLongerTranslated ) {
+		if ( ! $jobId || $reuseVetoed || ! self::holdsWorkInProgressInATE( $job ) ) {
+			return false;
+		}
+
+		if ( null === $fieldsNoLongerTranslated ) {
+			$fieldsNoLongerTranslated = $this->jobTranslatesFieldsNoLongerTranslated( $jobId, $elementType );
+		}
+		if ( $fieldsNoLongerTranslated ) {
+			return false;
+		}
+
+		if ( ( new TranslationRecord() )->opensRecordAsItStood( $jobId ) ) {
+			JobLog::add( 'manual_editor_open_of_record_rebuilt', [
+				'job_id'        => (int) $jobId,
+				'ate_job_id'    => (int) Obj::prop( 'editor_job_id', $job ),
+				'translator_id' => (int) Obj::prop( 'translator_id', $job ),
+			] );
+
+			return false;
+		}
+
+		JobLog::add( 'manual_editor_in_progress_job_kept', [
+			'job_id'        => (int) $jobId,
+			'ate_job_id'    => (int) Obj::prop( 'editor_job_id', $job ),
+			'translator_id' => (int) Obj::prop( 'translator_id', $job ),
+			'needs_update'  => (int) Obj::prop( 'needs_update', $job ),
+		] );
+
+		return true;
+	}
+
+	public static function holdsWorkInProgressInATE( $job ) {
+		if ( ! is_object( $job ) || TranslationRecord::isCompleted( $job ) ) {
+			return false;
+		}
+
+		$service = Obj::prop( 'translation_service', $job );
+
+		return ICL_TM_IN_PROGRESS === (int) Obj::prop( 'status', $job )
+		       && \WPML_TM_Editors::ATE === Obj::prop( 'editor', $job )
+		       && (int) Obj::prop( 'editor_job_id', $job ) > 0
+		       && ( ! $service || 'local' === $service );
 	}
 
 	public function getAutomaticJobInFlight( array $params ) {
@@ -321,7 +393,7 @@ class Manual {
 			? Jobs::getTridJob( $trid, $targetLanguageCode )
 			: ( $jobId ? Jobs::get( $jobId ) : null );
 
-		return $job && self::isAutomaticJobInFlight( $job ) ? $job : null;
+		return is_object( $job ) && self::isAutomaticJobInFlight( $job ) ? $job : null;
 	}
 
 	public static function isAutomaticJobInFlight( $job ) {
@@ -345,8 +417,12 @@ class Manual {
 	}
 
 	private function rebuildJobUnlessReusable( $updateNeeded, $job, $trid, $languageCode ) {
+		return $this->pluginVetoesReuse( $job, $trid, $languageCode ) ? true : $updateNeeded;
+	}
+
+	private function pluginVetoesReuse( $job, $trid, $languageCode ) {
 		if ( ! has_filter( 'wpml_tm_can_reuse_translation_job' ) ) {
-			return $updateNeeded;
+			return false;
 		}
 
 		$source = $trid ? TranslationRecords::getSourceByTrid( $trid ) : null;
@@ -363,7 +439,7 @@ class Manual {
 			]
 		);
 
-		return $canReuse ? $updateNeeded : true;
+		return ! $canReuse;
 	}
 
 	private function can_user_translate( $sourceLangCode, $targetLangCode, $postId ) {
@@ -376,14 +452,23 @@ class Manual {
 		return wpml_tm_load_blog_translators()->is_translator( User::getCurrentId(), $args );
 	}
 
-	private function createLocalJob( $originalPostId, $sourceLangCode, $targetLangCode, $elementType ) {
-		$jobId = wpml_tm_load_job_factory()->create_local_job( $originalPostId, $targetLangCode, null, $elementType, Jobs::SENT_MANUALLY, $sourceLangCode );
+	private function createLocalJob( $originalPostId, $sourceLangCode, $targetLangCode, $elementType, $translatorId = null ) {
+		$jobId = wpml_tm_load_job_factory()->create_local_job( $originalPostId, $targetLangCode, $translatorId, $elementType, Jobs::SENT_MANUALLY, $sourceLangCode );
 
 		return Maybe::fromNullable( $jobId )
 		            ->map( [ wpml_tm_load_job_factory(), 'get_translation_job_as_active_record' ] )
 		            ->map( $this->maybeAssignTranslator() )
 		            ->map( $this->maybeSetJobStatus() )
 		            ->getOrElse( null );
+	}
+
+	private function classicTranslatorToKeep( $job ) {
+		if ( ! is_object( $job ) || TranslationRecord::isCompleted( $job )
+		     || ! ClassicDraftCarry::holdsClassicWorkInProgress( Obj::prop( 'status', $job ), Obj::prop( 'editor', $job ), Obj::prop( 'translation_service', $job ) ) ) {
+			return null;
+		}
+
+		return (int) Obj::prop( 'translator_id', $job ) ?: null;
 	}
 
 	private function maybeAssignTranslator() {

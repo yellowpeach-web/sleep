@@ -121,6 +121,7 @@ class OTGS_Installer_Upgrade_Response {
 	private function is_download_back_to_production( OTGS_Installer_Plugin $plugin ) {
 		return WP_Installer_Channels::CHANNEL_PRODUCTION === $plugin->get_channel()
 			&& $plugin->get_installed_version()
+			&& WP_Installer_Channels::is_pre_release( $plugin->get_installed_version() )
 			&& version_compare( $plugin->get_installed_version(), $plugin->get_version(), '>' )
 			&& $this->is_read_for_download();
 	}

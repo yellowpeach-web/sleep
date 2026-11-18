@@ -32,15 +32,20 @@ class  OTGS_Installer_Site_Key_Remove_Service {
 		}
 		$repository = $this->repositories->get( $repository );
 
+		$site_key = '';
 		if ( $notifyExternalApi ) {
-			$site_key = $repository->get_subscription()->get_site_key();
+			$subscription = $repository->get_subscription();
+			$site_key     = $subscription ? $subscription->get_site_key() : $this->repositories->get_stored_site_key( $repository->get_id() );
+		}
+
+		if ( $site_key ) {
 			list( $url, $params ) = $this->removeApi->build_params( $repository, $site_key );
 		}
 
 		$repository->set_subscription( null );
 		$this->repositories->save_subscription( $repository );
 
-		if ( $notifyExternalApi ) {
+		if ( $site_key ) {
 			$response = $this->removeApi->run( $url, $params );
 
 			if ( self::is_confirmed( $response ) ) {
@@ -90,7 +95,7 @@ class  OTGS_Installer_Site_Key_Remove_Service {
 			return false;
 		}
 
-		$body = maybe_unserialize( wp_remote_retrieve_body( $response ) );
+		$body = OTGS_Installer_Serialized::maybe_decode( wp_remote_retrieve_body( $response ) );
 
 		if ( is_object( $body ) ) {
 			return ! empty( $body->success );
@@ -117,7 +122,7 @@ class  OTGS_Installer_Site_Key_Remove_Service {
 			return sprintf( 'wpml.org answered HTTP %d', $status );
 		}
 
-		$body = maybe_unserialize( wp_remote_retrieve_body( $response ) );
+		$body = OTGS_Installer_Serialized::maybe_decode( wp_remote_retrieve_body( $response ) );
 		if ( is_object( $body ) && ! empty( $body->error ) ) {
 			return 'wpml.org refused the request: ' . (string) $body->error;
 		}

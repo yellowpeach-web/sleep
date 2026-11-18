@@ -135,7 +135,7 @@ class SearchIndex {
         'href'        => 'admin.php?page=tm/menu/settings&section=urls-and-seo',
         'icon'        => 'urls-and-seo',
         'capability'  => 'wpml_manage_languages',
-        'description' => __( 'Language URL format, page URL, slug translations, SEO, browser redirect.', 'wpml' ),
+        'description' => __( 'Language URL format, page URL, slug translations, SEO, visitor language.', 'wpml' ),
         'subs'        => array(
           array(
             'label'  => __( 'Language URL format', 'wpml' ),
@@ -157,8 +157,10 @@ class SearchIndex {
             'anchor' => 'lang-sec-9-5',
           ),
           array(
-            'label'  => __( 'Browser language redirect', 'wpml' ),
-            'anchor' => 'lang-sec-9',
+            /* translators: Entry in the settings search list of WPML → Settings, pointing at the block about which language visitors see the site in. */
+            'label'    => __( 'Visitor language', 'wpml' ),
+            'anchor'   => 'lang-sec-9',
+            'keywords' => array( __( 'Browser language redirect', 'wpml' ) ),
           ),
           array(
             'label'  => __( 'Choose how to determine which language visitors see contents in', 'wpml' ),
@@ -216,21 +218,49 @@ class SearchIndex {
             'anchor' => 'lang-sec-9-5',
           ),
           array(
-            'label'  => __( 'Disable browser language redirect', 'wpml' ),
+            'label'  => __( 'Show the site in the language they last picked in the language switcher', 'wpml' ),
             'anchor' => 'lang-sec-9',
+            'target' => 'icl_redirect_to_chosen_language',
           ),
           array(
-            'label'  => __( 'Redirect visitors based on browser language only if translations exist', 'wpml' ),
+            /* translators: Entry in the settings search list of WPML → Settings, pointing at the field that sets for how many days the language a visitor picked is remembered. */
+            'label'  => __( 'Remember their choice for days', 'wpml' ),
             'anchor' => 'lang-sec-9',
+            'target' => 'icl_redirect_to_chosen_language',
           ),
           array(
-            'label'  => __( 'Always redirect visitors based on browser language (redirect to home page if translations are missing)', 'wpml' ),
+            'label'  => __( 'Keep them on the page they opened', 'wpml' ),
             'anchor' => 'lang-sec-9',
+            'target' => 'icl_first_visit_keep',
           ),
           array(
-            'label'  => __( "Remember visitors' language preference for hours", 'wpml' ),
+            'label'    => __( 'Show a bar that offers the page in their language', 'wpml' ),
+            'anchor'   => 'lang-sec-9',
+            'target'   => 'icl_first_visit_bar',
+            'keywords' => array( __( 'Language suggestion', 'wpml' ) ),
+          ),
+          array(
+            'label'    => __( 'Redirect them automatically to the page in their language', 'wpml' ),
+            'anchor'   => 'lang-sec-9',
+            'target'   => 'icl_first_visit_redirect',
+            'keywords' => array( __( 'Browser language redirect', 'wpml' ) ),
+          ),
+          array(
+            'label'  => __( 'Send them to the home page in their language', 'wpml' ),
             'anchor' => 'lang-sec-9',
-            'target' => 'icl_remember_language',
+            'target' => 'icl_first_visit_redirect',
+          ),
+          array(
+            /* translators: Entry in the settings search list of WPML → Settings, pointing at the field that sets how often the same visitor can be redirected by their browser language. */
+            'label'  => __( 'Redirect each visitor at most once every hours', 'wpml' ),
+            'anchor' => 'lang-sec-9',
+            'target' => 'icl_first_visit_redirect',
+          ),
+          array(
+            /* translators: Entry in the settings search list of WPML → Settings, pointing at the field that sets how long the bar suggesting the page in the visitor's language stays hidden after the visitor closes it. */
+            'label'  => __( 'After a visitor closes the bar, hide it for hours', 'wpml' ),
+            'anchor' => 'lang-sec-9',
+            'target' => 'icl_first_visit_bar',
           ),
         ),
       ),

@@ -7,6 +7,7 @@ use WPML\FP\Logic;
 use WPML\FP\Maybe;
 use WPML\FP\Obj;
 use WPML\FP\Relation;
+use WPML\SuperGlobals\Request;
 use function WPML\FP\System\filterVar;
 use function \WPML\FP\partialRight;
 
@@ -22,6 +23,7 @@ class Backend extends \WPML_Request {
 			Logic::isNotNull(),
 			[
 				$this->getForPage(),
+				$this->getOpenedPostLanguage(),
 				$this->getFromParam( [ 'get', 'lang' ], true ),
 				$this->getFromParam( [ 'post', 'icl_post_language' ], false ),
 				$this->getEditedPostLanguage(),
@@ -37,6 +39,22 @@ class Backend extends \WPML_Request {
 		)
 					->map( $findFromSystemVars )
 					->getOrElse( null );
+	}
+
+	public function get_language_to_save( $request_language ) {
+		$system = [
+			'get' => [
+				'lang'   => Request::param( 'lang' ),
+				'action' => Request::param( 'action' ),
+				'post'   => Request::param( 'post' ),
+			],
+		];
+
+		if ( 'all' === Obj::path( [ 'get', 'lang' ], $system ) && null !== $this->getOpenedPostLanguage()( $system ) ) {
+			return 'all';
+		}
+
+		return $request_language;
 	}
 
 	private function getForPage() {
@@ -74,11 +92,25 @@ class Backend extends \WPML_Request {
 		};
 	}
 
+	private function getOpenedPostLanguage() {
+		return function ( $system ) {
+			return $this->isGetRequest() ? $this->getEditedPostLanguage()( $system ) : null;
+		};
+	}
+
+	private function isGetRequest() {
+		if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || ! is_string( $_SERVER['REQUEST_METHOD'] ) ) {
+			return true;
+		}
+
+		return 'GET' === strtoupper( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) );
+	}
+
 	private function getEditedPostLanguage() {
 		return function ( $system ) {
 			global $wpml_post_translations, $wpml_language_resolution, $pagenow;
 
-			if ( 'post.php' !== $pagenow || 'edit' !== Obj::path( [ 'get', 'action' ], $system ) ) {
+			if ( 'post.php' !== $pagenow || ! $this->is_post_edit_action( Obj::path( [ 'get', 'action' ], $system ) ) ) {
 				return null;
 			}
 

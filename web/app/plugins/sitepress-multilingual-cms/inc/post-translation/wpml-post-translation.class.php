@@ -8,6 +8,8 @@ abstract class WPML_Post_Translation extends WPML_Element_Translation {
 
 	private static $language_assignment_changed = array();
 
+	private static $save_post_actions_suspended = 0;
+
 	private $debug_backtrace;
 
 	private $changed_post_meta = array();
@@ -50,6 +52,7 @@ abstract class WPML_Post_Translation extends WPML_Element_Translation {
 			} else {
 				add_action( 'rest_api_init', [ $this, 'add_rest_late_sync_actions' ] );
 			}
+			add_action( 'wpml_save_product', [ $this, 'sync_product_post_meta' ] );
 			add_action( 'shutdown', [ $this, 'shutdown_action' ], PHP_INT_MAX );
 			add_action( 'edit_attachment', [ $this, 'attachment_actions' ], 100 );
 			add_action( 'add_attachment', [ $this, 'attachment_actions' ], 100 );
@@ -153,6 +156,21 @@ abstract class WPML_Post_Translation extends WPML_Element_Translation {
 			unset( $this->late_sync_running[ $blog_id ][ $post_id ] );
 			$this->remember_synced_post_meta( $post_id );
 		}
+	}
+
+	public function sync_product_post_meta( $post_id ) {
+		$blog_id = $this->get_current_blog_id();
+		$post_id = (int) $post_id;
+
+		if (
+			$post_id
+			&& empty( $this->post_save_stack[ $blog_id ][ $post_id ] )
+			&& ! isset( $this->synced_post_meta[ $blog_id ][ $post_id ] )
+		) {
+			$this->synced_post_meta[ $blog_id ][ $post_id ] = 0;
+		}
+
+		$this->sync_late_post_meta( $post_id );
 	}
 
 	private function remember_synced_post_meta( $post_id ) {
@@ -308,6 +326,11 @@ abstract class WPML_Post_Translation extends WPML_Element_Translation {
 		return apply_filters ( 'wpml_save_post_lang', $language_code );
 	}
 
+	protected function filter_new_post_lang( $language_code, $post_id, $sitepress ) {
+		return ( new \WPML\Posts\NewPostLanguage( $sitepress ) )
+			->get( $language_code, $post_id, $this->get_element_lang_code( $post_id ) );
+	}
+
 	protected abstract function get_save_post_source_lang( $trid, $language_code, $default_language );
 
 	protected function after_save_post( $trid, $post_vars, $language_code, $source_language ) {
@@ -331,6 +354,7 @@ abstract class WPML_Post_Translation extends WPML_Element_Translation {
 			$post_vars
 		);
 		$custom_fields_to_sync = $this->normalize_custom_fields_to_sync( $custom_fields_to_sync );
+		$previous_trid         = $this->get_element_trid( $post_vars['ID'] );
 
 		WPML_Post_Translation_Metadata_Initializer::suspend();
 
@@ -365,7 +389,8 @@ abstract class WPML_Post_Translation extends WPML_Element_Translation {
 		if ( ! in_array( $post_vars['post_type'], array( 'nav_menu_item', 'attachment' ), true ) ) {
 			do_action( 'wpml_tm_save_post', $post_vars['ID'], get_post( $post_vars['ID'] ), false );
 		}
-		$this->flush_object_cache_for_groups( array( 'ls_languages', WPML_ELEMENT_TRANSLATIONS_CACHE_GROUP ) );
+		$this->flush_object_cache_for_groups( array( 'ls_languages' ) );
+		WPML_Translations::flush_cache_for_trids( array( $previous_trid, $this->get_element_trid( $post_vars['ID'] ) ) );
 
 		WPML_Pre_Option_Page::maybe_clear_privacy_policy_cache( $original_id, $post_vars['post_type'] );
 
@@ -511,8 +536,23 @@ abstract class WPML_Post_Translation extends WPML_Element_Translation {
 		return $res;
 	}
 
+	public static function suspend_save_post_actions() {
+		self::$save_post_actions_suspended ++;
+	}
+
+	public static function resume_save_post_actions() {
+		self::$save_post_actions_suspended = max( 0, self::$save_post_actions_suspended - 1 );
+	}
+
+	public static function save_post_actions_suspended() {
+		return self::$save_post_actions_suspended > 0;
+	}
+
 	public function has_save_post_action( $post ) {
 		if ( ! $post ) {
+			return false;
+		}
+		if ( self::save_post_actions_suspended() ) {
 			return false;
 		}
 		$is_auto_draft              = isset( $post->post_status ) && $post->post_status === 'auto-draft';

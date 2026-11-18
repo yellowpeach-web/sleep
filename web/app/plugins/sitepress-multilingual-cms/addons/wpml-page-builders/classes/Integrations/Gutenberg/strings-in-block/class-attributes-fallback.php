@@ -4,6 +4,8 @@ namespace WPML\PB\Gutenberg\StringsInBlock;
 
 use WPML\FP\Str;
 use WPML\PB\Gutenberg\Hooks\TextDefaultRules;
+use WPML\Compatibility\Divi\V5\CustomAttributeItem;
+use WPML\PB\Gutenberg\NeverTextKeys;
 
 class AttributesFallback extends Base {
 
@@ -37,7 +39,10 @@ class AttributesFallback extends Base {
 		$strings = [];
 
 		foreach ( $attrs as $key => $value ) {
-			if ( $this->isSystemKey( $key ) || $this->isReferenceKey( $block_name, $key, $path ) ) {
+			if (
+				$this->isSkippedKey( $block_name, $key, $path )
+				|| $this->isCodeKeyOfCustomAttribute( $block_name, $attrs, $key )
+			) {
 				continue;
 			}
 
@@ -70,7 +75,10 @@ class AttributesFallback extends Base {
 
 	private function updateStringsRecursively( $block_name, array $attrs, array $translations, $lang, array $path = [] ) {
 		foreach ( $attrs as $key => $value ) {
-			if ( $this->isSystemKey( $key ) || $this->isReferenceKey( $block_name, $key, $path ) ) {
+			if (
+				$this->isSkippedKey( $block_name, $key, $path )
+				|| $this->isCodeKeyOfCustomAttribute( $block_name, $attrs, $key )
+			) {
 				continue;
 			}
 
@@ -105,6 +113,16 @@ class AttributesFallback extends Base {
 
 	private function isInnerHtmlEmpty( \WP_Block_Parser_Block $block ) {
 		return ! isset( $block->innerHTML ) || '' === trim( $block->innerHTML );
+	}
+
+	private function isSkippedKey( $block_name, $key, array $path ) {
+		return $this->isSystemKey( $key )
+			|| $this->isReferenceKey( $block_name, $key, $path )
+			|| ( is_string( $key ) && NeverTextKeys::matches( $key, [] === $path ) );
+	}
+
+	private function isCodeKeyOfCustomAttribute( $block_name, array $attrs, $key ) {
+		return CustomAttributeItem::is( (string) $block_name, $attrs ) && ! CustomAttributeItem::isTextKey( $attrs, $key );
 	}
 
 	private function isSystemKey( $key ) {

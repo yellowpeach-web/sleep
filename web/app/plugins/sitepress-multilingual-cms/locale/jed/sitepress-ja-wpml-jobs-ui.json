@@ -47,7 +47,7 @@
             "引き受けて翻訳"
          ],
          "This job was created by Translate Everything and cannot be cancelled on its own. To stop it, turn off Translate Everything from the Translation Dashboard.": [
-            "このジョブは「すべてを自動翻訳する」によって作成されたため、個別にキャンセルすることはできません。停止するには、翻訳ダッシュボードから「すべてを自動翻訳する」をオフにしてください。"
+            "このジョブは「すべてを翻訳する」によって作成されたため、個別にキャンセルすることはできません。停止するには、翻訳ダッシュボードから「すべてを翻訳する」をオフにしてください。"
          ],
          "View": [
             "表示"
@@ -91,23 +91,107 @@
          "Cancelled": [
             "キャンセル済み"
          ],
-         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
-            "自動翻訳が繰り返し失敗したため、WPML は再試行を停止しました。翻訳ダッシュボードからジョブを再送信または破棄するか、ここでキャンセルしてください。"
+         "Published — Pending review": [
+            "公開済み — レビュー待ち"
          ],
          "Needs translation": [
             "翻訳待ち"
          ],
-         "Needs update": [
-            "更新が必要"
+         "Review in progress": [
+            "レビュー中"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "従量課金制の支払いを待機中"
          ],
          "Translation ready to download": [
             "翻訳のダウンロード準備完了"
          ],
+         "Waiting for payment": [
+            "支払いを待機中"
+         ],
+         "Waiting for words": [
+            "単語待ち"
+         ],
          "Completed": [
             "完了"
          ],
+         "Insufficient funds": [
+            "残高不足"
+         ],
+         "Sending": [
+            "送信中"
+         ],
+         "Automatic translation is off, so this job is not retried. Resend it, or switch Translate Everything on.": [
+            "自動翻訳がオフになっているため、このジョブは再試行されません。再送信するか、「すべてを翻訳する」をオンにしてください。"
+         ],
+         "Waiting for you": [
+            "対応待ち"
+         ],
          "Failed - needs attention": [
             "失敗 - 要注意"
+         ],
+         "You can also resend the content or open the job in the Translation Queue.": [
+            "コンテンツを再送信するか、翻訳キューでジョブを開くこともできます。"
+         ],
+         "If it keeps failing for about a day, the job is marked as needing your attention.": [
+            "約1日失敗が続く場合、ジョブは要対応としてマークされます。"
+         ],
+         "In progress": [
+            "進行中"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "自動翻訳が繰り返し失敗したため、WPML は再試行を停止しました。翻訳ダッシュボードからジョブを再送信または破棄するか、ここでキャンセルしてください。"
+         ],
+         "Needs update": [
+            "更新が必要"
+         ],
+         "Scheduled — Pending review": [
+            "予約済み — レビュー待ち"
+         ],
+         "Private — Pending review": [
+            "非公開 — レビュー待ち"
+         ],
+         "Draft — Pending review": [
+            "下書き — レビュー待ち"
+         ],
+         "Published — Review in progress": [
+            "公開済み — レビュー中"
+         ],
+         "Scheduled — Review in progress": [
+            "予約済み — レビュー中"
+         ],
+         "Private — Review in progress": [
+            "非公開 — レビュー中"
+         ],
+         "Draft — Review in progress": [
+            "下書き — レビュー中"
+         ],
+         "WPML could not reach our translation system.": [
+            "WPML が翻訳システムに接続できませんでした。"
+         ],
+         "Our translation system did not accept this job.": [
+            "翻訳システムがこのジョブを受け入れませんでした。"
+         ],
+         "WPML could not calculate the word count for this job.": [
+            "WPML がこのジョブの単語数を計算できませんでした。"
+         ],
+         "WPML could not read the price of automatic translation for this job.": [
+            "WPML がこのジョブの自動翻訳料金を読み取れませんでした。"
+         ],
+         "WPML could not prepare this job for automatic translation.": [
+            "WPML がこのジョブの自動翻訳の準備をできませんでした。"
+         ],
+         "Sending this job to automatic translation failed.": [
+            "このジョブの自動翻訳への送信に失敗しました。"
+         ],
+         "WPML tries again within a minute.": [
+            "WPML は1分以内に再試行します。"
+         ],
+         "WPML tries again in about %d minutes.": [
+            "WPML は約 %d 分後に再試行します。"
+         ],
+         "WPML tries again in about %d hours.": [
+            "WPML は約 %d 時間後に再試行します。"
          ],
          "%s terms are published immediately because they don't support draft mode.": [
             "%s は下書きモードをサポートしていないため、すぐに公開されます。"
@@ -115,41 +199,14 @@
          "%s are immediately published because they don't support draft mode.": [
             "%s は下書きモードをサポートしていないため、すぐに公開されます。"
          ],
-         "Published — Pending review": [
-            "公開済み — レビュー待ち"
-         ],
-         "Draft — Pending review": [
-            "下書き — レビュー待ち"
-         ],
-         "Review in progress": [
-            "レビュー中"
-         ],
-         "Published — Review in progress": [
-            "公開済み — レビュー中"
-         ],
-         "Draft — Review in progress": [
-            "下書き — レビュー中"
-         ],
-         "Waiting for your Pay-As-You-Go payment": [
-            "従量課金制の支払いを待機中"
-         ],
-         "Waiting for payment": [
-            "支払いを待機中"
-         ],
-         "Insufficient funds": [
-            "残高不足"
-         ],
-         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
-            "一時的なエラーにより自動翻訳が一時停止されました。自動的に再試行されます。操作は不要です。30分ほど経過してもステータスが変わらない場合は、WPML サポートにお問い合わせください。"
-         ],
-         "In progress": [
-            "進行中"
-         ],
-         "View original": [
-            "元言語を表示"
-         ],
          "(no title)": [
             "(タイトルなし)"
+         ],
+         "%1$s (ID %2$d)": [
+            "%1$s (ID %2$d)"
+         ],
+         "View original": [
+            "オリジナルを表示"
          ],
          "Automatic translation": [
             "自動翻訳"
@@ -478,9 +535,6 @@
          "Failed to resign from jobs": [
             "ジョブの辞退に失敗しました"
          ],
-         "The Advanced Editor jobs synchronization has failed": [
-            "高度なエディタのジョブ同期に失敗しました"
-         ],
          "Synchronization with the Professional Translation service has failed": [
             "プロフェッショナル翻訳サービスとの同期に失敗しました"
          ],
@@ -493,8 +547,35 @@
          "Batch sync couldn't be finished": [
             "バッチ同期を完了できませんでした"
          ],
+         "More details": [
+            "詳細はこちら"
+         ],
+         "%s job was left out of the export.": [
+            "%s 件のジョブがエクスポートから除外されました。"
+         ],
+         "%s job could not be exported. No file was downloaded.": [
+            "%s 件のジョブをエクスポートできませんでした。ファイルはダウンロードされませんでした。"
+         ],
+         "This job was saved while this server had the PHP zlib extension, so its text is stored compressed. PHP on this server has no zlib now, so WPML cannot read it. Ask your hosting provider to enable the PHP zlib extension, then export it again.": [
+            "これらのジョブは、このサーバーで PHP zlib 拡張モジュールが有効だったときに保存されたため、テキストが圧縮されて保存されています。現在このサーバーの PHP に zlib がないため、WPML はそれらを読み取ることができません。ホスティングプロバイダーに PHP zlib 拡張モジュールを有効にするよう依頼してから、再度エクスポートしてください。"
+         ],
+         "This job could not be exported.": [
+            "これらのジョブをエクスポートできませんでした。"
+         ],
+         "%1$s (job %2$s)": [
+            "%1$s (ジョブ %2$s)"
+         ],
+         "Job %s": [
+            "ジョブ %s"
+         ],
+         "and %s more job": [
+            "他 %s 件のジョブ"
+         ],
          "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
             "弊社の翻訳システムがこのリクエストを受け付けませんでした（応答：%d）。しばらく待ってからもう一度お試しください。問題が解決しない場合は WPML サポートにお問い合わせください。"
+         ],
+         "The site stopped answering before this translation was confirmed. If it was not saved, the next download takes it again.": [
+            "この翻訳が確認される前にサイトの応答が停止しました。保存されていなかった場合、次のダウンロード時に再度取得されます。"
          ]
       }
    }

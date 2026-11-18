@@ -3,6 +3,10 @@ class WPML_Admin_Scripts_Setup extends WPML_Full_Translation_API {
 
 	const PRIORITY_ENQUEUE_SCRIPTS = 10;
 
+	const ANTD_SCREEN_CLASS = 'wpml-antd-screen';
+
+	const EXPORT_IMPORT_PAGE = 'wpml/import';
+
 	private $page;
 
 	public function __construct( &$wpdb, &$sitepress, &$post_translation, &$term_translation, $page ) {
@@ -19,6 +23,20 @@ class WPML_Admin_Scripts_Setup extends WPML_Full_Translation_API {
 	public function add_admin_hooks() {
 		add_action( 'admin_print_scripts', array( $this, 'wpml_js_scripts_setup' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'wpml_css_setup' ), self::PRIORITY_ENQUEUE_SCRIPTS );
+		add_filter( 'admin_body_class', array( $this, 'add_antd_screen_class' ) );
+		add_filter( 'admin_body_class', array( new \WPML\TM\Menu\AntdCompatBodyClass(), 'addBodyClass' ) );
+	}
+
+	public function add_antd_screen_class( $classes ) {
+		$classes = (string) $classes;
+
+		$isAntdScreen = \WPML\UIPage::isWpmlAdminScreen() || self::EXPORT_IMPORT_PAGE === \WPML\SuperGlobals\Request::page();
+
+		if ( ! $isAntdScreen || in_array( self::ANTD_SCREEN_CLASS, preg_split( '/\s+/', $classes, -1, PREG_SPLIT_NO_EMPTY ) ?: [], true ) ) {
+			return $classes;
+		}
+
+		return $classes . ' ' . self::ANTD_SCREEN_CLASS;
 	}
 
 	public function register_styles() {

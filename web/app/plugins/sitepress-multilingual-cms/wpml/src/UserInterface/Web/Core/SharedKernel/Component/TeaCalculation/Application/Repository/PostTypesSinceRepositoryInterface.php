@@ -10,6 +10,9 @@ interface PostTypesSinceRepositoryInterface {
   public function getPostTypesSinceDates(): array;
 
 
+  public function getPostTypeSinceDate( string $type ): string;
+
+
   public function updatePostTypeSinceDate( string $type, string $since ): void;
 
 
@@ -22,6 +25,9 @@ interface PostTypesSinceRepositoryInterface {
 
 
   public function fillMissingSinceDates( array $types, string $default = Option::SINCE_DATE_ALL ): void;
+
+
+  public function includeAlwaysAllTypes( array $offeredPostTypes ): array;
 
 
   public function markPostTypeAsUncompleted( string $type ): void;

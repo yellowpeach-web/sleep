@@ -15,7 +15,7 @@ class CheckboxUI {
 			<?php } ?>
 			<div class="acf-input">
 				<div class="acf-input-wrap">
-					<input type="checkbox" name="wpml_synchronise_acf_fields_translations" value="synchronise" <?php checked( self::isChecked( $trid ), true, true ); ?> />
+					<input type="checkbox" id="wpml_synchronise_acf_fields_translations" name="wpml_synchronise_acf_fields_translations" value="synchronise" <?php checked( self::isChecked( $trid ), true, true ); ?> />
 					<?php wp_nonce_field( self::ACTION_SYNCHRONISE, self::ACTION_SYNCHRONISE ); ?>
 					<label for="wpml_synchronise_acf_fields_translations"><?php /* translators: Label of that checkbox; "repeater" and "flexible" are ACF field types. */ esc_html_e( 'Keep repeater and flexible sub-fields in the same order as the default language.', 'acfml' ); ?></label>
 				</div>
@@ -49,7 +49,7 @@ class CheckboxUI {
 			&& 'synchronise' === $_POST['wpml_synchronise_acf_fields_translations'];
 	}
 
-	protected static function isChecked( $trid ) {
+	public static function isChecked( $trid ) {
 		if ( $trid ) {
 			$synchroniseOption = CheckboxOption::get();
 			if ( isset( $synchroniseOption[ $trid ] ) ) {

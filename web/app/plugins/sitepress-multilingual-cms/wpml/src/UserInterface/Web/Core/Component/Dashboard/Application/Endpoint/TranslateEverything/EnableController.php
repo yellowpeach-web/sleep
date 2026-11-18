@@ -6,6 +6,7 @@ use WPML\Core\Component\ATE\Application\Service\TranslateEverythingPrerequisites
 use WPML\Core\Component\Translation\Application\Repository\SettingsRepository;
 use WPML\Core\Component\Translation\Application\Service\SettingsService;
 use WPML\Core\Port\Endpoint\EndpointInterface;
+use WPML\Core\SharedKernel\Component\ATE\Application\Query\AutomaticTranslationAccountQueryInterface;
 use WPML\Core\SharedKernel\Component\ATE\Application\Service\AtePingerInterface;
 use WPML\Core\SharedKernel\Component\ATE\Application\Service\TeaLoggerInterface;
 use WPML\Core\SharedKernel\Component\Language\Application\Query\LanguagesQueryInterface;
@@ -31,6 +32,8 @@ class EnableController implements EndpointInterface {
 
   private $prerequisites;
 
+  private $accountQuery;
+
 
   public function __construct(
     SettingsService $settingsService,
@@ -38,7 +41,8 @@ class EnableController implements EndpointInterface {
     LanguagesQueryInterface $languagesQuery,
     AtePingerInterface $atePinger,
     TeaLoggerInterface $logger,
-    TranslateEverythingPrerequisites $prerequisites
+    TranslateEverythingPrerequisites $prerequisites,
+    AutomaticTranslationAccountQueryInterface $accountQuery
   ) {
     $this->settingsService               = $settingsService;
     $this->translationSettingsRepository = $translationSettingsRepository;
@@ -46,6 +50,7 @@ class EnableController implements EndpointInterface {
     $this->atePinger                     = $atePinger;
     $this->logger                        = $logger;
     $this->prerequisites                 = $prerequisites;
+    $this->accountQuery                  = $accountQuery;
   }
 
 
@@ -53,21 +58,12 @@ class EnableController implements EndpointInterface {
     $this->logger->beginDashboardEnable();
 
     try {
-      $translationEditor = $this->translationSettingsRepository
-          ->getSettings()
-          ->getTranslationEditor();
-
-      if ( ! isset( $translationEditor ) || $translationEditor->getValue() !== TranslationEditorSetting::ATE ) {
-        $this->logger->dashboardEnableSkipped( 'ate_not_active' );
+      $editorRefusal = $this->editorOrAccountRefusal();
+      if ( $editorRefusal !== null ) {
+        $this->logger->dashboardEnableSkipped( $editorRefusal['code'] );
         return [
           'success' => false,
-          'error'   => [
-            'code'    => 'ate_not_active',
-            'message' => __(
-              'In order to translate automatically, you first need to enable WPML\'s Advanced Translation Editor',
-              'wpml'
-            ),
-          ],
+          'error'   => $editorRefusal,
         ];
       }
 
@@ -148,6 +144,35 @@ class EnableController implements EndpointInterface {
     } finally {
       $this->logger->end();
     }
+  }
+
+
+  private function editorOrAccountRefusal() {
+    if ( $this->accountQuery->needsAccountOnly() ) {
+      return $this->accountQuery->isUsable() ? null : [
+        'code'    => 'account_not_usable',
+        'message' => __(
+          'Translate Everything needs an active automatic translation account. Open WPML > AI Translation: billing and usage to connect it, then try again.',
+          'wpml'
+        ),
+      ];
+    }
+
+    $translationEditor = $this->translationSettingsRepository
+        ->getSettings()
+        ->getTranslationEditor();
+
+    if ( ! isset( $translationEditor ) || $translationEditor->getValue() !== TranslationEditorSetting::ATE ) {
+      return [
+        'code'    => 'ate_not_active',
+        'message' => __(
+          'In order to translate automatically, you first need to enable WPML\'s Advanced Translation Editor',
+          'wpml'
+        ),
+      ];
+    }
+
+    return null;
   }
 
 

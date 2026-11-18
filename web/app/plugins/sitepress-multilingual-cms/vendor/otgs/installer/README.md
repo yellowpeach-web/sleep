@@ -100,8 +100,8 @@ WP_Installer_Show_Products(
         'box_description'  => 'Avada theme is fully compatible with WPML - the WordPress Multilingual plugin. WPML lets 
                                       you add languages to your existing sites and includes advanced translation management.', 
         'repository'       => 'wpml', // required
-        'package'          => 'multilingual-cms', // required
-        'product'          => 'multilingual-cms' // required
+        'package'          => 'wpml', // required
+        'product'          => 'wpml-multilingual-cms-2' // required
     ) 
 );
 ```

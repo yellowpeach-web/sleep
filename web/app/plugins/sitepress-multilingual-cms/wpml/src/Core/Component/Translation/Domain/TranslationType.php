@@ -10,6 +10,7 @@ class TranslationType {
   const STRING_BATCH = 'string-batch';
   const STRING = 'string';
   const TAXONOMY = 'taxonomy';
+  const TERM_BUNDLE = 'term-bundle';
 
   private $value;
 
@@ -30,6 +31,9 @@ class TranslationType {
 
 
   public static function fromElementType( string $elementType ): self {
+    if ( 'term-batch' === $elementType ) {
+      return self::termBundle();
+    }
       $separator = strpos( $elementType, '_' );
       $prefix    = false === $separator ? '' : substr( $elementType, 0, $separator );
 
@@ -52,6 +56,8 @@ class TranslationType {
         return 'st-batch';
       case self::TAXONOMY:
         return 'tax';
+      case self::TERM_BUNDLE:
+        return 'term-batch';
       default:
         return $this->value;
     }
@@ -65,6 +71,7 @@ class TranslationType {
       self::STRING_BATCH,
       self::STRING,
       self::TAXONOMY,
+      self::TERM_BUNDLE,
     ];
   }
 
@@ -91,6 +98,11 @@ class TranslationType {
 
   public static function taxonomy(): self {
     return new self( self::TAXONOMY );
+  }
+
+
+  public static function termBundle(): self {
+    return new self( self::TERM_BUNDLE );
   }
 
 

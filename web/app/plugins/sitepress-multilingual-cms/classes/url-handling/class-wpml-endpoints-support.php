@@ -113,26 +113,61 @@ class WPML_Endpoints_Support {
 
 			if ( $registered_endpoints ) {
 
+				$translations = array();
+
 				foreach ( $registered_endpoints as $endpoint_key => $endpoint_value ) {
 
 					$endpoint_translation = $this->get_endpoint_translation( $endpoint_key, $endpoint_value );
 
-					if ( $endpoint_value === urldecode( $endpoint_translation ) ) {
-						continue;
+					if ( $endpoint_value !== urldecode( $endpoint_translation ) ) {
+						$translations[ $endpoint_value ] = $endpoint_translation;
 					}
+				}
 
-					$buff_value = array();
-
-					foreach ( $value as $k => $v ) {
-						$k                = preg_replace( '/(\/|^)' . preg_quote( $endpoint_value, '/' ) . '(\/)?(\(\/\(\.\*\)\)\?\/\?\$)/', '$1' . $endpoint_translation . '$2$3', $k );
-						$buff_value[ $k ] = $v;
-					}
-					$value = $buff_value;
+				if ( $translations ) {
+					$value = $this->rename_endpoints_in_rule_keys( $value, array_values( $registered_endpoints ), $translations );
 				}
 			}
 		}
 
 		return $value;
+	}
+
+	private function rename_endpoints_in_rule_keys( $rules, $endpoints, $translations ) {
+		$endpoints = array_unique( $endpoints );
+		usort(
+			$endpoints,
+			function ( $a, $b ) {
+				return strlen( $b ) - strlen( $a );
+			}
+		);
+
+		$quoted_endpoints = array_map(
+			function ( $endpoint ) {
+				return preg_quote( $endpoint, '/' );
+			},
+			$endpoints
+		);
+		$pattern          = '/(\/|^)(' . implode( '|', $quoted_endpoints ) . ')(\/)?(\(\/\(\.\*\)\)\?\/\?\$)/';
+
+		$renamed_rules = array();
+		foreach ( $rules as $key => $rule ) {
+			$renamed_key = preg_replace_callback(
+				$pattern,
+				function ( $matches ) use ( $translations ) {
+					if ( ! isset( $translations[ $matches[2] ] ) ) {
+						return $matches[0];
+					}
+
+					return $matches[1] . $translations[ $matches[2] ] . $matches[3] . $matches[4];
+				},
+				$key
+			);
+
+			$renamed_rules[ null === $renamed_key ? $key : $renamed_key ] = $rule;
+		}
+
+		return $renamed_rules;
 	}
 
 	public function endpoint_permalink_filter( $link, $pid ) {

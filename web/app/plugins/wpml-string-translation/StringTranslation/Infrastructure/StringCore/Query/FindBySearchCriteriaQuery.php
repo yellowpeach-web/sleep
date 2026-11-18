@@ -51,6 +51,11 @@ class FindBySearchCriteriaQuery implements FindBySearchCriteriaQueryInterface {
 			'word_count',
 		] ) );
 		$strings = $wpdb->get_results( $query, ARRAY_A );
+		if ( ! is_array( $strings ) ) {
+			FailedStatement::throwIfFailed( $wpdb, 'read the strings of the search' );
+
+			return [];
+		}
 		foreach ( $strings as &$string ) {
 			$string['string_id'] = (int)$string['string_id'];
 			$string['status']    = (int)$string['status'];
@@ -76,6 +81,10 @@ class FindBySearchCriteriaQuery implements FindBySearchCriteriaQueryInterface {
 			$allTargetLanguageCodes
 		);
 		$stringsTranslations = $wpdb->get_results( $query, ARRAY_A );
+		if ( ! is_array( $stringsTranslations ) ) {
+			FailedStatement::throwIfFailed( $wpdb, 'read the translations of the strings of the search' );
+			$stringsTranslations = [];
+		}
 		foreach ( $stringsTranslations as &$stringTranslation ) {
 			$stringTranslation['string_id'] = (int)$stringTranslation['string_id'];
 			$stringTranslation['status']    = (int)$stringTranslation['status'];

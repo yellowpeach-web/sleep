@@ -7,10 +7,40 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-15T11:55:10+00:00\n"
+"POT-Creation-Date: 2026-11-12T07:54:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wpml\n"
+
+msgid "Switch to Private Translation Cloud (PTC)"
+msgstr ""
+
+#. translators: Label of the button, and of the notice heading, that switch the site's automatic translation engine to Private Translation Cloud (PTC). Verb, imperative. PTC is a product name; keep it.
+msgid "Switch to PTC"
+msgstr ""
+
+#. translators: Button label while the switch to the new translation engine is running; it replaces "Switch to PTC" on the same button. Keep the ellipsis.
+msgid "Switching…"
+msgstr ""
+
+msgid "We couldn't confirm the switch. Try again, or reload to see the current engine."
+msgstr ""
+
+msgid "Translation engine controls couldn't load. Reload the page and try again."
+msgstr ""
+
+msgid "Loading translation engine settings…"
+msgstr ""
+
+msgid "Fill in your site context above before switching to PTC."
+msgstr ""
+
+#. translators: Button label in the dialog that switches the translation engine, shown when it could not load. Verb, imperative: it reloads the browser page.
+msgid "Reload page"
+msgstr ""
+
+msgid "Could not fetch engines data"
+msgstr ""
 
 msgid "Error in updating since dates for types."
 msgstr ""
@@ -97,7 +127,7 @@ msgstr ""
 msgid "Words required:"
 msgstr ""
 
-#. translators: Unit written after a number on the WPML translation dashboard, as in "1,200 Words". English uses the same word for one and for many; use whatever forms your language needs.
+#. translators: Unit written after a number on the WPML translation dashboard, as in "1,200 Words", and the heading of the column with each taxonomy's word count in the dashboard's taxonomy table. English uses the same word for one and for many; use whatever forms your language needs.
 msgid "Words"
 msgstr ""
 
@@ -142,7 +172,7 @@ msgstr ""
 msgid "Same as default"
 msgstr ""
 
-#. translators: Tooltip of the "Same as default" tag under the word-count table. %1$s: the site's default language, %2$s: the language that is left out.
+#. translators: Warning on the WPML translation dashboard, and tooltip of the "Same as default" tag under the word-count table, for a language the engine recognizes as the same as the site's default. %1$s: the site's default language, %2$s: the language that is left out.
 #, js-format
 msgid "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language."
 msgstr ""
@@ -188,10 +218,6 @@ msgstr ""
 msgid "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it."
 msgstr ""
 
-#. translators: Label of the button, and of the notice heading, that switch the site's automatic translation engine to Private Translation Cloud (PTC). Verb, imperative. PTC is a product name; keep it.
-msgid "Switch to PTC"
-msgstr ""
-
 #. translators: Note under the word-count table; "This" is the total above it and "It" is that same total.
 msgid "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add."
 msgstr ""
@@ -214,8 +240,8 @@ msgstr ""
 msgid "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use."
 msgstr ""
 
-#. translators: Second note under the word-count table; "It" is the total above it. A term is a category, a tag or a product attribute.
-msgid "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways."
+#. translators: Second note under the word-count table; "It" is the total above it. "Taxonomies" is the name of a row in that table.
+msgid "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it."
 msgstr ""
 
 #. translators: Label under the running total in the word-count table; the number is written above it.
@@ -315,6 +341,10 @@ msgstr ""
 msgid "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words."
 msgstr ""
 
+#. translators: Label in front of the translation quality scale on the AI Translation step of the setup wizard. Keep the colon.
+msgid "Translation quality:"
+msgstr ""
+
 msgid "Select payment method"
 msgstr ""
 
@@ -376,7 +406,7 @@ msgstr ""
 msgid "Connect your sites to share translation memory, glossary and word quota."
 msgstr ""
 
-#. translators: Text of a link to WPML's documentation. Verb, imperative.
+#. translators: Text of a link to a page on wpml.org that explains the text before it. Verb, imperative.
 msgid "Learn more"
 msgstr ""
 
@@ -482,4 +512,36 @@ msgstr ""
 
 #. translators: Accessible label (screen readers) of the X button that closes a dialog, on the WPML translation dashboard. Verb, imperative.
 msgid "Close modal"
+msgstr ""
+
+#. translators: Words for a band of the translation quality scale, at the low end: the translation has mistakes anyone would notice.
+msgid "Obvious mistakes"
+msgstr ""
+
+#. translators: Words for a band of translation quality: they label the middle of the quality scale and the warning pill on the quality card. The translation is usable but its mistakes can be seen.
+msgid "Mistakes visible"
+msgstr ""
+
+#. translators: Words for a band of the translation quality scale, at the high end: the translation is good enough to publish as it is.
+msgid "Ready to publish"
+msgstr ""
+
+#. translators: Tag on the quality scale marking the engine the site uses now.
+msgid "Your engine"
+msgstr ""
+
+#. translators: The short name of WPML's own AI translation engine, shown on its own or in bold inside a sentence. It is a product name; keep it as it is.
+msgid "PTC"
+msgstr ""
+
+#. translators: Read out to screen readers in place of the quality scale. %1$s: the name of the engine the site uses, %2$d: its score, %3$s: the name of WPML's own engine, %4$d: its score.
+#, js-format
+msgid "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d."
+msgstr ""
+
+msgid "Scores based on WPML's internal MQM translation quality study."
+msgstr ""
+
+#. translators: Sentence under the translation quality scale that recommends WPML's own engine. PTC is a product name; keep it.
+msgid "PTC translates at higher quality and gives you publish-ready results."
 msgstr ""

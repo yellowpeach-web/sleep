@@ -34,7 +34,7 @@ if ( ! function_exists( 'wpml_get_admin_url' ) ) {
 			}
 
 			$admin_url = $admin_url_parsed
-				? http_build_url( $admin_url_parsed )
+				? \WPML\UrlHandling\UrlBuilder::build( $admin_url_parsed )
 				: admin_url();
 		}
 

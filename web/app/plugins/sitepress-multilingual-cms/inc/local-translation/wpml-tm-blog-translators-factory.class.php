@@ -16,12 +16,7 @@ class WPML_TM_Blog_Translators_Factory {
 		global $wpdb, $sitepress, $wpml_post_translations, $wpml_term_translations, $wpml_cache_factory;
 
 		$tm_records         = new WPML_TM_Records( $wpdb, $wpml_post_translations, $wpml_term_translations );
-		$translator_records = new WPML_Translator_Records(
-			$wpdb,
-			new WPML_WP_User_Query_Factory(),
-			wp_roles(),
-			new \WPML\TranslationRoles\Service\AdministratorRoleManager()
-		);
+		$translator_records = \WPML\Container\make( WPML_Translator_Records::class );
 
 		return new WPML_TM_Blog_Translators( $sitepress, $tm_records, $translator_records, $wpml_cache_factory );
 	}

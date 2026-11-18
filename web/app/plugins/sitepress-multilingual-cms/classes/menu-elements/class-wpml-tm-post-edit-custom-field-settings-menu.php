@@ -42,7 +42,7 @@ class WPML_TM_Post_Edit_Custom_Field_Settings_Menu {
 						array( 'value' => WPML_COPY_CUSTOM_FIELD, 'text' => __( "Copy", 'sitepress' ) ),
 						/* translators: Option in the dropdown that says what happens to a field: put the value in the translation once, and leave it alone afterwards. Verb phrase, imperative. */
 						array( 'value' => WPML_COPY_ONCE_CUSTOM_FIELD, 'text' => __( "Copy once", 'sitepress' ) ),
-						/* translators: Option in the dropdown that says what happens to a field, and the heading of the column of the post editing screen where a translation is started: the text is translated. Verb, imperative. */
+						/* translators: Verb, imperative: an option in the dropdown that says what happens to a field, the heading of the column of the post editing screen where a translation is started, and the heading of the list of languages without a translation in the post editor's Language box. */
 						array( 'value' => WPML_TRANSLATE_CUSTOM_FIELD, 'text' => __( "Translate", 'sitepress' ) ),
 					);
 					?>

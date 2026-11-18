@@ -25,6 +25,7 @@ class Config {
 			\WPML_Locale::class,
 			\WPML_URL_Filters::class,
 			\WPML\ContentDeletion\CoreNoticeParams::class,
+			\WPML\TM\AutomaticTranslation\Actions\PublishedPostStatuses::class,
 		];
 	}
 

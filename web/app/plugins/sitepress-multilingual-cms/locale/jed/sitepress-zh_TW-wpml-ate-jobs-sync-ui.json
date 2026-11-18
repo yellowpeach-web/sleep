@@ -13,11 +13,26 @@
          "The translation could not be started because the server did not answer.": [
             "由於伺服器未回應，無法開始翻譯。"
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "您的工作階段已過期。請重新整理此頁面並再試一次。"
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "PTC 正在翻譯中。準備就緒後即會開啟編輯器。"
+         ],
          "This translation cannot be opened right now.": [
             "目前無法開啟此翻譯。"
          ],
          "Refresh this page": [
             "重新整理此頁面"
+         ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "預付字數不足，無法自動翻譯此內容。請新增更多字數，然後再試一次。"
+         ],
+         "Get more words": [
+            "取得更多字數"
+         ],
+         "Close": [
+            "關閉"
          ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
             "此內容正在自動翻譯中。如果您想進行其他操作，請先取消翻譯工作。"
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "正在翻譯您的內容"
+         ],
+         "Translate Everything is active": [
+            "自動翻譯全部內容功能已啟用"
          ],
          "%d translation notice": [
             "%d 則翻譯通知"
@@ -55,8 +73,8 @@
          "Automatic translation is paused: monthly spending cap reached": [
             "自動翻譯已暫停：已達到每月支出上限"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "此網站已達到為其設定的每月支出上限。提高上限或重設上限後，翻譯將繼續進行。只有帳戶擁有者可以執行此操作。"
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "此網站已達到設定的每月支出上限。當調高上限或上限重設時，翻譯將會繼續進行。您可以在「AI 翻譯：帳單與使用情況」頁面提高該上限。"
          ],
          "Preparing content for translation": [
             "正在準備翻譯內容"
@@ -70,8 +88,8 @@
          "Your language, %s, must be mapped to a supported language in order to use automatic translation.": [
             "您網站上的以下語言必須對應至支援的語言，才能使用自動翻譯：%s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "除非您將這些語言（%s）對應至與預設語言不同的語言，否則無法自動翻譯這些語言的內容。"
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "%1$s 與這些語言之間無法使用自動翻譯，因為系統將它們識別為同一種語言：%2$s。請改選「複製」以將內容複製過去。"
          ],
          "%d translation waiting for review": [
             "%d 份翻譯等待審核"
@@ -147,9 +165,6 @@
          ],
          "Pay now": [
             "立即付款"
-         ],
-         "Get more words": [
-            "取得更多字數"
          ],
          "Assign words": [
             "分配字數"

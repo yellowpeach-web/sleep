@@ -41,7 +41,7 @@ foreach ( $active_languages as $code => $lang ) {
 			<th scope="row" class="menu-check-all">
 				<input aria-label="<?php esc_html_e( 'Select all items', 'sitepress' ); ?>" class="wpml-checkbox-native" type="checkbox"/>
 			</th>
-			<th><?php /* translators: Column heading and field label in the WPML admin, for the language of a piece of content. Noun, singular. */ esc_html_e( 'Language', 'sitepress' ); ?></th>
+			<th><?php /* translators: Column heading and field label in the WPML admin, for the language of a piece of content, for example on the Updated translations page (the language of the updated translation). Noun, singular. */ esc_html_e( 'Language', 'sitepress' ); ?></th>
 			<th><?php /* translators: Column heading in the menu synchronization table, and the word before the number of a step in the details of one request in the job log, as in "Action 1:". Noun: the thing that will be done. */ esc_html_e( 'Action', 'sitepress' ); ?></th>
 		</tr>
 		</thead>
@@ -119,7 +119,7 @@ foreach ( $active_languages as $code => $lang ) {
 					data-message="<?php esc_attr_e( 'Syncing menus %1 of %2', 'sitepress' ); ?>"
 					data-message-complete="<?php esc_attr_e( 'The selected menus have been synchonized.', 'sitepress' ); ?>"
 				<?php echo $icl_menu_sync_submit_disabled; ?> />&nbsp;
-			<?php /* translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation". */ ?>
+			<?php /* translators: Button label that closes a dialog without doing anything, or stops what is going on, for example in the dialog "Translate with PTC?" (keep the previous choice). Verb, imperative, not the noun "a cancellation". */ ?>
 			<input id="icl_msync_cancel" class="button-secondary wpml-button base-btn wpml-button--outlined" type="button" value="<?php _e( 'Cancel', 'sitepress' ); ?>"/>
 			<span id="icl_msync_message"></span>
 		</p>

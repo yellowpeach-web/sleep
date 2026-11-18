@@ -38,12 +38,14 @@ class PostTermsLoader {
       $post->setTerms( $terms );
     }
 
+    $countEveryTerm = $this->jobQuery->carriesJobContent( $post );
+
     foreach ( $terms as $term ) {
       foreach ( $term->getContents() as $termContent ) {
         foreach ( $langs as $lang ) {
           $lastTranslation = $this->lastTranslationFactory->createForItem( $termContent, $lang );
 
-          if ( $this->translationQuery->isTermTranslatable( $term, $lang ) ) {
+          if ( $countEveryTerm || $this->translationQuery->isTermTranslatable( $term, $lang ) ) {
             $this->wordsToTranslate->forLastTranslation( $lastTranslation, $termContent );
           }
 

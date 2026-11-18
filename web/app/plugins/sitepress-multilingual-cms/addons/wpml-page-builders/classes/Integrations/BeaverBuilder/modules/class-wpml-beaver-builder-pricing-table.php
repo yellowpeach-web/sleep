@@ -11,7 +11,11 @@ class WPML_Beaver_Builder_Pricing_Table extends WPML_Beaver_Builder_Module_With_
 	}
 
 	private function get_billing_fields() {
-		return [ 'billing_option_1', 'billing_option_2' ];
+		return [ 'billing_option_1', 'billing_option_2', 'price_term_1', 'price_term_2' ];
+	}
+
+	private function get_dual_billing_column_fields() {
+		return [ 'price_option_2', 'button_url_yearly' ];
 	}
 
 	private function get_extended_features_fields() {
@@ -52,6 +56,22 @@ class WPML_Beaver_Builder_Pricing_Table extends WPML_Beaver_Builder_Module_With_
 				/* translators: Field label in WPML's translation editor for a page built with Beaver Builder. Before the colon is the name Beaver Builder gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
 				return esc_html__( 'Pricing table: Billing Option 2', 'sitepress' );
 
+			case 'price_term_1':
+				/* translators: Field label in WPML's translation editor for a page built with Beaver Builder. Before the colon is the name Beaver Builder gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
+				return esc_html__( 'Pricing table: Billing Term 1', 'sitepress' );
+
+			case 'price_term_2':
+				/* translators: Field label in WPML's translation editor for a page built with Beaver Builder. Before the colon is the name Beaver Builder gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
+				return esc_html__( 'Pricing table: Billing Term 2', 'sitepress' );
+
+			case 'price_option_2':
+				/* translators: Field label in WPML's translation editor for a page built with Beaver Builder. Before the colon is the name Beaver Builder gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
+				return esc_html__( 'Pricing table: Price for Billing Option 2', 'sitepress' );
+
+			case 'button_url_yearly':
+				/* translators: Field label in WPML's translation editor for a page built with Beaver Builder. Before the colon is the name Beaver Builder gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
+				return esc_html__( 'Pricing table: Button link for Billing Option 2', 'sitepress' );
+
 			case 'description':
 				/* translators: Field label in WPML's translation editor for a page built with Beaver Builder. Before the colon is the name Beaver Builder gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
 				return esc_html__( 'Pricing table: Feature Description', 'sitepress' );
@@ -78,9 +98,13 @@ class WPML_Beaver_Builder_Pricing_Table extends WPML_Beaver_Builder_Module_With_
 			case 'ribbon_text':
 			case 'billing_option_1':
 			case 'billing_option_2':
+			case 'price_term_1':
+			case 'price_term_2':
+			case 'price_option_2':
 				return 'LINE';
 
 			case 'button_url':
+			case 'button_url_yearly':
 				return 'LINK';
 
 			default:
@@ -96,6 +120,7 @@ class WPML_Beaver_Builder_Pricing_Table extends WPML_Beaver_Builder_Module_With_
 		$strings = parent::get( $node_id, $settings, $strings );
 
 		$strings = $this->add_billing_fields( $strings, $node_id, $settings );
+		$strings = $this->add_dual_billing_column_fields( $strings, $node_id, $settings );
 		$strings = $this->add_extended_features_fields( $strings, $node_id, $settings );
 
 		return $strings;
@@ -114,6 +139,27 @@ class WPML_Beaver_Builder_Pricing_Table extends WPML_Beaver_Builder_Module_With_
 				$this->get_title( $billing_field ),
 				$this->get_editor_type( $billing_field )
 			);
+		}
+
+		return $strings;
+	}
+
+	private function add_dual_billing_column_fields( $strings, $node_id, $settings ) {
+		if ( ! isset( $settings->pricing_columns ) || ! is_array( $settings->pricing_columns ) ) {
+			return $strings;
+		}
+
+		foreach ( $settings->pricing_columns as $column ) {
+			foreach ( $this->get_dual_billing_column_fields() as $field ) {
+				if ( isset( $column->$field ) && is_string( $column->$field ) ) {
+					$strings[] = new WPML_PB_String(
+						$column->$field,
+						$this->get_string_name( $node_id, $column->$field, $field ),
+						$this->get_title( $field ),
+						$this->get_editor_type( $field )
+					);
+				}
+			}
 		}
 
 		return $strings;
@@ -157,6 +203,7 @@ class WPML_Beaver_Builder_Pricing_Table extends WPML_Beaver_Builder_Module_With_
 		parent::update( $node_id, $settings, $string );
 
 		$this->update_billing_fields( $node_id, $settings, $string );
+		$this->update_dual_billing_column_fields( $node_id, $settings, $string );
 		$this->update_extended_features_fields( $node_id, $settings, $string );
 
 		return null;
@@ -168,12 +215,26 @@ class WPML_Beaver_Builder_Pricing_Table extends WPML_Beaver_Builder_Module_With_
 		}
 
 		foreach ( $this->get_billing_fields() as $billing_field ) {
-			if ( ! is_string( $settings->$billing_field ) ) {
+			if ( ! isset( $settings->$billing_field ) || ! is_string( $settings->$billing_field ) ) {
 				continue;
 			}
 
 			if ( $this->get_string_name( $node_id, $settings->$billing_field, $billing_field ) === $string->get_name() ) {
 				$settings->$billing_field = $string->get_value();
+			}
+		}
+	}
+
+	private function update_dual_billing_column_fields( $node_id, $settings, $string ) {
+		if ( ! isset( $settings->pricing_columns ) || ! is_array( $settings->pricing_columns ) ) {
+			return;
+		}
+
+		foreach ( $settings->pricing_columns as $column ) {
+			foreach ( $this->get_dual_billing_column_fields() as $field ) {
+				if ( isset( $column->$field ) && $this->get_string_name( $node_id, $column->$field, $field ) === $string->get_name() ) {
+					$column->$field = $string->get_value();
+				}
 			}
 		}
 	}

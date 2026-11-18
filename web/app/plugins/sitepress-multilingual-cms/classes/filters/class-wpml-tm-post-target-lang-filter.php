@@ -23,12 +23,16 @@ class WPML_TM_Post_Target_Lang_Filter extends WPML_TM_Record_User {
 	) {
 		if ( $element_type_prefix === 'post' ) {
 			if ( (bool) ( $this->post_translations->get_element_lang_code( $element_id ) ) === true ) {
+				try {
+					$translations = $this
+						->tm_records
+						->icl_translations_by_element_id_and_type_prefix(
+							$element_id, 'post' )
+						->translations();
+				} catch ( InvalidArgumentException $e ) {
+					return $allowed_langs;
+				}
 				$allowed_langs = array_fill_keys( $allowed_langs, 1 );
-				$translations  = $this
-					->tm_records
-					->icl_translations_by_element_id_and_type_prefix(
-						$element_id, 'post' )
-					->translations();
 				foreach ( $translations as $lang_code => $element ) {
 					if ( isset( $allowed_langs[ $lang_code ] )
 					     && ( ( $element->element_id() && ! $element->source_language_code() )

@@ -20,7 +20,4 @@ interface AtePingerInterface {
   public function notifyTeaDisabled( string $trigger ): void;
 
 
-  public function checkReachability( string $trigger );
-
-
 }

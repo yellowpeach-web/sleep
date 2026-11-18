@@ -8,6 +8,8 @@ class Term {
 
   private $contents = [];
 
+  private $taxonomy;
+
 
   public function __construct(
     int $id
@@ -18,6 +20,16 @@ class Term {
 
   public function getId() {
     return $this->id;
+  }
+
+
+  public function setTaxonomy( string $taxonomy ) {
+    $this->taxonomy = $taxonomy;
+  }
+
+
+  public function getTaxonomy() {
+    return $this->taxonomy;
   }
 
 

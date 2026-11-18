@@ -1,9 +1,17 @@
 <?php
 
+use WPML\TM\Jobs\JobLog;
+
 abstract class WPML_TM_Xliff_Shared extends WPML_TM_Job_Factory_User {
+	const SHORTCODE_PATTERN = WPML_String_Functions::SHORTCODE_PATTERN;
+
+	const KEPT_SOURCE_REASON = 'delivered without a translation; the source was kept';
+
 	protected $error;
 
 	private $validator = null;
+
+	private $carried_history = null;
 
 	protected function replace_xliff_new_line_tag_with_new_line( $string ) {
 		return WPML_TP_Xliff_Parser::restore_new_line( $string );
@@ -15,16 +23,20 @@ abstract class WPML_TM_Xliff_Shared extends WPML_TM_Job_Factory_User {
 		return (string) $file_attributes['original'];
 	}
 
+	public static function job_identifier_md5( $jobId, $originalDocId ) {
+		return md5( $jobId . $originalDocId );
+	}
+
 	public function get_job_for_xliff( SimpleXMLElement $xliff ) {
 		$identifier           = $this->identifier_from_xliff( $xliff );
 		$job_identifier_parts = explode( '-', $identifier );
 		if ( count( $job_identifier_parts ) === 2 && is_numeric( $job_identifier_parts[0] ) ) {
-			$job_id = $job_identifier_parts[0];
-			$job_id = apply_filters( 'wpml_job_id', $job_id );
-			$md5    = $job_identifier_parts[1];
+			$declared_job_id = (int) $job_identifier_parts[0];
+			$job_id          = apply_filters( 'wpml_job_id', $job_identifier_parts[0] );
+			$md5             = $job_identifier_parts[1];
 			$job = $this->job_factory->get_translation_job( (int) $job_id, false, 1, false );
-			if ( ! $job || $md5 !== md5( $job_id . $job->original_doc_id ) ) {
-				$job = $this->does_not_belong_error();
+			if ( ! $job || $md5 !== self::job_identifier_md5( $job_id, $job->original_doc_id ) ) {
+				$job = $this->does_not_belong_error( $this->mismatch_reason( $declared_job_id, (int) $job_id, (bool) $job, false ) );
 			}
 		} else {
 			$job = $this->invalid_xliff_error();
@@ -48,6 +60,10 @@ abstract class WPML_TM_Xliff_Shared extends WPML_TM_Job_Factory_User {
 		$this->validator = $validator;
 	}
 
+	public function set_carried_history( callable $carried_history ) {
+		$this->carried_history = $carried_history;
+	}
+
 	private function get_validator() {
 		if ( null === $this->validator ) {
 			$this->set_validator( new WPML_TM_Validate_HTML() );
@@ -64,7 +80,12 @@ abstract class WPML_TM_Xliff_Shared extends WPML_TM_Job_Factory_User {
 			'complete' => 1,
 		];
 
+		$carried_history = $this->carried_history && ( $this->carried_history )( (int) $job->job_id );
+		$absent_units    = [];
+
 		$units = [];
+		$kept_units       = [];
+		$translated_nodes = [];
 		foreach ( $xliff->file->body->children() as $node ) {
 			$attr = $node->attributes();
 
@@ -75,19 +96,32 @@ abstract class WPML_TM_Xliff_Shared extends WPML_TM_Job_Factory_User {
 			$type   = (string) $attr['id'];
 			$target = $this->get_xliff_node_target( $node );
 			if ( 'html' === (string) $attr['datatype'] ) {
-				$target = $this->get_validator()->restore_html( $target );
+				$target = (string) $this->get_validator()->restore_html( $target );
 			}
 
-			if ( ! $this->is_valid_target( $target ) ) {
+			$is_valid_target = $this->is_valid_target( $target );
+			if ( ! $is_valid_target || $this->target_is_blank( $target ) ) {
 				$source = $this->get_xliff_node_source( $node );
 				if ( 'html' === (string) $attr['datatype'] ) {
-					$source = $this->get_validator()->restore_html( $source );
+					$source = (string) $this->get_validator()->restore_html( $source );
 				}
-				if ( $this->source_has_no_text( $source ) ) {
+				if ( $this->source_has_no_letter_or_digit( $source ) ) {
 					$target = $source;
-				} else {
-					return $this->invalid_xliff_error( array( 'target' ) );
+				} elseif ( $carried_history && ! $is_valid_target ) {
+					$absent_units[ $type ] = 'empty';
+					$target                = '';
+				} elseif ( ! $is_valid_target ) {
+					if ( ! $this->keeps_source_of_untranslated_units() ) {
+						return $this->invalid_xliff_error( array( 'target' ) );
+					}
+					$kept_units[] = [
+						'id'     => $type,
+						'target' => isset( $node->target ) ? 'empty' : 'missing',
+					];
+					$target       = $source;
 				}
+			} else {
+				$translated_nodes[] = $node;
 			}
 
 			$units[] = [
@@ -96,7 +130,27 @@ abstract class WPML_TM_Xliff_Shared extends WPML_TM_Job_Factory_User {
 			];
 		}
 
+		if ( $kept_units && ! $this->has_translated_text_unit( $translated_nodes ) ) {
+			return $this->invalid_xliff_error( array( 'target' ) );
+		}
+
+		foreach ( $kept_units as $kept_unit ) {
+			JobLog::add(
+				'xliff_unit_kept_source',
+				[
+					'job_id'     => (int) $job->job_id,
+					'field_type' => $kept_unit['id'],
+					'target'     => $kept_unit['target'],
+					'reason'     => self::KEPT_SOURCE_REASON,
+				]
+			);
+		}
+
 		$units = $this->collapse_segmented_suggestion_units( $units, $job );
+
+		if ( $carried_history ) {
+			$data['absent_units'] = $absent_units + $this->missing_units( $units, $job );
+		}
 
 		foreach ( $units as $unit ) {
 			$type   = $unit['id'];
@@ -108,7 +162,8 @@ abstract class WPML_TM_Xliff_Shared extends WPML_TM_Job_Factory_User {
 						break;
 					}
 
-					$target              = $this->replace_xliff_new_line_tag_with_new_line( $target );
+					$target = $this->replace_xliff_new_line_tag_with_new_line( $target );
+					$target              = \WPML\TM\Jobs\ReferenceAttributes::strip( $target );
 					$field               = array();
 					$field['data']       = $target;
 					$field['finished']   = 1;
@@ -187,10 +242,48 @@ abstract class WPML_TM_Xliff_Shared extends WPML_TM_Job_Factory_User {
 		return $source;
 	}
 
-	private function source_has_no_text( $source ) {
-		$text = html_entity_decode( strip_tags( $source ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+	private function source_has_no_letter_or_digit( $source ) {
+		$text = html_entity_decode( strip_tags( (string) $source ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+		$text = preg_replace( self::SHORTCODE_PATTERN, '', (string) $text );
 
-		return '' === preg_replace( '/(*UCP)\s+/u', '', (string) $text );
+		return '' === preg_replace( '/(*UCP)[^\p{L}\p{N}]+/u', '', (string) $text );
+	}
+
+	private function target_is_blank( $target ) {
+		$text = html_entity_decode( (string) $target, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+		return '' === preg_replace( '/(*UCP)[\s\p{Z}\p{Cf}]+/u', '', $text );
+	}
+
+	private function missing_units( array $units, $job ) {
+		$delivered = array_flip( array_column( $units, 'id' ) );
+		$missing   = [];
+		foreach ( $job->elements as $element ) {
+			if ( ( ! isset( $element->field_translate ) || 0 !== (int) $element->field_translate ) && ! isset( $delivered[ $element->field_type ] ) ) {
+				$missing[ $element->field_type ] = 'missing';
+			}
+		}
+
+		return $missing;
+	}
+
+	protected function keeps_source_of_untranslated_units() {
+		return true;
+	}
+
+	private function has_translated_text_unit( array $nodes ) {
+		foreach ( $nodes as $node ) {
+			$attr   = $node->attributes();
+			$source = $this->get_xliff_node_source( $node );
+			if ( 'html' === (string) $attr['datatype'] ) {
+				$source = (string) $this->get_validator()->restore_html( $source );
+			}
+			if ( ! $this->source_has_no_letter_or_digit( $source ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private function is_valid_target( $target ) {
@@ -291,8 +384,21 @@ abstract class WPML_TM_Xliff_Shared extends WPML_TM_Job_Factory_User {
 		return new WP_Error( 'xliff_invalid', $message );
 	}
 
-	protected function does_not_belong_error() {
+	protected function does_not_belong_error( $reason = [] ) {
+		$message  = __( "The uploaded xliff file doesn't belong to this system.", 'sitepress' );
+		$sentence = isset( $reason['sentence'] ) ? (string) $reason['sentence'] : '';
+		$data     = isset( $reason['data'] ) && is_array( $reason['data'] ) && $reason['data'] ? [ 'sentence' => $sentence ] + $reason['data'] : '';
 
-		return new WP_Error( 'xliff_does_not_match', __( "The uploaded xliff file doesn't belong to this system.", 'sitepress' ) );
+		return new WP_Error( 'xliff_does_not_match', '' === $sentence ? $message : $message . ' ' . $sentence, $data );
+	}
+
+	protected function mismatch_reason( $declared_job_id, $job_id, $loads, $md5_matches ) {
+		global $wpdb;
+
+		if ( ! $wpdb instanceof wpdb ) {
+			return [ 'sentence' => '', 'data' => [] ];
+		}
+
+		return ( new \WPML\TM\XLIFF\MismatchReason( $wpdb ) )->details( $declared_job_id, $job_id, $loads, $md5_matches );
 	}
 }

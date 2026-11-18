@@ -50,7 +50,7 @@ class WPML_Main_Admin_Menu {
 			do_action( 'wpml_core_admin_menus_added' );
 		}
 
-		if ( ! $this->sitepress->is_setup_complete() || ! $this->is_wpml_configured() ) {
+		if ( ! $this->sitepress->is_setup_complete() ) {
 			$this->wizard();
 		} else {
 			add_action( 'admin_menu', array( $this, 'register_hidden_wizard_page' ), self::HIDDEN_PAGE_PRIORITY );
@@ -95,10 +95,6 @@ class WPML_Main_Admin_Menu {
 			'wpml_manage_languages',
 			WPML_PLUGIN_FOLDER . '/menu/setup.php'
 		);
-	}
-
-	private function is_wpml_configured() {
-		return 2 <= count( $this->sitepress->get_active_languages() );
 	}
 
 	private function themes_and_plugins_localization() {

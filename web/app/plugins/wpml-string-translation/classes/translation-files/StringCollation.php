@@ -11,9 +11,21 @@ trait StringCollation {
 			return $collation_suffix;
 		}
 
-		$collation_suffix = \get_transient( 'wpml_st_context_collation' );
+		$suffixes_by_charset = [
+			'utf8'    => 'COLLATE utf8_bin',
+			'utf8mb3' => 'COLLATE utf8mb3_bin',
+			'utf8mb4' => 'COLLATE utf8mb4_bin',
+			'latin1'  => 'COLLATE latin1_bin',
+			'latin2'  => 'COLLATE latin2_bin',
+			'ascii'   => 'COLLATE ascii_bin',
+			'binary'  => 'COLLATE binary',
+		];
 
-		if ( false !== $collation_suffix ) {
+		$cached = \get_transient( 'wpml_st_context_collation' );
+
+		if ( '' === $cached || in_array( $cached, $suffixes_by_charset, true ) ) {
+			$collation_suffix = $cached;
+
 			return $collation_suffix;
 		}
 
@@ -28,19 +40,12 @@ trait StringCollation {
 		if ( $collation ) {
 			list( $type ) = explode( '_', $collation );
 
-			$supported_charsets = [ 'utf8', 'utf8mb3', 'utf8mb4', 'latin1', 'latin2', 'ascii', 'binary' ];
-
-			if ( in_array( $type, $supported_charsets ) ) {
-				if ( 'binary' === $type ) {
-					$collation_suffix = 'COLLATE binary';
-				} else {
-					$collation_suffix = 'COLLATE ' . $type . '_bin';
-				}
-			}
+			$collation_suffix = isset( $suffixes_by_charset[ $type ] ) ? $suffixes_by_charset[ $type ] : '';
 		}
 
 		\set_transient( 'wpml_st_context_collation', $collation_suffix );
 
 		return $collation_suffix;
 	}
+
 }

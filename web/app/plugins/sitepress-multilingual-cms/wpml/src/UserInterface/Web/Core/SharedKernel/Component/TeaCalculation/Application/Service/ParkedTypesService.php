@@ -7,6 +7,7 @@ use WPML\Core\SharedKernel\Component\Item\Application\Query\UntranslatedTypesCou
 use WPML\Core\SharedKernel\Component\Item\Application\Service\UntranslatedService;
 use WPML\UserInterface\Web\Core\SharedKernel\Component\TeaCalculation\Application\Repository\ParkedTypesOfferRepositoryInterface;
 use WPML\UserInterface\Web\Core\SharedKernel\Component\TeaCalculation\Application\Repository\PostTypesSinceRepositoryInterface;
+use WPML\UserInterface\Web\Core\SharedKernel\Component\TeaCalculation\Application\Validator\TypeIncludeRules;
 
 class ParkedTypesService {
 
@@ -48,6 +49,9 @@ class ParkedTypesService {
     $missing = [];
     foreach ( $this->parkedOffer->getTranslatableTypes() as $type ) {
       if ( in_array( $type, TypesService::TYPES_TO_EXCLUDE, true ) ) {
+        continue;
+      }
+      if ( TypeIncludeRules::isAlwaysAll( $type ) ) {
         continue;
       }
       if ( isset( $sinceDates[ $type ] ) ) {
@@ -93,7 +97,6 @@ class ParkedTypesService {
         'label'     => $type['namePlural'],
         'items'     => $type['count'],
         'dismissed' => $record[ $type['type'] ]['dismissed'],
-        'parkedAt'  => $record[ $type['type'] ]['parked_at'],
       ];
     }
 

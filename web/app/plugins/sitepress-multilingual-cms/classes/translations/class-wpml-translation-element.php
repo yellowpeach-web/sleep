@@ -40,8 +40,8 @@ abstract class WPML_Translation_Element extends WPML_SP_User {
 
 	abstract function get_wpml_element_type();
 
-	private function get_element_translations( $skip_cache = false ) {
-		return $this->sitepress->get_element_translations( $this->get_trid(), $this->get_wpml_element_type(), false, false, $skip_cache );
+	private function get_element_translations( $skip_cache = false, $all_statuses = false ) {
+		return $this->sitepress->get_element_translations( $this->get_trid(), $this->get_wpml_element_type(), false, $all_statuses, $skip_cache );
 	}
 
 	public function get_translation( $language_code, $skip_cache = false ) {
@@ -109,7 +109,13 @@ abstract class WPML_Translation_Element extends WPML_SP_User {
 
 	abstract function get_new_instance( $element_data );
 
-	public function get_source_element() {
+	public function get_source_element( $all_statuses = false ) {
+		if ( $all_statuses ) {
+			$source = $this->get_element_translations( false, true )[ (string) $this->get_source_language_code() ] ?? null;
+
+			return empty( $source->element_id ) ? null : $this->get_new_instance( $source );
+		}
+
 		$this->maybe_init_translations();
 
 		$source_element       = null;
@@ -141,9 +147,10 @@ abstract class WPML_Translation_Element extends WPML_SP_User {
 	}
 
 	public function flush_cache() {
+		$previous_trid              = isset( $this->languages_details->trid ) ? $this->languages_details->trid : null;
 		$this->languages_details    = null;
 		$this->element_translations = null;
-		$this->wpml_cache->flush_group_cache();
+		WPML_Translations::flush_cache_for_trids( array( $previous_trid, $this->get_trid() ), $this->wpml_cache );
 	}
 
 	public function is_in_default_language() {

@@ -89,7 +89,7 @@ class WPML_Debug_Information {
 				/* translators: Shown in a table cell in place of a value that is not there. Keep the short form your language uses for "not available". */
 				'jQueryVersion'  => wp_script_is( 'jquery', 'registered' ) ? $GLOBALS['wp_scripts']->registered['jquery']->ver : __( 'n/a', 'sitepress' ),
 				'PHPVersion'     => $this->sitepress->get_wp_api()->phpversion(),
-				'MySQLVersion'   => $this->wpdb->db_version(),
+				'MySQLVersion'   => $this->info->get_db_server_version(),
 				'ServerSoftware' => $_SERVER['SERVER_SOFTWARE'],
 			),
 			'PHP'       => array(

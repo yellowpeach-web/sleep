@@ -37,8 +37,10 @@ var WPML_TM = WPML_TM || {};
         // wpmldev-7978: the `save_translator_note` ajax emitter was removed —
         // no server-side handler for that legacy `icl_ajx_action` branch has
         // existed in the product for a long time and no screen renders the
-        // `.icl_tn_save` control any more. Translator notes are saved with the
-        // post itself (`icl_tn_note`, see wpml-admin-post-actions.class.php).
+        // `.icl_tn_save` control any more. Translator notes are written from the
+        // Translation Dashboard (wpml/src TranslatorNoteService /
+        // SaveTranslatorNoteCommand, meta `_icl_translator_note`); the post-save
+        // reader of `icl_tn_note` was removed in wpmldev-8629 (ruling Q-6).
         // Translator notes - translation dashboard - end
 
         // MC Setup — mirrored by res/js/translation-options.js for licenses

@@ -173,14 +173,78 @@
 }
 
 .wpml-dd__footer {
+  /* The settings link on the left, the answer buttons pinned right
+     (wpmldev-12072): a quiet text link beside the one primary, never a third
+     button. Without the link the actions still sit at the right edge. */
   display: flex;
-  justify-content: flex-end;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
   margin: 20px 0 0;
   padding: 0;
 }
 
+.wpml-dd__actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
 .wpml-dd__button {
   margin: 0;
+}
+
+.wpml-dd__settings {
+  /* Vertically centred on the buttons' own 30px line, so the link reads as part
+     of the footer row; the refusal, when shown, wraps underneath it. */
+  display: block;
+  min-height: 30px;
+  padding-top: 5px;
+  line-height: 20px;
+}
+
+/* One rule for both shapes the shared Link renders: an anchor when the viewer
+   may open Settings, a button-as-link when the press only reveals the refusal.
+   Scoped, like everything here, because the screen behind the dialog styles
+   its own links and buttons. */
+.wpml-dd__settings-link,
+.wpml-dd__settings-link:hover,
+.wpml-dd__settings-link:focus {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  line-height: 20px;
+  color: #2271b1;
+  text-decoration: underline;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.wpml-dd__settings-link:hover,
+.wpml-dd__settings-link:focus {
+  color: #135e96;
+}
+
+.wpml-dd__settings-link .dashicons {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  line-height: 16px;
+  text-decoration: none;
+}
+
+.wpml-dd__settings-note {
+  display: block;
+  margin-top: 4px;
+  max-width: 32em;
+  color: #50575e;
+  font-size: 12px;
+  line-height: 1.5;
 }
 

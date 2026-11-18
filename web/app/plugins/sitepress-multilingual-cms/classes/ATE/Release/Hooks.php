@@ -8,6 +8,8 @@ class Hooks implements \IWPML_Action {
 
 	private $handledPosts = [];
 
+	private $announcedJobs = [];
+
 	public function add_hooks() {
 		add_action( 'wp_trash_post', [ $this, 'cancelJobsOfPost' ] );
 		add_action( 'before_delete_post', [ $this, 'cancelJobsOfPost' ] );
@@ -23,7 +25,13 @@ class Hooks implements \IWPML_Action {
 	public function cancelJobsOfPost( $postId ) {
 		$postId = (int) $postId;
 
-		if ( $postId <= 0 || isset( $this->handledPosts[ $postId ] ) ) {
+		if ( $postId <= 0 ) {
+			return;
+		}
+
+		$isDelete = function_exists( 'current_filter' ) && 'before_delete_post' === current_filter();
+
+		if ( isset( $this->handledPosts[ $postId ] ) && ( ! $isDelete || $this->handledPosts[ $postId ] ) ) {
 			return;
 		}
 
@@ -31,9 +39,22 @@ class Hooks implements \IWPML_Action {
 			return;
 		}
 
-		$this->handledPosts[ $postId ] = true;
+		$firstPass                     = ! isset( $this->handledPosts[ $postId ] );
+		$this->handledPosts[ $postId ] = $isDelete;
 
-		$jobs = InFlightChargedJobs::jobsForPost( $postId );
+		$source = function_exists( 'current_filter' ) && 'wp_trash_post' === current_filter()
+			? \WPML\TM\ATE\Cancel\CancelSource::TRASH
+			: \WPML\TM\ATE\Cancel\CancelSource::DELETE;
+
+		if ( $firstPass ) {
+			$this->cancelAcceptedCorrections( InFlightChargedJobs::acceptedCorrectionsForPost( $postId ), 'post_deleted', [ 'post_id' => $postId ], $source );
+		}
+
+		$jobs = $this->notYetAnnounced(
+			$isDelete
+				? InFlightChargedJobs::openAteJobsForPost( $postId )
+				: InFlightChargedJobs::jobsForPost( $postId )
+		);
 
 		if ( ! $jobs ) {
 			return;
@@ -48,7 +69,7 @@ class Hooks implements \IWPML_Action {
 			)
 		);
 
-		$this->cancelJobs( $jobs, 'post_deleted', [ 'post_id' => $postId ] );
+		$this->cancelJobs( $jobs, 'post_deleted', [ 'post_id' => $postId ], $source );
 
 		if ( InFlightChargedJobs::moneyMoved( $counts ) ) {
 			ReleaseNotices::queueTrashNotice( $postId, InFlightChargedJobs::countForCopy( $counts ) );
@@ -67,7 +88,7 @@ class Hooks implements \IWPML_Action {
 			return;
 		}
 
-		$jobs = InFlightChargedJobs::jobsForTerm( $termTaxonomy->term_taxonomy_id, $taxonomy );
+		$jobs = $this->notYetAnnounced( InFlightChargedJobs::openAteJobsForTerm( $termTaxonomy->term_taxonomy_id, $taxonomy ) );
 
 		if ( ! $jobs ) {
 			return;
@@ -79,12 +100,13 @@ class Hooks implements \IWPML_Action {
 			[
 				'element_id'   => (int) $termTaxonomy->term_taxonomy_id,
 				'element_type' => 'tax_' . $taxonomy,
-			]
+			],
+			\WPML\TM\ATE\Cancel\CancelSource::DELETE
 		);
 	}
 
 
-	private function cancelJobs( array $jobs, $event, array $context ) {
+	private function cancelJobs( array $jobs, $event, array $context, $source ) {
 		JobLog::maybeInitRequest();
 
 		$ownsGroup = ! JobLog::isGroupOpen();
@@ -125,6 +147,8 @@ class Hooks implements \IWPML_Action {
 			);
 
 			foreach ( $jobs as $job ) {
+				$this->announcedJobs[ (int) $job['job_id'] ] = true;
+
 				$entity = new \WPML_TM_Post_Job_Entity(
 					(int) $job['rid'],
 					\WPML_TM_Job_Entity::POST_TYPE,
@@ -138,7 +162,7 @@ class Hooks implements \IWPML_Action {
 				$entity->set_editor( \WPML_TM_Editors::ATE );
 				$entity->set_editor_job_id( (int) $job['editor_job_id'] );
 
-				$this->announce( $entity, \WPML_TM_ATE_API::CANCEL_REASON_DELETED );
+				$this->announce( $entity, \WPML_TM_ATE_API::CANCEL_REASON_DELETED, $source );
 			}
 
 			$this->revertLocalRows(
@@ -161,8 +185,87 @@ class Hooks implements \IWPML_Action {
 	}
 
 
-	protected function announce( \WPML_TM_Post_Job_Entity $job, $reason ) {
-		do_action( 'wpml_tm_job_cancelled', $job, $reason );
+	private function notYetAnnounced( array $jobs ) {
+		return array_values(
+			array_filter(
+				$jobs,
+				function ( $job ) {
+					return ! isset( $this->announcedJobs[ (int) $job['job_id'] ] );
+				}
+			)
+		);
+	}
+
+
+	private function cancelAcceptedCorrections( array $jobs, $event, array $context, $source ) {
+		if ( ! $jobs ) {
+			return;
+		}
+
+		JobLog::maybeInitRequest();
+
+		$ownsGroup = ! JobLog::isGroupOpen();
+
+		if ( $ownsGroup ) {
+			JobLog::createNewGroup(
+				JobLog::GROUP_ID_JOB_LIFECYCLE,
+				'Cancel the accepted translation updates of deleted content',
+				array_merge( $context, [ 'job_count' => count( $jobs ) ] )
+			);
+		}
+
+		try {
+			JobLog::add(
+				$event,
+				array_merge(
+					$context,
+					[
+						'correction' => true,
+						'jobs'       => array_map(
+							function ( $job ) {
+								return [ 'job_id' => $job['job_id'] ];
+							},
+							$jobs
+						),
+					]
+				)
+			);
+
+			$this->announceSiteCancel(
+				array_map(
+					function ( $job ) {
+						return (object) [
+							'editor'           => \WPML_TM_Editors::ATE,
+							'editor_job_id'    => (int) $job['editor_job_id'],
+							'translate_job_id' => (int) $job['job_id'],
+						];
+					},
+					$jobs
+				),
+				$source
+			);
+
+			$this->revertLocalRows(
+				array_map(
+					function ( $job ) {
+						return $job['rid'];
+					},
+					$jobs
+				)
+			);
+		} finally {
+			if ( $ownsGroup ) {
+				JobLog::finishCurrentGroup();
+			}
+		}
+	}
+
+	protected function announceSiteCancel( array $jobs, $source ) {
+		do_action( 'wpml_tm_jobs_cancelled', $jobs, $source );
+	}
+
+	protected function announce( \WPML_TM_Post_Job_Entity $job, $reason, $source ) {
+		do_action( 'wpml_tm_job_cancelled', $job, $reason, $source );
 	}
 
 	private function revertLocalRows( array $rids ) {

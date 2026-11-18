@@ -20,6 +20,19 @@ class WPML_Page_Builders_Media_Translate implements IWPML_PB_Media_Find_And_Tran
 		$this->image_translate = $image_translate;
 	}
 
+	public static function create() {
+		global $sitepress;
+
+		return new self(
+			new WPML_Translation_Element_Factory( $sitepress ),
+			new WPML_Media_Image_Translate(
+				$sitepress,
+				new WPML_Media_Attachment_By_URL_Factory(),
+				new \WPML\Media\Factories\WPML_Media_Attachment_By_URL_Query_Factory()
+			)
+		);
+	}
+
 	public function prefetch_media_urls( array $urls, $source_lang ) {
 		if ( empty( $urls ) ) {
 			return;

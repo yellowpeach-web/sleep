@@ -21,15 +21,21 @@ class WPML_Resolve_Absolute_Url implements IWPML_Resolve_Object_Url {
 		$this->lock = true;
 		$this->sitepress->switch_lang( $lang );
 
+		$force_translated_permalink = function () {
+			return true;
+		};
+		add_filter( 'wpml_force_translated_permalink', $force_translated_permalink );
+
 		try {
 			$new_url = $this->translate_link_targets->convert_url( $url );
 
 			if ( trailingslashit( $new_url ) === trailingslashit( $url ) ) {
-				$new_url = false;
+				$new_url = $this->translate_link_targets->is_object_url( $url ) ? $url : false;
 			}
 		} catch ( Exception $e ) {
 			$new_url = false;
 		} finally {
+			remove_filter( 'wpml_force_translated_permalink', $force_translated_permalink );
 			$this->sitepress->switch_lang();
 		}
 

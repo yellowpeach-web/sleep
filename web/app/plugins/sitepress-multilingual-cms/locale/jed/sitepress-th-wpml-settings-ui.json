@@ -73,8 +73,14 @@
          "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
             "ไม่ว่าจะเลือกทางใด การตั้งค่าใหม่จะถูกบันทึก หากเลือก “ใช้กับคำแปลใหม่เท่านั้น” คำแปลที่มีอยู่เดิมทั้งหมดจะคงเดิมทุกประการ"
          ],
+         "With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "เมื่อเลือก “มีผลกับการแปลใหม่เท่านั้น” งานแปลที่มีอยู่ทั้งหมดจะคงเดิมทุกประการ"
+         ],
          "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
             "ฟิลด์ที่กำหนดเอง %1$s ฟิลด์กลายเป็นฟิลด์ที่แปลได้จากภายนอกหน้าจอนี้: %2$s โปรดตัดสินใจว่าจะให้เกิดอะไรขึ้นกับคำแปลที่มีอยู่แล้ว"
+         ],
+         "%1$s custom field was waiting for a check an earlier WPML version started and did not finish: %2$s. Its translation setting has not changed. Decide whether the existing translations that use it should be marked as needing an update.": [
+            "ฟิลด์ที่กำหนดเอง %1$s รายการกำลังรอการตรวจสอบที่ WPML เวอร์ชันก่อนหน้าเริ่มไว้แต่ยังไม่เสร็จสมบูรณ์: %2$s การตั้งค่าการแปลของฟิลด์เหล่านี้ยังไม่มีการเปลี่ยนแปลง โปรดตัดสินใจว่าควรทำเครื่องหมายงานแปลที่มีอยู่ซึ่งใช้ฟิลด์เหล่านี้ว่าจำเป็นต้องอัปเดตหรือไม่"
          ],
          "Review this field": [
             "รีวิวฟิลด์เหล่านี้"

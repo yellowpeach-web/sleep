@@ -40,17 +40,29 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 		}
 	}
 
-	private function getCached( $originalId, $packageType, $isOriginal = false ) {
+	private function getCached( $originalId, $packageType, $kind, $isOriginal = false ) {
 		$originalPath = $isOriginal ? self::POST_IS_ORIGINAL : self::POST_IS_UNKNOWN;
-		return Obj::pathOr( null, [ $packageType, $originalId, $originalPath ], self::$cache );
+		return Obj::pathOr( null, [ $packageType, $kind, $originalId, $originalPath ], self::$cache );
 	}
 
-	private function setCached( $originalId, $packageType, $package, $isOriginal = false ) {
+	private function setCached( $originalId, $packageType, $kind, $package, $isOriginal = false ) {
 		if ( ! in_array( $packageType, [ self::PACKAGE_TYPE_EXTERNAL, self::PACKAGE_TYPE_POST ], true ) ) {
 			return;
 		}
 		$originalPath = $isOriginal ? self::POST_IS_ORIGINAL : self::POST_IS_UNKNOWN;
-		self::$cache[ $packageType ][ $originalId ][ $originalPath ] = $package;
+		self::$cache[ $packageType ][ $kind ][ $originalId ][ $originalPath ] = $package;
+	}
+
+	private function getItemKind( $item, $isExternal ) {
+		if ( ! $isExternal ) {
+			return self::PACKAGE_TYPE_POST;
+		}
+		if ( $item instanceof \WPML_Package ) {
+			return 'package';
+		}
+		$postType = Obj::prop( 'post_type', $item );
+
+		return get_class( $item ) . ':' . ( is_string( $postType ) ? $postType : '' );
 	}
 
 	public function clearCache() {
@@ -73,7 +85,8 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 			JobLog::add( 'Creating external translation package for post `' . $original_id . '`' );
 
 			$type          = self::PACKAGE_TYPE_EXTERNAL;
-			$cachedPackage = $this->getCached( $original_id, $type, $isOriginal );
+			$kind          = $this->getItemKind( $post, true );
+			$cachedPackage = $this->getCached( $original_id, $type, $kind, $isOriginal );
 			if ( null !== $cachedPackage ) {
 				JobLog::add( 'Found cached package for post `' . $original_id . '`' );
 				return $cachedPackage;
@@ -102,7 +115,8 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 			JobLog::add( 'Creating translation package for post `' . $original_id . '`' );
 
 			$type          = self::PACKAGE_TYPE_POST;
-			$cachedPackage = $this->getCached( $original_id, $type, $isOriginal );
+			$kind          = $this->getItemKind( $post, false );
+			$cachedPackage = $this->getCached( $original_id, $type, $kind, $isOriginal );
 			if ( null !== $cachedPackage ) {
 				JobLog::add( 'Found cached package for post `' . $original_id . '`' );
 				return $cachedPackage;
@@ -122,15 +136,7 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 				$post_contents['URL'] = $post->post_name;
 			}
 
-			$custom_fields_to_translate = \WPML\TM\Settings\Repository::getCustomFieldsToTranslate();
-
-			if ( isset( $post->ID ) ) {
-				$post_meta                  = get_post_custom( $post->ID );
-				$resolved                   = wpml_resolve_custom_field_preferences( is_array( $post_meta ) ? array_keys( $post_meta ) : [] );
-				$custom_fields_to_translate = array_unique(
-					array_merge( $custom_fields_to_translate, array_keys( $resolved, WPML_TRANSLATE_CUSTOM_FIELD, true ) )
-				);
-			}
+			$custom_fields_to_translate = $this->get_custom_fields_to_translate( $post );
 
 			if ( ! empty( $custom_fields_to_translate ) ) {
 				$package = $this->add_custom_field_contents(
@@ -157,7 +163,7 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 		$package['contents'] = $this->buildEntries( $package['contents'], $post_contents );
 
 		$package = apply_filters( 'wpml_tm_translation_job_data', $package, $post, $isOriginal );
-		$this->setCached( $original_id, $type, $package, $isOriginal );
+		$this->setCached( $original_id, $type, $kind, $package, $isOriginal );
 		return $package;
 	}
 
@@ -191,7 +197,7 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 		return $contents;
 	}
 
-	public function save_package_to_job( array $translation_package, $job_id, $prev_translation, $addJobLogs = false ) {
+	public function save_package_to_job( array $translation_package, $job_id, $prev_translation, $addJobLogs = false, $jobLanguage = '' ) {
 		global $wpdb;
 
 		$show = $wpdb->hide_errors();
@@ -201,7 +207,8 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 
 		$translation_package['contents'] = $this->dropTermFieldsCoveredInJobLanguage(
 			(array) $translation_package['contents'],
-			(int) $job_id
+			(int) $job_id,
+			(string) $jobLanguage
 		);
 
 		foreach ( $translation_package['contents'] as $field => $value ) {
@@ -246,8 +253,9 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 			);
 		}
 
+		$written = false;
 		if ( $rows ) {
-			$wpdb->query(
+			$written = $wpdb->query(
 				$wpdb->prepare(
 					"INSERT INTO {$wpdb->prefix}icl_translate
 					(job_id, content_id, field_type, field_wrap_tag, field_format, field_translate, field_data, field_data_translated, field_finished)
@@ -269,6 +277,8 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 		}
 
 		$wpdb->show_errors( $show );
+
+		return (bool) $rows && false !== $written;
 	}
 
 	private function filter_non_translatable_fields( $job_translate ) {
@@ -282,13 +292,23 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 
 			$is_translatable = (bool) apply_filters( 'wpml_tm_job_field_is_translatable', $is_translatable, $job_translate, $data );
 			if ( ! $is_translatable ) {
-				$job_translate['field_translate']       = 0;
-				$job_translate['field_data_translated'] = $job_translate['field_data'];
-				$job_translate['field_finished']        = 1;
+				$job_translate['field_translate'] = 0;
+				$job_translate['field_finished']  = 1;
+
+				$keep_previous = '' !== (string) $job_translate['field_data_translated']
+					&& $this->decoded( $job_translate['field_data_translated'], $job_translate['field_format'] ) !== $data
+					&& WPML_String_Functions::is_textless( $data );
+				if ( ! $keep_previous ) {
+					$job_translate['field_data_translated'] = $job_translate['field_data'];
+				}
 			}
 		}
 
 		return $job_translate;
+	}
+
+	private function decoded( $value, $format ) {
+		return 'base64' === $format ? (string) FieldCompression::decompress( (string) $value ) : (string) $value;
 	}
 
 	public function save_job_custom_fields( $job, $post_id, $fields ) {
@@ -559,11 +579,7 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 	}
 
 	private function prevent_strip_slash_on_json( $value, $encoding ) {
-		if ( in_array( 'json', explode( ',', $encoding ), true ) ) {
-			$value = wp_slash( $value );
-		}
-
-		return $value;
+		return wp_slash( $value );
 	}
 
 	private function add_custom_field_contents( $package, $post, $fields_to_translate, $fields_encoding ) {
@@ -577,6 +593,20 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 		}
 
 		return $package;
+	}
+
+	public function get_custom_fields_to_translate( $post ) {
+		$custom_fields_to_translate = \WPML\TM\Settings\Repository::getCustomFieldsToTranslate();
+
+		if ( isset( $post->ID ) ) {
+			$post_meta                  = get_post_custom( $post->ID );
+			$resolved                   = wpml_resolve_custom_field_preferences( is_array( $post_meta ) ? array_keys( $post_meta ) : [] );
+			$custom_fields_to_translate = array_unique(
+				array_merge( $custom_fields_to_translate, array_keys( $resolved, WPML_TRANSLATE_CUSTOM_FIELD, true ) )
+			);
+		}
+
+		return $custom_fields_to_translate;
 	}
 
 	public function get_custom_field_texts( $post, array $keys ) {
@@ -696,8 +726,6 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 	private function get_taxonomy_fields( $post ) {
 		global $sitepress;
 
-		$termMetaKeysToTranslate = self::getTermMetaKeysToTranslate();
-
 		$getTermFields = function ( $term ) {
 			return [
 				[ FieldId::forTerm( $term->term_taxonomy_id ), $term->name ],
@@ -705,40 +733,40 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 			];
 		};
 
-		$getTermMetaFields = curryN(
-			2,
-			function ( $termMetaKeysToTranslate, $term ) {
+		$getTermMetaFields = function ( $term ) {
 
-				$getMeta = curryN(
-					3,
-					function ( $termId, $termTaxonomyId, $key ) {
-						return (object) [
-							'id'   => $termTaxonomyId,
-							'key'  => $key,
-							'meta' => get_term_meta( $termId, $key ),
-						];
-					}
-				);
+			$getMeta = curryN(
+				3,
+				function ( $termId, $termTaxonomyId, $key ) {
+					return (object) [
+						'id'   => $termTaxonomyId,
+						'key'  => $key,
+						'meta' => get_term_meta( $termId, $key ),
+					];
+				}
+			);
 
-				$hasMeta = function ( $termData ) {
-					return isset( $termData->meta[0] );
-				};
+			$hasMeta = function ( $termData ) {
+				return isset( $termData->meta[0] );
+			};
 
-				$makeField = function ( $termData ) {
-					return [ FieldId::forTermMeta( $termData->id, $termData->key ), $termData->meta[0] ];
-				};
+			$makeField = function ( $termData ) {
+				return [ FieldId::forTermMeta( $termData->id, $termData->key ), $termData->meta[0] ];
+			};
 
-				$get = pipe(
-					Fns::map( $getMeta( $term->term_id, $term->term_taxonomy_id ) ),
-					Fns::filter( $hasMeta ),
-					Fns::map( $makeField )
-				);
+			$get = pipe(
+				Fns::map( $getMeta( $term->term_id, $term->term_taxonomy_id ) ),
+				Fns::filter( $hasMeta ),
+				Fns::map( $makeField )
+			);
 
-				return $get( array_unique( array_merge( $termMetaKeysToTranslate, TranslatableTermMeta::resolvedKeysOfTerm( (int) $term->term_id ) ) ) );
-			}
-		);
+			$isWpTerm = $term instanceof WP_Term;
+			$keys     = TranslatableTermMeta::keys( (string) ( $term->taxonomy ?? '' ), $isWpTerm ? $term : null );
 
-		$getAll = Fns::converge( Lst::concat(), [ $getTermFields, $getTermMetaFields( $termMetaKeysToTranslate ) ] );
+			return $get( $isWpTerm ? $keys : array_unique( array_merge( $keys, TranslatableTermMeta::resolvedKeysOfTerm( (int) $term->term_id ) ) ) );
+		};
+
+		$getAll = Fns::converge( Lst::concat(), [ $getTermFields, $getTermMetaFields ] );
 
 		return wpml_collect( $sitepress->get_translatable_taxonomies( false, $post->post_type ) )
 			->map( Post::getTerms( $post->ID ) )
@@ -750,14 +778,24 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 			->toArray();
 	}
 
-	private function dropTermFieldsCoveredInJobLanguage( array $contents, $jobId ) {
+	private function dropTermFieldsCoveredInJobLanguage( array $contents, $jobId, $lang = '' ) {
 		$termIds = self::termTaxonomyIdsInContents( $contents );
 		if ( ! $termIds ) {
 			return $contents;
 		}
 
-		$lang = $this->jobTargetLanguage( $jobId );
 		if ( '' === $lang ) {
+			$lang = $this->jobTargetLanguage( $jobId );
+		}
+		if ( '' === $lang ) {
+			JobLog::addError(
+				'term_fields_kept_job_language_unknown',
+				[
+					'job_id'            => (int) $jobId,
+					'term_taxonomy_ids' => $termIds,
+				]
+			);
+
 			return $contents;
 		}
 
@@ -781,7 +819,7 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 			}
 		}
 
-		return $contents;
+		return \WPML\TM\OwnedPackages\OwnerJobService::drop_owned_fields_covered_in_language( $contents, $covered );
 	}
 
 	private static function termTaxonomyIdsInContents( array $contents ) {
@@ -811,35 +849,7 @@ class WPML_Element_Translation_Package extends WPML_Translation_Job_Helper {
 	}
 
 	public static function termsCoveredInLanguage( array $termTaxonomyIds, $lang ) {
-		global $wpdb;
-
-		$termTaxonomyIds = array_values( array_unique( array_filter( array_map( 'intval', $termTaxonomyIds ) ) ) );
-		if ( ! $termTaxonomyIds || ! $lang ) {
-			return [];
-		}
-
-		$covered = $wpdb->get_col(
-			$wpdb->prepare(
-				"SELECT DISTINCT original.element_id
-				FROM {$wpdb->prefix}icl_translations original
-				JOIN {$wpdb->prefix}icl_translations translation
-					ON translation.trid = original.trid
-					AND translation.element_type = original.element_type
-					AND translation.language_code = %s
-				LEFT JOIN {$wpdb->prefix}icl_translation_status status
-					ON status.translation_id = translation.translation_id
-				WHERE original.element_id IN (" . implode( ', ', array_fill( 0, count( $termTaxonomyIds ), '%d' ) ) . ')
-					AND original.element_type LIKE %s
-					AND ( translation.element_id IS NOT NULL OR status.status IN ( %d, %d ) )',
-				array_merge(
-					[ $lang ],
-					$termTaxonomyIds,
-					[ $wpdb->esc_like( 'tax_' ) . '%', ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_IN_PROGRESS ]
-				)
-			)
-		);
-
-		return array_map( 'intval', (array) $covered );
+		return \WPML\TM\Jobs\TermTranslationInLanguage::covered( $termTaxonomyIds, (string) $lang );
 	}
 
 	public static function isTermCoveredInLanguage( $termTaxonomyId, $lang ) {

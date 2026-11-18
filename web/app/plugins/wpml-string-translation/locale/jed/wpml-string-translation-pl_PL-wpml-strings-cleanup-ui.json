@@ -37,14 +37,35 @@
          "Removing strings from <b>String Translation</b> table": [
             "Usuwanie ciągów znaków z tabeli <b>tłumaczenia ciągów znaków</b>"
          ],
+         "%s string waiting for translation was kept.": [
+            "Zachowano %s ciąg oczekujący na tłumaczenie.",
+            "Zachowano %s ciągi oczekujące na tłumaczenie.",
+            "Zachowano %s ciągów oczekujących na tłumaczenie."
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "Aby ponownie dodać ciągi do tabeli <b>tłumaczenia ciągów znaków</b>, może być konieczne ponowne przeskanowanie plików tłumaczeń lub zarejestrowanie ciągów jako nadających się do tłumaczenia."
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "Dowiedz się więcej o <a>skanowaniu witryny pod kątem ciągów znaków i rejestrowaniu ich jako nadających się do tłumaczenia</a>."
          ],
-         "Successfully removed strings": [
-            "Pomyślnie usunięto ciągi znaków"
+         "Nothing removed: %s string is waiting for translation": [
+            "Nic nie usunięto: %s ciąg oczekuje na tłumaczenie",
+            "Nic nie usunięto: %s ciągi oczekują na tłumaczenie",
+            "Nic nie usunięto: %s ciągów oczekuje na tłumaczenie"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "Nic nie usunięto: wybrane domeny nie zawierają nieprzetłumaczonych ciągów"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "Aby je również usunąć, zaznacz opcję „Usuń także ciągi oczekujące na tłumaczenie” i kliknij ponownie Usuń."
+         ],
+         "OK": [
+            "OK"
+         ],
+         "Removed %s string": [
+            "Usunięto %s ciąg",
+            "Usunięto %s ciągi",
+            "Usunięto %s ciągów"
          ],
          "OK, Great": [
             "OK, świetnie"
@@ -60,6 +81,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "Usuwanie ciągów znaków zostało przerwane przed zakończeniem. Ciągi, które nie zostały usunięte, nadal znajdują się w tabeli. Spróbuj usunąć je ponownie."
+         ],
+         "Successfully removed strings": [
+            "Pomyślnie usunięto ciągi znaków"
          ]
       }
    }

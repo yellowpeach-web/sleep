@@ -1,7 +1,6 @@
 <?php
 
 use ACFML\FieldGroup\SetCptNotTranslatable;
-use ACFML\Notice\Links;
 
 class WPML_ACF_Translatable_Groups_Checker implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
 	const TRANSIENT_KEY = 'acfml_untranslated_groups';
@@ -32,6 +31,7 @@ class WPML_ACF_Translatable_Groups_Checker implements \IWPML_Backend_Action, \IW
 		add_action( 'wpml_save_cpt_sync_settings', [ $this, 'on_cpt_sync_settings_saved' ] );
 
 		add_action( 'wpml_config_parse_finished', [ $this, 'flush_untranslated_groups' ] );
+		add_action( 'wpml_clear_all_caches', [ $this, 'flush_untranslated_groups' ], 10, 0 );
 
 		add_action( 'acf/update_field_group', [ $this, 'flush_untranslated_groups' ] );
 		add_action( 'acf/delete_field_group', [ $this, 'flush_untranslated_groups' ] );
@@ -123,14 +123,6 @@ class WPML_ACF_Translatable_Groups_Checker implements \IWPML_Backend_Action, \IW
 				)
 			);
 		}
-
-		$why = new WPML_Notice_Action(
-			/* translators: Link in that notice; it opens the ACFML documentation. */
-			esc_html__( 'Why this matters', 'acfml' ),
-			Links::getAcfmlExpertDoc( [ 'anchor' => 'field-group-translation-settings' ] )
-		);
-		$why->set_link_target( '_blank' );
-		$notice->add_action( $why );
 
 		$notices->add_notice( $notice );
 	}

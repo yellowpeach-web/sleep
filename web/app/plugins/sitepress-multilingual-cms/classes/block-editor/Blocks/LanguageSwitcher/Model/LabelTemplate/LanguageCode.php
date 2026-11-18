@@ -11,4 +11,8 @@ class LanguageCode implements LabelTemplateInterface {
 	public function getDisplayName( LanguageItem $languageItem ) {
 		return $languageItem->getCode();
 	}
+
+	public function writeLabel( \DOMElement $label, LanguageItem $languageItem ) {
+		$label->textContent = $this->getDisplayName( $languageItem );
+	}
 }

@@ -15,9 +15,9 @@ class TranslationStatusSchema {
 		'ate_comm_retry_count' => 'INT(11) UNSIGNED DEFAULT 0',
 	];
 
-	public static function healMissingColumns(): bool {
+	public static function healMissingColumns( $db = null ): bool {
 		global $wpdb;
 
-		return ( new \WPML_Upgrade_Schema( $wpdb ) )->ensure_columns( self::TABLE, self::COLUMNS );
+		return ( new \WPML_Upgrade_Schema( $db ?: $wpdb ) )->ensure_columns( self::TABLE, self::COLUMNS );
 	}
 }

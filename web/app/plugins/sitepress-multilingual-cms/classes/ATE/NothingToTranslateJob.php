@@ -2,6 +2,7 @@
 
 namespace WPML\TM\ATE;
 
+use WPML\EditHistory\InternalWrite;
 use WPML\TM\Jobs\JobLog;
 
 class NothingToTranslateJob {
@@ -44,7 +45,7 @@ class NothingToTranslateJob {
 
 		kses_remove_filters();
 		try {
-			wpml_tm_save_data( $data, false );
+			InternalWrite::run( InternalWrite::NOTHING_TO_TRANSLATE, fn() => wpml_tm_save_data( $data, false ) );
 		} finally {
 			kses_init();
 		}

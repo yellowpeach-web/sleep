@@ -16,6 +16,10 @@ class WPML_Flags {
 
 	private $filesystem;
 
+	private $table_rows = [];
+	private $table_rows_generation = 0;
+	private static $generation = 0;
+
 	public function __construct( $wpdb, icl_cache $cache, ?WP_Filesystem_Base $filesystem = null ) {
 		$this->wpdb       = $wpdb;
 		$this->cache      = $cache;
@@ -37,7 +41,7 @@ class WPML_Flags {
 		$flag = $this->cache->get( $lang_code );
 
 		if ( ! $flag ) {
-			$flag = $wpdb->get_row(
+			$flag = $this->table_row( $lang_code ) ?? $wpdb->get_row(
 				$wpdb->prepare(
 					"SELECT flag, from_template
                                                     FROM {$wpdb->prefix}icl_flags
@@ -50,6 +54,22 @@ class WPML_Flags {
 		}
 
 		return $flag;
+	}
+
+	private function table_row( $lang_code ) {
+		$wpdb  = $this->wpdb;
+		$table = $wpdb->prefix . 'icl_flags';
+		if ( self::$generation !== $this->table_rows_generation ) {
+			$this->table_rows            = [];
+			$this->table_rows_generation = self::$generation;
+		}
+		if ( ! isset( $this->table_rows[ $table ] ) ) {
+			$this->table_rows[ $table ] = [];
+			foreach ( array_filter( (array) $wpdb->get_results( "SELECT flag, from_template, lang_code FROM {$wpdb->prefix}icl_flags" ), 'is_object' ) as $row ) {
+				$this->table_rows[ $table ][ $row->lang_code ] = (object) [ 'flag' => $row->flag, 'from_template' => $row->from_template ];
+			}
+		}
+		return is_string( $lang_code ) && isset( $this->table_rows[ $table ][ $lang_code ] ) ? $this->table_rows[ $table ][ $lang_code ] : null;
 	}
 
 	public function get_flag_url( $lang_code ) {
@@ -113,10 +133,12 @@ class WPML_Flags {
 	}
 
 	public function clear() {
+		self::$generation++;
 		$this->cache->clear();
 	}
 
 	public static function invalidate() {
+		self::$generation++;
 		global $wpml_term_translations, $wpml_post_translations;
 
 		if ( ! is_object( $wpml_term_translations ) || ! is_object( $wpml_post_translations ) ) {
@@ -196,6 +218,6 @@ class WPML_Flags {
 
 		$base_url_parts['path'] = implode( '/', $base_url_path_components );
 
-		return http_build_url( $base_url_parts );
+		return \WPML\UrlHandling\UrlBuilder::build( $base_url_parts );
 	}
 }

@@ -38,7 +38,7 @@
             "ไม่มีเนื้อหาที่มีอยู่ที่ต้องอัปเดต"
          ],
          "%d post will be updated.": [
-            "เรื่อง %d เรื่องจะถูกอัปเดต"
+            "โพสต์จำนวน %d รายการจะได้รับการอัปเดต"
          ],
          "%d link will be adjusted.": [
             "ลิงก์ %d ลิงก์จะถูกปรับแต่ง"
@@ -155,7 +155,7 @@
             "%1$s — %2$d รายการ"
          ],
          "Pages and posts": [
-            "หน้าและเรื่อง"
+            "หน้าและโพสต์"
          ],
          "Products": [
             "สินค้า"
@@ -176,7 +176,7 @@
             "หมวดหมู่ แท็ก และเมนูไม่มีถังขยะใน WordPress ดังนั้นสิ่งเหล่านั้นจะถูกลบทันทีไม่ว่าจะเลือกทางใด"
          ],
          "Your site’s setting “when deleting a post, delete its translations too” is on. We will not apply it here, so nothing in %s is deleted.": [
-            "การตั้งค่าไซต์ของคุณ “เมื่อลบเรื่อง ให้ลบบทแปลด้วย” เปิดอยู่ เราจะไม่นำมาใช้ที่นี่ ดังนั้นจะไม่มีสิ่งใดใน %s ถูกลบ"
+            "การตั้งค่าไซต์ของคุณ “เมื่อลบโพสต์ ให้ลบคำแปลด้วย” เปิดใช้งานอยู่ เราจะไม่นำการตั้งค่านี้มาใช้ที่นี่ ดังนั้นจะไม่มีสิ่งใดใน %s ถูกลบ"
          ],
          ", ": [
             ", "
@@ -428,7 +428,7 @@
             "ผู้ใช้ส่วนใหญ่ไม่จำเป็นต้องใช้ภาษาที่กำหนดเอง ภูมิภาคย่อยส่วนใหญ่ (เช่น ภาษาสเปนเม็กซิโก, ภาษาโปรตุเกสบราซิล) มีอยู่ในรายการภาษาด้านบนแล้ว ใช้แบบฟอร์มนี้สำหรับภาษาที่กำหนดเองจริง ๆ เท่านั้น"
          ],
          "Variant name": [
-            "ชื่อตัวแปร"
+            "ชื่อตัวแปรย่อย"
          ],
          "e.g., Andalusian": [
             "เช่น อันดาลูเซีย"
@@ -560,13 +560,16 @@
             "เปลี่ยนได้ที่ การตั้งค่า → ทั่วไป"
          ],
          "Valid": [
-            "ใช้งานได้"
+            "ถูกต้อง"
          ],
          "Blocked by a firewall or CDN": [
             "ถูกบล็อกโดยไฟร์วอลล์หรือ CDN"
          ],
+         "Used by another site": [
+            "ถูกใช้โดยไซต์อื่น"
+         ],
          "Not valid": [
-            "ใช้งานไม่ได้"
+            "ไม่ถูกต้อง"
          ],
          "Validate on save": [
             "ตรวจสอบความถูกต้องเมื่อบันทึก"
@@ -588,6 +591,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s โหลดได้ แต่ไฟร์วอลล์หรือ CDN บล็อกการตรวจสอบของ WPML"
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "ถูกใช้โดยไซต์อื่นในเครือข่ายนี้: %s ป้อนโดเมนอื่นเพื่อบันทึก"
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "ไม่สามารถตรวจสอบความถูกต้องของโดเมนได้: %s โปรดตรวจสอบว่าโดเมนชี้มาที่ไซต์นี้ หรือยกเลิกการเลือก “ตรวจสอบความถูกต้องเมื่อบันทึก” เพื่อบันทึกต่อไป"
@@ -931,6 +937,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "ก่อนที่จะสามารถบันทึกภาษานี้ได้ โปรดเลือกว่าจะกู้คืนเนื้อหาที่ไซต์นี้เคยมีในภาษานี้กลับมา หรือจะเริ่มต้นใหม่"
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "ไม่สามารถจับคู่ภาษาไปยังภาษาเริ่มต้นของไซต์ของคุณได้ โปรดเลือก “จับคู่อัตโนมัติ” แทน"
+         ],
          "You don’t have permission to change languages.": [
             "คุณไม่มีสิทธิ์ในการเปลี่ยนภาษา"
          ],
@@ -956,10 +965,10 @@
             "%1$s: ไม่สามารถดาวน์โหลดแพ็คเกจภาษา WordPress สำหรับ %2$s ได้ ดังนั้นโลแคลจึงถูกบันทึกโดยไม่มีไฟล์การแปล"
          ],
          "%1$s: the links in post %2$s did not match the old language code and were left as they were.": [
-            "%1$s: ลิงก์ในเรื่อง %2$s ไม่ตรงกับรหัสภาษาเดิมและถูกทิ้งไว้ตามเดิม"
+            "%1$s: ลิงก์ในโพสต์ %2$s ไม่ตรงกับรหัสภาษาเดิมและถูกคงไว้ตามเดิม"
          ],
          "%1$s: the links in post %2$s could not be rewritten.": [
-            "%1$s: ไม่สามารถเขียนลิงก์ในเรื่อง %2$s ใหม่ได้"
+            "%1$s: ไม่สามารถเขียนลิงก์ในโพสต์ %2$s ใหม่ได้"
          ],
          "%1$s: some translation jobs could not be cancelled.": [
             "%1$s: งานแปลบางงานไม่สามารถยกเลิกได้"
@@ -990,6 +999,9 @@
          ],
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "หากคุณไม่พบภาษาของคุณในรายการ <a>เพิ่มภาษาที่กำหนดเอง</a>"
+         ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s ย้ายไปยังตำแหน่งที่ %2$d จาก %3$d"
          ],
          "Default language": [
             "ภาษาเริ่มต้น"
@@ -1031,7 +1043,7 @@
             "เข้ารหัสอักขระที่ไม่ใช่ภาษาละติน"
          ],
          "Mapping": [
-            "การจับคู่"
+            "การแมป"
          ],
          "This language is recognized as the same as your site’s default language, so it can’t be translated automatically. To carry your content over, duplicate it instead.": [
             "ภาษานี้ได้รับการยอมรับว่าเป็นภาษาเดียวกับภาษาเริ่มต้นของไซต์คุณ ดังนั้นจึงไม่สามารถแปลโดยอัตโนมัติได้ หากต้องการนำเนื้อหาของคุณไปใช้ ให้ทำสำเนาแทน"
@@ -1047,6 +1059,12 @@
          ],
          "Delete language": [
             "ลบภาษา"
+         ],
+         "Move %s. Use the up and down arrow keys.": [
+            "ย้าย %s ใช้ปุ่มลูกศรขึ้นและลง"
+         ],
+         "Drag to change the order": [
+            "ลากเพื่อเปลี่ยนลำดับ"
          ],
          "Type to search all languages…": [
             "พิมพ์เพื่อค้นหาทุกภาษา…"
@@ -1119,6 +1137,9 @@
          ],
          "Recognized as the same language as the default": [
             "รับรู้ว่าเป็นภาษาเดียวกับภาษาเริ่มต้น"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "การแปลอัตโนมัติถูกปิดอยู่: ไม่ได้เปิดใช้งานเครื่องมือการแปล หากต้องการเปิด ให้ไปที่ <link>WPML → การตั้งค่า → การแปลด้วย AI</link>"
          ],
          "%s (Regional)": [
             "%s (ภูมิภาค)"
@@ -1196,7 +1217,7 @@
             "ไม่พบข้อมูลที่ตรงกัน"
          ],
          "The items you include below are removed, along with their translation records. Originals in your other languages are untouched, and image files stay on disk. Comments on these posts are deleted with them. Nothing in %s’s sibling languages is deleted.": [
-            "รายการที่คุณรวมไว้ด้านล่างจะถูกลบออกพร้อมกับบันทึกการแปล ต้นฉบับในภาษาอื่น ๆ ของคุณจะไม่ได้รับผลกระทบ และไฟล์รูปภาพจะยังคงอยู่ในดิสก์ ความคิดเห็นในเรื่องเหล่านี้จะถูกลบออกไปด้วย จะไม่มีสิ่งใดในภาษาพี่น้องของ %s ถูกลบออก"
+            "รายการที่คุณระบุไว้ด้านล่างจะถูกลบออก พร้อมกับบันทึกการแปล ต้นฉบับในภาษาอื่น ๆ ของคุณจะไม่ได้รับผลกระทบ และไฟล์รูปภาพจะยังคงอยู่ในดิสก์ ความคิดเห็นในโพสต์เหล่านี้จะถูกลบไปด้วย จะไม่มีสิ่งใดในภาษาพี่น้องของ %s ถูกลบ"
          ],
          "Skip them, move everything else.": [
             "ข้ามรายการเหล่านี้ แล้วย้ายส่วนอื่น ๆ ทั้งหมด"

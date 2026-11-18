@@ -1,7 +1,10 @@
 <?php
 
+use WPML\EditHistory\InternalWrite;
 use WPML\FP\Obj;
+use WPML\TM\XLIFF\ExportLeftOut;
 use WPML\TM\XLIFF\PortableFileName;
+use function WPML\PHP\Logger\error as logError;
 
 require_once ABSPATH . 'wp-admin/includes/file.php';
 require_once WPML_TM_PATH . '/inc/wpml_zip.php';
@@ -14,9 +17,13 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 
 	private $attachments = array();
 
+	private $temp_files = array();
+
 	private $sitepress;
 
 	private $export_archive_name;
+
+	private $export_left_out;
 
 	private $late_init_priority = 9999;
 
@@ -26,6 +33,10 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 		parent::__construct( $job_factory );
 		$this->sitepress    = $sitepress;
 		$this->simplexml_on = $simplexml_on;
+	}
+
+	protected function keeps_source_of_untranslated_units() {
+		return false;
 	}
 
 	public function get_available_xliff_versions() {
@@ -117,7 +128,15 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 				if ( ! current_user_can( 'translate' ) && ! current_user_can( 'manage_translations' ) ) {
 					wp_send_json_error( __( 'You are not allowed to import XLIFF translations.', 'sitepress' ) );
 				}
-				if ( $this->import_xliff( Obj::propOr( [], 'import', $_FILES ) ) ) {
+				$upload   = Obj::propOr( [], 'import', $_FILES );
+				$imported = \WPML\TM\Jobs\JobLog::runInGroup(
+					\WPML\TM\Jobs\JobLog::GROUP_ID_LOCAL_SAVES,
+					'XLIFF upload',
+					function () use ( $upload ) {
+						return $this->import_xliff( $upload );
+					}
+				);
+				if ( $imported ) {
 					wp_send_json_success(
 						[
 							'jobs'   => $this->success,
@@ -158,10 +177,7 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 			$xliff_file    = $this->get_xliff_file( $job_id, $xliff_version );
 			$temp_dir      = get_temp_dir();
 			$file_name     = $temp_dir . PortableFileName::forJob( get_bloginfo( 'name' ), $job_id );
-			$fh            = fopen( $file_name, 'w' );
-			if ( $fh ) {
-				fwrite( $fh, $xliff_file );
-				fclose( $fh );
+			if ( $this->write_temp_file( $file_name, $xliff_file ) ) {
 				$mail['attachment']           = $file_name;
 				$this->attachments[ $job_id ] = $file_name;
 
@@ -183,14 +199,12 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 
 		foreach ( $attachments as $index => $attachment ) {
 			if ( in_array( $attachment, $this->attachments, true ) ) {
-				$fh         = fopen( $attachment, 'r' );
+				$xliff_file = $this->read_temp_file( $attachment );
+				unset( $attachments[ $index ] );
+				$this->remove_temp_file( $attachment );
 
-				if ( $fh ) {
-					$xliff_file = fread( $fh, (int) filesize( $attachment ) );
-					fclose( $fh );
+				if ( null !== $xliff_file ) {
 					$archive->addFile( $xliff_file, basename( $attachment ) );
-
-					unset( $attachments[ $index ] );
 					$found = true;
 				}
 			}
@@ -200,10 +214,7 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 			$archive_data = $archive->getZipData();
 			$temp_dir     = get_temp_dir();
 			$file_name    = $temp_dir . $this->get_zip_name_from_jobs( array_keys( $this->attachments ) );
-			$fh           = fopen( $file_name, 'w' );
-			if ( $fh ) {
-				fwrite( $fh, $archive_data );
-				fclose( $fh );
+			if ( $this->write_temp_file( $file_name, $archive_data ) ) {
 				$attachments[] = $file_name;
 			}
 		}
@@ -211,9 +222,73 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 		return $attachments;
 	}
 
+	public function remove_temp_attachments() {
+		foreach ( $this->temp_files as $file_name ) {
+			$this->remove_temp_file( $file_name );
+		}
+	}
+
+	private function write_temp_file( $file_name, $contents ) {
+		$contents = (string) $contents;
+		$written  = '' === $contents ? false : $this->write_temp_file_bytes( $file_name, $contents );
+
+		if ( strlen( $contents ) === $written ) {
+			$this->temp_files[ $file_name ] = $file_name;
+			if ( false === has_action( 'shutdown', array( $this, 'remove_temp_attachments' ) ) ) {
+				add_action( 'shutdown', array( $this, 'remove_temp_attachments' ) );
+			}
+
+			return true;
+		}
+
+		$this->remove_temp_file( $file_name );
+		logError(
+			sprintf(
+				'XLIFF notification attachment not written, the email goes without it: %s (%s of %d bytes written) in %s:%d',
+				$file_name,
+				false === $written ? 'none' : (int) $written,
+				strlen( $contents ),
+				basename( __FILE__ ),
+				__LINE__
+			)
+		);
+
+		return false;
+	}
+
+	protected function write_temp_file_bytes( $file_name, $contents ) {
+		$fh = @fopen( $file_name, 'w' );
+		if ( ! $fh ) {
+			return false;
+		}
+		$written = @fwrite( $fh, $contents );
+		fclose( $fh );
+
+		return $written;
+	}
+
+	private function read_temp_file( $file_name ) {
+		$contents = is_readable( $file_name ) ? file_get_contents( $file_name ) : false;
+		if ( false === $contents || '' === $contents ) {
+			logError( sprintf( 'XLIFF notification attachment skipped, the email goes without it: %s is empty or cannot be read in %s:%d', $file_name, basename( __FILE__ ), __LINE__ ) );
+
+			return null;
+		}
+
+		return $contents;
+	}
+
+	private function remove_temp_file( $file_name ) {
+		unset( $this->temp_files[ $file_name ] );
+		if ( file_exists( $file_name ) || is_link( $file_name ) ) {
+			wp_delete_file( $file_name );
+		}
+	}
+
 	private function get_xliff_file( $job_id, $xliff_version = WPML_XLIFF_DEFAULT_VERSION ) {
 		return wpml_tm_xliff_factory()
 			->create_writer( $xliff_version )
+			->withOutdatedFieldSegments()
 			->generate_job_xliff( $job_id );
 	}
 
@@ -233,7 +308,9 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 
 		$is_translation_manager = current_user_can( 'manage_translations' );
 
-		$archive = new wpml_zip();
+		$archive               = new wpml_zip();
+		$exported              = 0;
+		$this->export_left_out = new ExportLeftOut();
 		foreach ( $job_ids as $job_id ) {
 			$job = $this->job_factory->get_translation_job( (int) $job_id, false, 0, true );
 			if ( ! $job ) {
@@ -244,6 +321,12 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 				continue;
 			}
 
+			$left_out_reason = $this->export_left_out->reasonFor( (int) $job_id );
+			if ( null !== $left_out_reason ) {
+				$this->export_left_out->leaveOut( (int) $job_id, $left_out_reason );
+				continue;
+			}
+
 			$xliff_file = $this->get_xliff_file( (int) $job_id, $xliff_version );
 
 			if ( 0 === (int) $job->get_translator_id() ) {
@@ -251,6 +334,12 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 			}
 
 			$archive->addFile( $xliff_file, PortableFileName::forJob( get_bloginfo( 'name' ), $job_id ) );
+			++$exported;
+		}
+
+		$this->export_left_out->writeToJobLog();
+		if ( 0 === $exported && ! $this->export_left_out->isEmpty() ) {
+			return null;
 		}
 
 		$this->export_archive_name = $this->get_zip_name_from_jobs( $job_ids );
@@ -260,6 +349,10 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 	}
 
 	private function stream_xliff_archive( $archive ) {
+		$left_out = $this->get_export_left_out();
+		if ( $left_out && ! $left_out->isEmpty() && ! headers_sent() ) {
+			header( ExportLeftOut::HEADER . ': ' . $left_out->headerValue() );
+		}
 		if ( is_a( $archive, 'wpml_zip' ) ) {
 			if ( defined( 'WPML_SAVE_XLIFF_PATH' ) && trim( WPML_SAVE_XLIFF_PATH ) ) {
 				$this->save_zip_file( WPML_SAVE_XLIFF_PATH, $archive );
@@ -267,6 +360,10 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 			$archive->sendZip( $this->export_archive_name );
 		}
 		exit;
+	}
+
+	public function get_export_left_out() {
+		return $this->export_left_out;
 	}
 
 	private function save_zip_file( $path, $archive ) {
@@ -384,14 +481,16 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 					$this->sitepress->get_wp_api()->error_log( sprintf( 'WPML XLIFF import: failed to import "%s" — %s', $name, $this->error->get_error_message() ) );
 
 					/* translators: %s is the file that doesn't belong to this system */
-					$this->error_files[] = sprintf( __( "The uploaded xliff file doesn't belong to this system: %s", 'sitepress' ), $name );
+					$line = sprintf( __( "The uploaded xliff file doesn't belong to this system: %s", 'sitepress' ), $name );
+					$detail              = $this->import_error_detail( $this->error );
+					$this->error_files[] = '' === $detail ? $line : $line . ' ' . esc_html( $detail );
 					$this->error         = null;
 					continue;
 				}
 				list( $job, $job_data ) = $validated;
 				( new \WPML\TM\Jobs\TranslationRecord() )->closeOpenOfRecord( \WPML\TM\Jobs\TranslationRecord::rowToOpen( $job->job_id ), $job->job_id, false, true );
 				kses_remove_filters();
-				wpml_tm_save_data( $job_data );
+				InternalWrite::run( InternalWrite::XLIFF_IMPORT, fn() => wpml_tm_save_data( $job_data ) );
 				kses_init();
 				$this->success[] = $job->job_id;
 			}
@@ -482,5 +581,15 @@ class WPML_TM_Xliff_Frontend extends WPML_TM_Xliff_Shared {
 
 	private function is_directory( $path ) {
 		return '/' === substr( $path, -1 );
+	}
+
+	private function import_error_detail( $error ) {
+		if ( 'xliff_does_not_match' === $error->get_error_code() ) {
+			$data = $error->get_error_data();
+
+			return is_array( $data ) && isset( $data['sentence'] ) ? (string) $data['sentence'] : '';
+		}
+
+		return (string) $error->get_error_message();
 	}
 }

@@ -14,18 +14,23 @@ class WPML_Display_As_Translated_Posts_Query extends WPML_Display_As_Translated_
 		return "{$this->post_table}.post_type IN ( {$post_types} )";
 	}
 
+	protected function get_fallback_condition( $language_expression ) {
+		return $this->get_query_for_translation_not_published( $language_expression );
+	}
+
 	protected function get_query_for_translation_not_published( $language_expression ) {
 		return "
-			( SELECT COUNT(element_id)
+			NOT EXISTS (
+				SELECT 1
 				FROM {$this->wpdb->prefix}icl_translations t2
-				JOIN {$this->wpdb->posts} p ON p.id = t2.element_id
+				JOIN {$this->wpdb->posts} p ON p.ID = t2.element_id
 				WHERE t2.trid = {$this->icl_translation_table_alias}.trid
 				AND t2.language_code = {$language_expression}
-                AND (
-                    p.post_status = 'publish' OR p.post_status = 'private' OR
-                    ( p.post_type='attachment' AND p.post_status = 'inherit' )
-                )
-			) = 0";
+				AND (
+					p.post_status = 'publish' OR p.post_status = 'private' OR
+					( p.post_type = 'attachment' AND p.post_status = 'inherit' )
+				)
+			)";
 	}
 
 }

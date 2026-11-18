@@ -20,6 +20,7 @@ use WPML\PostHog\SetupRecordingCleanup;
 use WPML\TM\ATE\AutoTranslate\Endpoint\EnableATE;
 use WPML\TM\ATE\Loader\MarkPreviouslyUnsupportedContentAsCompletedInTEA\ExecutionStatus;
 use WPML\TranslationRoles\Service\AdministratorRoleManager;
+use WPML\TranslationRoles\Service\SyncBatch;
 use WPML\UrlHandling\WPLoginUrlConverter;
 use function WPML\Container\make;
 use WPML\FP\Lst;
@@ -42,7 +43,32 @@ class FinishStep implements IHandler {
 		$this->administratorRoleManager = $administratorRoleManager;
 	}
 
+	private function reviewModeForTranslateEverything( Collection $data ) {
+		if ( ! self::isLegacyEngineActive() ) {
+			return Option::NO_REVIEW;
+		}
+
+		$chosen  = (string) $data->get( 'review_mode', '' );
+		$allowed = [ Option::NO_REVIEW, Option::HOLD_FOR_REVIEW, Option::PUBLISH_AND_REVIEW ];
+
+		return in_array( $chosen, $allowed, true ) ? $chosen : Option::HOLD_FOR_REVIEW;
+	}
+
+	private static function isLegacyEngineActive() {
+		$engine = GetTranslationEngine::resolveActiveEngine();
+
+		return $engine !== null && ! GetTranslationEngine::isPtcSlug( $engine->getCodeName() );
+	}
+
+	public static function alreadySetUpError() {
+		return __( 'WPML is already set up on this site. Reload the page to continue.', 'sitepress' );
+	}
+
 	public function run( Collection $data ) {
+		if ( (bool) Settings::get( 'setup_complete', false ) ) {
+			return Either::left( self::alreadySetUpError() );
+		}
+
 		\WPML\Media\Option::prepareSetup();
 
 		$wpmlInstallation = wpml_get_setup_instance();
@@ -68,20 +94,23 @@ class FinishStep implements IHandler {
 		self::enableFooterLanguageSwitcher();
 
 		if ( $translateEverything ) {
-			Option::setReviewMode( Option::NO_REVIEW );
+			Option::setReviewMode( $this->reviewModeForTranslateEverything( $data ) );
 		}
 
 		$translationMode = Option::getTranslationMode();
-		if ( ! Lst::includes( 'users', $translationMode ) ) {
-			make( \WPML_Translator_Records::class )->delete_all();
-		}
+		SyncBatch::run(
+			function () use ( $translationMode ) {
+				if ( ! Lst::includes( 'users', $translationMode ) ) {
+					make( \WPML_Translator_Records::class )->delete_all();
+				}
 
-		if ( ! Lst::includes( 'manager', $translationMode ) ) {
-			make( \WPML_Translation_Manager_Records::class )->delete_all();
-		}
+				if ( ! Lst::includes( 'manager', $translationMode ) ) {
+					make( \WPML_Translation_Manager_Records::class )->delete_all();
+				}
 
-
-		$this->administratorRoleManager->initializeAllAdministrators();
+				$this->administratorRoleManager->initializeAllAdministrators();
+			}
+		);
 
 		if ( Option::isTMAllowed( ) ) {
 			if ( ! Lst::includes( 'service', $translationMode ) ) {
@@ -89,6 +118,8 @@ class FinishStep implements IHandler {
 			}
 
 			Settings::assoc( 'translation-management', \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_GLOBAL_EDITOR, 'dashboard' );
+
+			\WPML\TranslationPolicy\Settings\Loader::afterSetupWizard( (bool) $translateEverything );
 		} else {
 			Option::setTranslateEverything( false );
 		}

@@ -6,6 +6,8 @@ use WPML\Core\Component\Translation\Application\String\Repository\StringBatchRep
 use WPML\Core\Component\Translation\Application\String\StringException;
 use WPML\Core\Port\Persistence\DatabaseWriteInterface;
 
+use function WPML\PHP\Logger\error;
+
 class StringBatchRepository implements StringBatchRepositoryInterface {
 
   private $databaseWrite;
@@ -23,6 +25,12 @@ class StringBatchRepository implements StringBatchRepositoryInterface {
 
 
   public function create( string $name, array $stringIds, string $sourceLanguageCode ): int {
+    $stringIds = $this->withoutCarriedStrings( $stringIds );
+
+    if ( ! $stringIds ) {
+      throw new StringException( 'Every string of the batch is translated as part of a String Package; no batch is created.' );
+    }
+
     try {
       $batchId = $this->databaseWrite->insert(
         'icl_translation_batches',
@@ -54,6 +62,31 @@ class StringBatchRepository implements StringBatchRepositoryInterface {
     } catch ( \Throwable $e ) {
       throw new StringException( $e->getMessage(), (int) $e->getCode(), $e );
     }
+  }
+
+
+  private function withoutCarriedStrings( array $stringIds ): array {
+    $carried = function_exists( 'apply_filters' ) ? \apply_filters( 'wpml_st_carried_string_ids', [] ) : [];
+    $carried = is_array( $carried ) ? array_map( 'intval', $carried ) : [];
+
+    if ( ! $carried ) {
+      return $stringIds;
+    }
+
+    $kept = array_values(
+      array_filter(
+        $stringIds,
+        function ( $stringId ) use ( $carried ) {
+          return ! in_array( $stringId, $carried, true );
+        }
+      )
+    );
+
+    if ( count( $kept ) !== count( $stringIds ) ) {
+      error( 'String batch: strings translated as part of a String Package were left out: ' . implode( ', ', array_diff( array_map( 'intval', $stringIds ), $kept ) ) );
+    }
+
+    return $kept;
   }
 
 

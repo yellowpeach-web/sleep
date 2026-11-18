@@ -53,6 +53,23 @@ class MetaKeyPatterns implements \IWPML_Backend_Action, \IWPML_Frontend_Action, 
 		return false;
 	}
 
+	public function matchesOnly( $fieldType, $metaKey ) {
+		if ( ! $this->matches( $fieldType, $metaKey ) ) {
+			return false;
+		}
+
+		foreach ( array_keys( $this->getPatterns() ) as $otherType ) {
+			if ( $otherType !== $fieldType
+				&& ! in_array( $otherType, Fields::WRAPPER_FIELDS, true )
+				&& $this->matches( $otherType, $metaKey )
+			) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	private function matchesAPattern( array $patterns, string $metaKey ) {
 		foreach ( $patterns as $pattern ) {
 			if ( preg_match( self::REGEX_DELIMITER . '^' . $pattern . '$' . self::REGEX_DELIMITER, $metaKey ) ) {

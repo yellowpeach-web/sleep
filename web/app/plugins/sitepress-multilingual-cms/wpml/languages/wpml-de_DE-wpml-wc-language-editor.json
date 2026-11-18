@@ -20,7 +20,7 @@
             "Nicht gespeicherte Sprachänderungen aus einer vorherigen Sitzung konnten nicht wiederhergestellt werden, da sich die Sprachen der Website nach deren Erstellung geändert haben. Diese Änderungen wurden verworfen."
          ],
          "Dismiss": [
-            "Verwerfen"
+            "Schließen"
          ],
          "Impact on existing content": [
             "Auswirkungen auf bestehende Inhalte"
@@ -580,6 +580,9 @@
          "Blocked by a firewall or CDN": [
             "Durch eine Firewall oder ein CDN blockiert"
          ],
+         "Used by another site": [
+            "Wird von einer anderen Website verwendet"
+         ],
          "Not valid": [
             "Nicht gültig"
          ],
@@ -603,6 +606,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s wird geladen, aber eine Firewall oder ein CDN hat die Prüfung durch WPML blockiert."
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "Wird von einer anderen Website in diesem Netzwerk verwendet: %s. Geben Sie eine andere Domain ein, um zu speichern."
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "Die Domain konnte nicht validiert werden: %s. Überprüfen Sie, ob sie auf diese Website verweist, oder deaktivieren Sie „Beim Speichern validieren“, um sie trotzdem zu speichern."
@@ -959,6 +965,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "Bevor diese Sprache gespeichert werden kann, wählen Sie aus, ob Sie die zuvor auf dieser Website vorhandenen Inhalte darin wiederherstellen oder von vorn beginnen möchten."
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "Eine Sprache kann nicht der Standardsprache Ihrer Website zugeordnet werden. Wählen Sie stattdessen „Automatisch abgleichen“."
+         ],
          "You don’t have permission to change languages.": [
             "Du hast keine Berechtigung, Sprachen zu ändern."
          ],
@@ -1008,16 +1017,19 @@
             "Leserichtung"
          ],
          "Left-to-right": [
-            "Links-nach-rechts"
+            "Von links nach rechts"
          ],
          "Right-to-left": [
-            "Rechts-nach-links"
+            "Von rechts nach links"
          ],
          "Let WPML decide": [
             "WPML entscheiden lassen"
          ],
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "Wenn du deine Sprache nicht in der Liste findest, <a>füge eine benutzerdefinierte Sprache hinzu</a>."
+         ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s an Position %2$d von %3$d verschoben."
          ],
          "Default language": [
             "Standardsprache"
@@ -1075,6 +1087,12 @@
          ],
          "Delete language": [
             "Sprache löschen"
+         ],
+         "Move %s. Use the up and down arrow keys.": [
+            "%s verschieben. Verwenden Sie die Aufwärts- und Abwärtspfeiltasten."
+         ],
+         "Drag to change the order": [
+            "Ziehen, um die Reihenfolge zu ändern"
          ],
          "Type to search all languages…": [
             "Tippen, um alle Sprachen zu durchsuchen…"
@@ -1147,6 +1165,9 @@
          ],
          "Recognized as the same language as the default": [
             "Wird als dieselbe Sprache wie die Standardsprache erkannt"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "Automatische Übersetzung ist deaktiviert: Es ist keine Übersetzungs-Engine aktiviert. Um eine zu aktivieren, gehen Sie zu <link>WPML → Einstellungen → KI-Übersetzung</link>."
          ],
          "%s (Regional)": [
             "%s (regional)"

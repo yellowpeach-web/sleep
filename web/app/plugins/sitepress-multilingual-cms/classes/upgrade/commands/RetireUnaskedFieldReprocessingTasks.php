@@ -6,6 +6,7 @@ use WPML\Core\BackgroundTask\Model\BackgroundTask;
 use WPML\TM\Settings\CustomFieldChangeDetector;
 use WPML\TM\Settings\ProcessNewTranslatableFields;
 use WPML\TM\Settings\Repository;
+use WPML\Utils\Unserialize;
 
 class RetireUnaskedFieldReprocessingTasks implements \IWPML_Upgrade_Command {
 
@@ -44,7 +45,7 @@ class RetireUnaskedFieldReprocessingTasks implements \IWPML_Upgrade_Command {
 		$fields = [];
 		foreach ( $rows as $row ) {
 			$ids[]   = (int) $row['task_id'];
-			$payload = maybe_unserialize( $row['payload'] );
+			$payload = Unserialize::maybe( $row['payload'] );
 			foreach ( (array) ( is_array( $payload ) && isset( $payload['newFields'] ) ? $payload['newFields'] : [] ) as $field ) {
 				$fields[] = (string) $field;
 			}
@@ -81,7 +82,7 @@ class RetireUnaskedFieldReprocessingTasks implements \IWPML_Upgrade_Command {
 
 		$toRule = array_values( array_diff( array_intersect( $fields, $stillTranslate ), $waiting ) );
 		if ( $toRule ) {
-			CustomFieldChangeDetector::notify( $toRule );
+			CustomFieldChangeDetector::notifyFromRetiredTask( $toRule );
 		}
 	}
 

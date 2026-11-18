@@ -24,7 +24,7 @@ class Consumer {
 		$xliffContent = $this->ateApi->get_remote_xliff_content( Obj::prop( 'url', $job ), $job );
 
 		$expectedJobId = (int) Obj::prop( 'jobId', $job );
-		$wpmlJobId     = $this->ateJobs->apply( $xliffContent, $expectedJobId ?: null, (int) Obj::prop( 'ateJobId', $job ) ?: null );
+		$wpmlJobId     = $this->ateJobs->apply( $xliffContent, $expectedJobId ?: null, (int) Obj::prop( 'ateJobId', $job ) ?: null, Obj::prop( 'editAnswer', $job ) );
 
 		if ( $wpmlJobId ) {
 			$job = Obj::assoc( 'jobId', $wpmlJobId, $job );

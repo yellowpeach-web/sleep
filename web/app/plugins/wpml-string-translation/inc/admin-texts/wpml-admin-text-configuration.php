@@ -35,7 +35,37 @@ class WPML_Admin_Text_Configuration extends WPML_Admin_Text_Functionality {
 			}
 		}
 
+		if ( isset( $type ) && 'theme' === $type ) {
+			$wpml_config_all = $this->add_child_theme_mods( $wpml_config_all );
+		}
+
 		$this->config = $this->fill_wildcards( $wpml_config_all );
+	}
+
+	private function add_child_theme_mods( array $config_all ) {
+		$template   = (string) get_template();
+		$stylesheet = (string) get_stylesheet();
+
+		if ( '' === $template || '' === $stylesheet || $template === $stylesheet ) {
+			return $config_all;
+		}
+
+		$parent_option = 'theme_mods_' . $template;
+		$child_option  = 'theme_mods_' . $stylesheet;
+		$child_entries = array();
+
+		foreach ( $config_all as $entry ) {
+			$name = isset( $entry['attr']['name'] ) ? $entry['attr']['name'] : null;
+			if ( $child_option === $name ) {
+				return $config_all;
+			}
+			if ( $parent_option === $name ) {
+				$entry['attr']['name'] = $child_option;
+				$child_entries[]       = $entry;
+			}
+		}
+
+		return array_merge( $config_all, $child_entries );
 	}
 
 	function get_config_array() {

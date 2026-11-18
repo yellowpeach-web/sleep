@@ -81,14 +81,15 @@ class UnsolvableJobsQuery implements UnsolvableJobsQueryInterface {
 			-- wpmldev-8049: a job the product gave up on carries the terminal
 			-- status ATE_UNSOLVABLE. The second arm keeps rows written before
 			-- that status existed (an exhausted counter on a row still 'in
-			-- progress') visible until they are resent or discarded.
+			-- progress') visible until they are resent or discarded. A failed
+			-- fetch is not one of them (wpmldev-12506): that job is in flight
+			-- until the translation system closes it failed_on_site.
 			WHERE job.editor = 'ATE'
 			AND (
 				status.status = " . TranslationStatus::ATE_UNSOLVABLE . "
 				OR (
 					(
 						error.error_type = 'SyncError'
-						OR (error.error_type = 'DownloadError' AND error.counter >= 3)
 						OR (error.error_type = 'ApplyError' AND error.counter >= 1)
 					)
 					AND status.status IN (1, 2)

@@ -24,6 +24,8 @@ final class PreparedTaxonomyTermJob {
 
   private $statusBefore;
 
+  private $translatorId;
+
 
   public function __construct(
     $model,
@@ -35,7 +37,8 @@ final class PreparedTaxonomyTermJob {
     int $rid,
     int $jobId,
     int $insertedJobId,
-    array $statusBefore
+    array $statusBefore,
+    int $translatorId = 0
   ) {
     $this->model            = $model;
     $this->termTaxonomyId   = $termTaxonomyId;
@@ -47,6 +50,7 @@ final class PreparedTaxonomyTermJob {
     $this->jobId            = $jobId;
     $this->insertedJobId    = $insertedJobId;
     $this->statusBefore     = $statusBefore;
+    $this->translatorId     = $translatorId;
   }
 
 
@@ -97,6 +101,11 @@ final class PreparedTaxonomyTermJob {
 
   public function getStatusBefore(): array {
     return $this->statusBefore;
+  }
+
+
+  public function getTranslatorId(): int {
+    return $this->translatorId;
   }
 
 }

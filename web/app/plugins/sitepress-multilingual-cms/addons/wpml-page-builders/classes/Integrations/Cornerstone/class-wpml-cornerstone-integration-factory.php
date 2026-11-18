@@ -13,19 +13,26 @@ class WPML_Cornerstone_Integration_Factory {
 				'WPML_PB_Cornerstone_Handle_Custom_Fields_Factory',
 				'WPML_Cornerstone_Media_Hooks_Factory',
 				\WPML\PB\Cornerstone\Config\Factory::class,
+				\WPML\PB\Cornerstone\Config\DeclaredEntries::class,
 				\WPML\PB\Cornerstone\Styles\Hooks::class,
 				\WPML\PB\Cornerstone\Hooks\Editor::class,
 				\WPML\PB\Cornerstone\Hooks\ShortcodeAttributes::class,
 				\WPML\PB\Cornerstone\Hooks\Media::class,
+				\WPML\PB\Cornerstone\Hooks\AssignmentsFactory::class,
 				\WPML\PB\Cornerstone\Hooks\TranslationJobLabels::class,
+				\WPML\PB\Cornerstone\Hooks\TranslationJobImages::class,
 				\WPML\PB\Cornerstone\Hooks\TranslationGuiLabels::class,
+				\WPML\PB\Cornerstone\Hooks\BuilderSave::class,
+				\WPML\PB\Cornerstone\Hooks\Components::class,
+				\WPML\PB\Cornerstone\Hooks\RawHtmlSetting::class,
 			]
 		);
 
 		$nodes         = new WPML_Cornerstone_Translatable_Nodes();
 		$data_settings = new WPML_Cornerstone_Data_Settings();
 
-		( new \WPML\PB\Duplication\Hooks( $data_settings ) )->add_hooks();
+		$post_data_links = new \WPML\PB\Links\PostDataLinks( $data_settings, new \WPML\PB\Cornerstone\Duplication\LayoutDataStorage( $data_settings ) );
+		( new \WPML\PB\Duplication\Hooks( $data_settings, $post_data_links ) )->add_hooks();
 
 		$string_registration_factory = new WPML_String_Registration_Factory( $data_settings->get_pb_name() );
 		$string_registration         = $string_registration_factory->create();

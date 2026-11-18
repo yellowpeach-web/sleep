@@ -33,7 +33,7 @@ class UntranslatedTermsHooks implements \IWPML_Backend_Action, \IWPML_REST_Actio
 			->then( spreadArgs( [ $this, 'onTermMetaChanged' ] ) );
 
 		Hooks::onAction( 'deleted_term_meta', 10, 3 )
-			->then( spreadArgs( [ $this, 'onTermMetaChanged' ] ) );
+			->then( spreadArgs( [ $this, 'onTermMetaDeleted' ] ) );
 
 		Hooks::onAction( 'pre_delete_term', 10, 2 )
 			->then( spreadArgs( [ $this, 'onPreDeleteTerm' ] ) );
@@ -68,9 +68,23 @@ class UntranslatedTermsHooks implements \IWPML_Backend_Action, \IWPML_REST_Actio
 			return;
 		}
 
-		global $sitepress;
+		global $sitepress, $wpdb;
 
 		if ( ! $sitepress || ! $sitepress->is_translated_taxonomy( $taxonomy ) ) {
+			return;
+		}
+
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT trid, language_code, source_language_code
+					FROM {$wpdb->prefix}icl_translations
+					WHERE element_type = %s AND element_id = %d",
+				UntranslatedTerms::ELEMENT_TYPE_PREFIX . $taxonomy,
+				(int) $tt_id
+			)
+		);
+
+		if ( $row && null !== $row->source_language_code ) {
 			return;
 		}
 
@@ -88,10 +102,42 @@ class UntranslatedTermsHooks implements \IWPML_Backend_Action, \IWPML_REST_Actio
 	}
 
 	public function onTermMetaChanged( $meta_id, $term_id, $meta_key ) {
+		$row = $this->termOfTranslatableMeta( $term_id, $meta_key );
+		if ( ! $row ) {
+			return;
+		}
+
+		$this->flagTranslationsNeedUpdate( (int) $row->term_taxonomy_id, (string) $row->taxonomy );
+	}
+
+	private $termsWithDeletedMeta = [];
+
+	public function onTermMetaDeleted( $meta_ids, $term_id, $meta_key ) {
+		$row = $this->termOfTranslatableMeta( $term_id, $meta_key );
+		if ( ! $row ) {
+			return;
+		}
+
+		if ( ! $this->termsWithDeletedMeta ) {
+			add_action( 'shutdown', [ $this, 'flagTermsWithDeletedMeta' ] );
+		}
+		$this->termsWithDeletedMeta[ (int) $row->term_taxonomy_id ] = (string) $row->taxonomy;
+	}
+
+	public function flagTermsWithDeletedMeta() {
+		$terms                      = $this->termsWithDeletedMeta;
+		$this->termsWithDeletedMeta = [];
+
+		foreach ( $terms as $ttId => $taxonomy ) {
+			$this->flagTranslationsNeedUpdate( (int) $ttId, (string) $taxonomy );
+		}
+	}
+
+	private function termOfTranslatableMeta( $term_id, $meta_key ) {
 		global $sitepress, $wpdb;
 
 		if ( ! $sitepress || ! $wpdb ) {
-			return;
+			return null;
 		}
 
 		$row = $wpdb->get_row(
@@ -102,14 +148,14 @@ class UntranslatedTermsHooks implements \IWPML_Backend_Action, \IWPML_REST_Actio
 		);
 
 		if ( ! $row || ! $sitepress->is_translated_taxonomy( $row->taxonomy ) ) {
-			return;
+			return null;
 		}
 
 		if ( ! \WPML\TM\Taxonomy\TranslatableTermMeta::isTranslatableKey( (string) $meta_key, (string) $row->taxonomy ) ) {
-			return;
+			return null;
 		}
 
-		$this->flagTranslationsNeedUpdate( (int) $row->term_taxonomy_id, (string) $row->taxonomy );
+		return $row;
 	}
 
 	public function onTermContentChanged( $term_id ) {
@@ -154,23 +200,48 @@ class UntranslatedTermsHooks implements \IWPML_Backend_Action, \IWPML_REST_Actio
 
 		$md5 = $this->sourceChecksum( (int) $tt_id, (string) $taxonomy );
 
+		$inserted = 0;
 		if ( ! Option::shouldTranslateEverything() ) {
-			$this->addMissingStatusRows( (int) $source->trid, $md5 );
+			$inserted = $this->addMissingStatusRows( (int) $source->trid, $md5 );
 		}
 
-		$wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}icl_translation_status ts
-					INNER JOIN {$wpdb->prefix}icl_translations t
-						ON t.translation_id = ts.translation_id
-					SET ts.needs_update = 1, ts.md5 = %s
-					WHERE t.trid = %d
-					AND t.language_code <> %s",
-				$md5,
-				(int) $source->trid,
-				(string) $source->language_code
-			)
-		);
+		if ( '' === $md5 ) {
+			$changed = $wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->prefix}icl_translation_status ts
+						INNER JOIN {$wpdb->prefix}icl_translations t
+							ON t.translation_id = ts.translation_id
+						SET ts.needs_update = 1, ts.md5 = %s
+						WHERE t.trid = %d
+						AND t.language_code <> %s",
+					$md5,
+					(int) $source->trid,
+					(string) $source->language_code
+				)
+			);
+		} else {
+			$changed = $wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->prefix}icl_translation_status ts
+						INNER JOIN {$wpdb->prefix}icl_translations t
+							ON t.translation_id = ts.translation_id
+						SET ts.needs_update = 1, ts.md5 = %s
+						WHERE t.trid = %d
+						AND t.language_code <> %s
+						AND ts.md5 <> %s",
+					$md5,
+					(int) $source->trid,
+					(string) $source->language_code,
+					$md5
+				)
+			);
+		}
+
+		if ( '' !== $md5 && false !== $changed && (int) $changed < 1 && $inserted < 1 ) {
+			return;
+		}
+
+		( new TermBundleMembers( $wpdb ) )->dropTerm( (int) $tt_id );
 
 		make( UntranslatedTerms::class )->markTaxonomyAsUncompleted( $taxonomy );
 	}
@@ -191,7 +262,7 @@ class UntranslatedTermsHooks implements \IWPML_Backend_Action, \IWPML_REST_Actio
 		return make( TaxonomyTermXliffBuilder::class )->sourceChecksum( $term );
 	}
 
-	private function addMissingStatusRows( int $trid, string $md5 ) {
+	private function addMissingStatusRows( int $trid, string $md5 ): int {
 		global $wpdb;
 
 		$translationIds = $wpdb->get_col(
@@ -208,8 +279,9 @@ class UntranslatedTermsHooks implements \IWPML_Backend_Action, \IWPML_REST_Actio
 			)
 		);
 
+		$written = 0;
 		foreach ( (array) $translationIds as $translationId ) {
-			$wpdb->insert(
+			$result = $wpdb->insert(
 				$wpdb->prefix . 'icl_translation_status',
 				[
 					'translation_id'      => (int) $translationId,
@@ -217,13 +289,18 @@ class UntranslatedTermsHooks implements \IWPML_Backend_Action, \IWPML_REST_Actio
 					'translation_service' => 'local',
 					'translator_id'       => 0,
 					'batch_id'            => 0,
-					'needs_update'        => 0,
+					'needs_update'        => 1,
 					'md5'                 => $md5,
 					'translation_package' => '',
 				],
 				[ '%d', '%d', '%s', '%d', '%d', '%d', '%s', '%s' ]
 			);
+			if ( false !== $result ) {
+				$written++;
+			}
 		}
+
+		return $written;
 	}
 
 	public function onPreDeleteTerm( $term_id, $taxonomy ) {

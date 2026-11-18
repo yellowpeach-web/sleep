@@ -2,6 +2,8 @@
 
 class WPML_Query_Filter extends  WPML_Full_Translation_API {
 
+	const COMMENT_LANGUAGE_VAR = 'wpml_language';
+
 	private $name_filter = array();
 
 	private $comment_language_check;
@@ -75,6 +77,13 @@ class WPML_Query_Filter extends  WPML_Full_Translation_API {
 		return $clauses;
 	}
 
+	public function comments_cache_language( $query ) {
+		$language = $this->sitepress->get_current_language();
+
+		$query->query_var_defaults[ self::COMMENT_LANGUAGE_VAR ] = $language;
+		$query->query_vars[ self::COMMENT_LANGUAGE_VAR ]         = $language;
+	}
+
 	public function posts_join_filter( $join, $query ) {
 		global $pagenow;
 
@@ -87,7 +96,11 @@ class WPML_Query_Filter extends  WPML_Full_Translation_API {
 			return $join;
 		}
 
-		return is_array( $post_type )
+		if ( is_array( $post_type ) ) {
+			return $join . $this->any_post_type_join();
+		}
+
+		return $this->listed_root_page_id( $query )
 			? $join . $this->any_post_type_join()
 			: $this->filter_single_type_join( $join, $post_type );
 	}
@@ -112,11 +125,29 @@ class WPML_Query_Filter extends  WPML_Full_Translation_API {
 		$current_language = $this->get_current_language( $requested_id, $query );
 
 		$condition = $current_language === 'all'
-			? $this->all_langs_where()
-			: $this->specific_lang_where( $current_language, $default_language, $this->named_attachments_without_translation( $query, $current_language ) );
+			? $this->all_langs_where( $this->listed_root_page_id( $query ) )
+			: $this->specific_lang_where( $current_language, $default_language, $this->named_attachments_without_translation( $query, $current_language ), $query );
 		$where     .= $condition;
 
 		return $where;
+	}
+
+	private function listed_root_page_id( $query ) {
+		global $pagenow;
+
+		if ( 'edit.php' !== $pagenow || ! $query instanceof WP_Query ) {
+			return 0;
+		}
+
+		if ( array( 'page' ) !== (array) $this->get_query_post_types( $query )
+			 || 'all' !== $this->get_current_language( $this->get_requested_id( $query ), $query )
+			 || ! $query->is_main_query()
+			 || ! is_admin()
+		) {
+			return 0;
+		}
+
+		return WPML_Root_Page_Actions::root_page_without_language( $this->sitepress->get_setting( 'urls' ), $this->post_translations );
 	}
 
 	private function named_attachments_without_translation( $query, $current_language ) {
@@ -250,12 +281,15 @@ class WPML_Query_Filter extends  WPML_Full_Translation_API {
 		return $none_translated;
 	}
 
-	private function all_langs_where() {
+	private function all_langs_where( $root_page_id = 0 ) {
+		$languages = 'wpml_translations.language_code IN (' . wpml_prepare_in( array_keys( $this->sitepress->get_active_languages() ) ) . ')';
 
-		return ' AND wpml_translations.language_code IN (' . wpml_prepare_in( array_keys( $this->sitepress->get_active_languages() ) ) . ') ';
+		return $root_page_id
+			? " AND ( {$languages} OR {$this->wpdb->posts}.ID = " . (int) $root_page_id . ' ) '
+			: ' AND ' . $languages . ' ';
 	}
 
-	private function specific_lang_where( $current_language, $fallback_language, $ids_in_any_language = array() ) {
+	private function specific_lang_where( $current_language, $fallback_language, $ids_in_any_language = array(), $query = null ) {
 		$any_language = $ids_in_any_language
 			? " OR {$this->wpdb->posts}.ID IN (" . implode( ',', array_map( 'intval', $ids_in_any_language ) ) . ')'
 			: '';
@@ -263,7 +297,7 @@ class WPML_Query_Filter extends  WPML_Full_Translation_API {
 		return sprintf(
 			' AND ( ( ( wpml_translations.language_code = %s OR %s%s ) AND %s ) OR %s )',
 			$this->sql_string_literal( $current_language ),
-			$this->display_as_translated_snippet( $current_language, $fallback_language ),
+			$this->display_as_translated_snippet( $current_language, $fallback_language, $query ),
 			$any_language,
 			$this->in_translated_types_snippet(),
 			$this->in_translated_types_snippet( true )
@@ -275,11 +309,12 @@ class WPML_Query_Filter extends  WPML_Full_Translation_API {
 	}
 
 
-	private function display_as_translated_snippet( $current_language, $fallback_language ) {
+	private function display_as_translated_snippet( $current_language, $fallback_language, $query = null ) {
 		$content_types = null;
 		$skip_content_check = true;
 
-		if ( ! apply_filters( 'wpml_should_force_display_as_translated_snippet', false ) ) {
+		$forced = apply_filters( 'wpml_should_force_display_as_translated_snippet', false, $query );
+		if ( ! $forced ) {
 			$post_types = $this->sitepress->get_display_as_translated_documents();
 			if ( ! $post_types || ! apply_filters( 'wpml_should_use_display_as_translated_snippet', ! is_admin(), $post_types ) ) {
 				return '0';
@@ -289,8 +324,13 @@ class WPML_Query_Filter extends  WPML_Full_Translation_API {
 		}
 
 		$display_as_translated_query = new WPML_Display_As_Translated_Posts_Query( $this->wpdb );
+		$snippet                     = $display_as_translated_query->get_language_snippet( $current_language, $fallback_language, $content_types, $skip_content_check );
 
-		return $display_as_translated_query->get_language_snippet( $current_language, $fallback_language, $content_types, $skip_content_check );
+		if ( ! $forced ) {
+			return $snippet;
+		}
+
+		return (string) apply_filters( 'wpml_forced_display_as_translated_snippet', $snippet, $current_language, $fallback_language, $query );
 	}
 
 	private function where_filter_active( $query ) {

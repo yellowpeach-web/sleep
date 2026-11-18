@@ -11,7 +11,8 @@ class WPML_Tax_Permalink_Filters_Factory implements IWPML_Frontend_Action_Loader
 			new WPML_Translation_Element_Factory( $sitepress ),
 			WPML_Get_LS_Languages_Status::get_instance(),
 			(int) $sitepress->get_setting( 'language_negotiation_type' ),
-			new WPML_Debug_BackTrace( null, 10 )
+			new WPML_Debug_BackTrace( null, 10 ),
+			$sitepress
 		);
 	}
 }

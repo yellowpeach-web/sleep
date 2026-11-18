@@ -114,6 +114,7 @@ class TermDataQuery implements TermDataQueryInterface {
 
 
   private function fetch( string $column, array $values ): array {
+      $column       = 'term_id' === $column ? 'term_id' : 'term_taxonomy_id';
       $placeholders = implode( ',', array_fill( 0, count( $values ), '%d' ) );
       $sql          = "
 			SELECT term_taxonomy_id, term_id, taxonomy, parent

@@ -2,6 +2,7 @@
 
 namespace ACFML\FieldGroup;
 
+use ACFML\FieldPreferences\ModeWrites;
 use ACFML\FieldPreferences\SubfieldRules;
 use ACFML\Helper\Fields;
 use WPML\FP\Fns;
@@ -44,23 +45,21 @@ class SetFieldPreferencesAsDefault implements \IWPML_REST_Action {
 		$factory          = $this->tm->settings_factory();
 		$isCoveredByRules = $this->buildIsCoveredBySubfieldRules();
 
-		$changed = $this->backfill( $factory->get_post_meta_keys(), self::INDEX_POST, $preferenceByPattern, $isCoveredByRules );
-		$changed = $this->backfill( $factory->get_term_meta_keys(), self::INDEX_TERM, $preferenceByPattern, $isCoveredByRules ) || $changed;
-
-		if ( $changed ) {
-			$this->tm->save_settings();
-		}
+		ModeWrites::save(
+			$this->tm,
+			[
+				self::INDEX_POST => $this->backfill( $factory->get_post_meta_keys(), self::INDEX_POST, $preferenceByPattern, $isCoveredByRules ),
+				self::INDEX_TERM => $this->backfill( $factory->get_term_meta_keys(), self::INDEX_TERM, $preferenceByPattern, $isCoveredByRules ),
+			]
+		);
 	}
 
 	private function backfill( $metaKeys, $index, array $preferenceByPattern, callable $isCoveredByRules ) {
-		if ( ! $metaKeys ) {
-			return false;
-		}
-
-		$changed     = false;
+		$stored      = $this->tm->settings[ $index ] ?? [];
+		$modes       = [];
 		$elementType = self::INDEX_TERM === $index ? 'term' : 'post';
 
-		foreach ( $metaKeys as $metaKey ) {
+		foreach ( (array) $metaKeys as $metaKey ) {
 			if ( $isCoveredByRules( $metaKey, $elementType ) ) {
 				continue;
 			}
@@ -69,20 +68,13 @@ class SetFieldPreferencesAsDefault implements \IWPML_REST_Action {
 			if ( null === $preference ) {
 				continue;
 			}
-			$changed = $this->fill( $index, $metaKey, $preference['field'] ) || $changed;
-			$changed = $this->fill( $index, '_' . $metaKey, $preference['companion'] ) || $changed;
+			$modes += [
+				$metaKey       => $preference['field'],
+				'_' . $metaKey => $preference['companion'],
+			];
 		}
 
-		return $changed;
-	}
-
-	private function fill( $index, $key, $preference ) {
-		if ( isset( $this->tm->settings[ $index ][ $key ] ) ) {
-			return false;
-		}
-		$this->tm->settings[ $index ][ $key ] = $preference;
-
-		return true;
+		return array_diff_key( $modes, (array) $stored );
 	}
 
 	private function buildIsCoveredBySubfieldRules() {

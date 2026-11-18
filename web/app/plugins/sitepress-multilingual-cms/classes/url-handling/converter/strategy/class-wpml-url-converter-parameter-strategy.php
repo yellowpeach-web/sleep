@@ -40,7 +40,7 @@ class WPML_URL_Converter_Parameter_Strategy extends WPML_URL_Converter_Abstract_
 		}
 
 		$url_parts['query'] = http_build_query( $query_args );
-		$converted_url      = http_build_url( $url_parts );
+		$converted_url      = \WPML\UrlHandling\UrlBuilder::build( $url_parts );
 
 		return $this->slash_helper->maybe_user_trailingslashit( $converted_url );
 	}

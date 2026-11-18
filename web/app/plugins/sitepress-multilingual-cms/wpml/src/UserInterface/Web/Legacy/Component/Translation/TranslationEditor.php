@@ -13,6 +13,8 @@ class TranslationEditor implements TranslationEditorInterface {
 
   private $_elementFactory;
 
+  private $_postTranslations;
+
 
   private function statusDisplay() {
     if ( $this->_statusDisplay === null ) {
@@ -45,6 +47,15 @@ class TranslationEditor implements TranslationEditorInterface {
   }
 
 
+  private function postTranslations() {
+    if ( $this->_postTranslations === null ) {
+      $this->_postTranslations = make( \WPML_Post_Translation::class );
+    }
+
+    return $this->_postTranslations;
+  }
+
+
   public function usesNativeEditor( int $postId ): bool {
     try {
       return \WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( $postId );
@@ -71,6 +82,31 @@ class TranslationEditor implements TranslationEditorInterface {
   }
 
 
+  public function carriesEditsMadeOutsideWpml(): bool {
+    return \WPML\TranslationPolicy\Policy\Policy::carriesEditsMadeOutsideWpml();
+  }
+
+
+  public function waitsInClassicTranslationEditor( int $postId ): bool {
+    try {
+      $element = $this->trackedPostElement( $postId );
+      if ( ! $element ) {
+        return false;
+      }
+
+      if ( ! $this->statusDisplay()->has_local_job_in_progress( $element['trid'], $element['languageCode'] ) ) {
+        return false;
+      }
+
+      $job = \WPML\TM\API\Jobs::getTridJob( $element['trid'], $element['languageCode'] );
+
+      return is_object( $job ) && isset( $job->editor ) && \WPML_TM_Editors::WPML === $job->editor;
+    } catch ( \Throwable $e ) {
+      return true;
+    }
+  }
+
+
   private function trackedPostElement( int $postId ) {
     $post = get_post( $postId );
     if ( ! $post instanceof WP_Post ) {
@@ -82,7 +118,6 @@ class TranslationEditor implements TranslationEditorInterface {
     if (
       ! is_object( $post_element )
       || ! method_exists( $post_element, 'get_id' )
-      || ! method_exists( $post_element, 'get_source_element' )
       || ! method_exists( $post_element, 'get_language_code' )
       || ! method_exists( $post_element, 'get_trid' )
     ) {
@@ -96,17 +131,18 @@ class TranslationEditor implements TranslationEditorInterface {
       return null;
     }
 
-    $post_id             = $post_element->get_id();
-    $source_post_element = $post_element->get_source_element();
-    if ( $source_post_element ) {
-      $post_id = $source_post_element->get_id();
-    }
-
     return [
-      'sourcePostId' => (int) $post_id,
+      'sourcePostId' => $this->sourcePostId( (int) $post_element->get_id() ),
       'languageCode' => $languageCode,
       'trid'         => $trid,
     ];
+  }
+
+
+  private function sourcePostId( int $postId ): int {
+    $sourcePostId = $this->postTranslations()->get_original_element( $postId );
+
+    return $sourcePostId ? $sourcePostId : $postId;
   }
 
 

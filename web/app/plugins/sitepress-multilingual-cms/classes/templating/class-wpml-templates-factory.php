@@ -1,5 +1,7 @@
 <?php
 use WPML\FP\Obj;
+use WPML\Templates\PhpTwinRenderer;
+use WPML\Templates\TwigCacheState;
 
 use WPML\Core\Twig_Environment;
 use WPML\Core\Twig_Error_Syntax;
@@ -73,7 +75,7 @@ abstract class WPML_Templates_Factory {
 			$output = $this->sandboxTwig->render( $template, $model );
 		} catch ( RuntimeException $e ) {
 			if ( $this->is_caching_enabled() ) {
-				$this->disable_twig_cache();
+				$this->disable_twig_cache( TwigCacheState::REASON_WRITE_FAILED, $e->getMessage() );
 				$this->sandboxTwig = null;
 				$this->maybe_init_sandbox_twig();
 				$output = $this->get_sandbox_view( $template, $model );
@@ -92,7 +94,6 @@ abstract class WPML_Templates_Factory {
 
 	public function get_view( $template = null, $model = null ) {
 		$output = '';
-		$this->maybe_init_twig();
 
 		if ( null === $model ) {
 			$model = $this->get_model();
@@ -101,11 +102,19 @@ abstract class WPML_Templates_Factory {
 			$template = $this->get_template();
 		}
 
+		$php_output = $this->get_php_twin_view( $template, $model );
+
+		if ( null !== $php_output ) {
+			return $php_output;
+		}
+
+		$this->maybe_init_twig();
+
 		try {
 			$output = $this->twig->render( $template, $model );
 		} catch ( RuntimeException $e ) {
 			if ( $this->is_caching_enabled() ) {
-				$this->disable_twig_cache();
+				$this->disable_twig_cache( TwigCacheState::REASON_WRITE_FAILED, $e->getMessage() );
 				$this->twig = null;
 				$this->maybe_init_twig();
 				$output = $this->get_view( $template, $model );
@@ -118,6 +127,18 @@ abstract class WPML_Templates_Factory {
 		}
 
 		return $output;
+	}
+
+	private function get_php_twin_view( $template, $model ) {
+		if ( ! $this->uses_php_twins() || $this->is_string_template() || ! $this->template_paths || ! is_string( $template ) ) {
+			return null;
+		}
+
+		return ( new PhpTwinRenderer( (array) $this->template_paths ) )->show( $template, is_array( $model ) ? $model : array() );
+	}
+
+	protected function uses_php_twins() {
+		return true;
 	}
 
 	protected function maybe_init_twig() {
@@ -159,8 +180,16 @@ abstract class WPML_Templates_Factory {
 		return $this->wp_api;
 	}
 
-	protected function disable_twig_cache() {
-		set_transient( self::TWIG_CACHE_UNWRITABLE_TRANSIENT, true, DAY_IN_SECONDS );
+	protected function disable_twig_cache( $reason = '', $detail = '' ) {
+		set_transient(
+			self::TWIG_CACHE_UNWRITABLE_TRANSIENT,
+			array(
+				'reason' => (string) $reason,
+				'detail' => TwigCacheState::shorten_detail( $detail ),
+				'until'  => time() + DAY_IN_SECONDS,
+			),
+			DAY_IN_SECONDS
+		);
 	}
 
 	protected function is_caching_enabled() {
@@ -204,7 +233,10 @@ abstract class WPML_Templates_Factory {
 					$environment_args['cache']       = $this->cache_directory;
 					$environment_args['auto_reload'] = true;
 				} else {
-					$this->disable_twig_cache();
+					$this->disable_twig_cache(
+						TwigCacheState::REASON_NO_FOLDER,
+						( new TwigCacheState( $this->get_wp_api() ) )->missing_folder_detail()
+					);
 				}
 			}
 

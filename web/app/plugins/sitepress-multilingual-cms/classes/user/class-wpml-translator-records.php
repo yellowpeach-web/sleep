@@ -4,7 +4,8 @@ class WPML_Translator_Records extends WPML_Translation_Roles_Records {
 
 	protected function prepare_hooks() {
 		add_action( 'user_register', [ $this, 'on_user_register' ], 10, 2 );
-		add_filter( 'update_user_metadata', [ $this, 'on_user_meta_update' ], 10, 4 );
+		add_action( 'added_user_meta', [ $this, 'on_capabilities_written' ], 20, 4 );
+		add_action( 'updated_user_meta', [ $this, 'on_capabilities_written' ], 20, 4 );
 	}
 
 	protected function get_capability() {
@@ -46,9 +47,9 @@ class WPML_Translator_Records extends WPML_Translation_Roles_Records {
 		$this->administratorRoleManager->verifyUserId( $id );
 	}
 
-	public function on_user_meta_update( $check, $user_id, $meta_key, $meta_value ) {
+	public function on_capabilities_written( $meta_id, $user_id, $meta_key, $meta_value ) {
 		if ( $this->wpdb->prefix . 'capabilities' !== $meta_key ) {
-			return $check;
+			return;
 		}
 
 		if (
@@ -59,8 +60,14 @@ class WPML_Translator_Records extends WPML_Translation_Roles_Records {
 		) {
 			$this->administratorRoleManager->verifyUserId( $user_id, true );
 		}
+	}
 
-		return $check;
+	public function delete( $user_id ) {
+		\WPML\Container\make( \WPML\TranslationRoles\Service\TranslatorCapability::class )->revoke( (int) $user_id );
+	}
+
+	protected function is_kept_by_delete_all( $record ) {
+		return isset( $record->roles ) && in_array( 'administrator', (array) $record->roles, true );
 	}
 
 

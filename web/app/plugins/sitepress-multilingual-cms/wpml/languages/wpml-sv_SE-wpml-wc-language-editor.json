@@ -580,6 +580,9 @@
          "Blocked by a firewall or CDN": [
             "Blockerad av en brandvägg eller ett CDN"
          ],
+         "Used by another site": [
+            "Används av en annan webbplats"
+         ],
          "Not valid": [
             "Ogiltig"
          ],
@@ -603,6 +606,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s läses in, men en brandvägg eller ett CDN blockerade WPML:s kontroll."
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "Används av en annan webbplats i detta nätverk: %s. Ange en annan domän för att spara."
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "Domänen kunde inte valideras: %s. Kontrollera att den pekar på denna webbplats, eller avmarkera ”Validera vid sparning” för att spara ändå."
@@ -959,6 +965,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "Innan det här språket kan sparas måste du välja om innehållet som webbplatsen tidigare haft på det ska återställas eller om du vill börja om på nytt."
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "Ett språk kan inte mappas till webbplatsens standardspråk. Välj ”Matcha automatiskt” istället."
+         ],
          "You don’t have permission to change languages.": [
             "Du har inte behörighet att ändra språk."
          ],
@@ -1019,6 +1028,9 @@
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "Om du inte hittar ditt språk i listan kan du <a>lägga till ett anpassat språk</a>."
          ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s flyttades till position %2$d av %3$d."
+         ],
          "Default language": [
             "Standardspråk"
          ],
@@ -1076,6 +1088,12 @@
          "Delete language": [
             "Ta bort språk"
          ],
+         "Move %s. Use the up and down arrow keys.": [
+            "Flytta %s. Använd upp- och nedpilarna."
+         ],
+         "Drag to change the order": [
+            "Dra för att ändra ordningen"
+         ],
          "Type to search all languages…": [
             "Skriv för att söka bland alla språk…"
          ],
@@ -1110,7 +1128,7 @@
             "Standard"
          ],
          "Set as default": [
-            "Ange som standard"
+            "Ange som standardspråk"
          ],
          "Resume translating": [
             "Återuppta översättning"
@@ -1147,6 +1165,9 @@
          ],
          "Recognized as the same language as the default": [
             "Identifieras som samma språk som standardspråket"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "Automatisk översättning är inaktiverad: ingen översättningsmotor är aktiverad. Om du vill aktivera en, gå till <link>WPML → Inställningar → AI Translation</link>."
          ],
          "%s (Regional)": [
             "%s (regionalt)"

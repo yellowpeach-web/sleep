@@ -10,12 +10,18 @@ use WPML\FP\Fns;
 use WPML\FP\Lst;
 use WPML\FP\Obj;
 use WPML\FP\Relation;
+use WPML\Infrastructure\WordPress\Component\Item\Application\Query\TranslationToSendCondition;
 use WPML\Setup\Option;
 use WPML\TM\API\ATE\CachedLanguageMappings;
 use WPML\TM\API\ATE\LanguageMappings;
 use WPML\TM\Jobs\JobLog;
 use WPML\Core\Component\Translation\Domain\Priority\Tier;
 use WPML\TM\AutomaticTranslation\Actions\Actions;
+use WPML\TM\AutomaticTranslation\Actions\PendingMetaBoxSave;
+use WPML\TM\AutomaticTranslation\Actions\PublishedPostStatuses;
+use WPML\TranslationPolicy\Policy\Policy;
+use WPML\WP\OptionManager;
+use function WPML\Container\make;
 use function WPML\FP\pipe;
 
 class UntranslatedPosts extends AbstractUntranslatedElements{
@@ -27,6 +33,12 @@ class UntranslatedPosts extends AbstractUntranslatedElements{
 	const EXCLUDED_IDS_LOG_CAP = 20;
 
 	const EXCLUDED_IDS_TRACK_CAP = 500;
+
+	const JOBLESS_STATUS_GRACE = TranslationToSendCondition::JOBLESS_STATUS_GRACE;
+
+	const UNBOUND_KEY = 'translate-everything-unbound-posts';
+
+	const UNBOUND_REASON = 'no translation group was read for the post, so nothing was sent';
 
 	private $priorityQueues = [];
 
@@ -70,6 +82,7 @@ class UntranslatedPosts extends AbstractUntranslatedElements{
 		$firstKeptIndex = null;
 		$rebuilt        = false;
 		$excludedIds    = [];
+		$pendingIds     = [];
 		$index          = (int) $queue['cursor'];
 
 		while ( $keptCount < $queueSize ) {
@@ -93,7 +106,18 @@ class UntranslatedPosts extends AbstractUntranslatedElements{
 			$fetch = array_values( array_diff( $window, $keptIds ) );
 			$rows  = $fetch ? $this->fetchRowsForElements( $languages, $type, $fetch ) : [];
 
+			$pending = $rows
+				? array_fill_keys( PendingMetaBoxSave::pendingAmong( array_map( 'intval', array_column( $rows, 0 ) ) ), true )
+				: [];
+
 			foreach ( $rows as $row ) {
+				if ( isset( $pending[ (int) $row[0] ] ) ) {
+					if ( count( $pendingIds ) < self::EXCLUDED_IDS_TRACK_CAP ) {
+						$pendingIds[ (int) $row[0] ] = true;
+					}
+					continue;
+				}
+
 				if ( ! apply_filters( 'wpml_exclude_post_from_auto_translate', false, (int) $row[0] ) ) {
 					if ( null === $firstKeptIndex ) {
 						$firstKeptIndex = $index + (int) array_search( (int) $row[0], $window, true );
@@ -119,6 +143,16 @@ class UntranslatedPosts extends AbstractUntranslatedElements{
 				'excluded_count' => count( $excludedIds ),
 				'count_capped'   => count( $excludedIds ) >= self::EXCLUDED_IDS_TRACK_CAP,
 				'post_ids'       => array_slice( $excludedIds, 0, self::EXCLUDED_IDS_LOG_CAP ),
+			] );
+		}
+
+		if ( $pendingIds ) {
+			$pendingIds = array_keys( $pendingIds );
+			JobLog::add( 'tea_posts_pending_meta_box_save_skipped', [
+				'type'          => $type,
+				'pending_count' => count( $pendingIds ),
+				'count_capped'  => count( $pendingIds ) >= self::EXCLUDED_IDS_TRACK_CAP,
+				'post_ids'      => array_slice( $pendingIds, 0, self::EXCLUDED_IDS_LOG_CAP ),
 			] );
 		}
 
@@ -217,23 +251,40 @@ class UntranslatedPosts extends AbstractUntranslatedElements{
 	}
 
 	private function queryCandidates( $languages, $type, $select, $extraWhere, $orderBy, array $extraArgs ) {
-		$editorCondition = sprintf(
-			'COALESCE( %s, %d ) = 0',
-			$this->getPerPostEditorCase(),
-			\WPML_TM_Post_Edit_TM_Editor_Mode::is_post_type_using_wp_editor( $type ) ? 1 : 0
+		$editorCondition = Policy::editorSql()->usesWpmlEditor(
+			sprintf(
+				'COALESCE( %s, %d ) = 0',
+				$this->getPerPostEditorCase(),
+				\WPML_TM_Post_Edit_TM_Editor_Mode::is_post_type_using_wp_editor( $type ) ? 1 : 0
+			),
+			'posts.ID',
+			'posts.post_type'
 		);
 
 		$languagesPart      = $this->buildLanguagesUnion( $languages );
-		$acceptableStatuses = ICL_TM_NOT_TRANSLATED . ', ' . ICL_TM_ATE_CANCELLED;
+		$pairNotRefused     = $this->pairNotRefusedSql( 'original_element.language_code', $languages );
 
-		$oldEditorCondition = $this->buildOldEditorCondition();
+		list( $editorCondition, $oldEditorCondition ) = Policy::translateEverythingGate()->sweepConditions(
+			$editorCondition,
+			$this->buildOldEditorCondition(),
+			'posts.ID',
+			'posts.post_type'
+		);
 
-		$statusList = $this->buildPostStatusList();
+		$postStatuses           = $this->getPostStatuses();
+		$postStatusPlaceholders = implode( ', ', array_fill( 0, count( $postStatuses ), '%s' ) );
 
 		$cutoffCondition = Cutoff::postSql( 'posts' );
 
-		$discardedJob     = DiscardedAutomaticJob::joinSql( $this->wpdb->prefix, 'translation_status' );
-		$notADiscardedJob = DiscardedAutomaticJob::whereSql( 'translation_status' );
+		$unbound          = array_map( 'strval', array_keys( $this->getUnboundPosts() ) );
+		$unboundCondition = $unbound
+			? "AND CONCAT( original_element.element_id, ':', languages.code ) NOT IN ( " . implode( ', ', array_fill( 0, count( $unbound ), '%s' ) ) . ' )'
+			: '';
+
+		$discardedJob     = $this->toSend()->joinSql( 'translation_status' );
+		$notADiscardedJob = $this->toSend()->notDiscardedSql( 'translation_status' );
+
+		$notOpenForReview = $this->notOpenForReviewInAteSql( 'translation_status' );
 
 		$sql = "
 			SELECT {$select}
@@ -253,10 +304,13 @@ class UntranslatedPosts extends AbstractUntranslatedElements{
 				AND {$cutoffCondition}
 			  	AND original_element.source_language_code IS NULL
 			    AND original_element.language_code != languages.code
-			    AND ( translation_status.status IS NULL OR translation_status.status IN ({$acceptableStatuses}) OR translation_status.needs_update = 1)
+			    {$pairNotRefused}
+			    AND {$this->toSend()->sql( 'translation_status' )}
 			    {$notADiscardedJob}
-			    AND posts.post_status IN ( {$statusList} )
+			    {$notOpenForReview}
+			    AND posts.post_status IN ( {$postStatusPlaceholders} )
 					AND {$editorCondition}
+			    {$unboundCondition}
 			    {$extraWhere}
 			    {$oldEditorCondition}
 			{$orderBy}
@@ -272,7 +326,10 @@ class UntranslatedPosts extends AbstractUntranslatedElements{
 						\WPML_TM_Post_Edit_TM_Editor_Mode::POST_META_KEY_USE_WPML,
 						'post_' . $type,
 						Option::getTranslateEverythingPostSinceDate( $type ),
+						$this->joblessStatusCutoff(),
 					],
+					$postStatuses,
+					$unbound,
 					$extraArgs
 				)
 			),
@@ -280,6 +337,42 @@ class UntranslatedPosts extends AbstractUntranslatedElements{
 		);
 
 		return is_array( $result ) ? $result : [];
+	}
+
+	private function joblessStatusSql(): string {
+		return $this->toSend()->joblessSql( 'translation_status' );
+	}
+
+	private function joblessStatusCutoff(): string {
+		return $this->toSend()->joblessCutoff();
+	}
+
+	public function getJoblessElementsToProcess( array $languages, $limit ) {
+		$limit  = max( 1, (int) $limit );
+		$byType = [];
+		if ( empty( $languages ) ) {
+			return $byType;
+		}
+
+		foreach ( $this->getTypes() as $type ) {
+			$rows = $this->queryCandidates(
+				$languages,
+				$type,
+				'original_element.element_id, original_element.language_code, languages.code',
+				'AND ' . $this->joblessStatusSql(),
+				'ORDER BY original_element.element_id, languages.code LIMIT %d',
+				[ $this->joblessStatusCutoff(), $limit ]
+			);
+			if ( $rows ) {
+				$byType[ $type ] = Fns::map( Obj::evolve( [ 0 => Cast::toInt() ] ), $rows );
+				$limit          -= count( $rows );
+			}
+			if ( $limit <= 0 ) {
+				break;
+			}
+		}
+
+		return $byType;
 	}
 
 	private function getPerPostEditorCase(): string {
@@ -294,13 +387,76 @@ class UntranslatedPosts extends AbstractUntranslatedElements{
 		END";
 	}
 
-	private function buildPostStatusList(): string {
-		return "'publish', 'inherit'";
+	private function getPostStatuses(): array {
+		return array_values( array_unique( array_merge( make( PublishedPostStatuses::class )->get(), [ 'inherit' ] ) ) );
 	}
 
 
 	public function createTranslationJobs( Actions $actions, array $elements, $type ) {
-		return $this->createTranslationJobsFromAllLanguages( $actions, $elements, $type );
+		\TranslationManagement::drain_unread_group_pairs();
+		$jobs   = $this->createTranslationJobsFromAllLanguages( $actions, $elements, $type );
+		$unread = [];
+		foreach ( \TranslationManagement::drain_unread_group_pairs() as $pair ) {
+			$unread[ $pair['element_id'] . ':' . $pair['language'] ] = true;
+		}
+
+		$reported = [];
+		$unbound  = [];
+		foreach ( $jobs as $job ) {
+			$key = (int) ( $job['elementId'] ?? 0 ) . ':' . (string) ( $job['lang'] ?? '' );
+			if ( isset( $unread[ $key ] ) && (int) ( $job['jobId'] ?? 0 ) <= 0 ) {
+				$unbound[] = $job;
+			} else {
+				$reported[] = $job;
+			}
+		}
+
+		if ( $unbound ) {
+			$this->recordUnbound( $unbound, (string) $type );
+		}
+
+		return $reported;
+	}
+
+	public function getUnboundPosts(): array {
+		$recorded = ( new OptionManager() )->get( Option::OPTION_GROUP, self::UNBOUND_KEY, [] );
+
+		return is_array( $recorded ) ? $recorded : [];
+	}
+
+	private function recordUnbound( array $jobs, string $type ) {
+		$recorded = $this->getUnboundPosts();
+		$new      = [];
+		foreach ( $jobs as $job ) {
+			$postId   = (int) ( $job['elementId'] ?? 0 );
+			$language = (string) ( $job['lang'] ?? '' );
+			$key      = $postId . ':' . $language;
+			if ( $postId <= 0 || '' === $language || isset( $recorded[ $key ] ) ) {
+				continue;
+			}
+			$recorded[ $key ] = [
+				'post_id'     => $postId,
+				'language'    => $language,
+				'type'        => $type,
+				'reason'      => self::UNBOUND_REASON,
+				'recorded_at' => gmdate( 'Y-m-d H:i:s' ),
+			];
+
+			$new[] = $recorded[ $key ];
+		}
+
+		if ( ! $new ) {
+			return;
+		}
+
+		$this->setUnboundPosts( $recorded );
+		foreach ( $new as $entry ) {
+			JobLog::add( 'tea_post_unbound_recorded', $entry );
+		}
+	}
+
+	private function setUnboundPosts( array $recorded ) {
+		( new OptionManager() )->set( Option::OPTION_GROUP, self::UNBOUND_KEY, $recorded, false );
 	}
 
 
@@ -318,11 +474,25 @@ class UntranslatedPosts extends AbstractUntranslatedElements{
 			}
 		);
 		$this->discardPriorityQueues();
+
+		$recorded = $this->getUnboundPosts();
+		$kept     = array_filter(
+			$recorded,
+			function ( $entry ) use ( $type ) {
+				return (string) ( $entry['type'] ?? '' ) !== $type;
+			}
+		);
+		if ( count( $kept ) !== count( $recorded ) ) {
+			$this->setUnboundPosts( $kept );
+		}
 	}
 
 	public function markEverythingAsUncompleted() {
 		parent::markEverythingAsUncompleted();
 		$this->discardPriorityQueues();
+		if ( $this->getUnboundPosts() ) {
+			$this->setUnboundPosts( [] );
+		}
 	}
 
 	public function markLanguagesAsUncompleted( array $languages ) {

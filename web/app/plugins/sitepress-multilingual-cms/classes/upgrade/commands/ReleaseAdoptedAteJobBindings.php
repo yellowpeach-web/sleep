@@ -23,6 +23,20 @@ class ReleaseAdoptedAteJobBindings implements \IWPML_Upgrade_Command {
 	}
 
 	public function run() {
+		if ( ! class_exists( JobLog::class ) ) {
+			return $this->runPass();
+		}
+
+		return JobLog::runInGroup(
+			JobLog::GROUP_ID_UPGRADE_COMMANDS,
+			'Upgrade: release adopted ATE job bindings',
+			function () {
+				return $this->runPass();
+			}
+		);
+	}
+
+	private function runPass() {
 		$wpdb = $this->schema->get_wpdb();
 
 		$position = (int) get_option( self::POSITION_OPTION, 0 );

@@ -26,7 +26,10 @@ class WPML_ST_JED_File_Builder extends WPML\ST\TranslationFile\Builder {
 		);
 
 		foreach ( $strings as $string ) {
-			$original                                 = $this->get_original_with_context( $string );
+			$original = $this->get_original_with_context( $string );
+			if ( '' === $original ) {
+				continue;
+			}
 			$data->locale_data->messages->{$original} = $string->get_translations();
 		}
 

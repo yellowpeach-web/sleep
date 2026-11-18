@@ -127,6 +127,9 @@
          "Delete language pair(s)": [
             "言語ペアを削除"
          ],
+         "Can translate to and from all languages": [
+            "すべての言語間で翻訳可能"
+         ],
          "An error occurred. Please try again.": [
             "エラーが発生しました。もう一度お試しください。"
          ],
@@ -153,6 +156,60 @@
          ],
          "Back to Step %1$s: %2$s": [
             "ステップ %1$s に戻る： %2$s"
+         ],
+         "Available": [
+            "利用可能"
+         ],
+         "Not available": [
+            "利用不可"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "サイトのトピック、オーディエンス、トーンを理解する"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "保証付きの、そのまま公開できる品質"
+         ],
+         "Review before publishing": [
+            "公開前にレビューする"
+         ],
+         "Pay once per page – only added words are charged": [
+            "ページごとに一度だけ支払い – 追加された単語のみが課金対象"
+         ],
+         "Per word, changes included": [
+            "単語あたり、変更を含む"
+         ],
+         "A legacy engine": [
+            "レガシーエンジン"
+         ],
+         "<button>Switch to a different engine</button> if you prefer — no quality guarantee and no free translation edits with other engines.": [
+            "ご希望の場合は<button>別のエンジンに切り替える</button>ことができます。ただし、他のエンジンでは品質保証はなく、翻訳の無料編集も利用できません。"
+         ],
+         "Your content will be translated by <strong>Private Translation Cloud (PTC)</strong>, WPML's own AI engine. PTC lets you translate the entire site automatically, in one click, offering free translation edits.": [
+            "コンテンツは WPML 独自の AI エンジンである <strong>Private Translation Cloud (PTC)</strong> によって翻訳されます。PTC を使用すると、ワンクリックでサイト全体を自動翻訳でき、翻訳の無料編集も可能です。"
+         ],
+         "Couldn't save — try again": [
+            "保存できませんでした。もう一度お試しください"
+         ],
+         "Your content will be translated by <strong>%s</strong>, a machine translation engine. You pay per word, including changes to content that's already translated.": [
+            "コンテンツは機械翻訳エンジン <strong>%s</strong> によって翻訳されます。翻訳済みのコンテンツへの変更を含め、単語ごとに課金されます。"
+         ],
+         "Switch to PTC": [
+            "PTC に切り替える"
+         ],
+         "Switch away from PTC?": [
+            "PTC から切り替えますか？"
+         ],
+         "DeepL, Google Translate or Microsoft Translator": [
+            "DeepL, Google Translate or Microsoft Translator"
+         ],
+         "Your engine now": [
+            "現在のエンジン"
+         ],
+         "Switch away from PTC": [
+            "PTC から切り替える"
+         ],
+         "Stay with PTC": [
+            "PTC を使い続ける"
          ],
          "Technical Details (for WPML Support)": [
             "技術詳細 (WPML サポート用)"
@@ -186,6 +243,45 @@
          ],
          " and provide the technical details below (use the Copy button to copy them).": [
             " に連絡し、以下の技術詳細を提供してください（「コピー」ボタンでコピーできます）。"
+         ],
+         "Publish without review": [
+            "レビューなしで公開する"
+         ],
+         "Translations go live immediately in the target language.": [
+            "翻訳は翻訳先言語ですぐに公開されます。"
+         ],
+         "Wait for review before publishing": [
+            "公開前にレビューを待つ"
+         ],
+         "Translations stay as drafts until a translation manager approves them.": [
+            "翻訳は翻訳マネージャーが承認するまで下書き状態のままになります。"
+         ],
+         "Recommended": [
+            "推奨"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "DeepL、Google、Microsoft の場合は、正しさを確認するために人力レビューを推奨します。PTC はコンテキストを理解する人間以上の翻訳を提供するため、安心してレビュープロセスをスキップできます。"
+         ],
+         "Publish and mark for review": [
+            "公開してレビュー用にマークする"
+         ],
+         "Translations go live but appear in a \"needs review\" queue.": [
+            "翻訳は公開されますが、「レビューが必要」キューに表示されます。"
+         ],
+         "After auto-translation": [
+            "自動翻訳後"
+         ],
+         "What happens to content once %s has translated it.": [
+            "%s による翻訳後、コンテンツがどうなるか。"
+         ],
+         "Wait for review": [
+            "レビューを待つ"
+         ],
+         "%1$s (<strong>%2$s</strong>)": [
+            "%1$s (<strong>%2$s</strong>)"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "WPML がコンテンツの自動翻訳を完了したとき、どうしますか？"
          ],
          "Loading AI Translation...": [
             "AI 翻訳を読み込み中..."
@@ -328,6 +424,15 @@
          "adding a custom language": [
             "カスタム言語の追加"
          ],
+         "I will fix my server settings to display languages in directories later.": [
+            "ディレクトリに言語を表示するためのサーバー設定は後で修正します。"
+         ],
+         "We could not verify your server's URL-rewrite support.": [
+            "サーバーの URL リライト対応を確認できませんでした。"
+         ],
+         "Learn more about required server settings to display languages in directories": [
+            "ディレクトリに言語を表示するために必要なサーバー設定の詳細"
+         ],
          "I will change the permalink structure later.": [
             "パーマリンク構造は後で変更します。"
          ],
@@ -356,7 +461,7 @@
             "ドメインは機能しています。WPML のチェックを行わずに続行します。"
          ],
          "I will set up the domains for my secondary languages later.": [
-            "二次言語のドメイン設定は後で行います。"
+            "セカンダリ言語のドメイン設定は後で行います。"
          ],
          "Your server cannot convert international domain names. Enter the xn-- form of %s.": [
             "お使いのサーバーは国際化ドメイン名を変換できません。%s の xn-- 形式を入力してください。"
@@ -367,8 +472,14 @@
          "This domain does not show this site.": [
             "このドメインにはこのサイトが表示されていません。"
          ],
+         "This address belongs to another site on this network.": [
+            "このアドレスは、このネットワーク上の別のサイトに属しています。"
+         ],
          "WPML could not reach this domain.": [
             "WPML はこのドメインにアクセスできませんでした。"
+         ],
+         "If you choose this, these URLs will open a sub-site: %s.": [
+            "これを選択すると、これらの URL によりサブサイトが開きます：%s。"
          ],
          "The domain you have entered is invalid.": [
             "入力されたドメインは無効です。"
@@ -377,7 +488,7 @@
             "入力されたドメインは一意である必要があります。"
          ],
          "Please Note: Your site won't work in your secondary languages until this is successfully set up or you switch to a different URL option.": [
-            "注意：これが正常に設定されるか、別の URL オプションに切り替えるまで、サイトは二次言語で動作しません。"
+            "注意：これが正常に設定されるか、別の URL オプションに切り替えるまで、サイトはセカンダリ言語で機能しません。"
          ],
          "How would you like to structure your site's URLs?": [
             "サイトの URL をどのように構成しますか？"
@@ -387,15 +498,6 @@
          ],
          "The URL rewrite is not configured in your server.": [
             "サーバーで URL リライトが設定されていません。"
-         ],
-         "I will fix my server settings to display languages in directories later.": [
-            "ディレクトリに言語を表示するためのサーバー設定は後で修正します。"
-         ],
-         "We could not verify your server's URL-rewrite support.": [
-            "サーバーの URL リライト対応を確認できませんでした。"
-         ],
-         "Learn more about required server settings to display languages in directories": [
-            "ディレクトリに言語を表示するために必要なサーバー設定の詳細"
          ],
          "your pages": [
             "固定ページ"
@@ -421,11 +523,17 @@
          "Translate your posts": [
             "投稿を翻訳する"
          ],
-         "the Translation Dashboard": [
-            "翻訳ダッシュボード"
+         "%s will translate your whole site and keep new content translated from now on. You're charged per word, including later changes.": [
+            "%s がサイト全体を翻訳し、今後の新規コンテンツも翻訳された状態に保ちます。今後の変更を含め、単語あたりで課金されます。"
          ],
          "Private Translation Cloud (PTC) will translate your whole site and keep new content translated from now on. You pay once for what's translated — editing it afterward is free.": [
             "Private Translation Cloud (PTC) がサイト全体を翻訳し、今後新しいコンテンツも翻訳された状態に保ちます。翻訳された分だけ一度支払えば、その後の編集は無料です。"
+         ],
+         "Automatic translation will translate your whole site and keep new content translated from now on.": [
+            "自動翻訳がサイト全体を翻訳し、今後の新規コンテンツも翻訳された状態に保ちます。"
+         ],
+         "the Translation Dashboard": [
+            "翻訳ダッシュボード"
          ],
          "Apply settings and start site's translation": [
             "設定を適用してサイトの翻訳を開始する"
@@ -439,8 +547,14 @@
          "the WooCommerce Multilingual setup": [
             "WooCommerce Multilingual のセットアップ"
          ],
+         "%s will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "%s がサイトの翻訳を今すぐ開始し、今後の新しいコンテンツも継続して翻訳します。次に、多言語ストアをセットアップします。WooCommerce Multilingual のセットアップが完了すると、商品の翻訳が開始されます。"
+         ],
          "Private Translation Cloud (PTC) will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup. You pay once for what's translated. Editing it afterward is free.": [
             "Private Translation Cloud (PTC) がサイトの翻訳を開始し、今後新しいコンテンツも翻訳された状態に保ちます。次に、多言語ストアのセットアップを行います。WooCommerce Multilingual のセットアップが完了すると、商品の翻訳が開始されます。翻訳された分だけ一度支払えば、その後の編集は無料です。"
+         ],
+         "Automatic translation will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "自動翻訳がサイトの翻訳を今すぐ開始し、今後の新しいコンテンツも継続して翻訳します。次に、多言語ストアをセットアップします。WooCommerce Multilingual のセットアップが完了すると、商品の翻訳が開始されます。"
          ],
          "Continue to WooCommerce Multilingual Setup while translation begins": [
             "翻訳を開始しながら WooCommerce Multilingual のセットアップに進む"
@@ -484,8 +598,14 @@
          "Applying your setup choices": [
             "セットアップの選択内容を適用中"
          ],
+         "%s is translating your content. There's nothing else you need to do here.": [
+            "%s がコンテンツを翻訳しています。ここで行う操作はもうありません。"
+         ],
          "PTC is translating your content. There's nothing else you need to do here.": [
             "PTC がコンテンツを翻訳しています。ここで行うべき操作は他にありません。"
+         ],
+         "Your content is being translated. There's nothing else you need to do here.": [
+            "コンテンツを翻訳しています。ここで行う操作はもうありません。"
          ],
          "We're applying all your setup choices and preparing WPML. This is a one-time process.": [
             "セットアップの選択内容をすべて適用し、WPML を準備しています。これは一度限りのプロセスです。"
@@ -580,38 +700,8 @@
          "Full details of the info we’re proposing to share": [
             "共有を提案している情報の詳細"
          ],
-         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
-            "サイトに最適なモードを選択するために、<LinkToTheDifferentWaysYouCanTranslateYourSite/> をご覧ください。"
-         ],
-         "How would you like to translate your content?": [
-            "コンテンツをどのように翻訳しますか？"
-         ],
-         "Recommended": [
-            "推奨"
-         ],
-         "Translate Everything Automatically": [
-            "すべてを自動翻訳する"
-         ],
-         "Full-site automatic translation needs AI translation set up.": [
-            "サイト全体の自動翻訳には AI 翻訳のセットアップが必要です。"
-         ],
-         "Set up AI translation": [
-            "AI 翻訳をセットアップする"
-         ],
-         "Translate Some: You Choose What to Translate": [
-            "一部を翻訳する：翻訳するものを選択"
-         ],
-         "Select this option": [
-            "このオプションを選択"
-         ],
          "How it works": [
             "仕組み"
-         ],
-         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
-            "PTC (Private Translation Cloud) は WPML 独自の AI 翻訳エンジンです。バックグラウンドで、選択したすべての言語にサイト全体を翻訳します。翻訳の編集や、特定の投稿タイプの除外も可能です。"
-         ],
-         "Can't decide?": [
-            "決められませんか？"
          ],
          "You select and submit what to translate.": [
             "翻訳するものを選択して送信します。"
@@ -619,32 +709,35 @@
          "Costs": [
             "料金"
          ],
-         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
-            "翻訳された総コンテンツ量に対して一度だけ支払います。<br/><strong>修正は無料</strong>です。追加されたコンテンツのみ課金されます。"
-         ],
          "Pay per translation job submitted.<br/>Each update or new content batch is a separate charge.": [
             "送信された翻訳ジョブごとに支払います。<br/>更新や新しいコンテンツのバッチごとに個別の料金が発生します。"
-         ],
-         "Translation quality": [
-            "翻訳品質"
-         ],
-         "WPML ensures excellent quality. Bad translations are refunded.": [
-            "WPML が優れた品質を保証します。質の低い翻訳は返金されます。"
          ],
          "Ideal for": [
             "次のような場合に最適"
          ],
-         "Known upfront costs": [
-            "前払いのコストを把握したい"
+         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "PTC (Private Translation Cloud) は WPML 独自の AI 翻訳エンジンです。バックグラウンドで、選択したすべての言語にサイト全体を翻訳します。翻訳の編集や、特定の投稿タイプの除外も可能です。"
          ],
-         "Unlimited post-translation editing": [
-            "翻訳後の編集が制限なし"
+         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
+            "翻訳された総コンテンツ量に対して一度だけ支払います。<br/><strong>修正は無料</strong>です。追加されたコンテンツのみ課金されます。"
          ],
-         "Marketing optimization": [
-            "マーケティングの最適化"
+         "Included with PTC": [
+            "PTC に含まれる機能"
          ],
-         "Turn-key solutions": [
-            "ターンキーソリューション"
+         "Only with PTC — not with %s": [
+            "PTC 限定 — %s では利用不可"
+         ],
+         "your current engine": [
+            "現在のエンジン"
+         ],
+         "%s translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "%s が選択したすべての言語にサイト全体をバックグラウンドで翻訳します。翻訳は自由に編集でき、投稿タイプを除外することも可能です。"
+         ],
+         "Charged per word, including changes to content that's already translated.": [
+            "翻訳済みのコンテンツへの変更を含め、単語あたりで課金されます。"
+         ],
+         "You choose what to translate, from the Translation Dashboard or with \"+\" next to each page. PTC translates it.": [
+            "翻訳ダッシュボードから、または各ページの横にある「+」から、翻訳するものを選択します。PTC がそれを翻訳します。"
          ],
          "Partial site translation": [
             "サイトの部分翻訳"
@@ -652,8 +745,95 @@
          "Maximum control": [
             "最大限のコントロール"
          ],
+         "Quality without the work": [
+            "手間をかけずに高品質を実現"
+         ],
+         "You choose what to translate. You or your translators write each translation in the Advanced Translation Editor.": [
+            "翻訳するものを選択します。あなたまたはあなたの翻訳者が高度な翻訳エディタで各翻訳を作成します。"
+         ],
+         "No words used, unless you start from a machine translation in the editor.": [
+            "エディタ内で機械翻訳から開始しない限り、単語は消費されません。"
+         ],
+         "Your own translators": [
+            "専属の翻訳者"
+         ],
+         "Texts that need a human touch": [
+            "人手による作業が必要なテキスト"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "PTC translates what you send. You review.": [
+            "PTC が送信されたものを翻訳します。あなたがレビューします。"
+         ],
+         "I translate": [
+            "自分で翻訳"
+         ],
+         "You or your translators write it.": [
+            "あなたまたはあなたの翻訳者が作成します。"
+         ],
+         "When you start a translation, who translates?": [
+            "翻訳を開始する際、誰が翻訳しますか？"
+         ],
+         "Who translates": [
+            "誰が翻訳するか"
+         ],
          "Contact our support team for help": [
             "サポートチームにお問い合わせください"
+         ],
+         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
+            "サイトに最適なモードを選択するために、<LinkToTheDifferentWaysYouCanTranslateYourSite/> をご覧ください。"
+         ],
+         "How would you like to translate your content?": [
+            "コンテンツをどのように翻訳しますか？"
+         ],
+         "Translate Everything Automatically": [
+            "すべてを自動翻訳する"
+         ],
+         "Translations always in sync": [
+            "翻訳を常に同期"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "サイト全体の自動翻訳には AI 翻訳のセットアップが必要です。"
+         ],
+         "New and updated content translated automatically": [
+            "新規および更新されたコンテンツを自動的に翻訳"
+         ],
+         "Set up AI translation": [
+            "AI 翻訳をセットアップする"
+         ],
+         "Sites that publish often": [
+            "頻繁に公開するサイト"
+         ],
+         "All your languages at once": [
+            "すべての言語を一度に翻訳"
+         ],
+         "Translate Some: You Choose What to Translate": [
+            "一部を翻訳する：翻訳するものを選択"
+         ],
+         "Select this option": [
+            "このオプションを選択"
+         ],
+         "WPML uses the Advanced Translation Editor. You can change the editor later in WPML > Settings > Translation editor and method.": [
+            "WPML は高度な翻訳エディタを使用します。エディタは後から WPML > 設定 > 翻訳エディタと方法 で変更できます。"
+         ],
+         "Quality guarantee, bad translations refunded": [
+            "品質保証付き、質の低い翻訳は返金"
+         ],
+         "Can't decide?": [
+            "決められませんか？"
+         ],
+         "Pay once — revisions are free": [
+            "支払いは一度のみ — 修正は無料"
+         ],
+         "Known upfront costs": [
+            "前払いのコストを把握したい"
+         ],
+         "Publish-ready results, no review needed": [
+            "すぐに公開できる仕上がり、レビュー不要"
+         ],
+         "Marketing optimization based on your site and audience": [
+            "サイトと対象読者に合わせたマーケティングの最適化"
          ],
          "Calculate Translation Costs": [
             "翻訳コストを計算する"
@@ -888,6 +1068,9 @@
          ],
          "Ranking": [
             "ランキング"
+         ],
+         "language URL directory and language name\u0004%1$s (%2$s)": [
+            "%1$s (%2$s)"
          ]
       }
    }

@@ -19,6 +19,6 @@ class WPML_Multilingual_Options_Utils {
 			)
 		);
 
-		return $value ? maybe_unserialize( $value ) : $default;
+		return $value ? \WPML\Utils\Unserialize::maybe( $value ) : $default;
 	}
 }

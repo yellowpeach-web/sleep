@@ -1,7 +1,7 @@
 <?php
 
 
-class ComposerAutoloaderInitee16cb863d59848f3c0360c58ddf891a
+class ComposerAutoloaderInite34e63a0987a527411245fbdcc33bff2
 {
     private static $loader;
 
@@ -20,15 +20,15 @@ class ComposerAutoloaderInitee16cb863d59848f3c0360c58ddf891a
 
         require __DIR__ . '/platform_check.php';
 
-        spl_autoload_register(array('ComposerAutoloaderInitee16cb863d59848f3c0360c58ddf891a', 'loadClassLoader'), true, true);
+        spl_autoload_register(array('ComposerAutoloaderInite34e63a0987a527411245fbdcc33bff2', 'loadClassLoader'), true, true);
         self::$loader = $loader = new \Composer\Autoload\ClassLoader(\dirname(\dirname(__FILE__)));
-        spl_autoload_unregister(array('ComposerAutoloaderInitee16cb863d59848f3c0360c58ddf891a', 'loadClassLoader'));
+        spl_autoload_unregister(array('ComposerAutoloaderInite34e63a0987a527411245fbdcc33bff2', 'loadClassLoader'));
 
         $useStaticLoader = PHP_VERSION_ID >= 50600 && !defined('HHVM_VERSION') && (!function_exists('zend_loader_file_encoded') || !zend_loader_file_encoded());
         if ($useStaticLoader) {
             require __DIR__ . '/autoload_static.php';
 
-            call_user_func(\Composer\Autoload\ComposerStaticInitee16cb863d59848f3c0360c58ddf891a::getInitializer($loader));
+            call_user_func(\Composer\Autoload\ComposerStaticInite34e63a0987a527411245fbdcc33bff2::getInitializer($loader));
         } else {
             $map = require __DIR__ . '/autoload_namespaces.php';
             foreach ($map as $namespace => $path) {

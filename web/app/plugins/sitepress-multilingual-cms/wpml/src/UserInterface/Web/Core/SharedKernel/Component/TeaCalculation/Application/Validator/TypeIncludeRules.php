@@ -34,7 +34,7 @@ class TypeIncludeRules {
     }
 
     if (
-      in_array( $type, self::ALWAYS_ALL, true )
+      ( self::isAlwaysAll( $type ) && $includeSince !== self::ALL )
       || ( is_string( $kind ) && in_array( $kind, self::ALWAYS_ALL_KINDS, true ) )
     ) {
       return sprintf(
@@ -69,6 +69,11 @@ class TypeIncludeRules {
     }
 
     return null;
+  }
+
+
+  public static function isAlwaysAll( string $type ): bool {
+    return in_array( strtolower( $type ), array_map( 'strtolower', self::ALWAYS_ALL ), true );
   }
 
 

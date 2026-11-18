@@ -7,6 +7,8 @@ use WPML\Core\Security\ExecutionContext\ExecutionContextHolder;
 
 final class ElementVisibility {
 
+	const PRIVATE_TRANSLATION_STANDS_IN_FOR_EVERYONE = true;
+
 	public static function currentUserCanRead( $post, ?ExecutionContext $context = null ) {
 		$context = $context ? $context : ExecutionContextHolder::current();
 		if ( $context->isTrusted() ) {
@@ -53,9 +55,39 @@ final class ElementVisibility {
 					return true;
 				}
 
+				if ( self::isPublicStatus( (string) $row->post_status ) ) {
+					return true;
+				}
+
 				return self::currentUserCanRead( $elementId, $context );
 			}
 		);
+	}
+
+	public static function currentUserCanUseAsTranslation( $post, ?ExecutionContext $context = null ) {
+		$context = $context ? $context : ExecutionContextHolder::current();
+		if ( $context->isTrusted() ) {
+			return true;
+		}
+
+		$post = self::resolvePost( $post );
+		if ( ! $post ) {
+			return false;
+		}
+
+		if ( 'trash' === $post->post_status ) {
+			return false;
+		}
+
+		if ( 'attachment' === $post->post_type || self::isPublicStatus( (string) $post->post_status ) ) {
+			return true;
+		}
+
+		if ( 'private' === $post->post_status && self::PRIVATE_TRANSLATION_STANDS_IN_FOR_EVERYONE ) {
+			return true;
+		}
+
+		return self::currentUserCanRead( $post, $context );
 	}
 
 	private static function resolvePost( $post ) {
@@ -81,6 +113,10 @@ final class ElementVisibility {
 		return function_exists( 'is_post_status_viewable' ) && function_exists( 'is_post_type_viewable' )
 			&& is_post_type_viewable( $post->post_type )
 			&& is_post_status_viewable( $post->post_status );
+	}
+
+	private static function isPublicStatus( string $status ): bool {
+		return is_post_status_viewable( $status );
 	}
 
 	private static function groupSourceId( $trid, $sourceLanguage, $elementType ) {

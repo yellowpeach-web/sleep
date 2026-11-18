@@ -186,8 +186,10 @@
         </xs:sequence>
     </xs:complexType>
 
-    <!-- With type="post-ids" or type="taxonomy-ids", "*" in the attribute name matches one or more letters, digits,
-         "_" or "-" (example: include_*). "exclude" lists names, separated by commas, that WPML does not convert. -->
+    <!-- With type="post-ids", type="taxonomy-ids" or a link attribute (type="link" or convert_to_sticky="1"),
+         "*" in the attribute name matches one or more letters, digits, "_" or "-" (example: include_*). "exclude"
+         lists names, separated by commas, that WPML does not convert. type="link": the URL is shown in the current
+         language. convert_to_sticky="1": Sticky Links also stores the URL as a sticky link. -->
     <xs:complexType name="wpml-shortcode-attribute">
         <xs:simpleContent>
             <xs:extension base="xs:string">
@@ -196,6 +198,14 @@
                 <xs:attribute type="xs:string" name="exclude" use="optional"/>
                 <xs:attribute type="xs:string" name="encoding" use="optional"/>
                 <xs:attribute type="xs:string" name="label" use="optional"/>
+                <xs:attribute name="convert_to_sticky" use="optional">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:integer">
+                            <xs:enumeration value="0"/>
+                            <xs:enumeration value="1"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>

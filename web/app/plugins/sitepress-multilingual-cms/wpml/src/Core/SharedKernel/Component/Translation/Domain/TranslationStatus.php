@@ -15,6 +15,8 @@ class TranslationStatus {
   const ATE_NEEDS_RETRY = 40;
   const ATE_UNSOLVABLE = 41;
   const ATE_CANCELED = 42;
+  const PENDING_TP = 102;
+  const CARRIES_UNITS = [ self::WAITING_FOR_TRANSLATOR, self::IN_PROGRESS, self::READY_TO_DOWNLOAD, self::ATE_NEEDS_RETRY, self::PENDING_TP ];
 
   const STATUSES_RESOLVED_BY_THE_TRANSLATION = [ self::NOT_TRANSLATED, self::COMPLETE, self::ATE_CANCELED ];
 
@@ -22,7 +24,7 @@ class TranslationStatus {
 
 
   public function __construct( int $value ) {
-    if ( in_array( $value, self::getAll(), true ) ) {
+    if ( self::PENDING_TP === $value || in_array( $value, self::getAll(), true ) ) {
       $this->value = $value;
     } else {
       $this->value = self::NOT_TRANSLATED;

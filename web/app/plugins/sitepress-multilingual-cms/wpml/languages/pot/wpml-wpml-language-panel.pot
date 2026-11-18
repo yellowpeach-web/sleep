@@ -1,0 +1,321 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-11-12T07:54:48+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: wpml\n"
+
+msgid "usage ledger"
+msgstr ""
+
+msgid "WPML could not complete this action. Please try again."
+msgstr ""
+
+#. translators: Value of a row of the read-only Multilingual Content Setup panel: how many of the post type's taxonomies, or of the post's custom fields, WPML translates. %1$d: the translatable ones, %2$d: all of them.
+#, js-format
+msgid "%1$d of %2$d translatable"
+msgstr ""
+
+msgid "Multilingual Content Setup"
+msgstr ""
+
+#. translators: Value of the post type row of the read-only Multilingual Content Setup panel: WPML translates this post type. Lower case, no full stop.
+msgid "translatable"
+msgstr ""
+
+#. translators: Value of the post type row of the read-only Multilingual Content Setup panel: WPML does not translate this post type. Lower case, no full stop.
+msgid "not translatable"
+msgstr ""
+
+#. translators: Label of a row of the read-only Multilingual Content Setup panel: the taxonomies (categories, tags, ...) of the post type. Noun, plural.
+msgid "Taxonomies"
+msgstr ""
+
+#. translators: Label of a row of the read-only Multilingual Content Setup panel: the post's custom fields. Noun, plural.
+msgid "Custom Fields"
+msgstr ""
+
+#. translators: Label of a row of the read-only Multilingual Content Setup panel: an Advanced Custom Fields field group attached to the post. Noun, singular.
+msgid "Field Group"
+msgstr ""
+
+#. translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation".
+msgid "Cancel"
+msgstr ""
+
+#. translators: Button label that confirms a dialog and carries out what it asks about.
+msgid "OK"
+msgstr ""
+
+#. translators: Link on the post editing screen that opens the dialog joining this post to existing translations. Verb, imperative.
+msgid "Connect with translations"
+msgstr ""
+
+msgid "This post was not connected. Reload the page and try again."
+msgstr ""
+
+#. translators: Heading of the dialog that confirms joining this post to a group of translations.
+msgid "Connect this post?"
+msgstr ""
+
+msgid "You are about to connect the current post with these following posts:"
+msgstr ""
+
+msgid "Please make sure to save your post, if you've made any change, before proceeding with this action!"
+msgstr ""
+
+#. translators: Checkbox label in the dialog that connects a post to its translations. %1$s: the name of a language, %2$s: the name of the content type, for example post or page.
+#, js-format
+msgid "Make %1$s the original language for this %2$s"
+msgstr ""
+
+#. translators: Button label in the dialog that connects a post to its translations: carry the connection out. Verb, imperative.
+msgid "Assign"
+msgstr ""
+
+#. translators: Heading of the dialog that picks the content to connect this post with. %s: the name of the content type, for example Post or Page.
+#, js-format
+msgid "Choose a %s to assign"
+msgstr ""
+
+msgid "Loading"
+msgstr ""
+
+msgid "No posts found"
+msgstr ""
+
+msgid "Type a post title"
+msgstr ""
+
+#. translators: Hint under the list of matching posts when more exist than are shown. %d: how many more.
+#, js-format
+msgid "...and %d more match. Type more of the title to narrow the list."
+msgid_plural "...and %d more matches. Type more of the title to narrow the list."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: Button label that confirms a dialog, and the answer sent back when a request went through.
+msgid "Ok"
+msgstr ""
+
+msgid "This operation copies the content from the original language onto this translation. It's meant for when you want to start with the original content, but keep translating in this language. This button is only enabled when there's no content in the editor."
+msgstr ""
+
+#. translators: Button label on the post editing screen: bring the text of the original language into this translation. %s: the name of the original language.
+#, js-format
+msgid "Copy content from %s"
+msgstr ""
+
+msgid "Translate items in batch after reviewing the cost of AI translation"
+msgstr ""
+
+#. translators: The name of the WPML screen where content is sent for translation. Used as a button label, as a tooltip and inside sentences.
+msgid "Translation Dashboard"
+msgstr ""
+
+#. translators: Link on the post editing screen that opens the setting for translating drafts automatically.
+msgid "Enable automatic translation for drafts"
+msgstr ""
+
+#. translators: Screen reader label of a duplicate checkbox, e.g. "Create duplicate for German". %1$s: what the checkbox does, or why it is disabled, %2$s: the language name.
+#, js-format
+msgid "%1$s for %2$s"
+msgstr ""
+
+#. translators: Column heading and button label on the post editing screen: make a copy of this post in another language. Verb, imperative.
+msgid "Duplicate"
+msgstr ""
+
+#. translators: Notice on a post WPML keeps as a copy of another one. %s is the title of the original, shown as a link.
+#, js-format
+msgid "This is a duplicate of %s, maintained by WPML. Your edits will be overwritten when the original changes."
+msgstr ""
+
+#. translators: Button label on a post WPML keeps as a copy of another one: stop keeping it as a copy and translate it on its own. Verb, imperative.
+msgid "Translate independently"
+msgstr ""
+
+#. translators: The name of the standard WordPress editor, as opposed to WPML's own translation editor.
+msgid "WordPress Editor"
+msgstr ""
+
+#. translators: Label of the checkbox that confirms changing the translation editor. %s: the name of the editor being switched to.
+#, js-format
+msgid "I understand, switch to %s"
+msgstr ""
+
+msgid "I understand, switch to the WordPress Editor"
+msgstr ""
+
+msgid "I understand, switch to <b>Translation Dashboard</b>"
+msgstr ""
+
+#. translators: Heading of the dialog that confirms changing the translation editor. %s: the name of the editor being switched to.
+#, js-format
+msgid "You are about to translate with the %s"
+msgstr ""
+
+msgid "Translate with the WordPress Editor if you need different designs per language or if the content isn't compatible with WPML's Translation Editor."
+msgstr ""
+
+msgid "What do you want to translate?"
+msgstr ""
+
+#. translators: Option in the dialog that changes the translation editor or who translates: change it for this one item only. %s: the name of the kind of content in the singular, for example "post" or "page".
+#, js-format
+msgid "Only this %s"
+msgstr ""
+
+#. translators: Badge beside the option WPML suggests; an adjective describing that option.
+msgid "Recommended"
+msgstr ""
+
+#. translators: Option in the dialog that changes the translation editor or who translates: change it for every item of this kind. %s: the name of the kind of content in the plural, for example "posts" or "pages".
+#, js-format
+msgid "All %s"
+msgstr ""
+
+msgid "All the site's content"
+msgstr ""
+
+msgid "The WordPress Editor doesn't offer Automatic Translation, <b>Translation Memory</b> and other features that make translation easier."
+msgstr ""
+
+msgid "Also, switching back to WPML's Translation Editor later will require re-translating content that you translated with the WordPress editor."
+msgstr ""
+
+#. translators: Warning in the dialog that changes the translation editor from the WordPress Editor to WPML's Translation Dashboard, with the PTC engine: the existing translation is kept as the base.
+msgid "This translation was previously created in the WordPress editor. When you switch to the Translation Dashboard, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved."
+msgstr ""
+
+msgid "This translation was previously created in the WordPress editor. When you switch to WPML Translation Editor, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved."
+msgstr ""
+
+#. translators: Warning in the dialog that changes the translation editor. "This" is the switch to WPML's translation editor.
+msgid "This will overwrite content you translated with the WordPress Editor. If you switch now, you'll have to translate selected content again."
+msgstr ""
+
+#. translators: Button label that applies the choice made in the dialog; verb, imperative.
+msgid "Apply"
+msgstr ""
+
+#. translators: Question asked before the language of a post is changed. %s: the title of the post.
+#, js-format
+msgid "You are about to change the language of %s."
+msgstr ""
+
+#. translators: Stands in for the title of a post that has none yet, in the question asked before its language is changed.
+msgid "(No title for this post yet)"
+msgstr ""
+
+#. translators: Column heading and field label in the WPML admin, for the language of a piece of content. Noun, singular.
+msgid "Language"
+msgstr ""
+
+msgid "Please make sure that you've saved all the changes. We will have to reload the page."
+msgstr ""
+
+msgid "Do you want to continue?"
+msgstr ""
+
+msgid "Use the same media in translations"
+msgstr ""
+
+msgid "Use the same media as the original"
+msgstr ""
+
+msgid "Translations reuse the checked items from this content. Uncheck an item to use different media in translations."
+msgstr ""
+
+msgid "This translation reuses the checked items from the original. Uncheck an item to use different media in this translation."
+msgstr ""
+
+msgid "Learn more about translating media with WPML"
+msgstr ""
+
+#. translators: Checkbox under the media options heading. Checked, the translations use the same featured image.
+msgid "Featured image"
+msgstr ""
+
+#. translators: Checkbox under the media options heading. Checked, the translations use the same images and files attached to the content.
+msgid "Media attachments"
+msgstr ""
+
+#. translators: Label of the option that marks a change as small, so the translators need not be told about it.
+msgid "Minor edit"
+msgstr ""
+
+msgid "Don't update translation"
+msgstr ""
+
+#. translators: Shown in the Language panel for a post or template that has no language recorded yet. In the post editor a language picker follows, in the Site Editor it doesn't.
+msgid "Language not set"
+msgstr ""
+
+#. translators: Button label on the post editing screen: replace the text of this translation with the text of the original language. %s: the name of the original language.
+#, js-format
+msgid "Overwrite with %s content."
+msgstr ""
+
+msgid "This operation will synchronize this translation with the original language. When you edit the original, this translation will update immediately. It's meant when you want the content in this language to always be the same as the content in the original language."
+msgstr ""
+
+#. translators: Question asked before the text of a translation is replaced with the text of the original language. %1$s: the name of the content type, for example post or page, %2$s: the name of the original language.
+#, js-format
+msgid "The current content of this %1$s will be permanently lost. WPML will copy the %2$s content and replace the current content."
+msgstr ""
+
+#. translators: Accessible name of the three tabs in the post editor's Language panel: the Translation Dashboard, WPML's translation editors and the WordPress editor.
+msgid "How to translate"
+msgstr ""
+
+#. translators: Title of the dialog that asks where a change of the translation editor or of who translates applies: this post or all posts of its type.
+msgid "Where does this change apply?"
+msgstr ""
+
+msgid "This page does not have a language since it's the site's root page."
+msgstr ""
+
+msgid "hide"
+msgstr ""
+
+msgid "show"
+msgstr ""
+
+msgid "Translation Editor"
+msgstr ""
+
+#. translators: Label in front of the dropdown that picks the original post this one is a translation of. The name of the original post follows it, so it ends without a full stop.
+msgid "This is a translation of"
+msgstr ""
+
+#. translators: Heading of the list of existing translations of a post. Plural noun.
+msgid "Translations"
+msgstr ""
+
+#. translators: A language name followed by the word in brackets that marks a translation WPML keeps as a copy of the original. %s: the language name.
+#, js-format
+msgid "%s (duplicate)"
+msgstr ""
+
+msgid "Translate this Document"
+msgstr ""
+
+#. translators: Column heading above the status icons that start or open a translation. Verb, imperative.
+msgid "Translate"
+msgstr ""
+
+#. translators: Shown in the Language panel of the Site Editor for a template that WordPress still reads from a plugin's files (e.g. a WooCommerce block template), i.e. the user has not saved any change to it yet. WPML can only translate a template once a saved copy exists in the database; after that, updates of that plugin no longer change the template.
+msgid "This template comes from a plugin. To translate it, first save a change to it in the Site Editor. After that, WordPress uses your saved copy, and updates of the plugin no longer change this template."
+msgstr ""
+
+#. translators: Shown in the Language panel of the Site Editor for a template that WordPress still reads from the theme's files, i.e. the user has not saved any change to it yet. WPML can only translate a template once a saved copy exists in the database.
+msgid "This template comes from your theme. To translate it, first save a change to it in the Site Editor. After that, WordPress uses your saved copy, and updates of the theme no longer change this template."
+msgstr ""

@@ -8,8 +8,11 @@ class WPML_Post_Status_Display {
 	const ICON_TRANSLATION_ADD           = 'otgs-ico-add';
 	const ICON_TRANSLATION_ADD_DISABLED  = 'otgs-ico-add-disabled';
 	const ICON_TRANSLATION_EDIT_DISABLED = 'otgs-ico-edit-disabled';
+
+	const RENDERED_AT_PARAM = 'wpml_rendered_at';
 	const ICON_TRANSLATION_IN_PROGRESS   = 'otgs-ico-in-progress';
 	const ICON_TRANSLATION_IN_TRASH      = 'otgs-ico-trash';
+	const ICON_TRANSLATION_DUPLICATE     = 'otgs-ico-duplicate';
 
 	private $active_langs;
 
@@ -103,15 +106,19 @@ class WPML_Post_Status_Display {
 		$source_language_code = $wpml_post_translations->get_element_lang_code( $post_id );
 		$correct_id           = $wpml_post_translations->element_id_in( $post_id, $lang );
 
-		if ( $status && $correct_id && $this->is_in_trash( $correct_id ) ) {
+		$is_trashed = $status && $correct_id && $this->is_in_trash( $correct_id );
+
+		if ( $is_trashed ) {
 			list( $text, $link, $css_class ) = $this->generate_trashed_data( $correct_id );
+		} elseif ( $status && $correct_id && $wpml_post_translations->is_a_duplicate( $correct_id ) ) {
+			list( $text, $link, $css_class ) = $this->generate_duplicate_data( $correct_id );
 		} elseif ( $status && $correct_id ) {
 			list( $text, $link, $css_class ) = $this->generate_edit_allowed_data( $correct_id, $status_helper->needs_update( $correct_id ) );
 		} else {
 			list( $text, $link, $css_class ) = $this->generate_add_data( $trid, $lang, $source_language_code, $post_id );
 		}
 
-		if ($status === ICL_TM_ATE_NEEDS_RETRY) {
+		if ( $status === ICL_TM_ATE_NEEDS_RETRY && ! $is_trashed ) {
 			list( $text, $link, $css_class ) = $this->generate_retry_data();
 
 		}
@@ -126,7 +133,7 @@ class WPML_Post_Status_Display {
 		$post_type    = $wpml_post_translations->get_type( $post_id );
 
 		$css_class = self::ICON_TRANSLATION_EDIT;
-		if ( $update && ! $wpml_post_translations->is_a_duplicate( $post_id ) ) {
+		if ( $update ) {
 			$css_class = self::ICON_TRANSLATION_NEEDS_UPDATE;
 		}
 
@@ -149,6 +156,24 @@ class WPML_Post_Status_Display {
 			);
 
 		return array( $text, $link, $css_class );
+	}
+
+	private function generate_duplicate_data( $post_id ) {
+		global $wpml_post_translations;
+
+		list( , $link ) = $this->generate_edit_allowed_data( $post_id );
+
+		$lang_code = $wpml_post_translations->get_element_lang_code( $post_id );
+
+		return array(
+			sprintf(
+				/* translators: Hover text of the duplicate icon in the Languages column of the lists of content. %s: the name of the language. A click on the icon starts a translation that replaces the duplicate. */
+				__( '%s: a duplicate of the original. Click to translate it separately.', 'sitepress' ),
+				$this->active_langs[ $lang_code ]['display_name']
+			),
+			$link,
+			self::ICON_TRANSLATION_DUPLICATE,
+		);
 	}
 
 	private function is_in_trash( $post_id ) {
@@ -183,10 +208,11 @@ class WPML_Post_Status_Display {
 	private function generate_add_data( $trid, $lang_code, $source_language, $original_id ) {
 		$link = 'post-new.php?' . http_build_query (
 				array(
-					'lang'        => $lang_code,
-					'post_type'   => get_post_type ( $original_id ),
-					'trid'        => $trid,
-					'source_lang' => $source_language
+					'lang'                  => $lang_code,
+					'post_type'             => get_post_type ( $original_id ),
+					'trid'                  => $trid,
+					'source_lang'           => $source_language,
+					self::RENDERED_AT_PARAM => time(),
 				)
 			);
 

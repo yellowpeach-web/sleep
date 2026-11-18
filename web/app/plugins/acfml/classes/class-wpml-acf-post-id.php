@@ -5,7 +5,7 @@ class WPML_ACF_Post_Id {
 	
 	public function __construct($id, $WPML_ACF_Field) {
 		$this->id = $id;
-		$this->WPML_ACF_Field = maybe_unserialize($WPML_ACF_Field);
+		$this->WPML_ACF_Field = \WPML\Utils\Unserialize::maybe( $WPML_ACF_Field );
 	}
 	
 	public function convert() {

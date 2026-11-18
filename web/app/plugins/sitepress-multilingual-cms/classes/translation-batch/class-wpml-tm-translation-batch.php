@@ -4,6 +4,10 @@ use WPML\FP\Lst;
 
 class WPML_TM_Translation_Batch {
 
+	const MODE_AUTO = 'auto';
+
+	const MODE_MANUAL = 'manual';
+
 	const HANDLE_EXISTING_LEAVE = 'leave';
 	const HANDLE_EXISTING_OVERRIDE = 'override';
 
@@ -139,7 +143,7 @@ class WPML_TM_Translation_Batch {
 	}
 
 	public function setTranslationMode( $translationMode ) {
-		$this->translationMode = Lst::includes( $translationMode, [ 'auto', 'manual' ] ) ? $translationMode : null;
+		$this->translationMode = Lst::includes( $translationMode, [ self::MODE_AUTO, self::MODE_MANUAL ] ) ? $translationMode : null;
 	}
 
 	public function getHowToHandleExisting() {

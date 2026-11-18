@@ -10,6 +10,7 @@ use WPML\FP\Lst;
 use WPML\FP\Obj;
 use WPML\TM\ATE\API\RequestException;
 use WPML\TM\ATE\JobError\Recorder;
+use WPML\TM\ATE\JobError\UnappliedJobException;
 use WPML\TM\ATE\Log\Entry;
 use WPML\TM\ATE\Log\EventsTypes;
 use WPML\TM\ATE\Review\ReviewStatus;
@@ -27,16 +28,20 @@ class Process {
 
 	private $jobErrorRecorder;
 
+	private $getStatus;
+
 	public function __construct(
 		Consumer $consumer,
 		WPML_TM_ATE_API $ateApi,
 		OrphanPostCleaner $orphanPostCleaner,
-		Recorder $jobErrorRecorder
+		Recorder $jobErrorRecorder,
+		$getStatus = null
 	) {
 		$this->consumer          = $consumer;
 		$this->ateApi            = $ateApi;
 		$this->orphanPostCleaner = $orphanPostCleaner;
 		$this->jobErrorRecorder  = $jobErrorRecorder;
+		$this->getStatus         = $getStatus ?: [ \WPML\TM\API\Jobs::class, 'getStatus' ];
 	}
 
 	public function run( $jobs ) {
@@ -95,6 +100,11 @@ class Process {
 					global $iclTranslationManagement;
 					$message = 'The translation job could not be applied.';
 
+					$unsavedReason = \WPML_TM_ATE_Jobs::lastUnsavedReason();
+					if ( '' !== $unsavedReason ) {
+						$message .= ' ' . $unsavedReason;
+					}
+
 					if ( $iclTranslationManagement->messages_by_type( 'error' ) ) {
 						$stringifyError = pipe(
 							Lst::pluck( 'text' ),
@@ -108,10 +118,13 @@ class Process {
 
 					$termReason = TaxonomyTermJobApplier::lastFailureReason();
 					if ( '' !== $termReason ) {
-						$message .= ' ' . $termReason;
+						$this->orphanPostCleaner->markCleanupNeeded();
+						$this->logTermFailure( $message . ' ' . $termReason, $termReason, $job );
+
+						return null;
 					}
 
-					throw new Exception( $message );
+					throw new UnappliedJobException( $message, \WPML_TM_ATE_Jobs::lastUnsavedData() );
 				}
 			} catch ( Exception $e ) {
 				$this->orphanPostCleaner->markCleanupNeeded();
@@ -149,6 +162,8 @@ class Process {
 		if ( ! $jobs->count() || ! defined( 'WPML_ELEMENT_TRANSLATIONS_CACHE_GROUP' ) ) {
 			return;
 		}
+
+		( new \WPML_WP_Cache( \WPML_TM_Translation_Status::CACHE_GROUP ) )->flush_group_cache( true );
 
 		$cache = new \WPML_WP_Cache( WPML_ELEMENT_TRANSLATIONS_CACHE_GROUP );
 		$cache->flush_group_cache( true );
@@ -241,6 +256,33 @@ class Process {
 		wpml_tm_ate_ams_log( $entry, $avoidDuplication );
 	}
 
+	private function logTermFailure( $message, $reason, $job ) {
+		$jobId     = (int) Obj::prop( 'jobId', $job );
+		$ateJobId  = (int) Obj::prop( 'ateJobId', $job );
+		$errorData = [ 'reason' => $reason ];
+		$before    = $this->statusOf( $jobId );
+
+		if ( TaxonomyTermJobApplier::lastFailureIsFinal() ) {
+			$this->jobErrorRecorder->giveUp( $jobId, $ateJobId, Recorder::TYPE_APPLY, $message, $errorData );
+		} else {
+			$this->jobErrorRecorder->record( $jobId, $ateJobId, Recorder::TYPE_APPLY, $message, $errorData );
+		}
+
+		$this->declineWhenGivenUpNow( $jobId, $ateJobId, $before );
+
+		$entry              = new Entry();
+		$entry->description = $message;
+		$entry->eventType   = EventsTypes::JOB_DOWNLOAD;
+		$entry->ateJobId    = $ateJobId;
+		$entry->wpmlJobId   = $jobId;
+		$entry->extraData   = [
+			'downloadUrl' => Obj::prop( 'url', $job ),
+			'reason'      => $reason,
+		];
+
+		wpml_tm_ate_ams_log( $entry, false );
+	}
+
 	private function logError( Error $e, $job = null ) {
 		$entry              = new Entry();
 		$entry->description = sprintf( '%s %s:%s', $e->getMessage(), $e->getFile(), $e->getLine() );
@@ -261,7 +303,24 @@ class Process {
 		$jobId     = Obj::prop( 'wpmlJobId', $entry );
 		$ateJobId  = Obj::prop( 'ateJobId', $entry );
 		$message   = Obj::prop( 'description', $entry );
+		$before    = Recorder::TYPE_APPLY === $errorType ? $this->statusOf( (int) $jobId ) : null;
 
 		$this->jobErrorRecorder->recordThrowable( $jobId, $ateJobId, $errorType, $message, $error );
+
+		if ( Recorder::TYPE_APPLY === $errorType ) {
+			$this->declineWhenGivenUpNow( (int) $jobId, (int) $ateJobId, $before );
+		}
+	}
+
+	private function statusOf( $jobId ) {
+		return (int) call_user_func( $this->getStatus, (int) $jobId );
+	}
+
+	private function declineWhenGivenUpNow( $jobId, $ateJobId, $before ) {
+		if ( $jobId < 1 || ICL_TM_ATE_UNSOLVABLE === $before || ICL_TM_ATE_UNSOLVABLE !== $this->statusOf( $jobId ) ) {
+			return;
+		}
+
+		\WPML\TM\ATE\Handshake\Decline::givenUp( $jobId, (int) $ateJobId );
 	}
 }

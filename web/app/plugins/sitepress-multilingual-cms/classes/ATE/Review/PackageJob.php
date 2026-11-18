@@ -16,7 +16,7 @@ class PackageJob implements \IWPML_Backend_Action, \IWPML_REST_Action {
 
 	const ELEMENT_TYPE_PREFIX = 'package';
 	public function add_hooks() {
-		if ( \WPML_TM_ATE_Status::is_enabled_and_activated() ) {
+		if ( \WPML_TM_ATE_Status::is_account_usable() ) {
 			self::addReviewStatusHook();
 			self::addTranslationCompleteHook();
 		}
@@ -53,6 +53,13 @@ class PackageJob implements \IWPML_Backend_Action, \IWPML_REST_Action {
 
 			if ( Relation::propEq( 'review_status', ReviewStatus::EDITING, $job ) ) {
 				Jobs::setReviewStatus( (int) $job->job_id, ReviewStatus::ACCEPTED );
+			} else {
+				ReviewRulesFactory::create()->acceptOnCompletion(
+					$job,
+					function () use ( $job ) {
+						return ! ApplyJob::isAutomaticWork( $job );
+					}
+				);
 			}
 		};
 		Hooks::onAction( 'wpml_pro_translation_completed', 10, 3 )

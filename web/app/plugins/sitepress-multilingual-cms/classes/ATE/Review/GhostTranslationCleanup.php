@@ -8,12 +8,30 @@ class GhostTranslationCleanup implements \IWPML_Backend_Action, \IWPML_REST_Acti
 
 	private $detected_jobs = array();
 
+	private static $suspended = 0;
+
 	public function add_hooks() {
 		add_action( 'wpml_tm_ghost_translation_detected', array( $this, 'collect' ), 10, 2 );
 		add_action( 'shutdown', array( $this, 'repair' ) );
 	}
 
+	public static function suspend() {
+		self::$suspended++;
+	}
+
+	public static function resume() {
+		self::$suspended = max( 0, self::$suspended - 1 );
+	}
+
+	public static function is_suspended() {
+		return self::$suspended > 0;
+	}
+
 	public function collect( $element_id, $job_id = 0 ) {
+		if ( self::is_suspended() ) {
+			return;
+		}
+
 		$element_id = (int) $element_id;
 		$job_id     = (int) $job_id;
 

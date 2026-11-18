@@ -54,12 +54,32 @@ class WPML_User_Language {
 	}
 
 	public function intersect_wpml_wp_languages( $wp_languages ) {
-		$active_wpml_languages         = wp_list_pluck( $this->sitepress->get_active_languages(), 'default_locale' );
+		$active_languages              = $this->sitepress->get_active_languages();
+		$active_wpml_languages         = wp_list_pluck( $active_languages, 'default_locale' );
 		$active_wpml_codes             = array_flip( $active_wpml_languages );
 		$intersect_languages_by_locale = array_intersect( $active_wpml_languages, $wp_languages );
 		$intersect_languages_by_code   = array_intersect( $active_wpml_codes, $wp_languages );
 
-		return array_merge( $intersect_languages_by_code, $intersect_languages_by_locale );
+		$kept = array_merge( $intersect_languages_by_code, $intersect_languages_by_locale );
+
+		foreach ( (array) $wp_languages as $wp_locale ) {
+			if ( ! in_array( $wp_locale, $kept, true ) && $this->is_variant_of_active_language( $wp_locale, $active_languages ) ) {
+				$kept[] = $wp_locale;
+			}
+		}
+
+		return $kept;
+	}
+
+	private function is_variant_of_active_language( $wp_locale, $active_languages ) {
+		$code = $this->sitepress->get_language_code_from_locale( $wp_locale );
+
+		if ( ! $code ) {
+			$parts = explode( '_', (string) $wp_locale );
+			$code  = strtolower( $parts[0] );
+		}
+
+		return '' !== (string) $code && isset( $active_languages[ $code ] );
 	}
 
 	public function switch_language_for_email_action( $email ) {
@@ -252,7 +272,7 @@ class WPML_User_Language {
 		}
 
 		$secure = ( 'https' === parse_url( wp_login_url(), PHP_URL_SCHEME ) );
-		setcookie( $cookieName, '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, $secure );
+		setcookie( $cookieName, '', \WPML\AdminLanguageSwitcher\AdminLanguageSwitcher::loginCookieOptions( time() - 3600, $secure ) );
 	}
 
 	private function seed_browsing_language( CookieLanguage $cookieLanguage, $languageCode ) {

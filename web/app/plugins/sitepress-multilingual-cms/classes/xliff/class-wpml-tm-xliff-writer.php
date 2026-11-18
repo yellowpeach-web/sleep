@@ -1,5 +1,6 @@
 <?php
 
+use WPML\EditHistory\XliffMarking;
 use WPML\FP\Cast;
 use WPML\FP\Fns;
 use WPML\FP\Lst;
@@ -7,8 +8,10 @@ use WPML\FP\Obj;
 use WPML\FP\Str;
 use WPML\LIB\WP\Attachment;
 use WPML\TM\Jobs\FieldId;
+use WPML\TM\Jobs\JobLog;
 use WPML\TM\XLIFF\DeclaredPlaceholders;
 use WPML\TM\XLIFF\SegmentedSuggestion;
+use WPML\TM\XLIFF\SourceJob;
 use WPML\Utilities\Labels;
 use WPML\TM\API\Jobs;
 use WPML\TM\XLIFF\CurrentTranslation;
@@ -25,6 +28,8 @@ class WPML_TM_Xliff_Writer {
 	const WP_EDITOR_MODIFIED_TIMESTAMP  = 'translation_modified_timestamp';
 	const WP_EDITOR_GENERATED_TIMESTAMP = 'generated_timestamp';
 
+	const REFERENCE_UNIT_MAX_BYTES = 524288;
+
 	protected $job_factory;
 
 	private $xliff_version;
@@ -36,11 +41,21 @@ class WPML_TM_Xliff_Writer {
 
 	private $is_xliff_for_ate = false;
 
+	private $reference_unit_skips_logged = [];
+
 	private $shouldMarkDeclaredPlaceholders = false;
+
+	private $shouldSplitOutdatedFields = false;
 
 	private $use_translation_memory = false;
 
+	private $history_marking;
+
 	private $human_translated_fields = array();
+
+	private $previous_translation_made_in_ate = false;
+
+	private $source_job;
 
 	private $valid_html_tag_regex;
 
@@ -62,6 +77,12 @@ class WPML_TM_Xliff_Writer {
 		return $this;
 	}
 
+	public function withOutdatedFieldSegments() {
+		$this->shouldSplitOutdatedFields = true;
+
+		return $this;
+	}
+
 	public function get_job_xliff_file( $job_id ) {
 
 		return $this->generate_xliff_file( $this->generate_job_xliff( $job_id ) );
@@ -71,8 +92,13 @@ class WPML_TM_Xliff_Writer {
 		return $this->create_job_xliff( $job_id )['xliff'];
 	}
 
-	public function generate_job_xliff_or_null( $job_id ) {
-		$result = $this->create_job_xliff( $job_id );
+	public function generate_job_xliff_or_null( $job_id, ?XliffMarking $history_marking = null ) {
+		$this->history_marking = $history_marking;
+		try {
+			$result = $this->create_job_xliff( $job_id );
+		} finally {
+			$this->history_marking = null;
+		}
 
 		return $result['has_units'] ? $result['xliff'] : null;
 	}
@@ -94,7 +120,7 @@ class WPML_TM_Xliff_Writer {
 			&& \WPML_TM_ATE_Status::is_enabled_and_activated();
 
 		$translation_units  = $this->get_job_translation_units_data( $job );
-		$original           = $job_id . '-' . md5( $job_id . $job->original_doc_id );
+		$original           = $job_id . '-' . WPML_TM_Xliff_Shared::job_identifier_md5( $job_id, $job->original_doc_id );
 		$original_post_type = isset( $job->original_post_type ) ? $job->original_post_type : null;
 
 		$external_file_url = $this->get_external_url( $job );
@@ -256,7 +282,10 @@ class WPML_TM_Xliff_Writer {
 			return $translation_units;
 		}
 
-		$this->human_translated_fields = $this->load_human_translated_fields( $job );
+		$previous_job                           = isset( $job->job_id ) ? Jobs::getPreviousJob( $job->job_id ) : null;
+		$this->human_translated_fields          = $this->load_human_translated_fields( $previous_job );
+		$this->previous_translation_made_in_ate = $this->is_made_in_ate( $previous_job );
+		$this->source_job                       = isset( $job->job_id, $GLOBALS['wpdb'] ) ? new SourceJob( $GLOBALS['wpdb'], (int) $job->job_id ) : null;
 
 		$elements = array_values( array_filter( $elements, function( $element ) {
 			return ( 1 === (int) $element->field_translate );
@@ -314,6 +343,7 @@ class WPML_TM_Xliff_Writer {
 	private function handle_field_data( $element, $extra_data, &$translation_units ) {
 		$field_data_translated = base64_decode( $element->field_data_translated );
 		$field_data            = base64_decode( $element->field_data );
+		$stored_translation = $field_data_translated;
 
 		$field_data = apply_filters( 'wpml_tm_xliff_unit_field_data', $field_data );
 
@@ -331,24 +361,31 @@ class WPML_TM_Xliff_Writer {
 		}
 		$target_holds_a_translation = '' !== trim( (string) $field_data_translated );
 
-		if ( ! null === $field_data_translated || '' === $field_data_translated ) {
+		$history_rule = $this->history_marking
+			? $this->history_marking->rule( (string) $element->field_type, (string) $field_data, (string) $field_data_translated )
+			: null;
+
+		if ( XliffMarking::EMPTY_TARGET === $history_rule ) {
+			$field_data_translated      = '';
+			$target_holds_a_translation = false;
+		} elseif ( ! null === $field_data_translated || '' === $field_data_translated ) {
 			$field_data_translated = $this->remove_invalid_chars( $field_data );
 		}
 
 		$field_name = isset( $extra_data['unit'] ) ? $extra_data['unit'] : $element->field_type;
 
 		if ( in_array( $element->field_type, [ 'title', 'body', 'excerpt', 'URL' ], true ) ) {
-			$field_type_name = ucfirst( $element->field_type );
-			$extra_data      = [
-				'unit'     => $field_type_name,
+			$extra_data = [
+				'unit'     => Obj::propOr( '', 'unit', $extra_data ) ?: ucfirst( $element->field_type ),
 				'type'     => 'text',
-				'group'    => self::DEFAULT_GROUP,
+				'group'    => self::getDefaultGroupLabel(),
 				'group_id' => self::DEFAULT_GROUP_ID,
 			];
 
 			$field_name = $element->field_type;
 		} elseif ( FieldId::is_any_term_field( $element->field_type ) ) {
-			$extra_data['group']    = self::DEFAULT_GROUP . '/Taxonomies';
+			/* translators: Plural. Heading above the kinds of grouping a term can belong to, for example Categories and Tags, and the name of the group that holds the taxonomy terms of a translation job in the Advanced Translation Editor. */
+			$extra_data['group']    = self::getDefaultGroupLabel() . '/' . __( 'Taxonomies', 'sitepress' );
 			$extra_data['group_id'] = self::DEFAULT_GROUP_ID . '/Taxonomies-0';
 
 			$term_taxonomy_id = (int) FieldId::get_term_id( $element->field_type );
@@ -371,7 +408,7 @@ class WPML_TM_Xliff_Writer {
 
 			$is_translation_memory_outdated = false;
 
-			if ( isset( $element->field_finished, $element->has_previous_translation ) ) {
+			if ( isset( $element->field_finished, $element->has_previous_translation ) && XliffMarking::CLIENT_EDIT !== $history_rule ) {
 				$is_translation_memory_outdated = ( '0' === $element->field_finished && $element->has_previous_translation );
 			}
 
@@ -381,11 +418,20 @@ class WPML_TM_Xliff_Writer {
 					|| ( $this->use_translation_memory && ! empty( $element->translated_from_memory ) )
 				);
 
+			$per_segment_rule = $this->shouldSplitOutdatedFields
+				&& $this->is_xliff_for_ate
+				&& null === $history_rule
+				&& $is_translation_memory_outdated
+				&& $is_suggested_translation
+				&& ! FieldId::is_any_term_field( $element->field_type );
+
 			$segment_pairs = null;
 			if (
-				$is_suggested_translation
+				! $per_segment_rule
+				&& $is_suggested_translation
 				&& '' !== $field_data_translated
 				&& $this->is_xliff_for_ate
+				&& ! $this->previous_translation_made_in_ate
 				&& ! FieldId::is_any_term_field( $element->field_type )
 			) {
 				$segment_pairs = SegmentedSuggestion::split_pair( $field_data, $field_data_translated );
@@ -395,39 +441,41 @@ class WPML_TM_Xliff_Writer {
 				&& isset( $this->human_translated_fields[ $element->field_type ] )
 				&& trim( $this->human_translated_fields[ $element->field_type ] ) === trim( (string) $field_data_translated );
 
-			if ( $segment_pairs ) {
-				foreach ( $segment_pairs as $segment_index => $segment_pair ) {
-					$segment_field_id       = 0 === $segment_index
-						? $element->field_type
-						: $element->field_type . SegmentedSuggestion::SEGMENT_ID_SUFFIX . ( $segment_index + 1 );
-					$translation_units_data = $this->get_translation_unit_data(
-						$segment_field_id,
-						$field_name,
-						$this->markDeclaredPlaceholders( $segment_pair['source'], $element, $extra_data ),
-						$segment_pair['target'],
-						$is_suggested_translation,
-						$element->field_wrap_tag,
-						$extra_data,
-						$is_translation_memory_outdated,
-						$completed_by_a_human
+			$units = array(
+				array(
+					'source'    => $field_data,
+					'target'    => $field_data_translated,
+					'suggested' => $is_suggested_translation,
+					'outdated'  => $is_translation_memory_outdated,
+				),
+			);
+			if ( $per_segment_rule ) {
+				$units = $this->outdated_field_units( $element, $field_data, $field_data_translated, $stored_translation ) ?: $units;
+			} elseif ( $segment_pairs ) {
+				$units = array();
+				foreach ( $segment_pairs as $segment_pair ) {
+					$units[] = array(
+						'source'    => $segment_pair['source'],
+						'target'    => $segment_pair['target'],
+						'suggested' => $is_suggested_translation,
+						'outdated'  => $is_translation_memory_outdated,
 					);
-
-					if ( 'title' === $field_name ) {
-						array_unshift( $translation_units, $translation_units_data );
-					} else {
-						$translation_units[] = $translation_units_data;
-					}
 				}
-			} else {
+			}
+
+			foreach ( $units as $unit_index => $unit ) {
+				$unit_field_id          = 0 === $unit_index
+					? $element->field_type
+					: $element->field_type . SegmentedSuggestion::SEGMENT_ID_SUFFIX . ( $unit_index + 1 );
 				$translation_units_data = $this->get_translation_unit_data(
-					$element->field_type,
+					$unit_field_id,
 					$field_name,
-					$this->markDeclaredPlaceholders( $field_data, $element, $extra_data ),
-					$field_data_translated,
-					$is_suggested_translation,
+					$this->markDeclaredPlaceholders( $unit['source'], $element, $extra_data ),
+					$unit['target'],
+					$unit['suggested'],
 					$element->field_wrap_tag,
 					$extra_data,
-					$is_translation_memory_outdated,
+					$unit['outdated'],
 					$completed_by_a_human
 				);
 
@@ -538,6 +586,11 @@ class WPML_TM_Xliff_Writer {
 		return $extradataArray;
 	}
 
+	public static function getDefaultGroupLabel() {
+		/* translators: Name of the group that holds the main fields of a translation job (title, content, page builder fields) in the Advanced Translation Editor. */
+		return __( 'Main Content', 'sitepress' );
+	}
+
 	public static function buildFieldExtradata( array $field, $isCustomField ) {
 		$title    = Obj::propOr( '', 'title', $field );
 		$group    = Obj::propOr( '', 'group', $field );
@@ -549,10 +602,11 @@ class WPML_TM_Xliff_Writer {
 			$groupIdString    = implode( '/', array_keys( $group ) );
 		} elseif ( $isCustomField ) {
 			$title            = Str::pregReplace( '/^' . FieldId::CUSTOM_FIELD_PREFIX . '/', '', $title );
-			$groupTitleString = self::CUSTOM_FIELDS_GROUP;
+			/* translators: Heading of the group that holds the custom fields of a translation job, in the translation editor. */
+			$groupTitleString = __( 'Custom Fields', 'sitepress' );
 			$groupIdString    = self::CUSTOM_FIELDS_GROUP_ID;
 		} else {
-			$groupTitleString = self::DEFAULT_GROUP;
+			$groupTitleString = self::getDefaultGroupLabel();
 			$groupIdString    = self::DEFAULT_GROUP_ID;
 		}
 
@@ -675,14 +729,25 @@ class WPML_TM_Xliff_Writer {
 	}
 
 	private function remove_line_breaks_inside_tags( $string ) {
-		return preg_replace_callback( $this->get_valid_html_tag_regex(), array( $this, 'remove_line_breaks_inside_tag_callback' ), $string );
+		$result = preg_replace_callback( $this->get_valid_html_tag_regex(), array( $this, 'remove_line_breaks_inside_tag_callback' ), $string );
+
+		return is_string( $result ) ? $result : $string;
 	}
 
 	private function get_valid_html_tag_regex() {
 		if ( ! $this->valid_html_tag_regex ) {
-			$allowed_tags               = implode( '|', array_keys( (array) wp_kses_allowed_html( 'post' ) ) );
-			$this->valid_html_tag_regex = '/(<\s*(?:' . $allowed_tags . ')\b[^>]*>)/m';
+			$tag_names = array_filter(
+				array_map( 'strval', array_keys( (array) wp_kses_allowed_html( 'post' ) ) ),
+				'strlen'
+			);
+			$quoted    = array_map(
+				function ( $tag_name ) {
+					return preg_quote( $tag_name, '/' );
+				},
+				$tag_names
+			);
 
+			$this->valid_html_tag_regex = '/(<\s*(?:' . implode( '|', $quoted ) . ')\b[^>]*>)/m';
 		}
 
 		return $this->valid_html_tag_regex;
@@ -870,26 +935,34 @@ class WPML_TM_Xliff_Writer {
 			return false;
 		}
 
-		if ( isset( $job->editor ) && $this->is_non_wpml_editor( $job->editor ) ) {
+		if ( isset( $job->editor ) && $this->current_job_holds_non_wpml_translation( $job ) ) {
 			return true;
 		}
 
 		$previous_job = Jobs::getPreviousJob( $job->job_id );
 
-		return is_object( $previous_job ) && $this->is_non_wpml_editor( $previous_job->editor );
+		if ( ! is_object( $previous_job ) ) {
+			return isset( $job->editor ) && $this->is_non_wpml_editor( $job->editor );
+		}
+
+		return $this->is_non_wpml_editor( $previous_job->editor );
+	}
+
+	private function current_job_holds_non_wpml_translation( $job ) {
+		if ( WPML_TM_Editors::WP === $job->editor ) {
+			return true;
+		}
+
+		return $this->is_non_wpml_editor( $job->editor )
+			&& isset( $job->translated )
+			&& 1 === (int) $job->translated;
 	}
 
 	private function is_non_wpml_editor( $editor ) {
 		return ! in_array( $editor, [ WPML_TM_Editors::ATE, WPML_TM_Editors::WPML ], true );
 	}
 
-	private function load_human_translated_fields( $job ) {
-		if ( ! isset( $job->job_id ) ) {
-			return array();
-		}
-
-		$previous_job = Jobs::getPreviousJob( $job->job_id );
-
+	private function load_human_translated_fields( $previous_job ) {
 		if ( ! is_object( $previous_job ) || ! $this->is_completed_by_a_human( $previous_job ) ) {
 			return array();
 		}
@@ -914,6 +987,53 @@ class WPML_TM_Xliff_Writer {
 		}
 
 		return $fields;
+	}
+
+	private function outdated_field_units( $element, $field_data, $field_data_translated, $stored_translation ) {
+		if ( ! $this->source_job || ! SegmentedSuggestion::is_splittable( $field_data ) ) {
+			return null;
+		}
+
+		$source_job = $this->source_job->find( (string) $element->field_type, (string) $stored_translation );
+		if ( ! $source_job || $source_job['made_in_ate'] ) {
+			return null;
+		}
+
+		$old_source = apply_filters( 'wpml_tm_xliff_unit_field_data', $source_job['source'] );
+		if ( FieldId::is_a_custom_field( $element->field_type ) ) {
+			$old_source = apply_filters( 'wpml_tm_xliff_export_original_cf', $old_source, $element );
+		}
+
+		$segments = SegmentedSuggestion::split_outdated( (string) $old_source, $field_data, $field_data_translated );
+		if ( ! $segments ) {
+			return null;
+		}
+
+		$units = array();
+		foreach ( $segments as $segment ) {
+			$units[] = $segment['changed']
+				? array(
+					'source'    => $segment['source'],
+					'target'    => $this->remove_invalid_chars( $segment['source'] ),
+					'suggested' => false,
+					'outdated'  => false,
+				)
+				: array(
+					'source'    => $segment['source'],
+					'target'    => $segment['target'],
+					'suggested' => true,
+					'outdated'  => false,
+				);
+		}
+
+		return $units;
+	}
+
+	private function is_made_in_ate( $previous_job ) {
+		return is_object( $previous_job )
+			&& isset( $previous_job->editor )
+			&& WPML_TM_Editors::ATE === $previous_job->editor
+			&& 1 === (int) $previous_job->translated;
 	}
 
 	private function is_completed_by_a_human( $jobRow ) {
@@ -976,6 +1096,25 @@ class WPML_TM_Xliff_Writer {
 
 					$source = $this->decorate_wp_editor_markup( $source, $original_post_id );
 					$target = $this->decorate_wp_editor_markup( $target, $translated_post_id );
+
+					if ( strlen( $source ) + strlen( $target ) > self::REFERENCE_UNIT_MAX_BYTES ) {
+						$job_id = (int) $job->job_id;
+						if ( isset( $this->reference_unit_skips_logged[ $job_id ] ) ) {
+							continue;
+						}
+						$this->reference_unit_skips_logged[ $job_id ] = true;
+						JobLog::add(
+							'xliff_reference_unit_left_out',
+							[
+								'at'           => basename( __FILE__ ) . ':' . __LINE__,
+								'job_id'       => $job_id,
+								'source_bytes' => strlen( $source ),
+								'target_bytes' => strlen( $target ),
+								'cap_bytes'    => self::REFERENCE_UNIT_MAX_BYTES,
+							]
+						);
+						continue;
+					}
 				}
 
 				if ( null === $extradata ) {

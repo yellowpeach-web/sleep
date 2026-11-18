@@ -1,10 +1,12 @@
 <?php
 
+use WPML\EditHistory\InternalWrite;
 use WPML\FP\Fns;
 use WPML\FP\Obj;
 use WPML\FP\Logic;
 use WPML\FP\Type;
 use WPML\FP\Str;
+use WPML\PB\FullSiteEditing\TemplateRestRoute;
 use WPML\PB\Shortcode\StringCleanUp;
 use function WPML\FP\invoke;
 use function WPML\FP\partialRight;
@@ -58,13 +60,16 @@ class WPML_PB_Integration {
 	public function resave_post_translation_in_shutdown( WPML_Post_Element $post_element, $disallowed_in_shutdown = true ) {
 		if ( ! $post_element->get_source_element()
 			|| ( did_action( 'shutdown' ) && $disallowed_in_shutdown )
-			|| array_key_exists( $post_element->get_id(), $this->save_post_queue )
 		) {
-			return;
+			return false;
+		}
+
+		if ( array_key_exists( $post_element->get_id(), $this->save_post_queue ) ) {
+			return true;
 		}
 
 		if ( WPML_PB_Last_Translation_Edit_Mode::is_native_editor( $post_element->get_id() ) ) {
-			return;
+			return false;
 		}
 
 		$updated_packages = $this->factory->get_package_strings_resave()->from_element( $post_element );
@@ -92,15 +97,29 @@ class WPML_PB_Integration {
 
 		$this->new_translations_recieved = true;
 		$this->queue_save_post_actions( $post_element->get_id(), $post_element->get_wp_object() );
+
+		return true;
+	}
+
+	public function resave_post_translation_on_action( WPML_Post_Element $post_element, $disallowed_in_shutdown = true ) {
+		$this->resave_post_translation_in_shutdown( $post_element, $disallowed_in_shutdown );
 	}
 
 	public function queue_save_post_actions( $post_id, $post ) {
+		if ( (int) $post_id <= 0 || ! $post instanceof \WP_Post ) {
+			return;
+		}
+
 		$this->update_last_editor_mode( (int) $post_id );
 		$this->save_post_queue[ $post_id ] = $post;
 	}
 
 	public function get_save_post_queue() {
 		return $this->save_post_queue;
+	}
+
+	public function has_translations_to_save() {
+		return $this->new_translations_recieved;
 	}
 
 	private function update_last_editor_mode( $post_id ) {
@@ -161,14 +180,18 @@ class WPML_PB_Integration {
 
 			if ( is_string( $restRoute ) ) {
 				preg_match( '/^\/wp\/v2\/(?:' . $postTypeSlugs . ')\/(\d+)/', $restRoute, $matches );
-
-				return (int) Obj::prop( 1, $matches ) === $translatedPostId;
+				$RESTPostId = (int) Obj::prop( 1, $matches );
+			} else {
+				$restRoute = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+				preg_match( '/' . preg_quote( rest_get_url_prefix(), '/' ) . '\/wp\/v2\/(?:' . $postTypeSlugs . ')\/(\d+)/', $restRoute, $matches );
+				$RESTPostId = (int) Obj::prop( 1, $matches );
 			}
 
-			preg_match( '/' . preg_quote( rest_get_url_prefix(), '/' ) . '\/wp\/v2\/(?:' . $postTypeSlugs . ')\/(\d+)/', $_SERVER['REQUEST_URI'], $matches );
-			$RESTPostId = (int) Obj::prop( 1, $matches );
+			if ( $RESTPostId ) {
+				return $RESTPostId === $translatedPostId;
+			}
 
-			return $RESTPostId === $translatedPostId;
+			return TemplateRestRoute::savedWpId( $restRoute ) === $translatedPostId;
 		};
 
 		$getGET = Obj::prop( Fns::__, $_GET );
@@ -190,7 +213,9 @@ class WPML_PB_Integration {
 	}
 
 	private function is_translation( $postId ) {
-		return (bool) $this->factory->get_post_element( $postId )->get_source_language_code();
+		$element = $this->factory->get_post_element( $postId );
+
+		return $element && (bool) $element->get_source_language_code();
 	}
 
 	public function register_all_strings_for_translation( $post, $allowRegisteringPostTranslation = false ) {
@@ -213,7 +238,8 @@ class WPML_PB_Integration {
 		add_action( 'pre_post_update', array( $this, 'migrate_location' ) );
 		add_action( 'save_post', array( $this, 'queue_save_post_actions' ), PHP_INT_MAX, 2 );
 		add_action( 'wpml_pro_translation_after_post_save', array( $this, 'set_last_editor_mode_to_translation_editor' ) );
-		add_action( 'wpml_pb_resave_post_translation', array( $this, 'resave_post_translation_in_shutdown' ), 10, 2 );
+		add_action( 'wpml_pb_resave_post_translation', array( $this, 'resave_post_translation_on_action' ), 10, 2 );
+		add_action( 'wpml_pb_translate_media_in_translation', array( $this, 'queue_save_post_actions' ), 10, 2 );
 		add_action( 'icl_st_add_string_translation', array( $this, 'new_translation' ), 10, 1 );
 		add_action( 'wpml_pb_finished_adding_string_translations', array( $this, 'process_pb_content_with_hidden_strings_only' ), 9, 2 );
 		add_action( 'wpml_pb_finished_adding_string_translations', array( $this, 'save_translations_to_post' ), 10 );
@@ -348,7 +374,7 @@ class WPML_PB_Integration {
 		$was_attached = remove_action( 'wpml_tm_save_post', 'wpml_tm_save_post', 10 );
 
 		try {
-			$callback();
+			InternalWrite::run( InternalWrite::AUTO_RESAVE, $callback );
 		} finally {
 			if ( $was_attached ) {
 				add_action( 'wpml_tm_save_post', 'wpml_tm_save_post', 10, 3 );
@@ -398,9 +424,20 @@ class WPML_PB_Integration {
 	}
 
 	public function initialize_string_clean_up( WP_Post $post ) {
+		$this->stringCleanUp[ $post->ID ] = new StringCleanUp( $post->ID, $this->get_clean_up_shortcode_strategy() );
+	}
+
+	private function get_clean_up_shortcode_strategy() {
+		foreach ( $this->strategies as $strategy ) {
+			if ( $strategy instanceof WPML_PB_Shortcode_Strategy ) {
+				return $strategy;
+			}
+		}
+
 		$shortcodeStrategy = make( WPML_PB_Shortcode_Strategy::class );
 		$shortcodeStrategy->set_factory( $this->factory );
-		$this->stringCleanUp[ $post->ID ] = new StringCleanUp( $post->ID, $shortcodeStrategy );
+
+		return $shortcodeStrategy;
 	}
 
 	public function clean_up_strings( WP_Post $post ) {
@@ -430,15 +467,17 @@ class WPML_PB_Integration {
 
 	public function translate_media( $post ) {
 		if ( ! defined( 'WPML_MEDIA_VERSION' ) ) {
-			return;
+			return false;
 		}
 
 		$post = get_post( $post->ID );
 		if ( ! $post ) {
-			return;
+			return false;
 		}
 
 		if ( $this->is_post_status_ok( $post ) && ! $this->is_original_post( $post ) ) {
+			$stored_before = $this->get_stored_translation( $post->ID, $post );
+
 			$this->resave_translation_without_tm_status_update(
 				function () use ( $post ) {
 					foreach ( $this->get_media_updaters( $post ) as $updater ) {
@@ -446,7 +485,27 @@ class WPML_PB_Integration {
 					}
 				}
 			);
+
+			return $stored_before !== $this->get_stored_translation( $post->ID, get_post( $post->ID ) );
 		}
+
+		return false;
+	}
+
+	private function get_stored_translation( $post_id, $post ) {
+		$meta = get_post_meta( $post_id );
+
+		return [
+			$post ? $post->post_content : null,
+			is_array( $meta )
+				? array_filter(
+					$meta,
+					function ( $values ) {
+						return [ '' ] !== $values;
+					}
+				)
+				: [],
+		];
 	}
 
 	private function get_media_updaters( $post ) {

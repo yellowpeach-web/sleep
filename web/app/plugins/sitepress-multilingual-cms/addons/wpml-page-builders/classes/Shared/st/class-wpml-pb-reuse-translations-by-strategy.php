@@ -6,9 +6,9 @@ class WPML_PB_Reuse_Translations_By_Strategy extends WPML_PB_Reuse_Translations 
 
 	private $original_strings_by_strategy;
 
-	public function __construct( IWPML_PB_Strategy $strategy, WPML_ST_String_Factory $string_factory ) {
+	public function __construct( IWPML_PB_Strategy $strategy, WPML_ST_String_Factory $string_factory, ?callable $get_previous_forms = null ) {
 		$this->strategy = $strategy;
-		parent::__construct( $string_factory );
+		parent::__construct( $string_factory, $get_previous_forms );
 	}
 
 	public function set_original_strings( array $strings ) {

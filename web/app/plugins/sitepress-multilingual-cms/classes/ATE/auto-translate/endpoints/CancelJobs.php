@@ -8,6 +8,8 @@ use WPML\Ajax\IHandler;
 use WPML\Collect\Support\Collection;
 use WPML\FP\Either;
 use WPML\FP\Fns;
+use WPML\TM\ATE\TranslateEverything\TermBundle;
+use WPML\Translation\StringBatchCleanupServiceFactory;
 use function WPML\Container\make;
 
 class CancelJobs implements IHandler {
@@ -20,10 +22,31 @@ class CancelJobs implements IHandler {
 		$batchSize = $data->get( 'batchSize', 1000 );
 		$params   = $this->getSearchParams()->set_limit( $batchSize );
 
-		$toCancel = wpml_collect( wpml_tm_get_jobs_repository()->get( $params ) );
-		$toCancel->map( Fns::tap( [ make( \WPML_TP_Sync_Update_Job::class ), 'cancel' ] ) );
+		$toCancel = wpml_collect( wpml_tm_get_jobs_repository()->get( $params ) )
+			->reject( function ( \WPML_TM_Job_Entity $job ) {
+				return $job instanceof \WPML_TM_Post_Job_Entity && TermBundle::ELEMENT_TYPE === $job->get_element_type();
+			} );
+		$updateJob = make( \WPML_TP_Sync_Update_Job::class );
+		$toCancel->map(
+			Fns::tap(
+				function ( \WPML_TM_Job_Entity $job ) use ( $updateJob ) {
+					$this->releaseStrings( $updateJob->cancel( $job ) );
+				}
+			)
+		);
 
 		return Either::of( $toCancel->count() );
+	}
+
+	private function releaseStrings( \WPML_TM_Job_Entity $job ) {
+		if ( \WPML_TM_Job_Entity::STRING_BATCH !== $job->get_type() || ICL_TM_COMPLETE === (int) $job->get_status() ) {
+			return;
+		}
+
+		StringBatchCleanupServiceFactory::create()->cleanupBatch(
+			(int) $job->get_original_element_id(),
+			(string) $job->get_target_language()
+		);
 	}
 
 	private function getSearchParams() {

@@ -18,12 +18,15 @@ class PageData {
 	public static function bootstrap() {
 		self::ensureCatalogueSeeded();
 
+		$active = self::active();
+
 		return [
 			'ajaxUrl'                => admin_url( 'admin-ajax.php' ),
 			'codeSpace'              => \WPML\Core\Component\LanguageEditor\Domain\CustomLanguageFormat::codeSpace(),
 			'presets'                => self::presets(),
 			'defaultPairs'           => self::defaultPairs(),
-			'active'                 => self::active(),
+			'active'                 => $active,
+			'languagesOrder'         => self::languagesOrder( $active ),
 			'labels'                 => self::labels(),
 			'adminLanguage'          => self::adminLanguageCode(),
 			'defaultCode'            => self::defaultCode(),
@@ -174,12 +177,14 @@ class PageData {
 
 			$country = LanguageCodeResolution::country( str_replace( '_', '-', strtolower( $target ) ) );
 
+			$kind = MappingKind::of( $source, $target );
+
 			$coverage[ $source ] = [
-				'canBeTranslatedAutomatically' => true,
+				'canBeTranslatedAutomatically' => MappingKind::SELF !== $kind,
 				'mapping'                      => [
 					'targetCode'    => $target,
 					'targetCountry' => $country,
-					'kind'          => MappingKind::of( $source, $target ),
+					'kind'          => $kind,
 				],
 			];
 		}
@@ -425,6 +430,15 @@ class PageData {
 		return $out;
 	}
 
+	public static function languagesOrder( array $active ) {
+		global $sitepress;
+
+		return LanguagesOrder::reconcile(
+			$sitepress ? $sitepress->get_setting( 'languages_order', [] ) : [],
+			array_column( $active, 'code' )
+		);
+	}
+
 	public static function active() {
 		global $wpdb;
 
@@ -446,7 +460,9 @@ class PageData {
 		);
 
 		$rows = (array) $rows;
-		if ( $rows && '' !== $default && ! in_array( $default, array_map( function ( $r ) { return (string) $r->code; }, $rows ), true ) ) {
+		if ( ( $rows || ( function_exists( 'wpml_is_setup_complete' ) && wpml_is_setup_complete() ) )
+			&& '' !== $default
+			&& ! in_array( $default, array_map( function ( $r ) { return (string) $r->code; }, $rows ), true ) ) {
 			$own = self::languageRow( $default );
 			if ( null !== $own ) {
 				$rows[] = $own;
@@ -489,6 +505,7 @@ class PageData {
 					'isRtl'       => $withRtl && isset( $r->is_rtl ) && null !== $r->is_rtl ? (bool) (int) $r->is_rtl : null,
 					'isCustom'    => isset( $r->is_custom ) ? (bool) $r->is_custom : false,
 					'customIdentity' => LanguageCodeResolution::isCustomIdentity( $code ),
+					'ateChain'    => LanguageCodeResolution::ateLookupChain( $code ),
 					'flag'        => isset( $flags[ $code ] ) ? $flags[ $code ] : '',
 					'hidden'      => in_array( $code, $hidden, true ),
 					'isDefault'   => $code === $default,
@@ -536,9 +553,10 @@ class PageData {
 	}
 
 	private static function composedNameMatrix( array $sources, array $displays ) {
-		$service = new Labels();
-		$pairs   = self::variantPairInfo();
-		$saved   = self::savedLabelOverrides( $sources );
+		$service  = new Labels();
+		$pairs    = self::variantPairInfo();
+		$saved    = self::savedLabelOverrides( $sources );
+		$isSource = self::sourcesOwningTheirSavedRows( $sources, $saved );
 
 		$displayOf = [];
 		foreach ( $displays as $display ) {
@@ -578,9 +596,12 @@ class PageData {
 				? $base
 				: ( ( ( '' === $country || $isDefault ) && $source !== $base ) ? $source : $base );
 
+			$lookupSaved   = isset( $isSource[ $lookup ] )
+				? ( isset( $saved[ $lookup ] ) ? $saved[ $lookup ] : [] )
+				: null;
 			$langByDisplay = $composesCountry && $lookup === $base
 				? $service->getDerived( $lookup, $displayLangs )
-				: $service->get( $lookup, $displayLangs, $fallback );
+				: $service->get( $lookup, $displayLangs, $fallback, $lookupSaved );
 
 			$row = [];
 			foreach ( $displays as $display ) {
@@ -674,6 +695,36 @@ class PageData {
 		}
 
 		return $out;
+	}
+
+	private static function sourcesOwningTheirSavedRows( array $sources, array $saved ) {
+		$fold = function ( $code ) {
+			return strtolower( rtrim( (string) $code, ' ' ) );
+		};
+
+		$owning = [];
+		$byFold = [];
+		foreach ( $sources as $source ) {
+			$source                       = (string) $source;
+			$owning[ $source ]            = true;
+			$byFold[ $fold( $source ) ][] = $source;
+		}
+		$isSource = $owning;
+
+		foreach ( array_keys( $saved ) as $stored ) {
+			$stored = (string) $stored;
+			if ( isset( $isSource[ $stored ] ) ) {
+				continue;
+			}
+			if ( ! isset( $byFold[ $fold( $stored ) ] ) ) {
+				return [];
+			}
+			foreach ( $byFold[ $fold( $stored ) ] as $source ) {
+				unset( $owning[ $source ] );
+			}
+		}
+
+		return $owning;
 	}
 
 	private static function variantPairInfo() {
@@ -826,6 +877,33 @@ class PageData {
 		}
 
 		return (array) apply_filters( 'wpml_language_editor_country_names', $names );
+	}
+
+	public static function localizedCountryName( $code ) {
+		$code = strtoupper( trim( (string) $code ) );
+		if ( '' === $code ) {
+			return null;
+		}
+
+		$map = self::localizedCountryNameMap();
+		if ( isset( $map[ $code ] ) ) {
+			return $map[ $code ];
+		}
+
+		$adminLang = self::adminLanguageCode();
+		if ( '' === $adminLang ) {
+			return null;
+		}
+
+		$catalogue = Presets\CountriesTranslationsData::data();
+		$baseLang  = LanguageNames::baseDisplayCode( $adminLang );
+		foreach ( array_unique( array_filter( [ $adminLang, $baseLang ], 'strlen' ) ) as $lang ) {
+			if ( isset( $catalogue[ $lang ][ $code ] ) && '' !== trim( (string) $catalogue[ $lang ][ $code ] ) ) {
+				return (string) $catalogue[ $lang ][ $code ];
+			}
+		}
+
+		return null;
 	}
 
 	private static function localizedCountryNameMap() {

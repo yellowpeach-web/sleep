@@ -23,7 +23,7 @@ class Service {
 	public function maybeMigrateCredentials( string $currentStep ): string {
 		if (
 			$this->hasDiagnosedEpisode() ||
-			( WPML_TM_ATE_Status::is_enabled_and_activated() && $this->amsApiTester->hasSiteBeenMigratedToNewDomain() )
+			( WPML_TM_ATE_Status::is_account_usable() && $this->amsApiTester->hasSiteBeenMigratedToNewDomain() )
 		) {
 			return $this->clonedSiteResetter->reset( $currentStep );
 		}

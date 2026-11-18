@@ -47,8 +47,16 @@ class WPML_Single_Url_Resolution_Cache {
 			}
 		}
 
+		if ( true === $this->repository->at_capacity() ) {
+			return false;
+		}
+
 		if ( $this->repository->ensure_pending( $identity ) ) {
 			$this->scheduler->schedule( get_current_blog_id() );
+			$removed = $this->repository->delete_superseded( (int) $identity['generation'] );
+			if ( is_array( $removed ) && $removed ) {
+				$this->delete_object_cache_keys( $removed );
+			}
 		}
 
 		$result                            = WPML_Single_Url_Cache_Entry::deferred_result( $url, $source_language );

@@ -37,14 +37,32 @@
          "Removing strings from <b>String Translation</b> table": [
             "Rimozione delle stringhe dalla tabella <b>Traduzione stringhe</b> in corso"
          ],
+         "%s string waiting for translation was kept.": [
+            "È stata mantenuta %s stringa in attesa di traduzione.",
+            "Sono state mantenute %s stringhe in attesa di traduzione."
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "Per aggiungere nuovamente le stringhe alla tabella <b>Traduzione stringhe</b>, potrebbe essere necessario scansionare di nuovo i file di traduzione o registrare le stringhe come traducibili."
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "Scopri di più su come <a>scansionare il tuo sito alla ricerca di stringhe e registrarle come traducibili</a>."
          ],
-         "Successfully removed strings": [
-            "Stringhe rimosse con successo"
+         "Nothing removed: %s string is waiting for translation": [
+            "Nessun elemento rimosso: %s stringa è in attesa di traduzione",
+            "Nessun elemento rimosso: %s stringhe sono in attesa di traduzione"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "Nessun elemento rimosso: i domini selezionati non hanno stringhe non tradotte"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "Per rimuovere anche queste, seleziona “Rimuovi anche le stringhe in attesa di traduzione” e fai di nuovo clic su Rimuovi."
+         ],
+         "OK": [
+            "OK"
+         ],
+         "Removed %s string": [
+            "Rimossa %s stringa",
+            "Rimosse %s stringhe"
          ],
          "OK, Great": [
             "OK, ottimo"
@@ -60,6 +78,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "La rimozione delle stringhe si è interrotta prima di terminare. Le stringhe che non sono state rimosse sono ancora nella tabella. Riprova a rimuoverle."
+         ],
+         "Successfully removed strings": [
+            "Stringhe rimosse con successo"
          ]
       }
    }

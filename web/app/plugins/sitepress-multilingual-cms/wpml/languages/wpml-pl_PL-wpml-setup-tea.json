@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
             "lang": "pl_PL"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "Przełącz na prywatną chmurę tłumaczeń (PTC)"
+         ],
+         "Switch to PTC": [
+            "Przełącz na PTC"
+         ],
+         "Switching…": [
+            "Przełączanie…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "Nie udało się potwierdzić przełączenia. Spróbuj ponownie lub odśwież stronę, aby zobaczyć aktualny silnik."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Nie udało się załadować kontrolek silnika tłumaczeń. Odśwież stronę i spróbuj ponownie."
+         ],
+         "Loading translation engine settings…": [
+            "Ładowanie ustawień silnika tłumaczeń…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "Wypełnij powyższy kontekst witryny przed przełączeniem na PTC."
+         ],
+         "Reload page": [
+            "Odśwież stronę"
+         ],
+         "Could not fetch engines data": [
+            "Nie można pobrać danych silników"
+         ],
          "Error in updating since dates for types.": [
             "Błąd podczas aktualizacji dat „od” dla typów."
          ],
@@ -114,7 +141,7 @@
             "Taki sam jak domyślny"
          ],
          "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
-            "Automatyczne tłumaczenie nie jest dostępne między %1$s a %2$s, ponieważ są one rozpoznawane jako ten sam język."
+            "Tłumaczenie automatyczne nie jest dostępne między %1$s a %2$s, ponieważ są one rozpoznawane jako ten sam język."
          ],
          "Translation paused": [
             "Tłumaczenie wstrzymane"
@@ -143,9 +170,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "Zastosowano starszy model wyceny. %s to starszy silnik tłumaczeniowy, który nie jest zalecany dla nowych witryn i zostanie wycofany. Istniejące witryny zachowują dla niego skorygowaną stawkę za słowo."
          ],
-         "Switch to PTC": [
-            "Przełącz na PTC"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Tyle słów wymaga dziś przetłumaczenie Twojej bieżącej zawartości. Nie obejmuje to niektórych tekstów dodanych przez inne wtyczki, takich jak formularze czy slajdery, które są zliczane po zakończeniu konfiguracji. Ciągi witryny z motywu i wtyczek są również zliczane po konfiguracji i zwykle dodają kilkaset słów. Późniejsze edycje są bezpłatne. Płacisz ponownie tylko za dodane słowa."
          ],
@@ -161,8 +185,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Obejmuje strony, wpisy i produkty wraz z ich polami niestandardowymi, tekstami kreatora stron i tekstami mediów, a także używane przez nie kategorie, tagi i atrybuty."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Obejmuje strony, wpisy i produkty wraz z ich polami niestandardowymi, tekstami kreatora stron i tekstami mediów, używane przez nie kategorie, tagi i atrybuty oraz ciągi witryny. Termin jest liczony w każdym elemencie, który go używa, oraz raz osobno, ponieważ jest przesyłany do tłumaczenia w obu przypadkach."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Obejmuje strony, wpisy i produkty wraz z ich polami niestandardowymi, tekstami kreatora stron i tekstami mediów, a także używane przez nie kategorie, tagi i atrybuty oraz ciągi witryny. Każda kategoria, tag lub atrybut jest liczony tylko raz, w wierszu Taksonomie, i nie jest ponownie wliczany do elementów, które z niego korzystają."
          ],
          "Total items": [
             "Łącznie elementów"
@@ -235,6 +259,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "Aby rozpocząć <b>Translate Everything Automatically</b>, aktywuj <b>Rozliczenie według zużycia</b> lub kup przedpłacone słowa."
+         ],
+         "Translation quality:": [
+            "Jakość tłumaczenia:"
          ],
          "Select payment method": [
             "Wybierz metodę płatności"
@@ -351,7 +378,7 @@
             "Na Twoim koncie WPML znajduje się %1$s%2$s słów%3$s."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "Na Twoim koncie WPML dostępnych jest %1$s%2$s.%3$s"
+            "Na Twoim koncie WPML dostępna liczba słów to %1$s%2$s.%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(Tylko właściciel konta WPML może to zrobić)."
@@ -367,6 +394,30 @@
          ],
          "Close modal": [
             "Zamknij okno"
+         ],
+         "Obvious mistakes": [
+            "Oczywiste błędy"
+         ],
+         "Mistakes visible": [
+            "Widoczne błędy"
+         ],
+         "Ready to publish": [
+            "Gotowe do publikacji"
+         ],
+         "Your engine": [
+            "Twój silnik"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Jakość tłumaczenia (skala 50-100): %1$s uzyskuje wynik %2$d, %3$s uzyskuje wynik %4$d."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Wyniki oparte na wewnętrznym badaniu jakości tłumaczeń MQM przeprowadzonym przez WPML."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC tłumaczy z wyższą jakością i zapewnia wyniki gotowe do publikacji."
          ]
       }
    }

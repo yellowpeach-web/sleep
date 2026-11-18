@@ -6,6 +6,7 @@ use WPML\Core\Component\WordsToTranslate\Domain\Taxonomy\Query\TranslationQueryI
 use WPML\Core\Component\WordsToTranslate\Domain\Taxonomy\TaxonomyTerm;
 use WPML\Core\SharedKernel\Component\Translation\Domain\TranslationStatus;
 use WPML\TM\Dashboard\Taxonomy\TaxonomyDashboardData;
+use WPML\TM\Taxonomy\Job\TermWords;
 
 class TranslationQuery implements TranslationQueryInterface {
 
@@ -43,8 +44,26 @@ class TranslationQuery implements TranslationQueryInterface {
       TaxonomyDashboardData::WC_SNAPSHOT_META_PREFIX . $lang,
       true
     );
+    if ( is_string( $snapshot ) && '' !== $snapshot ) {
+      return $snapshot;
+    }
 
-    return is_string( $snapshot ) ? $snapshot : '';
+    $fields = $this->getLastTranslatedOriginalFieldContents( $term, $lang );
+
+    return $fields ? implode( "\n", $fields ) : '';
+  }
+
+
+  public function getLastTranslatedOriginalFieldContents( TaxonomyTerm $term, string $lang ) {
+    $state = $this->getState( $term, $lang );
+
+    if ( ! $state || ! $state['needs_update'] ) {
+      return null;
+    }
+
+    $baseline = TermWords::baseline( $term->getTermId(), $lang );
+
+    return is_array( $baseline ) ? $baseline : null;
   }
 
 

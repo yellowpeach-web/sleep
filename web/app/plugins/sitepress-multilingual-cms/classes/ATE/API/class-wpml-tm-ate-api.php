@@ -3,6 +3,7 @@
 use WPML\TM\ATE\API\FingerprintGenerator;
 use WPML\TM\ATE\API\ClientRestriction;
 use WPML\TM\ATE\API\ClientRestrictionState;
+use WPML\TM\ATE\API\MoneyBlockResume;
 use WPML\TM\ATE\API\SpendCap;
 use WPML\TM\ATE\API\SpendCapState;
 use WPML\TM\ATE\Log\Entry;
@@ -35,6 +36,8 @@ class WPML_TM_ATE_API {
 
 	const CATALOGUE_READ_TIMEOUT = 10;
 
+	const EDIT_DECISION_REPORT_TIMEOUT = 5;
+
 	const XLIFF_LOCATION_CONFIGURED_ORIGIN = 'configured_origin';
 	const XLIFF_LOCATION_PUBLIC_HTTPS      = 'public_https';
 
@@ -51,6 +54,8 @@ class WPML_TM_ATE_API {
 	const BYPASS_BREAKER_ARG = 'wpml_ate_bypass_breaker';
 
 	const CALL_KIND_ARG = 'wpml_ate_call_kind';
+
+	const RAW_GATEWAY_ERROR_ARG = 'wpml_ate_raw_gateway_error';
 
 	private static $transport_failure;
 
@@ -101,7 +106,17 @@ class WPML_TM_ATE_API {
 		return in_array( $reason, $allowed, true ) ? (string) $reason : self::CANCEL_REASON_CANCELLED;
 	}
 
-	public function cancelJobs( $jobIds, $onlyFailed = false, $reason = null, array $requestArgs = [] ) {
+	const CANCEL_SOURCE_UNKNOWN = 'unknown';
+
+	const CANCEL_SOURCE_MAX_LENGTH = 64;
+
+	public static function normaliseCancelSource( $source ) {
+		$source = is_scalar( $source ) ? trim( (string) $source ) : '';
+
+		return '' === $source ? self::CANCEL_SOURCE_UNKNOWN : substr( $source, 0, self::CANCEL_SOURCE_MAX_LENGTH );
+	}
+
+	public function cancelJobs( $jobIds, $onlyFailed = false, $reason = null, array $requestArgs = [], $source = null ) {
 		return $this->requestWithLog(
 			$this->endpoints->getAteCancelJobs(),
 			array_merge(
@@ -111,7 +126,8 @@ class WPML_TM_ATE_API {
 					'body'   => [
 						'id' => (array) $jobIds,
 						'only_failed' => $onlyFailed,
-						'reason' => self::normaliseCancelReason( $reason )
+						'reason' => self::normaliseCancelReason( $reason ),
+						'source' => self::normaliseCancelSource( $source ),
 					]
 				]
 			)
@@ -136,7 +152,24 @@ class WPML_TM_ATE_API {
 		);
 	}
 
-	public function hideJobs( $jobIds, $force = false, $reason = null, array $requestArgs = [] ) {
+	public function resumeParkedJobs() {
+		$url      = $this->endpoints->getAteResumeParkedJobs();
+		$response = $this->request( $url, [ 'method' => 'POST', 'body' => [] ] );
+
+		if ( is_wp_error( $response ) ) {
+			$entry              = new Entry();
+			$entry->eventType   = EventsTypes::SERVER_ATE;
+			$entry->description = 404 === (int) $response->get_error_code()
+				? 'jobs/resume_parked is not available on this ATE'
+				: $response->get_error_message();
+			$entry->extraData   = [ 'url' => $url, 'status' => $response->get_error_code() ];
+			wpml_tm_ate_ams_log( $entry );
+		}
+
+		return $response;
+	}
+
+	public function hideJobs( $jobIds, $force = false, $reason = null, array $requestArgs = [], $source = null ) {
 		return $this->requestWithLog(
 			$this->endpoints->getAteHideJobs(),
 			array_merge(
@@ -146,7 +179,8 @@ class WPML_TM_ATE_API {
 					'body'   => [
 						'id' => (array) $jobIds,
 						'force' => $force ? 'true' : 'false',
-						'reason' => self::normaliseCancelReason( $reason )
+						'reason' => self::normaliseCancelReason( $reason ),
+						'source' => self::normaliseCancelSource( $source ),
 					]
 				]
 			)
@@ -204,6 +238,7 @@ class WPML_TM_ATE_API {
 				->rid(),
 			'permalink'           => $job_object->get_url( true ),
 			'ate_ams_console_url' => wpml_tm_get_ams_ate_console_url(),
+			'receive_token_kind'  => \WPML\TM\ATE\REST\PublicReceive::receive_token_kind( $job_object->get_id() ),
 		];
 
 		if ( $sentFrom ) {
@@ -238,6 +273,7 @@ class WPML_TM_ATE_API {
 			'source_id'           => (int) $rid,
 			'permalink'           => '#',
 			'ate_ams_console_url' => wpml_tm_get_ams_ate_console_url(),
+			'receive_token_kind'  => \WPML\TM\ATE\REST\PublicReceive::receive_token_kind( (int) $wpml_job_id ),
 		];
 
 		if ( $sentFrom ) {
@@ -271,8 +307,8 @@ class WPML_TM_ATE_API {
 		return $this->requestWithLog( $this->endpoints->get_ate_jobs( $ate_job_id ) );
 	}
 
-	public function get_jobs( $job_ids, $statuses = null ) {
-		return $this->requestWithLog( $this->endpoints->get_ate_jobs( $job_ids, $statuses ) );
+	public function get_jobs( $job_ids, $statuses = null, array $requestArgs = [] ) {
+		return $this->requestWithLog( $this->endpoints->get_ate_jobs( $job_ids, $statuses ), $requestArgs );
 	}
 
 	public function get_job_status_with_priority( $job_id, array $requestArgs = [] ) {
@@ -692,11 +728,17 @@ class WPML_TM_ATE_API {
 	}
 
 	private function json_headers() {
-		return [
+		$headers = [
 			'Accept'                                      => 'application/json',
 			'Content-Type'                                => 'application/json',
 			FingerprintGenerator::SITE_FINGERPRINT_HEADER => $this->fingerprintGenerator->getSiteFingerprint(),
 		];
+
+		if ( \WPML\TM\ATE\Handshake\Declaration::active() ) {
+			$headers[ \WPML\TM\ATE\Handshake\Declaration::HEADER ] = (string) \WPML\TM\ATE\Handshake\Declaration::requestId();
+		}
+
+		return $headers;
 	}
 
 	private function encode_body_args( array $args ) {
@@ -873,9 +915,13 @@ class WPML_TM_ATE_API {
 	}
 
 
-	public function sync_all( array $ateJobIds, array $postIds = [], array $stringIds = [], array $packageIds = [], array $termIds = [] ) {
+	public function sync_all( array $ateJobIds, array $postIds = [], array $stringIds = [], array $packageIds = [], array $termIds = [], $inFlightTotal = null ) {
 		$orderingService = AteSyncOrderingServiceFactory::create();
 		$payload         = $orderingService->buildSyncPayload( $ateJobIds, $postIds, $stringIds, $packageIds, ICL_SITEPRESS_VERSION, $termIds );
+
+		if ( null !== $inFlightTotal ) {
+			$payload['in_flight_total'] = (int) $inFlightTotal;
+		}
 
 		return $this->requestWithLog(
 			$this->endpoints->get_sync_all(),
@@ -900,16 +946,17 @@ class WPML_TM_ATE_API {
 		);
 	}
 
-	public function check_delivery_reachability( array $payload, array $requestArgs = [] ) {
-		return $this->requestWithLog(
-			$this->endpoints->get_ate_delivery_reachability(),
-			array_merge(
-				$requestArgs,
-				[
-					'method' => 'POST',
-					'body'   => $payload,
-				]
-			)
+	public function report_edit_decisions( array $reports ) {
+		return $this->request(
+			$this->endpoints->get_ate_edit_decision_reports(),
+			[
+				'method'  => 'POST',
+				'timeout' => self::EDIT_DECISION_REPORT_TIMEOUT,
+				'body'    => [
+					'version' => 1,
+					'reports' => array_values( $reports ),
+				],
+			]
 		);
 	}
 
@@ -919,6 +966,9 @@ class WPML_TM_ATE_API {
 
 		$callKind = $requestArgs[ self::CALL_KIND_ARG ] ?? ClonedSitesHandler::CALL_OTHER;
 		unset( $requestArgs[ self::CALL_KIND_ARG ] );
+
+		$rawGatewayError = ! empty( $requestArgs[ self::RAW_GATEWAY_ERROR_ARG ] );
+		unset( $requestArgs[ self::RAW_GATEWAY_ERROR_ARG ] );
 
 		$lock = $this->clonedSitesHandler->checkCloneSiteLock( $url );
 		if ( $lock ) {
@@ -941,12 +991,12 @@ class WPML_TM_ATE_API {
 			return $standing;
 		}
 
-		$response = $this->requestOnce( $url, $requestArgs, $callKind );
+		$response = $this->requestOnce( $url, $requestArgs, $callKind, $rawGatewayError );
 
 		if ( ClonedSitesHandler::shouldReplay( $response ) ) {
 			$response = ClonedSitesHandler::replay(
-				function () use ( $url, $requestArgs, $callKind ) {
-					return $this->requestOnce( $url, $requestArgs, $callKind );
+				function () use ( $url, $requestArgs, $callKind, $rawGatewayError ) {
+					return $this->requestOnce( $url, $requestArgs, $callKind, $rawGatewayError );
 				}
 			);
 		}
@@ -986,6 +1036,22 @@ class WPML_TM_ATE_API {
 		}
 	}
 
+	private static function isRawGatewayError( $result ) {
+		$code = is_array( $result ) && isset( $result['response']['code'] ) ? (int) $result['response']['code'] : 0;
+
+		return $code >= ClonedSitesHandler::SERVER_ERROR_FLOOR && ClonedSitesHandler::SERVICE_UNAVAILABLE !== $code;
+	}
+
+	public static function isGatewayErrorAnswer( $response ) {
+		if ( ! is_wp_error( $response ) ) {
+			return false;
+		}
+
+		$code = $response->get_error_code();
+
+		return is_int( $code ) && $code >= ClonedSitesHandler::SERVER_ERROR_FLOOR && ClonedSitesHandler::SERVICE_UNAVAILABLE !== $code;
+	}
+
 	public static function isTransportFailure( $response ) {
 		return is_wp_error( $response ) && 'http_request_failed' === $response->get_error_code();
 	}
@@ -1012,7 +1078,11 @@ class WPML_TM_ATE_API {
 		self::$transport_failure = null;
 	}
 
-	private function requestOnce( $url, array $requestArgs = [], $callKind = ClonedSitesHandler::CALL_OTHER ) {
+	public function isTransportBreakerOpen() {
+		return null !== $this->standingTransportFailure();
+	}
+
+	private function requestOnce( $url, array $requestArgs = [], $callKind = ClonedSitesHandler::CALL_OTHER, $rawGatewayError = false ) {
 		$requestArgs = array_merge(
 			[
 				'timeout' => 60,
@@ -1114,13 +1184,16 @@ class WPML_TM_ATE_API {
 
 		JobLog::removeExtraLogData( 'apiCall' );
 
-		if ( ! is_wp_error( $result ) ) {
+		$cloneRefused = $httpCode >= ClonedSitesHandler::SERVER_ERROR_FLOOR
+			&& preg_match( '~' . str_replace( '%s', '[^/?#]+', preg_quote( WPML_TM_ATE_AMS_Endpoints::ENDPOINTS_CLONE_JOB, '~' ) ) . '(?:$|[?#])~', (string) $url );
+
+		if ( ! is_wp_error( $result ) && ! ( $rawGatewayError && self::isRawGatewayError( $result ) ) && ! $cloneRefused ) {
 			$result = $this->clonedSitesHandler->handleClonedSiteError( $result, $service, $callKind );
 		}
 
 		$response = $this->get_response( $result );
 
-		$this->updateClientRestrictionState( $url, $response, ! $unsigned );
+		$this->updateClientRestrictionState( $url, $response, ! $unsigned, $requestArgs['method'] );
 
 		$this->updateSpendCapState( $url, $result );
 
@@ -1135,7 +1208,7 @@ class WPML_TM_ATE_API {
 		return $response;
 	}
 
-	private function updateClientRestrictionState( $url, $response, $signed = true ) {
+	private function updateClientRestrictionState( $url, $response, $signed = true, $method = 'GET' ) {
 		$ateBaseUrl = (string) $this->endpoints->get_ATE_base_url();
 		if ( '' === $ateBaseUrl || strpos( (string) $url, $ateBaseUrl ) !== 0 ) {
 			return;
@@ -1145,9 +1218,28 @@ class WPML_TM_ATE_API {
 
 		if ( $restriction ) {
 			ClientRestrictionState::save( $restriction );
-		} elseif ( $signed && ! is_wp_error( $response ) ) {
+			MoneyBlockResume::noteBlocked( MoneyBlockResume::REASON_RESTRICTION );
+		} elseif ( $signed && ! is_wp_error( $response ) && self::isRestrictionGatedCall( $url, $method, $ateBaseUrl ) ) {
 			ClientRestrictionState::clearIfRestricted();
 		}
+	}
+
+	private static function isRestrictionGatedCall( $url, $method, $ateBaseUrl ) {
+		$path = substr( (string) $url, strlen( $ateBaseUrl ) );
+		$path = explode( '?', $path, 2 )[0];
+
+		if ( 'POST' === $method && WPML_TM_ATE_AMS_Endpoints::ENDPOINTS_JOBS === $path ) {
+			return true;
+		}
+
+		return in_array(
+			$path,
+			[
+				WPML_TM_ATE_AMS_Endpoints::ENDPOINTS_SYNC_ALL,
+				WPML_TM_ATE_AMS_Endpoints::ENDPOINTS_SYNC_PAGE,
+			],
+			true
+		);
 	}
 
 	private function updateSpendCapState( $url, $result ) {
@@ -1160,6 +1252,8 @@ class WPML_TM_ATE_API {
 		if ( ! $spendCap ) {
 			return;
 		}
+
+		MoneyBlockResume::noteBlocked( MoneyBlockResume::REASON_SPEND_CAP );
 
 		if ( ! SpendCapState::recordRefusal( $spendCap ) ) {
 			return;

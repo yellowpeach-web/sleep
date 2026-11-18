@@ -5,64 +5,82 @@ class WPML_Data_Encryptor {
 	const SALT_CHARS  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_ []{}<>~`+=,.;:/?|';
 	const SALT_LENGTH = 64;
 
-	private $method;
+	const DEFAULT_METHOD = 'AES-256-CTR';
+
+	const MODE_OPENSSL = "\x01";
+	const TAG_LENGTH   = 32;
+
+	private $method = '';
 	private $key;
-	private $iv;
+	private $mac_key;
 
 	private $library = false;
 
-	public function __construct( $key_salt = '', $method = 'AES-256-CTR' ) {
+	public function __construct( $key_salt = '', $method = self::DEFAULT_METHOD ) {
 
 		if ( ! $key_salt ) {
 			$key_salt = $this->get_key_salt();
 		}
 
-		if ( function_exists( 'openssl_encrypt' ) && function_exists( 'openssl_decrypt' )
-			 && version_compare( phpversion(), '5.3.2', '>' ) ) {
+		$this->key     = hash_hmac( 'sha256', 'wpml-data-encryptor:encryption', $key_salt, true );
+		$this->mac_key = hash_hmac( 'sha256', 'wpml-data-encryptor:authentication', $key_salt, true );
 
-			$methods = openssl_get_cipher_methods();
-			if ( ! in_array( $method, $methods ) && ! empty( $methods ) ) {
-				$this->method = $methods[0];
-			} else {
+		if ( function_exists( 'openssl_encrypt' ) && function_exists( 'openssl_decrypt' ) ) {
+			$methods = array_map( 'strtolower', openssl_get_cipher_methods() );
+			if ( in_array( strtolower( $method ), $methods, true ) ) {
 				$this->method = $method;
+			} elseif ( in_array( strtolower( self::DEFAULT_METHOD ), $methods, true ) ) {
+				$this->method = self::DEFAULT_METHOD;
 			}
-			$this->library = 'openssl';
-			$this->key     = substr( sha1( $key_salt, true ), 0, 16 );
-			$this->iv      = substr( $key_salt, 0, 16 );
 
-		} elseif ( function_exists( 'mcrypt_encrypt' ) && function_exists( 'mcrypt_decrypt' ) ) {
-			$this->library = 'mcrypt';
-			$this->key     = substr( NONCE_KEY, 0, 24 );
-			$this->iv      = mcrypt_create_iv( mcrypt_get_iv_size( MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB ), MCRYPT_RAND );
-
+			if ( '' !== $this->method ) {
+				$this->library = 'openssl';
+			}
 		}
 	}
 
 	public function encrypt( $data ) {
-		if ( $this->library === 'openssl' ) {
-			$encrypted_data = openssl_encrypt( $data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv );
-		} elseif ( $this->library === 'mcrypt' ) {
-			$encrypted_data = mcrypt_encrypt( MCRYPT_RIJNDAEL_256, $this->key, $data, MCRYPT_MODE_ECB, $this->iv );
-			$encrypted_data = preg_replace( '/\x00/', '', $encrypted_data );
-		} else {
-			$encrypted_data = $data;
+		if ( ! $this->can_encrypt() ) {
+			return false;
 		}
 
-		return $encrypted_data;
+		$iv   = $this->generate_iv();
+		$body = openssl_encrypt( $data, $this->method, $this->key, OPENSSL_RAW_DATA, $iv );
+		if ( false === $body ) {
+			return false;
+		}
+
+		$framed = self::MODE_OPENSSL . $iv . $body;
+
+		return $framed . $this->tag( $framed );
 	}
 
 	public function decrypt( $encrypted_data ) {
-
-		if ( $this->library === 'openssl' ) {
-			$data = openssl_decrypt( $encrypted_data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv );
-		} elseif ( $this->library === 'mcrypt' ) {
-			$data = mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $this->key, $encrypted_data, MCRYPT_MODE_ECB, $this->iv );
-			$data = preg_replace( '/\x00/', '', $data );
-		} else {
-			$data = $encrypted_data;
+		if ( ! $this->can_encrypt() || ! is_string( $encrypted_data ) ) {
+			return false;
 		}
 
-		return $data;
+		$iv_length = $this->get_iv_length();
+
+		if ( strlen( $encrypted_data ) < 1 + $iv_length + self::TAG_LENGTH ) {
+			return false;
+		}
+
+		$framed = substr( $encrypted_data, 0, -self::TAG_LENGTH );
+		$tag    = substr( $encrypted_data, -self::TAG_LENGTH );
+
+		if ( ! hash_equals( $this->tag( $framed ), $tag ) ) {
+			return false;
+		}
+
+		if ( self::MODE_OPENSSL !== $framed[0] ) {
+			return false;
+		}
+
+		$iv   = (string) substr( $framed, 1, $iv_length );
+		$body = (string) substr( $framed, 1 + $iv_length );
+
+		return openssl_decrypt( $body, $this->method, $this->key, OPENSSL_RAW_DATA, $iv );
 	}
 
 	public function set_crypt_library( $library ) {
@@ -71,6 +89,26 @@ class WPML_Data_Encryptor {
 
 	public function get_crypt_library() {
 		return $this->library;
+	}
+
+	private function can_encrypt() {
+		return 'openssl' === $this->library && '' !== $this->method;
+	}
+
+	private function tag( $framed ) {
+		return hash_hmac( 'sha256', $framed, $this->mac_key, true );
+	}
+
+	private function get_iv_length() {
+		$length = openssl_cipher_iv_length( $this->method );
+
+		return max( 0, (int) $length );
+	}
+
+	private function generate_iv() {
+		$length = $this->get_iv_length();
+
+		return $length > 0 ? random_bytes( $length ) : '';
 	}
 
 	private function get_key_salt() {
@@ -84,7 +122,7 @@ class WPML_Data_Encryptor {
 	private function generate_salt_key() {
 		$salt_key = '';
 		for ( $i = 0; $i < self::SALT_LENGTH; $i++ ) {
-			$salt_key .= substr( self::SALT_CHARS, mt_rand( 0, strlen( self::SALT_CHARS ) - 1 ), 1 );
+			$salt_key .= substr( self::SALT_CHARS, random_int( 0, strlen( self::SALT_CHARS ) - 1 ), 1 );
 		}
 
 		return $salt_key;

@@ -97,7 +97,7 @@ class MigrateBlockPreferences implements \IWPML_Backend_Action, \IWPML_Frontend_
 	private function getOnlyBlockLocatedGroups( array $fieldGroups ) {
 		$blockLocatedGroups = [];
 		foreach ( $fieldGroups as $fieldGroup ) {
-			if ( $this->hasBlockInDisplayRules( maybe_unserialize( $fieldGroup->post_content ) ) ) {
+			if ( $this->hasBlockInDisplayRules( \WPML\Utils\Unserialize::maybe( $fieldGroup->post_content ) ) ) {
 				$blockLocatedGroups[] = $fieldGroup;
 			}
 		}

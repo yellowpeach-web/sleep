@@ -1,8 +1,5 @@
 <?php
 
-use WPML\Core\Twig_Loader_Filesystem;
-use WPML\Core\Twig_Environment;
-
 class WPML_User_Language_Switcher_UI {
 	private $user_language_switcher;
 	private $resources;
@@ -19,21 +16,9 @@ class WPML_User_Language_Switcher_UI {
 	}
 
 	protected function get_view( $model ) {
-		$template_paths = array(
-			WPML_PLUGIN_PATH . '/templates/user-language/',
-		);
+		$loader = new WPML_Twig_Template_Loader( array( WPML_PLUGIN_PATH . '/templates/user-language/' ) );
 
-		$template = 'language-switcher.twig';
-
-		$loader           = new Twig_Loader_Filesystem( $template_paths );
-		$environment_args = array();
-		if ( WP_DEBUG ) {
-			$environment_args['debug'] = true;
-		}
-
-		$twig = new Twig_Environment( $loader, $environment_args );
-
-		return $twig->render( $template, $model );
+		return $loader->get_template()->show( $model, 'language-switcher.twig' );
 	}
 
 }

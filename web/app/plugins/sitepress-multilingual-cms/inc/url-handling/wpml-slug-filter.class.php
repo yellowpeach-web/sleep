@@ -109,7 +109,8 @@ class WPML_Slug_Filter extends WPML_Full_PT_API {
 		) {
 			$suffix = 2;
 			do {
-				$alt_post_name   = _truncate_post_slug( $slug, 200 - ( strlen( (string) $suffix ) + 1 ) ) . "-$suffix";
+				$max_length = 200 - ( strlen( (string) $suffix ) + 1 );
+				$alt_post_name = ( function_exists( 'wp_truncate_slug' ) ? wp_truncate_slug( $slug, $max_length ) : _truncate_post_slug( $slug, $max_length ) ) . "-$suffix";
 				$suffix ++;
 			} while ( $this->post_slug_exists( $post_id, $post_language, $alt_post_name, $post_type, $post_parent, $across_all_types ) );
 			$slug = $alt_post_name;

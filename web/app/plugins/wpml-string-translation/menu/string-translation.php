@@ -12,6 +12,7 @@ global $sitepress, $WPML_String_Translation, $wpdb, $wp_query;
 $string_settings = $WPML_String_Translation->get_strings_settings();
 
 if ( ( ! isset( $sitepress_settings['existing_content_language_verified'] ) || ! $sitepress_settings['existing_content_language_verified'] )   ) {
+	\WPML\ST\Main\SetupNeededNotice::render();
 	return;
 }
 
@@ -267,6 +268,9 @@ wp_enqueue_style( 'wpml-tooltip', WPML_ST_URL . '/res/css/tooltip/tooltip.css', 
 		</label>
 
 		</div>
+		<?php
+		echo wp_kses_post( \WPML\ST\StringsScanning\ScanThemesAndPluginsLink::render() );
+		?>
 		<div id="wpml-mo-scan-st-page"<?php if ( ! $search_filter ) : ?> style="display: none"<?php endif; ?>>
 			<div class="wpml-strings-widgets-wrap wpml-strings-single-widget-wrap">
 				<div class="wpml-string-widgets clear">

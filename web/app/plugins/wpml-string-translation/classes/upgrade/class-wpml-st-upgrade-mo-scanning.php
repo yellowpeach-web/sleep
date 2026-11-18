@@ -12,15 +12,63 @@ class WPML_ST_Upgrade_MO_Scanning implements IWPML_St_Upgrade_Command {
 	}
 
 	private function create_table() {
-		$wpdb = $this->wpdb;
+		$wpdb  = $this->wpdb;
+		$table = $wpdb->prefix . 'icl_mo_files_domains';
 
-		$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}icl_mo_files_domains`" );
+		if ( $table === $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) ) ) {
+			return $this->align_columns();
+		}
 
 		return \WPML\ST\Upgrade\TableCreator::create(
 			$wpdb,
-			$wpdb->prefix . 'icl_mo_files_domains',
+			$table,
 			$this->get_create_statement()
 		);
+	}
+
+	private function align_columns() {
+		$wpdb    = $this->wpdb;
+		$current = [];
+		$rows = $wpdb->get_results( "SHOW COLUMNS FROM `{$wpdb->prefix}icl_mo_files_domains`" );
+		foreach ( (array) $rows as $row ) {
+			if ( isset( $row->Field, $row->Type ) ) {
+				$current[ (string) $row->Field ] = $this->comparable_type( (string) $row->Type );
+			}
+		}
+		if ( ! $current ) {
+			return false;
+		}
+
+		$schema = $this->schema();
+		$result = true;
+		foreach ( $this->statement_columns() as $column => $definition ) {
+			$type = $this->comparable_type( (string) strtok( $definition, ' ' ) );
+			if ( ! array_key_exists( $column, $current ) ) {
+				$result = $schema && false !== $schema->add_column( 'icl_mo_files_domains', $column, $definition ) && $result;
+			} elseif ( $current[ $column ] !== $type ) {
+				$result = $schema && false !== $schema->modify_column( 'icl_mo_files_domains', $column, $definition ) && $result;
+			}
+		}
+
+		return $result;
+	}
+
+	private function statement_columns() {
+		$columns = [];
+		preg_match_all( '/^\s*`(\w+)`\s+(.+?),?\s*$/m', $this->get_create_statement(), $matches, PREG_SET_ORDER );
+		foreach ( $matches as $match ) {
+			$columns[ $match[1] ] = trim( (string) preg_replace( '/\s+PRIMARY KEY\b/i', '', $match[2] ) );
+		}
+
+		return $columns;
+	}
+
+	private function comparable_type( $type ) {
+		return (string) preg_replace( '/^((?:tiny|small|medium|big)?int)\(\d+\)/', '$1', strtolower( trim( $type ) ) );
+	}
+
+	private function schema() {
+		return function_exists( 'wpml_get_upgrade_schema' ) ? wpml_get_upgrade_schema() : null;
 	}
 
 	private function get_create_statement() {
@@ -28,7 +76,7 @@ class WPML_ST_Upgrade_MO_Scanning implements IWPML_St_Upgrade_Command {
 		$default_status = WPML_ST_Translations_File_Entry::NOT_IMPORTED;
 
 		return "
-				CREATE TABLE `{$wpdb->prefix}icl_mo_files_domains` (
+				CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}icl_mo_files_domains` (
 			  `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
 			  `file_path` varchar(250) NOT NULL,
 			  `file_path_md5` varchar(32) NOT NULL,

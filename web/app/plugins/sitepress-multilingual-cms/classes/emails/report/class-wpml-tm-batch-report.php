@@ -171,7 +171,7 @@ class WPML_TM_Batch_Report {
 		);
 
 		if ( empty( $jobsAutommaticStatus ) || ! is_array( $jobsAutommaticStatus ) ) {
-			return $filteredJobs;
+			return $this->only_string_jobs( $filteredJobs );
 		}
 
 		foreach ( $filteredJobs as $translatorId => $languagePairs ) {
@@ -198,6 +198,27 @@ class WPML_TM_Batch_Report {
 		}
 
 		return $manualJobs;
+	}
+
+	private function only_string_jobs( array $jobs ) {
+		$stringJobs = [];
+		foreach ( $jobs as $translatorId => $languagePairs ) {
+			foreach ( $languagePairs as $languagePairName => $items ) {
+				$items = array_values( array_filter( $items, fn( $item ) => ! is_int( $item['job_id'] ) ) );
+				if ( $items ) {
+					$stringJobs[ $translatorId ][ $languagePairName ] = $items;
+				}
+			}
+		}
+
+		return $stringJobs;
+	}
+
+	public function clear() {
+		$job_ids = array_keys( $this->storage->getAll() );
+		$this->storage->deleteByJobIds( $job_ids );
+
+		return count( $job_ids );
 	}
 
 	public function remove_emailed_jobs( array $snapshot, array $translators_ids ) {

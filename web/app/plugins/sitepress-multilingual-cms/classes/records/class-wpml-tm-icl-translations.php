@@ -122,6 +122,9 @@ class WPML_TM_ICL_Translations extends WPML_TM_Record_User {
 			}
 
 			foreach ( $translation_ids as $row ) {
+				if ( ! (int) $row->translation_id ) {
+					continue;
+				}
 				$this->related[ $row->language_code ] = $this->tm_records
 					->icl_translations_by_translation_id( $row->translation_id );
 			}
@@ -165,13 +168,17 @@ class WPML_TM_ICL_Translations extends WPML_TM_Record_User {
 	}
 
 	public function delete() {
+		$trid = (int) $this->trid();
 		$this->tm_records
 			->icl_translation_status_by_translation_id( $this->translation_id )
 			->delete();
-		$this->wpdb->delete(
+		$deleted = $this->wpdb->delete(
 			$this->wpdb->prefix . $this->table,
 			$this->get_args()
 		);
+		if ( $deleted && $trid ) {
+			WPML_Translations::flush_cache_for_trids( array( $trid ) );
+		}
 
 		return $this;
 	}

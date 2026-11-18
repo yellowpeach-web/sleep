@@ -12,6 +12,8 @@ class WPML_Update_Term_Action extends WPML_WPDB_And_SP_User {
 	private $existing_translations = array();
 	private $term_id;
 	private $old_slug;
+	private $invalid_reason = '';
+	private $error = null;
 
 	public function __construct( &$wpdb, &$sitepress, $args ) {
 		parent::__construct( $wpdb, $sitepress );
@@ -32,7 +34,8 @@ class WPML_Update_Term_Action extends WPML_WPDB_And_SP_User {
 			$this->wp_new_term_args['name'] = $term;
 			$this->taxonomy                 = $taxonomy;
 		} else {
-			$this->is_valid = false;
+			$this->is_valid       = false;
+			$this->invalid_reason = $taxonomy ? 'the term name is empty' : 'no taxonomy was given';
 
 			return;
 		}
@@ -66,7 +69,8 @@ class WPML_Update_Term_Action extends WPML_WPDB_And_SP_User {
 		remove_action( 'edit_term', array( $sitepress, 'create_term' ), 1 );
 		add_action( 'create_term', array( $this, 'add_term_language_action' ), 1, 3 );
 		add_filter( 'get_terms', array( 'WPML_Terms_Translations', 'get_terms_filter' ), 10, 2 );
-		$new_term = false;
+		$new_term    = false;
+		$this->error = null;
 
 		if ( $this->is_valid ) {
 			if ( $this->is_update && $this->term_id ) {
@@ -74,6 +78,11 @@ class WPML_Update_Term_Action extends WPML_WPDB_And_SP_User {
 			} else {
 				$new_term = wp_insert_term( $this->wp_new_term_args['name'], $this->taxonomy, $this->wp_new_term_args );
 			}
+			if ( is_wp_error( $new_term ) ) {
+				$this->error = $new_term;
+			}
+		} else {
+			$this->error = new WP_Error( 'wpml_term_write_invalid', $this->invalid_reason ?: 'the write is not valid' );
 		}
 		add_action( 'create_term', array( $sitepress, 'create_term' ), 1, 3 );
 		add_action( 'edit_term', array( $sitepress, 'create_term' ), 1, 3 );
@@ -93,6 +102,10 @@ class WPML_Update_Term_Action extends WPML_WPDB_And_SP_User {
 		return $new_term;
 	}
 
+	public function get_error() {
+		return $this->error;
+	}
+
 	public function add_term_language_action( $term_id, $term_taxonomy_id, $taxonomy ) {
 		if ( $this->is_valid && ! $this->is_update && $this->taxonomy == $taxonomy ) {
 			$this->sitepress->set_element_language_details(
@@ -105,8 +118,15 @@ class WPML_Update_Term_Action extends WPML_WPDB_And_SP_User {
 		}
 	}
 
+	private function is_site_language( $lang_code ) {
+		return $this->sitepress->is_active_language( $lang_code )
+			|| array_key_exists( (string) $lang_code, (array) $this->sitepress->get_languages( false, true ) );
+	}
+
 	private function set_language_information( $trid, $original_tax_id, $lang_code, $source_language ) {
-		if ( ! $lang_code || ! $this->sitepress->is_active_language( $lang_code ) ) {
+		if ( ! $lang_code || ! $this->is_site_language( $lang_code ) ) {
+			$this->invalid_reason = $lang_code ? sprintf( 'the language %s is not active', $lang_code ) : 'no language was given';
+
 			return false;
 		} else {
 			$this->lang_code = $lang_code;
@@ -191,7 +211,7 @@ class WPML_Update_Term_Action extends WPML_WPDB_And_SP_User {
 			$formats
 		);
 
-		$this->sitepress->get_translations_cache()
-			->clear();
+		WPML_Set_Language::flush_element_language_details_cache();
+		WPML_Translations::flush_cache_for_trids( array( $this->trid ) );
 	}
 }

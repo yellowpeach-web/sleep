@@ -37,14 +37,35 @@
          "Removing strings from <b>String Translation</b> table": [
             "Удаление строк из таблицы <b>Перевод строк</b>"
          ],
+         "%s string waiting for translation was kept.": [
+            "Сохранена %s строка, ожидающая перевода.",
+            "Сохранено строк, ожидающих перевода: %s.",
+            "Сохранено строк, ожидающих перевода: %s."
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "Чтобы снова добавить строки в таблицу <b>Перевод строк</b>, вам может потребоваться повторно просканировать файлы перевода или зарегистрировать строки как переводимые."
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "Узнайте больше о том, как <a>сканировать ваш сайт на наличие строк и регистрировать их как переводимые</a>."
          ],
-         "Successfully removed strings": [
-            "Строки успешно удалены"
+         "Nothing removed: %s string is waiting for translation": [
+            "Ничего не удалено: %s строка ожидает перевода",
+            "Ничего не удалено: %s строки ожидают перевода",
+            "Ничего не удалено: %s строк ожидают перевода"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "Ничего не удалено: в выбранных доменах нет непереведенных строк"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "Чтобы удалить и их, выберите «Также удалять строки, ожидающие перевода» и снова нажмите «Удалить»."
+         ],
+         "OK": [
+            "ОК"
+         ],
+         "Removed %s string": [
+            "Удалена %s строка",
+            "Удалено строк: %s",
+            "Удалено строк: %s"
          ],
          "OK, Great": [
             "ОК, отлично"
@@ -60,6 +81,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "Удаление строк было остановлено до его завершения. Строки, которые не были удалены, все еще находятся в таблице. Попробуйте удалить их еще раз."
+         ],
+         "Successfully removed strings": [
+            "Строки успешно удалены"
          ]
       }
    }

@@ -161,11 +161,12 @@ class WPML_Term_Actions extends WPML_Full_Translation_API {
 					);
 				}
 
-				$this->wpdb->query(
+				$repaired_rows = $this->wpdb->query(
 					"UPDATE {$wpdb->prefix}icl_translations
 									 SET source_language_code = NULL
 									 WHERE language_code = source_language_code"
 				);
+				WPML_Translations::flush_cache_after_source_repair( $trid, $repaired_rows, 0 < $rows_updated );
 			}
 		}
 	}

@@ -9,9 +9,12 @@ use WPML\Core\Component\ATE\Application\Service\Dto\UpdateEngine\FormalitySettin
 use WPML\Core\Component\ATE\Application\Service\Dto\UpdateEngineDto;
 use WPML\Core\Component\ATE\Application\Service\EngineServiceException;
 use WPML\Core\Component\ATE\Application\Service\EnginesServiceInterface;
+use WPML\Core\Component\ATE\Domain\SiteRegistration;
 use WPML\Core\SharedKernel\Component\Language\Application\Query\LanguagesQueryInterface;
+use WPML\Core\SharedKernel\Component\Site\Application\Query\SiteMigrationLockQueryInterface;
 use WPML\TM\API\ATE\CachedLanguageMappings;
 use WPML\TM\ATE\API\CachedAMSAPI;
+use WPML\TM\ATE\ClonedSites\ReconnectState;
 
 class EnginesService implements EnginesServiceInterface {
 
@@ -26,10 +29,17 @@ class EnginesService implements EnginesServiceInterface {
 
   private $languagesQuery;
 
+  private $reconnectEpisode;
 
-  public function __construct( \WPML_TM_AMS_API $amsApi, LanguagesQueryInterface $languagesQuery ) {
-    $this->amsApi         = $amsApi;
-    $this->languagesQuery = $languagesQuery;
+
+  public function __construct(
+    \WPML_TM_AMS_API $amsApi,
+    LanguagesQueryInterface $languagesQuery,
+    ?SiteMigrationLockQueryInterface $reconnectEpisode = null
+  ) {
+    $this->amsApi           = $amsApi;
+    $this->languagesQuery   = $languagesQuery;
+    $this->reconnectEpisode = $reconnectEpisode;
   }
 
 
@@ -78,7 +88,7 @@ class EnginesService implements EnginesServiceInterface {
         'formalities' => $this->fetchAvailableFormalities(),
       ];
     } catch ( EngineServiceException $e ) {
-      $this->writeFailureCache();
+      $this->maybeWriteFailureCache( $e );
       throw $e;
     }
 
@@ -104,7 +114,7 @@ class EnginesService implements EnginesServiceInterface {
     try {
       $engines = $this->fetchEnginesData();
     } catch ( EngineServiceException $e ) {
-      $this->writeFailureCache();
+      $this->maybeWriteFailureCache( $e );
       throw $e;
     }
 
@@ -133,6 +143,28 @@ class EnginesService implements EnginesServiceInterface {
     if ( function_exists( 'get_transient' ) && get_transient( self::CATALOG_FAILURE_CACHE_KEY ) ) {
       throw new EngineServiceException( 'The translation engines could not be read from AMS a moment ago.' );
     }
+  }
+
+
+  private function maybeWriteFailureCache( EngineServiceException $e ) {
+    if ( SiteRegistration::NOT_REGISTERED_ERROR_CODE === $e->getErrorCode() ) {
+      return;
+    }
+
+    if ( $this->isReconnectEpisodeOpen() ) {
+      return;
+    }
+
+    $this->writeFailureCache();
+  }
+
+
+  private function isReconnectEpisodeOpen(): bool {
+    if ( $this->reconnectEpisode !== null ) {
+      return $this->reconnectEpisode->isLocked();
+    }
+
+    return class_exists( ReconnectState::class ) && ReconnectState::isReconnecting();
   }
 
 
@@ -235,6 +267,10 @@ class EnginesService implements EnginesServiceInterface {
 
   private function fetchEnginesData(): array {
     $apiResult = $this->amsApi->get_translation_engines();
+
+    if ( is_wp_error( $apiResult ) && SiteRegistration::NOT_REGISTERED_ERROR_CODE === $apiResult->get_error_code() ) {
+      throw EngineServiceException::notRegistered();
+    }
 
     if ( is_wp_error( $apiResult ) ) {
       throw new EngineServiceException(

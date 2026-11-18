@@ -48,7 +48,6 @@ class TypesService {
     }
 
     $counts = $this->untranslatedService->getUntranslatedTypesCounts( array_keys( $offer ), $parkedLabels );
-    $sinceDates = $this->postTypesRepository->getPostTypesSinceDates();
 
     $mapped = [];
     $taxonomyItems = null;
@@ -68,17 +67,19 @@ class TypesService {
         continue;
       }
 
+      $rowKey  = empty( $type['type'] ) ? $type['kind'] : $type['type'];
       $typeDto = new TypeDto(
         $type['kind'],
         $type['type'],
         $type['nameSingular'],
         $type['namePlural'],
-        $sinceDates[ $type['type'] ] ?? '0000-00-00',
+        TypeIncludeRules::isAlwaysAll( $rowKey )
+          ? TypeIncludeRules::ALL
+          : $this->postTypesRepository->getPostTypeSinceDate( $type['type'] ),
         $type['count'],
         $type['heldOutCount']
       );
-      $type = empty( $type['type'] ) ? $type['kind'] : $type['type'];
-      $mapped[$type] = $typeDto;
+      $mapped[ $rowKey ] = $typeDto;
     }
 
     if ( $taxonomyItems !== null ) {
@@ -144,6 +145,7 @@ class TypesService {
     }
 
     $this->postTypesRepository->fillMissingSinceDates( $offeredPostTypes );
+    $this->postTypesRepository->includeAlwaysAllTypes( $offeredPostTypes );
   }
 
 

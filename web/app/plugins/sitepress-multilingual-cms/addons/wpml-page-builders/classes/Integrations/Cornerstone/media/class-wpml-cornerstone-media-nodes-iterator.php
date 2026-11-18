@@ -11,10 +11,11 @@ class WPML_Cornerstone_Media_Nodes_Iterator implements IWPML_PB_Media_Nodes_Iter
 
 	public function translate( $data_array, $lang, $source_lang ) {
 		foreach ( $data_array as $key => &$data ) {
-			if ( isset( $data[ self::ITEMS_FIELD ] ) && $data[ self::ITEMS_FIELD ] ) {
-				$data[ self::ITEMS_FIELD ] = $this->translate( $data[ self::ITEMS_FIELD ], $lang, $source_lang );
-			} elseif ( is_numeric( $key ) && isset( $data['_type'] ) ) {
+			if ( is_numeric( $key ) && isset( $data['_type'] ) ) {
 				$data = $this->translate_node( $data, $lang, $source_lang );
+			}
+			if ( ! empty( $data[ self::ITEMS_FIELD ] ) && is_array( $data[ self::ITEMS_FIELD ] ) ) {
+				$data[ self::ITEMS_FIELD ] = $this->translate( $data[ self::ITEMS_FIELD ], $lang, $source_lang );
 			}
 		}
 
@@ -28,7 +29,7 @@ class WPML_Cornerstone_Media_Nodes_Iterator implements IWPML_PB_Media_Nodes_Iter
 			$settings = $node->translate( $settings, $lang, $source_lang );
 		}
 
-		return $settings;
+		return $this->node_provider->getBackground()->translate( $settings, $lang, $source_lang );
 	}
 
 	public function get_media() {

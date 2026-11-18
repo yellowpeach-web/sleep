@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=2; plural=(n != 1);",
             "lang": "pt_PT"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "Mudar para o Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "Mudar para PTC"
+         ],
+         "Switching…": [
+            "A mudar…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "Não conseguimos confirmar a mudança. Tente novamente ou recarregue para ver o motor atual."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Não foi possível carregar os controlos do motor de tradução. Recarregue a página e tente novamente."
+         ],
+         "Loading translation engine settings…": [
+            "A carregar as definições do motor de tradução…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "Preencha o contexto do seu site acima antes de mudar para o PTC."
+         ],
+         "Reload page": [
+            "Recarregar página"
+         ],
+         "Could not fetch engines data": [
+            "Não foi possível obter os dados dos motores"
+         ],
          "Error in updating since dates for types.": [
             "Erro ao atualizar as datas \"desde\" para os tipos."
          ],
@@ -138,9 +165,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "Preços legados aplicados. O %s é um motor de tradução legado, não recomendado para novos sites e será descontinuado. Os sites existentes mantêm uma taxa de palavras ajustada para o mesmo."
          ],
-         "Switch to PTC": [
-            "Mudar para PTC"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Isto é o que é necessário hoje para traduzir o seu conteúdo atual. Não inclui alguns textos adicionados por outros plugins, como formulários ou sliders, que são contabilizados após a conclusão da configuração. As strings do site do seu tema e plugins também são contabilizadas após a configuração e normalmente adicionam várias centenas de palavras. Depois disso, as edições são gratuitas. Só volta a pagar pelas palavras que adicionar."
          ],
@@ -156,8 +180,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Conta páginas, artigos e produtos com os respetivos campos personalizados, textos de construtores de páginas e textos de multimédia, bem como as categorias, etiquetas e atributos que utilizam."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Conta páginas, artigos e produtos com os respetivos campos personalizados, textos de construtores de páginas e textos de multimédia, as categorias, etiquetas e atributos que utilizam, e as strings do site. Um termo é contabilizado em cada item que o utiliza e uma vez individualmente, porque é enviado para tradução de ambas as formas."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Conta páginas, artigos e produtos com os respetivos campos personalizados, textos de construtores de páginas e textos de multimédia, as categorias, etiquetas e atributos que utilizam, e os textos do site. Cada categoria, etiqueta ou atributo é contabilizado uma vez, na linha Taxonomias, e não volta a ser contabilizado com os itens que o utilizam."
          ],
          "Total items": [
             "Total de itens"
@@ -231,8 +255,11 @@
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "Para iniciar o <b>Translate Everything Automatically</b>, ative o <b>Pagamento por utilização</b> ou compre palavras pré-pagas."
          ],
+         "Translation quality:": [
+            "Qualidade da tradução:"
+         ],
          "Select payment method": [
-            "Selecione o método de pagamento"
+            "Selecionar método de pagamento"
          ],
          "%1$sCheck pricing%2$s.": [
             "%1$sConsultar preços%2$s."
@@ -362,6 +389,30 @@
          ],
          "Close modal": [
             "Fechar janela"
+         ],
+         "Obvious mistakes": [
+            "Erros óbvios"
+         ],
+         "Mistakes visible": [
+            "Erros visíveis"
+         ],
+         "Ready to publish": [
+            "Pronto para publicar"
+         ],
+         "Your engine": [
+            "O seu motor"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Qualidade da tradução (escala 50-100): %1$s pontua %2$d, %3$s pontua %4$d."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Pontuações baseadas no estudo interno de qualidade de tradução MQM da WPML."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "O PTC traduz com maior qualidade e oferece-lhe resultados prontos a publicar."
          ]
       }
    }

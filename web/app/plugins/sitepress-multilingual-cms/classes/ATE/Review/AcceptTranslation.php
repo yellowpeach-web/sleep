@@ -20,9 +20,10 @@ class AcceptTranslation implements IHandler {
 		$suppliedElementTypePrefix = $data->get( 'element_type_prefix' );
 		$job = Jobs::get( $jobId ) ?: TermJob::get( $jobId );
 
+		$isGivenUpBundle = TermJob::isTermBundle( $job ) && ICL_TM_ATE_UNSOLVABLE === (int) Obj::prop( 'status', $job );
 		if (
 			! $job
-			|| ICL_TM_COMPLETE !== (int) Obj::prop( 'status', $job )
+			|| ( ICL_TM_COMPLETE !== (int) Obj::prop( 'status', $job ) && ! $isGivenUpBundle )
 			|| ReviewStatus::NEEDS_REVIEW !== Obj::prop( 'review_status', $job )
 		) {
 			return Either::left( $jobId );
@@ -60,11 +61,21 @@ class AcceptTranslation implements IHandler {
 			return Either::left( $jobId );
 		}
 
-		Jobs::setStatus( $jobId, ICL_TM_COMPLETE );
+		if ( ! $isGivenUpBundle ) {
+			Jobs::setStatus( $jobId, ICL_TM_COMPLETE );
+		}
 		Jobs::setReviewStatus( $jobId, ReviewStatus::ACCEPTED );
 		self::completeJobRecord( $jobId );
 
+		if ( TermJob::isTermBundle( $job ) ) {
+			$this->bundleReview()->complete( (int) Obj::prop( 'rid', $job ) );
+		}
+
 		return Either::of( $jobId );
+	}
+
+	protected function bundleReview() {
+		return new TermBundleReview();
 	}
 
 	private function isAuthorizedForJob( $job ) {

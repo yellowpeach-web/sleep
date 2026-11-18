@@ -7,14 +7,37 @@ class Update {
 		global $wpdb;
 
 		$string = $getStringById( $stringId );
-		if ( $string ) {
-			$wpdb->update( $wpdb->prefix . 'icl_strings', [ 'context' => $domain ], [ 'id' => $stringId ] );
-			self::regenerateMOFiles( $string->context, $domain );
-
-			return true;
+		if ( ! $string ) {
+			return false;
 		}
 
-		return false;
+		$domainNameContextMd5 = md5( $domain . $string->name . $string->gettext_context );
+		$collision            = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM {$wpdb->prefix}icl_strings WHERE domain_name_context_md5 = %s AND id != %d",
+				$domainNameContextMd5,
+				$stringId
+			)
+		);
+		if ( $collision ) {
+			return false;
+		}
+
+		$updated = $wpdb->update(
+			$wpdb->prefix . 'icl_strings',
+			[
+				'context'                 => $domain,
+				'domain_name_context_md5' => $domainNameContextMd5,
+			],
+			[ 'id' => $stringId ]
+		);
+		if ( false === $updated ) {
+			return false;
+		}
+
+		self::regenerateMOFiles( $string->context, $domain );
+
+		return true;
 	}
 
 	public static function moveAllStringsToNewDomain( $oldDomain, $newDomain ) {

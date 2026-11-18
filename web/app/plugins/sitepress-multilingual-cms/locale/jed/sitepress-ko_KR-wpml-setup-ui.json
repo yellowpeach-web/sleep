@@ -127,6 +127,9 @@
          "Delete language pair(s)": [
             "언어 쌍 삭제"
          ],
+         "Can translate to and from all languages": [
+            "모든 언어로 번역 및 모든 언어에서 번역 가능"
+         ],
          "An error occurred. Please try again.": [
             "오류가 발생했습니다. 다시 시도해 주세요."
          ],
@@ -153,6 +156,60 @@
          ],
          "Back to Step %1$s: %2$s": [
             "단계 %1$s로 돌아가기: %2$s"
+         ],
+         "Available": [
+            "사용 가능"
+         ],
+         "Not available": [
+            "사용 불가능"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "사이트의 주제, 대상 및 어조를 이해함"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "당사의 보증이 뒷받침하는 즉시 게시 가능한 품질"
+         ],
+         "Review before publishing": [
+            "게시 전 검토"
+         ],
+         "Pay once per page – only added words are charged": [
+            "페이지당 한 번만 결제 – 추가된 단어에 대해서만 비용 청구"
+         ],
+         "Per word, changes included": [
+            "단어당 과금, 변경 사항 포함"
+         ],
+         "A legacy engine": [
+            "레거시 엔진"
+         ],
+         "<button>Switch to a different engine</button> if you prefer — no quality guarantee and no free translation edits with other engines.": [
+            "원하는 경우 <button>다른 엔진으로 전환</button>할 수 있지만, 다른 엔진을 사용하면 품질이 보장되지 않으며 번역 편집이 무료로 제공되지 않습니다."
+         ],
+         "Your content will be translated by <strong>Private Translation Cloud (PTC)</strong>, WPML's own AI engine. PTC lets you translate the entire site automatically, in one click, offering free translation edits.": [
+            "콘텐츠는 WPML의 자체 AI 엔진인 <strong>Private Translation Cloud (PTC)</strong>로 번역됩니다. PTC를 사용하면 클릭 한 번으로 사이트 전체를 자동으로 번역할 수 있으며 무료 번역 편집이 제공됩니다."
+         ],
+         "Couldn't save — try again": [
+            "저장할 수 없습니다. 다시 시도하세요"
+         ],
+         "Your content will be translated by <strong>%s</strong>, a machine translation engine. You pay per word, including changes to content that's already translated.": [
+            "콘텐츠는 기계 번역 엔진인 <strong>%s</strong>(으)로 번역됩니다. 이미 번역된 콘텐츠의 변경 사항을 포함하여 단어당 요금이 부과됩니다."
+         ],
+         "Switch to PTC": [
+            "PTC로 전환"
+         ],
+         "Switch away from PTC?": [
+            "PTC에서 전환하시겠습니까?"
+         ],
+         "DeepL, Google Translate or Microsoft Translator": [
+            "DeepL, Google Translate 또는 Microsoft Translator"
+         ],
+         "Your engine now": [
+            "현재 사용 중인 엔진"
+         ],
+         "Switch away from PTC": [
+            "PTC에서 전환"
+         ],
+         "Stay with PTC": [
+            "PTC 유지"
          ],
          "Technical Details (for WPML Support)": [
             "기술 세부 정보 (WPML 지원용)"
@@ -186,6 +243,45 @@
          ],
          " and provide the technical details below (use the Copy button to copy them).": [
             " 그리고 아래의 기술 세부 정보를 제공해 주세요 (복사 버튼을 사용하여 복사 가능)."
+         ],
+         "Publish without review": [
+            "검토 없이 발행"
+         ],
+         "Translations go live immediately in the target language.": [
+            "번역은 대상 언어로 즉시 게시됩니다."
+         ],
+         "Wait for review before publishing": [
+            "발행 전 검토 대기"
+         ],
+         "Translations stay as drafts until a translation manager approves them.": [
+            "번역은 번역 관리자가 승인할 때까지 초안 상태로 유지됩니다."
+         ],
+         "Recommended": [
+            "권장"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "DeepL, Google, Microsoft의 경우 정확성을 확인하기 위해 사람의 검토를 권장합니다. PTC는 문맥을 이해하는 사람보다 나은 번역을 제공하므로 안심하고 검토 과정을 건너뛸 수 있습니다."
+         ],
+         "Publish and mark for review": [
+            "발행 및 검토 대상으로 표시"
+         ],
+         "Translations go live but appear in a \"needs review\" queue.": [
+            "번역이 게시되지만 “검토 필요” 대기열에 표시됩니다."
+         ],
+         "After auto-translation": [
+            "자동 번역 후"
+         ],
+         "What happens to content once %s has translated it.": [
+            "%s이(가) 콘텐츠를 번역한 후 발생하는 일입니다."
+         ],
+         "Wait for review": [
+            "검토 대기"
+         ],
+         "%1$s (<strong>%2$s</strong>)": [
+            "%1$s (<strong>%2$s</strong>)"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "WPML이 콘텐츠 자동 번역을 마쳤을 때 어떻게 하시겠습니까?"
          ],
          "Loading AI Translation...": [
             "AI 번역 로드 중..."
@@ -328,6 +424,15 @@
          "adding a custom language": [
             "사용자 정의 언어 추가"
          ],
+         "I will fix my server settings to display languages in directories later.": [
+            "나중에 디렉토리에 언어를 표시하도록 서버 설정을 수정하겠습니다."
+         ],
+         "We could not verify your server's URL-rewrite support.": [
+            "서버의 URL 리라이트(URL-rewrite) 지원을 확인할 수 없습니다."
+         ],
+         "Learn more about required server settings to display languages in directories": [
+            "디렉토리에 언어를 표시하기 위해 필요한 서버 설정에 대해 자세히 알아보기"
+         ],
          "I will change the permalink structure later.": [
             "나중에 고유주소 구조를 변경하겠습니다."
          ],
@@ -367,8 +472,14 @@
          "This domain does not show this site.": [
             "이 도메인은 이 사이트를 표시하지 않습니다."
          ],
+         "This address belongs to another site on this network.": [
+            "이 주소는 이 네트워크의 다른 사이트에 속해 있습니다."
+         ],
          "WPML could not reach this domain.": [
             "WPML이 이 도메인에 연결할 수 없습니다."
+         ],
+         "If you choose this, these URLs will open a sub-site: %s.": [
+            "이 항목을 선택하면 다음 URL이 하위 사이트를 엽니다: %s."
          ],
          "The domain you have entered is invalid.": [
             "입력한 도메인이 유효하지 않습니다."
@@ -387,15 +498,6 @@
          ],
          "The URL rewrite is not configured in your server.": [
             "서버에 URL 리라이트가 구성되지 않았습니다."
-         ],
-         "I will fix my server settings to display languages in directories later.": [
-            "나중에 디렉토리에 언어를 표시하도록 서버 설정을 수정하겠습니다."
-         ],
-         "We could not verify your server's URL-rewrite support.": [
-            "서버의 URL 리라이트(URL-rewrite) 지원을 확인할 수 없습니다."
-         ],
-         "Learn more about required server settings to display languages in directories": [
-            "디렉토리에 언어를 표시하기 위해 필요한 서버 설정에 대해 자세히 알아보기"
          ],
          "your pages": [
             "페이지"
@@ -421,11 +523,17 @@
          "Translate your posts": [
             "글 번역"
          ],
-         "the Translation Dashboard": [
-            "번역 대시보드"
+         "%s will translate your whole site and keep new content translated from now on. You're charged per word, including later changes.": [
+            "%s이(가) 사이트 전체를 번역하고 이후의 새 콘텐츠도 번역된 상태로 유지합니다. 이후 변경 사항을 포함하여 단어당 요금이 청구됩니다."
          ],
          "Private Translation Cloud (PTC) will translate your whole site and keep new content translated from now on. You pay once for what's translated — editing it afterward is free.": [
             "Private Translation Cloud(PTC)가 사이트 전체를 번역하고 앞으로 새로운 콘텐츠의 번역 상태를 유지합니다. 번역된 내용에 대해 한 번만 비용을 지불하며, 이후 편집은 무료입니다."
+         ],
+         "Automatic translation will translate your whole site and keep new content translated from now on.": [
+            "자동 번역이 사이트 전체를 번역하고 이후의 새 콘텐츠도 번역된 상태로 유지합니다."
+         ],
+         "the Translation Dashboard": [
+            "번역 대시보드"
          ],
          "Apply settings and start site's translation": [
             "설정 적용 및 사이트 번역 시작"
@@ -439,8 +547,14 @@
          "the WooCommerce Multilingual setup": [
             "WooCommerce Multilingual 설정"
          ],
+         "%s will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "%s이(가) 지금 사이트 번역을 시작하고 이후의 새 콘텐츠도 번역된 상태로 유지합니다. 다음으로 다국어 상점을 설정합니다. WooCommerce Multilingual 설정을 완료하면 상품 번역이 시작됩니다."
+         ],
          "Private Translation Cloud (PTC) will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup. You pay once for what's translated. Editing it afterward is free.": [
             "Private Translation Cloud(PTC)가 지금 사이트 번역을 시작하고 앞으로 새로운 콘텐츠의 번역 상태를 유지합니다. 다음으로 다국어 상점을 설정하게 됩니다. WooCommerce Multilingual 설정을 마치면 제품 번역이 시작됩니다. 번역된 내용에 대해 한 번만 비용을 지불하며, 이후 편집은 무료입니다."
+         ],
+         "Automatic translation will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "자동 번역이 지금 사이트 번역을 시작하고 이후의 새 콘텐츠도 번역된 상태로 유지합니다. 다음으로 다국어 상점을 설정합니다. WooCommerce Multilingual 설정을 완료하면 상품 번역이 시작됩니다."
          ],
          "Continue to WooCommerce Multilingual Setup while translation begins": [
             "번역을 시작하는 동안 WooCommerce Multilingual 설정으로 계속 진행"
@@ -484,8 +598,14 @@
          "Applying your setup choices": [
             "설정 선택 사항 적용 중"
          ],
+         "%s is translating your content. There's nothing else you need to do here.": [
+            "%s이(가) 콘텐츠를 번역하고 있습니다. 여기서 더 이상 수행할 작업은 없습니다."
+         ],
          "PTC is translating your content. There's nothing else you need to do here.": [
             "PTC가 콘텐츠를 번역하고 있습니다. 여기서 더 이상 수행할 작업은 없습니다."
+         ],
+         "Your content is being translated. There's nothing else you need to do here.": [
+            "콘텐츠를 번역하고 있습니다. 여기서 더 이상 수행할 작업은 없습니다."
          ],
          "We're applying all your setup choices and preparing WPML. This is a one-time process.": [
             "모든 설정 선택 사항을 적용하고 WPML을 준비 중입니다. 이 작업은 한 번만 수행됩니다."
@@ -580,38 +700,8 @@
          "Full details of the info we’re proposing to share": [
             "공유하려는 정보의 전체 세부 정보"
          ],
-         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
-            "사이트에 가장 적합한 모드를 선택하여 <LinkToTheDifferentWaysYouCanTranslateYourSite/> 하세요."
-         ],
-         "How would you like to translate your content?": [
-            "콘텐츠를 어떻게 번역하시겠습니까?"
-         ],
-         "Recommended": [
-            "권장"
-         ],
-         "Translate Everything Automatically": [
-            "모든 항목 자동 번역"
-         ],
-         "Full-site automatic translation needs AI translation set up.": [
-            "전체 사이트 자동 번역을 위해서는 AI 번역 설정이 필요합니다."
-         ],
-         "Set up AI translation": [
-            "AI 번역 설정"
-         ],
-         "Translate Some: You Choose What to Translate": [
-            "일부 항목 번역: 번역할 항목 선택"
-         ],
-         "Select this option": [
-            "이 옵션 선택"
-         ],
          "How it works": [
             "작동 방식"
-         ],
-         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
-            "PTC(Private Translation Cloud)는 WPML의 자체 AI 번역 엔진입니다. 백그라운드에서 선택한 모든 언어로 사이트 전체를 번역합니다. 모든 번역을 편집할 수 있으며 포스트 타입을 제외할 수 있습니다."
-         ],
-         "Can't decide?": [
-            "결정하기 어려우신가요?"
          ],
          "You select and submit what to translate.": [
             "번역할 항목을 선택하여 제출합니다."
@@ -619,32 +709,35 @@
          "Costs": [
             "비용"
          ],
-         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
-            "전체 번역된 콘텐츠에 대해 한 번만 지불합니다.<br/><strong>수정은 무료입니다</strong> — 콘텐츠 확장 시에만 비용이 청구됩니다."
-         ],
          "Pay per translation job submitted.<br/>Each update or new content batch is a separate charge.": [
             "제출된 번역 작업당 지불합니다.<br/>각 업데이트 또는 새 콘텐츠 배치는 별도로 청구됩니다."
-         ],
-         "Translation quality": [
-            "번역 품질"
-         ],
-         "WPML ensures excellent quality. Bad translations are refunded.": [
-            "WPML은 우수한 품질을 보장합니다. 잘못된 번역은 환불됩니다."
          ],
          "Ideal for": [
             "권장 대상"
          ],
-         "Known upfront costs": [
-            "사전 비용 확정"
+         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "PTC(Private Translation Cloud)는 WPML의 자체 AI 번역 엔진입니다. 백그라운드에서 선택한 모든 언어로 사이트 전체를 번역합니다. 모든 번역을 편집할 수 있으며 글 유형을 제외할 수 있습니다."
          ],
-         "Unlimited post-translation editing": [
-            "무제한 사후 번역 편집"
+         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
+            "전체 번역된 콘텐츠에 대해 한 번만 지불합니다.<br/><strong>수정은 무료입니다</strong> — 콘텐츠 확장 시에만 비용이 청구됩니다."
          ],
-         "Marketing optimization": [
-            "마케팅 최적화"
+         "Included with PTC": [
+            "PTC에 포함됨"
          ],
-         "Turn-key solutions": [
-            "턴키 솔루션"
+         "Only with PTC — not with %s": [
+            "PTC에서만 제공 — %s에서는 제공되지 않음"
+         ],
+         "your current engine": [
+            "현재 엔진"
+         ],
+         "%s translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "%s이(가) 백그라운드에서 선택한 모든 언어로 사이트 전체를 번역합니다. 언제든지 번역을 편집할 수 있으며 글 유형을 제외할 수 있습니다."
+         ],
+         "Charged per word, including changes to content that's already translated.": [
+            "이미 번역된 콘텐츠의 변경 사항을 포함하여 단어당 청구됩니다."
+         ],
+         "You choose what to translate, from the Translation Dashboard or with \"+\" next to each page. PTC translates it.": [
+            "번역 대시보드에서 또는 각 페이지 옆의 “+” 기호를 사용하여 번역할 항목을 선택합니다. PTC가 이를 번역합니다."
          ],
          "Partial site translation": [
             "부분 사이트 번역"
@@ -652,8 +745,95 @@
          "Maximum control": [
             "최대한의 제어"
          ],
+         "Quality without the work": [
+            "직접 작업하지 않고 얻는 품질"
+         ],
+         "You choose what to translate. You or your translators write each translation in the Advanced Translation Editor.": [
+            "번역할 항목을 직접 선택합니다. 귀하 또는 귀하의 번역가가 고급 번역 에디터에서 각 번역을 작성합니다."
+         ],
+         "No words used, unless you start from a machine translation in the editor.": [
+            "에디터에서 기계 번역으로 시작하지 않는 한 단어가 사용되지 않습니다."
+         ],
+         "Your own translators": [
+            "직접 지정한 번역가"
+         ],
+         "Texts that need a human touch": [
+            "사람의 손길이 필요한 텍스트"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "PTC translates what you send. You review.": [
+            "PTC가 전송된 항목을 번역합니다. 귀하가 검토합니다."
+         ],
+         "I translate": [
+            "직접 번역"
+         ],
+         "You or your translators write it.": [
+            "귀하 또는 귀하의 번역가가 직접 작성합니다."
+         ],
+         "When you start a translation, who translates?": [
+            "번역을 시작할 때 누가 번역합니까?"
+         ],
+         "Who translates": [
+            "누가 번역합니까"
+         ],
          "Contact our support team for help": [
             "도움이 필요하시면 지원 팀에 문의하세요"
+         ],
+         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
+            "사이트에 가장 적합한 모드를 선택하여 <LinkToTheDifferentWaysYouCanTranslateYourSite/> 하세요."
+         ],
+         "How would you like to translate your content?": [
+            "콘텐츠를 어떻게 번역하시겠습니까?"
+         ],
+         "Translate Everything Automatically": [
+            "모든 항목 자동 번역"
+         ],
+         "Translations always in sync": [
+            "항상 동기화 상태를 유지하는 번역"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "전체 사이트 자동 번역을 위해서는 AI 번역 설정이 필요합니다."
+         ],
+         "New and updated content translated automatically": [
+            "새 콘텐츠 및 업데이트된 콘텐츠 자동 번역"
+         ],
+         "Set up AI translation": [
+            "AI 번역 설정"
+         ],
+         "Sites that publish often": [
+            "게시가 잦은 사이트"
+         ],
+         "All your languages at once": [
+            "모든 언어를 한 번에"
+         ],
+         "Translate Some: You Choose What to Translate": [
+            "일부 항목 번역: 번역할 항목 선택"
+         ],
+         "Select this option": [
+            "이 옵션 선택"
+         ],
+         "WPML uses the Advanced Translation Editor. You can change the editor later in WPML > Settings > Translation editor and method.": [
+            "WPML은 고급 번역 에디터를 사용합니다. 에디터는 나중에 WPML > 설정 > 번역 에디터 및 방법에서 변경할 수 있습니다."
+         ],
+         "Quality guarantee, bad translations refunded": [
+            "품질 보장, 만족스럽지 못한 번역은 환불"
+         ],
+         "Can't decide?": [
+            "결정하기 어려우신가요?"
+         ],
+         "Pay once — revisions are free": [
+            "한 번 결제 — 수정은 무료"
+         ],
+         "Known upfront costs": [
+            "사전 비용 확정"
+         ],
+         "Publish-ready results, no review needed": [
+            "검토가 필요 없는 바로 게시 가능한 결과"
+         ],
+         "Marketing optimization based on your site and audience": [
+            "사이트와 대상 고객에 맞춘 마케팅 최적화"
          ],
          "Calculate Translation Costs": [
             "번역 비용 계산"
@@ -668,7 +848,7 @@
             "모든 항목을 번역하기 전에"
          ],
          "You can continue without them. Nothing here stops the setup.": [
-            "이 항목들 없이도 계속 진행할 수 있습니다. 여기의 어떤 항목도 설정을 중단시키지 않습니다."
+            "이 구성 요소 없이도 계속 진행할 수 있습니다. 어떤 항목도 설정을 중단시키지 않습니다."
          ],
          "Translation Contributors": [
             "번역 기여자"
@@ -797,7 +977,7 @@
             "사용자 정의 필드에 입력한 콘텐츠가 한 가지 언어로 유지됩니다."
          ],
          "Texts that are not in posts or pages stay in one language. This includes your menus, widgets, and the texts that come from your theme and plugins.": [
-            "포스트나 페이지에 없는 텍스트는 한 가지 언어로 유지됩니다. 여기에는 메뉴, 위젯, 테마 및 플러그인에서 제공되는 텍스트가 포함됩니다."
+            "글이나 페이지에 없는 텍스트는 한 가지 언어로 유지됩니다. 여기에는 메뉴, 위젯, 테마 및 플러그인에서 제공되는 텍스트가 포함됩니다."
          ],
          "You cannot use different images and other media in each language.": [
             "각 언어별로 다른 이미지 및 기타 미디어를 사용할 수 없습니다."
@@ -888,6 +1068,9 @@
          ],
          "Ranking": [
             "순위"
+         ],
+         "language URL directory and language name\u0004%1$s (%2$s)": [
+            "%1$s (%2$s)"
          ]
       }
    }

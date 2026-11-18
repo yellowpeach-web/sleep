@@ -71,6 +71,9 @@ class ItemUpdateEvent {
     add_action(
       'shutdown',
       function() {
+        if ( $this->itemUpdateEventListenerAdapter === null ) {
+          return;
+        }
         if ( ! $this->filesMatchLoadedVersion() ) {
           return;
         }

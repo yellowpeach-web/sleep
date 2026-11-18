@@ -45,8 +45,7 @@ abstract class WPML_Display_As_Translated_Query {
 
 		$content_types_query = $skip_content_type_check ? '' : 'AND ' . $this->get_content_types_query( $content_types );
 
-		$sub_query_no_translation            = $this->get_query_for_no_translation( $language_expression );
-		$sub_query_translation_not_published = $this->get_query_for_translation_not_published( $language_expression );
+		$fallback_condition = $this->get_fallback_condition( $language_expression );
 
 		$language_condition = 'icl_t' === $this->icl_translation_table_alias
 			? $this->wpdb->prepare( 'icl_t.language_code = %s', $fallback_language )
@@ -55,8 +54,15 @@ abstract class WPML_Display_As_Translated_Query {
 		return "(
 					{$language_condition}
 					{$content_types_query}
-					AND ( ( {$sub_query_no_translation} ) OR ( {$sub_query_translation_not_published} ) )
+					AND ( {$fallback_condition} )
 				)";
+	}
+
+	protected function get_fallback_condition( $language_expression ) {
+		$sub_query_no_translation            = $this->get_query_for_no_translation( $language_expression );
+		$sub_query_translation_not_published = $this->get_query_for_translation_not_published( $language_expression );
+
+		return "( {$sub_query_no_translation} ) OR ( {$sub_query_translation_not_published} )";
 	}
 
 	private function get_query_for_no_translation( $language_expression ) {

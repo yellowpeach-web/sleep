@@ -12,14 +12,16 @@ class StringRowsCache {
 
 	private static $mark_buffer = array();
 
+	private static $warmed = array();
+
 	public static function register() {
 		add_action( 'wpml_start_GB_register_strings', array( self::class, 'preload' ), 10, 2 );
 		add_action( 'wpml_end_GB_register_strings', array( self::class, 'endBatch' ), 10, 2 );
+		add_action( 'wpml_pb_before_registering_strings', array( self::class, 'warm' ), 10, 2 );
+		add_action( 'wpml_pb_after_registering_strings', array( self::class, 'forget' ), 10, 2 );
 	}
 
 	public static function preload( $post, $package_data ) {
-		global $wpdb;
-
 		$context = self::context_from( $post, $package_data );
 		if ( null === $context ) {
 			return;
@@ -31,19 +33,83 @@ class StringRowsCache {
 			return;
 		}
 
+		self::load( $context );
+	}
+
+	public static function warm( $post, $package_data ) {
+		$context = self::package_context( $package_data );
+		if ( null === $context ) {
+			return;
+		}
+
+		if ( isset( self::$warmed[ $context ] ) ) {
+			++self::$warmed[ $context ];
+
+			return;
+		}
+
+		if ( isset( self::$rows_by_context[ $context ] ) ) {
+			return;
+		}
+
+		self::$warmed[ $context ] = 1;
+		self::load( $context );
+	}
+
+	public static function forget( $post, $package_data ) {
+		$context = self::package_context( $package_data );
+		if ( null === $context || ! isset( self::$warmed[ $context ] ) ) {
+			return;
+		}
+
+		if ( --self::$warmed[ $context ] > 0 ) {
+			return;
+		}
+
+		unset( self::$warmed[ $context ], self::$rows_by_context[ $context ] );
+		foreach ( self::$inserted as $id => $entry ) {
+			if ( $entry['context'] === $context ) {
+				unset( self::$inserted[ $id ] );
+			}
+		}
+	}
+
+	private static function load( $context ) {
+		global $wpdb;
+
 		self::$rows_by_context[ $context ] = array();
 
-		$rows = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT id, context, name, value, string_package_id, location, type, title, status, gettext_context FROM {$wpdb->prefix}icl_strings WHERE context = %s",
-				$context
-			),
-			ARRAY_A
-		);
+		if ( \WPML\ST\StringValue::isReady() ) {
+			$rows = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT id, context, name, value, string_package_id, location, type, title, status, gettext_context, wrap_tag, has_text FROM {$wpdb->prefix}icl_strings WHERE context = %s",
+					$context
+				),
+				ARRAY_A
+			);
+		} else {
+			$rows = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT id, context, name, value, string_package_id, location, type, title, status, gettext_context, wrap_tag FROM {$wpdb->prefix}icl_strings WHERE context = %s",
+					$context
+				),
+				ARRAY_A
+			);
+		}
 
 		foreach ( (array) $rows as $row ) {
 			self::$rows_by_context[ $context ][ (string) $row['name'] ] = $row;
 		}
+	}
+
+	private static function package_context( $package_data ) {
+		if ( ! is_array( $package_data ) || empty( $package_data['kind'] ) || ! isset( $package_data['name'] ) || ! class_exists( '\WPML_Package' ) ) {
+			return null;
+		}
+
+		$package = new \WPML_Package( array_merge( $package_data, array( 'translate_only' => true ) ) );
+
+		return $package->get_string_context_from_package();
 	}
 
 	public static function endBatch( $post = null, $package_data = null ) {
@@ -211,6 +277,7 @@ class StringRowsCache {
 		self::$rows_by_context = array();
 		self::$inserted        = array();
 		self::$mark_buffer     = array();
+		self::$warmed          = array();
 		self::$batching        = false;
 	}
 }

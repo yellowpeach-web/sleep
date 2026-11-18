@@ -1,5 +1,7 @@
 <?php
 
+use WPML\Core\Component\ATE\Domain\SiteRegistration;
+
 class WPML_TM_ATE_Authentication {
 	const AMS_DATA_KEY          = 'WPML_TM_AMS';
 	const AMS_STATUS_NON_ACTIVE = 'non-active';
@@ -16,7 +18,7 @@ class WPML_TM_ATE_Authentication {
 
 	public function get_signed_url_with_parameters( $verb, $url, $params = null ) {
 		if ( ! $this->has_keys() ) {
-			return new WP_Error( 'auth_error', 'Unable to authenticate' );
+			return $this->not_registered_error();
 		}
 
 		$url = $this->add_required_arguments_to_url( $verb, $url, $params );
@@ -26,7 +28,7 @@ class WPML_TM_ATE_Authentication {
 
 	public function get_signed_url_without_parameters( $verb, $url, $params = null ) {
 		if ( ! $this->has_keys() ) {
-			return new WP_Error( 'auth_error', 'Unable to authenticate' );
+			return $this->not_registered_error();
 		}
 
 		$url = $this->add_required_arguments_to_url( $verb, $url, $params );
@@ -35,6 +37,10 @@ class WPML_TM_ATE_Authentication {
 			$url,
 			$this->get_signature_for_base_endpoint( $verb, $url, $params )
 		);
+	}
+
+	private function not_registered_error() {
+		return new WP_Error( SiteRegistration::NOT_REGISTERED_ERROR_CODE, 'Unable to authenticate' );
 	}
 
 	public function signUrl( $verb, $url, $params = null, $secret = null ) {
@@ -52,7 +58,7 @@ class WPML_TM_ATE_Authentication {
 
 		$url_parts['query'] = $this->build_query( $query );
 
-		return http_build_url( $url_parts );
+		return \WPML\UrlHandling\UrlBuilder::build( $url_parts );
 	}
 
 	private function get_signature_for_full_url( $verb, $url, ?array $params = null, $secret = null ) {
@@ -75,7 +81,7 @@ class WPML_TM_ATE_Authentication {
 		$url_parts_to_sign          = $url_parts;
 		$url_parts_to_sign['query'] = $this->build_query( $query_to_sign );
 
-		$url_to_sign = http_build_url( $url_parts_to_sign );
+		$url_to_sign = \WPML\UrlHandling\UrlBuilder::build( $url_parts_to_sign );
 
 		return $this->sign_string( $verb . $url_to_sign, $secret );
 	}
@@ -180,9 +186,13 @@ class WPML_TM_ATE_Authentication {
 			$query['site_key'] = OTGS_Installer()->get_site_key( 'wpml' );
 		}
 
+		if ( \WPML\TM\ATE\Handshake\Declaration::declares( $url ) ) {
+			$query[ \WPML\TM\ATE\Handshake\Declaration::PARAM ] = \WPML\TM\ATE\Handshake\Declaration::VALUE;
+		}
+
 		$url_parts['query'] = wpml_http_build_query( $query );
 
-		return http_build_url( $url_parts );
+		return \WPML\UrlHandling\UrlBuilder::build( $url_parts );
 	}
 
 	private function get_url_query( $url ) {

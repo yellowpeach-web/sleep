@@ -10,10 +10,10 @@ class WPML_LS_Widget extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			self::SLUG,
-			/* translators: Screen reader name of the language switcher on the site, and the name of the language switcher widget. */
+			/* translators: The name of the WPML language switcher: the name of the Language Switcher block and widget, a keyword for finding the block in the editor, and the text read out by screen readers for the switcher on the site. */
 			__( 'Language Switcher', 'sitepress' ),
 			array(
-				/* translators: Screen reader name of the language switcher on the site, and the name of the language switcher widget. */
+				/* translators: The name of the WPML language switcher: the name of the Language Switcher block and widget, a keyword for finding the block in the editor, and the text read out by screen readers for the switcher on the site. */
 				'description' => __( 'Language Switcher', 'sitepress' ),
 			)
 		);

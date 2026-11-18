@@ -34,7 +34,7 @@ class WPML_Translation_Editor_UI {
 		$this->job          = $job_instance->get_basic_data();
 		$this->job_factory  = $job_factory;
 		$this->job_layout   = $job_layout;
-		if ( $job_instance->get_translator_id() <= 0 ) {
+		if ( $job_instance->get_translator_id() <= 0 && ! \WPML\TM\Jobs\TranslationRecord::isCompleted( $job_instance ) ) {
 			$job_instance->assign_to( $sitepress->get_wp_api()->get_current_user_id() );
 		}
 
@@ -45,6 +45,10 @@ class WPML_Translation_Editor_UI {
         if( ! function_exists( 'wp_scripts' ) || ! function_exists( 'wp_register_tinymce_scripts' ) ) {
             return;
         }
+
+		if ( version_compare( $GLOBALS['wp_version'], '7.2-alpha', '>=' ) ) {
+			return;
+		}
 
 		$wp_scripts = wp_scripts();
 		$wp_scripts->remove( 'wp-tinymce' );
@@ -174,7 +178,7 @@ class WPML_Translation_Editor_UI {
 
 		if ( count( $html_fields ) > 0 ) {
 			$link        = \WPML\OutboundLinks\OutboundLinks::to(
-				'https://wpml.org/documentation/translating-your-contents/advanced-translation-editor/#safe-html-editing',
+				'https://wpml.org/documentation/customizing-wpml/translation-editor/#where-the-editor-settings-live',
 				array(
 					'medium'   => 'translation-editor',
 					'campaign' => 'translation-editor',
@@ -253,7 +257,7 @@ class WPML_Translation_Editor_UI {
 			<div class="wpml-dialog-footer">
 				<div class="alignleft">
 					<button
-						class="cancel wpml-dialog-close-button js-copy-cancel"><?php echo /* translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation". */ esc_html__( 'Cancel', 'sitepress' ); ?></button>
+						class="cancel wpml-dialog-close-button js-copy-cancel"><?php echo /* translators: Button label that closes a dialog without doing anything, or stops what is going on, for example in the dialog "Translate with PTC?" (keep the previous choice). Verb, imperative, not the noun "a cancellation". */ esc_html__( 'Cancel', 'sitepress' ); ?></button>
 				</div>
 				<div class="alignright">
 					<button
@@ -291,7 +295,7 @@ class WPML_Translation_Editor_UI {
 
 			<div class="wpml-dialog-footer">
 				<div class="alignleft">
-					<button class="cancel wpml-dialog-close-button js-edit-independently-cancel"><?php echo /* translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation". */ esc_html__( 'Cancel', 'sitepress' ); ?></button>
+					<button class="cancel wpml-dialog-close-button js-edit-independently-cancel"><?php echo /* translators: Button label that closes a dialog without doing anything, or stops what is going on, for example in the dialog "Translate with PTC?" (keep the previous choice). Verb, imperative, not the noun "a cancellation". */ esc_html__( 'Cancel', 'sitepress' ); ?></button>
 				</div>
 				<div class="alignright">
 					<button class="button-secondary js-edit-independently"><?php echo /* translators: Name of the button that stops keeping a document as a copy of the original, used as its tooltip. Verb phrase, imperative. */ esc_html__( 'Edit independently', 'sitepress' ); ?></button>
@@ -307,6 +311,10 @@ class WPML_Translation_Editor_UI {
 			<input type="hidden" name="job_post_type" value="<?php echo esc_attr( $this->job->original_post_type ); ?>"/>
 			<input type="hidden" name="job_post_id" value="<?php echo esc_attr( $this->job->original_doc_id ); ?>"/>
 			<input type="hidden" name="job_id" value="<?php echo esc_attr( $this->job_instance->get_id() ); ?>"/>
+			<?php if ( \WPML\TM\Jobs\TranslationRecord::isCompleted( $this->job_instance ) ) : ?>
+				<?php  ?>
+				<input type="hidden" name="<?php echo esc_attr( \WPML\TM\Editor\ClassicEditorRequest::SESSION_FIELD ); ?>" value="<?php echo esc_attr( wp_generate_password( 32, false ) ); ?>"/>
+			<?php endif; ?>
 
 			<div id="wpml-translation-editor-wrapper"></div>
 		</form>

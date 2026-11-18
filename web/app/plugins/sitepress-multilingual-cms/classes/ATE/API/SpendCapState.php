@@ -86,7 +86,7 @@ class SpendCapState {
 	}
 
 	public static function inferFromParkedJobs( array $credits, array $parkedAteIds ) {
-		if ( $parkedAteIds && Obj::propOr( false, 'payment_required', $credits ) ) {
+		if ( $parkedAteIds && ( Obj::propOr( false, 'payment_required', $credits ) || ClientRestrictionState::isRestricted() ) ) {
 			self::rememberParkedForPayment( $parkedAteIds );
 
 			return false;

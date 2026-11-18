@@ -100,14 +100,17 @@ class WPML_PB_Update_Shortcodes_In_Content {
 		if ( $translation ) {
 
 			if ( $this->is_string_too_long_for_regex( $original ) || $this->is_string_too_long_for_regex( $block ) ) {
+				if ( $is_attribute && $attr ) {
+					$translation = $this->escape_attribute_value_delimiter( $translation, $block, $attr, $original );
+				}
 				$block             = WPML_PB_Shortcode_Content_Wrapper::unwrap( $block );
 				$new_block         = str_replace( $original, $translation, $block );
 				$this->new_content = str_replace( $block, $new_block, $this->new_content );
 			} else {
 				if ( $is_attribute && $attr ) {
 					$translation = $this->escape_attribute_value_delimiter( $translation, $block, $attr, $original );
-					$pattern     = '/' . WPML_PB_Config_Import_Shortcode::NAME_BOUNDARY . preg_quote( $attr, '/' ) . '=(["\'])' . preg_quote( $original, '/' ) . '(["\'])/';
-					$replacement = $attr . '=${1}' . $this->escape_backward_reference_on_replacement_string( $translation ) . '${2}';
+					$pattern     = '/' . WPML_PB_Config_Import_Shortcode::NAME_BOUNDARY . preg_quote( $attr, '/' ) . '(\s*=\s*["\'])' . preg_quote( $original, '/' ) . '(["\'])/';
+					$replacement = $attr . '${1}' . $this->escape_backward_reference_on_replacement_string( $translation ) . '${2}';
 				} else {
 					$used_wrapper = false !== strpos( $new_block, '[' . WPML_PB_Shortcode_Content_Wrapper::WRAPPER_SHORTCODE_NAME . ']' );
 					$pattern      = '/(]\s*)' . preg_quote( trim( $original ), '/' ) . '(\s*\[)/';
@@ -135,11 +138,17 @@ class WPML_PB_Update_Shortcodes_In_Content {
 	}
 
 	private function escape_attribute_value_delimiter( $translation, $block, $attr, $original ) {
-		$delimiter = preg_match( '/' . WPML_PB_Config_Import_Shortcode::NAME_BOUNDARY . preg_quote( $attr, '/' ) . '=(["\'])' . preg_quote( $original, '/' ) . '/', $block, $matches )
-			? $matches[1]
-			: '"';
+		if ( $this->is_string_too_long_for_regex( $original ) ) {
+			$is_single_quoted = false !== strpos( $block, "'" . $original )
+				&& preg_match( '/' . WPML_PB_Config_Import_Shortcode::NAME_BOUNDARY . preg_quote( $attr, '/' ) . '\s*=\s*\'/', $block );
+			$delimiter        = $is_single_quoted ? "'" : '"';
+		} else {
+			$delimiter = preg_match( '/' . WPML_PB_Config_Import_Shortcode::NAME_BOUNDARY . preg_quote( $attr, '/' ) . '\s*=\s*(["\'])' . preg_quote( $original, '/' ) . '/', $block, $matches )
+				? $matches[1]
+				: '"';
+		}
 
-		return str_replace( $delimiter, '"' === $delimiter ? '&quot;' : '&apos;', $translation );
+		return str_replace( $delimiter, '"' === $delimiter ? '&quot;' : '&#039;', $translation );
 	}
 
 	private function replace_content_without_delimiters( $block, $replacement ) {
@@ -192,10 +201,10 @@ class WPML_PB_Update_Shortcodes_In_Content {
 		}
 
 		if ( 'allow_html_tags' !== $encoding ) {
-			$translation = htmlspecialchars( htmlspecialchars_decode( $translation ) );
+			$translation = htmlspecialchars( htmlspecialchars_decode( $translation, ENT_QUOTES | ENT_HTML5 ), ENT_COMPAT | ENT_SUBSTITUTE, 'UTF-8' );
 		}
 
-		$translation = str_replace( array( '[', ']' ), array( '&#91;', '&#93;' ), $translation );
+		$translation = str_replace( array( '&apos;', '[', ']' ), array( '&#039;', '&#91;', '&#93;' ), $translation );
 
 		return $translation;
 	}

@@ -20,6 +20,8 @@ class TranslationsTabStripDispatcher implements
 
   const DEFAULT_TAB = 'dashboard';
 
+  const PAGE_SLUG = 'tm/menu/main.php';
+
   /**
    * Canonical "is Translation Management allowed?" check (reads
    * `WPML(setup)['is-tm-allowed']`). A blog license sets it false; the
@@ -97,6 +99,11 @@ class TranslationsTabStripDispatcher implements
     $this->storeUrlsTabBody           = $storeUrlsTabBody;
     $this->glossaryTabBody            = $glossaryTabBody;
     $this->improveTranslationsTabBody = $improveTranslationsTabBody;
+
+    // options page on a Blog licence lost its template helper, wpmldev-11734).
+    if ( ! self::isTranslationsPageRequest() ) {
+      return;
+    }
 
     $this->aliasLegacyContextOnEnqueue();
     $this->injectLegacyBodyClassForActiveTab();
@@ -206,7 +213,9 @@ class TranslationsTabStripDispatcher implements
       /* translators: Name of the Menus tab of WPML → Translations: the site's navigation menus. */
       __( 'Menus', 'wpml' ),
       __( 'Align menus in translated languages with your default menu structure.', 'wpml' ),
-      $isAdminOrManager
+      static function (): bool {
+        return self::menusTabAllowed();
+      }
     );
 
     $tabs[] = new TabDefinition(
@@ -255,6 +264,18 @@ class TranslationsTabStripDispatcher implements
       $isManagerWithTm
     );
 
+    $corrections = CorrectionsTabBody::definition();
+    if ( null !== $corrections ) {
+      $tabs[] = new TabDefinition(
+        CorrectionsTabBody::TAB,
+        $corrections['label'],
+        $corrections['tooltip'],
+        static function () use ( $tmAllowed, $corrections ): bool {
+          return $tmAllowed && $corrections['visible'];
+        }
+      );
+    }
+
     // Under a blog license (TM not allowed) there are no translation
     $tabs[] = new TabDefinition(
       'tasks',
@@ -269,7 +290,7 @@ class TranslationsTabStripDispatcher implements
     // blog license (TM not allowed) even if a stale
     // license — ATE is meaningless without Translation Management
     $canTranslateAndAte = static function () use ( $tmAllowed ): bool {
-      return $tmAllowed && current_user_can( 'translate' ) && \WPML_TM_ATE_Status::is_enabled();
+      return $tmAllowed && current_user_can( 'translate' ) && \WPML_TM_ATE_Status::can_ate_job_exist();
     };
 
     $tabs[] = new TabDefinition(
@@ -299,6 +320,18 @@ class TranslationsTabStripDispatcher implements
   }
 
 
+  public static function menusTabAllowed(): bool {
+    return current_user_can( 'manage_translations' ) || current_user_can( 'wpml_manage_wp_menus_sync' );
+  }
+
+
+  private static function isTranslationsPageRequest(): bool {
+    global $plugin_page;
+
+    return $plugin_page === self::PAGE_SLUG;
+  }
+
+
   public static function tasksTabAllowed( bool $tmAllowed ): bool {
     return $tmAllowed && current_user_can( 'translate' );
   }
@@ -317,6 +350,14 @@ class TranslationsTabStripDispatcher implements
         return $raw;
       }
     }
+
+    if ( CorrectionsTabBody::TAB === $raw && $this->tmAllowed->requirementsMet() ) {
+      $corrections = CorrectionsTabBody::definition();
+      if ( null !== $corrections && $corrections['reachable'] ) {
+        return $raw;
+      }
+    }
+
     return $defaultTab;
   }
 
@@ -359,6 +400,7 @@ class TranslationsTabStripDispatcher implements
       'store-urls'           => $this->storeUrlsTabBody,
       'glossary'             => $this->glossaryTabBody,
       'improve-translations' => $this->improveTranslationsTabBody,
+      CorrectionsTabBody::TAB => new CorrectionsTabBody(),
     );
     // The nullable (TM/ATE) bodies are absent on a blog license, but
     if ( isset( $bodies[ $activeId ] ) ) {

@@ -580,6 +580,9 @@
          "Blocked by a firewall or CDN": [
             "Bir güvenlik duvarı veya CDN tarafından engellendi"
          ],
+         "Used by another site": [
+            "Başka bir site tarafından kullanılıyor"
+         ],
          "Not valid": [
             "Geçerli değil"
          ],
@@ -603,6 +606,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s yükleniyor ancak bir güvenlik duvarı veya CDN, WPML'nin denetimini engelledi."
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "Bu ağdaki başka bir site tarafından kullanılıyor: %s. Kaydetmek için farklı bir alan adı girin."
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "Alan adı doğrulanamadı: %s. Bu siteyi işaret ettiğinden emin olun veya yine de kaydetmek için “Kaydederken doğrula” seçeneğinin işaretini kaldırın."
@@ -959,6 +965,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "Bu dil kaydedilmeden önce, bu sitenin daha önceden bu dilde sahip olduğu içeriğin geri getirilip getirilmeyeceğini veya sıfırdan başlanacağını seçin."
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "Bir dil, sitenizin varsayılan diliyle eşleştirilemez. Bunun yerine “Otomatik olarak eşleştir” seçeneğini belirleyin."
+         ],
          "You don’t have permission to change languages.": [
             "Dilleri değiştirme izniniz yok."
          ],
@@ -1019,6 +1028,9 @@
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "Dilinizi listede bulamazsanız, <a>özel bir dil ekleyin</a>."
          ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s, %3$d dil arasından %2$d. sıraya taşındı."
+         ],
          "Default language": [
             "Varsayılan dil"
          ],
@@ -1075,6 +1087,12 @@
          ],
          "Delete language": [
             "Dili sil"
+         ],
+         "Move %s. Use the up and down arrow keys.": [
+            "Taşı: %s. Yukarı ve aşağı ok tuşlarını kullanın."
+         ],
+         "Drag to change the order": [
+            "Sıralamayı değiştirmek için sürükleyin"
          ],
          "Type to search all languages…": [
             "Tüm dillerde aramak için yazın…"
@@ -1147,6 +1165,9 @@
          ],
          "Recognized as the same language as the default": [
             "Varsayılan ile aynı dil olarak algılandı"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "Otomatik çeviri kapalı: Etkinleştirilmiş bir çeviri motoru yok. Birini açmak için <link>WPML → Ayarlar → AI Translation</link> bölümüne gidin."
          ],
          "%s (Regional)": [
             "%s (bölgesel)"

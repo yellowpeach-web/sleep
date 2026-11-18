@@ -36,9 +36,25 @@ class MarkupBuilder {
 		}
 
 		$timestamps = $this->registry->getTimestamps( $postId );
+		$shared     = $this->getSharedFields( $postId, $provider, $elements );
 		$wrappers   = [];
 
 		foreach ( $elements as $element ) {
+			$values = [];
+			$keys   = isset( $shared[ $element['uid'] ] ) ? $this->getFieldKeys( $element['strings'] ) : [];
+
+			foreach ( $element['strings'] as $index => $string ) {
+				if ( isset( $keys[ $index ], $shared[ $element['uid'] ][ $keys[ $index ] ] ) ) {
+					continue;
+				}
+
+				$values[] = trim( (string) $string->get_value() );
+			}
+
+			if ( ! $values ) {
+				continue;
+			}
+
 			$attributes = ' data-wpml-uid="' . esc_attr( $element['uid'] ) . '"';
 
 			if ( isset( $timestamps[ $element['uid'] ]['created'] ) ) {
@@ -46,16 +62,56 @@ class MarkupBuilder {
 				$attributes .= ' data-wpml-modified="' . (int) $timestamps[ $element['uid'] ]['modified'] . '"';
 			}
 
-			$values = [];
-
-			foreach ( $element['strings'] as $string ) {
-				$values[] = trim( (string) $string->get_value() );
-			}
-
 			$wrappers[] = '<div' . $attributes . '>' . "\n" . implode( "\n", $values ) . "\n" . '</div>';
 		}
 
-		return implode( "\n", $wrappers );
+		return $wrappers ? implode( "\n", $wrappers ) : null;
+	}
+
+	private function getSharedFields( $postId, Provider $provider, array $elements ) {
+		$originalId = (int) apply_filters( 'wpml_original_element_id', null, $postId, 'post_' . get_post_type( $postId ) );
+
+		if ( $originalId > 0 && $originalId !== $postId ) {
+			$originalProvider = $this->findProvider( $originalId );
+			$elements         = $originalProvider ? $originalProvider->getElements( $originalId ) : [];
+		}
+
+		$listed = [];
+		$shared = [];
+
+		foreach ( $elements as $element ) {
+			$keys = null;
+
+			foreach ( $element['strings'] as $index => $string ) {
+				$name = (string) $string->get_name();
+
+				if ( ! isset( $listed[ $name ] ) ) {
+					$listed[ $name ] = true;
+					continue;
+				}
+
+				if ( null === $keys ) {
+					$keys = $this->getFieldKeys( $element['strings'] );
+				}
+
+				$shared[ $element['uid'] ][ $keys[ $index ] ] = true;
+			}
+		}
+
+		return $shared;
+	}
+
+	private function getFieldKeys( array $strings ) {
+		$keys  = [];
+		$count = [];
+
+		foreach ( $strings as $index => $string ) {
+			$title           = (string) $string->get_title();
+			$count[ $title ] = isset( $count[ $title ] ) ? $count[ $title ] + 1 : 0;
+			$keys[ $index ]  = $title . '#' . $count[ $title ];
+		}
+
+		return $keys;
 	}
 
 	public function refreshRegistry( $postId, $time = null ) {

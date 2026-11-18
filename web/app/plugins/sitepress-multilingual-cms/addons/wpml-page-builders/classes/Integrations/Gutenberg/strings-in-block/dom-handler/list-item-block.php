@@ -10,10 +10,8 @@ class ListItemBlock extends StandardBlock {
 			if ( $this->registersAsText( $element ) ) {
 				return $this->replaceTextInListItem(
 					$block,
-					$this->getTextMarkupPairs(
-						$originalValue ?: $element->nodeValue,
-						$this->getTranslationAsText( $element, $translation )
-					)
+					(string) ( $originalValue ?: $element->nodeValue ),
+					(string) $this->getTranslationAsText( $element, $translation )
 				);
 			}
 
@@ -31,8 +29,8 @@ class ListItemBlock extends StandardBlock {
 		return parent::applyStringTranslations( $block, $element, $translation, $originalValue );
 	}
 
-	private function replaceTextInListItem( \WP_Block_Parser_Block $block, array $pairs ) {
-		foreach ( $pairs as list( $original, $translation ) ) {
+	private function replaceTextInListItem( \WP_Block_Parser_Block $block, string $originalText, string $translationText ) {
+		foreach ( $this->getTextMarkupPairs( $originalText, $translationText ) as list( $original, $translation ) ) {
 			$found = false !== strpos( (string) $block->innerHTML, $original );
 
 			foreach ( $block->innerContent as $inner_content ) {
@@ -51,6 +49,14 @@ class ListItemBlock extends StandardBlock {
 			}
 
 			return $block;
+		}
+
+		$fragments = $this->replaceDecodedText( $block->innerContent, $originalText, $translationText );
+
+		if ( null !== $fragments ) {
+			$block->innerContent = $fragments;
+			$innerHTML           = $this->replaceDecodedText( [ (string) $block->innerHTML ], $originalText, $translationText );
+			$block->innerHTML    = null === $innerHTML ? $block->innerHTML : $innerHTML[0];
 		}
 
 		return $block;

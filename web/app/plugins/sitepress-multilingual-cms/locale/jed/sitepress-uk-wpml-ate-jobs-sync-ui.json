@@ -13,11 +13,26 @@
          "The translation could not be started because the server did not answer.": [
             "Не вдалося розпочати переклад, оскільки сервер не відповів."
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "Термін дії вашої сесії минув. Оновіть цю сторінку та спробуйте знову."
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "PTC виконує переклад. Редактор відкриється, щойно все буде готово."
+         ],
          "This translation cannot be opened right now.": [
             "Зараз неможливо відкрити цей переклад."
          ],
          "Refresh this page": [
             "Оновити цю сторінку"
+         ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "Недостатньо передплачених слів для автоматичного перекладу цього вмісту. Додайте більше слів і повторіть спробу."
+         ],
+         "Get more words": [
+            "Отримати більше слів"
+         ],
+         "Close": [
+            "Закрити"
          ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
             "Цей вміст перекладається автоматично. Якщо ви хочете зробити з ним щось інше, спочатку скасуйте завдання на переклад."
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "Переклад вашого вмісту"
+         ],
+         "Translate Everything is active": [
+            "Режим «Перекладати все» активний"
          ],
          "%d translation notice": [
             "%d сповіщення про переклад",
@@ -52,13 +70,13 @@
             "Ми помітили щось неочікуване у вашій нещодавній активності з перекладу та призупинили автоматичний переклад у вашому акаунті. Зверніться до служби підтримки, і ми перевіримо це разом із вами."
          ],
          "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
-            "<b>Автоматично перекладати все</b> призупинено: досягнуто ліміту щомісячних витрат"
+            "<b>Автоматично перекладати все</b> призупинено: досягнуто місячного ліміту витрат"
          ],
          "Automatic translation is paused: monthly spending cap reached": [
-            "Автоматичний переклад призупинено: досягнуто ліміту щомісячних витрат"
+            "Автоматичний переклад призупинено: досягнуто місячного ліміту витрат"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "Цей вебсайт досяг встановленого для нього ліміту щомісячних витрат. Переклад продовжиться, коли ліміт буде збільшено або коли він скинеться. Це може зробити лише власник акаунта."
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "Цей сайт досяг установленого щомісячного ліміту витрат. Переклад продовжиться після збільшення ліміту або його оновлення. Ви можете збільшити його на сторінці «ШІ-переклад: рахунки та використання»."
          ],
          "Preparing content for translation": [
             "Підготовка вмісту до перекладу"
@@ -74,8 +92,10 @@
             "Наступні мови на вашому сайті мають бути зіставлені з підтримуваною мовою, щоб використовувати автоматичний переклад: %s",
             "Наступні мови на вашому сайті мають бути зіставлені з підтримуваною мовою, щоб використовувати автоматичний переклад: %s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "Вміст цими мовами: %s, неможливо перекласти автоматично, якщо ви не зіставите їх із мовою, відмінною від мови за замовчуванням."
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "Автоматичний переклад недоступний між %1$s та %2$s, оскільки вони розпізнаються як однакова мова. Натомість виберіть «Дублювати», щоб скопіювати вміст.",
+            "Автоматичний переклад недоступний між %1$s і цими мовами, оскільки вони розпізнаються як однакова мова: %2$s. Натомість виберіть «Дублювати», щоб скопіювати вміст.",
+            "Автоматичний переклад недоступний між %1$s і цими мовами, оскільки вони розпізнаються як однакова мова: %2$s. Натомість виберіть «Дублювати», щоб скопіювати вміст."
          ],
          "%d translation waiting for review": [
             "%d переклад очікує на перевірку",
@@ -141,7 +161,7 @@
             "Автоматичний переклад призупинено — недостатньо слів"
          ],
          "Translation will resume automatically once you assign more words.": [
-            "Переклад відновиться автоматично, щойно ви призначете більше слів."
+            "Переклад відновиться автоматично, щойно ви призначите більше слів."
          ],
          "You have %s prepaid translation words in your WPML account. Assign these words to this site to resume automatic translation": [
             "У вашому акаунті WPML є %s передплачене слово для перекладу. Призначте ці слова цьому сайту, щоб відновити автоматичний переклад",
@@ -159,9 +179,6 @@
          ],
          "Pay now": [
             "Оплатити зараз"
-         ],
-         "Get more words": [
-            "Отримати більше слів"
          ],
          "Assign words": [
             "Призначити слова"

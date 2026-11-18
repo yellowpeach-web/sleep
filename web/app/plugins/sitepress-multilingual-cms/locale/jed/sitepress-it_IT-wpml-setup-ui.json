@@ -127,6 +127,9 @@
          "Delete language pair(s)": [
             "Elimina coppie di lingue"
          ],
+         "Can translate to and from all languages": [
+            "Può tradurre da e verso tutte le lingue"
+         ],
          "An error occurred. Please try again.": [
             "Si è verificato un errore. Riprova."
          ],
@@ -153,6 +156,60 @@
          ],
          "Back to Step %1$s: %2$s": [
             "Torna al passaggio %1$s: %2$s"
+         ],
+         "Available": [
+            "Disponibile"
+         ],
+         "Not available": [
+            "Non disponibile"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "Comprende l'argomento, il pubblico e il tono del tuo sito"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "Qualità pronta per la pubblicazione, supportata dalla nostra garanzia"
+         ],
+         "Review before publishing": [
+            "Rivedi prima di pubblicare"
+         ],
+         "Pay once per page – only added words are charged": [
+            "Paga una volta per pagina – vengono addebitate solo le parole aggiunte"
+         ],
+         "Per word, changes included": [
+            "Per parola, modifiche incluse"
+         ],
+         "A legacy engine": [
+            "Un motore legacy"
+         ],
+         "<button>Switch to a different engine</button> if you prefer — no quality guarantee and no free translation edits with other engines.": [
+            "<button>Passa a un motore diverso</button> se preferisci: nessuna garanzia di qualità e nessuna modifica gratuita della traduzione con altri motori."
+         ],
+         "Your content will be translated by <strong>Private Translation Cloud (PTC)</strong>, WPML's own AI engine. PTC lets you translate the entire site automatically, in one click, offering free translation edits.": [
+            "I tuoi contenuti saranno tradotti da <strong>Private Translation Cloud (PTC)</strong>, il motore IA proprietario di WPML. PTC ti consente di tradurre automaticamente l'intero sito con un solo clic, offrendo modifiche gratuite delle traduzioni."
+         ],
+         "Couldn't save — try again": [
+            "Impossibile salvare: riprova"
+         ],
+         "Your content will be translated by <strong>%s</strong>, a machine translation engine. You pay per word, including changes to content that's already translated.": [
+            "I tuoi contenuti saranno tradotti da <strong>%s</strong>, un motore di traduzione automatica. Paghi a consumo per parola, comprese le modifiche ai contenuti già tradotti."
+         ],
+         "Switch to PTC": [
+            "Passa a PTC"
+         ],
+         "Switch away from PTC?": [
+            "Vuoi abbandonare PTC?"
+         ],
+         "DeepL, Google Translate or Microsoft Translator": [
+            "DeepL, Google Translate o Microsoft Translator"
+         ],
+         "Your engine now": [
+            "Il tuo motore attuale"
+         ],
+         "Switch away from PTC": [
+            "Abbandona PTC"
+         ],
+         "Stay with PTC": [
+            "Rimani con PTC"
          ],
          "Technical Details (for WPML Support)": [
             "Dettagli tecnici (per il supporto di WPML)"
@@ -186,6 +243,45 @@
          ],
          " and provide the technical details below (use the Copy button to copy them).": [
             " e fornisci i dettagli tecnici qui sotto (usa il pulsante Copia per copiarli)."
+         ],
+         "Publish without review": [
+            "Pubblica senza revisione"
+         ],
+         "Translations go live immediately in the target language.": [
+            "Le traduzioni vengono pubblicate immediatamente nella lingua di destinazione."
+         ],
+         "Wait for review before publishing": [
+            "Attendi la revisione prima di pubblicare"
+         ],
+         "Translations stay as drafts until a translation manager approves them.": [
+            "Le traduzioni rimangono come bozze finché un manager delle traduzioni non le approva."
+         ],
+         "Recommended": [
+            "Consigliato"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "Per DeepL, Google e Microsoft consigliamo una revisione umana per confermare che siano corrette. PTC fornisce traduzioni migliori di quelle umane che comprendono il contesto, quindi puoi saltare con fiducia il processo di revisione."
+         ],
+         "Publish and mark for review": [
+            "Pubblica e contrassegna per la revisione"
+         ],
+         "Translations go live but appear in a \"needs review\" queue.": [
+            "Le traduzioni vengono pubblicate ma appaiono in una coda “necessita di revisione”."
+         ],
+         "After auto-translation": [
+            "Dopo la traduzione automatica"
+         ],
+         "What happens to content once %s has translated it.": [
+            "Cosa succede ai contenuti una volta tradotti da %s."
+         ],
+         "Wait for review": [
+            "Attendi la revisione"
+         ],
+         "%1$s (<strong>%2$s</strong>)": [
+            "%1$s (<strong>%2$s</strong>)"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "Cosa vorresti fare quando WPML finisce di tradurre i tuoi contenuti automaticamente?"
          ],
          "Loading AI Translation...": [
             "Caricamento traduzione IA..."
@@ -328,6 +424,15 @@
          "adding a custom language": [
             "aggiunta di una lingua personalizzata"
          ],
+         "I will fix my server settings to display languages in directories later.": [
+            "Correggerò le impostazioni del mio server per visualizzare le lingue nelle directory più tardi."
+         ],
+         "We could not verify your server's URL-rewrite support.": [
+            "Non è stato possibile verificare il supporto del tuo server per la riscrittura degli URL."
+         ],
+         "Learn more about required server settings to display languages in directories": [
+            "Scopri di più sulle impostazioni del server obbligatorie per visualizzare le lingue nelle directory"
+         ],
          "I will change the permalink structure later.": [
             "Modificherò la struttura dei permalink in seguito."
          ],
@@ -367,8 +472,15 @@
          "This domain does not show this site.": [
             "Questo dominio non mostra questo sito."
          ],
+         "This address belongs to another site on this network.": [
+            "Questo indirizzo appartiene a un altro sito su questa rete."
+         ],
          "WPML could not reach this domain.": [
             "WPML non è riuscito a raggiungere questo dominio."
+         ],
+         "If you choose this, these URLs will open a sub-site: %s.": [
+            "Se scegli questa opzione, questi URL apriranno un sito secondario: %s.",
+            "Se scegli questa opzione, questi URL apriranno un sito secondario: %s."
          ],
          "The domain you have entered is invalid.": [
             "Il dominio inserito non è valido."
@@ -388,17 +500,8 @@
          "The URL rewrite is not configured in your server.": [
             "La riscrittura degli URL non è configurata nel tuo server."
          ],
-         "I will fix my server settings to display languages in directories later.": [
-            "Correggerò le impostazioni del mio server per visualizzare le lingue nelle directory più tardi."
-         ],
-         "We could not verify your server's URL-rewrite support.": [
-            "Non è stato possibile verificare il supporto del tuo server per la riscrittura degli URL."
-         ],
-         "Learn more about required server settings to display languages in directories": [
-            "Scopri di più sulle impostazioni del server richieste per visualizzare le lingue nelle directory"
-         ],
          "your pages": [
-            "tue pagine"
+            "le tue pagine"
          ],
          "your posts": [
             "tuoi articoli"
@@ -421,11 +524,17 @@
          "Translate your posts": [
             "Traduci i tuoi articoli"
          ],
-         "the Translation Dashboard": [
-            "Dashboard di traduzione"
+         "%s will translate your whole site and keep new content translated from now on. You're charged per word, including later changes.": [
+            "%s tradurrà l'intero sito e manterrà tradotti i nuovi contenuti d'ora in poi. Il costo è calcolato a parola, incluse le modifiche successive."
          ],
          "Private Translation Cloud (PTC) will translate your whole site and keep new content translated from now on. You pay once for what's translated — editing it afterward is free.": [
             "Private Translation Cloud (PTC) tradurrà l'intero sito e manterrà tradotti i nuovi contenuti da ora in poi. Paghi una sola volta per ciò che viene tradotto — modificarlo in seguito è gratuito."
+         ],
+         "Automatic translation will translate your whole site and keep new content translated from now on.": [
+            "La traduzione automatica tradurrà l'intero sito e manterrà tradotti i nuovi contenuti d'ora in poi."
+         ],
+         "the Translation Dashboard": [
+            "Dashboard di traduzione"
          ],
          "Apply settings and start site's translation": [
             "Applica le impostazioni e inizia la traduzione del sito"
@@ -439,8 +548,14 @@
          "the WooCommerce Multilingual setup": [
             "configurazione di WooCommerce Multilingual"
          ],
+         "%s will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "%s inizierà a tradurre il tuo sito ora e manterrà tradotti i nuovi contenuti d'ora in poi. Successivamente, configurerai il tuo negozio multilingue. La traduzione dei tuoi prodotti inizierà non appena avrai completato la configurazione di WooCommerce Multilingual."
+         ],
          "Private Translation Cloud (PTC) will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup. You pay once for what's translated. Editing it afterward is free.": [
             "Private Translation Cloud (PTC) inizierà a tradurre il tuo sito ora e manterrà tradotti i nuovi contenuti da ora in poi. Successivamente, configurerai il tuo negozio multilingue. I tuoi prodotti inizieranno a essere tradotti una volta terminata la configurazione di WooCommerce Multilingual. Paghi una sola volta per ciò che viene tradotto. Modificarlo in seguito è gratuito."
+         ],
+         "Automatic translation will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "La traduzione automatica inizierà a tradurre il tuo sito ora e manterrà tradotti i nuovi contenuti d'ora in poi. Successivamente, configurerai il tuo negozio multilingue. La traduzione dei tuoi prodotti inizierà non appena avrai completato la configurazione di WooCommerce Multilingual."
          ],
          "Continue to WooCommerce Multilingual Setup while translation begins": [
             "Continua con la configurazione di WooCommerce Multilingual mentre inizia la traduzione"
@@ -484,8 +599,14 @@
          "Applying your setup choices": [
             "Applicazione delle scelte di configurazione"
          ],
+         "%s is translating your content. There's nothing else you need to do here.": [
+            "%s sta traducendo i tuoi contenuti. Non devi fare nient'altro qui."
+         ],
          "PTC is translating your content. There's nothing else you need to do here.": [
             "PTC sta traducendo i tuoi contenuti. Non devi fare altro qui."
+         ],
+         "Your content is being translated. There's nothing else you need to do here.": [
+            "I tuoi contenuti sono in fase di traduzione. Non devi fare nient'altro qui."
          ],
          "We're applying all your setup choices and preparing WPML. This is a one-time process.": [
             "Stiamo applicando tutte le tue scelte di configurazione e preparando WPML. Questo processo viene eseguito una sola volta."
@@ -580,38 +701,8 @@
          "Full details of the info we’re proposing to share": [
             "Dettagli completi delle informazioni che proponiamo di condividere"
          ],
-         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
-            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> per scegliere la modalità migliore per il tuo sito."
-         ],
-         "How would you like to translate your content?": [
-            "Come vorresti tradurre i tuoi contenuti?"
-         ],
-         "Recommended": [
-            "Consigliato"
-         ],
-         "Translate Everything Automatically": [
-            "Traduci tutto automaticamente"
-         ],
-         "Full-site automatic translation needs AI translation set up.": [
-            "La traduzione automatica dell'intero sito richiede la configurazione della traduzione IA."
-         ],
-         "Set up AI translation": [
-            "Configura la traduzione IA"
-         ],
-         "Translate Some: You Choose What to Translate": [
-            "Traduci in parte: scegli tu cosa tradurre"
-         ],
-         "Select this option": [
-            "Seleziona questa opzione"
-         ],
          "How it works": [
             "Come funziona"
-         ],
-         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
-            "PTC (Private Translation Cloud) è il motore di traduzione IA di WPML. Traduce l'intero sito in ogni lingua selezionata, in background. Puoi modificare qualsiasi traduzione ed escludere tipi di post."
-         ],
-         "Can't decide?": [
-            "Non riesci a decidere?"
          ],
          "You select and submit what to translate.": [
             "Seleziona e invia ciò che vuoi tradurre."
@@ -619,32 +710,35 @@
          "Costs": [
             "Costi"
          ],
-         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
-            "Paghi una volta per il contenuto totale tradotto.<br/><strong>Le revisioni sono gratuite</strong> — viene addebitata solo l'estensione del contenuto."
-         ],
          "Pay per translation job submitted.<br/>Each update or new content batch is a separate charge.": [
             "Paghi per ogni lavoro di traduzione inviato.<br/>Ogni aggiornamento o nuovo lotto di contenuti comporta un addebito separato."
-         ],
-         "Translation quality": [
-            "Qualità della traduzione"
-         ],
-         "WPML ensures excellent quality. Bad translations are refunded.": [
-            "WPML garantisce un'ottima qualità. Le traduzioni scadenti vengono rimborsate."
          ],
          "Ideal for": [
             "Ideale per"
          ],
-         "Known upfront costs": [
-            "Costi iniziali noti"
+         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "PTC (Private Translation Cloud) è il motore di traduzione IA di WPML. Traduce l'intero sito in tutte le lingue selezionate, in background. Puoi modificare qualsiasi traduzione ed escludere i tipi di contenuto."
          ],
-         "Unlimited post-translation editing": [
-            "Modifiche post-traduzione illimitate"
+         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
+            "Paghi una volta per il contenuto totale tradotto.<br/><strong>Le revisioni sono gratuite</strong> — viene addebitata solo l'estensione del contenuto."
          ],
-         "Marketing optimization": [
-            "Ottimizzazione marketing"
+         "Included with PTC": [
+            "Incluso con PTC"
          ],
-         "Turn-key solutions": [
-            "Soluzioni chiavi in mano"
+         "Only with PTC — not with %s": [
+            "Solo con PTC — non con %s"
+         ],
+         "your current engine": [
+            "il tuo motore attuale"
+         ],
+         "%s translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "%s traduce il tuo intero sito in background in tutte le lingue selezionate. Puoi modificare qualsiasi traduzione ed escludere tipi di contenuto."
+         ],
+         "Charged per word, including changes to content that's already translated.": [
+            "Fatturato a consumo per parola, incluse le modifiche ai contenuti già tradotti."
+         ],
+         "You choose what to translate, from the Translation Dashboard or with \"+\" next to each page. PTC translates it.": [
+            "Scegli tu cosa tradurre, dalla Dashboard di traduzione o con il \"+\" accanto a ciascuna pagina. PTC lo traduce."
          ],
          "Partial site translation": [
             "Traduzione parziale del sito"
@@ -652,8 +746,95 @@
          "Maximum control": [
             "Massimo controllo"
          ],
+         "Quality without the work": [
+            "Qualità senza fatica"
+         ],
+         "You choose what to translate. You or your translators write each translation in the Advanced Translation Editor.": [
+            "Scegli tu cosa tradurre. Tu o i tuoi traduttori scrivete ciascuna traduzione nell'Editor di traduzione avanzato."
+         ],
+         "No words used, unless you start from a machine translation in the editor.": [
+            "Nessuna parola utilizzata, a meno che tu non parta da una traduzione automatica nell'editor."
+         ],
+         "Your own translators": [
+            "I tuoi traduttori"
+         ],
+         "Texts that need a human touch": [
+            "Testi che richiedono un tocco umano"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "PTC translates what you send. You review.": [
+            "PTC traduce ciò che invii. Tu esegui la revisione."
+         ],
+         "I translate": [
+            "Traduco io"
+         ],
+         "You or your translators write it.": [
+            "Scrivi tu o i tuoi traduttori."
+         ],
+         "When you start a translation, who translates?": [
+            "Quando avvii una traduzione, chi traduce?"
+         ],
+         "Who translates": [
+            "Chi traduce"
+         ],
          "Contact our support team for help": [
             "Contatta il nostro team di supporto per ricevere aiuto"
+         ],
+         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
+            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> per scegliere la modalità migliore per il tuo sito."
+         ],
+         "How would you like to translate your content?": [
+            "Come vorresti tradurre i tuoi contenuti?"
+         ],
+         "Translate Everything Automatically": [
+            "Traduci tutto automaticamente"
+         ],
+         "Translations always in sync": [
+            "Traduzioni sempre sincronizzate"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "La traduzione automatica dell'intero sito richiede la configurazione della traduzione IA."
+         ],
+         "New and updated content translated automatically": [
+            "Contenuti nuovi e aggiornati tradotti automaticamente"
+         ],
+         "Set up AI translation": [
+            "Configura la traduzione IA"
+         ],
+         "Sites that publish often": [
+            "Siti che pubblicano spesso"
+         ],
+         "All your languages at once": [
+            "Tutte le tue lingue contemporaneamente"
+         ],
+         "Translate Some: You Choose What to Translate": [
+            "Traduci in parte: scegli tu cosa tradurre"
+         ],
+         "Select this option": [
+            "Seleziona questa opzione"
+         ],
+         "WPML uses the Advanced Translation Editor. You can change the editor later in WPML > Settings > Translation editor and method.": [
+            "WPML usa l'Editor di traduzione avanzato. Puoi cambiare l'editor in seguito in WPML > Impostazioni > Metodo ed editor di traduzione."
+         ],
+         "Quality guarantee, bad translations refunded": [
+            "Garanzia di qualità, traduzioni scadenti rimborsate"
+         ],
+         "Can't decide?": [
+            "Non riesci a decidere?"
+         ],
+         "Pay once — revisions are free": [
+            "Paga una volta sola — le revisioni sono gratuite"
+         ],
+         "Known upfront costs": [
+            "Costi iniziali noti"
+         ],
+         "Publish-ready results, no review needed": [
+            "Risultati pronti per la pubblicazione, nessuna revisione necessaria"
+         ],
+         "Marketing optimization based on your site and audience": [
+            "Ottimizzazione marketing basata sul tuo sito e sul tuo pubblico"
          ],
          "Calculate Translation Costs": [
             "Calcola i costi di traduzione"
@@ -888,6 +1069,9 @@
          ],
          "Ranking": [
             "Valutazione"
+         ],
+         "language URL directory and language name\u0004%1$s (%2$s)": [
+            "%1$s (%2$s)"
          ]
       }
    }

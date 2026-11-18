@@ -127,6 +127,9 @@
          "Delete language pair(s)": [
             "מחיקת צמדי שפות"
          ],
+         "Can translate to and from all languages": [
+            "יכול לתרגם מכל השפות ולכולן"
+         ],
          "An error occurred. Please try again.": [
             "אירעה שגיאה. אנא נסה שוב."
          ],
@@ -153,6 +156,60 @@
          ],
          "Back to Step %1$s: %2$s": [
             "חזרה לשלב %1$s: %2$s"
+         ],
+         "Available": [
+            "זמין"
+         ],
+         "Not available": [
+            "לא זמין"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "מבין את נושא האתר, קהל היעד והטון שלו"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "איכות מוכנה לפרסום, בגיבוי האחריות שלנו"
+         ],
+         "Review before publishing": [
+            "סקירה לפני פרסום"
+         ],
+         "Pay once per page – only added words are charged": [
+            "שלם פעם אחת לכל עמוד – רק מילים שנוספו יחויבו"
+         ],
+         "Per word, changes included": [
+            "לפי מילה, כולל שינויים"
+         ],
+         "A legacy engine": [
+            "מנוע מדור קודם"
+         ],
+         "<button>Switch to a different engine</button> if you prefer — no quality guarantee and no free translation edits with other engines.": [
+            "באפשרותך <button>לעבור למנוע אחר</button> אם תעדיף — ללא הבטחת איכות וללא עריכות תרגום בחינם במנועים אחרים."
+         ],
+         "Your content will be translated by <strong>Private Translation Cloud (PTC)</strong>, WPML's own AI engine. PTC lets you translate the entire site automatically, in one click, offering free translation edits.": [
+            "התוכן שלך יתורגם באמצעות <strong>Private Translation Cloud (PTC)</strong>, מנוע ה-AI של WPML. ‏PTC מאפשר לך לתרגם את האתר כולו באופן אוטומטי, בלחיצה אחת, ומציע עריכות תרגום בחינם."
+         ],
+         "Couldn't save — try again": [
+            "השמירה נכשלה — נסה שוב"
+         ],
+         "Your content will be translated by <strong>%s</strong>, a machine translation engine. You pay per word, including changes to content that's already translated.": [
+            "התוכן שלך יתורגם באמצעות <strong>%s</strong>, מנוע תרגום מכונה. התשלום הוא לפי מילה, כולל שינויים בתוכן שכבר תורגם."
+         ],
+         "Switch to PTC": [
+            "מעבר ל-PTC"
+         ],
+         "Switch away from PTC?": [
+            "לעזוב את PTC?"
+         ],
+         "DeepL, Google Translate or Microsoft Translator": [
+            "DeepL, Google Translate או Microsoft Translator"
+         ],
+         "Your engine now": [
+            "המנוע שלך כעת"
+         ],
+         "Switch away from PTC": [
+            "עזוב את PTC"
+         ],
+         "Stay with PTC": [
+            "הישאר עם PTC"
          ],
          "Technical Details (for WPML Support)": [
             "פרטים טכניים (עבור תמיכת WPML)"
@@ -186,6 +243,45 @@
          ],
          " and provide the technical details below (use the Copy button to copy them).": [
             " וספק את הפרטים הטכניים להלן (השתמש בכפתור ההעתקה כדי להעתיק אותם)."
+         ],
+         "Publish without review": [
+            "פרסם ללא סקירה"
+         ],
+         "Translations go live immediately in the target language.": [
+            "התרגומים מתפרסמים מיד בשפת היעד."
+         ],
+         "Wait for review before publishing": [
+            "המתן לסקירה לפני הפרסום"
+         ],
+         "Translations stay as drafts until a translation manager approves them.": [
+            "התרגומים נשארים כטיוטות עד שמנהל תרגום מאשר אותם."
+         ],
+         "Recommended": [
+            "מומלץ"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "עבור DeepL, Google ו-Microsoft אנו ממליצים על סקירה אנושית כדי לוודא שהם נכונים. PTC מספק תרגומים טובים יותר מתרגום אנושי (Better Than Human Translations) שמבינים את ההקשר, כך שתוכל לדלג בביטחון על תהליך הסקירה."
+         ],
+         "Publish and mark for review": [
+            "פרסם וסמן לסקירה"
+         ],
+         "Translations go live but appear in a \"needs review\" queue.": [
+            "התרגומים מתפרסמים אך מופיעים בתור ”נדרשת סקירה“."
+         ],
+         "After auto-translation": [
+            "לאחר תרגום אוטומטי"
+         ],
+         "What happens to content once %s has translated it.": [
+            "מה קורה לתוכן לאחר ש-%s תרגם אותו."
+         ],
+         "Wait for review": [
+            "המתן לסקירה"
+         ],
+         "%1$s (<strong>%2$s</strong>)": [
+            "%1$s (<strong>%2$s</strong>)"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "מה תרצה לעשות כש-WPML יסיים לתרגם את התוכן שלך אוטומטית?"
          ],
          "Loading AI Translation...": [
             "טוען תרגום AI..."
@@ -328,6 +424,15 @@
          "adding a custom language": [
             "הוספת שפה מותאמת אישית"
          ],
+         "I will fix my server settings to display languages in directories later.": [
+            "אתקן את הגדרות השרת שלי להצגת שפות בספריות מאוחר יותר."
+         ],
+         "We could not verify your server's URL-rewrite support.": [
+            "לא הצלחנו לאמת את התמיכה של השרת שלך בשכתוב כתובות URL (URL-rewrite)."
+         ],
+         "Learn more about required server settings to display languages in directories": [
+            "למד עוד על הגדרות שרת נדרשות להצגת שפות בספריות"
+         ],
          "I will change the permalink structure later.": [
             "אשנה את מבנה הקישורים הישירים מאוחר יותר."
          ],
@@ -341,7 +446,7 @@
             "דומיין שונה לכל שפה"
          ],
          "This option is not yet available for Multisite installs": [
-            "אפשרות זו עדיין אינה זמינה עבור התקנות Multisite"
+            "אפשרות זו עדיין אינה זמינה עבור התקנות מולטיסייט"
          ],
          "Learn more about required server settings to use a different domain per language": [
             "למד עוד על הגדרות שרת נדרשות לשימוש בדומיין שונה לכל שפה"
@@ -367,8 +472,15 @@
          "This domain does not show this site.": [
             "דומיין זה אינו מציג אתר זה."
          ],
+         "This address belongs to another site on this network.": [
+            "כתובת זו שייכת לאתר אחר ברשת זו."
+         ],
          "WPML could not reach this domain.": [
             "ל-WPML לא הייתה אפשרות לגשת לדומיין זה."
+         ],
+         "If you choose this, these URLs will open a sub-site: %s.": [
+            "אם תבחר באפשרות זו, כתובות ה-URL הבאות יפתחו אתר משנה: %s.",
+            "אם תבחר באפשרות זו, כתובות ה-URL הבאות יפתחו אתר משנה: %s."
          ],
          "The domain you have entered is invalid.": [
             "הדומיין שהזנת אינו חוקי."
@@ -387,15 +499,6 @@
          ],
          "The URL rewrite is not configured in your server.": [
             "שכתוב ה-URL אינו מוגדר בשרת שלך."
-         ],
-         "I will fix my server settings to display languages in directories later.": [
-            "אתקן את הגדרות השרת שלי להצגת שפות בספריות מאוחר יותר."
-         ],
-         "We could not verify your server's URL-rewrite support.": [
-            "לא הצלחנו לאמת את התמיכה של השרת שלך בשכתוב כתובות URL (URL-rewrite)."
-         ],
-         "Learn more about required server settings to display languages in directories": [
-            "למד עוד על הגדרות שרת נדרשות להצגת שפות בספריות"
          ],
          "your pages": [
             "העמודים שלך"
@@ -421,11 +524,17 @@
          "Translate your posts": [
             "תרגם את הפוסטים שלך"
          ],
-         "the Translation Dashboard": [
-            "לוח בקרת התרגום"
+         "%s will translate your whole site and keep new content translated from now on. You're charged per word, including later changes.": [
+            "%s יתרגם את כל האתר שלך וימשיך לתרגם תוכן חדש מעתה והלאה. החיוב הוא לפי מילה, כולל שינויים מאוחרים יותר."
          ],
          "Private Translation Cloud (PTC) will translate your whole site and keep new content translated from now on. You pay once for what's translated — editing it afterward is free.": [
             "Private Translation Cloud (PTC) יתרגם את כל האתר שלך וישמור על תוכן חדש מתורגם מעתה והלאה. אתה משלם פעם אחת על מה שתורגם — עריכתו לאחר מכן היא בחינם."
+         ],
+         "Automatic translation will translate your whole site and keep new content translated from now on.": [
+            "תרגום אוטומטי יתרגם את כל האתר שלך וימשיך לתרגם תוכן חדש מעתה והלאה."
+         ],
+         "the Translation Dashboard": [
+            "לוח בקרת התרגום"
          ],
          "Apply settings and start site's translation": [
             "החל הגדרות והתחל בתרגום האתר"
@@ -439,8 +548,14 @@
          "the WooCommerce Multilingual setup": [
             "הגדרת WooCommerce Multilingual"
          ],
+         "%s will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "%s יתחיל לתרגם את האתר שלך כעת וימשיך לתרגם תוכן חדש מעתה והלאה. בשלב הבא תגדיר את החנות הרב-לשונית שלך. תרגום המוצרים יתחיל לאחר שתסיים את הגדרת WooCommerce Multilingual."
+         ],
          "Private Translation Cloud (PTC) will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup. You pay once for what's translated. Editing it afterward is free.": [
             "Private Translation Cloud (PTC) יתחיל לתרגם את האתר שלך כעת וישמור על תוכן חדש מתורגם מעתה והלאה. לאחר מכן, תגדיר את החנות הרב-לשונית שלך. המוצרים שלך יתחילו להיתרגם ברגע שתסיים את הגדרת WooCommerce Multilingual. אתה משלם פעם אחת על מה שתורגם. עריכתו לאחר מכן היא בחינם."
+         ],
+         "Automatic translation will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "תרגום אוטומטי יתחיל לתרגם את האתר שלך כעת וימשיך לתרגם תוכן חדש מעתה והלאה. בשלב הבא תגדיר את החנות הרב-לשונית שלך. תרגום המוצרים יתחיל לאחר שתסיים את הגדרת WooCommerce Multilingual."
          ],
          "Continue to WooCommerce Multilingual Setup while translation begins": [
             "המשך להגדרת WooCommerce Multilingual בזמן שהתרגום מתחיל"
@@ -484,14 +599,20 @@
          "Applying your setup choices": [
             "מחיל את בחירות ההגדרה שלך"
          ],
+         "%s is translating your content. There's nothing else you need to do here.": [
+            "%s מתרגם את התוכן שלך. אין צורך לבצע שום פעולה נוספת כאן."
+         ],
          "PTC is translating your content. There's nothing else you need to do here.": [
             "PTC מתרגם את התוכן שלך. אין שום דבר נוסף שעליך לעשות כאן."
+         ],
+         "Your content is being translated. There's nothing else you need to do here.": [
+            "התוכן שלך מתורגם כעת. אין צורך לבצע שום פעולה נוספת כאן."
          ],
          "We're applying all your setup choices and preparing WPML. This is a one-time process.": [
             "אנחנו מחילים את כל בחירות ההגדרה שלך ומכינים את WPML. זהו תהליך חד-פעמי."
          ],
          "Taking you to %s…": [
-            "מעביר אותך אל %s…"
+            "מעביר אותך אל %s..."
          ],
          "What are the languages of your site?": [
             "מהן השפות של האתר שלך?"
@@ -563,10 +684,10 @@
             "התקן בלעדיהם"
          ],
          "Also send content statistics and your list of plugins and themes, to improve WPML and get maintenance alerts.": [
-            "שלח גם סטטיסטיקת תוכן ואת רשימת התוספים והתבניות שלך, כדי לשפר את WPML ולקבל התראות תחזוקה."
+            "שלח גם נתוני סטטיסטיקה על תוכן ואת רשימת התוספים וערכות העיצוב שלך, כדי לשפר את WPML ולקבל התראות תחזוקה."
          ],
          "Content statistics are counts: how many posts and pages you have, how much text, and how much of it is translated into each language. The content itself is never sent. The list of plugins and themes lets us warn you about known compatibility problems.": [
-            "סטטיסטיקת תוכן היא ספירה בלבד: כמה פוסטים ועמודים יש לך, כמה טקסט, וכמה מתוכו מתורגם לכל שפה. התוכן עצמו לעולם אינו נשלח. רשימת התוספים והתבניות מאפשרת לנו להתריע בפניך על בעיות תאימות ידועות."
+            "נתוני סטטיסטיקה על תוכן הם ספירות: כמה פוסטים ועמודים יש לך, כמה טקסט וכמה מתוכו מתורגם לכל שפה. התוכן עצמו לעולם אינו נשלח. רשימת התוספים וערכות העיצוב מאפשרת לנו להזהיר אותך לגבי בעיות תאימות ידועות."
          ],
          "What WPML shares with wpml.org": [
             "מה WPML משתף עם wpml.org"
@@ -580,38 +701,8 @@
          "Full details of the info we’re proposing to share": [
             "פרטים מלאים על המידע שאנו מציעים לשתף"
          ],
-         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
-            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> עם בחירת המצב הטוב ביותר עבור האתר שלך."
-         ],
-         "How would you like to translate your content?": [
-            "כיצד תרצה לתרגם את התוכן שלך?"
-         ],
-         "Recommended": [
-            "מומלץ"
-         ],
-         "Translate Everything Automatically": [
-            "תרגם הכל אוטומטית"
-         ],
-         "Full-site automatic translation needs AI translation set up.": [
-            "תרגום אוטומטי של כל האתר דורש הגדרת תרגום AI."
-         ],
-         "Set up AI translation": [
-            "הגדר תרגום AI"
-         ],
-         "Translate Some: You Choose What to Translate": [
-            "תרגם חלק מהתוכן: אתה בוחר מה לתרגם"
-         ],
-         "Select this option": [
-            "בחר באפשרות זו"
-         ],
          "How it works": [
             "איך זה עובד"
-         ],
-         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
-            "PTC (Private Translation Cloud) הוא מנוע תרגום ה-AI של WPML. הוא מתרגם את כל האתר שלך לכל שפה שבחרת, ברקע. תוכל לערוך כל תרגום ולהחריג סוגי פוסטים."
-         ],
-         "Can't decide?": [
-            "לא מצליח להחליט?"
          ],
          "You select and submit what to translate.": [
             "אתה בוחר ושולח מה לתרגם."
@@ -619,32 +710,35 @@
          "Costs": [
             "עלויות"
          ],
-         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
-            "שלם פעם אחת על סך התוכן שתורגם.<br/><strong>הגהות הן בחינם</strong> — רק הרחבת תוכן כרוכה בתשלום."
-         ],
          "Pay per translation job submitted.<br/>Each update or new content batch is a separate charge.": [
-            "שלם עבור כל עבודת תרגום שנשלחה.<br/>כל עדכון או סדרת תוכן חדשה הם בחיוב נפרד."
-         ],
-         "Translation quality": [
-            "איכות התרגום"
-         ],
-         "WPML ensures excellent quality. Bad translations are refunded.": [
-            "WPML מבטיח איכות מצוינת. תרגומים גרועים יזוכו."
+            "שלם עבור כל משימת תרגום שנשלחה.<br/>כל עדכון או מקבץ תוכן חדש כרוכים בחיוב נפרד."
          ],
          "Ideal for": [
             "אידיאלי עבור"
          ],
-         "Known upfront costs": [
-            "עלויות ידועות מראש"
+         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "PTC (Private Translation Cloud) הוא מנוע תרגום ה-AI של WPML. הוא מתרגם את כל האתר שלך לכל שפה שבחרת, ברקע. תוכל לערוך כל תרגום ולהחריג סוגי פוסטים."
          ],
-         "Unlimited post-translation editing": [
-            "עריכה ללא הגבלה לאחר התרגום"
+         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
+            "שלם פעם אחת על סך התוכן שתורגם.<br/><strong>הגהות הן בחינם</strong> — רק הרחבת תוכן כרוכה בתשלום."
          ],
-         "Marketing optimization": [
-            "אופטימיזציה שיווקית"
+         "Included with PTC": [
+            "כלול ב-PTC"
          ],
-         "Turn-key solutions": [
-            "פתרונות מוכנים לשימוש (Turn-key)"
+         "Only with PTC — not with %s": [
+            "רק ב-PTC — לא ב-%s"
+         ],
+         "your current engine": [
+            "המנוע הנוכחי שלך"
+         ],
+         "%s translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "%s מתרגם ברקע את כל האתר שלך לכל שפה שבחרת. תוכל לערוך כל תרגום ולהחריג סוגי פוסטים."
+         ],
+         "Charged per word, including changes to content that's already translated.": [
+            "חיוב לפי מילה, כולל שינויים בתוכן שכבר תורגם."
+         ],
+         "You choose what to translate, from the Translation Dashboard or with \"+\" next to each page. PTC translates it.": [
+            "אתם בוחרים מה לתרגם, מלוח בקרת תרגום או באמצעות ”+“ לצד כל עמוד. PTC מתרגם את התוכן."
          ],
          "Partial site translation": [
             "תרגום חלקי של האתר"
@@ -652,8 +746,95 @@
          "Maximum control": [
             "שליטה מקסימלית"
          ],
+         "Quality without the work": [
+            "איכות ללא המאמץ"
+         ],
+         "You choose what to translate. You or your translators write each translation in the Advanced Translation Editor.": [
+            "אתם בוחרים מה לתרגם. אתם או המתרגמים שלכם כותבים כל תרגום בעורך התרגום המתקדם."
+         ],
+         "No words used, unless you start from a machine translation in the editor.": [
+            "אין שימוש במילים, אלא אם תתחיל מתרגום מכונה בעורך."
+         ],
+         "Your own translators": [
+            "מתרגמים משלך"
+         ],
+         "Texts that need a human touch": [
+            "טקסטים שזקוקים למגע אנושי"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "PTC translates what you send. You review.": [
+            "PTC מתרגם את מה שאתם שולחים. אתם סוקרים."
+         ],
+         "I translate": [
+            "אתרגם בעצמי"
+         ],
+         "You or your translators write it.": [
+            "אתם או המתרגמים שלכם כותבים אותו."
+         ],
+         "When you start a translation, who translates?": [
+            "כשאתם מתחילים תרגום, מי מתרגם?"
+         ],
+         "Who translates": [
+            "מי מתרגם"
+         ],
          "Contact our support team for help": [
             "צור קשר עם צוות התמיכה שלנו לקבלת עזרה"
+         ],
+         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
+            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> עם בחירת המצב הטוב ביותר עבור האתר שלך."
+         ],
+         "How would you like to translate your content?": [
+            "כיצד תרצה לתרגם את התוכן שלך?"
+         ],
+         "Translate Everything Automatically": [
+            "תרגם הכל אוטומטית"
+         ],
+         "Translations always in sync": [
+            "תרגומים תמיד מסונכרנים"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "תרגום אוטומטי של כל האתר דורש הגדרת תרגום AI."
+         ],
+         "New and updated content translated automatically": [
+            "תוכן חדש ומעודכן מתורגם באופן אוטומטי"
+         ],
+         "Set up AI translation": [
+            "הגדר תרגום AI"
+         ],
+         "Sites that publish often": [
+            "אתרים שמפרסמים לעיתים קרובות"
+         ],
+         "All your languages at once": [
+            "כל השפות שלך בו-זמנית"
+         ],
+         "Translate Some: You Choose What to Translate": [
+            "תרגם חלק מהתוכן: אתה בוחר מה לתרגם"
+         ],
+         "Select this option": [
+            "בחר באפשרות זו"
+         ],
+         "WPML uses the Advanced Translation Editor. You can change the editor later in WPML > Settings > Translation editor and method.": [
+            "WPML משתמש בעורך התרגום המתקדם. תוכלו לשנות את העורך מאוחר יותר ב־WPML > הגדרות > עורך ושיטת תרגום."
+         ],
+         "Quality guarantee, bad translations refunded": [
+            "הבטחת איכות, החזר כספי על תרגומים גרועים"
+         ],
+         "Can't decide?": [
+            "לא מצליח להחליט?"
+         ],
+         "Pay once — revisions are free": [
+            "משלמים פעם אחת — תיקונים הם בחינם"
+         ],
+         "Known upfront costs": [
+            "עלויות ידועות מראש"
+         ],
+         "Publish-ready results, no review needed": [
+            "תוצאות מוכנות לפרסום, ללא צורך בסקירה"
+         ],
+         "Marketing optimization based on your site and audience": [
+            "אופטימיזציה שיווקית המבוססת על האתר וקהל היעד שלך"
          ],
          "Calculate Translation Costs": [
             "חשב עלויות תרגום"
@@ -668,7 +849,7 @@
             "לפני שמתרגמים הכל"
          ],
          "You can continue without them. Nothing here stops the setup.": [
-            "תוכל להמשיך בלעדיהם. שום דבר כאן לא עוצר את ההגדרה."
+            "תוכל להמשיך בלעדיהם. שום דבר כאן אינו עוצר את ההגדרה."
          ],
          "Translation Contributors": [
             "תורמים לתרגום"
@@ -888,6 +1069,9 @@
          ],
          "Ranking": [
             "דירוג"
+         ],
+         "language URL directory and language name\u0004%1$s (%2$s)": [
+            "%1$s (%2$s)"
          ]
       }
    }

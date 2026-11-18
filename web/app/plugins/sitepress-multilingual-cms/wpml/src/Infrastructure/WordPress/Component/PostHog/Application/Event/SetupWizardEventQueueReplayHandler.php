@@ -7,26 +7,32 @@ use WPML\Core\Component\PostHog\Application\Service\Config\ConfigService;
 use WPML\Core\Component\PostHog\Application\Service\Event\CaptureEventService;
 use WPML\Core\Component\PostHog\Application\Service\Event\SetupWizardEventQueueService;
 use WPML\Core\Component\PostHog\Domain\Event\Custom\Event as CustomEvent;
-use WPML\DicInterface;
-use WPML\Infrastructure\WordPress\Component\PostHog\Domain\Event\Capture;
+use WPML\Core\Component\PostHog\Domain\TrackingMode;
 use WPML\PHP\Exception\RemoteException;
 
 class SetupWizardEventQueueReplayHandler {
+
+  const REPLAY_HOOK = 'wpml_posthog_setup_wizard_queue_replay';
+
+  const REPLAY_TRACKING_MODE = TrackingMode::ALL;
 
   const RETRY_DELAY_SECONDS = 300;
 
   const MAX_REPLAY_PER_RUN = 10;
 
-  private $dic;
+  private $queueService;
+
+  private $captureServiceFactory;
 
 
-  public function __construct( DicInterface $dic ) {
-    $this->dic = $dic;
+  public function __construct( SetupWizardEventQueueService $queueService, callable $captureServiceFactory ) {
+    $this->queueService          = $queueService;
+    $this->captureServiceFactory = $captureServiceFactory;
   }
 
 
   public function handle() {
-    $queueService = $this->dic->make( SetupWizardEventQueueService::class );
+    $queueService = $this->queueService;
 
     $queueService->cleanupStale();
 
@@ -39,7 +45,7 @@ class SetupWizardEventQueueReplayHandler {
     if ( $queueService->getPending() ) {
       wp_schedule_single_event(
         time() + self::RETRY_DELAY_SECONDS,
-        SetupWizardEventQueueReplayScheduler::REPLAY_HOOK
+        self::REPLAY_HOOK
       );
     }
   }
@@ -52,10 +58,7 @@ class SetupWizardEventQueueReplayHandler {
         $this->withReplayMetadata( $entry )
       );
 
-      $captureService = $this->dic->make(
-        CaptureEventService::class,
-        [ ':captureEvent' => $this->dic->make( Capture::class ) ]
-      );
+      $captureService = ( $this->captureServiceFactory )();
 
       $sent = $captureService->capture(
         ( new ConfigService() )->create(),

@@ -53,6 +53,8 @@ class WPML_Media_Menus {
 			/* translators: Button label that closes the media translation dialog without saving. Verb, imperative, not the noun "a cancellation". */
 			'cancel'        => esc_js( __( 'Cancel', 'wpml-media' ) ),
 			'save'          => esc_js( __( 'Save media translation', 'wpml-media' ) ),
+			/* translators: Error shown at the bottom of the media translation dialog when Save gets no usable answer from the server (a server error, an expired session or a lost connection); the dialog stays open and Save can be pressed again. */
+			'save_failed'   => __( 'The media translation could not be saved. Refresh the page and try again.', 'wpml-media' ),
 			'status_labels' => WPML_Media_Translations_UI::get_translation_status_labels(),
 		);
 		wp_localize_script( 'wpml-media', 'wpml_media_popup', $wpml_media_popup_strings );
@@ -67,6 +69,11 @@ class WPML_Media_Menus {
 			'nonce'          => wp_create_nonce( 'wpml_media_translate_media_url' ),
 		);
 		wp_localize_script( 'wpml-media-batch-url-translation', 'wpml_media_batch_translation', $batch_translation_vars );
+
+		if ( \WPML\Media\TextScan\Feature::isEnabled() ) {
+			wp_enqueue_script( 'wpml-media-text-scan-listing', $wpml_media_url . '/res/js/text-scan-listing.js', array( 'jquery' ), $wpml_media_version, true );
+			wp_localize_script( 'wpml-media-text-scan-listing', 'wpml_media_text_scan', \WPML\Media\TextScan\Listing::scriptData() );
+		}
 
 		wp_enqueue_script( OTGS_Assets_Handles::TABLE_STICKY_HEADER );
 

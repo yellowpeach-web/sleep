@@ -11,6 +11,8 @@ class MediaTexts implements \IWPML_Backend_Action {
 	private const NOTICE_GROUP    = 'acfml';
 	private const NOTICE_ID       = 'media-texts-disabled';
 
+	private const NOTICE_SCRIPT_HANDLE = 'acfml-media-texts-notice';
+
 	private const SCRIPT_JSON_FLAGS = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
 
 	public function add_hooks() {
@@ -45,21 +47,17 @@ class MediaTexts implements \IWPML_Backend_Action {
 				'label' => __( 'Go to Media Translation settings', 'acfml' ),
 			],
 		];
-		?>
-		<script type="text/javascript">
-			(function() {
-				wp.data.dispatch("core/notices").createNotice(
-					'info',
-					<?php echo wp_json_encode( $this->explanation(), self::SCRIPT_JSON_FLAGS );  ?>,
-					{
-						id: <?php echo wp_json_encode( self::NOTICE_ID, self::SCRIPT_JSON_FLAGS );  ?>,
-						isDismissible: true,
-						actions: <?php echo wp_json_encode( $actions, self::SCRIPT_JSON_FLAGS );  ?>
-					}
-				);
-			})();
-		</script>
-		<?php
+
+		$script = sprintf(
+			'(function() { wp.data.dispatch("core/notices").createNotice("info", %1$s, { id: %2$s, isDismissible: true, actions: %3$s }); })();',
+			wp_json_encode( $this->explanation(), self::SCRIPT_JSON_FLAGS ),
+			wp_json_encode( self::NOTICE_ID, self::SCRIPT_JSON_FLAGS ),
+			wp_json_encode( $actions, self::SCRIPT_JSON_FLAGS )
+		);
+
+		wp_register_script( self::NOTICE_SCRIPT_HANDLE, false, [ 'wp-data', 'wp-notices' ], ACFML_VERSION, true );
+		wp_enqueue_script( self::NOTICE_SCRIPT_HANDLE );
+		wp_add_inline_script( self::NOTICE_SCRIPT_HANDLE, $script );
 	}
 
 	public static function shouldDisplayNotice() : bool {

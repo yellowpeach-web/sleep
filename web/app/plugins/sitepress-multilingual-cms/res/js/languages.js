@@ -23,13 +23,20 @@
     icl_hide_languages.submit(iclSaveForm)
     jQuery('#icl_adjust_ids').submit(iclSaveForm)
     jQuery('#icl_automatic_redirect').submit(iclSaveForm)
-    jQuery('#icl_automatic_redirect input[name="icl_automatic_redirect"]').on('click', function () {
-      const $redirect_warn = jQuery(this).parents('#icl_automatic_redirect').find('.js-redirect-warning')
-      if (jQuery(this).val() != 0) {
-        $redirect_warn.fadeIn()
-      } else {
-        $redirect_warn.fadeOut()
-      }
+    // Visitor language (wpmldev-9412): show each field only while the choice
+    // it belongs to is selected. Hidden fields are still posted.
+    jQuery('#icl_redirect_to_chosen_language').on('change', function () {
+      jQuery(this).closest('form').find('.js-chosen-language-days').toggle(this.checked)
+    })
+    jQuery('#icl_automatic_redirect input[name="icl_first_visit"]').on('change', function () {
+      const $form = jQuery(this).closest('form')
+      const mode = $form.find('input[name="icl_first_visit"]:checked').val()
+      $form.find('.js-redirect-missing').toggle(mode === 'redirect')
+      // One hours field for Redirect and Bar, with the sentence of the
+      // selected one around it.
+      $form.find('.js-remember-language-hours').toggle(mode === 'redirect' || mode === 'bar')
+      $form.find('.js-remember-language-hours-redirect').toggle(mode !== 'bar')
+      $form.find('.js-remember-language-hours-bar').toggle(mode === 'bar')
     })
     jQuery('input[name="icl_language_negotiation_type"]').change(iclLntDomains)
     jQuery('#icl_use_directory').change(iclUseDirectoryToggle)
@@ -49,8 +56,6 @@
       const checkedBoxes = jQuery('#icl_avail_languages_picker').find('li input:checkbox:checked').length
       jQuery('#icl_setup_next_1').prop('disabled', checkedBoxes <= 1)
     })
-
-    jQuery('#icl_promote_form').submit(iclSaveForm)
 
     // wpmldev-7978: the `toggle_content_translation` wizard emitter was removed —
     // no server-side handler for it has existed in the product for a long time
@@ -238,6 +243,13 @@
     } else {
       jQuery('#wpml_show_page_on_root_details').fadeOut()
       jQuery('#icl_hide_language_switchers').fadeOut()
+    }
+
+    // wpmldev-11812: the cache note belongs to "Redirect to the default language" only.
+    if (jQuery(this).val() === 'redirect') {
+      jQuery('#wpml_show_on_root_redirect_details').fadeIn()
+    } else {
+      jQuery('#wpml_show_on_root_redirect_details').fadeOut()
     }
   }
 
@@ -582,7 +594,7 @@
       url: ajaxurl,
       data: data,
       success: function (response) {
-        let formErrors, rootHtmlFile, rootPage, spl
+        let formErrors, spl
         if (response.success) {
           fadeInAjxResp('#' + ajxResponse, icl_ajx_saved)
 
@@ -600,18 +612,10 @@
           }
 
           if (jQuery('input[name=use_directory]').is(':checked') && jQuery('input[name=show_on_root]').length) {
-            rootHtmlFile = jQuery('#wpml_show_on_root_html_file')
-            rootPage = jQuery('#wpml_show_on_root_page')
-            if (rootHtmlFile.prop('checked')) {
-              rootHtmlFile.addClass('active')
-              rootPage.removeClass('active')
-            }
-
-            if (rootPage.prop('checked')) {
-              rootPage.addClass('active')
-              rootHtmlFile.removeClass('active')
-            }
-
+            // wpmldev-11812: three root choices; the saved one is the active one.
+            jQuery('input[name=show_on_root]').each(function () {
+              jQuery(this).toggleClass('active', jQuery(this).prop('checked'))
+            })
           }
         } else {
           formErrors = jQuery('form[name="' + formName + '"] .icl_form_errors')

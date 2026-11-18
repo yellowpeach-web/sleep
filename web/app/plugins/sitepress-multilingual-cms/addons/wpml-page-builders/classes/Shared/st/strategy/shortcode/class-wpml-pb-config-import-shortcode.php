@@ -9,11 +9,17 @@ class WPML_PB_Config_Import_Shortcode {
 	const PB_SHORTCODE_SETTING       = 'pb_shortcode';
 	const PB_MEDIA_SHORTCODE_SETTING = 'wpml_pb_media_shortcode';
 	const PB_IDS_SHORTCODE_SETTING   = 'wpml_pb_ids_shortcode';
+	const PB_LINKS_SHORTCODE_SETTING = 'wpml_pb_links_shortcode';
+
+	const PB_STICKY_LINKS_SHORTCODE_SETTING = 'wpml_pb_sticky_links_shortcode';
 
 	const HAS_SHORTCODE_SETTINGS_FLAG = 'wpml_pb_has_shortcode_settings';
 
 	const TYPE_POST_IDS     = 'post-ids';
 	const TYPE_TAXONOMY_IDS = 'taxonomy-ids';
+	const TYPE_LINK         = 'link';
+
+	const FLAG_CONVERT_TO_STICKY = 'convert_to_sticky';
 
 	const WILDCARD_TYPE    = 'type';
 	const WILDCARD_REGEX   = 'regex';
@@ -38,6 +44,8 @@ class WPML_PB_Config_Import_Shortcode {
 	public function wpml_config_filter( $config_data ) {
 		$this->update_shortcodes_config( $config_data );
 		$this->update_ids_shortcodes_config( $config_data );
+		$this->update_links_shortcodes_config( $config_data );
+		$this->update_sticky_links_shortcodes_config( $config_data );
 		$this->update_media_shortcodes_config( $config_data );
 
 		return $config_data;
@@ -150,8 +158,56 @@ class WPML_PB_Config_Import_Shortcode {
 	}
 
 	private function update_ids_shortcodes_config( $config_data ) {
-		$old_shortcodes_data = $this->get_id_settings();
-		$shortcodes_data     = [];
+		$shortcodes_data = $this->get_attribute_settings(
+			$config_data,
+			function ( array $attribute ) {
+				if ( ! $this->is_id_attribute( $attribute ) ) {
+					return null;
+				}
+
+				return ConvertIdsHelper::selectElementType(
+					Obj::path( [ 'attr', 'sub-type' ], $attribute ),
+					Obj::path( [ 'attr', 'type' ], $attribute )
+				);
+			}
+		);
+
+		if ( $shortcodes_data != $this->get_id_settings() ) {
+			update_option( self::PB_IDS_SHORTCODE_SETTING, $shortcodes_data, true );
+		}
+	}
+
+	private function update_links_shortcodes_config( $config_data ) {
+		$old_shortcodes_data = get_option( self::PB_LINKS_SHORTCODE_SETTING, null );
+		$shortcodes_data     = $this->get_attribute_settings(
+			$config_data,
+			function ( array $attribute ) {
+				return $this->is_link_attribute( $attribute ) ? self::TYPE_LINK : null;
+			}
+		);
+
+		if ( null === $old_shortcodes_data || $shortcodes_data != $old_shortcodes_data ) {
+			update_option( self::PB_LINKS_SHORTCODE_SETTING, $shortcodes_data, true );
+		}
+	}
+
+	private function update_sticky_links_shortcodes_config( $config_data ) {
+		$shortcodes_data = $this->get_attribute_settings(
+			$config_data,
+			function ( array $attribute ) {
+				return $this->is_link_attribute( $attribute ) && $this->has_flag( $attribute, self::FLAG_CONVERT_TO_STICKY )
+					? self::TYPE_LINK
+					: null;
+			}
+		);
+
+		if ( $shortcodes_data !== self::get_sticky_link_settings() ) {
+			update_option( self::PB_STICKY_LINKS_SHORTCODE_SETTING, $shortcodes_data, true );
+		}
+	}
+
+	private function get_attribute_settings( $config_data, callable $get_type ) {
+		$shortcodes_data = [];
 
 		if ( isset ( $config_data['wpml-config']['shortcodes']['shortcode'] ) ) {
 
@@ -162,17 +218,9 @@ class WPML_PB_Config_Import_Shortcode {
 					$data['attributes']['attribute'] = $this->convert_single_attribute_to_multiple_format( $data['attributes']['attribute'] );
 
 					foreach ( $data['attributes']['attribute'] as $attribute ) {
+						$type = empty( $attribute['value'] ) ? null : $get_type( $attribute );
 
-						if ( ! $this->is_id_attribute( $attribute ) ) {
-							continue;
-						}
-
-						if ( ! empty( $attribute['value'] ) ) {
-							$type = ConvertIdsHelper::selectElementType(
-								Obj::path( [ 'attr','sub-type' ], $attribute ),
-								Obj::path( [ 'attr','type' ], $attribute )
-							);
-
+						if ( null !== $type ) {
 							$attributes[ $attribute['value'] ] = $this->is_wildcard_name( $attribute['value'] )
 								? $this->get_wildcard_setting( $attribute, $type )
 								: $type;
@@ -188,9 +236,7 @@ class WPML_PB_Config_Import_Shortcode {
 			}
 		}
 
-		if ( $shortcodes_data != $old_shortcodes_data ) {
-			update_option( self::PB_IDS_SHORTCODE_SETTING, $shortcodes_data, true );
-		}
+		return $shortcodes_data;
 	}
 
 	private function is_string_attribute( array $attribute ) {
@@ -200,6 +246,24 @@ class WPML_PB_Config_Import_Shortcode {
 
 	private function is_id_attribute( array $attribute ) {
 		return ConvertIdsHelper::isValidType( Obj::path( [ 'attr', 'type' ], $attribute ) );
+	}
+
+	private function is_link_attribute( array $attribute ) {
+		if ( Obj::path( [ 'attr', 'encoding' ], $attribute ) ) {
+			return false;
+		}
+
+		if ( self::TYPE_LINK === Obj::path( [ 'attr', 'type' ], $attribute ) ) {
+			return true;
+		}
+
+		return $this->has_flag( $attribute, self::FLAG_CONVERT_TO_STICKY )
+			&& ! $this->is_id_attribute( $attribute )
+			&& ! $this->is_media_attribute( $attribute );
+	}
+
+	private function has_flag( array $attribute, $flag ) {
+		return (bool) Obj::path( [ 'attr', $flag ], $attribute );
 	}
 
 	private function is_media_attribute( array $attribute ) {
@@ -219,7 +283,7 @@ class WPML_PB_Config_Import_Shortcode {
 	private function get_wildcard_setting( array $attribute, string $type ): array {
 		$name    = str_replace( '\\*', '[\w-]+', preg_quote( $attribute['value'], '/' ) );
 		$exclude = explode( ',', (string) Obj::path( [ 'attr', 'exclude' ], $attribute ) );
-		$regex   = '/' . self::NAME_BOUNDARY . '(?<' . self::GROUP_ATTRIBUTE . '>(?<' . self::GROUP_NAME . '>' . $name . ')=[\"\']{1})'
+		$regex   = '/' . self::NAME_BOUNDARY . '(?<' . self::GROUP_ATTRIBUTE . '>(?<' . self::GROUP_NAME . '>' . $name . ')\s*=\s*[\"\']{1})'
 			. '(?<' . self::GROUP_IDS . '>[^\"\']+)/';
 
 		return [
@@ -227,6 +291,37 @@ class WPML_PB_Config_Import_Shortcode {
 			self::WILDCARD_REGEX   => $regex,
 			self::WILDCARD_EXCLUDE => array_values( array_filter( array_map( 'trim', $exclude ), 'strlen' ) ),
 		];
+	}
+
+	public static function replace_attribute_values( $subject, $attribute, $setting, callable $convert ) {
+		if ( is_array( $setting ) ) {
+			$type    = $setting[ self::WILDCARD_TYPE ];
+			$exclude = $setting[ self::WILDCARD_EXCLUDE ];
+
+			$converted = preg_replace_callback(
+				$setting[ self::WILDCARD_REGEX ],
+				function ( $arr ) use ( $type, $exclude, $convert ) {
+					return in_array( $arr[ self::GROUP_NAME ], $exclude, true )
+						? $arr[0]
+						: $arr[ self::GROUP_ATTRIBUTE ] . $convert( $arr[ self::GROUP_IDS ], $type );
+				},
+				$subject
+			);
+		} else {
+			$converted = preg_replace_callback(
+				'/' . self::NAME_BOUNDARY . '(' . preg_quote( $attribute, '/' ) . '\s*=\s*[\"\']{1})([^\"\']+)/',
+				function ( $arr ) use ( $setting, $convert ) {
+					return $arr[1] . $convert( $arr[2], $setting );
+				},
+				$subject
+			);
+		}
+
+		if ( is_array( $subject ) ) {
+			return is_array( $converted ) && array_keys( $converted ) === array_keys( $subject ) ? $converted : $subject;
+		}
+
+		return is_string( $converted ) ? $converted : $subject;
 	}
 
 	private function convert_single_attribute_to_multiple_format( array $attribute ) {
@@ -247,6 +342,16 @@ class WPML_PB_Config_Import_Shortcode {
 
 	public function get_id_settings() {
 		return get_option( self::PB_IDS_SHORTCODE_SETTING, [] );
+	}
+
+	public function get_link_settings() {
+		return get_option( self::PB_LINKS_SHORTCODE_SETTING, [] );
+	}
+
+	public static function get_sticky_link_settings() {
+		$settings = get_option( self::PB_STICKY_LINKS_SHORTCODE_SETTING, [] );
+
+		return is_array( $settings ) ? $settings : [];
 	}
 
 	public function has_settings() {

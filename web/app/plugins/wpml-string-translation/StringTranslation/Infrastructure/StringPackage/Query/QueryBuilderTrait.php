@@ -55,8 +55,8 @@ trait QueryBuilderTrait {
 	): string {
 		if ( $criteria->getTitle() ) {
 			return $this->wpdb->prepare(
-				'AND sp.title LIKE %s',
-				'%' . $this->wpdb->esc_like( $criteria->getTitle() ) . '%'
+				"AND sp.title LIKE %s ESCAPE '|'",
+				\WPML\Utils\LikeEscape::contains( $criteria->getTitle() )
 			);
 		}
 
@@ -72,13 +72,11 @@ trait QueryBuilderTrait {
 	}
 
 	private function buildSortingQueryPart( StringPackageCriteria $criteria ): string {
-		$allowedSortingDirections = [ 'DESC', 'ASC' ];
-		$direction                = $allowedSortingDirections[0];
+		$direction = 'DESC';
 
 		$sortingCriteria = $criteria->getSorting();
 		if ( $sortingCriteria && $sortingCriteria['by'] === 'title' ) {
-			$sortingOrder = strtoupper( $sortingCriteria['order'] );
-			$direction    = in_array( $sortingOrder, $allowedSortingDirections, true ) ? $sortingOrder : $direction;
+			$direction = 'ASC' === strtoupper( $sortingCriteria['order'] ) ? 'ASC' : 'DESC';
 
 			return "ORDER BY sp.title {$direction}, sp.ID {$direction}";
 		}

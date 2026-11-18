@@ -18,8 +18,10 @@ class SearchPopulatedKindsQueryBuilder {
 	}
 
 	public function build( SearchPopulatedKindsCriteria $criteria, $kindSlug ): string {
-		$sourceLanguage = $this->sqlStringLiteral( $this->getSourceLanguageCode( $criteria ) );
-		$kindSlug       = $this->sqlStringLiteral( $kindSlug );
+		$sourceLanguage        = $this->sqlStringLiteral( $this->getSourceLanguageCode( $criteria ) );
+		$kindSlug              = $this->sqlStringLiteral( $kindSlug );
+		$ridesOwnerSql         = apply_filters( 'wpml_string_package_rides_owner_sql', '', 'sp' );
+		$excludeRidingPackages = $ridesOwnerSql ? "AND NOT ({$ridesOwnerSql})" : '';
 
 		return "
 			SELECT sp.kind_slug
@@ -29,6 +31,7 @@ class SearchPopulatedKindsQueryBuilder {
 				AND source_t.element_type = CONCAT('package_', sp.kind_slug)
 				AND source_t.language_code = {$sourceLanguage}
 			WHERE sp.kind_slug = {$kindSlug}
+				{$excludeRidingPackages}
 				AND {$this->buildTranslationStatusCondition( $criteria, $this->getTargetLanguageCodes( $criteria ) )}
 			LIMIT 1
 		";

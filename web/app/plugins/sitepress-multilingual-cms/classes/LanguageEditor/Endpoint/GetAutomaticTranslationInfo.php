@@ -8,6 +8,8 @@ use WPML\FP\Either;
 use WPML\FP\Obj;
 use WPML\LanguageEditor\LanguageCodeResolution;
 use WPML\LanguageEditor\MappingKind;
+use WPML\Core\Component\ATE\Application\Service\ActiveEngineQueryInterface;
+use WPML\Core\Component\ATE\Application\Service\Dto\EngineDto;
 use WPML\Legacy\Component\ATE\Application\Service\ActiveEngineQuery;
 use WPML\TM\API\ATE\CachedLanguageMappings;
 use WPML\TM\API\ATE\LanguageMappings;
@@ -19,6 +21,12 @@ class GetAutomaticTranslationInfo implements IHandler {
 
 	const PTC_ENGINE = 'llm';
 
+	private $activeEngineQuery;
+
+	public function __construct( $activeEngineQuery = null ) {
+		$this->activeEngineQuery = $activeEngineQuery;
+	}
+
 	public function run( Collection $data ) {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return Either::left( [ 'error' => 'forbidden' ] );
@@ -29,29 +37,40 @@ class GetAutomaticTranslationInfo implements IHandler {
 		}
 
 		try {
-			$engine = $this->engine();
+			$resolution = $this->activeEngineQuery()->resolve();
 
-			if ( null === $engine ) {
-				return Either::left( [ 'error' => 'ateUnreachable' ] );
-			}
+			if ( $resolution->isNoneEnabled() ) {
+				$payload = [
+					'enabled'         => true,
+					'engine'          => null,
+					'noEngineEnabled' => true,
+					'settingsUrl'     => self::aiTranslationSettingsUrl(),
+					'languages'       => (object) [],
+				];
+			} else {
+				$engine = $this->engine( $resolution->getEngine() );
 
-			global $sitepress;
-			$activeLanguages = (array) $sitepress->get_active_languages();
+				if ( null === $engine ) {
+					return Either::left( [ 'error' => 'ateUnreachable' ] );
+				}
 
-			return Either::right(
-				[
+				global $sitepress;
+				$activeLanguages = (array) $sitepress->get_active_languages();
+
+				$payload = [
 					'enabled'   => true,
 					'engine'    => $engine,
 					'languages' => $this->languages( $activeLanguages ),
-				]
-			);
+				];
+			}
+
+			return Either::right( $payload );
 		} catch ( \Throwable $e ) {
 			return Either::left( [ 'error' => 'ateUnreachable' ] );
 		}
 	}
 
-	private function engine() {
-		$engine = ( new ActiveEngineQuery() )->get();
+	private function engine( $engine ) {
 		if ( null === $engine ) {
 			return null;
 		}
@@ -62,8 +81,20 @@ class GetAutomaticTranslationInfo implements IHandler {
 			'codeName'    => $codeName,
 			'formalName'  => $engine->getFormalName(),
 			'isPtc'       => self::PTC_ENGINE === $codeName,
-			'settingsUrl' => admin_url( 'admin.php?page=tm/menu/settings&section=ai-translation' ),
+			'settingsUrl' => self::aiTranslationSettingsUrl(),
 		];
+	}
+
+	private static function aiTranslationSettingsUrl() {
+		return admin_url( 'admin.php?page=tm/menu/settings&section=ai-translation' );
+	}
+
+	private function activeEngineQuery() {
+		if ( null === $this->activeEngineQuery ) {
+			$this->activeEngineQuery = new ActiveEngineQuery();
+		}
+
+		return $this->activeEngineQuery;
 	}
 
 	private function languages( array $activeLanguages ) {
@@ -110,7 +141,7 @@ class GetAutomaticTranslationInfo implements IHandler {
 				'canBeTranslatedAutomatically' => $canBeTranslatedAutomatically,
 				'ateLang'                      => $ateLang,
 				'mapping'                      => $mapping,
-				'ptcSupported'                 => ! empty( $ptc[ $code ] ),
+				'ptcSupported'                 => self::ptcSupportedFor( $ptc, $code, $mapping, $ateLang ),
 				'sameAteAsDefault'             => $sameAteAsDefault,
 				'needsMapping'                 => $needsMapping,
 			];
@@ -153,17 +184,46 @@ class GetAutomaticTranslationInfo implements IHandler {
 			return [];
 		}
 
-		$map = [];
+		return self::ptcSupportFromFeed( $feed );
+	}
+
+	private static function ptcSupportFromFeed( array $feed ) {
+		$byIso      = [];
+		$byWpmlCode = [];
 		foreach ( $feed as $entry ) {
-			$wpmlCode = (string) Obj::propOr( '', 'wpml_default_code', $entry );
-			if ( '' === $wpmlCode ) {
-				continue;
+			$supported = '' !== (string) Obj::propOr( '', 'llm_api_iso', $entry );
+
+			$iso = strtolower( (string) Obj::propOr( '', 'iso', $entry ) );
+			if ( '' !== $iso ) {
+				$byIso[ $iso ] = $supported;
 			}
-			$llm              = (string) Obj::propOr( '', 'llm_api_iso', $entry );
-			$map[ $wpmlCode ] = '' !== $llm;
+
+			$wpmlCode = strtolower( (string) Obj::propOr( '', 'wpml_default_code', $entry ) );
+			if ( '' !== $wpmlCode ) {
+				$byWpmlCode[ $wpmlCode ] = $supported;
+			}
 		}
 
-		return $map;
+		return $byWpmlCode + $byIso;
+	}
+
+	private static function ptcSupportedFor( array $ptc, $code, $mapping, $ateLang ) {
+		$candidates = [ $code ];
+		if ( is_array( $mapping ) && isset( $mapping['targetCode'] ) ) {
+			$candidates[] = (string) $mapping['targetCode'];
+		}
+		if ( null !== $ateLang ) {
+			$candidates[] = $ateLang;
+		}
+
+		foreach ( $candidates as $candidate ) {
+			$key = str_replace( '_', '-', strtolower( (string) $candidate ) );
+			if ( '' !== $key && array_key_exists( $key, $ptc ) ) {
+				return $ptc[ $key ];
+			}
+		}
+
+		return false;
 	}
 
 	private function ateApi() {

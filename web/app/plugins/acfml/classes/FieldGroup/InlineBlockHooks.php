@@ -2,9 +2,7 @@
 
 namespace ACFML\FieldGroup;
 
-use ACFML\Helper\Fields;
 use ACFML\Tools\Local;
-use WPML\FP\Fns;
 use WPML\FP\Obj;
 
 class InlineBlockHooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
@@ -45,11 +43,7 @@ class InlineBlockHooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action,
 		$mode                    = $this->getDeclaredMode( self::getLocationBlockName( $fieldGroup ) ) ?? $this->storedModes->getOrStore( $fieldGroup['key'] );
 		$fieldGroup[ Mode::KEY ] = $mode;
 
-		if ( Mode::ADVANCED !== $mode ) {
-			$fieldGroup['fields'] = Fields::iterate( (array) Obj::prop( 'fields', $fieldGroup ), $this->stampModePreference( $mode ), Fns::identity() );
-		}
-
-		return $fieldGroup;
+		return ModePreferenceStamp::onFields( $fieldGroup, $mode );
 	}
 
 	public static function isInlineBlockGroup( array $fieldGroup ): bool {
@@ -76,19 +70,5 @@ class InlineBlockHooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action,
 		$mode = $this->declaredModes[ $blockName ] ?? Obj::prop( Mode::KEY, (array) acf_get_block_type( $blockName ) );
 
 		return in_array( $mode, Mode::ALL, true ) ? $mode : null;
-	}
-
-	private function stampModePreference( string $mode ): callable {
-		$getModePreference = ModeDefaults::get( $mode );
-
-		return function ( $field ) use ( $getModePreference ) {
-			if ( isset( $field['wpml_cf_preferences'] ) || ModeValidity::storesNoValue( $field ) ) {
-				return $field;
-			}
-
-			$field['wpml_cf_preferences'] = $getModePreference( $field );
-
-			return $field;
-		};
 	}
 }

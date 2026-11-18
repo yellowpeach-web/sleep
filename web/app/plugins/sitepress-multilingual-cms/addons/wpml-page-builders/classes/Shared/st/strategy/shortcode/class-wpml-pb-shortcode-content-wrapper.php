@@ -285,7 +285,11 @@ class WPML_PB_Shortcode_Content_Wrapper {
 	}
 
 	public static function isStrippedContentDifferent( $content ) {
-		$content_with_stripped_shortcode = preg_replace( '/\[([\S]*)[^\]]*\][\s\S]*?\[\/(\1)\]|\[[^\]]*\]/', '', $content );
+		$content_with_stripped_shortcode = preg_replace( '/\[([^\s\[\]\/]*+)[^\]]*+\](?>[^\[]*+(?:\[(?!\/\1\])[^\[]*+)*+)\[\/\1\]|\[[^\]]*+\]/', '', $content );
+		if ( null === $content_with_stripped_shortcode ) {
+			return true;
+		}
+
 		$content_with_stripped_shortcode = trim( $content_with_stripped_shortcode );
 		return ! empty( $content_with_stripped_shortcode ) && trim( $content ) !== $content_with_stripped_shortcode;
 	}

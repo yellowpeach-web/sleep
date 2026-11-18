@@ -6,7 +6,9 @@ use WPML\FP\Obj;
 use WPML\LIB\WP\Hooks;
 use function WPML\FP\spreadArgs;
 
-class MultilingualOptions implements \IWPML_Backend_Action, \IWPML_AJAX_Action, \IWPML_REST_Action, \IWPML_DIC_Action {
+class MultilingualOptions implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_AJAX_Action, \IWPML_REST_Action, \IWPML_DIC_Action {
+
+	use OptionNameOfLanguage;
 
 	const OPTIONS_SCREEN_ID = 'appearance_page_avada_options';
 	const NOTICE_GROUP      = 'wpml-multilingual-options';
@@ -14,12 +16,21 @@ class MultilingualOptions implements \IWPML_Backend_Action, \IWPML_AJAX_Action, 
 	const OPTION_NAME = 'fusion_options';
 	const CONTEXT     = 'admin_texts_fusion_options';
 
+	const LANGUAGE_OF_UNSUFFIXED_OPTION = 'en';
+
+	const PRIORITY_AFTER_ORIGINAL_STRINGS_SYNC = 11;
+
 	private $pbStringTranslation;
 
 	private $updatedTranslations = [];
 
+	private $addedOptionsSync;
+
+	private $canLoadAdminTexts;
+
 	public function __construct( \WPML_PB_String_Translation $pbStringTranslation ) {
 		$this->pbStringTranslation = $pbStringTranslation;
+		$this->canLoadAdminTexts   = function_exists( 'wpml_st_load_admin_texts' );
 	}
 
 	public function add_hooks() {
@@ -28,7 +39,28 @@ class MultilingualOptions implements \IWPML_Backend_Action, \IWPML_AJAX_Action, 
 		add_action( 'wpml_st_add_string_translation', [ $this, 'syncStringsToOptions' ], 10, 4 );
 
 		$currentLanguage = apply_filters( 'wpml_current_language', null );
-		add_action( 'update_option_' . self::OPTION_NAME . '_' . $currentLanguage, [ $this, 'syncOptionsToStrings' ], 10, 2 );
+		$optionName      = $this->getOptionName( $currentLanguage );
+		add_action( 'update_option_' . $optionName, [ $this, 'syncOptionsToStrings' ], self::PRIORITY_AFTER_ORIGINAL_STRINGS_SYNC, 2 );
+		add_action( 'add_option_' . $optionName, $this->getAddedOptionsSync(), self::PRIORITY_AFTER_ORIGINAL_STRINGS_SYNC, 2 );
+
+		if ( class_exists( 'WPML_Admin_Texts' ) ) {
+			add_action(
+				'update_option_' . \WPML_Admin_Texts::TRANSLATABLE_NAMES_SETTING,
+				function () {
+					$this->syncEnglishOptionsToListedStrings();
+				}
+			);
+		}
+	}
+
+	private function getAddedOptionsSync() {
+		if ( null === $this->addedOptionsSync ) {
+			$this->addedOptionsSync = function ( $optionName, $options ) {
+				$this->syncOptionsToStrings( [], $options );
+			};
+		}
+
+		return $this->addedOptionsSync;
 	}
 
 	public function multilingualOptionsNotice( $screen ) {
@@ -183,16 +215,39 @@ class MultilingualOptions implements \IWPML_Backend_Action, \IWPML_AJAX_Action, 
 				if ( is_null( $value ) ) {
 					continue;
 				}
-				$option                          = $optionsPerLanguage[ $language ] ?? get_option( self::OPTION_NAME . '_' . $language, [] );
+				$option                          = $optionsPerLanguage[ $language ] ?? get_option( $this->getOptionName( $language ), [] );
 				$optionsPerLanguage[ $language ] = Obj::assocPath( $optionPath, $value, $option );
 			}
 		}
 
-		$currentLanguage = apply_filters( 'wpml_current_language', null );
-		remove_action( 'update_option_' . self::OPTION_NAME . '_' . $currentLanguage, [ $this, 'syncOptionsToStrings' ] );
+		$currentLanguage   = apply_filters( 'wpml_current_language', null );
+		$currentOptionName = $this->getOptionName( $currentLanguage );
+		remove_action( 'update_option_' . $currentOptionName, [ $this, 'syncOptionsToStrings' ], self::PRIORITY_AFTER_ORIGINAL_STRINGS_SYNC );
+		remove_action( 'add_option_' . $currentOptionName, $this->getAddedOptionsSync(), self::PRIORITY_AFTER_ORIGINAL_STRINGS_SYNC );
 
 		foreach ( $optionsPerLanguage as $language => $options ) {
-			update_option( self::OPTION_NAME . '_' . $language, $options, false );
+			if ( self::LANGUAGE_OF_UNSUFFIXED_OPTION === $language ) {
+				$this->updateUnsuffixedOptionAndKeepOriginalStrings( $options );
+			} else {
+				update_option( $this->getOptionName( (string) $language ), $options, false );
+			}
+		}
+	}
+
+	private function updateUnsuffixedOptionAndKeepOriginalStrings( $options ) {
+		$updateAction        = 'update_option_' . self::OPTION_NAME;
+		$adminTexts          = $this->canLoadAdminTexts ? wpml_st_load_admin_texts() : null;
+		$originalStringsSync = [ $adminTexts, 'on_update_original_value' ];
+		$priority            = $adminTexts ? has_action( $updateAction, $originalStringsSync ) : false;
+
+		if ( false !== $priority ) {
+			remove_action( $updateAction, $originalStringsSync, $priority );
+		}
+
+		update_option( self::OPTION_NAME, $options, false );
+
+		if ( false !== $priority ) {
+			add_action( $updateAction, $originalStringsSync, $priority, 3 );
 		}
 	}
 
@@ -226,6 +281,21 @@ class MultilingualOptions implements \IWPML_Backend_Action, \IWPML_AJAX_Action, 
 			return;
 		}
 
+		$this->registerTranslations( $newOptions, $currentLanguage, true );
+	}
+
+	private function syncEnglishOptionsToListedStrings() {
+		if ( self::LANGUAGE_OF_UNSUFFIXED_OPTION === apply_filters( 'wpml_default_language', null ) ) {
+			return;
+		}
+
+		$englishOptions = \WPML\Utils\Unserialize::maybe( apply_filters( 'wpml_unfiltered_admin_string', false, self::OPTION_NAME ) );
+		if ( is_array( $englishOptions ) ) {
+			$this->registerTranslations( $englishOptions, self::LANGUAGE_OF_UNSUFFIXED_OPTION, false );
+		}
+	}
+
+	private function registerTranslations( $options, $language, $shouldReplaceExistingTranslations ) {
 		if ( ! class_exists( 'WPML_Admin_Texts' ) ) {
 			return;
 		}
@@ -242,14 +312,11 @@ class MultilingualOptions implements \IWPML_Backend_Action, \IWPML_AJAX_Action, 
 			return;
 		}
 
-		$stringsInDomain = $this->pbStringTranslation->getStringsInContext( self::CONTEXT, [ 'id', 'name' ] );
-		if ( empty( $stringsInDomain ) ) {
-			return;
-		}
-
+		$defaultLanguage   = apply_filters( 'wpml_default_language', null );
+		$stringsInDomain   = $this->pbStringTranslation->getStringsInContext( self::CONTEXT, [ 'id', 'name' ] );
 		$registeredStrings = wp_list_pluck( $stringsInDomain, 'id', 'name' );
 
-		$registerTranslations = function( $optionsList, $translatableNames, $stringNamePrefix = '' ) use ( &$registerTranslations, $currentLanguage, $defaultLanguage, $registeredStrings ) {
+		$registerTranslations = function ( $optionsList, $translatableNames, $stringNamePrefix = '' ) use ( &$registerTranslations, $language, $defaultLanguage, $registeredStrings, $shouldReplaceExistingTranslations ) {
 			foreach ( $optionsList as $optionKey => $optionValue ) {
 				if ( ! isset( $translatableNames[ $optionKey ] ) ) {
 					continue;
@@ -263,14 +330,21 @@ class MultilingualOptions implements \IWPML_Backend_Action, \IWPML_AJAX_Action, 
 				$optionStringName = $stringNamePrefix . $optionKey;
 				$optionStringId   = Obj::prop( $optionStringName, $registeredStrings );
 				if ( ! $optionStringId ) {
-					$optionStringId = icl_register_string( self::CONTEXT, $optionStringName, '', true, $defaultLanguage );
+					$originalValue  = self::LANGUAGE_OF_UNSUFFIXED_OPTION === $language ? $optionValue : '';
+					$optionStringId = icl_register_string( self::CONTEXT, $optionStringName, $originalValue, true, $defaultLanguage );
+				} elseif ( ! $shouldReplaceExistingTranslations && ( '' === (string) $optionValue || $this->hasTranslation( $optionStringId, $language ) ) ) {
+					continue;
 				}
 
-				icl_add_string_translation( $optionStringId, $currentLanguage, $optionValue, ICL_TM_COMPLETE );
+				icl_add_string_translation( $optionStringId, $language, $optionValue, ICL_TM_COMPLETE );
 			}
 		};
 
 		remove_action( 'wpml_st_add_string_translation', [ $this, 'syncStringsToOptions' ] );
-		$registerTranslations( $newOptions, $translatableAvadaOptions, '[' . self::OPTION_NAME . ']' );
+		$registerTranslations( $options, $translatableAvadaOptions, '[' . self::OPTION_NAME . ']' );
+	}
+
+	private function hasTranslation( $stringId, $language ) {
+		return array_key_exists( $language, (array) icl_get_string_translations_by_id( $stringId ) );
 	}
 }

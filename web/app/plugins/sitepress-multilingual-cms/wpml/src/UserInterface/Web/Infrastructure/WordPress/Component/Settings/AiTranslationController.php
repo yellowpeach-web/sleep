@@ -2,6 +2,7 @@
 
 namespace WPML\UserInterface\Web\Infrastructure\WordPress\Component\Settings;
 
+use WPML\Core\SharedKernel\Component\ATE\Application\Query\AmsCredentialsQueryInterface;
 use WPML\Core\SharedKernel\Component\ATE\Application\Query\SiteIDQueryInterface;
 use WPML\Core\SharedKernel\Component\Installer\Application\Query\WpmlSiteKeyQueryInterface;
 use WPML\Core\Component\Translation\Application\Repository\SettingsRepository;
@@ -28,19 +29,25 @@ class AiTranslationController implements PageRenderInterface {
 
   private $siteIdQuery;
 
+  private $amsCredentials;
+
+  private $amsKeysFingerprint = '';
+
 
   public function __construct(
     LanguagesQueryInterface $languagesQuery,
     SettingsRepository $settingsRepository,
     TeaUpgradeCompactNoticeRenderer $teaUpgradeCompactNoticeRenderer,
     WpmlSiteKeyQueryInterface $siteKeyQuery,
-    SiteIDQueryInterface $siteIdQuery
+    SiteIDQueryInterface $siteIdQuery,
+    AmsCredentialsQueryInterface $amsCredentials
   ) {
     $this->languagesQuery               = $languagesQuery;
     $this->settingsRepository           = $settingsRepository;
     $this->teaUpgradeCompactNoticeRenderer = $teaUpgradeCompactNoticeRenderer;
     $this->siteKeyQuery                 = $siteKeyQuery;
     $this->siteIdQuery                  = $siteIdQuery;
+    $this->amsCredentials               = $amsCredentials;
 
     $section = isset( $_GET['section'] ) && is_string( $_GET['section'] ) ? $_GET['section'] : '';
     if ( $section !== 'ai-translation' ) {
@@ -125,6 +132,7 @@ class AiTranslationController implements PageRenderInterface {
       echo '<div id="auto-translate" class="wpml-ai-card">';
       AmsWidgetEmbed::renderSettings( 'translation', $languages, $defaultLanguage );
       $this->renderDraftsCheckbox();
+      $this->renderDetectionSurfacesTable();
       echo '</div>';
 
       echo '<div id="after-translation" class="wpml-ai-card">';
@@ -170,6 +178,9 @@ class AiTranslationController implements PageRenderInterface {
 
   public function enqueueEngineSwitchScript(): void {
     wp_enqueue_script( 'wpml-ai-engine-switch' );
+    if ( wp_style_is( 'wpml-ai-engine-switch', 'registered' ) ) {
+      wp_enqueue_style( 'wpml-ai-engine-switch' );
+    }
 
     $codes = array_map(
       function ( LanguageDto $language ) {
@@ -227,9 +238,6 @@ class AiTranslationController implements PageRenderInterface {
         'saved'         => __( 'Saved', 'wpml' ),
         'errorLoad'     => __( "Couldn't load the translation engine settings — check your connection.", 'wpml' ),
         'errorSave'     => __( "Couldn't save — try again", 'wpml' ),
-        'contextRequired' => __( 'Fill in your site context above before switching to PTC.', 'wpml' ),
-        /* translators: Label of the button in the engine-switch dialog when the site's context is still missing. It takes the reader to the context fields. Verb, imperative. */
-        'contextRequiredAction' => __( 'Fill in the context', 'wpml' ),
       ),
     );
 
@@ -309,6 +317,99 @@ class AiTranslationController implements PageRenderInterface {
         ?>
       </span>
     </p>
+    <?php
+  }
+
+
+  private function renderDetectionSurfacesTable(): void {
+    $answer   = apply_filters( 'wpml_appearance_surfaces', [] );
+    $surfaces = [];
+    foreach ( is_array( $answer ) ? $answer : [] as $type => $row ) {
+      if ( is_string( $type ) && is_array( $row ) && isset( $row['label'], $row['enabled'] ) && is_string( $row['label'] ) ) {
+        $surfaces[ $type ] = $row;
+      }
+    }
+    if ( ! $surfaces ) {
+      return;
+    }
+
+    $mode         = apply_filters( 'wpml_appearance_detection_mode', 'off' );
+    $detectionOff = ! in_array( $mode, [ 'admin', 'visitors' ], true );
+
+    self::printSaveStatusCssOnce();
+    ?>
+    <div id="wpml-ai-detection-surfaces" class="wpml-ai-detection-surfaces" style="margin-top:1.5rem">
+      <h3 style="font-size:13px;font-weight:600;color:#111827;margin:0 0 4px 0">
+        <?php echo esc_html__( 'Translate what visitors see', 'wpml' ); ?>
+        <span id="wpml-ai-surfaces-status" class="wpml-ai-save-status" aria-live="polite"></span>
+      </h3>
+      <p class="description" style="color:#646970;margin:0 0 8px 0">
+        <?php echo esc_html__( 'WPML translates these surfaces when they appear on the site. Turn a surface off to translate all of its items right away.', 'wpml' ); ?>
+      </p>
+      <?php if ( $detectionOff ) : ?>
+        <p class="description" style="color:#646970;margin:0 0 8px 0">
+          <?php echo esc_html__( 'Detection is off for this site, so every surface is translated right away.', 'wpml' ); ?>
+        </p>
+      <?php endif; ?>
+      <table class="widefat striped wpml-ai-surfaces-table" style="max-width:640px">
+        <thead>
+          <tr>
+            <th scope="col" id="wpml-ai-surfaces-col-surface"><?php echo esc_html__( 'Surface', 'wpml' ); ?></th>
+            <th scope="col" id="wpml-ai-surfaces-col-switch"><?php echo esc_html__( 'Translate when it appears on the site', 'wpml' ); ?></th>
+            <th scope="col" id="wpml-ai-surfaces-col-count"><?php echo esc_html__( 'Not shown yet', 'wpml' ); ?></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php $row = 0; ?>
+          <?php $printedReadOnly = false; ?>
+          <?php foreach ( $surfaces as $type => $surface ) : ?>
+            <?php
+            $row++;
+            $labelId  = 'wpml-ai-surface-label-' . $row;
+            $notShown = isset( $surface['not_shown'] ) && is_int( $surface['not_shown'] ) ? $surface['not_shown'] : null;
+            $readOnly        = isset( $surface['switchable'] ) && false === $surface['switchable'];
+            $printedReadOnly = $printedReadOnly || $readOnly;
+            ?>
+            <tr class="wpml-ai-surface-row" data-wpml-surface-row="<?php echo esc_attr( $type ); ?>"<?php echo $readOnly ? ' data-wpml-surface-readonly="1"' : ''; ?>>
+              <td id="<?php echo esc_attr( $labelId ); ?>"><?php echo esc_html( $surface['label'] ); ?></td>
+              <td>
+                <?php if ( $readOnly ) : ?>
+                  <span class="wpml-ai-surface-mode">
+                    <?php if ( 'admin' === $mode ) : ?>
+                      <?php echo esc_html__( 'On, for admins', 'wpml' ); ?>
+                    <?php elseif ( 'visitors' === $mode ) : ?>
+                      <?php echo esc_html__( 'On, for all visitors', 'wpml' ); ?>
+                    <?php else : ?>
+                      <?php echo esc_html__( 'Off', 'wpml' ); ?>
+                    <?php endif; ?>
+                  </span>
+                  <br />
+                  <?php
+                  ?>
+                  <a href="<?php echo esc_url( admin_url( 'admin.php?page=tm/menu/main.php&tab=strings#dashboard_wpml_st_autoregister' ) ); ?>"><?php echo esc_html__( 'Change in String Translation settings', 'wpml' ); ?></a>
+                <?php else : ?>
+                  <input type="checkbox" class="wpml-checkbox-native wpml-ai-surface-checkbox"
+                    data-wpml-surface="<?php echo esc_attr( $type ); ?>"
+                    aria-labelledby="<?php echo esc_attr( $labelId ); ?> wpml-ai-surfaces-col-switch"<?php echo $surface['enabled'] ? ' checked' : ''; ?> />
+                <?php endif; ?>
+              </td>
+              <td>
+                <?php if ( null === $notShown ) : ?>
+                  <span title="<?php echo esc_attr__( 'unknown', 'wpml' ); ?>">—</span>
+                <?php else : ?>
+                  <?php echo esc_html( (string) $notShown ); ?>
+                <?php endif; ?>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+      <?php if ( $printedReadOnly ) : ?>
+        <p class="description" style="color:#646970;margin:8px 0 0 0">
+          <?php echo esc_html__( 'Strings follow the detection setting of String Translation.', 'wpml' ); ?>
+        </p>
+      <?php endif; ?>
+    </div>
     <?php
   }
 
@@ -498,9 +599,16 @@ class AiTranslationController implements PageRenderInterface {
                   'unsaved'  => __( 'Unsaved changes', 'wpml' ),
                   /* translators: Status shown next to the Save button on WPML → Settings when storing the settings failed. Verb, imperative. */
                   'failed'   => __( "Couldn't save. Try again.", 'wpml' ),
+                  /* translators: Status shown next to the Save button on WPML → Settings when WPML's translation system refused the site's connection and the settings were not stored. "Our translation system" is WPML's own service; keep it generic. */
+                  'refused'  => __( 'Our translation system did not accept this site\'s connection, so your settings were not saved. Reload the page and save again. If this keeps happening, contact WPML support.', 'wpml' ),
                 )
               );
               ?>;
+      // wpmldev-11656: the digest of the keys this page's AMS widgets sign
+      // with (never the keys). The Save sends it; the endpoint answers the
+      // site's current keys when they differ (the site registered again after
+      // AMS refused the old ones), or says AMS refused the site outright.
+      var AMS_KEYS = '<?php echo esc_js( $this->amsKeysFingerprint ); ?>';
       function setStatus(kind, msg, hideAfter) {
         st.setAttribute('data-kind', kind);
         st.textContent = msg;
@@ -670,10 +778,29 @@ class AiTranslationController implements PageRenderInterface {
       function draftsBox() {
         return document.getElementById('translate-everything-drafts-checkbox');
       }
+      // wpmldev-12040 step 4c: the per-surface detection switches of the
+      // "Translate what visitors see" table, found the same way.
+      function surfaceBoxes() {
+        return document.querySelectorAll('.wpml-ai-surface-checkbox');
+      }
+      function isSurfaceBox(t) {
+        return !!(t.classList && t.classList.contains('wpml-ai-surface-checkbox'));
+      }
+      // Compatibility 14556: after a successful Save each switch shows the
+      // value the endpoint read back, so a value it dropped shows unchanged.
+      function applySurfaces(response) {
+        var stored = response && response.appearanceSurfaces;
+        if (!stored || typeof stored !== 'object') return;
+        var boxes = surfaceBoxes();
+        for (var s = 0; s < boxes.length; s++) {
+          var type = boxes[s].getAttribute('data-wpml-surface');
+          if (typeof stored[type] === 'boolean') boxes[s].checked = stored[type];
+        }
+      }
       document.addEventListener('change', function (event) {
         var t = event.target;
         if (!t) return;
-        if (t.id === 'translate-everything-drafts-checkbox' || t.name === 'wpml-ai-review-mode') {
+        if (t.id === 'translate-everything-drafts-checkbox' || t.name === 'wpml-ai-review-mode' || isSurfaceBox(t)) {
           markDirty();
         }
       }, true);
@@ -740,7 +867,78 @@ class AiTranslationController implements PageRenderInterface {
         if (drafts) body.shouldTranslateAutomaticallyDrafts = drafts.checked;
         var picked = document.querySelector('input[name="wpml-ai-review-mode"]:checked');
         if (picked) body.reviewMode = picked.value;
+        var boxes = surfaceBoxes();
+        if (boxes.length) {
+          var surfaces = {};
+          for (var s = 0; s < boxes.length; s++) {
+            surfaces[boxes[s].getAttribute('data-wpml-surface')] = boxes[s].checked;
+          }
+          body.appearanceSurfaces = surfaces;
+        }
+        if (AMS_KEYS) body.amsKeys = AMS_KEYS;
         return body;
+      }
+
+      // wpmldev-11656: sign the widgets' next requests with the keys the site
+      // holds now. The AMS bundle reads its keys from window.EateAppWidget into
+      // its auth store (window.AuthDataStore) at boot, and reads the store each
+      // time it signs, so the store is loaded again from the updated payload.
+      // False when this bundle exposes no store: the page then cannot sign
+      // again without a reload, and says so.
+      function reseedWidgetKeys(c) {
+        var store = window.AuthDataStore && window.AuthDataStore.instance;
+        if (!c || !window.EateAppWidget || !store || typeof store.loadValues !== 'function') return false;
+        // A widget that holds nothing it read (its reads were refused too, or
+        // it emptied itself after the refused write) would write its defaults
+        // over the client's settings: those wait for the reload instead. Same
+        // readiness test as the page's reveal.
+        if (!widgetsHoldTheirValues()) return false;
+        window.EateAppWidget.shared_key   = c.shared_key;
+        window.EateAppWidget.secret_key   = c.secret_key;
+        window.EateAppWidget.website_uuid = c.website_uuid;
+        store.loadValues();
+        if (c.fingerprint) AMS_KEYS = c.fingerprint;
+        return true;
+      }
+      // wpmldev-11656: the AMS bundle's save() answers true on any answered
+      // request, a refusal included, so the Save reads the widget answers it
+      // causes itself, whatever way they travel: straight to AMS, through
+      // WPML's proxy (wpml/v1/proxy, 403 relayed), or through the bundle's own
+      // (wpml/ate/v1/ate/proxy, which answers 200 with AMS's body). Any answer
+      // carrying AMS's InvalidSignature counts as a refused write. The body is
+      // read from a clone; the bundle reads its own copy as before.
+      var widgetRefusals = {
+        seen: false,
+        pending: [],
+        reset: function () { this.seen = false; this.pending = []; },
+        read: function () { return Promise.all(this.pending.slice()); }
+      };
+      function watchWidgetAnswers() {
+        var original = window.fetch;
+        if (typeof original !== 'function') return function () {};
+        var watching = function (input) {
+          var answered = original.apply(this, arguments);
+          var url = String((input && input.url) || input || '');
+          try { url = decodeURIComponent(url); } catch (e) { /* keep it as it is */ }
+          if (url.indexOf('/api/wpml/widget/') === -1) return answered;
+          widgetRefusals.pending.push(answered.then(function (res) {
+            return res.clone().text().then(function (text) {
+              if (/InvalidSignature|invalid signature/i.test(text)) widgetRefusals.seen = true;
+            });
+          }).catch(function () {}));
+          return answered;
+        };
+        window.fetch = watching;
+        return function () { if (window.fetch === watching) window.fetch = original; };
+      }
+
+      function widgetsHoldTheirValues() {
+        var scopes = ['#context wpml-settings[scope="context"]', '#auto-translate wpml-settings[scope="translation"]'];
+        for (var i = 0; i < scopes.length; i++) {
+          var el = document.querySelector(scopes[i]);
+          if (!el || (el.textContent || '').trim().length <= 20) return false;
+        }
+        return true;
       }
 
       // One element's save: contract 2 answers with a promise of true;
@@ -768,7 +966,7 @@ class AiTranslationController implements PageRenderInterface {
       // and the Save says so instead of syncing the page to an engine the
       // site is not on. Narrow on purpose: an echo that names no engine
       // (the read failed soft) is not a refusal. Mirrors
-      // saveEchoContradicts() in AiTranslationEngineSwitch/helpers.ts
+      // saveEchoContradicts() in SharedKernel/PublicSrc/Util/engineSaveEcho.ts
       // (keep in sync); PTC's engine slug is PtcEngineStatus::PTC_ENGINE_SLUG.
       var PTC_SLUG = <?php echo wp_json_encode( \WPML\Core\Component\ATE\Application\Service\PtcEngineStatus::PTC_ENGINE_SLUG ); ?>;
       function echoContradicts(response, mode) {
@@ -784,6 +982,9 @@ class AiTranslationController implements PageRenderInterface {
         saveInFlight = true;
         btn.disabled = true;
         clearSaveErrors();
+
+        widgetRefusals.reset();
+        var stopWatching = watchWidgetAnswers();
 
         var mode = engineMode();
         var engineChanged = mode !== null
@@ -809,6 +1010,81 @@ class AiTranslationController implements PageRenderInterface {
           : Promise.resolve({ ok: true });
 
         Promise.all([Promise.all(saves), own]).then(function (results) {
+          return widgetRefusals.read().then(function () { return results; });
+        }).then(function (results) {
+          var answer = (results[1].ok && results[1].response && typeof results[1].response === 'object')
+            ? results[1].response : {};
+
+          // wpmldev-11656: AMS refused this site's signature even after the
+          // site registered again. The widgets' writes were refused with it,
+          // and their save() answered true all the same: say so, never "Saved".
+          if (answer.amsSignatureRefused) {
+            stopWatching();
+            saveInFlight = false;
+            btn.disabled = false;
+            setStatus('error', S.refused, 0);
+            return;
+          }
+
+          // ...a widget answer carried the refusal (straight from AMS, relayed
+          // by a proxy, or a 200 whose body is the refusal) while the site's
+          // keys did not change: nothing the page can sign again with.
+          if (widgetRefusals.seen && !answer.amsCredentials) {
+            stopWatching();
+            saveInFlight = false;
+            btn.disabled = false;
+            setStatus('error', S.refused, 0);
+            return;
+          }
+
+          // ...or the site registered again, and the widgets signed this
+          // Save's writes with the keys AMS had refused: sign again with the
+          // site's keys and save them once more. One retry, never a loop.
+          if (answer.amsCredentials) {
+            if (!reseedWidgetKeys(answer.amsCredentials)) {
+              stopWatching();
+              saveInFlight = false;
+              btn.disabled = false;
+              setStatus('error', S.refused, 0);
+              return;
+            }
+            clearSaveErrors();
+            widgetRefusals.reset();
+            // Bounded: a widget whose second save never answers must not hold
+            // the button disabled; that Save did not save.
+            var retryAnswered = Promise.all(hosts().map(function (el) {
+              return saveHost(el).catch(function () { return false; });
+            }));
+            var retryTimeout = new Promise(function (resolve) {
+              setTimeout(function () { resolve(null); }, 20000);
+            });
+            Promise.race([retryAnswered, retryTimeout]).then(function (again) {
+              return widgetRefusals.read().then(function () { return again; });
+            }).then(function (again) {
+              stopWatching();
+              if (!again) {
+                saveInFlight = false;
+                btn.disabled = false;
+                setStatus('error', S.refused, 0);
+                return;
+              }
+              // Refused again with the site's keys: not saved, never a loop.
+              if (widgetRefusals.seen) {
+                saveInFlight = false;
+                btn.disabled = false;
+                setStatus('error', S.refused, 0);
+                return;
+              }
+              settleSave([again, results[1]]);
+            });
+            return;
+          }
+
+          stopWatching();
+          settleSave(results);
+        });
+
+        function settleSave(results) {
           saveInFlight = false;
           btn.disabled = false;
           var everyHostSaved = results[0].every(function (ok) { return ok; });
@@ -829,6 +1105,7 @@ class AiTranslationController implements PageRenderInterface {
             return;
           }
 
+          applySurfaces(results[1].response);
           markClean();
 
           // wpmldev-7255: a save that persisted an engine CHANGE (the
@@ -849,7 +1126,7 @@ class AiTranslationController implements PageRenderInterface {
           }
 
           setStatus('saved', S.saved, 1800);
-        });
+        }
       });
     })();
     </script>
@@ -859,6 +1136,8 @@ class AiTranslationController implements PageRenderInterface {
 
   public function enqueueSaveScript(): void {
     wp_enqueue_script( 'wp-api-fetch' );
+
+    $this->amsKeysFingerprint = $this->amsCredentials ? $this->amsCredentials->fingerprint() : '';
   }
 
 
@@ -916,7 +1195,7 @@ class AiTranslationController implements PageRenderInterface {
 
 
   private static function ateEnabled(): bool {
-    return \WPML_TM_ATE_Status::is_enabled();
+    return \WPML_TM_ATE_Status::is_ate_account_wanted();
   }
 
 

@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the WPML SEO plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WPML SEO 5.2.0\n"
+"Project-Id-Version: WPML SEO 5.3.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-seo-multilingual\n"
 "Last-Translator: PTC (Private Translation Cloud)\n"
 "Language-Team: Chinese (Simplified)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-20 07:34+0000\n"
-"PO-Revision-Date: 2026-10-20 07:34+0000\n"
+"POT-Creation-Date: 2026-11-02 18:15+0000\n"
+"PO-Revision-Date: 2026-11-02 18:15+0000\n"
 "X-Generator: PTC (Private Translation Cloud)\n"
 "X-Domain: wp-seo-multilingual\n"
 "Language: zh_CN\n"
@@ -90,3 +90,9 @@ msgstr "您的文本将覆盖 WPML 翻译。留空该字段以让 WPML 对其进
 #: classes/YoastSEO/Terms/Meta/DashboardHooks.php:30
 msgid "This section has the Yoast SEO texts of your categories, tags and other taxonomy terms."
 msgstr "本部分包含分类目录、标签和其他分类法术语的 Yoast SEO 文本。"
+
+#. translators: %s: the plugin's name.
+#: plugin.php:42
+#, php-format
+msgid "%s is incomplete: some of its files are missing, probably after an interrupted update. Please reinstall the plugin."
+msgstr "%s 不完整：部分文件缺失，可能是由于更新中断导致的。请重新安装该插件。"

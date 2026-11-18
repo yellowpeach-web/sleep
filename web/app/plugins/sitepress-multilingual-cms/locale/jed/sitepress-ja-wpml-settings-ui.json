@@ -73,8 +73,14 @@
          "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
             "どちらの場合も、新しい設定は保存されます。「新しい翻訳にのみ適用する」を選択した場合、既存の翻訳はすべてそのまま維持されます。"
          ],
+         "With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "「新しい翻訳にのみ適用」を選択すると、既存の翻訳はすべてそのまま維持されます。"
+         ],
          "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
             "この画面以外で %1$s 件のカスタムフィールドが翻訳可能になりました： %2$s。既存の翻訳をどうするか決定してください。"
+         ],
+         "%1$s custom field was waiting for a check an earlier WPML version started and did not finish: %2$s. Its translation setting has not changed. Decide whether the existing translations that use it should be marked as needing an update.": [
+            "%1$s 個のカスタムフィールドが、以前の WPML バージョンで開始され完了しなかったチェックを待機していました：%2$s。これらの翻訳設定は変更されていません。これらを使用している既存の翻訳に更新が必要としてマークするかどうかを決定してください。"
          ],
          "Review this field": [
             "これらのフィールドを確認"

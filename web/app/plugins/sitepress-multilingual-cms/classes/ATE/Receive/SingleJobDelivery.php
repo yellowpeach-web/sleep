@@ -12,6 +12,7 @@ class SingleJobDelivery {
 	const APPLIED      = TranslationApplier::APPLIED;
 	const NOT_READY    = TranslationApplier::XLIFF_NOT_READY;
 	const APPLY_FAILED = TranslationApplier::APPLY_FAILED;
+	const ALREADY_APPLIED = 'already_applied';
 	const LOCK_BUSY    = 'lock_busy';
 	const CANCELLED    = 'cancelled';
 	const JOB_MISSING  = 'job_missing';
@@ -40,7 +41,7 @@ class SingleJobDelivery {
 		return $this->applier;
 	}
 
-	public function deliver( $wpmlJobId, $lockName, ?callable $onLockAcquired = null ) {
+	public function deliver( $wpmlJobId, $lockName, ?callable $onLockAcquired = null, bool $rewriteApplied = false ) {
 		$wpmlJobId = (int) $wpmlJobId;
 
 		if ( ! $this->lock->create( $lockName ) ) {
@@ -52,13 +53,53 @@ class SingleJobDelivery {
 				$onLockAcquired();
 			}
 
-			return $this->decide( $wpmlJobId );
+			return $this->decide( $wpmlJobId, $rewriteApplied );
 		} finally {
 			$this->lock->release();
 		}
 	}
 
-	private function decide( $wpmlJobId ) {
+	public function refusal( $wpmlJobId ) {
+		$plan = $this->plan( (int) $wpmlJobId, false );
+
+		return $plan instanceof \Closure ? null : $plan;
+	}
+
+	private function decide( $wpmlJobId, $rewriteApplied ) {
+		$plan = $this->plan( $wpmlJobId, $rewriteApplied );
+
+		return $plan instanceof \Closure ? $plan() : $plan;
+	}
+
+	private static function logWhyMissing( $wpmlJobId ) {
+		global $wpdb;
+
+		if ( ! $wpdb instanceof \wpdb ) {
+			return;
+		}
+
+		$why = ( new \WPML\TM\XLIFF\MismatchReason( $wpdb ) )->details( $wpmlJobId, $wpmlJobId, false, false );
+		if ( '' === $why['sentence'] ) {
+			return;
+		}
+
+		\WPML\TM\Jobs\JobLog::runInGroup(
+			'delivery_job_not_loadable',
+			'Delivery of a job that does not load',
+			function () use ( $wpmlJobId, $why ) {
+				\WPML\TM\Jobs\JobLog::add(
+					'delivery_job_not_loadable',
+					[
+						'job_id'     => $wpmlJobId,
+						'reason'     => $why['sentence'],
+						'reasonCode' => $why['data']['reasonCode'] ?? '',
+					]
+				);
+			}
+		);
+	}
+
+	private function plan( $wpmlJobId, $rewriteApplied ) {
 		$wpmlJob = Jobs::get( $wpmlJobId );
 
 		if ( Jobs::isCancelled( $wpmlJobId ) ) {
@@ -67,14 +108,16 @@ class SingleJobDelivery {
 
 		$request = TranslationRecord::openRequestWithAteJobOf( $wpmlJobId );
 		if ( $request ) {
-			return $this->deliverForRequestRow( $wpmlJobId, $wpmlJob, $request );
+			return $this->planForRequestRow( $wpmlJobId, $wpmlJob, $request );
 		}
 
 		if ( ! $wpmlJob && JobKind::isTaxonomyTerm( $wpmlJobId ) ) {
-			return self::outcome( $this->applier()->applyForTerm( $wpmlJobId ) );
+			return fn() => self::outcome( $this->applier()->applyForTerm( $wpmlJobId ) );
 		}
 
 		if ( ! $wpmlJob ) {
+			self::logWhyMissing( (int) $wpmlJobId );
+
 			return self::outcome( self::JOB_MISSING );
 		}
 
@@ -94,7 +137,11 @@ class SingleJobDelivery {
 			return self::outcome( self::CLOSED );
 		}
 
-		return self::outcome(
+		if ( ! $rewriteApplied && Jobs::isApplied( $wpmlJobId ) ) {
+			return self::outcome( self::ALREADY_APPLIED );
+		}
+
+		return fn() => self::outcome(
 			$this->applier()->applyForPost(
 				Obj::prop( 'job_id', $wpmlJob ),
 				Obj::prop( 'original_doc_id', $wpmlJob )
@@ -102,18 +149,20 @@ class SingleJobDelivery {
 		);
 	}
 
-	private function deliverForRequestRow( $recordJobId, $record, array $request ) {
+	private function planForRequestRow( $recordJobId, $record, array $request ) {
 		$requestJobId = (int) $request['job_id'];
 
 		if ( ! $record && JobKind::isTaxonomyTerm( $recordJobId ) ) {
-			$outcome = $this->applier()->applyForTerm( $requestJobId );
-		} else {
-			$requestJob = Jobs::get( $requestJobId );
-			$editedJob  = $requestJob ?: $record;
-			if ( ClientEdits::areInTheWay( $editedJob, $request['editor_job_id'] ) ) {
-				return self::outcome( self::CLIENT_EDITS );
-			}
+			return fn() => self::requestRowOutcome( $request, $this->applier()->applyForTerm( $requestJobId ) );
+		}
 
+		$requestJob = Jobs::get( $requestJobId );
+		$editedJob  = $requestJob ?: $record;
+		if ( ClientEdits::areInTheWay( $editedJob, $request['editor_job_id'] ) ) {
+			return self::outcome( self::CLIENT_EDITS );
+		}
+
+		return function () use ( $request, $requestJobId, $requestJob, $record, $editedJob ) {
 			$outcome = $this->applier()->applyForPost(
 				$requestJobId,
 				Obj::prop( 'original_doc_id', $record ?: $requestJob )
@@ -123,10 +172,14 @@ class SingleJobDelivery {
 				&& ClientEdits::areInTheWay( $editedJob, Obj::prop( 'editor_job_id', $record ) ) ) {
 				return self::outcome( self::CLIENT_EDITS );
 			}
-		}
 
+			return self::requestRowOutcome( $request, $outcome );
+		};
+	}
+
+	private static function requestRowOutcome( array $request, $outcome ) {
 		if ( TranslationApplier::XLIFF_NOT_READY === $outcome ) {
-			return self::outcome( self::SUPERSEDED, [ 'rid' => (int) $request['rid'], 'newer_job_id' => $requestJobId ] );
+			return self::outcome( self::SUPERSEDED, [ 'rid' => (int) $request['rid'], 'newer_job_id' => (int) $request['job_id'] ] );
 		}
 
 		return self::outcome( $outcome );

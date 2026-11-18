@@ -20,6 +20,8 @@ class MixedFieldGroupModesHooks implements \IWPML_Backend_Action {
 	private const NOTICE_GROUP    = 'acfml';
 	private const NOTICE_ID       = 'acfml-post-edit-translation-notice';
 
+	private const NOTICE_SCRIPT_HANDLE = 'acfml-mixed-field-group-modes-notice';
+
 	public function add_hooks() {
 		if ( self::shouldDisplayNotice() ) {
 			Hooks::onAction( 'admin_notices', self::NOTICE_PRIORITY )->then( [ $this, 'displayWarningClassic' ] );
@@ -129,21 +131,16 @@ class MixedFieldGroupModesHooks implements \IWPML_Backend_Action {
 		}
 
 		$groups = self::getFieldGroupModes();
-		?>
-		<script type="text/javascript">
-			(function() {
-				wp.data.dispatch("core/notices").createNotice(
-					'warning',
-					<?php echo wp_json_encode( self::getBlockEditorContent( $groups ), self::SCRIPT_JSON_FLAGS );  ?>,
-					{
-						id: 'acfml_post_edit_translation_notice',
-						isDismissible: true,
-						actions: <?php echo wp_json_encode( self::getBlockEditorActions( $groups ), self::SCRIPT_JSON_FLAGS );  ?>
-					}
-				);
-			})();
-		</script>
-		<?php
+
+		$script = sprintf(
+			'(function() { wp.data.dispatch("core/notices").createNotice("warning", %1$s, { id: "acfml_post_edit_translation_notice", isDismissible: true, actions: %2$s }); })();',
+			wp_json_encode( self::getBlockEditorContent( $groups ), self::SCRIPT_JSON_FLAGS ),
+			wp_json_encode( self::getBlockEditorActions( $groups ), self::SCRIPT_JSON_FLAGS )
+		);
+
+		wp_register_script( self::NOTICE_SCRIPT_HANDLE, false, [ 'wp-data', 'wp-notices' ], ACFML_VERSION, true );
+		wp_enqueue_script( self::NOTICE_SCRIPT_HANDLE );
+		wp_add_inline_script( self::NOTICE_SCRIPT_HANDLE, $script );
 	}
 
 	private static function getBlockEditorContent( array $groups ) {

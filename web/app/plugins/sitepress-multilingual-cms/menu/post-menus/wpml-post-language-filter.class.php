@@ -78,7 +78,7 @@ class WPML_Post_Language_Filter extends WPML_Language_Filter_Bar {
 			$status_clause  = apply_filters( '_icl_posts_language_count_status', $status_snippet );
 
 			$args = array_merge(
-				array( $type, $include_trash ),
+				array( 'post_' . $type, $type, $include_trash ),
 				$languages
 			);
 		} else {
@@ -87,7 +87,7 @@ class WPML_Post_Language_Filter extends WPML_Language_Filter_Bar {
 			$status_clause = 'AND ( %d = 0 OR p.post_status IN (' . implode( ', ', array_fill( 0, count( $statuses ), '%s' ) ) . ') )';
 
 			$args = array_merge(
-				array( $type, $has_statuses ),
+				array( 'post_' . $type, $type, $has_statuses ),
 				$statuses,
 				array( $include_trash ),
 				$languages
@@ -103,7 +103,7 @@ class WPML_Post_Language_Filter extends WPML_Language_Filter_Bar {
 				FROM {$wpdb->prefix}icl_translations t
 				JOIN {$wpdb->posts} p
 					ON t.element_id = p.ID
-						AND t.element_type = CONCAT('post_', p.post_type)
+						AND t.element_type = %s
 				WHERE p.post_type = %s
 					{$status_clause}
 					AND ( %d = 1 OR p.post_status <> 'trash' )
@@ -113,6 +113,23 @@ class WPML_Post_Language_Filter extends WPML_Language_Filter_Bar {
 		return $wpdb->get_results(
 			$wpdb->prepare( $sql, $args )
 		);
+	}
+
+	private function root_page_count( $type ) {
+		global $wpml_post_translations;
+
+		if ( 'page' !== $type ) {
+			return 0;
+		}
+
+		$root_id = WPML_Root_Page_Actions::root_page_without_language( $this->sitepress->get_setting( 'urls' ), $wpml_post_translations );
+		$root    = $root_id ? get_post( $root_id ) : null;
+		$status  = isset( $root->post_status ) ? $root->post_status : '';
+
+		$in_view = $this->post_status ? in_array( $status, $this->post_status, true ) : true;
+		$trashed = 'trash' === $status && array( 'trash' ) !== $this->post_status;
+
+		return $status && $in_view && ! $trashed && 'auto-draft' !== $status ? 1 : 0;
 	}
 
 	/**
@@ -168,6 +185,7 @@ class WPML_Post_Language_Filter extends WPML_Language_Filter_Bar {
 		$lang_links = array();
 
 		$languages   = $this->get_counts( $type );
+		$languages['all'] += $this->root_page_count( $type );
 		$post_status = $this->post_status;
 		foreach ( $this->active_languages as $code => $lang ) {
 			$item = array();

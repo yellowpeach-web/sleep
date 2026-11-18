@@ -35,7 +35,7 @@
             "המשך לתרגם"
          ],
          "Resign": [
-            "התפטרות"
+            "התפטר"
          ],
          "Review": [
             "סקירה"
@@ -50,7 +50,7 @@
             "עבודה זו נוצרה על ידי ”תרגם הכל אוטומטית“ ולא ניתן לבטל אותה בנפרד. כדי להפסיק אותה, כבה את ”תרגם הכל אוטומטית“ בלוח בקרת התרגום."
          ],
          "View": [
-            "תצוגה"
+            "הצג"
          ],
          "Never mind. I want to review these translations.": [
             "לא משנה. אני רוצה לסקור את התרגומים האלה."
@@ -71,16 +71,16 @@
             "שמור תרגומים כטיוטה"
          ],
          "Bulk actions": [
-            "פעולות בתפוצה רחבה"
+            "פעולות קבוצתיות"
          ],
          "Apply": [
             "החל"
          ],
          "Actions applied to multiple translation jobs can take a few seconds. Please do not leave the page.": [
-            "ביצוע פעולות על מספר עבודות תרגום עשוי להימשך מספר שניות. נא לא לעזוב את העמוד."
+            "פעולות המוחלות על משימות תרגום מרובות עשויות להימשך מספר שניות. נא לא לעזוב את הדף."
          ],
          "Actions applied to multiple translation jobs can take a few minutes. Please do not leave the page.": [
-            "ביצוע פעולות על מספר עבודות תרגום עשוי להימשך מספר דקות. נא לא לעזוב את העמוד."
+            "פעולות המוחלות על משימות תרגום מרובות עשויות להימשך מספר דקות. נא לא לעזוב את הדף."
          ],
          "Select translator": [
             "בחר מתרגם"
@@ -91,65 +91,122 @@
          "Cancelled": [
             "בוטל"
          ],
-         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
-            "התרגום האוטומטי נכשל שוב ושוב ו-WPML הפסיק לנסות שוב. שלח מחדש או בטל את העבודה מלוח בקרת התרגום, או בטל אותה כאן."
+         "Published — Pending review": [
+            "פורסם — ממתין לסקירה"
          ],
          "Needs translation": [
             "נדרש תרגום"
          ],
-         "Needs update": [
-            "נדרש עדכון"
-         ],
-         "Translation ready to download": [
-            "התרגום מוכן להורדה"
-         ],
-         "Completed": [
-            "הושלם"
-         ],
-         "Failed - needs attention": [
-            "נכשל - דורש תשומת לב"
-         ],
-         "%s terms are published immediately because they don't support draft mode.": [
-            "%s מונחים מפורסמים באופן מיידי מכיוון שהם אינם תומכים במצב טיוטה."
-         ],
-         "%s are immediately published because they don't support draft mode.": [
-            "%s מפורסמים באופן מיידי מכיוון שהם אינם תומכים במצב טיוטה."
-         ],
-         "Published — Pending review": [
-            "פורסם — ממתין לסקירה"
-         ],
-         "Draft — Pending review": [
-            "טיוטה — ממתין לסקירה"
-         ],
          "Review in progress": [
             "סקירה בתהליך"
-         ],
-         "Published — Review in progress": [
-            "פורסם — סקירה בתהליך"
-         ],
-         "Draft — Review in progress": [
-            "טיוטה — סקירה בתהליך"
          ],
          "Waiting for your Pay-As-You-Go payment": [
             "ממתין לתשלום ה-Pay-As-You-Go שלך"
          ],
+         "Translation ready to download": [
+            "התרגום מוכן להורדה"
+         ],
          "Waiting for payment": [
             "ממתין לתשלום"
+         ],
+         "Waiting for words": [
+            "ממתין למילים"
+         ],
+         "Completed": [
+            "הושלם"
          ],
          "Insufficient funds": [
             "אין מספיק יתרה"
          ],
-         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
-            "התרגום האוטומטי הופסק עקב שגיאה זמנית ויבוצע ניסיון חוזר באופן אוטומטי — אין צורך בפעולה. אם הסטטוס לא השתנה תוך כ-30 דקות, פנה לתמיכה של WPML."
+         "Sending": [
+            "בשליחה"
+         ],
+         "Automatic translation is off, so this job is not retried. Resend it, or switch Translate Everything on.": [
+            "תרגום אוטומטי כבוי, לכן לא יבוצע ניסיון נוסף עבור משימת תרגום זו. יש לשלוח אותה שוב, או להפעיל את תרגם הכל."
+         ],
+         "Waiting for you": [
+            "ממתין לך"
+         ],
+         "Failed - needs attention": [
+            "נכשל - דורש תשומת לב"
+         ],
+         "You can also resend the content or open the job in the Translation Queue.": [
+            "באפשרותך גם לשלוח מחדש את התוכן או לפתוח את משימת התרגום בתור התרגום."
+         ],
+         "If it keeps failing for about a day, the job is marked as needing your attention.": [
+            "אם הבעיה נמשכת במשך כיממה, משימת התרגום תסומן כדורשת את תשומת ליבך."
          ],
          "In progress": [
             "בתהליך"
          ],
-         "View original": [
-            "הצג מקור"
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "התרגום האוטומטי נכשל שוב ושוב ו-WPML הפסיק לנסות שוב. שלח מחדש או בטל את העבודה מלוח בקרת התרגום, או בטל אותה כאן."
+         ],
+         "Needs update": [
+            "נדרש עדכון"
+         ],
+         "Scheduled — Pending review": [
+            "מתוזמן — ממתין לסקירה"
+         ],
+         "Private — Pending review": [
+            "פרטי — ממתין לסקירה"
+         ],
+         "Draft — Pending review": [
+            "טיוטה — ממתין לסקירה"
+         ],
+         "Published — Review in progress": [
+            "פורסם — סקירה בתהליך"
+         ],
+         "Scheduled — Review in progress": [
+            "מתוזמן — סקירה בעיצומה"
+         ],
+         "Private — Review in progress": [
+            "פרטי — סקירה בעיצומה"
+         ],
+         "Draft — Review in progress": [
+            "טיוטה — סקירה בתהליך"
+         ],
+         "WPML could not reach our translation system.": [
+            "ל-WPML לא הייתה אפשרות להתחבר למערכת התרגום שלנו."
+         ],
+         "Our translation system did not accept this job.": [
+            "מערכת התרגום שלנו לא קיבלה את משימת התרגום הזו."
+         ],
+         "WPML could not calculate the word count for this job.": [
+            "ל-WPML לא הייתה אפשרות לחשב את ספירת המילים עבור משימת תרגום זו."
+         ],
+         "WPML could not read the price of automatic translation for this job.": [
+            "ל-WPML לא הייתה אפשרות לקרוא את מחיר התרגום האוטומטי עבור משימת תרגום זו."
+         ],
+         "WPML could not prepare this job for automatic translation.": [
+            "ל-WPML לא הייתה אפשרות להכין משימת תרגום זו עבור תרגום אוטומטי."
+         ],
+         "Sending this job to automatic translation failed.": [
+            "שליחת משימת תרגום זו לתרגום אוטומטי נכשלה."
+         ],
+         "WPML tries again within a minute.": [
+            "WPML ינסה שוב בתוך דקה."
+         ],
+         "WPML tries again in about %d minutes.": [
+            "WPML ינסה שוב בעוד כ-%d דקות."
+         ],
+         "WPML tries again in about %d hours.": [
+            "WPML ינסה שוב בעוד כ-%d שעות."
+         ],
+         "%s terms are published immediately because they don't support draft mode.": [
+            "מונחי %s מתפרסמים מיד מכיוון שהם אינם תומכים במצב טיוטה."
+         ],
+         "%s are immediately published because they don't support draft mode.": [
+            "%s מפורסמים באופן מיידי מכיוון שהם אינם תומכים במצב טיוטה."
          ],
          "(no title)": [
             "(ללא כותרת)"
+         ],
+         "%1$s (ID %2$d)": [
+            "%1$s (מזהה %2$d)"
+         ],
+         "View original": [
+            "הצג מקור"
          ],
          "Automatic translation": [
             "תרגום אוטומטי"
@@ -233,7 +290,7 @@
             "בטל מיון"
          ],
          "The bulk action is running...": [
-            "הפעולה בתפוצה רחבה פועלת..."
+            "הפעולה הקבוצתית מתבצעת..."
          ],
          "Export all jobs to XLIFF 1.0": [
             "ייצא את כל העבודות ל-XLIFF 1.0"
@@ -305,7 +362,7 @@
             "קבל תרגומים"
          ],
          "This action does not apply to any of the selected translation jobs": [
-            "פעולה זו אינה חלה על אף אחת מעבודות התרגום שנבחרו"
+            "פעולה זו אינה חלה על אף אחת ממשימות התרגום שנבחרו"
          ],
          "%d translation is still in progress. You will not be charged for it.": [
             "תרגום %d עדיין בתהליך. לא תחויב עבורו.",
@@ -460,7 +517,7 @@
             "טוען את תור התרגום"
          ],
          "Loading translation jobs": [
-            "טוען עבודות תרגום"
+            "טוען משימות תרגום"
          ],
          "Jobs could not be loaded": [
             "לא ניתן היה לטעון עבודות"
@@ -472,7 +529,7 @@
             "מתרגם זה אינו זמין יותר. טען מחדש את העמוד ובחר מתרגם שוב."
          ],
          "Specify some jobs to resign": [
-            "ציין כמה עבודות להתפטרות"
+            "יש לציין עבודות מסוימות כדי להתפטר מהן"
          ],
          "We could not resign jobs: %s": [
             "לא ניתן היה להתפטר מהעבודות: %s"
@@ -486,9 +543,6 @@
          "Failed to resign from jobs": [
             "ההתפטרות מהעבודות נכשלה"
          ],
-         "The Advanced Editor jobs synchronization has failed": [
-            "סנכרון העבודות של העורך המתקדם נכשל"
-         ],
          "Synchronization with the Professional Translation service has failed": [
             "הסנכרון עם שירות התרגום המקצועי נכשל"
          ],
@@ -501,8 +555,40 @@
          "Batch sync couldn't be finished": [
             "לא ניתן היה להשלים את סנכרון הסדרה"
          ],
+         "More details": [
+            "לפרטים נוספים"
+         ],
+         "%s job was left out of the export.": [
+            "משימת תרגום %s הושמטה מהייצוא.",
+            "%s משימות תרגום הושמטו מהייצוא."
+         ],
+         "%s job could not be exported. No file was downloaded.": [
+            "לא ניתן היה לייצא משימת תרגום %s. שום קובץ לא הורד.",
+            "לא ניתן היה לייצא %s משימות תרגום. שום קובץ לא הורד."
+         ],
+         "This job was saved while this server had the PHP zlib extension, so its text is stored compressed. PHP on this server has no zlib now, so WPML cannot read it. Ask your hosting provider to enable the PHP zlib extension, then export it again.": [
+            "משימת תרגום זו נשמרה כאשר שרת זה כלל את ההרחבה PHP zlib, ולכן הטקסט שלה מאוחסן כשהוא דחוס. כעת אין ב-PHP בשרת זה zlib, ולכן ל-WPML אין אפשרות לקרוא אותו. בקש מספק האחסון שלך להפעיל את ההרחבה PHP zlib, ולאחר מכן ייצא אותה שוב.",
+            "משימות תרגום אלה נשמרו כאשר שרת זה כלל את ההרחבה PHP zlib, ולכן הטקסט שלהן מאוחסן כשהוא דחוס. כעת אין ב-PHP בשרת זה zlib, ולכן ל-WPML אין אפשרות לקרוא אותן. בקש מספק האחסון שלך להפעיל את ההרחבה PHP zlib, ולאחר מכן ייצא אותן שוב."
+         ],
+         "This job could not be exported.": [
+            "לא ניתן היה לייצא משימת תרגום זו.",
+            "לא ניתן היה לייצא משימות תרגום אלה."
+         ],
+         "%1$s (job %2$s)": [
+            "%1$s (משימת תרגום %2$s)"
+         ],
+         "Job %s": [
+            "משימת תרגום %s"
+         ],
+         "and %s more job": [
+            "ועוד משימת תרגום %s",
+            "ועוד %s משימות תרגום"
+         ],
          "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
             "מערכת התרגום שלנו לא קיבלה את הבקשה הזו (היא החזירה את התשובה %d). המתן דקה ונסה שוב, וצור קשר עם התמיכה של WPML אם הבעיה נמשכת."
+         ],
+         "The site stopped answering before this translation was confirmed. If it was not saved, the next download takes it again.": [
+            "האתר הפסיק להגיב לפני שתרגום זה אושר. אם הוא לא נשמר, ההורדה הבאה תוריד אותו שוב."
          ]
       }
    }

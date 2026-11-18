@@ -40,6 +40,10 @@ class AddMediaDataToTranslationPackage implements \IWPML_Backend_Action, \IWPML_
 	}
 
 	public function add_media_strings( $package, $post ) {
+		if ( \WPML_Element_Translation_Package::PACKAGE_TYPE_EXTERNAL === ( $package['type'] ?? null ) ) {
+			return $package;
+		}
+
 		$bundled_media_data = $this->get_bundled_media_to_translate( $post );
 		if ( $bundled_media_data ) {
 			foreach ( $bundled_media_data as $attachment_id => $data ) {

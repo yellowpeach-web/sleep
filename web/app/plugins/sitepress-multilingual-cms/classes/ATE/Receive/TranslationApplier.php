@@ -2,6 +2,7 @@
 
 namespace WPML\TM\ATE\Receive;
 
+use WPML\EditHistory\DeliveryAnswer;
 use WPML\FP\Obj;
 use WPML\TM\API\ATE;
 use WPML\TM\API\Job\Map;
@@ -32,7 +33,7 @@ class TranslationApplier {
 		$this->ateApi           = $ateApi;
 		$this->grant            = $grant ?: new UnfilteredHtmlGrant();
 		$this->jobErrorRecorder = $jobErrorRecorder;
-		$this->jobIdForRid      = $jobIdForRid ?: [ Map::class, 'fromRid' ];
+		$this->jobIdForRid      = $jobIdForRid ?: [ Map::class, 'jobIdFromRid' ];
 	}
 
 	public function applyForPost( $jobId, $postId ) {
@@ -70,7 +71,7 @@ class TranslationApplier {
 
 		$this->grant->arm( $jobId );
 
-		$applied = ( ! $requiresPost || $postId ) && $this->ateApi->applyTranslation( $jobId, $postId, $xliffUrl );
+		$applied = ( ! $requiresPost || $postId ) && $this->ateApi->applyTranslation( $jobId, $postId, $xliffUrl, DeliveryAnswer::keysOf( (array) $jobView ) );
 
 		return $applied ? self::APPLIED : self::APPLY_FAILED;
 	}

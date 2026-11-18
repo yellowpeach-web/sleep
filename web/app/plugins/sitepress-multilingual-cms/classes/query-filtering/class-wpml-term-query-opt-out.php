@@ -41,6 +41,10 @@ class WPML_Term_Query_Opt_Out {
 		);
 	}
 
+	public function is_site_id_adjustment_opted_out() {
+		return $this->filtered( $this->ids_are_not_auto_adjusted(), null );
+	}
+
 	private function filtered( $requested, $query ) {
 		return (bool) apply_filters( self::FILTER, $requested, $query ? $query : self::innermost_query_in_flight() );
 	}

@@ -595,6 +595,9 @@
          "Blocked by a firewall or CDN": [
             "Заблоковано фаєрволом або CDN"
          ],
+         "Used by another site": [
+            "Використовується іншим сайтом"
+         ],
          "Not valid": [
             "Недійсний"
          ],
@@ -618,6 +621,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s завантажується, але фаєрвол або CDN заблокували перевірку WPML."
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "Використовується іншим сайтом у цій мережі: %s. Введіть інший домен для збереження."
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "Не вдалося перевірити домен: %s. Переконайтеся, що він вказує на цей сайт, або зніміть прапорець «Перевіряти під час збереження», щоб зберегти його в будь-якому разі."
@@ -987,6 +993,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "Перш ніж зберегти цю мову, виберіть, чи відновити контент цією мовою, який уже був на сайті, чи почати заново."
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "Мову не можна зіставити з мовою вашого сайту за замовчуванням. Натомість виберіть «Зіставляти автоматично»."
+         ],
          "You don’t have permission to change languages.": [
             "У вас немає дозволу на зміну мов."
          ],
@@ -1047,6 +1056,9 @@
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "Якщо ви не можете знайти свою мову в списку, <a>додайте власну мову</a>."
          ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "Мову %1$s переміщено на позицію %2$d з %3$d."
+         ],
          "Default language": [
             "Мова за замовчуванням"
          ],
@@ -1104,6 +1116,12 @@
          "Delete language": [
             "Видалити мову"
          ],
+         "Move %s. Use the up and down arrow keys.": [
+            "Перемістити %s. Використовуйте клавіші зі стрілками вгору та вниз."
+         ],
+         "Drag to change the order": [
+            "Перетягніть, щоб змінити порядок"
+         ],
          "Type to search all languages…": [
             "Введіть текст для пошуку серед усіх мов…"
          ],
@@ -1138,7 +1156,7 @@
             "За замовчуванням"
          ],
          "Set as default": [
-            "Встановити як за замовчуванням"
+            "Встановити як основну"
          ],
          "Resume translating": [
             "Відновити переклад"
@@ -1175,6 +1193,9 @@
          ],
          "Recognized as the same language as the default": [
             "Розпізнається як та сама мова, що й мова за замовчуванням"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "Автоматичний переклад вимкнено: жодна система перекладу не ввімкнена. Щоб увімкнути систему, перейдіть до розділу <link>WPML → Налаштування → AI Translation</link>."
          ],
          "%s (Regional)": [
             "%s (регіональна)"

@@ -27,9 +27,7 @@ class AuthenticationAjax {
 	public function authenticate_service() {
 		$this->handle_action(
 			function () {
-				$this->authorize_factory->create()->authorize(
-					json_decode( stripslashes( $_POST['custom_fields'] ) )
-				);
+				$this->authorize_factory->create()->authorize( $this->credentials_or_refuse() );
 			},
 			[ $this, 'is_valid_request_with_params' ],
 			/* translators: Message shown after a translation service was set up and can be used. */
@@ -44,9 +42,7 @@ class AuthenticationAjax {
 	public function update_credentials() {
 		$this->handle_action(
 			function () {
-				$this->authorize_factory->create()->updateCredentials(
-					json_decode( stripslashes( $_POST['custom_fields'] ) )
-				);
+				$this->authorize_factory->create()->updateCredentials( $this->credentials_or_refuse() );
 			},
 			[ $this, 'is_valid_request_with_params' ],
 			__( 'Service credentials updated.', 'sitepress' ),
@@ -172,5 +168,21 @@ class AuthenticationAjax {
 
 	public function is_valid_request_with_params() {
 		return isset( $_POST['service_id'], $_POST['custom_fields'] ) && $this->is_valid_nonce_request();
+	}
+
+	private function credentials_or_refuse() {
+		$credentials = $this->credentials_from_request();
+		if ( null === $credentials ) {
+			throw new \InvalidArgumentException( 'custom_fields is not a JSON object' );
+		}
+
+		return $credentials;
+	}
+
+	private function credentials_from_request() {
+		$posted      = isset( $_POST['custom_fields'] ) && is_string( $_POST['custom_fields'] ) ? stripslashes( $_POST['custom_fields'] ) : '';
+		$credentials = '' === $posted ? null : json_decode( $posted );
+
+		return $credentials instanceof \stdClass ? $credentials : null;
 	}
 }

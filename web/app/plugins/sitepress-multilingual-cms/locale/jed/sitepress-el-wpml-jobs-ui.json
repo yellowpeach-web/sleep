@@ -91,23 +91,107 @@
          "Cancelled": [
             "Ακυρώθηκε"
          ],
-         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
-            "Η αυτόματη μετάφραση απέτυχε επανειλημμένα και το WPML σταμάτησε τις προσπάθειες. Στείλτε ξανά ή απορρίψτε την εργασία από τον Πίνακα ελέγχου μετάφρασης ή ακυρώστε την εδώ."
+         "Published — Pending review": [
+            "Δημοσιεύτηκε — Εκκρεμεί επιθεώρηση"
          ],
          "Needs translation": [
             "Χρειάζεται μετάφραση"
          ],
-         "Needs update": [
-            "Χρειάζεται ενημέρωση"
+         "Review in progress": [
+            "Επιθεώρηση σε εξέλιξη"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "Αναμονή για την πληρωμή σας με Χρέωση βάσει χρήσης"
          ],
          "Translation ready to download": [
             "Η μετάφραση είναι έτοιμη για λήψη"
          ],
+         "Waiting for payment": [
+            "Αναμονή για πληρωμή"
+         ],
+         "Waiting for words": [
+            "Αναμονή για λέξεις"
+         ],
          "Completed": [
             "Ολοκληρωμένο"
          ],
+         "Insufficient funds": [
+            "Ανεπαρκές υπόλοιπο"
+         ],
+         "Sending": [
+            "Αποστολή"
+         ],
+         "Automatic translation is off, so this job is not retried. Resend it, or switch Translate Everything on.": [
+            "Η αυτόματη μετάφραση είναι απενεργοποιημένη, επομένως δεν θα γίνει νέα προσπάθεια για αυτήν την εργασία. Στείλτε την ξανά ή ενεργοποιήστε το Translate Everything."
+         ],
+         "Waiting for you": [
+            "Σε αναμονή για εσάς"
+         ],
          "Failed - needs attention": [
             "Αποτυχία - απαιτείται προσοχή"
+         ],
+         "You can also resend the content or open the job in the Translation Queue.": [
+            "Μπορείτε επίσης να στείλετε ξανά το περιεχόμενο ή να ανοίξετε την εργασία στην Ουρά μεταφράσεων."
+         ],
+         "If it keeps failing for about a day, the job is marked as needing your attention.": [
+            "Εάν συνεχίσει να αποτυγχάνει για περίπου μία ημέρα, η εργασία θα επισημανθεί ότι απαιτεί την προσοχή σας."
+         ],
+         "In progress": [
+            "Σε εξέλιξη"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "Η αυτόματη μετάφραση απέτυχε επανειλημμένα και το WPML σταμάτησε τις προσπάθειες. Στείλτε ξανά ή απορρίψτε την εργασία από τον Πίνακα ελέγχου μετάφρασης ή ακυρώστε την εδώ."
+         ],
+         "Needs update": [
+            "Χρειάζεται ενημέρωση"
+         ],
+         "Scheduled — Pending review": [
+            "Προγραμματισμένο — Εκκρεμεί έλεγχος"
+         ],
+         "Private — Pending review": [
+            "Ιδιωτικό — Εκκρεμεί έλεγχος"
+         ],
+         "Draft — Pending review": [
+            "Προσχέδιο — Εκκρεμεί επιθεώρηση"
+         ],
+         "Published — Review in progress": [
+            "Δημοσιεύτηκε — Επιθεώρηση σε εξέλιξη"
+         ],
+         "Scheduled — Review in progress": [
+            "Προγραμματισμένο — Έλεγχος σε εξέλιξη"
+         ],
+         "Private — Review in progress": [
+            "Ιδιωτικό — Έλεγχος σε εξέλιξη"
+         ],
+         "Draft — Review in progress": [
+            "Προσχέδιο — Επιθεώρηση σε εξέλιξη"
+         ],
+         "WPML could not reach our translation system.": [
+            "Το WPML δεν μπόρεσε να συνδεθεί με το σύστημα μετάφρασής μας."
+         ],
+         "Our translation system did not accept this job.": [
+            "Το σύστημα μετάφρασής μας δεν αποδέχτηκε αυτήν την εργασία."
+         ],
+         "WPML could not calculate the word count for this job.": [
+            "Το WPML δεν μπόρεσε να υπολογίσει τον αριθμό λέξεων για αυτήν την εργασία."
+         ],
+         "WPML could not read the price of automatic translation for this job.": [
+            "Το WPML δεν μπόρεσε να διαβάσει την τιμή της αυτόματης μετάφρασης για αυτήν την εργασία."
+         ],
+         "WPML could not prepare this job for automatic translation.": [
+            "Το WPML δεν μπόρεσε να προετοιμάσει αυτήν την εργασία για αυτόματη μετάφραση."
+         ],
+         "Sending this job to automatic translation failed.": [
+            "Η αποστολή αυτής της εργασίας στην αυτόματη μετάφραση απέτυχε."
+         ],
+         "WPML tries again within a minute.": [
+            "Το WPML θα προσπαθήσει ξανά μέσα σε ένα λεπτό."
+         ],
+         "WPML tries again in about %d minutes.": [
+            "Το WPML θα προσπαθήσει ξανά σε περίπου %d λεπτά."
+         ],
+         "WPML tries again in about %d hours.": [
+            "Το WPML θα προσπαθήσει ξανά σε περίπου %d ώρες."
          ],
          "%s terms are published immediately because they don't support draft mode.": [
             "Οι όροι %s δημοσιεύονται αμέσως επειδή δεν υποστηρίζουν τη λειτουργία προσχεδίου."
@@ -115,41 +199,14 @@
          "%s are immediately published because they don't support draft mode.": [
             "Τα %s δημοσιεύονται αμέσως επειδή δεν υποστηρίζουν τη λειτουργία προσχεδίου."
          ],
-         "Published — Pending review": [
-            "Δημοσιεύτηκε — Εκκρεμεί επιθεώρηση"
+         "(no title)": [
+            "(χωρίς τίτλο)"
          ],
-         "Draft — Pending review": [
-            "Προσχέδιο — Εκκρεμεί επιθεώρηση"
-         ],
-         "Review in progress": [
-            "Επιθεώρηση σε εξέλιξη"
-         ],
-         "Published — Review in progress": [
-            "Δημοσιεύτηκε — Επιθεώρηση σε εξέλιξη"
-         ],
-         "Draft — Review in progress": [
-            "Προσχέδιο — Επιθεώρηση σε εξέλιξη"
-         ],
-         "Waiting for your Pay-As-You-Go payment": [
-            "Αναμονή για την πληρωμή σας με Χρέωση βάσει χρήσης"
-         ],
-         "Waiting for payment": [
-            "Αναμονή για πληρωμή"
-         ],
-         "Insufficient funds": [
-            "Ανεπαρκές υπόλοιπο"
-         ],
-         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
-            "Η αυτόματη μετάφραση διακόπηκε λόγω προσωρινού σφάλματος και θα γίνει αυτόματη επανάληψη — δεν απαιτείται καμία ενέργεια. Εάν η κατάσταση δεν αλλάξει σε περίπου 30 λεπτά, επικοινωνήστε με την υποστήριξη του WPML."
-         ],
-         "In progress": [
-            "Σε εξέλιξη"
+         "%1$s (ID %2$d)": [
+            "%1$s (ID %2$d)"
          ],
          "View original": [
             "Προβολή πρωτοτύπου"
-         ],
-         "(no title)": [
-            "(χωρίς τίτλο)"
          ],
          "Automatic translation": [
             "Αυτόματη μετάφραση"
@@ -161,7 +218,7 @@
             "Επαναφορά"
          ],
          "Filter": [
-            "Φίλτρο"
+            "Φιλτράρισμα"
          ],
          "Reference ID (%s)": [
             "ID αναφοράς (%s)"
@@ -472,7 +529,7 @@
             "Αυτός ο μεταφραστής δεν είναι πλέον διαθέσιμος. Ανανεώστε τη σελίδα και επιλέξτε ξανά έναν μεταφραστή."
          ],
          "Specify some jobs to resign": [
-            "Προσδιορίστε ορισμένες εργασίες για παραίτηση"
+            "Προσδιορίστε ορισμένες εργασίες για αποδέσμευση"
          ],
          "We could not resign jobs: %s": [
             "Δεν ήταν δυνατή η παραίτηση από τις εργασίες: %s"
@@ -486,9 +543,6 @@
          "Failed to resign from jobs": [
             "Αποτυχία παραίτησης από τις εργασίες"
          ],
-         "The Advanced Editor jobs synchronization has failed": [
-            "Ο συγχρονισμός εργασιών του Προηγμένου προγράμματος επεξεργασίας απέτυχε"
-         ],
          "Synchronization with the Professional Translation service has failed": [
             "Ο συγχρονισμός με την επαγγελματική μεταφραστική υπηρεσία απέτυχε"
          ],
@@ -501,8 +555,40 @@
          "Batch sync couldn't be finished": [
             "Ο συγχρονισμός παρτίδας δεν ήταν δυνατό να ολοκληρωθεί"
          ],
+         "More details": [
+            "Περισσότερες λεπτομέρειες"
+         ],
+         "%s job was left out of the export.": [
+            "%s εργασία παραλείφθηκε από την εξαγωγή.",
+            "%s εργασίες παραλείφθηκαν από την εξαγωγή."
+         ],
+         "%s job could not be exported. No file was downloaded.": [
+            "Δεν ήταν δυνατή η εξαγωγή %s εργασίας. Δεν έγινε λήψη κανενός αρχείου.",
+            "Δεν ήταν δυνατή η εξαγωγή %s εργασιών. Δεν έγινε λήψη κανενός αρχείου."
+         ],
+         "This job was saved while this server had the PHP zlib extension, so its text is stored compressed. PHP on this server has no zlib now, so WPML cannot read it. Ask your hosting provider to enable the PHP zlib extension, then export it again.": [
+            "Αυτή η εργασία αποθηκεύτηκε ενώ αυτός ο διακομιστής διέθετε την επέκταση PHP zlib, επομένως το κείμενό της είναι αποθηκευμένο σε συμπιεσμένη μορφή. Η PHP σε αυτόν τον διακομιστή δεν διαθέτει zlib τώρα, επομένως το WPML δεν μπορεί να το διαβάσει. Ζητήστε από τον πάροχο φιλοξενίας σας να ενεργοποιήσει την επέκταση PHP zlib και, στη συνέχεια, εξάγετέ την ξανά.",
+            "Αυτές οι εργασίες αποθηκεύτηκαν ενώ αυτός ο διακομιστής διέθετε την επέκταση PHP zlib, επομένως το κείμενό τους είναι αποθηκευμένο σε συμπιεσμένη μορφή. Η PHP σε αυτόν τον διακομιστή δεν διαθέτει zlib τώρα, επομένως το WPML δεν μπορεί να τις διαβάσει. Ζητήστε από τον πάροχο φιλοξενίας σας να ενεργοποιήσει την επέκταση PHP zlib και, στη συνέχεια, εξάγετέ τες ξανά."
+         ],
+         "This job could not be exported.": [
+            "Δεν ήταν δυνατή η εξαγωγή αυτής της εργασίας.",
+            "Δεν ήταν δυνατή η εξαγωγή αυτών των εργασιών."
+         ],
+         "%1$s (job %2$s)": [
+            "%1$s (εργασία %2$s)"
+         ],
+         "Job %s": [
+            "Εργασία %s"
+         ],
+         "and %s more job": [
+            "και %s ακόμη εργασία",
+            "και %s ακόμη εργασίες"
+         ],
          "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
             "Το μεταφραστικό μας σύστημα δεν αποδέχτηκε αυτό το αίτημα (απάντησε %d). Περιμένετε ένα λεπτό και δοκιμάστε ξανά, και επικοινωνήστε με την υποστήριξη του WPML εάν το πρόβλημα συνεχιστεί."
+         ],
+         "The site stopped answering before this translation was confirmed. If it was not saved, the next download takes it again.": [
+            "Ο ιστότοπος σταμάτησε να αποκρίνεται πριν επιβεβαιωθεί αυτή η μετάφραση. Εάν δεν αποθηκεύτηκε, η επόμενη λήψη θα την ανακτήσει ξανά."
          ]
       }
    }

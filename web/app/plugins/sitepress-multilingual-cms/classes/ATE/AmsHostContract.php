@@ -8,7 +8,7 @@ use WPML\TM\ATE\BuyWords\ManageCreditsSite;
 
 class AmsHostContract {
 
-	const VERSION = 2;
+	const VERSION = 3;
 
 	const BUY_WORDS_URL = 'https://app.wpml.org/account/words/buy';
 

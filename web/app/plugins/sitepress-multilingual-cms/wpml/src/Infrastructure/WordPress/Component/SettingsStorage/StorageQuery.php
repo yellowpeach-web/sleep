@@ -3,6 +3,7 @@
 namespace WPML\Infrastructure\WordPress\Component\SettingsStorage;
 
 use WPML\Core\Component\SettingsStorage\Application\Repository\StorageQueryInterface;
+use WPML\Core\Port\Persistence\DatabaseWriteInterface;
 use WPML\Core\Port\Persistence\Exception\DatabaseErrorException;
 use WPML\Core\Port\Persistence\QueryHandlerInterface;
 use WPML\Core\Port\Persistence\QueryPrepareInterface;
@@ -13,10 +14,17 @@ class StorageQuery implements StorageQueryInterface {
 
   private $queryPrepare;
 
+  private $databaseWrite;
 
-  public function __construct( QueryHandlerInterface $queryHandler, QueryPrepareInterface $queryPrepare ) {
-    $this->queryHandler = $queryHandler;
-    $this->queryPrepare = $queryPrepare;
+
+  public function __construct(
+    QueryHandlerInterface $queryHandler,
+    QueryPrepareInterface $queryPrepare,
+    ?DatabaseWriteInterface $databaseWrite = null
+  ) {
+    $this->queryHandler  = $queryHandler;
+    $this->queryPrepare  = $queryPrepare;
+    $this->databaseWrite = $databaseWrite;
   }
 
 
@@ -36,7 +44,25 @@ class StorageQuery implements StorageQueryInterface {
 
     $keys = [];
     foreach ( $names as $name ) {
-      $keys[] = (string) substr( $name, strlen( self::ROW_PREFIX ) );
+      if ( strpos( $name, self::ROW_PREFIX ) !== 0 ) {
+        return [];
+      }
+      if ( strlen( $name ) > strlen( self::ROW_PREFIX ) ) {
+        $keys[] = (string) substr( $name, strlen( self::ROW_PREFIX ) );
+      }
+    }
+
+    return $keys;
+  }
+
+
+  public function loadedRowKeys(): array {
+    $keys = [];
+    foreach ( array_keys( wp_load_alloptions() ) as $name ) {
+      $name = (string) $name;
+      if ( strpos( $name, self::ROW_PREFIX ) === 0 && $name !== self::REGISTRY_ROW ) {
+        $keys[] = (string) substr( $name, strlen( self::ROW_PREFIX ) );
+      }
     }
 
     return $keys;
@@ -56,7 +82,32 @@ class StorageQuery implements StorageQueryInterface {
       return false;
     }
 
-    return $raw === null ? false : maybe_unserialize( $raw );
+    if ( null === $raw ) {
+      return false;
+    }
+
+    return @unserialize( trim( $raw ), [ 'allowed_classes' => [ 'stdClass', 'WPML_TP_Service' ] ] );
+  }
+
+
+  public function readRawRow( string $key ) {
+    $prepare = $this->queryPrepare;
+    $sql     = $prepare->prepare(
+      'SELECT option_value FROM ' . $prepare->prefix() . 'options WHERE option_name = %s LIMIT 1',
+      self::ROW_PREFIX . $key
+    );
+
+    try {
+      $raw = $this->queryHandler->querySingle( $sql );
+    } catch ( DatabaseErrorException $e ) {
+      return false;
+    }
+
+    if ( null === $raw ) {
+      return false;
+    }
+
+    return @unserialize( trim( $raw ), [ 'allowed_classes' => [ 'stdClass', 'WPML_TP_Service' ] ] );
   }
 
 
@@ -78,6 +129,33 @@ class StorageQuery implements StorageQueryInterface {
       return $this->queryHandler->querySingle( $sql ) !== null;
     } catch ( DatabaseErrorException $e ) {
       return $onError;
+    }
+  }
+
+
+  public function stopAutoloadingStoredBlob() {
+    if ( function_exists( 'wp_set_option_autoload' ) ) {
+      wp_set_option_autoload( self::OPTION_NAME, false );
+
+      return;
+    }
+
+    if ( $this->databaseWrite === null ) {
+      return;
+    }
+
+    try {
+      $updated = $this->databaseWrite->update(
+        'options',
+        [ 'autoload' => 'no' ],
+        [ 'option_name' => self::OPTION_NAME ]
+      );
+    } catch ( DatabaseErrorException $e ) {
+      return;
+    }
+
+    if ( $updated > 0 ) {
+      wp_cache_delete( 'alloptions', 'options' );
     }
   }
 

@@ -169,7 +169,7 @@ class WPML_Media_Image_Translate {
 			return $baseurl;
 		}
 
-		$converted = $this->sitepress->convert_url( $baseurl, $language );
+		$converted = (string) $this->sitepress->convert_url( $baseurl, $language );
 
 		return '/' === substr( $baseurl, -1 ) ? trailingslashit( $converted ) : untrailingslashit( $converted );
 	}
@@ -216,27 +216,40 @@ class WPML_Media_Image_Translate {
 		}
 
 		$cache    = new WPML_WP_Cache( self::URLS_TO_IDS_CACHE_KEY );
-		$image_id = $cache->get( $image_url );
-		if ( ! $image_id ) {
-			$image_id = attachment_url_to_postid( $image_url );
+		$found    = false;
+		$image_id = $cache->get( $image_url, $found );
+		if ( ! $found ) {
+			$image_id = $this->getAttachmentIdInAnyLanguage( $image_url );
 			if ( ! $image_id && $image_url !== $url ) {
 				$image_id = $this->getBigImageAttachmentId( $image_url );
 			}
 			$cache->set( $image_url, $image_id, HOUR_IN_SECONDS );
 		}
 
-		return $this->sitepress->get_language_for_element( $image_id, 'post_attachment' );
+		return $image_id ? $this->sitepress->get_language_for_element( $image_id, 'post_attachment' ) : null;
 	}
 
-	private function getBigImageAttachmentId( $image_url ) {
-		foreach ( [ '-scaled', '-rotated' ] as $suffix ) {
-			$image_id = attachment_url_to_postid( preg_replace( '/(\.[a-z]{3,4})$/i', $suffix . '$1', $image_url ) );
+	private function getAttachmentIdInAnyLanguage( $url ) {
+		foreach ( $this->getLookupLanguages() as $language ) {
+			$attachment_by_url = $this->attachment_by_url_factory->create( $url, $language, $this->media_attachment_by_url_query );
+			$image_id          = (int) $attachment_by_url->get_id();
 			if ( $image_id ) {
 				return $image_id;
 			}
 		}
 
 		return 0;
+	}
+
+	private function getLookupLanguages() {
+		$default   = (string) $this->sitepress->get_default_language();
+		$languages = array_keys( (array) $this->sitepress->get_active_languages() );
+
+		return array_values( array_unique( array_filter( array_merge( [ $default ], $languages ) ) ) );
+	}
+
+	private function getBigImageAttachmentId( $image_url ) {
+		return $this->getAttachmentIdInAnyLanguage( preg_replace( '/(\.[a-z]{3,4})$/i', '-rotated$1', $image_url ) );
 	}
 
 	private function get_image_size_from_url( $url, $attachment_id ) {

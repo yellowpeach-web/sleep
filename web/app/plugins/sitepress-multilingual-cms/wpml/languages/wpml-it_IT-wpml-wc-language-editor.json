@@ -580,6 +580,9 @@
          "Blocked by a firewall or CDN": [
             "Bloccato da un firewall o da una CDN"
          ],
+         "Used by another site": [
+            "Utilizzato da un altro sito"
+         ],
          "Not valid": [
             "Non valido"
          ],
@@ -603,6 +606,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s si carica, ma un firewall o una CDN ha bloccato il controllo di WPML."
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "Utilizzato da un altro sito su questa rete: %s. Inserisci un dominio diverso per salvare."
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "Impossibile convalidare il dominio: %s. Verifica che punti a questo sito o deseleziona “Convalida al salvataggio” per salvarlo comunque."
@@ -959,6 +965,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "Prima di poter salvare questa lingua, scegli se ripristinare i contenuti che questo sito aveva già in essa o se iniziare da capo."
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "Una lingua non può essere mappata sulla lingua predefinita del tuo sito. Scegli invece “Abbina automaticamente”."
+         ],
          "You don’t have permission to change languages.": [
             "Non hai il permesso di cambiare le lingue."
          ],
@@ -1019,6 +1028,9 @@
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "Se non riesci a trovare la tua lingua nell'elenco, <a>aggiungi una lingua personalizzata</a>."
          ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s spostato alla posizione %2$d di %3$d."
+         ],
          "Default language": [
             "Lingua predefinita"
          ],
@@ -1075,6 +1087,12 @@
          ],
          "Delete language": [
             "Elimina lingua"
+         ],
+         "Move %s. Use the up and down arrow keys.": [
+            "Sposta %s. Usa i tasti freccia su e freccia giù."
+         ],
+         "Drag to change the order": [
+            "Trascina per modificare l'ordine"
          ],
          "Type to search all languages…": [
             "Digita per cercare tra tutte le lingue…"
@@ -1147,6 +1165,9 @@
          ],
          "Recognized as the same language as the default": [
             "Riconosciuta come la stessa lingua predefinita"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "La traduzione automatica è disattivata: nessun motore di traduzione è abilitato. Per attivarne uno, vai su <link>WPML → Impostazioni → Traduzione IA</link>."
          ],
          "%s (Regional)": [
             "%s (regionale)"
@@ -1509,7 +1530,7 @@
             "Aggiungi questa lingua"
          ],
          "Costs are based on your current content settings. Adjust them from the Translations dashboard.": [
-            "I costi si basano sulle impostazioni attuali dei contenuti. Regolali dalla bacheca delle traduzioni."
+            "I costi si basano sulle impostazioni attuali dei contenuti. Regolali dalla Dashboard di traduzione."
          ],
          "Manage and Hide Site Languages": [
             "Gestisci e nascondi le lingue del sito"

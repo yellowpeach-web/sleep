@@ -125,7 +125,7 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_DIC_Action {
 				'ack'           => sprintf( __( 'I understand %s will lose any unsaved work', 'sitepress' ), $assigneeName ),
 				/* translators: Button label in that dialog: take the job over from the person who holds it. Verb phrase, imperative. */
 				'takeOver'      => __( 'Take over', 'sitepress' ),
-				/* translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation". */
+				/* translators: Button label that closes a dialog without doing anything, or stops what is going on, for example in the dialog "Translate with PTC?" (keep the previous choice). Verb, imperative, not the noun "a cancellation". */
 				'cancel'        => __( 'Cancel', 'sitepress' ),
 				'statusChanged' => __( 'This translation changed since you opened the page. Reloading so you see its current state.', 'sitepress' ),
 				'genericError'  => __( 'The translation could not be taken over. Reloading.', 'sitepress' ),

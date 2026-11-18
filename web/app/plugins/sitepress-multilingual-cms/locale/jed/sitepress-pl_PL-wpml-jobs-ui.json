@@ -47,7 +47,7 @@
             "Podejmij i tłumacz"
          ],
          "This job was created by Translate Everything and cannot be cancelled on its own. To stop it, turn off Translate Everything from the Translation Dashboard.": [
-            "To zadanie zostało utworzone przez funkcję Translate Everything i nie można go anulować oddzielnie. Aby je zatrzymać, wyłącz funkcję Translate Everything w panelu zarządzania tłumaczeniami."
+            "To zadanie zostało utworzone przez funkcję Translate Everything i nie można go anulować oddzielnie. Aby je zatrzymać, wyłącz funkcję Translate Everything w Kokpicie tłumaczeń."
          ],
          "View": [
             "Wyświetl"
@@ -91,23 +91,107 @@
          "Cancelled": [
             "Anulowano"
          ],
-         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
-            "Automatyczne tłumaczenie wielokrotnie się nie powiodło i WPML przestał ponawiać próby. Wyślij ponownie lub odrzuć zadanie w panelu zarządzania tłumaczeniami albo anuluj je tutaj."
+         "Published — Pending review": [
+            "Opublikowano — Oczekuje na recenzję"
          ],
          "Needs translation": [
             "Wymaga tłumaczenia"
          ],
-         "Needs update": [
-            "Wymaga aktualizacji"
+         "Review in progress": [
+            "Recenzja w toku"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "Oczekiwanie na płatność w ramach modelu Rozliczenie według zużycia"
          ],
          "Translation ready to download": [
             "Tłumaczenie gotowe do pobrania"
          ],
+         "Waiting for payment": [
+            "Oczekiwanie na płatność"
+         ],
+         "Waiting for words": [
+            "Oczekiwanie na słowa"
+         ],
          "Completed": [
             "Zakończone"
          ],
+         "Insufficient funds": [
+            "Niewystarczające środki"
+         ],
+         "Sending": [
+            "Wysyłanie"
+         ],
+         "Automatic translation is off, so this job is not retried. Resend it, or switch Translate Everything on.": [
+            "Tłumaczenie automatyczne jest wyłączone, więc to zadanie nie zostanie ponowione. Wyślij je ponownie lub włącz funkcję Translate Everything."
+         ],
+         "Waiting for you": [
+            "Oczekuje na Ciebie"
+         ],
          "Failed - needs attention": [
             "Błąd – wymaga uwagi"
+         ],
+         "You can also resend the content or open the job in the Translation Queue.": [
+            "Możesz także ponownie wysłać treść lub otworzyć zadanie w kolejce tłumaczenia."
+         ],
+         "If it keeps failing for about a day, the job is marked as needing your attention.": [
+            "Jeśli próby będą nieudane przez około jeden dzień, zadanie zostanie oznaczone jako wymagające uwagi."
+         ],
+         "In progress": [
+            "W toku"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "Tłumaczenie automatyczne wielokrotnie się nie powiodło i WPML przestał ponawiać próby. Wyślij ponownie lub odrzuć zadanie z poziomu Kokpitu tłumaczeń albo anuluj je tutaj."
+         ],
+         "Needs update": [
+            "Wymaga aktualizacji"
+         ],
+         "Scheduled — Pending review": [
+            "Zaplanowano — Oczekuje na recenzję"
+         ],
+         "Private — Pending review": [
+            "Prywatny — Oczekuje na recenzję"
+         ],
+         "Draft — Pending review": [
+            "Szkic — Oczekuje na recenzję"
+         ],
+         "Published — Review in progress": [
+            "Opublikowano — Recenzja w toku"
+         ],
+         "Scheduled — Review in progress": [
+            "Zaplanowano — Recenzja w toku"
+         ],
+         "Private — Review in progress": [
+            "Prywatny — Recenzja w toku"
+         ],
+         "Draft — Review in progress": [
+            "Szkic — Recenzja w toku"
+         ],
+         "WPML could not reach our translation system.": [
+            "WPML nie mógł nawiązać połączenia z naszym systemem tłumaczeń."
+         ],
+         "Our translation system did not accept this job.": [
+            "Nasz system tłumaczeń nie zaakceptował tego zadania."
+         ],
+         "WPML could not calculate the word count for this job.": [
+            "WPML nie mógł obliczyć liczby słów dla tego zadania."
+         ],
+         "WPML could not read the price of automatic translation for this job.": [
+            "WPML nie mógł odczytać ceny tłumaczenia automatycznego dla tego zadania."
+         ],
+         "WPML could not prepare this job for automatic translation.": [
+            "WPML nie mógł przygotować tego zadania do tłumaczenia automatycznego."
+         ],
+         "Sending this job to automatic translation failed.": [
+            "Wysłanie tego zadania do tłumaczenia automatycznego nie powiodło się."
+         ],
+         "WPML tries again within a minute.": [
+            "WPML spróbuje ponownie w ciągu minuty."
+         ],
+         "WPML tries again in about %d minutes.": [
+            "WPML spróbuje ponownie za około %d min."
+         ],
+         "WPML tries again in about %d hours.": [
+            "WPML spróbuje ponownie za około %d godz."
          ],
          "%s terms are published immediately because they don't support draft mode.": [
             "Terminy taksonomii %s są publikowane natychmiast, ponieważ nie obsługują trybu szkicu."
@@ -115,44 +199,17 @@
          "%s are immediately published because they don't support draft mode.": [
             "%s są publikowane natychmiast, ponieważ nie obsługują trybu szkicu."
          ],
-         "Published — Pending review": [
-            "Opublikowano — Oczekuje na recenzję"
+         "(no title)": [
+            "(brak tytułu)"
          ],
-         "Draft — Pending review": [
-            "Szkic — Oczekuje na recenzję"
-         ],
-         "Review in progress": [
-            "Recenzja w toku"
-         ],
-         "Published — Review in progress": [
-            "Opublikowano — Recenzja w toku"
-         ],
-         "Draft — Review in progress": [
-            "Szkic — Recenzja w toku"
-         ],
-         "Waiting for your Pay-As-You-Go payment": [
-            "Oczekiwanie na płatność w ramach modelu Rozliczenie według zużycia"
-         ],
-         "Waiting for payment": [
-            "Oczekiwanie na płatność"
-         ],
-         "Insufficient funds": [
-            "Niewystarczające środki"
-         ],
-         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
-            "Automatyczne tłumaczenie zostało wstrzymane przez tymczasowy błąd i zostanie automatycznie ponowione — nie jest wymagane żadne działanie. Jeśli status nie zmieni się w ciągu około 30 minut, skontaktuj się ze wsparciem WPML."
-         ],
-         "In progress": [
-            "W toku"
+         "%1$s (ID %2$d)": [
+            "%1$s (ID %2$d)"
          ],
          "View original": [
             "Wyświetl oryginał"
          ],
-         "(no title)": [
-            "(brak tytułu)"
-         ],
          "Automatic translation": [
-            "Automatyczne tłumaczenie"
+            "Tłumaczenie automatyczne"
          ],
          "TP ID: %d": [
             "ID TP: %d"
@@ -248,7 +305,7 @@
             "Eksportuj wszystkie przefiltrowane zadania do XLIFF 1.1"
          ],
          "Export all jobs to XLIFF 1.2": [
-            "Eksportuj hospital zadania do XLIFF 1.2"
+            "Eksportuj wszystkie zadania do XLIFF 1.2"
          ],
          "Export all filtered jobs to XLIFF 1.2": [
             "Eksportuj wszystkie przefiltrowane zadania do XLIFF 1.2"
@@ -494,9 +551,6 @@
          "Failed to resign from jobs": [
             "Nie udało się zrezygnować z zadań"
          ],
-         "The Advanced Editor jobs synchronization has failed": [
-            "Synchronizacja zadań Zaawansowanego edytora nie powiodła się"
-         ],
          "Synchronization with the Professional Translation service has failed": [
             "Synchronizacja z profesjonalnym serwisem tłumaczeniowym nie powiodła się"
          ],
@@ -509,8 +563,45 @@
          "Batch sync couldn't be finished": [
             "Synchronizacja partii nie mogła zostać zakończona"
          ],
+         "More details": [
+            "Więcej szczegółów"
+         ],
+         "%s job was left out of the export.": [
+            "Pominięto %s zadanie w eksporcie.",
+            "Pominięto %s zadania w eksporcie.",
+            "Pominięto %s zadań w eksporcie."
+         ],
+         "%s job could not be exported. No file was downloaded.": [
+            "Nie można wyeksportować %s zadania. Żaden plik nie został pobrany.",
+            "Nie można wyeksportować %s zadań. Żaden plik nie został pobrany.",
+            "Nie można wyeksportować %s zadań. Żaden plik nie został pobrany."
+         ],
+         "This job was saved while this server had the PHP zlib extension, so its text is stored compressed. PHP on this server has no zlib now, so WPML cannot read it. Ask your hosting provider to enable the PHP zlib extension, then export it again.": [
+            "To zadanie zostało zapisane, gdy serwer obsługiwał rozszerzenie PHP zlib, więc jego tekst jest przechowywany w postaci skompresowanej. PHP na tym serwerze nie ma teraz zlib, więc WPML nie może go odczytać. Poproś dostawcę hostingu o włączenie rozszerzenia PHP zlib, a następnie wyeksportuj je ponownie.",
+            "Te zadania zostały zapisane, gdy serwer obsługiwał rozszerzenie PHP zlib, więc ich tekst jest przechowywany w postaci skompresowanej. PHP na tym serwerze nie ma teraz zlib, więc WPML nie może ich odczytać. Poproś dostawcę hostingu o włączenie rozszerzenia PHP zlib, a następnie wyeksportuj je ponownie.",
+            "Te zadania zostały zapisane, gdy serwer obsługiwał rozszerzenie PHP zlib, więc ich tekst jest przechowywany w postaci skompresowanej. PHP na tym serwerze nie ma teraz zlib, więc WPML nie może ich odczytać. Poproś dostawcę hostingu o włączenie rozszerzenia PHP zlib, a następnie wyeksportuj je ponownie."
+         ],
+         "This job could not be exported.": [
+            "Nie udało się wyeksportować tego zadania.",
+            "Nie udało się wyeksportować tych zadań.",
+            "Nie udało się wyeksportować tych zadań."
+         ],
+         "%1$s (job %2$s)": [
+            "%1$s (zadanie %2$s)"
+         ],
+         "Job %s": [
+            "Zadanie %s"
+         ],
+         "and %s more job": [
+            "i jeszcze %s zadanie",
+            "i jeszcze %s zadania",
+            "i jeszcze %s zadań"
+         ],
          "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
             "Nasz system tłumaczeń nie zaakceptował tego żądania (odpowiedź: %d). Odczekaj chwilę i spróbuj ponownie, a jeśli problem będzie się powtarzał, skontaktuj się ze wsparciem WPML."
+         ],
+         "The site stopped answering before this translation was confirmed. If it was not saved, the next download takes it again.": [
+            "Witryna przestała odpowiadać przed potwierdzeniem tego tłumaczenia. Jeśli nie zostało ono zapisane, kolejne pobieranie pobierze je ponownie."
          ]
       }
    }

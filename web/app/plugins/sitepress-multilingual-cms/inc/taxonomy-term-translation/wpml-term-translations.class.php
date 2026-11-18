@@ -151,13 +151,12 @@ class WPML_Terms_Translations {
 	public static function quick_edit_terms_removal( $column_name, $post_type ) {
 		global $sitepress, $wpdb;
 		if ( $column_name == 'icl_translations' ) {
-			$taxonomies                     = array_filter(
-				get_object_taxonomies( $post_type ),
-				array(
-					$sitepress,
-					'is_translated_taxonomy',
-				)
-			);
+			$taxonomies = array();
+			foreach ( get_object_taxonomies( $post_type ) as $taxonomy ) {
+				if ( is_taxonomy_hierarchical( $taxonomy ) && $sitepress->is_translated_taxonomy( $taxonomy ) ) {
+					$taxonomies[] = $taxonomy;
+				}
+			}
 			$terms_by_language_and_taxonomy = array();
 
 			if ( ! empty( $taxonomies ) ) {
@@ -326,6 +325,10 @@ class WPML_Terms_Translations {
 				);
 
 				$new_translated_term = self::create_new_term( $new_term_args );
+
+				if ( isset( $new_translated_term['term_taxonomy_id'], $original_term->name ) && $term === $original_term->name ) {
+					\WPML\TaxonomyTermTranslation\CopiedTermMarker::mark( (int) $new_translated_term['term_taxonomy_id'], $taxonomy );
+				}
 			}
 		}
 
@@ -556,9 +559,16 @@ class WPML_Terms_Translations {
 				$remove_filter = true;
 			}
 
-			$newTerm = $trid
-				? wp_insert_term( $termData['name'], $taxonomy, [ 'slug' => self::term_unique_slug( sanitize_title( $termData['name'] ), $taxonomy, $postLang ) ] )
-				: wp_update_term( $termData['term_id'], $taxonomy, [ 'slug' => self::term_unique_slug( sanitize_title( $termData['name'] ), $taxonomy, $postLang ) ] );
+			$termArgs = [ 'slug' => self::term_unique_slug( sanitize_title( $termData['name'] ), $taxonomy, $postLang ) ];
+
+			if ( $trid ) {
+				$sourceLang = $sitepress->get_source_language_by_trid( $trid );
+				$newTerm    = $sourceLang && $sourceLang !== $postLang
+					? \WPML\TaxonomyTermTranslation\TermTranslationInsert::insert( $termData['name'], $taxonomy, $termArgs, $trid, $postLang, $sourceLang, true )
+					: wp_insert_term( $termData['name'], $taxonomy, $termArgs );
+			} else {
+				$newTerm = wp_update_term( $termData['term_id'], $taxonomy, $termArgs );
+			}
 
 			if ( ! empty( $remove_filter ) ) {
 				remove_filter( 'get_terms', [ 'WPML_Terms_Translations', 'get_terms_filter' ] );

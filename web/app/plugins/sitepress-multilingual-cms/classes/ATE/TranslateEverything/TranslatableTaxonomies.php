@@ -4,7 +4,6 @@ namespace WPML\TM\ATE\TranslateEverything;
 
 use WPML\API\PostTypes;
 use WPML\Core\SharedKernel\Component\Post\Domain\TranslateEverythingScope;
-use WPML\Setup\Option;
 
 class TranslatableTaxonomies {
 
@@ -54,17 +53,11 @@ class TranslatableTaxonomies {
 	}
 
 	private static function getPostTypesTranslatedByTea(): array {
-		$automaticTranslatable = TranslateEverythingScope::offeredOnly( PostTypes::getAutomaticTranslatable() );
-
-		if ( empty( Option::getTranslateEverythingPostsSinceDates() ) ) {
-			return array_values( $automaticTranslatable );
-		}
-
 		return array_values(
 			array_filter(
-				$automaticTranslatable,
+				TranslateEverythingScope::offeredOnly( PostTypes::getAutomaticTranslatable() ),
 				function ( $postType ) {
-					return Option::getTranslateEverythingPostSinceDate( $postType ) !== Option::SINCE_DATE_SKIP_TYPE;
+					return ! Cutoff::isSkip( OfferedTypeSinceDate::resolve( $postType ) );
 				}
 			)
 		);

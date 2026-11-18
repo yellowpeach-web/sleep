@@ -40,9 +40,10 @@ class CustomTwigTemplatesNotice {
 		}
 
 		$templates = $this->get_twig_templates();
+		$uploads   = $this->get_uploads_templates();
 
-		if ( $templates ) {
-			$this->notices()->add_notice( $this->create_notice( $templates ) );
+		if ( $templates || $uploads ) {
+			$this->notices()->add_notice( $this->create_notice( $templates, $uploads ) );
 		} elseif ( $this->notices()->get_notice( self::NOTICE_ID, self::NOTICE_GROUP ) ) {
 			$this->notices()->remove_notice( self::NOTICE_GROUP, self::NOTICE_ID );
 		}
@@ -53,79 +54,15 @@ class CustomTwigTemplatesNotice {
 	}
 
 	public function get_twig_templates() {
-		$registered = $this->templates->get_templates();
-		$twig       = [];
-
-		foreach ( is_array( $registered ) ? $registered : [] as $slug => $template ) {
-			if ( $template->is_missing() || $template->is_core() || \WPML_LS_Template::ENGINE_TWIG !== $template->get_engine() ) {
-				continue;
-			}
-
-			$data         = $template->get_template_data();
-			$twig[ $slug ] = [
-				'name'       => isset( $data['name'] ) ? (string) $data['name'] : (string) $slug,
-				'folder'     => $this->get_folder( $data ),
-				'in_uploads' => isset( $data['php_allowed'] ) && ! $data['php_allowed'],
-				'used_by'    => [],
-			];
-		}
-
-		if ( ! $twig ) {
-			return [];
-		}
-
-		foreach ( $this->settings->get_active_slots() as $slot ) {
-			if ( ! $slot->template_string() && isset( $twig[ $slot->template() ] ) ) {
-				$twig[ $slot->template() ]['used_by'][] = $this->get_slot_label( $slot );
-			}
-		}
-
-		ksort( $twig );
-
-		return array_values( $twig );
+		return ( new CustomTemplates( $this->settings, $this->templates ) )->get( \WPML_LS_Template::ENGINE_TWIG );
 	}
 
-	private function get_slot_label( $slot ) {
-		if ( $slot->is_footer() ) {
-			/* translators: Name of a language switcher in a list: the one shown in the footer of the site. */
-			return __( 'Footer language switcher', 'sitepress' );
-		}
-
-		if ( $slot->is_post_translations() ) {
-			/* translators: Name of a language switcher in a list: the links to the other languages of a post, shown above or below its content. */
-			return __( 'Post translations links', 'sitepress' );
-		}
-
-		if ( $slot->is_shortcode_actions() ) {
-			/* translators: Name of a language switcher in a list: the one printed by the language switcher shortcode and the PHP action. */
-			return __( 'Shortcode and PHP action language switcher', 'sitepress' );
-		}
-
-		if ( $slot->is_sidebar() ) {
-			$sidebars = $this->settings->get_registered_sidebars();
-			$name     = isset( $sidebars[ $slot->slug() ]['name'] ) ? $sidebars[ $slot->slug() ]['name'] : $slot->slug();
-
-			/* translators: Name of a language switcher in a list: the one in a widget area. %s: the name of the widget area. */
-			return sprintf( __( 'Widget area language switcher: %s', 'sitepress' ), $name );
-		}
-
-		$menus = $this->settings->get_available_menus();
-		$name  = isset( $menus[ $slot->slug() ]->name ) ? $menus[ $slot->slug() ]->name : '#' . $slot->slug();
-
-		/* translators: Name of a language switcher in a list: the one in a menu. %s: the name of the menu. */
-		return sprintf( __( 'Menu language switcher: %s', 'sitepress' ), $name );
+	public function get_uploads_templates() {
+		return ( new CustomTemplates( $this->settings, $this->templates ) )->getUploads();
 	}
 
-	private function get_folder( array $template_data ) {
-		$paths  = isset( $template_data['path'] ) ? (array) $template_data['path'] : [];
-		$folder = (string) end( $paths );
-		$root   = defined( 'ABSPATH' ) ? rtrim( ABSPATH, '/\\' ) . '/' : '';
-
-		return '' !== $root && 0 === strpos( $folder, $root ) ? substr( $folder, strlen( $root ) ) : $folder;
-	}
-
-	private function create_notice( array $templates ) {
-		$notice = $this->notices()->create_notice( self::NOTICE_ID, $this->get_text( $templates ), self::NOTICE_GROUP );
+	private function create_notice( array $templates, array $uploads ) {
+		$notice = $this->notices()->create_notice( self::NOTICE_ID, $this->get_text( $templates, $uploads ), self::NOTICE_GROUP );
 		$notice->set_css_class_types( 'notice-warning' );
 		$notice->set_dismissible( true );
 		$notice->set_dismissible_for_different_text( false );
@@ -157,37 +94,32 @@ class CustomTwigTemplatesNotice {
 		return $html;
 	}
 
-	private function get_text( array $templates ) {
-		$has_uploads = false;
-		$list        = '<ul class="wpml-ls-twig-templates-list" style="max-height:none;overflow:visible">';
+	private function get_text( array $templates, array $uploads ) {
+		/* translators: Heading of an admin notice about custom language switcher templates. */
+		$text = '<h2>' . esc_html__( 'Action needed for your language switcher', 'sitepress' ) . '</h2>';
 
-		foreach ( $templates as $template ) {
-			$list .= '<li><strong>' . esc_html( $template['name'] ) . '</strong> &rarr; <code>' . $this->get_breakable_path( $template['folder'] ) . '</code>';
-
-			if ( $template['in_uploads'] ) {
-				$has_uploads = true;
-				/* translators: Added after the folder of a custom language switcher template that is in the uploads folder of the site. */
-				$list .= ' (' . esc_html__( 'in the uploads folder', 'sitepress' ) . ')';
-			}
-
-			if ( $template['used_by'] ) {
-				/* translators: Added under a custom language switcher template. %s: the language switchers of the site that use it, separated by commas. */
-				$list .= '<br>' . esc_html( sprintf( __( 'Used by: %s', 'sitepress' ), implode( ', ', $template['used_by'] ) ) );
-			} else {
-				/* translators: Added under a custom language switcher template that none of the switchers set in the language switcher options uses. */
-				$list .= '<br>' . esc_html__( 'Not used by a switcher in the language switcher options; it may be used by a shortcode or theme code.', 'sitepress' );
-			}
-
-			$list .= '</li>';
+		if ( $templates ) {
+			$text .= $this->get_twig_part( $templates );
 		}
 
-		$list .= '</ul>';
+		if ( $uploads ) {
+			$text .= $this->get_uploads_part( $uploads );
+		}
 
-		/* translators: Heading of an admin notice about custom language switcher templates. */
-		$text  = '<h2>' . esc_html__( 'Action needed for your language switcher', 'sitepress' ) . '</h2>';
+		$text .= '<p><strong>' . sprintf(
+			/* translators: %1$s and %2$s are the opening and closing tags of a link to WPML Support. The sentence is an offer of help. */
+			esc_html__( 'Need help? %1$sContact WPML Support%2$s and we\'ll help you convert your template.', 'sitepress' ),
+			'<a href="' . esc_url( $this->get_support_url() ) . '" target="_blank" rel="noopener noreferrer">',
+			'</a>'
+		) . '</strong></p>';
+
+		return $text;
+	}
+
+	private function get_twig_part( array $templates ) {
 		/* translators: First paragraph of an admin notice. "Twig" is the name of a template language and stays in English. The list of the templates follows. */
-		$text .= '<p>' . esc_html__( 'These custom language switcher templates are written in Twig. Support for Twig templates will end in a future version of WPML.', 'sitepress' ) . '</p>';
-		$text .= $list;
+		$text  = '<p>' . esc_html__( 'These custom language switcher templates are written in Twig. Support for Twig templates will end in a future version of WPML.', 'sitepress' ) . '</p>';
+		$text .= $this->get_list( $templates );
 		/* translators: Line that introduces a list of ways to keep the language switcher templates working. */
 		$text .= '<p>' . esc_html__( 'To keep them working:', 'sitepress' ) . '</p>';
 		$text .= '<ul>';
@@ -203,21 +135,57 @@ class CustomTwigTemplatesNotice {
 			'<a href="' . esc_url( $this->get_options_url() ) . '">',
 			'</a>'
 		) . '</li>';
-
-		if ( $has_uploads ) {
-			/* translators: Item of a list of ways to keep the language switchers working. PHP templates are not loaded from the uploads folder. */
-			$text .= '<li>' . esc_html__( 'A template in the uploads folder cannot be a PHP template: move it into your theme.', 'sitepress' ) . '</li>';
-		}
-
 		$text .= '</ul>';
-		$text .= '<p><strong>' . sprintf(
-			/* translators: %1$s and %2$s are the opening and closing tags of a link to WPML Support. The sentence is an offer of help. */
-			esc_html__( 'Need help? %1$sContact WPML Support%2$s and we\'ll help you convert your template.', 'sitepress' ),
-			'<a href="' . esc_url( $this->get_support_url() ) . '" target="_blank" rel="noopener noreferrer">',
-			'</a>'
-		) . '</strong></p>';
 
 		return $text;
+	}
+
+	private function get_uploads_part( array $uploads ) {
+		/* translators: Paragraph of an admin notice, before a list of custom language switcher templates that are in the uploads folder of the site. */
+		$text  = '<p>' . esc_html__( 'These language switcher templates are in the uploads folder. WPML does not run templates from a folder that uploads and other plugins can write to, so a switcher that uses one shows the default style of its type instead.', 'sitepress' ) . '</p>';
+		$text .= $this->get_list( $uploads, true );
+		$text .= '<p>' . sprintf(
+			/* translators: %1$s is a folder path in the theme. %2$s and %3$s are the opening and closing tags of a link to the documentation. */
+			esc_html__( 'Move each template into your theme, to %1$s. The switchers that use it then use the moved template. %2$sLearn more%3$s', 'sitepress' ),
+			'<code>' . $this->get_breakable_path( $this->get_theme_folder() ) . '</code>',
+			'<a href="' . esc_url( $this->get_docs_url() ) . '" target="_blank" rel="noopener noreferrer">',
+			'</a>'
+		) . '</p>';
+
+		return $text;
+	}
+
+	private function get_list( array $templates, $not_used = false ) {
+		$list = '<ul class="wpml-ls-twig-templates-list" style="max-height:none;overflow:visible">';
+
+		foreach ( $templates as $template ) {
+			$list .= '<li><strong>' . esc_html( $template['name'] ) . '</strong> &rarr; <code>' . $this->get_breakable_path( $template['folder'] ) . '</code>';
+
+			if ( $not_used ) {
+				/* translators: Added to the name or the folder of a custom language switcher template that is in the uploads folder of the site, which WPML does not use, in the language switcher settings. */
+				$list .= ' (' . esc_html__( 'not used any more: move it into your theme', 'sitepress' ) . ')';
+			}
+
+			if ( $template['used_by'] ) {
+				/* translators: Added under a custom language switcher template. %s: the language switchers of the site that use it, separated by commas. */
+				$list .= '<br>' . esc_html( sprintf( __( 'Used by: %s', 'sitepress' ), implode( ', ', $template['used_by'] ) ) );
+			} else {
+				/* translators: Added under a custom language switcher template that none of the switchers set in the language switcher options uses. */
+				$list .= '<br>' . esc_html__( 'Not used by a switcher in the language switcher options; it may be used by a shortcode or theme code.', 'sitepress' );
+			}
+
+			$list .= '</li>';
+		}
+
+		return $list . '</ul>';
+	}
+
+	private function get_theme_folder() {
+		$folder = get_stylesheet_directory() . '/wpml/templates/language-switchers/';
+		$root   = defined( 'ABSPATH' ) ? rtrim( str_replace( '\\', '/', ABSPATH ), '/' ) . '/' : '';
+		$folder = str_replace( '\\', '/', $folder );
+
+		return '' !== $root && 0 === strpos( $folder, $root ) ? substr( $folder, strlen( $root ) ) : $folder;
 	}
 
 	private function get_options_url() {
@@ -225,7 +193,7 @@ class CustomTwigTemplatesNotice {
 	}
 
 	private function get_docs_url() {
-		return OutboundLinks::to( 'https://wpml.org/documentation/getting-started-guide/language-switcher-options/custom-language-switcher/', [ 'medium' => 'notice', 'campaign' => 'language-switcher' ] );
+		return OutboundLinks::to( 'https://wpml.org/documentation/getting-started-guide/language-switcher-options/custom-language-switcher/#custom-language-switcher-templates', [ 'medium' => 'notice', 'campaign' => 'language-switcher' ] );
 	}
 
 	private function get_support_url() {

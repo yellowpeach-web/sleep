@@ -4,8 +4,6 @@ namespace WPML\TM\ATE\Sync;
 
 class Result {
 
-	public $lockKey;
-
 	public $ateToken;
 
 	public $nextPage;
@@ -15,6 +13,8 @@ class Result {
 	public $downloadQueueSize = 0;
 
 	public $jobs = [];
+
+	public $askedAteJobIds = [];
 
 	public $eta;
 

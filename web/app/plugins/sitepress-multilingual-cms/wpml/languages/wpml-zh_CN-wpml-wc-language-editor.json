@@ -188,7 +188,7 @@
             "%s 的字符串翻译将随之删除。"
          ],
          "Its queued translation jobs are cancelled without charge; any already in progress are stopped, and the words already sent are still charged.": [
-            "其队列中的翻译作业将被免费取消；任何已在进行中的作业都将停止，而已发送的字数仍将计费。"
+            "该语言排队的翻译作业将被取消且不收费；任何已在进行中的作业都将停止，并且已发送的字数仍会计费。"
          ],
          "Move this content into": [
             "将此内容移至"
@@ -299,10 +299,10 @@
             "如果您的站点每种语言使用一个域名，则该语言的域名不会被重定向：当它仍指向此站点时，它将在相同的地址以您站点的默认语言响应。"
          ],
          "The listed items are removed, along with their translation records, their string translations and their translation jobs.": [
-            "列出的项目将被移除，连同它们的翻译记录、字符串翻译和翻译作业。"
+            "所列项目连同其翻译记录、字符串翻译及其翻译作业都将被删除。"
          ],
          "The listed items are removed, along with their translation records, their string translations and their %d translation job.": [
-            "列出的项目将被移除，连同它们的翻译记录、字符串翻译和 %d 个翻译作业。"
+            "所列项目连同其翻译记录、字符串翻译及其 %d 个翻译作业都将被删除。"
          ],
          "We couldn’t check for translated content. You can still remove the language; its translations are kept. Deleting its content and moving it into another language both need that count, so those two goals are unavailable.": [
             "我们无法检查翻译内容。您仍然可以移除该语言；其翻译将被保留。删除其内容和将其移动到另一种语言都需要该计数，因此这两个目标不可用。"
@@ -565,6 +565,9 @@
          "Blocked by a firewall or CDN": [
             "已被防火墙或 CDN 阻止"
          ],
+         "Used by another site": [
+            "已被另一个站点使用"
+         ],
          "Not valid": [
             "无效"
          ],
@@ -588,6 +591,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s 可以加载，但防火墙或 CDN 阻止了 WPML 的检查。"
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "已被此网络上的另一个站点使用：%s。请输入其他域名以保存。"
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "域名无法验证：%s。请检查它是否指向此站点，或取消勾选“保存时验证”以强制保存。"
@@ -931,6 +937,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "在保存该语言之前，请选择是恢复该站点先前以此语言创建的内容，还是重新开始。"
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "语言不能映射到您网站的默认语言。请改选“自动匹配”。"
+         ],
          "You don’t have permission to change languages.": [
             "您没有更改语言的权限。"
          ],
@@ -962,7 +971,7 @@
             "%1$s：文章 %2$s 中的链接无法重写。"
          ],
          "%1$s: some translation jobs could not be cancelled.": [
-            "%1$s：某些翻译工作无法取消。"
+            "%1$s：部分翻译作业无法取消。"
          ],
          "%1$s: one step of the save kept failing and was skipped.": [
             "%1$s：保存的一个步骤不断失败并已跳过。"
@@ -991,6 +1000,9 @@
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "如果您在列表中找不到您的语言，请<a>添加自定义语言</a>。"
          ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s 已移至第 %2$d 位（共 %3$d 位）。"
+         ],
          "Default language": [
             "默认语言"
          ],
@@ -1001,7 +1013,7 @@
             "翻译语言"
          ],
          "Which languages do you want to translate your site into?": [
-            "您想将网站翻译成哪些语言？"
+            "您想将站点翻译成哪些语言？"
          ],
          "Click the lock to set the locale": [
             "点击锁图标以设置区域设置"
@@ -1047,6 +1059,12 @@
          ],
          "Delete language": [
             "删除语言"
+         ],
+         "Move %s. Use the up and down arrow keys.": [
+            "移动 %s。请使用上下箭头键。"
+         ],
+         "Drag to change the order": [
+            "拖动以更改顺序"
          ],
          "Type to search all languages…": [
             "输入以搜索所有语言…"
@@ -1119,6 +1137,9 @@
          ],
          "Recognized as the same language as the default": [
             "识别为与默认语言相同"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "自动翻译已关闭：未启用任何翻译引擎。要开启引擎，请前往 <link>WPML → 设置 → AI 翻译</link>。"
          ],
          "%s (Regional)": [
             "%s（区域）"
@@ -1283,10 +1304,10 @@
             "跳过原因：%s"
          ],
          "No translation jobs needed cancelling.": [
-            "没有翻译工作需要取消。"
+            "无需取消任何翻译作业。"
          ],
          "%d translation job was cancelled without charge.": [
-            "已免费取消 %d 个翻译工作。"
+            "已免费取消 %d 个翻译作业。"
          ],
          "%d job was stopped mid-work — the words already sent are still charged.": [
             "%d 个工作在进行中停止 — 已发送的单词仍将计费。"

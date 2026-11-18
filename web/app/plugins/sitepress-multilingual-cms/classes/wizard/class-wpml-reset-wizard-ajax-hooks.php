@@ -35,6 +35,12 @@ class WPML_Reset_Wizard_Ajax_Hooks {
 			return;
 		}
 
+		if ( (bool) \WPML\API\Settings::get( 'setup_complete', false ) ) {
+			wp_send_json_error( array( 'message' => \WPML\Setup\Endpoint\FinishStep::alreadySetUpError() ) );
+
+			return;
+		}
+
 		$reset_wizard = new WPML_Reset_Wizard();
 		$result       = $reset_wizard->execute();
 

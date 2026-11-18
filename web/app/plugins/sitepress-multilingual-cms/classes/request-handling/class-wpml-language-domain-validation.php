@@ -13,6 +13,8 @@ class WPML_Language_Domain_Validation {
 
 	const UNREACHABLE = 'unreachable';
 
+	const SITE_TAKEN = 'site_taken';
+
 	private $wp_api;
 	private $http;
 	private $url;
@@ -33,6 +35,10 @@ class WPML_Language_Domain_Validation {
 		$this->validation_url = $this->get_validation_url();
 		if ( ! $this->has_scheme_and_host() ) {
 			return self::UNREACHABLE;
+		}
+
+		if ( is_multisite() && \WPML\UrlHandling\SubsiteClash\Detector::hostIsTaken( (string) $this->url ) ) {
+			return self::SITE_TAKEN;
 		}
 
 		if ( is_multisite() && defined( 'SUBDOMAIN_INSTALL' ) && SUBDOMAIN_INSTALL ) {
@@ -57,6 +63,11 @@ class WPML_Language_Domain_Validation {
 		if ( self::BLOCKED === $result ) {
 			/* translators: Shown next to a language domain when the domain loads, but a firewall or a CDN (content delivery network) stopped WPML's check that it shows this site. */
 			return __( 'Blocked by a firewall or CDN', 'sitepress' );
+		}
+
+		if ( self::SITE_TAKEN === $result ) {
+			/* translators: Shown next to a language domain on a multisite network when another site of the network has this address. */
+			return __( 'Used by another site', 'sitepress' );
 		}
 
 		/* translators: Answer returned when what was entered is not in order. */

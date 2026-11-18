@@ -69,7 +69,7 @@ class Groups {
 				continue;
 			}
 
-			if ( self::isSingleElementInGroup( $groupId, $groups ) ) {
+			if ( self::isSingleElementInGroup( $groupId, $groups ) && self::isCollapsibleSingleElementGroup( $groupId ) ) {
 				$collapsedId = self::removeLastCrumb( $groupId );
 				$label       = self::removeLastCrumb( $element['extradata']['group'] );
 				$truePath    = self::removeLeafCrumb( $groupId );
@@ -148,6 +148,12 @@ class Groups {
 			->count();
 
 		return 1 === $count;
+	}
+
+	private static function isCollapsibleSingleElementGroup( $groupId ) {
+		$crumbs = explode( self::PATH_SEPARATOR, $groupId );
+
+		return count( $crumbs ) > 2 || (bool) preg_match( '/^core[-\/]/i', (string) end( $crumbs ) );
 	}
 
 	public static function isBlockElementInGroup( $groupId ) {

@@ -33,6 +33,7 @@ abstract class DOMHandle {
 	private static function loadFragment( $html ) {
 		$dom = new \DOMDocument();
 		\libxml_use_internal_errors( true );
+		$html = \WPML\Utilities\Utf8Text::scrub( (string) $html );
 		$html = mb_encode_numericentity( $html, [ 0x80, 0x1FFFFF, 0, 0x1FFFFF ], 'UTF-8' );
 		$dom->loadHTML( '<div>' . $html . '</div>' );
 		\libxml_clear_errors();
@@ -106,9 +107,7 @@ abstract class DOMHandle {
 		}
 
 		if ( $element instanceof \DOMAttr ) {
-			$search_value = preg_quote( esc_attr( $element->nodeValue ), '/' );
-			$search       = '/(")(' . $search_value . ')(")/';
-			$translation  = esc_attr( $translation );
+			return $this->applyAttributeTranslation( $block, (string) $element->nodeValue, (string) $translation );
 		} elseif ( $this->registersAsText( $element ) ) {
 			$original = $element instanceof \DOMText || ! $originalValue ? $element->nodeValue : $originalValue;
 
@@ -146,16 +145,103 @@ abstract class DOMHandle {
 	}
 
 	private function applyTextTranslation( \WP_Block_Parser_Block $block, $originalText, $translationText ) {
+		$untranslatedInnerContent = $block->innerContent;
+
 		foreach ( $this->getTextMarkupPairs( $originalText, $translationText ) as list( $original, $translation ) ) {
-			$innerContentBefore = $block->innerContent;
 			$block = $this->replaceInInnerContent( $block, '/(>|^)(' . preg_quote( $original, '/' ) . ')(<|$)/', $translation );
 
-			if ( $block->innerContent !== $innerContentBefore ) {
-				break;
+			if ( $block->innerContent !== $untranslatedInnerContent ) {
+				return $block;
+			}
+		}
+
+		$fragments = $this->replaceDecodedText( $block->innerContent, (string) $originalText, (string) $translationText );
+
+		if ( null !== $fragments ) {
+			$block->innerContent = $fragments;
+		}
+
+		return $block;
+	}
+
+	private function applyAttributeTranslation( \WP_Block_Parser_Block $block, string $originalValue, string $translationValue ) {
+		$untranslatedInnerContent = $block->innerContent;
+
+		$block = $this->replaceInInnerContent( $block, '/(")(' . preg_quote( esc_attr( $originalValue ), '/' ) . ')(")/', esc_attr( $translationValue ) );
+
+		if ( $block->innerContent === $untranslatedInnerContent ) {
+			$fragments = $this->replaceDecodedRuns(
+				$block->innerContent,
+				'/(=")([^"]*)(")/',
+				$originalValue,
+				$translationValue,
+				[ '&' => '&amp;', '"' => '&quot;', '<' => '&lt;' ]
+			);
+
+			if ( null !== $fragments ) {
+				$block->innerContent = $fragments;
 			}
 		}
 
 		return $block;
+	}
+
+	protected function replaceDecodedText( array $fragments, string $originalText, string $translationText ): ?array {
+		return $this->replaceDecodedRuns(
+			$fragments,
+			'/(>|^)([^<>]*&[^<>]*)(<|$)/',
+			$originalText,
+			$translationText,
+			[ '&' => '&amp;', '<' => '&lt;' ]
+		);
+	}
+
+	private function replaceDecodedRuns( array $fragments, string $pattern, string $original, string $translation, array $baseEscapes ): ?array {
+		$isReplaced = false;
+
+		foreach ( $fragments as &$fragment ) {
+			if ( ! $fragment ) {
+				continue;
+			}
+
+			$fragment = preg_replace_callback(
+				$pattern,
+				function ( array $matches ) use ( $original, $translation, $baseEscapes, &$isReplaced ) {
+					if ( ! self::runDecodesTo( $matches[2], $original ) ) {
+						return $matches[0];
+					}
+
+					$isReplaced = true;
+
+					return $matches[1] . self::textInTheEntityFormsOf( $translation, $matches[2], $baseEscapes ) . $matches[3];
+				},
+				$fragment
+			);
+		}
+
+		return $isReplaced ? $fragments : null;
+	}
+
+	private static function runDecodesTo( string $run, string $text ): bool {
+		return html_entity_decode( $run ) === $text
+			|| html_entity_decode( $run, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) === $text;
+	}
+
+	private static function textInTheEntityFormsOf( string $text, string $run, array $baseEscapes ): string {
+		preg_match_all( self::ENTITY_SYNTAX_PATTERN, $run, $matches );
+
+		$forms = $baseEscapes;
+		foreach ( array_unique( $matches[0] ) as $entity ) {
+			$character = html_entity_decode( $entity, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+			if ( $character === $entity || isset( $forms[ $character ] ) ) {
+				continue;
+			}
+
+			$forms[ $character ] = $entity;
+		}
+
+		return strtr( $text, $forms );
 	}
 
 	protected function registersAsText( \DOMNode $node ) {

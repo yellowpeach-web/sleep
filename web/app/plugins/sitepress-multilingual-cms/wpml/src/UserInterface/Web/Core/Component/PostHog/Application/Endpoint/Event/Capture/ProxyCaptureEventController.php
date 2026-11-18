@@ -4,10 +4,8 @@ namespace WPML\UserInterface\Web\Core\Component\PostHog\Application\Endpoint\Eve
 
 use WPML\Core\Component\PostHog\Application\Service\Config\ConfigService;
 use WPML\Core\Component\PostHog\Application\Service\Event\CaptureEventService;
+use WPML\Core\Component\PostHog\Application\Service\Event\ClientEventWizardPropertiesService;
 use WPML\Core\Component\PostHog\Application\Service\Event\EventInstanceService;
-use WPML\Core\Component\PostHog\Application\Repository\PostHogStateRepositoryInterface;
-use WPML\Core\Component\PostHog\Domain\Repository\SetupWizardUUIDRepositoryInterface;
-use WPML\Core\Component\PostHog\Domain\TrackingMode;
 use WPML\Core\Port\Endpoint\EndpointInterface;
 use WPML\PHP\Exception\RemoteException;
 
@@ -19,11 +17,7 @@ class ProxyCaptureEventController implements EndpointInterface {
 
   private $captureEventService;
 
-  private $wizardUUIDRepository;
-
-  private $postHogStateRepository;
-
-  const UI_LOCATION_SETUP_WIZARD = 'setup_wizard';
+  private $clientEventWizardPropertiesService;
 
   const SERVER_OWNED_PROPERTIES = [ 'queued_event', 'original_event_time', 'replay_time', 'queue_source' ];
 
@@ -32,14 +26,12 @@ class ProxyCaptureEventController implements EndpointInterface {
     ConfigService $configService,
     EventInstanceService $eventInstanceService,
     CaptureEventService $captureEventService,
-    SetupWizardUUIDRepositoryInterface $wizardUUIDRepository,
-    PostHogStateRepositoryInterface $postHogStateRepository
+    ClientEventWizardPropertiesService $clientEventWizardPropertiesService
   ) {
-    $this->configService          = $configService;
-    $this->eventInstanceService   = $eventInstanceService;
-    $this->captureEventService    = $captureEventService;
-    $this->wizardUUIDRepository   = $wizardUUIDRepository;
-    $this->postHogStateRepository = $postHogStateRepository;
+    $this->configService                      = $configService;
+    $this->eventInstanceService               = $eventInstanceService;
+    $this->captureEventService                = $captureEventService;
+    $this->clientEventWizardPropertiesService = $clientEventWizardPropertiesService;
   }
 
 
@@ -112,18 +104,11 @@ class ProxyCaptureEventController implements EndpointInterface {
     $properties = [ 'distinct_id' => $normalized['distinctId'] ];
 
     $eventData  = $normalized['eventData'];
-    $uiLocation = is_array( $eventData ) && isset( $eventData['ui_location'] ) ? $eventData['ui_location'] : null;
-    if (
-      self::UI_LOCATION_SETUP_WIZARD === $uiLocation
-      && TrackingMode::ALL === $this->postHogStateRepository->getTrackingMode()
-    ) {
-      $wizardUUID = $this->wizardUUIDRepository->get();
-      if ( is_string( $wizardUUID ) && '' !== $wizardUUID ) {
-        $properties['wizard_uuid'] = $wizardUUID;
-      }
-    }
+    $uiLocation = is_array( $eventData ) && isset( $eventData['ui_location'] ) && is_string( $eventData['ui_location'] )
+      ? $eventData['ui_location']
+      : null;
 
-    return $properties;
+    return array_merge( $properties, $this->clientEventWizardPropertiesService->forUiLocation( $uiLocation ) );
   }
 
 

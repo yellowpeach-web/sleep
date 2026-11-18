@@ -127,6 +127,9 @@
          "Delete language pair(s)": [
             "ลบคู่ภาษา"
          ],
+         "Can translate to and from all languages": [
+            "สามารถแปลไปและกลับได้ทุกภาษา"
+         ],
          "An error occurred. Please try again.": [
             "เกิดข้อผิดพลาด โปรดลองอีกครั้ง"
          ],
@@ -153,6 +156,60 @@
          ],
          "Back to Step %1$s: %2$s": [
             "กลับไปยังขั้นตอนที่ %1$s: %2$s"
+         ],
+         "Available": [
+            "มีให้ใช้งาน"
+         ],
+         "Not available": [
+            "ไม่มีให้ใช้งาน"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "เข้าใจหัวข้อ กลุ่มเป้าหมาย และโทนของไซต์คุณ"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "คุณภาพพร้อมสำหรับการเผยแพร่ พร้อมการรับประกันของเรา"
+         ],
+         "Review before publishing": [
+            "รีวิวก่อนเผยแพร่"
+         ],
+         "Pay once per page – only added words are charged": [
+            "จ่ายครั้งเดียวต่อหน้า – เรียกเก็บเงินเฉพาะคำที่เพิ่มเข้ามาเท่านั้น"
+         ],
+         "Per word, changes included": [
+            "ต่อคำ รวมการเปลี่ยนแปลงแล้ว"
+         ],
+         "A legacy engine": [
+            "เอนจินรุ่นเก่า"
+         ],
+         "<button>Switch to a different engine</button> if you prefer — no quality guarantee and no free translation edits with other engines.": [
+            "<button>สลับเป็นเครื่องมืออื่น</button> หากคุณต้องการ — ไม่มีการรับประกันคุณภาพและไม่มีการแก้ไขการแปลฟรีด้วยเครื่องมืออื่น"
+         ],
+         "Your content will be translated by <strong>Private Translation Cloud (PTC)</strong>, WPML's own AI engine. PTC lets you translate the entire site automatically, in one click, offering free translation edits.": [
+            "เนื้อหาของคุณจะได้รับการแปลโดย <strong>Private Translation Cloud (PTC)</strong> ซึ่งเป็นเครื่องมือ AI ของ WPML เอง PTC ช่วยให้คุณแปลทั้งไซต์ได้โดยอัตโนมัติในคลิกเดียว พร้อมให้แก้ไขการแปลฟรี"
+         ],
+         "Couldn't save — try again": [
+            "ไม่สามารถบันทึกได้ — โปรดลองอีกครั้ง"
+         ],
+         "Your content will be translated by <strong>%s</strong>, a machine translation engine. You pay per word, including changes to content that's already translated.": [
+            "เนื้อหาของคุณจะได้รับการแปลโดย <strong>%s</strong> ซึ่งเป็นเครื่องมือการแปลด้วยเครื่อง คุณชำระเงินต่อคำ รวมถึงการเปลี่ยนแปลงเนื้อหาที่ได้รับการแปลแล้ว"
+         ],
+         "Switch to PTC": [
+            "สลับเป็น PTC"
+         ],
+         "Switch away from PTC?": [
+            "สลับออกจาก PTC หรือไม่?"
+         ],
+         "DeepL, Google Translate or Microsoft Translator": [
+            "DeepL, Google Translate หรือ Microsoft Translator"
+         ],
+         "Your engine now": [
+            "เอนจินของคุณในขณะนี้"
+         ],
+         "Switch away from PTC": [
+            "สลับออกจาก PTC"
+         ],
+         "Stay with PTC": [
+            "ใช้งาน PTC ต่อไป"
          ],
          "Technical Details (for WPML Support)": [
             "รายละเอียดทางเทคนิค (สำหรับฝ่ายสนับสนุน WPML)"
@@ -186,6 +243,45 @@
          ],
          " and provide the technical details below (use the Copy button to copy them).": [
             " และให้รายละเอียดทางเทคนิคด้านล่าง (ใช้ปุ่มคัดลอกเพื่อคัดลอกข้อมูล)"
+         ],
+         "Publish without review": [
+            "เผยแพร่โดยไม่ต้องรีวิว"
+         ],
+         "Translations go live immediately in the target language.": [
+            "บทแปลจะเผยแพร่ทันทีในภาษาปลายทาง"
+         ],
+         "Wait for review before publishing": [
+            "รอการรีวิวก่อนเผยแพร่"
+         ],
+         "Translations stay as drafts until a translation manager approves them.": [
+            "บทแปลจะยังคงเป็นฉบับร่างจนกว่าผู้จัดการการแปลจะอนุมัติ"
+         ],
+         "Recommended": [
+            "แนะนำ"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "สำหรับ DeepL, Google และ Microsoft เราแนะนำให้มีการรีวิวโดยมนุษย์เพื่อยืนยันความถูกต้อง PTC ให้บริการการแปลที่เหนือกว่ามนุษย์ซึ่งเข้าใจบริบท คุณจึงสามารถข้ามขั้นตอนการรีวิวได้อย่างมั่นใจ"
+         ],
+         "Publish and mark for review": [
+            "เผยแพร่และทำเครื่องหมายเพื่อรีวิว"
+         ],
+         "Translations go live but appear in a \"needs review\" queue.": [
+            "บทแปลจะเผยแพร่แต่จะปรากฏในคิว “รอการตรวจสอบ”"
+         ],
+         "After auto-translation": [
+            "หลังจากการแปลอัตโนมัติ"
+         ],
+         "What happens to content once %s has translated it.": [
+            "เกิดอะไรขึ้นกับเนื้อหาหลังจากที่ %s แปลเสร็จแล้ว"
+         ],
+         "Wait for review": [
+            "รอการรีวิว"
+         ],
+         "%1$s (<strong>%2$s</strong>)": [
+            "%1$s (<strong>%2$s</strong>)"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "คุณต้องการทำอย่างไรเมื่อ WPML แปลเนื้อหาของคุณโดยอัตโนมัติเสร็จสิ้น?"
          ],
          "Loading AI Translation...": [
             "กำลังโหลดการแปลด้วย AI..."
@@ -251,7 +347,7 @@
             "ตำแหน่ง"
          ],
          "Code": [
-            "โค้ด"
+            "รหัส"
          ],
          "Flags must be:": [
             "ธงต้องเป็น:"
@@ -299,7 +395,7 @@
             "โปรดกรอกข้อมูลในฟิลด์นี้"
          ],
          "A unique value that identifies the language in the database and URL. Once saved, the language code cannot be changed.": [
-            "ค่าเฉพาะที่ระบุภาษาในฐานข้อมูลและ URL เมื่อบันทึกแล้ว จะไม่สามารถเปลี่ยนโค้ดภาษาได้"
+            "ค่าเฉพาะที่ระบุภาษาในฐานข้อมูลและ URL เมื่อบันทึกแล้ว จะไม่สามารถเปลี่ยนรหัสภาษาได้"
          ],
          "Save language": [
             "บันทึกภาษา"
@@ -308,7 +404,7 @@
             "หากภาษาที่คุณกำหนดเองคล้ายกับภาษาที่มีอยู่ คุณสามารถใช้การตรวจตัวสะกดและการแปลอัตโนมัติของภาษาที่มีอยู่ได้ ตัวอย่างเช่น หากภาษาที่คุณกำหนดเองคือภาษาเยอรมันแบบสวิส คุณสามารถจับคู่กับภาษาเยอรมันเพื่อใช้ในการตรวจตัวสะกดและการแปลอัตโนมัติได้ หากคุณไม่จับคู่ภาษาที่คุณกำหนดเองกับภาษาที่มีอยู่ ฟีเจอร์การตรวจตัวสะกดและการแปลอัตโนมัติจะไม่สามารถใช้งานได้ในภาษานั้น"
          ],
          "The value WPML checks when loading translations from MO and PO files. The default locale is included in the filenames in your /wp-content/languages/ folder in your WordPress setup.": [
-            "ค่าที่ WPML ตรวจสอบเมื่อโหลดคำแปลจากไฟล์ MO และ PO โลแคลเริ่มต้นจะรวมอยู่ในชื่อไฟล์ในโฟลเดอร์ /wp-content/languages/ ในการติดตั้ง WordPress ของคุณ"
+            "ค่าที่ WPML ตรวจสอบเมื่อโหลดการแปลจากไฟล์ MO และ PO โลแคลเริ่มต้นจะรวมอยู่ในชื่อไฟล์ในโฟลเดอร์ภาษา /wp-content/languages/ ในการตั้งค่า WordPress ของคุณ"
          ],
          "Google uses the hreflang attribute to direct users to sites in their relevant language and location. Examples:": [
             "Google ใช้แอตทริบิวต์ hreflang เพื่อนำทางผู้ใช้ไปยังไซต์ในภาษาและตำแหน่งที่เกี่ยวข้อง ตัวอย่าง:"
@@ -328,6 +424,15 @@
          "adding a custom language": [
             "การเพิ่มภาษาที่กำหนดเอง"
          ],
+         "I will fix my server settings to display languages in directories later.": [
+            "ฉันจะแก้ไขการตั้งค่าเซิร์ฟเวอร์เพื่อแสดงภาษาในไดเรกทอรีในภายหลัง"
+         ],
+         "We could not verify your server's URL-rewrite support.": [
+            "เราไม่สามารถตรวจสอบการรองรับการเขียน URL ใหม่ (URL-rewrite) ของเซิร์ฟเวอร์ของคุณได้"
+         ],
+         "Learn more about required server settings to display languages in directories": [
+            "เรียนรู้เพิ่มเติมเกี่ยวกับการตั้งค่าเซิร์ฟเวอร์ที่จำเป็นเพื่อแสดงภาษาในไดเรกทอรี"
+         ],
          "I will change the permalink structure later.": [
             "ฉันจะเปลี่ยนโครงสร้างลิงก์ถาวรในภายหลัง"
          ],
@@ -341,7 +446,7 @@
             "โดเมนที่แตกต่างกันในแต่ละภาษา"
          ],
          "This option is not yet available for Multisite installs": [
-            "ตัวเลือกนี้ยังไม่พร้อมใช้งานสำหรับการติดตั้งแบบ Multisite"
+            "ตัวเลือกนี้ยังไม่พร้อมใช้งานสำหรับการติดตั้งแบบมัลติไซต์"
          ],
          "Learn more about required server settings to use a different domain per language": [
             "เรียนรู้เพิ่มเติมเกี่ยวกับการตั้งค่าเซิร์ฟเวอร์ที่จำเป็นเพื่อใช้โดเมนที่แตกต่างกันในแต่ละภาษา"
@@ -367,8 +472,14 @@
          "This domain does not show this site.": [
             "โดเมนนี้ไม่ได้แสดงไซต์นี้"
          ],
+         "This address belongs to another site on this network.": [
+            "ที่อยู่นี้เป็นของไซต์อื่นในเครือข่ายนี้"
+         ],
          "WPML could not reach this domain.": [
             "WPML ไม่สามารถเข้าถึงโดเมนนี้ได้"
+         ],
+         "If you choose this, these URLs will open a sub-site: %s.": [
+            "หากคุณเลือกตัวเลือกนี้ URL เหล่านี้จะเปิดไซต์ย่อย: %s"
          ],
          "The domain you have entered is invalid.": [
             "โดเมนที่คุณป้อนไม่ถูกต้อง"
@@ -388,20 +499,11 @@
          "The URL rewrite is not configured in your server.": [
             "ไม่ได้กำหนดค่าการเขียน URL ใหม่ในเซิร์ฟเวอร์ของคุณ"
          ],
-         "I will fix my server settings to display languages in directories later.": [
-            "ฉันจะแก้ไขการตั้งค่าเซิร์ฟเวอร์เพื่อแสดงภาษาในไดเรกทอรีในภายหลัง"
-         ],
-         "We could not verify your server's URL-rewrite support.": [
-            "เราไม่สามารถตรวจสอบการรองรับการเขียน URL ใหม่ (URL-rewrite) ของเซิร์ฟเวอร์ของคุณได้"
-         ],
-         "Learn more about required server settings to display languages in directories": [
-            "เรียนรู้เพิ่มเติมเกี่ยวกับการตั้งค่าเซิร์ฟเวอร์ที่จำเป็นเพื่อแสดงภาษาในไดเรกทอรี"
-         ],
          "your pages": [
             "หน้าของคุณ"
          ],
          "your posts": [
-            "เรื่องของคุณ"
+            "โพสต์ของคุณ"
          ],
          "the Language Switcher settings": [
             "การตั้งค่าตัวสลับภาษา"
@@ -419,13 +521,19 @@
             "แปลหน้าของคุณ"
          ],
          "Translate your posts": [
-            "แปลเรื่องของคุณ"
+            "แปลโพสต์ของคุณ"
          ],
-         "the Translation Dashboard": [
-            "แดชบอร์ดการแปล"
+         "%s will translate your whole site and keep new content translated from now on. You're charged per word, including later changes.": [
+            "%s จะแปลทั้งไซต์ของคุณและคอยแปลเนื้อหาใหม่อย่างต่อเนื่องนับจากนี้ คุณจะถูกเรียกเก็บเงินต่อคำ รวมถึงการเปลี่ยนแปลงในภายหลัง"
          ],
          "Private Translation Cloud (PTC) will translate your whole site and keep new content translated from now on. You pay once for what's translated — editing it afterward is free.": [
             "Private Translation Cloud (PTC) จะแปลทั้งไซต์ของคุณและแปลเนื้อหาใหม่ให้โดยอัตโนมัติตั้งแต่ตอนนี้เป็นต้นไป คุณจ่ายเพียงครั้งเดียวสำหรับสิ่งที่แปลไปแล้ว การแก้ไขหลังจากนั้นจะไม่มีค่าใช้จ่าย"
+         ],
+         "Automatic translation will translate your whole site and keep new content translated from now on.": [
+            "การแปลอัตโนมัติจะแปลทั้งไซต์ของคุณและคอยแปลเนื้อหาใหม่อย่างต่อเนื่องนับจากนี้"
+         ],
+         "the Translation Dashboard": [
+            "แดชบอร์ดการแปล"
          ],
          "Apply settings and start site's translation": [
             "ใช้การตั้งค่าและเริ่มการแปลไซต์"
@@ -439,8 +547,14 @@
          "the WooCommerce Multilingual setup": [
             "การตั้งค่า WooCommerce Multilingual"
          ],
+         "%s will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "%s จะเริ่มแปลไซต์ของคุณตอนนี้และคอยแปลเนื้อหาใหม่อย่างต่อเนื่องนับจากนี้ ถัดไป คุณจะตั้งค่าร้านค้าหลายภาษาของคุณ สินค้าของคุณจะเริ่มแปลเมื่อคุณเสร็จสิ้นการตั้งค่า WooCommerce Multilingual"
+         ],
          "Private Translation Cloud (PTC) will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup. You pay once for what's translated. Editing it afterward is free.": [
             "Private Translation Cloud (PTC) จะเริ่มแปลไซต์ของคุณตอนนี้และแปลเนื้อหาใหม่ให้โดยอัตโนมัติตั้งแต่ตอนนี้เป็นต้นไป ถัดไป คุณจะต้องตั้งค่าร้านค้าหลายภาษา สินค้าของคุณจะเริ่มแปลเมื่อคุณตั้งค่า WooCommerce Multilingual เสร็จสิ้น คุณจ่ายเพียงครั้งเดียวสำหรับสิ่งที่แปลไปแล้ว การแก้ไขหลังจากนั้นจะไม่มีค่าใช้จ่าย"
+         ],
+         "Automatic translation will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "การแปลอัตโนมัติจะเริ่มแปลไซต์ของคุณตอนนี้และคอยแปลเนื้อหาใหม่อย่างต่อเนื่องนับจากนี้ ถัดไป คุณจะตั้งค่าร้านค้าหลายภาษาของคุณ สินค้าของคุณจะเริ่มแปลเมื่อคุณเสร็จสิ้นการตั้งค่า WooCommerce Multilingual"
          ],
          "Continue to WooCommerce Multilingual Setup while translation begins": [
             "ดำเนินการตั้งค่า WooCommerce Multilingual ต่อในขณะที่เริ่มการแปล"
@@ -484,8 +598,14 @@
          "Applying your setup choices": [
             "กำลังใช้ตัวเลือกการตั้งค่าของคุณ"
          ],
+         "%s is translating your content. There's nothing else you need to do here.": [
+            "%s กำลังแปลเนื้อหาของคุณ คุณไม่ต้องดำเนินการใด ๆ เพิ่มเติมที่นี่"
+         ],
          "PTC is translating your content. There's nothing else you need to do here.": [
             "PTC กำลังแปลเนื้อหาของคุณ คุณไม่จำเป็นต้องดำเนินการใด ๆ เพิ่มเติมที่นี่"
+         ],
+         "Your content is being translated. There's nothing else you need to do here.": [
+            "เนื้อหาของคุณกำลังได้รับการแปล คุณไม่ต้องดำเนินการใด ๆ เพิ่มเติมที่นี่"
          ],
          "We're applying all your setup choices and preparing WPML. This is a one-time process.": [
             "เรากำลังใช้ตัวเลือกการตั้งค่าทั้งหมดของคุณและเตรียมความพร้อม WPML นี่เป็นกระบวนการที่ทำเพียงครั้งเดียว"
@@ -580,38 +700,8 @@
          "Full details of the info we’re proposing to share": [
             "รายละเอียดทั้งหมดของข้อมูลที่เราเสนอให้แชร์"
          ],
-         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
-            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> เพื่อช่วยในการเลือกโหมดที่ดีที่สุดสำหรับไซต์ของคุณ"
-         ],
-         "How would you like to translate your content?": [
-            "คุณต้องการแปลเนื้อหาของคุณอย่างไร?"
-         ],
-         "Recommended": [
-            "แนะนำ"
-         ],
-         "Translate Everything Automatically": [
-            "แปลทุกอย่างโดยอัตโนมัติ"
-         ],
-         "Full-site automatic translation needs AI translation set up.": [
-            "การแปลอัตโนมัติทั้งไซต์จำเป็นต้องตั้งค่าการแปลด้วย AI"
-         ],
-         "Set up AI translation": [
-            "ตั้งค่าการแปลด้วย AI"
-         ],
-         "Translate Some: You Choose What to Translate": [
-            "แปลบางส่วน: คุณเลือกสิ่งที่จะแปล"
-         ],
-         "Select this option": [
-            "เลือกตัวเลือกนี้"
-         ],
          "How it works": [
             "วิธีการทำงาน"
-         ],
-         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
-            "PTC (Private Translation Cloud) คือเอนจินการแปลด้วย AI ของ WPML โดยจะแปลทั้งไซต์ของคุณเป็นทุกภาษาที่คุณเลือกไว้ในเบื้องหลัง คุณสามารถแก้ไขคำแปลใดก็ได้และยกเว้นประเภทโพสต์ได้"
-         ],
-         "Can't decide?": [
-            "ตัดสินใจไม่ได้ใช่หรือไม่?"
          ],
          "You select and submit what to translate.": [
             "คุณเลือกและส่งสิ่งที่จะแปลด้วยตนเอง"
@@ -619,32 +709,35 @@
          "Costs": [
             "ค่าใช้จ่าย"
          ],
-         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
-            "จ่ายเพียงครั้งเดียวสำหรับเนื้อหาทั้งหมดที่แปล<br/><strong>การแก้ไขไม่มีค่าใช้จ่าย</strong> — จะเรียกเก็บเงินเฉพาะเมื่อมีการเพิ่มเนื้อหาเท่านั้น"
-         ],
          "Pay per translation job submitted.<br/>Each update or new content batch is a separate charge.": [
             "จ่ายต่องานแปลที่ส่ง<br/>การอัปเดตแต่ละครั้งหรือชุดเนื้อหาใหม่จะมีการเรียกเก็บเงินแยกต่างหาก"
-         ],
-         "Translation quality": [
-            "คุณภาพการแปล"
-         ],
-         "WPML ensures excellent quality. Bad translations are refunded.": [
-            "WPML รับประกันคุณภาพที่ยอดเยี่ยม หากการแปลไม่ดีจะมีการคืนเงินให้"
          ],
          "Ideal for": [
             "เหมาะสำหรับ"
          ],
-         "Known upfront costs": [
-            "ทราบค่าใช้จ่ายล่วงหน้า"
+         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "PTC (Private Translation Cloud) คือเครื่องมือการแปลด้วย AI ของ WPML โดยจะแปลทั้งไซต์ของคุณเป็นทุกภาษาที่คุณเลือกไว้ในเบื้องหลัง คุณสามารถแก้ไขคำแปลใดก็ได้และยกเว้นประเภทโพสต์ได้"
          ],
-         "Unlimited post-translation editing": [
-            "แก้ไขหลังการแปลได้ไม่จำกัด"
+         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
+            "จ่ายเพียงครั้งเดียวสำหรับเนื้อหาทั้งหมดที่แปล<br/><strong>การแก้ไขไม่มีค่าใช้จ่าย</strong> — จะเรียกเก็บเงินเฉพาะเมื่อมีการเพิ่มเนื้อหาเท่านั้น"
          ],
-         "Marketing optimization": [
-            "การเพิ่มประสิทธิภาพการตลาด"
+         "Included with PTC": [
+            "รวมอยู่ใน PTC"
          ],
-         "Turn-key solutions": [
-            "โซลูชันแบบเบ็ดเสร็จ"
+         "Only with PTC — not with %s": [
+            "เฉพาะ PTC เท่านั้น — ไม่รวม %s"
+         ],
+         "your current engine": [
+            "เครื่องมือปัจจุบันของคุณ"
+         ],
+         "%s translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "%s แปลทั้งไซต์ของคุณเป็นทุกภาษาที่คุณเลือกในเบื้องหลัง คุณสามารถแก้ไขการแปลใดก็ได้และยกเว้นประเภทโพสต์ได้"
+         ],
+         "Charged per word, including changes to content that's already translated.": [
+            "คิดค่าบริการต่อคำ รวมถึงการเปลี่ยนแปลงเนื้อหาที่ได้รับการแปลแล้ว"
+         ],
+         "You choose what to translate, from the Translation Dashboard or with \"+\" next to each page. PTC translates it.": [
+            "คุณเลือกสิ่งที่จะแปลได้จากแดชบอร์ดการแปล หรือใช้ “+” ข้างแต่ละหน้า PTC จะเป็นผู้แปลให้"
          ],
          "Partial site translation": [
             "การแปลไซต์บางส่วน"
@@ -652,8 +745,95 @@
          "Maximum control": [
             "การควบคุมสูงสุด"
          ],
+         "Quality without the work": [
+            "คุณภาพโดยไม่ต้องลงมือทำเอง"
+         ],
+         "You choose what to translate. You or your translators write each translation in the Advanced Translation Editor.": [
+            "คุณเลือกสิ่งที่จะแปลได้ โดยคุณหรือนักแปลของคุณจะเป็นผู้เขียนคำแปลแต่ละรายการในตัวแก้ไขการแปลขั้นสูง"
+         ],
+         "No words used, unless you start from a machine translation in the editor.": [
+            "ไม่ใช้คำ เว้นแต่คุณจะเริ่มต้นจากการแปลโดยเครื่องในตัวแก้ไข"
+         ],
+         "Your own translators": [
+            "นักแปลของคุณเอง"
+         ],
+         "Texts that need a human touch": [
+            "ข้อความที่ต้องการการแปลโดยมนุษย์"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "PTC translates what you send. You review.": [
+            "PTC จะแปลสิ่งที่คุณส่งไป คุณเป็นผู้รีวิว"
+         ],
+         "I translate": [
+            "ฉันแปลเอง"
+         ],
+         "You or your translators write it.": [
+            "คุณหรือนักแปลของคุณเป็นผู้เขียน"
+         ],
+         "When you start a translation, who translates?": [
+            "เมื่อคุณเริ่มการแปล ใครจะเป็นผู้แปล?"
+         ],
+         "Who translates": [
+            "ใครเป็นผู้แปล"
+         ],
          "Contact our support team for help": [
-            "ติดต่อทีมสนับสนุนของเราเพื่อขอความช่วยเหลือ"
+            "ติดต่อทีมฝ่ายสนับสนุนของเราเพื่อขอความช่วยเหลือ"
+         ],
+         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
+            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> เพื่อช่วยในการเลือกโหมดที่ดีที่สุดสำหรับไซต์ของคุณ"
+         ],
+         "How would you like to translate your content?": [
+            "คุณต้องการแปลเนื้อหาของคุณอย่างไร?"
+         ],
+         "Translate Everything Automatically": [
+            "แปลทุกอย่างโดยอัตโนมัติ"
+         ],
+         "Translations always in sync": [
+            "การแปลซิงค์กันอยู่เสมอ"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "การแปลอัตโนมัติทั้งไซต์จำเป็นต้องตั้งค่าการแปลด้วย AI"
+         ],
+         "New and updated content translated automatically": [
+            "เนื้อหาใหม่และเนื้อหาที่อัปเดตจะได้รับการแปลโดยอัตโนมัติ"
+         ],
+         "Set up AI translation": [
+            "ตั้งค่าการแปลด้วย AI"
+         ],
+         "Sites that publish often": [
+            "ไซต์ที่มีการเผยแพร่บ่อยครั้ง"
+         ],
+         "All your languages at once": [
+            "แปลทุกภาษาของคุณพร้อมกันในคราวเดียว"
+         ],
+         "Translate Some: You Choose What to Translate": [
+            "แปลบางส่วน: คุณเลือกสิ่งที่จะแปล"
+         ],
+         "Select this option": [
+            "เลือกตัวเลือกนี้"
+         ],
+         "WPML uses the Advanced Translation Editor. You can change the editor later in WPML > Settings > Translation editor and method.": [
+            "WPML ใช้ตัวแก้ไขการแปลขั้นสูง คุณสามารถเปลี่ยนตัวแก้ไขได้ในภายหลังที่ WPML > การตั้งค่า > ตัวแก้ไขและวิธีการแปล"
+         ],
+         "Quality guarantee, bad translations refunded": [
+            "รับประกันคุณภาพ คืนเงินหากการแปลมีข้อผิดพลาด"
+         ],
+         "Can't decide?": [
+            "ตัดสินใจไม่ได้ใช่หรือไม่?"
+         ],
+         "Pay once — revisions are free": [
+            "จ่ายครั้งเดียว — แก้ไขฟรี"
+         ],
+         "Known upfront costs": [
+            "ทราบค่าใช้จ่ายล่วงหน้า"
+         ],
+         "Publish-ready results, no review needed": [
+            "ผลลัพธ์พร้อมเผยแพร่ ไม่จำเป็นต้องรีวิว"
+         ],
+         "Marketing optimization based on your site and audience": [
+            "การเพิ่มประสิทธิภาพทางการตลาดตามไซต์และกลุ่มเป้าหมายของคุณ"
          ],
          "Calculate Translation Costs": [
             "คำนวณค่าใช้จ่ายในการแปล"
@@ -668,7 +848,7 @@
             "ก่อนที่จะแปลทุกอย่าง"
          ],
          "You can continue without them. Nothing here stops the setup.": [
-            "คุณสามารถดำเนินการต่อโดยไม่มีสิ่งเหล่านี้ได้ ไม่มีอะไรที่นี่ที่จะหยุดการตั้งค่า"
+            "คุณสามารถดำเนินการต่อโดยไม่มีส่วนประกอบเหล่านี้ได้ ไม่มีสิ่งใดในนี้ที่จะขัดขวางการตั้งค่า"
          ],
          "Translation Contributors": [
             "ผู้มีส่วนร่วมในการแปล"
@@ -888,6 +1068,9 @@
          ],
          "Ranking": [
             "อันดับ"
+         ],
+         "language URL directory and language name\u0004%1$s (%2$s)": [
+            "%1$s (%2$s)"
          ]
       }
    }

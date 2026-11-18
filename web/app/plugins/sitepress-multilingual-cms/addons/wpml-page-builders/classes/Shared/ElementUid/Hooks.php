@@ -81,6 +81,10 @@ class Hooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC
 	}
 
 	public function refreshTranslationRegistry( $postId ) {
+		if ( (int) $postId <= 0 ) {
+			return;
+		}
+
 		$this->getMarkupBuilder()->refreshRegistry( (int) $postId );
 	}
 

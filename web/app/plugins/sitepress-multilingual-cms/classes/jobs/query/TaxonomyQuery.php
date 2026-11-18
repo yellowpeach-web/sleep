@@ -7,6 +7,8 @@ use WPML_TM_Job_Entity;
 class TaxonomyQuery extends AbstractQuery {
 	protected $title_column = 'terms.name';
 
+	protected $translated_title_column = 'translated_terms.name';
+
 	protected $batch_join = 'LEFT JOIN';
 
 	protected function add_resource_join( QueryBuilder $query_builder ) {
@@ -20,6 +22,17 @@ class TaxonomyQuery extends AbstractQuery {
 		);
 
 		$query_builder->add_AND_where_condition( "original_translations.element_type LIKE 'tax\\_%'" );
+	}
+
+	protected function add_translated_title_join( QueryBuilder $query_builder ) {
+		$query_builder->add_join(
+			"LEFT JOIN {$this->wpdb->prefix}term_taxonomy translated_term_taxonomy
+			ON translated_term_taxonomy.term_taxonomy_id = translations.element_id"
+		);
+		$query_builder->add_join(
+			"LEFT JOIN {$this->wpdb->prefix}terms translated_terms
+			ON translated_terms.term_id = translated_term_taxonomy.term_id"
+		);
 	}
 
 	protected function get_type() {

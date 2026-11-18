@@ -55,7 +55,7 @@ class ReferenceRepository {
 		$map    = $this->getMap( $context, $objectId );
 		$stored = isset( $map[ $metaKey ] ) ? $map[ $metaKey ] : [];
 
-		return 1 === count( $stored ) && maybe_unserialize( $stored[0] ) === $reference;
+		return 1 === count( $stored ) && \WPML\Utils\Unserialize::maybe( $stored[0] ) === $reference;
 	}
 
 	private function getContext( $metaType ) {

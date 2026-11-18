@@ -16,7 +16,7 @@ class WPML_Rootpage_Redirect_By_Subdir extends WPML_Redirect_By_Subdir {
 
 		$target = parent::get_redirect_target();
 
-		if ( ! $target ) {
+		if ( ! $target && $this->serves_root_page() ) {
 			$target = $wpml_url_filters->filter_root_permalink( $current_url );
 		}
 
@@ -51,7 +51,25 @@ class WPML_Rootpage_Redirect_By_Subdir extends WPML_Redirect_By_Subdir {
 		return untrailingslashit( (string) $url ) === untrailingslashit( (string) $other_url );
 	}
 
+	private function serves_root_page() {
+		if ( ! WPML_Root_Page::uses_page_root() ) {
+			return false;
+		}
+
+		$root_page_actions = wpml_get_root_page_actions_obj();
+
+		return null !== $root_page_actions->get_root_page_post( $root_page_actions->get_root_page_id() );
+	}
+
 	private function maybe_setup_rootpage() {
+		$query_string = wpml_parse_url( (string) $this->request_handler->get_request_uri(), PHP_URL_QUERY );
+
+		if ( WPML_Root_Page::is_feed_query( $query_string )
+			|| ( WPML_Root_Page::uses_html_root() && WPML_Root_Page::is_search_or_rest_query( $query_string ) )
+		) {
+			return;
+		}
+
 		if ( ! WPML_Root_Page::is_current_request_root() ) {
 			return;
 		}
@@ -60,18 +78,22 @@ class WPML_Rootpage_Redirect_By_Subdir extends WPML_Redirect_By_Subdir {
 			$result = \WPML\UrlHandling\RootPage\HtmlFile::resolve( $this->urls['root_html_file_path'] );
 
 			if ( $result['valid'] ) {
+				WPML_Root_Page::mark_html_file_served();
 				include $result['resolved_path'];
 				exit;
 			}
 
 			self::log_invalid_root_file_once( $this->urls['root_html_file_path'], $result['error_code'] );
 
-			$root_page_actions = wpml_get_root_page_actions_obj();
-			$root_page_actions->wpml_home_url_setup_root_page();
 			return;
 		}
 
 		$root_page_actions = wpml_get_root_page_actions_obj();
+
+		if ( ! $root_page_actions->get_root_page_post( $root_page_actions->get_root_page_id() ) ) {
+			return;
+		}
+
 		$root_page_actions->wpml_home_url_setup_root_page();
 	}
 

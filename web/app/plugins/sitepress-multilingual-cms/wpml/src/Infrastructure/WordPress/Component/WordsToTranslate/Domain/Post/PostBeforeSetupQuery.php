@@ -3,11 +3,19 @@ namespace WPML\Infrastructure\WordPress\Component\WordsToTranslate\Domain\Post;
 
 use WPML\Core\Component\WordsToTranslate\Domain\Post\Post;
 use WPML\Core\Component\WordsToTranslate\Domain\Post\Query\PostQueryInterface;
+use WPML\Core\SharedKernel\Component\Post\Application\Query\PublishedPostStatusesQueryInterface;
 use WPML\PHP\Exception\InvalidItemIdException;
 
 class PostBeforeSetupQuery implements PostQueryInterface {
 
   private $posts = [];
+
+  private $publishedPostStatusesQuery;
+
+
+  public function __construct( PublishedPostStatusesQueryInterface $publishedPostStatusesQuery ) {
+    $this->publishedPostStatusesQuery = $publishedPostStatusesQuery;
+  }
 
 
   public function getById( $id ) {
@@ -16,6 +24,12 @@ class PostBeforeSetupQuery implements PostQueryInterface {
     }
 
     global $wpdb;
+
+    $publishedPostStatuses = $this->publishedPostStatusesQuery->get();
+    if ( ! $publishedPostStatuses ) {
+      throw new InvalidItemIdException( sprintf( 'Post with ID %d not found.', $id ) );
+    }
+    $postStatusesIn = implode( ',', array_fill( 0, count( $publishedPostStatuses ), '%s' ) );
 
     $sql = $wpdb->prepare(
       "
@@ -26,9 +40,10 @@ class PostBeforeSetupQuery implements PostQueryInterface {
         p.post_modified
       FROM {$wpdb->prefix}posts AS p
       WHERE p.ID = %d
-      AND p.post_status = 'publish'
+      AND p.post_status IN ({$postStatusesIn})
     ",
-      $id
+      $id,
+      ...$publishedPostStatuses
     );
 
     $result = $wpdb->get_row( $sql, ARRAY_A );

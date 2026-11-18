@@ -11,6 +11,10 @@ class VirtualOptionService {
 
   const LOG_PREFIX = '[WPML][settings-storage]';
 
+  const SCAN_LINE = "\0scan";
+
+  const REGISTRY_LINE = "\0registry";
+
   private $options;
 
   private $query;
@@ -29,9 +33,23 @@ class VirtualOptionService {
 
   private $registryKeys = [];
 
+  private $registryReadable = [];
+
   private $logger;
 
   private $lostKeyDefaults = [];
+
+  private $unreadableKeys = [];
+
+  private $refusalLogged = [];
+
+  private $shortRegistry = [];
+
+  private $servedRowKeys = [];
+
+  private $registryUnreadable = [];
+
+  private $servedOnUnreadableList = [];
 
 
   public function __construct(
@@ -56,14 +74,29 @@ class VirtualOptionService {
   }
 
 
+  public function servesFromRows( int $context ): bool {
+    return $this->registryKeys( $context ) !== null && ! empty( $this->registryReadable[ $context ] );
+  }
+
+
   public function read( $storedValue, int $context ) {
     $keys = $this->registryKeys( $context );
     if ( $keys === null ) {
+      if ( ! empty( $this->registryUnreadable[ $context ] ) ) {
+        $this->servedOnUnreadableList[ $context ] = is_array( $storedValue )
+          ? array_fill_keys( array_map( 'strval', array_keys( $storedValue ) ), true )
+          : [];
+      }
+
       return $storedValue;
     }
 
     if ( ! isset( $this->assembled[ $context ] ) ) {
-      $this->assembled[ $context ] = $this->assemble( $keys, $storedValue );
+      unset( $this->servedOnUnreadableList[ $context ] );
+      $this->assembled[ $context ] = $this->assemble( $keys, $storedValue, $context );
+      if ( ! isset( $this->servedRowKeys[ $context ] ) ) {
+        $this->servedRowKeys[ $context ] = array_keys( $this->assembled[ $context ] );
+      }
     }
 
     return $this->assembled[ $context ];
@@ -93,6 +126,14 @@ class VirtualOptionService {
     if ( $keys === null && is_array( $incoming ) ) {
       $keys = $this->registryAppearedUnderneath( $context );
     }
+    if ( $keys === null && isset( $this->servedSnapshot[ $context ] ) ) {
+      if ( isset( $this->registryUnreadable[ $context ] ) ) {
+        $this->logRefusedOnce( $context, self::REGISTRY_LINE, 'The settings list could not be read in this save; the save is refused and the stored settings are kept.' );
+
+        return $oldValue;
+      }
+      $this->forgetContext( $context );
+    }
     if ( $keys === null ) {
       unset( $this->setterValues[ $context ] );
 
@@ -108,6 +149,11 @@ class VirtualOptionService {
 
     $diff = $this->diff->diff( $base, $incoming );
     $diff['changed'] += $this->setterReverts( $incoming, $context );
+
+    foreach ( $this->refusedUnreadableKeys( array_keys( $diff['changed'] ), $context, $base ) as $key ) {
+      unset( $diff['changed'][ $key ], $incoming[ $key ] );
+    }
+
     $noop = $diff['changed'] === [] && $diff['deleted'] === [];
 
     if ( ! $noop && is_array( $oldValue ) ) {
@@ -117,6 +163,11 @@ class VirtualOptionService {
     }
 
     if ( $noop ) {
+      if ( isset( $this->shortRegistry[ $context ] ) ) {
+        $this->storeRegistry( (array) $this->registryKeys[ $context ] );
+        unset( $this->shortRegistry[ $context ] );
+      }
+
       if ( is_array( $oldValue ) ) {
         return $oldValue;
       }
@@ -124,7 +175,16 @@ class VirtualOptionService {
       return $this->assembled[ $context ] ?? $this->freshAssembly( $context );
     }
 
-    $scanned = $this->query->scanRowKeys();
+    $listedKeys = $keys;
+    $servedKeys = array_merge( $keys, $this->servedRowKeys[ $context ] ?? [] );
+    if ( isset( $this->shortRegistry[ $context ] ) ) {
+      $listedKeys = $this->shortRegistry[ $context ];
+      unset( $this->shortRegistry[ $context ] );
+    }
+    $scanned = $this->settingKeys( $this->query->scanRowKeys() );
+    if ( $scanned === [] && $keys !== [] ) {
+      $this->logUnusedScanOnce( $context );
+    }
     if ( $scanned !== [] ) {
       $this->registryKeys[ $context ] = $scanned;
       $keys                           = $scanned;
@@ -135,10 +195,16 @@ class VirtualOptionService {
     foreach ( $diff['changed'] as $key => $keyValue ) {
       $this->writeRow( $key, $keyValue );
       $this->writtenByRequest[ $context ][ $key ] = $this->diff->fingerprint( $keyValue );
+      unset( $this->unreadableKeys[ $context ][ $key ] );
     }
 
     $newKeys = array_keys( $newState );
-    if ( $newKeys !== $keys ) {
+    foreach ( array_unique( array_merge( $keys, $servedKeys ) ) as $key ) {
+      if ( ! array_key_exists( $key, $newState ) && ! in_array( $key, $diff['deleted'], true ) ) {
+        $newKeys[] = $key;
+      }
+    }
+    if ( ! $this->sameKeySet( $newKeys, $listedKeys ) ) {
       $this->storeRegistry( $newKeys );
     }
     foreach ( $diff['deleted'] as $key ) {
@@ -151,6 +217,61 @@ class VirtualOptionService {
     $this->assembled[ $context ]    = $newState;
 
     return $newState;
+  }
+
+
+  private function refusedUnreadableKeys( array $changedKeys, int $context, array $base ): array {
+    $refused = [];
+    $written = $this->writtenByRequest[ $context ] ?? [];
+    foreach ( $changedKeys as $key ) {
+      $key        = (string) $key;
+      $unreadable = isset( $this->unreadableKeys[ $context ][ $key ] );
+      $neverRead  = ! array_key_exists( $key, $base ) && ! array_key_exists( $key, $written );
+      if ( ( ! $unreadable && ! $neverRead )
+        || ! $this->envelope->isValidRow( $this->query->readRawRow( $key ) )
+      ) {
+        continue;
+      }
+      $refused[] = $key;
+      if ( ! isset( $this->refusalLogged[ $context ][ $key ] ) ) {
+        $this->refusalLogged[ $context ][ $key ] = true;
+        ( $this->logger )(
+          sprintf(
+            '%s The setting "%s" is stored, but this request could not read it; a save that would replace it is refused and the stored value is kept.',
+            self::LOG_PREFIX,
+            $key
+          )
+        );
+      }
+    }
+
+    return $refused;
+  }
+
+
+  public function isStoredButUnreadable( string $key, int $context ): bool {
+    $leftMissing     = isset( $this->unreadableKeys[ $context ][ $key ] );
+    $missingFromCopy = isset( $this->servedOnUnreadableList[ $context ] )
+      && ! isset( $this->servedOnUnreadableList[ $context ][ $key ] );
+    if ( ! $leftMissing && ! $missingFromCopy ) {
+      return false;
+    }
+
+    return $this->envelope->isValidRow( $this->query->readRawRow( $key ) );
+  }
+
+
+  private function logUnusedScanOnce( int $context ) {
+    $this->logRefusedOnce( $context, self::SCAN_LINE, 'The settings row scan of this save read no row name; it is not used, and the save keeps the settings list this request was served.' );
+  }
+
+
+  private function logRefusedOnce( int $context, string $entry, string $message ) {
+    if ( isset( $this->refusalLogged[ $context ][ $entry ] ) ) {
+      return;
+    }
+    $this->refusalLogged[ $context ][ $entry ] = true;
+    ( $this->logger )( self::LOG_PREFIX . ' ' . $message );
   }
 
 
@@ -200,15 +321,26 @@ class VirtualOptionService {
       return false;
     }
 
+    $this->forgetContext( $context );
+
+    return true;
+  }
+
+
+  private function forgetContext( int $context ) {
     unset(
       $this->servedSnapshot[ $context ],
       $this->assembled[ $context ],
       $this->registryKeys[ $context ],
       $this->setterValues[ $context ],
-      $this->writtenByRequest[ $context ]
+      $this->writtenByRequest[ $context ],
+      $this->unreadableKeys[ $context ],
+      $this->refusalLogged[ $context ],
+      $this->shortRegistry[ $context ],
+      $this->servedRowKeys[ $context ],
+      $this->registryUnreadable[ $context ],
+      $this->servedOnUnreadableList[ $context ]
     );
-
-    return true;
   }
 
 
@@ -251,8 +383,18 @@ class VirtualOptionService {
       return null;
     }
     $keys = $stored['keys'] ?? null;
+    if ( ! is_array( $keys ) ) {
+      return null;
+    }
 
-    return is_array( $keys ) ? array_map( 'strval', array_values( $keys ) ) : null;
+    $names = [];
+    foreach ( $keys as $key ) {
+      if ( is_int( $key ) || ( is_string( $key ) && $key !== '' ) ) {
+        $names[] = (string) $key;
+      }
+    }
+
+    return $names === [] && $keys !== [] ? null : $names;
   }
 
 
@@ -272,17 +414,26 @@ class VirtualOptionService {
 
 
   public function reset() {
-    $this->servedSnapshot   = [];
-    $this->assembled        = [];
-    $this->registryKeys     = [];
-    $this->setterValues     = [];
-    $this->writtenByRequest = [];
+    $this->servedSnapshot         = [];
+    $this->assembled              = [];
+    $this->registryKeys           = [];
+    $this->setterValues           = [];
+    $this->writtenByRequest       = [];
+    $this->unreadableKeys         = [];
+    $this->refusalLogged          = [];
+    $this->shortRegistry          = [];
+    $this->servedRowKeys          = [];
+    $this->registryUnreadable     = [];
+    $this->servedOnUnreadableList = [];
   }
 
 
   public function refreshFromPersistence() {
-    $this->assembled    = [];
-    $this->registryKeys = [];
+    $this->assembled          = [];
+    $this->registryKeys       = [];
+    $this->registryReadable   = [];
+    $this->shortRegistry      = [];
+    $this->registryUnreadable = [];
   }
 
 
@@ -291,23 +442,66 @@ class VirtualOptionService {
       return $this->registryKeys[ $context ];
     }
 
+    unset( $this->registryUnreadable[ $context ] );
     $stored = $this->options->get( StorageQueryInterface::REGISTRY_ROW );
     $keys   = $this->registryKeysFrom( $stored );
+
+    $this->registryReadable[ $context ] = $keys !== null;
     if ( $keys !== null ) {
-      return $this->registryKeys[ $context ] = $keys;
+      return $this->registryKeys[ $context ] = $this->withUnlistedRows( $keys, $context );
     }
 
     if ( $stored === false && ! $this->query->optionRowExists( StorageQueryInterface::REGISTRY_ROW ) ) {
       return $this->registryKeys[ $context ] = null;
     }
 
-    $scanned = $this->query->scanRowKeys();
+    $scanned = $this->settingKeys( $this->query->scanRowKeys() );
+    if ( $scanned === [] ) {
+      $this->registryUnreadable[ $context ] = true;
 
-    return $this->registryKeys[ $context ] = ( $scanned === [] ? null : $scanned );
+      return $this->registryKeys[ $context ] = null;
+    }
+
+    return $this->registryKeys[ $context ] = $scanned;
   }
 
 
-  private function assemble( array $keys, $storedValue = null ): array {
+  private function withUnlistedRows( array $keys, int $context ): array {
+    $rows = $this->query->loadedRowKeys();
+    if ( $rows === [] ) {
+      $rows = $this->query->scanRowKeys();
+    }
+    $unlisted = array_values( array_diff( $this->settingKeys( $rows ), $keys ) );
+    if ( $unlisted === [] ) {
+      return $keys;
+    }
+    $this->shortRegistry[ $context ] = $keys;
+
+    return array_merge( $keys, $unlisted );
+  }
+
+
+  /**
+   * Row keys as settings: the empty key of a row named exactly the prefix is
+   * left out (wpmldev-12321, intake (c)).
+   *
+   * @param list<string> $rowKeys
+   *
+   * @return list<string>
+   */
+  private function settingKeys( array $rowKeys ): array {
+    return array_values(
+      array_filter(
+        $rowKeys,
+        function ( $key ) {
+          return $key !== '';
+        }
+      )
+    );
+  }
+
+
+  private function assemble( array $keys, $storedValue = null, ?int $servedContext = null ): array {
     $state       = [];
     $copy        = null;
     $leftMissing = [];
@@ -324,12 +518,17 @@ class VirtualOptionService {
       if ( array_key_exists( $key, $copy ) ) {
         $state[ $key ] = $copy[ $key ];
         $this->writeRow( $key, $copy[ $key ] );
+      } elseif ( array_key_exists( $key, $this->lostKeyDefaults ) && $this->storedRowServed( $key, $state ) ) {
+        continue;
       } elseif ( array_key_exists( $key, $this->lostKeyDefaults ) ) {
         $state[ $key ] = $this->lostKeyDefaults[ $key ];
         $this->writeRow( $key, $state[ $key ] );
         $this->logRestoredToDefault( $key, $state[ $key ] );
       } else {
         $leftMissing[] = $key;
+        if ( $servedContext !== null ) {
+          $this->unreadableKeys[ $servedContext ][ $key ] = true;
+        }
       }
     }
 
@@ -338,6 +537,17 @@ class VirtualOptionService {
     }
 
     return $state;
+  }
+
+
+  private function storedRowServed( string $key, array &$state ): bool {
+    $row = $this->query->readRawRow( $key );
+    if ( ! is_array( $row ) || ! $this->envelope->isValidRow( $row ) ) {
+      return false;
+    }
+    $state[ $key ] = $this->envelope->value( $row );
+
+    return true;
   }
 
 
@@ -416,6 +626,14 @@ class VirtualOptionService {
     $keys = $this->registryKeys( $context );
 
     return $this->assemble( (array) $keys );
+  }
+
+
+  private function sameKeySet( array $a, array $b ): bool {
+    sort( $a );
+    sort( $b );
+
+    return $a === $b;
   }
 
 

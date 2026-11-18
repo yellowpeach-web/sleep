@@ -8,6 +8,12 @@ interface QueryPrepareInterface {
   public function prefix(): string;
 
 
+  public function usersTable(): string;
+
+
+  public function usermetaTable(): string;
+
+
   public function prepare( $sql, ...$args ): string;
 
 

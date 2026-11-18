@@ -5,9 +5,12 @@ class WPML_Rewrite_Rule_Filter implements IWPML_ST_Rewrite_Rule_Filter {
 
 	private $new_match_finder;
 
-	public function __construct( array $custom_types_repositories, WPML_ST_Slug_New_Match_Finder $new_match_finder ) {
+	private $query_var_owners;
+
+	public function __construct( array $custom_types_repositories, WPML_ST_Slug_New_Match_Finder $new_match_finder, $query_var_owners = null ) {
 		$this->custom_types_repositories = $custom_types_repositories;
 		$this->new_match_finder          = $new_match_finder;
+		$this->query_var_owners          = is_array( $query_var_owners ) ? $query_var_owners : null;
 	}
 
 
@@ -54,6 +57,14 @@ class WPML_Rewrite_Rule_Filter implements IWPML_ST_Rewrite_Rule_Filter {
 		foreach ( $rules as $match => $query ) {
 			$normalized = $match;
 			foreach ( $to_original as $custom_type ) {
+				$slug = trim( (string) $custom_type->get_slug(), '/' );
+				if ( '' === $slug || false === strpos( $match, $slug ) ) {
+					continue;
+				}
+				if ( $this->queries_another_type( $query, $custom_type->get_name() ) ) {
+					continue;
+				}
+
 				$candidate = $this->new_match_finder->find_match_of_type( $match, $custom_type )->get_value();
 				if ( $candidate !== $match ) {
 					$normalized = $candidate;
@@ -67,6 +78,59 @@ class WPML_Rewrite_Rule_Filter implements IWPML_ST_Rewrite_Rule_Filter {
 		}
 
 		return $result;
+	}
+
+	private function queries_another_type( $query, $type_name ) {
+		if ( ! is_string( $query ) ) {
+			return false;
+		}
+
+		$owners  = $this->get_query_var_owners();
+		$another = false;
+		$pos     = strpos( $query, '?' );
+		$pairs   = explode( '&', false === $pos ? $query : substr( $query, $pos + 1 ) );
+		foreach ( $pairs as $pair ) {
+			$parts = explode( '=', $pair, 2 );
+			$var   = $parts[0];
+			$value = isset( $parts[1] ) ? $parts[1] : '';
+
+			if ( 'post_type' === $var && '' !== $value && '$' !== $value[0] ) {
+				$owner = $value;
+			} elseif ( isset( $owners[ $var ] ) ) {
+				$owner = $owners[ $var ];
+			} else {
+				continue;
+			}
+
+			if ( $owner === $type_name ) {
+				return false;
+			}
+			$another = true;
+		}
+
+		return $another;
+	}
+
+	private function get_query_var_owners() {
+		if ( null === $this->query_var_owners ) {
+			$this->query_var_owners = array();
+			$registered             = array();
+			if ( function_exists( 'get_taxonomies' ) ) {
+				$registered[] = get_taxonomies( array(), 'objects' );
+			}
+			if ( function_exists( 'get_post_types' ) ) {
+				$registered[] = get_post_types( array(), 'objects' );
+			}
+			foreach ( $registered as $types ) {
+				foreach ( (array) $types as $name => $type ) {
+					if ( is_object( $type ) && ! empty( $type->query_var ) && is_string( $type->query_var ) ) {
+						$this->query_var_owners[ $type->query_var ] = (string) $name;
+					}
+				}
+			}
+		}
+
+		return $this->query_var_owners;
 	}
 
 	private function get_translation_to_original_types( array $custom_types ) {

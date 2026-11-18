@@ -8,12 +8,20 @@ use WPML\FP\Lst;
 use WPML\FP\Obj;
 use WPML\FP\Relation;
 use WPML\Setup\Option;
+use WPML\TranslationPolicy\FeatureSwitch;
+use WPML\TranslationPolicy\Migration\LateLegacyWrites;
+use WPML\TranslationPolicy\Policy\SelectorSiteDefault;
+use WPML\WP\OptionManager;
+
+use function WPML\Container\make;
 
 class Plugins {
 	const WPML_TM_PLUGIN              = 'wpml-translation-management/plugin.php';
 	const WPML_CORE_PLUGIN            = 'sitepress-multilingual-cms/sitepress.php';
 	const WPML_SUBSCRIPTION_TYPE_BLOG = 6718;
 	const AFTER_INSTALLER             = 999;
+
+	const BLOG_LICENCE_SEEN = 'blog-licence-seen';
 
 	public static function loadCoreFirst() {
 		$plugins = get_option( 'active_plugins' );
@@ -81,45 +89,147 @@ class Plugins {
 
 	public static function updateTMAllowedOption() {
 		$isTMAllowed = self::isTMAllowed();
-		Option::setTMAllowed( $isTMAllowed );
+		self::syncTMAllowedAndEditor( self::currentSubscriptionType(), $isTMAllowed );
 		return $isTMAllowed;
 	}
 
 	public static function updateTMAllowedAndTranslateEverythingOnSubscriptionChange() {
-		if ( function_exists( 'OTGS_Installer' ) ) {
-			$type = OTGS_Installer()->get_subscription( 'wpml' )->get_type();
-			if ( $type ) {
-				Option::setTMAllowed( $type !== self::WPML_SUBSCRIPTION_TYPE_BLOG );
-				if ( self::WPML_SUBSCRIPTION_TYPE_BLOG === $type ) {
-					Option::setTranslateEverything( false );
-				}
-				self::selectTranslationEditorIfMissing( $type );
+		$type = self::currentSubscriptionType();
+		if ( $type ) {
+			self::syncTMAllowedAndEditor( $type, $type !== self::WPML_SUBSCRIPTION_TYPE_BLOG );
+			if ( self::WPML_SUBSCRIPTION_TYPE_BLOG === $type ) {
+				Option::setTranslateEverything( false );
 			}
 		}
 	}
 
-	private static function selectTranslationEditorIfMissing( $subscriptionType ) {
+	private static function currentSubscriptionType() {
+		return function_exists( 'OTGS_Installer' ) ? OTGS_Installer()->get_subscription( 'wpml' )->get_type() : null;
+	}
+
+	private static function syncTMAllowedAndEditor( $type, $isTMAllowed ) {
+		$isBlog          = self::WPML_SUBSCRIPTION_TYPE_BLOG === $type;
+		$blogLicenceSeen = self::blogLicenceSeen();
+
+		if ( ! $blogLicenceSeen && ( $isBlog || false === Option::isTMAllowed() ) ) {
+			self::setBlogLicenceSeen( true );
+			$blogLicenceSeen = true;
+		}
+
+		Option::setTMAllowed( $isTMAllowed );
+
+		if ( ! $type || $isBlog || true !== $isTMAllowed || ! self::canSelectEditor() ) {
+			return;
+		}
+
+		if ( $blogLicenceSeen ) {
+			self::selectEditorIfMissing( ICL_TM_TMETHOD_ATE );
+			self::setBlogLicenceSeen( false );
+		} else {
+			self::selectEditorIfMissing( ICL_TM_TMETHOD_EDITOR );
+		}
+	}
+
+	private static function blogLicenceSeen() {
+		return true === ( new OptionManager() )->get( Option::OPTION_GROUP, self::BLOG_LICENCE_SEEN, false );
+	}
+
+	private static function setBlogLicenceSeen( $isSeen ) {
+		( new OptionManager() )->set( Option::OPTION_GROUP, self::BLOG_LICENCE_SEEN, $isSeen );
+	}
+
+	private static function selectEditorIfMissing( $editor ) {
+		$storedEditor = wpml_get_tm_sub_setting( 'doc_translation_method', null );
+		if ( null !== $storedEditor && (string) ICL_TM_TMETHOD_MANUAL !== (string) $storedEditor ) {
+			return;
+		}
+
+		if ( FeatureSwitch::isOn() ) {
+			make( LateLegacyWrites::class )->turnAccountOn(
+				fn() => self::saveTMSettings( [ 'doc_translation_method' => $editor ] )
+			);
+			SelectorSiteDefault::create()->keepWordPressEditor();
+
+			return;
+		}
+
+		self::saveTMSettings( [ 'doc_translation_method' => $editor ] + self::postEditModeSafeguard() );
+	}
+
+	private static function postEditModeSafeguard() {
+		if ( self::hasExplicitGlobalEditorMode() ) {
+			return [];
+		}
+
+		$safeguard = [ \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_GLOBAL_EDITOR => \WPML_TM_Post_Edit_TM_Editor_Mode::EDITOR_NATIVE ];
+
+		$postTypeEditors = self::postTypeEditorsWithLegacyChoices();
+		if ( null !== $postTypeEditors ) {
+			$safeguard[ \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_FOR_POST_TYPE_EDITOR ] = $postTypeEditors;
+		}
+
+		return $safeguard;
+	}
+
+	private static function postTypeEditorsWithLegacyChoices() {
+		$getMap = function ( $key ) {
+			$map = wpml_get_tm_sub_setting( $key, [] );
+
+			return is_array( $map ) ? $map : [];
+		};
+
+		$editors      = $getMap( \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_FOR_POST_TYPE_EDITOR );
+		$legacyNative = $getMap( \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_FOR_POST_TYPE_USE_NATIVE );
+		$legacyWpml   = $getMap( \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_FOR_POST_TYPE_USE_WPML );
+
+		$legacyChoices = [];
+		foreach ( $legacyWpml as $postType => $legacyEditor ) {
+			if (
+				in_array( $legacyEditor, [ \WPML_TM_Post_Edit_TM_Editor_Mode::EDITOR_WPML, \WPML_TM_Post_Edit_TM_Editor_Mode::EDITOR_DASHBOARD ], true )
+				&& true !== ( $legacyNative[ $postType ] ?? null )
+			) {
+				$legacyChoices[ $postType ] = $legacyEditor;
+			}
+		}
+		if (
+			defined( 'WCML_VERSION' )
+			&& ! isset( $legacyChoices['product'] )
+			&& false === ( $legacyNative['product'] ?? null )
+		) {
+			$legacyChoices['product'] = \WPML_TM_Post_Edit_TM_Editor_Mode::EDITOR_WPML;
+		}
+
+		$isAdded = false;
+		foreach ( $legacyChoices as $postType => $legacyEditor ) {
+			$isValid = in_array(
+				$editors[ $postType ] ?? null,
+				[
+					\WPML_TM_Post_Edit_TM_Editor_Mode::EDITOR_NATIVE,
+					\WPML_TM_Post_Edit_TM_Editor_Mode::EDITOR_WPML,
+					\WPML_TM_Post_Edit_TM_Editor_Mode::EDITOR_DASHBOARD,
+				],
+				true
+			);
+			if ( ! $isValid ) {
+				$editors[ $postType ] = $legacyEditor;
+				$isAdded              = true;
+			}
+		}
+
+		return $isAdded ? $editors : null;
+	}
+
+	private static function canSelectEditor() {
 		global $sitepress;
 
-		if (
-			self::WPML_SUBSCRIPTION_TYPE_BLOG === $subscriptionType
-			|| true !== Option::isTMAllowed()
-			|| ! is_object( $sitepress )
-			|| ! function_exists( 'wpml_is_setup_complete' )
-			|| ! function_exists( 'wpml_get_tm_sub_setting' )
-			|| ! wpml_is_setup_complete()
-		) {
-			return;
-		}
+		return is_object( $sitepress )
+			&& function_exists( 'wpml_is_setup_complete' )
+			&& function_exists( 'wpml_get_tm_sub_setting' )
+			&& wpml_is_setup_complete();
+	}
 
-		$editor = wpml_get_tm_sub_setting( 'doc_translation_method', null );
-		if ( null !== $editor && (string) ICL_TM_TMETHOD_MANUAL !== (string) $editor ) {
-			return;
-		}
-
-		$newSettings = [];
-
-		$hasExplicitGlobalEditorMode = in_array(
+	private static function hasExplicitGlobalEditorMode() {
+		return in_array(
 			wpml_get_tm_sub_setting( \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_GLOBAL_EDITOR, null ),
 			[
 				\WPML_TM_Post_Edit_TM_Editor_Mode::EDITOR_NATIVE,
@@ -128,14 +238,10 @@ class Plugins {
 			],
 			true
 		)
-			|| null !== wpml_get_tm_sub_setting( \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_GLOBAL_USE_NATIVE, null )
-			|| null !== wpml_get_tm_sub_setting( \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_GLOBAL_USE_WPML, null );
+			|| null !== wpml_get_tm_sub_setting( \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_GLOBAL_USE_NATIVE, null );
+	}
 
-		if ( ! $hasExplicitGlobalEditorMode ) {
-			$newSettings[ \WPML_TM_Post_Edit_TM_Editor_Mode::TM_KEY_GLOBAL_EDITOR ] = \WPML_TM_Post_Edit_TM_Editor_Mode::EDITOR_NATIVE;
-		}
-		$newSettings['doc_translation_method'] = ICL_TM_TMETHOD_ATE;
-
+	private static function saveTMSettings( array $newSettings ) {
 		$tmSettings = Settings::getOr( [], 'translation-management' );
 		$tmSettings = is_array( $tmSettings ) ? $tmSettings : [];
 
@@ -249,7 +355,8 @@ class Plugins {
 
 		deactivate_plugins( self::WPML_TM_PLUGIN );
 
-		if ( ! wpml_is_cli() && ! wpml_is_ajax() && wp_redirect( $_SERVER['REQUEST_URI'], 302, 'WPML' ) ) {
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+		if ( ! wpml_is_cli() && ! wpml_is_ajax() && $request_uri && wp_safe_redirect( $request_uri, 302, 'WPML' ) ) {
 			exit;
 		}
 

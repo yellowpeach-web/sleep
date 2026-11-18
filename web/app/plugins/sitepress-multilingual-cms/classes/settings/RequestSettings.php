@@ -6,9 +6,12 @@ use WPML\Infrastructure\WordPress\Component\CustomFieldPreferences\EarlyReadBoun
 
 class RequestSettings {
 
+	private static $switchHydratedBlogId = null;
+
 	public static function load(): array {
 		global $sitepress_settings;
 		if ( ! is_array( $sitepress_settings ) ) {
+			self::$switchHydratedBlogId = null;
 			$sitepress_settings = EarlyReadBoundary::suspendDuring(
 				function () {
 					$settings = \WPML_Settings_Failsafe_Loader::load();
@@ -23,13 +26,38 @@ class RequestSettings {
 
 	public static function reload(): array {
 		global $sitepress_settings;
+		\WPML_Settings_Failsafe_Loader::forgetKeptSettings();
 		$sitepress_settings = null;
 
 		return self::load();
 	}
 
-	public static function reloadAfterBlogSwitch() {
-		self::reload();
+	public static function reloadAfterBlogSwitch( $newBlogId = null, $prevBlogId = null ) {
+		global $sitepress_settings;
+
+		if (
+			null !== $newBlogId
+			&& null !== $prevBlogId
+			&& (int) $newBlogId === (int) $prevBlogId
+			&& is_array( $sitepress_settings )
+		) {
+			self::$switchHydratedBlogId = (int) $newBlogId;
+
+			return;
+		}
+
+		$sitepress_settings = null;
+		self::load();
+		self::$switchHydratedBlogId = null === $newBlogId ? null : (int) $newBlogId;
+	}
+
+	public static function loadForBlog( int $blogId ): array {
+		global $sitepress_settings;
+		if ( is_array( $sitepress_settings ) && self::$switchHydratedBlogId === $blogId ) {
+			return $sitepress_settings;
+		}
+
+		return self::reload();
 	}
 
 	public static function get( string $key, $fallback = null ) {

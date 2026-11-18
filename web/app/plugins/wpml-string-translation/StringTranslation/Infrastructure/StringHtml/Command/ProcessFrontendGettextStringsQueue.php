@@ -2,9 +2,11 @@
 
 namespace WPML\StringTranslation\Infrastructure\StringHtml\Command;
 
+use WPML\StringTranslation\Application\Setting\Repository\SettingsRepositoryInterface;
 use WPML\StringTranslation\Application\StringHtml\Command\ProcessFrontendGettextStringsQueueInterface;
 use WPML\StringTranslation\Application\StringGettext\Repository\FrontendQueueRepositoryInterface;
 use WPML\StringTranslation\Application\StringHtml\Command\ProcessFrontendStringsObserverInterface;
+use WPML\StringTranslation\Application\StringCore\Domain\StringPosition;
 use WPML\StringTranslation\Infrastructure\StringGettext\Command\PendingQueueProcessingBudget;
 
 class ProcessFrontendGettextStringsQueue implements ProcessFrontendGettextStringsQueueInterface {
@@ -17,17 +19,21 @@ class ProcessFrontendGettextStringsQueue implements ProcessFrontendGettextString
 
 	private $budget;
 
+	private $settingsRepository;
+
 	private $observers;
 
 	public function __construct(
 		$wpdb,
 		FrontendQueueRepositoryInterface $frontendQueueRepository,
 		PendingQueueProcessingBudget $budget,
+		SettingsRepositoryInterface $settingsRepository,
 		array $observers = []
 	) {
 		$this->wpdb                    = $wpdb;
 		$this->frontendQueueRepository = $frontendQueueRepository;
 		$this->budget                  = $budget;
+		$this->settingsRepository      = $settingsRepository;
 		$this->observers               = $observers;
 	}
 
@@ -93,6 +99,16 @@ class ProcessFrontendGettextStringsQueue implements ProcessFrontendGettextString
 			return;
 		}
 
+		$recordInRegistry = true === apply_filters( 'wpml_appearance_available', false );
+
+		if ( $recordInRegistry ) {
+			$this->writePageAddresses( array_map( 'intval', $stringIds ), $requestUrl );
+
+			do_action( 'wpml_appearance_record', 'string', array_map( 'intval', $stringIds ), $this->seenBy() );
+
+			return;
+		}
+
 		$kind = ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND;
 
 		$stringIdsToUpdate = $wpdb->get_col(
@@ -139,5 +155,53 @@ class ProcessFrontendGettextStringsQueue implements ProcessFrontendGettextString
 		foreach ( $this->observers as $observer ) {
 			$observer->newFrontendStringsRegistered( $stringIds );
 		}
+	}
+
+	private function writePageAddresses( array $stringIds, string $requestUrl ) {
+		$wpdb    = $this->wpdb;
+		$kind    = ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND_WHERE;
+		$address = self::storedAddress( $requestUrl );
+
+		$withAddress = array_map(
+			'intval',
+			$wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT string_id FROM {$wpdb->prefix}icl_string_positions WHERE kind = %d AND position_in_page = %s AND string_id IN (" . implode( ', ', array_fill( 0, count( $stringIds ), '%d' ) ) . ')',
+					array_merge( [ $kind, $address ], $stringIds )
+				)
+			)
+		);
+		$toInsert    = array_values( array_diff( $stringIds, $withAddress ) );
+		if ( count( $toInsert ) === 0 ) {
+			return;
+		}
+
+		$args = [];
+		foreach ( $toInsert as $stringId ) {
+			$args[] = $stringId;
+			$args[] = (int) $kind;
+			$args[] = $address;
+		}
+		$wpdb->query(
+			$wpdb->prepare(
+				"INSERT INTO {$wpdb->prefix}icl_string_positions (string_id, kind, position_in_page) VALUES "
+				. implode( ',', array_fill( 0, count( $toInsert ), '(%d, %d, %s)' ) ),
+				$args[0],
+				$args[1],
+				...array_slice( $args, 2 )
+			)
+		);
+	}
+
+	private static function storedAddress( string $requestUrl ): string {
+		return function_exists( 'mb_substr' )
+			? (string) mb_substr( $requestUrl, 0, StringPosition::MAX_POSITION_IN_PAGE_LENGTH, 'UTF-8' )
+			: substr( $requestUrl, 0, StringPosition::MAX_POSITION_IN_PAGE_LENGTH );
+	}
+
+	private function seenBy(): string {
+		return SettingsRepositoryInterface::AUTOREGISTER_STRINGS_TYPE_ONLY_VIEWED_BY_ADMIN === $this->settingsRepository->getAutoregisterStringsTypeSetting()
+			? 'admin'
+			: 'visitor';
 	}
 }

@@ -333,7 +333,7 @@ class WPML_Sync_Custom_Fields {
 		}
 
 		$must_rewrite_removal = function ( $raw_value ) {
-			$value = maybe_unserialize( $raw_value );
+			$value = \WPML\Utils\Unserialize::maybe( $raw_value );
 
 			return '' === $value || null === $value || false === $value;
 		};
@@ -363,15 +363,15 @@ class WPML_Sync_Custom_Fields {
 
 		$empty_like_removals = [];
 		foreach ( array_unique( $plan['removed'] ) as $v ) {
-			$value_to_delete = maybe_unserialize( $v );
+			$value_to_delete = \WPML\Utils\Unserialize::maybe( $v );
 			if ( '' === $value_to_delete || null === $value_to_delete || false === $value_to_delete ) {
 				$empty_like_removals[] = $value_to_delete;
 				continue;
 			}
-			delete_post_meta( $post_id_to, $meta_key, $value_to_delete );
+			delete_post_meta( $post_id_to, $meta_key, wp_slash( $value_to_delete ) );
 		}
 		foreach ( $empty_like_removals as $value_to_delete ) {
-			delete_post_meta( $post_id_to, $meta_key, $value_to_delete );
+			delete_post_meta( $post_id_to, $meta_key, wp_slash( $value_to_delete ) );
 		}
 
 		foreach ( $plan['added_indices'] as $index ) {
@@ -397,7 +397,7 @@ class WPML_Sync_Custom_Fields {
 	}
 
 	private function filter_copied_value( $raw_value, $post_id_from, $post_id_to, $meta_key, array $args ) {
-		$copied_value = maybe_unserialize( $raw_value );
+		$copied_value = \WPML\Utils\Unserialize::maybe( $raw_value );
 
 		return apply_filters( 'wpml_sync_custom_field_copied_value', $copied_value, $post_id_from, $post_id_to, $meta_key, $args );
 	}

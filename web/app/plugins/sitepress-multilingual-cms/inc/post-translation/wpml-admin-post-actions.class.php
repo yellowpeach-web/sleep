@@ -5,10 +5,6 @@ use WPML\Language\ActiveLanguagesReadModel;
 
 class WPML_Admin_Post_Actions extends WPML_Post_Translation {
 
-	const DUPLICATE_MEDIA_META_KEY = \WPML\Media\Option::DUPLICATE_MEDIA_KEY;
-	const DUPLICATE_FEATURED_META_KEY = \WPML\Media\Option::DUPLICATE_FEATURED_KEY;
-	const DUPLICATE_MEDIA_GLOBAL_KEY = 'duplicate_media';
-	const DUPLICATE_FEATURED_GLOBAL_KEY = 'duplicate_media';
 
 	private $http_referer;
 
@@ -38,14 +34,22 @@ class WPML_Admin_Post_Actions extends WPML_Post_Translation {
 	public function save_post_actions( $post_id, $post ) {
 		global $sitepress;
 
+		if ( (int) $post_id <= 0 && ! $post ) {
+			return;
+		}
+
 		$this->defer_term_counting();
 		if ( ! $post ) {
 			$post = get_post( $post_id );
 		}
+		if ( ! $post ) {
+			return;
+		}
 
 		$http_referer = $this->get_http_referer();
 		if ( ! $this->has_save_post_action( $post )
-			&& ( WPML_Save_Translation_Data_Action::is_delivery_window_open()
+			&& ( self::save_post_actions_suspended()
+				|| WPML_Save_Translation_Data_Action::is_delivery_window_open()
 				|| ! $http_referer->is_rest_request_called_from_post_edit_page() ) ) {
 			return;
 		}
@@ -68,6 +72,7 @@ class WPML_Admin_Post_Actions extends WPML_Post_Translation {
 			}
 			$language_code = $this->get_save_post_lang( $post_id, $sitepress );
 		}
+		$language_code = $this->filter_new_post_lang( $language_code, $post_id, $sitepress );
 
 		if ( $this->is_inline_action( $post_vars ) && ! ( $language_code = $this->get_element_lang_code(
 				$post_id
@@ -114,10 +119,6 @@ class WPML_Admin_Post_Actions extends WPML_Post_Translation {
 			$default_language
 		);
 
-		if ( isset( $post_vars['icl_tn_note'] ) ) {
-			update_post_meta( $post_id, '_icl_translator_note', $post_vars['icl_tn_note'] );
-		}
-
 		$this->after_save_post( $trid, $post_vars, $language_code, $source_language );
 
 		if ( 'attachment' !== $post->post_type ) {
@@ -125,18 +126,26 @@ class WPML_Admin_Post_Actions extends WPML_Post_Translation {
 		}
 	}
 
-	private function save_media_options( $post_id, $source_language  ) {
+	protected function save_media_options( $post_id, $source_language  ) {
+		$classic = null;
 
 		if ( $this->has_post_media_options_metabox() ) {
-			$original_post_id = isset( $_POST['icl_translation_of'] )
-				? filter_var( $_POST['icl_translation_of'], FILTER_SANITIZE_NUMBER_INT ) : $post_id;
 			$duplicate_media = isset( $_POST['wpml_duplicate_media'] )
 				? filter_var( $_POST['wpml_duplicate_media'], FILTER_SANITIZE_NUMBER_INT ) : false;
 			$duplicate_featured = isset( $_POST['wpml_duplicate_featured'] )
 				? filter_var( $_POST['wpml_duplicate_featured'], FILTER_SANITIZE_NUMBER_INT ) : false;
 
-			\WPML\Media\Option::setDuplicateMediaForIndividualPost( $post_id, (bool) $duplicate_media );
-			\WPML\Media\Option::setDuplicateFeaturedForIndividualPost( $post_id, (bool) $duplicate_featured );
+			$classic = [
+				'duplicate_media'    => (bool) $duplicate_media,
+				'duplicate_featured' => (bool) $duplicate_featured,
+			];
+		}
+
+		$media_options = \WPML\Infrastructure\WordPress\Component\LanguagePanel\Rest\SaveFlags::mediaOptions( $classic );
+
+		if ( null !== $media_options ) {
+			\WPML\Media\Option::setDuplicateMediaForIndividualPost( $post_id, $media_options['duplicate_media'] );
+			\WPML\Media\Option::setDuplicateFeaturedForIndividualPost( $post_id, $media_options['duplicate_featured'] );
 		}
 	}
 

@@ -37,14 +37,29 @@
          "Removing strings from <b>String Translation</b> table": [
             "กำลังลบสตริงออกจากตาราง <b>การแปลสตริง</b>"
          ],
+         "%s string waiting for translation was kept.": [
+            "เก็บสตริงที่กำลังรอการแปลไว้ %s สตริง"
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "หากต้องการเพิ่มสตริงกลับเข้าไปในตาราง <b>การแปลสตริง</b> คุณอาจต้องสแกนไฟล์การแปลใหม่หรือลงทะเบียนสตริงให้สามารถแปลได้"
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "อ่านเพิ่มเติมเกี่ยวกับ <a>การสแกนไซต์ของคุณเพื่อหาสตริงและลงทะเบียนสตริงเหล่านั้นให้สามารถแปลได้</a>"
          ],
-         "Successfully removed strings": [
-            "ลบสตริงสำเร็จแล้ว"
+         "Nothing removed: %s string is waiting for translation": [
+            "ไม่มีสิ่งใดถูกลบ: มี %s สตริงที่กำลังรอการแปล"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "ไม่มีสิ่งใดถูกลบ: โดเมนที่เลือกไม่มีสตริงที่ยังไม่ได้แปล"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "หากต้องการลบสตริงเหล่านั้นด้วย ให้เลือก “ลบสตริงที่กำลังรอการแปลด้วย” แล้วคลิกลบอีกครั้ง"
+         ],
+         "OK": [
+            "ตกลง"
+         ],
+         "Removed %s string": [
+            "ลบไปแล้ว %s สตริง"
          ],
          "OK, Great": [
             "ตกลง ยอดเยี่ยม"
@@ -60,6 +75,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "การลบสตริงหยุดลงก่อนที่จะเสร็จสิ้น สตริงที่ไม่ได้ถูกลบยังคงอยู่ในตาราง โปรดลองลบอีกครั้ง"
+         ],
+         "Successfully removed strings": [
+            "ลบสตริงสำเร็จแล้ว"
          ]
       }
    }

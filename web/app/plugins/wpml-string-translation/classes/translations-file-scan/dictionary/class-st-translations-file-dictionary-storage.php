@@ -6,5 +6,7 @@ interface WPML_ST_Translations_File_Dictionary_Storage {
 
 	public function find( $path = null, $status = null );
 
+	public function move_status( $from, $to );
+
 	public function findAllUniqueComponentIds( ?string $componentType = null, array $fileExtensions = [] ): array;
 }

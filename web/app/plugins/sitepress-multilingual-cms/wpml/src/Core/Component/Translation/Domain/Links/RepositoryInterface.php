@@ -19,6 +19,15 @@ interface RepositoryInterface {
   public function getFromItemsByToItem( Item $item );
 
 
+  public function hasRelationshipsFrom( Item $item ): bool;
+
+
+  public function isCollected( Item $item ): bool;
+
+
+  public function markAsCollected( Item $item );
+
+
   public function addRelationship( Item $from, Item $to );
 
 

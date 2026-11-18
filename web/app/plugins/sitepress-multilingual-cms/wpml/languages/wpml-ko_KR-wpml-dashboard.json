@@ -7,6 +7,9 @@
             "plural_forms": "nplurals=1; plural=0;",
             "lang": "ko_KR"
          },
+         "(no title)": [
+            "(제목 없음)"
+         ],
          "Untranslated strings that I encounter on front-end while logged in": [
             "로그인 상태에서 프런트엔드에 표시되는 번역되지 않은 문자열"
          ],
@@ -37,6 +40,15 @@
          "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
             "총 %2$d개 항목 중 %1$d개를 재전송했지만 %3$d개는 실패했습니다. 페이지를 새로 고침하고 다시 시도하세요."
          ],
+         "We resent %1$d of %2$d items.": [
+            "항목 %2$d개 중 %1$d개를 다시 보냈습니다."
+         ],
+         "%1$s from %2$s": [
+            "%2$s에서 %1$s"
+         ],
+         "%1$d item can't be translated automatically: %2$s. Choose another translation method for it, or change your engines.": [
+            "%1$d개 항목을 자동으로 번역할 수 없습니다: %2$s. 해당 항목에 대해 다른 번역 방법을 선택하거나 엔진을 변경하십시오."
+         ],
          "Error in fetching default translation batch name": [
             "기본 번역 배치 이름을 가져오는 중 오류가 발생했습니다"
          ],
@@ -51,6 +63,9 @@
          ],
          "Validation failed": [
             "유효성 검사 실패"
+         ],
+         "The translation service batch could not be committed. Continue sending to try again.": [
+            "번역 서비스 배치를 커밋할 수 없습니다. 계속 전송하여 다시 시도하세요."
          ],
          "%s: labels and slug": [
             "%s: 레이블 및 슬러그"
@@ -91,6 +106,12 @@
          "They are still waiting and will be tried again on the next download.": [
             "해당 항목들은 여전히 대기 중이며 다음 다운로드 시 다시 시도됩니다."
          ],
+         "Job %d": [
+            "작업 %d"
+         ],
+         "and %d more": [
+            "외 %d개 더 보기"
+         ],
          "Status: ": [
             "상태: "
          ],
@@ -130,11 +151,11 @@
          "Switching…": [
             "전환 중…"
          ],
-         "Translation engine controls couldn't load. Reload the page and try again.": [
-            "번역 엔진 컨트롤을 로드할 수 없습니다. 페이지를 새로 고침하고 다시 시도하세요."
-         ],
          "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
             "전환을 확인할 수 없습니다. 다시 시도하거나 새로 고침하여 현재 엔진을 확인하세요."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "번역 엔진 컨트롤을 로드할 수 없습니다. 페이지를 새로 고침하고 다시 시도하세요."
          ],
          "Loading translation engine settings…": [
             "번역 엔진 설정 로드 중…"
@@ -289,14 +310,20 @@
          "Select %s": [
             "%s 선택"
          ],
-         "(no title)": [
-            "(제목 없음)"
+         "Appears on the site": [
+            "사이트에 표시됨"
+         ],
+         "Not shown yet": [
+            "아직 표시되지 않음"
          ],
          "Image": [
             "이미지"
          ],
          "%s Title": [
             "%s 제목"
+         ],
+         "Source": [
+            "소스"
          ],
          "%s Date": [
             "%s 날짜"
@@ -328,9 +355,6 @@
          "Show selected items": [
             "선택한 항목 표시"
          ],
-         "Looking for more items...": [
-            "더 많은 항목 찾는 중..."
-         ],
          " / page": [
             " / 페이지"
          ],
@@ -339,6 +363,9 @@
          ],
          "Next": [
             "다음"
+         ],
+         "Looking for more items...": [
+            "더 많은 항목 찾는 중..."
          ],
          "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
             "사이트의 콘텐츠가 너무 방대하여 단일 번역 배치로 처리할 수 없습니다. 필터를 사용하여 선택 범위를 좁힌 다음 “모두 선택”을 사용하세요."
@@ -370,11 +397,29 @@
          "Select all %ss": [
             "모든 %s 선택"
          ],
+         "%d not shown on the site yet": [
+            "%d개는 아직 사이트에 표시되지 않음"
+         ],
+         "Show them": [
+            "표시"
+         ],
+         "Hide them": [
+            "숨기기"
+         ],
          "Save note": [
             "메모 저장"
          ],
-         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
-            "다음 대상 언어는 자동 번역을 지원하지 않습니다: %s. 자동 번역을 활성화하려면 <a>알려진 언어로 매핑</a>하세요."
+         "%1$s and %2$s": [
+            "%1$s 및 %2$s"
+         ],
+         "The following target languages do not support automatic translation: %s.": [
+            "다음 대상 언어는 자동 번역을 지원하지 않습니다: %s."
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "%1$s와(과) %2$s은(는) 동일한 언어로 인식되므로 자동 번역을 사용할 수 없습니다. 대신 “복제”를 선택하여 콘텐츠를 복사하십시오."
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "%1$s와(과) %2$s은(는) 동일한 언어로 인식되므로 자동 번역을 사용할 수 없습니다."
          ],
          "The site's default language %s doesn't support automatic translation.": [
             "사이트의 기본 언어인 %s은(는) 자동 번역을 지원하지 않습니다."
@@ -418,8 +463,8 @@
          "Raise the cap": [
             "한도 높이기"
          ],
-         "Only the account owner can do this.": [
-            "계정 소유자만 이 작업을 수행할 수 있습니다."
+         "You can raise it on the AI Translation: billing and usage page.": [
+            "AI 번역: 결제 및 사용량 페이지에서 이를 상향할 수 있습니다."
          ],
          "Show strings in:": [
             "문자열 표시:"
@@ -442,9 +487,6 @@
          "Domain": [
             "도메인"
          ],
-         "Source": [
-            "소스"
-         ],
          "Type": [
             "유형"
          ],
@@ -460,11 +502,8 @@
          "All sources": [
             "모든 소스"
          ],
-         "Frontend (viewed)": [
-            "프런트엔드(조회됨)"
-         ],
-         "Backend (viewed)": [
-            "백엔드(조회됨)"
+         "Seen in the admin": [
+            "관리자에서 확인됨"
          ],
          "Unknown": [
             "알 수 없음"
@@ -478,17 +517,11 @@
          "Search string or a name": [
             "문자열 또는 이름 검색"
          ],
-         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
-            "이 필터는 소스가 “프런트엔드” 또는 “백엔드”로 설정된 경우에만 사용할 수 있습니다."
+         "%1$s, %2$s and %3$s": [
+            "%1$s, %2$s 및 %3$s"
          ],
-         "front-end": [
-            "프런트엔드"
-         ],
-         "back-end": [
-            "백엔드"
-         ],
-         "viewed": [
-            "조회됨"
+         "This filter is available only when Source is \"Appears on the site\" or \"Seen in the admin\".": [
+            "이 필터는 원본이 “사이트에 표시됨” 또는 “관리자에서 확인됨”인 경우에만 사용할 수 있습니다."
          ],
          "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
             "테마 및 플러그인 현지화 페이지를 엽니다. 여기서 아직 등록되지 않은 문자열을 테마 및 플러그인에서 스캔하여 번역할 수 있도록 만들 수 있습니다."
@@ -604,20 +637,23 @@
          "You can only translate %1$s from the site's default language (%2$s).": [
             "사이트의 기본 언어인 (%2$s)에서만 %1$s을(를) 번역할 수 있습니다."
          ],
-         "Search taxonomy or a name": [
-            "분류 체계 또는 이름 검색"
+         "Search taxonomies and terms": [
+            "분류 체계 및 용어 검색"
          ],
          "Filter by post type": [
-            "포스트 유형별 필터링"
+            "글 유형별로 필터링"
          ],
          "All post types": [
-            "모든 포스트 유형"
+            "모든 글 유형"
          ],
          "%d Not-translatable taxonomy is hidden. Switch it to <i>Translatable</i> in <a>WPML → Settings</a> to include it here.": [
             "%d개의 번역 불가능한 분류 체계가 숨겨져 있습니다. 여기에 포함하려면 <a>WPML → 설정</a>에서 <i>번역 가능</i>으로 전환하세요."
          ],
          "No translatable taxonomies match the current filters.": [
             "현재 필터와 일치하는 번역 가능한 분류 체계가 없습니다."
+         ],
+         "Words in the terms, in %s": [
+            "%s 용어의 단어 수"
          ],
          "Select all taxonomies": [
             "모든 분류 체계 선택"
@@ -628,11 +664,20 @@
          "Terms in": [
             "분류 내 용어"
          ],
-         "Post types": [
-            "포스트 타입"
+         "Used on": [
+            "사용처"
          ],
-         "Translated / Total terms": [
-            "번역됨 / 전체 용어"
+         "Terms": [
+            "항목"
+         ],
+         "Words": [
+            "단어"
+         ],
+         "Hide terms": [
+            "용어 숨기기"
+         ],
+         "Choose terms": [
+            "용어 선택"
          ],
          "translated": [
             "번역됨"
@@ -658,11 +703,32 @@
          "%1$s: %2$s": [
             "%1$s: %2$s"
          ],
-         "Open %s in the Taxonomy Translation tab": [
-            "분류 체계 번역 탭에서 %s 열기"
+         "Translated": [
+            "번역됨"
+         ],
+         "Partially translated": [
+            "일부 번역됨"
+         ],
+         "Translation needs update": [
+            "번역 업데이트 필요"
+         ],
+         "Preparing for translation": [
+            "번역 준비 중"
+         ],
+         "Translation stalled": [
+            "번역 지연됨"
+         ],
+         "Not translated": [
+            "번역되지 않음"
+         ],
+         "Status icons": [
+            "상태 아이콘"
          ],
          "Taxonomy labels and slug": [
             "분류 체계 레이블 및 슬러그"
+         ],
+         "The taxonomy's own texts: its singular and plural names and its URL slug. Not its terms.": [
+            "분류 체계 자체의 텍스트: 단수 및 복수 이름과 URL 슬러그입니다. 용어는 포함되지 않습니다."
          ],
          "WPML String Translation is not active.": [
             "WPML String Translation이 활성화되어 있지 않습니다."
@@ -694,14 +760,125 @@
          "Rescan": [
             "재스캔"
          ],
-         "%d Taxonomy selected": [
-            "%d개의 분류 체계가 선택됨"
+         "Send categories, tags and other terms for translation, a whole taxonomy or the terms you pick.": [
+            "카테고리, 태그 및 기타 용어, 전체 분류 체계 또는 직접 선택한 용어를 번역으로 전송합니다."
          ],
-         "<b>Translate Everything Automatically</b> (TEA) is active.": [
-            "<b>모든 항목 자동 번역</b>(TEA)이 활성화되었습니다."
+         "Edit translations manually": [
+            "수동으로 번역 편집"
          ],
-         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
-            "번역 가능 분류 체계의 신규 및 업데이트된 용어는 자동으로 대기열에 추가됩니다. 아래에서 분류 체계를 선택하여 남은 미번역 용어에 대해 일회성 대량 작업을 보낼 수 있습니다."
+         "(opens in a new tab)": [
+            "(새 탭에서 열림)"
+         ],
+         "To edit one term's translation by hand: <link/>": [
+            "한 용어의 번역을 직접 수동으로 편집하려면: <link/>"
+         ],
+         "There is nothing to send. New and changed terms will show up here.": [
+            "전송할 항목이 없습니다. 새로 추가되거나 변경된 용어가 여기에 표시됩니다."
+         ],
+         "Every term is translated into every language.": [
+            "모든 용어가 모든 언어로 번역되었습니다."
+         ],
+         "No taxonomy or term matches “%s”.": [
+            "“%s”와(과) 일치하는 분류 체계나 용어가 없습니다."
+         ],
+         "Clear search": [
+            "검색 지우기"
+         ],
+         "<b>Translate Everything</b> is on. It translates every term of every translatable taxonomy automatically. You do not need to send terms or pick them.": [
+            "<b>모든 항목 번역</b>이 켜져 있습니다. 번역 가능한 모든 분류 체계의 모든 용어를 자동으로 번역합니다. 용어를 전송하거나 선택할 필요가 없습니다."
+         ],
+         "Use this section to see their status, or to send terms to a translator or a translation service.": [
+            "이 섹션을 사용하여 해당 상태를 확인하거나 용어를 번역가 또는 번역 서비스로 보낼 수 있습니다."
+         ],
+         "%1$d sub-term, %2$d not translated": [
+            "하위 용어 %1$d개, %2$d개 번역되지 않음"
+         ],
+         "%d sub-term, all translated": [
+            "하위 용어 %d개, 모두 번역됨"
+         ],
+         "%1$s and its %2$d sub-term selected.": [
+            "%1$s 및 해당 하위 용어 %2$d개가 선택되었습니다."
+         ],
+         "%1$s and its %2$d sub-term cleared.": [
+            "%1$s 및 해당 하위 용어 %2$d개의 선택이 해제되었습니다."
+         ],
+         "Select %1$s, in %2$s": [
+            "%2$s의 %1$s 선택"
+         ],
+         "Hide sub-terms of %s": [
+            "%s의 하위 용어 숨기기"
+         ],
+         "Show sub-terms of %s": [
+            "%s의 하위 용어 표시"
+         ],
+         "in": [
+            "언어:"
+         ],
+         "Added because a sub-term is selected": [
+            "하위 용어가 선택되어 추가됨"
+         ],
+         "The terms could not be loaded.": [
+            "용어를 로드할 수 없습니다."
+         ],
+         "Showing %1$d term matching “%2$s”": [
+            "“%2$s”와(과) 일치하는 용어 %1$d개 표시 중"
+         ],
+         "Showing roots %1$d to %2$d of %3$d": [
+            "최상위 %3$d개 중 %1$d~%2$d 표시 중"
+         ],
+         "Showing %1$d to %2$d of %3$d": [
+            "%3$d개 중 %1$d~%2$d 표시 중"
+         ],
+         "%s: terms": [
+            "%s: 용어"
+         ],
+         "All terms are selected until you untick some.": [
+            "일부를 선택 해제할 때까지 모든 용어가 선택됩니다."
+         ],
+         "Terms matching “%s”, found by the section search.": [
+            "섹션 검색에서 찾은 “%s”와(과) 일치하는 용어입니다."
+         ],
+         "%1$s: %2$d term matches the section search.": [
+            "%1$s: 용어 %2$d개가 섹션 검색과 일치합니다."
+         ],
+         "Show all terms": [
+            "모든 용어 표시"
+         ],
+         "Select all %d terms": [
+            "%d개 용어 모두 선택"
+         ],
+         "Ticking a parent selects its sub-terms.": [
+            "상위 항목을 선택하면 하위 용어가 선택됩니다."
+         ],
+         "Expand all": [
+            "모두 펼치기"
+         ],
+         "Collapse all": [
+            "모두 접기"
+         ],
+         "Select all terms on this page": [
+            "이 페이지의 모든 용어 선택"
+         ],
+         "Term": [
+            "용어"
+         ],
+         "No term matches “%s”.": [
+            "“%s”와(과) 일치하는 용어가 없습니다."
+         ],
+         "%1$d of %2$d": [
+            "%1$d/%2$d"
+         ],
+         "Pages of %s terms": [
+            "%s 용어 페이지"
+         ],
+         "All %d terms selected": [
+            "전체 %d개 용어 선택됨"
+         ],
+         "%1$d of %2$d terms selected": [
+            "%2$d개 중 %1$d개 용어 선택됨"
+         ],
+         "No terms selected": [
+            "선택된 용어 없음"
          ],
          "Switch Now": [
             "지금 전환"
@@ -886,8 +1063,20 @@
          "Not now": [
             "나중에"
          ],
+         "This site is not registered with our translation system yet. Register it on WPML → Activate & Update to use automatic translation.": [
+            "이 사이트는 아직 당사의 번역 시스템에 등록되지 않았습니다. 자동 번역을 사용하려면 WPML → Activate & Update에서 등록하십시오."
+         ],
          "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
             "연결 오류가 발생했습니다. 잠시 기다린 후 이 페이지를 새로 고침하세요. 문제가 계속되면 WPML 지원팀에 문의하세요."
+         ],
+         "Posts": [
+            "글"
+         ],
+         "Taxonomy terms": [
+            "분류 체계 용어"
+         ],
+         "Words required:": [
+            "필요한 단어 수:"
          ],
          "You don’t have enough prepaid words to translate this content.": [
             "이 콘텐츠를 번역하기 위한 선불 단어가 부족합니다."
@@ -901,20 +1090,14 @@
          "Automatic translation costs:": [
             "자동 번역 비용:"
          ],
-         "Words": [
-            "단어"
-         ],
          "Words to translate automatic": [
             "자동 번역할 단어"
-         ],
-         "Words required:": [
-            "필요한 단어 수:"
          ],
          "Pricing": [
             "가격"
          ],
          "Your Automatic Translation Words": [
-            "내 자동 번역 단어"
+            "사용자의 자동 번역 단어"
          ],
          "To proceed with translation, activate <b>Pay-As-You-Go</b> or assign prepaid words.": [
             "번역을 진행하려면 <b>종량제</b>를 활성화하거나 선불 단어를 할당하십시오."
@@ -928,17 +1111,35 @@
          "%s word assigned to this site.": [
             "이 사이트에 %s 단어가 할당되었습니다."
          ],
-         "Leave existing translations as they are": [
-            "기존 번역을 그대로 유지"
-         ],
-         "Overwrite existing translations": [
-            "기존 번역 덮어쓰기"
-         ],
          "Some of the content you want to translate is already translated": [
             "번역하려는 콘텐츠 중 일부가 이미 번역되어 있습니다"
          ],
          "What do you want to do with the content that's already translated?": [
             "이미 번역된 콘텐츠를 어떻게 처리하시겠습니까?"
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Translate from scratch\" translates them again from the start.": [
+            "번역된 후 변경된 항목은 두 경우 모두 전송됩니다. “유지”는 변경된 내용만 번역합니다. “처음부터 번역”은 처음부터 다시 번역합니다."
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Overwrite\" translates them again from the start.": [
+            "번역 후 변경된 항목은 어떤 방식이든 전송됩니다. “유지”는 변경된 부분만 번역합니다. “덮어쓰기”는 처음부터 다시 번역합니다."
+         ],
+         "\"Translate from scratch\" replaces the edits made to these translations:": [
+            "“처음부터 번역”을 선택하면 이러한 번역에 적용된 편집 내용이 대체됩니다:"
+         ],
+         "And %s more item.": [
+            "외 %s개 항목 더 있음."
+         ],
+         "Leave existing translations as they are": [
+            "기존 번역을 그대로 유지"
+         ],
+         "Translate from scratch": [
+            "처음부터 번역"
+         ],
+         "Replaces the existing translations, including the edits made to them": [
+            "편집된 내용을 포함하여 기존 번역을 대체합니다"
+         ],
+         "Overwrite existing translations": [
+            "기존 번역 덮어쓰기"
          ],
          "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
             "DeepL, Google Translate 및 Microsoft Translator의 번역은 게시하기 전에 검토하는 것이 가장 좋습니다."
@@ -973,8 +1174,17 @@
          " Checking ": [
             " 확인 중 "
          ],
+         "To translate automatically, WPML needs an active automatic translation account. Turn on automatic translation, or choose a different translation option.": [
+            "자동으로 번역하려면 WPML에 활성화된 자동 번역 계정이 필요합니다. 자동 번역을 켜거나 다른 번역 옵션을 선택하십시오."
+         ],
          "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
             "자동으로 번역하려면 먼저 WPML의 <enable_ate><b>고급 번역 에디터</b>를 활성화</enable_ate>해야 합니다.<br/><b>고급 번역 에디터</b>를 활성화하고 <check_again>다시 확인</check_again>을 클릭하거나 다른 번역 옵션을 선택하세요."
+         ],
+         "Turn on automatic translation": [
+            "자동 번역 켜기"
+         ],
+         "Learn more": [
+            "더 알아보기"
          ],
          "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
             "선택한 콘텐츠는 <b>클래식 번역 에디터</b>를 사용하여 번역되었으므로 자동 번역으로 보낼 수 없습니다. 이를 허용하려면 <wpmlSettingLink>WPML 설정</wpmlSettingLink> 페이지에서 \"이전 번역에도 사용\"을 활성화하세요."
@@ -995,10 +1205,10 @@
             "선택한 콘텐츠 중 일부는 WordPress 에디터를 사용하여 번역되었으며 덮어쓰여집니다."
          ],
          "Translated content structure will change. The selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
-            "번역된 콘텐츠 구조가 변경됩니다. 선택한 항목은 이전에 WordPress 에디터에서 번역되었습니다. WPML이 이를 자동으로 번역하면 번역된 포스트의 구조가 원본 콘텐츠와 일치하도록 되돌아갑니다. 기존에 번역된 텍스트는 어조와 용어를 유지하기 위해 여전히 기본 베이스로 사용됩니다."
+            "번역된 콘텐츠 구조가 변경됩니다. 선택한 항목은 이전에 WordPress 에디터에서 번역되었습니다. WPML이 이를 자동으로 번역하면 번역된 글의 구조가 원본 콘텐츠와 일치하도록 되돌아갑니다. 기존 번역 텍스트는 어조와 용어를 유지할 수 있도록 계속 기반으로 사용됩니다."
          ],
          "Translated content structure will change. Some of the selected items were previously translated in the WordPress editor. When WPML translates them automatically, the structure of the translated post will revert to match the original content. Existing translated text will still be used as a base so the tone and terminology are preserved.": [
-            "번역된 콘텐츠 구조가 변경됩니다. 선택한 항목 중 일부는 이전에 WordPress 에디터에서 번역되었습니다. WPML이 이를 자동으로 번역하면 번역된 포스트의 구조가 원본 콘텐츠와 일치하도록 되돌아갑니다. 기존에 번역된 텍스트는 어조와 용어를 유지하기 위해 여전히 기본 베이스로 사용됩니다."
+            "번역된 콘텐츠 구조가 변경됩니다. 선택한 항목 중 일부는 이전에 WordPress 에디터에서 번역되었습니다. WPML이 이를 자동으로 번역하면 번역된 글의 구조가 원본 콘텐츠와 일치하도록 되돌아갑니다. 기존 번역 텍스트는 어조와 용어를 유지할 수 있도록 계속 기반으로 사용됩니다."
          ],
          "In order to assign to a translator, you first need to <add_translators>add %1$s translators</add_translators> to the site.<br/> Add %2$s translators and click <check_again>check again</check_again> or choose a different translation option.": [
             "번역가에게 할당하려면 먼저 사이트에 <add_translators>%1$s 번역가를 추가</add_translators>해야 합니다.<br/> %2$s 번역가를 추가하고 <check_again>다시 확인</check_again>을 클릭하거나 다른 번역 옵션을 선택하세요."
@@ -1045,11 +1255,14 @@
          "WPML does not support duplicating %1$s elements and strings.": [
             "WPML은 %1$s 요소 및 문자열 복제를 지원하지 않습니다."
          ],
-         "WPML does not support duplicating taxonomies.": [
-            "WPML은 분류 체계 복제를 지원하지 않습니다."
+         "Taxonomy terms cannot be duplicated. Translate them instead. When you duplicate posts, WPML copies their terms that have no translation yet and lists these copies as not translated until they are translated.": [
+            "분류 용어는 복제할 수 없습니다. 대신 번역하십시오. 글을 복제할 때 WPML은 아직 번역되지 않은 용어를 복사하며, 이 복사본은 번역될 때까지 번역되지 않음으로 표시됩니다."
          ],
-         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
-            "WPML은 분류 체계 복제를 지원하지 않습니다. 번역을 진행하면 분류 체계를 %1$s(으)로 복제하도록 선택한 사항은 무시됩니다."
+         "Taxonomy terms cannot be duplicated, so the terms you selected will not be duplicated to %1$s. The posts you duplicate get copies of their terms that have no translation yet. WPML lists these copies as not translated until they are translated.": [
+            "분류 용어는 복제할 수 없으므로 선택한 용어가 %1$s(으)로 복제되지 않습니다. 복제한 글에는 아직 번역되지 않은 용어의 복사본이 포함됩니다. WPML은 번역될 때까지 이러한 복사본을 번역되지 않음으로 표시합니다."
+         ],
+         "If the editor is set to translate automatically when it opens, it starts from a machine translation that uses your words. Undo translation in the editor clears it.": [
+            "에디터가 열릴 때 자동으로 번역하도록 설정된 경우, 단어를 사용하는 기계 번역부터 시작됩니다. 에디터에서 번역 취소를 실행하면 번역이 삭제됩니다."
          ],
          "Finish setting up %s on your site": [
             "사이트에서 %s 설정 완료하기"
@@ -1057,14 +1270,26 @@
          "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
             "번역할 콘텐츠를 보내려면 %s의 인증이 필요합니다.<br/><a>번역가 탭</a>을 방문하여 설정을 완료하고 <check_again>다시 확인</check_again>을 클릭하거나 다른 번역 옵션을 선택하세요."
          ],
+         "WPML will not send these items. A reviewer has their translation open:": [
+            "WPML이 이 항목들을 전송하지 않습니다. 검토자가 번역을 열어 두었습니다:"
+         ],
+         "To send them, finish or cancel the review in Translation Tasks first.": [
+            "전송하려면 먼저 번역 태스크에서 검토를 완료하거나 취소하십시오."
+         ],
          "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
             "선택한 콘텐츠 중 일부에 검토 대기 중인 번역이 있습니다. 다시 전송하면 해당 번역이 대체됩니다."
          ],
          "You selected multiple translation methods for content across different languages:": [
             "여러 언어에 걸쳐 콘텐츠에 대해 여러 번역 방법을 선택했습니다:"
          ],
+         "Translation Service": [
+            "번역 서비스"
+         ],
          "Sent for translation": [
-            "번역을 위해 전송됨"
+            "번역으로 전송됨"
+         ],
+         "Some content was not sent": [
+            "일부 콘텐츠가 전송되지 않았습니다"
          ],
          "Some items were not sent for translation": [
             "일부 항목이 번역을 위해 전송되지 않았습니다"
@@ -1092,6 +1317,9 @@
          ],
          "Continue sending": [
             "계속 전송"
+         ],
+         "Open Translations": [
+            "번역 열기"
          ],
          "Ok": [
             "확인"
@@ -1159,6 +1387,15 @@
          "WPML could not count the words of these items.": [
             "WPML에서 이 항목들의 단어 수를 계산할 수 없습니다."
          ],
+         "WPML could not get the price of automatic translation from our translation system. Try again in a few minutes.": [
+            "WPML이 당사 번역 시스템에서 자동 번역 가격을 가져올 수 없었습니다. 몇 분 후에 다시 시도하십시오."
+         ],
+         "No translation engine translates this content from %1$s into %2$s.": [
+            "%1$s에서 %2$s(으)로 이 콘텐츠를 번역하는 번역 엔진이 없습니다."
+         ],
+         "WPML did not send these items. A reviewer has their translation open. Finish or cancel the review in Translation Tasks, then send them again.": [
+            "WPML이 이 항목들을 전송하지 않았습니다. 검토자가 번역을 열어 두었습니다. 번역 태스크에서 검토를 완료하거나 취소한 후 다시 보내십시오."
+         ],
          "Some content couldn't be sent to translation.": [
             "일부 콘텐츠를 번역으로 보낼 수 없습니다."
          ],
@@ -1192,6 +1429,81 @@
          "Items already sent will be translated and delivered normally.": [
             "이미 전송된 항목은 정상적으로 번역되어 전달됩니다."
          ],
+         "%d post": [
+            "%d개의 글"
+         ],
+         "%1$s and %2$d term": [
+            "%1$s 및 용어 %2$d개"
+         ],
+         "%d term": [
+            "%d개 용어"
+         ],
+         "%1$s: %2$s is assigned to %3$s. They find it in their Translations queue.": [
+            "%1$s: %2$s이(가) %3$s에게 할당되었습니다. 해당 번역가의 번역 대기열에서 확인할 수 있습니다."
+         ],
+         "First available": [
+            "가장 먼저 가능한 번역가"
+         ],
+         "%1$s: %2$s is waiting for you in Translations.": [
+            "%1$s: %2$s이(가) 번역 화면에서 대기 중입니다."
+         ],
+         "%1$s: %2$s is sent to %3$s.": [
+            "%1$s: %2$s이(가) %3$s(으)로 전송됩니다."
+         ],
+         "%1$s: %2$s is being translated automatically.": [
+            "%1$s: %2$s이(가) 자동으로 번역되는 중입니다."
+         ],
+         "%1$s and %2$d of %3$d term": [
+            "%1$s 및 용어 %3$d개 중 %2$d개"
+         ],
+         "%1$d of %2$d term": [
+            "용어 %2$d개 중 %1$d개"
+         ],
+         "%1$s: %2$s sent for automatic translation.": [
+            "%1$s: %2$s이(가) 자동 번역으로 전송되었습니다."
+         ],
+         "%1$s: %2$s sent for translation.": [
+            "%1$s: %2$s이(가) 번역으로 전송되었습니다."
+         ],
+         "The term names could not be read.": [
+            "용어 이름을 읽을 수 없습니다."
+         ],
+         "%s, and more": [
+            "%s 외 기타"
+         ],
+         "Already translated: %s": [
+            "이미 번역됨: %s"
+         ],
+         "In translation: %s": [
+            "번역 중: %s"
+         ],
+         "In translation with their posts: %s": [
+            "해당 글과 함께 번역 중: %s"
+         ],
+         "Which terms were not sent again": [
+            "다시 전송되지 않은 용어"
+         ],
+         "Terms not sent again: %1$d already translated and %2$d in translation (%3$d with their posts).": [
+            "다시 전송되지 않는 용어: 이미 번역됨 %1$d개, 번역 중 %2$d개(해당 글과 함께 번역 중 %3$d개)."
+         ],
+         "The terms could not be sent.": [
+            "용어를 전송할 수 없습니다."
+         ],
+         "%1$s: %2$d term": [
+            "%1$s: 용어 %2$d개"
+         ],
+         "%1$s: not sent. %2$s no longer translates from %3$s to %4$s. <a>Choose another translator</a> at Step 2, then send again.": [
+            "%1$s: 전송되지 않았습니다. %2$s이(가) 더 이상 %3$s에서 %4$s(으)로 번역하지 않습니다. 2단계에서 <a>다른 번역가를 선택</a>한 후 다시 전송하세요."
+         ],
+         "Not sent (%s)": [
+            "전송되지 않음 (%s)"
+         ],
+         "%1$s: %2$d term (%3$s).": [
+            "%1$s: 용어 %2$d개 (%3$s)."
+         ],
+         "%1$s %2$d": [
+            "%1$s %2$d"
+         ],
          "Continue to %s": [
             "%s(으)로 계속하기"
          ],
@@ -1200,9 +1512,6 @@
          ],
          "<p><a><s>Contact WPML support for help</s></a></p>": [
             "<p><a><s>도움이 필요하면 WPML 지원팀에 문의하세요</s></a></p>"
-         ],
-         "Translation Service": [
-            "번역 서비스"
          ],
          "sending for professional translation..": [
             "전문 번역으로 보내는 중.."
@@ -1221,6 +1530,12 @@
          ],
          "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
             "현재 선택된 번역 에디터는 자동 번역을 지원하지 않습니다. 자동 번역으로 콘텐츠를 보내려면 <b>고급 번역 에디터</b>를 활성화해야 합니다.<br/> <wpml_settings>WPML 설정 페이지</wpml_settings>에서 설정을 확인하세요."
+         ],
+         "WPML cannot translate automatically: automatic translation is off for this site. Click \"Turn on automatic translation\" on the dashboard, then send again.": [
+            "WPML에서 자동으로 번역할 수 없습니다. 이 사이트에서 자동 번역이 꺼져 있습니다. 대시보드에서 “자동 번역 켜기”를 클릭한 후 다시 보내십시오."
+         ],
+         "%1$s cannot be translated automatically from %2$s with your translation engines. Choose another translation method for it, or change your engines.": [
+            "%1$s을(를) 사용 중인 번역 엔진으로 %2$s에서 자동으로 번역할 수 없습니다. 다른 번역 방법을 선택하거나 엔진을 변경하십시오."
          ],
          "Validation error happened during send to translation.": [
             "번역으로 보내는 동안 유효성 검사 오류가 발생했습니다."
@@ -1291,20 +1606,92 @@
          "No, I will split jobs myself": [
             "아니요, 직접 작업을 나누겠습니다"
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
-            "일부 분류 체계 용어가 아직 전송되지 않았습니다. 전송된 용어는 번역 중입니다. 나머지를 전송하려면 계속 전송을 클릭하십시오."
+         "%d not translated": [
+            "번역되지 않은 항목 %d개"
+         ],
+         "%d needs an update": [
+            "업데이트가 필요한 항목 %d개"
+         ],
+         "%d picked": [
+            "선택된 항목 %d개"
+         ],
+         "plus %d parent term": [
+            "부모 용어 %d개 추가"
+         ],
+         "%d of them a parent term": [
+            "그중 부모 용어 %d개"
+         ],
+         "%1$s, %2$s": [
+            "%1$s, %2$s"
+         ],
+         "What will be sent": [
+            "전송될 항목"
+         ],
+         "Target language": [
+            "대상 언어"
+         ],
+         "Terms sent now": [
+            "지금 전송된 용어"
+         ],
+         "Terms not sent again: already translated": [
+            "다시 전송되지 않는 용어: 이미 번역됨"
+         ],
+         "Terms not sent again: queued or in translation": [
+            "다시 전송되지 않는 용어: 대기 중이거나 번역 중"
+         ],
+         "Terms not sent again: in translation": [
+            "다시 전송되지 않는 용어: 번역 중"
+         ],
+         "%d with their posts": [
+            "해당 글과 함께 번역 중인 항목 %d개"
+         ],
+         "queued by Translate Everything": [
+            "모든 항목 번역에 의해 대기열에 추가됨"
+         ],
+         "Terms Translate Everything has queued are counted and not sent again. They are translated automatically.": [
+            "모든 항목 번역이 대기열에 추가한 용어는 카운트되며 다시 전송되지 않습니다. 자동으로 번역됩니다."
+         ],
+         "Terms in translation, with their posts or from this section, are counted but not sent again. Their translation arrives with the job that has them.": [
+            "해당 글과 함께 있거나 이 섹션에서 번역 중인 용어는 계산되지만 다시 전송되지 않습니다. 번역본은 해당 용어가 포함된 작업과 함께 도착합니다."
+         ],
+         "Terms you send from here are not sent again when their posts are translated.": [
+            "여기에서 전송한 용어는 해당 글이 번역될 때 다시 전송되지 않습니다."
+         ],
+         "This send creates %d job for the translation service from the selected terms.": [
+            "이번 전송을 통해 선택한 용어로부터 번역 서비스에 대한 %d개의 작업이 생성됩니다."
+         ],
+         "%d term you did not select is not sent.": [
+            "선택하지 않은 용어 %d개는 전송되지 않습니다."
+         ],
+         "A picked term whose parent is not translated takes its parent along, so the hierarchy is kept: plus %1$d parent term (%2$s).": [
+            "부모 용어가 번역되지 않은 선택된 용어는 계층 구조를 유지하기 위해 부모 용어도 함께 가져옵니다: 부모 용어 %1$d개(%2$s) 추가."
+         ],
+         "Translate automatically": [
+            "자동으로 번역"
+         ],
+         "Translate myself": [
+            "직접 번역"
+         ],
+         "Assign a translator": [
+            "번역가 할당"
+         ],
+         "Assign translation service": [
+            "번역 서비스 할당"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Click Continue sending to send the rest.": [
+            "일부 분류 체계 용어가 아직 전송되지 않았습니다. 전송된 항목은 번역 중입니다. 나머지를 전송하려면 전송 계속을 클릭하십시오."
          ],
          "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
             "분류 체계 용어가 아직 전송되지 않았습니다. 전송하려면 계속 전송을 클릭하십시오."
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
-            "일부 분류 체계 용어가 아직 전송되지 않았습니다. 전송된 용어는 번역 중입니다. 나머지를 전송하려면 전송되지 않은 항목을 다시 시도하십시오."
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Retry the not-sent items to send the rest.": [
+            "일부 분류 체계 용어가 아직 전송되지 않았습니다. 전송된 항목은 번역 중입니다. 나머지를 전송하려면 전송되지 않은 항목을 다시 시도하십시오."
          ],
          "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
             "분류 체계 용어가 아직 전송되지 않았습니다. 전송하려면 전송되지 않은 항목을 다시 시도하십시오."
          ],
-         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
-            "일부 분류 체계 용어가 번역을 위해 전송되지 않았습니다. 전송된 용어는 번역 중입니다. 나머지를 다시 전송하여 완료하십시오."
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated. Send the rest again to finish.": [
+            "일부 분류 체계 용어가 번역을 위해 전송되지 않았습니다. 전송된 항목은 번역 중입니다. 완료하려면 나머지를 다시 전송하십시오."
          ],
          "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
             "WPML이 번역을 위해 분류 체계 용어를 전송할 수 없어 아무것도 전송되지 않았습니다. 다시 시도하십시오."
@@ -1321,6 +1708,9 @@
          "Existing content": [
             "기존 콘텐츠"
          ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$s합계:%2$s %3$s"
+         ],
          "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
             "%1$s에 있는 문자열을 번역하도록 선택했습니다. 이 문자열만 %2$s(으)로 번역됩니다."
          ],
@@ -1330,14 +1720,8 @@
          "Source language": [
             "원본 언어"
          ],
-         "Target language": [
-            "대상 언어"
-         ],
          "Words to translate": [
             "번역할 단어"
-         ],
-         "%1$sTotal:%2$s %3$s": [
-            "%1$s합계:%2$s %3$s"
          ],
          "Translation service additional options": [
             "번역 서비스 추가 옵션"
@@ -1348,20 +1732,32 @@
          "Fetching translation service data...": [
             "번역 서비스 데이터를 가져오는 중..."
          ],
+         "%1$s: all %2$d terms": [
+            "%1$s: 전체 %2$d개 용어"
+         ],
+         "%1$s: %2$d of %3$d terms": [
+            "%1$s: %3$d개 중 %2$d개 용어"
+         ],
+         "%1$d Taxonomy (%2$s)": [
+            "%1$d개 분류 체계 (%2$s)"
+         ],
+         "Selected: %1$s · %2$s": [
+            "선택됨: %1$s · %2$s"
+         ],
+         "%d Post": [
+            "글 %d개"
+         ],
+         "Selected: %s": [
+            "선택됨: %s"
+         ],
+         "Change": [
+            "변경"
+         ],
+         "The term counts could not be read.": [
+            "용어 수를 읽을 수 없습니다."
+         ],
          "-": [
             "-"
-         ],
-         "Translate automatically": [
-            "자동으로 번역"
-         ],
-         "Translate myself": [
-            "직접 번역"
-         ],
-         "Assign a translator": [
-            "번역가 할당"
-         ],
-         "Assign translation service": [
-            "번역 서비스 할당"
          ],
          "Do nothing": [
             "아무것도 하지 않음"
@@ -1371,9 +1767,6 @@
          ],
          "Choose a translator": [
             "번역가 선택"
-         ],
-         "First available": [
-            "가장 먼저 가능한 번역가"
          ],
          "(Me)": [
             "(나)"
@@ -1393,9 +1786,6 @@
          "Minimize": [
             "최소화"
          ],
-         "PTC translates at higher quality and gives you publish-ready results.": [
-            "PTC는 더 높은 품질로 번역하며 즉시 게시 가능한 결과를 제공합니다."
-         ],
          "Step 2": [
             "2단계"
          ],
@@ -1404,54 +1794,6 @@
          ],
          "Set up AI translation": [
             "AI 번역 설정"
-         ],
-         "Keep a wp-admin window open until WPML finishes translating": [
-            "WPML이 번역을 마칠 때까지 wp-admin 창을 열어 두세요"
-         ],
-         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
-            "WPML은 보통 사용자가 WordPress 관리자에 머물지 않아도 백그라운드에서 콘텐츠를 번역합니다. 하지만 WPML이 이 사이트에 접속할 수 없으므로, wp-admin 창이 열려 있는 동안 번역본을 가져옵니다."
-         ],
-         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
-            "WordPress 관리자 어디에서든 계속 작업할 수 있습니다. 번역이 끝날 때까지 창 하나만 열어 두세요."
-         ],
-         "Next check for translations in %s.": [
-            "%s 후에 번역본을 다시 확인합니다."
-         ],
-         "Hide details": [
-            "세부 정보 숨기기"
-         ],
-         "What could be blocking it, and how to fix it": [
-            "차단 원인 및 해결 방법"
-         ],
-         "Check these on your site": [
-            "사이트에서 다음 사항을 확인하세요"
-         ],
-         "The site might be on a private network, in staging, or only reachable through a VPN.": [
-            "사이트가 사설 네트워크, 스테이징 환경에 있거나 VPN을 통해서만 접속 가능할 수 있습니다."
-         ],
-         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
-            "HTTP 기본 인증 또는 IP 허용 목록이 외부 요청을 차단하고 있을 수 있습니다."
-         ],
-         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
-            "보안 플러그인, 방화벽 또는 WAF가 WPML의 요청을 거부하고 있을 수 있습니다."
-         ],
-         "The site might be in maintenance mode.": [
-            "사이트가 유지관리 모드일 수 있습니다."
-         ],
-         "Already fixed this on your site?": [
-            "사이트에서 이미 문제를 해결하셨나요?"
-         ],
-         "Check again whether the site is reachable": [
-            "사이트 접속 가능 여부 다시 확인"
-         ],
-         "Checking…": [
-            "확인 중…"
-         ],
-         "Check again": [
-            "다시 확인"
-         ],
-         "Still couldn't reach your site.": [
-            "여전히 사이트에 접속할 수 없습니다."
          ],
          "Automatic translations completed": [
             "자동 번역 완료"
@@ -1474,56 +1816,11 @@
          "Map the language": [
             "언어 매핑"
          ],
-         "%d second": [
-            "%d초"
+         "%d translation picked up.": [
+            "%d개의 번역을 가져왔습니다."
          ],
-         "%d minute": [
-            "%d분"
-         ],
-         "%d hour": [
-            "%d시간"
-         ],
-         "%d day": [
-            "%d일"
-         ],
-         "%d translation": [
-            "%d개의 번역"
-         ],
-         "checking now": [
-            "지금 확인 중"
-         ],
-         "next check in %s": [
-            "%s 후 다음 확인"
-         ],
-         "WPML stopped checking for delivered translations after repeated failures.": [
-            "반복적인 실패로 인해 WPML이 전달된 번역 확인을 중단했습니다."
-         ],
-         "Receiving translations: last received %1$s ago · %2$s": [
-            "번역 수신 중: 마지막 수신 %1$s 전 · %2$s"
-         ],
-         "Receiving translations: last received %s ago": [
-            "번역 수신 중: 마지막 수신 %s 전"
-         ],
-         "Receiving translations: no translations received yet · %s": [
-            "번역 수신 중: 아직 수신된 번역 없음 · %s"
-         ],
-         "Receiving translations: no translations received yet": [
-            "번역 수신 중: 아직 수신된 번역 없음"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
-            "번역 수신 중: 마지막 수신 %1$s 전 · %2$s 대기 중 · %3$s"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting": [
-            "번역 수신 중: 마지막 수신 %1$s 전 · %2$s 대기 중"
-         ],
-         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
-            "번역 수신 중: 아직 수신된 번역 없음 · %1$s 대기 중 · %2$s"
-         ],
-         "Receiving translations: no translations received yet · %s waiting": [
-            "번역 수신 중: 아직 수신된 번역 없음 · %s 대기 중"
-         ],
-         "These translations are taking longer than they should to arrive.": [
-            "이 번역본들이 도착하는 데 예상보다 오래 걸리고 있습니다."
+         "Nothing new to pick up yet.": [
+            "아직 가져올 새 항목이 없습니다."
          ],
          "Picking up translations…": [
             "번역본 가져오는 중…"
@@ -1571,10 +1868,10 @@
             "다음에서 제공되는 텍스트(문자열): %s."
          ],
          "WPML will not translate existing content for these post types and texts but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
-            "WPML은 이 포스트 타입 및 텍스트의 기존 콘텐츠는 번역하지 않지만, 새로 만드는 콘텐츠는 자동으로 번역됩니다. 원하신다면 <button />을 시작할 수 있습니다."
+            "WPML은 이 글 유형 및 텍스트의 기존 콘텐츠를 번역하지 않지만, 새로 만드는 모든 콘텐츠는 자동으로 번역됩니다. 원하시는 경우 <button />을 시작할 수 있습니다."
          ],
          "WPML will not translate existing content for these post types but any new content you create will be automatically translated. If you prefer, you can start <button />.": [
-            "WPML은 이 포스트 타입의 기존 콘텐츠는 번역하지 않지만, 새로 만드는 콘텐츠는 자동으로 번역됩니다. 원하신다면 <button />을 시작할 수 있습니다."
+            "WPML은 이 글 유형의 기존 콘텐츠는 번역하지 않지만 새로 만드는 모든 콘텐츠는 자동으로 번역됩니다. 원하시는 경우 <button />을 시작할 수 있습니다."
          ],
          "start translating existing content now": [
             "지금 기존 콘텐츠 번역 시작"
@@ -1582,8 +1879,8 @@
          "New content is ready to translate": [
             "새 콘텐츠를 번역할 준비가 되었습니다"
          ],
-         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
-            "번역 비용을 검토한 후 %s이(가) 번역 가능하게 되었으므로 모든 항목 번역에 포함되지 않았습니다. 사이트를 완전히 번역된 상태로 유지하려면 비용을 검토하고 포함하세요."
+         "%s became translatable after Translate Everything was set up, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "%s은(는) 모든 항목 번역 설정 후에 번역 가능해졌으므로 모든 항목 번역에 포함되지 않았습니다. 사이트 전체를 완벽하게 번역된 상태로 유지하려면 비용을 검토하고 포함하십시오."
          ],
          "Review cost and include": [
             "비용 검토 및 포함"
@@ -1602,15 +1899,6 @@
          ],
          "PTC can translate your software right inside your Git workflow.": [
             "PTC는 Git 워크플로 내에서 바로 소프트웨어를 번역할 수 있습니다."
-         ],
-         "The following target languages do not support automatic translations: %s": [
-            "다음 대상 언어는 자동 번역을 지원하지 않습니다: %s"
-         ],
-         "To enable automatic translation map them to known languages.": [
-            "자동 번역을 활성화하려면 알려진 언어에 매핑하세요."
-         ],
-         "Map to known languages": [
-            "알려진 언어에 매핑"
          ],
          "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
             "도움을 받으려면 <supportLink>포럼 스레드(Maiya)에 티켓을 열고</supportLink>, \"모두 복사\" 버튼을 클릭하여 디버그 정보를 가져온 후 Maiya 에이전트에 \"붙여넣기\" 하세요. 여전히 문제가 발생하면 <logsLink>로그 도구</logsLink>를 사용하여 더 많은 데이터를 수집하세요."
@@ -1701,6 +1989,9 @@
          ],
          "Add your site description before you can turn this on.": [
             "이 기능을 켜기 전에 사이트 설명을 추가하십시오."
+         ],
+         "Translate Everything needs an active automatic translation account.": [
+            "모든 항목 번역을 사용하려면 활성화된 자동 번역 계정이 필요합니다."
          ],
          "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
             "모든 항목 자동 번역을 활성화하려면 고급 번역 에디터를 활성화해야 합니다."
@@ -1856,7 +2147,7 @@
             "사이트 콘텐츠를 검토하고 번역하도록 선택한 항목에 따른 번역 비용을 확인하세요."
          ],
          "Select payment method": [
-            "결제 방법 선택"
+            "결제 수단 선택"
          ],
          "Translate Everything Automatically - disabled": [
             "모든 항목 자동 번역 - 비활성화됨"
@@ -1876,11 +2167,8 @@
          "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
             "WPML이 새 콘텐츠 및 편집된 콘텐츠의 자동 번역을 중단합니다. 이미 전달된 번역은 그대로 유지됩니다."
          ],
-         "%d translation is still in progress. You will not be charged for it.": [
-            "%d개의 번역이 아직 진행 중입니다. 비용은 청구되지 않습니다."
-         ],
-         "%d translation is currently in progress and will be cancelled.": [
-            "%d개의 번역이 현재 진행 중이며 취소됩니다."
+         "Translations in progress will be cancelled and refunded. When you switch back on, changed pages will be sent again.": [
+            "진행 중인 번역은 취소되고 환불됩니다. 다시 켜면 변경된 페이지가 다시 전송됩니다."
          ],
          "You can adjust the content limits once Translate Everything finishes the current translation run.": [
             "모든 항목 번역이 현재 번역 실행을 마치면 콘텐츠 제한을 조정할 수 있습니다."
@@ -2162,10 +2450,10 @@
             "번역 오류"
          ],
          "The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
-            "%s 번역이 WPML 번역 에디터 외부(예: WordPress 에디터)에서 생성되었거나 마지막으로 편집되었습니다. 다시 번역할 때 번역된 포스트의 구조는 원본과 일치하도록 업데이트되지만, WPML은 기존 번역을 기반으로 사용하여 어조와 용어를 유지합니다."
+            "%s 번역은 WPML 번역 에디터 외부(예: WordPress 에디터)에서 생성되었거나 마지막으로 편집되었습니다. 다시 번역할 때 번역된 글의 구조는 원본과 일치하도록 업데이트되지만, WPML은 어조와 용어가 유지되도록 기존 번역을 기반으로 사용합니다."
          ],
          "This item needs a translation update. The %s translation was created or last edited outside the WPML Translation Editor (for example, in the WordPress editor). When you retranslate it, the structure of the translated post will be updated to match the original, but WPML will use your existing translation as a base so the tone and terminology are preserved.": [
-            "이 항목은 번역 업데이트가 필요합니다. %s 번역이 WPML 번역 에디터 외부(예: WordPress 에디터)에서 생성되었거나 마지막으로 편집되었습니다. 다시 번역할 때 번역된 포스트의 구조는 원본과 일치하도록 업데이트되지만, WPML은 기존 번역을 기반으로 사용하여 어조와 용어를 유지합니다."
+            "이 항목은 번역 업데이트가 필요합니다. %s 번역은 WPML 번역 에디터 외부(예: WordPress 에디터)에서 생성되었거나 마지막으로 편집되었습니다. 다시 번역할 때 번역된 글의 구조는 원본과 일치하도록 업데이트되지만, WPML은 어조와 용어가 유지되도록 기존 번역을 기반으로 사용합니다."
          ],
          "This item hasn't been translated yet and is set to use the WordPress Editor.": [
             "이 항목은 아직 번역되지 않았으며 WordPress 에디터를 사용하도록 설정되어 있습니다."
@@ -2175,6 +2463,9 @@
          ],
          "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
             "이 항목은 번역 업데이트가 필요하지만 이전에 WordPress 에디터를 사용하여 번역되었습니다. WPML 번역 에디터를 사용하면 기존 번역을 덮어쓰게 됩니다."
+         ],
+         "%s: review in progress": [
+            "%s: 검토 진행 중"
          ],
          "%1$s: %2$s%3$s": [
             "%1$s: %2$s%3$s"
@@ -2263,9 +2554,6 @@
          "Same as default": [
             "기본 언어와 동일"
          ],
-         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
-            "%1$s와(과) %2$s은(는) 동일한 언어로 인식되므로 자동 번역을 사용할 수 없습니다."
-         ],
          "Translation paused": [
             "번역 일시 중지됨"
          ],
@@ -2308,8 +2596,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "페이지, 글, 상품과 이에 포함된 사용자 정의 필드, 페이지 빌더 텍스트, 미디어 텍스트, 그리고 여기에 사용된 카테고리, 태그, 속성의 단어를 집계합니다."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "페이지, 글, 상품과 이에 포함된 사용자 정의 필드, 페이지 빌더 텍스트, 미디어 텍스트, 사용된 카테고리, 태그, 속성 및 사이트 문구를 집계합니다. 용어는 양방향으로 번역 전송되므로 이를 사용하는 모든 항목에서 한 번, 그리고 단독으로 한 번 집계됩니다."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "사용자 정의 필드가 포함된 페이지, 글, 제품과 페이지 빌더 텍스트 및 미디어 텍스트, 여기에 사용된 카테고리, 태그, 속성 및 사이트 문구를 계산합니다. 각 카테고리, 태그 또는 속성은 분류 체계 행에서 한 번만 계산되며, 이를 사용하는 항목에 다시 중복 계산되지 않습니다."
          ],
          "Total items": [
             "총 항목"
@@ -2349,6 +2637,9 @@
          ],
          "To use prepaid words, register WPML on this site.": [
             "선불 단어를 사용하려면 이 사이트에 WPML을 등록하십시오."
+         ],
+         "Checking…": [
+            "확인 중…"
          ],
          "We could not reach our translation system.": [
             "번역 시스템에 연결할 수 없습니다."
@@ -2458,9 +2749,6 @@
          "Connect your sites to share translation memory, glossary and word quota.": [
             "사이트를 연결하여 번역 메모리, 용어집 및 단어 할당량을 공유하세요."
          ],
-         "Learn more": [
-            "더 알아보기"
-         ],
          "Copy your migration code:": [
             "이전 코드 복사:"
          ],
@@ -2513,7 +2801,7 @@
             "WPML 계정에 %1$s%2$s 단어%3$s가 있습니다."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "WPML 계정에 %1$s%2$s개를 사용할 수 있습니다.%3$s"
+            "WPML 계정에서 %1$s%2$s 단어를 사용할 수 있습니다.%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(WPML 계정 소유자만 이 작업을 수행할 수 있습니다.)"
@@ -2525,7 +2813,7 @@
             "여전히 단어가 부족합니다. %d초 후에 다시 새로고침하세요."
          ],
          "Already assigned?": [
-            "이미 할당되었나요?"
+            "이미 할당되었습니까?"
          ],
          "Collapse": [
             "접기"
@@ -2547,6 +2835,9 @@
          ],
          "Scores based on WPML's internal MQM translation quality study.": [
             "WPML의 내부 MQM 번역 품질 연구를 기반으로 한 점수입니다."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC는 더 높은 품질로 번역하며 즉시 게시 가능한 결과를 제공합니다."
          ],
          "Select an item": [
             "항목 선택"

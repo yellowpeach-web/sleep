@@ -41,8 +41,8 @@ class WPML_Custom_Field_Setting_Query {
 		}
 
 		if ( $args['search'] ) {
-			$where   .= ' AND meta_key LIKE %s';
-			$values[] = '%' . $this->wpdb->esc_like( $args['search'] ) . '%';
+			$where   .= " AND meta_key LIKE %s ESCAPE '|'";
+			$values[] = \WPML\Utils\LikeEscape::contains( $args['search'] );
 		}
 
 		if ( $args['hide_system_fields'] ) {

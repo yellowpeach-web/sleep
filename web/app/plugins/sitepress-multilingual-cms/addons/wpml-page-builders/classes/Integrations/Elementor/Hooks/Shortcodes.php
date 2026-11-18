@@ -14,7 +14,7 @@ class Shortcodes implements \IWPML_Frontend_Action, \IWPML_Backend_Action {
 	}
 
 	public function removePreviewContent( $content, $postId ) {
-		return \WPML_Elementor_Data_Settings::is_edited_with_elementor( $postId ) ? '' : $content;
+		return \WPML_Elementor_Data_Settings::has_layout( $postId ) ? '' : $content;
 	}
 
 }

@@ -91,23 +91,107 @@
          "Cancelled": [
             "Скасовано"
          ],
-         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
-            "Автоматичний переклад неодноразово завершувався помилкою, і WPML припинив спроби. Надішліть повторно або видаліть завдання з панелі керування перекладами або скасуйте його тут."
+         "Published — Pending review": [
+            "Опубліковано — Очікує на перегляд"
          ],
          "Needs translation": [
             "Потребує перекладу"
          ],
-         "Needs update": [
-            "Потребує оновлення"
+         "Review in progress": [
+            "Перегляд у процесі"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "Очікування вашої оплати в міру використання"
          ],
          "Translation ready to download": [
             "Переклад готовий до завантаження"
          ],
+         "Waiting for payment": [
+            "Очікування оплати"
+         ],
+         "Waiting for words": [
+            "Очікує на слова"
+         ],
          "Completed": [
             "Завершено"
          ],
+         "Insufficient funds": [
+            "Недостатньо слів"
+         ],
+         "Sending": [
+            "Надсилання"
+         ],
+         "Automatic translation is off, so this job is not retried. Resend it, or switch Translate Everything on.": [
+            "Автоматичний переклад вимкнено, тому повторна спроба для цього завдання не виконується. Надішліть його знову або ввімкніть «Перекладати все автоматично»."
+         ],
+         "Waiting for you": [
+            "Очікує на вас"
+         ],
          "Failed - needs attention": [
             "Помилка — потребує уваги"
+         ],
+         "You can also resend the content or open the job in the Translation Queue.": [
+            "Ви також можете повторно надіслати вміст або відкрити завдання в черзі перекладів."
+         ],
+         "If it keeps failing for about a day, the job is marked as needing your attention.": [
+            "Якщо помилка повторюватиметься близько доби, завдання буде позначено як таке, що потребує вашої уваги."
+         ],
+         "In progress": [
+            "У процесі"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "Автоматичний переклад неодноразово завершувався помилкою, і WPML припинив спроби. Надішліть повторно або відкиньте завдання з панелі керування перекладами або скасуйте його тут."
+         ],
+         "Needs update": [
+            "Потребує оновлення"
+         ],
+         "Scheduled — Pending review": [
+            "Заплановано — Очікує на перевірку"
+         ],
+         "Private — Pending review": [
+            "Приватно — Очікує на перевірку"
+         ],
+         "Draft — Pending review": [
+            "Чернетка — Очікує на перегляд"
+         ],
+         "Published — Review in progress": [
+            "Опубліковано — Перегляд у процесі"
+         ],
+         "Scheduled — Review in progress": [
+            "Заплановано — Перевірка триває"
+         ],
+         "Private — Review in progress": [
+            "Приватно — Перевірка триває"
+         ],
+         "Draft — Review in progress": [
+            "Чернетка — Перегляд у процесі"
+         ],
+         "WPML could not reach our translation system.": [
+            "WPML не вдалося зв’язатися з нашою системою перекладу."
+         ],
+         "Our translation system did not accept this job.": [
+            "Наша система перекладу не прийняла це завдання."
+         ],
+         "WPML could not calculate the word count for this job.": [
+            "WPML не вдалося підрахувати кількість слів для цього завдання."
+         ],
+         "WPML could not read the price of automatic translation for this job.": [
+            "WPML не вдалося отримати вартість автоматичного перекладу для цього завдання."
+         ],
+         "WPML could not prepare this job for automatic translation.": [
+            "WPML не вдалося підготувати це завдання до автоматичного перекладу."
+         ],
+         "Sending this job to automatic translation failed.": [
+            "Не вдалося надіслати це завдання на автоматичний переклад."
+         ],
+         "WPML tries again within a minute.": [
+            "WPML повторить спробу протягом хвилини."
+         ],
+         "WPML tries again in about %d minutes.": [
+            "WPML повторить спробу приблизно через %d хв."
+         ],
+         "WPML tries again in about %d hours.": [
+            "WPML повторить спробу приблизно через %d год."
          ],
          "%s terms are published immediately because they don't support draft mode.": [
             "%s терміни публікуються негайно, оскільки вони не підтримують режим чернетки."
@@ -115,41 +199,14 @@
          "%s are immediately published because they don't support draft mode.": [
             "%s публікуються негайно, оскільки вони не підтримують режим чернетки."
          ],
-         "Published — Pending review": [
-            "Опубліковано — Очікує на перегляд"
+         "(no title)": [
+            "(без заголовка)"
          ],
-         "Draft — Pending review": [
-            "Чернетка — Очікує на перегляд"
-         ],
-         "Review in progress": [
-            "Перегляд у процесі"
-         ],
-         "Published — Review in progress": [
-            "Опубліковано — Перегляд у процесі"
-         ],
-         "Draft — Review in progress": [
-            "Чернетка — Перегляд у процесі"
-         ],
-         "Waiting for your Pay-As-You-Go payment": [
-            "Очікування вашої оплати в міру використання"
-         ],
-         "Waiting for payment": [
-            "Очікування оплати"
-         ],
-         "Insufficient funds": [
-            "Недостатньо коштів"
-         ],
-         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
-            "Автоматичний переклад було призупинено через тимчасову помилку, він відновиться автоматично — жодних дій не потрібно. Якщо статус не зміниться протягом приблизно 30 хвилин, зверніться до служби підтримки WPML."
-         ],
-         "In progress": [
-            "У процесі"
+         "%1$s (ID %2$d)": [
+            "%1$s (ID %2$d)"
          ],
          "View original": [
             "Переглянути оригінал"
-         ],
-         "(no title)": [
-            "(без заголовка)"
          ],
          "Automatic translation": [
             "Автоматичний переклад"
@@ -494,9 +551,6 @@
          "Failed to resign from jobs": [
             "Не вдалося відмовитися від завдань"
          ],
-         "The Advanced Editor jobs synchronization has failed": [
-            "Синхронізація завдань Advanced Editor не вдалася"
-         ],
          "Synchronization with the Professional Translation service has failed": [
             "Синхронізація зі службою професійного перекладу не вдалася"
          ],
@@ -509,8 +563,45 @@
          "Batch sync couldn't be finished": [
             "Не вдалося завершити синхронізацію пакетів"
          ],
+         "More details": [
+            "Детальніше"
+         ],
+         "%s job was left out of the export.": [
+            "%s завдання не було включено в експорт.",
+            "%s завдання не було включено в експорт.",
+            "%s завдань не було включено в експорт."
+         ],
+         "%s job could not be exported. No file was downloaded.": [
+            "%s завдання не вдалося експортувати. Жодного файлу не завантажено.",
+            "%s завдання не вдалося експортувати. Жодного файлу не завантажено.",
+            "%s завдань не вдалося експортувати. Жодного файлу не завантажено."
+         ],
+         "This job was saved while this server had the PHP zlib extension, so its text is stored compressed. PHP on this server has no zlib now, so WPML cannot read it. Ask your hosting provider to enable the PHP zlib extension, then export it again.": [
+            "Це завдання було збережено, коли на сервері було активне розширення PHP zlib, тому його текст збережено стисненим. Зараз у PHP на цьому сервері немає zlib, тому WPML не може його прочитати. Попросіть хостинг-провайдера ввімкнути розширення PHP zlib, а потім експортуйте його знову.",
+            "Ці завдання були збережені, коли на сервері було активне розширення PHP zlib, тому їхній текст збережено стисненим. Зараз у PHP на цьому сервері немає zlib, тому WPML не може їх прочитати. Попросіть хостинг-провайдера ввімкнути розширення PHP zlib, а потім експортуйте їх знову.",
+            "Ці завдання були збережені, коли на сервері було активне розширення PHP zlib, тому їхній текст збережено стисненим. Зараз у PHP на цьому сервері немає zlib, тому WPML не може їх прочитати. Попросіть хостинг-провайдера ввімкнути розширення PHP zlib, а потім експортуйте їх знову."
+         ],
+         "This job could not be exported.": [
+            "Не вдалося експортувати це завдання.",
+            "Не вдалося експортувати ці завдання.",
+            "Не вдалося експортувати ці завдання."
+         ],
+         "%1$s (job %2$s)": [
+            "%1$s (завдання %2$s)"
+         ],
+         "Job %s": [
+            "Завдання %s"
+         ],
+         "and %s more job": [
+            "і ще %s завдання",
+            "і ще %s завдання",
+            "і ще %s завдань"
+         ],
          "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
             "Наша система перекладу не прийняла цей запит (відповідь: %d). Зачекайте хвилину та спробуйте ще раз. Якщо проблема не зникне, зверніться до служби підтримки WPML."
+         ],
+         "The site stopped answering before this translation was confirmed. If it was not saved, the next download takes it again.": [
+            "Сайт перестав відповідати до підтвердження цього перекладу. Якщо його не було збережено, під час наступного завантаження його буде отримано знову."
          ]
       }
    }

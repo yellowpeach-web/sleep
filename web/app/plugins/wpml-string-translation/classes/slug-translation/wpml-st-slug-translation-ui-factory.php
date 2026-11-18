@@ -24,9 +24,13 @@ class WPML_ST_Slug_Translation_UI_Factory {
 		$sync             = $sync_settings_factory->create( $type );
 		$template_loader  = new WPML_Twig_Template_Loader( array( WPML_ST_PATH . '/' . self::TEMPLATE_PATH ) );
 		$template_service = $template_loader->get_template();
-		$lang_selector    = new WPML_Simple_Language_Selector( $sitepress );
+		$language_selector = new WPML_Simple_Language_Selector( $sitepress );
 
-		$model = new WPML_ST_Element_Slug_Translation_UI_Model( $sitepress, $settings, $records, $sync, $lang_selector );
+		$archive_records = WPML_Slug_Translation_Factory::POST === $type
+			? $records_factory->create( WPML_Slug_Translation_Factory::POST_ARCHIVE )
+			: null;
+
+		$model = new WPML_ST_Element_Slug_Translation_UI_Model( $sitepress, $settings, $records, $sync, $language_selector, $archive_records );
 		return new WPML_ST_Element_Slug_Translation_UI( $model, $template_service );
 	}
 }

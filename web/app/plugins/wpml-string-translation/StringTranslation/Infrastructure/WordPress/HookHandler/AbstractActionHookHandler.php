@@ -14,4 +14,15 @@ abstract class AbstractActionHookHandler implements HookHandlerInterface {
 			return $this->onAction( ...$args );
 		}, static::ACTION_PRIORITY, static::ACTION_ARGS );
 	}
+
+	public static function loadLazily( callable $make ) {
+		$handler = null;
+		add_action( static::ACTION_NAME, function( ...$args ) use ( $make, &$handler ) {
+			if ( null === $handler ) {
+				$handler = $make();
+			}
+
+			return $handler->onAction( ...$args );
+		}, static::ACTION_PRIORITY, static::ACTION_ARGS );
+	}
 }

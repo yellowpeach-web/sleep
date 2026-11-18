@@ -13,6 +13,14 @@ class WPML_Gutenberg_Config_Option {
 	const SEARCH_METHOD_WILDCARD = 'wildcards';
 	const SEARCH_METHOD_REGEX    = 'regex';
 
+	private $logger;
+
+	private $loggedRefusals = [];
+
+	public function __construct( ?callable $logger = null ) {
+		$this->logger = $logger ?: [ $this, 'writeErrorLog' ];
+	}
+
 	public function update_from_config( $config_data ) {
 		$blocks          = [];
 		$ids_in_blocks   = [];
@@ -87,7 +95,7 @@ class WPML_Gutenberg_Config_Option {
 
 	private function add_block_attribute_keys( array $blocks, array $block_config ) {
 		if ( isset( $block_config['key'] ) ) {
-			$keys = $this->get_keys_recursively( $block_config['key'] );
+			$keys = $this->get_keys_recursively( $block_config['key'], (string) self::get_block_name( $block_config ) );
 			$keys = $this->cleanup_to_include_key( $keys );
 
 			if ( $keys ) {
@@ -182,11 +190,16 @@ class WPML_Gutenberg_Config_Option {
 		return $blocks;
 	}
 
-	private function get_keys_recursively( array $keys_config ) {
+	private function get_keys_recursively( array $keys_config, $block_name = '', array $path = [] ) {
 		$final_config = array();
 		$keys_config  = $this->normalize_key_data( $keys_config );
 
 		foreach ( $keys_config as $key_config ) {
+
+			if ( $this->is_refused_text_key( $key_config, [] === $path ) ) {
+				$this->log_refused_text_key( $block_name, array_merge( $path, [ (string) $key_config['attr']['name'] ] ) );
+				continue;
+			}
 
 			$partial_config = [];
 			$type           = Obj::pathOr( '', [ 'attr', 'type' ], $key_config );
@@ -212,7 +225,7 @@ class WPML_Gutenberg_Config_Option {
 			}
 
 			if ( isset( $key_config['key'] ) ) {
-				$children       = $this->get_keys_recursively( $key_config['key'] );
+				$children       = $this->get_keys_recursively( $key_config['key'], $block_name, array_merge( $path, [ (string) Obj::path( [ 'attr', 'name' ], $key_config ) ] ) );
 				$valid_children = $this->filter_string_keys( $children );
 
 				if ( $valid_children ) {
@@ -228,6 +241,42 @@ class WPML_Gutenberg_Config_Option {
 		}
 
 		return $final_config;
+	}
+
+	private function is_refused_text_key( array $key_config, $is_root_key = true ) {
+		$name = Obj::path( [ 'attr', 'name' ], $key_config );
+		$type = Obj::pathOr( '', [ 'attr', 'type' ], $key_config );
+
+		return is_string( $name )
+			&& ! isset( $key_config['key'] )
+			&& false === strpos( $name, '*' )
+			&& self::SEARCH_METHOD_REGEX !== Obj::path( [ 'attr', 'search-method' ], $key_config )
+			&& self::is_string_type( $type )
+			&& ! in_array( $type, [ WPML_Page_Builders_Media_Gutenberg::TYPE_URL, WPML_Page_Builders_Media_Gutenberg::TYPE_IDS ], true )
+			&& \WPML\PB\Gutenberg\NeverTextKeys::matches( $name, $is_root_key );
+	}
+
+	private function log_refused_text_key( $block_name, array $key_path ) {
+		$path = implode( '>', $key_path );
+		$id   = $block_name . '/' . $path;
+
+		if ( isset( $this->loggedRefusals[ $id ] ) ) {
+			return;
+		}
+		$this->loggedRefusals[ $id ] = true;
+
+		call_user_func(
+			$this->logger,
+			sprintf(
+				'WPML: the configuration of the block "%s" names the attribute "%s" as text. It holds an id, a class name or an anchor, which is never translated, so the key is ignored.',
+				$block_name,
+				$path
+			)
+		);
+	}
+
+	public function writeErrorLog( $message ) {
+		error_log( $message );
 	}
 
 	private function filter_string_keys( $keys ) {

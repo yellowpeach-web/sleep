@@ -15,6 +15,8 @@ abstract class AbstractQuery implements Query {
 
 	protected $title_column = 'posts.post_title';
 
+	protected $translated_title_column = null;
+
 	protected $batch_name_column = 'batches.batch_name';
 
 	protected $batch_join = 'INNER JOIN';
@@ -53,7 +55,7 @@ abstract class AbstractQuery implements Query {
 				'translation_status.timestamp AS sent_date',
 				'translate_job.deadline_date AS deadline_date',
 				'translate_job.completed_date AS completed_date',
-				"{$this->title_column} AS title",
+				"CAST({$this->title_column} AS CHAR) AS title",
 				'source_languages.english_name AS source_language_name',
 				'target_languages.english_name AS target_language_name',
 				'translate_job.translator_id AS translator_id',
@@ -147,10 +149,19 @@ abstract class AbstractQuery implements Query {
 
 	abstract protected function add_resource_join( QueryBuilder $query_builder );
 
+	protected function add_translated_title_join( QueryBuilder $query_builder ) {
+	}
+
 	protected function define_filters( QueryBuilder $query_builder, WPML_TM_Jobs_Search_Params $params ) {
 		$this->set_status_filter( $query_builder, $params );
 		$query_builder = $this->set_scope_filter( $query_builder, $params );
-		$query_builder->set_multi_value_text_filter( $this->title_column, $params->get_title() );
+
+		$title_columns = [ $this->title_column ];
+		if ( $params->get_title() && $this->translated_title_column ) {
+			$this->add_translated_title_join( $query_builder );
+			$title_columns[] = $this->translated_title_column;
+		}
+		$query_builder->set_multi_value_text_filter( $title_columns, $params->get_title() );
 		$query_builder->set_multi_value_text_filter( $this->batch_name_column, $params->get_batch_name() );
 		$query_builder->set_source_language( 'translations.source_language_code', $params );
 		$query_builder->set_target_language( 'translations.language_code', $params );

@@ -13,11 +13,26 @@
          "The translation could not be started because the server did not answer.": [
             "Nie można było rozpocząć tłumaczenia, ponieważ serwer nie odpowiedział."
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "Twoja sesja wygasła. Odśwież tę stronę i spróbuj ponownie."
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "PTC tłumaczy. Edytor otworzy się, gdy tłumaczenie będzie gotowe."
+         ],
          "This translation cannot be opened right now.": [
             "Tego tłumaczenia nie można teraz otworzyć."
          ],
          "Refresh this page": [
             "Odśwież tę stronę"
+         ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "Za mało opłaconych słów, aby przetłumaczyć to automatycznie. Dodaj więcej słów, a następnie spróbuj ponownie."
+         ],
+         "Get more words": [
+            "Pobierz więcej słów"
+         ],
+         "Close": [
+            "Zamknij"
          ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
             "Ta treść jest tłumaczona automatycznie. Jeśli chcesz wykonać inną czynność, najpierw anuluj zadania tłumaczeniowe."
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "Tłumaczenie Twojej treści"
+         ],
+         "Translate Everything is active": [
+            "Opcja „Tłumacz wszystko” jest aktywna"
          ],
          "%d translation notice": [
             "%d powiadomienie o tłumaczeniu",
@@ -46,7 +64,7 @@
             "<b>Tłumacz wszystko automatycznie</b> jest tymczasowo wstrzymane"
          ],
          "Automatic translation is temporarily paused": [
-            "Automatyczne tłumaczenie jest tymczasowo wstrzymane"
+            "Tłumaczenie automatyczne jest tymczasowo wstrzymane"
          ],
          "We noticed something unexpected in your recent translation activity and paused automatic translation on your account. Contact support and we’ll review it with you.": [
             "Zauważyliśmy coś nieoczekiwanego w Twojej ostatniej aktywności związanej z tłumaczeniem i wstrzymaliśmy automatyczne tłumaczenie na Twoim koncie. Skontaktuj się z pomocą techniczną, a my to sprawdzimy."
@@ -55,10 +73,10 @@
             "<b>Tłumacz wszystko automatycznie</b> jest wstrzymane: osiągnięto miesięczny limit wydatków"
          ],
          "Automatic translation is paused: monthly spending cap reached": [
-            "Automatyczne tłumaczenie jest wstrzymane: osiągnięto miesięczny limit wydatków"
+            "Tłumaczenie automatyczne jest wstrzymane: osiągnięto miesięczny limit wydatków"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "Ta witryna osiągnęła ustawiony dla niej miesięczny limit wydatków. Tłumaczenie zostanie wznowione po podniesieniu limitu lub po jego zresetowaniu. Może to zrobić tylko właściciel konta."
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "Ta witryna osiągnęła ustawiony dla niej miesięczny limit wydatków. Tłumaczenie zostanie wznowione po podniesieniu limitu lub po jego zresetowaniu. Możesz go zwiększyć na stronie „Tłumaczenie SI: rozliczenia i użycie”."
          ],
          "Preparing content for translation": [
             "Przygotowywanie treści do tłumaczenia"
@@ -74,8 +92,10 @@
             "Następujące języki w Twojej witrynie muszą zostać przypisane do obsługiwanego języka, aby można było korzystać z automatycznego tłumaczenia: %s",
             "Następujące języki w Twojej witrynie muszą zostać przypisane do obsługiwanego języka, aby można było korzystać z automatycznego tłumaczenia: %s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "Treści w tych językach: %s, nie mogą być tłumaczone automatycznie, dopóki nie przypiszesz ich do języka innego niż domyślny."
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "Tłumaczenie automatyczne nie jest dostępne między językiem domyślnym (%1$s) a językiem %2$s, ponieważ są one rozpoznawane jako ten sam język. Zamiast tego wybierz opcję „Powiel”, aby skopiować treść.",
+            "Tłumaczenie automatyczne nie jest dostępne między językiem domyślnym a tymi językami (%1$s), ponieważ są one rozpoznawane jako ten sam język: %2$s. Zamiast tego wybierz opcję „Powiel”, aby skopiować treść.",
+            "Tłumaczenie automatyczne nie jest dostępne między językiem domyślnym a tymi językami (%1$s), ponieważ są one rozpoznawane jako ten sam język: %2$s. Zamiast tego wybierz opcję „Powiel”, aby skopiować treść."
          ],
          "%d translation waiting for review": [
             "%d tłumaczenie oczekuje na recenzję",
@@ -86,7 +106,7 @@
             "<b>Tłumacz wszystko automatycznie</b> ma nierozwiązane zadania"
          ],
          "Automatic translation has unresolved jobs": [
-            "Automatyczne tłumaczenie ma nierozwiązane zadania"
+            "Tłumaczenie automatyczne ma nierozwiązane zadania"
          ],
          "%d job couldn't be completed. Go to <b>Translation Dashboard</b> to review and resolve.": [
             "%d zadanie nie mogło zostać ukończone. Przejdź do: <b>Kokpit tłumaczeń</b>, aby je sprawdzić i rozwiązać.",
@@ -117,7 +137,7 @@
             "<b>Tłumacz wszystko automatycznie</b> jest wstrzymane – wymagana płatność"
          ],
          "Automatic translation is paused — payment required": [
-            "Automatyczne tłumaczenie jest wstrzymane – wymagana płatność"
+            "Tłumaczenie automatyczne jest wstrzymane – wymagana płatność"
          ],
          "We couldn’t process your payment. Click “Pay now” to complete the transaction and resume automatic translation.": [
             "Nie mogliśmy przetworzyć Twojej płatności. Kliknij „Zapłać teraz”, aby sfinalizować transakcję i wznowić automatyczne tłumaczenie."
@@ -138,7 +158,7 @@
             "<b>Tłumacz wszystko automatycznie</b> jest wstrzymane – niewystarczająca liczba słów"
          ],
          "Automatic translation is paused — not enough words": [
-            "Automatyczne tłumaczenie jest wstrzymane – niewystarczająca liczba słów"
+            "Tłumaczenie automatyczne jest wstrzymane – za mało słów"
          ],
          "Translation will resume automatically once you assign more words.": [
             "Tłumaczenie zostanie wznowione automatycznie po przypisaniu większej liczby słów."
@@ -159,9 +179,6 @@
          ],
          "Pay now": [
             "Zapłać teraz"
-         ],
-         "Get more words": [
-            "Pobierz więcej słów"
          ],
          "Assign words": [
             "Przypisz słowa"

@@ -4,6 +4,10 @@ namespace WPML\PB\Integrations\Divi;
 
 class Helper {
 
+	public static function isDiviBlockName( string $block_name ): bool {
+		return 0 === strpos( $block_name, 'divi/' );
+	}
+
 	public static function isRunningDivi5() {
 		$theme  = wp_get_theme();
 		$parent = $theme->parent() ?: $theme;
@@ -15,6 +19,10 @@ class Helper {
 
 	public static function isPostUsingDivi5( $postId ) {
 		return (bool) get_post_meta( $postId, '_et_pb_use_divi_5', true );
+	}
+
+	public static function isDiviPost( $postId ) {
+		return 'on' === get_post_meta( $postId, '_et_pb_use_builder', true );
 	}
 
 	public static function isInDiviBuilder() {

@@ -11,6 +11,10 @@ class AmsWidgetEmbed {
 
 
   public static function enqueue(): void {
+    if ( ! self::siteUsesAte() ) {
+      return;
+    }
+
     $loader = make( ATEDashboardLoader::class );
     $console = make( 'WPML_TM_AMS_ATE_Console_Section' );
     $params  = $console->get_ams_constructor();
@@ -27,6 +31,11 @@ class AmsWidgetEmbed {
       'before'
     );
     self::initializeScriptWithSeededConfig();
+  }
+
+
+  private static function siteUsesAte(): bool {
+    return \WPML_TM_ATE_Status::is_ate_account_wanted() || \WPML_TM_ATE_Status::can_ate_job_exist();
   }
 
 

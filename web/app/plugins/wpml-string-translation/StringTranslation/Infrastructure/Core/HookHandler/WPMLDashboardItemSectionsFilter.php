@@ -51,7 +51,18 @@ class WPMLDashboardItemSectionsFilter  extends AbstractFilterHookHandler {
 	private function getTranslatableStringPackages() {
 		global $wpdb;
 
-		$package_kinds = $wpdb->get_results( "SELECT kind, kind_slug FROM {$wpdb->prefix}icl_string_packages WHERE id>0 and post_id is null group by kind_slug, kind" );
+		$ridesOwnerSql    = apply_filters( 'wpml_string_package_rides_owner_sql', '', 'sp' );
+		$packageCondition = $ridesOwnerSql ? "AND NOT ({$ridesOwnerSql})" : 'AND sp.post_id IS NULL';
+		$sql              = "SELECT sp.kind, sp.kind_slug
+			FROM {$wpdb->prefix}icl_string_packages sp
+			WHERE sp.ID > 0
+				" . $packageCondition . "
+			GROUP BY sp.kind_slug, sp.kind";
+		$package_kinds    = \WPML\StringTranslation\Infrastructure\StringPackage\Query\FindStringPackagesQuery::getResults(
+			$wpdb,
+			$sql,
+			OBJECT
+		);
 
 		return $package_kinds;
 	}

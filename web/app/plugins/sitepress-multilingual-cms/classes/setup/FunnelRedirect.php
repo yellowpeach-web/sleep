@@ -27,9 +27,6 @@ class FunnelRedirect implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		$method = isset( $_SERVER['REQUEST_METHOD'] )
 			? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) )
 			: '';
-		if ( 'GET' !== strtoupper( $method ) ) {
-			return;
-		}
 
 		if ( wp_doing_ajax() ) {
 			return;
@@ -44,7 +41,7 @@ class FunnelRedirect implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 			return;
 		}
 
-		$target = $this->target_for( Request::page() );
+		$target = $this->target_for_request( $method, Request::page() );
 		if ( null === $target ) {
 			return;
 		}
@@ -53,39 +50,47 @@ class FunnelRedirect implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		exit;
 	}
 
-	private function target_for( $page ) {
-		if (
-			$this->needs_the_wizard( $page )
-			&& $this->is_half_configured()
-			&& ! $this->keeps_removed_content_reachable( $page )
-		) {
-			return self::SETUP_PAGE;
+	private function target_for_request( $method, $page ) {
+		if ( 'GET' !== strtoupper( $method ) && self::SETUP_PAGE !== $page ) {
+			return null;
 		}
 
-		if ( self::SETUP_PAGE === $page && $this->is_configured() ) {
-			return self::DASHBOARD_PAGE;
+		return $this->target_for( $page );
+	}
+
+	private function target_for( $page ) {
+		if ( ! $this->sitepress->is_setup_complete() ) {
+			return null;
+		}
+
+		$needs_a_language = 2 > count( $this->sitepress->get_active_languages() );
+
+		if ( self::SETUP_PAGE === $page ) {
+			return $needs_a_language ? $this->languages_target() : self::DASHBOARD_PAGE;
+		}
+
+		if ( $needs_a_language && $this->needs_a_configured_site( $page ) && ! $this->is_languages_screen( $page ) ) {
+			return $this->languages_target();
 		}
 
 		return null;
 	}
 
-	private function keeps_removed_content_reachable( $page ) {
+	private function languages_target() {
+		return self::LANGUAGES_PAGE . '&section=' . self::LANGUAGES_SECTION;
+	}
+
+	private function is_languages_screen( $page ) {
 		return self::LANGUAGES_PAGE === $page
-			&& self::LANGUAGES_SECTION === Request::param( 'section' )
-			&& $this->has_removed_language_content();
+			&& self::LANGUAGES_SECTION === Request::param( 'section' );
 	}
 
-	protected function has_removed_language_content() {
-		return array() !== \WPML\LanguageEditor\RemovedLanguages\Directory::all();
-	}
-
-	private function needs_the_wizard( $page ) {
+	private function needs_a_configured_site( $page ) {
 		if ( ! $this->is_wpml_page( $page ) ) {
 			return false;
 		}
 
 		$always_reachable = [
-			self::SETUP_PAGE,
 			WPML_PLUGIN_FOLDER . '/menu/support.php',
 			WPML_PLUGIN_FOLDER . '/menu/troubleshooting.php',
 			WPML_PLUGIN_FOLDER . '/menu/debug-information.php',
@@ -108,15 +113,5 @@ class FunnelRedirect implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		}
 
 		return false;
-	}
-
-	private function is_half_configured() {
-		return $this->sitepress->is_setup_complete()
-			&& 2 > count( $this->sitepress->get_active_languages() );
-	}
-
-	private function is_configured() {
-		return $this->sitepress->is_setup_complete()
-			&& 2 <= count( $this->sitepress->get_active_languages() );
 	}
 }

@@ -13,10 +13,14 @@ class LegacyChecksumOrders {
 
 	private $ordersStorage = null;
 
-	public function forNames( array $names ) {
+	public function forNames( array $names, $memoise = true ) {
 		$names = array_values( array_map( 'strval', $names ) );
 		if ( count( $names ) < 2 ) {
 			return [];
+		}
+
+		if ( ! $memoise ) {
+			return $this->ordersFor( $names );
 		}
 
 		$storage = $this->storageOrder();
@@ -30,6 +34,23 @@ class LegacyChecksumOrders {
 		}
 
 		return $this->orders[ $key ];
+	}
+
+	public static function without( array $orders, array $dropped ) {
+		$distinct = [];
+		foreach ( $orders as $order ) {
+			foreach ( $dropped as $name ) {
+				unset( $order[ $name ] );
+			}
+			if ( count( $order ) < 2 ) {
+				return [];
+			}
+			if ( ! in_array( $order, $distinct, true ) ) {
+				$distinct[] = $order;
+			}
+		}
+
+		return $distinct;
 	}
 
 	protected function ordersFor( array $names ) {

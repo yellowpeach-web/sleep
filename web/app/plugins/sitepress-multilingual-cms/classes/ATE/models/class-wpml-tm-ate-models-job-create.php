@@ -1,11 +1,12 @@
 <?php
 
-class WPML_TM_ATE_Models_Job_Create {
+class WPML_TM_ATE_Models_Job_Create implements JsonSerializable {
 	public $id;
 	public $deadline;
 	public $file;
 	public $notify_enabled;
 	public $notify_url;
+	public $receive_token_kind;
 	public $source_id;
 	public $element_id;
 	public $permalink;
@@ -14,6 +15,8 @@ class WPML_TM_ATE_Models_Job_Create {
 	public $target_language;
 	public $ate_ams_console_url;
 	public $existing_ate_id;
+
+	public $automatic = true;
 
 	public $wpml_words_to_translate_count;
 	public $wpml_automatic_translation_costs;
@@ -28,6 +31,8 @@ class WPML_TM_ATE_Models_Job_Create {
 	public $tier;
 
 	public $rank;
+
+	public $wpml_edit_history;
 
 	public function __construct( array $args = array() ) {
 		foreach ( $args as $key => $value ) {
@@ -44,5 +49,14 @@ class WPML_TM_ATE_Models_Job_Create {
 		}
 
 		$this->ate_ams_console_url = wpml_tm_get_ams_ate_console_url();
+	}
+
+	public function jsonSerialize(): array {
+		$properties = get_object_vars( $this );
+		if ( null === $this->wpml_edit_history ) {
+			unset( $properties['wpml_edit_history'] );
+		}
+
+		return $properties;
 	}
 }

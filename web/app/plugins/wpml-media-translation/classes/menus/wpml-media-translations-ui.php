@@ -1,6 +1,8 @@
 <?php
 
 use WPML\Media\Option;
+use WPML\Media\TextScan\Feature;
+use WPML\Media\TextScan\Listing;
 
 class WPML_Media_Translations_UI extends WPML_Templates_Factory {
 	const PREVIEW_MAX_WIDTH  = 800;
@@ -134,6 +136,10 @@ class WPML_Media_Translations_UI extends WPML_Templates_Factory {
 			'should_handle_media_auto' => Option::shouldHandleMediaAuto(),
 		);
 
+		if ( Feature::isEnabled() ) {
+			$model = Listing::addToModel( $model, $this->query_args );
+		}
+
 		return $model;
 	}
 
@@ -163,7 +169,7 @@ class WPML_Media_Translations_UI extends WPML_Templates_Factory {
 		$arg_keys = array( 'm', 'status', 'slang', 'tlang', 's', 'paged' );
 		foreach ( $arg_keys as $key ) {
 			if ( isset( $_GET[ $key ] ) ) {
-				$this->query_args[ $key ] = sanitize_text_field( $_GET[ $key ] );
+				$this->query_args[ $key ] = sanitize_text_field( wp_unslash( $_GET[ $key ] ) );
 			}
 		}
 
@@ -171,6 +177,11 @@ class WPML_Media_Translations_UI extends WPML_Templates_Factory {
 			if ( isset( $this->query_args[ $language_arg ] ) && ! $this->is_language_filter_value( $this->query_args[ $language_arg ] ) ) {
 				unset( $this->query_args[ $language_arg ] );
 			}
+		}
+
+		$scan = Listing::queryArg( $_GET );
+		if ( '' !== $scan ) {
+			$this->query_args[ Listing::ARG ] = $scan;
 		}
 	}
 
@@ -246,6 +257,10 @@ class WPML_Media_Translations_UI extends WPML_Templates_Factory {
 			'posts_per_page' => $this->get_items_per_page(),
 		);
 		$args = array_merge( $args, $this->query_args );
+
+		if ( isset( $args['s'] ) ) {
+			$args['s'] = wp_slash( $args['s'] );
+		}
 
 		$args['suppress_filters'] = false;
 
@@ -432,8 +447,8 @@ class WPML_Media_Translations_UI extends WPML_Templates_Factory {
 		}
 
 		$file_clause = $this->wpdb->prepare(
-			'media_file_search.meta_value LIKE %s',
-			'%' . $this->wpdb->esc_like( trim( (string) $this->query_args['s'] ) ) . '%'
+			"media_file_search.meta_value LIKE %s ESCAPE '|'",
+			\WPML\Utils\LikeEscape::contains( trim( (string) $this->query_args['s'] ) )
 		);
 
 		return preg_replace( '/^\s*AND\s*\(/', ' AND ( ( ' . $file_clause . ' ) OR ', $search, 1 );
@@ -467,6 +482,8 @@ class WPML_Media_Translations_UI extends WPML_Templates_Factory {
 				);
 			}
 		}
+
+		$join .= Listing::joinClause( $this->wpdb, $this->query_args );
 
 		return $join;
 	}
@@ -559,6 +576,8 @@ class WPML_Media_Translations_UI extends WPML_Templates_Factory {
 				}
 			}
 		}
+
+		$where .= Listing::whereClause( $this->wpdb, $this->query_args );
 
 		return $where;
 	}

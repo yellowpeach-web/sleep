@@ -14,10 +14,6 @@ final class TrustedBoundaries {
         'provenances' => [ Provenance::CRON ],
         'reason'      => 'Mints only while WordPress runs its scheduled callbacks (wp-cron); which callbacks run is WordPress\'s own schedule, not request-chosen.',
       ],
-      'WPML\TM\ATE\REST\PublicReceive' => [
-        'provenances' => [ Provenance::MACHINE_CALLBACK ],
-        'reason'      => 'ATE delivery callback; mints only after the job-bound HMAC token (wpmldev-7980) verified.',
-      ],
       'WPML\TM\ATE\Hooks\ReturnCommand' => [
         'provenances' => [ Provenance::MACHINE_CALLBACK ],
         'reason'      => 'ATE editor return (wpmldev-8426); mints only after the job-bound return token (wpmldev-7980) verified under the command\'s policy, for the job that token names, and hands the proof to the delivery listener instead of making it ambient.',

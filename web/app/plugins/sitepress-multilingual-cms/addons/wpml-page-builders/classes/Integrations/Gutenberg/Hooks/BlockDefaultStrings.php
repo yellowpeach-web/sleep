@@ -3,6 +3,7 @@
 namespace WPML\PB\Gutenberg\Hooks;
 
 use WPML\FP\Str;
+use WPML\PB\Gutenberg\NeverTextKeys;
 
 class BlockDefaultStrings implements \WPML\PB\Gutenberg\Integration {
 
@@ -53,7 +54,7 @@ class BlockDefaultStrings implements \WPML\PB\Gutenberg\Integration {
 		foreach ( $settings['attributes'] as $key => &$attribute ) {
 			$stringName = (string) $key;
 
-			if ( '' === $stringName || $this->isSystemKey( $key ) || ! $this->isTranslatableDefault( $stringName, $attribute ) ) {
+			if ( '' === $stringName || $this->isSystemKey( $key ) || NeverTextKeys::matches( $stringName ) || ! $this->isTranslatableDefault( $stringName, $attribute ) ) {
 				continue;
 			}
 
@@ -173,7 +174,12 @@ class BlockDefaultStrings implements \WPML\PB\Gutenberg\Integration {
 	private function isTranslatableDefault( string $key, $attribute ): bool {
 		return is_array( $attribute )
 			&& isset( $attribute['type'], $attribute['default'] )
-			&& $this->getTextRules()->isText( $key, $attribute['default'], $attribute );
+			&& $this->getTextRules()->isText( $key, $attribute['default'], $attribute )
+			&& ! $this->isUrl( $attribute['default'] );
+	}
+
+	private function isUrl( string $value ): bool {
+		return false !== filter_var( $value, FILTER_VALIDATE_URL );
 	}
 
 	private function getTextRules(): TextDefaultRules {

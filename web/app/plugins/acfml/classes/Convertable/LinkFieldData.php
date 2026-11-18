@@ -7,7 +7,7 @@ class LinkFieldData extends AbstractUrlConvertable {
 	public function convert( \WPML_ACF_Field $acf_field ) {
 		$cameSerialized = is_serialized( $acf_field->meta_value );
 
-		$dataUnpacked = (array) maybe_unserialize( $acf_field->meta_value );
+		$dataUnpacked = (array) \WPML\Utils\Unserialize::maybe( $acf_field->meta_value );
 
 		if ( isset( $dataUnpacked['url'] ) ) {
 			$targetLang = $this->resolveTargetLang( $acf_field );

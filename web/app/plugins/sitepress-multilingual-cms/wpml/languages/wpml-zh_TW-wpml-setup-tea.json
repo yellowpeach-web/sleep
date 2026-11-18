@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=1; plural=0;",
             "lang": "zh_TW"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "切換至私有翻譯雲 (PTC)"
+         ],
+         "Switch to PTC": [
+            "切換至 PTC"
+         ],
+         "Switching…": [
+            "正在切換…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "我們無法確認切換。請再試一次，或重新整理以查看目前的引擎。"
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "翻譯引擎控制項無法載入。請重新整理頁面並再試一次。"
+         ],
+         "Loading translation engine settings…": [
+            "正在載入翻譯引擎設定…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "在切換至 PTC 之前，請先填寫上方的網站背景資訊。"
+         ],
+         "Reload page": [
+            "重新整理頁面"
+         ],
+         "Could not fetch engines data": [
+            "無法獲取引擎數據"
+         ],
          "Error in updating since dates for types.": [
             "更新類型的起始日期時發生錯誤。"
          ],
@@ -133,9 +160,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "已套用舊版定價。%s 是舊版翻譯引擎，不建議新網站使用且即將停用。現有網站將保留其調整後的字數費率。"
          ],
-         "Switch to PTC": [
-            "切換至 PTC"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "這是翻譯您目前內容現在所需的字數。此數值不包含由其他外掛程式新增的某些文字（例如表單或滑動圖庫），這些文字會在設定完成後才計算。來自您的佈景主題與外掛程式的網站字串也會在設定完成後計算，通常會再增加數百字。在此之後，編輯內容均為免費。您只需為新增的字詞付費。"
          ],
@@ -151,8 +175,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "它計算了頁面、文章和產品及其自訂欄位、頁面編輯器文字和媒體文字，以及它們所使用的分類、標籤和屬性。"
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "它計算了頁面、文章和產品及其自訂欄位、頁面編輯器文字和媒體文字、它們所使用的分類、標籤和屬性，以及網站字串。詞彙在每個使用它的項目中都會被計算，並且自身也會單獨計算一次，因為它在兩種情況下都會被傳送以進行翻譯。"
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "這包括計算頁面、文章和產品及其自訂欄位、頁面編輯器文字和媒體文字，以及它們使用的分類、標籤和屬性與網站字串。每個分類、標籤或屬性僅在「分類法」列中計算一次，不會在引用它們的項目中重複計算。"
          ],
          "Total items": [
             "項目總數"
@@ -225,6 +249,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "若要開始 <b>自動翻譯所有內容</b>，請啟用 <b>隨用隨付</b> 或購買預付字數。"
+         ],
+         "Translation quality:": [
+            "翻譯品質："
          ],
          "Select payment method": [
             "選擇付款方式"
@@ -357,6 +384,30 @@
          ],
          "Close modal": [
             "關閉強制回應視窗"
+         ],
+         "Obvious mistakes": [
+            "明顯錯誤"
+         ],
+         "Mistakes visible": [
+            "可見錯誤"
+         ],
+         "Ready to publish": [
+            "準備發佈"
+         ],
+         "Your engine": [
+            "您的引擎"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "翻譯品質 (50-100 分)：%1$s 得分為 %2$d，%3$s 得分為 %4$d。"
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "評分基於 WPML 的內部 MQM 翻譯品質研究。"
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC 提供更高品質的翻譯，並為您提供可直接發佈的結果。"
          ]
       }
    }

@@ -65,6 +65,10 @@ class WPML_XMLRPC extends WPML_SP_User {
 	}
 
 	public function save_post_action( $pidd, $post ) {
+		if ( (int) $pidd <= 0 || ! $post ) {
+			return;
+		}
+
 		$post_language_code = get_post_meta( $pidd, '_wpml_language', true );
 		$post_language_code = $post_language_code ? $post_language_code : $this->sitepress->get_default_language();
 

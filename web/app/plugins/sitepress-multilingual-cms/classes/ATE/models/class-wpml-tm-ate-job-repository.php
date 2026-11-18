@@ -1,5 +1,6 @@
 <?php
 
+use WPML\TM\ATE\TranslateEverything\TermBundle;
 use function WPML\FP\invoke;
 use WPML\TM\ATE\Jobs;
 
@@ -30,21 +31,31 @@ class WPML_TM_ATE_Job_Repository {
 			->filter( invoke( 'is_ate_job' ) );
 	}
 
-	public function get_jobs_to_sync_with_element_ids( $includeManualAndLongstandingJobs = true ): array {
-		return $this->ateJobs->getATEJobIdsToSyncWithElementIds( $includeManualAndLongstandingJobs );
+	public function get_jobs_to_sync_with_element_ids( $includeManualAndLongstandingJobs = true, $leaveOutBackedOffManualJobs = false ): array {
+		return $this->ateJobs->getATEJobIdsToSyncWithElementIds( $includeManualAndLongstandingJobs, (bool) $leaveOutBackedOffManualJobs );
 	}
 
 	public function increment_ate_sync_count( array $ateJobIds ) {
 		return $this->job_repository->increment_ate_sync_count( $ateJobIds );
 	}
 
-	public function get_jobs_to_retry() {
+	public function get_jobs_to_retry( $retryLimit = null ) {
 		$searchParams = $this->getSearchParamsPrototype();
+		$searchParams->set_job_types( [ WPML_TM_Job_Entity::TAXONOMY_TYPE ] );
 		$searchParams->set_status( [ ICL_TM_ATE_NEEDS_RETRY ] );
+
+		if ( $retryLimit ) {
+			$searchParams->set_max_ate_retries( (int) $retryLimit - 1 );
+		}
 
 		return $this->job_repository
 			->get( $searchParams )
-			->filter( invoke( 'is_ate_job' ) );
+			->filter(
+				function ( WPML_TM_Job_Entity $job ) {
+					return $job->is_ate_job()
+						|| ( $job instanceof WPML_TM_Post_Job_Entity && TermBundle::ELEMENT_TYPE === $job->get_element_type() );
+				}
+			);
 	}
 
 	private function getSearchParamsPrototype() {

@@ -80,6 +80,7 @@ class WPML_Register_String_Filter extends WPML_Displayed_String_Filter {
 	public function register_string( $context, $name, $value, $allow_empty_value = false, $source_lang = '' ) {
 
 		$name = trim( $name ) ? $name : md5( $value );
+		$value = self::utf8_value( $value );
 		$this->initialize_current_string( $name, $context );
 
 		if ( substr( $name, 0, 10 ) === 'URL slug: ' && WPML_Slug_Translation::STRING_DOMAIN !== $context ) {
@@ -141,29 +142,49 @@ class WPML_Register_String_Filter extends WPML_Displayed_String_Filter {
 			'language'  => $language,
 		);
 
-		if ( ! $this->translation_row_exists( $string_id, $language ) ) {
+		$id = $this->translation_row_id( $string_id, $language );
+
+		if ( ! $id ) {
 			if ( false !== $this->insert_translation_row( array_merge( $translation_data, $row ) ) ) {
+				do_action( 'wpml_st_refresh_string_translation', (int) $this->wpdb->insert_id );
+
 				return true;
 			}
 
-			if ( ! $this->translation_row_exists( $string_id, $language ) ) {
+			$id = $this->translation_row_id( $string_id, $language );
+			if ( ! $id ) {
 				return false;
 			}
 		}
 
-		return false !== $this->wpdb->update(
+		$updated = false !== $this->wpdb->update(
 			$this->wpdb->prefix . 'icl_string_translations',
 			$translation_data,
 			$row
 		);
+
+		if ( $updated ) {
+			$wpdb = $this->wpdb;
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->prefix}icl_string_translations SET translation_date = NOW() WHERE string_id = %d AND language = %s",
+					$string_id,
+					$language
+				)
+			);
+
+			do_action( 'wpml_st_refresh_string_translation', $id );
+		}
+
+		return $updated;
 	}
 
-	private function translation_row_exists( $string_id, $language ) {
+	private function translation_row_id( $string_id, $language ) {
 		$wpdb = $this->wpdb;
 
-		return (bool) $wpdb->get_var(
+		return (int) $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT COUNT(*) FROM {$wpdb->prefix}icl_string_translations WHERE string_id = %d AND language = %s",
+				"SELECT id FROM {$wpdb->prefix}icl_string_translations WHERE string_id = %d AND language = %s",
 				$string_id,
 				$language
 			)
@@ -283,6 +304,14 @@ class WPML_Register_String_Filter extends WPML_Displayed_String_Filter {
 		if ( count( $this->request_string_cache ) > self::REGISTERED_STRING_CACHE_LIMIT ) {
 			array_shift( $this->request_string_cache );
 		}
+	}
+
+	public static function utf8_value( $value ) {
+		if ( is_string( $value ) && class_exists( '\WPML\Utilities\Utf8Text' ) ) {
+			return \WPML\Utilities\Utf8Text::scrub( $value );
+		}
+
+		return $value;
 	}
 
 	private function save_string( $value, $allow_empty_value, $language, $domain, $context, $name ) {

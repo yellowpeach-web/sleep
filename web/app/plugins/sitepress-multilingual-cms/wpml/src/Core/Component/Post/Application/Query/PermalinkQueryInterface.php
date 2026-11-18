@@ -8,4 +8,7 @@ interface PermalinkQueryInterface {
   public function getPermalink( int $postId );
 
 
+  public function prefetch( array $postIds );
+
+
 }

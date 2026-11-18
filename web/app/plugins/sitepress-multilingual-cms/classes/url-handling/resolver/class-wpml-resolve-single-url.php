@@ -102,7 +102,13 @@ class WPML_Resolve_Single_Url {
 				$source_language,
 				$target_language
 			);
+		}
 
+		if (
+			$this->persistent_cache
+			&& false !== $should_cache
+			&& false !== $result
+		) {
 			if (
 				$this->inline_resolver
 				&& isset( $result['resolution_state'] )
@@ -407,12 +413,10 @@ class WPML_Resolve_Single_Url {
 		$default_language = $this->sitepress->get_default_language();
 
 		if ( is_string( $url ) && '' !== $url ) {
-			$detected_language = $this->url_converter->get_language_from_url( $url );
+			$detected_language            = $this->url_converter->get_language_of_url( $url );
+			$is_url_in_secondary_language = $detected_language !== $default_language;
 
-			if (
-				in_array( $detected_language, $active_languages, true )
-				&& $detected_language !== $default_language
-			) {
+			if ( $is_url_in_secondary_language && in_array( $detected_language, $active_languages, true ) ) {
 				return $detected_language;
 			}
 		}

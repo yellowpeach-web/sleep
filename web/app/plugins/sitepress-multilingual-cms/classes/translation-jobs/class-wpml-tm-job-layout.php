@@ -108,7 +108,7 @@ class WPML_TM_Job_Layout {
 		if ( count( $this->custom_fields ) ) {
 			$data           = array(
 				'field_type'    => 'tm-section',
-				/* translators: Heading of the group of extra fields in the translation editor. */
+				/* translators: Heading of the group that holds the custom fields of a translation job, in the translation editor. */
 				'title'         => __( 'Custom Fields', 'sitepress' ),
 				'fields'        => $this->custom_fields,
 				'empty'         => false,

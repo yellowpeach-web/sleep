@@ -88,9 +88,12 @@ class MO extends \MO {
 		}
 
 		$controller = \WP_Translation_Controller::get_instance();
-		if ( $controller->get_locale() !== $locale ) {
-			$controller->set_locale( $locale );
+		if ( $controller->get_locale() === $locale ) {
+			return;
 		}
+
+		$determined = determine_locale();
+		$controller->set_locale( is_string( $determined ) && '' !== $determined ? $determined : $locale );
 	}
 
 	protected function loadTextDomain() {

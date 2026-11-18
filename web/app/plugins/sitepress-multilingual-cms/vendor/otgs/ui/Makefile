@@ -4,14 +4,14 @@
 .PHONY: setup test
 
 setup:: vendor/autoload.php
-setup:: yarn.lock
+setup:: package-lock.json
 setup:: githooks
 
 test:: jest
 test:: phpunit
 
 precommit:: validate-composer
-precommit:: validate-yarn
+precommit:: validate-npm
 precommit:: dupes
 precommit:: compatibility
 
@@ -26,8 +26,8 @@ compatibility: vendor/autoload.php
 validate-composer: composer.lock
 	./.make/check-composer.sh
 
-validate-yarn: yarn.lock
-	./.make/check-yarn.sh
+validate-npm: package-lock.json
+	./.make/check-npm.sh
 
 # Dependency managers
 
@@ -44,12 +44,12 @@ vendor/autoload.php: composer.lock
 	touch $@
 
 ## Yarn
-yarn.lock: package.json
-	yarn install
+package-lock.json: package.json
+	npm ci
 	touch $@
 
 package.json: 
-	yarn init -y
+	npm init -y
 
 # Setup
 
@@ -59,13 +59,13 @@ githooks:
 
 # Tests
 
-jest: yarn.lock
-	yarn run test
+jest: package-lock.json
+	npm run test
 
 phpunit: vendor/autoload.php
 	vendor/bin/phpunit --fail-on-warning
 
 # Build
 
-dev prod: yarn.lock
-	yarn run build:$@
+dev prod: package-lock.json
+	npm run build:$@

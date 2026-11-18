@@ -60,7 +60,9 @@ class WPML_PB_Register_Shortcodes {
 				$encoding_condition = $this->shortcode_strategy->get_shortcode_tag_encoding_condition( $shortcode['tag'] );
 				$type               = $this->shortcode_strategy->get_shortcode_tag_type( $shortcode['tag'] );
 				$shortcode_content  = $this->encoding->decode( $shortcode_content, $encoding, $encoding_condition );
-				$strings[]          = [ $shortcode_content, 'content', $type ];
+				if ( ! $this->is_shortcode_markup_only( $shortcode_content ) ) {
+					$strings[] = [ $shortcode_content, 'content', $type ];
+				}
 			}
 
 			$attributes              = (array) shortcode_parse_atts( $shortcode['attributes'] );
@@ -115,6 +117,46 @@ class WPML_PB_Register_Shortcodes {
 		);
 
 		return apply_filters( 'wpml_pb_should_handle_content', $handle_content, $shortcode );
+	}
+
+	private function is_shortcode_markup_only( $content ) {
+		if ( ! is_string( $content ) || '' === trim( $content ) ) {
+			return false;
+		}
+
+		$rest = html_entity_decode( $this->strip_shortcode_tags( $content ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+		return '' === preg_replace( '/(*UCP)\s+|\x{00A0}/u', '', $rest );
+	}
+
+	private function strip_shortcode_tags( $content ) {
+		if ( ! preg_match_all( '@\[/?([^<>&/\[\]\x00-\x20=]++)@', $content, $matches ) ) {
+			return $content;
+		}
+
+		$tags  = array_values( array_unique( $matches[1] ) );
+		$regex = '/' . get_shortcode_regex( $tags ) . '/s';
+
+		$strip = function ( $text ) use ( &$strip, $regex ) {
+			return (string) preg_replace_callback(
+				$regex,
+				function ( $match ) use ( $strip ) {
+					if ( '[' === $match[1] && ']' === $match[6] ) {
+						return substr( $match[0], 1, -1 );
+					}
+
+					return $match[1] . ( isset( $match[5] ) ? $strip( $match[5] ) : '' ) . $match[6];
+				},
+				$text
+			);
+		};
+
+		$quote        = function ( $tag ) {
+			return preg_quote( $tag, '@' );
+		};
+		$closing_tags = '@\[/(?:' . implode( '|', array_map( $quote, $tags ) ) . ')\]@';
+
+		return (string) preg_replace( $closing_tags, '', $strip( $content ) );
 	}
 
 	public function get_updated_shortcode_string_title( $string_id, $shortcode, $attribute ) {
@@ -181,7 +223,9 @@ class WPML_PB_Register_Shortcodes {
 		if ( is_array( $content ) ) {
 			foreach ( $content as $key => $data ) {
 				if ( $data['translate'] ) {
-					$this->register_string( $post_id, $data['value'], $shortcode, $attribute . ' ' . $key, $editor_type );
+					$key_editor_type = isset( $data['type'] ) ? $data['type'] : $editor_type;
+
+					$this->register_string( $post_id, $data['value'], $shortcode, $attribute . ' ' . $key, $key_editor_type );
 				}
 			}
 		} else {

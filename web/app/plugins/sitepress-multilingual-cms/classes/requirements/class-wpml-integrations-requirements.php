@@ -1,7 +1,5 @@
 <?php
 
-use WPML\Core\Twig_Loader_Filesystem;
-use WPML\Core\Twig_Environment;
 use WPML\TM\Settings\RequestSettings;
 
 class WPML_Integrations_Requirements {
@@ -162,16 +160,12 @@ class WPML_Integrations_Requirements {
 
 	private function get_notice_model() {
 		if ( ! $this->requirements_notification ) {
-			$template_paths   = array(
+			$template_paths = array(
 				WPML_PLUGIN_PATH . '/templates/warnings/',
 			);
-			$twig_loader      = new Twig_Loader_Filesystem( $template_paths );
-			$environment_args = array();
-			if ( WP_DEBUG ) {
-				$environment_args['debug'] = true;
-			}
-			$twig         = new Twig_Environment( $twig_loader, $environment_args );
-			$twig_service = new WPML_Twig_Template( $twig );
+
+			$template_loader = new WPML_Twig_Template_Loader( $template_paths );
+			$twig_service    = $template_loader->get_template();
 
 			$this->requirements_notification = new WPML_Requirements_Notification( $twig_service );
 		}

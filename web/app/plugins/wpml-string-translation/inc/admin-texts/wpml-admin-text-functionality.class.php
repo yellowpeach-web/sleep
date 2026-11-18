@@ -95,6 +95,10 @@ abstract class WPML_Admin_Text_Functionality {
 			1
 		);
 
+		if ( array_key_exists( $option_name, $black_list ) ) {
+			return true;
+		}
+
 		$tax_prefixes = array_keys( $wp_taxonomies );
 		foreach ( $tax_prefixes as &$tax_name ) {
 			$tax_name .= '_children';
@@ -103,10 +107,14 @@ abstract class WPML_Admin_Text_Functionality {
 			$tax_prefixes,
 			array( '_transient_', '_site_transient_' )
 		);
-		$matcher            = '#^' . join( '|^', $blacklist_prefixes ) . '#';
 
-		return array_key_exists( $option_name, $black_list )
-			   || preg_match( $matcher, $option_name ) === 1;
+		foreach ( $blacklist_prefixes as $prefix ) {
+			if ( 0 === strpos( $option_name, $prefix ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	protected function read_admin_texts_recursive( $keys, $admin_text_context, $type, &$arr_context, &$arr_type ) {

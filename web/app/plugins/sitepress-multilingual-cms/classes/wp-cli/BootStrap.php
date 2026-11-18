@@ -2,9 +2,13 @@
 
 namespace WPML\CLI\Core;
 
+use WPML\CLI\Core\Commands\AppearanceFactory;
 use WPML\CLI\Core\Commands\ClearCacheFactory;
+use WPML\CLI\Core\Commands\ConfigReloadFactory;
 use WPML\CLI\Core\Commands\MigrateLanguagesFactory;
-use WPML\CLI\Core\Commands\PullDeliveryFactory;
+use WPML\CLI\Core\Commands\RemoveTranslationPriorityFactory;
+use WPML\CLI\Core\Commands\RepairPageIdLinksFactory;
+use WPML\CLI\Core\Commands\TranslationPolicyCutoverFactory;
 use WPML\CLI\Core\Commands\ICommand;
 
 class BootStrap {
@@ -14,7 +18,11 @@ class BootStrap {
 		$commands_factory = [
 			ClearCacheFactory::class,
 			MigrateLanguagesFactory::class,
-			PullDeliveryFactory::class,
+			AppearanceFactory::class,
+			TranslationPolicyCutoverFactory::class,
+			RepairPageIdLinksFactory::class,
+			RemoveTranslationPriorityFactory::class,
+			ConfigReloadFactory::class,
 		];
 
 		foreach ( $commands_factory as $command_factory ) {
@@ -27,7 +35,8 @@ class BootStrap {
 	}
 
 	private function add_command( $command_text, $command ) {
-		\WP_CLI::add_command( $command_text, $command );
+		$args = is_object( $command ) && method_exists( $command, 'get_help' ) ? (array) $command->get_help() : [];
+		\WP_CLI::add_command( $command_text, $command, $args );
 	}
 
 	private function getFullCommand( $command ) {

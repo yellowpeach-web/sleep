@@ -6,6 +6,7 @@ use WPML\Core\Component\Cdt\Application\Query\SiteStateQueryInterface;
 use WPML\Core\Component\Cdt\Domain\LanguageCode;
 use WPML\Core\Component\ReportContentStats\Application\Query\CanCollectStatsQueryInterface;
 use WPML\Core\Port\Persistence\OptionsInterface;
+use WPML\Core\SharedKernel\Component\Post\Domain\TranslationEditorPreference;
 
 class SiteStateQuery implements SiteStateQueryInterface {
 
@@ -16,6 +17,8 @@ class SiteStateQuery implements SiteStateQueryInterface {
   const WOOCOMMERCE_CLASS  = 'WooCommerce';
 
   const STORED_ATE = 'ATE';
+
+  const STORED_MANUAL = '0';
 
   private $sitepress;
 
@@ -99,7 +102,21 @@ class SiteStateQuery implements SiteStateQueryInterface {
       return null;
     }
 
+    if ( (string) $stored === self::STORED_MANUAL || $this->usesWordPressEditorForAllContent() ) {
+      return 'native';
+    }
+
     return (string) $stored === self::STORED_ATE ? 'ate' : 'classic';
+  }
+
+
+  private function usesWordPressEditorForAllContent(): bool {
+    $editor = call_user_func( $this->tmSubSetting, TranslationEditorPreference::TM_KEY_GLOBAL_EDITOR );
+    if ( in_array( $editor, [ TranslationEditorPreference::EDITOR_NATIVE, TranslationEditorPreference::EDITOR_WPML, TranslationEditorPreference::EDITOR_DASHBOARD ], true ) ) {
+      return TranslationEditorPreference::EDITOR_NATIVE === $editor;
+    }
+
+    return true === call_user_func( $this->tmSubSetting, TranslationEditorPreference::TM_KEY_GLOBAL_USE_NATIVE );
   }
 
 

@@ -13,11 +13,26 @@
          "The translation could not be started because the server did not answer.": [
             "De vertaling kon niet worden gestart omdat de server niet antwoordde."
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "Uw sessie is verlopen. Vernieuw deze pagina en probeer het opnieuw."
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "PTC is aan het vertalen. De editor wordt geopend wanneer deze gereed is."
+         ],
          "This translation cannot be opened right now.": [
             "Deze vertaling kan momenteel niet worden geopend."
          ],
          "Refresh this page": [
             "Vernieuw deze pagina"
+         ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "Niet genoeg vooruitbetaalde woorden om dit automatisch te vertalen. Voeg meer woorden toe en probeer het opnieuw."
+         ],
+         "Get more words": [
+            "Meer woorden verkrijgen"
+         ],
+         "Close": [
+            "Sluiten"
          ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
             "Deze inhoud wordt automatisch vertaald. Als u iets anders wilt doen, annuleer dan eerst de vertaalopdrachten."
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "Uw inhoud vertalen"
+         ],
+         "Translate Everything is active": [
+            "Alles automatisch vertalen is actief"
          ],
          "%d translation notice": [
             "%d vertaalmelding",
@@ -45,19 +63,19 @@
             "<b>Alles automatisch vertalen</b> is tijdelijk gepauzeerd"
          ],
          "Automatic translation is temporarily paused": [
-            "Automatisch vertalen is tijdelijk gepauzeerd"
+            "Automatische vertaling is tijdelijk gepauzeerd"
          ],
          "We noticed something unexpected in your recent translation activity and paused automatic translation on your account. Contact support and we’ll review it with you.": [
-            "We hebben iets onverwachts opgemerkt in uw recente vertaalactiviteit en hebben automatisch vertalen voor uw account gepauzeerd. Neem contact op met de ondersteuning, dan zullen we dit met u doornemen."
+            "We hebben iets onverwachts opgemerkt in uw recente vertaalactiviteit en hebben automatische vertaling voor uw account gepauzeerd. Neem contact op met support, dan zullen we dit met u doornemen."
          ],
          "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
-            "<b>Alles automatisch vertalen</b> is gepauzeerd: maandelijks bestedingslimiet bereikt"
+            "<b>Alles automatisch vertalen</b> is gepauzeerd: maandelijkse uitgavenlimiet bereikt"
          ],
          "Automatic translation is paused: monthly spending cap reached": [
-            "Automatisch vertalen is gepauzeerd: maandelijks bestedingslimiet bereikt"
+            "Automatische vertaling is gepauzeerd: maandelijkse uitgavenlimiet bereikt"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "Deze website heeft de ingestelde maandelijkse bestedingslimiet bereikt. Het vertalen gaat verder wanneer de limiet wordt verhoogd of wanneer de limiet wordt gereset. Alleen de accounteigenaar kan dit doen."
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "Deze website heeft de ingestelde maandelijkse uitgavenlimiet bereikt. Het vertalen gaat door wanneer de limiet wordt verhoogd of wanneer deze wordt gereset. U kunt de limiet verhogen op de pagina AI Translation: facturering en gebruik."
          ],
          "Preparing content for translation": [
             "Inhoud voorbereiden voor vertaling"
@@ -66,14 +84,15 @@
             "Meer inhoud voorbereiden voor vertaling"
          ],
          "Your default language, %s, must be mapped to a supported language in order to use automatic translation.": [
-            "Uw standaardtaal, %s, moet worden gekoppeld aan een ondersteunde taal om automatisch vertalen te kunnen gebruiken."
+            "Uw standaardtaal, %s, moet worden gekoppeld aan een ondersteunde taal om automatische vertaling te kunnen gebruiken."
          ],
          "Your language, %s, must be mapped to a supported language in order to use automatic translation.": [
             "Uw taal, %s, moet worden gekoppeld aan een ondersteunde taal om automatische vertaling te kunnen gebruiken.",
             "De volgende talen op uw site moeten worden gekoppeld aan een ondersteunde taal om automatische vertaling te kunnen gebruiken: %s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "Inhoud in deze talen: %s, kan niet automatisch worden vertaald, tenzij u ze koppelt aan een taal die verschilt van de standaardtaal."
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "Automatische vertaling is niet beschikbaar tussen %1$s en %2$s omdat ze als dezelfde taal worden herkend. Kies in plaats daarvan voor “Dupliceren” om de inhoud over te nemen.",
+            "Automatische vertaling is niet beschikbaar tussen %1$s en deze talen omdat ze als dezelfde taal worden herkend: %2$s. Kies in plaats daarvan voor “Dupliceren” om de inhoud over te nemen."
          ],
          "%d translation waiting for review": [
             "%d vertaling wacht op beoordeling",
@@ -83,7 +102,7 @@
             "<b>Alles automatisch vertalen</b> heeft onopgeloste opdrachten"
          ],
          "Automatic translation has unresolved jobs": [
-            "Automatisch vertalen heeft onopgeloste opdrachten"
+            "Automatische vertaling heeft niet-afgehandelde taken"
          ],
          "%d job couldn't be completed. Go to <b>Translation Dashboard</b> to review and resolve.": [
             "%d taak kon niet worden voltooid. Ga naar het <b>Vertaaldashboard</b> om dit te bekijken en op te lossen.",
@@ -97,7 +116,7 @@
             "Controleren"
          ],
          "Automatic translation status": [
-            "Status van automatisch vertalen"
+            "Status van automatische vertaling"
          ],
          "No translations in the queue": [
             "Geen vertalingen in de wachtrij"
@@ -112,10 +131,10 @@
             "<b>Alles automatisch vertalen</b> is gepauzeerd — betaling vereist"
          ],
          "Automatic translation is paused — payment required": [
-            "Automatisch vertalen is gepauzeerd — betaling vereist"
+            "Automatische vertaling is gepauzeerd — betaling vereist"
          ],
          "We couldn’t process your payment. Click “Pay now” to complete the transaction and resume automatic translation.": [
-            "We konden uw betaling niet verwerken. Klik op “Nu betalen” om de transactie te voltooien en automatisch vertalen te hervatten."
+            "We konden uw betaling niet verwerken. Klik op “Nu betalen” om de transactie te voltooien en automatische vertaling te hervatten."
          ],
          "<b>Translate Everything Automatically</b> is paused — unpaid balance on a linked account": [
             "<b>Alles automatisch vertalen</b> is gepauzeerd — openstaand saldo op een gekoppeld account"
@@ -133,7 +152,7 @@
             "<b>Alles automatisch vertalen</b> is gepauzeerd - onvoldoende woorden"
          ],
          "Automatic translation is paused — not enough words": [
-            "Automatisch vertalen is gepauzeerd — onvoldoende woorden"
+            "Automatische vertaling is gepauzeerd — niet genoeg woorden"
          ],
          "Translation will resume automatically once you assign more words.": [
             "Het vertalen wordt automatisch hervat zodra u meer woorden toewijst."
@@ -153,9 +172,6 @@
          ],
          "Pay now": [
             "Nu betalen"
-         ],
-         "Get more words": [
-            "Meer woorden verkrijgen"
          ],
          "Assign words": [
             "Woorden toewijzen"

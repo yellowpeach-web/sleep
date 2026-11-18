@@ -10,6 +10,7 @@ use WPML\FP\Fns;
 use WPML\FP\Lst;
 use WPML\FP\Obj;
 use WPML\TM\ATE\Review\ReviewStatus;
+use WPML\TM\ATE\TranslateEverything\TermBundle;
 
 class Jobs {
 	const LONGSTANDING_AT_ATE_SYNC_COUNT = 100;
@@ -56,6 +57,66 @@ class Jobs {
 				OR NOT ( " . implode( ' OR ', $excluded ) . " )
 			)
 		";
+	}
+
+	public static function deliverableOriginalSQL( $translationIdColumn ) {
+		global $wpdb;
+
+		return "(
+			SELECT deliverable_original.translation_id
+			  FROM {$wpdb->prefix}icl_translations deliverable_target
+			  INNER JOIN {$wpdb->prefix}icl_translations deliverable_original
+			          ON deliverable_original.trid = deliverable_target.trid
+			         AND deliverable_original.element_type = deliverable_target.element_type
+			         AND deliverable_original.source_language_code IS NULL
+			         AND deliverable_original.element_id IS NOT NULL
+			 WHERE deliverable_target.translation_id = {$translationIdColumn}
+			 LIMIT 1
+		) IS NOT NULL";
+	}
+
+	public function getOrphanedPendingJobs( $limit ) {
+		global $wpdb;
+
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT jobs.job_id, jobs.editor_job_id
+				   FROM {$wpdb->prefix}icl_translate_job jobs
+				  INNER JOIN {$wpdb->prefix}icl_translation_status translation_status
+				          ON translation_status.rid = jobs.rid
+				  INNER JOIN (
+				        SELECT pending_jobs.rid, MAX(pending_jobs.job_id) AS job_id
+				          FROM {$wpdb->prefix}icl_translate_job pending_jobs
+				         INNER JOIN {$wpdb->prefix}icl_translation_status pending_status
+				                 ON pending_status.rid = pending_jobs.rid
+				         WHERE pending_status.status IN ( %d, %d )
+				         GROUP BY pending_jobs.rid
+				  ) latest_job ON latest_job.job_id = jobs.job_id
+				  WHERE jobs.editor = %s
+				    AND ( translation_status.status = %d OR translation_status.status = %d )
+				    AND (
+				        SELECT deliverable_original.translation_id
+				          FROM {$wpdb->prefix}icl_translations deliverable_target
+				         INNER JOIN {$wpdb->prefix}icl_translations deliverable_original
+				                 ON deliverable_original.trid = deliverable_target.trid
+				                AND deliverable_original.element_type = deliverable_target.element_type
+				                AND deliverable_original.source_language_code IS NULL
+				                AND deliverable_original.element_id IS NOT NULL
+				         WHERE deliverable_target.translation_id = translation_status.translation_id
+				         LIMIT 1
+				    ) IS NULL
+				  ORDER BY jobs.job_id ASC
+				  LIMIT %d",
+				ICL_TM_IN_PROGRESS,
+				ICL_TM_WAITING_FOR_TRANSLATOR,
+				\WPML_TM_Editors::ATE,
+				ICL_TM_IN_PROGRESS,
+				ICL_TM_WAITING_FOR_TRANSLATOR,
+				max( 1, (int) $limit )
+			)
+		);
+
+		return is_array( $rows ) ? $rows : [];
 	}
 
 	public function getCountOfAutomaticInProgress( $includeLongstanding = true ) {
@@ -116,6 +177,7 @@ class Jobs {
 		$sql .= "
 				WHERE jobs.editor = %s
 				AND translation_status.status = %d
+				AND " . self::deliverableOriginalSQL( 'translation_status.translation_id' ) . "
 		";
 
 		$sql .= $this->getErrorExclusionWhereSQL();
@@ -140,11 +202,13 @@ class Jobs {
 				AND (
 					translations.element_id IS NOT NULL
 					OR translations.element_type LIKE %s
+					OR translations.element_type = %s
 				)
 				WHERE ( translation_status.review_status = %s AND translation_status.status = %d ) OR
 				      ( translation_status.review_status = %s AND translation_status.status = %d )
 				",
 				$wpdb->esc_like( 'package_' ) . '%',
+				TermBundle::ELEMENT_TYPE,
 				ReviewStatus::NEEDS_REVIEW,
 				ICL_TM_COMPLETE,
 				ReviewStatus::EDITING,
@@ -183,6 +247,8 @@ class Jobs {
 		$sql .= "
 				WHERE jobs.editor = %s
 				AND translation_status.status = %d
+				AND jobs.editor_job_id > 0
+				AND " . self::deliverableOriginalSQL( 'translation_status.translation_id' ) . "
 		";
 
 		$sql .= $this->getErrorExclusionWhereSQL();
@@ -211,6 +277,8 @@ class Jobs {
 		$sql .= "
 				WHERE jobs.editor = %s
 				AND ( translation_status.status = %d OR translation_status.status = %d )
+				AND jobs.editor_job_id > 0
+				AND " . self::deliverableOriginalSQL( 'translation_status.translation_id' ) . "
 		";
 
 		$sql .= $this->getErrorExclusionWhereSQL();
@@ -243,7 +311,7 @@ class Jobs {
 		);
 	}
 
-	public function getATEJobIdsToSyncWithElementIds( $includeManualAndLongstandingJobs = true ): array {
+	public function getATEJobIdsToSyncWithElementIds( $includeManualAndLongstandingJobs = true, $leaveOutBackedOffManualJobs = false ): array {
 		global $wpdb;
 
 		$sql = "
@@ -268,6 +336,8 @@ class Jobs {
 		$sql .= "
 				WHERE jobs.editor = %s
 				AND ( translation_status.status = %d OR translation_status.status = %d )
+				AND jobs.editor_job_id > 0
+				AND " . self::deliverableOriginalSQL( 'translation_status.translation_id' ) . "
 		";
 
 		$sql .= $this->getErrorExclusionWhereSQL();
@@ -288,15 +358,24 @@ class Jobs {
 				)
 			);
 		} else {
+			$values = [
+				ICL_TM_IN_PROGRESS,
+				ICL_TM_WAITING_FOR_TRANSLATOR,
+				\WPML_TM_Editors::ATE,
+				ICL_TM_IN_PROGRESS,
+				ICL_TM_WAITING_FOR_TRANSLATOR,
+			];
+
+			if ( $leaveOutBackedOffManualJobs ) {
+				$sql     .= ' AND ( jobs.automatic = 1 OR jobs.ate_sync_count < %d )';
+				$values[] = self::LONGSTANDING_AT_ATE_SYNC_COUNT;
+			}
+
 			$sql    .= $orderBySQL;
 			$results = $wpdb->get_results(
 				$wpdb->prepare(
 					$sql,
-					ICL_TM_IN_PROGRESS,
-					ICL_TM_WAITING_FOR_TRANSLATOR,
-					\WPML_TM_Editors::ATE,
-					ICL_TM_IN_PROGRESS,
-					ICL_TM_WAITING_FOR_TRANSLATOR
+					$values
 				)
 			);
 		}

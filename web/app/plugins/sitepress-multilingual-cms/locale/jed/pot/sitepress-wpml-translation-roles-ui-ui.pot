@@ -156,27 +156,32 @@ msgstr ""
 msgid "Edit language pair(s) for translator"
 msgstr ""
 
-#: src/js/components/translators/TranslatorsTable.js:132
+#: src/js/components/translators/TranslatorsTable.js:145
 #: src/js/setup/components/Steps/AddLanguagesModal.js:355
 #. Column heading and field label for the name of a person, a language or a translation service: a noun (the name), not the verb "to name".
 msgid "Name"
 msgstr ""
 
-#: src/js/components/translators/TranslatorsTable.js:144
+#: src/js/components/translators/TranslatorsTable.js:157
 #. Heading of the table column that lists the pairs of languages each translator translates between.
 msgid "Language Pairs"
 msgstr ""
 
-#: src/js/components/translators/TranslatorsTable.js:148
+#: src/js/components/translators/TranslatorsTable.js:161
 msgid "You can translate to and from all languages"
 msgstr ""
 
-#: src/js/components/translators/TranslatorsTable.js:55
+#: src/js/components/translators/TranslatorsTable.js:170
 msgid "Edit language pair(s)"
 msgstr ""
 
-#: src/js/components/translators/TranslatorsTable.js:58
+#: src/js/components/translators/TranslatorsTable.js:173
 msgid "Delete language pair(s)"
+msgstr ""
+
+#: src/js/components/translators/TranslatorsTable.js:85
+#. Shown in the language pairs column of the translators table, instead of the language flags, for a translator who can translate between every pair of the site's languages.
+msgid "Can translate to and from all languages"
 msgstr ""
 
 #: src/js/setup/components/Steps/AddLanguages/Flag.js:48

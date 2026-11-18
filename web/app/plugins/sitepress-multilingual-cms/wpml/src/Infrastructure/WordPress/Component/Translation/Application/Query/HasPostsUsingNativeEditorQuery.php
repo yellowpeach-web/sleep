@@ -10,6 +10,7 @@ use WPML\Core\SharedKernel\Component\Language\Application\Query\Dto\LanguageDto;
 use WPML\Core\SharedKernel\Component\Language\Application\Query\LanguagesQueryInterface;
 use WPML\Core\SharedKernel\Component\Post\Domain\TranslationEditorPreference;
 use WPML\Core\SharedKernel\Component\Translation\Domain\TranslationStatus;
+use WPML\TranslationPolicy\Policy\Policy;
 
 class HasPostsUsingNativeEditorQuery implements HasPostsUsingNativeEditorQueryInterface {
 
@@ -84,10 +85,19 @@ class HasPostsUsingNativeEditorQuery implements HasPostsUsingNativeEditorQueryIn
 
 
   private function getMetaValueCondition( array $postTypesUsingWpEditor ) : string {
+    return ' AND ' . Policy::editorSql()->usesNativeEditor(
+      $this->getTodaysNativeEditorCondition( $postTypesUsingWpEditor ),
+      'wpml_p.ID',
+      'wpml_p.post_type'
+    );
+  }
+
+
+  private function getTodaysNativeEditorCondition( array $postTypesUsingWpEditor ) : string {
     $perPostEditorCase = $this->getPerPostEditorCase();
 
     if ( $postTypesUsingWpEditor ) {
-      return " AND ( $perPostEditorCase = 1
+      return "( $perPostEditorCase = 1
                   OR ( wpml_p.post_type IN
                       (" . $this->queryPrepare->prepareIn( $postTypesUsingWpEditor ) . ")
                        AND $perPostEditorCase IS NULL
@@ -95,7 +105,7 @@ class HasPostsUsingNativeEditorQuery implements HasPostsUsingNativeEditorQueryIn
                   )";
     }
 
-    return " AND $perPostEditorCase = 1";
+    return "$perPostEditorCase = 1";
   }
 
 

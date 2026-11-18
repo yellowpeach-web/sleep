@@ -172,28 +172,33 @@ msgstr ""
 msgid "Edit language pair(s) for translator"
 msgstr ""
 
-#: src/js/components/translators/TranslatorsTable.js:132
+#: src/js/components/translators/TranslatorsTable.js:145
 #: src/js/setup/components/Steps/AddLanguagesModal.js:355
 #: src/js/translationServices/components/ServicesList.js:70
 #. Column heading and field label for the name of a person, a language or a translation service: a noun (the name), not the verb "to name".
 msgid "Name"
 msgstr ""
 
-#: src/js/components/translators/TranslatorsTable.js:144
+#: src/js/components/translators/TranslatorsTable.js:157
 #. Heading of the table column that lists the pairs of languages each translator translates between.
 msgid "Language Pairs"
 msgstr ""
 
-#: src/js/components/translators/TranslatorsTable.js:148
+#: src/js/components/translators/TranslatorsTable.js:161
 msgid "You can translate to and from all languages"
 msgstr ""
 
-#: src/js/components/translators/TranslatorsTable.js:55
+#: src/js/components/translators/TranslatorsTable.js:170
 msgid "Edit language pair(s)"
 msgstr ""
 
-#: src/js/components/translators/TranslatorsTable.js:58
+#: src/js/components/translators/TranslatorsTable.js:173
 msgid "Delete language pair(s)"
+msgstr ""
+
+#: src/js/components/translators/TranslatorsTable.js:85
+#. Shown in the language pairs column of the translators table, instead of the language flags, for a translator who can translate between every pair of the site's languages.
+msgid "Can translate to and from all languages"
 msgstr ""
 
 #: src/js/setup/components/CorruptedWizard.js:41
@@ -235,6 +240,106 @@ msgstr ""
 #: src/js/setup/components/Footer.js:22
 #. Label of the back button in the setup wizard. %1$s: the number of the step it goes back to, %2$s: the name of that step.
 msgid "Back to Step %1$s: %2$s"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineComparisonTable.js:14
+#. The "available with PTC" answer in the engine comparison table on WPML → Settings.
+msgid "Available"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineComparisonTable.js:16
+#. The "not available with this engine" answer in the engine comparison table on WPML → Settings.
+msgid "Not available"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineComparisonTable.js:22
+#. Row of the engine comparison table on WPML → Settings, about the engine reading the site's own context.
+msgid "Understands your site's topic, audience and tone"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineComparisonTable.js:29
+#. Row of the engine comparison table on WPML → Settings, about translation quality.
+msgid "Publish-ready quality, backed by our guarantee"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineComparisonTable.js:31
+#. Answer in the engine comparison table on WPML → Settings: with this engine the client has to read the translations before they go live.
+msgid "Review before publishing"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineComparisonTable.js:37
+#. Row of the engine comparison table on WPML → Settings, about what a translation costs. Keep the dash.
+msgid "Pay once per page – only added words are charged"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineComparisonTable.js:39
+#. Answer in the engine comparison table on WPML → Settings: this engine charges for every word it translates, including the words of a page that is translated again after an edit.
+msgid "Per word, changes included"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineComparisonTable.js:51
+#: src/js/setup/components/Steps/Translation.js:183
+#. Header of the left column of the engine comparison table on WPML → Settings, when the exact engine is not known yet. It stands for any of the older engines.
+msgid "A legacy engine"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineHeader.js:100
+#. Line under the Translation Quality box of the AI translation step of the setup wizard. The <button> tags wrap the words that open the engine-switch dialog; keep them around a verb phrase.
+msgid ""
+"<button>Switch to a different engine</button> if you prefer — no quality "
+"guarantee and no free translation edits with other engines."
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineHeader.js:120
+#. First line over the AI translation step of the setup wizard. The <strong> tags make the engine name bold; keep them around it. PTC is a product name; keep it.
+msgid ""
+"Your content will be translated by <strong>Private Translation Cloud "
+"(PTC)</strong>, WPML's own AI engine. PTC lets you translate the entire "
+"site automatically, in one click, offering free translation edits."
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineHeader.js:53
+#: src/js/setup/components/Steps/AITranslation/EngineSwitchDialog.js:42
+msgid "Couldn't save — try again"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineHeader.js:68
+#. First line over the AI translation step of the setup wizard on a site that uses one of the older engines. %s: the engine's name, for example "DeepL". The <strong> tags make it bold; keep them around it.
+msgid ""
+"Your content will be translated by <strong>%s</strong>, a machine "
+"translation engine. You pay per word, including changes to content that's "
+"already translated."
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineQualityBarSlot.js:75
+#: src/js/setup/components/Steps/Translation.js:211
+#. Label of the button, and of the notice heading, that switch the site's automatic translation engine to Private Translation Cloud (PTC). Verb, imperative. PTC is a product name; keep it.
+msgid "Switch to PTC"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineSwitchDialog.js:58
+#. Title of the dialog on WPML → Settings that moves the site off the PTC translation engine. PTC is a product name; keep it.
+msgid "Switch away from PTC?"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineSwitchDialog.js:62
+#. Subline under the left column of the engine comparison table on WPML → Settings, naming the older engines. These are product names; keep them.
+msgid "DeepL, Google Translate or Microsoft Translator"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineSwitchDialog.js:63
+#. Subline under the PTC column of the engine comparison table in the dialog that switches the site away from PTC. It says PTC is what the site uses at this moment.
+msgid "Your engine now"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineSwitchDialog.js:72
+#. Label of the button that confirms moving the site off the PTC translation engine. Verb, imperative. PTC is a product name; keep it.
+msgid "Switch away from PTC"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/EngineSwitchDialog.js:75
+#. Label of the button that dismisses the dialog and leaves the site on the PTC translation engine. Verb, imperative. PTC is a product name; keep it.
+msgid "Stay with PTC"
 msgstr ""
 
 #: src/js/setup/components/Steps/AITranslation/ErrorInfo.js:107
@@ -290,34 +395,99 @@ msgstr ""
 msgid " and provide the technical details below (use the Copy button to copy them)."
 msgstr ""
 
-#: src/js/setup/components/Steps/AITranslation/index.js:136
+#: src/js/setup/components/Steps/AITranslation/ReviewModeRadios.js:18
+#: src/js/setup/components/Steps/AITranslation/ReviewModeSelect.js:18
+msgid "Publish without review"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/ReviewModeRadios.js:19
+msgid "Translations go live immediately in the target language."
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/ReviewModeRadios.js:24
+msgid "Wait for review before publishing"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/ReviewModeRadios.js:25
+msgid "Translations stay as drafts until a translation manager approves them."
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/ReviewModeRadios.js:28
+#: src/js/setup/components/Steps/Translation.js:543
+#. Badge beside the option WPML suggests; an adjective describing that option.
+msgid "Recommended"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/ReviewModeRadios.js:29
+msgid ""
+"For DeepL, Google, and Microsoft we recommend a human review to confirm "
+"they are correct. PTC provides Better Than Human Translations that "
+"understand context, so you can confidently skip the review process."
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/ReviewModeRadios.js:34
+#: src/js/setup/components/Steps/AITranslation/ReviewModeSelect.js:21
+msgid "Publish and mark for review"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/ReviewModeRadios.js:35
+msgid "Translations go live but appear in a \"needs review\" queue."
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/ReviewModeRadios.js:62
+msgid "After auto-translation"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/ReviewModeRadios.js:66
+#. Subtitle over the review options on the AI translation step of the setup wizard, on a site that uses one of the older engines. %s: the engine's name, for example "DeepL".
+msgid "What happens to content once %s has translated it."
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/ReviewModeSelect.js:20
+#. Short label of the review option on the AI translation step of the setup wizard: translations stay unpublished until someone reviewed them.
+msgid "Wait for review"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/ReviewModeSelect.js:43
+#. Label of the review option WPML advises you to pick, on the AI translation step of the setup wizard. %1$s: the option's label, for example "Wait for review". %2$s: the word "Recommended". The <strong> tags make it bold; keep them around it.
+msgid "%1$s (<strong>%2$s</strong>)"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/ReviewModeSelect.js:79
+#. Question on the left of the review dropdown on the AI translation step of the setup wizard, on a site that uses one of the older engines. The dropdown answers it: publish without review, wait for review, or publish and mark for review.
+msgid ""
+"What would you like to do when WPML finishes translating your content "
+"automatically?"
+msgstr ""
+
+#: src/js/setup/components/Steps/AITranslation/index.js:192
 msgid "Loading AI Translation..."
 msgstr ""
 
-#: src/js/setup/components/Steps/AITranslation/index.js:152
+#: src/js/setup/components/Steps/AITranslation/index.js:221
 msgid "We couldn't save your AI translation context"
 msgstr ""
 
-#: src/js/setup/components/Steps/AITranslation/index.js:155
+#: src/js/setup/components/Steps/AITranslation/index.js:224
 msgid "Please edit a field to try again, or skip the AI translation setup."
 msgstr ""
 
-#: src/js/setup/components/Steps/AITranslation/index.js:176
+#: src/js/setup/components/Steps/AITranslation/index.js:245
 msgid "Are you sure?"
 msgstr ""
 
-#: src/js/setup/components/Steps/AITranslation/index.js:178
+#: src/js/setup/components/Steps/AITranslation/index.js:247
 msgid ""
 "Skipping this step means that you will not be able to automatically "
 "translate the entire site."
 msgstr ""
 
-#: src/js/setup/components/Steps/AITranslation/index.js:185
+#: src/js/setup/components/Steps/AITranslation/index.js:254
 #. Label of the button that confirms leaving out the AI translation step of the setup wizard; verb, imperative.
 msgid "Yes, skip"
 msgstr ""
 
-#: src/js/setup/components/Steps/AITranslation/index.js:188
+#: src/js/setup/components/Steps/AITranslation/index.js:257
 msgid "No, enter the details"
 msgstr ""
 
@@ -531,113 +701,125 @@ msgstr ""
 msgid "adding a custom language"
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:108
+#: src/js/setup/components/Steps/Address.js:107
+msgid "I will fix my server settings to display languages in directories later."
+msgstr ""
+
+#: src/js/setup/components/Steps/Address.js:109
+msgid "We could not verify your server's URL-rewrite support."
+msgstr ""
+
+#: src/js/setup/components/Steps/Address.js:112
+msgid ""
+"Learn more about required server settings to display languages in "
+"directories"
+msgstr ""
+
+#: src/js/setup/components/Steps/Address.js:121
 #. Checkbox under the Plain-permalinks error in the setup wizard. Ticking it lets the user continue with languages in directories and change the permalink structure afterwards.
 msgid "I will change the permalink structure later."
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:110
+#: src/js/setup/components/Steps/Address.js:123
 #. Error under the address format choice in the setup wizard. The site uses Plain permalinks (no permalink structure), so the option that puts each language in a directory of its own cannot work.
 msgid "Languages in directories do not work with Plain permalinks."
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:113
+#: src/js/setup/components/Steps/Address.js:126
 #. Link after that error. "Settings > Permalinks" is the WordPress admin screen where the permalink structure is chosen; use the names WordPress shows in your language.
 msgid "Choose a different structure in Settings > Permalinks."
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:128
+#: src/js/setup/components/Steps/Address.js:141
 msgid "A different domain per language"
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:130
+#: src/js/setup/components/Steps/Address.js:143
 msgid "This option is not yet available for Multisite installs"
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:138
+#: src/js/setup/components/Steps/Address.js:151
 msgid ""
 "Learn more about required server settings to use a different domain per "
 "language"
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:148
+#: src/js/setup/components/Steps/Address.js:161
 msgid "Language name added as a parameter"
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:161
+#: src/js/setup/components/Steps/Address.js:174
 msgid "Learn more about Language URL Options"
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:234
+#: src/js/setup/components/Steps/Address.js:247
 #. Checkbox in the setup wizard after a firewall or a CDN (content delivery network) blocked WPML's check of every language domain, while the domains themselves load. Ticking it continues with the domains saved, without the check.
 msgid "My domains work. Continue without WPML's check."
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:235
+#: src/js/setup/components/Steps/Address.js:248
 msgid "I will set up the domains for my secondary languages later."
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:246
+#: src/js/setup/components/Steps/Address.js:259
 #. Shown under a language domain in the setup wizard when the domain is an international domain name, such as bücher.example, and the server cannot convert it. The xn-- form (punycode) is the ASCII spelling of such a name. %s: the domain as the user typed it.
 msgid ""
 "Your server cannot convert international domain names. Enter the xn-- form "
 "of %s."
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:250
+#: src/js/setup/components/Steps/Address.js:263
 #. Shown under a language domain in the setup wizard when the domain loads, but a firewall or a CDN (content delivery network) blocked WPML's check that it shows this site.
 msgid "This domain loads, but a firewall or CDN blocked WPML's check."
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:252
+#: src/js/setup/components/Steps/Address.js:265
 #. Shown under a language domain in the setup wizard when the domain answers, but with another site.
 msgid "This domain does not show this site."
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:254
+#: src/js/setup/components/Steps/Address.js:267
+#. Shown under a language domain in the setup wizard on a multisite network, when another site of the network has this address.
+msgid "This address belongs to another site on this network."
+msgstr ""
+
+#: src/js/setup/components/Steps/Address.js:269
 #. Shown under a language domain in the setup wizard when the domain does not load at all.
 msgid "WPML could not reach this domain."
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:321
+#: src/js/setup/components/Steps/Address.js:330
+#. Note under "Different languages in directories" when the site uses another URL format. %s: language URL directories with their language names, for example "/es/ (Spanish)".
+msgid "If you choose this, these URLs will open a sub-site: %s."
+msgid_plural "If you choose this, these URLs will open a sub-site: %s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/setup/components/Steps/Address.js:373
 msgid "The domain you have entered is invalid."
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:324
+#: src/js/setup/components/Steps/Address.js:376
 msgid "The domain you have entered must be unique."
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:377
+#: src/js/setup/components/Steps/Address.js:429
 #. Note under the address format choice in the setup wizard. "This" is the server setting that allows languages in directories.
 msgid ""
 "Please Note: Your site won't work in your secondary languages until this is "
 "successfully set up or you switch to a different URL option."
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:63
+#: src/js/setup/components/Steps/Address.js:73
 msgid "How would you like to structure your site's URLs?"
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:68
+#: src/js/setup/components/Steps/Address.js:79
 msgid "Different languages in directories"
 msgstr ""
 
-#: src/js/setup/components/Steps/Address.js:82
+#: src/js/setup/components/Steps/Address.js:95
 msgid "The URL rewrite is not configured in your server."
-msgstr ""
-
-#: src/js/setup/components/Steps/Address.js:94
-msgid "I will fix my server settings to display languages in directories later."
-msgstr ""
-
-#: src/js/setup/components/Steps/Address.js:96
-msgid "We could not verify your server's URL-rewrite support."
-msgstr ""
-
-#: src/js/setup/components/Steps/Address.js:99
-msgid ""
-"Learn more about required server settings to display languages in "
-"directories"
 msgstr ""
 
 #: src/js/setup/components/Steps/Finished/cases/BlogCase.js:18
@@ -680,13 +862,14 @@ msgstr ""
 msgid "Translate your posts"
 msgstr ""
 
-#: src/js/setup/components/Steps/Finished/cases/TeaActiveCase.js:22
-#: src/js/setup/components/Steps/Finished/cases/TeaInactiveCase.js:18
-#. Where the setup wizard is taking you, used inside "Taking you to the Translation Dashboard…".
-msgid "the Translation Dashboard"
+#: src/js/setup/components/Steps/Finished/cases/TeaActiveCase.js:25
+#. Last step of the setup wizard, on a site that uses one of the older engines. %s: the engine's name, for example "DeepL".
+msgid ""
+"%s will translate your whole site and keep new content translated from now "
+"on. You're charged per word, including later changes."
 msgstr ""
 
-#: src/js/setup/components/Steps/Finished/cases/TeaActiveCase.js:28
+#: src/js/setup/components/Steps/Finished/cases/TeaActiveCase.js:29
 msgid ""
 "Private Translation Cloud (PTC) will translate your whole site and keep new "
 "content translated from now on. You pay once for what's translated — "
@@ -694,6 +877,19 @@ msgid ""
 msgstr ""
 
 #: src/js/setup/components/Steps/Finished/cases/TeaActiveCase.js:33
+#. Last step of the setup wizard when the translation engine is not known.
+msgid ""
+"Automatic translation will translate your whole site and keep new content "
+"translated from now on."
+msgstr ""
+
+#: src/js/setup/components/Steps/Finished/cases/TeaActiveCase.js:39
+#: src/js/setup/components/Steps/Finished/cases/TeaInactiveCase.js:18
+#. Where the setup wizard is taking you, used inside "Taking you to the Translation Dashboard…".
+msgid "the Translation Dashboard"
+msgstr ""
+
+#: src/js/setup/components/Steps/Finished/cases/TeaActiveCase.js:45
 msgid "Apply settings and start site's translation"
 msgstr ""
 
@@ -705,13 +901,21 @@ msgstr ""
 msgid "Apply settings and go to <b>Translation Dashboard</b>"
 msgstr ""
 
-#: src/js/setup/components/Steps/Finished/cases/WcmlWithTeaCase.js:24
+#: src/js/setup/components/Steps/Finished/cases/WcmlWithTeaCase.js:28
 #: src/js/setup/components/Steps/Finished/cases/WcmlWithoutTeaCase.js:16
 #. Where the setup wizard is taking you, used inside "Taking you to the WooCommerce Multilingual setup…".
 msgid "the WooCommerce Multilingual setup"
 msgstr ""
 
-#: src/js/setup/components/Steps/Finished/cases/WcmlWithTeaCase.js:27
+#: src/js/setup/components/Steps/Finished/cases/WcmlWithTeaCase.js:34
+#. Last step of the setup wizard before the WooCommerce Multilingual setup, on a site that uses one of the older engines. %s: the engine's name, for example "DeepL".
+msgid ""
+"%s will start translating your site now and keep new content translated "
+"from now on. Next, you'll set up your multilingual store. Your products "
+"start translating once you finish the WooCommerce Multilingual setup."
+msgstr ""
+
+#: src/js/setup/components/Steps/Finished/cases/WcmlWithTeaCase.js:38
 msgid ""
 "Private Translation Cloud (PTC) will start translating your site now and "
 "keep new content translated from now on. Next, you'll set up your "
@@ -720,7 +924,16 @@ msgid ""
 "it afterward is free."
 msgstr ""
 
-#: src/js/setup/components/Steps/Finished/cases/WcmlWithTeaCase.js:36
+#: src/js/setup/components/Steps/Finished/cases/WcmlWithTeaCase.js:42
+#. Last step of the setup wizard before the WooCommerce Multilingual setup, when the translation engine is not known.
+msgid ""
+"Automatic translation will start translating your site now and keep new "
+"content translated from now on. Next, you'll set up your multilingual "
+"store. Your products start translating once you finish the WooCommerce "
+"Multilingual setup."
+msgstr ""
+
+#: src/js/setup/components/Steps/Finished/cases/WcmlWithTeaCase.js:48
 msgid "Continue to WooCommerce Multilingual Setup while translation begins"
 msgstr ""
 
@@ -777,26 +990,36 @@ msgid ""
 "language options."
 msgstr ""
 
-#: src/js/setup/components/Steps/Finished/parts/PreparingScreen.js:11
+#: src/js/setup/components/Steps/Finished/parts/PreparingScreen.js:17
 msgid "Your site's translation has started"
 msgstr ""
 
-#: src/js/setup/components/Steps/Finished/parts/PreparingScreen.js:12
+#: src/js/setup/components/Steps/Finished/parts/PreparingScreen.js:18
 msgid "Applying your setup choices"
 msgstr ""
 
-#: src/js/setup/components/Steps/Finished/parts/PreparingScreen.js:14
+#: src/js/setup/components/Steps/Finished/parts/PreparingScreen.js:22
+#. Line on the waiting screen at the end of the setup wizard. %s: the translation engine's name, for example "DeepL".
+msgid "%s is translating your content. There's nothing else you need to do here."
+msgstr ""
+
+#: src/js/setup/components/Steps/Finished/parts/PreparingScreen.js:26
 msgid "PTC is translating your content. There's nothing else you need to do here."
 msgstr ""
 
-#: src/js/setup/components/Steps/Finished/parts/PreparingScreen.js:15
+#: src/js/setup/components/Steps/Finished/parts/PreparingScreen.js:27
+#. Line on the waiting screen at the end of the setup wizard, when the translation engine is not known.
+msgid "Your content is being translated. There's nothing else you need to do here."
+msgstr ""
+
+#: src/js/setup/components/Steps/Finished/parts/PreparingScreen.js:30
 #. Line on the waiting screen at the end of the setup wizard. "This" is the applying of the setup choices.
 msgid ""
 "We're applying all your setup choices and preparing WPML. This is a "
 "one-time process."
 msgstr ""
 
-#: src/js/setup/components/Steps/Finished/parts/PreparingScreen.js:23
+#: src/js/setup/components/Steps/Finished/parts/PreparingScreen.js:40
 #. Line on the waiting screen at the end of the setup wizard. %s: where you are being taken, for example "the Translation Dashboard" or "your pages".
 msgid "Taking you to %s…"
 msgstr ""
@@ -952,47 +1175,32 @@ msgstr ""
 msgid "Full details of the info we’re proposing to share"
 msgstr ""
 
-#: src/js/setup/components/Steps/Translation.js:161
-msgid ""
-"<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best "
-"mode for your site."
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:173
-msgid "How would you like to translate your content?"
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:193
-#. Badge beside the option WPML suggests; an adjective describing that option.
-msgid "Recommended"
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:198
-msgid "Translate Everything Automatically"
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:206
-msgid "Full-site automatic translation needs AI translation set up."
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:213
-msgid "Set up AI translation"
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:241
-msgid "Translate Some: You Choose What to Translate"
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:246
-msgid "Select this option"
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:26
+#: src/js/setup/components/Steps/Translation.js:101
 #. Row heading in the table that compares the two translation modes in the setup wizard. "It" is each mode.
 msgid "How it works"
 msgstr ""
 
-#: src/js/setup/components/Steps/Translation.js:27
+#: src/js/setup/components/Steps/Translation.js:103
+msgid "You select and submit what to translate."
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:108
+#. Row heading in the table that compares the two translation modes: a noun (what each mode costs), not the verb "to cost".
+msgid "Costs"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:111
+msgid ""
+"Pay per translation job submitted.<br/>Each update or new content batch is "
+"a separate charge."
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:119
+#. Row heading in the table that compares the two translation modes; the cells finish the phrase with a list, for example "Ideal for: sites that publish often".
+msgid "Ideal for"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:162
 #. Description of the automatic translation mode in the table that compares the translation modes. "It" is PTC.
 msgid ""
 "PTC (Private Translation Cloud) is WPML's own AI translation engine. It "
@@ -1000,87 +1208,212 @@ msgid ""
 "background. You can edit any translation and exclude post types."
 msgstr ""
 
-#: src/js/setup/components/Steps/Translation.js:288
-#. Heading in the setup wizard over the link to help with choosing a translation mode.
-msgid "Can't decide?"
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:31
-msgid "You select and submit what to translate."
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:35
-#. Row heading in the table that compares the two translation modes: a noun (what each mode costs), not the verb "to cost".
-msgid "Costs"
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:37
+#: src/js/setup/components/Steps/Translation.js:169
 msgid ""
 "Pay once for total content translated.<br/><strong>Revisions are "
 "free</strong> — only extending content is charged."
 msgstr ""
 
-#: src/js/setup/components/Steps/Translation.js:41
+#: src/js/setup/components/Steps/Translation.js:175
+#. Row heading in the table that compares the translation modes, on a site that uses WPML's own engine (PTC); the row lists what PTC gives. PTC is a product name; keep it.
+msgid "Included with PTC"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:186
+#. Row heading in the table that compares the translation modes, on a site that uses one of the older engines; the row lists what only WPML's own engine (PTC) gives. %s: the engine's name, for example "DeepL", or "your current engine". Keep the dash. PTC is a product name; keep it.
+msgid "Only with PTC — not with %s"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:187
+#. Stands in for the engine's name in "Only with PTC — not with %s" when the engine has no name.
+msgid "your current engine"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:194
+#. Description of the automatic translation mode in the table that compares the translation modes, on a site that uses one of the older engines. %s: the engine's name, for example "DeepL".
 msgid ""
-"Pay per translation job submitted.<br/>Each update or new content batch is "
-"a separate charge."
+"%s translates your entire site into every language you selected, in the "
+"background. You can edit any translation and exclude post types."
 msgstr ""
 
-#: src/js/setup/components/Steps/Translation.js:47
-#. Row heading in the table that compares the two translation modes in the setup wizard.
-msgid "Translation quality"
+#: src/js/setup/components/Steps/Translation.js:199
+#. Pricing of the automatic translation mode in the table that compares the translation modes, on a site that uses one of the older engines.
+msgid "Charged per word, including changes to content that's already translated."
 msgstr ""
 
-#: src/js/setup/components/Steps/Translation.js:49
-msgid "WPML ensures excellent quality. Bad translations are refunded."
+#: src/js/setup/components/Steps/Translation.js:260
+#. Description of the manual translation mode with PTC in the table that compares the translation modes. "+" is the icon next to each page in the list of pages. PTC is a product name; keep it.
+msgid ""
+"You choose what to translate, from the Translation Dashboard or with \"+\" "
+"next to each page. PTC translates it."
 msgstr ""
 
-#: src/js/setup/components/Steps/Translation.js:53
-#. Row heading in the table that compares the two translation modes; the cells finish the phrase with a list, for example "Ideal for: known upfront costs".
-msgid "Ideal for"
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:56
-msgid "Known upfront costs"
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:57
-msgid "Unlimited post-translation editing"
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:58
-#. One of the things the automatic translation mode is ideal for, listed in the table that compares the translation modes.
-msgid "Marketing optimization"
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:59
-msgid "Turn-key solutions"
-msgstr ""
-
-#: src/js/setup/components/Steps/Translation.js:64
+#: src/js/setup/components/Steps/Translation.js:263
 msgid "Partial site translation"
 msgstr ""
 
-#: src/js/setup/components/Steps/Translation.js:65
+#: src/js/setup/components/Steps/Translation.js:264
 #. One of the things the manual translation mode is ideal for, listed in the table that compares the translation modes.
 msgid "Maximum control"
 msgstr ""
 
-#: src/js/setup/components/Steps/Translation.js:78
+#: src/js/setup/components/Steps/Translation.js:265
+#. One of the things the manual translation mode with PTC is ideal for, listed in the table that compares the translation modes: good translations without writing them yourself.
+msgid "Quality without the work"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:271
+#. Description of the manual translation mode when the user or their translators translate, in the table that compares the translation modes.
+msgid ""
+"You choose what to translate. You or your translators write each "
+"translation in the Advanced Translation Editor."
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:272
+#. Pricing of the manual translation mode when the user or their translators translate. "Words" are the prepaid words of automatic translation.
+msgid "No words used, unless you start from a machine translation in the editor."
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:275
+#. One of the things the manual translation mode without PTC is ideal for, listed in the table that compares the translation modes.
+msgid "Your own translators"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:276
+#. One of the things the manual translation mode without PTC is ideal for, listed in the table that compares the translation modes.
+msgid "Texts that need a human touch"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:303
+#. Who translates: WPML's own translation engine. PTC is a product name; keep it.
+msgid "PTC"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:304
+#. One line under "PTC" in the setup wizard: what PTC does with "Translate Some". PTC is a product name; keep it.
+msgid "PTC translates what you send. You review."
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:309
+#. Who translates: the user. A short label of a choice, the same as on WPML → Settings.
+msgid "I translate"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:310
+#. One line under "I translate" in the setup wizard.
+msgid "You or your translators write it."
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:316
+#. Question in the "Translate Some" option of the setup wizard, above the two choices "PTC" and "I translate".
+msgid "When you start a translation, who translates?"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:317
+msgid "Who translates"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:363
 msgid "Contact our support team for help"
 msgstr ""
 
-#: src/js/setup/components/Steps/TranslationCosts.js:146
+#: src/js/setup/components/Steps/Translation.js:511
+msgid ""
+"<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best "
+"mode for your site."
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:523
+msgid "How would you like to translate your content?"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:548
+msgid "Translate Everything Automatically"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:55
+#. One of the things the automatic translation mode is ideal for, listed in the table that compares the translation modes: the translations never lag behind the original content.
+msgid "Translations always in sync"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:556
+msgid "Full-site automatic translation needs AI translation set up."
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:56
+#. One of the things the automatic translation mode is ideal for, listed in the table that compares the translation modes.
+msgid "New and updated content translated automatically"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:563
+msgid "Set up AI translation"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:57
+#. One of the things the automatic translation mode is ideal for, listed in the table that compares the translation modes: sites whose owners add content frequently.
+msgid "Sites that publish often"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:58
+#. One of the things the automatic translation mode is ideal for, listed in the table that compares the translation modes: every language of the site is translated together.
+msgid "All your languages at once"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:593
+msgid "Translate Some: You Choose What to Translate"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:599
+msgid "Select this option"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:647
+#. Quiet line under the table of translation modes in the setup wizard. "WPML > Settings > Translation editor and method" is the path to a settings section; keep the ">" signs.
+msgid ""
+"WPML uses the Advanced Translation Editor. You can change the editor later "
+"in WPML > Settings > Translation editor and method."
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:65
+#. Benefit of WPML's own translation engine (PTC), listed in the table that compares the translation modes.
+msgid "Quality guarantee, bad translations refunded"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:664
+#. Heading in the setup wizard over the link to help with choosing a translation mode.
+msgid "Can't decide?"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:74
+#. Benefit of WPML's own translation engine (PTC), listed under the automatic translation mode in the table that compares the translation modes. Keep the dash.
+msgid "Pay once — revisions are free"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:75
+msgid "Known upfront costs"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:76
+#. Benefit of WPML's own translation engine (PTC), listed in the table that compares the translation modes: its translations can go live without a human checking them.
+msgid "Publish-ready results, no review needed"
+msgstr ""
+
+#: src/js/setup/components/Steps/Translation.js:77
+#. Benefit of WPML's own translation engine (PTC), listed in the table that compares the translation modes: the engine adapts the wording to the site's topic and its visitors.
+msgid "Marketing optimization based on your site and audience"
+msgstr ""
+
+#: src/js/setup/components/Steps/TranslationCosts.js:196
 msgid "Calculate Translation Costs"
 msgstr ""
 
-#: src/js/setup/components/Steps/TranslationCosts.js:149
+#: src/js/setup/components/Steps/TranslationCosts.js:199
 msgid ""
 "Review your site content and estimate the translation cost based on what "
 "you choose to translate."
 msgstr ""
 
-#: src/js/setup/components/Steps/TranslationCosts.js:159
+#: src/js/setup/components/Steps/TranslationCosts.js:209
 msgid "Connecting to Automatic Translation…"
 msgstr ""
 
@@ -1386,31 +1719,31 @@ msgstr ""
 msgid "Finished"
 msgstr ""
 
-#: src/js/setup/store.js:227
+#: src/js/setup/store.js:235
 #. Button label that goes to the step or screen before this one: verb, imperative, not the noun "the back".
 msgid "Back"
 msgstr ""
 
-#: src/js/setup/store.js:235
+#: src/js/setup/store.js:243
 #. Button label that goes to the next step of the setup wizard; verb, imperative.
 msgid "Continue"
 msgstr ""
 
-#: src/js/setup/store.js:244
+#: src/js/setup/store.js:252
 #. Button label that leaves out the current step of the setup wizard: verb, imperative, not the noun "a skip".
 msgid "Skip"
 msgstr ""
 
-#: src/js/setup/store.js:248
+#: src/js/setup/store.js:256
 msgid "Install and activate"
 msgstr ""
 
-#: src/js/setup/store.js:253
+#: src/js/setup/store.js:261
 #. Button label that completes the setup wizard; verb, imperative.
 msgid "Finish"
 msgstr ""
 
-#: src/js/setup/store.js:346
+#: src/js/setup/store.js:354
 msgid ""
 "WPML could not save your progress because the wizard state on the server is "
 "out of sync. Please reload this page and repeat the last step."
@@ -1472,4 +1805,10 @@ msgstr ""
 #: src/js/translationServices/components/ServicesList.js:82
 #. Heading of the table column that shows, as stars, how highly each translation service is rated.
 msgid "Ranking"
+msgstr ""
+
+#: src/js/setup/components/Steps/Address.js:318
+#. One item of a list of language URLs. 1: a language URL directory in code tags, for example /es/. 2: the language name, for example Spanish.
+msgctxt "language URL directory and language name"
+msgid "%1$s (%2$s)"
 msgstr ""

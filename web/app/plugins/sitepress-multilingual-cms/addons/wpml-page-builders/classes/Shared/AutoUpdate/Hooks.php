@@ -40,6 +40,7 @@ class Hooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC
 			add_filter( 'wpml_tm_delegate_translation_statuses_update', [ $this, 'enqueueTranslationStatusUpdate' ], 10, 3 );
 			add_filter( 'wpml_tm_post_md5_content', [ $this, 'getMd5ContentFromPackageStrings' ], 10, 2 );
 			add_action( 'shutdown', [ $this, 'afterRegisterAllStringsInShutdown' ], ShutdownHooks::PRIORITY_REGISTER_STRINGS + 1 );
+			add_action( ShutdownHooks::EDITOR_SAVE_BEFORE_RESPONSE, [ $this, 'afterRegisterAllStringsNow' ], ShutdownHooks::PRIORITY_REGISTER_STRINGS + 1 );
 		}
 	}
 
@@ -73,15 +74,31 @@ class Hooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC
 	}
 
 	public function afterRegisterAllStringsInShutdown() {
-		if ( $this->translationStatusesUpdaters ) {
-			self::clearTmCaches();
+		$this->runStatusUpdaters( $this->translationStatusesUpdaters );
+	}
 
-			foreach ( $this->translationStatusesUpdaters as $originalPostId => $translationStatusesUpdater ) {
-				if ( \get_post( $originalPostId ) ) {
-					call_user_func( $translationStatusesUpdater );
-					$this->resaveTranslations( $originalPostId );
-				}
+	public function afterRegisterAllStringsNow( $postId ) {
+		$postId = (int) $postId;
+
+		if ( isset( $this->translationStatusesUpdaters[ $postId ] ) ) {
+			$this->runStatusUpdaters( [ $postId => $this->translationStatusesUpdaters[ $postId ] ] );
+		}
+	}
+
+	private function runStatusUpdaters( array $updaters ) {
+		if ( ! $updaters ) {
+			return;
+		}
+
+		self::clearTmCaches();
+
+		foreach ( $updaters as $originalPostId => $translationStatusesUpdater ) {
+			if ( \get_post( $originalPostId ) ) {
+				call_user_func( $translationStatusesUpdater );
+				$this->resaveTranslations( $originalPostId );
 			}
+
+			unset( $this->translationStatusesUpdaters[ $originalPostId ] );
 		}
 	}
 
@@ -113,7 +130,7 @@ class Hooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC
 		wpml_collect( $this->elementFactory->create_post( $postId )->get_translations() )
 			->reject( $ifOriginal )
 			->filter( $ifCompleted )
-			->each( $resaveElement )
+			->filter( $resaveElement )
 			->each( $callAction );
 	}
 

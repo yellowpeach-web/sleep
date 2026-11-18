@@ -12,6 +12,7 @@ class Loaders {
 		$isSitemapHrefLangEnabled = ! defined( 'WPML_SEO_ENABLE_SITEMAP_HREFLANG' ) || constant( 'WPML_SEO_ENABLE_SITEMAP_HREFLANG' );
 		$langNegotiationType      = (int) $sitepress->get_setting( 'language_negotiation_type' );
 		$isWooCommerceActive      = class_exists( \WooCommerce::class );
+		$isSTEnabled              = defined( 'WPML_ST_VERSION' );
 
 		return wpml_collect(
 			[
@@ -28,6 +29,7 @@ class Loaders {
 				RestHead\LanguageHooks::class           => true,
 				Breadcrumbs\Hooks::class                => true,
 				AuthorBase\Hooks::class                 => true,
+				EditScreen\TemplatesLanguageHooks::class => $isSTEnabled,
 				InstantIndexing\ManualSubmitHooks::class => WPML_LANGUAGE_NEGOTIATION_TYPE_DOMAIN !== $langNegotiationType,
 				InstantIndexing\AutoSubmitHooks::class   => WPML_LANGUAGE_NEGOTIATION_TYPE_DIRECTORY === $langNegotiationType,
 				Sitemap\LangMode\DirectoryHooks::class  => WPML_LANGUAGE_NEGOTIATION_TYPE_DIRECTORY === $langNegotiationType,

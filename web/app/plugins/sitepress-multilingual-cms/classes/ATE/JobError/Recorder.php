@@ -5,10 +5,10 @@ namespace WPML\TM\ATE\JobError;
 require_once __DIR__ . '/../../../inc/constants-since-5-0.php';
 
 use Throwable;
+use WPML\Core\Component\Translation\Application\Repository\TranslateEverythingCompletedMapsInterface;
 use WPML\Core\Component\Translation\Application\Service\TranslateJobErrorService;
 use WPML\Core\Component\Translation\Domain\Entity\JobError;
 use WPML\TM\API\Jobs;
-use WPML\TM\ATE\PullDelivery\State;
 use WPML\TM\Jobs\JobLog;
 use WPML\Translation\TranslateJobErrorServiceFactory;
 
@@ -17,6 +17,7 @@ class Recorder {
 	const TYPE_SYNC     = JobError::TYPE_SYNC;
 	const TYPE_DOWNLOAD = JobError::TYPE_DOWNLOAD;
 	const TYPE_APPLY    = JobError::TYPE_APPLY;
+	const TYPE_CREATE   = JobError::TYPE_CREATE;
 
 	private $service;
 
@@ -24,16 +25,18 @@ class Recorder {
 
 	private $getStatus;
 
-	public function __construct( $service = null, $setStatus = null, $getStatus = null ) {
-		$this->service   = $service;
-		$this->setStatus = $setStatus ?: [ Jobs::class, 'setStatus' ];
-		$this->getStatus = $getStatus ?: [ Jobs::class, 'getStatus' ];
+	private $completedMaps;
+
+	public function __construct( $service = null, $setStatus = null, $getStatus = null, ?TranslateEverythingCompletedMapsInterface $completedMaps = null ) {
+		$this->service       = $service;
+		$this->setStatus     = $setStatus ?: [ Jobs::class, 'setStatus' ];
+		$this->getStatus     = $getStatus ?: [ Jobs::class, 'getStatus' ];
+		$this->completedMaps = $completedMaps;
 	}
 
 	public function record( $jobId, $ateJobId, $type, $message, array $errorData = [] ) {
 		try {
 			$jobError = $this->getService()->logError( (int) $jobId, (int) $ateJobId, $type, $message, $errorData );
-			State::onJobErrorChanged();
 		} catch ( Throwable $error ) {
 			$this->logPersistenceFailure( 'record', $jobId, $error );
 			return;
@@ -45,7 +48,6 @@ class Recorder {
 	public function giveUp( $jobId, $ateJobId, $type, $message, array $errorData = [] ) {
 		try {
 			$jobError = $this->getService()->logError( (int) $jobId, (int) $ateJobId, $type, $message, $errorData );
-			State::onJobErrorChanged();
 		} catch ( Throwable $error ) {
 			$this->logPersistenceFailure( 'record', $jobId, $error );
 			return;
@@ -66,8 +68,12 @@ class Recorder {
 
 	private function giveUpJob( JobError $jobError ) {
 		try {
-			$fresh = call_user_func( $this->getStatus, $jobError->getJobId() );
-			if ( ! in_array( (int) $fresh, [ ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_IN_PROGRESS ], true ) ) {
+			$fresh    = call_user_func( $this->getStatus, $jobError->getJobId() );
+			$inFlight = [ ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_IN_PROGRESS ];
+			if ( self::TYPE_CREATE === $jobError->getErrorType() ) {
+				$inFlight[] = ICL_TM_ATE_NEEDS_RETRY;
+			}
+			if ( ! in_array( (int) $fresh, $inFlight, true ) ) {
 				JobLog::add(
 					'ate_job_given_up_row_left_alone',
 					[
@@ -81,6 +87,7 @@ class Recorder {
 				return;
 			}
 			call_user_func( $this->setStatus, $jobError->getJobId(), ICL_TM_ATE_UNSOLVABLE );
+			$this->completedMaps()->reopenTaxonomiesForJobs( [ $jobError->getJobId() ] );
 			JobLog::add(
 				'ate_job_given_up',
 				[
@@ -102,9 +109,7 @@ class Recorder {
 
 	public function clear( $jobId ) {
 		try {
-			if ( $this->getService()->deleteError( (int) $jobId ) > 0 ) {
-				State::onJobErrorChanged();
-			}
+			$this->getService()->deleteError( (int) $jobId );
 		} catch ( Throwable $error ) {
 			$this->logPersistenceFailure( 'clear', $jobId, $error );
 		}
@@ -116,6 +121,18 @@ class Recorder {
 		}
 
 		return $this->service;
+	}
+
+	private function completedMaps() {
+		if ( null === $this->completedMaps ) {
+			global $wpml_dic;
+			if ( ! $wpml_dic ) {
+				throw new \RuntimeException( 'The WPML container is not available, so the taxonomy completed maps cannot be reopened.' );
+			}
+			$this->completedMaps = $wpml_dic->make( TranslateEverythingCompletedMapsInterface::class );
+		}
+
+		return $this->completedMaps;
 	}
 
 	private function logPersistenceFailure( $operation, $jobId, Throwable $error ) {
@@ -149,6 +166,34 @@ class Recorder {
 			'file'    => $error->getFile(),
 			'line'    => $error->getLine(),
 			'trace'   => $stackTrace,
-		];
+		] + self::refusalDetails( $error );
+	}
+
+	private static function refusalDetails( Throwable $error ) {
+		if ( ! method_exists( $error, 'getData' ) ) {
+			return [];
+		}
+
+		$data = $error->getData();
+		if ( ! is_array( $data ) ) {
+			return [];
+		}
+
+		$details = [];
+		if ( isset( $data['reasonCode'] ) && is_string( $data['reasonCode'] ) && preg_match( '/^[a-z_]{1,64}$/', $data['reasonCode'] ) ) {
+			$details['reasonCode'] = $data['reasonCode'];
+		}
+
+		$jobData = [];
+		foreach ( [ 'original_doc_id', 'elementId' ] as $key ) {
+			if ( isset( $data['jobData'][ $key ] ) && is_numeric( $data['jobData'][ $key ] ) && (int) $data['jobData'][ $key ] > 0 ) {
+				$jobData[ $key ] = (int) $data['jobData'][ $key ];
+			}
+		}
+		if ( $jobData ) {
+			$details['jobData'] = $jobData;
+		}
+
+		return $details;
 	}
 }

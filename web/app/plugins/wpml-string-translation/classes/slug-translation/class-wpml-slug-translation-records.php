@@ -1,9 +1,13 @@
 <?php
 
+use WPML\ST\SlugTranslation\PostArchive\Records as PostArchiveRecords;
+
 abstract class WPML_Slug_Translation_Records {
 
 	const CONTEXT_DEFAULT   = 'default';
 	const CONTEXT_WORDPRESS = 'WordPress';
+
+	private static $listed = array();
 
 	private $wpdb;
 
@@ -22,6 +26,9 @@ abstract class WPML_Slug_Translation_Records {
 
 		if ( $found && is_array( $cached ) ) {
 			return WPML_ST_Slug::from_array( $cached );
+		}
+		if ( $this->read_listed_slugs_once( $type ) ) {
+			return $this->get_slug( $type );
 		}
 
 		$slug = new WPML_ST_Slug();
@@ -63,6 +70,90 @@ abstract class WPML_Slug_Translation_Records {
 		$cache_item->set( $slug->to_array() );
 
 		return $slug;
+	}
+
+	public function get_listed_slug( $type ) {
+		if ( empty( $this->get_listed_state()[ $this->get_element_type() ][ $type ] ) ) {
+			return null;
+		}
+		list( $cached, $found ) = $this->cache_factory->create_cache_item( $this->get_cache_group(), $type )->get_with_found();
+		if ( $found && is_array( $cached ) ) {
+			return WPML_ST_Slug::from_array( $cached );
+		}
+		return $this->read_listed_slugs_once( $type ) ? $this->get_slug( $type ) : null;
+	}
+
+	private function &get_listed_state() {
+		$state = &self::$listed[ get_current_blog_id() ];
+		if ( null === $state ) {
+			global $sitepress;
+			$posts = $sitepress instanceof SitePress ? (array) $sitepress->get_setting( WPML_ST_Post_Slug_Translation_Settings::KEY_IN_SITEPRESS_SETTINGS ) : array();
+			$listed_post_types = array_filter( (array) ( $posts['types'] ?? array() ) );
+			$state             = array(
+				'run'                                       => false,
+				WPML_Slug_Translation_Factory::POST         => $listed_post_types,
+				WPML_Slug_Translation_Factory::POST_ARCHIVE => $listed_post_types,
+				WPML_Slug_Translation_Factory::TAX          => array_filter( (array) ( get_option( WPML_ST_Tax_Slug_Translation_Settings::OPTION_NAME, array() )['types'] ?? array() ) ),
+			);
+		}
+		return $state;
+	}
+
+	private function read_listed_slugs_once( $type ) {
+		$state = &$this->get_listed_state();
+		if ( $state['run'] || empty( $state[ $this->get_element_type() ][ $type ] ) ) {
+			return false;
+		}
+		$state['run'] = true;
+		self::read_listed_slugs( $this->wpdb, $this->cache_factory, $state );
+		return true;
+	}
+
+	private static function read_listed_slugs( wpdb $wpdb, WPML_WP_Cache_Factory $cache_factory, array $listed ) {
+		$names = array();
+		foreach ( array_keys( $listed[ WPML_Slug_Translation_Factory::POST ] ) as $type ) {
+			$names[ sprintf( WPML_Post_Slug_Translation_Records::STRING_NAME, $type ) ] = array( WPML_Slug_Translation_Factory::POST, (string) $type );
+		}
+		foreach ( array_keys( $listed[ WPML_Slug_Translation_Factory::POST_ARCHIVE ] ) as $type ) {
+			$names[ sprintf( PostArchiveRecords::STRING_NAME, $type ) ] = array( WPML_Slug_Translation_Factory::POST_ARCHIVE, (string) $type );
+		}
+		foreach ( array_keys( $listed[ WPML_Slug_Translation_Factory::TAX ] ) as $type ) {
+			$names[ sprintf( WPML_Tax_Slug_Translation_Records::STRING_NAME, $type ) ] = array( WPML_Slug_Translation_Factory::TAX, (string) $type );
+		}
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT id, value, language, context, name FROM {$wpdb->prefix}icl_strings WHERE name IN ("
+				. implode( ',', array_fill( 0, count( $names ), '%s' ) ) . ') AND (context = %s OR context = %s) ORDER BY id',
+				...array_merge( array_map( 'strval', array_keys( $names ) ), array( self::CONTEXT_DEFAULT, self::CONTEXT_WORDPRESS ) )
+			)
+		);
+		$originals = array();
+		foreach ( (array) $rows as $row ) {
+			$originals += array( strtolower( $row->name ) => $row );
+		}
+		$languages    = array_column( $originals, 'language', 'id' );
+		$translations = array();
+		$rows         = ! $languages ? array() : $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT string_id, value, language, status FROM {$wpdb->prefix}icl_string_translations WHERE string_id IN ("
+				. implode( ',', array_fill( 0, count( $languages ), '%d' ) ) . ") AND value <> ''",
+				...array_keys( $languages )
+			)
+		);
+		foreach ( (array) $rows as $row ) {
+			if ( $languages[ $row->string_id ] !== $row->language ) {
+				$translations[ $row->string_id ][] = $row;
+				unset( $row->string_id );
+			}
+		}
+		foreach ( $names as $name => list( $element_type, $type ) ) {
+			$slug     = new WPML_ST_Slug();
+			$original = $originals[ strtolower( $name ) ] ?? null;
+			foreach ( $original ? array_merge( array( $original ), $translations[ $original->id ] ?? array() ) : array() as $row ) {
+				$slug->set_lang_data( $row );
+			}
+			$cache_factory->create_cache_item( __CLASS__ . '::' . $element_type, $type )->set( $slug->to_array() );
+		}
 	}
 
 	private function get_cache_group() {
@@ -140,7 +231,7 @@ abstract class WPML_Slug_Translation_Records {
 		if ( 0 < (int) $updated ) {
 			do_action(
 				'wpml_translated_slug_updated',
-				WPML_Slug_Translation_Factory::POST === $this->get_element_type() ? 'post_type' : 'taxonomy',
+				WPML_Slug_Translation_Factory::TAX === $this->get_element_type() ? 'taxonomy' : 'post_type',
 				$type
 			);
 		}

@@ -37,7 +37,7 @@ class MediaFields {
 	public static function getAttachmentIds( $post_id ) : array {
 		$ids = [];
 		foreach ( self::eachMetaValue( $post_id ) as $mediaValue ) {
-			$ids[] = self::attachmentIdsIn( $mediaValue['type'], maybe_unserialize( $mediaValue['raw'] ) );
+			$ids[] = self::attachmentIdsIn( $mediaValue['type'], \WPML\Utils\Unserialize::maybe( $mediaValue['raw'] ) );
 		}
 		foreach ( self::eachBlockValue( $post_id ) as $mediaValue ) {
 			$ids[] = self::attachmentIdsIn( $mediaValue['type'], $mediaValue['raw'] );
@@ -128,7 +128,7 @@ class MediaFields {
 			return true;
 		}
 
-		$iconPicker = maybe_unserialize( $value );
+		$iconPicker = \WPML\Utils\Unserialize::maybe( $value );
 
 		return is_array( $iconPicker ) && self::ICON_PICKER_MEDIA_LIBRARY === ( $iconPicker['type'] ?? null );
 	}

@@ -5,6 +5,7 @@ namespace WPML\TM\API\ATE;
 use WPML\FP\Either;
 use WPML\FP\Fns;
 use WPML\FP\Obj;
+use WPML\TM\ATE\API\MoneyBlockResume;
 use WPML\TM\ATE\API\SpendCap;
 use WPML\TM\ATE\API\SpendCapState;
 use WPML\LIB\WP\Transient;
@@ -48,6 +49,13 @@ class Account {
 		OptionManager::update( 'TM', 'Account::credits', $credits );
 
 		SpendCapState::syncWithCredits( $credits );
+
+		MoneyBlockResume::syncWithCredits(
+			$credits,
+			function () {
+				return make( \WPML_TM_ATE_API::class )->resumeParkedJobs();
+			}
+		);
 
 		if ( self::isHealthyCreditState( $credits ) ) {
 			Transient::set( self::CREDITS_CACHE_KEY, $credits, self::CACHE_TTL );

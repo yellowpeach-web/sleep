@@ -3,6 +3,7 @@
 namespace WPML\Legacy\Component\Translation\Sender\Taxonomy;
 
 use WPML\Core\Component\Translation\Application\Service\Taxonomy\TaxonomySendOperationRepository;
+use WPML\Core\SharedKernel\Component\Translation\Domain\TaxonomyBatchCommitterInterface;
 
 class TaxonomySendOperationSweeper {
 
@@ -14,14 +15,50 @@ class TaxonomySendOperationSweeper {
 
   private $wpdb;
 
+  private $translationProxyService;
 
-  public function __construct( ?\wpdb $wpdb = null ) {
-    $this->wpdb = $wpdb ?: $GLOBALS['wpdb'];
+  private $repository;
+
+  private $releaseOpenMembers;
+
+
+  public function __construct(
+    ?\wpdb $wpdb = null,
+    ?TaxonomyBatchCommitterInterface $translationProxyService = null,
+    ?TaxonomySendOperationRepository $repository = null,
+    ?callable $releaseOpenMembers = null
+  ) {
+    $this->wpdb                    = $wpdb ?: $GLOBALS['wpdb'];
+    $this->translationProxyService = $translationProxyService;
+    $this->repository              = $repository ?: new TaxonomySendOperationRepository();
+    $this->releaseOpenMembers      = $releaseOpenMembers ?: function ( array $records ): int {
+      return TaxonomyTermBundleRounds::releaseRecords( $this->wpdb, $records );
+    };
   }
 
 
-  public function sweep( int $now = 0 ): int {
-    $now  = $now ?: time();
+  public function sweep( int $now = 0, bool $commitAbandoned = false ): int {
+    $now = $now ?: time();
+    if ( $commitAbandoned ) {
+      return \WPML\TM\Jobs\JobLog::runAsBackgroundWork(
+        'taxonomy_send_cleanup',
+        function () use ( $now ) {
+          return \WPML\TM\Jobs\JobLog::runInGroup(
+            \WPML\TM\Jobs\JobLog::GROUP_ID_SEND_JOBS,
+            'Taxonomy send cleanup',
+            function () use ( $now ) {
+              return $this->sweepOperations( $now, true );
+            }
+          );
+        }
+      );
+    }
+
+    return $this->sweepOperations( $now, $commitAbandoned );
+  }
+
+
+  private function sweepOperations( int $now, bool $commitAbandoned ): int {
     $wpdb = $this->wpdb;
 
     $rows = $wpdb->get_results(
@@ -37,7 +74,9 @@ class TaxonomySendOperationSweeper {
       return 0;
     }
 
-    $removed = 0;
+    $removed         = 0;
+    $remoteCommits  = 0;
+    $minimumAttempts = $this->minimumCommitAttempts( $rows, $now );
     foreach ( $rows as $row ) {
       if ( $removed >= self::OPERATIONS_REMOVED ) {
         break;
@@ -49,8 +88,44 @@ class TaxonomySendOperationSweeper {
       }
 
       $storedValue = (string) ( $row['option_value'] ?? '' );
-      if ( $this->expiresAt( maybe_unserialize( $storedValue ) ) + self::GRACE_SECONDS >= $now ) {
+      $operation   = \WPML\Utils\Unserialize::maybe( $storedValue );
+      if ( $this->expiresAt( $operation ) + self::GRACE_SECONDS >= $now ) {
         continue;
+      }
+
+      if ( $this->hasUncommittedBatch( $operation ) ) {
+        if ( ! $commitAbandoned ) {
+          continue;
+        }
+        $attempts = $operation['commitAttempts'] ?? 0;
+        if ( $attempts >= 3 ) {
+          \WPML\TM\Jobs\JobLog::addError(
+            'taxonomy_send_operation_commit_abandoned:' . $operation['batchName'] . ':' . $operation['batchId']
+          );
+        } else {
+          if ( $remoteCommits > 0 || $attempts > $minimumAttempts ) {
+            continue;
+          }
+          $remoteCommits++;
+          $operationId = substr( $name, strlen( TaxonomySendOperationRepository::OPTION_PREFIX ) );
+          $committed = $this->translationProxyService()->commit(
+            $operation['batchName'],
+            $operation['batchId']
+          );
+          if ( ! $committed
+            && $this->repository->recordTpCommitAttempt( $operationId, $operation['batchName'], $operation['batchId'] ) > 0
+          ) {
+            continue;
+          }
+
+          if ( $committed ) {
+            if ( ! $this->repository->markTpBatchCommitted( $operationId, $operation['batchName'], $operation['batchId'] ) ) {
+              continue;
+            }
+            $operation['batchCommitted'] = true;
+            $storedValue = serialize( $operation );
+          }
+        }
       }
 
       if ( ! $this->deleteIfUnchanged( $name, $storedValue ) ) {
@@ -59,11 +134,51 @@ class TaxonomySendOperationSweeper {
 
       wp_cache_delete( $name, 'options' );
       $removed++;
+
+      if ( is_array( $operation ) && is_array( $operation['openBundleMembers'] ?? null ) && $operation['openBundleMembers'] ) {
+        try {
+          call_user_func( $this->releaseOpenMembers, array_values( $operation['openBundleMembers'] ) );
+        } catch ( \Throwable $e ) {
+          \WPML\TM\Jobs\JobLog::addError( 'taxonomy_send_operation_members_release_failed:' . $name );
+        }
+      }
     }
 
     $this->sweepResolvedOrOrphanedDispatchMarkers();
 
     return $removed;
+  }
+
+
+  private function minimumCommitAttempts( iterable $rows, int $now ): int {
+    $minimum = PHP_INT_MAX;
+    foreach ( $rows as $row ) {
+      $operation = \WPML\Utils\Unserialize::maybe( (string) ( $row['option_value'] ?? '' ) );
+      if ( $this->expiresAt( $operation ) + self::GRACE_SECONDS < $now
+        && $this->hasUncommittedBatch( $operation )
+      ) {
+        $minimum = min( $minimum, $operation['commitAttempts'] ?? 0 );
+      }
+    }
+    return $minimum;
+  }
+
+
+  private function hasUncommittedBatch( $operation ): bool {
+    return is_array( $operation )
+      && empty( $operation['batchCommitted'] )
+      && is_string( $operation['batchName'] ?? null )
+      && '' !== $operation['batchName']
+      && is_int( $operation['batchId'] ?? null )
+      && $operation['batchId'] > 0;
+  }
+
+
+  private function translationProxyService(): TaxonomyBatchCommitterInterface {
+    if ( null === $this->translationProxyService ) {
+      $this->translationProxyService = \WPML\Container\make( TaxonomyBatchCommitterInterface::class );
+    }
+    return $this->translationProxyService;
   }
 
 
@@ -112,12 +227,12 @@ class TaxonomySendOperationSweeper {
           "SELECT j.editor_job_id, j.translated,
             EXISTS (
               SELECT 1
-              FROM {$wpdb->prefix}icl_translation_status ts
-              INNER JOIN {$wpdb->prefix}icl_translations target ON target.translation_id = ts.translation_id
+              FROM {$wpdb->prefix}icl_translation_status source_status
+              INNER JOIN {$wpdb->prefix}icl_translations target ON target.translation_id = source_status.translation_id
               INNER JOIN {$wpdb->prefix}icl_translations source
                 ON source.trid = target.trid AND source.source_language_code IS NULL
               INNER JOIN {$wpdb->prefix}term_taxonomy tt ON tt.term_taxonomy_id = source.element_id
-              WHERE ts.rid = j.rid
+              WHERE source_status.rid = j.rid
             ) AS source_exists
            FROM {$wpdb->prefix}icl_translate_job j
            WHERE j.job_id = %d",

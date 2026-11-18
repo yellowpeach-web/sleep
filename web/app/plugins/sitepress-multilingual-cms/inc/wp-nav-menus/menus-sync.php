@@ -9,11 +9,11 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 
 	public static function chip_icon_svg( $type ) {
 		$aliases = array(
-			'label_changed'   => 'stale',
-			'url_missing'     => 'nourl',
-			'label_missing'   => 'nourl',
-			'options_changed' => 'options',
-			'url_changed'     => 'options',
+			'label_changed'     => 'stale',
+			'url_missing'       => 'nourl',
+			'label_missing'     => 'nourl',
+			'options_changed'   => 'options',
+			'url_changed'       => 'options',
 		);
 		if ( isset( $aliases[ $type ] ) ) {
 			$type = $aliases[ $type ];
@@ -82,7 +82,8 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 
 			if ( $action === 'icl_msync_preview' ) {
 				$this->is_preview = true;
-				$this->sync_data  = isset( $_POST['sync'] ) ? array_map( 'stripslashes_deep', $_POST['sync'] ) : false;
+				$posted           = isset( $_POST['sync'] ) && is_array( $_POST['sync'] ) ? stripslashes_deep( $_POST['sync'] ) : null;
+				$this->sync_data  = null === $posted ? false : self::sanitize_sync_payload( $posted );
 				$previous_menu    = WPML_Menu_Sync_Store::get();
 			}
 
@@ -95,6 +96,57 @@ class ICLMenusSync extends WPML_Menu_Sync_Functionality {
 		} finally {
 			$this->sitepress->switch_lang();
 		}
+	}
+
+	public static function sanitize_sync_payload( $sync ) {
+		if ( ! is_array( $sync ) ) {
+			return false;
+		}
+		$sections = [
+			'menu_translation'  => 2,
+			'menu_translations' => 2,
+			'add'               => 3,
+			'mov'               => 4,
+			'del'               => 3,
+			'label_changed'     => 3,
+			'url_changed'       => 3,
+			'label_missing'     => 3,
+			'url_missing'       => 3,
+			'options_changed'   => 3,
+		];
+		$clean    = [];
+		foreach ( $sync as $section => $menus ) {
+			if ( ! isset( $sections[ $section ] ) || ! is_array( $menus ) ) {
+				continue;
+			}
+			$tree = self::sanitize_sync_tree( $menus, $sections[ $section ] );
+			if ( [] !== $tree ) {
+				$clean[ $section ] = $tree;
+			}
+		}
+
+		return $clean ?: false;
+	}
+
+	private static function sanitize_sync_tree( array $tree, $levels ) {
+		$clean = [];
+		foreach ( $tree as $key => $value ) {
+			if ( ! preg_match( '/^[A-Za-z0-9_-]{1,64}$/', (string) $key ) ) {
+				continue;
+			}
+			if ( 1 === $levels ) {
+				if ( is_scalar( $value ) ) {
+					$clean[ $key ] = (string) $value;
+				}
+			} elseif ( is_array( $value ) ) {
+				$branch = self::sanitize_sync_tree( $value, $levels - 1 );
+				if ( [] !== $branch ) {
+					$clean[ $key ] = $branch;
+				}
+			}
+		}
+
+		return $clean;
 	}
 
 	function get_menu_names() {

@@ -10,6 +10,14 @@ class Lst {
 
 	use Macroable;
 
+	public static function includes( $val = null, $array = null ) {
+		if ( func_num_args() < 2 || Fns::__ === $val || Fns::__ === $array ) {
+			return call_user_func_array( self::$macros['includes'], func_get_args() );
+		}
+
+		return in_array( $val, $array, true );
+	}
+
 	public static function init() {
 
 		self::macro( 'append', curryN( 2, function ( $newItem, array $data ) {
@@ -123,7 +131,7 @@ class Lst {
 		self::macro( 'flatten', curryN( 1, Arr::class . '::flatten' ) );
 
 		self::macro( 'includes', curryN( 2, function ( $val, $array ) {
-			return in_array( $val, $array, true );
+			return self::includes( $val, $array );
 		} ) );
 
 		self::macro( 'includesAll', curryN( 2, function ( $values, $array ) {

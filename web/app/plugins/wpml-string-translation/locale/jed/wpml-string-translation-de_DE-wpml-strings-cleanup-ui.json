@@ -37,14 +37,32 @@
          "Removing strings from <b>String Translation</b> table": [
             "Strings werden aus der <b>String-Übersetzung</b>-Tabelle entfernt"
          ],
+         "%s string waiting for translation was kept.": [
+            "%s String, der auf Übersetzung wartet, wurde behalten.",
+            "%s Strings, die auf Übersetzung warten, wurden behalten."
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "Um Strings wieder zur <b>String-Übersetzung</b>-Tabelle hinzuzufügen, musst Du möglicherweise die Übersetzungsdateien neu durchsuchen oder Strings als übersetzbar registrieren."
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "Erfahre mehr über das <a>Durchsuchen Deiner Website nach Strings und deren Registrierung als übersetzbar</a>."
          ],
-         "Successfully removed strings": [
-            "Strings erfolgreich entfernt"
+         "Nothing removed: %s string is waiting for translation": [
+            "Nichts entfernt: %s String wartet auf Übersetzung",
+            "Nichts entfernt: %s Strings warten auf Übersetzung"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "Nichts entfernt: Die ausgewählten Domains enthalten keine unübersetzten Strings"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "Um diese ebenfalls zu entfernen, wählen Sie „Auch Strings entfernen, die auf Übersetzung warten“ und klicken Sie erneut auf „Entfernen“."
+         ],
+         "OK": [
+            "OK"
+         ],
+         "Removed %s string": [
+            "%s String entfernt",
+            "%s Strings entfernt"
          ],
          "OK, Great": [
             "OK, super"
@@ -60,6 +78,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "Das Entfernen der Strings wurde abgebrochen, bevor es abgeschlossen war. Die Strings, die nicht entfernt wurden, befinden sich noch in der Tabelle. Versuchen Sie erneut, sie zu entfernen."
+         ],
+         "Successfully removed strings": [
+            "Strings erfolgreich entfernt"
          ]
       }
    }

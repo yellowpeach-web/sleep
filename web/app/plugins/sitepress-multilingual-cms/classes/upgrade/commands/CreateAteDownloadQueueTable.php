@@ -46,7 +46,7 @@ class CreateAteDownloadQueueTable implements \IWPML_Upgrade_Command {
 			  `download_url` VARCHAR(2000) NOT NULL,
 			  `lock_timestamp` INT(11) UNSIGNED NULL,
 			  PRIMARY KEY (`editor_job_id`)
-			) ENGINE=INNODB'
+			)'
 		);
 	}
 

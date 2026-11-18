@@ -91,23 +91,107 @@
          "Cancelled": [
             "已取消"
          ],
-         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
-            "自動翻譯重複失敗，WPML 已停止重試。請從翻譯儀表板重新傳送或捨棄該工作，或在此處取消。"
+         "Published — Pending review": [
+            "已發佈 — 待審閱"
          ],
          "Needs translation": [
             "需要翻譯"
          ],
-         "Needs update": [
-            "需要更新"
+         "Review in progress": [
+            "審閱中"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "正在等待您的隨用隨付付款"
          ],
          "Translation ready to download": [
             "翻譯已準備好下載"
          ],
+         "Waiting for payment": [
+            "等待付款"
+         ],
+         "Waiting for words": [
+            "等待字數"
+         ],
          "Completed": [
             "已完成"
          ],
+         "Insufficient funds": [
+            "餘額不足"
+         ],
+         "Sending": [
+            "正在傳送"
+         ],
+         "Automatic translation is off, so this job is not retried. Resend it, or switch Translate Everything on.": [
+            "自動翻譯已關閉，因此不會重試此工作。請重新傳送，或開啟「自動翻譯全部內容」。"
+         ],
+         "Waiting for you": [
+            "等待您的操作"
+         ],
          "Failed - needs attention": [
             "失敗 - 需要注意"
+         ],
+         "You can also resend the content or open the job in the Translation Queue.": [
+            "您也可以重新傳送內容，或在翻譯佇列中開啟此工作。"
+         ],
+         "If it keeps failing for about a day, the job is marked as needing your attention.": [
+            "如果持續失敗約一天，該工作將標記為需要您注意。"
+         ],
+         "In progress": [
+            "進行中"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "自動翻譯重複失敗，WPML 已停止重試。請從翻譯儀表板重新傳送或捨棄該工作，或在此處取消。"
+         ],
+         "Needs update": [
+            "需要更新"
+         ],
+         "Scheduled — Pending review": [
+            "已排程 — 等待審閱"
+         ],
+         "Private — Pending review": [
+            "私密 — 等待審閱"
+         ],
+         "Draft — Pending review": [
+            "草稿 — 待審閱"
+         ],
+         "Published — Review in progress": [
+            "已發佈 — 審閱中"
+         ],
+         "Scheduled — Review in progress": [
+            "已排程 — 審閱進行中"
+         ],
+         "Private — Review in progress": [
+            "私密 — 審閱進行中"
+         ],
+         "Draft — Review in progress": [
+            "草稿 — 審閱中"
+         ],
+         "WPML could not reach our translation system.": [
+            "WPML 無法連線至我們的翻譯系統。"
+         ],
+         "Our translation system did not accept this job.": [
+            "我們的翻譯系統未接受此工作。"
+         ],
+         "WPML could not calculate the word count for this job.": [
+            "WPML 無法計算此工作的字數。"
+         ],
+         "WPML could not read the price of automatic translation for this job.": [
+            "WPML 無法讀取此工作的自動翻譯價格。"
+         ],
+         "WPML could not prepare this job for automatic translation.": [
+            "WPML 無法為自動翻譯準備此工作。"
+         ],
+         "Sending this job to automatic translation failed.": [
+            "將此工作傳送至自動翻譯失敗。"
+         ],
+         "WPML tries again within a minute.": [
+            "WPML 將於一分鐘內重試。"
+         ],
+         "WPML tries again in about %d minutes.": [
+            "WPML 將在約 %d 分鐘後重試。"
+         ],
+         "WPML tries again in about %d hours.": [
+            "WPML 將在約 %d 小時後重試。"
          ],
          "%s terms are published immediately because they don't support draft mode.": [
             "%s 項目會立即發佈，因為它們不支援草稿模式。"
@@ -115,41 +199,14 @@
          "%s are immediately published because they don't support draft mode.": [
             "%s 會立即發佈，因為它們不支援草稿模式。"
          ],
-         "Published — Pending review": [
-            "已發佈 — 待審閱"
+         "(no title)": [
+            "(無標題)"
          ],
-         "Draft — Pending review": [
-            "草稿 — 待審閱"
-         ],
-         "Review in progress": [
-            "審閱中"
-         ],
-         "Published — Review in progress": [
-            "已發佈 — 審閱中"
-         ],
-         "Draft — Review in progress": [
-            "草稿 — 審閱中"
-         ],
-         "Waiting for your Pay-As-You-Go payment": [
-            "正在等待您的隨用隨付付款"
-         ],
-         "Waiting for payment": [
-            "等待付款"
-         ],
-         "Insufficient funds": [
-            "餘額不足"
-         ],
-         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
-            "自動翻譯因暫時性錯誤而暫停，並將自動重試 — 無需採取任何行動。如果狀態在約 30 分鐘內沒有改變，請聯絡 WPML 支援。"
-         ],
-         "In progress": [
-            "進行中"
+         "%1$s (ID %2$d)": [
+            "%1$s (ID %2$d)"
          ],
          "View original": [
             "檢視原文"
-         ],
-         "(no title)": [
-            "(無標題)"
          ],
          "Automatic translation": [
             "自動翻譯"
@@ -478,9 +535,6 @@
          "Failed to resign from jobs": [
             "放棄工作失敗"
          ],
-         "The Advanced Editor jobs synchronization has failed": [
-            "進階編輯器工作同步失敗"
-         ],
          "Synchronization with the Professional Translation service has failed": [
             "與專業翻譯服務的同步失敗"
          ],
@@ -493,8 +547,35 @@
          "Batch sync couldn't be finished": [
             "無法完成批次同步"
          ],
+         "More details": [
+            "更多詳細資訊"
+         ],
+         "%s job was left out of the export.": [
+            "有 %s 項工作未包含在匯出中。"
+         ],
+         "%s job could not be exported. No file was downloaded.": [
+            "無法匯出 %s 項工作。未下載任何檔案。"
+         ],
+         "This job was saved while this server had the PHP zlib extension, so its text is stored compressed. PHP on this server has no zlib now, so WPML cannot read it. Ask your hosting provider to enable the PHP zlib extension, then export it again.": [
+            "這些工作是在此伺服器啟用了 PHP zlib 擴充功能時儲存的，因此其文字以壓縮形式儲存。此伺服器上的 PHP 目前沒有 zlib，因此 WPML 無法讀取它們。請聯絡您的主機服務提供商以啟用 PHP zlib 擴充功能，然後再次匯出。"
+         ],
+         "This job could not be exported.": [
+            "無法匯出這些工作。"
+         ],
+         "%1$s (job %2$s)": [
+            "%1$s (工作 %2$s)"
+         ],
+         "Job %s": [
+            "工作 %s"
+         ],
+         "and %s more job": [
+            "以及另外 %s 項工作"
+         ],
          "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
             "我們的翻譯系統未接受此請求（其回應為 %d）。請稍候片刻再重試，若問題持續發生，請聯絡 WPML 支援團隊。"
+         ],
+         "The site stopped answering before this translation was confirmed. If it was not saved, the next download takes it again.": [
+            "網站在此翻譯獲得確認前已停止回應。如果該翻譯尚未儲存，下次下載時將會再次取得。"
          ]
       }
    }

@@ -390,10 +390,6 @@ class AiTranslationEngineCard {
          context". An id selector out-specifies that rule, so the attribute
          means what it says again. */
       #wpml-ai-switch-modal-stay[hidden]{display:none}
-      /* Validation message above the action — red box, same look as the
-         dashboard modal's `.wpml-engine-switch__error`. */
-      .wpml-ai-switch-context-error{margin:10px 0 12px;padding:10px 12px;
-        border-radius:4px;background:#fcf0f1;color:#8a1f11;font-size:13px}
       /* Engine-card variant gating — same wrapper-class mechanism as
          the Recommended badges. After a successful switch the TS asset
          hides both state variants (inline display:none beats these
@@ -549,11 +545,6 @@ class AiTranslationEngineCard {
           <?php echo /* translators: Button label shown after something failed, to repeat it. Verb phrase, imperative. */ esc_html__( 'Try again', 'wpml' ); ?>
         </button>
       </p>
-      <?php  ?>
-      <?php  ?>
-      <p id="wpml-ai-switch-context-error" class="wpml-ai-switch-context-error"
-        role="alert" hidden></p>
-      <?php  ?>
       <?php  ?>
       <?php  ?>
       <?php  ?>

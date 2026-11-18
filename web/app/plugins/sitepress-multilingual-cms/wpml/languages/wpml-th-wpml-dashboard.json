@@ -7,6 +7,9 @@
             "plural_forms": "nplurals=1; plural=0;",
             "lang": "th"
          },
+         "(no title)": [
+            "(ไม่มีชื่อ)"
+         ],
          "Untranslated strings that I encounter on front-end while logged in": [
             "สตริงที่ยังไม่ได้แปลที่ฉันพบในส่วนหน้าขณะที่เข้าสู่ระบบ"
          ],
@@ -37,6 +40,15 @@
          "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
             "เราส่งรายการ %1$d จาก %2$d รายการอีกครั้งแล้ว แต่มี %3$d รายการที่ล้มเหลว โปรดโหลดหน้านี้ใหม่และลองอีกครั้ง"
          ],
+         "We resent %1$d of %2$d items.": [
+            "เราได้ส่งรายการอีกครั้ง %1$d จากทั้งหมด %2$d รายการ"
+         ],
+         "%1$s from %2$s": [
+            "%1$s จาก %2$s"
+         ],
+         "%1$d item can't be translated automatically: %2$s. Choose another translation method for it, or change your engines.": [
+            "%1$d รายการไม่สามารถแปลโดยอัตโนมัติได้: %2$s โปรดเลือกวิธีแปลอื่นสำหรับรายการเหล่านี้ หรือเปลี่ยนเครื่องมือแปลของคุณ"
+         ],
          "Error in fetching default translation batch name": [
             "เกิดข้อผิดพลาดในการดึงชื่อชุดการแปลเริ่มต้น"
          ],
@@ -51,6 +63,9 @@
          ],
          "Validation failed": [
             "การตรวจสอบความถูกต้องล้มเหลว"
+         ],
+         "The translation service batch could not be committed. Continue sending to try again.": [
+            "ไม่สามารถคอมมิตชุดข้อมูลของบริการการแปลได้ ดำเนินการส่งต่อเพื่อลองใหม่อีกครั้ง"
          ],
          "%s: labels and slug": [
             "%s: ป้ายกำกับและ Slug"
@@ -91,6 +106,12 @@
          "They are still waiting and will be tried again on the next download.": [
             "รายการเหล่านั้นยังคงรออยู่และจะมีการลองใหม่อีกครั้งในการดาวน์โหลดครั้งถัดไป"
          ],
+         "Job %d": [
+            "งานแปล %d"
+         ],
+         "and %d more": [
+            "และอีก %d ราย"
+         ],
          "Status: ": [
             "สถานะ: "
          ],
@@ -130,11 +151,11 @@
          "Switching…": [
             "กำลังสลับ…"
          ],
-         "Translation engine controls couldn't load. Reload the page and try again.": [
-            "ไม่สามารถโหลดส่วนควบคุมเอนจินการแปลได้ โปรดโหลดหน้านี้ใหม่และลองอีกครั้ง"
-         ],
          "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
             "เราไม่สามารถยืนยันการสลับได้ โปรดลองอีกครั้ง หรือโหลดหน้าใหม่เพื่อดูเอนจินปัจจุบัน"
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "ไม่สามารถโหลดส่วนควบคุมเอนจินการแปลได้ โปรดโหลดหน้านี้ใหม่และลองอีกครั้ง"
          ],
          "Loading translation engine settings…": [
             "กำลังโหลดการตั้งค่าเอนจินการแปล…"
@@ -289,14 +310,20 @@
          "Select %s": [
             "เลือก %s"
          ],
-         "(no title)": [
-            "(ไม่มีชื่อ)"
+         "Appears on the site": [
+            "ปรากฏบนไซต์"
+         ],
+         "Not shown yet": [
+            "ยังไม่แสดง"
          ],
          "Image": [
             "รูปภาพ"
          ],
          "%s Title": [
             "ชื่อ %s"
+         ],
+         "Source": [
+            "แหล่งที่มา"
          ],
          "%s Date": [
             "วันที่ %s"
@@ -328,9 +355,6 @@
          "Show selected items": [
             "แสดงรายการที่เลือก"
          ],
-         "Looking for more items...": [
-            "กำลังค้นหารายการเพิ่มเติม..."
-         ],
          " / page": [
             " / หน้า"
          ],
@@ -339,6 +363,9 @@
          ],
          "Next": [
             "ถัดไป"
+         ],
+         "Looking for more items...": [
+            "กำลังค้นหารายการเพิ่มเติม..."
          ],
          "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
             "เนื้อหาของไซต์ของคุณมีจำนวนมากเกินไปสำหรับชุดการแปลเดียว โปรดใช้ตัวกรองเพื่อลดจำนวนที่เลือก จากนั้นใช้ “เลือกทั้งหมด”"
@@ -370,11 +397,29 @@
          "Select all %ss": [
             "เลือก %s ทั้งหมด"
          ],
+         "%d not shown on the site yet": [
+            "ยังไม่แสดงบนไซต์อีก %d รายการ"
+         ],
+         "Show them": [
+            "แสดงรายการเหล่านี้"
+         ],
+         "Hide them": [
+            "ซ่อนรายการเหล่านี้"
+         ],
          "Save note": [
             "บันทึกบันทึก"
          ],
-         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
-            "ภาษาปลายทางต่อไปนี้ไม่รองรับการแปลอัตโนมัติ: %s <a>จับคู่กับภาษาที่รู้จัก</a> เพื่อเปิดใช้งานการแปลอัตโนมัติ"
+         "%1$s and %2$s": [
+            "%1$s และ %2$s"
+         ],
+         "The following target languages do not support automatic translation: %s.": [
+            "ภาษาเป้าหมายต่อไปนี้ไม่รองรับการแปลอัตโนมัติ: %s"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "การแปลอัตโนมัติไม่พร้อมใช้งานระหว่าง %1$s และ %2$s เนื่องจากระบบระบุว่าเป็นภาษาเดียวกัน ให้เลือก “ทำสำเนา” แทนเพื่อคัดลอกเนื้อหาไป"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "การแปลอัตโนมัติไม่สามารถใช้งานได้ระหว่าง %1$s และ %2$s เนื่องจากถูกระบุว่าเป็นภาษาเดียวกัน"
          ],
          "The site's default language %s doesn't support automatic translation.": [
             "ภาษาเริ่มต้นของไซต์ %s ไม่รองรับการแปลอัตโนมัติ"
@@ -418,8 +463,8 @@
          "Raise the cap": [
             "เพิ่มวงเงิน"
          ],
-         "Only the account owner can do this.": [
-            "เจ้าของบัญชีเท่านั้นที่สามารถดำเนินการนี้ได้"
+         "You can raise it on the AI Translation: billing and usage page.": [
+            "คุณสามารถเพิ่มขีดจำกัดได้ที่หน้า การแปลด้วย AI: การเรียกเก็บเงินและการใช้งาน"
          ],
          "Show strings in:": [
             "แสดงสตริงใน:"
@@ -442,9 +487,6 @@
          "Domain": [
             "โดเมน"
          ],
-         "Source": [
-            "แหล่งที่มา"
-         ],
          "Type": [
             "ประเภท"
          ],
@@ -460,11 +502,8 @@
          "All sources": [
             "แหล่งที่มาทั้งหมด"
          ],
-         "Frontend (viewed)": [
-            "ส่วนหน้า (ที่ดู)"
-         ],
-         "Backend (viewed)": [
-            "ส่วนหลังบ้าน (ที่ดู)"
+         "Seen in the admin": [
+            "พบในส่วนผู้ดูแลระบบ"
          ],
          "Unknown": [
             "ไม่ทราบ"
@@ -478,17 +517,11 @@
          "Search string or a name": [
             "ค้นหาสตริงหรือชื่อ"
          ],
-         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
-            "ตัวกรองนี้ใช้งานได้เฉพาะเมื่อตั้งค่าแหล่งที่มาเป็น “ส่วนหน้า” หรือ “ส่วนหลังบ้าน” เท่านั้น"
+         "%1$s, %2$s and %3$s": [
+            "%1$s, %2$s และ %3$s"
          ],
-         "front-end": [
-            "ส่วนหน้า"
-         ],
-         "back-end": [
-            "ส่วนหลังบ้าน"
-         ],
-         "viewed": [
-            "ที่ดู"
+         "This filter is available only when Source is \"Appears on the site\" or \"Seen in the admin\".": [
+            "ตัวกรองนี้ใช้ได้เฉพาะเมื่อแหล่งที่มาคือ “ปรากฏบนไซต์” หรือ “พบในส่วนผู้ดูแลระบบ”"
          ],
          "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
             "เปิดหน้าการแปลธีมและปลั๊กอิน ซึ่งคุณสามารถสแกนธีมและปลั๊กอินของคุณเพื่อหาสตริงที่ยังไม่ได้ลงทะเบียนและทำให้พร้อมสำหรับการแปลที่นี่"
@@ -604,8 +637,8 @@
          "You can only translate %1$s from the site's default language (%2$s).": [
             "คุณสามารถแปล %1$s จากภาษาเริ่มต้นของไซต์ (%2$s) ได้เท่านั้น"
          ],
-         "Search taxonomy or a name": [
-            "ค้นหาอนุกรมวิธานหรือชื่อ"
+         "Search taxonomies and terms": [
+            "ค้นหาอนุกรมวิธานและเทอม"
          ],
          "Filter by post type": [
             "กรองตามประเภทโพสต์"
@@ -619,6 +652,9 @@
          "No translatable taxonomies match the current filters.": [
             "ไม่มีอนุกรมวิธานที่แปลได้ตรงกับตัวกรองปัจจุบัน"
          ],
+         "Words in the terms, in %s": [
+            "คำในเทอม ใน %s"
+         ],
          "Select all taxonomies": [
             "เลือกอนุกรมวิธานทั้งหมด"
          ],
@@ -628,11 +664,20 @@
          "Terms in": [
             "คำใน"
          ],
-         "Post types": [
-            "ประเภทโพสต์"
+         "Used on": [
+            "ใช้ใน"
          ],
-         "Translated / Total terms": [
-            "แปลแล้ว / คำทั้งหมด"
+         "Terms": [
+            "ข้อมูลกำกับเนื้อหา (Terms)"
+         ],
+         "Words": [
+            "คำ"
+         ],
+         "Hide terms": [
+            "ซ่อนคำศัพท์"
+         ],
+         "Choose terms": [
+            "เลือกคำศัพท์"
          ],
          "translated": [
             "แปลแล้ว"
@@ -658,11 +703,32 @@
          "%1$s: %2$s": [
             "%1$s: %2$s"
          ],
-         "Open %s in the Taxonomy Translation tab": [
-            "เปิด %s ในแท็บการแปลอนุกรมวิธาน"
+         "Translated": [
+            "แปลแล้ว"
+         ],
+         "Partially translated": [
+            "แปลแล้วบางส่วน"
+         ],
+         "Translation needs update": [
+            "การแปลต้องมีการอัปเดต"
+         ],
+         "Preparing for translation": [
+            "กำลังเตรียมสำหรับการแปล"
+         ],
+         "Translation stalled": [
+            "การแปลหยุดชะงัก"
+         ],
+         "Not translated": [
+            "ยังไม่ได้แปล"
+         ],
+         "Status icons": [
+            "ไอคอนสถานะ"
          ],
          "Taxonomy labels and slug": [
             "ป้ายกำกับและ Slug ของอนุกรมวิธาน"
+         ],
+         "The taxonomy's own texts: its singular and plural names and its URL slug. Not its terms.": [
+            "ข้อความของอนุกรมวิธานเอง: ชื่อเอกพจน์และพหูพจน์ และ Slug ของ URL ไม่ใช่คำในอนุกรมวิธาน"
          ],
          "WPML String Translation is not active.": [
             "WPML String Translation ไม่ได้เปิดใช้งาน"
@@ -694,14 +760,125 @@
          "Rescan": [
             "สแกนใหม่"
          ],
-         "%d Taxonomy selected": [
-            "เลือกแล้ว %d อนุกรมวิธาน"
+         "Send categories, tags and other terms for translation, a whole taxonomy or the terms you pick.": [
+            "ส่งหมวดหมู่ แท็ก และคำศัพท์อื่น ๆ ไปแปล ไม่ว่าจะเป็นทั้งอนุกรมวิธานหรือเฉพาะคำศัพท์ที่คุณเลือก"
          ],
-         "<b>Translate Everything Automatically</b> (TEA) is active.": [
-            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> (TEA) เปิดใช้งานอยู่"
+         "Edit translations manually": [
+            "แก้ไขการแปลด้วยตนเอง"
          ],
-         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
-            "คำใหม่และคำที่อัปเดตในอนุกรมวิธานที่แปลได้จะถูกเพิ่มเข้าคิวโดยอัตโนมัติ เลือกอนุกรมวิธานด้านล่างเพื่อส่งงานแบบกลุ่มสำหรับคำที่เหลือที่ยังไม่ได้แปล"
+         "(opens in a new tab)": [
+            "(เปิดในแท็บใหม่)"
+         ],
+         "To edit one term's translation by hand: <link/>": [
+            "หากต้องการแก้ไขคำแปลของคำศัพท์ด้วยตนเอง: <link/>"
+         ],
+         "There is nothing to send. New and changed terms will show up here.": [
+            "ไม่มีรายการที่ต้องส่ง คำศัพท์ใหม่และคำศัพท์ที่มีการเปลี่ยนแปลงจะแสดงขึ้นที่นี่"
+         ],
+         "Every term is translated into every language.": [
+            "ทุกคำศัพท์ได้รับการแปลเป็นทุกภาษาแล้ว"
+         ],
+         "No taxonomy or term matches “%s”.": [
+            "ไม่มีอนุกรมวิธานหรือเทอมที่ตรงกับ “%s”"
+         ],
+         "Clear search": [
+            "ล้างการค้นหา"
+         ],
+         "<b>Translate Everything</b> is on. It translates every term of every translatable taxonomy automatically. You do not need to send terms or pick them.": [
+            "เปิดใช้งาน <b>แปลทุกอย่าง</b> อยู่ ฟีเจอร์นี้จะแปลทุกคำในทุกอนุกรมวิธานที่แปลได้โดยอัตโนมัติ คุณไม่จำเป็นต้องส่งคำหรือเลือกคำเหล่านั้น"
+         ],
+         "Use this section to see their status, or to send terms to a translator or a translation service.": [
+            "ใช้ส่วนนี้เพื่อดูสถานะของคำศัพท์ หรือส่งคำศัพท์ไปยังนักแปลหรือบริการการแปล"
+         ],
+         "%1$d sub-term, %2$d not translated": [
+            "คำศัพท์ย่อย %1$d คำ ยังไม่ได้แปล %2$d คำ"
+         ],
+         "%d sub-term, all translated": [
+            "คำศัพท์ย่อย %d คำ แปลแล้วทั้งหมด"
+         ],
+         "%1$s and its %2$d sub-term selected.": [
+            "เลือก %1$s และคำศัพท์ย่อย %2$d คำแล้ว"
+         ],
+         "%1$s and its %2$d sub-term cleared.": [
+            "ล้างการเลือก %1$s และคำศัพท์ย่อย %2$d คำแล้ว"
+         ],
+         "Select %1$s, in %2$s": [
+            "เลือก %1$s ใน %2$s"
+         ],
+         "Hide sub-terms of %s": [
+            "ซ่อนคำศัพท์ย่อยของ %s"
+         ],
+         "Show sub-terms of %s": [
+            "แสดงคำศัพท์ย่อยของ %s"
+         ],
+         "in": [
+            "ใน"
+         ],
+         "Added because a sub-term is selected": [
+            "เพิ่มเนื่องจากมีการเลือกคำศัพท์ย่อยไว้"
+         ],
+         "The terms could not be loaded.": [
+            "ไม่สามารถโหลดเทอมได้"
+         ],
+         "Showing %1$d term matching “%2$s”": [
+            "กำลังแสดงคำศัพท์ %1$d คำที่ตรงกับ “%2$s”"
+         ],
+         "Showing roots %1$d to %2$d of %3$d": [
+            "กำลังแสดงรายการระดับบนสุดที่ %1$d ถึง %2$d จากทั้งหมด %3$d รายการ"
+         ],
+         "Showing %1$d to %2$d of %3$d": [
+            "กำลังแสดง %1$d ถึง %2$d จาก %3$d"
+         ],
+         "%s: terms": [
+            "%s: คำศัพท์"
+         ],
+         "All terms are selected until you untick some.": [
+            "คำศัพท์ทั้งหมดจะถูกเลือกไว้จนกว่าคุณจะยกเลิกการเลือกบางส่วน"
+         ],
+         "Terms matching “%s”, found by the section search.": [
+            "คำศัพท์ที่ตรงกับ “%s” ซึ่งพบจากการค้นหาในหมวดนี้"
+         ],
+         "%1$s: %2$d term matches the section search.": [
+            "%1$s: คำศัพท์ %2$d คำตรงกับการค้นหาในส่วนนี้"
+         ],
+         "Show all terms": [
+            "แสดงคำศัพท์ทั้งหมด"
+         ],
+         "Select all %d terms": [
+            "เลือกคำศัพท์ทั้งหมด %d คำ"
+         ],
+         "Ticking a parent selects its sub-terms.": [
+            "การเลือกรายการหลักจะเป็นการเลือกคำศัพท์ย่อยด้วย"
+         ],
+         "Expand all": [
+            "ขยายทั้งหมด"
+         ],
+         "Collapse all": [
+            "ยุบทั้งหมด"
+         ],
+         "Select all terms on this page": [
+            "เลือกคำศัพท์ทั้งหมดในหน้านี้"
+         ],
+         "Term": [
+            "คำศัพท์"
+         ],
+         "No term matches “%s”.": [
+            "ไม่มีเทอมที่ตรงกับ “%s”"
+         ],
+         "%1$d of %2$d": [
+            "%1$d จาก %2$d"
+         ],
+         "Pages of %s terms": [
+            "หน้าของคำศัพท์ %s"
+         ],
+         "All %d terms selected": [
+            "เลือกคำศัพท์ทั้งหมด %d คำแล้ว"
+         ],
+         "%1$d of %2$d terms selected": [
+            "เลือกคำศัพท์ %1$d จาก %2$d คำแล้ว"
+         ],
+         "No terms selected": [
+            "ไม่ได้เลือกคำศัพท์ใดไว้"
          ],
          "Switch Now": [
             "สลับตอนนี้"
@@ -797,13 +974,13 @@
             "ทำไมการจ่ายครั้งเดียวจึงมีให้เฉพาะ PTC?"
          ],
          "PTC is WPML’s own AI engine. It reads the whole page, learns your terms and tone, and is backed by our quality guarantee, so we can price it once per page. DeepL, Google and Microsoft translate segment by segment and are priced per word, changes included.": [
-            "PTC คือเอนจิน AI ของ WPML เอง โดยจะอ่านทั้งหน้า เรียนรู้คำศัพท์และโทนเสียงของคุณ และมีการรับประกันคุณภาพจากเรา เราจึงสามารถคิดราคาแบบจ่ายครั้งเดียวต่อหน้าได้ ส่วน DeepL, Google และ Microsoft จะแปลทีละส่วนและคิดราคาตามจำนวนคำ รวมถึงเมื่อมีการแก้ไขด้วย"
+            "PTC เป็นเอนจิน AI ของ WPML เอง โดยจะอ่านเนื้อหาทั้งหน้า เรียนรู้คำศัพท์และน้ำเสียงของคุณ อีกทั้งยังมีการรับประกันคุณภาพของเรา จึงสามารถคิดราคาเพียงครั้งเดียวต่อหน้าได้ ส่วน DeepL, Google และ Microsoft จะแปลทีละส่วนและคิดราคาต่อคำ รวมถึงการเปลี่ยนแปลงเนื้อหาด้วย"
          ],
          "How much will I pay?": [
             "ฉันต้องจ่ายเท่าไหร่?"
          ],
          "You’re on %s: per word, changes included. Switch to PTC to pay once per page, with free changes.": [
-            "คุณกำลังใช้ %s: คิดราคาตามจำนวนคำ รวมถึงเมื่อมีการแก้ไข สลับเป็น PTC เพื่อจ่ายครั้งเดียวต่อหน้า พร้อมแก้ไขฟรี"
+            "คุณกำลังใช้งาน %s: คิดราคาต่อคำ รวมถึงการเปลี่ยนแปลงเนื้อหา สลับเป็น PTC เพื่อจ่ายเพียงครั้งเดียวต่อหน้า พร้อมแก้ไขเนื้อหาฟรี"
          ],
          "On PTC, you pay once per page, in each language. After that, edits to that page are free. You pay again only if the page grows past what you first paid for. In short: you pay for new content, not for updates.": [
             "สำหรับ PTC คุณจ่ายครั้งเดียวต่อหน้าในแต่ละภาษา หลังจากนั้นการแก้ไขหน้านั้นจะไม่มีค่าใช้จ่าย คุณจะจ่ายเพิ่มก็ต่อเมื่อหน้านั้นมีเนื้อหาเพิ่มขึ้นจากที่คุณจ่ายไปตอนแรก สรุปสั้น ๆ คือ คุณจ่ายสำหรับเนื้อหาใหม่ ไม่ใช่สำหรับการอัปเดต"
@@ -857,7 +1034,7 @@
             "มีเพียงคุณเท่านั้นที่สามารถอธิบายไซต์ของคุณได้ PTC จะใช้ข้อมูลนี้เพื่อแปลในสไตล์ของคุณ โปรดป้อนข้อมูลในการตั้งค่า AI แล้วกดบันทึก"
          ],
          "Starts with your current engine, %s, priced per word. After step 1 it runs on PTC, pay once per page.": [
-            "เริ่มต้นด้วยเอนจินปัจจุบันของคุณ %s ซึ่งคิดราคาตามจำนวนคำ หลังจากขั้นตอนที่ 1 จะรันบน PTC และจ่ายครั้งเดียวต่อหน้า"
+            "เริ่มต้นด้วยเครื่องมือแปลปัจจุบันของคุณ %s ซึ่งคิดราคาต่อคำ หลังจากขั้นตอนที่ 1 ระบบจะทำงานบน PTC และจ่ายครั้งเดียวต่อหน้า"
          ],
          "WPML translates your whole site. New content stays translated as you publish.": [
             "WPML แปลทั้งไซต์ของคุณ เนื้อหาใหม่จะถูกแปลทันทีที่คุณเผยแพร่"
@@ -881,13 +1058,25 @@
             "การแปลอัตโนมัติ"
          ],
          "<b>Translate Everything Automatically</b> is already on, with %s (per word).": [
-            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> เปิดใช้งานอยู่แล้ว โดยใช้ %s (คิดราคาตามจำนวนคำ)"
+            "<b>แปลทุกอย่างโดยอัตโนมัติ</b> เปิดใช้งานอยู่แล้วด้วย %s (ต่อคำ)"
          ],
          "Not now": [
             "ไม่ใช่ตอนนี้"
          ],
+         "This site is not registered with our translation system yet. Register it on WPML → Activate & Update to use automatic translation.": [
+            "ไซต์นี้ยังไม่ได้ลงทะเบียนกับระบบการแปลของเรา ลงทะเบียนที่ WPML → เปิดใช้งาน & อัปเดต เพื่อใช้การแปลอัตโนมัติ"
+         ],
          "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
             "เกิดข้อผิดพลาดในการเชื่อมต่อ โปรดรอสักครู่แล้วโหลดหน้านี้ใหม่ หากปัญหายังคงอยู่ โปรดติดต่อฝ่ายสนับสนุนของ WPML"
+         ],
+         "Posts": [
+            "โพสต์"
+         ],
+         "Taxonomy terms": [
+            "คำศัพท์อนุกรมวิธาน"
+         ],
+         "Words required:": [
+            "จำนวนคำที่ต้องการ:"
          ],
          "You don’t have enough prepaid words to translate this content.": [
             "คุณมีจำนวนคำแบบชำระเงินล่วงหน้าไม่เพียงพอที่จะแปลเนื้อหานี้"
@@ -901,14 +1090,8 @@
          "Automatic translation costs:": [
             "ค่าใช้จ่ายการแปลอัตโนมัติ:"
          ],
-         "Words": [
-            "คำ"
-         ],
          "Words to translate automatic": [
             "จำนวนคำที่จะแปลอัตโนมัติ"
-         ],
-         "Words required:": [
-            "จำนวนคำที่ต้องการ:"
          ],
          "Pricing": [
             "ราคา"
@@ -928,17 +1111,35 @@
          "%s word assigned to this site.": [
             "จัดสรร %s คำให้กับไซต์นี้แล้ว"
          ],
-         "Leave existing translations as they are": [
-            "คงคำแปลที่มีอยู่ไว้ตามเดิม"
-         ],
-         "Overwrite existing translations": [
-            "เขียนทับคำแปลที่มีอยู่"
-         ],
          "Some of the content you want to translate is already translated": [
             "เนื้อหาบางส่วนที่คุณต้องการแปลได้รับการแปลแล้ว"
          ],
          "What do you want to do with the content that's already translated?": [
             "คุณต้องการทำอย่างไรกับเนื้อหาที่แปลแล้ว?"
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Translate from scratch\" translates them again from the start.": [
+            "รายการที่เปลี่ยนแปลงหลังจากที่ได้รับการแปลแล้วจะถูกส่งไม่ว่าจะเลือกแบบใด โดย “ปล่อยไว้” จะแปลเฉพาะส่วนที่มีการเปลี่ยนแปลง ส่วน “แปลตั้งแต่เริ่มต้น” จะแปลรายการเหล่านั้นใหม่อีกครั้งตั้งแต่ต้น"
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Overwrite\" translates them again from the start.": [
+            "รายการที่มีการเปลี่ยนแปลงหลังจากการแปลจะถูกส่งไปไม่ว่าจะเลือกแบบใด โดย “คงไว้” จะแปลเฉพาะส่วนที่มีการเปลี่ยนแปลง ส่วน “เขียนทับ” จะแปลรายการเหล่านั้นใหม่อีกครั้งตั้งแต่ต้น"
+         ],
+         "\"Translate from scratch\" replaces the edits made to these translations:": [
+            "“แปลตั้งแต่เริ่มต้น” จะแทนที่การแก้ไขที่ทำไว้กับคำแปลเหล่านี้:"
+         ],
+         "And %s more item.": [
+            "และอีก %s รายการ"
+         ],
+         "Leave existing translations as they are": [
+            "คงคำแปลที่มีอยู่ไว้ตามเดิม"
+         ],
+         "Translate from scratch": [
+            "แปลตั้งแต่เริ่มต้น"
+         ],
+         "Replaces the existing translations, including the edits made to them": [
+            "แทนที่การแปลที่มีอยู่ รวมถึงการแก้ไขที่ทำไว้กับคำแปลเหล่านั้น"
+         ],
+         "Overwrite existing translations": [
+            "เขียนทับคำแปลที่มีอยู่"
          ],
          "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
             "การแปลจาก DeepL, Google Translate และ Microsoft Translator ควรได้รับการรีวิวก่อนเผยแพร่"
@@ -973,8 +1174,17 @@
          " Checking ": [
             " กำลังตรวจสอบ "
          ],
+         "To translate automatically, WPML needs an active automatic translation account. Turn on automatic translation, or choose a different translation option.": [
+            "หากต้องการแปลอัตโนมัติ WPML จำเป็นต้องมีบัญชีการแปลอัตโนมัติที่ใช้งานอยู่ เปิดการแปลอัตโนมัติ หรือเลือกตัวเลือกการแปลอื่น"
+         ],
          "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
             "ในการแปลอัตโนมัติ ก่อนอื่นคุณต้อง <enable_ate>เปิดใช้งาน <b>ตัวแก้ไขการแปลขั้นสูง</b> ของ WPML</enable_ate><br/>เปิดใช้งาน <b>ตัวแก้ไขการแปลขั้นสูง</b> แล้วคลิก <check_again>ตรวจสอบอีกครั้ง</check_again> หรือเลือกตัวเลือกการแปลอื่น"
+         ],
+         "Turn on automatic translation": [
+            "เปิดการแปลอัตโนมัติ"
+         ],
+         "Learn more": [
+            "เรียนรู้เพิ่มเติม"
          ],
          "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
             "เนื้อหาที่เลือกถูกแปลโดยใช้ <b>ตัวแก้ไขการแปลแบบคลาสสิก</b> และไม่สามารถส่งไปแปลอัตโนมัติได้ หากต้องการอนุญาตสิ่งนี้ โปรดเปิดใช้งาน \"ใช้สำหรับคำแปลเก่าด้วย\" ในหน้า <wpmlSettingLink>การตั้งค่า WPML</wpmlSettingLink>"
@@ -1045,11 +1255,14 @@
          "WPML does not support duplicating %1$s elements and strings.": [
             "WPML ไม่รองรับการทำสำเนาองค์ประกอบและสตริง %1$s"
          ],
-         "WPML does not support duplicating taxonomies.": [
-            "WPML ไม่รองรับการทำสำเนาอนุกรมวิธาน"
+         "Taxonomy terms cannot be duplicated. Translate them instead. When you duplicate posts, WPML copies their terms that have no translation yet and lists these copies as not translated until they are translated.": [
+            "คำของอนุกรมวิธานไม่สามารถทำสำเนาได้ ให้แปลแทน เมื่อคุณทำสำเนาโพสต์ WPML จะคัดลอกคำของโพสต์เหล่านั้นที่ยังไม่มีการแปล และระบุสำเนาเหล่านี้ว่ายังไม่ได้รับการแปลจนกว่าจะได้รับการแปล"
          ],
-         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
-            "WPML ไม่รองรับการทำสำเนาอนุกรมวิธาน สิ่งที่คุณเลือกเพื่อทำสำเนาอนุกรมวิธานไปยัง %1$s จะถูกละเว้นหากคุณดำเนินการแปลต่อ"
+         "Taxonomy terms cannot be duplicated, so the terms you selected will not be duplicated to %1$s. The posts you duplicate get copies of their terms that have no translation yet. WPML lists these copies as not translated until they are translated.": [
+            "คำของอนุกรมวิธานไม่สามารถทำสำเนาได้ ดังนั้นคำที่คุณเลือกจะไม่ถูกทำสำเนาไปยัง %1$s โพสต์ที่คุณทำสำเนาจะได้รับสำเนาของคำที่ยังไม่มีการแปล WPML จะระบุสำเนาเหล่านี้ว่ายังไม่ได้รับการแปลจนกว่าจะได้รับการแปล"
+         ],
+         "If the editor is set to translate automatically when it opens, it starts from a machine translation that uses your words. Undo translation in the editor clears it.": [
+            "หากตั้งค่าตัวแก้ไขให้แปลโดยอัตโนมัติเมื่อเปิดขึ้นมา ระบบจะเริ่มต้นจากการแปลโดยเครื่องซึ่งใช้คำของคุณ การยกเลิกการแปลในตัวแก้ไขจะล้างข้อมูลดังกล่าว"
          ],
          "Finish setting up %s on your site": [
             "ตั้งค่า %s บนไซต์ของคุณให้เสร็จสิ้น"
@@ -1057,14 +1270,26 @@
          "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
             "คุณต้องยืนยันตัวตน %s เพื่อส่งเนื้อหาไปแปล<br/>ไปที่ <a>แท็บนักแปล</a> เพื่อตั้งค่าให้เสร็จสิ้น แล้วคลิก <check_again>ตรวจสอบอีกครั้ง</check_again> หรือเลือกตัวเลือกการแปลอื่น"
          ],
+         "WPML will not send these items. A reviewer has their translation open:": [
+            "WPML จะไม่ส่งรายการเหล่านี้ ผู้ตรวจสอบกำลังเปิดการแปลของรายการเหล่านี้อยู่:"
+         ],
+         "To send them, finish or cancel the review in Translation Tasks first.": [
+            "หากต้องการส่ง ให้เสร็จสิ้นหรือยกเลิกการรีวิวใน งานที่ต้องแปล ก่อน"
+         ],
          "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
             "เนื้อหาบางส่วนที่เลือกมีการแปลที่เปิดไว้เพื่อรีวิว การส่งอีกครั้งจะแทนที่การแปลนั้น"
          ],
          "You selected multiple translation methods for content across different languages:": [
             "คุณเลือกวิธีการแปลหลายวิธีสำหรับเนื้อหาในภาษาต่าง ๆ:"
          ],
+         "Translation Service": [
+            "บริการการแปล"
+         ],
          "Sent for translation": [
             "ส่งไปแปลแล้ว"
+         ],
+         "Some content was not sent": [
+            "เนื้อหาบางส่วนไม่ได้ถูกส่ง"
          ],
          "Some items were not sent for translation": [
             "บางรายการไม่ได้ถูกส่งไปแปล"
@@ -1092,6 +1317,9 @@
          ],
          "Continue sending": [
             "ดำเนินการส่งต่อ"
+         ],
+         "Open Translations": [
+            "เปิดการแปล"
          ],
          "Ok": [
             "ตกลง"
@@ -1159,6 +1387,15 @@
          "WPML could not count the words of these items.": [
             "WPML ไม่สามารถนับจำนวนคำของรายการเหล่านี้ได้"
          ],
+         "WPML could not get the price of automatic translation from our translation system. Try again in a few minutes.": [
+            "WPML ไม่สามารถรับราคาของการแปลอัตโนมัติจากระบบการแปลของเรา โปรดลองอีกครั้งในอีกสักครู่"
+         ],
+         "No translation engine translates this content from %1$s into %2$s.": [
+            "ไม่มีเครื่องมือการแปลใดที่แปลเนื้อหานี้จาก %1$s เป็น %2$s ได้"
+         ],
+         "WPML did not send these items. A reviewer has their translation open. Finish or cancel the review in Translation Tasks, then send them again.": [
+            "WPML ไม่ได้ส่งรายการเหล่านี้ ผู้ตรวจสอบกำลังเปิดการแปลของรายการเหล่านี้อยู่ ให้ดำเนินการรีวิวใน งานที่ต้องแปล ให้เสร็จสิ้นหรือยกเลิกก่อน แล้วจึงส่งใหม่อีกครั้ง"
+         ],
          "Some content couldn't be sent to translation.": [
             "เนื้อหาบางส่วนไม่สามารถส่งไปแปลได้"
          ],
@@ -1192,6 +1429,81 @@
          "Items already sent will be translated and delivered normally.": [
             "รายการที่ส่งไปแล้วจะถูกแปลและส่งมอบตามปกติ"
          ],
+         "%d post": [
+            "%d โพสต์"
+         ],
+         "%1$s and %2$d term": [
+            "%1$s และคำศัพท์ %2$d คำ"
+         ],
+         "%d term": [
+            "%d รายการ"
+         ],
+         "%1$s: %2$s is assigned to %3$s. They find it in their Translations queue.": [
+            "%1$s: มอบหมาย %2$s ให้กับ %3$s แล้ว พวกเขาจะพบรายการเหล่านี้ในคิวการแปลของตน"
+         ],
+         "First available": [
+            "คนแรกที่ว่าง"
+         ],
+         "%1$s: %2$s is waiting for you in Translations.": [
+            "%1$s: %2$s กำลังรอคุณอยู่ใน การแปล"
+         ],
+         "%1$s: %2$s is sent to %3$s.": [
+            "%1$s: ส่ง %2$s ไปยัง %3$s แล้ว"
+         ],
+         "%1$s: %2$s is being translated automatically.": [
+            "%1$s: กำลังแปล %2$s โดยอัตโนมัติ"
+         ],
+         "%1$s and %2$d of %3$d term": [
+            "%1$s และคำศัพท์ %2$d จาก %3$d คำ"
+         ],
+         "%1$d of %2$d term": [
+            "คำศัพท์ %1$d จาก %2$d คำ"
+         ],
+         "%1$s: %2$s sent for automatic translation.": [
+            "%1$s: ส่ง %2$s ไปยังการแปลอัตโนมัติแล้ว"
+         ],
+         "%1$s: %2$s sent for translation.": [
+            "%1$s: ส่ง %2$s ไปแปลแล้ว"
+         ],
+         "The term names could not be read.": [
+            "ไม่สามารถอ่านชื่อคำศัพท์ได้"
+         ],
+         "%s, and more": [
+            "%s และอื่น ๆ"
+         ],
+         "Already translated: %s": [
+            "แปลแล้ว: %s"
+         ],
+         "In translation: %s": [
+            "กำลังแปล: %s"
+         ],
+         "In translation with their posts: %s": [
+            "กำลังแปลพร้อมกับโพสต์ของคำศัพท์เหล่านั้น: %s"
+         ],
+         "Which terms were not sent again": [
+            "คำศัพท์ใดบ้างที่ไม่ส่งซ้ำ"
+         ],
+         "Terms not sent again: %1$d already translated and %2$d in translation (%3$d with their posts).": [
+            "คำศัพท์ที่ไม่ส่งซ้ำ: แปลแล้ว %1$d รายการ และกำลังแปล %2$d รายการ (พร้อมกับโพสต์ของคำศัพท์เหล่านั้น %3$d รายการ)"
+         ],
+         "The terms could not be sent.": [
+            "ไม่สามารถส่งคำศัพท์ได้"
+         ],
+         "%1$s: %2$d term": [
+            "%1$s: %2$d คำ"
+         ],
+         "%1$s: not sent. %2$s no longer translates from %3$s to %4$s. <a>Choose another translator</a> at Step 2, then send again.": [
+            "%1$s: ไม่ได้ส่ง %2$s ไม่ได้แปลจาก %3$s เป็น %4$s อีกต่อไป <a>เลือกนักแปลคนอื่น</a> ในขั้นตอนที่ 2 แล้วส่งอีกครั้ง"
+         ],
+         "Not sent (%s)": [
+            "ยังไม่ส่ง (%s)"
+         ],
+         "%1$s: %2$d term (%3$s).": [
+            "%1$s: %2$d คำ (%3$s)"
+         ],
+         "%1$s %2$d": [
+            "%1$s %2$d"
+         ],
          "Continue to %s": [
             "ดำเนินการต่อที่ %s"
          ],
@@ -1200,9 +1512,6 @@
          ],
          "<p><a><s>Contact WPML support for help</s></a></p>": [
             "<p><a><s>ติดต่อฝ่ายสนับสนุนของ WPML เพื่อขอความช่วยเหลือ</s></a></p>"
-         ],
-         "Translation Service": [
-            "บริการการแปล"
          ],
          "sending for professional translation..": [
             "กำลังส่งไปแปลระดับมืออาชีพ.."
@@ -1221,6 +1530,12 @@
          ],
          "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
             "ตัวแก้ไขการแปลที่เลือกอยู่ในปัจจุบันไม่รองรับการแปลอัตโนมัติ คุณต้องเปิดใช้งาน <b>ตัวแก้ไขการแปลขั้นสูง</b> เพื่อส่งเนื้อหาไปแปลอัตโนมัติ<br/> ตรวจสอบการตั้งค่าของคุณใน <wpml_settings>หน้าการตั้งค่า WPML</wpml_settings>"
+         ],
+         "WPML cannot translate automatically: automatic translation is off for this site. Click \"Turn on automatic translation\" on the dashboard, then send again.": [
+            "WPML ไม่สามารถแปลอัตโนมัติได้: การแปลอัตโนมัติปิดใช้งานอยู่สำหรับไซต์นี้ คลิก “เปิดการแปลอัตโนมัติ” บนแดชบอร์ด แล้วส่งใหม่อีกครั้ง"
+         ],
+         "%1$s cannot be translated automatically from %2$s with your translation engines. Choose another translation method for it, or change your engines.": [
+            "%1$s ไม่สามารถแปลอัตโนมัติจาก %2$s ด้วยเครื่องมือแปลของคุณ โปรดเลือกวิธีแปลอื่น หรือเปลี่ยนเครื่องมือแปลของคุณ"
          ],
          "Validation error happened during send to translation.": [
             "เกิดข้อผิดพลาดในการตรวจสอบความถูกต้องระหว่างการส่งไปแปล"
@@ -1291,20 +1606,92 @@
          "No, I will split jobs myself": [
             "ไม่ ฉันจะแบ่งงานด้วยตัวเอง"
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
-            "คำในอนุกรมวิธานบางคำยังไม่ได้ถูกส่ง ส่วนคำที่ส่งไปแล้วกำลังอยู่ระหว่างการแปล - คลิก ดำเนินการส่งต่อ เพื่อส่งส่วนที่เหลือ"
+         "%d not translated": [
+            "ยังไม่ได้แปล %d รายการ"
+         ],
+         "%d needs an update": [
+            "จำเป็นต้องอัปเดต %d รายการ"
+         ],
+         "%d picked": [
+            "เลือกแล้ว %d รายการ"
+         ],
+         "plus %d parent term": [
+            "รวมคำศัพท์ระดับบนอีก %d รายการ"
+         ],
+         "%d of them a parent term": [
+            "เป็นคำศัพท์ระดับบน %d รายการ"
+         ],
+         "%1$s, %2$s": [
+            "%1$s, %2$s"
+         ],
+         "What will be sent": [
+            "สิ่งที่จะถูกส่งไป"
+         ],
+         "Target language": [
+            "ภาษาเป้าหมาย"
+         ],
+         "Terms sent now": [
+            "คำศัพท์ที่ส่งตอนนี้"
+         ],
+         "Terms not sent again: already translated": [
+            "คำศัพท์ที่ไม่ส่งซ้ำ: แปลแล้ว"
+         ],
+         "Terms not sent again: queued or in translation": [
+            "คำศัพท์ที่ไม่ส่งซ้ำ: อยู่ในคิวหรือกำลังแปล"
+         ],
+         "Terms not sent again: in translation": [
+            "คำศัพท์ที่ไม่ส่งซ้ำ: กำลังแปล"
+         ],
+         "%d with their posts": [
+            "%d รายการพร้อมโพสต์ของคำศัพท์เหล่านั้น"
+         ],
+         "queued by Translate Everything": [
+            "จัดคิวโดย แปลทุกอย่าง"
+         ],
+         "Terms Translate Everything has queued are counted and not sent again. They are translated automatically.": [
+            "คำที่ แปลทุกอย่าง จัดคิวไว้จะถูกนับรวมและไม่ส่งซ้ำอีก โดยจะได้รับการแปลอัตโนมัติ"
+         ],
+         "Terms in translation, with their posts or from this section, are counted but not sent again. Their translation arrives with the job that has them.": [
+            "คำศัพท์ที่กำลังแปล พร้อมกับโพสต์ของคำศัพท์เหล่านั้นหรือจากส่วนนี้ จะถูกนับรวมแต่ไม่ส่งซ้ำ งานแปลจะมาพร้อมกับงานที่มีคำศัพท์ดังกล่าว"
+         ],
+         "Terms you send from here are not sent again when their posts are translated.": [
+            "คำศัพท์ที่คุณส่งจากที่นี่จะไม่ถูกส่งซ้ำเมื่อมีการแปลโพสต์ของคำศัพท์เหล่านั้น"
+         ],
+         "This send creates %d job for the translation service from the selected terms.": [
+            "การส่งนี้จะสร้างงานแปล %d งานสำหรับบริการการแปลจากคำศัพท์ที่เลือก"
+         ],
+         "%d term you did not select is not sent.": [
+            "คำศัพท์ที่คุณไม่ได้เลือกจำนวน %d คำจะไม่ถูกส่งไป"
+         ],
+         "A picked term whose parent is not translated takes its parent along, so the hierarchy is kept: plus %1$d parent term (%2$s).": [
+            "คำศัพท์ที่เลือกซึ่งคำศัพท์ระดับบนยังไม่ได้แปลจะนำคำศัพท์ระดับบนไปด้วย เพื่อคงลำดับชั้นไว้: รวมคำศัพท์ระดับบน %1$d รายการ (%2$s)"
+         ],
+         "Translate automatically": [
+            "แปลอัตโนมัติ"
+         ],
+         "Translate myself": [
+            "แปลด้วยตัวเอง"
+         ],
+         "Assign a translator": [
+            "มอบหมายนักแปล"
+         ],
+         "Assign translation service": [
+            "มอบหมายบริการการแปล"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Click Continue sending to send the rest.": [
+            "คำศัพท์อนุกรมวิธานบางคำยังไม่ได้ส่ง รายการที่ส่งไปแล้วกำลังอยู่ระหว่างการแปล คลิก “ส่งต่อไป” เพื่อส่งรายการที่เหลือ"
          ],
          "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
             "ยังไม่ได้ส่งคำในอนุกรมวิธาน คลิก ดำเนินการส่งต่อ เพื่อส่งคำเหล่านั้น"
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
-            "คำในอนุกรมวิธานบางคำยังไม่ได้ถูกส่ง ส่วนคำที่ส่งไปแล้วกำลังอยู่ระหว่างการแปล - ลองส่งรายการที่ยังไม่ได้ส่งใหม่อีกครั้งเพื่อส่งส่วนที่เหลือ"
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Retry the not-sent items to send the rest.": [
+            "คำศัพท์อนุกรมวิธานบางคำยังไม่ได้ส่ง รายการที่ส่งไปแล้วกำลังอยู่ระหว่างการแปล ลองส่งรายการที่ยังไม่ได้ส่งใหม่อีกครั้งเพื่อส่งส่วนที่เหลือ"
          ],
          "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
             "ยังไม่ได้ส่งคำในอนุกรมวิธาน ลองส่งรายการที่ยังไม่ได้ส่งใหม่อีกครั้งเพื่อส่งคำเหล่านั้น"
          ],
-         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
-            "อนุกรมวิธานบางรายการไม่ได้ถูกส่งไปแปล รายการที่ส่งไปแล้วกำลังดำเนินการแปลอยู่ - โปรดส่งส่วนที่เหลืออีกครั้งเพื่อให้เสร็จสมบูรณ์"
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated. Send the rest again to finish.": [
+            "คำศัพท์อนุกรมวิธานบางคำไม่ได้ถูกส่งไปแปล รายการที่ส่งไปแล้วกำลังอยู่ระหว่างการแปล ส่งส่วนที่เหลืออีกครั้งเพื่อให้เสร็จสิ้น"
          ],
          "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
             "WPML ไม่สามารถส่งอนุกรมวิธานไปแปลได้ จึงไม่มีรายการใดถูกส่งไปเลย โปรดลองอีกครั้ง"
@@ -1321,6 +1708,9 @@
          "Existing content": [
             "เนื้อหาที่มีอยู่"
          ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$sรวม:%2$s %3$s"
+         ],
          "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
             "คุณเลือกที่จะแปลสตริงที่อยู่ใน %1$s เฉพาะสตริงเหล่านี้เท่านั้นที่จะถูกแปลเป็น %2$s"
          ],
@@ -1330,14 +1720,8 @@
          "Source language": [
             "ภาษาต้นทาง"
          ],
-         "Target language": [
-            "ภาษาเป้าหมาย"
-         ],
          "Words to translate": [
             "คำที่ต้องแปล"
-         ],
-         "%1$sTotal:%2$s %3$s": [
-            "%1$sรวม:%2$s %3$s"
          ],
          "Translation service additional options": [
             "ตัวเลือกเพิ่มเติมของบริการการแปล"
@@ -1348,20 +1732,32 @@
          "Fetching translation service data...": [
             "กำลังดึงข้อมูลบริการการแปล..."
          ],
+         "%1$s: all %2$d terms": [
+            "%1$s: คำศัพท์ทั้งหมด %2$d คำ"
+         ],
+         "%1$s: %2$d of %3$d terms": [
+            "%1$s: คำศัพท์ %2$d จาก %3$d คำ"
+         ],
+         "%1$d Taxonomy (%2$s)": [
+            "อนุกรมวิธาน %1$d รายการ (%2$s)"
+         ],
+         "Selected: %1$s · %2$s": [
+            "ที่เลือก: %1$s · %2$s"
+         ],
+         "%d Post": [
+            "%d โพสต์"
+         ],
+         "Selected: %s": [
+            "ที่เลือก: %s"
+         ],
+         "Change": [
+            "เปลี่ยน"
+         ],
+         "The term counts could not be read.": [
+            "ไม่สามารถอ่านจำนวนเทอมได้"
+         ],
          "-": [
             "-"
-         ],
-         "Translate automatically": [
-            "แปลอัตโนมัติ"
-         ],
-         "Translate myself": [
-            "แปลด้วยตัวเอง"
-         ],
-         "Assign a translator": [
-            "มอบหมายนักแปล"
-         ],
-         "Assign translation service": [
-            "มอบหมายบริการการแปล"
          ],
          "Do nothing": [
             "ไม่ต้องดำเนินการใด ๆ"
@@ -1371,9 +1767,6 @@
          ],
          "Choose a translator": [
             "เลือกนักแปล"
-         ],
-         "First available": [
-            "คนแรกที่ว่าง"
          ],
          "(Me)": [
             "(ฉัน)"
@@ -1393,9 +1786,6 @@
          "Minimize": [
             "ย่อ"
          ],
-         "PTC translates at higher quality and gives you publish-ready results.": [
-            "PTC แปลด้วยคุณภาพที่สูงกว่าและให้ผลลัพธ์ที่พร้อมเผยแพร่"
-         ],
          "Step 2": [
             "ขั้นตอนที่ 2"
          ],
@@ -1404,54 +1794,6 @@
          ],
          "Set up AI translation": [
             "ตั้งค่าการแปลด้วย AI"
-         ],
-         "Keep a wp-admin window open until WPML finishes translating": [
-            "เปิดหน้า wp-admin ค้างไว้จนกว่า WPML จะแปลเสร็จ"
-         ],
-         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
-            "โดยปกติ WPML จะแปลเนื้อหาของคุณในพื้นหลังโดยที่คุณไม่ต้องอยู่ในส่วนบริหารจัดการของ WordPress อย่างไรก็ตาม WPML ไม่สามารถเข้าถึงไซต์นี้ได้ ดังนั้นจึงจะรับคำแปลของคุณในขณะที่หน้า wp-admin เปิดอยู่"
-         ],
-         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
-            "คุณสามารถทำงานต่อที่ใดก็ได้ในส่วนบริหารจัดการของ WordPress เพียงแค่เปิดหน้าต่างทิ้งไว้หนึ่งหน้าต่างจนกว่าการแปลจะเสร็จสิ้น"
-         ],
-         "Next check for translations in %s.": [
-            "ตรวจสอบการแปลครั้งต่อไปใน %s"
-         ],
-         "Hide details": [
-            "ซ่อนรายละเอียด"
-         ],
-         "What could be blocking it, and how to fix it": [
-            "อะไรที่อาจขัดขวาง และวิธีแก้ไขปัญหานี้"
-         ],
-         "Check these on your site": [
-            "ตรวจสอบสิ่งเหล่านี้บนไซต์ของคุณ"
-         ],
-         "The site might be on a private network, in staging, or only reachable through a VPN.": [
-            "ไซต์อาจอยู่ในเครือข่ายส่วนตัว อยู่ในระหว่างการทดสอบ (staging) หรือเข้าถึงได้ผ่าน VPN เท่านั้น"
-         ],
-         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
-            "การตรวจสอบสิทธิ์ HTTP ขั้นพื้นฐานหรือรายการ IP ที่อนุญาตอาจกำลังบล็อกคำขอจากภายนอก"
-         ],
-         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
-            "ปลั๊กอินความปลอดภัย ไฟร์วอลล์ หรือ WAF อาจกำลังปฏิเสธคำขอจาก WPML"
-         ],
-         "The site might be in maintenance mode.": [
-            "ไซต์อาจอยู่ในโหมดบำรุงรักษา"
-         ],
-         "Already fixed this on your site?": [
-            "แก้ไขปัญหานี้บนไซต์ของคุณแล้วใช่หรือไม่?"
-         ],
-         "Check again whether the site is reachable": [
-            "ตรวจสอบอีกครั้งว่าไซต์สามารถเข้าถึงได้หรือไม่"
-         ],
-         "Checking…": [
-            "กำลังตรวจสอบ…"
-         ],
-         "Check again": [
-            "ตรวจสอบอีกครั้ง"
-         ],
-         "Still couldn't reach your site.": [
-            "ยังคงไม่สามารถเข้าถึงไซต์ของคุณได้"
          ],
          "Automatic translations completed": [
             "การแปลอัตโนมัติเสร็จสมบูรณ์"
@@ -1474,56 +1816,11 @@
          "Map the language": [
             "จับคู่ภาษา"
          ],
-         "%d second": [
-            "%d วินาที"
+         "%d translation picked up.": [
+            "ดึงข้อมูลคำแปลแล้ว %d รายการ"
          ],
-         "%d minute": [
-            "%d นาที"
-         ],
-         "%d hour": [
-            "%d ชั่วโมง"
-         ],
-         "%d day": [
-            "%d วัน"
-         ],
-         "%d translation": [
-            "%d การแปล"
-         ],
-         "checking now": [
-            "กำลังตรวจสอบตอนนี้"
-         ],
-         "next check in %s": [
-            "ตรวจสอบครั้งถัดไปใน %s"
-         ],
-         "WPML stopped checking for delivered translations after repeated failures.": [
-            "WPML หยุดตรวจสอบการแปลที่ส่งมอบแล้วหลังจากล้มเหลวหลายครั้ง"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s": [
-            "กำลังรับการแปล: ได้รับล่าสุดเมื่อ %1$s ที่แล้ว · %2$s"
-         ],
-         "Receiving translations: last received %s ago": [
-            "กำลังรับการแปล: ได้รับล่าสุดเมื่อ %s ที่แล้ว"
-         ],
-         "Receiving translations: no translations received yet · %s": [
-            "กำลังรับการแปล: ยังไม่ได้รับงานแปลใด ๆ · %s"
-         ],
-         "Receiving translations: no translations received yet": [
-            "กำลังรับการแปล: ยังไม่ได้รับงานแปลใด ๆ"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
-            "กำลังรับคำแปล: ได้รับล่าสุดเมื่อ %1$s ที่แล้ว · รออยู่ %2$s · %3$s"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting": [
-            "กำลังรับคำแปล: ได้รับล่าสุดเมื่อ %1$s ที่แล้ว · รออยู่ %2$s"
-         ],
-         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
-            "กำลังรับคำแปล: ยังไม่ได้รับคำแปลใด ๆ · รออยู่ %1$s · %2$s"
-         ],
-         "Receiving translations: no translations received yet · %s waiting": [
-            "กำลังรับคำแปล: ยังไม่ได้รับคำแปลใด ๆ · รออยู่ %s"
-         ],
-         "These translations are taking longer than they should to arrive.": [
-            "คำแปลเหล่านี้ใช้เวลานานกว่าที่ควรจะเป็นในการส่งมาถึง"
+         "Nothing new to pick up yet.": [
+            "ยังไม่มีรายการใหม่ให้ดึงข้อมูล"
          ],
          "Picking up translations…": [
             "กำลังรับคำแปล…"
@@ -1582,8 +1879,8 @@
          "New content is ready to translate": [
             "เนื้อหาใหม่พร้อมสำหรับการแปลแล้ว"
          ],
-         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
-            "%s สามารถแปลได้หลังจากที่คุณตรวจสอบค่าใช้จ่ายในการแปลแล้ว ดังนั้น “แปลทุกอย่าง” จึงไม่ได้รวมรายการเหล่านี้ไว้ โปรดตรวจสอบค่าใช้จ่ายและรวมรายการเหล่านี้เพื่อให้ไซต์ของคุณได้รับการแปลอย่างสมบูรณ์"
+         "%s became translatable after Translate Everything was set up, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "%s กลายเป็นเนื้อหาที่แปลได้หลังจากตั้งค่า แปลทุกอย่าง แล้ว ดังนั้น แปลทุกอย่าง จึงไม่ได้รวมรายการเหล่านี้ไว้ ตรวจสอบค่าใช้จ่ายและรวมรายการเหล่านี้เพื่อคงให้ไซต์ของคุณได้รับการแปลอย่างสมบูรณ์"
          ],
          "Review cost and include": [
             "ตรวจสอบค่าใช้จ่ายและรวมเข้าด้วยกัน"
@@ -1602,15 +1899,6 @@
          ],
          "PTC can translate your software right inside your Git workflow.": [
             "PTC สามารถแปลซอฟต์แวร์ของคุณได้โดยตรงภายในเวิร์กโฟลว์ Git ของคุณ"
-         ],
-         "The following target languages do not support automatic translations: %s": [
-            "ภาษาเป้าหมายต่อไปนี้ไม่รองรับการแปลอัตโนมัติ: %s"
-         ],
-         "To enable automatic translation map them to known languages.": [
-            "หากต้องการเปิดใช้งานการแปลอัตโนมัติ โปรดจับคู่ภาษากับภาษาที่รู้จัก"
-         ],
-         "Map to known languages": [
-            "จับคู่กับภาษาที่รู้จัก"
          ],
          "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
             "หากต้องการความช่วยเหลือ โปรด <supportLink>เปิดตั๋วใน Forum Thread (Maiya) ของเรา</supportLink> คลิกที่ปุ่ม “Copy All” เพื่อรับข้อมูลการดีบั๊กและ “วาง” ลงในเอเจนต์ Maiya ของเรา หากคุณยังคงประสบปัญหา ให้ใช้ <logsLink>เครื่องมือบันทึก</logsLink> เพื่อรวบรวมข้อมูลเพิ่มเติม"
@@ -1702,6 +1990,9 @@
          "Add your site description before you can turn this on.": [
             "เพิ่มคำอธิบายไซต์ของคุณก่อนที่จะเปิดใช้งานสิ่งนี้"
          ],
+         "Translate Everything needs an active automatic translation account.": [
+            "แปลทุกอย่าง ต้องมีบัญชีการแปลอัตโนมัติที่ใช้งานอยู่"
+         ],
          "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
             "คุณต้องเปิดใช้งานตัวแก้ไขการแปลขั้นสูงเพื่อเปิดใช้งานแปลทุกอย่างโดยอัตโนมัติ"
          ],
@@ -1754,7 +2045,7 @@
             "จ่ายครั้งเดียวต่อหน้า – คิดค่าบริการเฉพาะคำที่เพิ่มใหม่เท่านั้น"
          ],
          "Per word, changes included": [
-            "คิดราคาตามจำนวนคำ รวมถึงเมื่อมีการแก้ไข"
+            "ต่อคำ รวมถึงการเปลี่ยนแปลงเนื้อหา"
          ],
          "Your active engine": [
             "เอนจินที่คุณใช้งานอยู่"
@@ -1787,7 +2078,7 @@
             "เมื่อคุณตั้งค่าสิ่งนี้"
          ],
          "Choose your engine: keep %s, priced per word, or switch to PTC to pay once per page.": [
-            "เลือกเอนจินของคุณ: ใช้ %s ต่อไปโดยคิดราคาตามจำนวนคำ หรือสลับเป็น PTC เพื่อจ่ายครั้งเดียวต่อหน้า"
+            "เลือกเครื่องมือแปลของคุณ: ใช้ %s ต่อไปซึ่งคิดราคาต่อคำ หรือสลับเป็น PTC เพื่อจ่ายครั้งเดียวต่อหน้า"
          ],
          "Review what gets translated and see the cost.": [
             "ตรวจสอบสิ่งที่จะถูกแปลและดูค่าใช้จ่าย"
@@ -1805,7 +2096,7 @@
             "สลับเป็น PTC แทน"
          ],
          "You're translating with %s: priced per word, and changes to translated pages are charged again. With PTC you pay once per page and changes are free.": [
-            "คุณกำลังแปลด้วย %s: คิดราคาตามจำนวนคำ และจะมีการคิดค่าบริการอีกครั้งเมื่อมีการแก้ไขหน้าที่แปลแล้ว หากใช้ PTC คุณจะจ่ายครั้งเดียวต่อหน้าและแก้ไขได้ฟรี"
+            "คุณกำลังแปลด้วย %s: คิดราคาต่อคำ และการเปลี่ยนแปลงในหน้าที่แปลแล้วจะถูกเรียกเก็บเงินอีกครั้ง เมื่อใช้ PTC คุณจะจ่ายเพียงครั้งเดียวต่อหน้าและแก้ไขเนื้อหาได้ฟรี"
          ],
          "at %s's per-word rate; changes to translated pages are charged again": [
             "ในอัตราต่อคำของ %s และจะมีการคิดค่าบริการอีกครั้งเมื่อมีการแก้ไขหน้าที่แปลแล้ว"
@@ -1876,11 +2167,8 @@
          "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
             "WPML จะหยุดแปลเนื้อหาใหม่และเนื้อหาที่แก้ไขโดยอัตโนมัติ คำแปลที่ส่งมอบแล้วจะยังคงเป็นเหมือนเดิม"
          ],
-         "%d translation is still in progress. You will not be charged for it.": [
-            "%d การแปลยังคงอยู่ในระหว่างดำเนินการ คุณจะไม่ถูกเรียกเก็บเงินสำหรับรายการเหล่านี้"
-         ],
-         "%d translation is currently in progress and will be cancelled.": [
-            "%d การแปลกำลังดำเนินการอยู่ในขณะนี้และจะถูกยกเลิก"
+         "Translations in progress will be cancelled and refunded. When you switch back on, changed pages will be sent again.": [
+            "การแปลที่กำลังดำเนินการจะถูกยกเลิกและคืนเงิน เมื่อคุณเปิดใช้งานอีกครั้ง หน้าที่มีการเปลี่ยนแปลงจะถูกส่งไปใหม่อีกครั้ง"
          ],
          "You can adjust the content limits once Translate Everything finishes the current translation run.": [
             "คุณสามารถปรับขีดจำกัดเนื้อหาได้เมื่อ “แปลทุกอย่าง” เสร็จสิ้นการรันการแปลปัจจุบัน"
@@ -1952,7 +2240,7 @@
             "ใช้งานได้ แต่ยังเห็นข้อผิดพลาดอยู่"
          ],
          "Per word, changes included. ": [
-            "คิดราคาตามจำนวนคำ รวมถึงเมื่อมีการแก้ไข "
+            "ต่อคำ รวมถึงการเปลี่ยนแปลงเนื้อหา "
          ],
          " to make changes free.": [
             " เพื่อให้แก้ไขได้ฟรี"
@@ -2176,6 +2464,9 @@
          "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
             "รายการนี้ต้องมีการอัปเดตการแปล แต่ก่อนหน้านี้ถูกแปลโดยใช้ตัวแก้ไข WordPress การใช้ตัวแก้ไขการแปลของ WPML จะเขียนทับการแปลที่มีอยู่"
          ],
+         "%s: review in progress": [
+            "%s: กำลังรีวิว"
+         ],
          "%1$s: %2$s%3$s": [
             "%1$s: %2$s%3$s"
          ],
@@ -2263,9 +2554,6 @@
          "Same as default": [
             "เหมือนกับค่าเริ่มต้น"
          ],
-         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
-            "การแปลอัตโนมัติไม่สามารถใช้งานได้ระหว่าง %1$s และ %2$s เนื่องจากถูกระบุว่าเป็นภาษาเดียวกัน"
-         ],
          "Translation paused": [
             "หยุดการแปลชั่วคราว"
          ],
@@ -2308,8 +2596,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "ระบบจะนับหน้า โพสต์ และสินค้าพร้อมด้วยฟิลด์ที่กำหนดเอง ข้อความของตัวสร้างหน้า และข้อความสื่อ รวมถึงหมวดหมู่ ป้ายกำกับ และแอตทริบิวต์ที่ใช้"
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "ระบบจะนับหน้า โพสต์ และสินค้าพร้อมด้วยฟิลด์ที่กำหนดเอง ข้อความของตัวสร้างหน้า และข้อความสื่อ หมวดหมู่ ป้ายกำกับ และแอตทริบิวต์ที่ใช้ รวมถึงสตริงของไซต์ โดยจะนับคำศัพท์ในทุกรายการที่ใช้นั้นและนับแยกต่างหากอีกหนึ่งครั้ง เนื่องจากคำศัพท์จะถูกส่งไปแปลทั้งสองแบบ"
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "จำนวนนี้นับรวมหน้า โพสต์ และสินค้าพร้อมฟิลด์ที่กำหนดเอง ข้อความตัวสร้างหน้า และข้อความของสื่อ ตลอดจนหมวดหมู่ แท็ก และแอตทริบิวต์ที่ใช้ และสตริงของไซต์ แต่ละหมวดหมู่ แท็ก หรือแอตทริบิวต์จะถูกนับเพียงครั้งเดียวในแถวอนุกรมวิธาน และจะไม่นับซ้ำกับรายการที่ใช้ข้อมูลดังกล่าว"
          ],
          "Total items": [
             "รายการทั้งหมด"
@@ -2349,6 +2637,9 @@
          ],
          "To use prepaid words, register WPML on this site.": [
             "หากต้องการใช้คำแบบชำระเงินล่วงหน้า โปรดลงทะเบียน WPML บนไซต์นี้"
+         ],
+         "Checking…": [
+            "กำลังตรวจสอบ…"
          ],
          "We could not reach our translation system.": [
             "เราไม่สามารถเชื่อมต่อกับระบบการแปลของเราได้"
@@ -2458,9 +2749,6 @@
          "Connect your sites to share translation memory, glossary and word quota.": [
             "เชื่อมต่อไซต์ของคุณเพื่อแชร์หน่วยความจำการแปล อภิธานศัพท์ และโควตาคำ"
          ],
-         "Learn more": [
-            "เรียนรู้เพิ่มเติม"
-         ],
          "Copy your migration code:": [
             "คัดลอกรหัสการย้ายข้อมูลของคุณ:"
          ],
@@ -2513,7 +2801,7 @@
             "มี %1$s%2$s คำ%3$s ในบัญชี WPML ของคุณ"
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "มี %1$s%2$s คำที่พร้อมใช้งานในบัญชี WPML ของคุณ%3$s"
+            "มี %1$s%2$s พร้อมใช้งานในบัญชี WPML ของคุณ%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(เฉพาะเจ้าของบัญชี WPML เท่านั้นที่สามารถดำเนินการนี้ได้)"
@@ -2547,6 +2835,9 @@
          ],
          "Scores based on WPML's internal MQM translation quality study.": [
             "คะแนนอ้างอิงจากการศึกษาคุณภาพการแปล MQM ภายในของ WPML"
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC แปลด้วยคุณภาพที่สูงกว่าและให้ผลลัพธ์ที่พร้อมเผยแพร่"
          ],
          "Select an item": [
             "เลือกรายการ"

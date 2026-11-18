@@ -10,8 +10,7 @@ class WPML_TM_ATE {
 
 	public function is_translation_method_ate_enabled() {
 		if ( null === $this->translation_method_ate_enabled ) {
-			$doc_translation_method               = wpml_get_tm_sub_setting( 'doc_translation_method', null );
-			$this->translation_method_ate_enabled = $doc_translation_method === ICL_TM_TMETHOD_ATE;
+			$this->translation_method_ate_enabled = WPML_TM_ATE_Status::is_editor_ate();
 		}
 
 		return $this->translation_method_ate_enabled;
@@ -30,7 +29,7 @@ class WPML_TM_ATE {
 
 		$ate_job = $this->get_job_data_for_post( $trid, $language );
 
-		if ( $ate_job && ! is_wp_error( $ate_job ) ) {
+		if ( $ate_job && ! is_wp_error( $ate_job ) && isset( $ate_job->status_id ) ) {
 			$status_id = $ate_job->status_id;
 		}
 
@@ -53,7 +52,11 @@ class WPML_TM_ATE {
 		$ate_job_id = $tm_ate_jobs->get_ate_job_id( $job_id );
 		$ate_job    = $tm_ate_api->get_job( $ate_job_id );
 
-		return isset( $ate_job->$ate_job_id ) ? $ate_job->$ate_job_id : $ate_job;
+		if ( isset( $ate_job->$ate_job_id ) ) {
+			return $ate_job->$ate_job_id;
+		}
+
+		return $ate_job instanceof WP_Error ? $ate_job : null;
 	}
 
 	private function get_tm_ate_api() {

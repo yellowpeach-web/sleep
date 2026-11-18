@@ -34,7 +34,7 @@ class Hooks implements \IWPML_Action {
 			$this->cache->set( $config, $currentHash );
 		}
 
-		return array_merge( $widgetsToTranslate, $config );
+		return array_merge( $widgetsToTranslate, array_diff_key( $config, $widgetsToTranslate ) );
 	}
 
 	public function clearCache() {

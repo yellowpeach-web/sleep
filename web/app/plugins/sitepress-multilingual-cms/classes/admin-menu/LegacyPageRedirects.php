@@ -10,6 +10,8 @@ class WPML_Legacy_Page_Redirects implements IWPML_Backend_Action {
 	const ST_FOLDER     = 'wpml-string-translation';
 	const PACKAGES_SLUG = 'wpml-package-management';
 
+	const CORRECTIONS_SM = 'corrections';
+
 	const DUPLICATE_DOORS = array(
 		'wpml-tm-ate-log'        => 'ate-error-logs',
 		'wpml-tm-job-log'        => 'job-logs',
@@ -222,6 +224,10 @@ class WPML_Legacy_Page_Redirects implements IWPML_Backend_Action {
 			return 'admin.php?page=' . self::TM_FOLDER . '/menu/main.php&tab=taxonomy';
 		}
 
+		if ( self::PLUGIN_FOLDER . '/menu/menu-sync/menus-sync.php' === $page ) {
+			return 'admin.php?page=' . self::TM_FOLDER . '/menu/main.php&tab=menus';
+		}
+
 		if ( self::RETIRED_TROUBLESHOOTING_PAGE === $page ) {
 			return 'admin.php?page=' . self::PLUGIN_FOLDER . '/menu/support.php';
 		}
@@ -250,6 +256,10 @@ class WPML_Legacy_Page_Redirects implements IWPML_Backend_Action {
 
 
 		if ( self::TM_OLD_FOLDER . '/menu/main.php' === $page ) {
+			return $this->main_php_target( $sm );
+		}
+
+		if ( self::TM_OLD_FOLDER === $page && self::CORRECTIONS_SM === $sm ) {
 			return $this->main_php_target( $sm );
 		}
 
@@ -304,6 +314,8 @@ class WPML_Legacy_Page_Redirects implements IWPML_Backend_Action {
 				return self::TRANSLATORS_NOTIFICATIONS;
 			case 'com-log':
 				return 'admin.php?page=' . self::PLUGIN_FOLDER . '/menu/support.php&tool=communication-log';
+			case self::CORRECTIONS_SM:
+				return 'admin.php?page=' . self::TM_FOLDER . '/menu/main.php&tab=corrections';
 			case '':
 				return 'admin.php?page=' . self::TM_FOLDER . '/menu/main.php';
 		}

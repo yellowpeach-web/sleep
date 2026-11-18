@@ -2,6 +2,8 @@
 
 namespace WPML\UserInterface\Web\Infrastructure\CompositionRoot\Config\Updates;
 
+use WPML\Core\Port\Update\PercentDoneInterface;
+use WPML\Core\Port\Update\ResumableUpdateInterface;
 use WPML\UserInterface\Web\Core\SharedKernel\Config\Endpoint\Endpoint;
 use WPML\UserInterface\Web\Core\SharedKernel\Config\Endpoint\MethodType;
 use WPML\UserInterface\Web\Infrastructure\CompositionRoot\Config\ApiInterface;
@@ -11,6 +13,7 @@ class UpdateHandler {
   const ROUTE_PATH = '/updates';
 
   const ERROR_RETURNED_FALSE = 'Update returned false.';
+  const ERROR_NO_PROGRESS = 'Resumable update did not advance.';
 
   private $_endpoint;
 
@@ -18,12 +21,25 @@ class UpdateHandler {
 
   private $repository;
 
+  private $runLock;
+
+  private $backgroundRun;
+
   private $updatesToPerform = [];
 
+  private $allUpdates = [];
 
-  public function __construct( ApiInterface $api, Repository $repository ) {
+
+  public function __construct(
+    ApiInterface $api,
+    Repository $repository,
+    RunLock $runLock,
+    BackgroundRun $backgroundRun
+  ) {
     $this->api = $api;
     $this->repository = $repository;
+    $this->runLock = $runLock;
+    $this->backgroundRun = $backgroundRun;
   }
 
 
@@ -37,8 +53,9 @@ class UpdateHandler {
   }
 
 
-  public function registerRoute( $updatesToPerform ) {
+  public function registerRoute( $updatesToPerform, $allUpdates = [] ) {
     $this->updatesToPerform = $updatesToPerform;
+    $this->allUpdates = $allUpdates;
 
     $this->api->registerRoute(
       $this->endpoint(),
@@ -56,7 +73,28 @@ class UpdateHandler {
       return;
     }
 
-    $this->doUpdate( $this->updatesToPerform[ $requestData['update'] ] );
+    $this->runExclusively( $this->updatesToPerform[ $requestData['update'] ] );
+
+    $this->backgroundRun->arm( $this->allUpdates );
+  }
+
+
+  public function runExclusively( $update ) {
+    if ( ! $this->runLock->acquire( $update ) ) {
+      return false;
+    }
+
+    try {
+      if ( ! $this->repository->getUpdatesToPerform( [ $update->id() => $update ] ) ) {
+        return false;
+      }
+
+      $this->doUpdate( $update );
+
+      return true;
+    } finally {
+      $this->runLock->release( $update );
+    }
   }
 
 
@@ -73,9 +111,27 @@ class UpdateHandler {
       return;
     }
 
-    $result
-      ? $this->repository->setUpdateComplete( $update )
-      : $this->setUpdateFailed( $update, self::ERROR_RETURNED_FALSE );
+    if ( ! $result ) {
+      $this->setUpdateFailed( $update, self::ERROR_RETURNED_FALSE );
+      return;
+    }
+
+    if ( $handler instanceof ResumableUpdateInterface && ! $handler->isFinished() ) {
+      $progress = $handler->progress();
+      if ( $progress === $this->repository->getProgress( $update ) ) {
+        $this->setUpdateFailed( $update, self::ERROR_NO_PROGRESS . ' (' . $progress . ')' );
+        return;
+      }
+
+      $this->repository->setUpdateToContinue(
+        $update,
+        $progress,
+        $handler instanceof PercentDoneInterface ? $handler->percentDone() : null
+      );
+      return;
+    }
+
+    $this->repository->setUpdateComplete( $update );
   }
 
 

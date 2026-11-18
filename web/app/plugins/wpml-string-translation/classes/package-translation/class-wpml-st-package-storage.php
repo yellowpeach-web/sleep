@@ -19,6 +19,7 @@ class WPML_ST_Package_Storage {
 	public function update( $string_title, $string_type, $string_value, $string_id ) {
 
 		$update_where = array( 'id' => $string_id );
+		$string_value = WPML_Register_String_Filter::utf8_value( $string_value );
 
 		$row = StringRowsCache::getRow( $string_id );
 		if ( null === $row ) {
@@ -64,6 +65,10 @@ class WPML_ST_Package_Storage {
 			}
 		}
 
+		if ( $package_id_or_value_updated && $row && (string) $row['value'] !== (string) $string_value ) {
+			do_action( 'wpml_st_update_string', $row['context'], $row['name'], $row['value'], $string_value, false, (object) $row );
+		}
+
 		return $type_or_title_updated || $package_id_or_value_updated;
 	}
 
@@ -96,13 +101,23 @@ class WPML_ST_Package_Storage {
 	private function read_row( $string_id ) {
 		$wpdb = $this->wpdb;
 
-		$row = $wpdb->get_row(
-			$wpdb->prepare(
-				"SELECT id, value, string_package_id, type, title FROM {$wpdb->prefix}icl_strings WHERE id = %d",
-				$string_id
-			),
-			ARRAY_A
-		);
+		if ( StringValue::isReady() ) {
+			$row = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT id, context, name, value, string_package_id, type, title, status, has_text FROM {$wpdb->prefix}icl_strings WHERE id = %d",
+					$string_id
+				),
+				ARRAY_A
+			);
+		} else {
+			$row = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT id, context, name, value, string_package_id, type, title, status FROM {$wpdb->prefix}icl_strings WHERE id = %d",
+					$string_id
+				),
+				ARRAY_A
+			);
+		}
 
 		return $row ?: null;
 	}

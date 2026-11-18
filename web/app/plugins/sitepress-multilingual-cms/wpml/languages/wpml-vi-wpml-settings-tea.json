@@ -127,11 +127,11 @@
          "Legacy engine": [
             "Công cụ cũ"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "Đã áp dụng mức giá cũ. %s là một công cụ dịch thuật cũ, không được khuyến nghị cho các trang web mới và sẽ bị ngừng hỗ trợ. Các trang web hiện tại vẫn giữ tỷ lệ từ đã điều chỉnh cho công cụ này."
-         ],
          "Switch to PTC": [
             "Chuyển sang PTC"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Đã áp dụng mức giá cũ. %s là một công cụ dịch thuật cũ, không được khuyến nghị cho các trang web mới và sẽ bị ngừng hỗ trợ. Các trang web hiện tại vẫn giữ tỷ lệ từ đã điều chỉnh cho công cụ này."
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Đây là số lượng từ cần để dịch nội dung hiện tại của bạn hôm nay. Số lượng này không bao gồm một số văn bản do các plugin khác thêm vào, chẳng hạn như biểu mẫu hoặc thanh trượt, vốn được tính sau khi thiết lập hoàn tất. Các chuỗi trang web từ giao diện và plugin cũng được tính sau khi thiết lập và thường thêm vào vài trăm từ. Sau đó, việc chỉnh sửa là miễn phí. Bạn chỉ trả tiền lại cho các từ mà bạn thêm vào."
@@ -148,8 +148,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Số lượng này tính các trang, bài viết và sản phẩm cùng với các trường tùy chỉnh, văn bản trình tạo trang và văn bản phương tiện của chúng, cũng như các chuyên mục, thẻ và thuộc tính mà chúng sử dụng."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Số lượng này tính các trang, bài viết và sản phẩm cùng với các trường tùy chỉnh, văn bản trình tạo trang và văn bản phương tiện của chúng, các chuyên mục, thẻ và thuộc tính mà chúng sử dụng, cùng các chuỗi trang web. Một thuật ngữ được tính trong mọi mục sử dụng nó và một lần riêng lẻ, vì nó được gửi đi dịch theo cả hai cách."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Hệ thống đếm các trang, bài viết và sản phẩm cùng với các trường tùy chỉnh, văn bản của trình tạo trang và văn bản phương tiện của chúng, các chuyên mục, thẻ và thuộc tính mà chúng sử dụng, cũng như các chuỗi trang web. Mỗi chuyên mục, thẻ hoặc thuộc tính chỉ được tính một lần trong hàng Các phân loại và không được tính lại cùng với các mục sử dụng nó."
          ],
          "Total items": [
             "Tổng số mục"
@@ -371,7 +371,7 @@
             "Có %1$s%2$s từ%3$s trong tài khoản WPML của bạn."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "Có %1$s%2$s từ khả dụng trên tài khoản WPML của bạn.%3$s"
+            "Có %1$s%2$s khả dụng trên tài khoản WPML của bạn.%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(Chỉ chủ sở hữu tài khoản WPML mới có thể thực hiện việc này.)"

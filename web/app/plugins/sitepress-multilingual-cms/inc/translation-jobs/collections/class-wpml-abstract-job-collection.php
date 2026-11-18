@@ -1,6 +1,8 @@
 <?php
 
 use WPML\TM\ATE\Review\ReviewStatus;
+use WPML\TM\Jobs\StringBatchTitles;
+use WPML\TM\Jobs\StringBatchTranslationJob;
 
 class WPML_Abstract_Job_Collection {
 	public $wpdb;
@@ -58,6 +60,8 @@ class WPML_Abstract_Job_Collection {
 	}
 
 	protected function plain_objects_to_job_instances( $jobs ) {
+		$string_batch_jobs = array();
+
 		foreach ( $jobs as $key => $job ) {
 			if ( ! is_object( $job ) || ! isset( $job->element_type_prefix ) || ! isset( $job->job_id ) ) {
 				unset( $jobs[ $key ] );
@@ -75,15 +79,40 @@ class WPML_Abstract_Job_Collection {
 				$jobs[ $key ] = new WPML_String_Translation_Job( $job->job_id );
 			} elseif ( 'package' === $job->element_type_prefix ) {
 				$jobs[ $key ] = new WPML_Package_Translation_Job( $job->job_id );
+			} elseif ( 'string-batch' === $job->element_type_prefix ) {
+				$jobs[ $key ]        = new StringBatchTranslationJob( $job->job_id, $job->batch_id );
+				$string_batch_jobs[] = $jobs[ $key ];
 			} else {
 				$jobs[ $key ] = new WPML_External_Translation_Job( $job->job_id, $job->batch_id );
 			}
 		}
 
+		$this->preload_string_batch_titles( $string_batch_jobs );
+
 		return $jobs;
 	}
 
-	protected function build_where_clause( array $args ) {
+	private function preload_string_batch_titles( array $string_batch_jobs ) {
+		if ( ! $string_batch_jobs ) {
+			return;
+		}
+
+		$batch_ids = array();
+		foreach ( $string_batch_jobs as $job ) {
+			$batch_ids[] = (int) $job->get_original_element_id();
+		}
+
+		$titles = ( new StringBatchTitles( $this->wpdb ) )->get_titles( $batch_ids );
+
+		foreach ( $string_batch_jobs as $job ) {
+			$batch_id = (int) $job->get_original_element_id();
+			if ( isset( $titles[ $batch_id ] ) ) {
+				$job->set_title( $titles[ $batch_id ] );
+			}
+		}
+	}
+
+	protected function build_where_clause( array $args, $for_string_batches = false, $icl_translations_original_alias = 'ito' ) {
 		$defaults_args = array(
 			'translator_id'      => 0,
 			'status'             => false,
@@ -133,8 +162,11 @@ class WPML_Abstract_Job_Collection {
 		if ( $to ) {
 			$where .= $this->wpdb->prepare( ' AND t.language_code = %s ', $to );
 		}
-		if ( $title ) {
-			$where .= $this->wpdb->prepare( ' AND p.post_title LIKE %s ', '%' . $title . '%' );
+		if ( $title && ! $for_string_batches ) {
+			$where .= ' AND EXISTS ( SELECT 1 FROM ' . $this->wpdb->posts . ' title_p'
+				. ' WHERE title_p.ID = ' . $icl_translations_original_alias . '.element_id'
+				. ' AND ' . $icl_translations_original_alias . ".element_type = CONCAT( 'post_', title_p.post_type )"
+				. $this->wpdb->prepare( " AND title_p.post_title LIKE %s ESCAPE '|' ) ", \WPML\Utils\LikeEscape::contains( $title ) );
 		}
 
 		if ( '' !== $translator_id ) {
@@ -161,7 +193,7 @@ class WPML_Abstract_Job_Collection {
 
 		$where .= ! empty( $service ) ? $this->wpdb->prepare( ' AND s.translation_service=%s ', $service ) : '';
 
-		if ( $this->sitepress ) {
+		if ( $this->sitepress && ! $for_string_batches ) {
 			$post_types = array_keys( $this->sitepress->get_translatable_documents() );
 			if ( $post_types ) {
 				$where .= ' AND (p.post_type IS NULL OR p.post_type IN (' . wpml_prepare_in( $post_types, '%s' ) . ' )) ';
@@ -198,7 +230,7 @@ class WPML_Abstract_Job_Collection {
 			$where .= ' AND t.language_code IN(' . wpml_prepare_in( array_keys( $language_pairs[ $from ] ) ) . ')';
 		}
 
-		$where .= ! empty( $type ) ? $this->wpdb->prepare( ' AND ito.element_type=%s ', $type ) : '';
+		$where .= ! empty( $type ) && ! $for_string_batches ? ' AND ' . $icl_translations_original_alias . $this->wpdb->prepare( '.element_type=%s ', $type ) : '';
 
 		if ( $overdue ) {
 			$today_date = date( 'Y-m-d' );

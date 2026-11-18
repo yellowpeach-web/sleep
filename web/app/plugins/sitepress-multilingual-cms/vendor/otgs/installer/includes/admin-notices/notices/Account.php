@@ -46,7 +46,7 @@ class Account {
 		              ( isset( $nag['condition_cb'] ) ? $nag['condition_cb']() : true );
 
 		if ( $shouldShow ) {
-			$shouldShow = ! self::maybeDelayOneWeekOnNewInstalls( $nag['repository_id'] );
+			$shouldShow = ! self::isCoveredByWPML( $installer, $nag ) && ! self::maybeDelayOneWeekOnNewInstalls( $nag['repository_id'] );
 		}
 
 		return $shouldShow;
@@ -54,7 +54,8 @@ class Account {
 
 	public static function shouldShowExpired( \WP_Installer $installer, array $nag ) {
 		return $installer->repository_has_expired_subscription( $nag['repository_id'], 30 * DAY_IN_SECONDS )
-		       && ! $installer->repository_has_in_grace_subscription( $nag['repository_id'], 30 * DAY_IN_SECONDS );
+		       && ! $installer->repository_has_in_grace_subscription( $nag['repository_id'], 30 * DAY_IN_SECONDS )
+		       && ! self::isCoveredByWPML( $installer, $nag );
 	}
 
 	public static function shouldShowInvalidSiteKey( \WP_Installer $installer, array $nag ) {
@@ -62,14 +63,15 @@ class Account {
 	}
 
 	public static function shouldShowInGrace( \WP_Installer $installer, array $nag ) {
-		return $installer->repository_has_in_grace_subscription( $nag['repository_id'], 30 * DAY_IN_SECONDS );
+		return $installer->repository_has_in_grace_subscription( $nag['repository_id'], 30 * DAY_IN_SECONDS )
+		       && ! self::isCoveredByWPML( $installer, $nag );
 	}
 
 	public static function shouldShowDevelopmentBanner( \WP_Installer $installer, array $nag ) {
 		$showDevelopmentBanner = $installer->repository_has_development_site_key( $nag['repository_id'] );
 		$isDismissed = Loader::isDismissed( $nag[ 'repository_id' ], Account::DEVELOPMENT_MODE );
 		if ( $showDevelopmentBanner && $isDismissed && $nag['repository_id'] === 'wpml' ) {
-			wp_enqueue_style( 'installer-admin-notices', $installer->res_url() . '/res/css/admin-notices.css', array(), $installer->version() );
+			wp_enqueue_style( 'installer-admin-notices', $installer->res_url() . '/res/css/admin-notices.css', array( 'common' ), $installer->version() );
 			add_action( 'wp_before_admin_bar_render', [ static::class, 'addWpmlDevelopmentAdminBar' ], 100);
 		}
 		return $showDevelopmentBanner;
@@ -101,7 +103,8 @@ class Account {
 	}
 
 	public static function shouldShowRefunded( \WP_Installer $installer, array $nag ) {
-		return $installer->repository_has_refunded_subscription( $nag['repository_id'] );
+		return $installer->repository_has_refunded_subscription( $nag['repository_id'] )
+		       && ! self::isCoveredByWPML( $installer, $nag );
 	}
 
 	public static function config( array $initialConfig ) {
@@ -181,6 +184,7 @@ class Account {
 				Account::NOT_REGISTERED => Dismissions::class . '::dismissAccountNotice',
 				Account::DEVELOPMENT_MODE => Dismissions::class . '::dismissAccountNotice',
 				Account::EXPIRED        => Dismissions::class . '::dismissAccountNotice',
+				Account::IN_GRACE       => Dismissions::class . '::dismissAccountNotice',
 				Account::REFUNDED       => Dismissions::class . '::dismissAccountNotice',
 			]
 		);
@@ -196,6 +200,10 @@ class Account {
 		return $endsWith( $host, '.dev' ) ||
 		       $endsWith( $host, '.local' ) ||
 		       $endsWith( $host, '.test' );
+	}
+
+	private static function isCoveredByWPML( \WP_Installer $installer, array $nag ) {
+		return 'toolset' === $nag['repository_id'] && $installer->toolset_is_covered_by_wpml();
 	}
 
 	private static function maybeDelayOneWeekOnNewInstalls( $repo ) {

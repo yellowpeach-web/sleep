@@ -5,7 +5,11 @@ use WPML\FP\Fns;
 use WPML\FP\Lst;
 use WPML\FP\Obj;
 use WPML\TM\API\Jobs;
+use WPML\Core\SharedKernel\Component\Translation\Domain\TranslationStatus;
+use WPML\TM\ATE\AutomaticTranslationCapabilities;
+use WPML\TM\ATE\JobCreation\CreateFailureRecord;
 use WPML\TM\ATE\PullDelivery\State as PullDeliveryState;
+use WPML\TM\AutomaticTranslation\Actions\DeferredDispatch;
 use WPML\WP\OptionManager;
 use WPML\TM\ATE\Review\PreviewLink;
 use WPML\TM\ATE\Review\ReviewStatus;
@@ -24,6 +28,10 @@ class WPML_TM_Rest_Jobs_View_Model {
 	private $progress;
 
 	private $element_link;
+
+	private $next_try_in;
+
+	private $translate_everything_on;
 
 	public function __construct(
 		WPML_TM_Rest_Jobs_Translation_Service $translation_service,
@@ -46,12 +54,13 @@ class WPML_TM_Rest_Jobs_View_Model {
 
 		$held_for_payment = array_map( 'intval', (array) PullDeliveryState::getKey( 'payment_pending_job_ids', [] ) );
 
-		$waiting_for_payment = $this->isPayAsYouGoAccount()
-			? array_map( 'intval', (array) PullDeliveryState::getKey( 'insufficient_balance_job_ids', [] ) )
-			: [];
+		$parked              = array_map( 'intval', (array) PullDeliveryState::getKey( 'insufficient_balance_job_ids', [] ) );
+		$payAsYouGo          = $this->isPayAsYouGoAccount();
+		$waiting_for_payment = $payAsYouGo ? $parked : [];
+		$waiting_for_words = $payAsYouGo ? [] : $parked;
 
 		foreach ( $jobs as $job ) {
-			$result['jobs'][] = $this->map_job( $job, $jobs_search_params, $page_name, $held_for_payment, $waiting_for_payment );
+			$result['jobs'][] = $this->map_job( $job, $jobs_search_params, $page_name, $held_for_payment, $waiting_for_payment, $waiting_for_words );
 		}
 
 		$result['total'] = $total_jobs_count;
@@ -59,21 +68,32 @@ class WPML_TM_Rest_Jobs_View_Model {
 		return $result;
 	}
 
-	private function map_job( WPML_TM_Job_Entity $job, WPML_TM_Jobs_Search_Params $jobs_search_params, $page_name = '', array $held_for_payment = [], array $waiting_for_payment = [] ) {
-		$extra_data        = [];
-		$viewUrl           = '';
-		$heldForPayment    = false;
-		$waitingForPayment = false;
+	private function map_job( WPML_TM_Job_Entity $job, WPML_TM_Jobs_Search_Params $jobs_search_params, $page_name = '', array $held_for_payment = [], array $waiting_for_payment = [], array $waiting_for_words = [] ) {
+		$extra_data          = [];
+		$viewUrl             = '';
+		$heldForPayment      = false;
+		$waitingForPayment   = false;
+		$waitingForWords     = false;
+		$sending             = false;
+		$translatedElementId = null;
+		$viewOpensEditor     = false;
 
 		if ( $job instanceof WPML_TM_Post_Job_Entity ) {
 			$extra_data['icl_translate_job_id'] = $job->get_translate_job_id();
 			$extra_data['editor_job_id']        = $job->get_editor_job_id();
 			$heldForPayment                     = in_array( (int) $job->get_translate_job_id(), $held_for_payment, true );
 			$waitingForPayment                  = in_array( (int) $job->get_translate_job_id(), $waiting_for_payment, true );
+			$waitingForWords                    = in_array( (int) $job->get_translate_job_id(), $waiting_for_words, true );
+			$sending = DeferredDispatch::isParkedForSending( $job->get_status(), $job->get_translate_job_id() );
 
 			$viewUrl = WPML_TM_Job_Entity::TAXONOMY_TYPE === $job->get_type()
 				? ''
 				: $this->getViewUrl( $job, $jobs_search_params, $page_name );
+
+			if ( WPML_TM_Job_Entity::POST_TYPE === $job->get_type() ) {
+				$translatedElementId = (int) $job->get_element_id() > 0 ? (int) $job->get_element_id() : null;
+				$viewOpensEditor     = $this->isPostTypeWithoutPublicView( $job );
+			}
 		}
 
 		return [
@@ -105,6 +125,9 @@ class WPML_TM_Rest_Jobs_View_Model {
 			'created_by_translate_everything' => $job->is_created_by_translate_everything(),
 			'held_for_payment'       => $heldForPayment,
 			'waiting_for_payment'    => $waitingForPayment,
+			'waiting_for_words'      => $waitingForWords,
+			'sending'                => $sending,
+			'create_failure'         => $this->create_failure( $job, $sending ),
 			'progress'               => $this->progress->get( $job ),
 			'batch'                  => [
 				'id'    => $job->get_batch()->get_id(),
@@ -115,7 +138,66 @@ class WPML_TM_Rest_Jobs_View_Model {
 			'edit_url'               => $this->get_edit_url( $job ),
 			'view_url'               => $viewUrl,
 			'view_original_url'      => $this->element_link->getOriginal( $job ),
+			'translated_element_id'  => $translatedElementId,
+			'view_opens_editor'      => $viewOpensEditor,
 		];
+	}
+
+	private function create_failure( WPML_TM_Job_Entity $job, $sending ) {
+		if ( $sending || ! $job instanceof WPML_TM_Post_Job_Entity ) {
+			return null;
+		}
+
+		$status = (int) $job->get_status();
+		if ( ! in_array( $status, [ ICL_TM_ATE_NEEDS_RETRY, TranslationStatus::ATE_UNSOLVABLE ], true ) ) {
+			return null;
+		}
+
+		$failure = CreateFailureRecord::read( $job->get_translate_job_id() );
+		if ( TranslationStatus::ATE_UNSOLVABLE === $status ) {
+			return $failure ? [ 'kind' => $failure['kind'], 'next_try_in' => null ] : null;
+		}
+
+		$kind = $failure ? $failure['kind'] : '';
+
+		if ( $job->is_automatic() && ! $this->isTranslateEverythingOn() ) {
+			return [
+				'kind'        => $kind,
+				'next_try_in' => null,
+				'held'        => true,
+			];
+		}
+
+		if ( null === $this->next_try_in ) {
+			$this->next_try_in = CreateFailureRecord::secondsUntilNextTry();
+		}
+
+		return [
+			'kind'        => $kind,
+			'next_try_in' => $this->next_try_in,
+			'held'        => false,
+		];
+	}
+
+	private function isTranslateEverythingOn() {
+		if ( null === $this->translate_everything_on ) {
+			$this->translate_everything_on = AutomaticTranslationCapabilities::shouldTranslateEverythingFresh();
+		}
+
+		return $this->translate_everything_on;
+	}
+
+	private function isPostTypeWithoutPublicView( WPML_TM_Post_Job_Entity $job ) {
+		$elementType = (string) $job->get_element_type();
+		$prefix      = WPML_TM_Job_Entity::POST_TYPE . '_';
+
+		if ( 0 !== strpos( $elementType, $prefix ) ) {
+			return false;
+		}
+
+		$postType = get_post_type_object( substr( $elementType, strlen( $prefix ) ) );
+
+		return ! $postType || empty( $postType->public ) || empty( $postType->show_ui );
 	}
 
 	private function get_edit_url( $job ) {

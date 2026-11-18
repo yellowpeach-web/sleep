@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=2; plural=(n != 1);",
             "lang": "de_DE"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "Zur Private Translation Cloud (PTC) wechseln"
+         ],
+         "Switch to PTC": [
+            "Zu PTC wechseln"
+         ],
+         "Switching…": [
+            "Wechseln…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "Wir konnten den Wechsel nicht bestätigen. Versuche es erneut oder lade die Seite neu, um die aktuelle Engine zu sehen."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Steuerelemente für die Übersetzungs-Engine konnten nicht geladen werden. Lade die Seite neu und versuche es erneut."
+         ],
+         "Loading translation engine settings…": [
+            "Einstellungen der Übersetzungs-Engine werden geladen…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "Fülle oben Deinen Website-Kontext aus, bevor Du zu PTC wechselst."
+         ],
+         "Reload page": [
+            "Seite neu laden"
+         ],
+         "Could not fetch engines data": [
+            "Engine-Daten konnten nicht abgerufen werden"
+         ],
          "Error in updating since dates for types.": [
             "Fehler beim Aktualisieren der „Seit“-Daten für Typen."
          ],
@@ -138,9 +165,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "Legacy-Preise angewendet. %s ist eine Legacy-Übersetzungs-Engine, die für neue Websites nicht empfohlen wird und eingestellt wird. Bestehende Websites behalten eine angepasste Wortrate dafür bei."
          ],
-         "Switch to PTC": [
-            "Zu PTC wechseln"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Das ist die Anzahl der Wörter, die für die Übersetzung Ihrer aktuellen Inhalte derzeit benötigt wird. Einige Texte anderer Plugins, wie Formulare oder Slider, sind darin nicht enthalten und werden erst nach Abschluss der Einrichtung gezählt. Website-Strings Ihres Themes und Ihrer Plugins werden ebenfalls erst nach der Einrichtung erfasst und umfassen in der Regel einige hundert Wörter. Danach sind Bearbeitungen kostenlos. Sie zahlen nur erneut für Wörter, die Sie neu hinzufügen."
          ],
@@ -156,8 +180,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Es zählt Seiten, Beiträge und Produkte mit ihren benutzerdefinierten Feldern, Page-Builder-Texten und Medientexten sowie den verwendeten Kategorien, Schlagwörtern und Attributen."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Es zählt Seiten, Beiträge und Produkte mit ihren benutzerdefinierten Feldern, Page-Builder-Texten und Medientexten, die verwendeten Kategorien, Schlagwörter und Attribute sowie Website-Strings. Ein Begriff wird in jedem Element gezählt, das ihn verwendet, und einmal separat, da er auf beide Weisen zur Übersetzung gesendet wird."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Es zählt Seiten, Beiträge und Produkte mit ihren benutzerdefinierten Feldern, Page-Builder-Texten und Medientexten, den verwendeten Kategorien, Schlagwörtern und Attributen sowie Website-Strings. Jede Kategorie, jedes Schlagwort oder Attribut wird einmal in der Zeile „Taxonomien“ gezählt und nicht noch einmal bei den Elementen, die es verwenden."
          ],
          "Total items": [
             "Elemente insgesamt"
@@ -230,6 +254,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "Um mit <b>Alles automatisch übersetzen</b> zu beginnen, aktivieren Sie die <b>nutzungsbasierte Abrechnung</b> oder kaufen Sie Prepaid-Wörter."
+         ],
+         "Translation quality:": [
+            "Übersetzungsqualität:"
          ],
          "Select payment method": [
             "Zahlungsmethode auswählen"
@@ -346,7 +373,7 @@
             "Es befinden sich %1$s%2$s Wörter%3$s in Ihrem WPML-Konto."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "Es sind %1$s%2$s in Deinem WPML-Konto verfügbar.%3$s"
+            "Es sind %1$s%2$s in Ihrem WPML-Konto verfügbar.%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(Nur der Inhaber des WPML-Kontos kann dies tun.)"
@@ -362,6 +389,30 @@
          ],
          "Close modal": [
             "Modal schließen"
+         ],
+         "Obvious mistakes": [
+            "Offensichtliche Fehler"
+         ],
+         "Mistakes visible": [
+            "Fehler sichtbar"
+         ],
+         "Ready to publish": [
+            "Bereit zur Veröffentlichung"
+         ],
+         "Your engine": [
+            "Deine Engine"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Übersetzungsqualität (Skala 0–100): %1$s erreicht %2$d, %3$s erreicht %4$d."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Die Ergebnisse basieren auf der internen MQM-Studie zur Übersetzungsqualität von WPML."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC übersetzt mit höherer Qualität und liefert Dir veröffentlichungsreife Ergebnisse."
          ]
       }
    }

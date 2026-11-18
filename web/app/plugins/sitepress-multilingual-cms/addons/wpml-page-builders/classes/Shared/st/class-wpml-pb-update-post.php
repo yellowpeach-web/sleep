@@ -1,11 +1,17 @@
 <?php
 
 use WPML\FP\Wrapper;
+use WPML\TM\Jobs\JobLog;
 use function WPML\FP\invoke;
 
 class WPML_PB_Update_Post {
 
 	const STRING_TRANSLATIONS = 'string_translations';
+
+	const SKIP_NO_TRANSLATION_ROW     = 'no-translation-row';
+	const SKIP_NO_TRANSLATED_POST     = 'no-translated-post';
+	const SKIP_NO_STRING_TRANSLATIONS = 'no-string-translations';
+	const SKIP_NATIVE_EDITOR          = 'last-edited-in-native-editor';
 
 	private $package_data;
 	private $strategy;
@@ -37,16 +43,19 @@ class WPML_PB_Update_Post {
 
 		foreach ( $languages as $lang ) {
 			if ( ! isset( $post_translations[ $lang ] ) ) {
+				$this->log_skip( $post, 0, $lang, self::SKIP_NO_TRANSLATION_ROW );
 				continue;
 			}
 
 			$translated_post_id = $post_translations[ $lang ]->element_id;
 
 			if ( ! $translated_post_id || ! ( get_post( $translated_post_id ) instanceof WP_Post ) ) {
+				$this->log_skip( $post, (int) $translated_post_id, $lang, self::SKIP_NO_TRANSLATED_POST );
 				continue;
 			}
 
 			if ( ! self::has_translation_for_language( $string_translations, $lang ) ) {
+				$this->log_skip( $post, (int) $translated_post_id, $lang, self::SKIP_NO_STRING_TRANSLATIONS );
 				continue;
 			}
 
@@ -86,10 +95,29 @@ class WPML_PB_Update_Post {
 
 	private function update_post( $translated_post_id, $original_post, $string_translations, $lang ) {
 		if ( WPML_PB_Last_Translation_Edit_Mode::is_native_editor( $translated_post_id ) ) {
+			$this->log_skip( $original_post, (int) $translated_post_id, $lang, self::SKIP_NATIVE_EDITOR );
 			return;
 		}
 
 		$content_updater = $this->strategy->get_content_updater();
 		$content_updater->update( $translated_post_id, $original_post, $string_translations, $lang );
+	}
+
+	private function log_skip( WP_Post $original_post, $translated_post_id, $lang, $reason ) {
+		$package = $this->package_data['package'];
+		$data    = [
+			'original_post_id'   => (int) $original_post->ID,
+			'post_type'          => (string) $original_post->post_type,
+			'translated_post_id' => (int) $translated_post_id,
+			'language'           => (string) $lang,
+			'reason'             => $reason,
+			'package_id'         => is_object( $package ) && isset( $package->ID ) ? (int) $package->ID : 0,
+		];
+
+		do_action( 'wpml_pb_update_post_skipped', $data );
+
+		if ( class_exists( JobLog::class ) ) {
+			JobLog::add( 'pb_rebuild_skipped', $data );
+		}
 	}
 }

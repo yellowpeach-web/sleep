@@ -13,7 +13,17 @@ class Scheduler {
 
 	const UNDELIVERED_CHECK_INTERVAL = 60 * 60;
 
+	private $declaredHandshakeSite;
+
+	public function __construct( $declaredHandshakeSite = null ) {
+		$this->declaredHandshakeSite = $declaredHandshakeSite ?: [ \WPML\TM\ATE\Handshake\Acceptance::class, 'accepted' ];
+	}
+
 	public function shouldRun(): bool {
+		if ( call_user_func( $this->declaredHandshakeSite ) ) {
+			return false;
+		}
+
 		$state    = $this->readState();
 		$lastCall = (int) ( $state['last_call'] ?? 0 );
 		$now      = time();

@@ -2,10 +2,13 @@
 
 namespace ACFML\FieldGroup;
 
+use ACFML\Helper\FieldGroup;
 use ACFML\Helper\Fields;
 use WPML\FP\Obj;
 
 class NameCollisions {
+
+	const ELEMENT_TYPE = 'post_' . FieldGroup::CPT;
 
 	private $fieldNamePatterns;
 
@@ -20,12 +23,82 @@ class NameCollisions {
 			return [];
 		}
 
-		$collisions = $this->findInStoredGroups( $names, (int) Obj::propOr( 0, 'ID', $fieldGroup ) );
+		$fieldGroupId = (int) Obj::propOr( 0, 'ID', $fieldGroup );
+		$ownGroupIds  = $this->getFieldGroupAndTranslationIds( $fieldGroupId );
+		$collisions   = $this->findInStoredGroups( $names, $ownGroupIds );
 
-		return array_merge(
-			$collisions,
-			$this->findInNamePatterns( $names, (string) Obj::propOr( '', 'key', $fieldGroup ), $collisions )
+		return $this->keepOneCopyPerOtherGroup(
+			array_merge(
+				$collisions,
+				$this->findInNamePatterns( $names, $this->getOwnGroupKeys( $fieldGroup, $fieldGroupId, $ownGroupIds ), $collisions )
+			),
+			$fieldGroupId
 		);
+	}
+
+	private function keepOneCopyPerOtherGroup( array $collisions, int $fieldGroupId ): array {
+		$keptCollisions     = [];
+		$savedGroupLanguage = null;
+
+		foreach ( $collisions as $collision ) {
+			$copyKey = $collision['field_name'] . '|' . $this->getTranslationGroupKey( $collision );
+
+			if ( ! isset( $keptCollisions[ $copyKey ] ) ) {
+				$keptCollisions[ $copyKey ] = $collision;
+				continue;
+			}
+
+			$savedGroupLanguage = $savedGroupLanguage ?? $this->getLanguage( $fieldGroupId );
+
+			if ( $savedGroupLanguage && $this->getLanguage( $collision['group_id'] ) === $savedGroupLanguage ) {
+				$keptCollisions[ $copyKey ] = $collision;
+			}
+		}
+
+		return array_values( $keptCollisions );
+	}
+
+	private function getTranslationGroupKey( array $collision ): string {
+		$trid = $collision['group_id']
+			? apply_filters( 'wpml_element_trid', null, $collision['group_id'], self::ELEMENT_TYPE )
+			: null;
+
+		return $trid ? 'trid:' . $trid : 'key:' . $collision['group_key'];
+	}
+
+	private function getLanguage( int $fieldGroupId ): ?string {
+		return apply_filters(
+			'wpml_element_language_code',
+			null,
+			[
+				'element_id'   => $fieldGroupId,
+				'element_type' => FieldGroup::CPT,
+			]
+		);
+	}
+
+	private function getFieldGroupAndTranslationIds( int $fieldGroupId ): array {
+		$trid         = apply_filters( 'wpml_element_trid', null, $fieldGroupId, self::ELEMENT_TYPE );
+		$translations = $trid ? (array) apply_filters( 'wpml_get_element_translations', [], $trid, self::ELEMENT_TYPE ) : [];
+
+		$ids = [ $fieldGroupId ];
+		foreach ( $translations as $translation ) {
+			$ids[] = (int) Obj::propOr( 0, 'element_id', $translation );
+		}
+
+		return array_values( array_unique( $ids ) );
+	}
+
+	private function getOwnGroupKeys( array $fieldGroup, int $fieldGroupId, array $ownGroupIds ): array {
+		$keys = [ (string) Obj::propOr( '', 'key', $fieldGroup ) ];
+
+		foreach ( $ownGroupIds as $groupId ) {
+			if ( $fieldGroupId !== $groupId ) {
+				$keys[] = (string) get_post_field( 'post_name', $groupId );
+			}
+		}
+
+		return array_values( array_unique( array_filter( $keys ) ) );
 	}
 
 	private function getTopLevelFieldNames( $fieldGroup ) {
@@ -42,10 +115,11 @@ class NameCollisions {
 		return array_values( array_unique( $names ) );
 	}
 
-	private function findInStoredGroups( $names, $fieldGroupId ) {
+	private function findInStoredGroups( array $names, array $ownGroupIds ) {
 		global $wpdb;
 
-		$placeholders = implode( ', ', array_fill( 0, count( $names ), '%s' ) );
+		$placeholders      = implode( ', ', array_fill( 0, count( $names ), '%s' ) );
+		$groupPlaceholders = implode( ', ', array_fill( 0, count( $ownGroupIds ), '%d' ) );
 
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
@@ -54,10 +128,10 @@ class NameCollisions {
 				 INNER JOIN {$wpdb->posts} g ON g.ID = f.post_parent
 				 WHERE f.post_type = 'acf-field' AND f.post_status = 'publish'
 				   AND g.post_type = 'acf-field-group' AND g.post_status = 'publish'
-				   AND g.ID != %d
+				   AND g.ID NOT IN ($groupPlaceholders)
 				   AND f.post_excerpt IN ($placeholders)
 				 GROUP BY f.post_excerpt, g.ID, g.post_name, g.post_title",
-				array_merge( [ $fieldGroupId ], $names )
+				array_merge( $ownGroupIds, $names )
 			)
 		);
 
@@ -75,11 +149,11 @@ class NameCollisions {
 		return $collisions;
 	}
 
-	private function findInNamePatterns( $names, $fieldGroupKey, array $alreadyFound ) {
+	private function findInNamePatterns( $names, array $ownGroupKeys, array $alreadyFound ) {
 		$exactNamePatterns = [];
 
 		foreach ( $this->fieldNamePatterns->getAllPatterns() as $groupKey => $patterns ) {
-			if ( $groupKey === $fieldGroupKey ) {
+			if ( in_array( $groupKey, $ownGroupKeys, true ) ) {
 				continue;
 			}
 

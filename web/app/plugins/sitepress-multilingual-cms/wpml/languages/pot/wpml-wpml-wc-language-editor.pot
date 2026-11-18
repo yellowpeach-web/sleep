@@ -7,7 +7,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-15T11:55:08+00:00\n"
+"POT-Creation-Date: 2026-11-12T07:54:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wpml\n"
@@ -804,6 +804,10 @@ msgstr ""
 msgid "Blocked by a firewall or CDN"
 msgstr ""
 
+#. translators: Status beside a language domain on a multisite network, when another site of the network has this address.
+msgid "Used by another site"
+msgstr ""
+
 msgid "Not valid"
 msgstr ""
 
@@ -833,6 +837,11 @@ msgstr ""
 #. translators: Shown in the dialog that asks for a language's domain, when the domain loads but a firewall or a CDN (content delivery network) blocked WPML's check that it shows this site. %s: the domain.
 #, js-format
 msgid "%s loads, but a firewall or CDN blocked WPML's check."
+msgstr ""
+
+#. translators: Refusal in the dialog that asks for a language's domain, when another site of the multisite network has that address. %s: "language: domain" pairs.
+#, js-format
+msgid "Used by another site on this network: %s. Enter a different domain to save."
 msgstr ""
 
 #. translators: Refusal shown when a domain did not answer the validation request. %s: "language: domain" pairs. Same wording as the URL format section's refusal.
@@ -1331,6 +1340,10 @@ msgstr ""
 msgid "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh."
 msgstr ""
 
+#. translators: Error after saving in the WPML Languages editor, when a language's Mapping was set to the site's default language. "Match automatically" is an option of the Mapping field on the same screen; translate it the same way there.
+msgid "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead."
+msgstr ""
+
 #. translators: Error after saving in the WPML Languages editor, when the WordPress user is not allowed to change languages.
 msgid "You don’t have permission to change languages."
 msgstr ""
@@ -1412,6 +1425,11 @@ msgstr ""
 msgid "If you cannot find your language in the list, <a>add a custom language</a>."
 msgstr ""
 
+#. translators: Read out by screen readers after a language row was moved in the WPML Languages editor. %1$s: the language name, %2$d: its new position in the list, %3$d: how many languages the list has.
+#, js-format
+msgid "%1$s moved to position %2$d of %3$d."
+msgstr ""
+
 #. translators: Heading above the site's main language in the WPML Languages editor.
 msgid "Default language"
 msgstr ""
@@ -1478,6 +1496,15 @@ msgstr ""
 
 #. translators: Tooltip and accessible label (screen readers) of the bin button that removes a language, in the WPML Languages editor. Verb, imperative.
 msgid "Delete language"
+msgstr ""
+
+#. translators: Accessible label (screen readers) of the drag handle on a language row in the WPML Languages editor. %s: the language name.
+#, js-format
+msgid "Move %s. Use the up and down arrow keys."
+msgstr ""
+
+#. translators: Tooltip of the drag handle on a language row in the WPML Languages editor. Verb, imperative.
+msgid "Drag to change the order"
 msgstr ""
 
 #. translators: Shown in place of the list in the add-language picker of the WPML Languages editor when it opens with nothing pre-listed, because the site already uses every language the picker offers up front. Typing searches all the remaining ones.
@@ -1566,6 +1593,10 @@ msgstr ""
 
 #. translators: Tooltip of the "Same as default" pill on a language row in the WPML Languages editor. The name of the site's default language follows in brackets, added in code.
 msgid "Recognized as the same language as the default"
+msgstr ""
+
+#. translators: Notice on the WPML Languages screen when no automatic translation engine is turned on. <link> wraps the place in the WPML admin menu where engines are turned on: WPML → Settings → AI Translation.
+msgid "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>."
 msgstr ""
 
 #. translators: One entry of the language list in the WPML Languages editor. %s: the language name; "Regional" marks a language that belongs to no single country, as in "Catalan (Regional)".

@@ -3,6 +3,7 @@
 namespace WPML\TM\Jobs\Authorization;
 
 use WPML\LIB\WP\User;
+use WPML\TM\ATE\Review\TermTranslationJob;
 
 class JobAuthorization {
 
@@ -64,6 +65,12 @@ class JobAuthorization {
 			return new \WPML_String_Translation_Job( $jobId );
 		}
 
-		return wpml_tm_load_job_factory()->get_translation_job_as_active_record( $jobId );
+		if ( \WPML_TM_Job_Entity::TAXONOMY_TYPE === $type ) {
+			return TermTranslationJob::load( $jobId );
+		}
+
+		$job = wpml_tm_load_job_factory()->get_translation_job_as_active_record( $jobId );
+
+		return $job ? $job : TermTranslationJob::load( $jobId );
 	}
 }

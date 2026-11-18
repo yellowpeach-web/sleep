@@ -39,11 +39,7 @@ class RegenerateMoFilesWithoutNativeCopies implements \IWPML_St_Upgrade_Command 
 		$this->getDomains       = $getDomains ?: [ self::class, 'getDefaultDomains' ];
 		$this->time             = $time ?: 'time';
 		$this->hasFiles         = $hasFiles ?: [ Manager::class, 'hasFiles' ];
-		$this->hasNativeText    = $hasNativeText ?: function ( $domain ) {
-			global $wpdb;
-
-			return self::domainHasNativeText( (string) $domain, $wpdb );
-		};
+		$this->hasNativeText    = $hasNativeText ?: self::nativeTextLookup();
 	}
 
 	public function run() {
@@ -52,10 +48,18 @@ class RegenerateMoFilesWithoutNativeCopies implements \IWPML_St_Upgrade_Command 
 		}
 
 		$done    = $this->getProgress();
-		$started = call_user_func( $this->time );
 		$manager = $this->manager ?: ManagerFactory::create();
 
-		foreach ( $this->getExistingFiles( $manager ) as $file ) {
+		try {
+			$files = $this->getExistingFiles( $manager );
+		} catch ( \RuntimeException $e ) {
+			return false;
+		}
+
+		$started = call_user_func( $this->time );
+		$handled = 0;
+
+		foreach ( $files as $file ) {
 			list( $domain, $locale ) = $file;
 			$key                     = $domain . '|' . $locale;
 
@@ -63,7 +67,8 @@ class RegenerateMoFilesWithoutNativeCopies implements \IWPML_St_Upgrade_Command 
 				continue;
 			}
 
-			if ( call_user_func( $this->time ) - $started >= self::TIME_BUDGET ) {
+			$elapsed = call_user_func( $this->time ) - $started;
+			if ( $handled > 0 && $elapsed >= self::TIME_BUDGET ) {
 				$this->saveProgress( $done );
 
 				return false;
@@ -78,6 +83,7 @@ class RegenerateMoFilesWithoutNativeCopies implements \IWPML_St_Upgrade_Command 
 			}
 
 			$done[] = $key;
+			$handled++;
 			$this->saveProgress( $done );
 		}
 
@@ -139,7 +145,57 @@ class RegenerateMoFilesWithoutNativeCopies implements \IWPML_St_Upgrade_Command 
 		return $this->nativeTextAnswers[ $key ];
 	}
 
+	public static function getDomainsWithNativeText( \wpdb $wpdb ) {
+		$contexts = $wpdb->get_col(
+			"SELECT DISTINCT s.context FROM {$wpdb->prefix}icl_strings s
+			 INNER JOIN {$wpdb->prefix}icl_string_translations st ON st.string_id = s.id
+			 WHERE st.mo_string IS NOT NULL AND st.mo_string <> ''"
+		);
+
+		if ( ! empty( $wpdb->last_error ) ) {
+			throw new \RuntimeException( 'The native-text domains query failed.' );
+		}
+
+		$domains = [];
+		foreach ( (array) $contexts as $context ) {
+			$context = (string) $context;
+			if ( '' === $context || StringsRetrieve::isAdminTextsDomain( $context ) ) {
+				continue;
+			}
+
+			$domains[ strtolower( $context ) ] = true;
+		}
+
+		if ( isset( $domains[ strtolower( StringsRetrieve::CONTEXT_WORDPRESS ) ] ) ) {
+			$domains[ StringsRetrieve::CONTEXT_DEFAULT ] = true;
+		}
+
+		return $domains;
+	}
+
+	public static function nativeTextLookup( ?\wpdb $db = null ) {
+		$domains = null;
+
+		return function ( $domain ) use ( $db, &$domains ) {
+			$domain = (string) $domain;
+			if ( StringsRetrieve::isAdminTextsDomain( $domain ) ) {
+				return false;
+			}
+
+			if ( null === $domains ) {
+				global $wpdb;
+				$domains = self::getDomainsWithNativeText( $db ?: $wpdb );
+			}
+
+			return isset( $domains[ strtolower( $domain ) ] );
+		};
+	}
+
 	public static function domainHasNativeText( $domain, \wpdb $wpdb ) {
+		if ( StringsRetrieve::isAdminTextsDomain( $domain ) ) {
+			return false;
+		}
+
 		$contexts = StringsRetrieve::CONTEXT_DEFAULT === strtolower( $domain )
 			? [ StringsRetrieve::CONTEXT_DEFAULT, StringsRetrieve::CONTEXT_WORDPRESS ]
 			: [ $domain ];

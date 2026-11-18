@@ -13,7 +13,7 @@
                             </tr>
                         </thead>                        
                         <tbody>
-                        <?php foreach($product['downloads'] as $download): ?>
+                        <?php foreach($downloads as $download): ?>
                             <?php if(empty($tr_oddeven) || $tr_oddeven == 'even') $tr_oddeven = 'odd'; else $tr_oddeven = 'even'; ?>
                             <tr class="<?php echo $tr_oddeven ?>">
                                 <td>
@@ -30,9 +30,9 @@
 
                                         $disabled = $expired ||
                                                     (
-                                                        $this->plugin_is_installed($download['name'], $download['slug'], $download['version']) &&
-                                                        !$this->plugin_is_embedded_version($download['name'], $download['slug'])
-                                                    ) || WP_Installer()->dependencies->cant_download( $repository_id );
+                                                        ! $this->can_plugin_be_installed( $download, $repository_id ) &&
+                                                        ! $this->can_plugin_go_back_to_production( $download, $repository_id )
+                                                    );
 
                                     ?>
                                     <input type="checkbox" name="downloads[]" value="<?php echo base64_encode( (string) json_encode($download_data)); ?>" <?php
@@ -50,7 +50,7 @@
                                 </td>
                                 <td class="twelve">
                                     <div class="installer-status-downloading"><?php _e('downloading...', 'installer') ?></div>
-                                    <div class="installer-status-downloaded" data-fail="<?php _e('failed!', 'installer') ?>"><?php _e('downloaded', 'installer') ?></div>
+                                    <div class="installer-status-downloaded installer-status-installed installer-status-updated" data-fail="<?php _e('failed!', 'installer') ?>"><?php _e('downloaded', 'installer') ?></div>
                                 </td>
                                 <td class="twelve">
                                     <div class="installer-status-activating"><?php _e('activating', 'installer') ?></div>
@@ -61,12 +61,14 @@
                         </tbody>
                     </table>
 
+                    <div class="installer-error-box">
                     <?php if( !WP_Installer()->dependencies->is_uploading_allowed() ): ?>
-                        <p class="installer-error-box"><?php printf(__('Downloading is not possible because WordPress cannot write into the plugins folder. %sHow to fix%s.', 'installer'),
+                        <p><?php printf(__('Downloading is not possible because WordPress cannot write into the plugins folder. %sHow to fix%s.', 'installer'),
                                 '<a href="https://codex.wordpress.org/Changing_File_Permissions">', '</a>') ?></p>
                     <?php elseif( WP_Installer()->dependencies->is_win_paths_exception($repository_id) ): ?>
                         <p><?php echo WP_Installer()->dependencies->win_paths_exception_message() ?></p>
                     <?php endif;?>
+                    </div>
 
                     <br />
                     <input type="submit" class="button-secondary" value="<?php esc_attr_e('Download', 'installer') ?>" disabled="disabled" />
@@ -76,5 +78,5 @@
                     <div class="installer-download-progress-status"></div>
                     <div class="installer-status-success"><?php _e('Operation complete!', 'installer') ?></div>
 
-                    <span class="installer-revalidate-message hidden"><?php _e("Download failed!\n\nClick OK to revalidate your subscription or CANCEL to try again.", 'installer') ?></span>
+                    <span class="installer-revalidate-message hidden"><?php _e('Download failed', 'installer') ?></span>
                     </form>         

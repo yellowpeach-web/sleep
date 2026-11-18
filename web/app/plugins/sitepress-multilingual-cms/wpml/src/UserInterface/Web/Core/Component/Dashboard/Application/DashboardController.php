@@ -2,6 +2,7 @@
 
 namespace WPML\UserInterface\Web\Core\Component\Dashboard\Application;
 
+use WPML\Core\Component\ATE\Application\Service\ActiveEngineQueryInterface;
 use WPML\Core\SharedKernel\Component\ATE\Application\Repository\AteReachabilityRepositoryInterface;
 use WPML\Core\SharedKernel\Component\ATE\Application\Repository\ClientRestrictionRepositoryInterface;
 use WPML\Core\SharedKernel\Component\ATE\Application\Repository\SpendCapRepositoryInterface;
@@ -16,10 +17,12 @@ use WPML\Core\Component\TranslationProxy\Application\Service\RemoteTranslationSe
 use WPML\Core\Component\TranslationProxy\Application\Service\TranslationProxyServiceInterface;
 use WPML\Core\SharedKernel\Component\TranslationProxy\Domain\Query\FetchRemoteTranslationServiceException;
 use WPML\Core\SharedKernel\Component\Translator\Application\Service\Dto\TranslatorDto;
+use WPML\Core\Port\Appearance\AppearanceReaderInterface;
 use WPML\Core\Port\Persistence\Exception\DatabaseErrorException;
 use WPML\Core\Port\PluginInterface;
 use WPML\Core\SharedKernel\Component\Language\Application\Query\Dto\LanguageDto;
 use WPML\Core\SharedKernel\Component\Language\Application\Query\LanguagesQueryInterface;
+use WPML\Core\SharedKernel\Component\ATE\Application\Query\AutomaticTranslationAccountQueryInterface;
 use WPML\Core\SharedKernel\Component\ATE\Application\Query\SiteIDQueryInterface;
 use WPML\Core\SharedKernel\Component\Installer\Application\Query\WpmlSiteKeyQueryInterface;
 use WPML\Core\SharedKernel\Component\Post\Application\Query\Dto\PostTypeDto;
@@ -94,6 +97,12 @@ class DashboardController implements
 
   private $siteMigrationLockQuery;
 
+  private $appearanceReader;
+
+  private $accountQuery;
+
+  private $activeEngineQuery;
+
   public function __construct(
     DashboardTranslatableTypesQueryInterface $translatableItems,
     JobQueryInterface $jobQuery,
@@ -120,7 +129,10 @@ class DashboardController implements
     GetPopulatedItemSectionsController $populatedItemSectionsEndpoint,
     ParkedTypesService $parkedTypesService,
     SiteMigrationLockQueryInterface $siteMigrationLockQuery,
-    SiteIDQueryInterface $siteIdQuery
+    SiteIDQueryInterface $siteIdQuery,
+    AppearanceReaderInterface $appearanceReader,
+    AutomaticTranslationAccountQueryInterface $accountQuery,
+    ActiveEngineQueryInterface $activeEngineQuery
   ) {
     $this->translatableItems                = $translatableItems;
     $this->jobQuery                         = $jobQuery;
@@ -148,6 +160,9 @@ class DashboardController implements
     $this->populatedItemSectionsEndpoint    = $populatedItemSectionsEndpoint;
     $this->parkedTypesService               = $parkedTypesService;
     $this->siteMigrationLockQuery           = $siteMigrationLockQuery;
+    $this->appearanceReader                 = $appearanceReader;
+    $this->accountQuery                     = $accountQuery;
+    $this->activeEngineQuery                = $activeEngineQuery;
   }
 
 
@@ -183,6 +198,7 @@ class DashboardController implements
       'adminTextsPage'                  => admin_url( 'admin.php?page=wpml-admin-texts-translation' ),
       'stringTranslationPage'           => admin_url( 'admin.php?page=tm%2Fmenu%2Fmain.php&tab=strings' ),
       'languageEditorPage'              => admin_url( 'admin.php?page=sitepress-multilingual-cms%2Fmenu%2Flanguages.php&trop=1' ),
+      'languagesSettingsPage'           => admin_url( 'admin.php?page=tm%2Fmenu%2Fsettings&section=languages' ),
       'glossaryPage'                    => admin_url( 'admin.php?page=tm%2Fmenu%2Fmain.php&tab=glossary' ),
       'connectedSites'                  => admin_url( 'admin.php?page=wpml-ai-translation-billing&settings=connected_sites' ),
       'translationProxyUrl'             => $this->translationProxyService->getTPUrl(),
@@ -343,6 +359,8 @@ class DashboardController implements
 
       'wpmlStartVersion' => $this->plugin->getVersionWhenSetupRan(),
 
+      'isDuplicateOffered' => \WPML\TranslationPolicy\Duplicate\DuplicateControls::offered(),
+
       // Only when tm.php loaded: a Blog license defines WPML_TM_URL too
       'legacyResourceUrl' => defined( 'WPML_TM_VERSION' ) && defined( 'WPML_TM_URL' ) ? WPML_TM_URL : '',
 
@@ -353,6 +371,8 @@ class DashboardController implements
       'defaultPopulatedItemSections' => $defaultPopulatedItemSections,
       'initialPopulatedItemSections' => $initialPopulatedItemSections,
       'predefinedStringDomain' => $predefinedStringDomain,
+
+      'heldTypes' => $this->appearanceReader->heldTypes(),
 
       'translateEverything' => [
         'isEnabled'                   => $translateEverythingSettings->isEnabled(),
@@ -372,6 +392,7 @@ class DashboardController implements
       'clientRestriction'                      => $this->clientRestrictionRepository->get(),
       'spendCap'                               => $this->spendCapRepository->get(),
       'isAteReachable'                         => $isAteReachable,
+      'isNoEngineEnabled'                      => $isAteEnabled && $this->isNoEngineEnabled(),
       'publicationStatuses'                    => $this->getPublicationStatuses(),
       'translators'                            => $this->getTranslators(),
       'currentlyLoggedInTranslator'            => $this->getCurrentlyLoggedInTranslator(),
@@ -381,6 +402,7 @@ class DashboardController implements
       'stPackagesApi'                          => $this->stringItemEndpointData->getStringPackagesEndpointData(),
       'remoteTranslationService'               => $currentTranslationService,
       'isAteEnabled'                           => $isAteEnabled,
+      'automaticTranslationNeedsAccountOnly'   => $this->accountQuery->needsAccountOnly(),
       'useAteForOldTranslationsCreatedWithCte' => $useAteForOldTranslationsCreatedWithCte,
       'useNativeEditorForAllPostTypes'         => $translationEditor && $translationEditor->useNativeEditorForAllPostTypes(),
       'postTypesUsingNativeEditor'             => $translationEditor ? $translationEditor->getPostTypesUsingNativeEditor() : [],
@@ -405,6 +427,15 @@ class DashboardController implements
       'wpml_dashboard_initial_script_data',
       array_merge( $languageData, $otherData )
     );
+  }
+
+
+  private function isNoEngineEnabled(): bool {
+    try {
+      return $this->activeEngineQuery->resolve()->isNoneEnabled();
+    } catch ( \Throwable $e ) {
+      return false;
+    }
   }
 
 

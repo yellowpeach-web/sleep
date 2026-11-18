@@ -1,5 +1,9 @@
 <?php
 
+use WPML\TM\Settings\RequestSettings;
+use function WPML\PHP\Logger\error as logError;
+use function WPML\PHP\Logger\notice as logNotice;
+
 class WPML_TM_Batch_Report_Email_Process {
 
 	private $batch_report;
@@ -12,12 +16,34 @@ class WPML_TM_Batch_Report_Email_Process {
 	}
 
 	public function process_emails() {
-		$batch_jobs = $this->batch_report->get_jobs();
+		try {
+			if ( ! self::is_new_job_notification_on() ) {
+				$cleared = $this->batch_report->clear();
+				if ( $cleared ) {
+					logNotice( sprintf( 'Translation job notification emails are off: %d queued job(s) cleared without an email.', $cleared ) );
+				}
 
-		$this->email_builder->prepare_assigned_jobs_emails( $batch_jobs );
-		$this->email_builder->prepare_unassigned_jobs_emails( $batch_jobs );
+				return;
+			}
 
-		$this->send_emails( $batch_jobs );
+			$batch_jobs = $this->batch_report->get_jobs();
+
+			$this->email_builder->prepare_assigned_jobs_emails( $batch_jobs );
+			$this->email_builder->prepare_unassigned_jobs_emails( $batch_jobs );
+
+			$this->send_emails( $batch_jobs );
+		} catch ( Throwable $e ) {
+			self::log_failure( $e );
+		}
+	}
+
+	private static function is_new_job_notification_on() {
+		return ICL_TM_NOTIFICATION_IMMEDIATELY === (int) RequestSettings::tmNotificationSettings()['new-job'];
+	}
+
+	private static function log_failure( Throwable $e ) {
+		$file = defined( 'WP_CONTENT_DIR' ) ? str_replace( WP_CONTENT_DIR . '/', '', $e->getFile() ) : $e->getFile();
+		logError( sprintf( 'Translation job notification email failed: %s: %s in %s:%d', get_class( $e ), $e->getMessage(), $file, $e->getLine() ) );
 	}
 
 	private function send_emails( array $batch_jobs ) {
@@ -30,7 +56,12 @@ class WPML_TM_Batch_Report_Email_Process {
 		foreach ( $this->email_builder->get_emails() as $email ) {
 			$email['attachment'] = isset( $email['attachment'] ) ? $email['attachment'] : array();
 
-            $email_sent = WPML_Mail_Sender::send( $email['email'], $email['subject'], $email['body'], $headers, $email['attachment'], 'batch-report' );
+			try {
+				$email_sent = WPML_Mail_Sender::send( $email['email'], $email['subject'], $email['body'], $headers, $email['attachment'], 'batch-report' );
+			} catch ( Throwable $e ) {
+				self::log_failure( $e );
+				$email_sent = false;
+			}
 
 			if ( $email_sent ) {
 				$translators_ids[] = $email['translator_id'];

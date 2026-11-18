@@ -44,9 +44,9 @@ class TranslationBatchesQuery implements TranslationBatchesQueryInterface {
 
     $sql = "SELECT tb.id, tb.batch_name 
     FROM {$this->queryPrepare->prefix()}icl_translation_batches tb
-    WHERE REPLACE(REPLACE(REPLACE(tb.batch_name, ' ', ''), '\t', ''), '\n', '') LIKE %s";
+    WHERE REPLACE(REPLACE(REPLACE(tb.batch_name, ' ', ''), '\t', ''), '\n', '') LIKE %s ESCAPE '|'";
 
-    $sqlPrepared = $this->queryPrepare->prepare( $sql, $searchName . '%' );
+    $sqlPrepared = $this->queryPrepare->prepare( $sql, \WPML\Utils\LikeEscape::startsWith( $searchName ) );
 
     try {
       $translationBatches = $this->queryHandler->query( $sqlPrepared )->getResults();

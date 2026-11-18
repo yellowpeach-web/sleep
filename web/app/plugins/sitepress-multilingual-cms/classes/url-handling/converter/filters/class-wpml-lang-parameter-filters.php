@@ -23,7 +23,7 @@ class WPML_Lang_Parameter_Filters {
 	}
 
 	public function paginated_url_filter( $url ) {
-		$url       = urldecode( $url );
+		$url       = rawurldecode( $url );
 		$parts     = explode( '?', $url );
 		$last_part = count( $parts ) > 2 ? array_pop( $parts ) : '';
 		$url       = join( '?', $parts );

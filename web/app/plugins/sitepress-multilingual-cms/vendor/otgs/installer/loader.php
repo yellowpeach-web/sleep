@@ -17,12 +17,33 @@ if ( ! function_exists( 'otgs_is_rest_request' ) ) {
 }
 
 if ( file_exists( __DIR__ . '/../../otgs/icons/loader.php' ) ) {
-	$vendor_root_url = plugins_url( '/', __FILE__ )  . '../..';
+	$vendor_root_url = plugins_url( '/', __FILE__ ) . '../..';
+
+	$otgs_installer_dir = (string) realpath( __DIR__ );
+	$otgs_installer_in_plugins = false;
+	foreach ( [ WP_PLUGIN_DIR, WPMU_PLUGIN_DIR ] as $otgs_installer_plugins_dir ) {
+		$otgs_installer_plugins_dir = realpath( $otgs_installer_plugins_dir );
+		if ( $otgs_installer_plugins_dir && 0 === strpos( $otgs_installer_dir, $otgs_installer_plugins_dir . DIRECTORY_SEPARATOR ) ) {
+			$otgs_installer_in_plugins = true;
+			break;
+		}
+	}
+	if ( ! $otgs_installer_in_plugins ) {
+		foreach ( [ [ get_stylesheet_directory(), get_stylesheet_directory_uri() ], [ get_template_directory(), get_template_directory_uri() ] ] as $otgs_installer_theme ) {
+			$otgs_installer_theme_dir = realpath( $otgs_installer_theme[0] );
+			if ( $otgs_installer_theme_dir && 0 === strpos( $otgs_installer_dir, $otgs_installer_theme_dir . DIRECTORY_SEPARATOR ) ) {
+				$vendor_root_url = $otgs_installer_theme[1] . str_replace( '\\', '/', substr( (string) realpath( __DIR__ . '/../..' ), strlen( $otgs_installer_theme_dir ) ) );
+				break;
+			}
+		}
+	}
+	unset( $otgs_installer_dir, $otgs_installer_in_plugins, $otgs_installer_plugins_dir, $otgs_installer_theme, $otgs_installer_theme_dir );
+
 	require_once __DIR__ . '/../../otgs/icons/loader.php';
 }
 
 global $otgs_installer_version;
-$otgs_installer_version = '5.2.0';
+$otgs_installer_version = '5.4.2';
 
 if ( ! function_exists( 'wpml_installer_force_load' ) ) {
 	function wpml_installer_force_load() {
@@ -47,6 +68,7 @@ if ( ! $is_cron_request && ! $is_wp_cli_request && ! is_admin() && ! otgs_is_res
 	if ( ! function_exists( 'WP_Installer_Setup' ) ) {
 		function WP_Installer_Setup( $wp_installer_instance, $args = [] ) {
 			if ( isset( $args['site_key_nags'][0]['repository_id'] ) ) {
+				require_once __DIR__ . '/includes/class-otgs-installer-serialized.php';
 				require_once __DIR__ . '/includes/class-otgs-installer-settings.php';
 				require_once __DIR__ . '/includes/class-otgs-installer-subscription.php';
 				require_once __DIR__ . '/includes/utilities/OutboundLink.php';
@@ -128,6 +150,7 @@ if ( ! $is_cron_request && ! $is_wp_cli_request && ! is_admin() && ! otgs_is_res
 $wp_installer_instance = dirname( __FILE__ ) . '/installer.php';
 
 global $wp_installer_instances;
+
 $wp_installer_instances[ $wp_installer_instance ] = [
 	'bootfile' => $wp_installer_instance,
 	'version'  => $otgs_installer_version,
@@ -211,10 +234,18 @@ if ( ! function_exists( 'wpml_installer_instance_delegator' ) ) {
 		require_once dirname( __FILE__ ) . '/includes/loader/Config.php';
 		$delegate = OTGS\Installer\Loader\Config::merge( $delegate, $wp_installer_instances );
 
-		$template_path = realpath( get_template_directory() );
-		if ( $template_path && strpos( (string) realpath( $delegate['bootfile'] ), (string) $template_path ) === 0 ) {
-			$filepath = str_replace( (string) realpath( get_template_directory() ), '', (string) realpath( $delegate['bootfile'] ) );
-			$delegate['args']['in_theme_folder'] = dirname( ltrim( $filepath, '\\/' ) );
+		$bootfile_path = (string) realpath( $delegate['bootfile'] );
+		$theme_dirs    = [ 'template' => get_template_directory() ];
+		if ( get_stylesheet_directory() !== get_template_directory() ) {
+			$theme_dirs = [ 'stylesheet' => get_stylesheet_directory() ] + $theme_dirs;
+		}
+		foreach ( $theme_dirs as $theme => $theme_dir ) {
+			$theme_path = realpath( $theme_dir );
+			if ( $theme_path && strpos( $bootfile_path, $theme_path . DIRECTORY_SEPARATOR ) === 0 ) {
+				$delegate['args']['in_theme_folder'] = dirname( ltrim( substr( $bootfile_path, strlen( $theme_path ) ), '\\/' ) );
+				$delegate['args']['in_theme']        = $theme;
+				break;
+			}
 		}
 
 		if ( isset( $delegate['args'] ) && is_array( $delegate['args'] ) ) {

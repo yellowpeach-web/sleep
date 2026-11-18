@@ -11,4 +11,8 @@ class CurrentLanguage implements LabelTemplateInterface {
 	public function getDisplayName( LanguageItem $languageItem ) {
 		return $languageItem->getDisplayName();
 	}
+
+	public function writeLabel( \DOMElement $label, LanguageItem $languageItem ) {
+		$label->textContent = $this->getDisplayName( $languageItem );
+	}
 }

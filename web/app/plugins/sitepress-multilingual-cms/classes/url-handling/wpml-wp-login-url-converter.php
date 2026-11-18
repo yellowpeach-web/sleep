@@ -84,7 +84,7 @@ class WPLoginUrlConverter implements \IWPML_Action {
 		if (
 			! is_multisite()
 			&& $converted_url != site_url( $requestUriWithoutPath )
-			&& wp_redirect( $converted_url, 302, 'WPML' )
+			&& wp_safe_redirect( $converted_url, 302, 'WPML' )
 		) {
 			exit;
 		}
@@ -199,7 +199,7 @@ class WPLoginUrlConverter implements \IWPML_Action {
 
 			if (
 				$redirect_to !== $current_url
-				&& wp_redirect( $redirect_to, 302, 'WPML' )
+				&& wp_safe_redirect( $redirect_to, 302, 'WPML' )
 			) {
 				exit;
 			}
@@ -237,22 +237,22 @@ class WPLoginUrlConverter implements \IWPML_Action {
 	}
 
 	private function is_wp_login_action() {
-		$actions = wpml_collect(
-			[
-				'confirm_admin_email',
-				'postpass',
-				'logout',
-				'lostpassword',
-				'retrievepassword',
-				'resetpass',
-				'rp',
-				'register',
-				'login',
-				'confirmaction',
-			]
-		);
+		$actions = [
+			'confirm_admin_email',
+			'postpass',
+			'logout',
+			'lostpassword',
+			'retrievepassword',
+			'resetpass',
+			'rp',
+			'register',
+			'login',
+			'confirmaction',
+		];
 
-		return $actions->contains( Obj::prop( 'action', $_GET ) );
+		$action = sanitize_text_field( wp_unslash( $_GET['action'] ?? '' ) );
+
+		return is_string( $action ) && in_array( $action, $actions, true );
 	}
 
 	private function get_language_param_for_convert_url() {

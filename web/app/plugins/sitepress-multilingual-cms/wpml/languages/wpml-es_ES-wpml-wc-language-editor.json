@@ -580,6 +580,9 @@
          "Blocked by a firewall or CDN": [
             "Bloqueado por un cortafuegos o CDN"
          ],
+         "Used by another site": [
+            "Utilizado por otro sitio"
+         ],
          "Not valid": [
             "No válido"
          ],
@@ -603,6 +606,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s carga, pero un cortafuegos o CDN ha bloqueado la comprobación de WPML."
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "Utilizado por otro sitio de esta red: %s. Introduzca un dominio diferente para guardar."
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "No se ha podido validar el dominio: %s. Compruebe que apunta a este sitio o desmarque “Validar al guardar” para guardarlo de todos modos."
@@ -739,7 +745,7 @@
             "Actualizar"
          ],
          "Save changes": [
-            "Guardar cambios"
+            "Guardar los cambios"
          ],
          "Do you want to set the locale?": [
             "¿Desea establecer la localización?"
@@ -959,6 +965,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "Antes de poder guardar este idioma, elija si desea recuperar el contenido anterior de este sitio en él o empezar de cero."
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "Un idioma no se puede asignar al idioma predeterminado de su sitio. En su lugar, elija “Emparejar automáticamente”."
+         ],
          "You don’t have permission to change languages.": [
             "No tiene permiso para cambiar los idiomas."
          ],
@@ -1019,6 +1028,9 @@
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "Si no encuentra su idioma en la lista, <a>añada un idioma personalizado</a>."
          ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s se ha movido a la posición %2$d de %3$d."
+         ],
          "Default language": [
             "Idioma predeterminado"
          ],
@@ -1059,7 +1071,7 @@
             "Codificar caracteres no latinos"
          ],
          "Mapping": [
-            "Mapeo"
+            "Asignación"
          ],
          "This language is recognized as the same as your site’s default language, so it can’t be translated automatically. To carry your content over, duplicate it instead.": [
             "Este idioma se reconoce como el mismo que el idioma predeterminado de su sitio, por lo que no se puede traducir automáticamente. Para trasladar su contenido, duplíquelo en su lugar."
@@ -1075,6 +1087,12 @@
          ],
          "Delete language": [
             "Eliminar idioma"
+         ],
+         "Move %s. Use the up and down arrow keys.": [
+            "Mover %s. Utilice las teclas de flecha arriba y abajo."
+         ],
+         "Drag to change the order": [
+            "Arrastre para cambiar el orden"
          ],
          "Type to search all languages…": [
             "Escriba para buscar en todos los idiomas…"
@@ -1147,6 +1165,9 @@
          ],
          "Recognized as the same language as the default": [
             "Reconocido como el mismo idioma que el predeterminado"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "La traducción automática está desactivada: no hay ningún motor de traducción activado. Para activar uno, vaya a <link>WPML → Ajustes → Traducción por IA</link>."
          ],
          "%s (Regional)": [
             "%s (regional)"

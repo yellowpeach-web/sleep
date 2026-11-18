@@ -3,6 +3,7 @@
 namespace WPML\WPSEO\YoastSEO\Terms\Meta;
 
 use SitePress;
+use WPML\WPSEO\YoastSEO\Loaders;
 use WPML\WPSEO\YoastSEO\Utils;
 use WPSEO_Taxonomy_Meta;
 use WPML\LIB\WP\Hooks as WPHooks;
@@ -104,7 +105,7 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 		WPHooks::onAction( 'update_option_' . $this->getWpSeoOptionName() )
 			->then( [ $this, 'forgetServedValue' ] );
 
-		if ( is_admin() ) {
+		if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 			WPHooks::onAction( 'add_option', 10, 2 )
 				->then( spreadArgs( [ $this, 'registerStrings' ] ) );
 			WPHooks::onAction( 'update_option', 10, 3 )
@@ -248,6 +249,12 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 	}
 
 	public function addPackageKind( $kinds ) {
+		if ( ! is_array( $kinds ) ) {
+			$kinds = [];
+		}
+		if ( Loaders::supportsPerTermPackages() ) {
+			return $kinds;
+		}
 		$kinds[ self::PACKAGE['kind_slug'] ] = [
 			'title'  => self::PACKAGE['kind'],
 			'slug'   => self::PACKAGE['kind_slug'],
@@ -257,13 +264,13 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 		return $kinds;
 	}
 
-	private function getPackage() {
-		return [
-			'kind'      => self::PACKAGE['kind'],
-			'kind_slug' => self::PACKAGE['kind_slug'],
-			'name'      => self::PACKAGE['name'],
-			'title'     => self::PACKAGE['title'],
-		];
+	private function getPackage( $termTaxonomyId = null ) {
+		$package = self::PACKAGE;
+		if ( $termTaxonomyId && Loaders::supportsPerTermPackages() ) {
+			$package['name']  = 'term-' . $termTaxonomyId;
+			$package['owner'] = [ 'type' => 'term', 'id' => (int) $termTaxonomyId ];
+		}
+		return $package;
 	}
 
 	public function registerStrings( $option, $value, $oldValue = [] ) {
@@ -273,8 +280,11 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 
 		$package              = $this->getPackage();
 		$languageByStringName = [];
+		$perTermPackages      = Loaders::supportsPerTermPackages();
 
-		do_action( 'wpml_start_string_package_registration', $package );
+		if ( ! $perTermPackages ) {
+			do_action( 'wpml_start_string_package_registration', $package );
+		}
 
 		foreach ( $value as $taxonomy => $terms ) {
 			if ( ! is_array( $terms ) ) {
@@ -290,9 +300,10 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 			}
 		}
 
-		do_action( 'wpml_delete_unused_package_strings', $package );
-
-		$this->stringLanguage->apply( $languageByStringName );
+		if ( ! $perTermPackages ) {
+			do_action( 'wpml_delete_unused_package_strings', $package );
+			$this->stringLanguage->apply( $languageByStringName );
+		}
 	}
 
 	private function registerTermStrings( $package, $taxonomy, $termId, $termMeta, $oldTermMeta ) {
@@ -303,6 +314,12 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 		$term = $this->getUnadjustedTerm( $termId, $taxonomy );
 		if ( ! $term || ! $this->sitepress->is_original_content_filter( false, (int) $term->term_taxonomy_id, 'tax_' . $taxonomy ) ) {
 			return [];
+		}
+
+		$perTermPackages = Loaders::supportsPerTermPackages();
+		if ( $perTermPackages ) {
+			$package = $this->getPackage( $term->term_taxonomy_id );
+			do_action( 'wpml_start_string_package_registration', $package );
 		}
 
 		foreach ( self::FIELDS as $field => $fieldTitle ) {
@@ -318,13 +335,22 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 			}
 		}
 
+		if ( $perTermPackages ) {
+			do_action( 'wpml_delete_unused_package_strings', $package );
+		}
+
 		if ( $oldTermMeta === $termMeta ) {
 			return [];
 		}
 
 		$termLanguage = $this->stringLanguage->getTermLanguage( $term->term_taxonomy_id, $taxonomy );
+		$languages    = $termLanguage ? $this->getLanguageByStringName( $taxonomy, $termId, $termMeta, $termLanguage ) : [];
+		if ( $perTermPackages ) {
+			$this->stringLanguage->apply( $languages, $term->term_taxonomy_id );
+			return [];
+		}
 
-		return $termLanguage ? $this->getLanguageByStringName( $taxonomy, $termId, $termMeta, $termLanguage ) : [];
+		return $languages;
 	}
 
 	public function registerUpdatedStrings( $option, $oldValue, $value ) {
@@ -350,9 +376,12 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 
 		$option = get_option( $this->getWpSeoOptionName() );
 
-		$this->stringLanguage->apply(
-			$this->getLanguageByStringName( $taxonomy, $sourceTermId, $option[ $taxonomy ][ $sourceTermId ] ?? [], $source->language_code )
-		);
+		$languages = $this->getLanguageByStringName( $taxonomy, $sourceTermId, $option[ $taxonomy ][ $sourceTermId ] ?? [], $source->language_code );
+		if ( Loaders::supportsPerTermPackages() ) {
+			$this->stringLanguage->apply( $languages, (int) $source->element_id );
+		} else {
+			$this->stringLanguage->apply( $languages );
+		}
 	}
 
 	private function getOriginalTranslation( $termTaxonomyId, $taxonomy ) {
@@ -393,8 +422,6 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 		if ( ! is_array( $value ) ) {
 			return $value;
 		}
-
-		$package = $this->getPackage();
 
 		foreach ( $value as $taxonomy => $terms ) {
 			if ( ! is_array( $terms ) ) {
@@ -441,7 +468,7 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 									$stringName = self::buildStringName( $taxonomy, $termId, $field );
 
 									if ( self::isServedOnlyWhenTranslated( $field ) ) {
-										$translatedValue = $this->getServedTranslation( $stringName, $termMeta[ $field ], $translation->language_code );
+										$translatedValue = $this->getServedTranslation( $stringName, $termMeta[ $field ], $translation->language_code, $ttId );
 										if ( null !== $translatedValue ) {
 											$value[ $taxonomy ][ $targetTermId ][ $field ] = $translatedValue;
 										}
@@ -449,7 +476,7 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 									}
 
 									$translatedValue = self::$forceTranslateStrings
-										? $this->getStoredStringTranslation( $stringName, $translation->language_code )
+										? $this->getStoredStringTranslation( $stringName, $translation->language_code, $ttId )
 										: null;
 
 									if ( null === $translatedValue ) {
@@ -457,7 +484,7 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 											'wpml_translate_string',
 											$termMeta[ $field ],
 											$stringName,
-											$package
+											$this->getPackageForRead( $ttId, $stringName )
 										);
 									}
 
@@ -501,10 +528,32 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 		return ( $term instanceof \WP_Term ) ? (int) $term->term_id : 0;
 	}
 
-	private function getStoredStringTranslation( $stringName, $languageCode ) {
-		global $wpdb;
+	private function getStoredStringTranslation( $stringName, $languageCode, $termTaxonomyId = null ) {
+		if ( ! defined( 'ICL_TM_COMPLETE' ) ) {
+			return null;
+		}
 
-		if ( ! is_object( $wpdb ) || ! defined( 'ICL_TM_COMPLETE' ) ) {
+		if ( Loaders::supportsPerTermPackages() ) {
+			if ( ! $termTaxonomyId || ! function_exists( 'icl_get_string_translations_by_id' ) ) {
+				return null;
+			}
+			$stringId = $this->unmovedLegacyStringId( $stringName, $termTaxonomyId );
+			if ( ! $stringId ) {
+				$stringId = (int) apply_filters( 'wpml_string_id', null, [ 'context' => self::stringContext( $termTaxonomyId ), 'name' => $stringName ] );
+			}
+			if ( ! $stringId ) {
+				return null;
+			}
+			\WPML_Non_Persistent_Cache::flush_group( 'icl_get_string_translations_by_id' );
+			$translations = icl_get_string_translations_by_id( $stringId );
+			$translation  = $translations[ $languageCode ] ?? null;
+			$value        = is_array( $translation ) ? ( $translation['value'] ?? null ) : null;
+
+			return is_array( $translation ) && ICL_TM_COMPLETE === (int) $translation['status'] && is_string( $value ) && '' !== $value ? $value : null;
+		}
+
+		global $wpdb;
+		if ( ! is_object( $wpdb ) ) {
 			return null;
 		}
 
@@ -532,8 +581,9 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 		return $taxonomy . '-' . $termId . '-' . $field;
 	}
 
-	public static function stringContext() {
-		return self::PACKAGE['kind_slug'] . '-' . self::PACKAGE['name'];
+	public static function stringContext( $termTaxonomyId = null ) {
+		$name = $termTaxonomyId && Loaders::supportsPerTermPackages() ? 'term-' . $termTaxonomyId : self::PACKAGE['name'];
+		return self::PACKAGE['kind_slug'] . '-' . $name;
 	}
 
 	public function getServedValues( $taxonomy, $sourceTermId, $field, $languageCode ) {
@@ -544,21 +594,29 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 			return [];
 		}
 
+		$ttId = null;
+		if ( Loaders::supportsPerTermPackages() ) {
+			$term = $this->getUnadjustedTerm( $sourceTermId, $taxonomy );
+			if ( ! $term ) {
+				return [];
+			}
+			$ttId = (int) $term->term_taxonomy_id;
+		}
 		$stringName = self::buildStringName( $taxonomy, $sourceTermId, $field );
 
 		if ( self::isServedOnlyWhenTranslated( $field ) ) {
-			return $this->getTranslations( $stringName, $sourceValue, $languageCode );
+			return $this->getTranslations( $stringName, $sourceValue, $languageCode, $ttId );
 		}
 
 		$this->sitepress->switch_lang( $languageCode );
 		try {
-			$dictionaryValue = apply_filters( 'wpml_translate_string', $sourceValue, $stringName, $this->getPackage() );
+			$dictionaryValue = apply_filters( 'wpml_translate_string', $sourceValue, $stringName, $this->getPackageForRead( $ttId, $stringName ) );
 		} finally {
 			$this->sitepress->switch_lang();
 		}
 
 		$values      = [];
-		$storedValue = $this->getStoredStringTranslation( $stringName, $languageCode );
+		$storedValue = $this->getStoredStringTranslation( $stringName, $languageCode, $ttId );
 		if ( null !== $storedValue ) {
 			$values[] = $storedValue;
 		}
@@ -571,19 +629,19 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 		return in_array( $field, self::FIELDS_SERVED_ONLY_WHEN_TRANSLATED, true );
 	}
 
-	private function getServedTranslation( $stringName, $sourceValue, $languageCode ) {
+	private function getServedTranslation( $stringName, $sourceValue, $languageCode, $termTaxonomyId ) {
 		if ( self::$forceTranslateStrings ) {
-			return $this->getStoredStringTranslation( $stringName, $languageCode );
+			return $this->getStoredStringTranslation( $stringName, $languageCode, $termTaxonomyId );
 		}
 
-		return $this->getDictionaryTranslation( $stringName, $sourceValue, $languageCode );
+		return $this->getDictionaryTranslation( $stringName, $sourceValue, $languageCode, $termTaxonomyId );
 	}
 
-	private function getTranslations( $stringName, $sourceValue, $languageCode ) {
+	private function getTranslations( $stringName, $sourceValue, $languageCode, $termTaxonomyId ) {
 		$translations = array_filter(
 			[
-				$this->getStoredStringTranslation( $stringName, $languageCode ),
-				$this->getDictionaryTranslation( $stringName, $sourceValue, $languageCode ),
+				$this->getStoredStringTranslation( $stringName, $languageCode, $termTaxonomyId ),
+				$this->getDictionaryTranslation( $stringName, $sourceValue, $languageCode, $termTaxonomyId ),
 			],
 			'is_string'
 		);
@@ -591,14 +649,31 @@ class Hooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC
 		return array_values( array_unique( $translations ) );
 	}
 
-	private function getDictionaryTranslation( $stringName, $sourceValue, $languageCode ) {
+	private function getDictionaryTranslation( $stringName, $sourceValue, $languageCode, $termTaxonomyId ) {
 		if ( ! function_exists( 'icl_translate' ) ) {
 			return null;
 		}
 
 		$hasTranslation  = false;
-		$translatedValue = icl_translate( self::stringContext(), $stringName, $sourceValue, false, $hasTranslation, $languageCode );
+		$translatedValue = icl_translate( self::stringContext( $termTaxonomyId ), $stringName, $sourceValue, false, $hasTranslation, $languageCode );
+		if ( ! $hasTranslation && $this->unmovedLegacyStringId( $stringName, $termTaxonomyId ) ) {
+			$translatedValue = icl_translate( self::stringContext(), $stringName, $sourceValue, false, $hasTranslation, $languageCode );
+		}
 
 		return $hasTranslation && is_string( $translatedValue ) && '' !== $translatedValue ? $translatedValue : null;
+	}
+
+	private function getPackageForRead( $termTaxonomyId, $stringName ) {
+		return $this->unmovedLegacyStringId( $stringName, $termTaxonomyId ) ? $this->getPackage() : $this->getPackage( $termTaxonomyId );
+	}
+
+	private function unmovedLegacyStringId( $stringName, $termTaxonomyId ) {
+		if ( ! $termTaxonomyId || ! Loaders::supportsPerTermPackages() ) {
+			return 0;
+		}
+		$legacyId = (int) apply_filters( 'wpml_string_id', null, [ 'context' => self::stringContext(), 'name' => $stringName ] );
+		$newId    = (int) apply_filters( 'wpml_string_id', null, [ 'context' => self::stringContext( $termTaxonomyId ), 'name' => $stringName ] );
+
+		return $legacyId && $legacyId !== $newId ? $legacyId : 0;
 	}
 }

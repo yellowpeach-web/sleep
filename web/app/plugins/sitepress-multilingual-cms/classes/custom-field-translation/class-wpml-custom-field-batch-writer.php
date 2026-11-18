@@ -175,7 +175,7 @@ class WPML_Custom_Field_Batch_Writer {
 	}
 
 	private function is_canonical_raw_value( $raw_value ) {
-		return (string) maybe_serialize( maybe_unserialize( $raw_value ) ) === $raw_value;
+		return (string) maybe_serialize( \WPML\Utils\Unserialize::maybe( $raw_value ) ) === $raw_value;
 	}
 
 	public function replace( $post_id_to, array $candidates ) {

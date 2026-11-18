@@ -34,23 +34,23 @@ class MediaLookupTable {
 			$hash_literals = implode( ', ', array_map( function ( $hex ) {
 				return '0x' . $hex;
 			}, $chunk ) );
-			foreach (
-				(array) $this->wpdb->get_results(
-					sprintf(
-						"SELECT HEX(l.url_hash) AS hash_hex, l.attachment_id, l.variant, l.expires_at
-						FROM `{$wpdb->prefix}icl_media_url_lookup` l
-						LEFT JOIN `{$wpdb->prefix}icl_translations` t
-							ON t.element_id = l.attachment_id
-							AND t.element_type = 'post_attachment'
-							AND t.language_code = l.language_code
-						WHERE l.language_code = 0x%s AND l.url_hash IN (%s)
-							AND ( l.attachment_id = 0 OR t.translation_id IS NOT NULL )",
-						esc_sql( bin2hex( $language ) ),
-						esc_sql( $hash_literals )
-					),
-					ARRAY_A
-				) as $row
-			) {
+			$rows = $this->wpdb->get_results(
+				sprintf(
+					"SELECT HEX(l.url_hash) AS hash_hex, l.attachment_id, l.variant, l.expires_at
+					FROM `{$wpdb->prefix}icl_media_url_lookup` l
+					LEFT JOIN `{$wpdb->prefix}icl_translations` t
+						ON t.element_id = l.attachment_id
+						AND t.element_type = 'post_attachment'
+						AND t.language_code = l.language_code
+					WHERE l.language_code = 0x%s AND l.url_hash IN (%s)
+						AND ( l.attachment_id = 0 OR t.translation_id IS NOT NULL )",
+					esc_sql( bin2hex( $language ) ),
+					esc_sql( $hash_literals )
+				),
+				ARRAY_A
+			);
+			$this->schema->forgetIfQueryFailed();
+			foreach ( (array) $rows as $row ) {
 				$found[ strtolower( $row['hash_hex'] ) ] = [
 					'attachment_id' => (int) $row['attachment_id'],
 					'variant'       => (int) $row['variant'],

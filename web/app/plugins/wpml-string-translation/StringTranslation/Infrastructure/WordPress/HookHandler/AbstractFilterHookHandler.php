@@ -14,4 +14,15 @@ abstract class AbstractFilterHookHandler implements HookHandlerInterface {
 			return $this->onFilter( ...$args );
 		}, static::FILTER_PRIORITY, static::FILTER_ARGS );
 	}
+
+	public static function loadLazily( callable $make ) {
+		$handler = null;
+		add_filter( static::FILTER_NAME, function( ...$args ) use ( $make, &$handler ) {
+			if ( null === $handler ) {
+				$handler = $make();
+			}
+
+			return $handler->onFilter( ...$args );
+		}, static::FILTER_PRIORITY, static::FILTER_ARGS );
+	}
 }

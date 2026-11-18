@@ -46,9 +46,15 @@ class ParkedJobs {
 			return $state;
 		}
 
-		JobLog::add( 'pull_parked_jobs_forgotten', [ 'jobIds' => $dropped, 'kept' => $kept ] );
+		return JobLog::runInGroup(
+			JobLog::GROUP_ID_MAINTENANCE,
+			'ATE pull delivery: parked jobs forgotten',
+			function () use ( $dropped, $kept, $changes ) {
+				JobLog::add( 'pull_parked_jobs_forgotten', [ 'jobIds' => $dropped, 'kept' => $kept ] );
 
-		return State::update( $changes );
+				return State::update( $changes );
+			}
+		);
 	}
 
 	public static function forget() {

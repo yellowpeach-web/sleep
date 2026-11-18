@@ -7,6 +7,7 @@ use WPML\FP\Lst;
 use WPML\FP\Relation;
 use WPML\LIB\WP\User;
 use WPML\TM\API\Translators;
+use WPML\TM\Jobs\Query\OrderQueryHelper;
 
 class WPML_TM_Rest_Jobs_Criteria_Parser {
 	public function build_criteria( WP_REST_Request $request ) {
@@ -127,14 +128,15 @@ class WPML_TM_Rest_Jobs_Criteria_Parser {
 	}
 
 	private function buildLanguagePairsCriteria() {
+		global $wpdb;
+
 		$translator = Translators::getCurrent();
 
-		$buildWhereForPair = function ( $targets, $source ) {
-			return sprintf(
-				"( translations.source_language_code = '%s' AND translations.language_code IN (%s) )",
-				$source,
-				wpml_prepare_in( $targets )
-			);
+		$buildWhereForPair = function ( $targets, $source ) use ( $wpdb ) {
+			return $wpdb->prepare(
+				'( translations.source_language_code = %s AND translations.language_code IN (',
+				$source
+			) . wpml_prepare_in( $targets ) . ') )';
 		};
 
 		$pairs = \wpml_collect( $translator->language_pairs )
@@ -158,7 +160,7 @@ class WPML_TM_Rest_Jobs_Criteria_Parser {
 		}
 
 		if ( $request->get_param( 'pageName' ) === \WPML_TM_Jobs_List_Script_Data::TRANSLATION_QUEUE_PAGE ) {
-			$sorting[] = new \WPML_TM_Jobs_Sorting_Param( "IF ((status = 10 AND (review_status = 'EDITING' OR review_status = 'NEEDS_REVIEW')) OR status = 1, 1,IF (status = 2, 2, IF (needs_update = 1, 3, 4)))", 'ASC' );
+			$sorting[] = new \WPML_TM_Jobs_Sorting_Param( OrderQueryHelper::QUEUE_PRIORITY, 'ASC' );
 			$sorting[] = new \WPML_TM_Jobs_Sorting_Param( 'translator_id', 'DESC' );
 			$sorting[] = new \WPML_TM_Jobs_Sorting_Param( 'translate_job_id', 'DESC' );
 		}

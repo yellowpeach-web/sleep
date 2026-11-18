@@ -5,6 +5,7 @@ namespace WPML\Legacy\Component\ATE\Application\Query;
 use WPML\Core\Component\ATE\Application\Query\Dto\WebsiteContextDto;
 use WPML\Core\Component\ATE\Application\Query\WebsiteContextException;
 use WPML\Core\Component\ATE\Application\Query\WebsiteContextQueryInterface;
+use WPML\Core\Component\ATE\Domain\SiteRegistration;
 use WPML\TM\API\ATE\WebsiteContext;
 
 
@@ -15,6 +16,9 @@ class WebsiteContextQuery implements WebsiteContextQueryInterface {
 
     $apiResult = WebsiteContext::getWebsiteContext();
     if ( array_key_exists( 'error', (array) $apiResult ) ) {
+      if ( SiteRegistration::NOT_REGISTERED_ERROR_CODE === ( $apiResult['code'] ?? '' ) ) {
+        throw WebsiteContextException::notRegistered();
+      }
       throw new WebsiteContextException( $apiResult['error'] );
     }
 

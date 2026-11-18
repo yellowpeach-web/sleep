@@ -100,42 +100,42 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:543
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:549
 #. Title of the dialog that lists what a change to the custom-field translation preferences does to existing translations.
 msgid "Review these translation setting changes"
 msgstr ""
 
-#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:544
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:550
 #: src/js/settings/components/ConfirmPageUrlTranslate.js:219
 #. Button that closes a confirmation dialog without saving; verb, imperative.
 msgid "Cancel"
 msgstr ""
 
-#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:545
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:551
 #: src/js/settings/components/ConfirmPageUrlTranslate.js:220
 #. Label of the button that saves the Page URL setting after the client has chosen whether existing translations are rewritten; verb, imperative.
 msgid "Save changes"
 msgstr ""
 
-#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:568
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:574
 #. Choice in the preference-change dialog when the number of translated posts the change touches could not be counted.
 msgid "Also update the existing posts now"
 msgstr ""
 
-#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:571
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:577
 #. Choice in the preference-change dialog. %s: the number of translated posts the change touches, formatted.
 msgid "Also update the %s existing post now"
 msgid_plural "Also update the %s existing posts now"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:574
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:580
 #: src/js/settings/components/ConfirmPageUrlTranslate.js:245
 #. Choice in the Page URL confirmation: leave existing translations as they are.
 msgid "Only apply to new translations"
 msgstr ""
 
-#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:578
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:584
 #. Line in the preference-change dialog when one or more fields move to Translate with Translate Everything on and no translated post carries them yet. The number is how many fields move: singular for one, plural for two or more.
 msgid ""
 "Once saved, WPML automatically sends new and updated posts with this field "
@@ -146,7 +146,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:581
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:587
 #. Line in the term-meta preference-change dialog when one or more keys move to Translate with Translate Everything on; existing translations are not updated from that screen, so this is the whole effect. The number is how many keys move: singular for one, plural for two or more.
 msgid ""
 "Once saved, WPML automatically sends new and updated terms with this key to "
@@ -157,14 +157,21 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:584
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:590
 #. Closing line of the preference-change dialog.
 msgid ""
 "Either way the new preference is saved. With \"Only apply to new "
 "translations\" every existing translation stays exactly as it is."
 msgstr ""
 
-#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:597
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:594
+#. Closing line of the dialog that asks about custom fields waiting for a decision; no setting is saved there.
+msgid ""
+"With \"Only apply to new translations\" every existing translation stays "
+"exactly as it is."
+msgstr ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:611
 #. Notice above the custom-fields table. %1$s: how many fields (formatted), %2$s: their names, already written as one list ("a, b and c").
 msgid ""
 "%1$s custom field became translatable outside this screen: %2$s. Decide "
@@ -175,14 +182,29 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:608
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:622
+#. Notice above the custom-fields table, for fields an unfinished background check of an earlier WPML version left after an update; their translation setting did not change. %1$s: how many fields (formatted), %2$s: their names, already written as one list ("a, b and c").
+msgid ""
+"%1$s custom field was waiting for a check an earlier WPML version started "
+"and did not finish: %2$s. Its translation setting has not changed. Decide "
+"whether the existing translations that use it should be marked as needing "
+"an update."
+msgid_plural ""
+"%1$s custom fields were waiting for a check an earlier WPML version started "
+"and did not finish: %2$s. Their translation setting has not changed. Decide "
+"whether the existing translations that use them should be marked as needing "
+"an update."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:633
 #. Button in the notice above the custom-fields table; opens the confirmation for the field(s) that became translatable outside the screen. Verb, imperative. The number is how many fields the notice lists: singular for one, plural for two or more.
 msgid "Review this field"
 msgid_plural "Review these fields"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:621
+#: src/js/settings/components/ConfirmCustomFieldTranslationPreference.js:646
 #: src/js/settings/components/ConfirmNewTranslatablePostType.js:66
 #: src/js/settings/components/ConfirmNewTranslatableTaxonomy.js:217
 #: src/js/settings/components/ConfirmPageUrlTranslate.js:258

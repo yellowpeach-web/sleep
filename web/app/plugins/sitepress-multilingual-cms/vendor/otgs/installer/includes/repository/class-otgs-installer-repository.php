@@ -30,7 +30,7 @@ class OTGS_Installer_Repository {
 		if ( ! $ssl ) {
 			$api_url           = wp_parse_url( $api_url );
 			$api_url['scheme'] = 'http';
-			$api_url           = http_build_url( $api_url );
+			$api_url           = OTGS_Installer_Url::build( $api_url );
 		}
 
 		return $api_url;

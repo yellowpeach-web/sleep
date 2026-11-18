@@ -18,6 +18,10 @@ class WPML_Elementor_Media_Nodes_Iterator implements IWPML_PB_Media_Nodes_Iterat
 				$node = $this->translate_node( $node, $lang, $source_lang );
 			}
 
+			if ( $this->is_atomic_element_with_settings( $node ) ) {
+				$node = $this->translate_element( $node, $lang, $source_lang );
+			}
+
 			if ( isset( $node['settings'] ) ) {
 				$node['settings'] = $this->node_provider->get( 'all_nodes' )->translate( $node['settings'], $lang, $source_lang );
 			}
@@ -37,6 +41,22 @@ class WPML_Elementor_Media_Nodes_Iterator implements IWPML_PB_Media_Nodes_Iterat
 	private function is_valid_media_node( $node ) {
 		return isset( $node['elType'], $node['widgetType'], $node['settings'] )
 			&& 'widget' === $node['elType'];
+	}
+
+	private function is_atomic_element_with_settings( $node ) {
+		return isset( $node['elType'], $node['settings'] )
+			&& 'widget' !== $node['elType']
+			&& 0 === strpos( (string) $node['elType'], 'e-' );
+	}
+
+	private function translate_element( $node_data, $lang, $source_lang ) {
+		$node = $this->node_provider->get( $node_data['elType'] );
+
+		if ( $node ) {
+			$node_data['settings'] = $node->translate( $node_data['settings'], $lang, $source_lang );
+		}
+
+		return $node_data;
 	}
 
 	private function translate_node( $node_data, $lang, $source_lang ) {

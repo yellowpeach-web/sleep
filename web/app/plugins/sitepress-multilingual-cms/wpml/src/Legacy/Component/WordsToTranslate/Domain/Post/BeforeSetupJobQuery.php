@@ -34,6 +34,11 @@ class BeforeSetupJobQuery implements JobQueryInterface {
   }
 
 
+  public function carriesJobContent( Post $post ) {
+    return $this->jobQuery->carriesJobContent( $post );
+  }
+
+
   protected function registerContributors() {
     BeforeSetupPackageContributors::register();
   }

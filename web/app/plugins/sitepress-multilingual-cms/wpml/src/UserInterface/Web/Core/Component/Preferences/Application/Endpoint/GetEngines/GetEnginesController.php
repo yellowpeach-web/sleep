@@ -30,10 +30,16 @@ class GetEnginesController implements EndpointInterface {
         'data'   => $engines,
       ];
     } catch ( EngineServiceException $e ) {
-      return [
+      $response = [
         'status'  => false,
         'message' => $e->getMessage(),
       ];
+
+      if ( $e->getErrorCode() !== '' ) {
+        $response['code'] = $e->getErrorCode();
+      }
+
+      return $response;
     }
   }
 

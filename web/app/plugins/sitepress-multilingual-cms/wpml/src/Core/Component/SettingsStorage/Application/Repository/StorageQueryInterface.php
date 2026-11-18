@@ -12,13 +12,22 @@ interface StorageQueryInterface {
   public function scanRowKeys(): array;
 
 
+  public function loadedRowKeys(): array;
+
+
   public function readRawStoredBlob();
+
+
+  public function readRawRow( string $key );
 
 
   public function optionRowExists( string $optionName ): bool;
 
 
   public function registryRowExistsInDatabase( bool $onError = true ): bool;
+
+
+  public function stopAutoloadingStoredBlob();
 
 
 }

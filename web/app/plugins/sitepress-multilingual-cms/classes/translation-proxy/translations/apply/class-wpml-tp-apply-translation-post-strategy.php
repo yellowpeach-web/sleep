@@ -1,5 +1,6 @@
 <?php
 
+use WPML\EditHistory\InternalWrite;
 use WPML\PHP\Exception\ClientMessageException;
 
 class WPML_TP_Apply_Translation_Post_Strategy implements WPML_TP_Apply_Translation_Strategy {
@@ -14,13 +15,13 @@ class WPML_TP_Apply_Translation_Post_Strategy implements WPML_TP_Apply_Translati
 		$this->wpdb = $wpdb;
 	}
 
-	public function apply( WPML_TM_Job_Entity $job, WPML_TP_Translation_Collection $translations ) {
+	public function apply( WPML_TM_Job_Entity $job, $translations ) {
 		if ( ! $job instanceof WPML_TM_Post_Job_Entity ) {
 			throw new ClientMessageException( 'A job must have post type' );
 		}
 
 		kses_remove_filters();
-		wpml_tm_save_data( $this->build_data( $job, $translations ) );
+		InternalWrite::run( InternalWrite::SERVICE, fn() => wpml_tm_save_data( $this->build_data( $job, $translations ) ) );
 		kses_init();
 
 		$this->jobs_api->update_job_state( $job, 'delivered' );
@@ -33,18 +34,25 @@ class WPML_TP_Apply_Translation_Post_Strategy implements WPML_TP_Apply_Translati
 			'complete' => 1
 		);
 
+		$elements_by_type = array();
+		foreach ( $job->get_elements() as $element ) {
+			$elements_by_type[ $element->get_type() ] = $element;
+		}
+
 		foreach ( $translations as $translation ) {
-			foreach ( $job->get_elements() as $element ) {
-				if ( $element->get_type() === $translation->get_field() ) {
-					$data['fields'][ $element->get_type() ] = array(
-						'data'       => $translation->get_target(),
-						'finished'   => 1,
-						'tid'        => $element->get_id(),
-						'field_type' => $element->get_type(),
-						'format'     => $element->get_format()
-					);
-				}
+			$field = $translation->get_field();
+			if ( ! isset( $elements_by_type[ $field ] ) ) {
+				continue;
 			}
+
+			$element                                 = $elements_by_type[ $field ];
+			$data['fields'][ $element->get_type() ] = array(
+				'data'       => $translation->get_target(),
+				'finished'   => 1,
+				'tid'        => $element->get_id(),
+				'field_type' => $element->get_type(),
+				'format'     => $element->get_format()
+			);
 		}
 
 		return $data;

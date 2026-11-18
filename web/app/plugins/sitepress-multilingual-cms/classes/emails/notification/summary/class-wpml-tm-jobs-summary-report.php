@@ -1,6 +1,10 @@
 <?php
 
+use WPML\Core\Component\WordsToTranslate\Application\Service\WordsToTranslateService;
 use WPML\Core\Component\WordsToTranslate\Domain\Calculator\WordsToTranslate;
+use WPML\Core\Component\WordsToTranslate\Domain\Job\Provider as WordsToTranslateJobProvider;
+use WPML\TM\Jobs\StringBatchTitles;
+use WPML\TM\Jobs\StringBatchTranslationJob;
 
 class WPML_TM_Jobs_Summary_Report {
 
@@ -16,16 +20,24 @@ class WPML_TM_Jobs_Summary_Report {
 
 	private $count_field_words;
 
+	private $count_words_to_translate;
+
+	private $string_batch_titles;
+
 	public function __construct(
 		WPML_Translation_Jobs_Collection $jobs_collection,
 		$type,
 		WPML_Translation_Element_Factory $element_factory,
-		$count_field_words = null
+		$count_field_words = null,
+		$count_words_to_translate = null,
+		?StringBatchTitles $string_batch_titles = null
 	) {
-		$this->jobs_collection   = $jobs_collection;
-		$this->type              = $type;
-		$this->element_factory   = $element_factory;
-		$this->count_field_words = is_callable( $count_field_words ) ? $count_field_words : [ $this, 'count_words_with_tokenizer' ];
+		$this->jobs_collection          = $jobs_collection;
+		$this->type                     = $type;
+		$this->element_factory          = $element_factory;
+		$this->count_field_words        = is_callable( $count_field_words ) ? $count_field_words : [ $this, 'count_words_with_tokenizer' ];
+		$this->count_words_to_translate = is_callable( $count_words_to_translate ) ? $count_words_to_translate : [ $this, 'count_words_to_translate_locally' ];
+		$this->string_batch_titles      = $string_batch_titles;
 		$this->build_completed_jobs();
 		$this->build_waiting_jobs();
 	}
@@ -54,7 +66,16 @@ class WPML_TM_Jobs_Summary_Report {
 				continue;
 			}
 
-			if ( $this->is_package_job( $job ) ) {
+			if ( $this->is_string_batch_job( $job ) ) {
+				$original_page   = array(
+					'title' => $job->get_title(),
+					'url'   => '',
+				);
+				$translated_page = array(
+					'title' => $job->get_title() . ' (' . $job->get_language_code() . ')',
+					'url'   => '',
+				);
+			} elseif ( $this->is_package_job( $job ) ) {
 				$original_page   = array(
 					'title' => $job->get_title(),
 					'url'   => $this->get_package_edit_link( $job->get_original_element_id() ),
@@ -105,6 +126,7 @@ class WPML_TM_Jobs_Summary_Report {
 		$counters                   = array();
 		$number_of_strings          = 0;
 		$number_of_words_in_strings = 0;
+		$strings_per_batch          = $this->count_strings_per_batch( $jobs );
 
 		foreach ( $jobs as $job ) {
 			$manager_id = isset( $job->get_basic_data()->manager_id ) ? $job->get_basic_data()->manager_id : 0;
@@ -118,17 +140,19 @@ class WPML_TM_Jobs_Summary_Report {
 
 			if ( 'String' === $job->get_type() ) {
 				$number_of_strings ++;
-				$number_of_words_in_strings += apply_filters( 'wpml_word_count_calculate_string', 0, $job->get_original_element_id() );
+				$number_of_words_in_strings += $this->get_words_to_translate( $job );
 			} else {
 				if ( $this->is_package_job( $job ) ) {
-					$fields = $this->get_job_field_contents( $job );
+					$counters[ $manager_id ][ $lang_pair ]['number_of_strings'] += count( $this->get_job_field_contents( $job ) );
+				} elseif ( $this->is_string_batch_job( $job ) ) {
+					$batch_id = (int) $job->get_original_element_id();
 
-					$counters[ $manager_id ][ $lang_pair ]['number_of_strings'] += count( $fields );
-					$counters[ $manager_id ][ $lang_pair ]['number_of_words']   += (int) call_user_func( $this->count_field_words, $fields, $job->get_source_language_code() );
+					$counters[ $manager_id ][ $lang_pair ]['number_of_strings'] += isset( $strings_per_batch[ $batch_id ] ) ? $strings_per_batch[ $batch_id ] : 0;
 				} else {
 					$counters[ $manager_id ][ $lang_pair ]['number_of_pages'] += 1;
-					$counters[ $manager_id ][ $lang_pair ]['number_of_words'] += apply_filters( 'wpml_word_count_calculate_post', 0, $job->get_original_element_id() );
 				}
+
+				$counters[ $manager_id ][ $lang_pair ]['number_of_words'] += $this->get_words_to_translate( $job );
 
 				$this->jobs[ $manager_id ][ WPML_TM_Jobs_Summary::JOBS_WAITING_KEY ][ $lang_pair ] = array(
 					'lang_pair'         => sprintf(
@@ -153,6 +177,29 @@ class WPML_TM_Jobs_Summary_Report {
 		       && 0 === strpos( (string) $basic_data->original_post_type, self::PACKAGE_TYPE_PREFIX );
 	}
 
+	private function is_string_batch_job( $job ) {
+		return $job instanceof StringBatchTranslationJob;
+	}
+
+	private function count_strings_per_batch( $jobs ) {
+		$batch_ids = array();
+		foreach ( $jobs as $job ) {
+			if ( $this->is_string_batch_job( $job ) ) {
+				$batch_ids[] = (int) $job->get_original_element_id();
+			}
+		}
+
+		if ( ! $batch_ids ) {
+			return array();
+		}
+
+		if ( ! $this->string_batch_titles ) {
+			$this->string_batch_titles = new StringBatchTitles( $GLOBALS['wpdb'] );
+		}
+
+		return $this->string_batch_titles->count_strings( $batch_ids );
+	}
+
 	private function get_job_field_contents( $job ) {
 		$basic_data = $job->get_basic_data();
 		$elements   = is_object( $basic_data ) && isset( $basic_data->elements ) && is_array( $basic_data->elements )
@@ -169,6 +216,43 @@ class WPML_TM_Jobs_Summary_Report {
 		}
 
 		return $contents;
+	}
+
+	private function get_words_to_translate( $job ) {
+		$basic_data = $job->get_basic_data();
+
+		if (
+			is_object( $basic_data )
+			&& property_exists( $basic_data, 'wpml_words_to_translate_count' )
+			&& null !== $basic_data->wpml_words_to_translate_count
+		) {
+			return (int) $basic_data->wpml_words_to_translate_count;
+		}
+
+		return (int) call_user_func( $this->count_words_to_translate, $job );
+	}
+
+	public function count_words_to_translate_locally( $job ) {
+		global $wpml_dic;
+
+		if ( ! $wpml_dic ) {
+			return 0;
+		}
+
+		try {
+			if ( 'String' === $job->get_type() ) {
+				$lang = (string) $job->get_language_code();
+				$item = $wpml_dic->make( WordsToTranslateService::class )
+				                 ->getForString( (int) $job->get_original_element_id(), [ $lang ] );
+
+				return (int) $item->getWordsToTranslate( $lang );
+			}
+
+			return (int) $wpml_dic->make( WordsToTranslateJobProvider::class )
+			                      ->getWordsToTranslateById( (int) $job->get_id() );
+		} catch ( \Throwable $e ) {
+			return 0;
+		}
 	}
 
 	public function count_words_with_tokenizer( array $fields, $lang ) {

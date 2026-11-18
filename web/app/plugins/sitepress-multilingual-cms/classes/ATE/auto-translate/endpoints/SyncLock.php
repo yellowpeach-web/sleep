@@ -7,7 +7,6 @@ namespace WPML\TM\ATE\AutoTranslate\Endpoint;
 use WPML\Ajax\IHandler;
 use WPML\Collect\Support\Collection;
 use WPML\FP\Either;
-use WPML\Utilities\KeyedLock;
 use function WPML\Container\make;
 
 class SyncLock implements IHandler {
@@ -24,10 +23,14 @@ class SyncLock implements IHandler {
 			}
 
 			return Either::of( [ 'action' => 'release', 'result' => (bool) $lockKey ] );
-		} else {
-			return Either::of( [ 'action' => 'acquire', 'result' => $lock->create( null ) ] );
 		}
 
+		$lockKey = $lock->create( null );
+		if ( $lockKey ) {
+			$lock->release();
+		}
+
+		return Either::of( [ 'action' => 'acquire', 'result' => $lockKey ] );
 	}
 
 }

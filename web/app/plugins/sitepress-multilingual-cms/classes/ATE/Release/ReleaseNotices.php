@@ -95,14 +95,19 @@ class ReleaseNotices {
 				continue;
 			}
 
-			return [
-				'id'         => self::noticeId( $kind, $postId, $entries[ $postId ] ),
-				'text'       => self::KIND_MANUAL_SAVE === $kind ? self::manualSaveNoticeText() : self::updateNoticeText(),
-				'ledger_url' => self::ledgerUrl(),
-			];
+			return self::updatePayload( $kind, $postId, $entries[ $postId ] );
 		}
 
 		return null;
+	}
+
+
+	private static function updatePayload( $kind, $postId, array $entry ) {
+		return [
+			'id'         => self::noticeId( $kind, $postId, $entry ),
+			'text'       => self::KIND_MANUAL_SAVE === $kind ? self::manualSaveNoticeText() : self::updateNoticeText(),
+			'ledger_url' => self::ledgerUrl(),
+		];
 	}
 
 
@@ -148,24 +153,39 @@ class ReleaseNotices {
 		}
 
 		if ( null === $postId ) {
-			$taken          = $all[ $kind ];
-			$all[ $kind ]   = [];
-			self::write( $all );
+			$taken        = $all[ $kind ];
+			$all[ $kind ] = [];
+		} else {
+			$postId = (int) $postId;
 
-			return $taken;
+			if ( ! isset( $all[ $kind ][ $postId ] ) ) {
+				return [];
+			}
+
+			$taken = [ $postId => $all[ $kind ][ $postId ] ];
+			unset( $all[ $kind ][ $postId ] );
 		}
 
-		$postId = (int) $postId;
-
-		if ( ! isset( $all[ $kind ][ $postId ] ) ) {
+		if ( ! delete_transient( self::transientKey() ) ) {
 			return [];
 		}
 
-		$taken = [ $postId => $all[ $kind ][ $postId ] ];
-		unset( $all[ $kind ][ $postId ] );
-		self::write( $all );
+		if ( self::hasEntries( $all ) ) {
+			set_transient( self::transientKey(), $all, self::TTL );
+		}
 
 		return $taken;
+	}
+
+
+	private static function hasEntries( array $all ) {
+		foreach ( $all as $entries ) {
+			if ( ! empty( $entries ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 
@@ -198,15 +218,7 @@ class ReleaseNotices {
 
 
 	private static function write( array $all ) {
-		$empty = true;
-		foreach ( $all as $entries ) {
-			if ( ! empty( $entries ) ) {
-				$empty = false;
-				break;
-			}
-		}
-
-		if ( $empty ) {
+		if ( ! self::hasEntries( $all ) ) {
 			delete_transient( self::transientKey() );
 
 			return;

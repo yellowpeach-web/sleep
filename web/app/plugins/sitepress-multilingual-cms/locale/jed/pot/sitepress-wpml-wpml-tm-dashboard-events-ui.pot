@@ -9,3 +9,17 @@ msgid ""
 "Our translation system did not accept this request (it answered %d). Wait a "
 "minute and try again, and contact WPML support if it keeps happening."
 msgstr ""
+
+#: src/js/translationDashboard/pickup-translations/model/DownloadTranslations.js:102
+#. Why a downloaded translation is listed as not applied on the WPML translation dashboard: the request to save it was cut off (for example by a server time limit), so WPML does not know whether it was saved.
+msgid ""
+"The site stopped answering before this translation was confirmed. If it was "
+"not saved, the next download takes it again."
+msgstr ""
+
+#: src/js/translationDashboard/pickup-translations/model/Process.js:211
+#. Why a translation is listed as not applied on the WPML translation dashboard: the translation service has it ready, but the job could not be loaded in the browser, so it was not downloaded this time.
+msgid ""
+"This translation is ready, but its job could not be loaded, so it was not "
+"downloaded. The next download takes it."
+msgstr ""

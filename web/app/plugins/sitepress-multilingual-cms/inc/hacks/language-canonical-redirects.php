@@ -12,7 +12,7 @@ function icl_language_canonical_redirects() {
 		$permalink = $pid ? get_permalink( $pid ) : false;
 		$permalink = $permalink ? html_entity_decode( $permalink ) : false;
 		if ( $permalink ) {
-			wp_redirect( $permalink, 301 );
+			wp_safe_redirect( $permalink, 301 );
 			exit;
 		}
 	}

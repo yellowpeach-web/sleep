@@ -17,6 +17,8 @@ class WPML_Sticky_Posts_Lang_Filter {
 			return $posts;
 		}
 
+		$this->post_translation->prefetch_ids( $posts );
+
 		$result = array();
 		foreach ( $posts as $post_id ) {
 			if ( $this->post_translation->get_element_lang_code( $post_id ) === $lang ) {

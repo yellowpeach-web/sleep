@@ -11,7 +11,9 @@ use WPML\Core\Component\PostHog\Application\Service\Event\CaptureEventService;
 use WPML\Core\Component\PostHog\Application\Service\Event\EventInstanceService;
 use WPML\Core\Component\Translation\Application\Repository\SettingsRepository;
 use WPML\Core\Component\Translation\Application\Service\SettingsService;
+use WPML\Core\Port\Appearance\AppearanceSurfacesInterface;
 use WPML\Core\Port\Endpoint\EndpointInterface;
+use WPML\Core\SharedKernel\Component\ATE\Application\Query\AmsCredentialsQueryInterface;
 use WPML\PHP\Exception\Exception;
 
 class SaveAutomaticTranslationsSettingsController implements EndpointInterface {
@@ -34,6 +36,10 @@ class SaveAutomaticTranslationsSettingsController implements EndpointInterface {
 
   private $engineChange;
 
+  private $amsCredentials;
+
+  private $appearanceSurfaces;
+
 
   public function __construct(
     SettingsRepository $settingsRepository,
@@ -44,7 +50,9 @@ class SaveAutomaticTranslationsSettingsController implements EndpointInterface {
     CaptureEventService $captureEventService,
     EventInstanceService $eventInstanceService,
     ActiveEngineQueryInterface $activeEngineQuery,
-    EngineChange $engineChange
+    EngineChange $engineChange,
+    AmsCredentialsQueryInterface $amsCredentials,
+    AppearanceSurfacesInterface $appearanceSurfaces
   ) {
     $this->settingsRepository   = $settingsRepository;
     $this->settingsService      = $settingsService;
@@ -55,6 +63,8 @@ class SaveAutomaticTranslationsSettingsController implements EndpointInterface {
     $this->eventInstanceService = $eventInstanceService;
     $this->activeEngineQuery    = $activeEngineQuery;
     $this->engineChange         = $engineChange;
+    $this->amsCredentials       = $amsCredentials;
+    $this->appearanceSurfaces   = $appearanceSurfaces;
   }
 
 
@@ -90,12 +100,73 @@ class SaveAutomaticTranslationsSettingsController implements EndpointInterface {
       );
     }
 
+    $surfaces = $this->saveAppearanceSurfaces( $requestData );
+
     $this->captureAutomaticTranslationSettingsSaved( $requestData );
 
-    return [
-      'status'       => true,
-      'activeEngine' => $this->resolveActiveEngine(),
-    ];
+    $activeEngine = $this->resolveActiveEngine();
+
+    return array_merge(
+      [
+        'status'       => true,
+        'activeEngine' => $activeEngine,
+      ],
+      $surfaces,
+      $this->amsCredentialsAnswer( $requestData )
+    );
+  }
+
+
+  private function saveAppearanceSurfaces( $requestData ): array {
+    if ( ! isset( $requestData['appearanceSurfaces'] ) || ! is_array( $requestData['appearanceSurfaces'] ) ) {
+      return [];
+    }
+
+    $shown    = $this->appearanceSurfaces->surfaces();
+    $switches = [];
+    foreach ( $requestData['appearanceSurfaces'] as $type => $enabled ) {
+      if ( is_string( $type ) && isset( $shown[ $type ] ) && false !== $shown[ $type ]['switchable'] && is_bool( $enabled ) ) {
+        $switches[ $type ] = $enabled;
+      }
+    }
+
+    if ( $switches ) {
+      $this->appearanceSurfaces->setSurfaces( $switches );
+      $shown = $this->appearanceSurfaces->surfaces();
+    }
+
+    $readBack = [];
+    foreach ( $shown as $type => $surface ) {
+      $readBack[ $type ] = $surface['enabled'];
+    }
+
+    return [ 'appearanceSurfaces' => $readBack ];
+  }
+
+
+  private function amsCredentialsAnswer( $requestData ): array {
+    if ( $this->amsCredentials->signatureRefused() ) {
+      return [ 'amsSignatureRefused' => true ];
+    }
+
+    $held = isset( $requestData['amsKeys'] ) && is_string( $requestData['amsKeys'] )
+      ? $requestData['amsKeys']
+      : '';
+    if ( $held === '' ) {
+      return [];
+    }
+
+    $current = $this->amsCredentials->fingerprint();
+    if ( $current === '' || hash_equals( $current, $held ) ) {
+      return [];
+    }
+
+    $credentials = $this->amsCredentials->credentials();
+    if ( $credentials === null ) {
+      return [];
+    }
+
+    return [ 'amsCredentials' => $credentials + [ 'fingerprint' => $current ] ];
   }
 
 

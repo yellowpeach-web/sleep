@@ -25,6 +25,8 @@ class StatusBar {
 	}
 
 	public static function add( \WP_Admin_Bar $adminBar ) {
+		$stalled = self::stalled();
+
 		$adminBar->add_node(
 			[
 				'parent' => false,
@@ -33,9 +35,10 @@ class StatusBar {
 					'<span class="screen-reader-text" id="wpml-ate-status-bar-label">' .
 					esc_html__( 'WPML automatic translation', 'sitepress' ) .
 					'</span>' .
-					'<span id="wp-admin-bar-ate-status-bar-badge"></span>',
+					'<span id="wp-admin-bar-ate-status-bar-badge"></span>' .
+					self::stalledText( $stalled ),
 				'href'   => false,
-				'meta'   => [ 'class' => 'wpml-status-bar-hidden' ]
+				'meta'   => [ 'class' => 'wpml-status-bar-hidden' . ( '' !== $stalled['attribute'] ? ' wpml-ate-delivery-stalled' : '' ) ]
 			]
 		);
 		$adminBar->add_node(
@@ -46,5 +49,27 @@ class StatusBar {
 				'href'   => false,
 			]
 		);
+	}
+
+	private static function stalled() {
+		try {
+			$config = Loader::handshakeConfig();
+
+			return isset( $config['stalled'] ) && is_array( $config['stalled'] ) ? $config['stalled'] : [ 'attribute' => '', 'adminBar' => '' ];
+		} catch ( \Throwable $e ) {
+			return [ 'attribute' => '', 'adminBar' => '' ];
+		}
+	}
+
+	const STALLED_ID = 'wpml-ate-status-bar-stalled';
+
+	public static function stalledText( array $stalled ) {
+		if ( empty( $stalled['attribute'] ) || empty( $stalled['adminBar'] ) ) {
+			return '';
+		}
+
+		return '<span id="' . self::STALLED_ID . '" class="wpml-ate-status-bar-stalled" data-wpml-delivery-stalled="' . esc_attr( $stalled['attribute'] ) . '">' .
+			esc_html( $stalled['adminBar'] ) .
+			'</span>';
 	}
 }

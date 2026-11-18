@@ -38,7 +38,7 @@ class TranslationJobHooks implements \IWPML_Backend_Action, \IWPML_REST_Action {
 			list( $fieldName, $subKey ) = CompositeValue::splitName( $optionField );
 
 			$optionName      = $packageObject->name . '_' . $language . '_' . $fieldName;
-			$translatedValue = $this->getValueToStore(
+			$translatedValue = TranslatedValue::toStore(
 				base64_decode( Obj::propOr( '', 'field_data_translated', $element ) ),
 				$subKey,
 				$packageObject->name . '_' . $fieldName,
@@ -98,20 +98,6 @@ class TranslationJobHooks implements \IWPML_Backend_Action, \IWPML_REST_Action {
 		}
 
 		return $sourceValue;
-	}
-
-	private function getValueToStore( $translatedValue, $subKey, $sourceOptionName, $optionName ) {
-		if ( null === $subKey ) {
-			return $translatedValue;
-		}
-
-		$storedValue = get_option( $optionName );
-
-		return CompositeValue::merge(
-			is_array( $storedValue ) ? $storedValue : get_option( $sourceOptionName ),
-			$subKey,
-			$translatedValue
-		);
 	}
 
 }

@@ -36,7 +36,7 @@ class WPML_TM_MCS_Pagination_Ajax {
 				'items_per_page'      => intval( $_POST['items_per_page'] ),
 				'page'                => $page,
 				'highest_page_loaded' => isset( $_POST['highest_page_loaded'] ) ? intval( $_POST['highest_page_loaded'] ) : $page,
-				'search'              => isset( $_POST['search'] ) ? sanitize_text_field( $_POST['search'] ) : '',
+				'search'              => isset( $_POST['search'] ) ? sanitize_text_field( wp_unslash( $_POST['search'] ) ) : '',
 				'hide_system_fields'  => ! isset( $_POST['show_system_fields'] ) || ! filter_var( $_POST['show_system_fields'], FILTER_VALIDATE_BOOLEAN ),
 				'show_cf_meta_box'    => isset( $_POST['show_cf_meta_box'] ) && filter_var( $_POST['show_cf_meta_box'], FILTER_VALIDATE_BOOLEAN ),
 			);

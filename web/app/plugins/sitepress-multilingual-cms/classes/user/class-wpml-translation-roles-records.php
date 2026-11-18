@@ -77,8 +77,10 @@ abstract class WPML_Translation_Roles_Records {
 			);
 		}
 
+		$operator = self::USERS_WITHOUT_CAPABILITY === $compare ? 'NOT LIKE' : 'LIKE';
+
 		return $source . $this->wpdb->prepare(
-			" AND c.meta_value {$compare} %s",
+			" AND c.meta_value {$operator} %s",
 			'%' . $this->get_capability() . '%'
 		);
 	}
@@ -105,16 +107,26 @@ abstract class WPML_Translation_Roles_Records {
 		);
 	}
 
-	public function delete_all() {
-		$users = $this->get_users_with_capability();
-		foreach ( $users as $user ) {
-			$this->delete( $user->ID );
-		}
+	public static function forget_user_capability_memo( $user_id ) {
+		( new WPML_WP_Cache( self::CACHE_GROUP . '_does_user_have_capability' ) )->delete( serialize( [ $user_id ] ) );
 	}
 
-	public function delete( $user_id ) {
-		$user = new WP_User( $user_id );
-		$user->remove_cap( $this->get_capability() );
+	public function delete_all() {
+		\WPML\TranslationRoles\Service\SyncBatch::run(
+			function () {
+				foreach ( $this->get_users_with_capability() as $user ) {
+					if ( ! $this->is_kept_by_delete_all( $user ) ) {
+						$this->delete( $user->ID );
+					}
+				}
+			}
+		);
+	}
+
+	abstract public function delete( $user_id );
+
+	protected function is_kept_by_delete_all( $record ) {
+		return false;
 	}
 
 	private function get_records( $compare, $search = '', $limit = -1, $use_exact_match = false ) {
@@ -196,7 +208,12 @@ abstract class WPML_Translation_Roles_Records {
 		if ( $search ) {
 			$preparedUserQuery .= $use_exact_match
 				? $this->wpdb->prepare( " AND (u.user_login = %s OR u.user_nicename = %s OR u.user_email = %s)", "{$search}", "{$search}", "{$search}" )
-				: $this->wpdb->prepare( " AND (u.user_login LIKE %s OR u.user_nicename LIKE %s OR u.user_email LIKE %s)", "%{$search}%", "%{$search}%", "%{$search}%" );
+				: $this->wpdb->prepare(
+					" AND (u.user_login LIKE %s ESCAPE '|' OR u.user_nicename LIKE %s ESCAPE '|' OR u.user_email LIKE %s ESCAPE '|')",
+					\WPML\Utils\LikeEscape::contains( $search ),
+					\WPML\Utils\LikeEscape::contains( $search ),
+					\WPML\Utils\LikeEscape::contains( $search )
+				);
 		}
 
 		$preparedUserQuery .= ' ORDER BY user_login ASC';

@@ -23,6 +23,8 @@ class WPML_Upgrade {
 
 	private $current_scope;
 
+	private $command_failed = false;
+
 	public function __construct(
 		array $commands,
 		SitePress $sitepress,
@@ -68,9 +70,8 @@ class WPML_Upgrade {
 			}
 		} finally {
 			$this->command_status->endBatch();
+			$this->set_upgrade_completed();
 		}
-
-		$this->set_upgrade_completed();
 
 		return $result;
 	}
@@ -156,16 +157,49 @@ class WPML_Upgrade {
 			return null;
 		}
 
-		if ( 'maybe_run_ajax' === $method && ! $this->nonce_ok( $command_definition->get_class_name() ) ) {
-			return null;
+		$this->command_status->suspendKeeping();
+		try {
+			if ( 'maybe_run_ajax' === $method && ! $this->nonce_ok( $command_definition->get_class_name() ) ) {
+				return null;
+			}
+
+			$this->set_upgrade_in_progress();
+			$this->current_scope  = $scope;
+			$this->command_failed = false;
+
+			try {
+				$upgrade = $command_definition->create();
+			} catch ( Throwable $e ) {
+				$this->record_failure( $command_definition->get_class_name(), $e );
+
+				return null;
+			}
+
+			$result = $this->$method( $upgrade );
+
+			return $this->command_failed ? null : $result;
+		} finally {
+			$this->command_status->resumeKeeping();
 		}
+	}
 
-		$this->set_upgrade_in_progress();
-		$upgrade = $command_definition->create();
+	private function run_entry( IWPML_Upgrade_Command $upgrade, $entry ) {
+		try {
+			return $upgrade->$entry();
+		} catch ( Throwable $e ) {
+			$this->record_failure( get_class( $upgrade ), $e );
 
-		$this->current_scope = $scope;
+			return false;
+		}
+	}
 
-		return $this->$method( $upgrade );
+	private function record_failure( $class_name, Throwable $e ) {
+		$this->command_failed = true;
+
+		$message = sprintf( '%s: %s (%s:%d)', get_class( $e ), $e->getMessage(), basename( $e->getFile() ), $e->getLine() );
+		$this->command_status->markFailed( $class_name, $message, ICL_SITEPRESS_VERSION );
+
+		error_log( sprintf( 'WPML upgrade step %s failed and is retried on the next request; the other steps ran. %s', $class_name, $message ) );
 	}
 
 	private function is_settled_in_scope( WPML_Upgrade_Command_Definition $command_definition, $scope ) {
@@ -184,7 +218,7 @@ class WPML_Upgrade {
 	}
 
 	private function maybe_run_admin( IWPML_Upgrade_Command $upgrade ) {
-		if ( $upgrade->run_admin() ) {
+		if ( $this->run_entry( $upgrade, 'run_admin' ) ) {
 			$this->mark_command_as_executed( $upgrade );
 		}
 
@@ -192,13 +226,13 @@ class WPML_Upgrade {
 	}
 
 	private function maybe_run_front_end( IWPML_Upgrade_Command $upgrade ) {
-		$this->record_outcome( $upgrade, $upgrade->run_frontend() );
+		$this->record_outcome( $upgrade, $this->run_entry( $upgrade, 'run_frontend' ) );
 
 		return $upgrade->get_results();
 	}
 
 	private function maybe_run_ajax( IWPML_Upgrade_Command $upgrade ) {
-		$outcome = $upgrade->run_ajax();
+		$outcome = $this->run_entry( $upgrade, 'run_ajax' );
 		$this->record_outcome( $upgrade, $outcome );
 		if ( $outcome ) {
 			$this->command_status->endBatch();
@@ -235,7 +269,7 @@ class WPML_Upgrade {
 	}
 
 	private function set_upgrade_in_progress() {
-		if ( ! $this->upgrade_in_progress ) {
+		if ( ! $this->upgrade_in_progress && ! get_transient( WPML_Upgrade_Loader::TRANSIENT_UPGRADE_IN_PROGRESS ) ) {
 			$this->upgrade_in_progress = true;
 			set_transient( WPML_Upgrade_Loader::TRANSIENT_UPGRADE_IN_PROGRESS, true, MINUTE_IN_SECONDS );
 		}

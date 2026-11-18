@@ -9,10 +9,12 @@ class StatusWriteFailure {
 	const CODE_WRITE_FAILED     = 'translation_status_write_failed';
 	const CODE_NOT_CONFIRMED    = 'send_not_confirmed';
 	const CODE_JOB_WRITE_FAILED = 'translation_job_write_failed';
+	const CODE_ROW_WRITE_FAILED = 'translation_row_write_failed';
 
 	const TABLE_NOT_FOUND = 'table not found';
 
 	const MYSQL_ERROR_NAMES = [
+		1048 => 'Column cannot be null',
 		1054 => 'Unknown column',
 		1062 => 'Duplicate entry',
 		1114 => 'Table is full',
@@ -46,6 +48,36 @@ class StatusWriteFailure {
 			self::CODE_JOB_WRITE_FAILED,
 			null === $where ? self::WHERE_PHP_ERROR_LOG : $where
 		);
+	}
+
+	public static function translationRowDetails( $mysqlErrno, $repairOffered = null ) {
+		$error = trim( self::mysqlError( (int) $mysqlErrno ), ' ()' );
+		$error = '' !== $error
+			? $error
+			/* translators: Stands for the database error in "WPML could not write the translation record for this content (database error: %s)" when the database reported none. */
+			: __( 'none reported', 'sitepress' );
+
+		if ( null === $repairOffered ? self::isTranslationsTableRepairOffered() : $repairOffered ) {
+			return sprintf(
+				/* translators: Error shown when a send to translation stops for one language. "The translation record" is the row in WPML's translations table that links the content to its translation. "Repair the translations table" is the name of a tool on WPML → Support. %s: the database error, for example "MySQL error 1048: Column cannot be null", or "none reported". */
+				__( 'WPML could not write the translation record for this content (database error: %s). Run "Repair the translations table" in WPML → Support, then send again.', 'sitepress' ),
+				$error
+			);
+		}
+
+		return sprintf(
+			/* translators: Error shown when a send to translation stops for one language and WPML → Support offers no repair for it. "The translation record" is the row in WPML's translations table that links the content to its translation. "Translation job logs" is the name of a tool on WPML → Support. %s: the database error, for example "MySQL error 1048: Column cannot be null", or "none reported". */
+			__( 'WPML could not write the translation record for this content (database error: %s). Send it again. If it fails again, send WPML support the newest entry in WPML → Support → Translation job logs.', 'sitepress' ),
+			$error
+		);
+	}
+
+	public static function isTranslationsTableRepairOffered() {
+		global $wpdb;
+
+		return class_exists( \WPML\Troubleshooting\TranslationsTableKeys::class )
+			&& $wpdb instanceof \wpdb
+			&& ( new \WPML\Troubleshooting\TranslationsTableKeys( $wpdb ) )->needsRepair();
 	}
 
 	public static function whereAreTheDetails() {

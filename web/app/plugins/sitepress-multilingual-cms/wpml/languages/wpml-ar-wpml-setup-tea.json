@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);",
             "lang": "ar"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "بدّل إلى Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "التبديل إلى PTC"
+         ],
+         "Switching…": [
+            "جارٍ التبديل…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "لم نتمكن من تأكيد التبديل. حاول مرة أخرى، أو أعد التحميل لرؤية المحرك الحالي."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "تعذر تحميل عناصر التحكم في محرك الترجمة. أعد تحميل الصفحة وحاول مرة أخرى."
+         ],
+         "Loading translation engine settings…": [
+            "جاري تحميل إعدادات محرك الترجمة…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "املأ سياق موقعك أعلاه قبل التبديل إلى PTC."
+         ],
+         "Reload page": [
+            "إعادة تحميل الصفحة"
+         ],
+         "Could not fetch engines data": [
+            "تعذر جلب بيانات المحركات"
+         ],
          "Error in updating since dates for types.": [
             "خطأ في تحديث تواريخ \"منذ\" للأنواع."
          ],
@@ -67,7 +94,7 @@
             "بناءً على المحتوى المتبقي غير المترجم عبر جميع اللغات."
          ],
          "Estimated from the selected source volume multiplied by the target languages.": [
-            "مقدرة من حجم المصدر المحدد مضروبًا في لغات الهدف."
+            "مقدرة من حجم المصدر المحدد مضروبًا في اللغات الهدف."
          ],
          "%1$s source words × %2$s language": [
             "%1$s كلمة مصدر × %2$s لغات",
@@ -158,14 +185,11 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "تم تطبيق التسعير القديم. %s هو محرك ترجمة قديم، ولا يُنصح به للمواقع الجديدة وسيتم إيقافه. تحتفظ المواقع الحالية بمعدل كلمات معدل له."
          ],
-         "Switch to PTC": [
-            "التبديل إلى PTC"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
-            "هذا ما تتطلبه ترجمة محتواك الحالي اليوم. وهو لا يشمل بعض النصوص التي تضيفها إضافات أخرى، مثل النماذج أو أشرطة التمرير، والتي تُحسب بعد أن يصبح الإعداد مكتملًا. كما تُحسب سلاسل الموقع من قالبك وإضافاتك بعد الإعداد وعادةً ما تضيف عدة مئات من الكلمات. بعد ذلك، تكون التعديلات مجانية. ولن تدفع مجددًا إلا مقابل الكلمات التي تضيفها."
+            "هذا ما تتطلبه ترجمة محتواك الحالي اليوم. وهو لا يشمل بعض النصوص التي تضيفها إضافات أخرى، مثل النماذج أو أشرطة التمرير، والتي تُحسب بعد اكتمال الإعداد. كما تُحسب نصوص الموقع من قالبك وإضافاتك بعد الإعداد وعادة ما تضيف بضع مئات من الكلمات. بعد ذلك، تكون التعديلات مجانية. لن تدفع مجددًا إلا مقابل الكلمات التي تضيفها."
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
-            "هذا ما تحتاجه ترجمة محتواك الحالي اليوم. ولا يشمل ذلك بعض النصوص المضافة بواسطة إضافات أخرى، مثل النماذج أو أشرطة التمرير (sliders)، والتي يتم احتسابها بعد اكتمال الإعداد. كما يتم احتساب نصوص الموقع من القالب والإضافات الخاصة بك بعد الإعداد، وعادةً ما تضيف عدة مئات من الكلمات. بسعر الكلمة الخاص بـ %s؛ يتم فرض رسوم مرة أخرى عند إجراء تغييرات على الصفحات المترجمة."
+            "هذا ما تتطلبه ترجمة محتواك الحالي اليوم. وهو لا يشمل بعض النصوص التي تضيفها إضافات أخرى، مثل النماذج أو أشرطة التمرير، والتي تُحسب بعد اكتمال الإعداد. كما تُحسب نصوص الموقع من قالبك وإضافاتك بعد الإعداد وعادة ما تضيف بضع مئات من الكلمات. بحسب سعر الكلمة لدى %s؛ يتم احتساب التغييرات على الصفحات المترجمة مرة أخرى."
          ],
          "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
             "هذا ما تتطلبه ترجمة محتواك الحالي اليوم. بعد ذلك، تكون التعديلات مجانية، ولن تدفع مجددًا إلا مقابل الكلمات التي تضيفها."
@@ -176,8 +200,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "يحسب الصفحات، والمقالات، والمنتجات مع حقولها المخصصة، ونصوص أداة بناء الصفحات، ونصوص الوسائط، بالإضافة إلى التصنيفات، والوسوم، والسمات التي تستخدمها."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "يحسب الصفحات، والمقالات، والمنتجات مع حقولها المخصصة، ونصوص أداة بناء الصفحات، ونصوص الوسائط، بالإضافة إلى التصنيفات، والوسوم، والسمات التي تستخدمها، وسلاسل الموقع. يُحسب المصطلح في كل عنصر يستخدمه ومرة واحدة بمفرده، لأنه يُرسل للترجمة بكلتا الطريقتين."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "يحسب الصفحات والمقالات والمنتجات مع حقولها المخصصة ونصوص منشئ الصفحات ونصوص الوسائط، بالإضافة إلى التصنيفات والوسوم والسمات التي تستخدمها، ونصوص الموقع. يتم احتساب كل تصنيف أو وسم أو سمة مرة واحدة في صف التصنيفات، ولا يتم احتسابها مرة أخرى مع العناصر التي تستخدمها."
          ],
          "Total items": [
             "إجمالي العناصر"
@@ -250,6 +274,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "لبدء خاصية <b>ترجم كل شيء تلقائيًا</b>، فعّل خاصية <b>الدفع حسب الاستخدام</b> أو اشترِ كلمات مدفوعة مسبقًا."
+         ],
+         "Translation quality:": [
+            "جودة الترجمة:"
          ],
          "Select payment method": [
             "اختر طريقة الدفع"
@@ -382,6 +409,30 @@
          ],
          "Close modal": [
             "إغلاق النافذة"
+         ],
+         "Obvious mistakes": [
+            "أخطاء واضحة"
+         ],
+         "Mistakes visible": [
+            "أخطاء مرئية"
+         ],
+         "Ready to publish": [
+            "جاهز للنشر"
+         ],
+         "Your engine": [
+            "محركك"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "جودة الترجمة (مقياس 50-100): يحقق %1$s نتيجة %2$d، ويحقق %3$s نتيجة %4$d."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "النتائج بناءً على دراسة MQM الداخلية لجودة الترجمة من WPML."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "تترجم PTC بجودة أعلى وتمنحك نتائج جاهزة للنشر."
          ]
       }
    }

@@ -28,11 +28,60 @@ class SecondaryDomains {
 			return $currentSiteUrl;
 		}
 
-		if ( $this->isRegistered( $currentSiteUrl ) ) {
+		if ( $this->isRegistered( $currentSiteUrl ) && ! $this->isAnotherSiteOfTheNetwork( $originalSiteUrl ) ) {
 			return $originalSiteUrl;
 		}
 
 		return $currentSiteUrl;
+	}
+
+	public function isAnotherSiteOfTheNetwork( $url ) {
+		if ( ! function_exists( 'is_multisite' ) || ! is_multisite() ) {
+			return false;
+		}
+
+		$address = $this->addressOf( $url );
+		if ( null === $address ) {
+			return false;
+		}
+
+		$site = get_site_by_path( $address['domain'], $address['path'] );
+		if ( ! is_object( $site ) || ! isset( $site->blog_id ) ) {
+			return false;
+		}
+
+		$blogId = (int) $site->blog_id;
+		if ( $blogId === (int) get_current_blog_id() ) {
+			return false;
+		}
+
+		$sitePath = isset( $site->path ) ? (string) $site->path : '/';
+		if ( '/' !== $sitePath || '/' === $address['path'] ) {
+			return true;
+		}
+
+		foreach ( [ get_home_url( $blogId ), get_site_url( $blogId ) ] as $ownUrl ) {
+			$own = $this->addressOf( $ownUrl );
+			if ( null !== $own && $own['domain'] === $address['domain'] && $own['path'] === $address['path'] ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private function addressOf( $url ) {
+		$parsed = wp_parse_url( trim( (string) $url ) );
+		if ( ! is_array( $parsed ) || empty( $parsed['host'] ) ) {
+			return null;
+		}
+
+		$path = isset( $parsed['path'] ) ? trim( (string) $parsed['path'], '/' ) : '';
+
+		return [
+			'domain' => strtolower( (string) $parsed['host'] ) . ( isset( $parsed['port'] ) ? ':' . $parsed['port'] : '' ),
+			'path'   => '' === $path ? '/' : '/' . $path . '/',
+		];
 	}
 
 	public function getInfo() {

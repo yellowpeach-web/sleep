@@ -59,7 +59,7 @@
             "すべての言語における残りの未翻訳コンテンツに基づいています。"
          ],
          "Estimated from the selected source volume multiplied by the target languages.": [
-            "選択されたソースのボリュームにターゲット言語の数を掛けて推定されます。"
+            "選択されたソースのボリュームに翻訳先言語の数を掛けて算出されます。"
          ],
          "%1$s source words × %2$s language": [
             "%1$s ソース単語 × %2$s 言語"
@@ -127,11 +127,11 @@
          "Legacy engine": [
             "レガシーエンジン"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "レガシー料金が適用されました。 %s はレガシー翻訳エンジンであり、新しいサイトには推奨されず、今後廃止される予定です。既存のサイトでは、引き続き調整後の単語レートが適用されます。"
-         ],
          "Switch to PTC": [
             "PTC に切り替える"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "レガシー料金が適用されました。 %s はレガシー翻訳エンジンであり、新しいサイトには推奨されず、今後廃止される予定です。既存のサイトでは、引き続き調整後の単語レートが適用されます。"
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "これは、現在のコンテンツの翻訳に本日必要な分量です。フォームやスライダーなど、他のプラグインによって追加された一部のテキストは含まれておらず、セットアップ完了後にカウントされます。テーマやプラグインのサイト文字列もセットアップ後にカウントされ、通常は数百単語ほど追加されます。その後、編集は無料です。追加した単語に対してのみ、再度支払いが発生します。"
@@ -148,8 +148,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "これには、固定ページ、投稿、商品（カスタムフィールド、ページビルダーのテキスト、メディアテキストを含む）と、それらに使用されているカテゴリー、タグ、属性がカウントされます。"
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "これには、固定ページ、投稿、商品（カスタムフィールド、ページビルダーのテキスト、メディアテキストを含む）、それらに使用されているカテゴリー、タグ、属性、およびサイトの文字列がカウントされます。タームは翻訳のために両方の方法で送信されるため、それを使用するすべての項目でカウントされるほか、単体でも1回カウントされます。"
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "固定ページ、投稿、商品に加えて、それらのカスタムフィールド、ページビルダーのテキスト、メディアテキスト、使用されているカテゴリー、タグ、属性、およびサイトの文字列をカウントします。各カテゴリー、タグ、属性は「タクソノミー」行で1度だけカウントされ、それらを使用するアイテムで重複してカウントされることはありません。"
          ],
          "Total items": [
             "アイテム合計"
@@ -371,7 +371,7 @@
             "WPML アカウントに %1$s%2$s 単語%3$s あります。"
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "WPML アカウントに %1$s%2$s 個の利用可能な単語があります。%3$s"
+            "WPMLアカウントで利用可能な単語が%1$s%2$s%3$sあります。"
          ],
          "(Only the WPML account owner can do this.)": [
             "（WPML アカウントの所有者のみがこれを行えます。）"

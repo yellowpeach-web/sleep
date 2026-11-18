@@ -12,6 +12,8 @@ class ActiveLanguagesReadModel {
 
 	private static $invalidating = false;
 
+	private static $rowsByBlog = [];
+
 	public static function cache(): \icl_cache {
 		if ( null === self::$cache ) {
 			self::ensureCacheApi();
@@ -91,10 +93,17 @@ class ActiveLanguagesReadModel {
 		}
 
 		if ( ! $refresh ) {
-			$prefix = $activeOnly ? 'in_language_' : 'all_language_';
-			$rows   = self::cache()->get( $prefix . $displayLanguage . '_' . $majorFirst . '_' . $orderBy );
+			$key  = self::rowsKey( $displayLanguage, $activeOnly, $majorFirst, $orderBy );
+			$rows = self::cache()->get( $key );
 			if ( $rows ) {
+				self::remember( $key, $rows );
+
 				return $rows;
+			}
+
+			$blogId = self::currentBlogId();
+			if ( isset( self::$rowsByBlog[ $blogId ][ $key ] ) && self::storeRefuses() ) {
+				return self::$rowsByBlog[ $blogId ][ $key ];
 			}
 		}
 
@@ -107,11 +116,30 @@ class ActiveLanguagesReadModel {
 		return [];
 	}
 
+	private static function rowsKey( $displayLanguage, $activeOnly, $majorFirst, $orderBy ): string {
+		return ( $activeOnly ? 'in_language_' : 'all_language_' ) . $displayLanguage . '_' . $majorFirst . '_' . $orderBy;
+	}
+
+	private static function storeRefuses(): bool {
+		$cache = self::cache();
+
+		return method_exists( $cache, 'is_switched_away' ) && $cache->is_switched_away();
+	}
+
+	public static function remember( string $key, array $rows ): void {
+		self::$rowsByBlog[ self::currentBlogId() ][ $key ] = $rows;
+	}
+
+	private static function currentBlogId(): int {
+		return function_exists( 'get_current_blog_id' ) ? (int) get_current_blog_id() : 0;
+	}
+
 	public static function invalidate(): void {
 		if ( self::$invalidating ) {
 			return;
 		}
 
+		self::$rowsByBlog   = [];
 		self::$invalidating = true;
 		try {
 			self::cache()->clear();

@@ -3,20 +3,49 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/js/ate/AutoTranslate.js:28
+#: src/js/ate/AutoTranslate.js:39
 msgid "Sending for translation"
 msgstr ""
 
-#: src/js/ate/IntentControls.js:156
+#: src/js/ate/IntentControls.js:265
 msgid "The translation could not be started because the server did not answer."
 msgstr ""
 
-#: src/js/ate/IntentControls.js:245
+#: src/js/ate/IntentControls.js:366
+msgid "Your session has expired. Refresh this page and try again."
+msgstr ""
+
+#: src/js/ate/IntentControls.js:484
+#. Tooltip of the spinning icon after a click on "+": PTC translates the content, then WPML opens the editor. PTC is the name of WPML's automatic translation. Keep "PTC" as it is.
+msgid "PTC is translating. The editor opens when it is ready."
+msgstr ""
+
+#: src/js/ate/IntentControls.js:593
+#: src/js/ate/RefusalPopover.js:58
 msgid "This translation cannot be opened right now."
 msgstr ""
 
-#: src/js/ate/IntentControls.js:250
+#: src/js/ate/IntentControls.js:598
+#: src/js/ate/RefusalPopover.js:75
 msgid "Refresh this page"
+msgstr ""
+
+#: src/js/ate/RefusalPopover.js:57
+#. The popover next to a "+" in the WPML Language panel, when the site has not enough prepaid words for an automatic translation.
+msgid ""
+"Not enough prepaid words to translate this automatically. Add more words, "
+"then try again."
+msgstr ""
+
+#: src/js/ate/RefusalPopover.js:66
+#: src/js/ate/status-bar/model/notification-center-action-presets.js:34
+#: src/js/ate/status-icons/StatusUpdater.js:199
+msgid "Get more words"
+msgstr ""
+
+#: src/js/ate/RefusalPopover.js:83
+#. The screen reader name of the "×" that closes the popover next to a "+" in the WPML Language panel. Verb, imperative.
+msgid "Close"
 msgstr ""
 
 #: src/js/ate/TranslationDashboardJobsActions.js:23
@@ -34,11 +63,15 @@ msgstr ""
 msgid "%1$s and %2$s"
 msgstr ""
 
-#: src/js/ate/status-bar/components/StatusBar/NotificationBadge.js:58
+#: src/js/ate/status-bar/components/StatusBar/NotificationBadge.js:79
 msgid "Translating your content"
 msgstr ""
 
-#: src/js/ate/status-bar/components/StatusBar/NotificationBadge.js:69
+#: src/js/ate/status-bar/components/StatusBar/NotificationBadge.js:86
+msgid "Translate Everything is active"
+msgstr ""
+
+#: src/js/ate/status-bar/components/StatusBar/NotificationBadge.js:97
 #. Text read out by screen readers for the counter on the WPML icon in the admin bar. %d: the number of notices.
 msgid "%d translation notice"
 msgid_plural "%d translation notices"
@@ -55,54 +88,55 @@ msgstr ""
 msgid "less than 1 min remaining"
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:103
+#: src/js/ate/status-bar/components/constants.js:104
 msgid "<b>Translate Everything Automatically</b> is temporarily paused"
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:105
+#: src/js/ate/status-bar/components/constants.js:106
 msgid "Automatic translation is temporarily paused"
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:107
+#: src/js/ate/status-bar/components/constants.js:108
 msgid ""
 "We noticed something unexpected in your recent translation activity and "
 "paused automatic translation on your account. Contact support and we’ll "
 "review it with you."
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:114
+#: src/js/ate/status-bar/components/constants.js:115
 msgid ""
 "<b>Translate Everything Automatically</b> is paused: monthly spending cap "
 "reached"
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:116
+#: src/js/ate/status-bar/components/constants.js:117
 msgid "Automatic translation is paused: monthly spending cap reached"
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:118
+#: src/js/ate/status-bar/components/constants.js:120
+#. Notification in the WPML admin bar menu. "AI Translation: billing and usage" is the name of a WPML admin page; keep it as that page is named in your language.
 msgid ""
 "This website reached the monthly spending cap set for it. Translation "
-"continues when the cap is raised, or when the cap resets. Only the account "
-"owner can do this."
-msgstr ""
-
-#: src/js/ate/status-bar/components/constants.js:161
-msgid "Preparing content for translation"
+"continues when the cap is raised, or when the cap resets. You can raise it "
+"on the AI Translation: billing and usage page."
 msgstr ""
 
 #: src/js/ate/status-bar/components/constants.js:163
+msgid "Preparing content for translation"
+msgstr ""
+
+#: src/js/ate/status-bar/components/constants.js:165
 msgid "Preparing more content for translation"
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:166
+#: src/js/ate/status-bar/components/constants.js:168
 #. Notification in the WPML admin bar menu. %s: the name of the language the site is written in.
 msgid ""
 "Your default language, %s, must be mapped to a supported language in order "
 "to use automatic translation."
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:174
+#: src/js/ate/status-bar/components/constants.js:176
 #. Notification in the WPML admin bar menu. %s: the name of the language; in the plural form, the list of language names separated by commas.
 msgid ""
 "Your language, %s, must be mapped to a supported language in order to use "
@@ -113,29 +147,35 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/js/ate/status-bar/components/constants.js:185
-#. Notification in the WPML admin bar menu. %s: the list of language names, separated by commas.
+#: src/js/ate/status-bar/components/constants.js:190
+#. Notification in the WPML admin bar menu. %1$s: the site's default language, %2$s: the name of the language the automatic engine recognizes as the same language; in the plural form, the list of those languages. "Duplicate" is the option of that name on the Translation Dashboard.
 msgid ""
-"Content in those languages: %s, cannot be automatically translated unless "
-"you map them to a language that's different from the default."
-msgstr ""
+"Automatic translation isn't available between %1$s and %2$s because they're "
+"recognized as the same language. Choose \"Duplicate\" instead to copy the "
+"content across."
+msgid_plural ""
+"Automatic translation isn't available between %1$s and these languages "
+"because they're recognized as the same language: %2$s. Choose \"Duplicate\" "
+"instead to copy the content across."
+msgstr[0] ""
+msgstr[1] ""
 
-#: src/js/ate/status-bar/components/constants.js:195
+#: src/js/ate/status-bar/components/constants.js:203
 #. Notification in the WPML admin bar menu. %d: the number of translations waiting to be reviewed.
 msgid "%d translation waiting for review"
 msgid_plural "%d translations waiting for review"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/js/ate/status-bar/components/constants.js:209
+#: src/js/ate/status-bar/components/constants.js:217
 msgid "<b>Translate Everything Automatically</b> has unresolved jobs"
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:211
+#: src/js/ate/status-bar/components/constants.js:219
 msgid "Automatic translation has unresolved jobs"
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:216
+#: src/js/ate/status-bar/components/constants.js:224
 #. Notification in the WPML admin bar menu. %d: the number of translation jobs. Keep the <b> tags around the name of the screen.
 msgid ""
 "%d job couldn't be completed. Go to <b>Translation Dashboard</b> to review "
@@ -218,19 +258,19 @@ msgid ""
 "e-mail. Settle it or contact support."
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:82
+#: src/js/ate/status-bar/components/constants.js:83
 msgid "<b>Translate Everything</b> automatically is paused - not enough words"
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:84
+#: src/js/ate/status-bar/components/constants.js:85
 msgid "Automatic translation is paused — not enough words"
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:86
+#: src/js/ate/status-bar/components/constants.js:87
 msgid "Translation will resume automatically once you assign more words."
 msgstr ""
 
-#: src/js/ate/status-bar/components/constants.js:91
+#: src/js/ate/status-bar/components/constants.js:92
 #. Notification in the WPML admin bar menu shown when automatic translation is paused. %s: the number of translation words on the account, already written out.
 msgid ""
 "You have %s prepaid translation words in your WPML account. Assign these "
@@ -259,11 +299,6 @@ msgstr ""
 #: src/js/ate/status-icons/StatusUpdater.js:198
 #. Button label in the notification shown when a payment failed and automatic translation is paused; verb, imperative.
 msgid "Pay now"
-msgstr ""
-
-#: src/js/ate/status-bar/model/notification-center-action-presets.js:34
-#: src/js/ate/status-icons/StatusUpdater.js:199
-msgid "Get more words"
 msgstr ""
 
 #: src/js/ate/status-bar/model/notification-center-action-presets.js:42

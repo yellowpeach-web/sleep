@@ -1,7 +1,10 @@
 <?php
 
 use WPML\Convert\Ids;
+use WPML\Core\Component\CustomFieldPreferences\Domain\ElementType;
 use WPML\FP\Obj;
+use WPML\TM\Settings\PreferenceResolver;
+use WPML\TM\Settings\PreferenceWriter;
 use WPML\Utils\XmlTranslatableIds;
 
 class WPML_Custom_Field_XML_Settings_Import {
@@ -20,25 +23,32 @@ class WPML_Custom_Field_XML_Settings_Import {
 		$config = $this->settings_array;
 		foreach (
 			array(
-				'post_meta_setting' => array(
+				ElementType::POST => array(
+					'post_meta_setting',
 					WPML_POST_META_CONFIG_INDEX_PLURAL,
 					WPML_POST_META_CONFIG_INDEX_SINGULAR
 				),
-				'term_meta_setting' => array(
+				ElementType::TERM => array(
+					'term_meta_setting',
 					WPML_TERM_META_CONFIG_INDEX_PLURAL,
 					WPML_TERM_META_CONFIG_INDEX_SINGULAR
 				)
-			) as $setting_constructor => $settings
+			) as $element_type => list( $setting_constructor, $plural, $singular )
 		) {
-			if ( ! empty( $config[ $settings[0] ] ) ) {
-				$field = $config[ $settings[0] ][ $settings[1] ];
-				$cf    = ! is_numeric( key( current( $config[ $settings[0] ] ) ) ) ? array( $field ) : $field;
+			if ( ! empty( $config[ $plural ] ) ) {
+				$field = $config[ $plural ][ $singular ];
+				$cf    = ! is_numeric( key( current( $config[ $plural ] ) ) ) ? array( $field ) : $field;
+				$modes = [];
 				foreach ( $cf as $c ) {
+					$name    = trim( $c['value'] );
 					$setting = call_user_func_array( array(
 						$this->setting_factory,
 						$setting_constructor
-					), array( trim( $c['value'] ) ) );
-					$this->import_action( $c, $setting );
+					), array( $name ) );
+					$mode = $this->imported_mode( $c, $setting );
+					if ( null !== $mode ) {
+						$modes[ $name ] = $mode;
+					}
 					$setting->make_read_only();
 					$this->import_editor_settings( $c, $setting );
 					if ( isset( $c[ 'attr' ][ 'translate_link_target' ] ) || isset( $c[ 'custom-field' ] ) ) {
@@ -48,13 +58,15 @@ class WPML_Custom_Field_XML_Settings_Import {
 						$setting->set_convert_to_sticky( (bool) $c[ 'attr' ][ 'convert_to_sticky' ] );
 					}
 					$setting->clear_from_translate_ids();
-					if ( $setting->status() === WPML_COPY_CUSTOM_FIELD && $this->xml_object_ids->hasTranslatableIds( $c ) ) {
+					$status = $modes[ $name ] ?? $setting->status();
+					if ( WPML_COPY_CUSTOM_FIELD === $status && $this->xml_object_ids->hasTranslatableIds( $c ) ) {
 						$target_type = $this->xml_object_ids->getType( $c );
 						$target_slug = $this->xml_object_ids->getSlug( $c, $target_type );
 						$setting->set_field_translatable_ids( $target_type, $target_slug );
 					}
 					$setting->set_encoding( Obj::path( [ 'attr', 'encoding' ], $c ) );
 				}
+				$this->write_changed_modes( $element_type, $modes );
 			}
 		}
 
@@ -62,25 +74,37 @@ class WPML_Custom_Field_XML_Settings_Import {
 		$this->import_translatable_ids_in_custom_field_texts();
 	}
 
-	private function import_action( $c, $setting ) {
-		if ( ! $setting->is_unlocked() ) {
-			switch ( $c['attr']['action'] ) {
-				case 'translate':
-					$setting->set_to_translatable();
-					break;
+	private function imported_mode( $c, $setting ) {
+		if ( $setting->is_unlocked() ) {
+			return null;
+		}
 
-				case 'copy':
-					$setting->set_to_copy();
-					break;
+		switch ( $c['attr']['action'] ?? '' ) {
+			case 'translate':
+				return WPML_TRANSLATE_CUSTOM_FIELD;
+			case 'copy':
+				return WPML_COPY_CUSTOM_FIELD;
+			case 'copy-once':
+				return WPML_COPY_ONCE_CUSTOM_FIELD;
+			default:
+				return WPML_IGNORE_CUSTOM_FIELD;
+		}
+	}
 
-				case 'copy-once':
-					$setting->set_to_copy_once();
-					break;
+	private function write_changed_modes( $element_type, array $modes ) {
+		if ( ! $modes ) {
+			return;
+		}
 
-				default:
-					$setting->set_to_nothing();
-					break;
-			}
+		$stored  = PreferenceResolver::modes( $element_type, array_map( 'strval', array_keys( $modes ) ) );
+		$changed = array_filter(
+			$modes,
+			fn( $mode, $name ) => ( $stored[ $name ] ?? null ) !== $mode,
+			ARRAY_FILTER_USE_BOTH
+		);
+
+		if ( $changed ) {
+			PreferenceWriter::setModes( $element_type, $changed );
 		}
 	}
 

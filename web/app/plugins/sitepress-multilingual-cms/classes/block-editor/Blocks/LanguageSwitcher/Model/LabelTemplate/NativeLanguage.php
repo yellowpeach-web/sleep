@@ -11,4 +11,16 @@ class NativeLanguage implements LabelTemplateInterface {
 	public function getDisplayName( LanguageItem $languageItem ) {
 		return $languageItem->getNativeName();
 	}
+
+	public function writeLabel( \DOMElement $label, LanguageItem $languageItem ) {
+		$label->textContent = $this->getDisplayName( $languageItem );
+		self::markLanguage( $label, $languageItem );
+	}
+
+	public static function markLanguage( \DOMElement $element, LanguageItem $languageItem ) {
+		$tag = $languageItem->getHreflang();
+		if ( '' !== $tag ) {
+			$element->setAttribute( 'lang', $tag );
+		}
+	}
 }

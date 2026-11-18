@@ -2,10 +2,14 @@
 
 use WPML\Infrastructure\WordPress\Component\Translation\Domain\Links\Repository;
 use WPML\TM\Upgrade\Commands\CreateAteDownloadQueueTable;
+use WPML\TM\Upgrade\Commands\CreateTermBatchMembersTable;
 use WPML\TM\Upgrade\Commands\CreateUnsolvableJobsTable;
 use WPML\Upgrade\CreateTable;
+use WPML\Upgrade\StringTablesSchema;
 use WPML\Upgrade\Commands\CreateBackgroundTaskTable;
 use WPML\Upgrade\Commands\CreateElementKnowledgeTable;
+use WPML\Upgrade\Commands\CreateAppearancesTable;
+use WPML\Knowledge\AppearanceRepository;
 use WPML\Upgrade\Commands\CreateMediaUrlLookupTable;
 use WPML\Upgrade\Commands\CreateLanguagePresetsTable;
 use WPML\Upgrade\Commands\CreateCountriesTable;
@@ -14,11 +18,14 @@ use WPML\Upgrade\Commands\CreateUrlResolutionCacheTable;
 
 require_once WPML_PLUGIN_PATH . '/classes/upgrade/commands/WPML5.0/CreateUrlResolutionCacheTable.php';
 require_once WPML_PLUGIN_PATH . '/classes/upgrade/commands/WPML5.0/CreateElementKnowledgeTable.php';
+require_once WPML_PLUGIN_PATH . '/classes/upgrade/commands/WPML5.0/CreateAppearancesTable.php';
 
 function icl_sitepress_activate() {
 	global $wpdb;
 
 	try {
+		CreateTable::forgetLastRefusal();
+
 		SitePress_Setup::fill_languages();
 		SitePress_Setup::fill_languages_translations();
 		SitePress_Setup::fill_flags();
@@ -75,7 +82,8 @@ function icl_sitepress_activate() {
                  `ate_comm_retry_count` INT(11) UNSIGNED DEFAULT 0,
                  PRIMARY KEY (`rid`),
                  UNIQUE KEY `translation_id` (`translation_id`),
-                 KEY `review_status` (`review_status`)
+                 KEY `review_status` (`review_status`),
+                 INDEX `status_rid` ( `status`, `rid` )
 	                )"
 			) ) {
 				throw new Exception( $wpdb->last_error );
@@ -109,7 +117,9 @@ function icl_sitepress_activate() {
                 `ate_sync_count` INT(6) UNSIGNED DEFAULT 0,
                 `wpml_words_to_translate_count` INT(11) UNSIGNED NULL,
                 `wpml_words_to_translate_count_lifetime_max` INT(11) UNSIGNED NULL,
+                `wpml_words_to_translate_count_unconfirmed_max` INT(11) UNSIGNED NULL,
                 `wpml_automatic_translation_costs` INT(11) UNSIGNED NULL,
+                `ate_receive_token` VARCHAR(64) NULL,
                 INDEX ( `rid` , `translator_id` ),
                 INDEX `rid_job_id` ( `rid` , `job_id` )
 	                )"
@@ -137,6 +147,7 @@ function icl_sitepress_activate() {
                 `field_data` longtext NOT NULL ,
                 `field_data_translated` longtext NOT NULL ,
                 `field_finished` TINYINT NOT NULL DEFAULT 0,
+                INDEX `field_type_job_id` ( `field_type`(64), `job_id` ),
                 INDEX ( `job_id` )
 	                )"
 			) ) {
@@ -181,158 +192,7 @@ function icl_sitepress_activate() {
 			}
 		}
 
-		$table_name                   = $wpdb->prefix . 'icl_strings';
-		$found_table                  = (string) $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) );
-		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
-			if ( ! CreateTable::create(
-				$wpdb,
-				$wpdb->prefix . 'icl_strings',
-				"
-	                 CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}icl_strings` (
-	                  `id` bigint(20) unsigned NOT NULL auto_increment,
-	                  `language` varchar(7) NOT NULL,
-	                  `context` varchar(" . absint( WPML_STRING_TABLE_NAME_CONTEXT_LENGTH ) . ') NOT NULL,
-	                  `name` varchar(' . absint( WPML_STRING_TABLE_NAME_CONTEXT_LENGTH ) . ") NOT NULL,
-                  `value` longtext NOT NULL,
-                  `string_package_id` BIGINT unsigned NULL,
-                  `location` BIGINT unsigned NULL,
-                  `wrap_tag` VARCHAR( 16 ) NOT NULL,
-                  `type` VARCHAR(40) NOT NULL DEFAULT 'LINE',
-                  `title` TEXT NULL,
-                  `status` TINYINT NOT NULL,
-                  `gettext_context` TEXT NOT NULL,
-                  `domain_name_context_md5` VARCHAR(32) NOT NULL,
-                  `word_count` int unsigned NULL,
-                  `has_text` TINYINT(1) NOT NULL DEFAULT 1,
-                  PRIMARY KEY  (`id`),
-                  UNIQUE KEY `uc_domain_name_context_md5` (`domain_name_context_md5`),
-                  KEY `language_context` (`language`, `context`),
-                  KEY `icl_strings_name` (`name` ASC),
-                  KEY `context` ( `context` ),
-                  KEY `context_has_text` ( `context`, `has_text` ),
-                  KEY `string_package_id` ( `string_package_id` )
-	                  )"
-			) ) {
-				throw new Exception( $wpdb->last_error );
-			}
-		}
-
-		$table_name  = $wpdb->prefix . 'icl_string_translations';
-		$found_table = (string) $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) );
-		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
-			if ( ! CreateTable::create(
-				$wpdb,
-				$wpdb->prefix . 'icl_string_translations',
-				"
-	                 CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}icl_string_translations` (
-                  `id` bigint(20) unsigned NOT NULL auto_increment,
-                  `string_id` bigint(20) unsigned NOT NULL,
-                  `language` varchar(10) NOT NULL,
-                  `status` tinyint(4) NOT NULL,
-                  `value` longtext NULL DEFAULT NULL,
-                  `mo_string` longtext NULL DEFAULT NULL,
-                  `translator_id` bigint(20) unsigned DEFAULT NULL,
-                  `translation_service` varchar(16) DEFAULT '' NOT NULL,
-                  `batch_id` int DEFAULT 0 NOT NULL,
-                  `translation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                  PRIMARY KEY  (`id`),
-                  UNIQUE KEY `string_language` (`string_id`,`language`)
-	                )"
-			) ) {
-				throw new Exception( $wpdb->last_error );
-			}
-		}
-
-		$table_name  = $wpdb->prefix . 'icl_string_positions';
-		$found_table = (string) $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) );
-		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
-			if ( ! CreateTable::create(
-				$wpdb,
-				$wpdb->prefix . 'icl_string_positions',
-				"
-	                  CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}icl_string_positions` (
-                `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-                `string_id` BIGINT NOT NULL ,
-                `kind` TINYINT,
-                `position_in_page` VARCHAR( 255 ) NOT NULL,
-                INDEX ( `string_id` )
-	                )"
-			) ) {
-				throw new Exception( $wpdb->last_error );
-			}
-		}
-
-		$table_name  = $wpdb->prefix . 'icl_message_status';
-		$found_table = (string) $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) );
-		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
-			if ( ! CreateTable::create(
-				$wpdb,
-				$wpdb->prefix . 'icl_message_status',
-				"
-	                  CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}icl_message_status` (
-                      `id` bigint(20) unsigned NOT NULL auto_increment,
-                      `rid` bigint(20) unsigned NOT NULL,
-                      `object_id` bigint(20) unsigned NOT NULL,
-                      `from_language` varchar(10) NOT NULL,
-                      `to_language` varchar(10) NOT NULL,
-                      `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
-                      `md5` varchar(32) NOT NULL,
-                      `object_type` varchar(64) NOT NULL,
-                      `status` smallint(6) NOT NULL,
-                      PRIMARY KEY  (`id`),
-                      UNIQUE KEY `rid` (`rid`),
-                      KEY `object_id` (`object_id`)
-	                )"
-			) ) {
-				throw new Exception( $wpdb->last_error );
-			}
-		}
-
-		if ( ! CreateTable::create(
-				$wpdb,
-				$wpdb->prefix . 'icl_content_status',
-				"
-	            CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}icl_content_status` (
-            `rid` BIGINT NOT NULL ,
-            `nid` BIGINT NOT NULL ,
-            `timestamp` DATETIME NOT NULL ,
-            `md5` VARCHAR( 32 ) NOT NULL ,
-            PRIMARY KEY ( `rid` ) ,
-            INDEX ( `nid` )
-	            )"
-			) ) {
-			throw new Exception( $wpdb->last_error );
-		}
-
-		if ( ! CreateTable::create(
-				$wpdb,
-				$wpdb->prefix . 'icl_node',
-				"
-	            CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}icl_node` (
-            `nid` BIGINT NOT NULL ,
-            `md5` VARCHAR( 32 ) NOT NULL ,
-            `links_fixed` TINYINT NOT NULL DEFAULT 0,
-            PRIMARY KEY ( `nid` )
-	            )"
-			) ) {
-			throw new Exception( $wpdb->last_error );
-		}
-
-		if ( ! CreateTable::create(
-				$wpdb,
-				$wpdb->prefix . 'icl_reminders',
-				"
-	            CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}icl_reminders` (
-            `id` BIGINT NOT NULL ,
-            `message` TEXT NOT NULL ,
-            `url`  TEXT NOT NULL ,
-            `can_delete` TINYINT NOT NULL ,
-            `show` TINYINT NOT NULL ,
-            PRIMARY KEY ( `id` )
-	            )"
-			) ) {
-			throw new Exception( $wpdb->last_error );
-		}
+		StringTablesSchema::createMissing( $wpdb );
 
 		if ( ! Repository::createDatabaseTables() ) {
 			throw new Exception( 'Failed to create database tables for links translations.' );
@@ -346,6 +206,10 @@ function icl_sitepress_activate() {
 		// loads - never on a Blog licence - so activation creates it as well.
 		$icl_translation_downloads = CreateAteDownloadQueueTable::create_table_if_not_exists( $wpdb );
 		if ( ! $icl_translation_downloads ) {
+			throw new Exception( $wpdb->last_error );
+		}
+
+		if ( ! \WPML\TM\ATE\Handshake\Schema::createTables( $wpdb ) ) {
 			throw new Exception( $wpdb->last_error );
 		}
 
@@ -373,6 +237,10 @@ function icl_sitepress_activate() {
 			throw new Exception( $wpdb->last_error );
 		}
 
+		if ( ! CreateTermBatchMembersTable::create_table_if_not_exists( $wpdb ) ) {
+			throw new Exception( $wpdb->last_error );
+		}
+
 		$icl_media_url_lookup = CreateMediaUrlLookupTable::create_table_if_not_exists( $wpdb );
 		if ( ! $icl_media_url_lookup ) {
 			throw new Exception( $wpdb->last_error );
@@ -381,8 +249,18 @@ function icl_sitepress_activate() {
 		if ( false === CreateElementKnowledgeTable::create_table_if_not_exists( $wpdb ) ) {
 			throw new Exception( $wpdb->last_error );
 		}
+
+		if ( false === CreateAppearancesTable::create_table_if_not_exists( $wpdb ) ) {
+			error_log(
+				sprintf(
+					'WPML: could not create %s (%s). Activation continues; the appearance registry answers "unknown" until the table exists, and the upgrade will retry on the next request.',
+					$wpdb->prefix . AppearanceRepository::TABLE,
+					$wpdb->last_error
+				)
+			);
+		}
 	} catch ( Exception $e ) {
-		trigger_error( $e->getMessage(), E_USER_ERROR );
+		trigger_error( esc_html( icl_sitepress_activation_error_message( $e ) ), E_USER_ERROR );
 		exit;
 	}
 
@@ -408,6 +286,20 @@ function icl_sitepress_activate() {
 	repair_el_type_collate();
 
 	do_action( 'wpml_activated' );
+}
+
+function icl_sitepress_activation_error_message( Exception $e ) {
+	$refusal = CreateTable::lastRefusal();
+	if ( null === $refusal ) {
+		return $e->getMessage();
+	}
+
+	return sprintf(
+		/* translators: %1$s: the full database table name, %2$s: the error the database answered, verbatim. */
+		__( 'WPML could not create the database table %1$s. The database answered: %2$s', 'sitepress' ),
+		$refusal['table'],
+		$refusal['error']
+	);
 }
 
 function wpml_maybe_activate_network_site( array $sitewide_plugins ) {
@@ -474,13 +366,17 @@ function icl_enable_capabilities() {
 		}
 	}
 
-	foreach ( $user_admins as $user ) {
-		if ( $user->exists() ) {
-			for ( $i = 0, $caps_limit = count( $icl_capabilities ); $i < $caps_limit; $i ++ ) {
-				$user->add_cap( $icl_capabilities[ $i ] );
+	\WPML\TranslationRoles\Service\SyncBatch::run(
+		function () use ( $user_admins, $icl_capabilities ) {
+			foreach ( $user_admins as $user ) {
+				if ( $user->exists() ) {
+					for ( $i = 0, $caps_limit = count( $icl_capabilities ); $i < $caps_limit; $i ++ ) {
+						( new WP_User( $user->ID ) )->add_cap( $icl_capabilities[ $i ] );
+					}
+				}
 			}
 		}
-	}
+	);
 
 	$iclsettings['icl_capabilities_verified'] = true;
 	update_option( 'icl_sitepress_settings', $iclsettings );
@@ -489,7 +385,7 @@ function icl_enable_capabilities() {
 function wpml_enable_capabilities() {
 	global $sitepress_settings;
 
-	if ( ! did_action( 'muplugins_loaded' ) ) {
+	if ( ! did_action( 'plugins_loaded' ) ) {
 		add_action( 'plugins_loaded', 'wpml_enable_capabilities' );
 	} else {
 		if ( ! function_exists( 'get_user_by' ) ) {

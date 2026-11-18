@@ -2,7 +2,7 @@
 
 namespace WPML\Compatibility\Divi\V5;
 
-class GlobalLayout implements \IWPML_Frontend_Action {
+class GlobalLayout implements \IWPML_Backend_Action, \IWPML_Frontend_Action {
 
 	const LAYOUT_POST_TYPE = 'et_pb_layout';
 
@@ -21,11 +21,36 @@ class GlobalLayout implements \IWPML_Frontend_Action {
 		return preg_replace_callback(
 			'/"globalModule":"(\d+)"/',
 			function ( $matches ) {
-				$convertedId = apply_filters( 'wpml_object_id', (int) $matches[1], self::LAYOUT_POST_TYPE, true );
-
-				return '"globalModule":"' . (int) $convertedId . '"';
+				return '"globalModule":"' . self::getPublishedTranslationId( (int) $matches[1] ) . '"';
 			},
 			$content
 		);
+	}
+
+	public static function getPublishedTranslationId( int $moduleId, ?string $language = null ): int {
+		$convertedId = self::getTranslationId( $moduleId, $language );
+
+		if ( $convertedId !== $moduleId && 'publish' !== get_post_status( $convertedId ) ) {
+			return $moduleId;
+		}
+
+		return $convertedId;
+	}
+
+	public static function getTranslationId( int $moduleId, ?string $language = null ): int {
+		if ( post_type_exists( self::LAYOUT_POST_TYPE ) ) {
+			return (int) apply_filters( 'wpml_object_id', $moduleId, self::LAYOUT_POST_TYPE, true, $language );
+		}
+
+		$language = $language ?: apply_filters( 'wpml_current_language', null );
+		if ( ! apply_filters( 'wpml_is_translated_post_type', false, self::LAYOUT_POST_TYPE ) ) {
+			return $moduleId;
+		}
+
+		$elementType  = 'post_' . self::LAYOUT_POST_TYPE;
+		$trid         = apply_filters( 'wpml_element_trid', null, $moduleId, $elementType );
+		$translations = $trid ? (array) apply_filters( 'wpml_get_element_translations', null, $trid, $elementType ) : [];
+
+		return isset( $translations[ $language ]->element_id ) ? (int) $translations[ $language ]->element_id : $moduleId;
 	}
 }

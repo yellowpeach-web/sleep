@@ -2,13 +2,16 @@
 
 namespace WPML\TM\Editor;
 
+use WPML\Core\Component\Post\Application\LanguagePanel\SiteEditorEntityTypes;
+use WPML\Element\API\Languages;
 use WPML\FP\Obj;
 use WPML\LIB\WP\User;
 use WPML\TM\API\Jobs;
 use WPML\TM\ATE\API\ErrorMessages;
-use WPML\TM\ATE\AutoTranslate\Eligibility;
 use WPML\TM\ATE\ClonedSites\ApiCommunication;
 use WPML\TM\ATE\JobCreation\AteCreateReconciler;
+use WPML\TM\Editor\Dispatch\DispatchPlan;
+use WPML\TM\Editor\Dispatch\DispatchPlanFactory;
 use WPML\TranslationRoles\SelfTranslator;
 use function WPML\Container\make;
 
@@ -26,14 +29,14 @@ class TranslationActionResolver {
 
 	private $editor;
 
-	private $eligibility;
-
 	private $selfTranslator;
 
-	public function __construct( Editor $editor, Eligibility $eligibility, SelfTranslator $selfTranslator ) {
+	private $plan;
+
+	public function __construct( Editor $editor, SelfTranslator $selfTranslator, ?DispatchPlan $plan = null ) {
 		$this->editor         = $editor;
-		$this->eligibility    = $eligibility;
 		$this->selfTranslator = $selfTranslator;
+		$this->plan           = $plan ?: DispatchPlanFactory::create();
 	}
 
 	public function resolve( array $intent ) {
@@ -61,17 +64,29 @@ class TranslationActionResolver {
 		$sourceLanguage = $this->getSourceLanguage( $postId );
 
 		if ( $targetLanguage === $sourceLanguage ) {
-			return $this->openOriginal( $postId );
+			return $this->openOriginal( $postId, $sourceLanguage, $intent );
 		}
 
-		list( $jobSourcePostId, $jobSourceLanguage ) = $this->getRecordedSource( $trid, $targetLanguage, $postId, $sourceLanguage );
+		$listedSource = self::VERB_TRANSLATE === $verb
+			? $this->getListedSource( $trid, $targetLanguage, Obj::prop( 'sourceLanguage', $intent ), $sourceLanguage )
+			: null;
+
+		list( $jobSourcePostId, $jobSourceLanguage ) = $listedSource ?: $this->getRecordedSource( $trid, $targetLanguage, $postId, $sourceLanguage );
 
 		if ( ! $this->canTranslatePair( $jobSourceLanguage, $targetLanguage, $jobSourcePostId ) ) {
 			return $this->blocked( 'not-allowed', __( 'You are not allowed to translate this language pair.', 'sitepress' ) );
 		}
 
-		if ( self::VERB_TRANSLATE === $verb && $this->eligibility->shouldAutoTranslate( $trid, $postId, $targetLanguage ) ) {
-			return $this->translateAutomatically( $trid, $postId, $targetLanguage, Obj::prop( 'currentUrl', $intent ) );
+		$refusal = $this->plan->refusesClick( $trid, $postId, $targetLanguage, $verb );
+		if ( null !== $refusal ) {
+			return $this->blocked( $refusal, $this->refusalMessage( $refusal, $postId, $targetLanguage ) );
+		}
+
+		if ( self::VERB_TRANSLATE === $verb && $this->plan->translatesAutomatically( $trid, $postId, $targetLanguage ) ) {
+			$answer = $this->translateAutomatically( $trid, $postId, $targetLanguage, Obj::prop( 'currentUrl', $intent ) );
+			if ( null !== $answer ) {
+				return $answer;
+			}
 		}
 
 		return $this->mapEditorResponse(
@@ -80,10 +95,14 @@ class TranslationActionResolver {
 		);
 	}
 
-	private function openOriginal( $postId ) {
+	private function openOriginal( $postId, $language, array $intent ) {
 		$url = get_edit_post_link( $postId, 'raw' );
 		if ( ! $url ) {
 			return $this->blocked( 'cannot-edit-original', __( 'You are not allowed to edit this post.', 'sitepress' ) );
+		}
+
+		if ( SiteEditorEntityTypes::SCREEN === Obj::prop( 'screen', $intent ) && $this->isPageInTheWordPressEditor( $postId ) ) {
+			$url = admin_url( SiteEditorEntityTypes::pageEditorPath( (int) $postId, (string) $language ) );
 		}
 
 		return [
@@ -93,13 +112,32 @@ class TranslationActionResolver {
 		];
 	}
 
+	private function isPageInTheWordPressEditor( $postId ) {
+		$post = get_post( (int) $postId );
+
+		return $post
+		       && SiteEditorEntityTypes::PAGE === $post->post_type
+		       && (bool) \WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( (int) $postId );
+	}
+
 	private function canTranslatePair( $langFrom, $langTo, $postId ) {
-		$allowed = (bool) apply_filters( 'wpml_is_translator', false, User::getCurrentId(), [
+		$userId = User::getCurrentId();
+		$args   = [
 			'lang_from'      => $langFrom,
 			'lang_to'        => $langTo,
 			'admin_override' => User::isAdministrator(),
 			'post_id'        => $postId,
-		] );
+		];
+
+		$default = false;
+		if ( \WPML\Plugins::isTMLoadedForRequest() && function_exists( 'wpml_tm_load_blog_translators' ) ) {
+			$translators = wpml_tm_load_blog_translators();
+			if ( $translators instanceof \WPML_TM_Blog_Translators ) {
+				$default = (bool) $translators->is_translator( $userId, $args );
+			}
+		}
+
+		$allowed = (bool) apply_filters( 'wpml_is_translator', $default, $userId, $args );
 
 		if ( ! $allowed ) {
 			$allowed = $this->selfTranslator->can_translate_pair( $langFrom, $langTo );
@@ -111,22 +149,21 @@ class TranslationActionResolver {
 	private function translateAutomatically( $trid, $postId, $targetLanguage, $currentUrl ) {
 		global $wpml_translation_job_factory;
 
-		$lock = ( new OpenLock() )->acquire( [ 'trid' => $trid, 'language_code' => $targetLanguage ] );
+		$openLock   = new OpenLock();
+		$lock       = $openLock->acquire( [ 'trid' => $trid, 'language_code' => $targetLanguage ] );
+		$waitingJob = null;
 
 		try {
+			$openLock->readLive();
+
 			$existing = Jobs::getTridJob( $trid, $targetLanguage );
 
 			if ( $existing && ! (int) Obj::propOr( 0, 'translated', $existing ) ) {
 				$existingJobId = (int) Obj::prop( 'job_id', $existing );
 
 				if ( (int) Obj::propOr( 0, 'automatic', $existing ) ) {
-					return [
-						'action' => self::ACTION_AUTO_TRANSLATE,
-						'jobId'  => $existingJobId,
-					];
-				}
-
-				if ( $existingJobId && ! (int) Obj::propOr( 0, 'editor_job_id', $existing ) ) {
+					$waitingJob = $existing;
+				} elseif ( $existingJobId && ! (int) Obj::propOr( 0, 'editor_job_id', $existing ) ) {
 					$answer = $this->resolveLeftBehindJob( $existingJobId, $currentUrl, $existing, $postId );
 					if ( null !== $answer ) {
 						return $answer;
@@ -134,11 +171,29 @@ class TranslationActionResolver {
 				}
 			}
 
-			$jobId = $wpml_translation_job_factory->create_local_post_job( $postId, $targetLanguage );
+			if ( ! $waitingJob ) {
+				$refusal = $this->plan->refusesNewAutomaticJob();
+				if ( null !== $refusal ) {
+					return $this->blocked( $refusal, $this->refusalMessage( $refusal, $postId, $targetLanguage ) );
+				}
+
+				$jobId = $wpml_translation_job_factory->create_local_post_job( $postId, $targetLanguage );
+			}
 		} finally {
 			if ( $lock ) {
 				$lock->release();
 			}
+		}
+
+		if ( $waitingJob ) {
+			if ( $this->plan->pullsDelivery( (int) Obj::propOr( 0, 'editor_job_id', $waitingJob ) ) ) {
+				return null;
+			}
+
+			return [
+				'action' => self::ACTION_AUTO_TRANSLATE,
+				'jobId'  => (int) Obj::prop( 'job_id', $waitingJob ),
+			];
 		}
 
 		$job = Jobs::get( (int) $jobId );
@@ -254,6 +309,15 @@ class TranslationActionResolver {
 			$params['return_url'] = $currentUrl;
 		}
 
+		if ( SiteEditorEntityTypes::SCREEN === Obj::prop( 'screen', $intent ) ) {
+			$params['screen'] = SiteEditorEntityTypes::SCREEN;
+		}
+
+		$renderedAt = (int) filter_var( Obj::prop( 'renderedAt', $intent ), FILTER_SANITIZE_NUMBER_INT );
+		if ( $renderedAt > 0 ) {
+			$params[ \WPML_Post_Status_Display::RENDERED_AT_PARAM ] = $renderedAt;
+		}
+
 		return $params;
 	}
 
@@ -293,10 +357,75 @@ class TranslationActionResolver {
 		return $sourceId ? [ $sourceId, (string) $recorded ] : [ $originalId, $originalLanguage ];
 	}
 
+	private function getListedSource( $trid, $targetLanguage, $listedLanguage, $originalLanguage ) {
+		if (
+			! is_string( $listedLanguage )
+			|| '' === $listedLanguage
+			|| $listedLanguage === $targetLanguage
+			|| $listedLanguage === $originalLanguage
+		) {
+			return null;
+		}
+
+		global $sitepress;
+
+		$translations = $sitepress->post_translations();
+		if ( $translations->get_element_id( $targetLanguage, $trid ) ) {
+			return null;
+		}
+
+		$listedId = (int) $translations->get_element_id( $listedLanguage, $trid );
+
+		return $listedId ? [ $listedId, $listedLanguage ] : null;
+	}
+
 	private function getSourceLanguage( $postId ) {
 		global $sitepress;
 
 		return $sitepress->post_translations()->get_element_lang_code( $postId );
+	}
+
+	private function refusalMessage( $reason, $postId, $targetLanguage ) {
+		if ( DispatchPlan::REFUSAL_IN_TRASH === $reason ) {
+			return sprintf(
+				/* translators: Shown next to a translation icon when the original is in the Trash. %s: the post type's name in the singular, lower-cased (post, page, product). */
+				__( 'This %s is in the Trash. Restore it to translate it.', 'sitepress' ),
+				$this->postTypeLabel( $postId )
+			);
+		}
+
+		if ( DispatchPlan::REFUSAL_LANGUAGE_PAUSED === $reason ) {
+			return sprintf(
+				/* translators: Shown next to a translation icon when translation into the language is paused. %s: the language name. */
+				__( 'Translation into %s is paused.', 'sitepress' ),
+				$this->languageName( $targetLanguage )
+			);
+		}
+
+		if ( DispatchPlan::REFUSAL_NO_WORDS !== $reason ) {
+			/* translators: Shown next to the "+" icon of a translation when WPML cannot translate it automatically now. */
+			return __( 'WPML cannot translate this automatically now.', 'sitepress' );
+		}
+
+		if ( User::canManageTranslations() ) {
+			/* translators: Shown next to the "+" icon of a translation when WPML cannot translate it automatically because the site's automatic translation account has no words left. */
+			return __( 'Your automatic translation account has no words left. Get more words to translate this automatically.', 'sitepress' );
+		}
+
+		/* translators: Shown next to the "+" icon of a translation to a user who cannot buy words, when WPML cannot translate it automatically because the site's automatic translation account has no words left. */
+		return __( 'The automatic translation account of this site has no words left. Ask an administrator to get more words.', 'sitepress' );
+	}
+
+	private function postTypeLabel( $postId ) {
+		$postType = get_post_type_object( (string) get_post_type( $postId ) );
+		$label    = $postType ? (string) Obj::pathOr( '', [ 'labels', 'singular_name' ], $postType ) : '';
+
+		/* translators: The name of a content type inside a sentence, as in "This post has 3 translations" in the dialog shown before content is deleted, and the fallback name of a post type that has no name. Singular, in lower case. */
+		return '' !== $label ? strtolower( $label ) : __( 'post', 'sitepress' );
+	}
+
+	private function languageName( $languageCode ) {
+		return (string) Obj::propOr( $languageCode, 'display_name', Languages::getLanguageDetails( $languageCode ) );
 	}
 
 	private function blocked( $reason, $message ) {

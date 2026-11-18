@@ -17,8 +17,8 @@ class OptionsPage implements ContentType {
 
 	public function getObjectSlug( $internalPostId ) {
 		$internalPostContent = get_post_field( 'post_content', $internalPostId, 'raw' );
-		$objectSettings      = maybe_unserialize( $internalPostContent );
-		return Obj::propOr( null, 'menu_slug', $objectSettings );
+		$objectSettings = \WPML\Utils\Unserialize::maybe( $internalPostContent );
+		return is_array( $objectSettings ) ? Obj::propOr( null, 'menu_slug', $objectSettings ) : null;
 	}
 
 	public function getLabelTranslationsPackageSlug() {

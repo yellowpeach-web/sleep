@@ -12,6 +12,8 @@ final class MappingKind {
 
 	const HEAD = 'head';
 
+	const SELF = 'self';
+
 	public static function of( $sourceCode, $targetCode ) {
 		$source = trim( (string) $sourceCode );
 		$target = trim( (string) $targetCode );
@@ -26,9 +28,20 @@ final class MappingKind {
 
 		$sourceHead = LanguageDerivation::baseIdentifier( $identity['language'], $identity['script'] );
 
-		$targetHead = LanguageCodeResolution::head( str_replace( '_', '-', strtolower( $target ) ) );
+		$targetKey  = str_replace( '_', '-', strtolower( $target ) );
+		$targetHead = LanguageCodeResolution::head( $targetKey );
 
-		return strtolower( $sourceHead ) === strtolower( $targetHead ) ? self::VARIANT : self::CROSS;
+		if ( strtolower( $sourceHead ) !== strtolower( $targetHead ) ) {
+			return self::CROSS;
+		}
+
+		return self::isSelfTarget( $source, $targetKey, $targetHead ) ? self::SELF : self::VARIANT;
+	}
+
+	private static function isSelfTarget( $source, $targetKey, $targetHead ) {
+		return strtolower( $source ) === $targetKey
+			&& $targetKey === strtolower( $targetHead )
+			&& null === LanguageCodeResolution::country( $source );
 	}
 
 	private static function isRegisteredHead( $source, $target ) {

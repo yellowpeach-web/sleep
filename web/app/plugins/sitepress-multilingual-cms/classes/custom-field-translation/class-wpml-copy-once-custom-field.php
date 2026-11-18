@@ -38,8 +38,13 @@ class WPML_Copy_Once_Custom_Field implements IWPML_Backend_Action, IWPML_Fronten
 		}
 
 		$custom_fields = get_post_meta( $post_id );
+		$custom_fields = is_array( $custom_fields ) ? $custom_fields : [];
+		$copied_once = \WPML\CustomFieldTranslation\CopyOnceRecord::copiedFrom( $custom_fields );
 
 		foreach ( $custom_fields_to_copy as $meta_key ) {
+			if ( in_array( (string) $meta_key, $copied_once, true ) ) {
+				continue;
+			}
 			if ( ! isset( $source_meta[ $meta_key ] ) ) {
 				continue;
 			}
@@ -61,6 +66,7 @@ class WPML_Copy_Once_Custom_Field implements IWPML_Backend_Action, IWPML_Fronten
 
 			if ( empty( $values ) ) {
 				$this->sitepress->sync_custom_field( $source_element_id, $post_id, $meta_key );
+				\WPML\CustomFieldTranslation\CopyOnceRecord::record( $post_id, $meta_key );
 			}
 		}
 	}

@@ -36,6 +36,10 @@ class WPML_Autoregister_Save_Strings {
 	public function get_source_lang( $name, $domain ) {
 		$domain_lang = $this->lang_of_domain->get_language( $domain );
 
+		if ( ! $domain_lang && $this->is_site_content_domain( $domain ) ) {
+			$domain_lang = (string) $this->sitepress->get_default_language();
+		}
+
 		if ( ! $domain_lang ) {
 			$flag = 0 === strpos( $domain, 'admin_texts_' )
 					|| WPML_ST_Blog_Name_And_Description_Hooks::is_string( $name );
@@ -46,6 +50,12 @@ class WPML_Autoregister_Save_Strings {
 		}
 
 		return $domain_lang;
+	}
+
+	private function is_site_content_domain( $domain ) {
+		$widgets_domain = defined( 'WPML_ST_WIDGET_STRING_DOMAIN' ) ? WPML_ST_WIDGET_STRING_DOMAIN : 'Widgets';
+
+		return $widgets_domain === $domain;
 	}
 
 	private function get_english_source_lang() {

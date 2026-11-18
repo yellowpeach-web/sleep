@@ -47,7 +47,7 @@
             "الاستلام والترجمة"
          ],
          "This job was created by Translate Everything and cannot be cancelled on its own. To stop it, turn off Translate Everything from the Translation Dashboard.": [
-            "تم إنشاء هذه الوظيفة بواسطة ميزة ترجم كل شيء ولا يمكن إلغاؤها بشكل مستقل. لإيقافها، قم بإيقاف تشغيل ترجم كل شيء من لوحة إدارة الترجمة."
+            "تم إنشاء مهمة الترجمة هذه بواسطة ترجم كل شيء ولا يمكن إلغاؤها بشكل مستقل. لإيقافها، قم بإيقاف تشغيل ترجم كل شيء من لوحة إدارة الترجمة."
          ],
          "View": [
             "عرض"
@@ -77,10 +77,10 @@
             "طبِّق"
          ],
          "Actions applied to multiple translation jobs can take a few seconds. Please do not leave the page.": [
-            "قد تستغرق الإجراءات المطبقة على وظائف ترجمة متعددة بضع ثوانٍ. يرجى عدم مغادرة الصفحة."
+            "قد تستغرق الإجراءات المطبقة على عدة مهام ترجمة بضع ثوانٍ. يُرجى عدم مغادرة الصفحة."
          ],
          "Actions applied to multiple translation jobs can take a few minutes. Please do not leave the page.": [
-            "قد تستغرق الإجراءات المطبقة على وظائف ترجمة متعددة بضع دقائق. يرجى عدم مغادرة الصفحة."
+            "قد تستغرق الإجراءات المطبقة على عدة مهام ترجمة بضع دقائق. يُرجى عدم مغادرة الصفحة."
          ],
          "Select translator": [
             "اختر المترجم"
@@ -91,65 +91,122 @@
          "Cancelled": [
             "ملغاة"
          ],
-         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
-            "فشلت الترجمة التلقائية بشكل متكرر وتوقف WPML عن المحاولة. أعد إرسال الوظيفة أو تجاهلها من لوحة إدارة الترجمة، أو قم بإلغائها من هنا."
+         "Published — Pending review": [
+            "منشور — في انتظار المراجعة"
          ],
          "Needs translation": [
             "بحاجة إلى ترجمة"
          ],
-         "Needs update": [
-            "بحاجة إلى تحديث"
-         ],
-         "Translation ready to download": [
-            "الترجمة جاهزة للتنزيل"
-         ],
-         "Completed": [
-            "مكتمل"
-         ],
-         "Failed - needs attention": [
-            "فشل - يحتاج إلى اهتمام"
-         ],
-         "%s terms are published immediately because they don't support draft mode.": [
-            "يتم نشر %s من المصطلحات فورًا لأنها لا تدعم وضع المسودة."
-         ],
-         "%s are immediately published because they don't support draft mode.": [
-            "يتم نشر %s فورًا لأنها لا تدعم وضع المسودة."
-         ],
-         "Published — Pending review": [
-            "منشور — في انتظار المراجعة"
-         ],
-         "Draft — Pending review": [
-            "مسودة — في انتظار المراجعة"
-         ],
          "Review in progress": [
             "المراجعة قيد التنفيذ"
-         ],
-         "Published — Review in progress": [
-            "منشور — المراجعة قيد التنفيذ"
-         ],
-         "Draft — Review in progress": [
-            "مسودة — المراجعة قيد التنفيذ"
          ],
          "Waiting for your Pay-As-You-Go payment": [
             "في انتظار دفع رسوم الدفع حسب الاستخدام"
          ],
+         "Translation ready to download": [
+            "الترجمة جاهزة للتنزيل"
+         ],
          "Waiting for payment": [
             "في انتظار الدفع"
+         ],
+         "Waiting for words": [
+            "في انتظار الكلمات"
+         ],
+         "Completed": [
+            "مكتمل"
          ],
          "Insufficient funds": [
             "رصيد غير كافٍ"
          ],
-         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
-            "توقفت الترجمة التلقائية مؤقتًا بسبب خطأ مؤقت وستتم إعادة المحاولة تلقائيًا — لا يلزم اتخاذ أي إجراء. إذا لم تتغير الحالة خلال 30 دقيقة تقريبًا، فاتصل بدعم WPML."
+         "Sending": [
+            "جارٍ الإرسال"
+         ],
+         "Automatic translation is off, so this job is not retried. Resend it, or switch Translate Everything on.": [
+            "الترجمة التلقائية معطلة، لذا لن تتم إعادة محاولة هذه المهمة. أعِد إرسالها، أو فعّل ”ترجم كل شيء“."
+         ],
+         "Waiting for you": [
+            "في انتظارك"
+         ],
+         "Failed - needs attention": [
+            "فشل - يحتاج إلى اهتمام"
+         ],
+         "You can also resend the content or open the job in the Translation Queue.": [
+            "يمكنك أيضًا إعادة إرسال المحتوى أو فتح المهمة في قائمة انتظار الترجمة."
+         ],
+         "If it keeps failing for about a day, the job is marked as needing your attention.": [
+            "إذا استمر الفشل لنحو يوم تقريبًا، فستُميز المهمة بأنها تحتاج إلى انتباهك."
          ],
          "In progress": [
             "قيد التنفيذ"
          ],
-         "View original": [
-            "عرض الأصل"
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "فشلت الترجمة التلقائية بشكل متكرر وتوقف WPML عن المحاولة. أعد إرسال مهمة الترجمة أو تجاهلها من لوحة إدارة الترجمة، أو قم بإلغائها من هنا."
+         ],
+         "Needs update": [
+            "بحاجة إلى تحديث"
+         ],
+         "Scheduled — Pending review": [
+            "مجدول — في انتظار المراجعة"
+         ],
+         "Private — Pending review": [
+            "خاص — في انتظار المراجعة"
+         ],
+         "Draft — Pending review": [
+            "مسودة — في انتظار المراجعة"
+         ],
+         "Published — Review in progress": [
+            "منشور — المراجعة قيد التنفيذ"
+         ],
+         "Scheduled — Review in progress": [
+            "مجدول — المراجعة قيد التنفيذ"
+         ],
+         "Private — Review in progress": [
+            "خاص — المراجعة قيد التنفيذ"
+         ],
+         "Draft — Review in progress": [
+            "مسودة — المراجعة قيد التنفيذ"
+         ],
+         "WPML could not reach our translation system.": [
+            "تعذر على WPML الوصول إلى نظام الترجمة لدينا."
+         ],
+         "Our translation system did not accept this job.": [
+            "لم يقبل نظام الترجمة لدينا هذه المهمة."
+         ],
+         "WPML could not calculate the word count for this job.": [
+            "تعذر على WPML حساب عدد الكلمات لهذه المهمة."
+         ],
+         "WPML could not read the price of automatic translation for this job.": [
+            "تعذر على WPML قراءة سعر الترجمة التلقائية لهذه المهمة."
+         ],
+         "WPML could not prepare this job for automatic translation.": [
+            "تعذر على WPML إعداد هذه المهمة للترجمة التلقائية."
+         ],
+         "Sending this job to automatic translation failed.": [
+            "فشل إرسال هذه المهمة إلى الترجمة التلقائية."
+         ],
+         "WPML tries again within a minute.": [
+            "سيعيد WPML المحاولة خلال دقيقة واحدة."
+         ],
+         "WPML tries again in about %d minutes.": [
+            "سيعيد WPML المحاولة خلال %d دقائق تقريبًا."
+         ],
+         "WPML tries again in about %d hours.": [
+            "سيعيد WPML المحاولة خلال %d ساعات تقريبًا."
+         ],
+         "%s terms are published immediately because they don't support draft mode.": [
+            "يتم نشر مصطلحات %s فورًا لأنها لا تدعم وضع المسودة."
+         ],
+         "%s are immediately published because they don't support draft mode.": [
+            "يتم نشر %s فورًا لأنها لا تدعم وضع المسودة."
          ],
          "(no title)": [
             "(بدون عنوان)"
+         ],
+         "%1$s (ID %2$d)": [
+            "%1$s (المعرف %2$d)"
+         ],
+         "View original": [
+            "عرض الأصل"
          ],
          "Automatic translation": [
             "ترجمة تلقائية"
@@ -305,7 +362,7 @@
             "الحصول على الترجمات"
          ],
          "This action does not apply to any of the selected translation jobs": [
-            "هذا الإجراء لا ينطبق على أي من وظائف الترجمة المحددة"
+            "لا ينطبق هذا الإجراء على أي من مهام الترجمة المحددة"
          ],
          "%d translation is still in progress. You will not be charged for it.": [
             "لا تزال هناك %d ترجمة قيد التنفيذ. لن يتم محاسبتك عليها.",
@@ -411,7 +468,7 @@
             "تمت الموافقة على مراجعات الترجمات بنجاح!"
          ],
          "The translator has been assigned to the job": [
-            "تم تعيين المترجم للوظيفة"
+            "تم تعيين المترجم لمهمة الترجمة"
          ],
          "The translator could not be assigned to the job": [
             "تعذر تعيين المترجم للوظيفة"
@@ -420,10 +477,10 @@
             "تم إلغاء الوظائف"
          ],
          "The job has been cancelled": [
-            "تم إلغاء الوظيفة"
+            "تم إلغاء مهمة الترجمة"
          ],
          "The jobs could not be cancelled": [
-            "تعذر إلغاء الوظائف"
+            "تعذر إلغاء مهام الترجمة"
          ],
          "The job could not be cancelled": [
             "تعذر إلغاء الوظيفة"
@@ -492,7 +549,7 @@
             "جاري تحميل قائمة انتظار الترجمات"
          ],
          "Loading translation jobs": [
-            "جاري تحميل وظائف الترجمة"
+            "جارٍ تحميل مهام الترجمة"
          ],
          "Jobs could not be loaded": [
             "تعذر تحميل الوظائف"
@@ -507,7 +564,7 @@
             "حدد بعض الوظائف للاستقالة منها"
          ],
          "We could not resign jobs: %s": [
-            "تعذر علينا الاستقالة من الوظائف: %s"
+            "تعذر علينا التخلي عن مهام الترجمة: %s"
          ],
          "Resigned from jobs": [
             "تمت الاستقالة من الوظائف"
@@ -517,9 +574,6 @@
          ],
          "Failed to resign from jobs": [
             "فشلت الاستقالة من الوظائف"
-         ],
-         "The Advanced Editor jobs synchronization has failed": [
-            "فشلت مزامنة وظائف المحرر المتقدم"
          ],
          "Synchronization with the Professional Translation service has failed": [
             "فشلت المزامنة مع خدمة الترجمة الاحترافية"
@@ -533,8 +587,60 @@
          "Batch sync couldn't be finished": [
             "تعذر إنهاء مزامنة الدفعة"
          ],
+         "More details": [
+            "مزيد من التفاصيل"
+         ],
+         "%s job was left out of the export.": [
+            "تم استبعاد %s مهمة من التصدير.",
+            "تم استبعاد %s مهمة واحدة من التصدير.",
+            "تم استبعاد %s مهمتين من التصدير.",
+            "تم استبعاد %s مهمات من التصدير.",
+            "تم استبعاد %s مهمة من التصدير.",
+            "تم استبعاد %s مهمة من التصدير."
+         ],
+         "%s job could not be exported. No file was downloaded.": [
+            "تعذر تصدير %s مهمة. لم يتم تنزيل أي ملف.",
+            "تعذر تصدير %s مهمة واحدة. لم يتم تنزيل أي ملف.",
+            "تعذر تصدير %s مهمتين. لم يتم تنزيل أي ملف.",
+            "تعذر تصدير %s مهمات. لم يتم تنزيل أي ملف.",
+            "تعذر تصدير %s مهمة. لم يتم تنزيل أي ملف.",
+            "تعذر تصدير %s مهمة. لم يتم تنزيل أي ملف."
+         ],
+         "This job was saved while this server had the PHP zlib extension, so its text is stored compressed. PHP on this server has no zlib now, so WPML cannot read it. Ask your hosting provider to enable the PHP zlib extension, then export it again.": [
+            "تم حفظ هذه المهام أثناء تفعيل إضافة PHP zlib على هذا الخادم، لذا تم تخزين نصوصها مضغوطة. لا يحتوي PHP على هذا الخادم على zlib حاليًا، لذا يتعذر على WPML قراءتها. اطلب من موفر الاستضافة تمكين إضافة PHP zlib، ثم أعِد تصديرها مجددًا.",
+            "تم حفظ هذه المهمة أثناء تفعيل إضافة PHP zlib على هذا الخادم، لذا تم تخزين نصها مضغوطًا. لا يحتوي PHP على هذا الخادم على zlib حاليًا، لذا يتعذر على WPML قراءتها. اطلب من موفر الاستضافة تمكين إضافة PHP zlib، ثم أعِد تصديرها مجددًا.",
+            "تم حفظ هاتين المهمتين أثناء تفعيل إضافة PHP zlib على هذا الخادم، لذا تم تخزين نصوصهما مضغوطة. لا يحتوي PHP على هذا الخادم على zlib حاليًا، لذا يتعذر على WPML قراءتهما. اطلب من موفر الاستضافة تمكين إضافة PHP zlib، ثم أعِد تصديرهما مجددًا.",
+            "تم حفظ هذه المهام أثناء تفعيل إضافة PHP zlib على هذا الخادم، لذا تم تخزين نصوصها مضغوطة. لا يحتوي PHP على هذا الخادم على zlib حاليًا، لذا يتعذر على WPML قراءتها. اطلب من موفر الاستضافة تمكين إضافة PHP zlib، ثم أعِد تصديرها مجددًا.",
+            "تم حفظ هذه المهام أثناء تفعيل إضافة PHP zlib على هذا الخادم، لذا تم تخزين نصوصها مضغوطة. لا يحتوي PHP على هذا الخادم على zlib حاليًا، لذا يتعذر على WPML قراءتها. اطلب من موفر الاستضافة تمكين إضافة PHP zlib، ثم أعِد تصديرها مجددًا.",
+            "تم حفظ هذه المهام أثناء تفعيل إضافة PHP zlib على هذا الخادم، لذا تم تخزين نصوصها مضغوطة. لا يحتوي PHP على هذا الخادم على zlib حاليًا، لذا يتعذر على WPML قراءتها. اطلب من موفر الاستضافة تمكين إضافة PHP zlib، ثم أعِد تصديرها مجددًا."
+         ],
+         "This job could not be exported.": [
+            "تعذر تصدير هذه المهام.",
+            "تعذر تصدير هذه المهمة.",
+            "تعذر تصدير هاتين المهمتين.",
+            "تعذر تصدير هذه المهام.",
+            "تعذر تصدير هذه المهام.",
+            "تعذر تصدير هذه المهام."
+         ],
+         "%1$s (job %2$s)": [
+            "%1$s (المهمة %2$s)"
+         ],
+         "Job %s": [
+            "المهمة %s"
+         ],
+         "and %s more job": [
+            "و%s مهام أخرى",
+            "و%s مهمة أخرى",
+            "و%s مهمتين أخرتين",
+            "و%s مهمات أخرى",
+            "و%s مهمة أخرى",
+            "و%s مهمة أخرى"
+         ],
          "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
             "لم يقبل نظام الترجمة لدينا هذا الطلب (كان الرد %d). انتظر دقيقة ثم حاول مرة أخرى، واتصل بدعم WPML إذا استمر حدوث ذلك."
+         ],
+         "The site stopped answering before this translation was confirmed. If it was not saved, the next download takes it again.": [
+            "توقف الموقع عن الاستجابة قبل تأكيد هذه الترجمة. إذا لم يتم حفظها، فسيسترجعها التنزيل التالي مرة أخرى."
          ]
       }
    }

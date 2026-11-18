@@ -4,7 +4,7 @@ use WPML\PB\TranslationJob\SourceLabels;
 
 abstract class WPML_Page_Builders_Register_Strings {
 
-	private $translatable_nodes;
+	protected $translatable_nodes;
 
 	protected $data_settings;
 
@@ -47,29 +47,38 @@ abstract class WPML_Page_Builders_Register_Strings {
 		$this->group_index     = 0;
 
 		if ( $this->data_settings->is_handling_post( $post->ID ) ) {
+			do_action( 'wpml_pb_before_registering_strings', $post, $package );
 
-			if ( $this->reuse_translations ) {
-				$existing_strings = $this->reuse_translations->get_strings( $post->ID );
-				$this->reuse_translations->set_original_strings( $existing_strings );
-			}
-
-			$converted = $this->get_data_to_register( $post );
-
-			if ( is_array( $converted ) ) {
-				do_action( 'wpml_pb_register_strings_for_post', $package, $post );
-
-				$this->register_strings_for_modules(
-					$converted,
-					$package
-				);
-			}
-
-			if ( $this->reuse_translations ) {
-				$this->reuse_translations->find_and_reuse( $post->ID, $existing_strings );
+			try {
+				$this->register_handled_post_strings( $post, $package );
+			} finally {
+				do_action( 'wpml_pb_after_registering_strings', $post, $package );
 			}
 		}
 
 		do_action( 'wpml_delete_unused_package_strings', $package );
+	}
+
+	private function register_handled_post_strings( WP_Post $post, array $package ) {
+		if ( $this->reuse_translations ) {
+			$existing_strings = $this->reuse_translations->get_strings( $post->ID );
+			$this->reuse_translations->set_original_strings( $existing_strings );
+		}
+
+		$converted = $this->get_data_to_register( $post );
+
+		if ( is_array( $converted ) ) {
+			do_action( 'wpml_pb_register_strings_for_post', $package, $post );
+
+			$this->register_strings_for_modules(
+				$converted,
+				$package
+			);
+		}
+
+		if ( $this->reuse_translations ) {
+			$this->reuse_translations->find_and_reuse( $post->ID, $existing_strings );
+		}
 	}
 
 	public function collect_strings( WP_Post $post ) {

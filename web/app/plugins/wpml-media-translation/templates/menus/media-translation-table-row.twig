@@ -56,6 +56,20 @@
 		{% endif %}
 	</td>
 	{% endif %}
+{% if attachment.text_scan is defined %}
+	<td class="wpml-col-media-scan">
+		{% if attachment.text_scan.is_image %}
+		<span class="wpml-media-scan-result chip chip--{{ attachment.text_scan.variant }}" tabindex="0"
+			  data-scan-state="{{ attachment.text_scan.state }}"
+			  data-scan-reason="{{ attachment.text_scan.reason }}"
+			  data-tip="{{ attachment.text_scan.tooltip }}">
+			{% include 'media-translation-text-scan-icon.twig' with {'variant': attachment.text_scan.variant} only %}{{ attachment.text_scan.label }}<span class="screen-reader-text">. {{ attachment.text_scan.tooltip }}</span>
+		</span>
+		{% else %}
+		<span class="wpml-media-scan-none"><span aria-hidden="true">&mdash;</span><span class="screen-reader-text">{{ attachment.text_scan.label }}</span></span>
+		{% endif %}
+	</td>
+{% endif %}
 	<td class="wpml-col-media-translations">
 		{% for code, language in languages %}
 			{% if target_language is empty or target_language == code %}
@@ -70,7 +84,7 @@
 						  id="media-attachment-{{ attachment.post.ID }}-{{ code }}"
 						  data-file-name="{{ attachment.translations[code].file_name }}"
 						  tabindex="-1"
-						  title="{{ strings.edit_translation | format(languages[code].name ) }}"
+						  title="{{ strings.edit_translation | format(languages[code].name ) }}{% if attachment.text_scan.outdated[code] is defined %}. {{ attachment.text_scan.outdated[code] }}{% endif %}"
 						  data-label-add="{{ strings.add_translation_for | format(languages[code].name ) }}"
 						  data-label-edit="{{ strings.edit_translation | format(languages[code].name ) }}"
                             {% if not attachment.translations[code].media_is_translated %}
@@ -91,7 +105,7 @@
 					>
                                     <a class="js-open-media-translation-dialog {% if attachment.translations[code].media_is_translated %}wpml-media-translation-image{% endif %}"
                                        role="button" tabindex="0"
-                                       aria-label="{% if attachment.translations[code].id %}{{ strings.edit_translation | format(languages[code].name ) }}{% else %}{{ strings.add_translation_for | format(languages[code].name ) }}{% endif %}">
+                                       aria-label="{% if attachment.translations[code].id %}{{ strings.edit_translation | format(languages[code].name ) }}{% else %}{{ strings.add_translation_for | format(languages[code].name ) }}{% endif %}{% if attachment.text_scan.outdated[code] is defined %}. {{ attachment.text_scan.outdated[code] }}{% endif %}">
                                         <img src="{{ attachment.translations[code].thumb.src }}"
 											 width="{{ attachment.thumb.width }}" height="{{ attachment.thumb.height }}"
 											 alt="{{ attachment.language }}"
@@ -99,6 +113,9 @@
 											{% if not attachment.translations[code].media_is_translated %}style="display:none"{% endif %}>
                                         <i class="{% if attachment.translations[code].id %}otgs-ico-edit{% else %}otgs-ico-add{% endif %}" aria-hidden="true"
 										   {% if attachment.translations[code].media_is_translated %}style="display:none"{% endif %}></i>
+{% if attachment.text_scan.outdated[code] is defined %}
+                                        <span class="wpml-media-original-changed" data-language-code="{{ code }}" aria-hidden="true"></span>
+{% endif %}
                                     </a>
                                 </span>
 				{% endif %}

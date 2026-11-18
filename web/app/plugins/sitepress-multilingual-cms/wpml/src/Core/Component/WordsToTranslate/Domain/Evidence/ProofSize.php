@@ -13,9 +13,19 @@ class ProofSize {
 
 
   public function compressedBytes( $proof ) {
-    $compressed = gzcompress( $this->encode( $proof ), self::COMPRESSION_LEVEL );
+    $encoded = $this->encode( $proof );
+    if ( ! $this->isZlibAvailable() ) {
+      return strlen( $encoded );
+    }
 
-    return $compressed === false ? 0 : strlen( $compressed );
+    $compressed = gzcompress( $encoded, self::COMPRESSION_LEVEL );
+
+    return strlen( $compressed === false ? $encoded : $compressed );
+  }
+
+
+  protected function isZlibAvailable() {
+    return function_exists( 'gzcompress' );
   }
 
 

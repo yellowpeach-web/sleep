@@ -3,6 +3,7 @@
 namespace WPML\TM\ATE;
 
 use WPML\LIB\WP\User;
+use WPML\UrlHandling\UrlBuilder;
 use WPML\Remote\TrustedDestinations;
 
 class Proxy extends \WPML_REST_Base {
@@ -99,7 +100,7 @@ class Proxy extends \WPML_REST_Base {
 				$params = \wpml_http_build_query( $params );
 			}
 
-			$endpoint = \http_build_url( $url, [ 'query' => $params ] );
+			$endpoint = UrlBuilder::build( $url, [ 'query' => $params ] );
 
 			if ( ! $this->destinations()->isTrusted( $endpoint ) ) {
 				$status_code   = 400;

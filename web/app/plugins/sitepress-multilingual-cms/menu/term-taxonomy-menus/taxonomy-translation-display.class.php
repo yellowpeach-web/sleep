@@ -76,13 +76,13 @@ class WPML_Taxonomy_Translation_Table_Display {
 			'translationTo'                   => __( 'Translation to:', 'sitepress' ),
 			/* translators: Label of the field holding the name of a term in the term translation dialog. Noun. */
 			'Name'                            => __( 'Name', 'sitepress' ),
-			/* translators: Label of the field holding the part of the address that stands for a term, in the term translation dialog. */
+			/* translators: Label for the part of an address that stands for a page or a term, after the site's address: in the table of changes on the "Translation updates" screen and in the term translation dialog. Noun. */
 			'Slug'                            => __( 'Slug', 'sitepress' ),
 			/* translators: Column heading and field label for the longer text that describes something. */
 			'Description'                     => __( 'Description', 'sitepress' ),
-			/* translators: Button label that confirms a dialog and carries out what it asks about. */
+			/* translators: Says that all is well: the label of the button that confirms a dialog and carries out what it asks about, and the text read by screen readers for a green check mark. */
 			'Ok'                              => __( 'OK', 'sitepress' ),
-			/* translators: Button label that keeps what was entered. Verb, imperative. */
+			/* translators: Button label that keeps what was entered, for example in the Translation delivery box's "Settings for support" and in the "Translation editor and method" section of WPML → Settings. Verb, imperative. */
 			'save'                            => __( 'Save', 'sitepress' ),
 			/* translators: Label of the field holding the singular name of a taxonomy in the label translation dialog. */
 			'Singular'                        => __( 'Singular', 'sitepress' ),
@@ -90,11 +90,11 @@ class WPML_Taxonomy_Translation_Table_Display {
 			'Plural'                          => __( 'Plural', 'sitepress' ),
 			/* translators: Link in a term row on the taxonomy translation screen that opens the list of languages, so the term can be moved to another language. Verb, imperative. */
 			'changeLanguage'                  => __( 'Change language', 'sitepress' ),
-			/* translators: Button label that closes a dialog without doing anything, or stops what is going on. Verb, imperative, not the noun "a cancellation". */
+			/* translators: Button label that closes a dialog without doing anything, or stops what is going on, for example in the dialog "Translate with PTC?" (keep the previous choice). Verb, imperative, not the noun "a cancellation". */
 			'cancel'                          => __( 'Cancel', 'sitepress' ),
 			/* translators: Text shown while the taxonomy translation screen is waiting for data. */
 			'loading'                         => __( 'loading', 'sitepress' ),
-			/* translators: Button label that keeps what was entered. Verb, imperative. */
+			/* translators: Button label that keeps what was entered, for example in the Translation delivery box's "Settings for support" and in the "Translation editor and method" section of WPML → Settings. Verb, imperative. */
 			'Save'                            => __( 'Save', 'sitepress' ),
 			/* translators: Screen reader name of the field that holds the number of the page being shown. */
 			'currentPage'                     => __( 'Current page', 'sitepress' ),
@@ -363,18 +363,21 @@ class WPML_Taxonomy_Translation_Table_Display {
 
 	private static function get_in_progress_map( $taxonomy ) {
 		global $wpdb;
+		\WPML\TM\ATE\TranslateEverything\TermBundleMembers::ensureTable( $wpdb );
 
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT DISTINCT t.trid, t.language_code
 				FROM {$wpdb->prefix}icl_translations t
 				INNER JOIN {$wpdb->prefix}icl_translation_status ts ON ts.translation_id = t.translation_id
-				INNER JOIN {$wpdb->prefix}icl_translate_job j ON j.rid = ts.rid AND j.translated = 0
-				WHERE t.element_type = %s AND j.editor = %s AND ts.status IN ( %d, %d )",
+				WHERE t.element_type = %s AND ts.status IN ( %d, %d )
+				AND ( EXISTS ( SELECT 1 FROM {$wpdb->prefix}icl_translate_job j WHERE j.rid = ts.rid AND j.translated = 0 AND j.editor = %s )
+					OR EXISTS ( SELECT 1 FROM {$wpdb->prefix}icl_term_batch_members m WHERE m.term_rid = ts.rid AND m.state = %s ) )",
 				'tax_' . $taxonomy,
-				\WPML_TM_Editors::ATE,
 				ICL_TM_WAITING_FOR_TRANSLATOR,
-				ICL_TM_IN_PROGRESS
+				ICL_TM_IN_PROGRESS,
+				\WPML_TM_Editors::ATE,
+				\WPML\TM\ATE\TranslateEverything\TermBundleMembers::STATE_IN_BUNDLE
 			)
 		);
 
@@ -388,15 +391,18 @@ class WPML_Taxonomy_Translation_Table_Display {
 
 	private static function get_needs_update_map( $taxonomy ) {
 		global $wpdb;
+		\WPML\TM\ATE\TranslateEverything\TermBundleMembers::ensureTable( $wpdb );
 
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT DISTINCT t.trid, t.language_code
 				FROM {$wpdb->prefix}icl_translations t
 				INNER JOIN {$wpdb->prefix}icl_translation_status ts ON ts.translation_id = t.translation_id
-				LEFT JOIN {$wpdb->prefix}icl_translate_job j ON j.rid = ts.rid AND j.translated = 0
-				WHERE t.element_type = %s AND ts.needs_update = 1 AND j.rid IS NULL",
-				'tax_' . $taxonomy
+				WHERE t.element_type = %s AND ts.needs_update = 1
+				AND NOT EXISTS ( SELECT 1 FROM {$wpdb->prefix}icl_translate_job j WHERE j.rid = ts.rid AND j.translated = 0 )
+				AND NOT EXISTS ( SELECT 1 FROM {$wpdb->prefix}icl_term_batch_members m WHERE m.term_rid = ts.rid AND m.state = %s )",
+				'tax_' . $taxonomy,
+				\WPML\TM\ATE\TranslateEverything\TermBundleMembers::STATE_IN_BUNDLE
 			)
 		);
 

@@ -6,10 +6,14 @@ use Elementor\Widget_Base;
 
 class AtomicWidgetProcessor implements WidgetProcessorInterface {
 
+	const TYPE_LINK           = 'link';
+	const TYPE_INLINE_EDITING = 'inline-editing';
+
 	const EDITOR_TYPE_MAP = [
-		'text'     => 'LINE',
-		'textarea' => 'AREA',
-		'link'     => 'LINK',
+		'text'                    => 'LINE',
+		'textarea'                => 'AREA',
+		self::TYPE_LINK           => 'LINK',
+		self::TYPE_INLINE_EDITING => 'LINE',
 	];
 
 	public function canProcess( $widget ) {
@@ -36,6 +40,10 @@ class AtomicWidgetProcessor implements WidgetProcessorInterface {
 		$items = $section->get_items();
 
 		foreach ( $items as $control ) {
+			if ( ! is_object( $control ) || ! method_exists( $control, 'get_type' ) || ! method_exists( $control, 'get_bind' ) ) {
+				continue;
+			}
+
 			$type = $control->get_type();
 			$name = $control->get_bind();
 
@@ -49,22 +57,39 @@ class AtomicWidgetProcessor implements WidgetProcessorInterface {
 				continue;
 			}
 
-			$fieldPath = 'link' === $type ? $name . '>value>destination>value' : $name . '>value';
-
-			$field = [
-				'field'       => $fieldPath,
-				'type'        => $title . ': ' . $name,
-				'editor_type' => $editor,
-			];
-
 			if ( ! isset( $config['fields'] ) ) {
 				$config['fields'] = [];
 			}
 
-			$config['fields'][] = $field;
+			foreach ( $this->getFields( $name, $type ) as $field ) {
+				$config['fields'][] = $field + [
+					'type'        => $title . ': ' . $name,
+					'editor_type' => $editor,
+				];
+			}
 		}
 
 		return $config;
+	}
+
+	private function getFields( $name, $type ) {
+		if ( self::TYPE_LINK === $type ) {
+			return [ [ 'field' => $name . '>value>destination>value' ] ];
+		}
+
+		if ( self::TYPE_INLINE_EDITING === $type ) {
+			$htmlV3Path = $name . '>value>content>value';
+
+			return [
+				[ 'field' => $htmlV3Path ],
+				[
+					'field'    => $name . '>value',
+					'field_id' => $htmlV3Path,
+				],
+			];
+		}
+
+		return [ [ 'field' => $name . '>value' ] ];
 	}
 
 	private function isRegistrable( $name, $type ) {

@@ -50,6 +50,30 @@ class InFlightChargedJobs {
 
 
 	public static function jobsForPost( $postId ) {
+		return self::postJobs( $postId, 0, self::openStatuses(), true );
+	}
+
+
+	public static function openAteJobsForPost( $postId ) {
+		return self::postJobs( $postId, 0, self::openStatuses(), false );
+	}
+
+
+	public static function acceptedCorrectionsForPost( $postId ) {
+		if ( ! \WPML\TM\ATE\Handshake\Acceptance::accepted() ) {
+			return [];
+		}
+
+		return self::postJobs( $postId, 1, [ ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_IN_PROGRESS, ICL_TM_IN_PROGRESS ], true );
+	}
+
+
+	private static function openStatuses() {
+		return [ ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_IN_PROGRESS, ICL_TM_ATE_UNSOLVABLE ];
+	}
+
+
+	private static function postJobs( $postId, $translated, array $statuses, $automaticOnly ) {
 		$postId = (int) $postId;
 
 		if ( $postId <= 0 ) {
@@ -57,6 +81,8 @@ class InFlightChargedJobs {
 		}
 
 		global $wpdb;
+
+		$automatic = self::automaticCondition( $automaticOnly );
 
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
@@ -77,18 +103,19 @@ class InFlightChargedJobs {
 				          deleted.source_language_code IS NULL
 				          OR affected.translation_id = deleted.translation_id
 				        )
-				    AND j.automatic = 1
+				    {$automatic}
 				    AND j.editor = %s
 				    AND j.editor_job_id > 0
-				    AND j.translated = 0
+				    AND j.translated = %d
 				    AND j.job_id = ( SELECT MAX( newest.job_id ) FROM {$wpdb->prefix}icl_translate_job newest WHERE newest.rid = j.rid )
 				    AND ts.status IN ( %d, %d, %d )",
 				$postId,
 				$wpdb->esc_like( 'post_' ) . '%',
 				\WPML_TM_Editors::ATE,
-				ICL_TM_WAITING_FOR_TRANSLATOR,
-				ICL_TM_IN_PROGRESS,
-				ICL_TM_ATE_UNSOLVABLE
+				(int) $translated,
+				(int) $statuses[0],
+				(int) $statuses[1],
+				(int) $statuses[2]
 			),
 			ARRAY_A
 		);
@@ -111,6 +138,16 @@ class InFlightChargedJobs {
 
 
 	public static function jobsForTerm( $termTaxonomyId, $taxonomy ) {
+		return self::termJobs( $termTaxonomyId, $taxonomy, true );
+	}
+
+
+	public static function openAteJobsForTerm( $termTaxonomyId, $taxonomy ) {
+		return self::termJobs( $termTaxonomyId, $taxonomy, false );
+	}
+
+
+	private static function termJobs( $termTaxonomyId, $taxonomy, $automaticOnly ) {
 		$termTaxonomyId = (int) $termTaxonomyId;
 
 		if ( $termTaxonomyId <= 0 || ! is_string( $taxonomy ) || '' === $taxonomy ) {
@@ -118,6 +155,8 @@ class InFlightChargedJobs {
 		}
 
 		global $wpdb;
+
+		$automatic = self::automaticCondition( $automaticOnly );
 
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
@@ -138,7 +177,7 @@ class InFlightChargedJobs {
 				          deleted.source_language_code IS NULL
 				          OR affected.translation_id = deleted.translation_id
 				        )
-				    AND j.automatic = 1
+				    {$automatic}
 				    AND j.editor = %s
 				    AND j.editor_job_id > 0
 				    AND j.translated = 0
@@ -202,6 +241,38 @@ class InFlightChargedJobs {
 		}
 
 		return $charged;
+	}
+
+
+	public static function countChargedJobRows( array $jobIds ) {
+		$jobIds = self::normaliseIds( $jobIds );
+
+		if ( ! $jobIds ) {
+			return 0;
+		}
+
+		global $wpdb;
+
+		$count = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT( job_id )
+				   FROM {$wpdb->prefix}icl_translate_job
+				  WHERE automatic = 1
+				    AND editor = 'ate'
+				    AND editor_job_id > 0
+				    AND translated = 0
+				    AND wpml_automatic_translation_costs IS NOT NULL
+				    AND job_id IN ( " . implode( ', ', array_fill( 0, count( $jobIds ), '%d' ) ) . " )",
+				...$jobIds
+			)
+		);
+
+		return (int) $count;
+	}
+
+
+	private static function automaticCondition( $automaticOnly ) {
+		return $automaticOnly ? 'AND j.automatic = 1' : '';
 	}
 
 

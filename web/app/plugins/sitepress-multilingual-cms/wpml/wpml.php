@@ -11,6 +11,9 @@ use WPML\UserInterface\Web\Infrastructure\CompositionRoot\Config\Updates\Control
 use WPML\UserInterface\Web\Infrastructure\CompositionRoot\Config\Updates\UpdateHandler as UpdatesUpdateHandler;
 use WPML\UserInterface\Web\Infrastructure\CompositionRoot\Config\Updates\Repository as UpdatesRepository;
 use WPML\UserInterface\Web\Infrastructure\CompositionRoot\Config\Updates\ScriptLoader as UpdatesScriptLoader;
+use WPML\UserInterface\Web\Infrastructure\CompositionRoot\Config\Updates\BackgroundRun as UpdatesBackgroundRun;
+use WPML\UserInterface\Web\Infrastructure\CompositionRoot\Config\Updates\ProgressNotice as UpdatesProgressNotice;
+use WPML\UserInterface\Web\Infrastructure\CompositionRoot\Config\Updates\RunLock as UpdatesRunLock;
 use WPML\UserInterface\Web\Infrastructure\WordPress\CompositionRoot\Config\AdminPage;
 use WPML\UserInterface\Web\Infrastructure\WordPress\CompositionRoot\Config\Api;
 use WPML\UserInterface\Web\Infrastructure\WordPress\CompositionRoot\Config\ConfigEvents;
@@ -33,6 +36,7 @@ $configArray = require_once __DIR__ . '/src/config.php';
 $api = new Api();
 $adminPage = new AdminPage( $api, $dic );
 $updatesRepository = new UpdatesRepository( new Options() );
+$updatesBackgroundRun = new UpdatesBackgroundRun( $updatesRepository );
 $registerNotices = new RegisterNotices();
 
 $compositionRoot = new CompositionRoot(
@@ -46,8 +50,15 @@ $compositionRoot = new CompositionRoot(
       $api,
       $updatesRepository,
       new UpdatesScriptLoader( $api, $adminPage ),
-      new UpdatesUpdateHandler( $api, $updatesRepository ),
-      $plugin
+      new UpdatesUpdateHandler(
+        $api,
+        $updatesRepository,
+        new UpdatesRunLock( $GLOBALS['wpdb'] ),
+        $updatesBackgroundRun
+      ),
+      $plugin,
+      $updatesBackgroundRun,
+      new UpdatesProgressNotice()
     ),
     new DismissedNoticesQuery( new DismissedNoticesStorage() ),
     $registerNotices,
@@ -72,6 +83,23 @@ add_action(
       $compositionRoot->prepareUpdates();
       $compositionRoot->loadRESTEndpoints();
   }
+);
+
+add_action(
+  UpdatesBackgroundRun::HOOK,
+  function () use ( $compositionRoot ) {
+    $compositionRoot->prepareUpdates();
+  }
+);
+
+add_action(
+  'wp_loaded',
+  function () use ( $compositionRoot ) {
+    if ( ! is_admin() ) {
+      $compositionRoot->prepareUpdates();
+    }
+  },
+  10
 );
 
 add_action(

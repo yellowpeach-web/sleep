@@ -4,7 +4,9 @@ namespace WPML\XMLConfig;
 
 use WPML\FP\Obj;
 
-class AllowTranslatableJobFields extends \WPML_WP_Option implements \IWPML_Backend_Action, \IWPML_AJAX_Action {
+class AllowTranslatableJobFields extends \WPML_WP_Option implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_AJAX_Action {
+
+	private $rules;
 
 	public function get_key() {
 		return 'wpml_allow_translatable_job_fields';
@@ -28,6 +30,7 @@ class AllowTranslatableJobFields extends \WPML_WP_Option implements \IWPML_Backe
 			->all();
 
 		$this->set( $cleaned );
+		$this->rules = (array) $cleaned;
 
 		return $config;
 	}
@@ -37,7 +40,10 @@ class AllowTranslatableJobFields extends \WPML_WP_Option implements \IWPML_Backe
 			return $isTranslatable;
 		}
 
-		$config = (array) $this->get();
+		if ( null === $this->rules ) {
+			$this->rules = (array) $this->get();
+		}
+		$config = $this->rules;
 
 		if ( ! $config ) {
 			return $isTranslatable;

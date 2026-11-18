@@ -16,7 +16,9 @@ use WPML\Element\API\Languages;
 use WPML\LIB\WP\Post;
 use WPML\API\PostTypes;
 use WPML\TM\API\Jobs;
+use WPML\TM\AutomaticTranslation\Actions\DeferredDispatch;
 use WPML\TM\Menu\TranslationQueue\TranslationQueuePage;
+use WPML\TranslationPolicy\Policy\Policy;
 use function WPML\FP\partial;
 use WPML\LIB\WP\User;
 use WPML\UIPage;
@@ -26,6 +28,8 @@ use WPML\TranslationRoles\LangPairPermissions;
 use function WPML\FP\pipe;
 
 class WPML_TM_Translation_Status_Display {
+
+	const STATUS_TEXT_PRIORITY = 10;
 
 	private $statuses        = array();
 	private $stats_preloaded = false;
@@ -53,6 +57,12 @@ class WPML_TM_Translation_Status_Display {
 	private $wpdb;
 
 	private $untranslatedPosts;
+
+	private static $editor_screen_url = null;
+
+	public static function set_editor_screen_url( $url ) {
+		self::$editor_screen_url = is_string( $url ) && '' !== $url ? $url : null;
+	}
 
 	public function __construct(
 		wpdb $wpdb,
@@ -106,7 +116,7 @@ class WPML_TM_Translation_Status_Display {
 				$this,
 				'filter_status_text',
 			),
-			10,
+			self::STATUS_TEXT_PRIORITY,
 			4
 		);
 
@@ -170,6 +180,10 @@ class WPML_TM_Translation_Status_Display {
 			ARRAY_A
 		);
 		foreach ( $stats as $element ) {
+			if ( DeferredDispatch::isParkedForSending( Obj::prop( 'status', $element ), Obj::prop( 'job_id', $element ) ) ) {
+				$element['status']  = ICL_TM_IN_PROGRESS;
+				$element['sending'] = true;
+			}
 			$this->statuses[ $element['trid'] ][ $element['code'] ] = $element;
 		}
 
@@ -180,6 +194,10 @@ class WPML_TM_Translation_Status_Display {
 
 		$element_id  = $this->post_translations->get_element_id( $lang, $trid );
 		$source_lang = $this->post_translations->get_source_lang_code( $element_id );
+
+		if ( $this->translation_is_in_trash( $element_id ) ) {
+			return $css_class;
+		}
 
 		if ( $this->has_unsolvable_error( $trid, $lang ) ) {
 			$css_class = 'otgs-ico-warning';
@@ -208,7 +226,11 @@ class WPML_TM_Translation_Status_Display {
 			$css_class .= ' otgs-ico-edit-disabled';
 		}
 
-		if ( ( $this->isTranslateEverythingInProgress( $trid, $post_id, $lang ) && ( 'draft' !== $post_status || $this->is_in_progress( $trid, $lang ) ) ) ) {
+		if (
+			$this->isTranslateEverythingInProgress( $trid, $post_id, $lang )
+			&& ( 'draft' !== $post_status || $this->is_in_progress( $trid, $lang ) )
+			&& ! $this->is_duplicate_at_rest( $element_id, $trid, $lang )
+		) {
 			$css_class .= ' otgs-ico-waiting';
 		}
 
@@ -225,6 +247,10 @@ class WPML_TM_Translation_Status_Display {
 	public function filter_status_text( $text, $original_post_id, $lang, $trid ) {
 		$source_lang = $this->post_translations->get_element_lang_code( $original_post_id );
 		$element_id  = $this->post_translations->get_element_id( $lang, $trid );
+
+		if ( $this->translation_is_in_trash( $element_id ) ) {
+			return $text;
+		}
 
 		$this->maybe_load_stats( $trid );
 
@@ -273,11 +299,21 @@ class WPML_TM_Translation_Status_Display {
 			$text = __( 'You can only edit translations assigned to you. Ask your translation manager to assign this translation to you.', 'sitepress' );
 		}
 
-		if ( $this->isTranslateEverythingInProgress( $trid, $original_post_id, $lang ) ) {
+		if (
+			$this->isTranslateEverythingInProgress( $trid, $original_post_id, $lang )
+			&& ! $this->is_duplicate_at_rest( $element_id, $trid, $lang )
+		) {
 			$text = __( 'WPML is translating your content automatically. You can monitor the progress in the admin bar.', 'sitepress' );
 		}
 
 		return $text;
+	}
+
+	private function is_duplicate_at_rest( $element_id, $trid, $lang ) {
+		return (bool) $element_id
+			&& ! $this->is_in_progress( $trid, $lang )
+			&& ! $this->has_unsolvable_error( $trid, $lang )
+			&& $this->post_translations->is_a_duplicate( (int) $element_id );
 	}
 
 	private function has_no_manual_translation( $trid, $lang ) {
@@ -337,7 +373,7 @@ class WPML_TM_Translation_Status_Display {
 		if ( $source_lang_code !== $lang ) {
 			if ( ( $is_in_progress && ! $is_remote ) || (bool) $translated_element_id ) {
 				$job_id = $this->job_factory->job_id_by_trid_and_lang( $trid, $lang );
-				if ( $job_id && ! is_admin() ) {
+				if ( $job_id && ! is_admin() && ! self::$editor_screen_url ) {
 					$job_object = $this->job_factory->get_translation_job( $job_id, false, 0, true );
 					if ( $job_object && ! $job_object->user_can_translate( wp_get_current_user() ) ) {
 						return $link;
@@ -345,7 +381,7 @@ class WPML_TM_Translation_Status_Display {
 				}
 			}
 
-			return $this->get_intent_link( $trid, $lang, $source_lang_code );
+			return $this->get_intent_link( $trid, $lang, $source_lang_code, ! $translated_element_id );
 		}
 
 		return $link;
@@ -365,6 +401,10 @@ class WPML_TM_Translation_Status_Display {
 		$source_lang = $this->post_translations->get_source_lang_code( $translated_element_id ) ?: null;
 
 		if ( (bool) $translated_element_id && (bool) $source_lang === false ) {
+			return $link;
+		}
+
+		if ( $this->translation_is_in_trash( $translated_element_id ) ) {
 			return $link;
 		}
 
@@ -395,21 +435,77 @@ class WPML_TM_Translation_Status_Display {
 		return $this->has_unsolvable_error( $trid, $lang )
 		       || ( $this->is_remote( $trid, $lang ) && $this->is_in_progress( $trid, $lang ) )
 		       || ! $this->is_lang_pair_allowed( $lang, $source_lang, $post_id )
-		       || $this->it_needs_retry( $trid, $lang );
+		       || $this->it_needs_retry( $trid, $lang )
+		       || $this->is_being_sent( $trid, $lang );
+	}
+
+	private function is_being_sent( $trid, $lang ) {
+		return (bool) Obj::path( [ $trid, $lang, 'sending' ], $this->statuses );
+	}
+
+	private function shouldUseTMEditorForAutomaticTranslation( $postId ) {
+		$gate = Policy::translateEverythingGate();
+		$gate->prime(
+			function () {
+				return $this->get_list_original_ids();
+			}
+		);
+
+		return $gate->opensOnClick(
+			(int) $postId,
+			function () use ( $postId ) {
+				return $this->shouldUseTMEditor( $postId );
+			}
+		);
 	}
 
 	private function shouldUseTMEditor( $postId ) {
 		static $cachedKeys;
 		if ( ! isset( $cachedKeys[ $postId ] ) ) {
-			$cachedKeys[ $postId ] = ! \WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( $postId );
+			$cachedKeys[ $postId ] = ! Policy::listEditor()->usesNativeEditor(
+				$postId,
+				function () {
+					return $this->get_list_original_ids();
+				}
+			);
 		}
 
 		return $cachedKeys[ $postId ];
 	}
 
+	private function get_list_original_ids() {
+		$defaultLanguage = Languages::getDefaultCode();
+		$ids             = [];
+		foreach ( $this->post_translations->get_trids() as $trid ) {
+			$id = $this->post_translations->get_element_id( $defaultLanguage, $trid );
+			if ( $id ) {
+				$ids[] = (int) $id;
+			}
+		}
+
+		return $ids;
+	}
+
 	public function add_links_data_attributes( $html, $post_id, $lang, $trid ) {
-		if ( ! isset( $this->rendered_links[ $post_id ][ $lang ][ $trid ] ) ) {
+		$Attributes = $this->get_links_data( $post_id, $lang, $trid, $html );
+		if ( null === $Attributes ) {
 			return $html;
+		}
+
+		$createAttribute = function ( $item, $key ) {
+			return 'data-' . $key . '="' . $item . '"';
+		};
+
+		$data = wpml_collect( $Attributes )
+			->map( $createAttribute )
+			->implode( ' ' );
+
+		return str_replace( '<a ', '<a ' . $data . ' ', $html );
+	}
+
+	public function get_links_data( $post_id, $lang, $trid, $icon ) {
+		if ( ! isset( $this->rendered_links[ $post_id ][ $lang ][ $trid ] ) ) {
+			return null;
 		}
 
 		$this->maybe_load_stats( $trid );
@@ -441,21 +537,13 @@ class WPML_TM_Translation_Status_Display {
 					'trid'     => $trid,
 					'language' => $lang,
 					'post-id'  => $post_id,
-					'verb'     => $this->get_intent_verb( $html, $action ),
+					'verb'     => $this->get_intent_verb( $icon, $action ),
 				],
 				$Attributes
 			);
 		}
 
-		$createAttribute = function ( $item, $key ) {
-			return 'data-' . $key . '="' . $item . '"';
-		};
-
-		$data = wpml_collect( $Attributes )
-			->map( $createAttribute )
-			->implode( ' ' );
-
-		return str_replace( '<a ', '<a ' . $data . ' ', $html );
+		return $Attributes;
 	}
 
 	private function get_intent_verb( $html, $action ) {
@@ -474,12 +562,16 @@ class WPML_TM_Translation_Status_Display {
 		return 'add' === $action ? 'translate' : 'edit';
 	}
 
-	private function get_intent_link( $trid, $lang, $source_lang_code ) {
+	private function get_intent_link( $trid, $lang, $source_lang_code, $is_new = false ) {
 		$args = array(
 			'trid'                 => $trid,
 			'language_code'        => $lang,
 			'source_language_code' => $source_lang_code,
 		);
+
+		if ( $is_new ) {
+			$args[ WPML_Post_Status_Display::RENDERED_AT_PARAM ] = time();
+		}
 
 		return add_query_arg( $args, self::get_tm_editor_base_url() );
 	}
@@ -510,6 +602,12 @@ class WPML_TM_Translation_Status_Display {
 				return remove_query_arg( $args, $url );
 			};
 
+			$returnToTheEditorScreenTheProviderNamed = function () use ( $removeUnwantedArgs ) {
+				if ( self::$editor_screen_url ) {
+					return $removeUnwantedArgs( self::$editor_screen_url );
+				}
+			};
+
 			$returnToTMDashboard = function () use ( $removeUnwantedArgs ) {
 				return $removeUnwantedArgs( admin_url( UIPage::getTMDashboard() ) );
 			};
@@ -533,6 +631,7 @@ class WPML_TM_Translation_Status_Display {
 			};
 
 			$strategies = [
+				$returnToTheEditorScreenTheProviderNamed,
 				$returnToThePageWhichTriggeredAjaxIfThatPageCanBeDetermined,
 				$returnToTMDashboardIfItIsAjaxAndTriggeringPageCannotBeDetermined,
 				$otherwiseReturnToCurrentPage,
@@ -698,7 +797,7 @@ class WPML_TM_Translation_Status_Display {
 
 		return $isOriginalPost &&
 		       $postLanguage === Languages::getDefaultCode() &&
-		       $this->shouldUseTMEditor( $postId ) &&
+		       $this->shouldUseTMEditorForAutomaticTranslation( $postId ) &&
 		       Automatic::shouldTranslate( get_post_type( $postId ) ) &&
 		       AutomaticTranslationCapabilities::isLanguageEligible( $targetLang, $postLanguage ) &&
 		       $this->isExistingTranslationOpenToAte( $trid, $targetLang );
@@ -736,7 +835,20 @@ class WPML_TM_Translation_Status_Display {
 		}
 
 		$translator_id = Obj::path( [ $trid, $lang, 'translator_id' ], $this->statuses );
-		$status_txt    = $translator_id
+
+		if (
+			$translator_id
+			&& (int) Obj::path( [ $trid, $lang, 'status' ], $this->statuses ) === ICL_TM_IN_PROGRESS
+			&& (int) $translator_id === (int) $this->sitepress->get_wp_api()->get_current_user_id()
+		) {
+			return sprintf(
+				/* translators: Tooltip on the translation status of a piece of content, while the person reading has a translation of it in progress. %s: the name of the language it is being translated into. Verb, imperative. */
+				__( 'Continue the %s translation', 'sitepress' ),
+				$language_details['display_name']
+			);
+		}
+
+		$status_txt = $translator_id
 			// Translators: %s: Language display name.
 			? __( '%s translation assigned to local translator', 'sitepress' )
 			// Translators: %s: Language display name.
@@ -766,10 +878,6 @@ class WPML_TM_Translation_Status_Display {
 
 		if ( $error_type === 'ApplyError' ) {
 			return $counter >= 1;
-		}
-
-		if ( $error_type === 'DownloadError' ) {
-			return $counter >= 3;
 		}
 
 		return false;

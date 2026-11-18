@@ -13,11 +13,26 @@
          "The translation could not be started because the server did not answer.": [
             "Sunucu yanıt vermediği için çeviri başlatılamadı."
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "Oturumunuzun süresi doldu. Bu sayfayı yenileyip tekrar deneyin."
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "PTC çeviriyor. Düzenleyici hazır olduğunda açılır."
+         ],
          "This translation cannot be opened right now.": [
             "Bu çeviri şu anda açılamıyor."
          ],
          "Refresh this page": [
             "Bu sayfayı yenileyin"
+         ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "Bunu otomatik çevirmek için yeterli ön ödemeli kelime yok. Daha fazla kelime ekleyin ve tekrar deneyin."
+         ],
+         "Get more words": [
+            "Daha fazla kelime al"
+         ],
+         "Close": [
+            "Kapat"
          ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
             "Bu içerik otomatik olarak çevriliyor. Farklı bir işlem yapmak istiyorsanız önce çeviri görevlerini iptal edin."
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "İçeriğiniz çevriliyor"
+         ],
+         "Translate Everything is active": [
+            "Translate Everything etkin"
          ],
          "%d translation notice": [
             "%d çeviri bildirimi",
@@ -56,8 +74,8 @@
          "Automatic translation is paused: monthly spending cap reached": [
             "Otomatik çeviri duraklatıldı: aylık harcama sınırına ulaşıldı"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "Bu web sitesi kendisi için belirlenen aylık harcama sınırına ulaştı. Sınır yükseltildiğinde veya sınır sıfırlandığında çeviri devam eder. Bunu yalnızca hesap sahibi yapabilir."
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "Bu web sitesi, kendisi için belirlenen aylık harcama sınırına ulaştı. Sınır yükseltildiğinde veya sınır sıfırlandığında çeviri devam eder. Sınırı, Yapay Zekâ Çevirisi: faturalandırma ve kullanım sayfasından yükseltebilirsiniz."
          ],
          "Preparing content for translation": [
             "İçerik çeviri için hazırlanıyor"
@@ -72,8 +90,9 @@
             "Otomatik çeviriyi kullanmak için %s diliniz desteklenen bir dille eşleştirilmelidir.",
             "Otomatik çeviriyi kullanmak için sitenizdeki şu diller desteklenen bir dille eşleştirilmelidir: %s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "Şu dillerdeki içerikler: %s, varsayılan dilden farklı bir dille eşleştirilmediği sürece otomatik olarak çevrilemez."
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "%1$s ile %2$s aynı dil olarak tanındığından aralarında otomatik çeviri kullanılamaz. İçeriği kopyalamak için bunun yerine “Çoğalt” seçeneğini belirleyin.",
+            "%1$s dili ile bu diller aynı dil olarak tanındığından aralarında otomatik çeviri kullanılamaz: %2$s. İçeriği kopyalamak için bunun yerine “Çoğalt” seçeneğini belirleyin."
          ],
          "%d translation waiting for review": [
             "%d çeviri inceleme bekliyor",
@@ -154,9 +173,6 @@
          "Pay now": [
             "Şimdi öde"
          ],
-         "Get more words": [
-            "Daha fazla kelime al"
-         ],
          "Assign words": [
             "Kelime ata"
          ],
@@ -167,7 +183,7 @@
             "Sınırı yükselt"
          ],
          "Contact support": [
-            "Destek forumu"
+            "Destek ekibiyle iletişime geçin"
          ],
          "Go to billing": [
             "Faturalandırmaya git"

@@ -89,10 +89,18 @@
          "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
             "W obu przypadkach nowe preferencje zostaną zapisane. Przy wyborze „Zastosuj tylko do nowych tłumaczeń” każde istniejące tłumaczenie pozostanie bez zmian."
          ],
+         "With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "W przypadku opcji „Zastosuj tylko do nowych tłumaczeń” każde istniejące tłumaczenie pozostaje dokładnie w obecnym stanie."
+         ],
          "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
             "%1$s pole własne stało się możliwe do tłumaczenia poza tym ekranem: %2$s. Zdecyduj, co stanie się z już istniejącymi tłumaczeniami.",
             "%1$s pola własne stały się możliwe do tłumaczenia poza tym ekranem: %2$s. Zdecyduj, co stanie się z już istniejącymi tłumaczeniami.",
             "%1$s pól własnych stało się możliwych do tłumaczenia poza tym ekranem: %2$s. Zdecyduj, co stanie się z już istniejącymi tłumaczeniami."
+         ],
+         "%1$s custom field was waiting for a check an earlier WPML version started and did not finish: %2$s. Its translation setting has not changed. Decide whether the existing translations that use it should be marked as needing an update.": [
+            "%1$s pole własne oczekiwało na sprawdzenie, które rozpoczęła i którego nie ukończyła wcześniejsza wersja WPML: %2$s. Jego ustawienie tłumaczenia nie uległo zmianie. Proszę zdecydować, czy istniejące tłumaczenia, które z niego korzystają, powinny zostać oznaczone jako wymagające aktualizacji.",
+            "%1$s pola własne oczekiwały na sprawdzenie, które rozpoczęła i którego nie ukończyła wcześniejsza wersja WPML: %2$s. Ich ustawienie tłumaczenia nie uległo zmianie. Proszę zdecydować, czy istniejące tłumaczenia, które z nich korzystają, powinny zostać oznaczone jako wymagające aktualizacji.",
+            "%1$s pól własnych oczekiwało na sprawdzenie, które rozpoczęła i którego nie ukończyła wcześniejsza wersja WPML: %2$s. Ich ustawienie tłumaczenia nie uległo zmianie. Proszę zdecydować, czy istniejące tłumaczenia, które z nich korzystają, powinny zostać oznaczone jako wymagające aktualizacji."
          ],
          "Review this field": [
             "Przejrzyj to pole",
@@ -234,7 +242,7 @@
             "Liczenie słów do wysłania… %1$s z %2$s wpisów."
          ],
          "The number of words this sends could not be estimated. The Translation Dashboard shows the cost once the posts are queued.": [
-            "Nie udało się oszacować liczby słów do wysłania. Pulpit nawigacyjny tłumaczeń pokaże koszt po umieszczeniu wpisów w kolejce."
+            "Nie udało się oszacować liczby wysyłanych słów. Kokpit tłumaczeń pokaże koszt po umieszczeniu wpisów w kolejce."
          ],
          "This sends %s word of content that could not be priced. The Translation Dashboard shows the cost once the posts are queued.": [
             "To wysyła %s słowo treści, której nie można wycenić. Pulpit nawigacyjny tłumaczeń pokaże koszt po umieszczeniu wpisów w kolejce.",

@@ -20,6 +20,8 @@ class WPML_Elementor_Integration_Factory {
 				\WPML\PB\Elementor\V4\Hooks::class,
 				\WPML\PB\Elementor\V4\Component\QueryHooks::class,
 				\WPML\PB\Elementor\V4\Component\Cache::class,
+				\WPML\PB\Elementor\V4\Component\CopiedData::class,
+				\WPML\PB\Elementor\V4\Component\Styles::class,
 				\WPML\PB\Elementor\Hooks\FormPopup::class,
 				\WPML\PB\Elementor\Hooks\PopupQueue::class,
 				\WPML\PB\Elementor\Hooks\GutenbergCleanup::class,
@@ -29,9 +31,12 @@ class WPML_Elementor_Integration_Factory {
 				\WPML\PB\Elementor\AutoConfig\Factory::class,
 				\WPML\PB\Elementor\Hooks\LandingPages::class,
 				\WPML\PB\Elementor\Hooks\Editor::class,
+				\WPML\PB\Elementor\Hooks\PreviewRedirect::class,
 				\WPML\PB\Elementor\Hooks\WordPressWidgets::class,
 				\WPML\PB\Elementor\Hooks\Templates::class,
+				\WPML\PB\Elementor\Hooks\AppearedOnSite::class,
 				\WPML\PB\Elementor\Hooks\Cache::class,
+				\WPML\PB\Elementor\Hooks\ElementCacheLanguages::class,
 				\WPML\PB\Elementor\Hooks\KitDeletion::class,
 				\WPML_PB_Fix_Maintenance_Query::class,
 				\WPML\PB\Elementor\Hooks\TranslationJobImages::class,
@@ -39,6 +44,7 @@ class WPML_Elementor_Integration_Factory {
 				\WPML\PB\Elementor\Hooks\CustomFonts::class,
 				\WPML\PB\Elementor\Hooks\QueryFilter::class,
 				\WPML\PB\Elementor\Hooks\SavePostActions::class,
+				\WPML\PB\Elementor\Hooks\ImportedContentLanguage::class,
 				\WPML\PB\Elementor\Hooks\EditorLanguage::class,
 				\WPML\PB\Elementor\Hooks\Shortcodes::class,
 				\WPML\PB\Elementor\Hooks\RawHtmlSetting::class,
@@ -46,6 +52,14 @@ class WPML_Elementor_Integration_Factory {
 				\WPML\PB\Elementor\Config\IdsInWidgets::class,
 				\WPML\PB\Elementor\Hooks\TranslationGuiLabels::class,
 				\WPML\PB\Elementor\Hooks\DisambiguateMediaCarouselUrls::class,
+				\WPML\PB\Elementor\Hooks\SiteSettings::class,
+				\WPML\PB\Elementor\Hooks\HeaderFooterFields::class,
+				\WPML\PB\Elementor\Hooks\QueryWidgetFields::class,
+				\WPML\PB\Elementor\Hooks\EditorTemplateIds::class,
+				\WPML\PB\Elementor\Hooks\FormFields::class,
+				\WPML\PB\Elementor\Hooks\RecaptchaLanguage::class,
+				\WPML\PB\Elementor\Hooks\DocumentSettingsSync::class,
+				\WPML\PB\Elementor\Hooks\DocumentSettingsIds::class,
 			)
 		);
 
@@ -53,13 +67,18 @@ class WPML_Elementor_Integration_Factory {
 		$elementor_db_factory = new WPML_Elementor_DB_Factory();
 		$data_settings        = new WPML_Elementor_Data_Settings( $elementor_db_factory->create() );
 
-		( new \WPML\PB\Duplication\Hooks( $data_settings ) )->add_hooks();
+		( new \WPML\PB\Duplication\Hooks( $data_settings, new \WPML\PB\Links\PostDataLinks( $data_settings ) ) )->add_hooks();
 
 		$string_registration_factory = new WPML_String_Registration_Factory( $data_settings->get_pb_name() );
 		$string_registration         = $string_registration_factory->create();
 
 		$register_strings   = new WPML_Elementor_Register_Strings( $nodes, $data_settings, $string_registration );
-		$update_translation = new WPML_Elementor_Update_Translation( $nodes, $data_settings );
+		$update_translation = new WPML_Elementor_Update_Translation(
+			$nodes,
+			$data_settings,
+			new \WPML\PB\Elementor\V4\Component\InstanceIds(),
+			new \WPML\PB\Elementor\V4\Component\Cache()
+		);
 
 		return new WPML_Page_Builders_Integration( $register_strings, $update_translation, $data_settings );
 	}

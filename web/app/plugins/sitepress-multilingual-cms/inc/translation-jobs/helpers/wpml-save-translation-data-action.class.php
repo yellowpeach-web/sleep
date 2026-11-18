@@ -29,6 +29,8 @@ class WPML_Save_Translation_Data_Action extends WPML_Translation_Job_Helper_With
 
 	private $tm_records;
 
+	private $pro_translation;
+
 	private $data;
 
 	private $redirect_target = false;
@@ -49,6 +51,7 @@ class WPML_Save_Translation_Data_Action extends WPML_Translation_Job_Helper_With
 		$this->sitepress                         = $sitepress;
 		$this->data                              = $data;
 		$this->tm_records                        = $tm_records;
+		$this->pro_translation                   = $ICL_Pro_Translation;
 		$translate_link_targets_global_state     = new WPML_Translate_Link_Target_Global_State( $sitepress );
 		$this->translate_link_targets_in_posts   = new WPML_Translate_Link_Targets_In_Posts( $translate_link_targets_global_state, $wpdb, $ICL_Pro_Translation );
 		$this->translate_link_targets_in_strings = new WPML_Translate_Link_Targets_In_Strings( $translate_link_targets_global_state, $wpdb, new WPML_WP_API(), $ICL_Pro_Translation );
@@ -110,6 +113,10 @@ class WPML_Save_Translation_Data_Action extends WPML_Translation_Job_Helper_With
 			$res = false;
 		} else {
 			foreach ( $data['fields'] as $fieldname => $field ) {
+				if ( isset( $field['data'] ) ) {
+					$field['data']                        = \WPML\TM\Jobs\ReferenceAttributes::strip( $field['data'] );
+					$data['fields'][ $fieldname ]['data'] = $field['data'];
+				}
 				if ( substr( $fieldname, 0, 6 ) === 'field-' ) {
 					$field = apply_filters( 'wpml_tm_save_translation_cf', $field, $fieldname, $data );
 				}
@@ -205,6 +212,22 @@ class WPML_Save_Translation_Data_Action extends WPML_Translation_Job_Helper_With
 					$icl_translate_job->complete();
 					self::save_external( $element_type_prefix, $job, [ $this, 'decode_field_data' ] );
 				} else {
+					if ( $this->has_package_fields_without_writer( $job ) ) {
+						JobLog::addError( 'save_translation_no_string_writer', [
+							'job_id' => $data['job_id'] ?? null,
+							'rid'    => $rid,
+						] );
+
+						$this->add_message( [
+							'type' => 'error',
+							'text' => __( 'The translation could not be applied: the texts of this content are saved by WPML String Translation, which is not loaded for this request. Make sure WPML String Translation is active, then apply the translation again. The job has been left unfinished.', 'sitepress' ),
+						] );
+
+						$this->forget_job_request_values( $job_set_post_id );
+
+						return false;
+					}
+
 					$translation_trid = $translation_trid ? $translation_trid : $translation_status->trid();
 
 					if ( $element_id ) {
@@ -454,11 +477,17 @@ class WPML_Save_Translation_Data_Action extends WPML_Translation_Job_Helper_With
 							)
 						);
 
+						WPML_Translations::flush_cache_for_trids( array( $translation_trid ) );
+
 						/* translators: First half of a message; the title of the translated content follows it as a link, as in "Translation added: My page." Keep the space after the colon. */
 						$user_message = __( 'Translation added: ', 'sitepress' ) . '<a href="' . $link . '">' . $postarr['post_title'] . '</a>.';
 					} else {
 						/* translators: First half of a message; the title of the translated content follows it as a link, as in "Translation updated: My page." Keep the space after the colon. */
 						$user_message = __( 'Translation updated: ', 'sitepress' ) . '<a href="' . $link . '">' . $postarr['post_title'] . '</a>.';
+					}
+
+					if ( $this->pro_translation ) {
+						$this->pro_translation->fix_links_to_translated_content( $new_post_id, $job->language_code, 'post' );
 					}
 
 					$icl_translate_job->complete();
@@ -565,6 +594,9 @@ class WPML_Save_Translation_Data_Action extends WPML_Translation_Job_Helper_With
 				$this->sitepress->executeSavePostHookOnPostTranslationSave( $new_post_id );
 
 				$expectedStatus = apply_filters( 'wpml_tm_applied_job_status', ICL_TM_COMPLETE, $job, $new_post_id );
+
+				$needs_second_update = (int) apply_filters( 'wpml_tm_applied_job_needs_update', $needs_second_update, $job, $new_post_id );
+
 				$translation_status->update( [
 					'status'       => $expectedStatus,
 					'needs_update' => $needs_second_update,
@@ -861,6 +893,21 @@ class WPML_Save_Translation_Data_Action extends WPML_Translation_Job_Helper_With
 		$postarr['post_content'] = $original_post->post_content;
 	}
 
+	private function has_package_fields_without_writer( $job ) {
+		$has_package_field = false;
+
+		foreach ( isset( $job->elements ) && is_array( $job->elements ) ? $job->elements : [] as $field ) {
+			$field_type = isset( $field->field_type ) ? (string) $field->field_type : '';
+
+			if ( 0 === strpos( $field_type, 'package-string-' ) && ! empty( $field->field_translate ) ) {
+				$has_package_field = true;
+				break;
+			}
+		}
+
+		return $has_package_field && ! has_action( 'wpml_add_string_translation' );
+	}
+
 	private static function is_empty_decoded_value( $value ) {
 		if ( is_array( $value ) ) {
 			return ! array_filter( $value, function ( $item ) {
@@ -974,7 +1021,14 @@ class WPML_Save_Translation_Data_Action extends WPML_Translation_Job_Helper_With
 		require_once WPML_TM_PATH . '/inc/translation-jobs/wpml-translation-jobs-collection.class.php';
 
 		$job = new WPML_Post_Translation_Job( $job_id );
-		$job->save_terms_to_post();
+		foreach ( (array) $job->save_terms_to_post() as $refused ) {
+			$this->add_message(
+				[
+					'type' => 'error',
+					'text' => $refused['message'],
+				]
+			);
+		}
 	}
 
 	private function add_message( $message ) {

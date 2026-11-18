@@ -9,6 +9,8 @@ class WPML_Single_Url_Cache_Scheduler {
 	const CRON_DELAY      = 60;
 	const LOOPBACK_ACTION = 'single-url-cache-worker';
 
+	const LOOPBACK_NAME = 'single-url-cache';
+
 	const REDISPATCH_LIMIT       = 600;
 	const REDISPATCH_WINDOW      = 3600;
 	const REDISPATCH_STALL_LIMIT = 6;
@@ -19,6 +21,8 @@ class WPML_Single_Url_Cache_Scheduler {
 	private $shutdown_registered = false;
 
 	private $scheduled_in_request = [];
+
+	private $deferred_dispatches = [];
 
 	public function schedule( $blog_id = null ) {
 		$blog_id = $blog_id ? (int) $blog_id : get_current_blog_id();
@@ -40,8 +44,9 @@ class WPML_Single_Url_Cache_Scheduler {
 			}
 
 			if ( false === get_transient( self::DISPATCH_LOCK ) ) {
-				set_transient( self::DISPATCH_LOCK, 1, 30 );
-				$this->shutdown_dispatches[ $blog_id ] = $blog_id;
+				$this->queue_dispatch( $blog_id );
+			} else {
+				$this->deferred_dispatches[ $blog_id ] = true;
 			}
 		} finally {
 			if ( $switched ) {
@@ -49,6 +54,15 @@ class WPML_Single_Url_Cache_Scheduler {
 			}
 		}
 
+		$this->register_shutdown();
+	}
+
+	private function queue_dispatch( $blog_id ) {
+		set_transient( self::DISPATCH_LOCK, 1, 30 );
+		$this->shutdown_dispatches[ $blog_id ] = $blog_id;
+	}
+
+	private function register_shutdown() {
 		if ( ! $this->shutdown_registered ) {
 			$this->shutdown_registered = true;
 			add_action( 'shutdown', [ $this, 'dispatch_loopbacks' ], PHP_INT_MAX - 10 );
@@ -93,11 +107,11 @@ class WPML_Single_Url_Cache_Scheduler {
 			return;
 		}
 
-		wp_remote_post(
+		\WPML\Request\Loopback::post(
 			get_admin_url( $blog_id, 'admin-ajax.php' ),
 			[
 				'blocking'    => false,
-				'timeout'     => 0.01,
+				'timeout'     => 1,
 				'redirection' => 0,
 				'body'        => [
 					'action'    => self::AJAX_ACTION,
@@ -105,7 +119,8 @@ class WPML_Single_Url_Cache_Scheduler {
 					'timestamp' => $timestamp,
 					'signature' => $signature,
 				],
-			]
+			],
+			self::LOOPBACK_NAME
 		);
 	}
 
@@ -135,15 +150,22 @@ class WPML_Single_Url_Cache_Scheduler {
 	}
 
 	public function allow_redispatch( $blog_id ) {
+		$blog_id  = (int) $blog_id;
 		$switched = false;
-		if ( get_current_blog_id() !== (int) $blog_id ) {
-			switch_to_blog( (int) $blog_id );
+		if ( get_current_blog_id() !== $blog_id ) {
+			switch_to_blog( $blog_id );
 			$switched = true;
 		}
 
 		try {
 			if ( $this->redispatch_allowed() ) {
-				delete_transient( self::DISPATCH_LOCK );
+				if ( isset( $this->deferred_dispatches[ $blog_id ] ) ) {
+					unset( $this->deferred_dispatches[ $blog_id ] );
+					$this->queue_dispatch( $blog_id );
+					$this->register_shutdown();
+				} else {
+					delete_transient( self::DISPATCH_LOCK );
+				}
 			}
 		} finally {
 			if ( $switched ) {
@@ -166,8 +188,8 @@ class WPML_Single_Url_Cache_Scheduler {
 		try {
 			$state      = $this->redispatch_state();
 			$unfinished = (int) $result['unfinished'];
-			$progress   = ! empty( $result['seeding'] )
-				|| ! empty( $result['cleaned'] )
+			$stable     = empty( $result['generation_moved'] );
+			$progress   = ( $stable && ( ! empty( $result['seeding'] ) || ! empty( $result['cleaned'] ) ) )
 				|| ( null !== $state['unfinished'] && $unfinished < $state['unfinished'] );
 
 			if ( null !== $state['unfinished'] ) {

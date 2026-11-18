@@ -116,8 +116,7 @@ class WPML_PO_Import {
 	}
 
 	private function strip_slashes( $string ) {
-		$string = str_replace( '\\\\', '\\', $string );
-		return $string;
+		return (string) preg_replace( '/\\\\([\\\\"])/', '$1', $string );
 	}
 
 	public function has_strings( ) {

@@ -9,6 +9,8 @@ class WPML_ST_Translations_File_Dictionary_Storage_Table implements WPML_ST_Tran
 
 	private $updated_data = array();
 
+	private $status_moves = array();
+
 	public function __construct( wpdb $wpdb ) {
 		$this->wpdb = $wpdb;
 	}
@@ -32,6 +34,17 @@ class WPML_ST_Translations_File_Dictionary_Storage_Table implements WPML_ST_Tran
 
 	public function persist() {
 		$wpdb = $this->wpdb;
+
+		foreach ( $this->status_moves as $move ) {
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->prefix}icl_mo_files_domains SET status = %s WHERE status = %s",
+					$move[1],
+					$move[0]
+				)
+			);
+		}
+		$this->status_moves = array();
 
 		foreach ( $this->new_data as $file ) {
 			$wpdb->query(
@@ -61,6 +74,18 @@ class WPML_ST_Translations_File_Dictionary_Storage_Table implements WPML_ST_Tran
 				array( '%s', '%s', '%d', '%d', '%s', '%s' )
 			);
 		}
+	}
+
+	public function move_status( $from, $to ) {
+		$this->load_data();
+
+		foreach ( $this->data as $file ) {
+			if ( $from === $file->get_status() ) {
+				$file->set_status( $to );
+			}
+		}
+
+		$this->status_moves[] = array( $from, $to );
 	}
 
 	private function file_to_array( WPML_ST_Translations_File_Entry $file, array $data = array() ) {

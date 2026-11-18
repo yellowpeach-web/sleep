@@ -60,6 +60,9 @@ class Register {
 		$accountLink      = $accountUrl
 			? '<p class="otgs-installer-register-link"><a target="_blank" rel="nofollow" href="' . esc_url( $accountUrl ) . '">' . esc_html( __( 'Get a key for this site', 'installer' ) ) . '</a></p>'
 			: '';
+		$networkNotice = \WP_Installer::is_subsite_of_unregistered_network( $model->repoId )
+			? '<p class="otgs-installer-register-network-notice">' . \WP_Installer::network_one_key_notice( $model->repoId, $model->productName ) . '</p>'
+			: '';
 
 		return '<form class="otgsi_site_key_form" method="post">
 			<input type="hidden" name="action" value="save_site_key"/>
@@ -67,6 +70,7 @@ class Register {
 			<input type="hidden" name="repository_id" value="' . esc_attr( $model->repoId ) . '">
             <h3 class="otgs-installer-register-title">Register ' . esc_html( $model->productName ) . '</h3>
             <p class="otgs-installer-register-info">' . esc_html( $registrationText ) . '</p>
+            ' . $networkNotice . '
             <div class="otgs-installer-register-inputs">
                 <label for="site_key_' . esc_attr( $model->repoId ) . '">' . esc_html( __( 'Site key', 'installer' ) ) . '</label>
                 <input type="text" size="20" name="site_key_' . esc_attr( $model->repoId ) . '" id="site_key_' . esc_attr( $model->repoId ) . '"/>

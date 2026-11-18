@@ -55,6 +55,20 @@ class DebugBackTrace {
 		return $found;
 	}
 
+	public function are_classes_in_call_stack( array $classes, $refresh = true ) {
+		if ( empty( $this->debug_backtrace ) || $refresh ) {
+			$this->get_backtrace();
+		}
+
+		foreach ( $this->debug_backtrace as $frame ) {
+			if ( isset( $frame['class'] ) && in_array( $frame['class'], $classes, true ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public function is_function_in_call_stack( $function_name, $refresh = true ) {
 		return $this->are_functions_in_call_stack( [ $function_name ], $refresh );
 	}

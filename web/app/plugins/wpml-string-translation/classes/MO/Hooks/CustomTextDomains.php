@@ -53,25 +53,40 @@ class CustomTextDomains implements \IWPML_Action {
 	}
 
 	public function clear_cache() {
-		$locales = $this->cache->get( self::CACHE_ALL_LOCALES );
+		self::clearCacheIn( $this->cache );
+	}
+
+	public static function clearCacheIn( StoragePerLanguageInterface $cache ) {
+		$locales = $cache->get( self::CACHE_ALL_LOCALES );
 		if ( ! is_array( $locales ) ) {
 			return;
 		}
 
 		foreach ( $locales as $locale ) {
-			$this->cache->delete( $locale );
+			$cache->delete( $locale );
 		}
 
-		$this->cache->delete( self::CACHE_ALL_LOCALES );
+		$cache->delete( self::CACHE_ALL_LOCALES );
 	}
 
 	public function add_hooks() {
 		$this->init_custom_text_domains();
+
+		add_action( 'admin_init', [ $this, 'rebuild_lost_files' ] );
+	}
+
+	public function rebuild_lost_files() {
+		if ( wpml_is_ajax() || wp_doing_cron() || wpml_is_rest_request() ) {
+			return;
+		}
+
+		add_action( 'shutdown', [ $this->manager, 'rebuildLostFiles' ], 10 );
 	}
 
 
 	public function init_custom_text_domains( $locale = null ) {
 		$locale = $locale ?: determine_locale();
+		$this->primeLocaleCaches( $locale );
 
 		$addJitMoToL10nGlobal = pipe( Lst::nth( 0 ), function ( $domain ) use ( $locale ) {
 			unset( $GLOBALS['l10n'][ $domain ] );
@@ -131,5 +146,18 @@ class CustomTextDomains implements \IWPML_Action {
 		}
 
 		$localeFiles->each( $addJitMoToL10nGlobal );
+	}
+
+	private function primeLocaleCaches( $locale ) {
+		if ( ! function_exists( 'wp_prime_option_caches' ) || wp_installing() || wp_using_ext_object_cache() ) {
+			return;
+		}
+		$names = [];
+		foreach ( [ self::CACHE_ID, \WPML\ST\TranslationFile\Manager::INDEX_CACHE_ID . '_mo' ] as $id ) {
+			$transient = $id . '-' . $locale;
+			$names[]   = '_transient_' . $transient;
+			$names[]   = '_transient_timeout_' . $transient;
+		}
+		wp_prime_option_caches( $names );
 	}
 }

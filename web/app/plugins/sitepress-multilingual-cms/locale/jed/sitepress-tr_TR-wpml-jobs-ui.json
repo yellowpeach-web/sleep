@@ -14,7 +14,7 @@
             "Grup senkronizasyonunu başlat"
          ],
          "Cancel job": [
-            "Görevi iptal et"
+            "İşi iptal et"
          ],
          "Continue reviewing": [
             "İncelemeye devam et"
@@ -77,10 +77,10 @@
             "Uygula"
          ],
          "Actions applied to multiple translation jobs can take a few seconds. Please do not leave the page.": [
-            "Birden fazla çeviri görevine uygulanan işlemler birkaç saniye sürebilir. Lütfen sayfadan ayrılmayın."
+            "Birden fazla çeviri işine uygulanan işlemler birkaç saniye sürebilir. Lütfen sayfadan ayrılmayın."
          ],
          "Actions applied to multiple translation jobs can take a few minutes. Please do not leave the page.": [
-            "Birden fazla çeviri görevine uygulanan işlemler birkaç dakika sürebilir. Lütfen sayfadan ayrılmayın."
+            "Birden fazla çeviri işine uygulanan işlemler birkaç dakika sürebilir. Lütfen sayfadan ayrılmayın."
          ],
          "Select translator": [
             "Çevirmen seçin"
@@ -91,23 +91,107 @@
          "Cancelled": [
             "İptal edildi"
          ],
-         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
-            "Otomatik çeviri art arda başarısız oldu ve WPML yeniden denemeyi durdurdu. İşi Çeviri Panosu'ndan yeniden gönderin veya atın ya da buradan iptal edin."
+         "Published — Pending review": [
+            "Yayınlandı — İnceleme bekleniyor"
          ],
          "Needs translation": [
             "Çeviri bekleniyor"
          ],
-         "Needs update": [
-            "Güncelleme gerekiyor"
+         "Review in progress": [
+            "İnceleme devam ediyor"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "Kullandıkça ödeme ödemeniz bekleniyor"
          ],
          "Translation ready to download": [
             "Çeviri indirilmeye hazır"
          ],
+         "Waiting for payment": [
+            "Ödeme bekleniyor"
+         ],
+         "Waiting for words": [
+            "Kelimeler bekleniyor"
+         ],
          "Completed": [
             "Tamamlandı"
          ],
+         "Insufficient funds": [
+            "Yetersiz bakiye"
+         ],
+         "Sending": [
+            "Gönderiliyor"
+         ],
+         "Automatic translation is off, so this job is not retried. Resend it, or switch Translate Everything on.": [
+            "Otomatik çeviri kapalı olduğundan bu iş yeniden denenmez. İşi yeniden gönderin veya Her Şeyi Otomatik Çevir özelliğini açın."
+         ],
+         "Waiting for you": [
+            "Sizden eylem bekleniyor"
+         ],
          "Failed - needs attention": [
             "Başarısız - ilgilenilmesi gerekiyor"
+         ],
+         "You can also resend the content or open the job in the Translation Queue.": [
+            "Ayrıca içeriği yeniden gönderebilir veya işi Çeviri Kuyruğu'nda açabilirsiniz."
+         ],
+         "If it keeps failing for about a day, the job is marked as needing your attention.": [
+            "Yaklaşık bir gün boyunca başarısız olmaya devam ederse iş, ilgilenmeniz gereken bir durum olarak işaretlenir."
+         ],
+         "In progress": [
+            "Devam ediyor"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "Otomatik çeviri art arda başarısız oldu ve WPML yeniden denemeyi durdurdu. İşi Çeviri Panosu'ndan yeniden gönderin veya atın ya da buradan iptal edin."
+         ],
+         "Needs update": [
+            "Güncelleme gerekiyor"
+         ],
+         "Scheduled — Pending review": [
+            "Zamanlandı — İnceleme bekleniyor"
+         ],
+         "Private — Pending review": [
+            "Gizli — İnceleme bekleniyor"
+         ],
+         "Draft — Pending review": [
+            "Taslak — İnceleme bekleniyor"
+         ],
+         "Published — Review in progress": [
+            "Yayınlandı — İnceleme devam ediyor"
+         ],
+         "Scheduled — Review in progress": [
+            "Zamanlandı — İnceleme devam ediyor"
+         ],
+         "Private — Review in progress": [
+            "Gizli — İnceleme devam ediyor"
+         ],
+         "Draft — Review in progress": [
+            "Taslak — İnceleme devam ediyor"
+         ],
+         "WPML could not reach our translation system.": [
+            "WPML çeviri sistemimize ulaşamadı."
+         ],
+         "Our translation system did not accept this job.": [
+            "Çeviri sistemimiz bu işi kabul etmedi."
+         ],
+         "WPML could not calculate the word count for this job.": [
+            "WPML bu iş için kelime sayısını hesaplayamadı."
+         ],
+         "WPML could not read the price of automatic translation for this job.": [
+            "WPML bu iş için otomatik çeviri fiyatını okuyamadı."
+         ],
+         "WPML could not prepare this job for automatic translation.": [
+            "WPML bu işi otomatik çeviri için hazırlayamadı."
+         ],
+         "Sending this job to automatic translation failed.": [
+            "Bu işin otomatik çeviriye gönderilmesi başarısız oldu."
+         ],
+         "WPML tries again within a minute.": [
+            "WPML bir dakika içinde tekrar dener."
+         ],
+         "WPML tries again in about %d minutes.": [
+            "WPML yaklaşık %d dakika içinde tekrar dener."
+         ],
+         "WPML tries again in about %d hours.": [
+            "WPML yaklaşık %d saat içinde tekrar dener."
          ],
          "%s terms are published immediately because they don't support draft mode.": [
             "%s terimleri taslak modunu desteklemedikleri için hemen yayınlanır."
@@ -115,41 +199,14 @@
          "%s are immediately published because they don't support draft mode.": [
             "%s taslak modunu desteklemedikleri için hemen yayınlanır."
          ],
-         "Published — Pending review": [
-            "Yayınlandı — İnceleme bekleniyor"
+         "(no title)": [
+            "(başlık yok)"
          ],
-         "Draft — Pending review": [
-            "Taslak — İnceleme bekleniyor"
-         ],
-         "Review in progress": [
-            "İnceleme devam ediyor"
-         ],
-         "Published — Review in progress": [
-            "Yayınlandı — İnceleme devam ediyor"
-         ],
-         "Draft — Review in progress": [
-            "Taslak — İnceleme devam ediyor"
-         ],
-         "Waiting for your Pay-As-You-Go payment": [
-            "Kullandıkça ödeme ödemeniz bekleniyor"
-         ],
-         "Waiting for payment": [
-            "Ödeme bekleniyor"
-         ],
-         "Insufficient funds": [
-            "Yetersiz bakiye"
-         ],
-         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
-            "Otomatik çeviri geçici bir hata nedeniyle duraklatıldı ve otomatik olarak yeniden denenecek — herhangi bir işlem yapılmasına gerek yok. Durum yaklaşık 30 dakika içinde değişmezse WPML desteği ile iletişime geçin."
-         ],
-         "In progress": [
-            "Devam ediyor"
+         "%1$s (ID %2$d)": [
+            "%1$s (ID %2$d)"
          ],
          "View original": [
             "Orijinali görüntüle"
-         ],
-         "(no title)": [
-            "(başlık yok)"
          ],
          "Automatic translation": [
             "Otomatik çeviri"
@@ -212,7 +269,7 @@
             "Herkes"
          ],
          "Include jobs from translation services": [
-            "Çeviri hizmetlerinden gelen görevleri dahil et"
+            "Çeviri hizmetlerinden gelen işleri dahil et"
          ],
          "All types": [
             "Tüm türler"
@@ -245,7 +302,7 @@
             "Tüm görevleri XLIFF 1.1 olarak dışa aktar"
          ],
          "Export all filtered jobs to XLIFF 1.1": [
-            "Tüm filtrelenmiş görevleri XLIFF 1.1 olarak dışa aktar"
+            "Tüm filtrelenmiş işleri XLIFF 1.1 olarak dışa aktar"
          ],
          "Export all jobs to XLIFF 1.2": [
             "Tüm görevleri XLIFF 1.2 olarak dışa aktar"
@@ -281,7 +338,7 @@
             "%s sütununa göre filtrele"
          ],
          "WPML's id for this translation. It stays the same when the job is sent again.": [
-            "WPML'nin bu çeviri için kimliği. Görev tekrar gönderildiğinde aynı kalır."
+            "WPML’nin bu çeviri için kimliği. İş tekrar gönderildiğinde aynı kalır."
          ],
          "The number in exported XLIFF file names. It changes when the job is sent again.": [
             "Dışa aktarılan XLIFF dosya adlarındaki numara. Görev tekrar gönderildiğinde değişir."
@@ -293,7 +350,7 @@
             "Çeviri incelemelerini onayla"
          ],
          "Cancel jobs": [
-            "Görevleri iptal et"
+            "İşleri iptal et"
          ],
          "Cancel translation reviews": [
             "Çeviri incelemelerini iptal et"
@@ -346,7 +403,7 @@
             "%d çeviri indirildi"
          ],
          "No valid jobs selected to approve translations reviews!": [
-            "Çeviri incelemelerini onaylamak için geçerli bir görev seçilmedi!"
+            "Çeviri incelemelerini onaylamak için geçerli bir iş seçilmedi!"
          ],
          "%1$s (%2$s)": [
             "%1$s (%2$s)"
@@ -385,7 +442,7 @@
             "Çevirmen göreve atanamadı"
          ],
          "The jobs have been cancelled": [
-            "Görevler iptal edildi"
+            "İşler iptal edildi"
          ],
          "The job has been cancelled": [
             "Görev iptal edildi"
@@ -463,7 +520,7 @@
             "Çeviri görevleri yükleniyor"
          ],
          "Jobs could not be loaded": [
-            "Görevler yüklenemedi"
+            "İşler yüklenemedi"
          ],
          "This translator cannot translate this language pair.": [
             "Bu çevirmen bu dil çiftini çeviremez."
@@ -486,9 +543,6 @@
          "Failed to resign from jobs": [
             "Görevler iade edilemedi"
          ],
-         "The Advanced Editor jobs synchronization has failed": [
-            "Gelişmiş Editör görev senkronizasyonu başarısız oldu"
-         ],
          "Synchronization with the Professional Translation service has failed": [
             "Profesyonel Çeviri hizmeti ile senkronizasyon başarısız oldu"
          ],
@@ -501,8 +555,40 @@
          "Batch sync couldn't be finished": [
             "Grup senkronizasyonu tamamlanamadı"
          ],
+         "More details": [
+            "Daha fazla detay"
+         ],
+         "%s job was left out of the export.": [
+            "%s iş dışa aktarma dışında bırakıldı.",
+            "%s iş dışa aktarma dışında bırakıldı."
+         ],
+         "%s job could not be exported. No file was downloaded.": [
+            "%s iş dışa aktarılamadı. Hiçbir dosya indirilmedi.",
+            "%s iş dışa aktarılamadı. Hiçbir dosya indirilmedi."
+         ],
+         "This job was saved while this server had the PHP zlib extension, so its text is stored compressed. PHP on this server has no zlib now, so WPML cannot read it. Ask your hosting provider to enable the PHP zlib extension, then export it again.": [
+            "Bu iş sunucuda PHP zlib eklentisi mevcutken kaydedildi, bu nedenle metni sıkıştırılmış olarak saklanıyor. Bu sunucudaki PHP'de şu anda zlib bulunmadığından WPML metni okuyamıyor. Barındırma sağlayıcınızdan PHP zlib eklentisini etkinleştirmesini isteyin, ardından tekrar dışa aktarın.",
+            "Bu işler sunucuda PHP zlib eklentisi mevcutken kaydedildi, bu nedenle metinleri sıkıştırılmış olarak saklanıyor. Bu sunucudaki PHP'de şu anda zlib bulunmadığından WPML metinleri okuyamıyor. Barındırma sağlayıcınızdan PHP zlib eklentisini etkinleştirmesini isteyin, ardından tekrar dışa aktarın."
+         ],
+         "This job could not be exported.": [
+            "Bu iş dışa aktarılamadı.",
+            "Bu işler dışa aktarılamadı."
+         ],
+         "%1$s (job %2$s)": [
+            "%1$s (iş %2$s)"
+         ],
+         "Job %s": [
+            "İş %s"
+         ],
+         "and %s more job": [
+            "ve %s iş daha",
+            "ve %s iş daha"
+         ],
          "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
             "Çeviri sistemimiz bu isteği kabul etmedi (%d yanıtını verdi). Bir dakika bekleyip tekrar deneyin; sorun devam ederse WPML destek ekibiyle iletişime geçin."
+         ],
+         "The site stopped answering before this translation was confirmed. If it was not saved, the next download takes it again.": [
+            "Bu çeviri onaylanmadan önce site yanıt vermeyi durdurdu. Kaydedilmediyse sonraki indirmede tekrar alınacaktır."
          ]
       }
    }

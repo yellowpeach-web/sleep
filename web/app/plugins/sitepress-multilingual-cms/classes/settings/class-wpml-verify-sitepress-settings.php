@@ -17,7 +17,6 @@ class WPML_Verify_SitePress_Settings {
 
 	public function verify( $settings ) {
 		$default_settings = [
-			'interview_translators'              => 1,
 			'existing_content_language_verified' => empty( $settings['setup_complete'] ) ? 0 : 1,
 			'language_negotiation_type'          => WPML_URL_Format::DEFAULT_FORMAT,
 			'icl_lso_link_empty'                 => 0,
@@ -34,24 +33,22 @@ class WPML_Verify_SitePress_Settings {
 			'sync_delete_tax'                    => 0,
 			'sync_post_taxonomies'               => 1,
 			'sync_post_date'                     => 1,
-			'sync_taxonomy_parents'              => 0,
 			'translation_pickup_method'          => 0,
 			'notify_complete'                    => 1,
 			'translated_document_status'         => 1,
 			'translated_document_status_sync'    => 0,
-			'remote_management'                  => 0,
 			'auto_adjust_ids'                    => 1,
-			'alert_delay'                        => 0,
-			'promote_wpml'                       => 0,
 			'automatic_redirect'                 => 0,
 			'remember_language'                  => 24,
+			'redirect_to_chosen_language'        => 0,
+			'chosen_language_days'               => 30,
+			'suggest_browser_language'           => 0,
 			'icl_lang_sel_copy_parameters'       => '',
 			'translated_document_page_url'       => 'auto-generate',
 			'sync_comments_on_duplicates'        => 0,
 			'seo'                                => [
-				'head_langs'                  => 1,
-				'canonicalization_duplicates' => 1,
-				'head_langs_priority'         => 1,
+				'head_langs'          => 1,
+				'head_langs_priority' => 1,
 			],
 			'posts_slug_translation'             => [
 				'on' => 1,
@@ -115,15 +112,53 @@ class WPML_Verify_SitePress_Settings {
 			}
 		}
 
+		if ( is_array( $settings ) && ! empty( $settings['setup_complete'] )
+			&& array_key_exists( 'existing_content_language_verified', $settings )
+			&& empty( $settings['existing_content_language_verified'] )
+		) {
+			$settings['existing_content_language_verified'] = 1;
+			$update_settings                                = true;
+		}
+
 		if ( $is_fresh_install ) {
 			$settings[ \WPML\ContentDeletion\Settings::KEY ] = self::seedContentDeletion();
+			$settings[ \WPML\ContentDeletion\Settings::UNWRITTEN_DEFAULT_KEY ] = \WPML\ContentDeletion\Settings::ASK;
 			$settings['sync_delete']                         = 0;
 			$settings['sync_delete_tax']                     = 0;
 			$update_settings                                 = true;
+		} elseif ( self::startedOnTheTableBeforeTheMark( $settings ) ) {
+			$settings[ \WPML\ContentDeletion\Settings::UNWRITTEN_DEFAULT_KEY ] = \WPML\ContentDeletion\Settings::ASK;
+			$update_settings = true;
 		}
 
 		return [ $settings, $update_settings ];
 
+	}
+
+	private static function startedOnTheTableBeforeTheMark( $settings ) {
+		if ( ! is_array( $settings )
+			 || array_key_exists( \WPML\ContentDeletion\Settings::UNWRITTEN_DEFAULT_KEY, $settings )
+			 || ! isset( $settings[ \WPML\ContentDeletion\Settings::KEY ] )
+			 || ! array_key_exists( 'sync_delete', $settings )
+			 || ! array_key_exists( 'sync_delete_tax', $settings )
+			 || 0 !== (int) $settings['sync_delete']
+			 || 0 !== (int) $settings['sync_delete_tax']
+		) {
+			return false;
+		}
+
+		$seed      = self::seedContentDeletion();
+		$originals = $settings[ \WPML\ContentDeletion\Settings::KEY ][ \WPML\ContentDeletion\Settings::ORIGINALS ] ?? null;
+		if ( ! is_array( $originals ) ) {
+			return false;
+		}
+		foreach ( $seed[ \WPML\ContentDeletion\Settings::ORIGINALS ] as $key => $value ) {
+			if ( ! isset( $originals[ $key ] ) || $originals[ $key ] !== $value ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	private function leftMissingKeys( $settings, array $default_keys ) {
@@ -131,9 +166,11 @@ class WPML_Verify_SitePress_Settings {
 			return [];
 		}
 
+		$registered = $this->stored_copy->registeredKeys();
+		$source_lost  = in_array( 'setup_complete', $registered, true ) && ! array_key_exists( 'setup_complete', $settings );
 		$left_missing = [];
-		foreach ( array_intersect( $this->stored_copy->registeredKeys(), $default_keys ) as $key ) {
-			if ( ! array_key_exists( $key, $settings ) && ! in_array( $key, self::DERIVED_WHEN_LOST, true ) ) {
+		foreach ( array_intersect( $registered, $default_keys ) as $key ) {
+			if ( ! array_key_exists( $key, $settings ) && ( $source_lost || ! in_array( $key, self::DERIVED_WHEN_LOST, true ) ) ) {
 				$left_missing[ $key ] = true;
 			}
 		}

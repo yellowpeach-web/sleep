@@ -1,5 +1,9 @@
 <?php
 
+use WPML\PB\BeaverBuilder\Media\Modules\AttachmentData;
+use WPML\PB\BeaverBuilder\Media\Modules\AttachmentFields;
+use WPML\PB\BeaverBuilder\Media\Modules\Composite;
+
 class WPML_Beaver_Builder_Media_Node_Provider {
 
 	private $media_translate;
@@ -29,6 +33,43 @@ class WPML_Beaver_Builder_Media_Node_Provider {
 					$node = new WPML_Beaver_Builder_Media_Node_Slideshow( $this->media_translate );
 					break;
 
+				case 'row':
+					$node = new Composite(
+						$this->media_translate,
+						[
+							$this->attachment_fields( [ 'bg_image', 'bg_parallax_image', 'bg_video_fallback', 'bg_video', 'bg_video_webm' ] ),
+							new AttachmentData( $this->media_translate, [ 'bg_video_data', 'bg_video_webm_data' ] ),
+							new WPML_Beaver_Builder_Media_Node_Slideshow( $this->media_translate, 'ss_photos', 'ss_photo_data' ),
+						]
+					);
+					break;
+
+				case 'column':
+					$node = $this->attachment_fields( [ 'bg_image' ] );
+					break;
+
+				case 'callout':
+					$node = $this->attachment_fields( [ 'photo' ] );
+					break;
+
+				case 'video':
+					$node = new Composite(
+						$this->media_translate,
+						[
+							$this->attachment_fields( [ 'video', 'video_webm', 'poster' ] ),
+							new AttachmentData( $this->media_translate, [ 'data' ] ),
+						]
+					);
+					break;
+
+				case 'menu':
+					$node = $this->attachment_fields( [ 'menu_logo_image' ] );
+					break;
+
+				case 'post-grid':
+					$node = $this->attachment_fields( [ 'image_fallback' ] );
+					break;
+
 				default:
 					$node = null;
 			}
@@ -37,6 +78,10 @@ class WPML_Beaver_Builder_Media_Node_Provider {
 		}
 
 		return $this->nodes[ $type ];
+	}
+
+	private function attachment_fields( array $field_names ) {
+		return new AttachmentFields( $this->media_translate, $field_names );
 	}
 
 	public function get_media() {

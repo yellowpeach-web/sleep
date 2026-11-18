@@ -93,7 +93,7 @@ class ReferenceKeyLoadHooks implements \IWPML_Backend_Action, \IWPML_Frontend_Ac
 	}
 
 	private function unserialize( $value ) {
-		return $this->isAcf61OrNewer() ? acf_maybe_unserialize( $value ) : maybe_unserialize( $value );
+		return $this->isAcf61OrNewer() ? acf_maybe_unserialize( $value ) : \WPML\Utils\Unserialize::maybe( $value );
 	}
 
 	private function isAcf61OrNewer(): bool {

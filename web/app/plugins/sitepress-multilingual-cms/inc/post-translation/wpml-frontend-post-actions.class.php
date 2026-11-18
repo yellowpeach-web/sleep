@@ -73,18 +73,29 @@ class WPML_Frontend_Post_Actions extends WPML_Post_Translation {
 			}
 		}
 
+		if ( ! $this->get_element_lang_code( $post_id ) ) {
+			$site_editor_lang = \WPML\BlockEditor\SiteEditor\TemplateSaveLanguage::forNewRow( $post_id );
+			if ( null !== $site_editor_lang ) {
+				return apply_filters( 'wpml_save_post_lang', $site_editor_lang );
+			}
+		}
+
 		return parent::get_save_post_lang( $post_id, $sitepress );
 	}
 
 	public function save_post_actions( $pidd, $post ) {
 		global $sitepress;
 
+		if ( (int) $pidd <= 0 && ! $post ) {
+			return;
+		}
+
 		$this->defer_term_counting();
 		if ( ! $post ) {
 			$post = get_post( $pidd );
 		}
 
-		$http_referer = new WPML_URL_HTTP_Referer( new WPML_Rest( new WP_Http() ) );
+		$http_referer = new WPML_URL_HTTP_Referer( new WPML_Rest() );
 		if ( ! $this->has_save_post_action( $post ) || $http_referer->is_rest_request_called_from_post_edit_page() ) {
 			return;
 		}
@@ -92,7 +103,7 @@ class WPML_Frontend_Post_Actions extends WPML_Post_Translation {
 		$post_vars              = $this->get_post_vars( $post );
 		$post_id                = isset( $post_vars['post_ID'] ) ? $post_vars['post_ID']
 			: $pidd;
-		$language_code          = $this->get_save_post_lang( $post_id, $sitepress );
+		$language_code          = $this->filter_new_post_lang( $this->get_save_post_lang( $post_id, $sitepress ), $post_id, $sitepress );
 		$trid                   = $this->get_save_post_trid( $post_id, $post->post_status );
 		$source_language = $this->get_save_post_source_lang( $trid, $language_code, $default_language );
 		$this->after_save_post( $trid, $post_vars, $language_code, $source_language );

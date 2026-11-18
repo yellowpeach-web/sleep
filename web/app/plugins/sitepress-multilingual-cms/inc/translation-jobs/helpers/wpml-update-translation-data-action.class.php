@@ -97,8 +97,6 @@ abstract class WPML_TM_Update_Translation_Data_Action extends WPML_Translation_J
 			return 0;
 		}
 
-		Map::rememberJobIdForRid( $rid, $job_id );
-
 		if ( $addJobLogs ) {
 			JobLog::add(
 				'New icl_translate_job record created with jobId `' . $job_id . '` from rid `' . $rid . '`',
@@ -106,7 +104,34 @@ abstract class WPML_TM_Update_Translation_Data_Action extends WPML_Translation_J
 			);
 		}
 
-		$this->package_helper->save_package_to_job( $translation_package, $job_id, $prev_translation, $addJobLogs );
+		$translation_id = (int) Obj::propOr( 0, 'translation_id', $translation_status );
+		$job_language   = $translation_id
+			? (string) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT language_code FROM {$wpdb->prefix}icl_translations WHERE translation_id = %d",
+					$translation_id
+				)
+			)
+			: '';
+		$fields_saved = $this->package_helper->save_package_to_job( $translation_package, $job_id, $prev_translation, $addJobLogs, $job_language );
+		if ( ! $fields_saved ) {
+			$wpdb->delete( $wpdb->prefix . 'icl_translate_job', array( 'job_id' => $job_id ) );
+			if ( $addJobLogs ) {
+				JobLog::addError(
+					'icl_translate_job record `' . $job_id . '` rolled back: its field rows could not be written',
+					array(
+						'job_id'   => $job_id,
+						'rid'      => $rid,
+						'db_error' => $wpdb->last_error,
+					)
+				);
+			}
+
+			return 0;
+		}
+
+		Map::rememberJobIdForRid( $rid, $job_id );
+
 		$this->maybeRemovedElementsBelongingToOldCompletedJobsToKeepTheTableClean( $rid );
 		if ( (int) $translation_status->status !== ICL_TM_DUPLICATE ) {
 			$this->fire_notification_actions( $job_id, $translation_status, $translator_id, $notify );
@@ -195,7 +220,7 @@ abstract class WPML_TM_Update_Translation_Data_Action extends WPML_Translation_J
 	private function maybeRestoreATECancelledJobDueToInsufficientBalance( $rid ) {
 		$previousStatus = \WPML\Translation\PreviousStateServiceFactory::create()->getByRid( $rid );
 		if ( $previousStatus && (int) $previousStatus['status'] === ICL_TM_ATE_CANCELLED ) {
-			return Map::fromRid( $rid );
+			return Map::jobIdFromRid( $rid );
 		}
 
 		return null;

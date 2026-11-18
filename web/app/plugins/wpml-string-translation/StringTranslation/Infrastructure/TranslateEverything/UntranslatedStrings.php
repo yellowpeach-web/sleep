@@ -71,9 +71,23 @@ class UntranslatedStrings implements UntranslatedElementsInterface {
 		$discardedAutomaticBatch      = DiscardedAutomaticBatch::joinSql( $this->wpdb->prefix, 'strings', 'langs.code' );
 		$notInDiscardedAutomaticBatch = DiscardedAutomaticBatch::whereSql();
 
+		$notCarried = \WPML_ST_Package_String_Carriers::get()->notCarriedSql( 'strings.domain_name_context_md5' );
+
 		$stringIdsCondition = $stringIds
 			? 'AND strings.id IN ( ' . implode( ', ', array_fill( 0, count( $stringIds ), '%d' ) ) . ' )'
 			: '';
+
+		$appeared     = apply_filters( 'wpml_appearance_exists_sql', '', "'string'", 'strings.id' );
+		$appearedArgs = [];
+		if ( ! is_string( $appeared ) || '' === $appeared ) {
+			$appeared     = "EXISTS (
+								SELECT 1
+								FROM {$this->wpdb->prefix}icl_string_positions positions
+								WHERE positions.string_id = strings.id
+									AND positions.kind = %d
+							)";
+			$appearedArgs = [ ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND ];
+		}
 
 		$sql = "
 			SELECT strings.id, langs.code AS language_code
@@ -86,12 +100,7 @@ class UntranslatedStrings implements UntranslatedElementsInterface {
 			WHERE (
 					(
 						strings.string_type = 1
-						AND EXISTS (
-							SELECT 1
-							FROM {$this->wpdb->prefix}icl_string_positions positions
-							WHERE positions.string_id = strings.id
-								AND positions.kind = %d
-						)
+						AND {$appeared}
 					)
 					-- Besides the autoregistered frontend strings above, the scope admits
 					-- two sets of programmatically registered strings (string_type 0, no
@@ -145,6 +154,9 @@ class UntranslatedStrings implements UntranslatedElementsInterface {
 				-- mapping sync error, wpmldev-7222). Keyed on the string actual
 				-- source, so a non-English string is still translated into English.
 				AND langs.code != strings.language
+				-- wpmldev-11919: never a string a String Package string carries (the site title and tagline
+				-- of an Elementor site): the package is the one item that translates it.
+				{$notCarried}
 				{$stringIdsCondition}
 			ORDER BY langs.code, strings.id ASC
 			LIMIT %d
@@ -156,8 +168,8 @@ class UntranslatedStrings implements UntranslatedElementsInterface {
 				array_values( $languages ),
 				ActiveStringBatchJob::args(),
 				DiscardedAutomaticBatch::args(),
+				$appearedArgs,
 				[
-					ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND,
 					\WPML_ST_Blog_Name_And_Description_Hooks::STRING_DOMAIN,
 					\WPML_ST_Blog_Name_And_Description_Hooks::STRING_NAME_BLOGNAME,
 					\WPML_ST_Blog_Name_And_Description_Hooks::STRING_NAME_BLOGDESCRIPTION,
@@ -188,8 +200,20 @@ class UntranslatedStrings implements UntranslatedElementsInterface {
 
 		$sourceLanguage = $this->getSourceLanguage();
 
+		$carried = \WPML_ST_Package_String_Carriers::get()->carriedStringIds();
+
 		$batchElements = [];
 		foreach ( $stringsGroupedByLanguages as $languageCode => $strings ) {
+			if ( $carried ) {
+				$strings = array_values( array_diff( $strings, $carried ) );
+
+				$stringsGroupedByLanguages[ $languageCode ] = $strings;
+
+				if ( ! $strings ) {
+					continue;
+				}
+			}
+
 			$alreadyInFlight = $this->getStringIdsWithActiveJob( $strings, $languageCode );
 
 			if ( $alreadyInFlight ) {
@@ -268,6 +292,13 @@ class UntranslatedStrings implements UntranslatedElementsInterface {
 		$targetLanguages = $this->maybeAppendDefaultLanguage( $languageMapper, $targetLanguages );
 
 		$targetLanguages = $this->removeEnglishFromTargetLanguages( $targetLanguages );
+
+		if ( class_exists( \WPML\TM\ATE\AutomaticPairSupport::class ) ) {
+			$targetLanguages = array_diff(
+				$targetLanguages,
+				\WPML\TM\ATE\AutomaticPairSupport::refusedTargets( $this->getSourceLanguage(), array_values( $targetLanguages ) )
+			);
+		}
 
 		return TranslationPauseScope::translatable( array_values( $targetLanguages ) );
 	}

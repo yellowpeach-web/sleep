@@ -21,6 +21,24 @@ class WPML_TM_ATE_AMS_Endpoints {
 
 	const ATE_JOB_STATUS_CANCELED_BY_USER_SHOULD_HIDE = 42;
 
+	const ATE_JOB_STATUS_CANCELLED = 20;
+
+	const ATE_JOB_STATUSES_CANCELLED = [
+		self::ATE_JOB_STATUS_CANCELLED,
+		self::ATE_JOB_STATUS_CANCELLED_NOT_ENOUGH,
+		self::ATE_JOB_STATUS_CANCELED_BY_USER_SHOULD_HIDE,
+	];
+
+	const ATE_JOB_STATUS_SHOULD_CANCEL = 40;
+
+	const ATE_JOB_STATUSES_FINISHED = [
+		self::ATE_JOB_STATUS_TRANSLATED,
+		self::ATE_JOB_STATUS_DELIVERING,
+		self::ATE_JOB_STATUS_DELIVERED,
+		self::ATE_JOB_STATUS_SHOULD_CANCEL,
+		self::ATE_JOB_STATUS_CANCELED_BY_USER_SHOULD_HIDE,
+	];
+
 	const ENDPOINTS_AUTO_LOGIN          = '/panel/autologin';
 	const ENDPOINTS_CLIENTS             = '/api/wpml/clients';
 	const ENDPOINTS_CONFIRM             = '/api/wpml/jobs/confirm';
@@ -63,6 +81,7 @@ class WPML_TM_ATE_AMS_Endpoints {
 	const ENDPOINTS_CLONE_JOB           = '/api/wpml/jobs/%s/clone';
 	const ENDPOINTS_CANCEL_JOBS         = '/api/wpml/jobs/cancel';
 	const ENDPOINTS_RESUME_JOBS         = '/api/wpml/jobs/resume';
+	const ENDPOINTS_RESUME_PARKED_JOBS  = '/api/wpml/jobs/resume_parked';
 	const ENDPOINTS_HIDE_JOBS           = '/api/wpml/jobs/canceled_on_wpml';
 	const ENDPOINTS_LANGUAGES           = '/api/wpml/languages';
 	const ENDPOINTS_LANGUAGES_MAPPING   = '/api/wpml/languages/mappings';
@@ -70,14 +89,15 @@ class WPML_TM_ATE_AMS_Endpoints {
 	const ENDPOINTS_LANGUAGES_CHECK_PAIRS  = '/api/wpml/languages/check_pairs';
 	const ENDPOINTS_LANGUAGES_SHOW      = '/api/wpml/languages/%s';
 	const ENDPOINTS_TEA_STATUS          = '/api/wpml/tea/status';
-	const ENDPOINTS_DELIVERY_REACHABILITY = '/api/wpml/delivery/reachability';
+	const ENDPOINTS_EDIT_DECISION_REPORTS = '/api/wpml/edit_decisions/reports';
 	const ENDPOINTS_CATALOGUE_VERSION   = '/api/wpml/languages/catalogue_version';
 	const ENDPOINTS_LANGUAGES_TRANSLATIONS = '/api/wpml/languages/translations';
 	const ENDPOINTS_COUNTRIES_TRANSLATIONS = '/api/wpml/countries/translations';
 	const ENDPOINTS_COUNTRIES_FLAGS     = '/api/wpml/countries/flags';
 	const ENDPOINTS_AMS_CATALOGUE_VERSION   = '/api/wpml/catalogue/version';
 	const ENDPOINTS_AMS_CATALOGUE_LANGUAGES = '/api/wpml/catalogue/languages';
-	const SERVICE_AMS                   = 'ams';
+	const ENDPOINTS_AMS_NOTIFICATION_BLOCKS = '/api/wpml/v1/handshake/notification_blocks';
+	const SERVICE_AMS                  = 'ams';
 	const SERVICE_ATE                   = 'ate';
 
 	const STORE_JOB      = '/ate/jobs/store';
@@ -118,7 +138,7 @@ class WPML_TM_ATE_AMS_Endpoints {
 			}
 			$url_parts['query'] = wpml_http_build_query( $query );
 
-			$url = http_build_url( $url_parts );
+			$url = \WPML\UrlHandling\UrlBuilder::build( $url_parts );
 		}
 
 		return $url;
@@ -335,12 +355,16 @@ class WPML_TM_ATE_AMS_Endpoints {
 		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_RESUME_JOBS );
 	}
 
+	public function getAteResumeParkedJobs() {
+		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_RESUME_PARKED_JOBS );
+	}
+
 	public function get_ate_tea_status() {
 		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_TEA_STATUS );
 	}
 
-	public function get_ate_delivery_reachability() {
-		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_DELIVERY_REACHABILITY );
+	public function get_ate_edit_decision_reports() {
+		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_EDIT_DECISION_REPORTS );
 	}
 
 	public function getAteHideJobs() {

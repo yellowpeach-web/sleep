@@ -19,6 +19,10 @@ class Client {
 		$this->url = $url;
 	}
 
+	public function url() {
+		return $this->url;
+	}
+
 	public function post( $body ) {
 		$args = [
 			'timeout' => self::TIMEOUT,

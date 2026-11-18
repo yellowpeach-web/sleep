@@ -32,9 +32,9 @@ class AdminLanguageSwitcher implements \IWPML_Frontend_Action {
 				return;
 			}
 
-			$secure       = ( 'https' === parse_url( wp_login_url(), PHP_URL_SCHEME ) );
-			setcookie( 'wp-wpml_login_lang', $languageCode, time() + 120, COOKIEPATH, COOKIE_DOMAIN, $secure );
-			setcookie( 'wp_lang', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, $secure );
+			$secure = ( 'https' === parse_url( wp_login_url(), PHP_URL_SCHEME ) );
+			setcookie( 'wp-wpml_login_lang', $languageCode, self::loginCookieOptions( time() + 120, $secure ) );
+			setcookie( 'wp_lang', '', self::loginCookieOptions( time() - 3600, $secure ) );
 
 			global $sitepress;
 			wp_safe_redirect( $this->prepareRedirectLink( $sitepress, $languageCode ) );
@@ -121,6 +121,17 @@ class AdminLanguageSwitcher implements \IWPML_Frontend_Action {
 
 	public static function saveState( $state ) {
 		Option::updateWithoutAutoLoad( self::LANGUAGE_SWITCHER_KEY, $state );
+	}
+
+	public static function loginCookieOptions( $expires, $secure ) {
+		$options             = [ 'expires' => (int) $expires ];
+		$options['path']     = (string) COOKIEPATH;
+		$options['domain']   = (string) COOKIE_DOMAIN;
+		$options['secure']   = (bool) $secure;
+		$options['httponly'] = true;
+		$options['samesite'] = 'Lax';
+
+		return $options;
 	}
 
 	public static function isEnabled() {

@@ -340,13 +340,12 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 			$icl_cache->set( 'language_details_' . $r['code'] . $display_language, $r );
 		}
 
-		if ( $active_only ) {
-			$icl_cache->set( 'in_language_' . $display_language . '_' . $major_first . '_' . $order_by, $languages );
-		} else {
-			$icl_cache->set( 'all_language_' . $display_language . '_' . $major_first . '_' . $order_by, $languages );
+		$rows_key = ( $active_only ? 'in_language_' : 'all_language_' ) . $display_language . '_' . $major_first . '_' . $order_by;
+		$icl_cache->set( $rows_key, $languages );
+		if ( method_exists( \WPML\Language\ActiveLanguagesReadModel::class, 'remember' ) ) {
+			\WPML\Language\ActiveLanguagesReadModel::remember( $rows_key, $languages );
 		}
 
-		$icl_cache->save_cache_if_required();
 
 		return $languages;
 	}
@@ -376,22 +375,18 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 	}
 
 	private function has_language_column( $column ) {
-		$wpdb = $this->wpdb;
-
-		static $columns = array();
-
-		$key = $wpdb->prefix . '|' . $column;
-
-		if ( ! array_key_exists( $key, $columns ) ) {
-			$columns[ $key ] = (bool) $wpdb->get_var(
-				$wpdb->prepare(
-					"SHOW COLUMNS FROM `{$wpdb->prefix}icl_languages` LIKE %s",
-					$column
-				)
-			);
+		if ( class_exists( \WPML\Upgrade\SchemaFacts::class ) ) {
+			return \WPML\Upgrade\SchemaFacts::hasColumn( 'icl_languages', $column );
 		}
 
-		return $columns[ $key ];
+		$wpdb = $this->wpdb;
+
+		return (bool) $wpdb->get_var(
+			$wpdb->prepare(
+				"SHOW COLUMNS FROM `{$wpdb->prefix}icl_languages` LIKE %s",
+				$column
+			)
+		);
 	}
 
 	private function update_languages_order() {
@@ -403,6 +398,8 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 		$this->wpdb->query( "TRUNCATE TABLE {$this->wpdb->prefix}icl_translation_status" );
 		$this->wpdb->query( "TRUNCATE TABLE {$this->wpdb->prefix}icl_translate_job" );
 		$this->wpdb->query( "TRUNCATE TABLE {$this->wpdb->prefix}icl_translate" );
+
+		WPML_Translations::flush_cache_for_all_trids();
 	}
 
 	private function prepopulate_translations( $lang ) {

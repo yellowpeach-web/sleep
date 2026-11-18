@@ -6,6 +6,7 @@ use WPML\FP\Obj;
 use WPML\LIB\WP\Hooks;
 use function WPML\FP\spreadArgs;
 use WPML\PB\Helper\LanguageNegotiation;
+use WPML\UrlHandling\UrlBuilder;
 
 class DomainsWithMultisite implements \IWPML_Backend_Action {
 
@@ -29,7 +30,9 @@ class DomainsWithMultisite implements \IWPML_Backend_Action {
 		$parsedUrl = wpml_parse_url( $url );
 
 		if ( is_array( $parsedUrl ) && ! empty( $parsedUrl['host'] ) ) {
-			return http_build_url( Obj::assoc( 'host', $_SERVER['HTTP_HOST'], $parsedUrl ) );
+			$host = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
+
+			return UrlBuilder::build( Obj::assoc( 'host', $host, $parsedUrl ) );
 		}
 
 		return $url;

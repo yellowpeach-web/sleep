@@ -1,0 +1,446 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:wpml:ate:wpml_edit_history:2",
+  "title": "wpml_edit_history, version 2 (draft 3.1 for format version 9)",
+  "description": "The key inside one jobs[] item of POST /api/wpml/jobs, object version 2: version 1 with a compact encoding. texts holds only texts that are not in the job's XLIFF as received; an item may point at a table row (t) or at the current source or target (s) of a trans-unit of that XLIFF, the one named by k, or by u when the item has no key or points at another unit; a list may hold spans over the previous carried list, and a translation list may be the string \"file\". s and u are references by value: u is never a key. Everything else is version 1. A top-level null is no key (today's job) and is read before this schema; a value that is not an object is history_invalid; inside the key, null, false and [] stand for an empty or absent value where WPML's PHP sends them, and an id of last_applied or dropped_job may arrive as a numeric string. The schema is closed.",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 2
+    },
+    "last_applied": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ids_applied"
+        },
+        {
+          "const": "none"
+        },
+        {
+          "const": "unknown"
+        }
+      ]
+    },
+    "dropped_job": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ids_dropped"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "watermark": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "The id of the newest entry carried."
+    },
+    "compacted": {
+      "enum": [
+        true,
+        false,
+        null
+      ],
+      "description": "true when entries were cut to fit; false or null reads as absent."
+    },
+    "texts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The texts of the past, each once: texts that are not the current source or target of a trans-unit of this file. The empty string is a row when a list holds an emptied unit. A row equal to a text of the file does no harm."
+    },
+    "base": {
+      "type": "object",
+      "description": "The baseline: the last applied delivery's targets (units) and the sources at that time (original). Base lists hold no span; base.original is never \"file\".",
+      "properties": {
+        "units": {
+          "$ref": "#/$defs/base_units"
+        },
+        "original": {
+          "$ref": "#/$defs/items_only"
+        }
+      },
+      "required": [
+        "units",
+        "original"
+      ],
+      "additionalProperties": false
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    },
+    "structure": {
+      "description": "Per entry id: an element key; \"unkeyed\", one mark on the entry when the structure or styling of an element without an id changed, with no position; or \"page\" for the typed page settings.",
+      "oneOf": [
+        {
+          "type": "object",
+          "patternProperties": {
+            "^[1-9][0-9]*$": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/empty"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "original_times": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/original_time"
+          }
+        },
+        {
+          "$ref": "#/$defs/empty"
+        }
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "last_applied",
+    "watermark",
+    "texts",
+    "base",
+    "entries",
+    "original_times"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "item": {
+      "description": "One unit at its place in an ordered list; its position is its index after every span is expanded. k is the unit's key (version 8, 4.5), absent for a unit WPML cannot name. Its text is row t of texts, or the current s (source or target) of a trans-unit of the job's XLIFF as received: the text content of that element after XML decoding and before any parse of ATE's. The trans-unit is the one whose id is k, or u when the item has no key or its text equals another trans-unit's current text. u is a reference by value and never a key: an item without k is unkeyed whatever its u.",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "k": {
+              "type": "string",
+              "minLength": 1
+            },
+            "t": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "t"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "k": {
+              "type": "string",
+              "minLength": 1
+            },
+            "s": {
+              "$ref": "#/$defs/side"
+            }
+          },
+          "required": [
+            "k",
+            "s"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "u": {
+              "type": "string",
+              "minLength": 1
+            },
+            "s": {
+              "$ref": "#/$defs/side"
+            }
+          },
+          "required": [
+            "u",
+            "s"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "k": {
+              "type": "string",
+              "minLength": 1
+            },
+            "u": {
+              "type": "string",
+              "minLength": 1
+            },
+            "s": {
+              "$ref": "#/$defs/side"
+            }
+          },
+          "required": [
+            "k",
+            "u",
+            "s"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "side": {
+      "enum": [
+        "source",
+        "target"
+      ]
+    },
+    "span": {
+      "type": "object",
+      "description": "count items copied unchanged, key and text, from positions from .. from+count-1 of the previous carried list: for a translation list the previous entry's units, else base.units; for an original list the nearest earlier entry that carries original, else base.original. A span never copies an item whose key a rename has retired (in a translation list, an old key of this entry's renamed; in an original list, an old key of the renamed of any entry after the copied list, up to this one): such a position is written as an item with its new key.",
+      "properties": {
+        "span": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "integer",
+              "minimum": 1
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "required": [
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "items_only": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/item"
+      }
+    },
+    "items_or_spans": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/item"
+          },
+          {
+            "$ref": "#/$defs/span"
+          }
+        ]
+      }
+    },
+    "file": {
+      "const": "file",
+      "description": "A translation list that, expanded, equals item for item: every trans-unit of the file in file order (a trans-unit with translate=\"no\" is not one), each keyed by its id (a key under version 8's 4.5, not a handle), each with a non-empty target that is the unit's current text, and nothing else. An original list is never \"file\"."
+    },
+    "base_units": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/items_only"
+        },
+        {
+          "$ref": "#/$defs/file"
+        }
+      ]
+    },
+    "translation_list": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/items_or_spans"
+        },
+        {
+          "$ref": "#/$defs/file"
+        }
+      ]
+    },
+    "original_list": {
+      "$ref": "#/$defs/items_or_spans"
+    },
+    "entry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "The history entry id; increasing."
+        },
+        "time": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "UTC epoch seconds at the end of the user action."
+        },
+        "source": {
+          "enum": [
+            "client",
+            "revert",
+            "unseen",
+            "from-scratch",
+            "copy",
+            "xliff-import",
+            "po-import",
+            "service",
+            "cte-resave",
+            "auto-resave",
+            "revision-restore",
+            "import"
+          ]
+        },
+        "units": {
+          "$ref": "#/$defs/translation_list"
+        },
+        "original": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/original_list"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The original's units at that save; absent or null when unchanged."
+        },
+        "renamed": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            {
+              "$ref": "#/$defs/empty"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Keys WPML itself re-issued since the previous carried list: old key -> new key, composed over merged or cut entries; empty, [] or null reads as none."
+        }
+      },
+      "required": [
+        "id",
+        "time",
+        "source",
+        "units"
+      ],
+      "additionalProperties": false
+    },
+    "id": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 1
+        },
+        {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$"
+        }
+      ],
+      "description": "An id of 1 or more: an integer, or its numeric string as WPML's PHP may send it, which ATE reads as the integer."
+    },
+    "ids_applied": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "$ref": "#/$defs/id",
+          "description": "The ATE job id (cms_request id)."
+        },
+        "delivery_id": {
+          "$ref": "#/$defs/id",
+          "description": "translated_xliffs.id; absent only for a delivery applied before the site's cutover, which WPML 5.x did not record."
+        }
+      },
+      "required": [
+        "job_id"
+      ],
+      "additionalProperties": false
+    },
+    "ids_dropped": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "$ref": "#/$defs/id"
+        },
+        "delivery_id": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "required": [
+        "job_id",
+        "delivery_id"
+      ],
+      "additionalProperties": false
+    },
+    "original_time": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "element",
+                "field",
+                "page",
+                "hint"
+              ]
+            },
+            "time": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "kind",
+            "time"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "unknown"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "empty": {
+      "type": "array",
+      "maxItems": 0,
+      "description": "An empty PHP array, which WPML's encode, decode, encode round trip sends for an empty map."
+    }
+  }
+}

@@ -45,8 +45,6 @@ class WPML_Pro_Translation extends WPML_TM_Job_Factory_User {
 				'post_submitbox_start',
 			)
 		);
-
-		add_action( 'wpml_minor_edit_for_gutenberg', array( $this, 'gutenberg_minor_edit' ), 10, 0 );
 	}
 
 	public static function reset_translated_links_cache() {
@@ -365,6 +363,17 @@ class WPML_Pro_Translation extends WPML_TM_Job_Factory_User {
 		return $replacements;
 	}
 
+
+	private function date_string_translation( $string_translation_id ) {
+		global $wpdb;
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}icl_string_translations SET translation_date = NOW() WHERE id = %d",
+				$string_translation_id
+			)
+		);
+	}
 	public function fix_links_to_translated_content( $element_id, $target_lang_code, $element_type = 'post', $preLoaded = [] ) {
 		global $wpdb, $sitepress;
 
@@ -460,9 +469,11 @@ class WPML_Pro_Translation extends WPML_TM_Job_Factory_User {
 		$sticky_link_unresolved = false;
 		$sticky_settled_overrides = [];
 
+		$keeps_sticky_form = self::should_links_be_converted_back_to_sticky( $element_type );
+
 		try {
-			$getTranslatedLink = function ( $link ) use ( $translate_link_targets, $absolute_links, $element_type, $target_lang_code, $sitepress, $string_type, &$is_language_switched, &$sticky_link_resolved_without_change, &$sticky_link_unresolved, &$sticky_settled_overrides ) {
-				$id_link = $target_lang_code . '-' . $link[0];
+			$getTranslatedLink = function ( $link ) use ( $translate_link_targets, $absolute_links, $target_lang_code, $sitepress, $string_type, $keeps_sticky_form, &$is_language_switched, &$sticky_link_resolved_without_change, &$sticky_link_unresolved, &$sticky_settled_overrides ) {
+				$id_link = $target_lang_code . '-' . ( empty( $link['excerpt'] ) ? '' : 'excerpt-' ) . $link[0];
 				if ( isset( self::$translated_links[ $id_link ] ) ) {
 					return [
 						'from' => $link[0],
@@ -477,6 +488,8 @@ class WPML_Pro_Translation extends WPML_TM_Job_Factory_User {
 
 				$link_url = WPML_Same_Site_Url_Normalizer::normalize_url( $link[2] );
 
+				$is_root_relative = 0 === strpos( $link_url, '/' ) && 0 !== strpos( $link_url, '//' );
+
 				$sticky_source_id = self::hostless_sticky_link_source_id( $link_url );
 
 				$sticky_source_post_type = $sticky_source_id ? get_post_type( $sticky_source_id ) : false;
@@ -485,11 +498,23 @@ class WPML_Pro_Translation extends WPML_TM_Job_Factory_User {
 					$translated_id = apply_filters( 'wpml_object_id', $sticky_source_id, $sticky_source_post_type, false, $target_lang_code );
 
 					if ( $translated_id && (int) $translated_id !== $sticky_source_id ) {
-						$translatedLink = Str::replace(
-							$link[2],
-							preg_replace( '/([?&](?:p|page_id)=)' . $sticky_source_id . '\b/', '${1}' . (int) $translated_id, $link[2], 1 ),
-							$link[0]
-						);
+						if (
+							'LINK' === $string_type
+							|| ! empty( $link['single_url'] )
+							|| ( $keeps_sticky_form && empty( $link['excerpt'] ) )
+						) {
+							$translatedLink = Str::replace(
+								$link[2],
+								preg_replace( '/([?&](?:p|page_id)=)' . $sticky_source_id . '\b/', '${1}' . (int) $translated_id, $link[2], 1 ),
+								$link[0]
+							);
+						} else {
+							$translatedLink = Str::replace(
+								$link[2],
+								wp_make_link_relative( $translate_link_targets->convert_url( home_url( $link_url ) ) ),
+								$link[0]
+							);
+						}
 					} elseif ( $translated_id ) {
 						$translatedLink                      = $link[0];
 						$sticky_link_resolved_without_change = true;
@@ -502,7 +527,7 @@ class WPML_Pro_Translation extends WPML_TM_Job_Factory_User {
 						$translatedLink        = $link[0];
 						$sticky_link_unresolved = true;
 					}
-				} elseif ( $absolute_links->is_home( $link_url ) ) {
+				} elseif ( $absolute_links->is_home( $link_url ) && ! $is_root_relative ) {
 					$translatedLink = $absolute_links->convert_url( $link_url, $target_lang_code );
 					$translatedLink = Str::replace( $link[2], $translatedLink, $link[0] );
 				} else {
@@ -518,7 +543,12 @@ class WPML_Pro_Translation extends WPML_TM_Job_Factory_User {
 						$translatedLink = $link[0];
 					}
 
-					if ( empty( $link['single_url'] ) && self::should_links_be_converted_back_to_sticky( $element_type ) ) {
+					if (
+						$keeps_sticky_form
+						&& empty( $link['single_url'] )
+						&& empty( $link['excerpt'] )
+						&& ! ( $is_root_relative && $absolute_links->is_home( $link_url ) )
+					) {
 						$translatedLink = $absolute_links->convert_text( $translatedLink );
 					}
 				}
@@ -539,7 +569,13 @@ class WPML_Pro_Translation extends WPML_TM_Job_Factory_User {
 			);
 
 			$links            = self::content_get_link_paths( $body );
-			$postExcerptLinks = self::content_get_link_paths( $postExcerpt );
+			$postExcerptLinks = array_map(
+				function ( $link ) {
+					$link['excerpt'] = true;
+					return $link;
+				},
+				self::content_get_link_paths( $postExcerpt )
+			);
 
 			$blockLinks = array_map(
 				function ( $url ) {
@@ -618,12 +654,16 @@ class WPML_Pro_Translation extends WPML_TM_Job_Factory_User {
 						),
 						array( 'id' => $element_id )
 					);
+					$this->date_string_translation( $element_id );
 					do_action( 'icl_st_add_string_translation', $element_id );
 					\WPML\TM\Jobs\TranslationRecord::followStringTranslation( $element_id, $new_body );
 				} else {
 					$wpdb->update( $wpdb->prefix . 'icl_string_translations', array( 'value' => $new_body ), array( 'id' => $element_id ) );
+					$this->date_string_translation( $element_id );
 					\WPML\TM\Jobs\TranslationRecord::followStringTranslation( $element_id, $new_body );
 				}
+
+				do_action( 'wpml_st_refresh_string_translation', (int) $element_id );
 			}
 
 			if ( $contentChanged && ! $sticky_link_unresolved ) {
@@ -688,24 +728,8 @@ class WPML_Pro_Translation extends WPML_TM_Job_Factory_User {
 		}
 	}
 
-	public function gutenberg_minor_edit() {
-		$show_box_style = $this->get_show_minor_edit_style();
-		if ( false !== $show_box_style ) {
-			?>
-			<div id="icl_minor_change_box" style="<?php echo $show_box_style; ?>" class="icl_box_paragraph">
-				<p>
-					<strong><?php /* translators: Label of the option that marks a change as small, so the translators need not be told about it. */ esc_html_e( 'Minor edit', 'sitepress' ); ?></strong>
-				</p>
-				<label><input type="checkbox" name="icl_minor_edit" value="1" style="min-width:15px;"/>&nbsp;
-					<?php esc_html_e( "Don't update translation", 'sitepress' ); ?>
-				</label>
-			</div>
-			<?php
-		}
-	}
-
 	private function get_show_minor_edit_style() {
-		global $post, $iclTranslationManagement;
+		global $post;
 		if ( empty( $post ) || ! $post->ID ) {
 			return false;
 		}
@@ -715,14 +739,20 @@ class WPML_Pro_Translation extends WPML_TM_Job_Factory_User {
 			return false;
 		}
 
-		$translations = $iclTranslationManagement->get_element_translations( $post->ID, 'post_' . $post->post_type );
-		foreach ( $translations as $t ) {
+		return $this->should_show_minor_edit( (int) $post->ID, (string) $post->post_type ) ? '' : 'display:none';
+	}
+
+	public function should_show_minor_edit( $post_id, $post_type ) {
+		global $iclTranslationManagement;
+
+		$translations = $iclTranslationManagement->get_element_translations( $post_id, 'post_' . $post_type );
+		foreach ( (array) $translations as $t ) {
 			if ( $t->status == ICL_TM_COMPLETE && ! $t->needs_update ) {
-				return '';
+				return true;
 			}
 		}
 
-		return 'display:none';
+		return false;
 	}
 
 

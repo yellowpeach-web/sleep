@@ -58,8 +58,7 @@ class Factory {
 
 	public function getFieldGroupPackageTitles() {
 		if ( ! $this->fieldGroupPackageTitles ) {
-			global $wpdb;
-			$this->fieldGroupPackageTitles = new FieldGroupPackageTitles( $wpdb );
+			$this->fieldGroupPackageTitles = new FieldGroupPackageTitles();
 		}
 
 		return $this->fieldGroupPackageTitles;

@@ -12,6 +12,10 @@ class CachedAMSAPI {
 
 	const CACHE_OPTION = 'wpml-tm-ams-api-cache';
 
+	const FAILED_READ_TTL = 600;
+
+	const FAILED_READ_MARKER = '__failed_read__';
+
 	private $amsApi;
 
 	private $storage;
@@ -37,21 +41,60 @@ class CachedAMSAPI {
 		$data = $this->storage->get( self::CACHE_OPTION, [] );
 		$key  = $this->getKey( $args );
 
-		if ( ! array_key_exists( $fnName, $data ) || ! array_key_exists( $key, $data[ $fnName ] ) ) {
-			$data = call_user_func_array( [ $this->amsApi, $fnName ], $args );
+		$hasEntry = array_key_exists( $fnName, $data ) && array_key_exists( $key, $data[ $fnName ] );
+
+		if ( $hasEntry && Lst::includes( $fnName, $this->noCollectionAsReturnType ) ) {
+			$entry = $data[ $fnName ][ $key ];
+			if ( $this->isLiveReadEntry( $entry ) ) {
+				return $this->isFailedReadEntry( $entry ) ? $entry['value'] : $entry;
+			}
+			$hasEntry = false;
+		}
+
+		if ( ! $hasEntry ) {
+			$answer = call_user_func_array( [ $this->amsApi, $fnName ], $args );
 
 			if ( Lst::includes( $fnName, $this->noCollectionAsReturnType ) ) {
 				return ReconnectState::isReconnecting()
-					? $data
-					: $this->cacheValue( $fnName, $args, $data );
+					? $answer
+					: $this->cacheReadAnswer( $fnName, $args, $answer );
 			}
 
-			return $data->map( $this->cacheValue( $fnName, $args ) );
+			return $answer->map( $this->cacheValue( $fnName, $args ) );
 		}
 
-		return Lst::includes( $fnName, $this->noCollectionAsReturnType )
-			? $data[ $fnName ][ $key ]
-			: Maybe::of( $data[ $fnName ][ $key ] );
+		return Maybe::of( $data[ $fnName ][ $key ] );
+	}
+
+	private function isLiveReadEntry( $entry ) {
+		if ( $this->isFailedReadEntry( $entry ) ) {
+			return $entry['expires_at'] > time();
+		}
+
+		return is_array( $entry );
+	}
+
+	private function isFailedReadEntry( $entry ) {
+		return is_array( $entry )
+			&& array_key_exists( self::FAILED_READ_MARKER, $entry )
+			&& array_key_exists( 'expires_at', $entry );
+	}
+
+	private function cacheReadAnswer( $fnName, $args, $answer ) {
+		if ( is_array( $answer ) ) {
+			return $this->cacheValue( $fnName, $args, $answer );
+		}
+
+		$cachedData = $this->storage->get( self::CACHE_OPTION, [] );
+
+		$cachedData[ $fnName ][ $this->getKey( $args ) ] = [
+			self::FAILED_READ_MARKER => true,
+			'value'                  => $answer,
+			'expires_at'             => time() + self::FAILED_READ_TTL,
+		];
+		$this->storage->save( self::CACHE_OPTION, $cachedData );
+
+		return $answer;
 	}
 
 	public function cacheValue( $functionName = null, $args = null, $result = null ) {

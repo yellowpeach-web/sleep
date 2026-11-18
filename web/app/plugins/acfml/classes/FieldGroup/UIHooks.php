@@ -277,8 +277,8 @@ class UIHooks implements \IWPML_Action {
 				'go-to-st'                   => esc_html__( 'How to translate field labels »', 'acfml' ),
 				/* translators: Line in the Multilingual Setup panel saying what the chosen option covers: what is typed into the fields, not their names. */
 				'labels-scope-values'        => esc_html__( 'This setup translates field values.', 'acfml' ),
-				/* translators: Line in the Multilingual Setup panel about translating the fields' names. "ACF Field Group" is the type the Translation Dashboard shows for these strings; keep the bold tags around the screen name. */
-				'labels-scope-labels'        => BoldNames::render( __( 'Translate field labels and dropdown choice labels separately. Find them under ACF Field Group in the <b>Translation Dashboard</b>.', 'acfml' ) ),
+				/* translators: Line in the Multilingual Setup panel about translating the fields' names. "ACF Field Groups" is the Translation Dashboard's section heading for these strings; keep the bold tags around the screen name. */
+				'labels-scope-labels'        => BoldNames::render( __( 'Translate field labels and dropdown choice labels separately. Find them under ACF Field Groups in the <b>Translation Dashboard</b>.', 'acfml' ) ),
 			],
 		];
 	}

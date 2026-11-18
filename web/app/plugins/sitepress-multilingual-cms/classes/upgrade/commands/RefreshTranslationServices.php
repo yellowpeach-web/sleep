@@ -24,7 +24,11 @@ class RefreshTranslationServices implements \IWPML_Upgrade_Command {
 	public function run_admin() {
 		$this->result = true;
 		if ( call_user_func( $this->isHigherThanInstallationVersion, self::WPML_VERSION_SINCE_PREVIEW_LOGOS_AVAILABLE ) ) {
-			$this->result = $this->refreshServicesFactory->create_an_instance()->refresh_services();
+			$this->result = ServicesRefreshBackoff::attempt(
+				function () {
+					return $this->refreshServicesFactory->create_an_instance()->refresh_services();
+				}
+			);
 		}
 
 		return $this->result;

@@ -12,17 +12,21 @@ class IgnoredElementDto {
 
   private $reason;
 
+  private $message;
+
 
   public function __construct(
     int $elementId,
     string $elementType,
     string $targetLanguageCode,
-    string $reason
+    string $reason,
+    ?string $message = null
   ) {
     $this->elementId          = $elementId;
     $this->elementType        = $elementType;
     $this->targetLanguageCode = $targetLanguageCode;
     $this->reason             = $reason;
+    $this->message            = $message;
   }
 
 
@@ -47,12 +51,17 @@ class IgnoredElementDto {
 
 
   public function toArray(): array {
-    return [
+    $result = [
       'elementId'          => $this->elementId,
       'elementType'        => $this->elementType,
       'targetLanguageCode' => $this->targetLanguageCode,
       'reason'             => $this->reason,
     ];
+    if ( null !== $this->message ) {
+      $result['message'] = $this->message;
+    }
+
+    return $result;
   }
 
 

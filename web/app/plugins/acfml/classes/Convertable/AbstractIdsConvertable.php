@@ -8,7 +8,7 @@ abstract class AbstractIdsConvertable implements \WPML_ACF_Convertable {
 		$cameSerialized = is_serialized( $acfField->meta_value );
 
 		$ids = $cameSerialized
-			? maybe_unserialize( $acfField->meta_value )
+			? \WPML\Utils\Unserialize::maybe( $acfField->meta_value )
 			: $acfField->meta_value;
 
 		$translatedIds = $this->convertSingleOrArray( $ids, $acfField );

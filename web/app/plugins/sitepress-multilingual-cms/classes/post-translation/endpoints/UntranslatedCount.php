@@ -8,7 +8,9 @@ use WPML\Element\API\Languages;
 use WPML\FP\Fns;
 use WPML\FP\Lst;
 use WPML\FP\Str;
+use WPML\Infrastructure\WordPress\Component\StringPackage\Application\Query\UntranslatedTypesCountQuery;
 use WPML\LIB\WP\PostType;
+use WPML\TranslationPolicy\Policy\Policy;
 
 class UntranslatedCount {
 
@@ -28,7 +30,7 @@ class UntranslatedCount {
 		$postIn   = wpml_prepare_in( Fns::map( Str::concat( 'post_' ), $postTypes ) );
 		$statuses = wpml_prepare_in( [ ICL_TM_NOT_TRANSLATED, ICL_TM_ATE_CANCELLED ] );
 
-		$editorCondition = $this->buildEditorCondition();
+		$editorCondition = Policy::editorSql()->usesWpmlEditor( $this->buildEditorCondition(), 'posts.ID', 'posts.post_type' );
 
 		$query = "
 			SELECT translations.post_type, COUNT(translations.ID)
@@ -163,6 +165,14 @@ class UntranslatedCount {
 		$fullTypes = Fns::map( Str::concat( 'package_' ), array_keys( $kinds ) );
 		$statuses  = [ ICL_TM_NOT_TRANSLATED, ICL_TM_ATE_CANCELLED ];
 
+		$ridesOwnerCondition = apply_filters( 'wpml_string_package_rides_owner_sql', '', 'packages' );
+		$ridesOwnerCondition = $ridesOwnerCondition ? "AND NOT ({$ridesOwnerCondition})" : '';
+
+		$excluded          = UntranslatedTypesCountQuery::excludedPackageIds( array_keys( $kinds ), Languages::getSecondaryCodes() );
+		$excludedCondition = $excluded
+			? 'AND packages.ID NOT IN ( ' . implode( ', ', array_fill( 0, count( $excluded ), '%d' ) ) . ' )'
+			: '';
+
 		$untranslatedPackages = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT translations.kind, COUNT(translations.ID)
@@ -170,10 +180,12 @@ class UntranslatedCount {
 	            SELECT RIGHT(element_type, LENGTH(element_type) - 8) as kind, packages.ID
 	            FROM {$wpdb->prefix}icl_translations
 	            INNER JOIN {$wpdb->prefix}icl_string_packages packages ON element_id = ID
-                
+
 				WHERE element_type IN (" . implode( ', ', array_fill( 0, count( $fullTypes ), '%s' ) ) . ")
 				   AND source_language_code IS NULL
 				   AND language_code = %s
+				   " . $ridesOwnerCondition . "
+				   " . $excludedCondition . "
 		           AND (
 	                   SELECT COUNT(trid)
 	                   FROM {$wpdb->prefix}icl_translations icl_translations_inner
@@ -188,6 +200,7 @@ class UntranslatedCount {
 				array_merge(
 					$fullTypes,
 					array( Languages::getDefaultCode() ),
+					$excluded,
 					$statuses,
 					array( Lst::length( Languages::getSecondaries() ) )
 				)

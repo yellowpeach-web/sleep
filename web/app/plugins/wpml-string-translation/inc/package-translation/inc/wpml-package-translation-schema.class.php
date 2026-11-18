@@ -201,7 +201,10 @@ class WPML_Package_Translation_Schema {
                   `post_id` BIGINT UNSIGNED DEFAULT NULL,
                   `word_count` VARCHAR(2000) DEFAULT NULL,
 	                  `translator_note` LONGTEXT DEFAULT NULL,
-	                  PRIMARY KEY  (`ID`)
+	                  `owner_kind` VARCHAR(8) NULL DEFAULT NULL,
+	                  `owner_element_id` BIGINT UNSIGNED DEFAULT NULL,
+	                  PRIMARY KEY  (`ID`),
+	                  KEY `owner` (`owner_kind`, `owner_element_id`)
 	                )"
 		) ) {
 			throw new Exception( $wpdb->last_error );

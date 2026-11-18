@@ -11,6 +11,12 @@ class WPML_Remove_Pages_Not_In_Current_Language {
 	private $wpdb;
 	private $sitepress;
 
+	private static $memo = [];
+
+	public static function reset() {
+		self::$memo = [];
+	}
+
 	public function __construct( wpdb $wpdb, SitePress $sitepress ) {
 		$this->wpdb      = $wpdb;
 		$this->sitepress = $sitepress;
@@ -25,9 +31,9 @@ class WPML_Remove_Pages_Not_In_Current_Language {
 			$post_type = $this->find_post_type( $get_page_arguments, $posts );
 
 			if ( $post_type && Lst::includes( $post_type, PostTypes::getTranslatable() ) ) {
-				$white_list = $this->get_posts_in_current_languages( $post_type, $current_language );
+				$white_list = $this->memo( 'get_posts_in_current_languages', $post_type, $current_language );
 				if ( $this->sitepress->is_display_as_translated_post_type( $post_type ) ) {
-					$original_posts_in_other_language = $this->get_original_posts_in_other_languages( $post_type, $current_language );
+					$original_posts_in_other_language = $this->memo( 'get_original_posts_in_other_languages', $post_type, $current_language );
 					$white_list                       = Lst::concat( $white_list, $original_posts_in_other_language );
 				}
 				$get_post_id          = Logic::ifElse( 'is_numeric', Fns::identity(), Obj::prop( 'ID' ) );
@@ -37,6 +43,21 @@ class WPML_Remove_Pages_Not_In_Current_Language {
 		}
 
 		return $filtered_posts;
+	}
+
+	private function memo( $reader, $post_type, $language ) {
+		$generation = (string) wp_cache_get_last_changed( 'posts' );
+		$key        = implode( '|', [ $reader, $this->wpdb->prefix, $post_type, $language, $generation ] );
+		if ( ! array_key_exists( $key, self::$memo ) ) {
+			foreach ( array_keys( self::$memo ) as $kept ) {
+				if ( substr( $kept, strrpos( $kept, '|' ) + 1 ) !== $generation ) {
+					unset( self::$memo[ $kept ] );
+				}
+			}
+			self::$memo[ $key ] = $this->$reader( $post_type, $language );
+		}
+
+		return self::$memo[ $key ];
 	}
 
 	private function get_posts_in_current_languages( $post_type, $current_language ) {

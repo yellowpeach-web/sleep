@@ -216,7 +216,9 @@ class WPML_Media_Translated_Images_Update {
 		return null === $replaced ? $text : $replaced;
 	}
 
-	private function get_url_in_form_of( $source, $url ) {
+	public function get_url_in_form_of( $source, $url ) {
+		$url = WPML_Media_Attachment_By_URL::encodePathLike( $source, $url );
+
 		if ( ! is_string( $source ) || ! is_string( $url ) || '' === $source || '/' !== $source[0] ) {
 			return $url;
 		}
@@ -320,7 +322,7 @@ class WPML_Media_Translated_Images_Update {
 		return (string) preg_replace_callback( $pattern, $replacement, $text );
 	}
 
-	private function isUploadsUrl( $url ) {
+	public function isUploadsUrl( $url ) {
 		$uploads_dir = wp_get_upload_dir();
 
 		return 0 === strpos(
@@ -329,7 +331,7 @@ class WPML_Media_Translated_Images_Update {
 		);
 	}
 
-	private function isTranslatableMediaSrc( $media_src ) {
+	public function isTranslatableMediaSrc( $media_src ) {
 		return is_string( $media_src ) && 1 === preg_match( '#^(?:https?://|/)#i', $media_src );
 	}
 

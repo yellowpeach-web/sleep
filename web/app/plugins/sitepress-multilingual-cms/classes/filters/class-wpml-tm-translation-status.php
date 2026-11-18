@@ -1,6 +1,10 @@
 <?php
 
+use WPML\TM\AutomaticTranslation\Actions\DeferredDispatch;
+
 class WPML_TM_Translation_Status {
+	const CACHE_GROUP = 'WPML_TM_Translation_Status::filter_translation_status';
+
 	protected $tm_records;
 
 	private $element_id_cache;
@@ -43,7 +47,7 @@ class WPML_TM_Translation_Status {
 			return false;
 		};
 
-		$newStatus = ( new WPML_WP_Cache( WPML_ELEMENT_TRANSLATIONS_CACHE_GROUP ) )->execute_and_cache(
+		$newStatus = ( new WPML_WP_Cache( self::CACHE_GROUP ) )->execute_and_cache(
 			serialize( [ $trid, $target_lang_code ] ),
 			function () use ( $getNewStatus, $trid, $target_lang_code ) {
 				return $getNewStatus( $trid, $target_lang_code );
@@ -55,7 +59,7 @@ class WPML_TM_Translation_Status {
 
 	public function reload() {
 		$this->element_id_cache = array();
-		( new WPML_WP_Cache( WPML_ELEMENT_TRANSLATIONS_CACHE_GROUP ) )->flush_group_cache( true );
+		( new WPML_WP_Cache( self::CACHE_GROUP ) )->flush_group_cache( true );
 		wp_cache_delete( WPML_ELEMENT_TRANSLATIONS_CACHE_GROUP, \WPML\LIB\WP\Cache::KEYS );
 	}
 
@@ -65,10 +69,14 @@ class WPML_TM_Translation_Status {
 		$element_type_prefix,
 		$return_status = false
 	) {
-		$translations = $this->tm_records->icl_translations_by_element_id_and_type_prefix(
-			$element_id,
-			$element_type_prefix
-		)->translations();
+		try {
+			$translations = $this->tm_records->icl_translations_by_element_id_and_type_prefix(
+				$element_id,
+				$element_type_prefix
+			)->translations();
+		} catch ( InvalidArgumentException $e ) {
+			return false;
+		}
 		if ( null === $target_lang_code ) {
 			return false;
 		}
@@ -83,9 +91,11 @@ class WPML_TM_Translation_Status {
 		) {
 			$res = $return_status ? ICL_TM_COMPLETE : false;
 		} else {
-			$res = $this->tm_records
-				->icl_translation_status_by_translation_id( $element_translated->translation_id() )
-				->status();
+			$status_record = $this->tm_records->icl_translation_status_by_translation_id( $element_translated->translation_id() );
+			$res           = $status_record->status();
+			if ( ICL_TM_ATE_NEEDS_RETRY === $res ) {
+				$res = DeferredDispatch::statusForEditorByRid( $res, $status_record->rid() );
+			}
 			$res = $return_status ? $res : in_array(
 				$res,
 				array(

@@ -108,6 +108,12 @@ class WPML_Blog_License_Translation_Status {
 			return;
 		}
 
+		if ( \WPML\Infrastructure\WordPress\Component\LanguagePanel\Rest\SaveFlags::isMinorEdit()
+		     || \WPML\Posts\MetaBoxLoaderLeg::is_minor_edit_leg( $post_id )
+		) {
+			return;
+		}
+
 		call_user_func( $this->post_actions->get_translation_statuses_updater( $post_id, $translations ) );
 	}
 
@@ -128,7 +134,7 @@ class WPML_Blog_License_Translation_Status {
 		}
 
 		$status = $force_set_status > 0 ? (int) $force_set_status : ICL_TM_COMPLETE;
-		if ( ICL_TM_COMPLETE === $status && get_post_meta( $post_id, '_icl_lang_duplicate_of', true ) ) {
+		if ( ICL_TM_COMPLETE === $status && \WPML\TranslationPolicy\Duplicate\DuplicateReaders::isKeptInStep( (int) $post_id ) ) {
 			$status = ICL_TM_DUPLICATE;
 		}
 

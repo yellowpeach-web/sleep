@@ -40,7 +40,28 @@ class LoadTextDomain implements \IWPML_Action {
 
 		add_filter( 'override_load_textdomain', [ $this, 'overrideLoadTextDomain' ], 10, 3 );
 		add_filter( 'override_unload_textdomain', [ $this, 'overrideUnloadTextDomain' ], 10, 2 );
+		add_filter( 'load_textdomain_mofile', [ $this, 'mapToWpmlFileName' ], 10, 2 );
 		add_action( 'wpml_language_has_switched', [ $this, 'languageHasSwitched' ] );
+	}
+
+	public function mapToWpmlFileName( $mofile, $domain ) {
+		if ( ! is_string( $mofile ) || ! is_string( $domain ) || strtolower( $domain ) === $domain ) {
+			return $mofile;
+		}
+
+		$prefix   = $domain . '-';
+		$filename = basename( $mofile );
+		if (
+			dirname( $mofile ) !== Manager::getSubdir()
+			|| 0 !== strpos( $filename, $prefix )
+			|| '.mo' !== substr( $filename, -3 )
+		) {
+			return $mofile;
+		}
+
+		$locale = substr( $filename, strlen( $prefix ), -3 );
+
+		return '' === $locale ? $mofile : $this->file_manager->getFilepath( $domain, $locale );
 	}
 
 	public function overrideLoadTextDomain( $override, $domain, $mofile ) {
@@ -48,6 +69,7 @@ class LoadTextDomain implements \IWPML_Action {
 			return $override;
 		}
 
+		$mofile = $this->mapToWpmlFileName( $mofile, $domain );
 
 		if ( ! $this->isCustomMOLoaded( $domain ) ) {
 			remove_filter( 'override_load_textdomain', [ $this, 'overrideLoadTextDomain' ], 10 );
@@ -85,18 +107,18 @@ class LoadTextDomain implements \IWPML_Action {
 		if ( $wpml_mofile && $wpml_mofile !== $mofile ) {
 			$defaultTextdomainPath = $this->getDefaultWordPressTranslationPath( $domain, $locale );
 
-			load_textdomain( $domain, $wpml_mofile );
+			load_textdomain( $domain, $wpml_mofile, $locale );
 
 			if ( $defaultTextdomainPath && ! self::isRequestedFile( $defaultTextdomainPath, $mofile ) ) {
-				$this->loadWordPressJITMoFile( $defaultTextdomainPath, $domain );
+				$this->loadWordPressJITMoFile( $defaultTextdomainPath, $domain, $locale );
 			}
 		}
 
 		$this->setCustomMOLoaded( $domain );
 	}
 
-	private function loadWordPressJITMoFile( $path, $domain ) {
-		load_textdomain( $domain, $path );
+	private function loadWordPressJITMoFile( $path, $domain, $locale ) {
+		load_textdomain( $domain, $path, $locale );
 	}
 
 	private function getDefaultWordPressTranslationPath( $domain, $locale ) {

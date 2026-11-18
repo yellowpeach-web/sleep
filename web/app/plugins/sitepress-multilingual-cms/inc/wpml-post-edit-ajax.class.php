@@ -1,6 +1,7 @@
 <?php
 
 use WPML\API\Sanitize;
+use WPML\EditHistory\InternalWrite;
 use WPML\Core\Component\PostHog\Application\Service\Event\EventInstanceService;
 
 class WPML_Post_Edit_Ajax {
@@ -138,12 +139,14 @@ class WPML_Post_Edit_Ajax {
 			( new \WPML\TM\Taxonomy\Job\TermJobRowFactory( $wpdb ) )
 				->supersedeWithManualTranslation( $translationId );
 
+			$review_accepted = \WPML\TM\ATE\Review\ReviewRulesFactory::create()->acceptOnTermSave( (int) $existing );
+
 			$wpdb->update(
 				$wpdb->prefix . 'icl_translation_status',
 				[
 					'status'              => ICL_TM_COMPLETE,
 					'needs_update'        => 0,
-					'review_status'       => null,
+					'review_status'       => $review_accepted ? \WPML\TM\ATE\Review\ReviewStatus::ACCEPTED : null,
 					'translation_service' => 'local',
 					'translator_id'       => get_current_user_id(),
 				],
@@ -216,11 +219,11 @@ class WPML_Post_Edit_Ajax {
 			$fields_contents['external_custom_fields'] = $external_custom_fields;
 
 			$refusal                                = null;
-			$fields_contents['saved_custom_fields'] = self::save_meta_values_on_translation(
-				(int) $target_post_id,
-				$trid,
-				$external_custom_fields,
-				$refusal
+			$fields_contents['saved_custom_fields'] = InternalWrite::run(
+				InternalWrite::COPY,
+				function () use ( $target_post_id, $trid, $external_custom_fields, &$refusal ) {
+					return self::save_meta_values_on_translation( (int) $target_post_id, $trid, $external_custom_fields, $refusal );
+				}
 			);
 
 			if ( $refusal ) {
@@ -339,7 +342,7 @@ class WPML_Post_Edit_Ajax {
 			$meta_id = add_post_meta(
 				$target_post_id,
 				$field['name'],
-				wp_slash( maybe_unserialize( $field['value'] ) )
+				wp_slash( \WPML\Utils\Unserialize::maybe( $field['value'] ) )
 			);
 
 			if ( $meta_id ) {
@@ -379,8 +382,6 @@ class WPML_Post_Edit_Ajax {
 	}
 
 	public static function wpml_switch_post_language() {
-		global $sitepress, $wpdb;
-
 		$nonce = $_POST['nonce'];
 		if ( ! wp_verify_nonce( $nonce, self::AJAX_ACTION_SWITCH_POST_LANGUAGE ) ) {
 			wp_send_json_error();
@@ -404,38 +405,51 @@ class WPML_Post_Edit_Ajax {
 				wp_send_json_error( __( 'You are not allowed to edit this post.', 'sitepress' ), 403 );
 			}
 
-			$post_type      = get_post_type( $post_id );
-			$wpml_post_type = 'post_' . $post_type;
-			$trid           = $sitepress->get_element_trid( $post_id, $wpml_post_type );
-
-
-			$existing_translation = $wpdb->get_row(
-				$wpdb->prepare( "	SELECT translation_id, element_id
-																FROM {$wpdb->prefix}icl_translations
-																WHERE element_type = %s
-																	AND trid = %d
-																	AND language_code = %s",
-					$wpml_post_type,
-					$trid,
-					$to
-				)
-			);
-
-			if ( $existing_translation && $existing_translation->element_id != $post_id ) {
-				$result = false;
-			} else {
-				$sitepress->set_element_language_details( $post_id, $wpml_post_type, $trid, $to );
-				WPML_Terms_Translations::sync_post_terms_language( $post_id );
-				require_once WPML_PLUGIN_PATH . '/inc/cache.php';
-				icl_cache_clear( $post_type . 's_per_language', true );
-
-				$result = $to;
+			global $sitepress;
+			if ( ! is_string( $to ) || ! $sitepress->is_active_language( $to ) ) {
+				wp_send_json_error( __( 'The language code is not one of the active languages.', 'sitepress' ), 400 );
 			}
 
-			SitePress::clear_source_language_by_trid_cache( (int) $trid );
+			$result = self::switch_post_language( (int) $post_id, (string) $to );
 		}
 
 		wp_send_json_success( $result );
+	}
+
+	public static function switch_post_language( $post_id, $to ) {
+		global $sitepress, $wpdb;
+
+		$post_type      = get_post_type( $post_id );
+		$wpml_post_type = 'post_' . $post_type;
+		$trid           = $sitepress->get_element_trid( $post_id, $wpml_post_type );
+
+
+		$existing_translation = $wpdb->get_row(
+			$wpdb->prepare( "	SELECT translation_id, element_id
+															FROM {$wpdb->prefix}icl_translations
+															WHERE element_type = %s
+																AND trid = %d
+																AND language_code = %s",
+				$wpml_post_type,
+				$trid,
+				$to
+			)
+		);
+
+		if ( $existing_translation && $existing_translation->element_id != $post_id ) {
+			$result = false;
+		} else {
+			$sitepress->set_element_language_details( $post_id, $wpml_post_type, $trid, $to );
+			WPML_Terms_Translations::sync_post_terms_language( $post_id );
+			require_once WPML_PLUGIN_PATH . '/inc/cache.php';
+			icl_cache_clear( $post_type . 's_per_language', true );
+
+			$result = $to;
+		}
+
+		SitePress::clear_source_language_by_trid_cache( (int) $trid );
+
+		return $result;
 	}
 
 	public static function wpml_get_default_lang() {

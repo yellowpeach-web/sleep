@@ -62,6 +62,30 @@ class RelationalIds {
 		return $translatedId ? self::sameShape( $id, $translatedId ) : $id;
 	}
 
+	public static function translateHeldFallbacks( $value, $sourceValue, array $field, string $languageCode ) {
+		if ( ! is_array( $value ) ) {
+			return self::isId( $sourceValue, $value ) ? self::translateOne( $value, $field, $languageCode ) : $value;
+		}
+
+		$sourceIds     = array_map( 'strval', array_filter( (array) $sourceValue, 'is_scalar' ) );
+		$translatedIds = [];
+
+		foreach ( $value as $index => $id ) {
+			if ( is_scalar( $id ) && in_array( (string) $id, $sourceIds, true ) ) {
+				$value[ $index ] = self::translateOne( $id, $field, $languageCode );
+				if ( $value[ $index ] !== $id ) {
+					$translatedIds[] = $value[ $index ];
+				}
+			}
+		}
+
+		foreach ( $translatedIds as $translatedId ) {
+			$value = self::withoutRepeatsOf( $value, $translatedId );
+		}
+
+		return $value;
+	}
+
 	public static function replaceFallback( $value, $sourceValue, $referencedId, $translatedId ) {
 		if ( ! is_array( $value ) ) {
 			return self::isId( $value, $referencedId ) && self::isId( $sourceValue, $referencedId )

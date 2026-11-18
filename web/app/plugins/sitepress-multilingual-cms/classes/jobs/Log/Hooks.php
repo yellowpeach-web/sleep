@@ -242,7 +242,7 @@ class Hooks implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 				$results[] = $row;
 			}
 		} else {
-			$like    = '%' . $wpdb->esc_like( $q ) . '%';
+			$like    = \WPML\Utils\LikeEscape::contains( $q );
 			$results = (array) $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT p.ID, p.post_title, p.post_type, t.language_code
@@ -250,7 +250,7 @@ class Hooks implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 				 LEFT JOIN {$wpdb->prefix}icl_translations t
 				        ON t.element_id = p.ID AND t.element_type = CONCAT('post_', p.post_type)
 				 WHERE p.post_status NOT IN ('auto-draft','trash')
-				   AND p.post_title LIKE %s
+				   AND p.post_title LIKE %s ESCAPE '|'
 				   AND ( t.source_language_code IS NULL OR t.translation_id IS NULL )
 				 ORDER BY p.post_modified DESC
 				 LIMIT 20",
@@ -520,55 +520,12 @@ class Hooks implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		$text .= 'Status: ' . ( $summary['status'] ?? '' ) . "\n";
 		$text .= "\n";
 
+		$collected     = View::groupEvents( JobLog::getEvents( $logUid ) );
 		$requestParams = null;
-		$groups        = [];
-		$current       = null;
-
-		foreach ( JobLog::getEvents( $logUid ) as $event ) {
-			if ( ! isset( $event['type'] ) ) {
-				continue;
+		foreach ( [ $collected['finished'], $collected['started'] ] as $envelope ) {
+			if ( $requestParams === null && is_array( $envelope ) && isset( $envelope['requestParams'] ) && is_array( $envelope['requestParams'] ) ) {
+				$requestParams = $envelope['requestParams'];
 			}
-
-			switch ( $event['type'] ) {
-				case 'request_started':
-					if ( $requestParams === null && isset( $event['requestParams'] ) && is_array( $event['requestParams'] ) ) {
-						$requestParams = $event['requestParams'];
-					}
-					break;
-
-				case 'group_started':
-					$current = [
-						'label' => $event['label'] ?? '',
-						'logs'  => [],
-					];
-					break;
-
-				case 'log':
-					if ( $current === null ) {
-						$current = [
-							'label' => '(orphan)',
-							'logs'  => [],
-						];
-					}
-					$current['logs'][] = $event;
-					break;
-
-				case 'group_finished':
-					if ( $current !== null ) {
-						$groups[] = $current;
-						$current  = null;
-					}
-					break;
-
-				case 'request_finished':
-					if ( isset( $event['requestParams'] ) && is_array( $event['requestParams'] ) ) {
-						$requestParams = $event['requestParams'];
-					}
-					break;
-			}
-		}
-		if ( $current !== null ) {
-			$groups[] = $current;
 		}
 
 		$text .= "Request Parameters:\n";
@@ -576,34 +533,47 @@ class Hooks implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		$text .= wp_json_encode( $requestParams ?: [], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . "\n\n";
 
 		$actionNum = 0;
-		foreach ( $groups as $group ) {
+		foreach ( $collected['groups'] as $group ) {
 			++$actionNum;
-			$text .= "========================================\n";
-			$text .= 'Action ' . $actionNum . ': ' . ( $group['label'] ?? '' ) . "\n";
-			$text .= "========================================\n\n";
-
-			$stepNum = 0;
-			foreach ( $group['logs'] as $log ) {
-				++$stepNum;
-				$text .= 'Step ' . $stepNum . ': ' . ( $log['id'] ?? 'N/A' );
-				if ( isset( $log['elapsed_ms'] ) ) {
-					$text .= ' (+' . (int) $log['elapsed_ms'] . 'ms)';
-				}
-				if ( isset( $log['php_pid'] ) ) {
-					$text .= ' [pid:' . (int) $log['php_pid'] . ']';
-				}
-				$text .= "\n";
-				$text .= str_repeat( '-', 40 ) . "\n";
-
-				if ( isset( $log['data'] ) ) {
-					$text .= wp_json_encode( $log['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . "\n\n";
-				}
-			}
+			$text .= $this->actionText( (string) $actionNum, $group );
 		}
 
 		$text .= "========================================\n";
 		$text .= "End of Log\n";
 		$text .= "========================================\n";
+
+		return $text;
+	}
+
+	private function actionText( $number, array $group ) {
+		$label = ! empty( $group['orphan'] ) ? '(orphan)' : (string) ( $group['label'] ?? '' );
+
+		$text  = "========================================\n";
+		$text .= 'Action ' . $number . ': ' . $label . "\n";
+		$text .= "========================================\n\n";
+
+		$stepNum  = 0;
+		$childNum = 0;
+		foreach ( $group['logs'] as $log ) {
+			++$stepNum;
+			if ( isset( $log['childGroup'] ) && is_array( $log['childGroup'] ) ) {
+				$text .= $this->actionText( $number . '.' . ( ++$childNum ), $log['childGroup'] );
+				continue;
+			}
+			$text .= 'Step ' . $stepNum . ': ' . ( $log['id'] ?? 'N/A' );
+			if ( isset( $log['elapsed_ms'] ) ) {
+				$text .= ' (+' . (int) $log['elapsed_ms'] . 'ms)';
+			}
+			if ( isset( $log['php_pid'] ) ) {
+				$text .= ' [pid:' . (int) $log['php_pid'] . ']';
+			}
+			$text .= "\n";
+			$text .= str_repeat( '-', 40 ) . "\n";
+
+			if ( isset( $log['data'] ) ) {
+				$text .= wp_json_encode( $log['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . "\n\n";
+			}
+		}
 
 		return $text;
 	}

@@ -63,31 +63,27 @@ class DynamicContent extends BaseDynamicContent {
 	protected function is_dynamic_content( $string ) {
 		$decoded = json_decode( base64_decode( $string ), true );
 
-		if ( ! is_array( $decoded ) ) {
-			return false;
-		}
-
-		return isset( $decoded['element_content'] ) || isset( $decoded['alt'] ) || isset( $decoded['link'] );
+		return is_array( $decoded ) && (bool) $this->getDynamicParamKeys( $decoded );
 	}
 
 	protected function decode_field( $string ) {
 		$decoded = json_decode( base64_decode( $string ), true );
 
-		$content_keys = [];
-		if ( isset( $decoded['element_content'] ) ) {
-			$content_keys[] = 'element_content';
-		}
-		if ( isset( $decoded['alt'] ) ) {
-			$content_keys[] = 'alt';
-		}
-		if ( isset( $decoded['link'] ) ) {
-			$content_keys[] = 'link';
-		}
-
 		return [
 			'data'         => $decoded,
-			'content_keys' => $content_keys,
+			'content_keys' => is_array( $decoded ) ? $this->getDynamicParamKeys( $decoded ) : [],
 		];
+	}
+
+	private function getDynamicParamKeys( array $decodedParams ) {
+		return array_keys(
+			array_filter(
+				$decodedParams,
+				function ( $param ) {
+					return is_array( $param ) && isset( $param['data'] );
+				}
+			)
+		);
 	}
 
 	protected function encode_field( $decodedData ) {

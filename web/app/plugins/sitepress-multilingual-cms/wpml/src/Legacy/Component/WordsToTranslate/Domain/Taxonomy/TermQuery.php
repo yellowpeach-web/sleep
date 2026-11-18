@@ -5,6 +5,7 @@ namespace WPML\Legacy\Component\WordsToTranslate\Domain\Taxonomy;
 use WPML\Core\Component\WordsToTranslate\Domain\Taxonomy\Query\TermQueryInterface;
 use WPML\Core\Component\WordsToTranslate\Domain\Taxonomy\TaxonomyTerm;
 use WPML\PHP\Exception\InvalidItemIdException;
+use WPML\TM\Taxonomy\Job\TermWords;
 use WPML\TM\Taxonomy\TranslatableTermMeta;
 
 class TermQuery implements TermQueryInterface {
@@ -54,17 +55,21 @@ class TermQuery implements TermQueryInterface {
       (string) ( $row->source_language_code ?: $row->language_code )
     );
 
-    $content  = (string) $row->name . "\n" . (string) $row->description;
-    $metaText = TranslatableTermMeta::metaTextById(
+    $metaValues = TranslatableTermMeta::valuesOfTermById(
       (int) $row->term_id,
       TranslatableTermMeta::keys( $taxonomy ),
       $taxonomy
     );
+    $content    = (string) $row->name . "\n" . (string) $row->description;
+    $metaText   = implode( "\n", $metaValues );
     if ( '' !== $metaText ) {
       $content .= "\n" . $metaText;
     }
 
     $term->setContent( $content );
+    $term->setFieldContents(
+      TermWords::fieldsOf( (string) $row->name, (string) $row->description, $metaValues, (int) $row->term_taxonomy_id )
+    );
 
     return $term;
   }

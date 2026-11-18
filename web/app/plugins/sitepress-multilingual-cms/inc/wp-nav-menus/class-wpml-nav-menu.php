@@ -91,7 +91,7 @@ class WPML_Nav_Menu {
 			 && isset( $_GET['menu'] )
 			 && empty( $_GET['lang'] )
 		) {
-			wp_redirect(
+			wp_safe_redirect(
 				admin_url(
 					sprintf(
 						'nav-menus.php?menu=%d&lang=%s',
@@ -120,7 +120,7 @@ class WPML_Nav_Menu {
 		}
 
 		\WPML\Request\Adapter\Ajax::register( 'icl_msync_confirm', \WPML\Request\Policy\Policy::capability( [ 'wpml_manage_wp_menus_sync', 'manage_translations' ], \WPML\Request\Policy\Authenticity::actionNonce( '_icl_nonce_menu_sync', '_icl_nonce_menu_sync' ) ), array( $this, 'sync_menus_via_ajax' ) );
-		\WPML\Request\Adapter\Ajax::register( 'wpml_get_links_for_menu_strings_translation', \WPML\Request\Policy\Policy::capability( 'manage_options', \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_get_links_for_menu_strings_translation', '_nonce' ) ), array( $this, 'get_links_for_menu_strings_translation_ajax' ) );
+		\WPML\Request\Adapter\Ajax::register( 'wpml_get_links_for_menu_strings_translation', \WPML\Request\Policy\Policy::capability( [ 'wpml_manage_wp_menus_sync', 'manage_translations' ], \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_get_links_for_menu_strings_translation', '_nonce' ) ), array( $this, 'get_links_for_menu_strings_translation_ajax' ) );
 	}
 
 	function sync_menus_via_ajax() {
@@ -142,6 +142,20 @@ class WPML_Nav_Menu {
 			include_once WPML_PLUGIN_PATH . '/inc/wp-nav-menus/menus-sync.php';
 			$icl_menus_sync = new ICLMenusSync( $sitepress, $wpdb, $wpml_post_translations, $wpml_term_translations );
 			$icl_menus_sync->init( WPML_Menu_Sync_Store::get() );
+
+			$sync_payload = ICLMenusSync::sanitize_sync_payload( $sync_payload );
+			if ( false === $sync_payload ) {
+				\WPML\Request\Payload::refuse(
+					\WPML\Request\Payload::invalid(
+						'sync',
+						'sync carries no section the menu sync reads',
+						/* translators: Shown on the WP Menus Sync screen when the browser sent no changes to apply. */
+						__( 'No menu changes were received, so nothing was synchronized. Please reload the page and try again.', 'sitepress' )
+					)
+				);
+
+				return;
+			}
 
 			$unknown_menus = $icl_menus_sync->unknown_menu_ids( $sync_payload );
 			if ( $unknown_menus ) {
@@ -174,7 +188,7 @@ class WPML_Nav_Menu {
 		global $icl_menus_sync, $wpml_post_translations, $wpml_term_translations;
 		$nonce = isset( $_GET['_nonce'] ) ? sanitize_text_field( $_GET['_nonce'] ) : '';
 
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'wpml_manage_wp_menus_sync' ) && ! current_user_can( 'manage_translations' ) ) {
 			/* translators: Error message returned when the user is not allowed to carry out the request. */
 			wp_send_json_error( esc_html__( 'Unauthorized', 'sitepress' ), 401 );
 			return;
@@ -252,9 +266,21 @@ class WPML_Nav_Menu {
 	function ajax( $data ) {
 		if ( $data['icl_wp_nav_menu_ajax'] == 'translation_of' ) {
 			$trid = isset( $data['trid'] ) ? $data['trid'] : false;
-			echo $this->render_translation_of( $data['lang'], $trid );
+			$lang = $this->get_translation_of_language( $data );
+			if ( null !== $lang ) {
+				echo $this->render_translation_of( $lang, $trid );
+			}
 		}
 		exit;
+	}
+
+	public function get_translation_of_language( array $data ) {
+		$lang = isset( $data['lang'] ) && is_string( $data['lang'] ) ? $data['lang'] : '';
+		if ( '' === $lang ) {
+			return null;
+		}
+
+		return array_key_exists( $lang, (array) $this->sitepress->get_active_languages() ) ? $lang : null;
 	}
 
 	function _get_menu_language( $menu_id ) {
@@ -381,12 +407,12 @@ class WPML_Nav_Menu {
 			}
 			$langsel .= '</div><br />';
 			$langsel .= '<div class="icl_nav_menu_text" style="float:right; clear:right">';
-			$langsel .= '<div><a href="' . admin_url( 'admin.php?page=' . WPML_PLUGIN_FOLDER . '/menu/menu-sync/menus-sync.php' ) . '">' . __( 'Synchronize menus between languages.', 'sitepress' ) . '</a></div>';
+			$langsel .= '<div><a href="' . admin_url( 'admin.php?page=' . WPML_TM_FOLDER . '/menu/main.php&tab=menus' ) . '">' . __( 'Synchronize menus between languages.', 'sitepress' ) . '</a></div>';
 			$langsel .= '</div>';
 
 		}
 
-		/* translators: Column heading and field label in the WPML admin, for the language of a piece of content. Noun, singular. */
+		/* translators: Column heading and field label in the WPML admin, for the language of a piece of content, for example on the Updated translations page (the language of the updated translation). Noun, singular. */
 		$langsel .= '<label class="menu-name-label howto"><span>' . __( 'Language', 'sitepress' ) . '</span>';
 		$langsel .= '&nbsp;&nbsp;';
 		$langsel .= '<select name="icl_nav_menu_language" id="icl_menu_language">';
@@ -482,7 +508,7 @@ class WPML_Nav_Menu {
 			/* translators: Label in front of the name of the menu this one is a translation of, on the menus screen. The menu name follows it, so it ends without a full stop. */
 			$out     .= '<label class="menu-name-label howto"><span>' . __( 'Translation of', 'sitepress' ) . '</span>&nbsp;';
 			$out     .= '<select name="icl_translation_of" id="icl_menu_translation_of"' . $disabled . '>';
-			/* translators: Shown in place of a value when there is nothing to show. Written in lower case because it stands where a value would. */
+			/* translators: Shown in place of a value when there is nothing to show, for example the language of a post that has none. Written in lower case because it stands where a value would. */
 			$out     .= '<option value="none">--' . __( 'none', 'sitepress' ) . '--</option>';
 			foreach ( $menus as $mtrid => $m ) {
 				if ( (int) $trid === (int) $mtrid ) {

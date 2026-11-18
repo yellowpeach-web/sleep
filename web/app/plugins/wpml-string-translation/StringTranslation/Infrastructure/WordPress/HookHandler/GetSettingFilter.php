@@ -50,6 +50,9 @@ class GetSettingFilter extends AbstractFilterHookHandler {
 		if ( $settingName === 'isCurrentUserAdmin' ) {
 			return $this->settingsRepository->getIsCurrentUserAdmin();
 		}
+		if ( $settingName === 'isGuestRequestInAdminOnlyMode' ) {
+			return $this->settingsRepository->isGuestRequestInAdminOnlyMode();
+		}
 
 	}
 }

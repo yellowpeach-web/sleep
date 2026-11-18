@@ -105,9 +105,25 @@ class Api implements ApiInterface {
 
     \WPML\Request\Adapter\Ajax::declare(
       'wpml_api_' . $routeWithoutSlashes,
-      self::policyFor( $endpoint, $authorisation, self::isStateChanging( $endpoint )
-        ? \WPML\Request\Policy\Authenticity::restNonce()
-        : \WPML\Request\Policy\Authenticity::none( 'read-only GET twin of a REST endpoint; no state change' ) )
+      self::policyFor(
+        $endpoint,
+        $authorisation,
+        self::isStateChanging( $endpoint )
+          ? \WPML\Request\Policy\Authenticity::restNonce()
+          : \WPML\Request\Policy\Authenticity::none( 'read-only GET twin of a REST endpoint; no state change' ),
+        function () use ( $endpoint ) {
+          if ( self::isStateChanging( $endpoint ) ) {
+            $nonce = isset( $_SERVER['HTTP_X_WP_NONCE'] )
+              ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_WP_NONCE'] ) )
+              : '';
+            if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+              return null;
+            }
+          }
+
+          return self::ajaxRequest( $endpoint, self::ajaxParams( $_GET ) );
+        }
+      )
     );
 
     add_action(
@@ -131,7 +147,11 @@ class Api implements ApiInterface {
           }
         }
 
-        $authorisationResult = $authorisation();
+        $params = self::ajaxParams( $_GET );
+
+        $authorisationResult = $endpoint->permission()
+          ? $authorisation( self::ajaxRequest( $endpoint, $params ) )
+          : $authorisation();
 
         if ( $authorisationResult === false || $authorisationResult === null ) {
           $authorisationResult = new \WP_Error(
@@ -145,13 +165,6 @@ class Api implements ApiInterface {
           $errorResponse = rest_convert_error_to_response( $authorisationResult );
           return wp_send_json_error( $authorisationResult, $errorResponse->get_status() );
         }
-
-        $json = file_get_contents( 'php://input' );
-
-        $params = $json ? json_decode( $json, true ) : [];
-        $params = is_array( $params ) ? $params : [];
-
-        $params = array_merge( $params, $_GET );
 
         $invalidParam = self::firstInvalidParam( $params, $endpoint->args() );
 
@@ -204,9 +217,10 @@ class Api implements ApiInterface {
   private static function policyFor(
     Endpoint $endpoint,
     $authorisation,
-    \WPML\Request\Policy\Authenticity $authenticity
+    \WPML\Request\Policy\Authenticity $authenticity,
+    $requestFactory = null
   ) {
-    if ( '__return_true' === $endpoint->capability() ) {
+    if ( '__return_true' === $endpoint->capability() && ! $endpoint->permission() ) {
       return \WPML\Request\Policy\Policy::publicAccess(
         'endpoint ' . $endpoint->route() . ' is configured public (capability __return_true)',
         $authenticity
@@ -214,12 +228,39 @@ class Api implements ApiInterface {
     }
 
     return \WPML\Request\Policy\Policy::authorize(
-      function () use ( $authorisation ) {
-        return true === $authorisation();
+      function ( $request = null ) use ( $authorisation, $requestFactory, $endpoint ) {
+        if ( null === $request && $requestFactory && $endpoint->permission() ) {
+          $request = $requestFactory();
+        }
+
+        return true === $authorisation( $request );
       },
       $authenticity,
       'configured capability "' . implode( '" or "', $endpoint->capabilities() ) . '" via Api::validateRequest (administrators always pass)'
+      . ( $endpoint->permission() ? ', then the object-level permission ' . (string) $endpoint->permission() . '::check( request )' : '' )
     );
+  }
+
+
+  private static function ajaxParams( array $query ) {
+    $json = file_get_contents( 'php://input' );
+
+    $params = $json ? json_decode( $json, true ) : [];
+    $params = is_array( $params ) ? $params : [];
+
+    foreach ( $query as $name => $value ) {
+      $params[ (string) $name ] = $value;
+    }
+
+    return $params;
+  }
+
+
+  private static function ajaxRequest( Endpoint $endpoint, array $params ) {
+    $request = new \WP_REST_Request( $endpoint->method(), '/' . $endpoint->route() );
+    $request->set_query_params( $params );
+
+    return $request;
   }
 
 

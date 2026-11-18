@@ -13,14 +13,29 @@
          "The translation could not be started because the server did not answer.": [
             "تعذر بدء الترجمة لأن الخادم لم يستجب."
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "انتهت صلاحية جلستك. أعد تحميل هذه الصفحة وحاول مجددًا."
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "يقوم PTC بالترجمة. سيفتح المحرر عندما يصبح جاهزًا."
+         ],
          "This translation cannot be opened right now.": [
             "لا يمكن فتح هذه الترجمة في الوقت الحالي."
          ],
          "Refresh this page": [
             "تحديث هذه الصفحة"
          ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "لا توجد كلمات مدفوعة مسبقًا كافية لترجمة هذا تلقائيًا. أضف المزيد من الكلمات، ثم حاول مرة أخرى."
+         ],
+         "Get more words": [
+            "احصل على المزيد من الكلمات"
+         ],
+         "Close": [
+            "إغلاق"
+         ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
-            "يتم ترجمة هذا المحتوى تلقائيًا. إذا كنت ترغب في القيام بشيء مختلف، فقم بإلغاء وظائف الترجمة أولاً."
+            "تجري ترجمة هذا المحتوى تلقائيًا. إذا كنت تريد القيام بإجراء مختلف معه، فألغِ مهام الترجمة أولاً."
          ],
          "You don't have the rights to review this language": [
             "ليس لديك الصلاحيات لمراجعة هذه اللغة"
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "جاري ترجمة محتواك"
+         ],
+         "Translate Everything is active": [
+            "ترجم كل شيء نشط"
          ],
          "%d translation notice": [
             "%d إشعارات ترجمة",
@@ -60,8 +78,8 @@
          "Automatic translation is paused: monthly spending cap reached": [
             "الترجمة التلقائية متوقفة مؤقتًا: تم الوصول إلى حد الإنفاق الشهري"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "وصل هذا الموقع إلى حد الإنفاق الشهري المحدد له. تستمر الترجمة عند رفع الحد، أو عند إعادة تعيين الحد. يمكن لمالك الحساب فقط القيام بذلك."
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "وصل هذا الموقع إلى حد الإنفاق الشهري المحدد له. ستستمر الترجمة عند رفع الحد، أو عند إعادة تعيينه. يمكنك رفعه من صفحة ترجمة AI: الفواتير والاستخدام."
          ],
          "Preparing content for translation": [
             "جاري تحضير المحتوى للترجمة"
@@ -80,8 +98,13 @@
             "يجب ربط اللغات التالية في موقعك بلغة مدعومة لاستخدام الترجمة التلقائية: %s",
             "يجب ربط اللغات التالية في موقعك بلغة مدعومة لاستخدام الترجمة التلقائية: %s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "المحتوى بهذه اللغات: %s، لا يمكن ترجمته تلقائيًا إلا إذا قمت بربطه بلغة مختلفة عن اللغة الافتراضية."
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "الترجمة التلقائية غير متاحة بين %1$s وهذه اللغات لأنها تُعد نفس اللغة: %2$s. اختر ”تكرار“ بدلاً من ذلك لنسخ المحتوى عبرها.",
+            "الترجمة التلقائية غير متاحة بين %1$s و%2$s لأنهما تُعتبران اللغة نفسها. اختر ”تكرار“ بدلاً من ذلك لنسخ المحتوى عبرهما.",
+            "الترجمة التلقائية غير متاحة بين %1$s وهذه اللغات لأنها تُعد نفس اللغة: %2$s. اختر ”تكرار“ بدلاً من ذلك لنسخ المحتوى عبرها.",
+            "الترجمة التلقائية غير متاحة بين %1$s وهذه اللغات لأنها تُعد نفس اللغة: %2$s. اختر ”تكرار“ بدلاً من ذلك لنسخ المحتوى عبرها.",
+            "الترجمة التلقائية غير متاحة بين %1$s وهذه اللغات لأنها تُعد نفس اللغة: %2$s. اختر ”تكرار“ بدلاً من ذلك لنسخ المحتوى عبرها.",
+            "الترجمة التلقائية غير متاحة بين %1$s وهذه اللغات لأنها تُعد نفس اللغة: %2$s. اختر ”تكرار“ بدلاً من ذلك لنسخ المحتوى عبرها."
          ],
          "%d translation waiting for review": [
             "%d ترجمات في انتظار المراجعة",
@@ -177,9 +200,6 @@
          ],
          "Pay now": [
             "ادفع الآن"
-         ],
-         "Get more words": [
-            "احصل على المزيد من الكلمات"
          ],
          "Assign words": [
             "عيّن الكلمات"

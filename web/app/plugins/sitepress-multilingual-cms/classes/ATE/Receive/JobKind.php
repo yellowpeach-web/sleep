@@ -2,11 +2,23 @@
 
 namespace WPML\TM\ATE\Receive;
 
+use WPML\TM\ATE\TranslateEverything\TermBundle;
 use WPML\TM\ATE\TranslateEverything\UntranslatedTerms;
 
 class JobKind {
 
 	public static function isTaxonomyTerm( $wpmlJobId ) {
+		$elementType = self::elementTypeOf( $wpmlJobId );
+
+		return is_string( $elementType )
+			&& ( TermBundle::ELEMENT_TYPE === $elementType || 0 === strpos( $elementType, UntranslatedTerms::ELEMENT_TYPE_PREFIX ) );
+	}
+
+	public static function isTermBundle( $wpmlJobId ) {
+		return TermBundle::ELEMENT_TYPE === self::elementTypeOf( $wpmlJobId );
+	}
+
+	private static function elementTypeOf( $wpmlJobId ) {
 		global $wpdb;
 
 		$elementType = $wpdb->get_var(
@@ -20,7 +32,6 @@ class JobKind {
 			)
 		);
 
-		return is_string( $elementType )
-			&& 0 === strpos( $elementType, UntranslatedTerms::ELEMENT_TYPE_PREFIX );
+		return is_string( $elementType ) ? $elementType : null;
 	}
 }

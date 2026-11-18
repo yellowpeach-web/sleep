@@ -53,6 +53,10 @@ class LanguageValueHooks implements \IWPML_Backend_Action, \IWPML_Frontend_Actio
 	}
 
 	public function loadLanguageValue( $value, $postId, $fieldName, $isReference ) {
+		if ( ! self::hasFieldName( $fieldName ) ) {
+			return $value;
+		}
+
 		$userId       = self::getUserId( $postId );
 		$languageCode = $this->getLanguageOfOwnValue( $userId, $fieldName, $value, $isReference );
 		if ( ! $languageCode ) {
@@ -68,6 +72,10 @@ class LanguageValueHooks implements \IWPML_Backend_Action, \IWPML_Frontend_Actio
 	}
 
 	public function updateLanguageValue( $result, $postId, $fieldName, $value, $isReference ) {
+		if ( ! self::hasFieldName( $fieldName ) ) {
+			return $result;
+		}
+
 		$userId       = self::getUserId( $postId );
 		$languageCode = $this->getLanguageOfOwnValue( $userId, $fieldName, $result, $isReference );
 		if ( ! $languageCode ) {
@@ -78,6 +86,10 @@ class LanguageValueHooks implements \IWPML_Backend_Action, \IWPML_Frontend_Actio
 	}
 
 	public function deleteLanguageValue( $result, $postId, $fieldName, $isReference ) {
+		if ( ! self::hasFieldName( $fieldName ) ) {
+			return $result;
+		}
+
 		$userId       = self::getUserId( $postId );
 		$languageCode = $this->getLanguageOfOwnValue( $userId, $fieldName, $result, $isReference );
 		if ( ! $languageCode ) {
@@ -151,6 +163,10 @@ class LanguageValueHooks implements \IWPML_Backend_Action, \IWPML_Frontend_Actio
 
 	private static function isCopyField( array $field ): bool {
 		return isset( $field['wpml_cf_preferences'] ) && WPML_COPY_CUSTOM_FIELD === (int) $field['wpml_cf_preferences'];
+	}
+
+	private static function hasFieldName( $fieldName ): bool {
+		return is_string( $fieldName ) && '' !== $fieldName;
 	}
 
 	private static function getUserId( $postId ): int {

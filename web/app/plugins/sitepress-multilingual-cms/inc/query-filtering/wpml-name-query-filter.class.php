@@ -148,7 +148,10 @@ abstract class WPML_Name_Query_Filter extends WPML_Slug_Resolution {
 			$cache->set( $cache_key, $pages_with_name );
 		}
 
-		return array( 'matching_ids' => $pages_with_name );
+		return array(
+			'matching_ids'     => $pages_with_name,
+			'requested_parent' => (int) $post_parent,
+		);
 	}
 
 	private function get_single_slug_adjusted_IDs_from_DB( $page_name_for_query, $post_parent ) {

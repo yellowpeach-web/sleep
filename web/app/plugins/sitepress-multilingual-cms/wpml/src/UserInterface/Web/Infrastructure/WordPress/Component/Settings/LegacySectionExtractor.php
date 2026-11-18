@@ -96,7 +96,12 @@ class LegacySectionExtractor {
   }
 
 
-  public static function extractInnerSectionByHeading( string $html, string $parentId, string $headingText ): string {
+  public static function extractInnerSectionById(
+    string $html,
+    string $parentId,
+    string $innerId,
+    bool $withoutHeading = false
+  ): string {
     if ( $html === '' ) {
       return '';
     }
@@ -106,19 +111,27 @@ class LegacySectionExtractor {
       return '';
     }
 
-    $inner = self::findInnerSectionByHeading( $dom, $parentId, $headingText );
+    $inner = self::findInnerSectionById( $dom, $parentId, $innerId );
     if ( $inner === null ) {
       return '';
+    }
+
+    if ( $withoutHeading ) {
+      $headings = ( new \DOMXPath( $dom ) )->query( './/h4', $inner );
+      $heading  = $headings ? $headings->item( 0 ) : null;
+      if ( $heading && $heading->parentNode ) {
+        $heading->parentNode->removeChild( $heading );
+      }
     }
 
     return self::restoreScriptTemplates( $dom->saveHTML( $inner ) ?: '' );
   }
 
 
-  public static function extractSectionByIdWithoutInner(
+  public static function extractSectionByIdWithoutInnerId(
     string $html,
     string $sectionId,
-    string $headingText
+    string $innerId
   ): string {
     if ( $html === '' ) {
       return '';
@@ -134,7 +147,7 @@ class LegacySectionExtractor {
       return '';
     }
 
-    $inner = self::findInnerSectionByHeading( $dom, $sectionId, $headingText );
+    $inner = self::findInnerSectionById( $dom, $sectionId, $innerId );
     if ( $inner instanceof \DOMElement && $inner->parentNode ) {
       $inner->parentNode->removeChild( $inner );
     }
@@ -143,39 +156,23 @@ class LegacySectionExtractor {
   }
 
 
-  private static function findInnerSectionByHeading(
+  private static function findInnerSectionById(
     \DOMDocument $dom,
     string $parentId,
-    string $headingText
+    string $innerId
   ): ?\DOMElement {
     $section = self::findElementById( $dom, $parentId );
     if ( ! $section instanceof \DOMElement ) {
       return null;
     }
 
-    $xpath  = new \DOMXPath( $dom );
-    $needle = trim( $headingText );
-    $classMatch = "contains(concat(' ', normalize-space(@class), ' '), ' wpml-section-content-inner ')";
-    $inners = $xpath->query( ".//div[$classMatch]", $section );
-    if ( ! $inners ) {
+    $nodes = ( new \DOMXPath( $dom ) )->query( './/*[@id=' . self::xpathLiteral( $innerId ) . ']', $section );
+    if ( $nodes === false || $nodes->length === 0 ) {
       return null;
     }
+    $found = $nodes->item( 0 );
 
-    foreach ( $inners as $inner ) {
-      $heading = $xpath->query( './/h4', $inner );
-      if ( ! $heading || $heading->length === 0 ) {
-        continue;
-      }
-      $headingNode = $heading->item( 0 );
-      if ( $headingNode === null ) {
-        continue;
-      }
-      if ( trim( $headingNode->textContent ) === $needle && $inner instanceof \DOMElement ) {
-        return $inner;
-      }
-    }
-
-    return null;
+    return $found instanceof \DOMElement ? $found : null;
   }
 
 

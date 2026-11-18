@@ -28,6 +28,8 @@ class Item {
 
   private $nameBefore;
 
+  private $contentLinksUnchanged = false;
+
 
   public function __construct(
     int $id,
@@ -124,6 +126,16 @@ class Item {
 
   public function getNameBefore() {
     return $this->nameBefore;
+  }
+
+
+  public function markContentLinksUnchanged() {
+    $this->contentLinksUnchanged = true;
+  }
+
+
+  public function contentLinksUnchanged(): bool {
+    return $this->contentLinksUnchanged;
   }
 
 

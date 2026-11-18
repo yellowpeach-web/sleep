@@ -118,7 +118,8 @@ class ItemWithTranslationStatusDtoMapper {
         $editor,
         $isTranslated,
         $job['translator_id'] ? (int) $job['translator_id'] : null,
-        isset( $job['editor_job_id'] ) ? (int) $job['editor_job_id'] : null
+        isset( $job['editor_job_id'] ) ? (int) $job['editor_job_id'] : null,
+        $job['element_id'] ? (int) $job['element_id'] : null
       );
     }
 

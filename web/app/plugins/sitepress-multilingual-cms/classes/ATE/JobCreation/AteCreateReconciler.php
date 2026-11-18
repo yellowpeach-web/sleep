@@ -2,12 +2,14 @@
 
 namespace WPML\TM\ATE\JobCreation;
 
+use WPML\Core\Component\ATE\Domain\SiteRegistration;
 use WPML\FP\Obj;
 use WPML\TM\API\Job\Map;
 use WPML\TM\API\Jobs;
 use WPML\TM\ATE\Cancel\PendingCancels;
 use WPML\TM\ATE\JobRecords;
 use WPML\TM\Jobs\JobLog;
+use WPML\TranslationPolicy\Policy\Policy;
 
 class AteCreateReconciler {
 
@@ -20,9 +22,11 @@ class AteCreateReconciler {
 
 	const IN_FLIGHT_OPTION_PREFIX = 'wpml_tm_ate_create_in_flight_';
 
+	const HELD_SEND_OPTION_PREFIX = 'wpml_tm_ate_held_send_';
+
 	const ATE_RECORD_SPENT_STATUSES = [ 8, 20, 34, 40, 42 ];
 
-	const NO_LOOKUP_ERROR_CODES = [ 'ate_auth_failed', 'auth_error' ];
+	const NO_LOOKUP_ERROR_CODES = [ 'ate_auth_failed', SiteRegistration::NOT_REGISTERED_ERROR_CODE ];
 
 	const OWN_ERROR_NO_ANSWER_CODES = [ 'http_request_failed', 'wpml_ate_reconnecting' ];
 
@@ -92,7 +96,7 @@ class AteCreateReconciler {
 			: self::result( self::OUTCOME_NONE );
 	}
 
-	public function bind( array $adopted, array $modeByJobId, $sentFrom ) {
+	public function bind( array $adopted, array $modeByJobId, $sentFrom, $addMessage = true ) {
 		if ( ! $adopted ) {
 			return;
 		}
@@ -108,6 +112,9 @@ class AteCreateReconciler {
 			$this->ateJobs->store( $wpmlJobId, [ JobRecords::FIELD_ATE_JOB_ID => $ateJobId ] );
 			$oldEditor->set( $wpmlJobId, \WPML_TM_Editors::ATE );
 			self::clearUnreadable( [ $wpmlJobId ] );
+			delete_option( self::HELD_SEND_OPTION_PREFIX . $wpmlJobId );
+			CreateFailureRecord::forget( $wpmlJobId );
+			LifetimeMaxRollback::adopted( [ $wpmlJobId ] );
 			$translationJob = wpml_tm_load_job_factory()->get_translation_job( $wpmlJobId, false, 0, true );
 
 			$mode = isset( $modeByJobId[ $wpmlJobId ] ) ? $modeByJobId[ $wpmlJobId ] : null;
@@ -133,11 +140,17 @@ class AteCreateReconciler {
 			);
 		}
 
-		/* translators: Message shown after content is handed to the Advanced Translation Editor. %1$s: how many translation jobs were handed over. */
-		$message = __( '%1$s jobs added to the Advanced Translation Editor.', 'sitepress' );
-		do_action( 'wpml_tm_add_message', 'updated', sprintf( $message, count( $adopted ) ), 'wpml_tm_ate_create_job' );
+		if ( $addMessage ) {
+			self::addedMessage( count( $adopted ) );
+		}
 
 		do_action( 'wpml_tm_ate_jobs_created', $adopted );
+	}
+
+	public static function addedMessage( $count ) {
+		/* translators: Message shown after content is handed to the Advanced Translation Editor. %1$s: how many translation jobs were handed over. */
+		$message = __( '%1$s jobs added to the Advanced Translation Editor.', 'sitepress' );
+		do_action( 'wpml_tm_add_message', 'updated', sprintf( $message, (int) $count ), 'wpml_tm_ate_create_job' );
 	}
 
 	public static function markedMode( $wpmlJobId ) {
@@ -156,15 +169,53 @@ class AteCreateReconciler {
 		return is_array( $mark ) && isset( $mark['clone'] ) && (int) $mark['clone'] > 0;
 	}
 
+	public static function keepHeldSend( $wpmlJobId, $mode, $applyMemory ) {
+		if ( ! in_array( $mode, [ 'auto', 'manual' ], true ) ) {
+			return;
+		}
+
+		update_option(
+			self::HELD_SEND_OPTION_PREFIX . (int) $wpmlJobId,
+			[
+				'at'           => time(),
+				'mode'         => $mode,
+				'apply_memory' => (bool) $applyMemory,
+			],
+			false
+		);
+	}
+
+	public static function heldSend( $wpmlJobId ) {
+		$record = get_option( self::HELD_SEND_OPTION_PREFIX . (int) $wpmlJobId, false );
+
+		if ( ! is_array( $record ) || ! isset( $record['mode'] ) || ! in_array( $record['mode'], [ 'auto', 'manual' ], true ) ) {
+			return null;
+		}
+
+		return [
+			'mode'         => $record['mode'],
+			'apply_memory' => ! array_key_exists( 'apply_memory', $record ) || (bool) $record['apply_memory'],
+		];
+	}
+
 	public static function jobTypeOf( $translationJob, $modeSetInDashboard ) {
 		$document = $translationJob->get_original_document();
 		if ( ! $document ) {
 			return 'manual';
 		} elseif ( $modeSetInDashboard ) {
 			return $modeSetInDashboard;
-		} else {
-			return Jobs::isEligibleForAutomaticTranslations( $translationJob->get_id() ) ? 'auto' : 'manual';
 		}
+
+		$heldSend = self::heldSend( $translationJob->get_id() );
+		if ( $heldSend ) {
+			return $heldSend['mode'];
+		}
+
+		if ( Jobs::isAutomatic( (int) $translationJob->get_id() ) ) {
+			return 'auto';
+		}
+
+		return Policy::reader()->jobMode( (int) $translationJob->get_id() );
 	}
 
 	private function adoptable( array $ridByJob, $response ) {

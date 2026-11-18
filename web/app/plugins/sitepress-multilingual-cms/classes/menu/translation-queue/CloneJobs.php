@@ -12,6 +12,7 @@ use WPML_Element_Translation_Job;
 use WPML_TM_Editors;
 use WPML_TM_ATE_Jobs;
 use WPML\TM\ATE\JobRecords;
+use WPML\TM\ATE\JobCreation\LifetimeMaxRollback;
 use WPML_TM_ATE_API;
 
 class CloneJobs {
@@ -70,6 +71,17 @@ class CloneJobs {
 	}
 
 	public function cloneWPMLJob( $wpmlJobId, $sentFrom = null, $ateJobId = 0 ) {
+		$lifetimeMax = new LifetimeMaxRollback();
+		$lifetimeMax->remember( [ (int) $wpmlJobId ] );
+
+		try {
+			return $this->createATECounterpart( $wpmlJobId, $sentFrom, $ateJobId, $lifetimeMax );
+		} finally {
+			$lifetimeMax->finish();
+		}
+	}
+
+	private function createATECounterpart( $wpmlJobId, $sentFrom, $ateJobId, LifetimeMaxRollback $lifetimeMax ) {
 		$model = wpml_tm_create_ATE_job_creation_model( $wpmlJobId );
 
 		if ( ! $model ) {
@@ -107,6 +119,9 @@ class CloneJobs {
 		update_option( $inFlight, $expiry, false );
 		$ambiguous = true;
 		try {
+			if ( ! $this->apiClient->isTransportBreakerOpen() ) {
+				$lifetimeMax->sent( [ (int) $wpmlJobId ] );
+			}
 			$response  = $this->apiClient->create_jobs( $params );
 			$ambiguous = is_wp_error( $response ) || ( ! is_object( $response ) && ! is_array( $response ) );
 		} finally {
@@ -120,9 +135,12 @@ class CloneJobs {
 		}
 
 		if ( ! $ambiguous && Obj::prop( 'jobs', $response ) ) {
-			$newAteJobId = Obj::path( [ 'jobs', Map::fromJobId( $wpmlJobId ) ], $response );
+			$newAteJobId = Obj::path( [ 'jobs', Map::ridFromJobId( $wpmlJobId ) ], $response );
 
 			$this->ateJobs->store( $wpmlJobId, [ JobRecords::FIELD_ATE_JOB_ID => $newAteJobId ] );
+			if ( $newAteJobId ) {
+				$lifetimeMax->confirmed( [ (int) $wpmlJobId ] );
+			}
 			wpml_tm_load_old_jobs_editor()->set( $wpmlJobId, WPML_TM_Editors::ATE );
 			$this->ateJobs->warm_cache( [ $wpmlJobId ] );
 

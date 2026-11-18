@@ -27,10 +27,29 @@ class WPML_PB_Loader {
 			$strategy = new WPML_PB_Shortcode_Strategy( new WPML_Page_Builder_Settings() );
 			$strategy->set_shortcodes_provider(
 				function () use ( $page_builder_config_import ) {
-					return $page_builder_config_import->get_settings();
+					$settings = (array) $page_builder_config_import->get_settings();
+
+					if ( defined( 'FUSION_BUILDER_VERSION' ) ) {
+						$settings = \WPML\Compatibility\FusionBuilder\DynamicParamsEncoding::adjustStringSettings( $settings );
+					}
+
+					return defined( 'WPB_VC_VERSION' )
+						? \WPML\Compatibility\WPBakery\ImageLinks::addStringSettings(
+							\WPML\Compatibility\WPBakery\SingleImageLink::addStringSettings( $settings )
+						)
+						: $settings;
 				}
 			);
 			$page_builder_strategies[] = $strategy;
+
+			add_filter(
+				'wpml_pb_shortcode_tags',
+				function ( $tags ) use ( $strategy ) {
+					return array_merge( (array) $tags, $strategy->get_shortcodes() );
+				}
+			);
+
+			( new \WPML\PB\Duplication\ShortcodeLinksHooks( $strategy, $GLOBALS['wpdb'], make( \WPML\PB\Duplication\TargetLanguageLinks::class ) ) )->add_hooks();
 
 			add_filter(
 				'wpml_pb_element_uid_markup_providers',
@@ -41,10 +60,11 @@ class WPML_PB_Loader {
 				}
 			);
 
-			$is_media_translation_plugin_enabled = defined( 'WPML_MEDIA_VERSION' ) && $page_builder_config_import->get_media_settings();
+			$shortcodes_media_update_factory     = new WPML_Page_Builders_Media_Shortcodes_Update_Factory( $page_builder_config_import );
+			$is_media_translation_plugin_enabled = defined( 'WPML_MEDIA_VERSION' ) && $shortcodes_media_update_factory->get_media_settings();
 
 			$shortcodes_media_hooks = new WPML_Page_Builders_Media_Hooks(
-				new WPML_Page_Builders_Media_Shortcodes_Update_Factory( $page_builder_config_import ),
+				$shortcodes_media_update_factory,
 				'shortcodes'
 			);
 			$shortcodes_media_hooks->add_hooks( $is_media_translation_plugin_enabled );
@@ -79,6 +99,10 @@ class WPML_PB_Loader {
 			WPML\PB\Media\Hooks::class,
 			WPML\PB\AnchorLinks\Hooks::class,
 		];
+
+		if ( defined( 'FUSION_BUILDER_VERSION' ) ) {
+			$hooks[] = WPML\Compatibility\FusionBuilder\Hooks\LivePreviewIds::class;
+		}
 
 		make( WPML_Action_Filter_Loader::class )->load( $hooks );
 	}

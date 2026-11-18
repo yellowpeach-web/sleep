@@ -53,7 +53,7 @@ class WPML_ST_TM_Jobs extends WPML_WPDB_User {
 			return 'WHERE 1 = 0';
 		}
 
-		$string_where  = isset( $args['string_where'] ) ? $args['string_where'] : '';
+		$string_where  = '';
 		$translator_id = isset( $args['translator_id'] ) ? $args['translator_id'] : '';
 		$from          = isset( $args['from'] ) ? $args['from'] : '';
 		$to            = isset( $args['to'] ) ? $args['to'] : '';

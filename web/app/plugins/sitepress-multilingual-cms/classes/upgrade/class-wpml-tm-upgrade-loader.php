@@ -36,6 +36,9 @@ class WPML_TM_Upgrade_Loader implements IWPML_Action {
 	}
 
 	public function wpml_tm_upgrade() {
+		if ( get_transient( WPML_Upgrade_Loader::TRANSIENT_UPGRADE_IN_PROGRESS ) ) {
+			return;
+		}
 
 		$commands = array(
 			$this->factory->create_command_definition(
@@ -53,6 +56,11 @@ class WPML_TM_Upgrade_Loader implements IWPML_Action {
 			$this->factory->create_command_definition( 'WPML_TM_Upgrade_WPML_Site_ID_ATE', array( $this->upgrade_schema ), array( 'admin' ) ),
 			$this->factory->create_command_definition(
 				WPML\TM\Upgrade\Commands\MigrateAteRepository::class,
+				[ $this->upgrade_schema ],
+				[ 'admin' ]
+			),
+			$this->factory->create_command_definition(
+				WPML\TM\Upgrade\Commands\RemoveOldAteRepository::class,
 				[ $this->upgrade_schema ],
 				[ 'admin' ]
 			),
@@ -77,6 +85,16 @@ class WPML_TM_Upgrade_Loader implements IWPML_Action {
 				WPML\TM\Upgrade\Commands\CreateAteDownloadQueueTable::class,
 				[ $this->upgrade_schema ],
 				[ 'admin' ]
+			),
+			$this->factory->create_command_definition(
+				WPML\TM\Upgrade\Commands\CreateAteHandshakeTables::class,
+				[ $this->upgrade_schema ],
+				[ 'admin', 'ajax', 'front-end' ]
+			),
+			$this->factory->create_command_definition(
+				WPML\TM\ATE\Handshake\Upgrade\StampInFlightAfterUpdate::class,
+				[],
+				[ \WPML_Upgrade::SCOPE_ADMIN, \WPML_Upgrade::SCOPE_FRONT_END, \WPML_Upgrade::SCOPE_CLI ]
 			),
 
 			$this->factory->create_command_definition(

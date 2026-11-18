@@ -135,6 +135,30 @@ class CategoryBaseHooks implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 	}
 
 	private function getTranslatedBase( string $base, string $taxonomy, string $language ): string {
+		$translatedSlug = $this->getTranslatedSlug( $base, $taxonomy, $language );
+
+		if ( '' !== $translatedSlug && $translatedSlug !== $base ) {
+			return $translatedSlug;
+		}
+
+		return $this->getTranslatedString( $base, $taxonomy, $language );
+	}
+
+	private function getTranslatedSlug( string $base, string $taxonomy, string $language ): string {
+		if ( ! class_exists( \WPML_Slug_Translation_Factory::class ) ) {
+			return $base;
+		}
+
+		return (string) apply_filters(
+			'wpml_get_translated_slug',
+			$base,
+			$taxonomy,
+			$language,
+			\WPML_Slug_Translation_Factory::TAX
+		);
+	}
+
+	private function getTranslatedString( string $base, string $taxonomy, string $language ): string {
 		return (string) apply_filters(
 			'wpml_translate_single_string',
 			$base,

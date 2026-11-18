@@ -11,9 +11,11 @@ class WPML_Page_Builders_Media_Shortcodes_Update_Factory extends WPML_Page_Build
 	}
 
 	public function create( $find_usage_instead_of_translate = false ) {
+		$media_translate  = $this->get_media_translate( $find_usage_instead_of_translate );
 		$media_shortcodes = new WPML_Page_Builders_Media_Shortcodes(
-			$this->get_media_translate( $find_usage_instead_of_translate ),
-			$this->page_builder_config_import->get_media_settings()
+			$media_translate,
+			$this->get_media_settings(),
+			new \WPML\PB\Media\CssImages( $media_translate )
 		);
 
 		return new WPML_Page_Builders_Media_Shortcodes_Update(
@@ -23,6 +25,14 @@ class WPML_Page_Builders_Media_Shortcodes_Update_Factory extends WPML_Page_Build
 				? null
 				: new WPML_Page_Builders_Media_Usage( $this->get_media_translate( $find_usage_instead_of_translate ), new WPML_Media_Usage_Factory() )
 		);
+	}
+
+	public function get_media_settings() {
+		$media_settings = $this->page_builder_config_import->get_media_settings();
+
+		return defined( 'WPB_VC_VERSION' )
+			? \WPML\Compatibility\WPBakery\DesignOptionsImages::addMediaSettings( $media_settings )
+			: $media_settings;
 	}
 
 	private function get_element_factory() {

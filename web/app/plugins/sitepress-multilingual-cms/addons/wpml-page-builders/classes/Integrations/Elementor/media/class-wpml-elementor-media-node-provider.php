@@ -1,7 +1,12 @@
 <?php
 
+use WPML\PB\Elementor\Media\Modules\AtomicSvg;
+use WPML\PB\Elementor\Media\Modules\AtomicVideo;
+use WPML\PB\Elementor\Media\Modules\ComponentOverrides;
 use WPML\PB\Elementor\Media\Modules\EImage;
 use WPML\PB\Elementor\Media\Modules\Gallery;
+use WPML\PB\Elementor\Media\Modules\WidgetFields;
+use WPML\PB\Elementor\Media\Modules\WpWidgetMediaFile;
 
 class WPML_Elementor_Media_Node_Provider {
 
@@ -18,6 +23,19 @@ class WPML_Elementor_Media_Node_Provider {
 			switch ( $type ) {
 				case 'e-image':
 					$node = new EImage( $this->media_translate );
+					break;
+
+				case 'e-svg':
+					$node = new AtomicSvg( $this->media_translate );
+					break;
+
+				case 'e-self-hosted-video':
+				case 'e-background-video':
+					$node = new AtomicVideo( $this->media_translate );
+					break;
+
+				case 'e-component':
+					$node = new ComponentOverrides( $this->media_translate );
 					break;
 
 				case 'image':
@@ -60,6 +78,11 @@ class WPML_Elementor_Media_Node_Provider {
 					$node = new WPML_Elementor_Media_Node_WP_Widget_Media_Gallery( $this->media_translate );
 					break;
 
+				case 'wp-widget-media_video':
+				case 'wp-widget-media_audio':
+					$node = new WpWidgetMediaFile( $this->media_translate );
+					break;
+
 				case 'all_nodes':
 					$node = new \WPML\PB\Elementor\Media\Modules\AllNodes( $this->media_translate );
 					break;
@@ -90,11 +113,22 @@ class WPML_Elementor_Media_Node_Provider {
 					break;
 
 				case 'contact-buttons':
+				case 'contact-buttons-var-1':
+				case 'contact-buttons-var-3':
+				case 'contact-buttons-var-4':
+				case 'contact-buttons-var-5':
+				case 'contact-buttons-var-6':
+				case 'contact-buttons-var-7':
+				case 'contact-buttons-var-8':
+				case 'contact-buttons-var-9':
+				case 'contact-buttons-var-10':
 					$node = new \WPML\PB\Elementor\Media\Modules\ContactButtons( $this->media_translate );
 					break;
 
 				default:
-					$node = null;
+					$node = isset( WidgetFields::WIDGETS[ $type ] )
+						? new WidgetFields( $this->media_translate, WidgetFields::WIDGETS[ $type ] )
+						: null;
 			}
 
 			$this->nodes[ $type ] = $node;

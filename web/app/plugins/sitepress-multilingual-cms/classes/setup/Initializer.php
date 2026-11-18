@@ -70,7 +70,6 @@ class Initializer {
 
 		\WPML\TM\ATE\ClonedSites\ReconnectNotice::enqueueComponent();
 	}
-
 	public static function getData() {
 		if ( self::settingsAreUnrecoverable() ) {
 			return self::getQuarantinedData();
@@ -85,11 +84,6 @@ class Initializer {
 			&& in_array( $currentStep, CurrentStep::STEPS_REMOVED_FOR_SERVICE, true )
 		) {
 			$currentStep = CurrentStep::STEP_AI_TRANSLATION;
-		}
-
-		if ( self::isHalfConfigured() && 'languages' !== $currentStep ) {
-			$currentStep = 'languages';
-			Option::saveCurrentStep( $currentStep );
 		}
 
 		$siteUrl = self::getSiteUrl();
@@ -159,13 +153,15 @@ class Initializer {
 					'domains'       => LanguageNegotiation::getDomains() ?: [],
 					'canUseDomains' => LanguageNegotiation::isDomainModeAvailable(),
 					'gotUrlRewrite' => null,
+					'checkSubsites' => Endpoint\SubsiteClashes::applies(),
 				],
 				'isTMAllowed'              => Option::isTMAllowed() === true,
 				'isTMDisabled'             => Option::isTMAllowed() === false,
-				'isAteEnabled'             => WPML_TM_ATE_Status::is_enabled_and_activated(),
+				'isAteEnabled'             => WPML_TM_ATE_Status::is_account_usable(),
 				'isWCMLWizardWaiting'      => ShouldShowWCMLMessages::getOption(),
 				'isTranslateEverything'    => Option::getTranslateEverything(),
 				'isAiSkipped'              => Option::getAiSkipped(),
+				'aiStepLayout'             => AiStepLayout::get(),
 				'ateBaseUrl'               => self::getATEBaseUrl(),
 				'ateDashboardScript'       => make( ATEDashboardLoader::class )->getRegisteredScriptUrl(),
 				'ateDashboard'             => self::getAteDashboardData(),
@@ -186,6 +182,7 @@ class Initializer {
 					TranslationMethodSettings::getModeSettingsData(),
 					TranslationRolesInitializer::getTranslationData( null, false )
 				),
+				'translationPolicy'        => \WPML\TranslationPolicy\Settings\Loader::setupWizardData(),
 
 				'license'                  => [
 					'actions'  => [
@@ -207,6 +204,26 @@ class Initializer {
 		return $data;
 	}
 
+	const SETUP_STEP_WRITERS = array(
+		Endpoint\AddLanguages::class,
+		Endpoint\AddressStep::class,
+		Endpoint\CurrentStep::class,
+		Endpoint\EnableAte::class,
+		Endpoint\LicenseStep::class,
+		Endpoint\SetOriginalLanguage::class,
+		Endpoint\SetSecondaryLanguages::class,
+		Endpoint\SetSupport::class,
+		Endpoint\SetTranslateSomeMethod::class,
+		Endpoint\TranslationStep::class,
+		\WPML\TranslationMode\Endpoint\SetAiSkipped::class,
+	);
+
+	public static function refusesOnASetUpSite( $endpoint ) {
+		return is_string( $endpoint )
+			&& in_array( $endpoint, self::SETUP_STEP_WRITERS, true )
+			&& (bool) \WPML\API\Settings::get( 'setup_complete', false );
+	}
+
 	public static function shouldBlockMutatingEndpoint( $endpoint, Collection $data ) {
 		if ( ! self::settingsAreUnrecoverable() ) {
 			return false;
@@ -223,6 +240,7 @@ class Initializer {
 			Endpoint\ATEDashboardScript::class,
 			Endpoint\GetLanguagesAutomaticSupport::class,
 			Endpoint\GetParametersForAteDashboard::class,
+			Endpoint\GetTranslationEngine::class,
 			Endpoint\RecommendedPlugins::class,
 			Endpoint\ShouldShowWCMLMessages::class,
 			Endpoint\TranslationServices::class,
@@ -388,6 +406,7 @@ class Initializer {
 				'translationStep'              => Endpoint\TranslationStep::class,
 				'setReviewMode'                => SetReviewMode::class,
 				'setTranslateEverything'       => SetTranslateEverything::class,
+				'setTranslateSomeMethod'       => Endpoint\SetTranslateSomeMethod::class,
 				'setAiSkipped'                 => SetAiSkipped::class,
 				'recommendedPlugins'           => Endpoint\RecommendedPlugins::class,
 				'finishStep'                   => Endpoint\FinishStep::class,
@@ -395,7 +414,9 @@ class Initializer {
 				'finishDeferredUpgrade'        => Endpoint\FinishDeferredUpgrade::class,
 				'addLanguages'                 => Endpoint\AddLanguages::class,
 				'verifyUrlRewrite'             => Endpoint\VerifyUrlRewrite::class,
+				'subsiteClashes'               => Endpoint\SubsiteClashes::class,
 				'getLanguagesAutomaticSupport' => Endpoint\GetLanguagesAutomaticSupport::class,
+				'getTranslationEngine'         => Endpoint\GetTranslationEngine::class,
 				'upload'                       => Upload::class,
 				'checkTMAllowed'               => CheckTMAllowed::class,
 				'shouldShowWCMLMessages'       => ShouldShowWCMLMessages::class,
@@ -405,14 +426,6 @@ class Initializer {
 			),
 			TranslationRolesInitializer::getEndPoints()
 		);
-	}
-
-
-	private static function isHalfConfigured() {
-		global $sitepress;
-
-		return $sitepress->is_setup_complete()
-			&& 2 > count( $sitepress->get_active_languages() );
 	}
 
 	private static function maybeCaptureWizardStartedEvent( $currentStep ) {
@@ -510,7 +523,7 @@ class Initializer {
 			return null;
 		}
 
-		$networkKey = Obj::pathOr( null, [ 'wpml', 'key' ], (array) maybe_unserialize( get_site_option( 'wp_installer_network' ) ) );
+		$networkKey = Obj::pathOr( null, [ 'wpml', 'key' ], (array) \WPML\Utils\Unserialize::maybe( get_site_option( 'wp_installer_network' ) ) );
 
 		return $networkKey && OTGS_Installer()->get_site_key( 'wpml' ) === $networkKey ? $networkKey : null;
 	}
@@ -531,7 +544,7 @@ class Initializer {
 			if ( empty( $result['error'] ) ) {
 				icl_set_setting( 'site_key', $siteKey, true );
 
-				if ( Plugins::updateTMAllowedOption() && ! WPML_TM_ATE_Status::is_enabled_and_activated() ) {
+				if ( Plugins::updateTMAllowedOption() && ! WPML_TM_ATE_Status::is_account_usable() ) {
 					Option::setTranslateEverythingDefault();
 					make( EnableATE::class )->enable();
 				}

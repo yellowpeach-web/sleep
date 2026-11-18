@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=1; plural=0;",
             "lang": "th"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "สลับเป็น Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "สลับเป็น PTC"
+         ],
+         "Switching…": [
+            "กำลังสลับ…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "เราไม่สามารถยืนยันการสลับได้ โปรดลองอีกครั้ง หรือโหลดหน้าใหม่เพื่อดูเอนจินปัจจุบัน"
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "ไม่สามารถโหลดส่วนควบคุมเอนจินการแปลได้ โปรดโหลดหน้านี้ใหม่และลองอีกครั้ง"
+         ],
+         "Loading translation engine settings…": [
+            "กำลังโหลดการตั้งค่าเอนจินการแปล…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "กรอกบริบทของไซต์ด้านบนก่อนสลับเป็น PTC"
+         ],
+         "Reload page": [
+            "โหลดหน้าใหม่"
+         ],
+         "Could not fetch engines data": [
+            "ไม่สามารถดึงข้อมูลเอนจินได้"
+         ],
          "Error in updating since dates for types.": [
             "เกิดข้อผิดพลาดในการอัปเดตวันที่ตั้งแต่เริ่มต้นสำหรับประเภทต่าง ๆ"
          ],
@@ -133,9 +160,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "ใช้อัตราภาษารุ่นเก่า %s เป็นเอนจินการแปลรุ่นเก่า ซึ่งไม่แนะนำสำหรับไซต์ใหม่และจะถูกยกเลิกการใช้งานในอนาคต ไซต์ที่มีอยู่จะยังคงใช้อัตราคำที่ปรับแล้วสำหรับเอนจินนี้"
          ],
-         "Switch to PTC": [
-            "สลับเป็น PTC"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "นี่คือจำนวนที่จำเป็นสำหรับการแปลเนื้อหาปัจจุบันของคุณในวันนี้ ซึ่งยังไม่รวมข้อความบางส่วนที่เพิ่มโดยปลั๊กอินอื่น ๆ เช่น ฟอร์มหรือสไลเดอร์ ซึ่งจะถูกนับหลังจากตั้งค่าเสร็จสมบูรณ์ สตริงของไซต์จากธีมและปลั๊กอินของคุณจะถูกนับหลังจากการตั้งค่าเช่นกัน และโดยทั่วไปจะเพิ่มขึ้นอีกหลายร้อยคำ หลังจากนั้น การแก้ไขจะไม่มีค่าใช้จ่าย คุณจะจ่ายอีกครั้งเฉพาะคำที่คุณเพิ่มเท่านั้น"
          ],
@@ -151,8 +175,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "ระบบจะนับหน้า โพสต์ และสินค้า รวมถึงฟิลด์ที่กำหนดเอง ข้อความจากเครื่องมือสร้างหน้า และข้อความของสื่อ ตลอดจนหมวดหมู่ แท็ก และแอตทริบิวต์ที่รายการเหล่านั้นใช้"
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "ระบบจะนับหน้า โพสต์ และสินค้า รวมถึงฟิลด์ที่กำหนดเอง ข้อความจากเครื่องมือสร้างหน้า และข้อความของสื่อ ตลอดจนหมวดหมู่ แท็ก และแอตทริบิวต์ที่รายการเหล่านั้นใช้ และสตริงของไซต์ โดยคำศัพท์จะถูกนับในทุกรายการที่ใช้งานและนับแยกต่างหากอีกหนึ่งครั้ง เนื่องจากคำศัพท์จะถูกส่งไปแปลทั้งสองแบบ"
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "การคำนวณนี้จะนับหน้า โพสต์ และสินค้า รวมทั้งฟิลด์ที่กำหนดเอง ข้อความเครื่องมือสร้างหน้า และข้อความสื่อ รวมถึงหมวดหมู่ แท็ก และคุณสมบัติที่เกี่ยวข้อง ตลอดจนสตริงของไซต์ โดยแต่ละหมวดหมู่ แท็ก หรือคุณสมบัติจะถูกนับเพียงครั้งเดียวในแถว “อนุกรมวิธาน” และจะไม่ถูกนับซ้ำกับรายการที่ใช้งานสิ่งเหล่านั้น"
          ],
          "Total items": [
             "รายการทั้งหมด"
@@ -225,6 +249,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "หากต้องการเริ่ม <b>แปลทุกอย่างโดยอัตโนมัติ</b> โปรดเปิดใช้งาน <b>จ่ายตามการใช้งานจริง</b> หรือซื้อคำแบบชำระเงินล่วงหน้า"
+         ],
+         "Translation quality:": [
+            "คุณภาพการแปล:"
          ],
          "Select payment method": [
             "เลือกวิธีการชำระเงิน"
@@ -341,7 +368,7 @@
             "มี %1$s%2$s คำ%3$s ในบัญชี WPML ของคุณ"
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "มี %1$s%2$s คำที่ใช้งานได้ในบัญชี WPML ของคุณ%3$s"
+            "มี %1$s%2$s คำที่พร้อมใช้งานในบัญชี WPML ของคุณ%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(เฉพาะเจ้าของบัญชี WPML เท่านั้นที่สามารถดำเนินการนี้ได้)"
@@ -357,6 +384,30 @@
          ],
          "Close modal": [
             "ปิดหน้าต่าง"
+         ],
+         "Obvious mistakes": [
+            "ข้อผิดพลาดที่ชัดเจน"
+         ],
+         "Mistakes visible": [
+            "มองเห็นข้อผิดพลาด"
+         ],
+         "Ready to publish": [
+            "พร้อมเผยแพร่"
+         ],
+         "Your engine": [
+            "เอนจินของคุณ"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "คุณภาพการแปล (มาตราส่วน 50-100): %1$s ได้คะแนน %2$d, %3$s ได้คะแนน %4$d"
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "คะแนนอ้างอิงจากการศึกษาคุณภาพการแปล MQM ภายในของ WPML"
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC แปลด้วยคุณภาพที่สูงกว่าและให้ผลลัพธ์ที่พร้อมเผยแพร่"
          ]
       }
    }

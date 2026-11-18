@@ -12,11 +12,17 @@ class CollectLock {
 	private $keyedLock;
 
 	public function __construct() {
-		$this->keyedLock = make( KeyedLock::class, [ ':name' => 'ate_collect' ] );
+		$this->keyedLock = make( KeyedLock::class, [ ':name' => 'ate_collect' ] )->forgetRefusals();
 	}
 
 	public function create( $key = null ) {
 		return $this->keyedLock->create( $key, self::TIMEOUT_SECONDS );
+	}
+
+	public function isHeld() {
+		$since = $this->keyedLock->heldSince();
+
+		return null !== $since && $since > time() - self::TIMEOUT_SECONDS;
 	}
 
 	public function release() {

@@ -19,9 +19,18 @@ class WPML_TM_Page_Builders_Hooks {
 	public function init_job_data_hooks() {
 		add_filter( 'wpml_tm_translation_job_data', array( $this, 'translation_job_data_filter' ), 10, 3 );
 		add_action( 'wpml_pro_translation_completed', array( $this, 'pro_translation_completed_action' ), 10, 3 );
+		add_filter( 'wpml_tm_applied_job_needs_update', array( $this, 'applied_job_needs_update_filter' ), 10, 2 );
 		add_filter( 'wpml_tm_adjust_translation_fields', array( $this, 'adjust_translation_fields_filter' ) );
 		add_filter( 'wpml_tm_adjust_translation_job', array( $this, 'adjust_translation_job_filter' ) );
 		add_filter( 'wpml_tm_xliff_unit_placeholders', array( $this, 'xliffUnitPlaceholdersFilter' ), 10, 2 );
+		add_filter(
+			'wpml_tm_populate_prev_translation',
+			function ( $previousTranslations, $package, $language ) {
+				return $this->get_worker()->populate_previous_translation( (array) $previousTranslations, (array) $package, (string) $language );
+			},
+			10,
+			3
+		);
 	}
 
 	public function init_admin_hooks() {
@@ -36,6 +45,10 @@ class WPML_TM_Page_Builders_Hooks {
 
 	public function pro_translation_completed_action( $new_post_id, array $fields, stdClass $job ) {
 		$this->get_worker()->pro_translation_completed_action( $new_post_id, $fields, $job );
+	}
+
+	public function applied_job_needs_update_filter( $needs_update, $job ) {
+		return $this->get_worker()->applied_job_needs_update_filter( $needs_update, $job );
 	}
 
 	public function adjust_translation_fields_filter( array $fields ) {

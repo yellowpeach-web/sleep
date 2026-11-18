@@ -2,6 +2,8 @@
 
 class WPML_Root_Page {
 
+	private static $html_file_served = false;
+
 	public static function init() {
 		if ( self::uses_html_root()
 			 || self::get_root_id() > 0
@@ -28,6 +30,10 @@ class WPML_Root_Page {
 			$root_page_actions = wpml_get_root_page_actions_obj();
 			add_action( 'icl_set_element_language', array( $root_page_actions, 'delete_root_page_lang' ), 10, 0 );
 		}
+
+		if ( self::uses_redirect_root() ) {
+			\WPML\UrlHandling\RootPage\RedirectToDefaultLanguage::add_hooks();
+		}
 	}
 
 	public static function is_root_page_in_setup( $urls ) {
@@ -42,8 +48,37 @@ class WPML_Root_Page {
 
 	public static function is_configured_root_request() {
 		return isset( $_SERVER['REQUEST_URI'] )
-			&& ( self::uses_html_root() || self::get_root_id() )
+			&& ( self::is_html_file_served() || self::serves_root_page() )
 			&& self::is_current_request_root();
+	}
+
+	public static function mark_html_file_served() {
+		self::$html_file_served = true;
+	}
+
+	public static function is_html_file_served() {
+		return self::$html_file_served;
+	}
+
+	public static function is_search_or_rest_query( $query_string ) {
+		if ( ! is_string( $query_string ) || '' === $query_string ) {
+			return false;
+		}
+
+		$params = self::get_query_array_from_string( $query_string );
+
+		return array_key_exists( 's', $params )
+			|| ( isset( $params['rest_route'] ) && is_string( $params['rest_route'] ) && '' !== $params['rest_route'] );
+	}
+
+	public static function is_feed_query( $query_string ) {
+		if ( ! is_string( $query_string ) || '' === $query_string ) {
+			return false;
+		}
+
+		$params = self::get_query_array_from_string( $query_string );
+
+		return isset( $params['feed'] ) && is_string( $params['feed'] ) && '' !== $params['feed'];
 	}
 
 	public static function is_root_page( $requested_url ) {
@@ -94,10 +129,23 @@ class WPML_Root_Page {
 			&& isset( $urls['show_on_root'] ) && 'page' === $urls['show_on_root'];
 	}
 
+	public static function uses_redirect_root() {
+		$urls = icl_get_setting( 'urls' );
+
+		return self::serves_a_root_url()
+			&& isset( $urls['show_on_root'] ) && 'redirect' === $urls['show_on_root'];
+	}
+
 	public static function get_root_id() {
 		$root_actions = wpml_get_root_page_actions_obj();
 
 		return $root_actions->get_root_page_id();
+	}
+
+	private static function serves_root_page() {
+		$root_actions = wpml_get_root_page_actions_obj();
+
+		return null !== $root_actions->get_root_page_post( $root_actions->get_root_page_id() );
 	}
 
 	private static function get_root_slug() {
@@ -168,13 +216,18 @@ class WPML_Root_Page {
 
 	private static function query_points_to_archive( $query_string ) {
 
-		$root_page_actions = wpml_get_root_page_actions_obj();
-		remove_action( 'parse_query', array( $root_page_actions, 'wpml_home_url_parse_query' ) );
+		$callback = array( wpml_get_root_page_actions_obj(), 'wpml_home_url_parse_query' );
+		$priority = has_action( 'parse_query', $callback );
+		if ( false !== $priority ) {
+			remove_action( 'parse_query', $callback, $priority );
+		}
 		$query_string = str_replace( '?', '', $query_string );
 
 		$query      = new WP_Query( $query_string );
 		$is_archive = $query->is_archive();
-		add_action( 'parse_query', array( $root_page_actions, 'wpml_home_url_parse_query' ) );
+		if ( false !== $priority ) {
+			add_action( 'parse_query', $callback, $priority );
+		}
 
 		return $is_archive;
 	}
@@ -240,7 +293,7 @@ class WPML_Root_Page {
 
 	public static function wpml_home_url_template_include( $template ) {
 
-		return self::is_current_request_root() ? self::get_root_page_template() : $template;
+		return self::serves_root_page() && self::is_current_request_root() ? self::get_root_page_template() : $template;
 	}
 
 	public static function get_root_page_template() {

@@ -1,6 +1,7 @@
 <?php
 
 use WPML\FP\Obj;
+use WPML\TM\ATE\TranslateEverything\TermBundle;
 
 class WPML_TM_Rest_Jobs_Element_Info {
 	private $package_helper_factory;
@@ -29,7 +30,9 @@ class WPML_TM_Rest_Jobs_Element_Info {
 				$result = $this->get_for_package( $id );
 				break;
 			case WPML_TM_Job_Entity::TAXONOMY_TYPE:
-				$result = $this->get_for_term( $id, $job->get_element_type() );
+				$result = TermBundle::ELEMENT_TYPE === $job->get_element_type()
+					? [ 'name' => (string) $job->get_title(), 'url' => null ]
+					: $this->get_for_term( $id, $job->get_element_type() );
 				break;
 		}
 
@@ -113,6 +116,14 @@ class WPML_TM_Rest_Jobs_Element_Info {
 	}
 
 	private function get_type_info( WPML_TM_Post_Job_Entity $job ) {
+		if ( TermBundle::ELEMENT_TYPE === $job->get_element_type() ) {
+			return [
+				'value' => $job->get_element_type(),
+				/* translators: Kind of content in the Translation Jobs list: a job that holds many taxonomy terms. Plural noun. */
+				'label' => apply_filters( 'wpml_tm_job_list_element_label_filter', __( 'Terms', 'sitepress' ), $job->get_element_type() ),
+			];
+		}
+
 		$generalType = substr(
 			$job->get_element_type(),
 			0,

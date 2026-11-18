@@ -31,7 +31,9 @@ var WPML_TM = WPML_TM || {};
 					},
 					success: function (response) {
 						if (response.success) {
-							self.trigger('saveJobSuccess');
+							// The answer can carry messages for the person who saved, for example a
+							// term WordPress could not store (wpmldev-12741).
+							self.trigger('saveJobSuccess', response.data);
 						} else {
 							self.trigger('saveJobFailed');
 						}

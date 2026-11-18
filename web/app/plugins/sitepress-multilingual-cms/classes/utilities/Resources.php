@@ -10,11 +10,13 @@ use function WPML\FP\partial;
 class Resources {
 	const VENDOR = 'wpml-vendor';
 
+	const APPS_WITH_TOOLTIPS = [ 'ate-jobs-sync', 'postEditTranslationEditor', 'settings' ];
+
 	private static $script_vendor_registered = false;
 
 	public static function enqueueApp( $app ) {
 		return function( $localize = null, $dependencies = [] ) use ( $app ) {
-			$dependencies = array_merge( [ self::vendorAsDependency() ], $dependencies );
+			$dependencies = array_merge( [ self::vendorAsDependency() ], self::tooltipAsDependency( $app ), $dependencies );
 			\WPML\LIB\WP\App\Resources::enqueueWithDeps( $app, ICL_PLUGIN_URL, WPML_PLUGIN_PATH, ICL_SITEPRESS_SCRIPT_VERSION, 'sitepress', $localize, $dependencies );
 		};
 	}
@@ -63,6 +65,28 @@ class Resources {
 			'wpmlOutboundLinks',
 			\WPML\OutboundLinks\OutboundLinks::getJsConfig()
 		);
+
+		self::defineAjaxUrlBefore( self::VENDOR );
+	}
+
+	public static function defineAjaxUrlBefore( $handle ) {
+		wp_add_inline_script(
+			$handle,
+			'window.ajaxurl = window.ajaxurl || ' . wp_json_encode( admin_url( 'admin-ajax.php', 'relative' ) ) . ';',
+			'before'
+		);
+	}
+
+	private static function tooltipAsDependency( $app ) {
+		$handle = \OTGS_Assets_Handles::POPOVER_TOOLTIP;
+
+		if ( ! in_array( $app, self::APPS_WITH_TOOLTIPS, true ) || ! wp_script_is( $handle, 'registered' ) ) {
+			return [];
+		}
+
+		wp_enqueue_style( $handle );
+
+		return [ $handle ];
 	}
 
 	public static function vendorAsDependency() {

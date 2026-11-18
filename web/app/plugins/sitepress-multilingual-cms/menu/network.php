@@ -7,7 +7,7 @@ $wp_list_table->prepare_items();
 
 $total_pages = $wp_list_table->get_pagination_arg( 'total_pages' );
 if ( $pagenum > $total_pages && $total_pages > 0 ) {
-	wp_redirect( add_query_arg( 'paged', $total_pages ) );
+	wp_safe_redirect( add_query_arg( 'paged', $total_pages ) );
 	exit;
 }
 
@@ -170,7 +170,7 @@ $text = isset( $text ) ? $text : '';
                                 <a href="<?php echo esc_url( wp_nonce_url( network_admin_url( 'sites.php?action=activatewpml&amp;id=' . (int) $blog['blog_id'] ), 'activatewpml' ) ); ?>"><?php /* translators: Link text that opens the plugins screen so an add-on can be turned on. Verb, imperative. */ esc_html_e( 'Activate', 'sitepress' ); ?></a>
                             </div>
 						<?php else : ?>
-							<?php /* translators: Value in a table saying that the thing the row is about is turned on and in use. Adjective. */ esc_html_e( 'Active', 'sitepress' ); ?>
+							<?php /* translators: Adjective. In a table, the value saying that the thing the row is about is turned on and in use; in the Elementor language switcher widget, the heading of the style settings for the current language. */ esc_html_e( 'Active', 'sitepress' ); ?>
 							<div class="row-actions">
 								<?php
 								global $current_blog;

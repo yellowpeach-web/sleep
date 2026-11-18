@@ -154,10 +154,14 @@ class BackgroundTaskRepository {
 		$task->setStartingDate( isset( $data['starting_date'] ) ? new \DateTime( $data['starting_date'] ) : null );
 		$task->setTotalCount( $get( 'total_count' ) );
 		$task->setCompletedCount( $get( 'completed_count' ) );
-		$task->setCompletedIds( isset( $data['completed_ids'] ) ? unserialize( $data['completed_ids'] ) : null );
-		$task->setPayload( isset( $data['payload'] ) ? unserialize( $data['payload'] ) : null );
+		$task->setCompletedIds( isset( $data['completed_ids'] ) ? self::unserializeData( $data['completed_ids'] ) : null );
+		$task->setPayload( isset( $data['payload'] ) ? self::unserializeData( $data['payload'] ) : null );
 		$task->setRetryCount( $get( 'retry_count' ) );
 
 		return $task;
+	}
+
+	private static function unserializeData( $data ) {
+		return unserialize( $data, [ 'allowed_classes' => false ] );
 	}
 }

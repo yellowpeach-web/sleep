@@ -5,7 +5,7 @@
  * Description: Multilingual support for popular SEO plugins
  * Author: OnTheGoSystems
  * Author URI: http://www.onthegosystems.com/
- * Version: 5.2.0
+ * Version: 5.4.0
  * Plugin Slug: wp-seo-multilingual
  * Text Domain: wp-seo-multilingual
  * Domain Path: /languages
@@ -17,6 +17,7 @@
 use WPML\WPSEO\YoastSEO\Loaders as YoastSEOLoaders;
 use WPML\WPSEO\RankMathSEO\Loaders as RankMathSEOLoaders;
 use WPML\WPSEO\IndexNowPlugin\Loaders as IndexNowPluginLoaders;
+use WPML\WPSEO\GoogleSitemapGenerator\Loaders as GoogleSitemapGeneratorLoaders;
 use WPML\WPSEO\YoastSEO\Utils;
 use WPML\Settings\LanguageNegotiation;
 use WPML\WPSEO\YoastSEO\Redirects\PostRedirectLanguage;
@@ -25,7 +26,29 @@ if ( defined( 'WPSEOML_VERSION' ) ) {
 	return;
 }
 
-define( 'WPSEOML_VERSION', '5.2.0' );
+if ( ! is_file( __DIR__ . '/vendor/autoload.php' ) || ! is_file( __DIR__ . '/vendor/composer/autoload_real.php' ) ) {
+	$wpml_incomplete_plugin_notice = function () {
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			return;
+		}
+		printf(
+			'<div class="notice notice-error"><p>%s</p></div>',
+			esc_html(
+				sprintf(
+					/* translators: %s: the plugin's name. */
+					__( '%s is incomplete: some of its files are missing, probably after an interrupted update. Please reinstall the plugin.', 'wp-seo-multilingual' ),
+					'WPML SEO'
+				)
+			)
+		);
+	};
+	add_action( 'admin_notices', $wpml_incomplete_plugin_notice );
+	add_action( 'network_admin_notices', $wpml_incomplete_plugin_notice );
+	unset( $wpml_incomplete_plugin_notice );
+	return;
+}
+
+define( 'WPSEOML_VERSION', '5.4.0' );
 define( 'WPSEOML_PLUGIN_PATH', __DIR__ );
 
 const WPSEOML_TEXTDOMAIN_BEFORE_UPGRADE_NOTICES = -10;
@@ -50,28 +73,54 @@ function wpml_wpseo_loads_first() {
 }
 add_action( 'activated_plugin', 'wpml_wpseo_loads_first', 1 );
 
-if ( ! class_exists( 'WPML_Core_Version_Check' ) ) {
-	require_once WPSEOML_PLUGIN_PATH . '/vendor/wpml-shared/wpml-lib-dependencies/src/dependencies/class-wpml-core-version-check.php';
-}
-
-if ( ! WPML_Core_Version_Check::is_ok( WPSEOML_PLUGIN_PATH . '/wpml-dependencies.json' ) ) {
-	return;
-}
-
-require_once WPSEOML_PLUGIN_PATH . '/vendor/autoload.php';
-
-if ( Utils::isPremium() && apply_filters( 'wpml_setting', false, 'setup_complete' ) ) {
-	if ( LanguageNegotiation::isDir() ) {
-		$redirector = new WPML_WPSEO_Redirection();
-		if ( $redirector->is_redirection() ) {
-			add_filter( 'wpml_skip_convert_url_string', '__return_true' );
-		}
-	} elseif ( ! is_admin() ) {
-		( new PostRedirectLanguage() )->scopeFrontEndRedirectsToCurrentLanguage();
+function wpml_wpseo_boot() {
+	if ( ! class_exists( 'WPML_Core_Version_Check' ) ) {
+		require_once WPSEOML_PLUGIN_PATH . '/vendor/wpml-shared/wpml-lib-dependencies/src/dependencies/class-wpml-core-version-check.php';
 	}
+
+	if ( ! WPML_Core_Version_Check::is_ok( WPSEOML_PLUGIN_PATH . '/wpml-dependencies.json' ) ) {
+		return;
+	}
+
+	require_once WPSEOML_PLUGIN_PATH . '/vendor/autoload.php';
+
+	if ( Utils::isPremium() && apply_filters( 'wpml_setting', false, 'setup_complete' ) ) {
+		if ( LanguageNegotiation::isDir() ) {
+			$redirector = new WPML_WPSEO_Redirection();
+			if ( $redirector->is_redirection() ) {
+				add_filter( 'wpml_skip_convert_url_string', '__return_true' );
+			}
+		} elseif ( ! is_admin() ) {
+			( new PostRedirectLanguage() )->scopeFrontEndRedirectsToCurrentLanguage();
+		}
+	}
+
+	add_action( 'wpml_loaded', 'wpml_wpseo_init' );
+}
+
+function wpml_wpseo_boot_after_core() {
+	if ( ! defined( 'ICL_SITEPRESS_VERSION' ) ) {
+		return;
+	}
+
+	remove_action( 'plugin_loaded', 'wpml_wpseo_boot_after_core' );
+	remove_action( 'network_plugin_loaded', 'wpml_wpseo_boot_after_core' );
+	wpml_wpseo_boot();
+}
+
+if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
+	wpml_wpseo_boot();
+} else {
+	add_action( 'plugin_loaded', 'wpml_wpseo_boot_after_core' );
+	add_action( 'network_plugin_loaded', 'wpml_wpseo_boot_after_core' );
 }
 
 function wpml_wpseo_init() {
+	if ( class_exists( 'GoogleSitemapGeneratorLoader' ) ) {
+		$actions_filters_loader = new WPML_Action_Filter_Loader();
+		$actions_filters_loader->load( GoogleSitemapGeneratorLoaders::get() );
+	}
+
 	if ( defined( 'WPSEO_VERSION' ) ) {
 		$actions_filters_loader = new WPML_Action_Filter_Loader();
 		$actions_filters_loader->load( YoastSEOLoaders::get( WPSEO_VERSION ) );
@@ -87,4 +136,3 @@ function wpml_wpseo_init() {
 		$actions_filters_loader->load( IndexNowPluginLoaders::get() );
 	}
 }
-add_action( 'wpml_loaded', 'wpml_wpseo_init' );

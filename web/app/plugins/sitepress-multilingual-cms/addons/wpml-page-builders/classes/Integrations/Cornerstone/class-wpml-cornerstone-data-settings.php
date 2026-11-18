@@ -1,8 +1,13 @@
 <?php
 
+use WPML\PB\AutoUpdate\PostSignatureLayoutField;
+use WPML\PB\Cornerstone\BodyRenderer;
 use WPML\PB\Cornerstone\Utils;
+use WPML\PB\TranslationBody\RendersTranslationBody;
 
-class WPML_Cornerstone_Data_Settings implements IWPML_Page_Builders_Data_Settings {
+class WPML_Cornerstone_Data_Settings implements IWPML_Page_Builders_Data_Settings, RendersTranslationBody {
+
+	use PostSignatureLayoutField;
 
 	public function get_meta_field() {
 		return '_cornerstone_data';
@@ -42,6 +47,11 @@ class WPML_Cornerstone_Data_Settings implements IWPML_Page_Builders_Data_Setting
 	}
 
 	public function add_hooks() {
+		add_filter( 'wpml_custom_field_values_for_post_signature', [ $this, 'add_data_custom_field_to_md5' ], 10, 2 );
+	}
+
+	public function render_translation_body( $translated_post_id, WP_Post $original_post ) {
+		return ( new BodyRenderer( $this ) )->render( $translated_post_id, $original_post );
 	}
 
 	public function is_handling_post( $postId ) {

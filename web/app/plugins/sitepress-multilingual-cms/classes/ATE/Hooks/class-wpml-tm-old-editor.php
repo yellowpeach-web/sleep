@@ -51,7 +51,7 @@ class WPML_TM_Old_Editor implements IWPML_Action {
 	}
 
 	private function is_ate_enabled_and_manager_wizard_completed() {
-		return WPML_TM_ATE_Status::is_enabled_and_activated() && (bool) get_option( WPML_TM_Wizard_Options::WIZARD_COMPLETE_FOR_MANAGER, false );
+		return WPML_TM_ATE_Status::is_editor_ate() && WPML_TM_ATE_Status::is_account_usable() && (bool) get_option( WPML_TM_Wizard_Options::WIZARD_COMPLETE_FOR_MANAGER, false );
 	}
 
 	private function capture_ate_for_old_translations_event( $old_editor ) {

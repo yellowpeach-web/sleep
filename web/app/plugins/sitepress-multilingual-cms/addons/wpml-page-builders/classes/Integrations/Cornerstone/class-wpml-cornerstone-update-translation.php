@@ -1,8 +1,19 @@
 <?php
 
+use WPML\PB\Cornerstone\LayoutContent;
 use WPML\PB\Cornerstone\Utils;
+use WPML\PB\Helper\TranslationKses;
 
 class WPML_Cornerstone_Update_Translation extends WPML_Page_Builders_Update_Translation {
+
+	private $should_filter_translations_with_kses = false;
+
+	public function update( $translated_post_id, $original_post, $string_translations, $lang ) {
+		$this->should_filter_translations_with_kses = Utils::isLayoutPostType( get_post_type( $original_post->ID ) )
+			&& $this->run_with_unfiltered_html_grant( [ LayoutContent::class, 'isKsesFilteringPostContent' ] );
+
+		parent::update( $translated_post_id, $original_post, $string_translations, $lang );
+	}
 
 	public function get_converted_data( $post_id ) {
 		if ( Utils::isLayoutPostType( get_post_type( $post_id ) ) ) {
@@ -17,6 +28,7 @@ class WPML_Cornerstone_Update_Translation extends WPML_Page_Builders_Update_Tran
 	public function save( $post_id, $original_post_id, $converted_data ) {
 		if ( ! Utils::isLayoutPostType( get_post_type( $original_post_id ) ) ) {
 			parent::save( $post_id, $original_post_id, $converted_data );
+			$this->delete_generated_styles( $post_id );
 			return;
 		}
 
@@ -24,7 +36,13 @@ class WPML_Cornerstone_Update_Translation extends WPML_Page_Builders_Update_Tran
 			'ID'           => $post_id,
 			'post_content' => wp_json_encode( $converted_data ),
 		];
-		if ( \WPML\PB\Helper\TranslationContent::update( $postarr ) ) {
+		$is_written = $this->run_with_unfiltered_html_grant(
+			function () use ( $postarr ) {
+				return LayoutContent::update( $postarr );
+			}
+		);
+
+		if ( $is_written ) {
 			\WPML\PB\Helper\TranslationContent::followRecord( $post_id );
 		}
 
@@ -36,6 +54,13 @@ class WPML_Cornerstone_Update_Translation extends WPML_Page_Builders_Update_Tran
 				apply_filters( 'wpml_pb_copy_meta_field', $value, $post_id, $original_post_id, $meta_key )
 			);
 		}
+
+		$this->delete_generated_styles( $post_id );
+	}
+
+	private function delete_generated_styles( $post_id ) {
+		delete_post_meta( $post_id, \WPML\PB\Cornerstone\Styles\Hooks::META_KEY_V6 );
+		delete_post_meta( $post_id, \WPML\PB\Cornerstone\Styles\Hooks::META_KEY_OLD );
 	}
 
 	public function update_strings_in_modules( array &$data_array ) {
@@ -46,6 +71,9 @@ class WPML_Cornerstone_Update_Translation extends WPML_Page_Builders_Update_Tran
 					$this->update_strings_in_modules( $data );
 				}
 			} elseif ( is_array( $data ) ) {
+				if ( isset( $data['_type'] ) ) {
+					$data = $this->update_strings_in_node( Utils::getLayoutNodeId( $data ), $data );
+				}
 				$this->update_strings_in_modules( $data );
 			}
 		}
@@ -55,7 +83,11 @@ class WPML_Cornerstone_Update_Translation extends WPML_Page_Builders_Update_Tran
 		$strings = $this->translatable_nodes->get( $node_id, $settings );
 		foreach ( $strings as $string ) {
 			$translation = $this->get_translation( $string );
-			$settings    = $this->translatable_nodes->update( $node_id, $settings, $translation );
+			$value = $translation->get_value();
+			if ( $this->should_filter_translations_with_kses && is_string( $value ) ) {
+				$translation->set_value( TranslationKses::filter( $value ) );
+			}
+			$settings = $this->translatable_nodes->update( $node_id, $settings, $translation );
 		}
 
 		return $settings;

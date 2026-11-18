@@ -42,9 +42,10 @@ class MetaSettingsIncidentNotice {
 			return;
 		}
 
-		$lost = self::somethingWasLost();
+		$unreadable = self::tableRecreatedRecorded();
+		$lost       = $unreadable || self::somethingWasLost();
 
-		$notice = new \WPML_Notice( self::NOTICE_ID, self::text( $messages, $lost ), self::NOTICE_GROUP );
+		$notice = new \WPML_Notice( self::NOTICE_ID, self::text( $messages, $lost, $unreadable ), self::NOTICE_GROUP );
 		$notice->set_css_class_types( array( $lost ? 'error' : 'warning' ) );
 		$notice->set_dismissible( true );
 		$notice->set_dismissible_for_different_text( false );
@@ -52,10 +53,14 @@ class MetaSettingsIncidentNotice {
 		$notices->add_notice( $notice );
 	}
 
-	public static function text( array $messages, $lost = false ) {
-		$heading = $lost
-			? esc_html__( 'WPML could not save your custom field translation preferences.', 'sitepress' )
-			: esc_html__( 'WPML had to compensate for a problem with your custom field translation preferences.', 'sitepress' );
+	public static function text( array $messages, $lost = false, $unreadable = false ) {
+		if ( $unreadable ) {
+			$heading = esc_html__( 'WPML could not read your custom field translation preferences.', 'sitepress' );
+		} else {
+			$heading = $lost
+				? esc_html__( 'WPML could not save your custom field translation preferences.', 'sitepress' )
+				: esc_html__( 'WPML had to compensate for a problem with your custom field translation preferences.', 'sitepress' );
+		}
 
 		$text = '<p><strong>' . $heading . '</strong></p>'
 			. '<ul style="list-style-type: disc; margin-left: 2em; max-height: none; overflow: visible; overflow-wrap: anywhere;">';
@@ -128,6 +133,16 @@ class MetaSettingsIncidentNotice {
 		return false;
 	}
 
+	public static function tableRecreatedRecorded() {
+		foreach ( ContainerFreeServices::incidents()->all() as $entry ) {
+			if ( isset( $entry['code'] ) && StoreIncidents::TABLE_RECREATED === (string) $entry['code'] ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public static function somethingWasLost() {
 		$lossCodes = array( StoreIncidents::UPGRADE_PENDING, StoreIncidents::WRITE_FAILED );
 
@@ -192,6 +207,14 @@ class MetaSettingsIncidentNotice {
 					/* translators: %s: a link reading "WPML debug information". */
 					__( 'WPML could not save your custom field translation preferences. Your database is missing an update WPML needs. Reload any WPML admin page to let WPML finish the update, then save your preferences again. If this message stays, send your %s to WPML support.', 'sitepress' ),
 					self::debugInformationLink()
+				);
+
+			case StoreIncidents::TABLE_RECREATED:
+				return sprintf(
+					/* translators: %1$s: a link reading "WPML debug information", %2$s: a link whose text is the path to the settings screen. */
+					__( 'Your database was missing the table that holds your custom field translation preferences, so WPML created it again. The preferences stored in it could not be read, and your custom fields now use the default settings. A backup or staging copy of this site made after updating to WPML 5 can bring them back. Send your %1$s to WPML support to restore them. Until then, check your preferences on %2$s.', 'sitepress' ),
+					self::debugInformationLink(),
+					self::customFieldsSettingsLink()
 				);
 
 			case StoreIncidents::WRITE_FAILED:

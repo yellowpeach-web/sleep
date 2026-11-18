@@ -37,14 +37,32 @@
          "Removing strings from <b>String Translation</b> table": [
             "Dizgiler <b>Dizgi Çevirisi</b> tablosundan kaldırılıyor"
          ],
+         "%s string waiting for translation was kept.": [
+            "Çeviri bekleyen %s dize tutuldu.",
+            "Çeviri bekleyen %s dize tutuldu."
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "Dizgileri <b>Dizgi Çevirisi</b> tablosuna geri eklemek için çeviri dosyalarını yeniden taramanız veya dizgileri çevrilebilir olarak kaydetmeniz gerekebilir."
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "<a>Sitenizi dizgiler için tarama ve bunları çevrilebilir olarak kaydetme</a> hakkında daha fazla bilgi edinin."
          ],
-         "Successfully removed strings": [
-            "Dizgiler başarıyla kaldırıldı"
+         "Nothing removed: %s string is waiting for translation": [
+            "Hiçbir şey kaldırılmadı: %s dize çeviri bekliyor",
+            "Hiçbir şey kaldırılmadı: %s dize çeviri bekliyor"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "Hiçbir şey kaldırılmadı: Seçilen alan adlarında çevrilmemiş dize yok"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "Bunları da kaldırmak için “Çeviri bekleyen dizeleri de kaldır” seçeneğini işaretleyin ve Kaldır düğmesine tekrar tıklayın."
+         ],
+         "OK": [
+            "Tamam"
+         ],
+         "Removed %s string": [
+            "%s dize kaldırıldı",
+            "%s dize kaldırıldı"
          ],
          "OK, Great": [
             "Tamam, harika"
@@ -60,6 +78,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "Dizgileri kaldırma işlemi tamamlanmadan durdu. Kaldırılmayan dizgiler hâlâ tabloda duruyor. Bunları kaldırmak için tekrar deneyin."
+         ],
+         "Successfully removed strings": [
+            "Dizgiler başarıyla kaldırıldı"
          ]
       }
    }

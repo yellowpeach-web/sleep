@@ -16,6 +16,10 @@ class StoreIncidents {
 
   const UPGRADE_PENDING = 'upgrade-pending';
 
+  const TABLE_RECREATED = 'table-recreated';
+
+  const TYPE_TABLE = 'table';
+
   private static $sink;
 
 

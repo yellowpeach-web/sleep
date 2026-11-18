@@ -132,11 +132,11 @@
          "Legacy engine": [
             "Legacy-Engine"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "Legacy-Preise angewendet. %s ist eine Legacy-Übersetzungs-Engine, die für neue Websites nicht empfohlen wird und eingestellt wird. Bestehende Websites behalten eine angepasste Wortrate dafür bei."
-         ],
          "Switch to PTC": [
             "Zu PTC wechseln"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Legacy-Preise angewendet. %s ist eine Legacy-Übersetzungs-Engine, die für neue Websites nicht empfohlen wird und eingestellt wird. Bestehende Websites behalten eine angepasste Wortrate dafür bei."
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Das ist der aktuelle Bedarf für die Übersetzung Ihrer vorhandenen Inhalte. Nicht enthalten sind einige Texte von anderen Plugins wie Formularen oder Slidern, die erst nach Abschluss der Einrichtung gezählt werden. Auch Website-Strings aus Ihrem Theme und Ihren Plugins werden erst nach der Einrichtung erfasst und umfassen in der Regel einige hundert Wörter. Danach sind Bearbeitungen kostenlos. Sie zahlen nur wieder für neu hinzugefügte Wörter."
@@ -153,8 +153,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Hierbei werden Seiten, Beiträge und Produkte einschließlich ihrer benutzerdefinierten Felder, Page-Builder-Texte und Medientexte sowie die von ihnen verwendeten Kategorien, Schlagwörter und Attribute gezählt."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Hierbei werden Seiten, Beiträge und Produkte einschließlich ihrer benutzerdefinierten Felder, Page-Builder-Texte und Medientexte, die von ihnen verwendeten Kategorien, Schlagwörter und Attribute sowie Website-Strings gezählt. Ein Begriff wird in jedem Element gezählt, das ihn verwendet, sowie einmal separat, da er auf beide Weisen zur Übersetzung gesendet wird."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Es zählt Seiten, Beiträge und Produkte einschließlich ihrer benutzerdefinierten Felder, Page-Builder-Texte und Medientexte, die von ihnen verwendeten Kategorien, Schlagwörter und Attribute sowie Website-Strings. Jede Kategorie, jedes Schlagwort oder Attribut wird einmal in der Zeile „Taxonomien“ gezählt und nicht noch einmal bei den Elementen, die es verwenden."
          ],
          "Total items": [
             "Elemente insgesamt"
@@ -377,7 +377,7 @@
             "Es befinden sich %1$s%2$s Wörter%3$s in Ihrem WPML-Konto."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "Es sind %1$s%2$s in deinem WPML-Konto verfügbar.%3$s"
+            "Es sind %1$s%2$s in Ihrem WPML-Konto verfügbar.%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(Nur der Inhaber des WPML-Kontos kann dies tun.)"

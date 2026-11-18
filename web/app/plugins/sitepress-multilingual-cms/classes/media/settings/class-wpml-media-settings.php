@@ -71,7 +71,7 @@ class WPML_Media_Settings {
 						<ul class="settings-ul">
 							<li aria-label="ShouldHandleMediaAuto" id="ShouldHandleMediaAuto" class="setting-item <?php echo Option::shouldHandleMediaAuto() ? 'on' : 'off'; ?>">
 								<span class="wpml-blue-badge wpml-green-badge solid">
-									<?php echo /* translators: Badge next to the setting WPML advises, on the media translation and Translation Management settings screens. Past participle used as a label: this is what WPML advises. */ esc_html_e( 'Recommended', 'sitepress' ); ?>
+									<?php echo /* translators: Badge next to the setting or action WPML advises: on the media translation and Translation Management settings screens, and in the Translation delivery box. Past participle used as a label: this is what WPML advises. */ esc_html_e( 'Recommended', 'sitepress' ); ?>
 								</span>
 								<div class="setting-item-title">
 									<span class="setting-item-title-label">
@@ -120,7 +120,7 @@ class WPML_Media_Settings {
 
 						<div id="wpml-media-translation-should-handle-media-auto-notice" class="warning notice-warning otgs-notice wpml-settings-list-notice" style="display: <?php echo Option::shouldHandleMediaAuto() ? 'none' : 'block'; ?>">
 							<p><?php echo esc_html_e( 'We recommend enabling automatic detection of image texts (alt, caption, title). This helps prevent duplicate media fields and missing translations.', 'sitepress' ); ?>
-								<a href="<?php echo esc_url( $media_doc_url ); ?>" class="external-link" target="_blank"><?php echo /* translators: Link text that opens a page on wpml.org explaining the notice above it. Verb phrase, imperative. */ esc_html_e( 'Learn more', 'sitepress' ); ?></a></p>
+								<a href="<?php echo esc_url( $media_doc_url ); ?>" class="external-link" target="_blank"><?php echo /* translators: Link text that opens a page on wpml.org explaining the text before it. Verb phrase, imperative. */ esc_html_e( 'Learn more', 'sitepress' ); ?></a></p>
 						</div>
 
 						<div class="setup-manually-container"<?php echo \WPML\Media\Option::shouldHandleMediaAuto() ? ' style="display:none"' : ''; ?>>

@@ -7,8 +7,35 @@
             "plural_forms": "nplurals=2; plural=(n != 1);",
             "lang": "sv_SE"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "Växla till Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "Byt till PTC"
+         ],
+         "Switching…": [
+            "Byter…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "Vi kunde inte bekräfta växlingen. Försök igen, eller ladda om för att se aktuell motor."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Inställningar för översättningsmotor kunde inte laddas. Ladda om sidan och försök igen."
+         ],
+         "Loading translation engine settings…": [
+            "Laddar inställningar för översättningsmotor…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "Fyll i din webbplatskontext ovan innan du byter till PTC."
+         ],
+         "Reload page": [
+            "Ladda om sidan"
+         ],
+         "Could not fetch engines data": [
+            "Kunde inte hämta data om motorer"
+         ],
          "Error in updating since dates for types.": [
-            "Fel vid uppdatering av datum för typer."
+            "Fel vid uppdatering av \"sedan\"-datum för typer."
          ],
          "Error in fetching untranslated types count": [
             "Fel vid hämtning av antal oöversatta typer"
@@ -17,7 +44,7 @@
             "Fel vid lagring av erbjudna datum för typer."
          ],
          "Error in updating since date for type.": [
-            "Fel vid uppdatering av datum för typ."
+            "Fel vid uppdatering av \"sedan\"-datum för typ."
          ],
          "Content to translate": [
             "Innehåll att översätta"
@@ -138,9 +165,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "Prissättning för äldre motorer tillämpas. %s är en äldre översättningsmotor som inte rekommenderas för nya webbplatser och kommer att fasas ut. Befintliga webbplatser behåller en justerad ordtaxa för den."
          ],
-         "Switch to PTC": [
-            "Byt till PTC"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Detta är vad som krävs för att översätta ditt nuvarande innehåll idag. Det inkluderar inte vissa texter som lagts till av andra tillägg, såsom formulär eller bildspel, vilka räknas efter att konfigurationen är klar. Webbplatssträngar från ditt tema och dina tillägg räknas också efter konfigurationen och lägger vanligtvis till flera hundra ord. Därefter är redigeringar gratis. Du betalar först igen för ord du lägger till."
          ],
@@ -156,8 +180,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Den räknar sidor, inlägg och produkter inklusive deras anpassade fält, sidbyggartexter och medietexter, samt de kategorier, taggar och attribut de använder."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Den räknar sidor, inlägg och produkter inklusive deras anpassade fält, sidbyggartexter och medietexter, de kategorier, taggar och attribut de använder, samt webbplatssträngar. En term räknas i varje objekt som använder den och en gång för sig själv, eftersom den skickas till översättning på båda sätten."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Den räknar sidor, inlägg och produkter inklusive deras anpassade fält, sidbyggartexter och medietexter, kategorierna, etiketterna och attributen de använder, samt webbplatssträngar. Varje kategori, etikett eller attribut räknas en gång, i raden Taxonomier, och inte igen tillsammans med objekten som använder dem."
          ],
          "Total items": [
             "Totalt antal objekt"
@@ -230,6 +254,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "För att starta <b>Translate Everything Automatically</b>, aktivera <b>Användningsbaserad debitering</b> eller köp förbetalda ord."
+         ],
+         "Translation quality:": [
+            "Översättningskvalitet:"
          ],
          "Select payment method": [
             "Välj betalningsmetod"
@@ -362,6 +389,30 @@
          ],
          "Close modal": [
             "Stäng dialogruta"
+         ],
+         "Obvious mistakes": [
+            "Uppenbara misstag"
+         ],
+         "Mistakes visible": [
+            "Synliga misstag"
+         ],
+         "Ready to publish": [
+            "Klar att publicera"
+         ],
+         "Your engine": [
+            "Din motor"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Översättningskvalitet (skala 50–100): %1$s får %2$d poäng, %3$s får %4$d poäng."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Poängen baseras på WPML:s interna MQM-studie om översättningskvalitet."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC översätter med högre kvalitet och ger dig resultat som är redo att publiceras."
          ]
       }
    }

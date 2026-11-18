@@ -26,6 +26,8 @@ class TranslationService {
 
   const WORD_COUNT_FAILED = 'word_count_failed';
 
+  const PRICES_UNAVAILABLE = 'prices_unavailable';
+
   private $batchBuilder;
 
   private $translationSender;
@@ -133,20 +135,31 @@ class TranslationService {
 
 
   private function heldBackElements( ?TranslationBatch $translationBatch = null ): array {
-    $heldBack = $translationBatch ? $this->translationSender->getHeldBackTranslations() : [];
+    if ( ! $translationBatch ) {
+      return [];
+    }
+
+    return array_merge(
+      $this->asHeldBackElements( $this->translationSender->getHeldBackTranslations(), self::WORD_COUNT_FAILED ),
+      $this->asHeldBackElements( $this->translationSender->getPriceHeldBackTranslations(), self::PRICES_UNAVAILABLE )
+    );
+  }
+
+
+  private function asHeldBackElements( array $heldBack, string $reason ): array {
     if ( ! $heldBack ) {
       return [];
     }
 
     return array_map(
-      function ( Translation $translation ) {
+      function ( Translation $translation ) use ( $reason ) {
         return [
           'elementType'    => $translation->getType()->get(),
           'elementId'      => $translation->getOriginalElementId(),
           'targetLanguage' => $translation->getTargetLanguageCode(),
-          'reason'         => self::WORD_COUNT_FAILED,
+          'reason'         => $reason,
           'kind'           => 'blocked',
-          'errorCode'      => self::WORD_COUNT_FAILED,
+          'errorCode'      => $reason,
         ];
       },
       $this->stringBatchToStringsTranslationsMapper->map( $heldBack )

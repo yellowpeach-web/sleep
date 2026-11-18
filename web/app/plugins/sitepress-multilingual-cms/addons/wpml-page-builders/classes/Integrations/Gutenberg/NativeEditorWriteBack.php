@@ -10,7 +10,7 @@ class NativeEditorWriteBack implements Integration {
 
 	private $pb_integration;
 
-	private $strings_in_block;
+	private $block_strings;
 
 	private $sitepress;
 
@@ -28,7 +28,7 @@ class NativeEditorWriteBack implements Integration {
 		NativeEditorStringTranslations $string_translations
 	) {
 		$this->pb_integration      = $pb_integration;
-		$this->strings_in_block    = $strings_in_block;
+		$this->block_strings       = new BlockStrings( $strings_in_block );
 		$this->sitepress           = $sitepress;
 		$this->job_fields          = $job_fields;
 		$this->string_translations = $string_translations;
@@ -94,37 +94,7 @@ class NativeEditorWriteBack implements Integration {
 	}
 
 	private function collectBlocks( $content ) {
-		return $this->collectFromBlocks( \WPML_Gutenberg_Integration::parse_blocks( (string) $content ), '' );
-	}
-
-	private function collectFromBlocks( array $blocks, $parent_path ) {
-		$collected = [];
-
-		foreach ( $blocks as $position => $block ) {
-			if (
-				'' === (string) Obj::propOr( '', 'blockName', $block )
-				&& ! Obj::propOr( [], 'innerBlocks', $block )
-				&& '' === trim( (string) Obj::propOr( '', 'innerHTML', $block ) )
-			) {
-				continue;
-			}
-
-			$block = \WPML_Gutenberg_Integration::sanitize_block( $block );
-			$path  = '' === $parent_path ? (string) $position : $parent_path . '.' . $position;
-			$name  = (string) Obj::propOr( '', 'blockName', $block );
-
-			$collected[] = [
-				'path'    => $path,
-				'block'   => $name,
-				'strings' => array_values( (array) $this->strings_in_block->find( $block ) ),
-			];
-
-			if ( ! empty( $block->innerBlocks ) ) {
-				$collected = array_merge( $collected, $this->collectFromBlocks( $block->innerBlocks, $path ) );
-			}
-		}
-
-		return $collected;
+		return $this->block_strings->collect( $content );
 	}
 
 	private function pairBlocks( \WP_Post $original_post, array $original, \WP_Post $translated_post, array $translated ) {
@@ -157,7 +127,7 @@ class NativeEditorWriteBack implements Integration {
 
 		$pairs = [];
 
-		foreach ( $this->inEveryLongestCommonOrder( $original_sequence, $translated_sequence ) as $uid ) {
+		foreach ( LongestCommonOrder::inEvery( $original_sequence, $translated_sequence ) as $uid ) {
 			if ( $this->sameShape( $original_by_uid[ $uid ], $translated_by_uid[ $uid ] ) ) {
 				$pairs[] = [ $original_by_uid[ $uid ], $translated_by_uid[ $uid ] ];
 			}
@@ -189,56 +159,6 @@ class NativeEditorWriteBack implements Integration {
 		}
 
 		return $indexed;
-	}
-
-	private function inEveryLongestCommonOrder( array $original, array $translated ) {
-		$position = array_flip( array_map( 'strval', $translated ) );
-		$at       = [];
-
-		foreach ( $original as $uid ) {
-			$at[] = $position[ (string) $uid ];
-		}
-
-		$count  = count( $at );
-		$ending = array_fill( 0, $count, 1 );
-		$from   = array_fill( 0, $count, 1 );
-
-		for ( $k = 0; $k < $count; $k++ ) {
-			for ( $i = 0; $i < $k; $i++ ) {
-				if ( $at[ $i ] < $at[ $k ] ) {
-					$ending[ $k ] = max( $ending[ $k ], $ending[ $i ] + 1 );
-				}
-			}
-		}
-
-		for ( $k = $count - 1; $k >= 0; $k-- ) {
-			for ( $i = $count - 1; $i > $k; $i-- ) {
-				if ( $at[ $i ] > $at[ $k ] ) {
-					$from[ $k ] = max( $from[ $k ], $from[ $i ] + 1 );
-				}
-			}
-		}
-
-		$longest = $count ? max( $ending ) : 0;
-		$on_run  = [];
-
-		for ( $k = 0; $k < $count; $k++ ) {
-			if ( $ending[ $k ] + $from[ $k ] - 1 === $longest ) {
-				$on_run[ $ending[ $k ] ][] = $k;
-			}
-		}
-
-		$kept = [];
-
-		foreach ( $on_run as $step ) {
-			if ( 1 === count( $step ) ) {
-				$kept[ $step[0] ] = $original[ $step[0] ];
-			}
-		}
-
-		ksort( $kept );
-
-		return array_values( $kept );
 	}
 
 	private function pairByPosition( array $original, array $translated ) {

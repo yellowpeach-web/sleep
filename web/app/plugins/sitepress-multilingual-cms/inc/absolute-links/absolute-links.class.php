@@ -22,7 +22,9 @@ class AbsoluteLinks {
 
 	private $shape_env;
 
-	private $rule_bucket_index;
+	private $rule_bucket_index = [];
+
+	private $language_rules = [];
 
 	private $shape_memo = [];
 
@@ -67,6 +69,27 @@ class AbsoluteLinks {
 		}
 
 		$this->query_vars_initialized = true;
+	}
+
+	private function last_filled_query_var( array $query_vars, array $permalink_query_vars ) {
+		$match = null;
+		foreach ( $query_vars as $key => $query_var ) {
+			if ( ! empty( $permalink_query_vars[ $query_var ] ) ) {
+				$match = [ (string) $key, (string) $query_var ];
+			}
+		}
+
+		return $match;
+	}
+
+	private function first_filled_query_var( array $query_vars, array $permalink_query_vars ) {
+		foreach ( $query_vars as $key => $query_var ) {
+			if ( ! empty( $permalink_query_vars[ $query_var ] ) ) {
+				return [ (string) $key, (string) $query_var ];
+			}
+		}
+
+		return null;
 	}
 
 	public static function has_href_attribute( $text ) {
@@ -120,17 +143,82 @@ class AbsoluteLinks {
 			return $block;
 		};
 
-		foreach (
-			[
-				'#<!-- wp:(\S+) (\{.*?\}) -->.*?<!-- /wp:\1 -->#s',
-				'#<!-- wp:(\S+) (\{.*?\})\s*/-->#s',
-			] as $pattern
-		) {
-			$converted = preg_replace_callback( $pattern, $convert_block, $text );
-			$text      = null === $converted ? $text : $converted;
-		}
+		$attributes_json = '(\{(?:(?!-->).)*?\})';
 
-		return $text;
+		$delimiter_pattern = '#<!-- wp:(\S+) ' . $attributes_json . '\s*(/)?-->|<!-- /wp:(\S+) -->#s';
+
+		$convert_blocks = function ( $text ) use ( &$convert_blocks, $convert_block, $delimiter_pattern ) {
+			if ( ! preg_match_all( $delimiter_pattern, $text, $delimiters, PREG_SET_ORDER | PREG_OFFSET_CAPTURE ) ) {
+				return $text;
+			}
+
+			$stack = [];
+			$spans = [];
+
+			foreach ( $delimiters as $delimiter ) {
+				$whole = $delimiter[0][0];
+				$start = $delimiter[0][1];
+				$end   = $start + strlen( $whole );
+
+				if ( 0 === strncmp( $whole, '<!-- /', 6 ) ) {
+					for ( $i = count( $stack ) - 1; $i >= 0; $i-- ) {
+						if ( $stack[ $i ]['name'] === $delimiter[4][0] ) {
+							break;
+						}
+					}
+
+					if ( $i < 0 ) {
+						continue;
+					}
+
+					$frame = $stack[ $i ];
+					$stack = array_slice( $stack, 0, $i );
+
+					if ( ! $stack ) {
+						$spans[] = [ $frame['start'], $end, $frame['json'], $frame['inner_start'], $start ];
+					}
+
+					continue;
+				}
+
+				if ( isset( $delimiter[3] ) && '' !== $delimiter[3][0] ) {
+					if ( ! $stack ) {
+						$spans[] = [ $start, $end, $delimiter[2][0], null, null ];
+					}
+
+					continue;
+				}
+
+				$stack[] = [
+					'name'        => $delimiter[1][0],
+					'start'       => $start,
+					'json'        => $delimiter[2][0],
+					'inner_start' => $end,
+				];
+			}
+
+			$result = '';
+			$pos    = 0;
+
+			foreach ( $spans as [ $start, $end, $json, $inner_start, $inner_end ] ) {
+				$result .= substr( $text, $pos, $start - $pos );
+				$block  = substr( $text, $start, $end - $start );
+
+				if ( null !== $inner_start ) {
+					$inner = $convert_blocks( substr( $text, $inner_start, $inner_end - $inner_start ) );
+					$block = substr( $text, $start, $inner_start - $start )
+						. $inner
+						. substr( $text, $inner_end, $end - $inner_end );
+				}
+
+				$result .= $convert_block( [ $block, null, $json ] );
+				$pos     = $end;
+			}
+
+			return $result . substr( $text, $pos );
+		};
+
+		return $convert_blocks( $text );
 	}
 
 	private function convert_single_url( $url, &$alp_broken_links, ?CollectorInterface $collector = null, $language_scope = null ) {
@@ -254,7 +342,7 @@ class AbsoluteLinks {
 			$text = $source_text;
 		}
 
-		$all_active_languages     = array_keys( $sitepress->get_active_languages() );
+		$all_active_languages     = array_map( 'strval', array_keys( $sitepress->get_active_languages() ) );
 		$this->active_languages   = $all_active_languages;
 		$this->url_language_codes = $this->get_url_language_codes( $all_active_languages );
 		$languages_to_process   = is_array( $language_scope )
@@ -281,7 +369,8 @@ class AbsoluteLinks {
 		$this->batching_disabled_cache = null;
 		$this->rule_match_memo         = [];
 		$this->shape_memo              = [];
-		$this->rule_bucket_index       = null;
+		$this->rule_bucket_index       = [];
+		$this->language_rules          = [];
 		$this->shape_env               = null;
 		$this->prefetched_pages       = [];
 		$this->prefetched_page_misses = [];
@@ -299,6 +388,10 @@ class AbsoluteLinks {
 				$sitepress,
 				is_array( $language_scope ) ? [ $test_language ] : null
 			);
+
+			$fallback_languages = is_array( $language_scope )
+				? []
+				: $this->fallback_rule_languages( $rewrite_language, $default_language, $all_active_languages );
 
 			list( $site_domain, $domain_pattern ) = $this->language_domain_pattern( $test_language, $sitepress_settings, $default_language, $sitepress );
 
@@ -327,11 +420,11 @@ class AbsoluteLinks {
 						continue;
 					}
 
-					list( $permalink_query_vars, $matched_rule_query ) = $this->match_rewrite_rules( $rewrite, $request, $req_uri );
+					$link_languages = $lang && in_array( $lang, $fallback_languages, true )
+						? array_values( array_unique( array_merge( [ $lang ], $fallback_languages ) ) )
+						: $fallback_languages;
 
-					if ( null !== $matched_rule_query ) {
-						$permalink_query_vars = apply_filters( 'wpml_absolute_links_permalink_query_vars', $permalink_query_vars, $matched_rule_query, $test_language );
-					}
+					list( $permalink_query_vars ) = $this->link_query_vars( $rewrite, $request, $req_uri, $test_language, $link_languages );
 
 					$post_name             = false;
 					$category_name         = false;
@@ -367,19 +460,15 @@ class AbsoluteLinks {
 					} elseif ( isset( $permalink_query_vars['category_name'] ) ) {
 						$category_name = $permalink_query_vars['category_name'];
 					} else {
-						foreach ( $this->custom_post_query_vars as $query_vars_key => $query_vars_value ) {
-							if ( isset( $permalink_query_vars[ $query_vars_value ] ) ) {
-								$post_name = $permalink_query_vars[ $query_vars_value ];
-								$post_type = $query_vars_key;
-								break;
-							}
+						$post_match = $this->last_filled_query_var( $this->custom_post_query_vars, $permalink_query_vars );
+						if ( $post_match ) {
+							$post_type = $post_match[0];
+							$post_name = $permalink_query_vars[ $post_match[1] ];
 						}
-						foreach ( $this->taxonomies_query_vars as $query_vars_value ) {
-							if ( isset( $permalink_query_vars[ $query_vars_value ] ) ) {
-								$tax_name = $permalink_query_vars[ $query_vars_value ];
-								$tax_type = $query_vars_value;
-								break;
-							}
+						$tax_match = $this->first_filled_query_var( $this->taxonomies_query_vars, $permalink_query_vars );
+						if ( $tax_match ) {
+							$tax_type = $tax_match[1];
+							$tax_name = $permalink_query_vars[ $tax_type ];
 						}
 					}
 
@@ -407,7 +496,7 @@ class AbsoluteLinks {
 						if ( empty( $p ) && $try_cpt_slug_fallback ) {
 							$custom_post = $this->find_custom_post_type_by_slug( $post_name, $test_language );
 
-							if ( $custom_post ) {
+							if ( $custom_post && $this->is_post_permalink_path( $request, $permalink_query_vars, (int) $custom_post->ID ) ) {
 								$p = get_post( $custom_post->ID );
 							}
 						}
@@ -668,11 +757,9 @@ class AbsoluteLinks {
 					$term_slugs[ $vars['category_name'] ] = true;
 				}
 			} else {
-				foreach ( $this->custom_post_query_vars as $query_var ) {
-					if ( isset( $vars[ $query_var ] ) ) {
-						$page_names[ (string) $vars[ $query_var ] ] = true;
-						break;
-					}
+				$post_match = $this->last_filled_query_var( $this->custom_post_query_vars, $vars );
+				if ( $post_match ) {
+					$page_names[ (string) $vars[ $post_match[1] ] ] = true;
 				}
 			}
 		}
@@ -847,6 +934,16 @@ class AbsoluteLinks {
 			if ( is_string( $home_path ) && '' !== $home_path ) {
 				$home_path = trim( $home_path, '/' );
 				$home_path_regex = sprintf( '@^%s(?=/|$)@i', preg_quote( $home_path, '@' ) );
+
+				$install_path = wp_parse_url( $this->get_home_url_with_no_lang_directory(), PHP_URL_PATH );
+				$install_path = is_string( $install_path ) ? trim( $install_path, '/' ) : '';
+				if ( '' !== $install_path && $install_path !== $home_path ) {
+					$home_path_regex = sprintf(
+						'@^(?:%s|%s)(?=/|$)@i',
+						preg_quote( $home_path, '@' ),
+						preg_quote( $install_path, '@' )
+					);
+				}
 			}
 
 			$pathinfo_raw         = isset( $_SERVER['PATH_INFO'] ) ? $_SERVER['PATH_INFO'] : '';
@@ -895,31 +992,106 @@ class AbsoluteLinks {
 		return $this->shape_memo[ $dir_path ];
 	}
 
-	private function match_rewrite_rules( $rewrite, $request, $req_uri ) {
-		if ( $this->batching_disabled() ) {
-			return $this->match_rewrite_rules_uncached( $rewrite, $request, $req_uri );
+	private function link_query_vars( $rewrite, $request, $req_uri, $test_language, array $fallback_languages ) {
+		list( $permalink_query_vars, $matched_rule_query ) = $this->match_rewrite_rules( $rewrite, $request, $req_uri );
+
+		if ( null === $matched_rule_query || ! $this->carries_literal_segment( '', $request ) ) {
+			foreach ( $fallback_languages as $language ) {
+				$rules = $this->rules_only_in_language( $language, $rewrite );
+
+				if ( ! $rules ) {
+					continue;
+				}
+
+				list( $language_vars, $language_query ) = $this->match_rewrite_rules( $rules, $request, $req_uri, 'language:' . $language );
+
+				if ( null !== $language_query ) {
+					$permalink_query_vars = $language_vars;
+					$matched_rule_query   = $language_query;
+					break;
+				}
+			}
 		}
 
-		$memo_key = $request . "\0" . $req_uri;
+		$matched = null !== $matched_rule_query;
+
+		$filtered = apply_filters(
+			'wpml_absolute_links_permalink_query_vars',
+			$matched ? $permalink_query_vars : [],
+			$matched ? $matched_rule_query : $request,
+			$test_language
+		);
+
+		$permalink_query_vars = $matched || is_array( $filtered ) ? $filtered : [];
+
+		return [ $permalink_query_vars, $matched_rule_query ];
+	}
+
+	private function carries_literal_segment( $index_key, $request ) {
+		if ( ! isset( $this->rule_bucket_index[ $index_key ] ) ) {
+			return false;
+		}
+
+		list( $buckets ) = $this->rule_bucket_index[ $index_key ];
+
+		foreach ( array_unique( [ $request, urldecode( $request ) ] ) as $path ) {
+			if ( isset( $buckets[ strtolower( (string) strstr( $path . '/', '/', true ) ) ] ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private function fallback_rule_languages( $rewrite_language, $default_language, array $active_languages ) {
+		$languages = array_map( 'strval', array_merge( [ $default_language ], $active_languages ) );
+
+		return array_values( array_diff( array_unique( $languages ), [ (string) $rewrite_language, '' ] ) );
+	}
+
+	private function rules_only_in_language( $language, $rewrite ) {
+		global $sitepress;
+
+		if ( ! isset( $this->language_rules[ $language ] ) ) {
+			$rules = $this->initialize_rewrite( $language, $sitepress->get_default_language(), $sitepress, [ $language ] );
+
+			$this->language_rules[ $language ] = array_filter(
+				array_diff_key( (array) $rules, (array) $rewrite ),
+				function ( $match ) {
+					return (bool) preg_match( '@^[^/()\[\]{}.?*+|\\\\^$]+/@', (string) $match );
+				},
+				ARRAY_FILTER_USE_KEY
+			);
+		}
+
+		return $this->language_rules[ $language ];
+	}
+
+	private function match_rewrite_rules( $rewrite, $request, $req_uri, $index_key = '' ) {
+		if ( $this->batching_disabled() ) {
+			return $this->match_rewrite_rules_uncached( $rewrite, $request, $req_uri, $index_key );
+		}
+
+		$memo_key = ( '' === $index_key ? '' : $index_key . "\1" ) . $request . "\0" . $req_uri;
 		if ( isset( $this->rule_match_memo[ $memo_key ] ) ) {
 			return $this->rule_match_memo[ $memo_key ];
 		}
 
-		list( $permalink_query_vars, $matched_query ) = $this->match_rewrite_rules_uncached( $rewrite, $request, $req_uri );
+		list( $permalink_query_vars, $matched_query ) = $this->match_rewrite_rules_uncached( $rewrite, $request, $req_uri, $index_key );
 
 		$this->rule_match_memo[ $memo_key ] = [ $permalink_query_vars, $matched_query ];
 
 		return $this->rule_match_memo[ $memo_key ];
 	}
 
-	private function match_rewrite_rules_uncached( $rewrite, $request, $req_uri ) {
+	private function match_rewrite_rules_uncached( $rewrite, $request, $req_uri, $index_key = '' ) {
 		global $wp_rewrite;
 
 		$request_match = $request;
 
 		$permalink_query_vars = [];
 
-		if ( null === $this->rule_bucket_index ) {
+		if ( ! isset( $this->rule_bucket_index[ $index_key ] ) ) {
 			$buckets  = [];
 			$fallback = [];
 			$ordered  = [];
@@ -933,9 +1105,9 @@ class AbsoluteLinks {
 				}
 				$i++;
 			}
-			$this->rule_bucket_index = [ $buckets, $fallback, $ordered ];
+			$this->rule_bucket_index[ $index_key ] = [ $buckets, $fallback, $ordered ];
 		}
-		list( $buckets, $fallback, $ordered ) = $this->rule_bucket_index;
+		list( $buckets, $fallback, $ordered ) = $this->rule_bucket_index[ $index_key ];
 
 		$use_buckets = ! $this->batching_disabled() && ( '' === $req_uri || $req_uri === $request );
 
@@ -1115,12 +1287,25 @@ class AbsoluteLinks {
 			$exp  = explode( '/', $home_url );
 			$lang = end( $exp );
 
-			if ( $this->does_lang_exist( $lang ) ) {
+			if ( $this->does_lang_exist( $lang ) && ( $url || ! $this->is_absolute_home_path( $home_url ) ) ) {
 				$home_url = substr( $home_url, 0, strlen( $home_url ) - strlen( $lang ) );
 			}
 		}
 
 		return $home_url;
+	}
+
+	private function is_absolute_home_path( $home_url ) {
+		global $wpml_url_converter;
+
+		if ( ! $wpml_url_converter instanceof WPML_URL_Converter ) {
+			return false;
+		}
+
+		$home_path = trim( (string) wp_parse_url( $home_url, PHP_URL_PATH ), '/' );
+		$abs_path  = trim( (string) wp_parse_url( (string) $wpml_url_converter->get_abs_home(), PHP_URL_PATH ), '/' );
+
+		return '' !== $home_path && $home_path === $abs_path;
 	}
 
 	private function does_lang_exist( $lang ) {
@@ -1727,6 +1912,47 @@ class AbsoluteLinks {
 		}
 
 		return ! empty( $post_type_object->_builtin ) || false !== $post_type_object->rewrite;
+	}
+
+	private function is_post_permalink_path( $request, array $permalink_query_vars, $post_id ) {
+		$link_path   = trim( (string) $request, '/' );
+		$page_number = isset( $permalink_query_vars['page'] ) ? trim( (string) $permalink_query_vars['page'], '/' ) : '';
+		if ( '' !== $page_number && ctype_digit( $page_number ) ) {
+			$link_path = trim( (string) preg_replace( '@(?:^|/)' . $page_number . '$@', '', $link_path ), '/' );
+		}
+
+		$permalink_path = trim( (string) wp_parse_url( $this->get_permalink_in_post_language( $post_id ), PHP_URL_PATH ), '/' );
+		$home_path      = trim( (string) wp_parse_url( $this->get_home_url_with_no_lang_directory(), PHP_URL_PATH ), '/' );
+		if ( '' !== $home_path ) {
+			$permalink_path = trim( (string) preg_replace( '@^' . preg_quote( $home_path, '@' ) . '(?=/|$)@i', '', $permalink_path ), '/' );
+		}
+
+		return $this->comparable_link_path( $link_path ) === $this->comparable_link_path( $permalink_path );
+	}
+
+	private function get_permalink_in_post_language( $post_id ) {
+		global $sitepress;
+
+		$post          = get_post( $post_id );
+		$post_language = $post ? $sitepress->get_language_for_element( $post_id, 'post_' . $post->post_type ) : null;
+
+		if ( ! $post_language || $post_language === $sitepress->get_current_language() ) {
+			return (string) get_permalink( $post_id );
+		}
+
+		$switch_lang = new WPML_Temporary_Switch_Language( $sitepress, $post_language );
+		$permalink   = (string) get_permalink( $post_id );
+		$switch_lang->restore_lang();
+
+		return $permalink;
+	}
+
+	private function comparable_link_path( $path ) {
+		global $sitepress;
+
+		list( , $path ) = $this->extract_lang_from_path( $sitepress->get_settings(), null, $path );
+
+		return strtolower( rawurldecode( trim( (string) $path, '/' ) ) );
 	}
 
 	private function get_post_type_and_name_from_post_id( $post_id ) {

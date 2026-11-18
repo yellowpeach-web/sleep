@@ -13,6 +13,8 @@ class CustomFieldChangeDetector implements \IWPML_Backend_Action, \IWPML_DIC_Act
 	const DETECTED_SETTING = 'detected-custom-fields-to-translate';
 	const RECHECK_SECONDS  = 86400;
 
+	const RETIRED_TASK_SETTING = 'detected-from-retired-task';
+
 	const PENDING_CACHE = 'wpml_tm_pending_rulings';
 
 	const PENDING_CACHE_SECONDS = 3600;
@@ -31,8 +33,35 @@ class CustomFieldChangeDetector implements \IWPML_Backend_Action, \IWPML_DIC_Act
 
 		self::notify( self::getNew() );
 		self::updatePrevious();
+		self::dropSwitchedBack();
 
 		$signal->markChecked();
+	}
+
+	private static function dropSwitchedBack() {
+		$detected = array_map( 'strval', (array) self::getDetected() );
+		if ( ! $detected ) {
+			return;
+		}
+
+		$translatable = array_map( 'strval', (array) ( Repository::getCustomFieldsToTranslate() ?: [] ) );
+		$kept = array_values( array_unique( array_intersect( $detected, $translatable ) ) );
+		if ( $kept !== array_values( $detected ) ) {
+			OptionManager::update( 'TM', self::DETECTED_SETTING, $kept );
+			self::keepRetiredTaskWithin( $kept );
+		}
+	}
+
+	private static function keepRetiredTaskWithin( array $detected ) {
+		$retired = self::getDetectedFromRetiredTask();
+		if ( ! $retired ) {
+			return;
+		}
+
+		$kept = array_values( array_intersect( $retired, array_map( 'strval', $detected ) ) );
+		if ( $kept !== $retired ) {
+			OptionManager::update( 'TM', self::RETIRED_TASK_SETTING, $kept );
+		}
 	}
 
 	public static function getNew() {
@@ -54,9 +83,37 @@ class CustomFieldChangeDetector implements \IWPML_Backend_Action, \IWPML_DIC_Act
 			OptionManager::update(
 				'TM',
 				self::DETECTED_SETTING,
-				Lst::concat( self::getDetected(), $newFields )
+				array_values( array_unique( array_merge( (array) self::getDetected(), $newFields ) ) )
 			);
 		}
+
+		return $newFields;
+	}
+
+	public static function notifyFromRetiredTask( array $fields ) {
+		$recorded = array_map( 'strval', self::notify( $fields ) );
+		if ( ! $recorded ) {
+			return;
+		}
+
+		OptionManager::update(
+			'TM',
+			self::RETIRED_TASK_SETTING,
+			array_values( array_unique( array_merge( self::getDetectedFromRetiredTask(), $recorded ) ) )
+		);
+	}
+
+	private static function getDetectedFromRetiredTask() {
+		return array_values( array_map( 'strval', (array) OptionManager::getOr( [], 'TM', self::RETIRED_TASK_SETTING ) ) );
+	}
+
+	public static function pendingFromRetiredTask() {
+		$retired = self::getDetectedFromRetiredTask();
+		if ( ! $retired ) {
+			return [];
+		}
+
+		return array_values( array_intersect( array_map( 'strval', self::pending() ), $retired ) );
 	}
 
 	private static function withoutConsented( array $fields ) {
@@ -76,6 +133,15 @@ class CustomFieldChangeDetector implements \IWPML_Backend_Action, \IWPML_DIC_Act
 				self::DETECTED_SETTING,
 				Lst::diff( self::getDetected(), $fields )
 			);
+
+			$retired = self::getDetectedFromRetiredTask();
+			if ( $retired ) {
+				OptionManager::update(
+					'TM',
+					self::RETIRED_TASK_SETTING,
+					array_values( array_diff( $retired, array_map( 'strval', $fields ) ) )
+				);
+			}
 		}
 	}
 

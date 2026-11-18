@@ -245,12 +245,13 @@ class EditorHooks implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		}
 
 		if ( WPML_TRANSLATE_CUSTOM_FIELD === Obj::prop( 'wpml_cf_preferences', $field ) ) {
-			$compositeTexts = CompositeValue::getTexts( $field, $value );
+			$translation    = wp_unslash( $value );
+			$compositeTexts = CompositeValue::getTexts( $field, $translation );
 
 			if ( $compositeTexts ) {
 				$this->registerCompositeTranslations( $compositeTexts, $field, $this->sitepress->get_current_language() );
-			} elseif ( is_scalar( $value ) ) {
-				$this->registerFieldTranslation( (string) $value, $field, $this->sitepress->get_current_language() );
+			} elseif ( is_scalar( $translation ) ) {
+				$this->registerFieldTranslation( (string) $translation, $field, $this->sitepress->get_current_language() );
 			}
 		}
 

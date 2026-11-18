@@ -9,7 +9,7 @@ if ( WPML\PB\OldPlugin::handle() ) {
 	return;
 }
 
-define( 'WPML_PAGE_BUILDERS_VERSION', '5.2.0' );
+define( 'WPML_PAGE_BUILDERS_VERSION', '5.4.0' );
 define( 'WPML_PAGE_BUILDERS_PATH', __DIR__ );
 
 \WPML\PB\App::run();

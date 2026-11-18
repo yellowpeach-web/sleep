@@ -15,6 +15,8 @@ class Endpoint {
 
   private $capabilities;
 
+  private $permission;
+
   private $version = 1;
 
   private $isAjax;
@@ -122,6 +124,18 @@ class Endpoint {
     }
 
     $this->capabilities = $list;
+
+    return $this;
+  }
+
+
+  public function permission() {
+    return $this->permission;
+  }
+
+
+  public function setPermission( $permission ) {
+    $this->permission = $permission ?: null;
 
     return $this;
   }

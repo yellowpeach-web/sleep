@@ -12,7 +12,7 @@ class WPML_TM_Email_Notification_View extends WPML_TM_Email_View {
 		}
 		$content .= $this->template_service->show( $model, $template );
 		$content .= $this->render_promote_translation_services( $model );
-		$content .= $this->render_footer();
+		$content .= $this->render_notification_settings_footer();
 
 		return $content;
 	}
@@ -34,22 +34,5 @@ class WPML_TM_Email_Notification_View extends WPML_TM_Email_View {
 		}
 
 		return $content;
-	}
-
-	private function render_footer() {
-		$notifications_url  = esc_url( admin_url( 'admin.php?page=' . WPML_TM_FOLDER . WPML_Translation_Management::PAGE_SLUG_SETTINGS . '&section=translators&flash=translation-notifications' ) );
-		$notifications_text = esc_html__( 'WPML Notification Settings', 'sitepress' );
-		$notifications_link = '<a href="' . $notifications_url . '" style="color: #ffffff;">' . $notifications_text . '</a>';
-
-		$bottom_text = sprintf(
-			/* translators: Last line of the email WPML sends about translation work. %s: a link, already wrapped in its tags, that opens the site. */
-			esc_html__(
-				'To stop receiving notifications, log-in to %s and change your preferences.',
-				'sitepress'
-			),
-			$notifications_link
-		);
-
-		return $this->render_email_footer( $bottom_text );
 	}
 }

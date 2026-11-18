@@ -13,6 +13,10 @@ class LanguageLocaleChanged implements \IWPML_Action {
 
 	const OPTION = 'wpml_st_language_locales';
 
+	const REPAIRED_OPTION = 'wpml_locale_map_repaired';
+
+	private $tookRepaired = false;
+
 	private $domainsAndLanguagesRepository;
 
 	private $manager;
@@ -74,8 +78,13 @@ class LanguageLocaleChanged implements \IWPML_Action {
 		$stored = get_option( self::OPTION, false );
 
 		if ( ! is_array( $stored ) ) {
-			$this->saveLocales( $this->readLocales() );
-			return;
+			$repaired           = (array) get_option( self::REPAIRED_OPTION, [] );
+			$this->tookRepaired = (bool) $repaired;
+			$stored = array_merge( $this->readLocales(), $repaired );
+			$this->saveLocales( $stored );
+			if ( ! $repaired ) {
+				return;
+			}
 		}
 
 		$current = $this->readLocales( false );
@@ -105,6 +114,11 @@ class LanguageLocaleChanged implements \IWPML_Action {
 		}
 
 		$this->saveLocales( $current );
+
+		if ( $this->tookRepaired ) {
+			$this->tookRepaired = false;
+			delete_option( self::REPAIRED_OPTION );
+		}
 	}
 
 	private function movedLocales( array $stored, array $current ) {

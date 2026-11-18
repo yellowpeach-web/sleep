@@ -13,6 +13,7 @@ use WPML\LIB\WP\Post;
 use WPML\LIB\WP\User;
 use WPML\TM\API\Job\Map;
 use WPML\TM\API\Jobs;
+use WPML\TM\Jobs\JobLog;
 use function WPML\FP\pipe;
 
 class Cancel implements IHandler {
@@ -36,38 +37,57 @@ class Cancel implements IHandler {
 		}
 
 		if ( $reviewJobs->count() ) {
-			$releaseMark = ReleaseLedger::instance()->mark();
-
-			$reviewJobs->map( Obj::prop( 'job_id' ) )
-			           ->map( Jobs::clearReviewStatus() );
-
-			$closed = $reviewJobs->reject( [ TermJob::class, 'isTermJob' ] )
-			                     ->reject( [ $this, 'isDraft' ] )
-			                     ->filter( function ( $job ) {
-				                     return $this->translationRecord()->closeOpenOfRecord( (int) Obj::prop( 'job_id', $job ) );
-			                     } )
-			                     ->pluck( 'job_id' )
-			                     ->toArray();
-
-			if ( $deleteDrafts ) {
-				$postJobs = $reviewJobs->reject( [ TermJob::class, 'isTermJob' ] )
-				                       ->reject( function ( $job ) use ( $closed ) {
-					                       return in_array( Obj::prop( 'job_id', $job ), $closed, true );
-				                       } );
-				if ( $postJobs->count() ) {
-					$this->deleteDrafts( $postJobs );
+			return JobLog::runInGroup(
+				JobLog::GROUP_ID_CANCELS,
+				'Cancel jobs (review cancelled)',
+				function () use ( $reviewJobs, $deleteDrafts ) {
+					return $this->cancelReviewJobs( $reviewJobs, $deleteDrafts );
 				}
-			}
-
-			return [
-				'jobIds'  => $reviewJobs->pluck( 'job_id' )->map( Cast::toInt() )->values()->toArray(),
-				'release' => ReleaseLedger::instance()->summaryFrom( $releaseMark )->toArray(),
-			];
+			);
 		}
 
 		return [
 			'jobIds'  => [],
 			'release' => ( new ReleaseSummary() )->toArray(),
+		];
+	}
+
+	private function cancelReviewJobs( Collection $reviewJobs, $deleteDrafts ) {
+		$releaseMark = ReleaseLedger::instance()->mark();
+
+		$reviewJobs->map( Obj::prop( 'job_id' ) )
+		           ->map( Jobs::clearReviewStatus() );
+
+		$reviewJobs->filter( [ TermJob::class, 'isTermBundle' ] )
+		           ->each( function ( $job ) {
+			           $this->bundleReview()->cancel( (int) Obj::prop( 'rid', $job ) );
+		           } );
+
+		$leftOpen = function ( $job ) {
+			return TermJob::isTermBundle( $job ) ? false : ( TermJob::isTermJob( $job ) || $this->isDraft( $job ) );
+		};
+		$closed = $reviewJobs->reject( $leftOpen )
+		                     ->filter( function ( $job ) {
+			                     return $this->translationRecord()->closeOpenOfRecord( (int) Obj::prop( 'job_id', $job ) );
+		                     } )
+		                     ->pluck( 'job_id' )
+		                     ->toArray();
+
+		if ( $deleteDrafts ) {
+			$postJobs = $reviewJobs->reject( function ( $job ) {
+				                       return TermJob::isTermJob( $job );
+			                       } )
+			                       ->reject( function ( $job ) use ( $closed ) {
+				                       return in_array( Obj::prop( 'job_id', $job ), $closed, true );
+			                       } );
+			if ( $postJobs->count() ) {
+				$this->deleteDrafts( $postJobs );
+			}
+		}
+
+		return [
+			'jobIds'  => $reviewJobs->pluck( 'job_id' )->map( Cast::toInt() )->values()->toArray(),
+			'release' => ReleaseLedger::instance()->summaryFrom( $releaseMark )->toArray(),
 		];
 	}
 
@@ -81,14 +101,18 @@ class Cancel implements IHandler {
 		return new \WPML\TM\Jobs\TranslationRecord();
 	}
 
+	protected function bundleReview() {
+		return new TermBundleReview();
+	}
+
 	private function deleteDrafts( Collection $reviewJobs ) {
 		$doCancelJobsAction = function ( Collection $jobIds ) {
 			$getJobEntity = function ( $jobId ) {
-				return wpml_tm_get_jobs_repository()->get_job( Map::fromJobId( $jobId ), \WPML_TM_Job_Entity::POST_TYPE );
+				return wpml_tm_get_jobs_repository()->get_job( Map::ridFromJobId( $jobId ), \WPML_TM_Job_Entity::POST_TYPE );
 			};
 
 			$jobEntities = $jobIds->map( $getJobEntity )->toArray();
-			do_action( 'wpml_tm_jobs_cancelled', $jobEntities );
+			do_action( 'wpml_tm_jobs_cancelled', $jobEntities, \WPML\TM\ATE\Cancel\CancelSource::DASHBOARD );
 		};
 
 		$getTranslatedId = Fns::memorize( pipe( Jobs::get(), Jobs::getTranslatedPostId() ) );

@@ -2,28 +2,36 @@
 
 namespace WPML\PB\Elementor\Hooks;
 
-use WPML\LIB\WP\Hooks;
-
-use function WPML\FP\spreadArgs;
-
-class RawHtmlSetting implements \IWPML_Frontend_Action, \IWPML_Backend_Action {
+class RawHtmlSetting extends \WPML\Compatibility\BaseRawHtmlNodesSetting {
 
 	const NODE = 'html';
 
-	private $settings;
+	const CUSTOM_HTML_WIDGET = 'wp-widget-custom_html';
 
-	public function __construct( ?\WPML_Page_Builder_Settings $settings = null ) {
-		$this->settings = $settings ?: new \WPML_Page_Builder_Settings();
+	const CUSTOM_HTML_CONTENT_FIELD = 'wp>content';
+
+	protected function getNodesToTranslateFilter(): string {
+		return 'wpml_elementor_widgets_to_translate';
 	}
 
-	public function add_hooks() {
-		Hooks::onFilter( 'wpml_elementor_widgets_to_translate' )
-			->then( spreadArgs( [ $this, 'removeHtmlNodeWhenDisabled' ] ) );
+	protected function getRawHtmlNode(): string {
+		return self::NODE;
 	}
 
-	public function removeHtmlNodeWhenDisabled( $nodes ) {
-		if ( ! $this->settings->is_raw_html_translatable() ) {
-			unset( $nodes[ self::NODE ] );
+	protected function withoutRawHtmlNodes( array $nodes ): array {
+		return $this->withoutCustomHtmlContent( parent::withoutRawHtmlNodes( $nodes ) );
+	}
+
+	private function withoutCustomHtmlContent( array $nodes ): array {
+		$fields = $nodes[ self::CUSTOM_HTML_WIDGET ]['fields'] ?? null;
+
+		if ( is_array( $fields ) ) {
+			$nodes[ self::CUSTOM_HTML_WIDGET ]['fields'] = array_filter(
+				$fields,
+				function ( $field ) {
+					return self::CUSTOM_HTML_CONTENT_FIELD !== ( $field['field'] ?? null );
+				}
+			);
 		}
 
 		return $nodes;

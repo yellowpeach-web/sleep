@@ -2,8 +2,11 @@
 
 use WPML\TM\Menu\TranslationServices\Troubleshooting\RefreshServices;
 use WPML\TM\Menu\TranslationServices\Troubleshooting\RefreshServicesFactory;
+use WPML\TM\Upgrade\Commands\ServicesRefreshBackoff;
 
 class WPML_TM_Upgrade_Service_Redirect_To_Field implements IWPML_Upgrade_Command {
+	const RETRY_AFTER_FAILURE_TRANSIENT = ServicesRefreshBackoff::TRANSIENT;
+
 	private $result = true;
 
 	private $service_refresh;
@@ -15,7 +18,19 @@ class WPML_TM_Upgrade_Service_Redirect_To_Field implements IWPML_Upgrade_Command
 	}
 
 	private function run() {
-		$this->result = $this->get_service_refresh()->refresh_services();
+		global $sitepress;
+		$service = $sitepress->get_setting( 'translation_service' );
+		if ( ! $service && ! is_array( $service ) ) {
+			$this->result = true;
+
+			return $this->result;
+		}
+
+		$this->result = ServicesRefreshBackoff::attempt(
+			function () {
+				return $this->get_service_refresh()->refresh_services();
+			}
+		);
 
 		return $this->result;
 	}

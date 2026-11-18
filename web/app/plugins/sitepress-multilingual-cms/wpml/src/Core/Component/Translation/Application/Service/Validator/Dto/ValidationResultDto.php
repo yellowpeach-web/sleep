@@ -8,18 +8,27 @@ class ValidationResultDto {
 
   private $valid;
 
+  private $languages;
 
-  public function __construct( string $type, bool $valid ) {
-    $this->type  = $type;
-    $this->valid = $valid;
+
+  public function __construct( string $type, bool $valid, array $languages = [] ) {
+    $this->type      = $type;
+    $this->valid     = $valid;
+    $this->languages = array_values( array_map( 'strval', $languages ) );
   }
 
 
   public function toArray(): array {
-    return [
+    $result = [
       'type'  => $this->type,
       'valid' => $this->valid,
     ];
+
+    if ( $this->languages ) {
+      $result['languages'] = $this->languages;
+    }
+
+    return $result;
   }
 
 

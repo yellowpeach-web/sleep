@@ -17,8 +17,10 @@ use WPML\TM\ATE\ClonedSites\MigrationLogger;
 use WPML\TM\ATE\ClonedSites\Rebind\State as RebindState;
 use WPML\FP\Logic;
 use WPML\TM\ATE\API\CachedAMSAPI;
+use WPML\TM\ATE\API\CachedATEAPI;
 use WPML\TM\ATE\API\IdentityRequestTimeout;
 use WPML\Core\SharedKernel\Component\WpmlOrgClient\Domain\WpmlOrgOrigin;
+use WPML\Core\Component\ATE\Domain\SiteRegistration;
 use function WPML\FP\pipe;
 use function WPML\FP\invoke;
 class WPML_TM_AMS_API {
@@ -39,6 +41,14 @@ class WPML_TM_AMS_API {
 	private $amsRequestSigner;
 
 	private $lastRequestError = null;
+
+	const SIGNATURE_RENEWED = 'renewed';
+
+	const SIGNATURE_REFUSED = 'refused';
+
+	private static $signatureRefusal = null;
+
+	private static $signatureRepairTried = false;
 
 	public function __construct(
 		WP_Http $wp_http,
@@ -136,6 +146,9 @@ class WPML_TM_AMS_API {
 
 		$url = $this->endpoints->get_translation_engines();
 		$response = $this->signed_request( 'GET', $url );
+		if ( is_wp_error( $response ) && SiteRegistration::NOT_REGISTERED_ERROR_CODE === $response->get_error_code() ) {
+			return $response;
+		}
 		if ( $this->response_has_body( $response ) ) {
 			$result = $this->get_errors( $response );
 			if ( ! is_wp_error( $result ) ) {
@@ -341,6 +354,9 @@ class WPML_TM_AMS_API {
 
 			$stored = $this->set_registration_data( $registration_data );
 
+			CachedAMSAPI::clearCache();
+			CachedATEAPI::clearAllCaches();
+
 			\WPML\TM\ATE\SiteName\Sender::send();
 
 			return $stored;
@@ -504,7 +520,8 @@ class WPML_TM_AMS_API {
 	private function response_has_keys( $response ) {
 		$response_body = json_decode( $response['body'], true );
 
-		return array_key_exists( 'secret_key', $response_body )
+		return is_array( $response_body )
+			&& array_key_exists( 'secret_key', $response_body )
 			&& array_key_exists( 'shared_key', $response_body )
 			&& array_key_exists( 'website_uuid', $response_body );
 	}
@@ -670,6 +687,10 @@ class WPML_TM_AMS_API {
 			return 10;
 		}
 
+		if ( is_string( $url ) && strpos( $url, \WPML_TM_ATE_AMS_Endpoints::ENDPOINTS_AMS_NOTIFICATION_BLOCKS ) !== false ) {
+			return 5;
+		}
+
 		return $this->getTimeout( $this->minimumTimeoutFor( $url ) );
 	}
 
@@ -686,7 +707,192 @@ class WPML_TM_AMS_API {
 			);
 		}
 
+		if ( $this->is_signature_refusal( $response ) ) {
+			$response = $this->recover_from_signature_refusal( $verb, $url, $params, $response );
+		} elseif ( self::is_answered( $response ) ) {
+			self::clear_key_refusal();
+		}
+
 		return $response;
+	}
+
+	public function register_again() {
+		if ( ! $this->reregister_after_signature_refusal() ) {
+			return false;
+		}
+
+		self::clear_key_refusal();
+
+		return true;
+	}
+
+	public static function signature_refusal() {
+		return self::$signatureRefusal;
+	}
+
+	public static function reset_signature_refusal() {
+		self::$signatureRefusal     = null;
+		self::$signatureRepairTried = false;
+	}
+
+	const KEY_REFUSALS = [
+		'invalid_signature'     => [ 'InvalidSignature', 'invalid signature' ],
+		'access_key_not_found'  => [ 'AccessKeyNotFound', 'access key not found' ],
+		'access_key_not_active' => [ 'AccessKeyNotActive', 'access key not active' ],
+	];
+
+	private function is_signature_refusal( $response ) {
+		return '' !== self::key_refusal( $response );
+	}
+
+	private static function key_refusal( $response ) {
+		if ( is_wp_error( $response ) || ! isset( $response['response']['code'], $response['body'] ) ) {
+			return '';
+		}
+		if ( 403 !== (int) $response['response']['code'] ) {
+			return '';
+		}
+
+		$body = json_decode( (string) $response['body'], true );
+		if ( ! is_array( $body ) ) {
+			return '';
+		}
+
+		$class = isset( $body['error']['class'] ) && is_string( $body['error']['class'] ) ? $body['error']['class'] : '';
+		$title = isset( $body['errors'][0]['title'] ) && is_string( $body['errors'][0]['title'] ) ? $body['errors'][0]['title'] : '';
+
+		foreach ( self::KEY_REFUSALS as $refusal => $words ) {
+			if ( ( '' !== $class && false !== stripos( $class, $words[0] ) ) || ( '' !== $title && false !== stripos( $title, $words[1] ) ) ) {
+				return $refusal;
+			}
+		}
+
+		return '';
+	}
+
+	private static function is_answered( $response ) {
+		$code = ! is_wp_error( $response ) && isset( $response['response']['code'] ) ? (int) $response['response']['code'] : 0;
+
+		return $code >= 200 && $code < 300;
+	}
+
+	private static function record_key_refusal( $response ) {
+		$answer = self::key_refusal( $response );
+		$state  = \WPML\TM\ATE\Handshake\State::get();
+
+		if ( (int) $state['keys_refused_at'] > 0 && $answer === $state['keys_refused_answer'] ) {
+			return;
+		}
+
+		\WPML\TM\ATE\Handshake\State::update(
+			[
+				'keys_refused_at'     => (int) $state['keys_refused_at'] > 0 ? (int) $state['keys_refused_at'] : \WPML\TM\ATE\Handshake\Clock::now(),
+				'keys_refused_answer' => $answer,
+			]
+		);
+	}
+
+	private static function clear_key_refusal() {
+		if ( (int) \WPML\TM\ATE\Handshake\State::getKey( 'keys_refused_at' ) < 1 ) {
+			return;
+		}
+
+		\WPML\TM\ATE\Handshake\State::update(
+			[
+				'keys_refused_at'     => 0,
+				'keys_refused_answer' => '',
+			]
+		);
+	}
+
+	private function recover_from_signature_refusal( $verb, $url, $params, $response ) {
+		$request = $verb . ' ' . $this->request_name( $url );
+
+		if ( self::$signatureRepairTried ) {
+			self::$signatureRefusal = self::SIGNATURE_REFUSED;
+			$this->log_signature_refusal( $request, $response, 'not retried: the site was already registered again in this request' );
+			self::record_key_refusal( $response );
+
+			return $response;
+		}
+
+		self::$signatureRepairTried = true;
+
+		if ( ! $this->reregister_after_signature_refusal() ) {
+			self::$signatureRefusal = self::SIGNATURE_REFUSED;
+			$this->log_signature_refusal( $request, $response, 'registering the site again failed' );
+			self::record_key_refusal( $response );
+
+			return $response;
+		}
+
+		$this->log_signature_refusal( $request, $response, 'the site was registered again; the request is sent once more' );
+
+		$retry = $this->signedRequestOnce( $verb, $url, $params );
+
+		if ( $this->is_signature_refusal( $retry ) ) {
+			self::$signatureRefusal = self::SIGNATURE_REFUSED;
+			$this->log_signature_refusal( $request, $retry, 'refused again after registering the site again' );
+			self::record_key_refusal( $retry );
+
+			return $retry;
+		}
+
+		self::$signatureRefusal = self::SIGNATURE_RENEWED;
+		self::clear_key_refusal();
+
+		return $retry;
+	}
+
+	protected function reregister_after_signature_refusal() {
+		$data    = $this->get_registration_data();
+		$manager = isset( $data['user_id'] ) ? get_user_by( 'id', (int) $data['user_id'] ) : false;
+		if ( ! $manager instanceof WP_User ) {
+			$manager = wp_get_current_user();
+		}
+		if ( ! $manager instanceof WP_User || ! $manager->ID ) {
+			return false;
+		}
+
+		$amsUsers = $this->ams_users();
+
+		$registered = $this->register_manager( $manager, $amsUsers->get_translators(), $amsUsers->get_managers() )
+			->bimap( Fns::always( false ), Fns::always( true ) )
+			->getOrElse( false );
+
+		if ( ! $registered ) {
+			return false;
+		}
+
+		$this->get_status();
+
+		return true;
+	}
+
+	protected function ams_users() {
+		$amsUsers = \WPML\Container\make( WPML_TM_AMS_Users::class );
+
+		return $amsUsers;
+	}
+
+	private function request_name( $url ) {
+		$parts = wp_parse_url( (string) $url );
+
+		return is_array( $parts ) && isset( $parts['path'] ) ? (string) $parts['path'] : '';
+	}
+
+	private function log_signature_refusal( $request, $response, $outcome ) {
+		$body = is_array( $response ) && isset( $response['body'] ) ? json_decode( (string) $response['body'], true ) : null;
+
+		$this->log_api_error(
+			'AMS refused the request signature: ' . $request,
+			[
+				'request' => $request,
+				'status'  => is_array( $response ) && isset( $response['response']['code'] ) ? (int) $response['response']['code'] : 0,
+				'answer'  => is_array( $body ) ? $body : null,
+				'outcome' => $outcome,
+			]
+		);
 	}
 
 	private function signedRequestOnce( $verb, $url, ?array $params = null ) {
@@ -711,7 +917,7 @@ class WPML_TM_AMS_API {
 		$query['wpml_tm_version']   = defined( 'WPML_TM_VERSION' ) ? WPML_TM_VERSION : '1.0';
 
 		$url_parts['query'] = wpml_http_build_query( $query );
-		$url                = http_build_url( $url_parts );
+		$url                = \WPML\UrlHandling\UrlBuilder::build( $url_parts );
 
 		return $url;
 	}
@@ -724,6 +930,13 @@ class WPML_TM_AMS_API {
 		return $this->getSignedResult(
 			'GET',
 			$this->endpoints->get_credits()
+		);
+	}
+
+	public function getNotificationBlocks() {
+		return $this->getSignedResult(
+			'GET',
+			$this->endpoints->get_endpoint_url( \WPML_TM_ATE_AMS_Endpoints::SERVICE_AMS, \WPML_TM_ATE_AMS_Endpoints::ENDPOINTS_AMS_NOTIFICATION_BLOCKS )
 		);
 	}
 

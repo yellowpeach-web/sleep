@@ -81,6 +81,9 @@ class WPML_LS_Render extends WPML_SP_User {
 
 		if ( $model['languages'] && ! $this->hides_when_nothing_to_switch( $model, $slot ) ) {
 			$this->assets->maybe_late_enqueue_template( $template_slug );
+			if ( ! $slot->is_post_translations() ) {
+				$model['ls_aria_label'] = $this->model_build->printed_ls_aria_label( $slot );
+			}
 			$model = $this->add_submenu_id( $model, $slot, $template_slug );
 			$this->current_template->set_model( $model );
 
@@ -112,11 +115,21 @@ class WPML_LS_Render extends WPML_SP_User {
 		$template_slug = $slot->template();
 		$template      = $this->templates->get_template( $template_slug );
 
-		if ( $template->is_missing() && ! $slot->template_string() ) {
+		if ( ! $slot->template_string() && ( $template->is_missing() || $template->is_in_uploads() ) ) {
+			$moved = $this->templates->get_moved_from_uploads( $template_slug );
+
+			if ( $moved ) {
+				return array( $moved, $this->templates->get_template( $moved ) );
+			}
+
 			$fallback = $this->get_fallback_template( $slot, $template_slug );
 
 			if ( $fallback ) {
 				return $fallback;
+			}
+
+			if ( $template->is_in_uploads() ) {
+				return array( $template_slug, new WPML_LS_Template( array() ) );
 			}
 		}
 
@@ -394,7 +407,7 @@ class WPML_LS_Render extends WPML_SP_User {
 		$post_translations = '';
 		$slot              = $this->settings->get_slot( 'statics', 'post_translations' );
 
-		if ( $slot->is_enabled() && $this->sitepress->get_wp_api()->is_singular() ) {
+		if ( $slot->is_enabled() && $this->sitepress->get_wp_api()->is_singular() && $this->is_content_of_opened_post() ) {
 			$post_translations = $this->post_translations_label( $slot );
 		}
 
@@ -409,6 +422,10 @@ class WPML_LS_Render extends WPML_SP_User {
 		}
 
 		return $content;
+	}
+
+	private function is_content_of_opened_post() {
+		return (int) get_the_ID() === (int) get_queried_object_id();
 	}
 
 	public function post_translations_label( $slot ) {

@@ -20,9 +20,11 @@ class RegisterPackageKind implements \WPML\PB\Gutenberg\Integration {
 		}
 
 		$kinds[ Strings::PACKAGE_KIND ] = [
-			'title'  => Strings::PACKAGE_TITLE,
+			/* translators: Name of the kind of content made of block widgets (the Widgets screen), on the WPML translation dashboard. Singular. */
+			'title'  => __( 'Widget', 'sitepress' ),
 			'slug'   => Strings::PACKAGE_KIND_SLUG,
-			'plural' => Strings::PACKAGE_TITLE_PLURAL,
+			/* translators: Name of the kind of content made of block widgets (the Widgets screen), on the WPML translation dashboard. Plural. */
+			'plural' => __( 'Widgets', 'sitepress' ),
 		];
 
 		return $kinds;

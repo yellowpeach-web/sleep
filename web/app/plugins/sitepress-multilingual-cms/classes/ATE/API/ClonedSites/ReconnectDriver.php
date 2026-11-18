@@ -39,6 +39,16 @@ class ReconnectDriver implements \IWPML_Backend_Action, \IWPML_Frontend_Action, 
 			if ( self::$attemptedThisRequest ) {
 				return;
 			}
+
+			if ( ! ReconnectState::claim( ReconnectState::CLAIM_PROBE ) ) {
+				if ( ReconnectState::get() ) {
+					self::arm();
+				} else {
+					self::disarm();
+				}
+
+				return;
+			}
 			self::$attemptedThisRequest = true;
 
 			$this->probe->run();
@@ -69,7 +79,7 @@ class ReconnectDriver implements \IWPML_Backend_Action, \IWPML_Frontend_Action, 
 		}
 
 		if ( ! ReconnectState::isReconnecting() ) {
-			if ( ! \WPML_TM_ATE_Status::is_enabled() && ReconnectState::isNoAnswer() ) {
+			if ( ! \WPML_TM_ATE_Status::is_ate_account_wanted() && ReconnectState::isNoAnswer() ) {
 				ReconnectState::clear();
 			}
 
@@ -85,6 +95,20 @@ class ReconnectDriver implements \IWPML_Backend_Action, \IWPML_Frontend_Action, 
 		}
 
 		if ( ! ReconnectState::isDue() ) {
+			self::arm();
+
+			return false;
+		}
+
+		$state = ReconnectState::claim( ReconnectState::CLAIM_ATTEMPT );
+
+		if ( ! $state ) {
+			if ( ! ReconnectState::get() ) {
+				$this->unschedule();
+
+				return true;
+			}
+
 			self::arm();
 
 			return false;

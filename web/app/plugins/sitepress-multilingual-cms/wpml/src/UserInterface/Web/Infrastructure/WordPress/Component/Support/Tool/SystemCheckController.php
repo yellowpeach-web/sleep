@@ -5,6 +5,7 @@ namespace WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool
 use WPML\Core\Component\MinimumRequirements\Application\Service\RequirementsService;
 use WPML\Core\SharedKernel\Component\ATE\Application\Query\SiteIDQueryInterface;
 use WPML\Core\SharedKernel\Component\ATE\Application\Query\SiteSharedKeyQueryInterface;
+use WPML\Core\SharedKernel\Component\Server\Application\Query\TemplateCacheStateQueryInterface;
 use WPML\Core\SharedKernel\Component\Server\Domain\ServerInfoInterface;
 use WPML\UserInterface\Web\Core\SharedKernel\Config\PageRenderInterface;
 use WPML_Debug_Information;
@@ -55,6 +56,8 @@ class SystemCheckController implements PageRenderInterface {
 
   private $serverInfo;
 
+  private $templateCacheStateQuery;
+
   private const REQUIREMENT_ID_MEMORY_LIMIT      = 1;
   private const REQUIREMENT_ID_PHP_VERSION       = 2;
   private const REQUIREMENT_ID_DATABASE_VERSION  = 3;
@@ -66,12 +69,14 @@ class SystemCheckController implements PageRenderInterface {
     SiteIDQueryInterface $siteIdQuery,
     SiteSharedKeyQueryInterface $siteSharedKeyQuery,
     RequirementsService $requirementsService,
-    ServerInfoInterface $serverInfo
+    ServerInfoInterface $serverInfo,
+    ?TemplateCacheStateQueryInterface $templateCacheStateQuery = null
   ) {
-    $this->siteIdQuery         = $siteIdQuery;
-    $this->siteSharedKeyQuery  = $siteSharedKeyQuery;
-    $this->requirementsService = $requirementsService;
-    $this->serverInfo          = $serverInfo;
+    $this->siteIdQuery             = $siteIdQuery;
+    $this->siteSharedKeyQuery      = $siteSharedKeyQuery;
+    $this->requirementsService     = $requirementsService;
+    $this->serverInfo              = $serverInfo;
+    $this->templateCacheStateQuery = $templateCacheStateQuery;
   }
 
 
@@ -334,7 +339,7 @@ class SystemCheckController implements PageRenderInterface {
         if (connBtn) {
           connBtn.addEventListener('click', function () {
             connBtn.disabled = true;
-            connStatus.textContent = '<?php echo esc_js( /* translators: Status shown on WPML → Support while the connection test is running. */ __( 'Checking…', 'wpml' ) ); ?>';
+            connStatus.textContent = '<?php echo esc_js( /* translators: Status shown on WPML → Support while a check or a test runs. */ __( 'Checking…', 'wpml' ) ); ?>';
 
             function setRow(repo, ok) {
               var row = document.querySelector('[data-connectivity-row="' + repo + '"]');
@@ -343,11 +348,11 @@ class SystemCheckController implements PageRenderInterface {
               var valueEl  = row.querySelector('[data-connectivity-value]');
               if (ok) {
                 iconWrap.innerHTML = '<svg class="wpml:w-4 wpml:h-4 wpml:text-green-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>';
-                valueEl.textContent = 'OK';
+                valueEl.textContent = '<?php echo esc_js( /* translators: Status of one server in the connection test on WPML → Support: it answered. */ __( 'OK', 'wpml' ) ); ?>';
                 valueEl.classList.remove('wpml:text-red-600');
               } else {
                 iconWrap.innerHTML = '<svg class="wpml:w-4 wpml:h-4 wpml:text-red-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M4.93 4.93a10 10 0 1114.14 14.14 10 10 0 01-14.14-14.14z"/></svg>';
-                valueEl.textContent = 'Unreachable';
+                valueEl.textContent = '<?php echo esc_js( /* translators: Status of one server in the connection test on WPML → Support: it did not answer. */ __( 'Unreachable', 'wpml' ) ); ?>';
                 valueEl.classList.add('wpml:text-red-600');
               }
             }
@@ -416,14 +421,11 @@ class SystemCheckController implements PageRenderInterface {
    * unreachable service was reported "License refreshed." exactly like a real
    * refresh. This makes the tool report what the Installer actually answered.
    *
-   * It cannot make the stored subscription match that report: on a rejected key,
-   * `WP_Installer::mark_site_key_as_invalid()` (same vendor file) unsets the
-   * subscription's `data`/`key_type` and sets `site_key_invalid`, but keeps
-   * `subscription.key` — the "clean rejection" branch that clears the key
-   * entirely (`$repository->set_subscription( null )`) only runs when the API
-   * answers with no error at all, which never happens for an error response
-   * shaped like the one every real rejection sends. That state is vendor-owned;
-   * this method only stops the page from lying about it.
+   * wpmldev-12310: the Installer removes a key the API refused only when the
+   * request carries `drop_refused_key=1`, and this click is the one call that
+   * sends it. Every other `update_site_key` caller and every automatic check
+   * keeps the key, flagged with `site_key_invalid`, so the next good answer can
+   * clear the flag. A key that was only unreachable stays either way.
    */
   private function renderRefreshLicenseScript(): void {
     ?>
@@ -438,6 +440,7 @@ class SystemCheckController implements PageRenderInterface {
             body.append('action', 'update_site_key');
             body.append('nonce', licBtn.getAttribute('data-nonce'));
             body.append('repository_id', 'wpml');
+            body.append('drop_refused_key', '1');
             fetch(ajaxUrl, {
               method: 'POST',
               credentials: 'same-origin',
@@ -507,13 +510,21 @@ class SystemCheckController implements PageRenderInterface {
 
   private function renderEnvironmentRow( array $row ): void {
     $mono = ! empty( $row['mono'] );
+    $note = 'warn' === $row['status'] && ! empty( $row['note'] ) ? $row['note'] : array();
     ?>
-    <li class="wpml:flex wpml:items-center wpml:gap-3 wpml:px-4 wpml:py-2">
+    <li class="wpml:flex <?php echo $note ? 'wpml:flex-wrap wpml:gap-x-3 wpml:gap-y-1' : 'wpml:gap-3'; ?> wpml:items-center wpml:px-4 wpml:py-2">
       <?php $this->renderStatusIcon( $row['status'] ); ?>
       <span class="wpml:flex-1 wpml:text-gray-800"><?php echo esc_html( $row['label'] ); ?></span>
       <span class="wpml:text-xs wpml:text-gray-700 <?php echo $mono ? 'wpml:font-mono' : ''; ?>">
         <?php echo esc_html( $row['value'] ); ?>
       </span>
+      <?php if ( $note ) : ?>
+        <span class="wpml-support-environment-note wpml:block wpml:w-full wpml:pl-7 wpml:text-xs wpml:text-gray-600">
+          <?php foreach ( $note as $line ) : ?>
+            <span class="wpml:block"><?php echo esc_html( $line ); ?></span>
+          <?php endforeach; ?>
+        </span>
+      <?php endif; ?>
     </li>
     <?php
   }
@@ -566,6 +577,14 @@ class SystemCheckController implements PageRenderInterface {
   }
 
 
+  private function dbServerVersion( $wpdb ): string {
+    $version = (string) $wpdb->get_var( 'SELECT VERSION()' );
+    $version = (string) preg_replace( '/^5\.5\.5-/', '', $version );
+
+    return '' !== $version ? $version : (string) $wpdb->db_version();
+  }
+
+
   private function collectVersions( array $statuses ): array {
     $wpdb = $GLOBALS['wpdb'];
 
@@ -602,7 +621,7 @@ class SystemCheckController implements PageRenderInterface {
       /* translators: Row label in the system information table on WPML → Support: the PHP version. Keep the name as it is. */
       array( 'label' => __( 'PHP', 'wpml' ),                   'value' => PHP_VERSION,                                                              'status' => $this->requirementRowStatus( $statuses, self::REQUIREMENT_ID_PHP_VERSION ), 'mono' => true ),
       /* translators: Row label in the system information table on WPML → Support: the database version. Keep the name as it is. */
-      array( 'label' => __( 'MySQL', 'wpml' ),                 'value' => (string) $wpdb->db_version(),                                             'status' => $this->requirementRowStatus( $statuses, self::REQUIREMENT_ID_DATABASE_VERSION ), 'mono' => true ),
+      array( 'label' => __( 'MySQL', 'wpml' ),                 'value' => $this->dbServerVersion( $wpdb ),                                          'status' => $this->requirementRowStatus( $statuses, self::REQUIREMENT_ID_DATABASE_VERSION ), 'mono' => true ),
       /* translators: Row label in the system information table on WPML → Support: which web server the site runs on. */
       array( 'label' => __( 'Web server', 'wpml' ),            'value' => $webserver,                                                               'status' => 'ok',   'mono' => true ),
       /* translators: Row label in the system information table on WPML → Support: whether the site is part of a WordPress multisite network. */
@@ -644,7 +663,7 @@ class SystemCheckController implements PageRenderInterface {
       /* translators: Value in the system information table on WPML → Support: the PHP extension named on the left is not installed. Adjective, not the gerund of "to miss". */
       : __( 'Missing', 'wpml' );
 
-    return array(
+    $rows = array(
       /* translators: Name of one requirement on the notice WPML shows when the server does not meet its requirements, and a row label in the system information table on WPML → Support: how much memory PHP may use. */
       array( 'label' => __( 'Memory limit', 'wpml' ),               'value' => $this->memoryLimitRowValue(),                                        'status' => $this->requirementRowStatus( $statuses, self::REQUIREMENT_ID_MEMORY_LIMIT ), 'mono' => true ),
       array( 'label' => __( 'Max upload size', 'wpml' ),            'value' => (string) size_format( wp_max_upload_size() ),                        'status' => 'ok',   'mono' => true ),
@@ -660,6 +679,92 @@ class SystemCheckController implements PageRenderInterface {
       array( 'label' => __( 'SimpleXML extension', 'wpml' ),        'value' => $simpleXmlState,                                                     'status' => class_exists( 'SimpleXMLElement' ) ? 'ok' : 'warn' ),
       array( 'label' => __( 'Multibyte String extension', 'wpml' ), 'value' => $mbstringState,                                                      'status' => extension_loaded( 'mbstring' ) ? 'ok' : 'warn' ),
     );
+
+    if ( $this->templateCacheStateQuery ) {
+      $rows[] = $this->templateCacheRow( $this->templateCacheStateQuery->get() );
+    }
+
+    return $rows;
+  }
+
+
+  private function templateCacheRow( array $reading ): array {
+    /* translators: Row label in the system information table on WPML → Support: whether WPML keeps its compiled page templates in a cache folder. */
+    $row = array( 'label' => __( 'WPML template cache', 'wpml' ), 'status' => 'warn' );
+
+    /* translators: Note under the WPML template cache row on WPML → Support, when the cache is off. "Clear cache" is the label of a button and "Clear the cache in WPML" the heading of the section it is in, on WPML → Support: use the same words as they are translated there. */
+    $clearCache = __( 'To turn it back on, click Clear cache in the "Clear the cache in WPML" section of WPML → Support.', 'wpml' );
+
+    switch ( $reading['state'] ) {
+      case TemplateCacheStateQueryInterface::STATE_OFF_LEGACY:
+        /* translators: Value of the WPML template cache row on WPML → Support: the cache is off because of a setting an older version of WPML saved. */
+        $row['value'] = __( 'Off (an old WPML setting)', 'wpml' );
+        $row['note']  = array( $clearCache );
+        break;
+
+      case TemplateCacheStateQueryInterface::STATE_OFF_UNRECORDED:
+        /* translators: Value of the WPML template cache row on WPML → Support: the cache is off, and turns itself back on within a day. */
+        $row['value'] = __( 'Off for up to a day', 'wpml' );
+        $row['note']  = array(
+          /* translators: Note under the WPML template cache row on WPML → Support: WPML does not know why the cache was turned off. */
+          __( 'The reason was not recorded.', 'wpml' ),
+          $clearCache,
+        );
+        break;
+
+      case TemplateCacheStateQueryInterface::STATE_OFF_UNTIL:
+        $row['value'] = $reading['until'] > 0
+          /* translators: Value of the WPML template cache row on WPML → Support. %s: the date and time, in the site's format, when the cache turns itself back on. */
+          ? sprintf( __( 'Off until %s', 'wpml' ), (string) wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $reading['until'] ) )
+          /* translators: Value of the WPML template cache row on WPML → Support: the cache is off, and turns itself back on within a day. */
+          : __( 'Off for up to a day', 'wpml' );
+        $row['note']  = array( $this->templateCacheReason( $reading['reason'], $reading['detail'] ), $clearCache );
+        break;
+
+      case TemplateCacheStateQueryInterface::STATE_ON_CANNOT_WRITE:
+        /* translators: Value of the WPML template cache row on WPML → Support: the cache is on, but WPML cannot write the folder it keeps it in. */
+        $row['value'] = __( 'On, but WPML cannot write its folder', 'wpml' );
+        $row['note']  = array(
+          '' !== $reading['path']
+            /* translators: Note under the WPML template cache row on WPML → Support. %s: the path of the folder on the server. */
+            ? sprintf( __( 'The cache folder is %s. Make it, or the folder it goes in, writable by the web server.', 'wpml' ), $reading['path'] )
+            /* translators: Note under the WPML template cache row on WPML → Support. %s: the error WordPress reports about its uploads folder. */
+            : sprintf( __( 'WordPress cannot use its uploads folder: %s', 'wpml' ), $reading['uploads_error'] ),
+          /* translators: Note under the WPML template cache row on WPML → Support, when WPML cannot write the cache folder. */
+          __( 'Until then, the next page that uses the cache turns it off for a day.', 'wpml' ),
+        );
+        break;
+
+      case TemplateCacheStateQueryInterface::STATE_ON_NOT_YET:
+        /* translators: Value of the WPML template cache row on WPML → Support: the cache is on, and WPML makes its folder the first time it needs it. */
+        $row['value']  = __( 'On (its folder is made on first use)', 'wpml' );
+        $row['status'] = 'ok';
+        break;
+
+      default:
+        /* translators: Value of the WPML template cache row on WPML → Support: WPML keeps its compiled page templates in a cache folder. */
+        $row['value']  = __( 'On', 'wpml' );
+        $row['status'] = 'ok';
+    }
+
+    return $row;
+  }
+
+
+  private function templateCacheReason( string $reason, string $detail ): string {
+    if ( TemplateCacheStateQueryInterface::REASON_NO_FOLDER === $reason ) {
+      return '' !== $detail
+        /* translators: Note under the WPML template cache row on WPML → Support. %s: the error, or the path of the folder WPML could not create. */
+        ? sprintf( __( 'WPML could not create its cache folder: %s', 'wpml' ), $detail )
+        /* translators: Note under the WPML template cache row on WPML → Support. */
+        : __( 'WPML could not create its cache folder.', 'wpml' );
+    }
+
+    return '' !== $detail
+      /* translators: Note under the WPML template cache row on WPML → Support. %s: the error message, which names the folder. */
+      ? sprintf( __( 'WPML could not write a compiled template: %s', 'wpml' ), $detail )
+      /* translators: Note under the WPML template cache row on WPML → Support. */
+      : __( 'WPML could not write a compiled template.', 'wpml' );
   }
 
 

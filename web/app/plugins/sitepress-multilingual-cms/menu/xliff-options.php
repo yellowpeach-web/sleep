@@ -44,7 +44,7 @@ $new_line_labels = array(
 						$available_xliff_versions = $xliff_instance->get_available_xliff_versions();
 						foreach ( $available_xliff_versions as $value => $version ) {
 							$selected = '';
-							if ( $sitepress->get_setting( 'tm_xliff_version' ) === $value ) {
+							if ( (int) $sitepress->get_setting( 'tm_xliff_version' ) === (int) $value ) {
 								$selected = 'selected="selected"';
 							}
 							/* translators: Option in the dropdown that picks the form of the XLIFF file. %s: the version number, for example 1.2. */
@@ -77,7 +77,7 @@ $new_line_labels = array(
 			<p class="buttons-wrap">
 				<span class="icl_ajx_response" id="icl_ajx_response"></span>
 				<input type="submit" class="button-primary wpml-button base-btn"
-					   value="<?php /* translators: Button label that keeps what was entered. Verb, imperative. */ esc_attr_e( 'Save', 'sitepress' ); ?>"/>
+					   value="<?php /* translators: Button label that keeps what was entered, for example in the Translation delivery box's "Settings for support" and in the "Translation editor and method" section of WPML → Settings. Verb, imperative. */ esc_attr_e( 'Save', 'sitepress' ); ?>"/>
 			</p>
 		</form>
 	</div> <!-- .wpml-section-content -->

@@ -11,35 +11,155 @@ class Obj {
 
 	use Macroable;
 
+
+	public static function prop( $key = null, $item = null ) {
+		if ( func_num_args() < 2 || Fns::__ === $key || Fns::__ === $item ) {
+			return call_user_func_array( self::$macros['prop'], func_get_args() );
+		}
+
+		return self::propOr( null, $key, $item );
+	}
+
+	public static function propOr( $default = null, $key = null, $item = null ) {
+		if ( func_num_args() < 3 || Fns::__ === $default || Fns::__ === $key || Fns::__ === $item ) {
+			return call_user_func_array( self::$macros['propOr'], func_get_args() );
+		}
+		if ( $item instanceof Collection ) {
+			return $item->get( $key, $default );
+		}
+		if ( is_array( $item ) ) {
+			if ( null === $key ) {
+				return $default;
+			}
+
+			return array_key_exists( $key, $item ) ? $item[ $key ] : $default;
+		}
+		if ( is_object( $item ) ) {
+			if ( property_exists( $item, $key ) || isset( $item->$key ) ) {
+				return $item->$key;
+			}
+			if ( is_numeric( $key ) ) {
+				return self::propOr( $default, $key, (array) $item );
+			}
+
+			return $default;
+		}
+		if ( is_null( $item ) ) {
+			return null;
+		}
+		throw new \InvalidArgumentException( 'item should be a Collection or an array or an object' );
+	}
+
+	public static function path( $path = null, $item = null ) {
+		if ( func_num_args() < 2 || Fns::__ === $path || Fns::__ === $item ) {
+			return call_user_func_array( self::$macros['path'], func_get_args() );
+		}
+		if ( ! is_array( $path ) ) {
+			return array_reduce( $path, flip( self::prop() ), $item );
+		}
+		foreach ( $path as $key ) {
+			$item = self::propOr( null, $key, $item );
+		}
+
+		return $item;
+	}
+
+	public static function pathOr( $default = null, $path = null, $item = null ) {
+		if ( func_num_args() < 3 || Fns::__ === $default || Fns::__ === $path || Fns::__ === $item ) {
+			return call_user_func_array( self::$macros['pathOr'], func_get_args() );
+		}
+		try {
+			$result = self::path( $path, $item );
+		} catch ( \Exception $e ) {
+			$result = null;
+		}
+
+		return is_null( $result ) ? $default : $result;
+	}
+
+	public static function assoc( $key = null, $value = null, $item = null ) {
+		if ( func_num_args() < 3 || Fns::__ === $key || Fns::__ === $value || Fns::__ === $item ) {
+			return call_user_func_array( self::$macros['assoc'], func_get_args() );
+		}
+		if ( $item instanceof Collection ) {
+			$item = clone $item;
+
+			return $item->put( $key, $value );
+		}
+		if ( is_array( $item ) ) {
+			$item[ $key ] = $value;
+
+			return $item;
+		}
+		if ( is_object( $item ) ) {
+			$item       = clone $item;
+			$item->$key = $value;
+
+			return $item;
+		}
+		if ( is_null( $item ) ) {
+			return null;
+		}
+		throw new \InvalidArgumentException( 'item should be a Collection or an array or an object' );
+	}
+
+	public static function has( $prop = null, $item = null ) {
+		if ( func_num_args() < 2 || Fns::__ === $prop || Fns::__ === $item ) {
+			return call_user_func_array( self::$macros['has'], func_get_args() );
+		}
+		if ( $item instanceof Collection ) {
+			return $item->has( $prop );
+		}
+		if ( is_array( $item ) ) {
+			return isset( $item[ $prop ] );
+		}
+		if ( is_object( $item ) ) {
+			return property_exists( $item, $prop );
+		}
+		throw new \InvalidArgumentException( 'item should be a Collection or an array or an object' );
+	}
+
+	public static function keys( $obj = null ) {
+		if ( func_num_args() < 1 || Fns::__ === $obj ) {
+			return call_user_func_array( self::$macros['keys'], func_get_args() );
+		}
+		if ( is_array( $obj ) ) {
+			return array_keys( $obj );
+		}
+		if ( $obj instanceof Collection ) {
+			return $obj->keys()->toArray();
+		}
+		if ( is_object( $obj ) ) {
+			return array_keys( get_object_vars( $obj ) );
+		}
+
+		throw new \InvalidArgumentException( 'obj should be either array or object' );
+	}
+
+	public static function values( $obj = null ) {
+		if ( func_num_args() < 1 || Fns::__ === $obj ) {
+			return call_user_func_array( self::$macros['values'], func_get_args() );
+		}
+		if ( is_array( $obj ) ) {
+			return array_values( $obj );
+		}
+		if ( $obj instanceof Collection ) {
+			return $obj->values()->toArray();
+		}
+		if ( is_object( $obj ) ) {
+			return array_values( get_object_vars( $obj ) );
+		}
+
+		throw new \InvalidArgumentException( 'obj should be either array or object' );
+	}
+
 	public static function init() {
 		self::macro( 'prop', curryN( 2, function ( $key, $item ) {
-			return self::propOr( null, $key, $item );
+			return self::prop( $key, $item );
 		} ) );
 
 		self::macro( 'propOr', curryN( 3, function ( $default, $key, $item ) {
-			if ( $item instanceof Collection ) {
-				return $item->get( $key, $default );
-			}
-			if ( is_array( $item ) ) {
-                if ( null === $key ) {
-                    return $default;
-                }
-
-				return array_key_exists( $key, $item ) ? $item[ $key ] : $default;
-			}
-			if ( is_object( $item ) ) {
-				if ( property_exists( $item, $key ) || isset( $item->$key ) ) {
-					return $item->$key;
-				} elseif ( is_numeric( $key ) ) {
-					return self::propOr( $default, $key, (array) $item );
-				} else {
-					return $default;
-				}
-			}
-			if ( is_null( $item ) ) {
-				return null;
-			}
-			throw( new \InvalidArgumentException( 'item should be a Collection or an array or an object' ) );
+			return self::propOr( $default, $key, $item );
 		} ) );
 
 		self::macro( 'props', curryN( 2, function ( array $keys, $item ) {
@@ -72,15 +192,11 @@ class Obj {
 		} ) );
 
 		self::macro( 'path', curryN( 2, function ( $path, $item ) {
-			return array_reduce( $path, flip( self::prop() ), $item );
+			return self::path( $path, $item );
 		} ) );
 
 		self::macro( 'pathOr', curryN( 3, function ( $default, $path, $item ) {
-			$result = Either::of( $item )
-			                ->tryCatch( Obj::path( $path ) )
-			                ->getOrElse( null );
-
-			return is_null( $result ) ? $default : $result;
+			return self::pathOr( $default, $path, $item );
 		} ) );
 
 		self::macro( 'assocPath', curryN( 3, function ( $path, $val, $item ) {
@@ -103,26 +219,7 @@ class Obj {
 		} ) );
 
 		self::macro( 'assoc', curryN( 3, function ( $key, $value, $item ) {
-			if ( $item instanceof Collection ) {
-				$item = clone $item;
-
-				return $item->put( $key, $value );
-			}
-			if ( is_array( $item ) ) {
-				$item[ $key ] = $value;
-
-				return $item;
-			}
-			if ( is_object( $item ) ) {
-				$item       = clone $item;
-				$item->$key = $value;
-
-				return $item;
-			}
-			if ( is_null( $item ) ) {
-				return null;
-			}
-			throw( new \InvalidArgumentException( 'item should be a Collection or an array or an object' ) );
+			return self::assoc( $key, $value, $item );
 		} ) );
 
 		self::macro( 'lens', curryN( 2, function ( $getter, $setter ) {
@@ -244,16 +341,7 @@ class Obj {
 		} ) );
 
 		self::macro( 'has', curryN( 2, function ( $prop, $item ) {
-			if ( $item instanceof Collection ) {
-				return $item->has( $prop );
-			}
-			if ( is_array( $item ) ) {
-				return isset( $item[ $prop ] );
-			}
-			if ( is_object( $item ) ) {
-				return property_exists( $item, $prop );
-			}
-			throw( new \InvalidArgumentException( 'item should be a Collection or an array or an object' ) );
+			return self::has( $prop, $item );
 		} ) );
 
 		self::macro( 'evolve', curryN( 2, function ( $transformations, $item ) {
@@ -273,27 +361,11 @@ class Obj {
 		} ) );
 
 		self::macro( 'keys', curryN( 1, function ( $obj ) {
-			if ( is_array( $obj ) ) {
-				return array_keys( $obj );
-			} elseif ( $obj instanceof Collection ) {
-				return $obj->keys()->toArray();
-			} elseif ( is_object( $obj ) ) {
-				return array_keys( get_object_vars( $obj ) );
-			}
-
-			throw new \InvalidArgumentException( 'obj should be either array or object' );
+			return self::keys( $obj );
 		} ) );
 
 		self::macro( 'values', curryN( 1, function ( $obj ) {
-			if ( is_array( $obj ) ) {
-				return array_values( $obj );
-			} elseif ( $obj instanceof Collection ) {
-				return $obj->values()->toArray();
-			} elseif ( is_object( $obj ) ) {
-				return array_values( get_object_vars( $obj ) );
-			}
-
-			throw new \InvalidArgumentException( 'obj should be either array or object' );
+			return self::values( $obj );
 		} ) );
 
 		self::macro( 'objOf', curryN( 2, function ( $key, $value ) {

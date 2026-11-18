@@ -6,7 +6,6 @@ use WPML\Core\Component\WordsToTranslate\Domain\Calculator\PrepareContent\Ideogr
 use WPML\Core\Component\WordsToTranslate\Domain\Calculator\PrepareContent\Letter\PrepareContent as PrepareContentLetter;
 use WPML\Core\Component\WordsToTranslate\Domain\Calculator\PrepareContent\PrepareContentAbstract;
 use WPML\Core\Component\WordsToTranslate\Domain\Config;
-use WPML\Core\SharedKernel\Component\Language\Application\Query\LanguagesQueryInterface;
 
 class WordsToTranslateWordCount implements WordCountInterface {
 
@@ -14,23 +13,17 @@ class WordsToTranslateWordCount implements WordCountInterface {
 
   private $prepareIdeogram;
 
-  private $languages;
-
 
   public function __construct(
     PrepareContentLetter $prepareLetter,
-    PrepareContentIdeogram $prepareIdeogram,
-    LanguagesQueryInterface $languages
+    PrepareContentIdeogram $prepareIdeogram
   ) {
     $this->prepareLetter   = $prepareLetter;
     $this->prepareIdeogram = $prepareIdeogram;
-    $this->languages       = $languages;
   }
 
 
-  public function words( string $content ): int {
-    $language = $this->sourceLanguage();
-
+  public function words( string $content, string $language = '' ): int {
     $prepare = $this->prepareLetter;
     $factor  = 1.0;
 
@@ -47,15 +40,6 @@ class WordsToTranslateWordCount implements WordCountInterface {
     );
 
     return (int) round( count( $tokens ) * $factor );
-  }
-
-
-  private function sourceLanguage(): string {
-    try {
-      return $this->languages->getDefaultCode();
-    } catch ( \Throwable $e ) {
-      return '';
-    }
   }
 
 

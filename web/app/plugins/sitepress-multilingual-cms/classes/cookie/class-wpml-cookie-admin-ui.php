@@ -33,7 +33,7 @@ class WPML_Cookie_Admin_UI {
 					__( 'Many hosts do not cache pages for visitors who have this cookie. WPML finds the language of AJAX requests without it. Turn this off for faster pages, unless your theme or a plugin reads this cookie: %s', 'sitepress' ),
 					'<br><code>wp-wpml_current_language</code>'
 				),
-				/* translators: Button label that keeps what was entered. Verb, imperative. */
+				/* translators: Button label that keeps what was entered, for example in the Translation delivery box's "Settings for support" and in the "Translation editor and method" section of WPML → Settings. Verb, imperative. */
 				'button_text' => __( 'Save', 'sitepress' ),
 				'button_id'   => self::BUTTON_ID,
 			),

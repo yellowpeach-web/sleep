@@ -88,7 +88,7 @@ class WPML_WPSEO_XML_Sitemaps_Filter implements IWPML_Action {
 					break;
 				case 'post':
 					$postId = $this->get_post_id_for_option( 'page_for_posts', $langCode );
-					if ( Utils::isIndexablePost( $postId ) ) {
+					if ( Utils::isIndexablePost( $postId ) && 'publish' === get_post_status( $postId ) ) {
 						$url = get_permalink( $postId );
 					}
 					break;

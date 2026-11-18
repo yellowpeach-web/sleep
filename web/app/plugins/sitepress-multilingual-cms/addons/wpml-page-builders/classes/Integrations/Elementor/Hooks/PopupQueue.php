@@ -3,6 +3,7 @@
 namespace WPML\PB\Elementor\Hooks;
 
 use WPML\LIB\WP\Hooks;
+use WPML\PB\Elementor\Helper\Template;
 use function WPML\FP\spreadArgs;
 
 class PopupQueue implements \IWPML_Frontend_Action {
@@ -24,7 +25,12 @@ class PopupQueue implements \IWPML_Frontend_Action {
 		}
 
 		foreach ( $manager->get_documents_for_location( self::LOCATION ) as $popupId ) {
-			$translatedId = (int) apply_filters( 'wpml_object_id', $popupId, get_post_type( $popupId ), true );
+			$postType     = get_post_type( $popupId );
+			$translatedId = (int) Template::fallBackWhenUnpublished(
+				$popupId,
+				apply_filters( 'wpml_object_id', $popupId, $postType, true ),
+				$postType
+			);
 
 			if ( $translatedId && $translatedId !== (int) $popupId ) {
 				$manager->remove_doc_from_location( self::LOCATION, $popupId );

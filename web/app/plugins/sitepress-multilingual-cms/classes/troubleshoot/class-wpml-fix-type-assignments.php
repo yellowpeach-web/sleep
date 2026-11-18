@@ -26,7 +26,11 @@ class WPML_Fix_Type_Assignments extends WPML_WPDB_And_SP_User {
 		$rows_fixed += $res[0];
 		$rows_left  += $res[1];
 
+		if ( $rows_fixed > 0 ) {
+			WPML_Translations::flush_cache_for_all_trids();
+		}
 		icl_cache_clear();
+		WPML_Set_Language::flush_element_language_details_cache();
 		wp_cache_init();
 
 		$result = [
@@ -48,9 +52,9 @@ class WPML_Fix_Type_Assignments extends WPML_WPDB_And_SP_User {
 	private function fix_broken_duplicate_rows() {
 		$wpdb = $this->wpdb;
 
-		$rows_fixed = $this->wpdb->query(
+		$translation_ids = $this->wpdb->get_col(
 			"
-			DELETE t
+			SELECT t.translation_id
 			FROM {$wpdb->prefix}icl_translations i
 			  JOIN {$wpdb->prefix}icl_translations t
 			    ON i.element_id = t.element_id
@@ -70,6 +74,13 @@ class WPML_Fix_Type_Assignments extends WPML_WPDB_And_SP_User {
 			    ON data.element_id = i.element_id
 			       AND data.element_type = i.element_type"
 		);
+		if ( ! is_array( $translation_ids ) || $this->wpdb->last_error ) {
+			$this->record_refusal( 'fix_broken_duplicate_rows' );
+
+			return 0;
+		}
+
+		$rows_fixed = WPML_Translation_Records_Delete::translations_by_ids( $translation_ids );
 		if ( false === $rows_fixed ) {
 			$this->record_refusal( 'fix_broken_duplicate_rows' );
 		}
@@ -236,8 +247,8 @@ class WPML_Fix_Type_Assignments extends WPML_WPDB_And_SP_User {
 	private function fix_mismatched_types() {
 		$wpdb = $this->wpdb;
 
-		$rows_affected = $this->wpdb->query(
-			"DELETE t
+		$translation_ids = $this->wpdb->get_col(
+			"SELECT t.translation_id
 				FROM {$wpdb->prefix}icl_translations t
 				JOIN {$wpdb->prefix}icl_translations o
 					ON o.trid = t.trid
@@ -246,6 +257,13 @@ class WPML_Fix_Type_Assignments extends WPML_WPDB_And_SP_User {
 					AND t.source_language_code IS NOT NULL
 					AND o.element_type <> t.element_type"
 		);
+		if ( ! is_array( $translation_ids ) || $this->wpdb->last_error ) {
+			$this->record_refusal( 'fix_mismatched_types' );
+
+			return 0;
+		}
+
+		$rows_affected = WPML_Translation_Records_Delete::translations_by_ids( $translation_ids );
 		if ( false === $rows_affected ) {
 			$this->record_refusal( 'fix_mismatched_types' );
 		}

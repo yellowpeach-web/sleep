@@ -4,11 +4,14 @@ use WPML\FP\Obj;
 use WPML\FP\Str;
 use WPML\FP\Fns;
 use WPML\PB\Elementor\Helper\ElementTree;
+use WPML\PB\Elementor\Helper\Template;
 use function WPML\FP\pipe;
 
 class WPML_Elementor_Translate_IDs implements IWPML_Action {
 
 	private $debug_backtrace;
+
+	private $rendered_template_ids = [];
 
 	public function __construct( \WPML\Utils\DebugBackTrace $debug_backtrace ) {
 		$this->debug_backtrace = $debug_backtrace;
@@ -18,6 +21,7 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 		add_filter( 'elementor/theme/get_location_templates/template_id', [ $this, 'translate_theme_location_template_id' ] );
 		add_filter( 'elementor/theme/get_location_templates/condition_sub_id', [ $this, 'translate_location_condition_sub_id' ], 10, 2 );
 		add_filter( 'elementor/documents/get/post_id', [ $this, 'translate_template_id' ] );
+		add_filter( 'elementor/frontend/builder_content/before_enqueue_css_file', [ $this, 'translate_template_css_file' ] );
 		add_filter( 'elementor/frontend/builder_content_data', [ $this, 'translate_global_widget_ids' ], 10, 2 );
 		add_filter( 'elementor/frontend/builder_content_data', [ $this, 'translate_product_ids' ], 10, 2 );
 		add_filter( 'elementor/frontend/builder_content_data', [ $this, 'translate_ids_in_widget_fields' ], 10, 2 );
@@ -58,11 +62,33 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 	}
 
 	public function translate_template_id( $template_id ) {
+		$requested_id = (int) $template_id;
+
 		if ( $this->should_translate_template() && ! $this->is_kit( $template_id ) ) {
 			$template_id = $this->translate_id( $template_id );
 		}
 
+		$this->rendered_template_ids[ $requested_id ] = (int) $template_id;
+
 		return $template_id;
+	}
+
+	public function translate_template_css_file( $css_file ) {
+		if (
+			! $css_file instanceof \Elementor\Core\Files\CSS\Post
+			|| $css_file instanceof \Elementor\Core\Files\CSS\Post_Local_Cache
+		) {
+			return $css_file;
+		}
+
+		$post_id     = (int) $css_file->get_post_id();
+		$rendered_id = $this->rendered_template_ids[ $post_id ] ?? $post_id;
+
+		if ( ! $rendered_id || $rendered_id === $post_id ) {
+			return $css_file;
+		}
+
+		return \WPML\Container\make( \Elementor\Core\Files\CSS\Post::class, [ ':post_id' => $rendered_id ] );
 	}
 
 	private function is_kit( $template_id ) {
@@ -105,6 +131,7 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 		$widget_type = Obj::prop( 'widgetType', $element );
 
 		if ( 'global' === $widget_type ) {
+			\WPML\PB\Elementor\Hooks\AppearedOnSite::markShown( Obj::prop( 'templateID', $element ) );
 			$element['templateID'] = $this->translate_id( Obj::prop( 'templateID', $element ) );
 		} elseif ( 'template' === $widget_type ) {
 			$element['settings']['template_id'] = $this->translate_id( Obj::path( [ 'settings', 'template_id' ], $element ) );
@@ -139,6 +166,7 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 		}
 
 		$translated_id = apply_filters( 'wpml_object_id', $element_id, $element_type, true );
+		$translated_id = Template::fallBackWhenUnpublished( $element_id, $translated_id, $element_type );
 
 		if ( is_string( $element_id ) ) {
 			$translated_id = (string) $translated_id;
@@ -182,16 +210,14 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 
 	private function translate_repeater_field_ids( $settings, $field_config ) {
 		$repeater_key = $field_config['repeater_key'];
-		$field_key    = $field_config['field_key'];
 
 		if ( empty( $settings[ $repeater_key ] ) || ! is_array( $settings[ $repeater_key ] ) ) {
 			return $settings;
 		}
 
 		foreach ( $settings[ $repeater_key ] as &$value ) {
-			if ( ! empty( $value[ $field_key ] ) && is_numeric( $value[ $field_key ] ) ) {
-				$type                = $field_config['type'] ?? null;
-				$value[ $field_key ] = $this->translate_id( $value[ $field_key ], $type );
+			if ( is_array( $value ) ) {
+				$value = $this->translate_field_ids( $value, $field_config );
 			}
 		}
 
@@ -207,6 +233,10 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 				return $settings;
 			}
 			$current = &$current[ $key ];
+		}
+
+		if ( empty( $current ) ) {
+			return $settings;
 		}
 
 		if ( is_array( $current ) ) {

@@ -6,6 +6,16 @@ class WPML_Allowed_Redirect_Hosts extends WPML_SP_User {
 		parent::__construct( $sitepress );
 	}
 
+	public static function add_site_url_host( $hosts ) {
+		$host = wpml_parse_url( (string) get_option( 'siteurl' ), PHP_URL_HOST );
+
+		if ( is_string( $host ) && '' !== $host && ! in_array( $host, $hosts, true ) ) {
+			$hosts[] = $host;
+		}
+
+		return $hosts;
+	}
+
 	public function get_hosts( $hosts ) {
 		$domains          = $this->sitepress->get_setting( 'language_domains' );
 		$domains          = is_array( $domains ) ? $domains : array();

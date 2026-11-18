@@ -12,7 +12,8 @@ class DomainsBackendEditor implements \IWPML_Backend_Action {
 	public function add_hooks() {
 		if ( LanguageNegotiation::isUsingDomains()
 			 && self::isPostEditor()
-			 && self::getDomainByCurrentPostLanguage() !== $_SERVER['HTTP_HOST']
+			 && self::isPostUsingDiviBuilder()
+			 && self::isOnAnotherDomain()
 		) {
 			Hooks::onAction( 'admin_notices' )
 				->then( spreadArgs( [ $this, 'displayNotice' ] ) );
@@ -45,6 +46,17 @@ class DomainsBackendEditor implements \IWPML_Backend_Action {
 
 		return 'post.php' === $pagenow
 			&& self::getPostId();
+	}
+
+	private static function isPostUsingDiviBuilder() {
+		return 'on' === get_post_meta( self::getPostId(), '_et_pb_use_builder', true );
+	}
+
+	private static function isOnAnotherDomain() {
+		$postHost    = \WPML_Language_Domains::hostOf( (string) self::getDomainByCurrentPostLanguage() );
+		$currentHost = \WPML_Language_Domains::hostOf( (string) Obj::propOr( '', 'HTTP_HOST', $_SERVER ) );
+
+		return $postHost && $postHost !== $currentHost;
 	}
 
 	private static function getPostId() {

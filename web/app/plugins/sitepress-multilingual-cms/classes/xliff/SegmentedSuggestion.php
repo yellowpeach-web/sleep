@@ -24,7 +24,6 @@ class SegmentedSuggestion {
 		'h5',
 		'h6',
 		'blockquote',
-		'br',
 		'hr',
 		'figure',
 		'figcaption',
@@ -38,37 +37,124 @@ class SegmentedSuggestion {
 		'fieldset',
 	);
 
+	const LINE_BREAK_TAG = 'br';
+
+	const INLINE_TAGS = array(
+		'a',
+		'strong',
+		'b',
+		'em',
+		'i',
+		'u',
+		's',
+		'span',
+		'sup',
+		'sub',
+		'small',
+		'mark',
+		'code',
+		'abbr',
+		'img',
+	);
+
+	const VOID_INLINE_TAGS = array( 'br', 'img' );
+
+	const TAG_EXPRESSION = '<\/?[a-zA-Z][a-zA-Z0-9]*(?:"[^"]*"|\'[^\']*\'|[^>"\'])*\/?>';
+
+	const TAG_PATTERN = '/' . self::TAG_EXPRESSION . '/';
+
+	const RUN_EDGES_PATTERN = '/^((?:\s|<br\b[^>]*>)*)(.*?)((?:\s|<br\b[^>]*>)*)$/is';
+
 	public static function split_pair( $source, $target ) {
-		$source_pieces = self::tokenize( (string) $source );
-		if ( null === $source_pieces ) {
+		$source_segments = self::segments( (string) $source );
+		if ( null === $source_segments ) {
 			return null;
 		}
 
-		$source_texts = self::text_pieces( $source_pieces );
-		$count        = count( $source_texts );
-		if ( $count < 2 || $count > self::MAX_SEGMENTS ) {
-			return null;
-		}
-
-		$target_pieces = self::tokenize( (string) $target );
-		if ( null === $target_pieces ) {
-			return null;
-		}
-
-		$target_texts = self::text_pieces( $target_pieces );
-		if ( count( $target_texts ) !== $count ) {
+		$target_segments = self::segments( (string) $target );
+		if ( null === $target_segments || count( $target_segments['texts'] ) !== count( $source_segments['texts'] ) ) {
 			return null;
 		}
 
 		$pairs = array();
-		foreach ( $source_texts as $index => $source_text ) {
+		foreach ( $source_segments['texts'] as $index => $source_text ) {
 			$pairs[] = array(
 				'source' => $source_text,
-				'target' => $target_texts[ $index ],
+				'target' => $target_segments['texts'][ $index ],
 			);
 		}
 
 		return $pairs;
+	}
+
+	public static function is_splittable( $html ) {
+		return null !== self::segments( (string) $html );
+	}
+
+	public static function split_outdated( $old_source, $source, $translation ) {
+		$old_segments = self::segments( (string) $old_source );
+		$segments     = self::segments( (string) $source );
+		if ( null === $old_segments || null === $segments || $old_segments['skeleton'] !== $segments['skeleton'] ) {
+			return null;
+		}
+
+		$translated_segments = self::segments( (string) $translation );
+		if ( null === $translated_segments || count( $translated_segments['texts'] ) !== count( $old_segments['texts'] ) ) {
+			return null;
+		}
+
+		$split     = array();
+		$unchanged = 0;
+		foreach ( $segments['texts'] as $index => $text ) {
+			$changed = $text !== $old_segments['texts'][ $index ];
+			$split[] = array(
+				'source'  => $text,
+				'target'  => $translated_segments['texts'][ $index ],
+				'changed' => $changed,
+			);
+			if ( ! $changed ) {
+				$unchanged++;
+			}
+		}
+
+		return $unchanged > 0 ? $split : null;
+	}
+
+	private static function segments( $html ) {
+		$pieces = self::tokenize( $html );
+		if ( null === $pieces ) {
+			return null;
+		}
+
+		$texts    = array();
+		$skeleton = array( '' );
+		foreach ( $pieces as $piece ) {
+			$last = count( $skeleton ) - 1;
+			if ( 'text' !== $piece['kind'] ) {
+				$skeleton[ $last ] .= $piece['html'];
+				continue;
+			}
+
+			list( $leading, $core, $trailing ) = self::run_edges( $piece['html'] );
+			if ( ! self::is_segment_core( $core ) ) {
+				$skeleton[ $last ] .= $piece['html'];
+				continue;
+			}
+
+			$skeleton[ $last ] .= $leading;
+			$texts[]            = $core;
+			$skeleton[]         = $trailing;
+		}
+
+		$count = count( $texts );
+		if ( $count < 2 || $count > self::MAX_SEGMENTS ) {
+			return null;
+		}
+
+		return array(
+			'texts'    => $texts,
+			'skeleton' => $skeleton,
+		);
 	}
 
 	public static function reassemble_into( array $texts, $preferred_skeleton, $fallback_skeleton ) {
@@ -96,7 +182,7 @@ class SegmentedSuggestion {
 		}
 
 		$tokens = preg_split(
-			'/(<\/?[a-zA-Z][a-zA-Z0-9]*(?:"[^"]*"|\'[^\']*\'|[^>"\'])*\/?>)/',
+			'/(' . self::TAG_EXPRESSION . ')/',
 			$html,
 			-1,
 			PREG_SPLIT_DELIM_CAPTURE
@@ -111,39 +197,88 @@ class SegmentedSuggestion {
 				continue;
 			}
 
+			$kind = 'text';
 			if ( '<' === $token[0] && preg_match( '/^<\/?([a-zA-Z][a-zA-Z0-9]*)/', $token, $tag ) ) {
-				if ( ! in_array( strtolower( $tag[1] ), self::BLOCK_TAGS, true ) ) {
-					return null;
+				$tag_name = strtolower( $tag[1] );
+				if ( self::LINE_BREAK_TAG !== $tag_name && ! in_array( $tag_name, self::INLINE_TAGS, true ) ) {
+					if ( ! in_array( $tag_name, self::BLOCK_TAGS, true ) ) {
+						return null;
+					}
+					$kind = 'markup';
 				}
-				$pieces[] = array(
-					'kind' => 'markup',
-					'html' => $token,
-				);
-			} else {
-				$pieces[] = array(
-					'kind' => 'text',
-					'html' => $token,
-				);
+			}
+
+			$last = count( $pieces ) - 1;
+			if ( 'text' === $kind && $last >= 0 && 'text' === $pieces[ $last ]['kind'] ) {
+				$pieces[ $last ]['html'] .= $token;
+				continue;
+			}
+
+			$pieces[] = array(
+				'kind' => $kind,
+				'html' => $token,
+			);
+		}
+
+		foreach ( $pieces as $piece ) {
+			if ( 'text' === $piece['kind'] && ! self::inline_tags_balance( $piece['html'] ) ) {
+				return null;
 			}
 		}
 
 		return $pieces;
 	}
 
-	private static function text_pieces( array $pieces ) {
-		$texts = array();
-		foreach ( $pieces as $piece ) {
-			if ( 'text' !== $piece['kind'] ) {
+	private static function inline_tags_balance( $html ) {
+		if ( false === strpos( $html, '<' ) ) {
+			return true;
+		}
+
+		if ( ! preg_match_all( '/<(\/?)([a-zA-Z][a-zA-Z0-9]*)(?:"[^"]*"|\'[^\']*\'|[^>"\'])*?(\/?)>/', $html, $tags, PREG_SET_ORDER ) ) {
+			return true;
+		}
+
+		$open = array();
+		foreach ( $tags as $tag ) {
+			$name = strtolower( $tag[2] );
+			if ( in_array( $name, self::VOID_INLINE_TAGS, true ) || '/' === $tag[3] ) {
 				continue;
 			}
 
-			$text = trim( $piece['html'] );
-			if ( '' !== $text ) {
-				$texts[] = $text;
+			if ( '/' !== $tag[1] ) {
+				$open[] = $name;
+				continue;
+			}
+
+			if ( array_pop( $open ) !== $name ) {
+				return false;
 			}
 		}
 
-		return $texts;
+		return array() === $open;
+	}
+
+	private static function is_segment_core( $core ) {
+		if ( '' === $core ) {
+			return false;
+		}
+
+		if ( false === strpos( $core, '<' ) ) {
+			return true;
+		}
+
+		$text = (string) preg_replace( self::TAG_PATTERN, '', $core );
+		$text = html_entity_decode( $text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+		return 0 !== preg_match( '/[\p{L}\p{N}]/u', $text );
+	}
+
+	private static function run_edges( $html ) {
+		if ( ! preg_match( self::RUN_EDGES_PATTERN, $html, $matches ) ) {
+			return array( '', $html, '' );
+		}
+
+		return array( $matches[1], $matches[2], $matches[3] );
 	}
 
 	private static function reassemble( $skeleton, array $texts ) {
@@ -155,8 +290,13 @@ class SegmentedSuggestion {
 		$out        = '';
 		$text_index = 0;
 		foreach ( $pieces as $piece ) {
-			$trimmed = trim( $piece['html'] );
-			if ( 'text' !== $piece['kind'] || '' === $trimmed ) {
+			if ( 'text' !== $piece['kind'] ) {
+				$out .= $piece['html'];
+				continue;
+			}
+
+			list( $leading, $core, $trailing ) = self::run_edges( $piece['html'] );
+			if ( ! self::is_segment_core( $core ) ) {
 				$out .= $piece['html'];
 				continue;
 			}
@@ -165,8 +305,7 @@ class SegmentedSuggestion {
 				return null;
 			}
 
-			$leading = substr( $piece['html'], 0, strlen( $piece['html'] ) - strlen( ltrim( $piece['html'] ) ) );
-			$out    .= $leading . $texts[ $text_index ] . substr( $piece['html'], strlen( $leading ) + strlen( $trimmed ) );
+			$out .= $leading . $texts[ $text_index ] . $trailing;
 			$text_index++;
 		}
 

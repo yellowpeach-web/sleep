@@ -292,7 +292,7 @@ class SubfieldRows {
 			return (int) $value;
 		}
 
-		$value = maybe_unserialize( $value );
+		$value = \WPML\Utils\Unserialize::maybe( $value );
 
 		return is_array( $value ) ? count( $value ) : 0;
 	}

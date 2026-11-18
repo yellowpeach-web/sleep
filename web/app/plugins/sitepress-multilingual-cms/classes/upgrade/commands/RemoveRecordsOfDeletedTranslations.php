@@ -17,6 +17,16 @@ class RemoveRecordsOfDeletedTranslations implements \IWPML_Upgrade_Command {
 	}
 
 	public function run() {
+		return JobLog::runInGroup(
+			JobLog::GROUP_ID_UPGRADE_COMMANDS,
+			'Upgrade: remove records of deleted translations',
+			function () {
+				return $this->runPass();
+			}
+		);
+	}
+
+	private function runPass() {
 		$wpdb      = $this->schema->get_wpdb();
 		$batchSize = $this->batchSize();
 

@@ -3,9 +3,7 @@
 namespace WPML\Setup;
 
 use WPML\Element\API\Entity\LanguageMapping;
-use WPML\FP\Fns;
 use WPML\FP\Lst;
-use WPML\FP\Relation;
 use WPML\LIB\WP\PostType;
 use WPML\WP\OptionManager;
 

@@ -4,6 +4,8 @@ namespace WPML\Core\Component\Translation\Application\Service;
 
 use WPML\Core\Component\Translation\Application\Event\JobsCancelledEvent;
 use WPML\Core\Component\Translation\Application\Query\TranslationQueryInterface;
+use WPML\Core\Component\Translation\Application\Repository\TermBundleMembersInterface;
+use WPML\Core\Component\Translation\Application\Repository\TranslateEverythingCompletedMapsInterface;
 use WPML\Core\Component\Translation\Application\Repository\TranslationRepositoryInterface;
 use WPML\Core\Component\Translation\Application\Service\PreviousState\PreviousStateService;
 use WPML\Core\Component\Translation\Domain\Translation;
@@ -26,23 +28,31 @@ class CancelJobsService {
 
   private $stringBatchCleanupService;
 
+  private $completedMaps;
+
+  private $bundleMembers;
+
 
   public function __construct(
     TranslationQueryInterface $translationQuery,
     TranslationRepositoryInterface $translationRepository,
     PreviousStateService $previousStateService,
     DispatcherInterface $eventDispatcher,
-    StringBatchCleanupService $stringBatchCleanupService
+    StringBatchCleanupService $stringBatchCleanupService,
+    ?TranslateEverythingCompletedMapsInterface $completedMaps = null,
+    ?TermBundleMembersInterface $bundleMembers = null
   ) {
     $this->translationQuery            = $translationQuery;
     $this->translationRepository       = $translationRepository;
     $this->previousStateService        = $previousStateService;
     $this->eventDispatcher             = $eventDispatcher;
     $this->stringBatchCleanupService   = $stringBatchCleanupService;
+    $this->completedMaps               = $completedMaps;
+    $this->bundleMembers               = $bundleMembers;
   }
 
 
-  public function cancelJobs( array $jobIds, bool $keepOutOfAutomaticTranslation = false ): array {
+  public function cancelJobs( array $jobIds, bool $keepOutOfAutomaticTranslation = false, string $source = '' ): array {
     if ( empty( $jobIds ) ) {
       return [
         'cancelledJobIds'  => [],
@@ -68,7 +78,15 @@ class CancelJobsService {
 
       $previousState = $this->previousStateService->get( $translation->getId() );
 
-      if ( $previousState === null && $translation->getTranslatedElementId() === null ) {
+      if (
+        $keepOutOfAutomaticTranslation
+        && TranslationType::TERM_BUNDLE === $translationType
+        && $this->bundleMembers
+        && $this->bundleMembers->hasApplied( $jobId )
+      ) {
+        $this->bundleMembers->completeDelivered( $jobId, false );
+        $restoredStatuses[ $jobId ] = TranslationStatus::COMPLETE;
+      } elseif ( $previousState === null && $translation->getTranslatedElementId() === null ) {
         $this->translationRepository->setCancelledStatus( $translation->getId() );
         $restoredStatuses[ $jobId ] = TranslationStatus::NOT_TRANSLATED;
       } else {
@@ -94,9 +112,13 @@ class CancelJobsService {
       $jobDataForEvent[] = $this->buildJobDataForEvent( $translation, $keepOut );
     }
 
+    if ( $this->completedMaps ) {
+      $this->completedMaps->reopenTaxonomiesForJobs( $cancelledJobIds );
+    }
+
     if ( ! empty( $jobDataForEvent ) ) {
       $this->eventDispatcher->dispatch(
-        new JobsCancelledEvent( $jobDataForEvent )
+        new JobsCancelledEvent( $jobDataForEvent, $source )
       );
     }
 

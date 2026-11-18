@@ -5,6 +5,7 @@ class WPML_Nav_Menu_Actions extends WPML_Full_Translation_API {
 	public function __construct( &$sitepress, &$wpdb, &$post_translations, &$term_translations ) {
 		parent::__construct( $sitepress, $wpdb, $post_translations, $term_translations );
 		add_action( 'wp_delete_nav_menu', array( $this, 'wp_delete_nav_menu' ) );
+		add_action( 'created_nav_menu', array( $this, 'created_nav_menu' ), 10, 2 );
 		add_action( 'wp_create_nav_menu', array( $this, 'wp_update_nav_menu' ), 10, 2 );
 		add_action( 'wp_update_nav_menu', array( $this, 'wp_update_nav_menu' ), 10, 2 );
 		add_action( 'wp_update_nav_menu_item', array( $this, 'wp_update_nav_menu_item' ), 10, 3 );
@@ -38,6 +39,22 @@ class WPML_Nav_Menu_Actions extends WPML_Full_Translation_API {
 		);
 
 		do_action( 'wpml_translation_update', array_merge( $update_args, array( 'type' => 'after_delete' ) ) );
+	}
+
+	public function created_nav_menu( $menu_id, $menu_id_tt ) {
+		$wpdb = $this->wpdb;
+
+		$has_row = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT translation_id FROM {$wpdb->prefix}icl_translations WHERE element_id=%d AND element_type='tax_nav_menu' LIMIT 1",
+				$menu_id_tt
+			)
+		);
+		if ( $has_row ) {
+			return;
+		}
+
+		$this->sitepress->set_element_language_details( $menu_id_tt, 'tax_nav_menu', null, $this->get_save_lang( $menu_id ) );
 	}
 
 	function wp_update_nav_menu( $menu_id, $menu_data = null ) {

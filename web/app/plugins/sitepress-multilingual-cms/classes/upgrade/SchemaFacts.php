@@ -14,11 +14,14 @@ class SchemaFacts {
 
 	private static $dirty = [];
 
+	private static $pending = [];
+
 	private static $shutdownHooked = false;
 
 	public static function keepAcrossRequests( $keep = true ) {
 		self::$acrossRequests = (bool) $keep;
 		self::forget();
+		self::$pending = [];
 	}
 
 	public static function hasTable( $table ) {
@@ -55,6 +58,8 @@ class SchemaFacts {
 						return (bool) $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$wpdb->prefix}icl_language_presets` LIKE %s", $column ) );
 					case 'icl_language_preset_countries':
 						return (bool) $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$wpdb->prefix}icl_language_preset_countries` LIKE %s", $column ) );
+					case 'icl_string_packages':
+						return (bool) $wpdb->get_var( $wpdb->prepare( "SHOW COLUMNS FROM `{$wpdb->prefix}icl_string_packages` LIKE %s", $column ) );
 				}
 
 				throw new \InvalidArgumentException( 'SchemaFacts has no column probe for this table: add its literal spelling to hasColumn().' );
@@ -63,6 +68,12 @@ class SchemaFacts {
 	}
 
 	public static function forget() {
+		foreach ( array_keys( self::$dirty ) as $prefix ) {
+			if ( isset( self::$stamps[ $prefix ], self::$facts[ $prefix ] ) ) {
+				self::keepPending( (string) $prefix, self::$stamps[ $prefix ], array_filter( self::$facts[ $prefix ] ) );
+			}
+		}
+
 		self::$facts  = [];
 		self::$stamps = [];
 		self::$dirty  = [];
@@ -73,7 +84,12 @@ class SchemaFacts {
 			return;
 		}
 
+		self::forgetKept();
+	}
+
+	public static function forgetKept() {
 		self::forget();
+		self::$pending = [];
 		if ( self::$acrossRequests && false !== get_option( self::OPTION, false ) ) {
 			delete_option( self::OPTION );
 		}
@@ -87,22 +103,67 @@ class SchemaFacts {
 			return;
 		}
 
-		$prefix = (string) $wpdb->prefix;
-		if ( empty( self::$dirty[ $prefix ] ) || ! isset( self::$stamps[ $prefix ] ) ) {
+		$prefix  = (string) $wpdb->prefix;
+		$dirty   = ! empty( self::$dirty[ $prefix ] ) && isset( self::$stamps[ $prefix ] );
+		$pending = isset( self::$pending[ $prefix ] ) ? self::$pending[ $prefix ] : null;
+		unset( self::$dirty[ $prefix ], self::$pending[ $prefix ] );
+		if ( ! $dirty && null === $pending ) {
 			return;
 		}
-		unset( self::$dirty[ $prefix ] );
 
-		$kept = array_filter( self::$facts[ $prefix ] );
+		$stamp = self::stamp();
+		$kept  = self::keptFacts( $prefix, $stamp );
+		$facts = $kept;
+		if ( $dirty && self::$stamps[ $prefix ] === $stamp ) {
+			$facts = array_merge( $facts, array_filter( self::$facts[ $prefix ] ) );
+		}
+		if ( null !== $pending && $pending['stamp'] === $stamp ) {
+			$facts = array_merge( $facts, $pending['facts'] );
+		}
+
+		if ( $facts === $kept ) {
+			return;
+		}
+
 		update_option(
 			self::OPTION,
 			[
 				'prefix' => $prefix,
-				'stamp'  => self::$stamps[ $prefix ],
-				'facts'  => $kept,
+				'stamp'  => $stamp,
+				'facts'  => $facts,
 			],
 			true
 		);
+	}
+
+	private static function keepPending( $prefix, $stamp, array $facts ) {
+		if ( ! $facts ) {
+			return;
+		}
+
+		if ( isset( self::$pending[ $prefix ] ) && self::$pending[ $prefix ]['stamp'] === $stamp ) {
+			$facts = array_merge( self::$pending[ $prefix ]['facts'], $facts );
+		}
+
+		self::$pending[ $prefix ] = [
+			'stamp' => $stamp,
+			'facts' => $facts,
+		];
+	}
+
+	private static function keptFacts( $prefix, $stamp ) {
+		$kept = get_option( self::OPTION, false );
+		if (
+			is_array( $kept )
+			&& isset( $kept['prefix'], $kept['stamp'], $kept['facts'] )
+			&& $kept['prefix'] === $prefix
+			&& $stamp === $kept['stamp']
+			&& is_array( $kept['facts'] )
+		) {
+			return array_filter( array_map( 'boolval', $kept['facts'] ) );
+		}
+
+		return [];
 	}
 
 	private static function fact( $wpdb, $key, callable $probe ) {
@@ -139,16 +200,7 @@ class SchemaFacts {
 		$stamp                   = self::stamp();
 		self::$stamps[ $prefix ] = $stamp;
 
-		$kept = get_option( self::OPTION, false );
-		if (
-			is_array( $kept )
-			&& isset( $kept['prefix'], $kept['stamp'], $kept['facts'] )
-			&& $kept['prefix'] === $prefix
-			&& $stamp === $kept['stamp']
-			&& is_array( $kept['facts'] )
-		) {
-			self::$facts[ $prefix ] = array_map( 'boolval', $kept['facts'] );
-		}
+		self::$facts[ $prefix ] = self::keptFacts( $prefix, $stamp );
 	}
 
 	private static function stamp() {

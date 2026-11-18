@@ -37,14 +37,32 @@
          "Removing strings from <b>String Translation</b> table": [
             "Suppression des chaînes de la table de <b>Traduction de chaînes</b>"
          ],
+         "%s string waiting for translation was kept.": [
+            "%s chaîne en attente de traduction a été conservée.",
+            "%s chaînes en attente de traduction ont été conservées."
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "Pour rajouter des chaînes à la table de <b>Traduction de chaînes</b>, vous devrez peut-être analyser à nouveau les fichiers de traduction ou enregistrer les chaînes comme étant traduisibles."
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "En savoir plus sur l'<a>analyse de votre site à la recherche de chaînes et leur enregistrement comme étant traduisibles</a>."
          ],
-         "Successfully removed strings": [
-            "Chaînes supprimées avec succès"
+         "Nothing removed: %s string is waiting for translation": [
+            "Rien n'a été supprimé : %s chaîne est en attente de traduction",
+            "Rien n'a été supprimé : %s chaînes sont en attente de traduction"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "Rien n'a été supprimé : les domaines sélectionnés ne contiennent aucune chaîne non traduite"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "Pour les supprimer également, cochez « Supprimer également les chaînes en attente de traduction » puis cliquez de nouveau sur Supprimer."
+         ],
+         "OK": [
+            "OK"
+         ],
+         "Removed %s string": [
+            "%s chaîne supprimée",
+            "%s chaînes supprimées"
          ],
          "OK, Great": [
             "D'accord, super"
@@ -60,6 +78,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "La suppression des chaînes s'est arrêtée avant la fin. Les chaînes qui n'ont pas été supprimées sont toujours dans la table. Réessayez pour les supprimer."
+         ],
+         "Successfully removed strings": [
+            "Chaînes supprimées avec succès"
          ]
       }
    }

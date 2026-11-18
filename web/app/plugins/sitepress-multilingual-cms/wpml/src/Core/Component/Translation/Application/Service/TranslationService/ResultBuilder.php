@@ -52,7 +52,8 @@ class ResultBuilder {
           $ignoredElement->getElementId(),
           $ignoredElement->getTranslationType()->get(),
           $ignoredElement->getTargetLanguageCode(),
-          $ignoredElement->getReason()
+          $ignoredElement->getReason(),
+          $ignoredElement->getMessage() !== $ignoredElement->getReason() ? $ignoredElement->getMessage() : null
         );
       },
       $ignoredElements

@@ -3,6 +3,7 @@
 namespace WPML\TM\Dashboard\Taxonomy;
 
 use WPML\Element\API\Languages;
+use WPML\TM\Taxonomy\Job\TermWords;
 
 class TaxonomyLabelStatus {
 
@@ -255,7 +256,7 @@ class TaxonomyLabelStatus {
 				$status = 'partial';
 			}
 
-			$allWords = $this->wordCount( $original );
+			$allWords = $this->wordCount( $original, $sourceLang );
 			$states[] = [
 				'code'         => $lang,
 				'status'       => $status,
@@ -269,18 +270,14 @@ class TaxonomyLabelStatus {
 		return $states;
 	}
 
-	private function wordCount( array $original ): int {
-		$text = trim(
-			wp_strip_all_tags(
-				(string) ( $original['singular'] ?? '' ) . ' ' . (string) ( $original['general'] ?? '' )
-			)
+	private function wordCount( array $original, string $sourceLang ): int {
+		return TermWords::count(
+			[
+				'singular' => (string) ( $original['singular'] ?? '' ),
+				'general'  => (string) ( $original['general'] ?? '' ),
+			],
+			$sourceLang
 		);
-
-		if ( '' === $text ) {
-			return 0;
-		}
-
-		return count( preg_split( '/\s+/u', $text ) ?: [] );
 	}
 
 	private function getSourceLang( $data ): string {

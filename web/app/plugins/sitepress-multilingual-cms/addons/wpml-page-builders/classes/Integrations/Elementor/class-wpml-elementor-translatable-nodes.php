@@ -2,7 +2,9 @@
 
 use WPML\FP\Obj;
 use WPML\PB\Elementor\DynamicContent\Strings as DynamicContentStrings;
+use WPML\PB\Elementor\Helper\Node;
 use WPML\PB\Elementor\Modules\ModuleWithItemsFromConfig;
+use WPML\PB\TranslationJob\Editor;
 use WPML\PB\TranslationJob\SourceLabels;
 
 class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translatable_Nodes {
@@ -15,11 +17,13 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 
 	private $nodes_to_translate;
 
+	private $nodes_for_ate;
+
+	private $config_condition_values = [];
+
 	public function get( $node_id, $element ) {
 
-		if ( ! $this->nodes_to_translate ) {
-			$this->initialize_nodes_to_translate();
-		}
+		$this->initialize_stale_nodes_to_translate();
 
 		$strings = array();
 
@@ -73,9 +77,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 
 	public function update( $node_id, $element, WPML_PB_String $pbString ) {
 
-		if ( ! $this->nodes_to_translate ) {
-			$this->initialize_nodes_to_translate();
-		}
+		$this->initialize_stale_nodes_to_translate();
 
 		foreach ( $this->nodes_to_translate as $node_type => $node_data ) {
 
@@ -166,14 +168,27 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 			return self::$active_settings_cache;
 		}
 
-		$active = [];
+		$active      = [];
+		$performance = 'Elementor\Core\Frontend\Performance';
+		$can_switch  = class_exists( $performance ) && method_exists( $performance, 'set_use_style_controls' );
+		$was_using   = $can_switch && method_exists( $performance, 'is_use_style_controls' )
+			? (bool) $performance::is_use_style_controls()
+			: false;
 
 		try {
+			if ( $can_switch ) {
+				$performance::set_use_style_controls( true );
+			}
+
 			$active = \Elementor\Plugin::$instance->elements_manager
 				->create_element_instance( $element )
 				->get_active_settings();
 		} catch ( \Throwable $e ) {
 			$active = [];
+		} finally {
+			if ( $can_switch ) {
+				$performance::set_use_style_controls( $was_using );
+			}
 		}
 
 		if ( ! is_array( $active ) ) {
@@ -277,6 +292,35 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 		return '';
 	}
 
+	public function is_translatable_element( $element ) {
+		return Node::isTranslatable( $element ) || ( is_array( $element ) && $this->has_config_for_element_type( $element ) );
+	}
+
+	private function has_config_for_element_type( array $element ) {
+		$element_type = Obj::prop( self::ELEMENT_TYPE, $element );
+
+		if ( ! is_string( $element_type ) ) {
+			return false;
+		}
+
+		$this->initialize_stale_nodes_to_translate();
+
+		if ( ! isset( $this->config_condition_values[ $element_type ] ) ) {
+			return false;
+		}
+
+		foreach ( $this->nodes_to_translate as $node_data ) {
+			if (
+				in_array( $element_type, (array) Obj::propOr( [], 'conditions', $node_data ), true )
+				&& $this->conditions_ok( $node_data, $element )
+			) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private function conditions_ok( $node_data, $element ) {
 		$conditions_meet = true;
 		foreach ( $node_data['conditions'] as $field_key => $field_value ) {
@@ -337,31 +381,31 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'field'       => 'link',
 						/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
 						'type'        => __( 'Video: Link', 'sitepress' ),
-						'editor_type' => 'LINE',
+						'editor_type' => 'LINK',
 					),
 					array(
 						'field'       => 'vimeo_link',
 						/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
 						'type'        => __( 'Video: Vimeo link', 'sitepress' ),
-						'editor_type' => 'LINE',
+						'editor_type' => 'LINK',
 					),
 					array(
 						'field'       => 'youtube_url',
 						/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
 						'type'        => __( 'Video: Youtube URL', 'sitepress' ),
-						'editor_type' => 'LINE',
+						'editor_type' => 'LINK',
 					),
 					array(
 						'field'       => 'vimeo_url',
 						/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
 						'type'        => __( 'Video: Vimeo URL', 'sitepress' ),
-						'editor_type' => 'LINE',
+						'editor_type' => 'LINK',
 					),
 					array(
 						'field'       => 'dailymotion_url',
 						/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
 						'type'        => __( 'Video: DailyMotion URL', 'sitepress' ),
-						'editor_type' => 'LINE',
+						'editor_type' => 'LINK',
 					),
 					'hosted_url'   => array(
 						'field'       => 'url',
@@ -373,7 +417,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'field'       => 'url',
 						/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
 						'type'        => __( 'Video: External hosted', 'sitepress' ),
-						'editor_type' => 'LINE',
+						'editor_type' => 'LINK',
 					),
 				),
 			),
@@ -851,6 +895,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'type'        => __( 'Search: Placeholder', 'sitepress' ),
 						'editor_type' => 'LINE',
 					),
+					array(
+						'field'       => 'button_text',
+						/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
+						'type'        => __( 'Search: Button text', 'sitepress' ),
+						'editor_type' => 'LINE',
+					),
 				),
 			),
 			'post-navigation'      => array(
@@ -963,10 +1013,47 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					'\WPML\PB\Elementor\V4\Component\Overrides',
 				],
 			),
+			'theme-site-title'     => array(
+				'conditions' => array( self::TYPE => 'theme-site-title' ),
+				'fields'     => array(
+					array(
+						'field'       => 'title',
+						/* translators: Field label in WPML's translation editor for a page built with Elementor. Before the colon is the name Elementor gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
+						'type'        => __( 'Site Title: Title', 'sitepress' ),
+						'editor_type' => 'LINE',
+					),
+				),
+			),
+			'custom-attributes-widget'    => array(
+				'conditions'        => array( self::ELEMENT_TYPE => 'widget' ),
+				'fields'            => array(),
+				'integration-class' => '\WPML\PB\Elementor\Modules\CustomAttributes',
+			),
+			'custom-attributes-container' => array(
+				'conditions'        => array( self::ELEMENT_TYPE => 'container' ),
+				'fields'            => array(),
+				'integration-class' => '\WPML\PB\Elementor\Modules\CustomAttributes',
+			),
 		);
 	}
 
+	private function initialize_stale_nodes_to_translate() {
+		if ( ! $this->nodes_to_translate || Editor::isATE() !== $this->nodes_for_ate ) {
+			$this->initialize_nodes_to_translate();
+		}
+	}
+
 	public function initialize_nodes_to_translate() {
+		$this->nodes_for_ate = Editor::isATE();
 		$this->nodes_to_translate = apply_filters( 'wpml_elementor_widgets_to_translate', SourceLabels::run( [ self::class, 'get_nodes_to_translate' ] ) );
+
+		$this->config_condition_values = [];
+		foreach ( $this->nodes_to_translate as $node_data ) {
+			foreach ( (array) Obj::propOr( [], 'conditions', $node_data ) as $condition_value ) {
+				if ( is_string( $condition_value ) ) {
+					$this->config_condition_values[ $condition_value ] = true;
+				}
+			}
+		}
 	}
 }

@@ -14,12 +14,60 @@ trait BuildsTaxonomyTermJobModel {
 		\WP_Term $term,
 		string $sourceLang,
 		string $targetLang,
-		string $xliff
+		string $xliff,
+		array $billing
 	): WPML_TM_ATE_Models_Job_Create {
+		$job = $this->newTermJobModel( $jobId, $rid, $termTaxonomyId, $sourceLang, $targetLang, [ $this->taxonomyTermDepth( $term ), $termTaxonomyId ], $term->name, $xliff );
+
+		$fullCount = $this->countTaxonomyTermWords( $term, $sourceLang );
+		( new TermJobRowFactory( $GLOBALS['wpdb'] ) )->fillBillingColumns(
+			$job,
+			$rid,
+			$jobId,
+			$fullCount,
+			(int) ( $billing['words'] ?? $fullCount )
+		);
+		$job->apply_memory = empty( $billing['inFull'] );
+
+		return $job;
+	}
+
+	protected function buildTermBundleJobModel(
+		int $jobId,
+		int $rid,
+		int $batchId,
+		array $members,
+		string $sourceLang,
+		string $targetLang,
+		string $xliff,
+		string $fileName
+	): WPML_TM_ATE_Models_Job_Create {
+		$rank           = null;
+		$fullCountByRid = [];
+		$billedByRid    = [];
+		$inFull         = false;
+		foreach ( $members as $member ) {
+			$memberRank = [ $this->taxonomyTermDepth( $member['term'] ), (int) $member['term']->term_taxonomy_id ];
+			if ( null === $rank || $memberRank < $rank ) {
+				$rank = $memberRank;
+			}
+			$fullCountByRid[ (int) $member['rid'] ] = (int) $member['words'];
+			$billedByRid[ (int) $member['rid'] ]    = (int) ( $member['billed_words'] ?? 0 );
+			$inFull                                 = $inFull || ! empty( $member['billed_in_full'] );
+		}
+
+		$job = $this->newTermJobModel( $jobId, $rid, $batchId, $sourceLang, $targetLang, $rank ?: [ 0, 0 ], $fileName, $xliff );
+		( new TermJobRowFactory( $GLOBALS['wpdb'] ) )->fillBundleBillingColumns( $job, $jobId, $billedByRid, $fullCountByRid );
+		$job->apply_memory = ! $inFull;
+
+		return $job;
+	}
+
+	private function newTermJobModel( int $jobId, int $rid, int $elementId, string $sourceLang, string $targetLang, array $rank, string $fileName, string $xliff ): WPML_TM_ATE_Models_Job_Create {
 		$job                        = new WPML_TM_ATE_Models_Job_Create();
 		$job->id                    = $jobId;
 		$job->source_id             = $rid;
-		$job->element_id            = $termTaxonomyId;
+		$job->element_id            = $elementId;
 		$job->source_language->code = $sourceLang;
 		$job->source_language->name = $this->taxonomyLanguageNameFor( $sourceLang );
 		$job->target_language->code = $targetLang;
@@ -28,27 +76,21 @@ trait BuildsTaxonomyTermJobModel {
 		$job->apply_memory          = true;
 		$job->permalink             = '#';
 		$job->tier                  = (string) \WPML\Core\Component\Translation\Domain\Priority\Tier::TAXONOMY_TERMS;
-		$job->rank                  = [ $this->taxonomyTermDepth( $term ), $termTaxonomyId ];
+		$job->rank                  = $rank;
 		$job->notify_enabled        = true;
 		$job->notify_url            = \WPML\TM\ATE\REST\PublicReceive::get_receive_ate_job_url( $jobId );
+		$job->receive_token_kind    = \WPML\TM\ATE\REST\PublicReceive::receive_token_kind( $jobId );
 		$job->site_identifier       = wpml_get_site_id( WPML_TM_ATE::SITE_ID_SCOPE );
 		$job->job_sender            = \WPML\TM\ATE\JobSender\JobSenderRepository::get();
 
-		( new TermJobRowFactory( $GLOBALS['wpdb'] ) )->fillBillingColumns(
-			$job,
-			$rid,
-			$jobId,
-			$this->countTaxonomyTermWords( $term )
-		);
-
 		$job->file->type = 'data:application/x-xliff;base64';
-		$job->file->name = $term->name;
+		$job->file->name = $fileName;
 		$job->file->content = base64_encode( $xliff );
 
 		return $job;
 	}
 
-	private function taxonomyTermDepth( \WP_Term $term ): int {
+	protected function taxonomyTermDepth( \WP_Term $term ): int {
 		if ( ! is_taxonomy_hierarchical( $term->taxonomy ) ) {
 			return 0;
 		}
@@ -100,14 +142,7 @@ trait BuildsTaxonomyTermJobModel {
 		return isset( $active[ $code ]['display_name'] ) ? (string) $active[ $code ]['display_name'] : $code;
 	}
 
-	protected function countTaxonomyTermWords( \WP_Term $term ): int {
-		$metaText = \WPML\TM\Taxonomy\TranslatableTermMeta::countableText( \WPML\TM\Taxonomy\TranslatableTermMeta::values( $term ) );
-		$text     = trim(
-			wp_strip_all_tags(
-				$term->name . ' ' . (string) $term->description . ( '' !== $metaText ? ' ' . $metaText : '' )
-			)
-		);
-
-		return '' === $text ? 0 : count( preg_split( '/\s+/u', $text ) ?: [] );
+	protected function countTaxonomyTermWords( \WP_Term $term, ?string $sourceLang = null ): int {
+		return TermWords::countTerm( $term, $sourceLang );
 	}
 }

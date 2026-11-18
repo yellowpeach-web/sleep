@@ -7,6 +7,9 @@
             "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
             "lang": "ru_RU"
          },
+         "(no title)": [
+            "(без заголовка)"
+         ],
          "Untranslated strings that I encounter on front-end while logged in": [
             "Непереведенные строки, которые я встречаю во фронтенде, когда я в системе"
          ],
@@ -39,6 +42,17 @@
          "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
             "Мы повторно отправили %1$d из %2$d элементов, но %3$d не удалось отправить. Перезагрузите страницу и попробуйте еще раз."
          ],
+         "We resent %1$d of %2$d items.": [
+            "Мы повторно отправили %1$d из %2$d элементов."
+         ],
+         "%1$s from %2$s": [
+            "%1$s с языка: %2$s"
+         ],
+         "%1$d item can't be translated automatically: %2$s. Choose another translation method for it, or change your engines.": [
+            "%1$d элемент нельзя перевести автоматически: %2$s. Выберите для него другой способ перевода или измените свои системы перевода.",
+            "%1$d элемента нельзя перевести автоматически: %2$s. Выберите для них другой способ перевода или измените свои системы перевода.",
+            "%1$d элементов нельзя перевести автоматически: %2$s. Выберите для них другой способ перевода или измените свои системы перевода."
+         ],
          "Error in fetching default translation batch name": [
             "Ошибка при получении названия пакета перевода по умолчанию"
          ],
@@ -53,6 +67,9 @@
          ],
          "Validation failed": [
             "Ошибка валидации"
+         ],
+         "The translation service batch could not be committed. Continue sending to try again.": [
+            "Не удалось зафиксировать пакет сервиса перевода. Нажмите «Продолжить отправку», чтобы повторить попытку."
          ],
          "%s: labels and slug": [
             "%s: ярлыки и ярлык"
@@ -95,6 +112,12 @@
          "They are still waiting and will be tried again on the next download.": [
             "Они все еще ожидают и будут повторно запрошены при следующей загрузке."
          ],
+         "Job %d": [
+            "Задание %d"
+         ],
+         "and %d more": [
+            "и еще %d"
+         ],
          "Status: ": [
             "Статус: "
          ],
@@ -136,11 +159,11 @@
          "Switching…": [
             "Переключение…"
          ],
-         "Translation engine controls couldn't load. Reload the page and try again.": [
-            "Не удалось загрузить элементы управления системой перевода. Перезагрузите страницу и попробуйте еще раз."
-         ],
          "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
             "Нам не удалось подтвердить переключение. Попробуйте еще раз или перезагрузите страницу, чтобы увидеть текущую систему."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Не удалось загрузить элементы управления системой перевода. Перезагрузите страницу и попробуйте еще раз."
          ],
          "Loading translation engine settings…": [
             "Загрузка настроек системы перевода…"
@@ -301,14 +324,20 @@
          "Select %s": [
             "Выбрать %s"
          ],
-         "(no title)": [
-            "(без заголовка)"
+         "Appears on the site": [
+            "Отображается на сайте"
+         ],
+         "Not shown yet": [
+            "Еще не отображалось"
          ],
          "Image": [
             "Изображение"
          ],
          "%s Title": [
             "%s: заголовок"
+         ],
+         "Source": [
+            "Источник"
          ],
          "%s Date": [
             "%s: дата"
@@ -340,9 +369,6 @@
          "Show selected items": [
             "Показать выбранные элементы"
          ],
-         "Looking for more items...": [
-            "Поиск других элементов..."
-         ],
          " / page": [
             " / стр."
          ],
@@ -351,6 +377,9 @@
          ],
          "Next": [
             "Далее"
+         ],
+         "Looking for more items...": [
+            "Поиск других элементов..."
          ],
          "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
             "Контент вашего сайта слишком велик для одного пакета перевода. Используйте фильтры, чтобы уменьшить выборку, а затем нажмите «выбрать все»."
@@ -382,11 +411,31 @@
          "Select all %ss": [
             "Выбрать все %s"
          ],
+         "%d not shown on the site yet": [
+            "%d еще не отображается на сайте",
+            "%d еще не отображаются на сайте",
+            "%d еще не отображаются на сайте"
+         ],
+         "Show them": [
+            "Показать их"
+         ],
+         "Hide them": [
+            "Скрыть их"
+         ],
          "Save note": [
             "Сохранить примечание"
          ],
-         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
-            "Следующие целевые языки не поддерживают автоматический перевод: %s. <a>Сопоставьте их с известными языками</a>, чтобы включить автоматический перевод."
+         "%1$s and %2$s": [
+            "%1$s и %2$s"
+         ],
+         "The following target languages do not support automatic translation: %s.": [
+            "Следующие языки перевода не поддерживают автоматический перевод: %s."
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "Автоматический перевод недоступен между языками: %1$s и %2$s, поскольку они распознаются как один и тот же язык. Выберите «Дублировать», чтобы скопировать контент."
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "Автоматический перевод недоступен между %1$s и %2$s, так как они распознаются как один и тот же язык."
          ],
          "The site's default language %s doesn't support automatic translation.": [
             "Язык сайта по умолчанию %s не поддерживает автоматический перевод."
@@ -430,8 +479,8 @@
          "Raise the cap": [
             "Увеличить лимит"
          ],
-         "Only the account owner can do this.": [
-            "Это может сделать только владелец аккаунта."
+         "You can raise it on the AI Translation: billing and usage page.": [
+            "Вы можете увеличить его на странице «Перевод ИИ: оплата и использование»."
          ],
          "Show strings in:": [
             "Показать строки в:"
@@ -454,9 +503,6 @@
          "Domain": [
             "Домен"
          ],
-         "Source": [
-            "Источник"
-         ],
          "Type": [
             "Тип"
          ],
@@ -472,11 +518,8 @@
          "All sources": [
             "Все источники"
          ],
-         "Frontend (viewed)": [
-            "Фронтенд (просмотрено)"
-         ],
-         "Backend (viewed)": [
-            "Бэкенд (просмотрено)"
+         "Seen in the admin": [
+            "В панели администрирования"
          ],
          "Unknown": [
             "Неизвестно"
@@ -490,17 +533,11 @@
          "Search string or a name": [
             "Поиск строки или имени"
          ],
-         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
-            "Этот фильтр доступен только в том случае, если в качестве источника выбрано «Фронтенд» или «Бэкенд»."
+         "%1$s, %2$s and %3$s": [
+            "%1$s, %2$s и %3$s"
          ],
-         "front-end": [
-            "фронтенд"
-         ],
-         "back-end": [
-            "бэкенд"
-         ],
-         "viewed": [
-            "просмотрено"
+         "This filter is available only when Source is \"Appears on the site\" or \"Seen in the admin\".": [
+            "Этот фильтр доступен только в том случае, если в поле «Источник» выбрано значение «Отображается на сайте» или «В панели администрирования»."
          ],
          "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
             "Открывает страницу локализации тем и плагинов, где вы можете просканировать свои темы и плагины на наличие строк, которые еще не зарегистрированы, и сделать их доступными для перевода здесь."
@@ -593,7 +630,7 @@
             "Узнайте, как использовать авторегистрацию"
          ],
          "recommended": [
-            "рекомендуется"
+            "Рекомендуется"
          ],
          "Also register strings from the website's back-end": [
             "Также регистрировать строки из бэкенда сайта"
@@ -616,8 +653,8 @@
          "You can only translate %1$s from the site's default language (%2$s).": [
             "Вы можете переводить %1$s только с основного языка сайта (%2$s)."
          ],
-         "Search taxonomy or a name": [
-            "Поиск таксономии или названия"
+         "Search taxonomies and terms": [
+            "Поиск таксономий и терминов"
          ],
          "Filter by post type": [
             "Фильтровать по типу записи"
@@ -633,6 +670,9 @@
          "No translatable taxonomies match the current filters.": [
             "Нет переводимых таксономий, соответствующих текущим фильтрам."
          ],
+         "Words in the terms, in %s": [
+            "Слова в терминах, язык: %s"
+         ],
          "Select all taxonomies": [
             "Выбрать все таксономии"
          ],
@@ -642,11 +682,22 @@
          "Terms in": [
             "Элементы в"
          ],
-         "Post types": [
-            "Типы записей"
+         "Used on": [
+            "Используется для"
          ],
-         "Translated / Total terms": [
-            "Переведено / Всего элементов"
+         "Terms": [
+            "Термины"
+         ],
+         "Words": [
+            "Слово",
+            "Слова",
+            "Слов"
+         ],
+         "Hide terms": [
+            "Скрыть элементы"
+         ],
+         "Choose terms": [
+            "Выбрать элементы"
          ],
          "translated": [
             "переведено"
@@ -672,11 +723,32 @@
          "%1$s: %2$s": [
             "%1$s: %2$s"
          ],
-         "Open %s in the Taxonomy Translation tab": [
-            "Открыть %s на вкладке «Перевод таксономии»"
+         "Translated": [
+            "Переведено"
+         ],
+         "Partially translated": [
+            "Частично переведено"
+         ],
+         "Translation needs update": [
+            "Перевод требует обновления"
+         ],
+         "Preparing for translation": [
+            "Подготовка к переводу"
+         ],
+         "Translation stalled": [
+            "Перевод приостановлен"
+         ],
+         "Not translated": [
+            "Не переведено"
+         ],
+         "Status icons": [
+            "Значки статуса"
          ],
          "Taxonomy labels and slug": [
             "Ярлыки и ярлык таксономии"
+         ],
+         "The taxonomy's own texts: its singular and plural names and its URL slug. Not its terms.": [
+            "Собственные тексты таксономии: ее названия в единственном и множественном числе, а также ярлык URL. Не ее элементы."
          ],
          "WPML String Translation is not active.": [
             "WPML String Translation не активен."
@@ -708,16 +780,137 @@
          "Rescan": [
             "Сканировать повторно"
          ],
-         "%d Taxonomy selected": [
-            "Выбрана %d таксономия",
-            "Выбрано %d таксономии",
-            "Выбрано %d таксономий"
+         "Send categories, tags and other terms for translation, a whole taxonomy or the terms you pick.": [
+            "Отправляйте рубрики, метки и другие элементы на перевод — всю таксономию целиком или выбранные элементы."
          ],
-         "<b>Translate Everything Automatically</b> (TEA) is active.": [
-            "Функция <b>Переводить все автоматически</b> активна."
+         "Edit translations manually": [
+            "Изменить переводы вручную"
          ],
-         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
-            "Новые и обновленные элементы в переводимых таксономиях ставятся в очередь автоматически. Выберите таксономии ниже, чтобы отправить разовое массовое задание для всех оставшихся непереведенных элементов."
+         "(opens in a new tab)": [
+            "(откроется в новой вкладке)"
+         ],
+         "To edit one term's translation by hand: <link/>": [
+            "Чтобы отредактировать перевод отдельного элемента вручную: <link/>"
+         ],
+         "There is nothing to send. New and changed terms will show up here.": [
+            "Отправлять нечего. Новые и измененные элементы появятся здесь."
+         ],
+         "Every term is translated into every language.": [
+            "Все элементы переведены на все языки."
+         ],
+         "No taxonomy or term matches “%s”.": [
+            "Нет таксономий или терминов, соответствующих «%s»."
+         ],
+         "Clear search": [
+            "Очистить поиск"
+         ],
+         "<b>Translate Everything</b> is on. It translates every term of every translatable taxonomy automatically. You do not need to send terms or pick them.": [
+            "Функция <b>Переводить все</b> включена. Она автоматически переводит каждый элемент каждой переводимой таксономии. Вам не нужно выбирать или отправлять элементы."
+         ],
+         "Use this section to see their status, or to send terms to a translator or a translation service.": [
+            "Используйте этот раздел, чтобы просмотреть их статус или отправить термины переводчику либо в сервис перевода."
+         ],
+         "%1$d sub-term, %2$d not translated": [
+            "%1$d дочерний элемент, не переведено: %2$d",
+            "%1$d дочерних элемента, не переведено: %2$d",
+            "%1$d дочерних элементов, не переведено: %2$d"
+         ],
+         "%d sub-term, all translated": [
+            "%d дочерний элемент, все переведены",
+            "%d дочерних элемента, все переведены",
+            "%d дочерних элементов, все переведены"
+         ],
+         "%1$s and its %2$d sub-term selected.": [
+            "Элемент «%1$s» и его %2$d дочерний элемент выбраны.",
+            "Элемент «%1$s» и его дочерние элементы (%2$d) выбраны.",
+            "Элемент «%1$s» и его дочерние элементы (%2$d) выбраны."
+         ],
+         "%1$s and its %2$d sub-term cleared.": [
+            "Выбор элемента «%1$s» и его %2$d дочернего элемента отменен.",
+            "Выбор элемента «%1$s» и его дочерних элементов (%2$d) отменен.",
+            "Выбор элемента «%1$s» и его дочерних элементов (%2$d) отменен."
+         ],
+         "Select %1$s, in %2$s": [
+            "Выбрать %1$s, в %2$s"
+         ],
+         "Hide sub-terms of %s": [
+            "Скрыть дочерние элементы для «%s»"
+         ],
+         "Show sub-terms of %s": [
+            "Показать дочерние элементы для «%s»"
+         ],
+         "in": [
+            "на"
+         ],
+         "Added because a sub-term is selected": [
+            "Добавлено, так как выбран дочерний элемент"
+         ],
+         "The terms could not be loaded.": [
+            "Не удалось загрузить термины."
+         ],
+         "Showing %1$d term matching “%2$s”": [
+            "Отображается %1$d элемент, соответствующий «%2$s»",
+            "Отображаются %1$d элемента, соответствующие «%2$s»",
+            "Отображается %1$d элементов, соответствующих «%2$s»"
+         ],
+         "Showing roots %1$d to %2$d of %3$d": [
+            "Отображаются корневые элементы с %1$d по %2$d из %3$d"
+         ],
+         "Showing %1$d to %2$d of %3$d": [
+            "Отображаются с %1$d по %2$d из %3$d"
+         ],
+         "%s: terms": [
+            "%s: элементы"
+         ],
+         "All terms are selected until you untick some.": [
+            "Все элементы выбраны, пока вы не снимете отметку с некоторых из них."
+         ],
+         "Terms matching “%s”, found by the section search.": [
+            "Элементы, соответствующие «%s», найдены поиском по разделу."
+         ],
+         "%1$s: %2$d term matches the section search.": [
+            "%1$s: %2$d элемент соответствует результатам поиска в разделе.",
+            "%1$s: %2$d элемента соответствуют результатам поиска в разделе.",
+            "%1$s: %2$d элементов соответствуют результатам поиска в разделе."
+         ],
+         "Show all terms": [
+            "Показать все элементы"
+         ],
+         "Select all %d terms": [
+            "Выбрать все элементы (%d)"
+         ],
+         "Ticking a parent selects its sub-terms.": [
+            "При выборе родительского элемента выбираются его дочерние элементы."
+         ],
+         "Expand all": [
+            "Развернуть все"
+         ],
+         "Collapse all": [
+            "Свернуть все"
+         ],
+         "Select all terms on this page": [
+            "Выбрать все элементы на этой странице"
+         ],
+         "Term": [
+            "Элемент"
+         ],
+         "No term matches “%s”.": [
+            "Нет терминов, соответствующих «%s»."
+         ],
+         "%1$d of %2$d": [
+            "%1$d из %2$d"
+         ],
+         "Pages of %s terms": [
+            "Страницы элементов таксономии «%s»"
+         ],
+         "All %d terms selected": [
+            "Выбраны все элементы (%d)"
+         ],
+         "%1$d of %2$d terms selected": [
+            "Выбрано элементов: %1$d из %2$d"
+         ],
+         "No terms selected": [
+            "Элементы не выбраны"
          ],
          "Switch Now": [
             "Перейти сейчас"
@@ -762,7 +955,7 @@
             "Понятно"
          ],
          "See your pricing": [
-            "Посмотреть цены"
+            "Посмотреть свои цены"
          ],
          "You’re all set. The new pricing is active.": [
             "Все готово. Новые цены активны."
@@ -904,8 +1097,20 @@
          "Not now": [
             "Не сейчас"
          ],
+         "This site is not registered with our translation system yet. Register it on WPML → Activate & Update to use automatic translation.": [
+            "Этот сайт еще не зарегистрирован в нашей системе перевода. Зарегистрируйте его в разделе «WPML → Активация и обновление», чтобы использовать автоматический перевод."
+         ],
          "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
             "Ошибка соединения. Пожалуйста, подождите минуту и перезагрузите страницу. Если проблема не исчезнет, обратитесь в службу поддержки WPML."
+         ],
+         "Posts": [
+            "Записи"
+         ],
+         "Taxonomy terms": [
+            "Элементы таксономий"
+         ],
+         "Words required:": [
+            "Требуется слов:"
          ],
          "You don’t have enough prepaid words to translate this content.": [
             "У вас недостаточно предоплаченных слов для перевода этого контента."
@@ -919,16 +1124,8 @@
          "Automatic translation costs:": [
             "Стоимость автоматического перевода:"
          ],
-         "Words": [
-            "Слово",
-            "Слова",
-            "Слов"
-         ],
          "Words to translate automatic": [
             "Слов для автоматического перевода"
-         ],
-         "Words required:": [
-            "Требуется слов:"
          ],
          "Pricing": [
             "Цены"
@@ -950,17 +1147,37 @@
             "Этому сайту назначено %s слова.",
             "Этому сайту назначено %s слов."
          ],
-         "Leave existing translations as they are": [
-            "Оставить существующие переводы без изменений"
-         ],
-         "Overwrite existing translations": [
-            "Перезаписать существующие переводы"
-         ],
          "Some of the content you want to translate is already translated": [
             "Часть контента, который вы хотите перевести, уже переведена"
          ],
          "What do you want to do with the content that's already translated?": [
             "Что вы хотите сделать с уже переведенным контентом?"
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Translate from scratch\" translates them again from the start.": [
+            "Элементы, изменившиеся после перевода, отправляются в любом случае. Вариант «Оставить» переводит только то, что изменилось. Вариант «Перевести с нуля» переводит их заново с самого начала."
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Overwrite\" translates them again from the start.": [
+            "Элементы, изменившиеся после перевода, отправляются в любом случае. Параметр «Оставить» переводит только то, что изменилось. Параметр «Перезаписать» переводит их заново с самого начала."
+         ],
+         "\"Translate from scratch\" replaces the edits made to these translations:": [
+            "Параметр «Перевести с нуля» заменяет изменения, внесенные в эти переводы:"
+         ],
+         "And %s more item.": [
+            "И еще %s элемент.",
+            "И еще %s элемента.",
+            "И еще %s элементов."
+         ],
+         "Leave existing translations as they are": [
+            "Оставить существующие переводы без изменений"
+         ],
+         "Translate from scratch": [
+            "Перевести с нуля"
+         ],
+         "Replaces the existing translations, including the edits made to them": [
+            "Заменяет существующие переводы, включая внесенные в них изменения"
+         ],
+         "Overwrite existing translations": [
+            "Перезаписать существующие переводы"
          ],
          "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
             "Переводы от DeepL, Google Translate и Microsoft Translator лучше проверить перед публикацией."
@@ -995,8 +1212,17 @@
          " Checking ": [
             " Проверка "
          ],
+         "To translate automatically, WPML needs an active automatic translation account. Turn on automatic translation, or choose a different translation option.": [
+            "Чтобы переводить автоматически, WPML требуется активная учетная запись автоматического перевода. Включите автоматический перевод или выберите другой вариант перевода."
+         ],
          "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
             "Чтобы переводить автоматически, сначала нужно <enable_ate>включить <b>Расширенный редактор переводов</b> WPML</enable_ate>.<br/>Включите <b>Расширенный редактор переводов</b> и нажмите <check_again>проверить снова</check_again> или выберите другой вариант перевода."
+         ],
+         "Turn on automatic translation": [
+            "Включить автоматический перевод"
+         ],
+         "Learn more": [
+            "Узнать больше"
          ],
          "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
             "Выбранный контент был переведен с помощью <b>Классического редактора переводов</b> и не может быть отправлен на автоматический перевод. Чтобы разрешить это, включите параметр «Использовать также для старых переводов» на странице <wpmlSettingLink>Настройки WPML</wpmlSettingLink>."
@@ -1067,11 +1293,14 @@
          "WPML does not support duplicating %1$s elements and strings.": [
             "WPML не поддерживает дублирование элементов и строк %1$s."
          ],
-         "WPML does not support duplicating taxonomies.": [
-            "WPML не поддерживает дублирование таксономий."
+         "Taxonomy terms cannot be duplicated. Translate them instead. When you duplicate posts, WPML copies their terms that have no translation yet and lists these copies as not translated until they are translated.": [
+            "Элементы таксономий нельзя дублировать. Вместо этого переведите их. При дублировании записей WPML копирует их элементы, у которых еще нет перевода, и помечает эти копии как непереведенные, пока они не будут переведены."
          ],
-         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
-            "WPML не поддерживает дублирование таксономий. Ваш выбор дублирования таксономий на %1$s будет проигнорирован, если вы продолжите перевод."
+         "Taxonomy terms cannot be duplicated, so the terms you selected will not be duplicated to %1$s. The posts you duplicate get copies of their terms that have no translation yet. WPML lists these copies as not translated until they are translated.": [
+            "Элементы таксономий нельзя дублировать, поэтому выбранные элементы не будут продублированы на %1$s. Дублируемые записи получат копии своих элементов, у которых еще нет перевода. WPML помечает эти копии как непереведенные, пока они не будут переведены."
+         ],
+         "If the editor is set to translate automatically when it opens, it starts from a machine translation that uses your words. Undo translation in the editor clears it.": [
+            "Если редактор настроен на автоматический перевод при открытии, он начинает с машинного перевода, расходующего ваши слова. Команда «Отменить перевод» в редакторе очищает его."
          ],
          "Finish setting up %s on your site": [
             "Завершите настройку %s на своем сайте"
@@ -1079,14 +1308,26 @@
          "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
             "Вам необходимо авторизовать %s, чтобы отправлять им контент на перевод.<br/>Перейдите на <a>вкладку «Переводчики»</a>, чтобы завершить настройку, и нажмите <check_again>проверить снова</check_again> или выберите другой вариант перевода."
          ],
+         "WPML will not send these items. A reviewer has their translation open:": [
+            "WPML не будет отправлять эти элементы. Их перевод открыт рецензентом:"
+         ],
+         "To send them, finish or cancel the review in Translation Tasks first.": [
+            "Чтобы отправить их, сначала завершите или отмените проверку в разделе «Задачи перевода»."
+         ],
          "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
             "Часть выбранного контента уже открыта для проверки перевода. Повторная отправка заменит этот перевод."
          ],
          "You selected multiple translation methods for content across different languages:": [
             "Вы выбрали несколько методов перевода для контента на разных языках:"
          ],
+         "Translation Service": [
+            "Сервис перевода"
+         ],
          "Sent for translation": [
             "Отправлено на перевод"
+         ],
+         "Some content was not sent": [
+            "Некоторый контент не был отправлен"
          ],
          "Some items were not sent for translation": [
             "Некоторые элементы не были отправлены на перевод"
@@ -1114,6 +1355,9 @@
          ],
          "Continue sending": [
             "Продолжить отправку"
+         ],
+         "Open Translations": [
+            "Открыть переводы"
          ],
          "Ok": [
             "Ок"
@@ -1187,6 +1431,15 @@
          "WPML could not count the words of these items.": [
             "WPML не удалось подсчитать количество слов для этих элементов."
          ],
+         "WPML could not get the price of automatic translation from our translation system. Try again in a few minutes.": [
+            "WPML не удалось получить стоимость автоматического перевода из нашей системы перевода. Повторите попытку через несколько минут."
+         ],
+         "No translation engine translates this content from %1$s into %2$s.": [
+            "Ни одна система перевода не переводит этот контент с языка %1$s на %2$s."
+         ],
+         "WPML did not send these items. A reviewer has their translation open. Finish or cancel the review in Translation Tasks, then send them again.": [
+            "WPML не отправил эти элементы. Их перевод открыт рецензентом. Завершите или отмените проверку в разделе «Задачи перевода», затем отправьте их снова."
+         ],
          "Some content couldn't be sent to translation.": [
             "Некоторый контент не удалось отправить на перевод."
          ],
@@ -1226,6 +1479,103 @@
          "Items already sent will be translated and delivered normally.": [
             "Уже отправленные элементы будут переведены и доставлены в обычном режиме."
          ],
+         "%d post": [
+            "%d запись",
+            "%d записи",
+            "%d записей"
+         ],
+         "%1$s and %2$d term": [
+            "%1$s и %2$d элемент",
+            "%1$s и %2$d элемента",
+            "%1$s и %2$d элементов"
+         ],
+         "%d term": [
+            "%d элемент",
+            "%d элемента",
+            "%d элементов"
+         ],
+         "%1$s: %2$s is assigned to %3$s. They find it in their Translations queue.": [
+            "%1$s: %2$s назначен переводчику %3$s. Переводчик найдет его в своей очереди переводов.",
+            "%1$s: %2$s назначены переводчику %3$s. Переводчик найдет их в своей очереди переводов.",
+            "%1$s: %2$s назначены переводчику %3$s. Переводчик найдет их в своей очереди переводов."
+         ],
+         "First available": [
+            "Первый доступный"
+         ],
+         "%1$s: %2$s is waiting for you in Translations.": [
+            "%1$s: %2$s ждет вас в разделе «Переводы».",
+            "%1$s: %2$s ждут вас в разделе «Переводы».",
+            "%1$s: %2$s ждут вас в разделе «Переводы»."
+         ],
+         "%1$s: %2$s is sent to %3$s.": [
+            "%1$s: %2$s отправлен в сервис %3$s.",
+            "%1$s: %2$s отправлены в сервис %3$s.",
+            "%1$s: %2$s отправлены в сервис %3$s."
+         ],
+         "%1$s: %2$s is being translated automatically.": [
+            "%1$s: %2$s переводится автоматически.",
+            "%1$s: %2$s переводятся автоматически.",
+            "%1$s: %2$s переводятся автоматически."
+         ],
+         "%1$s and %2$d of %3$d term": [
+            "%1$s и %2$d из %3$d элемента",
+            "%1$s и %2$d из %3$d элементов",
+            "%1$s и %2$d из %3$d элементов"
+         ],
+         "%1$d of %2$d term": [
+            "%1$d из %2$d элемента",
+            "%1$d из %2$d элементов",
+            "%1$d из %2$d элементов"
+         ],
+         "%1$s: %2$s sent for automatic translation.": [
+            "%1$s: %2$s отправлено на автоматический перевод."
+         ],
+         "%1$s: %2$s sent for translation.": [
+            "%1$s: %2$s отправлено на перевод."
+         ],
+         "The term names could not be read.": [
+            "Не удалось прочитать названия элементов."
+         ],
+         "%s, and more": [
+            "%s и еще"
+         ],
+         "Already translated: %s": [
+            "Уже переведено: %s"
+         ],
+         "In translation: %s": [
+            "На переводе: %s"
+         ],
+         "In translation with their posts: %s": [
+            "На переводе со своими записями: %s"
+         ],
+         "Which terms were not sent again": [
+            "Какие элементы не были отправлены повторно"
+         ],
+         "Terms not sent again: %1$d already translated and %2$d in translation (%3$d with their posts).": [
+            "Элементы, которые не отправляются повторно: %1$d уже переведено и %2$d на переводе (%3$d со своими записями)."
+         ],
+         "The terms could not be sent.": [
+            "Не удалось отправить элементы."
+         ],
+         "%1$s: %2$d term": [
+            "%1$s: %2$d элемент",
+            "%1$s: %2$d элемента",
+            "%1$s: %2$d элементов"
+         ],
+         "%1$s: not sent. %2$s no longer translates from %3$s to %4$s. <a>Choose another translator</a> at Step 2, then send again.": [
+            "%1$s: не отправлено. %2$s больше не переводит с языка «%3$s» на «%4$s». <a>Выберите другого переводчика</a> на шаге 2, затем повторите отправку."
+         ],
+         "Not sent (%s)": [
+            "Не отправлено: (%s)"
+         ],
+         "%1$s: %2$d term (%3$s).": [
+            "%1$s: %2$d элемент — (%3$s).",
+            "%1$s: %2$d элемента — (%3$s).",
+            "%1$s: %2$d элементов — (%3$s)."
+         ],
+         "%1$s %2$d": [
+            "%1$s %2$d"
+         ],
          "Continue to %s": [
             "Перейти к %s"
          ],
@@ -1234,9 +1584,6 @@
          ],
          "<p><a><s>Contact WPML support for help</s></a></p>": [
             "<p><a><s>Обратитесь за помощью в службу поддержки WPML</s></a></p>"
-         ],
-         "Translation Service": [
-            "Сервис перевода"
          ],
          "sending for professional translation..": [
             "отправка на профессиональный перевод..."
@@ -1257,6 +1604,12 @@
          ],
          "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
             "Выбранный в данный момент редактор перевода не поддерживает автоматический перевод. Чтобы отправлять контент на автоматический перевод, необходимо включить <b>Расширенный редактор перевода</b>.<br/> Проверьте настройки на <wpml_settings>странице настроек WPML</wpml_settings>."
+         ],
+         "WPML cannot translate automatically: automatic translation is off for this site. Click \"Turn on automatic translation\" on the dashboard, then send again.": [
+            "WPML не может переводить автоматически: автоматический перевод отключен для этого сайта. Нажмите «Включить автоматический перевод» на панели управления, затем отправьте снова."
+         ],
+         "%1$s cannot be translated automatically from %2$s with your translation engines. Choose another translation method for it, or change your engines.": [
+            "%1$s нельзя перевести автоматически с %2$s с помощью ваших систем перевода. Выберите для этого другой способ перевода или измените свои системы перевода."
          ],
          "Validation error happened during send to translation.": [
             "При отправке на перевод произошла ошибка валидации."
@@ -1327,20 +1680,108 @@
          "No, I will split jobs myself": [
             "Нет, я разделю задания самостоятельно"
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
-            "Некоторые термины таксономии еще не отправлены. Те, что были отправлены, переводятся — нажмите «Продолжить отправку», чтобы отправить остальные."
+         "%d not translated": [
+            "%d не переведен",
+            "%d не переведено",
+            "%d не переведено"
+         ],
+         "%d needs an update": [
+            "%d требует обновления",
+            "%d требуют обновления",
+            "%d требуют обновления"
+         ],
+         "%d picked": [
+            "выбран %d",
+            "выбрано %d",
+            "выбрано %d"
+         ],
+         "plus %d parent term": [
+            "плюс %d родительский элемент",
+            "плюс %d родительских элемента",
+            "плюс %d родительских элементов"
+         ],
+         "%d of them a parent term": [
+            "%d из них — родительский элемент",
+            "%d из них — родительские элементы",
+            "%d из них — родительские элементы"
+         ],
+         "%1$s, %2$s": [
+            "%1$s, %2$s"
+         ],
+         "What will be sent": [
+            "Что будет отправлено"
+         ],
+         "Target language": [
+            "Язык перевода"
+         ],
+         "Terms sent now": [
+            "Элементы, отправляемые сейчас"
+         ],
+         "Terms not sent again: already translated": [
+            "Элементы, которые не отправляются повторно: уже переведены"
+         ],
+         "Terms not sent again: queued or in translation": [
+            "Элементы, которые не отправляются повторно: в очереди или на переводе"
+         ],
+         "Terms not sent again: in translation": [
+            "Элементы, которые не отправляются повторно: на переводе"
+         ],
+         "%d with their posts": [
+            "%d со своими записями"
+         ],
+         "queued by Translate Everything": [
+            "в очереди функции «Переводить все»"
+         ],
+         "Terms Translate Everything has queued are counted and not sent again. They are translated automatically.": [
+            "Элементы, поставленные в очередь функцией «Переводить все», подсчитываются и повторно не отправляются. Они переводятся автоматически."
+         ],
+         "Terms in translation, with their posts or from this section, are counted but not sent again. Their translation arrives with the job that has them.": [
+            "Элементы, находящиеся на переводе (вместе со своими записями или из этого раздела), учитываются, но не отправляются повторно. Их перевод поступает вместе с содержащим их заданием."
+         ],
+         "Terms you send from here are not sent again when their posts are translated.": [
+            "Элементы, отправленные отсюда, не отправляются повторно при переводе содержащих их записей."
+         ],
+         "This send creates %d job for the translation service from the selected terms.": [
+            "При этой отправке для сервиса перевода создается %d задание на перевод из выбранных элементов.",
+            "При этой отправке для сервиса перевода создается %d задания на перевод из выбранных элементов.",
+            "При этой отправке для сервиса перевода создается %d заданий на перевод из выбранных элементов."
+         ],
+         "%d term you did not select is not sent.": [
+            "%d не выбранный вами элемент не отправлен.",
+            "%d не выбранных вами элемента не отправлены.",
+            "%d не выбранных вами элементов не отправлены."
+         ],
+         "A picked term whose parent is not translated takes its parent along, so the hierarchy is kept: plus %1$d parent term (%2$s).": [
+            "Выбранный элемент, родительский элемент которого не переведен, отправляется вместе с ним для сохранения иерархии: плюс %1$d родительский элемент ((%2$s)).",
+            "Выбранный элемент, родительский элемент которого не переведен, отправляется вместе с ним для сохранения иерархии: плюс %1$d родительских элемента ((%2$s)).",
+            "Выбранный элемент, родительский элемент которого не переведен, отправляется вместе с ним для сохранения иерархии: плюс %1$d родительских элементов ((%2$s))."
+         ],
+         "Translate automatically": [
+            "Переводить автоматически"
+         ],
+         "Translate myself": [
+            "Переводить самому"
+         ],
+         "Assign a translator": [
+            "Назначить переводчика"
+         ],
+         "Assign translation service": [
+            "Назначить сервис перевода"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Click Continue sending to send the rest.": [
+            "Некоторые элементы таксономий еще не отправлены. Отправленные элементы сейчас переводятся. Нажмите «Продолжить отправку», чтобы отправить остальные."
          ],
          "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
             "Термины таксономии еще не отправлены. Нажмите «Продолжить отправку», чтобы отправить их."
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
-            "Некоторые термины таксономии еще не отправлены. Те, что были отправлены, переводятся — повторите попытку для неотправленных элементов, чтобы отправить остальные."
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Retry the not-sent items to send the rest.": [
+            "Некоторые элементы таксономий еще не отправлены. Отправленные элементы сейчас переводятся. Повторите попытку для неотправленных элементов, чтобы отправить остальные."
          ],
          "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
             "Термины таксономии еще не отправлены. Повторите попытку для неотправленных элементов, чтобы отправить их."
          ],
-         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
-            "Некоторые элементы таксономии не были отправлены на перевод. Те, что были отправлены, переводятся — отправьте остальные еще раз, чтобы закончить."
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated. Send the rest again to finish.": [
+            "Некоторые элементы таксономий не были отправлены на перевод. Отправленные элементы сейчас переводятся. Отправьте остальные повторно для завершения."
          ],
          "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
             "WPML не удалось отправить элементы таксономии на перевод, поэтому ни один из них не был отправлен. Пожалуйста, попробуйте еще раз."
@@ -1357,6 +1798,9 @@
          "Existing content": [
             "Существующий контент"
          ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$sИтого:%2$s %3$s"
+         ],
          "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
             "Вы выбрали перевод строк на языке %1$s. Только эти строки будут переведены на %2$s."
          ],
@@ -1366,14 +1810,8 @@
          "Source language": [
             "Исходный язык"
          ],
-         "Target language": [
-            "Язык перевода"
-         ],
          "Words to translate": [
             "Слов для перевода"
-         ],
-         "%1$sTotal:%2$s %3$s": [
-            "%1$sИтого:%2$s %3$s"
          ],
          "Translation service additional options": [
             "Дополнительные параметры сервиса перевода"
@@ -1384,20 +1822,36 @@
          "Fetching translation service data...": [
             "Получение данных сервиса перевода..."
          ],
+         "%1$s: all %2$d terms": [
+            "%1$s: все элементы (%2$d)"
+         ],
+         "%1$s: %2$d of %3$d terms": [
+            "%1$s: элементов %2$d из %3$d"
+         ],
+         "%1$d Taxonomy (%2$s)": [
+            "Таксономия (%1$d) (%2$s)",
+            "Таксономии (%1$d) (%2$s)",
+            "Таксономии (%1$d) (%2$s)"
+         ],
+         "Selected: %1$s · %2$s": [
+            "Выбрано: %1$s · %2$s"
+         ],
+         "%d Post": [
+            "%d запись",
+            "%d записи",
+            "%d записей"
+         ],
+         "Selected: %s": [
+            "Выбрано: %s"
+         ],
+         "Change": [
+            "Изменить"
+         ],
+         "The term counts could not be read.": [
+            "Не удалось прочитать количество терминов."
+         ],
          "-": [
             "-"
-         ],
-         "Translate automatically": [
-            "Переводить автоматически"
-         ],
-         "Translate myself": [
-            "Переводить самому"
-         ],
-         "Assign a translator": [
-            "Назначить переводчика"
-         ],
-         "Assign translation service": [
-            "Назначить сервис перевода"
          ],
          "Do nothing": [
             "Ничего не делать"
@@ -1407,9 +1861,6 @@
          ],
          "Choose a translator": [
             "Выберите переводчика"
-         ],
-         "First available": [
-            "Первый доступный"
          ],
          "(Me)": [
             "(я)"
@@ -1429,9 +1880,6 @@
          "Minimize": [
             "Свернуть"
          ],
-         "PTC translates at higher quality and gives you publish-ready results.": [
-            "PTC переводит с более высоким качеством и предоставляет готовые к публикации результаты."
-         ],
          "Step 2": [
             "Шаг 2"
          ],
@@ -1440,54 +1888,6 @@
          ],
          "Set up AI translation": [
             "Настроить перевод ИИ"
-         ],
-         "Keep a wp-admin window open until WPML finishes translating": [
-            "Держите окно wp-admin открытым, пока WPML не закончит перевод"
-         ],
-         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
-            "Обычно WPML переводит ваш контент в фоновом режиме, и вам не нужно оставаться в админ-панели WordPress. Однако WPML не может связаться с этим сайтом, поэтому он получает ваши переводы, пока открыто окно wp-admin."
-         ],
-         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
-            "Вы можете продолжать работу в любом месте админ-панели WordPress. Просто оставьте одно окно открытым до завершения перевода."
-         ],
-         "Next check for translations in %s.": [
-            "Следующая проверка переводов через %s."
-         ],
-         "Hide details": [
-            "Скрыть подробности"
-         ],
-         "What could be blocking it, and how to fix it": [
-            "Что может блокировать связь и как это исправить"
-         ],
-         "Check these on your site": [
-            "Проверьте это на своем сайте"
-         ],
-         "The site might be on a private network, in staging, or only reachable through a VPN.": [
-            "Сайт может находиться в частной сети, на этапе разработки или быть доступен только через VPN."
-         ],
-         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
-            "Базовая аутентификация HTTP или список разрешенных IP-адресов могут блокировать внешние запросы."
-         ],
-         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
-            "Плагин безопасности, брандмауэр или WAF могут отклонять запросы от WPML."
-         ],
-         "The site might be in maintenance mode.": [
-            "Сайт может находиться в режиме обслуживания."
-         ],
-         "Already fixed this on your site?": [
-            "Уже исправили это на своем сайте?"
-         ],
-         "Check again whether the site is reachable": [
-            "Проверить еще раз, доступен ли сайт"
-         ],
-         "Checking…": [
-            "Проверка…"
-         ],
-         "Check again": [
-            "Проверить еще раз"
-         ],
-         "Still couldn't reach your site.": [
-            "Все еще не удалось связаться с вашим сайтом."
          ],
          "Automatic translations completed": [
             "Автоматические переводы завершены"
@@ -1514,66 +1914,13 @@
          "Map the language": [
             "Сопоставить язык"
          ],
-         "%d second": [
-            "%d секунда",
-            "%d секунды",
-            "%d секунд"
+         "%d translation picked up.": [
+            "Получен %d перевод.",
+            "Получено %d перевода.",
+            "Получено %d переводов."
          ],
-         "%d minute": [
-            "%d минута",
-            "%d минуты",
-            "%d минут"
-         ],
-         "%d hour": [
-            "%d час",
-            "%d часа",
-            "%d часов"
-         ],
-         "%d day": [
-            "%d день",
-            "%d дня",
-            "%d дней"
-         ],
-         "%d translation": [
-            "%d перевод",
-            "%d перевода",
-            "%d переводов"
-         ],
-         "checking now": [
-            "проверка сейчас"
-         ],
-         "next check in %s": [
-            "следующая проверка через %s"
-         ],
-         "WPML stopped checking for delivered translations after repeated failures.": [
-            "WPML прекратил проверку доставки переводов после нескольких неудачных попыток."
-         ],
-         "Receiving translations: last received %1$s ago · %2$s": [
-            "Получение переводов: последние получены %1$s назад · %2$s"
-         ],
-         "Receiving translations: last received %s ago": [
-            "Получение переводов: последние получены %s назад"
-         ],
-         "Receiving translations: no translations received yet · %s": [
-            "Получение переводов: переводы еще не получены · %s"
-         ],
-         "Receiving translations: no translations received yet": [
-            "Получение переводов: переводы еще не получены"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
-            "Получение переводов: последний получен %1$s назад · %2$s ожидает · %3$s"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting": [
-            "Получение переводов: последний получен %1$s назад · %2$s ожидает"
-         ],
-         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
-            "Получение переводов: переводы еще не получены · %1$s ожидает · %2$s"
-         ],
-         "Receiving translations: no translations received yet · %s waiting": [
-            "Получение переводов: переводы еще не получены · %s ожидает"
-         ],
-         "These translations are taking longer than they should to arrive.": [
-            "Доставка этих переводов занимает больше времени, чем ожидалось."
+         "Nothing new to pick up yet.": [
+            "Пока нет новых переводов для получения."
          ],
          "Picking up translations…": [
             "Получение переводов…"
@@ -1632,8 +1979,8 @@
          "New content is ready to translate": [
             "Новый контент готов к переводу"
          ],
-         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
-            "%s стали переводимыми после того, как вы проверили стоимость перевода, поэтому функция «Переводить все» не включила их. Проверьте стоимость и включите их, чтобы ваш сайт оставался полностью переведенным."
+         "%s became translatable after Translate Everything was set up, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "%s стали переводимыми после настройки режима «Переводить все», поэтому они не были в него включены. Проверьте стоимость и включите их, чтобы сайт оставался полностью переведенным."
          ],
          "Review cost and include": [
             "Проверить стоимость и включить"
@@ -1652,15 +1999,6 @@
          ],
          "PTC can translate your software right inside your Git workflow.": [
             "PTC может переводить ваше программное обеспечение прямо в рамках вашего рабочего процесса Git."
-         ],
-         "The following target languages do not support automatic translations: %s": [
-            "Следующие целевые языки не поддерживают автоматический перевод: %s"
-         ],
-         "To enable automatic translation map them to known languages.": [
-            "Чтобы включить автоматический перевод, сопоставьте их с известными языками."
-         ],
-         "Map to known languages": [
-            "Сопоставить с известными языками"
          ],
          "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
             "Чтобы получить помощь, пожалуйста, <supportLink>откройте тикет в нашей ветке форума (Maiya)</supportLink>, нажмите кнопку «Копировать все», чтобы получить отладочную информацию, и «вставьте» ее нашему агенту Maiya. Если проблемы сохраняются, используйте <logsLink>инструмент журналов</logsLink> для сбора дополнительных данных."
@@ -1755,6 +2093,9 @@
          ],
          "Add your site description before you can turn this on.": [
             "Добавьте описание вашего сайта, прежде чем включать эту функцию."
+         ],
+         "Translate Everything needs an active automatic translation account.": [
+            "Для режима «Переводить все» требуется активный аккаунт автоматического перевода."
          ],
          "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
             "Чтобы включить режим «Переводить все автоматически», необходимо активировать расширенный редактор переводов."
@@ -1930,15 +2271,8 @@
          "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
             "WPML перестанет автоматически переводить новый и отредактированный контент. Уже готовые переводы останутся без изменений."
          ],
-         "%d translation is still in progress. You will not be charged for it.": [
-            "%d перевод все еще в процессе. Плата за него взиматься не будет.",
-            "%d перевода все еще в процессе. Плата за них взиматься не будет.",
-            "%d переводов все еще в процессе. Плата за них взиматься не будет."
-         ],
-         "%d translation is currently in progress and will be cancelled.": [
-            "%d перевод в настоящее время находится в процессе и будет отменен.",
-            "%d перевода в настоящее время находятся в процессе и будут отменены.",
-            "%d переводов в настоящее время находятся в процессе и будут отменены."
+         "Translations in progress will be cancelled and refunded. When you switch back on, changed pages will be sent again.": [
+            "Переводы в процессе выполнения будут отменены, а слова возвращены. После повторного включения измененные страницы будут отправлены снова."
          ],
          "You can adjust the content limits once Translate Everything finishes the current translation run.": [
             "Вы сможете настроить ограничения контента, как только «Переводить все» завершит текущий цикл перевода."
@@ -2262,6 +2596,9 @@
          "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
             "Этому элементу требуется обновление перевода, но ранее он был переведен с помощью редактора WordPress. Использование редактора перевода WPML перезапишет существующий перевод."
          ],
+         "%s: review in progress": [
+            "%s: идет проверка"
+         ],
          "%1$s: %2$s%3$s": [
             "%1$s: %2$s%3$s"
          ],
@@ -2316,7 +2653,7 @@
             "На основе оставшегося непереведенного контента на всех языках."
          ],
          "Estimated from the selected source volume multiplied by the target languages.": [
-            "Оценка на основе выбранного объема исходного текста, умноженного на количество целевых языков."
+            "Рассчитывается на основе объема выбранного исходного контента, умноженного на количество целевых языков."
          ],
          "%1$s source words × %2$s language": [
             "%1$s исходное слово × %2$s язык",
@@ -2359,9 +2696,6 @@
          "Same as default": [
             "Так же, как по умолчанию"
          ],
-         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
-            "Автоматический перевод недоступен между %1$s и %2$s, так как они распознаются как один и тот же язык."
-         ],
          "Translation paused": [
             "Перевод приостановлен"
          ],
@@ -2402,10 +2736,10 @@
             "Это то, что требуется для перевода вашего текущего контента сегодня. По тарифу %s за слово; изменения на переведенных страницах оплачиваются повторно."
          ],
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
-            "Учитываются страницы, записи и товары вместе с их произвольными полями, текстами конструктора страниц и текстами медиафайлов, а также используемые ими категории, метки и атрибуты."
+            "Учитываются страницы, записи и товары вместе с их произвольными полями, текстами конструктора страниц и текстами медиафайлов, а также используемые ими рубрики, метки и атрибуты."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Учитываются страницы, записи и товары вместе с их произвольными полями, текстами конструктора страниц и текстами медиафайлов, используемые ими категории, метки и атрибуты, а также строки сайта. Элемент таксономии учитывается в каждом использующем его элементе контента и один раз отдельно, так как он отправляется на перевод обоими способами."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Учитываются страницы, записи и товары вместе с их произвольными полями, текстами конструктора страниц и медиафайлов, используемые ими рубрики, метки и атрибуты, а также строки сайта. Каждая рубрика, метка или атрибут подсчитывается один раз в строке «Таксономии» и не учитывается повторно в использующих их элементах."
          ],
          "Total items": [
             "Всего элементов"
@@ -2445,6 +2779,9 @@
          ],
          "To use prepaid words, register WPML on this site.": [
             "Чтобы использовать предоплаченные слова, зарегистрируйте WPML на этом сайте."
+         ],
+         "Checking…": [
+            "Проверка…"
          ],
          "We could not reach our translation system.": [
             "Не удалось связаться с нашей системой перевода."
@@ -2558,9 +2895,6 @@
          "Connect your sites to share translation memory, glossary and word quota.": [
             "Подключите свои сайты, чтобы совместно использовать память переводов, глоссарий и квоту слов."
          ],
-         "Learn more": [
-            "Узнать больше"
-         ],
          "Copy your migration code:": [
             "Скопируйте ваш код миграции:"
          ],
@@ -2647,6 +2981,9 @@
          ],
          "Scores based on WPML's internal MQM translation quality study.": [
             "Оценки основаны на внутреннем исследовании качества перевода MQM от WPML."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC переводит с более высоким качеством и предоставляет готовые к публикации результаты."
          ],
          "Select an item": [
             "Выберите элемент"

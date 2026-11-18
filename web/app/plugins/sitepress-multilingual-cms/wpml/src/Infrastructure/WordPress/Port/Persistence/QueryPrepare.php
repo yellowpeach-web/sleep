@@ -19,6 +19,16 @@ class QueryPrepare implements QueryPrepareInterface {
   }
 
 
+  public function usersTable(): string {
+    return $this->wpdb->users;
+  }
+
+
+  public function usermetaTable(): string {
+    return $this->wpdb->usermeta;
+  }
+
+
   public function prepare( $sql, ...$args ): string {
     $prepared = $this->wpdb->prepare( $sql, $args );
     return is_string( $prepared ) ? $prepared : '';

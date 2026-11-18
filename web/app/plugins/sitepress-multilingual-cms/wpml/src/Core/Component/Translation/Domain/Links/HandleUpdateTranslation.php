@@ -51,7 +51,7 @@ class HandleUpdateTranslation {
     foreach ( $itemsFrom as $itemFrom ) {
       if ( $itemFrom->isDeleted() ) {
         $this->repository->deleteRelationship( $itemFrom, $itemTo );
-        return;
+        continue;
       }
 
       $this->adjustOnlyOnce( $itemFrom, $itemTo );

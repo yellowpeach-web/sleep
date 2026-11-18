@@ -212,6 +212,6 @@ class WPML_Post_Status extends WPML_WPDB_User {
 	}
 	
 	public function is_duplicate( $post_id ) {
-		return (bool) $this->wp_api->get_post_meta ( $post_id, '_icl_lang_duplicate_of', true );
+		return \WPML\TranslationPolicy\Duplicate\DuplicateReaders::keepsInStep() && (bool) $this->wp_api->get_post_meta ( $post_id, '_icl_lang_duplicate_of', true );
 	}
 }

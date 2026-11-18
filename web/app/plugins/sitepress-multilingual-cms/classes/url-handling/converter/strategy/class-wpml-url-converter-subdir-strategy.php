@@ -9,6 +9,8 @@ class WPML_URL_Converter_Subdir_Strategy extends WPML_URL_Converter_Abstract_Str
 
 	private $root_url;
 
+	private $root_url_state;
+
 	private $is_rest_request;
 
 	public function __construct(
@@ -25,10 +27,48 @@ class WPML_URL_Converter_Subdir_Strategy extends WPML_URL_Converter_Abstract_Str
 
 	public function add_hooks() {
 		add_filter( 'rest_url', [ $this, 'convertRestUrl' ] );
+		add_action( 'clean_post_cache', [ $this, 'forget_root_url_of_post' ] );
+		add_action( 'icl_save_settings', [ $this, 'follow_saved_urls_settings' ] );
 	}
 
 	public function remove_hooks() {
 		remove_filter( 'rest_url', [ $this, 'convertRestUrl' ] );
+		remove_action( 'clean_post_cache', [ $this, 'forget_root_url_of_post' ] );
+		remove_action( 'icl_save_settings', [ $this, 'follow_saved_urls_settings' ] );
+	}
+
+	public function forget_root_url_of_post( $post_id ) {
+		if ( isset( $this->urls_settings['root_page'] ) && (int) $post_id === (int) $this->urls_settings['root_page'] ) {
+			$this->forget_root_url();
+		}
+	}
+
+	public function follow_saved_urls_settings( $settings ) {
+		if ( is_array( $settings ) && isset( $settings['urls'] ) && is_array( $settings['urls'] ) ) {
+			$this->urls_settings = $settings['urls'];
+			$this->forget_root_url();
+		}
+	}
+
+	public function get_root_url_state() {
+		if ( ! $this->uses_root_page() ) {
+			return '';
+		}
+
+		$this->get_root_url();
+
+		return (string) $this->root_url_state;
+	}
+
+	private function forget_root_url() {
+		$this->root_url       = null;
+		$this->root_url_state = null;
+	}
+
+	private function uses_root_page() {
+		return isset( $this->urls_settings['root_page'], $this->urls_settings['show_on_root'] )
+			&& 'page' === $this->urls_settings['show_on_root']
+			&& ! empty( $this->urls_settings['directory_for_default_language'] );
 	}
 
 
@@ -123,6 +163,7 @@ class WPML_URL_Converter_Subdir_Strategy extends WPML_URL_Converter_Abstract_Str
 		$current_language = $this->get_lang_from_url_string( $source_url );
 		$code             = $this->get_language_of_current_dir( $code, '' );
 		$current_language = $this->get_language_of_current_dir( $current_language, '' );
+		$stored_language  = $current_language;
 
 		$code = null !== $code && isset( $this->language_codes_map[ $code ] )
 			? $this->language_codes_map[ $code ]
@@ -131,17 +172,15 @@ class WPML_URL_Converter_Subdir_Strategy extends WPML_URL_Converter_Abstract_Str
 			? $this->language_codes_map[ $current_language ]
 			: $current_language;
 
-		$source_url = str_replace(
-			[
-				trailingslashit( $absolute_home_url . $current_language ),
-				'/' . $code . '//',
-			],
-			[
-				$code ? ( $absolute_home_url . $code . '/' ) : trailingslashit( $absolute_home_url ),
-				'/' . $code . '/',
-			],
-			$source_url
-		);
+		$target_language = $code ? ( $absolute_home_url . $code . '/' ) : trailingslashit( $absolute_home_url );
+		$search          = [ trailingslashit( $absolute_home_url . $current_language ), '/' . $code . '//' ];
+		$replace         = [ $target_language, '/' . $code . '/' ];
+		if ( $stored_language !== $current_language ) {
+			$search[]  = trailingslashit( $absolute_home_url . $stored_language );
+			$replace[] = $target_language;
+		}
+
+		$source_url = str_replace( $search, $replace, $source_url );
 
 		return $this->slash_helper->maybe_user_trailingslashit( $source_url ) . $fragment;
 	}
@@ -172,11 +211,7 @@ class WPML_URL_Converter_Subdir_Strategy extends WPML_URL_Converter_Abstract_Str
 	private function is_root_url( $url ) {
 		$result = false;
 
-		if ( isset( $this->urls_settings['root_page'], $this->urls_settings['show_on_root'] ) &&
-			 'page' === $this->urls_settings['show_on_root'] &&
-			! empty( $this->urls_settings['directory_for_default_language'] )
-		) {
-
+		if ( $this->uses_root_page() ) {
 			$root_url = $this->get_root_url();
 			if ( $root_url ) {
 				$result = strpos( trailingslashit( $url ), $root_url ) === 0;
@@ -188,13 +223,15 @@ class WPML_URL_Converter_Subdir_Strategy extends WPML_URL_Converter_Abstract_Str
 
 	private function get_root_url() {
 		if ( null === $this->root_url ) {
-			$root_post = get_post( $this->urls_settings['root_page'] );
+			$root_id   = (int) $this->urls_settings['root_page'];
+			$root_post = $root_id > 0 ? get_post( $root_id ) : null;
 
-			if ( $root_post ) {
-				$this->root_url = trailingslashit( $this->get_url_helper()->get_abs_home() ) . $root_post->post_name;
-				$this->root_url = trailingslashit( $this->root_url );
+			if ( WPML_Root_Page_Actions::is_usable_root_page( $root_post ) ) {
+				$this->root_url       = trailingslashit( trailingslashit( $this->get_url_helper()->get_abs_home() ) . $root_post->post_name );
+				$this->root_url_state = $root_id . ':' . $root_post->post_name;
 			} else {
-				$this->root_url = false;
+				$this->root_url       = false;
+				$this->root_url_state = '0';
 			}
 		}
 

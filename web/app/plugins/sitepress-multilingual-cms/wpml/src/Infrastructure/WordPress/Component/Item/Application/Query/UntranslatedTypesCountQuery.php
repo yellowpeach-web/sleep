@@ -2,6 +2,7 @@
 
 namespace WPML\Infrastructure\WordPress\Component\Item\Application\Query;
 
+use WPML\Core\Port\Appearance\AppearanceReaderInterface;
 use WPML\Core\Port\Persistence\Exception\DatabaseErrorException;
 use WPML\Core\Port\Persistence\QueryHandlerInterface;
 use WPML\Core\Port\Persistence\QueryPrepareInterface;
@@ -10,9 +11,11 @@ use WPML\Core\SharedKernel\Component\Item\Application\Query\UntranslatedTypesCou
 use WPML\Core\SharedKernel\Component\Language\Application\Query\Dto\LanguageDto;
 use WPML\Core\SharedKernel\Component\Language\Application\Query\LanguagesQueryInterface;
 use WPML\Core\SharedKernel\Component\Post\Application\Query\Dto\PostTypeDto;
+use WPML\Core\SharedKernel\Component\Post\Application\Query\PublishedPostStatusesQueryInterface;
 use WPML\Core\SharedKernel\Component\Post\Application\Query\TranslatableTypesQueryInterface;
 use WPML\Core\SharedKernel\Component\Post\Domain\TranslationEditorPreference;
 use WPML\Core\SharedKernel\Component\Translation\Domain\TranslationStatus;
+use WPML\TranslationPolicy\Policy\Policy;
 
 class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterface {
 
@@ -30,19 +33,27 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
 
   private $heldOutCondition;
 
+  private $publishedPostStatusesQuery;
+
+  private $appearanceReader;
+
 
   public function __construct(
     QueryHandlerInterface $queryHandler,
     QueryPrepareInterface $queryPrepare,
     TranslatableTypesQueryInterface $translatableTypesQuery,
     LanguagesQueryInterface $languagesQuery,
-    HeldOutTranslationCondition $heldOutCondition
+    HeldOutTranslationCondition $heldOutCondition,
+    PublishedPostStatusesQueryInterface $publishedPostStatusesQuery,
+    AppearanceReaderInterface $appearanceReader
   ) {
     $this->queryHandler = $queryHandler;
     $this->queryPrepare = $queryPrepare;
     $this->translatableTypesQuery = $translatableTypesQuery;
     $this->languagesQuery = $languagesQuery;
     $this->heldOutCondition = $heldOutCondition;
+    $this->publishedPostStatusesQuery = $publishedPostStatusesQuery;
+    $this->appearanceReader = $appearanceReader;
   }
 
 
@@ -119,6 +130,9 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
 
     $statusesIn = $this->getStatusesIn();
 
+    $publishedPostStatuses = $this->publishedPostStatusesQuery->get();
+    $postStatusesIn        = $this->queryPrepare->prepareIn( $publishedPostStatuses );
+
     $translatableCodes = $this->translatableSecondaryCodes();
     $languagesIn       = $this->queryPrepare->prepareIn( $translatableCodes );
 
@@ -132,6 +146,8 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
 
     $heldOutPerDocument = $this->heldOutCondition->existsSql( $translationsTable . '.trid' );
     $heldOutFlag        = $heldOutPerDocument === '' ? '0' : "( $heldOutPerDocument )";
+
+    $shownCondition = $this->notShownYetCondition( $translationsTable );
 
     $sql = "
     SELECT translations.post_type,
@@ -164,16 +180,17 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
               AND postmeta_wpml.meta_key = '$postMetaKeyUseWpml'
 
             WHERE element_type IN ($typesIn)
-              AND post_status = 'publish'
+              AND post_status IN ({$postStatusesIn})
               AND source_language_code IS NULL
-              AND {$this->getPostMetaConditions( $nativeEditorGlobalSetting, $nativeEditorSettingPerType )}
+              AND {$this->editorCondition( $this->getPostMetaConditions( $nativeEditorGlobalSetting, $nativeEditorSettingPerType ), 'posts' )}
+              {$shownCondition}
          ) as translations
       WHERE translations.is_untranslated = 1 OR translations.has_held_out = 1
       GROUP BY translations.post_type;
     ";
 
     try {
-      if ( $translatableCodes && $postTypes ) {
+      if ( $translatableCodes && $postTypes && $publishedPostStatuses ) {
         $untranslatedTypesCount = $this->queryHandler->query(
           $this->queryPrepare->prepare( $sql, count( $translatableCodes ) )
         )->getResults();
@@ -207,6 +224,12 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
   public function getSomeIds( $numberOfIdsToFetch, $offset, $type ) {
     $statusesIn = $this->getStatusesIn();
 
+    $publishedPostStatuses = $this->publishedPostStatusesQuery->get();
+    if ( ! $publishedPostStatuses ) {
+      return [];
+    }
+    $postStatusesIn = $this->queryPrepare->prepareIn( $publishedPostStatuses );
+
     $translatableCodes = $this->translatableSecondaryCodes();
     if ( ! $translatableCodes ) {
       return [];
@@ -219,6 +242,8 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
 
     $heldOut       = $this->heldOutCondition->sql( 'its' );
     $heldOutIsDone = $heldOut === '' ? '' : "OR ( $heldOut )";
+
+    $shownCondition = $this->notShownYetCondition( 'itr' );
 
     $sql = "
       SELECT p.ID
@@ -235,7 +260,7 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
              ON pm_wpml.post_id = p.ID
             AND pm_wpml.meta_key = '$postMetaKeyUseWpml'
       WHERE itr.element_type = CONCAT('post_', %s)
-        AND p.post_status = 'publish'
+        AND p.post_status IN ({$postStatusesIn})
         AND itr.source_language_code IS NULL
         AND (
           SELECT COUNT(inner_itr.trid)
@@ -247,7 +272,8 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
             AND its.status NOT IN ({$statusesIn})
             AND ( its.needs_update != 1 {$heldOutIsDone} )
         ) < %d
-        AND COALESCE({$this->getPerPostEditorCase( 'pm_editor', 'pm', 'pm_wpml' )}, 0) = 0
+        AND {$this->editorCondition( "COALESCE({$this->getPerPostEditorCase( 'pm_editor', 'pm', 'pm_wpml' )}, 0) = 0", 'p' )}
+        {$shownCondition}
       ORDER BY p.ID ASC
       LIMIT %d OFFSET %d
     ";
@@ -266,6 +292,28 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
     } catch ( DatabaseErrorException $e ) {
       return [];
     }
+  }
+
+
+  private function notShownYetCondition( string $translationsAlias ): string {
+    $heldPostTypes = array_values(
+      array_filter(
+        $this->appearanceReader->heldTypes(),
+        function ( string $type ) {
+          return strpos( $type, 'post_' ) === 0;
+        }
+      )
+    );
+    if ( ! $heldPostTypes ) {
+      return '';
+    }
+
+    $appeared = $this->appearanceReader->existsSql( "{$translationsAlias}.element_type", "{$translationsAlias}.element_id" );
+    if ( $appeared === '' ) {
+      return '';
+    }
+
+    return "AND NOT ( {$translationsAlias}.element_type IN ({$this->queryPrepare->prepareIn( $heldPostTypes )}) AND NOT {$appeared} )";
   }
 
 
@@ -329,6 +377,11 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
       WHEN $legacyAlias.meta_value = 'no' THEN 0
       ELSE NULL
     END";
+  }
+
+
+  private function editorCondition( string $todaysCondition, string $postsAlias ) : string {
+    return Policy::editorSql()->usesWpmlEditor( $todaysCondition, "{$postsAlias}.ID", "{$postsAlias}.post_type" );
   }
 
 

@@ -14,4 +14,10 @@ interface TranslationEditorInterface {
   public function hasLocalJobInProgress( int $postId ): bool;
 
 
+  public function carriesEditsMadeOutsideWpml(): bool;
+
+
+  public function waitsInClassicTranslationEditor( int $postId ): bool;
+
+
 }

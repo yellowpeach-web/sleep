@@ -12,6 +12,8 @@ class RowChange {
 
 	const REMOVE = 'remove';
 
+	const EDIT = 'edit';
+
 	const AMBIGUOUS = 'ambiguous';
 
 	private $kind;
@@ -31,7 +33,9 @@ class RowChange {
 		$removed = count( $before ) - $kept;
 
 		if ( $added && $removed ) {
-			return new self( self::AMBIGUOUS, [] );
+			return self::editsInPlace( $before, $after )
+				? new self( self::EDIT, self::inPlace( $after ) )
+				: new self( self::AMBIGUOUS, [] );
 		}
 
 		if ( $added ) {
@@ -64,6 +68,33 @@ class RowChange {
 		return $map;
 	}
 
+	private static function editsInPlace( array $before, array $after ) {
+		$before = array_values( $before );
+		$after  = array_values( $after );
+
+		if ( count( $before ) !== count( $after ) ) {
+			return false;
+		}
+
+		$changedBefore = [];
+		$changedAfter  = [];
+
+		foreach ( $after as $index => $hash ) {
+			if ( $before[ $index ] !== $hash ) {
+				$changedBefore[] = $before[ $index ];
+				$changedAfter[]  = $hash;
+			}
+		}
+
+		return ! array_intersect( $changedAfter, $changedBefore );
+	}
+
+	private static function inPlace( array $after ) {
+		$indexes = array_keys( array_values( $after ) );
+
+		return array_combine( $indexes, $indexes );
+	}
+
 	private static function isInOrder( array $map ) {
 		foreach ( $map as $newIndex => $oldIndex ) {
 			if ( $newIndex !== $oldIndex ) {
@@ -87,7 +118,11 @@ class RowChange {
 	}
 
 	public function needsTranslating() {
-		return in_array( $this->kind, [ self::INSERT, self::AMBIGUOUS ], true );
+		return in_array( $this->kind, [ self::INSERT, self::EDIT, self::AMBIGUOUS ], true );
+	}
+
+	public function editsRowsInPlace() {
+		return self::EDIT === $this->kind;
 	}
 
 	public function outdatesJob() {

@@ -8,7 +8,10 @@ use WPML\Core\SharedKernel\Component\Post\Domain\TranslateEverythingScope;
 class OfferedTypeDefaults {
 
 	public function persist() {
-		PostTypesSinceRepositoryFactory::create()
-			->fillMissingSinceDates( TranslateEverythingScope::offeredOnly( PostTypes::getAutomaticTranslatable() ) );
+		$offered    = TranslateEverythingScope::offeredOnly( PostTypes::getAutomaticTranslatable() );
+		$repository = PostTypesSinceRepositoryFactory::create();
+
+		$repository->fillMissingSinceDates( $offered );
+		ParkedTypesOffer::forget( $repository->includeAlwaysAllTypes( $offered ) );
 	}
 }

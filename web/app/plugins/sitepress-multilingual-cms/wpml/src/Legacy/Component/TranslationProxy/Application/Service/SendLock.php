@@ -2,7 +2,9 @@
 
 namespace WPML\Legacy\Component\TranslationProxy\Application\Service;
 
-class SendLock {
+use WPML\Core\Component\TranslationProxy\Application\Service\SendLockInterface;
+
+class SendLock implements SendLockInterface {
 
   const LOCK_NAME = 'tp_send';
 
@@ -13,7 +15,7 @@ class SendLock {
   private $lockKey = false;
 
 
-  public function acquire() {
+  public function acquire(): bool {
     $key = $this->keyedLock()->create( null, self::RELEASE_TIMEOUT_SECONDS );
 
     $this->lockKey = is_string( $key ) ? $key : false;

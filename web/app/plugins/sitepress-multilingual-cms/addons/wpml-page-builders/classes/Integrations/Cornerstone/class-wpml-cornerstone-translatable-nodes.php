@@ -1,7 +1,9 @@
 <?php
 
+use WPML\PB\Cornerstone\Modules\ComponentParameters;
 use WPML\PB\Cornerstone\Modules\ModuleWithItemsFromConfig;
 use WPML\FP\Obj;
+use WPML\PB\Cornerstone\Utils;
 use WPML\PB\TranslationJob\SourceLabels;
 
 class WPML_Cornerstone_Translatable_Nodes implements IWPML_Page_Builders_Translatable_Nodes {
@@ -10,7 +12,13 @@ class WPML_Cornerstone_Translatable_Nodes implements IWPML_Page_Builders_Transla
 
 	protected $nodes_to_translate;
 
+	private $fields_by_node_type;
+
 	public function get( $node_id, $settings ) {
+
+		if ( isset( $settings['_type'] ) && Utils::typeIsLayout( $settings['_type'] ) ) {
+			return $this->get_background_image_alt_strings( $node_id, $settings );
+		}
 
 		if ( ! $this->nodes_to_translate ) {
 			$this->initialize_nodes_to_translate();
@@ -45,6 +53,41 @@ class WPML_Cornerstone_Translatable_Nodes implements IWPML_Page_Builders_Transla
 		return $strings;
 	}
 
+	private function get_background_image_alt_strings( $node_id, $settings ) {
+		$strings = [];
+
+		foreach ( $this->get_background_image_alt_fields() as $field ) {
+			$value = Obj::prop( $field['field'], $settings );
+			if ( is_string( $value ) && trim( $value ) ) {
+				$strings[] = new WPML_PB_String(
+					$value,
+					$this->get_string_name( $node_id, $field, $settings ),
+					$field['type'],
+					$field['editor_type']
+				);
+			}
+		}
+
+		return $strings;
+	}
+
+	private function get_background_image_alt_fields() {
+		return [
+			[
+				'field'       => 'bg_lower_img_alt',
+				/* translators: Field label in WPML's translation editor for a page built with Cornerstone. It is the alternative text of the image in the lower background layer of a section, row or column. */
+				'type'        => __( 'Background: Lower Layer Image Alt Text', 'sitepress' ),
+				'editor_type' => 'LINE',
+			],
+			[
+				'field'       => 'bg_upper_img_alt',
+				/* translators: Field label in WPML's translation editor for a page built with Cornerstone. It is the alternative text of the image in the upper background layer of a section, row or column. */
+				'type'        => __( 'Background: Upper Layer Image Alt Text', 'sitepress' ),
+				'editor_type' => 'LINE',
+			],
+		];
+	}
+
 	public function update( $node_id, $settings, WPML_PB_String $string ) {
 
 		if ( ! $this->nodes_to_translate ) {
@@ -66,6 +109,12 @@ class WPML_Cornerstone_Translatable_Nodes implements IWPML_Page_Builders_Transla
 			}
 		}
 
+		foreach ( $this->get_background_image_alt_fields() as $field ) {
+			if ( isset( $settings[ $field['field'] ] ) && $this->get_string_name( $node_id, $field, $settings ) === $string->get_name() ) {
+				$settings[ $field['field'] ] = $string->get_value();
+			}
+		}
+
 		return $settings;
 	}
 
@@ -84,7 +133,30 @@ class WPML_Cornerstone_Translatable_Nodes implements IWPML_Page_Builders_Transla
 			}
 		}
 
+		foreach ( $instances as $instance ) {
+			if ( $instance instanceof WPML_Cornerstone_Module_With_Items ) {
+				$instance->set_fields_of_item_nodes( $this->get_fields_by_node_type() );
+			}
+		}
+
 		return $instances;
+	}
+
+	private function get_fields_by_node_type() {
+		if ( null !== $this->fields_by_node_type ) {
+			return $this->fields_by_node_type;
+		}
+
+		$this->fields_by_node_type = [];
+
+		foreach ( $this->nodes_to_translate as $node_data ) {
+			$node_type = Obj::path( [ 'conditions', '_type' ], $node_data );
+			if ( is_string( $node_type ) && ! empty( $node_data['fields'] ) ) {
+				$this->fields_by_node_type[ $node_type ] = array_column( $node_data['fields'], 'field' );
+			}
+		}
+
+		return $this->fields_by_node_type;
 	}
 
 	public function get_string_name( $node_id, $field, $settings ) {
@@ -342,6 +414,17 @@ class WPML_Cornerstone_Translatable_Nodes implements IWPML_Page_Builders_Transla
 					],
 				],
 			],
+			'layout-table-cell'       => [
+				'conditions' => [ '_type' => 'layout-table-cell' ],
+				'fields'     => [
+					[
+						'field'       => 'text_content',
+						/* translators: Field label in WPML's translation editor for a page built with Cornerstone. Before the colon is the name Cornerstone gives the widget on its own canvas, after it the field inside that widget; keep both halves and the colon. */
+						'type'        => __( 'Table Cell: Text Content', 'sitepress' ),
+						'editor_type' => 'VISUAL',
+					],
+				],
+			],
 			'accordion'               => [
 				'conditions'        => [ '_type' => 'accordion' ],
 				'fields'            => [],
@@ -352,10 +435,16 @@ class WPML_Cornerstone_Translatable_Nodes implements IWPML_Page_Builders_Transla
 				'fields'            => [],
 				'integration-class' => 'WPML_Cornerstone_Tabs',
 			],
+			'component'               => [
+				'conditions'        => [ '_type' => 'component' ],
+				'fields'            => [],
+				'integration-class' => ComponentParameters::class,
+			],
 		];
 	}
 
 	public function initialize_nodes_to_translate() {
-		$this->nodes_to_translate = apply_filters( 'wpml_cornerstone_modules_to_translate', SourceLabels::run( [ self::class, 'get_nodes_to_translate' ] ) );
+		$this->nodes_to_translate  = apply_filters( 'wpml_cornerstone_modules_to_translate', SourceLabels::run( [ self::class, 'get_nodes_to_translate' ] ) );
+		$this->fields_by_node_type = null;
 	}
 }

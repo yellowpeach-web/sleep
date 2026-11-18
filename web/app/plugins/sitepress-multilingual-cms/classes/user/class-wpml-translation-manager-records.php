@@ -11,6 +11,10 @@ class WPML_Translation_Manager_Records extends WPML_Translation_Roles_Records {
 		return \WPML\LIB\WP\User::CAP_MANAGE_TRANSLATIONS;
 	}
 
+	public function delete( $user_id ) {
+		\WPML\Container\make( \WPML\TranslationRoles\Service\TranslationManagerCapability::class )->revoke( (int) $user_id );
+	}
+
 	protected function get_required_wp_roles() {
 
 		return wpml_collect( $this->wp_roles->role_objects )

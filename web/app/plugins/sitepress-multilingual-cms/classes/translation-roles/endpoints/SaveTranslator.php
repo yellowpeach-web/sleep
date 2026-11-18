@@ -3,13 +3,10 @@
 namespace WPML\TranslationRoles;
 
 use WPML\Collect\Support\Collection;
-use WPML\FP\Fns;
 use WPML\FP\Lst;
 use WPML\FP\Obj;
+use WPML\TranslationRoles\Service\TranslatorCapability;
 use function WPML\Container\make;
-use function WPML\FP\invoke;
-use function WPML\FP\partial;
-use function WPML\FP\partialRight;
 use function WPML\FP\pipe;
 
 class SaveTranslator extends SaveUser {
@@ -21,18 +18,11 @@ class SaveTranslator extends SaveUser {
 			->mapWithKeys( function ( $pair ) { return [ $pair['from'] => $pair['to'] ]; } )
 			->toArray();
 
-		$setRole = Fns::tap( invoke( 'add_cap' )->with( \WPML\LIB\WP\User::CAP_TRANSLATE ) );
-
-		$storePairs = Fns::tap( partialRight( [ make( \WPML_Language_Pair_Records::class ), 'store' ], $pairs ) );
-
 		return self::getUser( $data )
-		           ->map( $setRole )
-		           ->map( Obj::prop( 'ID' ) )
-		           ->map( $storePairs )
-		           ->map( function( $user_id ) {
-					   do_action( 'wpml_update_translator', $user_id );
-					   return $user_id;
-				   } )
-		           ->map( Fns::always( true ) );
+		           ->map( function ( $user ) use ( $pairs ) {
+			           make( TranslatorCapability::class )->grant( $user->ID, $pairs, TranslatorCapability::PAIRS_SET );
+
+			           return true;
+		           } );
 	}
 }

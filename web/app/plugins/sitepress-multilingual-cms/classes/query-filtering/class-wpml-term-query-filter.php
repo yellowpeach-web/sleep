@@ -12,8 +12,6 @@ class WPML_Term_Query_Filter {
 
 	private $term_translation;
 
-	private $debug_backtrace;
-
 	private $wpdb;
 
 	private $taxonomy_state;
@@ -26,15 +24,15 @@ class WPML_Term_Query_Filter {
 
 	private $opt_out;
 
+	private $update_term_slug_check;
+
 	public function __construct(
 		WPML_Term_Translation $term_translation,
-		WPML_Debug_BackTrace $debug_backtrace,
 		wpdb $wpdb,
 		IWPML_Taxonomy_State $taxonomy_state,
 		?WPML_Term_Query_Opt_Out $opt_out = null
 	) {
 		$this->term_translation = $term_translation;
-		$this->debug_backtrace  = $debug_backtrace;
 		$this->wpdb             = $wpdb;
 		$this->taxonomy_state   = $taxonomy_state;
 		$this->opt_out          = $opt_out ? $opt_out : new WPML_Term_Query_Opt_Out();
@@ -45,11 +43,61 @@ class WPML_Term_Query_Filter {
 		$this->default_language = $default_language;
 	}
 
+	public function note_update_term_slug_check( $parent, $term_id, $taxonomy ) {
+		$this->update_term_slug_check = [ (string) $taxonomy, (int) $term_id ];
+
+		return $parent;
+	}
+
 	public function get_terms_args_filter( $args, $taxonomies ) {
+		$language = $this->take_update_term_slug_check_language( $args, $taxonomies );
+		if ( ! $language || $language === $this->current_language ) {
+			return $this->filter_args( $args, $taxonomies );
+		}
+
+		global $icl_adjust_id_url_filter_off;
+
+		$current_language             = $this->current_language;
+		$adjust_id_was_off            = $icl_adjust_id_url_filter_off;
+		$this->current_language       = $language;
+		$icl_adjust_id_url_filter_off = true;
+		try {
+			return $this->filter_args( $args, $taxonomies );
+		} finally {
+			$this->current_language       = $current_language;
+			$icl_adjust_id_url_filter_off = $adjust_id_was_off;
+		}
+	}
+
+	private function take_update_term_slug_check_language( $args, $taxonomies ) {
+		if ( ! $this->update_term_slug_check || empty( $args['slug'] ) ) {
+			return null;
+		}
+
+		list( $taxonomy, $term_id ) = $this->update_term_slug_check;
+		if ( ! in_array( $taxonomy, (array) $taxonomies, true ) ) {
+			return null;
+		}
+
+		$this->update_term_slug_check = null;
+
+		$language = $this->term_translation->lang_code_by_termid( $term_id );
+
+		return $language ? (string) $language : null;
+	}
+
+	private function filter_args( $args, $taxonomies ) {
+		$keep_named_translations = false;
 		if ( $this->opt_out->is_id_adjustment_opted_out() ) {
-			return $this->opt_out->is_stand_down_requested()
-				? $args
-				: $this->pin_slug_to_current_language( $args, $taxonomies );
+			$stand_down = $this->opt_out->is_stand_down_requested();
+
+			if ( $stand_down && ! $this->opt_out->is_site_id_adjustment_opted_out() ) {
+				$keep_named_translations = true;
+			} else {
+				return $stand_down
+					? $args
+					: $this->pin_slug_to_current_language( $args, $taxonomies );
+			}
 		}
 
 		if ( $this->lock ) {
@@ -64,17 +112,37 @@ class WPML_Term_Query_Filter {
 			return $args;
 		}
 
+		if ( $keep_named_translations ) {
+			return $this->adjust_args_keeping_named_translations( $args, $taxonomies );
+		}
+
 		$slug_memo_key = $this->slug_memo_key( $args, $taxonomies );
 		if ( null !== $slug_memo_key ) {
-			return $this->slug_memo()->remember(
+			$args = $this->slug_memo()->remember(
 				$slug_memo_key,
 				function () use ( $args, $taxonomies ) {
 					return $this->adjust_args( $args, $taxonomies );
 				}
 			);
+		} else {
+			$args = $this->adjust_args( $args, $taxonomies );
 		}
 
-		return $this->adjust_args( $args, $taxonomies );
+		return $args;
+	}
+
+	private function is_term_adjustment_disabled() {
+		global $icl_adjust_id_url_filter_off;
+
+		if ( ! has_filter( 'wpml_disable_term_adjust_id' ) ) {
+			return (bool) $icl_adjust_id_url_filter_off;
+		}
+
+		try {
+			return (bool) apply_filters( 'wpml_disable_term_adjust_id', $icl_adjust_id_url_filter_off, null );
+		} catch ( Error $error ) {
+			return true;
+		}
 	}
 
 	private function slug_memo() {
@@ -91,17 +159,25 @@ class WPML_Term_Query_Filter {
 		}
 
 		try {
-			return md5( serialize( [ $this->current_language, $this->default_language, is_admin(), (array) $taxonomies, $args ] ) );
+			return md5( serialize( [ $this->current_language, $this->default_language, is_admin(), $this->are_terms_adjusted(), (array) $taxonomies, $args ] ) );
 		} catch ( \Throwable $e ) {
 			return null;
 		}
+	}
+
+	private function are_terms_adjusted() {
+		global $sitepress;
+
+		return $sitepress instanceof SitePress
+			&& false !== has_filter( 'get_term', [ $sitepress, 'get_term_adjust_id' ] )
+			&& ! $this->is_term_adjustment_disabled();
 	}
 
 	private function adjust_args( $args, $taxonomies ) {
 		$this->lock = true;
 
 		if ( isset( $args['cache_domain'] ) ) {
-			$args['cache_domain'] .= '_' . $this->current_language;
+			$args['cache_domain'] .= '_' . $this->current_language . ( $this->are_terms_adjusted() ? '_adj' : '' );
 		}
 
 		$isOrderByEqualTo = Relation::propEq( 'orderby', Fns::__, $args );
@@ -132,12 +208,85 @@ class WPML_Term_Query_Filter {
 			$args = $this->adjust_taxonomies_terms_slugs( $args, $taxonomies );
 		}
 
-		if ( $this->debug_backtrace->is_function_in_call_stack( '_get_term_hierarchy' ) ) {
-			$args['_icl_show_all_langs'] = true;
-		}
-
 		$this->lock = false;
 		return $args;
+	}
+
+	private function adjust_args_keeping_named_translations( $args, $taxonomies ) {
+		$taxonomies = (array) $taxonomies;
+
+		$this->lock = true;
+
+		$slugs = empty( $args['slug'] ) ? [] : array_values( array_filter( (array) $args['slug'], 'strlen' ) );
+		$slug_targets = [];
+		foreach ( $slugs as $slug ) {
+			$term                  = $this->guess_term( (string) $slug, $taxonomies );
+			$slug_targets[ $slug ] = $term ? $this->translation_target( (int) $term->term_id, $term->taxonomy ) : null;
+		}
+
+		$ids        = empty( $args['include'] ) ? [] : array_values( array_filter( array_map( 'intval', $this->explode_and_trim( $args['include'] ) ) ) );
+		$id_targets = [];
+		foreach ( $this->get_terms( $ids, false ) as $term ) {
+			$id_targets[ (int) $term->term_id ] = $this->translation_target( (int) $term->term_id, $term->taxonomy );
+		}
+
+		$kept_slugs = $this->named_with_a_translation( $slug_targets );
+		$kept_ids   = $this->named_with_a_translation( $id_targets );
+
+		$this->lock = false;
+
+		if ( ! $kept_slugs && ! $kept_ids ) {
+			return $this->adjust_args( $args, $taxonomies );
+		}
+
+		$to_adjust = $args;
+		if ( $kept_slugs ) {
+			$to_adjust['slug'] = array_values( array_diff( $slugs, $kept_slugs ) );
+		}
+		if ( $kept_ids ) {
+			$to_adjust['include'] = array_values( array_diff( $ids, $kept_ids ) );
+		}
+
+		$adjusted = $this->adjust_args( $to_adjust, $taxonomies );
+
+		if ( $kept_slugs ) {
+			$adjusted['slug'] = array_values( array_merge( array_filter( (array) $adjusted['slug'], 'strlen' ), $kept_slugs ) );
+			if ( empty( $args['term_taxonomy_id'] ) ) {
+				if ( array_key_exists( 'term_taxonomy_id', $args ) ) {
+					$adjusted['term_taxonomy_id'] = $args['term_taxonomy_id'];
+				} else {
+					unset( $adjusted['term_taxonomy_id'] );
+				}
+			}
+		}
+		if ( $kept_ids ) {
+			$adjusted['include'] = array_values( array_merge( array_filter( array_map( 'intval', $this->explode_and_trim( $adjusted['include'] ) ) ), $kept_ids ) );
+		}
+
+		return $adjusted;
+	}
+
+	private function translation_target( $term_id, $taxonomy ) {
+		if ( ! $this->taxonomy_state->is_translated_taxonomy( $taxonomy ) ) {
+			return null;
+		}
+
+		$target = $this->term_translation->term_id_in( $term_id, $this->current_language );
+
+		return $target ? (int) $target : null;
+	}
+
+	private function named_with_a_translation( array $targets ) {
+		$counts = array_count_values( array_map( 'strval', array_filter( $targets ) ) );
+
+		$kept = [];
+		foreach ( $targets as $named => $target ) {
+			if ( $target && $counts[ (string) $target ] > 1 ) {
+				$kept[] = $named;
+			}
+		}
+
+		return $kept;
 	}
 
 	private function adjust_taxonomies_terms_ids( $terms_ids, $orderByTermId ) {

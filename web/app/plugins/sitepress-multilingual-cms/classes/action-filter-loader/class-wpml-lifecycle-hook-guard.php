@@ -30,12 +30,7 @@ class WPML_Lifecycle_Hook_Guard {
 		$snapshot = array();
 
 		foreach ( self::REQUEST_ENTRY_HOOKS as $hook ) {
-			$snapshot[ $hook ] = array();
-			foreach ( self::callbacks_on( $hook ) as $priority => $callbacks ) {
-				foreach ( $callbacks as $id => $entry ) {
-					$snapshot[ $hook ][ $priority . ':' . $id ] = true;
-				}
-			}
+			$snapshot[ $hook ] = self::callbacks_on( $hook );
 		}
 
 		return $snapshot;
@@ -46,10 +41,14 @@ class WPML_Lifecycle_Hook_Guard {
 
 		foreach ( self::REQUEST_ENTRY_HOOKS as $hook ) {
 			$known = isset( $snapshot[ $hook ] ) ? $snapshot[ $hook ] : array();
+			$now   = self::callbacks_on( $hook );
+			if ( $now === $known ) {
+				continue;
+			}
 
-			foreach ( self::callbacks_on( $hook ) as $priority => $callbacks ) {
+			foreach ( $now as $priority => $callbacks ) {
 				foreach ( $callbacks as $id => $entry ) {
-					if ( isset( $known[ $priority . ':' . $id ] ) || ! isset( $entry['function'] ) ) {
+					if ( isset( $known[ $priority ][ $id ] ) || ! isset( $entry['function'] ) ) {
 						continue;
 					}
 

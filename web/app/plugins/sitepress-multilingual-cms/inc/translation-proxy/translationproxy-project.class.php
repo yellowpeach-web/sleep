@@ -145,6 +145,10 @@ class TranslationProxy_Project {
 
 		if ( ! $batch_data ) {
 			if ( isset( $tp_batch_info ) ) {
+				\WPML\TM\TranslationProxy\StrandedBatchRecovery::beforeNewBatch(
+					$this,
+					isset( $tp_batch_info['batchName'] ) ? $tp_batch_info['batchName'] : null
+				);
 
 				$prepareTpBatchExtraFields = function ( $extraFields ) {
 					$preparedExtraFields = [];
@@ -311,7 +315,7 @@ class TranslationProxy_Project {
 		return $tp_job->get_id();
 	}
 
-	function commit_batch_job( $tp_batch_id = false, $cleanBasketNameAndBatch = false ) {
+	function commit_batch_job( $tp_batch_id = false, $cleanBasketNameAndBatch = false, $batch_name = null ) {
 		$tp_batch_id = $tp_batch_id ? $tp_batch_id : $this->get_batch_job_id();
 
 		if ( ! $tp_batch_id ) {
@@ -326,7 +330,7 @@ class TranslationProxy_Project {
 		);
 
 		$response    = TranslationProxy_Api::proxy_request( '/batches/{batch_id}/commit.json', $params, 'PUT', false );
-		$basket_name = \WPML\TM\TranslationProxy\TpBatchState::getBatchName();
+		$basket_name = $batch_name ? $batch_name : \WPML\TM\TranslationProxy\TpBatchState::getBatchName();
 		if ( $basket_name ) {
 			global $wpdb;
 

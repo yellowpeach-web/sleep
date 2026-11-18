@@ -17,6 +17,10 @@ class SupportLandingController implements PageRenderInterface {
 
   const LANDING_TOP_HOOK = 'wpml_admin_support_landing_top';
 
+  const AFTER_SEARCH_HOOK = 'wpml_admin_support_landing_after_search';
+
+  const SEARCH_ENTRIES_FILTER = 'wpml_admin_support_search_entries';
+
   private $registry;
 
   private $unknownTool = '';
@@ -177,6 +181,9 @@ class SupportLandingController implements PageRenderInterface {
   private function renderRequestSupportCard(): void {
     ?>
         <div id="wpml-support-default-content">
+            <?php
+            do_action( self::AFTER_SEARCH_HOOK );
+            ?>
             <div class="wpml:bg-white wpml:border wpml:border-gray-200 wpml:rounded-md wpml:p-5 wpml:mb-6">
                 <div class="wpml:flex wpml:flex-wrap wpml:items-start wpml:gap-4">
                     <div class="wpml:flex-1 wpml:min-w-[14rem]">
@@ -659,13 +666,50 @@ class SupportLandingController implements PageRenderInterface {
         );
     }
 
-      return array_map(
+      $tools = array_map(
         function ( array $entry ) {
             unset( $entry['searchOrder'] );
             return $entry;
         },
         self::sortedBy( 'searchOrder', $entries )
       );
+
+      return array_merge( self::landingSearchEntries(), $tools );
+  }
+
+
+  private static function landingSearchEntries(): array {
+      $raw = apply_filters( self::SEARCH_ENTRIES_FILTER, array() );
+      $out = array();
+
+    foreach ( is_array( $raw ) ? $raw : array() as $entry ) {
+      if ( ! is_array( $entry )
+        || ! isset( $entry['section'], $entry['tier'], $entry['href'] )
+        || ! is_string( $entry['section'] ) || ! is_string( $entry['href'] )
+        || ! in_array( $entry['tier'], array( 'safe', 'log', 'danger' ), true )
+      ) {
+        continue;
+      }
+
+        $subs = array();
+      foreach ( isset( $entry['subs'] ) && is_array( $entry['subs'] ) ? $entry['subs'] : array() as $sub ) {
+        if ( is_array( $sub ) && isset( $sub['label'], $sub['anchor'] ) && is_string( $sub['label'] ) && is_string( $sub['anchor'] ) ) {
+            $subs[] = array(
+                'label'  => $sub['label'],
+                'anchor' => $sub['anchor'],
+            );
+        }
+      }
+
+        $out[] = array(
+            'section' => $entry['section'],
+            'tier'    => $entry['tier'],
+            'href'    => $entry['href'],
+            'subs'    => $subs,
+        );
+    }
+
+      return $out;
   }
 
 

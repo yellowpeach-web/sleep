@@ -80,9 +80,13 @@ class WPML_URL_Converter {
 		if ( ! $lang_code ) {
 			$lang_code = $sitepress->get_current_language();
 		}
-		$language_from_url = $this->get_language_from_url( $url );
+		$language_from_url = $this->get_language_to_convert_from( $url );
 
-		if ( $language_from_url === $lang_code || 'all' === $lang_code ) {
+		if ( $language_from_url === $lang_code ) {
+			$new_url = $this->keeps_same_language_url( $lang_code )
+				? $url
+				: $this->strategy->convert_url_string( $url, $lang_code );
+		} elseif ( 'all' === $lang_code ) {
 			$new_url = $url;
 		} else {
 			if ( $this->can_resolve_object_url( $url ) ) {
@@ -95,6 +99,22 @@ class WPML_URL_Converter {
 		}
 
 		return $new_url;
+	}
+
+	protected function keeps_same_language_url( $lang_code ) {
+		if ( ! $this->strategy instanceof WPML_URL_Converter_Subdir_Strategy ) {
+			return true;
+		}
+
+		$url_code_map = (array) apply_filters( 'wpml_language_codes_map', [ $lang_code => $lang_code ] );
+
+		return ! isset( $url_code_map[ $lang_code ] ) || $url_code_map[ $lang_code ] === $lang_code;
+	}
+
+	protected function get_language_to_convert_from( $url ) {
+		return WPML_Ajax::is_admin_ajax_request_called_from_frontend( $url )
+			? $this->get_language_from_url( $url )
+			: $this->get_language_of_url( $url );
 	}
 
 	public function get_language_from_url( $url ) {

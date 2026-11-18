@@ -113,6 +113,10 @@ class WPML_Widgets_Support_Backend implements IWPML_Action {
 		return $legacy_widgets_languages;
 	}
 
+	private function is_selectable_language( $language_code ) {
+		return 'all' === $language_code || isset( $this->active_languages[ $language_code ] );
+	}
+
 	public function set_selected_language_for_legacy_widget() {
 		$nonce   = isset( $_POST['nonce'] ) ? sanitize_text_field( $_POST['nonce'] ) : '';
 
@@ -125,9 +129,18 @@ class WPML_Widgets_Support_Backend implements IWPML_Action {
 			$widget             = explode( '-', $widget_id );
 			$widget_id          = array_pop( $widget );
 			$widget_option_name = 'widget_' . implode( '-', $widget );
-			$widgets_by_type    = get_option( $widget_option_name );
 
-			$widgets_by_type[ $widget_id ]['wpml_language'] = $selected_language_value;
+			if ( ! $this->is_selectable_language( $selected_language_value ) || '' === implode( '-', $widget ) || ! ctype_digit( (string) $widget_id ) ) {
+				/* translators: Error message returned when a request from the browser cannot be trusted and is turned away. */
+				wp_send_json_error( esc_html__( 'Invalid request!', 'sitepress' ) );
+
+				return;
+			}
+
+			$widgets_by_type = get_option( $widget_option_name );
+			$widgets_by_type = is_array( $widgets_by_type ) ? $widgets_by_type : [];
+
+			$widgets_by_type[ (int) $widget_id ]['wpml_language'] = $selected_language_value;
 
 			Option::update( $widget_option_name, $widgets_by_type );
 		} else {

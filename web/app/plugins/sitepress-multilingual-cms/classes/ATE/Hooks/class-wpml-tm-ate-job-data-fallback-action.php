@@ -18,12 +18,12 @@ class WPML_TM_ATE_Job_Data_Fallback implements IWPML_Action {
 	public function get_data_from_api( array $data, $wpml_job_id ) {
 		$wpml_job_id = (int) $wpml_job_id;
 
-		$rid = (int) Map::fromJobId( $wpml_job_id );
+		$rid = (int) Map::ridFromJobId( $wpml_job_id );
 		if ( $rid <= 0 ) {
 			return $data;
 		}
 
-		$newest = (int) Map::fromRid( $rid );
+		$newest = (int) Map::jobIdFromRid( $rid );
 		if ( $newest && $newest !== $wpml_job_id ) {
 			return $data;
 		}

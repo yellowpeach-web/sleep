@@ -69,7 +69,7 @@ class SitePress_Setup {
 			return true;
 		}
 
-		return \WPML\Upgrade\CreateTable::create(
+		$created = \WPML\Upgrade\CreateTable::create(
 			$wpdb,
 			$wpdb->prefix . 'icl_languages',
 			"CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}icl_languages` ( `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -92,6 +92,11 @@ class SitePress_Setup {
 					  KEY `bcp_47` (`bcp_47`)
 				  )"
 		);
+		if ( $created ) {
+			\WPML\Language\WpmlPresence::languagesTableCreated( $wpdb->prefix . 'icl_languages' );
+		}
+
+		return $created;
 	}
 
 	static function languages_table_is_complete() {
@@ -549,26 +554,6 @@ class SitePress_Setup {
 			'tax_category'
 		);
 
-		$existing_ttid = self::find_default_category_of_language( $lang_code, $default_category_trid, $default_category_ttid );
-		if ( $existing_ttid ) {
-			$tmp = array( 'term_taxonomy_id' => $existing_ttid );
-		} else {
-			$sitepress->switch_locale( $lang_code );
-			/* translators: The name WordPress gives its default category. WPML uses it when it makes that category in a new language, so use the same wording WordPress itself uses in your language. */
-			$tr_cat = __( 'Uncategorized', 'sitepress' );
-			$sitepress->switch_locale();
-
-			$tmp = self::insert_own_default_category_term( $tr_cat, $lang_code );
-		}
-
-		if ( is_wp_error( $tmp ) || empty( $tmp['term_taxonomy_id'] ) ) {
-			return;
-		}
-
-		$default_categories[ $lang_code ] = $tmp['term_taxonomy_id'];
-
-		$sitepress->set_default_categories( $default_categories );
-
 		if ( $default_category_ttid && ! $default_category_trid ) {
 			$sitepress->set_element_language_details(
 				$default_category_ttid,
@@ -581,6 +566,29 @@ class SitePress_Setup {
 				'tax_category'
 			);
 		}
+
+		$default_category_trid = $default_category_trid ? (int) $default_category_trid : null;
+
+		$existing_ttid = self::find_default_category_of_language( $lang_code, $default_category_trid, $default_category_ttid );
+		if ( $existing_ttid ) {
+			$tmp = array( 'term_taxonomy_id' => $existing_ttid );
+		} else {
+			$sitepress->switch_locale( $lang_code );
+			/* translators: The name WordPress gives its default category. WPML uses it when it makes that category in a new language, so use the same wording WordPress itself uses in your language. */
+			$tr_cat = __( 'Uncategorized', 'sitepress' );
+			$sitepress->switch_locale();
+
+			$tmp = self::insert_own_default_category_term( $tr_cat, $lang_code, $default_category_trid, $default_language );
+		}
+
+		if ( is_wp_error( $tmp ) || empty( $tmp['term_taxonomy_id'] ) ) {
+			return;
+		}
+
+		$default_categories[ $lang_code ] = $tmp['term_taxonomy_id'];
+
+		$sitepress->set_default_categories( $default_categories );
+
 		$sitepress->set_element_language_details(
 			$tmp['term_taxonomy_id'],
 			'tax_category',
@@ -610,12 +618,12 @@ class SitePress_Setup {
 		return 'uncategorized-' . strtolower( (string) $lang_code );
 	}
 
-	private static function insert_own_default_category_term( $name, $lang_code ) {
+	private static function insert_own_default_category_term( $name, $lang_code, $trid, $default_language ) {
 		$slug = self::default_category_slug( $lang_code );
-		$term = wp_insert_term( $name, 'category', array( 'slug' => $slug ) );
+		$term = \WPML\TaxonomyTermTranslation\TermTranslationInsert::insert( $name, 'category', array( 'slug' => $slug ), $trid, $lang_code, $default_language );
 
 		for ( $n = 2; $n <= 9 && is_wp_error( $term ) && 'term_exists' === $term->get_error_code(); $n++ ) {
-			$term = wp_insert_term( $name, 'category', array( 'slug' => $slug . '-' . $n ) );
+			$term = \WPML\TaxonomyTermTranslation\TermTranslationInsert::insert( $name, 'category', array( 'slug' => $slug . '-' . $n ), $trid, $lang_code, $default_language );
 		}
 
 		return $term;

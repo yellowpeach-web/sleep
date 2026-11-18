@@ -1,5 +1,6 @@
 <?php
 
+use WPML\LanguageSwitcher\FolderIdentity;
 use WPML\LanguageSwitcher\UploadsFolder;
 
 class WPML_LS_Templates {
@@ -7,13 +8,21 @@ class WPML_LS_Templates {
 	const CONFIG_FILE = 'config.json';
 	const OPTION_NAME = 'wpml_language_switcher_template_objects';
 
+	const OPTION_UPLOADS_SLUGS = 'wpml_ls_uploads_template_slugs';
+
 	private $uploads_path;
 
 	private $wpml_file;
 
 	private $templates = false;
 
+	private $uploads_templates = array();
+
+	private $uploads_slugs;
+
 	private $ds = DIRECTORY_SEPARATOR;
+
+	private $php_roots = array();
 
 	private $are_templates_loaded_from_cache = false;
 
@@ -45,6 +54,7 @@ class WPML_LS_Templates {
 	}
 
 	public function activated_plugin_action() {
+		$this->remember_cached_uploads_slugs();
 		delete_option( self::OPTION_NAME );
 	}
 
@@ -67,6 +77,220 @@ class WPML_LS_Templates {
 		return $ret;
 	}
 
+	public function get_uploads_templates() {
+		return $this->uploads_templates;
+	}
+
+	public function get_moved_from_uploads( $slug ) {
+		$slug = (string) $slug;
+
+		if ( '' === $slug || ! is_array( $this->templates ) ) {
+			return null;
+		}
+
+		$folder_names = array();
+		$name_parts   = array();
+
+		if ( isset( $this->uploads_templates[ $slug ] ) ) {
+			$data           = $this->uploads_templates[ $slug ]->get_template_data();
+			$folder_names[] = basename( (string) end( $data['path'] ) );
+		}
+
+		$remembered = $this->get_uploads_slugs();
+
+		if ( isset( $remembered[ $slug ] ) ) {
+			if ( '' !== $remembered[ $slug ]['folder'] ) {
+				$folder_names[] = $remembered[ $slug ]['folder'];
+			}
+
+			if ( null !== $remembered[ $slug ]['name'] ) {
+				$name_parts[] = sanitize_title_with_dashes( wp_get_theme() . ' - ' . $remembered[ $slug ]['name'] );
+				$name_parts[] = sanitize_title_with_dashes( $remembered[ $slug ]['name'] );
+			}
+		}
+
+		foreach ( $this->get_uploads_slug_prefixes() as $prefix ) {
+			if ( 0 === strpos( $slug, $prefix . '-' ) ) {
+				$name         = substr( $slug, strlen( $prefix ) + 1 );
+				$name_parts[] = sanitize_title_with_dashes( wp_get_theme() . ' - ' . $name );
+				$name_parts[] = $name;
+			}
+		}
+
+		if ( ! $folder_names && ! $name_parts ) {
+			return null;
+		}
+
+		foreach ( $this->templates as $candidate_slug => $template ) {
+			if ( ! $template instanceof WPML_LS_Template || $template->is_core() || $template->is_missing() || $template->is_in_uploads() ) {
+				continue;
+			}
+
+			$data = $template->get_template_data();
+
+			if (
+				in_array( (string) $candidate_slug, $name_parts, true )
+				|| ( $folder_names && in_array( basename( (string) end( $data['path'] ) ), $folder_names, true ) )
+			) {
+				return (string) $candidate_slug;
+			}
+		}
+
+		return null;
+	}
+
+	public function get_choice_for_settings_screen( $slug ) {
+		$slug   = (string) $slug;
+		$choice = array(
+			'value'    => $slug,
+			'stand_in' => null,
+		);
+
+		if ( '' === $slug || ! is_array( $this->get_templates() ) || isset( $this->templates[ $slug ] ) ) {
+			return $choice;
+		}
+
+		$moved = $this->get_moved_from_uploads( $slug );
+
+		if ( null !== $moved ) {
+			$choice['value'] = $moved;
+		} else {
+			$in_uploads = $this->get_uploads_template_for( $slug );
+
+			if ( $in_uploads ) {
+				$choice['stand_in'] = $this->make_stand_in( $in_uploads, $slug );
+			}
+		}
+
+		return $choice;
+	}
+
+	private function get_uploads_template_for( $slug ) {
+		if ( isset( $this->uploads_templates[ $slug ] ) ) {
+			return $this->uploads_templates[ $slug ];
+		}
+
+		$remembered = $this->get_uploads_slugs();
+
+		if ( isset( $remembered[ $slug ] ) && '' !== $remembered[ $slug ]['folder'] ) {
+			foreach ( $this->uploads_templates as $template ) {
+				$data = $template->get_template_data();
+
+				if ( basename( (string) end( $data['path'] ) ) === $remembered[ $slug ]['folder'] ) {
+					return $template;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public function get_settings_screen_choices( array $settings ) {
+		$stand_ins = array();
+
+		foreach ( array( 'menus', 'sidebars', 'statics' ) as $group ) {
+			if ( empty( $settings[ $group ] ) || ! is_array( $settings[ $group ] ) ) {
+				continue;
+			}
+
+			foreach ( $settings[ $group ] as $slot_slug => $slot ) {
+				if ( ! is_array( $slot ) || empty( $slot['template'] ) ) {
+					continue;
+				}
+
+				$choice = $this->get_choice_for_settings_screen( $slot['template'] );
+
+				$settings[ $group ][ $slot_slug ]['template'] = $choice['value'];
+
+				if ( $choice['stand_in'] ) {
+					$stand_ins[ $choice['value'] ] = $choice['stand_in'];
+				}
+			}
+		}
+
+		return array(
+			'settings'  => $settings,
+			'stand_ins' => $stand_ins,
+		);
+	}
+
+	public function get_uploads_stand_ins() {
+		$stand_ins = array_map( array( $this, 'make_stand_in' ), $this->uploads_templates );
+
+		foreach ( array_keys( $this->get_uploads_slugs() ) as $slug ) {
+			if ( ! isset( $stand_ins[ $slug ] ) && ! isset( $this->templates[ $slug ] ) ) {
+				$in_uploads = $this->get_uploads_template_for( $slug );
+
+				if ( $in_uploads ) {
+					$stand_ins[ $slug ] = $this->make_stand_in( $in_uploads, $slug );
+				}
+			}
+		}
+
+		return $stand_ins;
+	}
+
+	private function make_stand_in( WPML_LS_Template $template, $slug = null ) {
+		$data = $template->get_template_data();
+
+		if ( null !== $slug ) {
+			$data['slug'] = (string) $slug;
+		}
+
+		/* translators: Added to the name or the folder of a custom language switcher template that is in the uploads folder of the site, which WPML does not use, in the language switcher settings. */
+		$data['name']          = $data['name'] . ' (' . __( 'not used any more: move it into your theme', 'sitepress' ) . ')';
+		$data['detected_only'] = false;
+
+		return new WPML_LS_Template( $data );
+	}
+
+	private function get_uploads_slugs() {
+		if ( null === $this->uploads_slugs ) {
+			$this->uploads_slugs = array();
+			$saved               = get_option( self::OPTION_UPLOADS_SLUGS );
+
+			if ( is_array( $saved ) ) {
+				foreach ( $saved as $slug => $entry ) {
+					if ( is_array( $entry ) && isset( $entry['folder'] ) && is_string( $entry['folder'] ) ) {
+						$this->uploads_slugs[ (string) $slug ] = array(
+							'folder' => $entry['folder'],
+							'name'   => isset( $entry['name'] ) && is_string( $entry['name'] ) ? $entry['name'] : null,
+						);
+					}
+				}
+			}
+		}
+
+		return $this->uploads_slugs;
+	}
+
+	private function remember_uploads_slugs( array $found ) {
+		$known = $this->get_uploads_slugs();
+
+		foreach ( $found as $slug => $entry ) {
+			if ( null === $entry['name'] && isset( $known[ $slug ] ) && null !== $known[ $slug ]['name'] ) {
+				$found[ $slug ]['name'] = $known[ $slug ]['name'];
+			}
+		}
+
+		$merged = array_merge( $known, $found );
+
+		if ( $merged !== $known ) {
+			$this->uploads_slugs = $merged;
+			update_option( self::OPTION_UPLOADS_SLUGS, $merged, false );
+		}
+	}
+
+	private function get_uploads_slug_prefixes() {
+		return array_values(
+			array_unique(
+				array_filter(
+					array( 'uploads', sanitize_title_with_dashes( __( 'Uploads', 'sitepress' ) ) )
+				)
+			)
+		);
+	}
+
 	public function get_all_templates_data() {
 		$ret = array();
 
@@ -86,8 +310,9 @@ class WPML_LS_Templates {
 
 		if ( $this->templates === false ) {
 
-			$this->templates = array();
-			$dirs_to_scan    = array();
+			$this->templates         = array();
+			$this->uploads_templates = array();
+			$dirs_to_scan            = array();
 
 			$dirs_to_scan = apply_filters( 'wpml_ls_directories_to_scan', $dirs_to_scan );
 
@@ -99,7 +324,10 @@ class WPML_LS_Templates {
 
 			array_unshift( $dirs_to_scan, $wpml_core_path, $theme_path, $child_theme_path, $uploads_path );
 
+			$this->php_roots = array_values( array_filter( $dirs_to_scan, 'is_string' ) );
+
 			$templates_array_data = [];
+			$uploads_seen         = array();
 			$templates_paths      = $this->scan_template_paths( $dirs_to_scan );
 
 			foreach ( $templates_paths as $template_path => $engine ) {
@@ -113,6 +341,7 @@ class WPML_LS_Templates {
 					$tpl['path']        = [ $wpml_core_path, $template_path ];
 					$tpl['engine']      = $engine;
 					$tpl['php_allowed'] = $this->may_have_php_template( $template_path );
+					$tpl['in_uploads']  = $this->is_in_uploads( $template_path );
 					$tpl['version']  = $this->get_template_version( $config, $is_core );
 					$tpl['name']     = isset( $config['name'] ) ? $config['name'] : null;
 					$tpl['name']     = $this->get_unique_name( $tpl['name'], $template_path );
@@ -139,11 +368,23 @@ class WPML_LS_Templates {
 					$tpl['force_settings'] = isset( $config['settings'] )
 						? $config['settings'] : array();
 
+					if ( $tpl['in_uploads'] ) {
+						$tpl['detected_only']                    = true;
+						$templates_array_data[ $tpl['slug'] ]    = $tpl;
+						$this->uploads_templates[ $tpl['slug'] ] = new WPML_LS_Template( $tpl );
+						$uploads_seen[ (string) $tpl['slug'] ]   = array(
+							'folder' => basename( $template_path ),
+							'name'   => isset( $config['name'] ) && is_string( $config['name'] ) ? $config['name'] : basename( $template_path ),
+						);
+						continue;
+					}
+
 					$templates_array_data[ $tpl['slug'] ] = $tpl;
 					$this->templates[ $tpl['slug'] ]      = new WPML_LS_Template( $tpl );
 				}
 			}
 			$this->save_templates( $templates_array_data );
+			$this->remember_uploads_slugs( $uploads_seen );
 		}
 
 		return $this->templates;
@@ -176,6 +417,14 @@ class WPML_LS_Templates {
 	}
 
 	private function get_template_engine( $template_path ) {
+		if ( $this->is_in_uploads( $template_path ) ) {
+			if ( file_exists( $template_path . $this->ds . WPML_LS_Template::PHP_FILENAME ) ) {
+				return WPML_LS_Template::ENGINE_PHP;
+			}
+
+			return file_exists( $template_path . $this->ds . WPML_LS_Template::FILENAME ) ? WPML_LS_Template::ENGINE_TWIG : null;
+		}
+
 		if ( $this->may_have_php_template( $template_path )
 			 && file_exists( $template_path . $this->ds . WPML_LS_Template::PHP_FILENAME )
 		) {
@@ -190,7 +439,12 @@ class WPML_LS_Templates {
 	}
 
 	private function may_have_php_template( $template_path ) {
-		return ! UploadsFolder::contains( $template_path, (string) $this->get_uploads_path() );
+		return ! $this->is_in_uploads( $template_path )
+			   && FolderIdentity::inside( $template_path, array_diff( $this->php_roots, array( (string) $this->get_uploads_path() ) ), true );
+	}
+
+	private function is_in_uploads( $template_path ) {
+		return UploadsFolder::contains( $template_path, (string) $this->get_uploads_path() );
 	}
 
 	private function parse_template_config( $template_path ) {
@@ -280,13 +534,23 @@ class WPML_LS_Templates {
 		$templates                             = get_option( self::OPTION_NAME );
 
 		if ( $templates ) {
+			$uploads = array();
+
 			foreach ( $templates as $slug => $data ) {
 				if ( is_array( $data ) ) {
 					if ( ! isset( $data['engine'] ) ) {
 						return false;
 					}
 
+					if ( ! empty( $data['in_uploads'] ) && empty( $data['detected_only'] ) ) {
+						return false;
+					}
+
 					$templates[ $slug ] = new WPML_LS_Template( $data );
+
+					if ( ! empty( $data['detected_only'] ) ) {
+						$uploads[ $slug ] = $templates[ $slug ];
+					}
 				}
 			}
 
@@ -294,13 +558,41 @@ class WPML_LS_Templates {
 				return false;
 			}
 
+			$this->uploads_templates               = $uploads;
+			$templates                             = array_diff_key( $templates, $uploads );
 			$this->are_templates_loaded_from_cache = true;
 		}
 
 		return $templates;
 	}
 
+	private function remember_cached_uploads_slugs() {
+		$cached = get_option( self::OPTION_NAME );
+
+		if ( is_array( $cached ) ) {
+			$this->remember_registered_uploads_templates( $cached );
+		}
+	}
+
+	private function remember_registered_uploads_templates( array $cached ) {
+		$found = array();
+
+		foreach ( $cached as $slug => $data ) {
+			if ( is_array( $data ) && ! empty( $data['in_uploads'] ) && empty( $data['detected_only'] ) && ! empty( $data['path'] ) ) {
+				$found[ (string) $slug ] = array(
+					'folder' => basename( (string) end( $data['path'] ) ),
+					'name'   => null,
+				);
+			}
+		}
+
+		if ( $found ) {
+			$this->remember_uploads_slugs( $found );
+		}
+	}
+
 	private function save_templates( $data ) {
+		$this->remember_cached_uploads_slugs();
 		update_option( self::OPTION_NAME, $data );
 	}
 

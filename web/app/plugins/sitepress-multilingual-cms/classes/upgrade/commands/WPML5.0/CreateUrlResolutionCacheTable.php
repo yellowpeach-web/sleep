@@ -73,7 +73,7 @@ class CreateUrlResolutionCacheTable implements \IWPML_Upgrade_Command {
 				KEY `translation_trid` (`translation_trid`),
 				KEY `expires_at` (`expires_at`),
 				KEY `generation_updated` (`generation`, `updated_at`)
-			) ENGINE=InnoDB
+			)
 		";
 
 		return CreateTable::create( $wpdb, $table_name, $query );

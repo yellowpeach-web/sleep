@@ -37,17 +37,35 @@
          "Removing strings from <b>String Translation</b> table": [
             "מסיר מחרוזות מטבלת <b>תרגום מחרוזות</b>"
          ],
+         "%s string waiting for translation was kept.": [
+            "מחרוזת %s הממתינה לתרגום נשמרה.",
+            "%s מחרוזות הממתינות לתרגום נשמרו."
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "כדי להוסיף מחרוזות בחזרה לטבלת <b>תרגום מחרוזות</b>, ייתכן שיהיה עליך לסרוק מחדש קובצי תרגום או לרשום מחרוזות כניתנות לתרגום."
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "קרא עוד על <a>סריקת האתר שלך לאיתור מחרוזות ורישומן כניתנות לתרגום</a>."
          ],
-         "Successfully removed strings": [
-            "המחרוזות הוסרו בהצלחה"
+         "Nothing removed: %s string is waiting for translation": [
+            "דבר לא הוסר: מחרוזת %s ממתינה לתרגום",
+            "דבר לא הוסר: %s מחרוזות ממתינות לתרגום"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "דבר לא הוסר: בדומיינים שנבחרו אין מחרוזות שלא תורגמו"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "כדי להסיר גם אותן, יש לסמן את ”הסר גם מחרוזות הממתינות לתרגום“ וללחוץ שוב על הסר."
+         ],
+         "OK": [
+            "אישור"
+         ],
+         "Removed %s string": [
+            "הוסרה מחרוזת %s",
+            "הוסרו %s מחרוזות"
          ],
          "OK, Great": [
-            "אוקיי, מעולה"
+            "אישור, מעולה"
          ],
          "Domain": [
             "דומיין"
@@ -60,6 +78,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "הסרת המחרוזות הופסקה לפני שהושלמה. המחרוזות שלא הוסרו עדיין נמצאות בטבלה. נסה להסיר אותן שוב."
+         ],
+         "Successfully removed strings": [
+            "המחרוזות הוסרו בהצלחה"
          ]
       }
    }

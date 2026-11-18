@@ -12,12 +12,14 @@ class Overrides implements \IWPML_Page_Builders_Module {
 	const OVERRIDE_STRING_VALUE_PATH  = [ 'value', 'override_value', 'value' ];
 	const OVERRIDE_HTML_V3_VALUE_PATH = [ 'value', 'override_value', 'value', 'content', 'value' ];
 	const OVERRIDE_LINK_VALUE_PATH    = [ 'value', 'override_value', 'value', 'destination', 'value' ];
+	const OVERRIDE_IMAGE_ALT_PATH     = [ 'value', 'override_value', 'value', 'src', 'value', 'alt', 'value' ];
 	const OVERRIDE_VALUE_TYPE_PATH    = [ 'value', 'override_value', self::TYPE_KEY ];
 	const OVERRIDE_VALUE_FIELD_NAME   = 'override_value';
 	const OVERRIDE_VALUE_TYPE_STRING  = 'string';
 	const OVERRIDE_VALUE_TYPE_HTML_V3 = 'html-v3';
 	const OVERRIDE_VALUE_TYPE_ESCAPED_HTML = 'escaped-html';
 	const OVERRIDE_VALUE_TYPE_LINK         = 'link';
+	const OVERRIDE_VALUE_TYPE_IMAGE        = 'image';
 	const EDITOR_TYPE_LINE                 = 'LINE';
 	const EDITOR_TYPE_LINK                 = \WPML_TM_Page_Builders::FIELD_STYLE_LINK;
 
@@ -53,6 +55,8 @@ class Overrides implements \IWPML_Page_Builders_Module {
 				$item = Obj::assocPath( self::OVERRIDE_HTML_V3_VALUE_PATH, $pbString->get_value(), $item );
 			} elseif ( $this->isLinkOverride( $item ) ) {
 				$item = Obj::assocPath( self::OVERRIDE_LINK_VALUE_PATH, $pbString->get_value(), $item );
+			} elseif ( $this->isImageAltOverride( $item ) ) {
+				$item = Obj::assocPath( self::OVERRIDE_IMAGE_ALT_PATH, $pbString->get_value(), $item );
 			}
 
 			return [ $key, $item ];
@@ -86,6 +90,16 @@ class Overrides implements \IWPML_Page_Builders_Module {
 			&& is_string( Obj::path( self::OVERRIDE_LINK_VALUE_PATH, $item ) );
 	}
 
+	private function isImageAltOverride( $item ) {
+		if ( self::OVERRIDE_VALUE_TYPE_IMAGE !== Obj::path( self::OVERRIDE_VALUE_TYPE_PATH, $item ) ) {
+			return false;
+		}
+
+		$alt = Obj::path( self::OVERRIDE_IMAGE_ALT_PATH, $item );
+
+		return is_string( $alt ) && '' !== trim( $alt );
+	}
+
 	private function get_string_value( $item ) {
 		if ( $this->isStringOverride( $item ) ) {
 			return Obj::path( self::OVERRIDE_STRING_VALUE_PATH, $item );
@@ -97,6 +111,10 @@ class Overrides implements \IWPML_Page_Builders_Module {
 
 		if ( $this->isLinkOverride( $item ) ) {
 			return Obj::path( self::OVERRIDE_LINK_VALUE_PATH, $item );
+		}
+
+		if ( $this->isImageAltOverride( $item ) ) {
+			return Obj::path( self::OVERRIDE_IMAGE_ALT_PATH, $item );
 		}
 
 		return null;

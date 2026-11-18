@@ -89,11 +89,31 @@ final class WPML_Proxy {
 			$p['content_type'] = $p['__ct'];
 		}
 
+		$response = $self->relay( $p );
+		if ( isset( $response['error'] ) ) {
+			self::error( $response['status'], $response['error'], $response['message'], $response['headers'] );
+			exit;
+		}
+
+		if ( function_exists( 'status_header' ) ) {
+			status_header( $response['status'] );
+		}
+		if ( function_exists( 'http_response_code' ) ) {
+			@http_response_code( $response['status'] );
+		}
+
+		$self->sendCleanResponse( $response['headers'], $response['body'] );
+	}
+
+	public function relay( array $p ) {
+		$self = $this;
+
 		try {
 			$self->validate( $p );
 			$url = self::destinations()->assert( $self->buildUrl( (string) $p['url'], $p['query'] ) );
 
-			if ( ! $self->isStaticAssetRelay( $url, (string) $p['method'] ) ) {
+			$noAnswer = \WPML\TM\ATE\ClonedSites\ReconnectState::get() && \WPML\TM\ATE\ClonedSites\ReconnectState::isNoAnswer();
+			if ( ! $noAnswer && ! $self->isStaticAssetRelay( $url, (string) $p['method'] ) ) {
 				try {
 					$lock = \WPML\Container\make( \WPML\TM\ATE\ClonedSites\ApiCommunication::class )->checkCloneSiteLock( $url );
 				} catch ( Throwable $t ) {
@@ -102,8 +122,7 @@ final class WPML_Proxy {
 						: null;
 				}
 				if ( is_wp_error( $lock ) ) {
-					self::error( 503, (string) $lock->get_error_code(), $lock->get_error_message() );
-					exit;
+					return self::refusal( 503, (string) $lock->get_error_code(), $lock->get_error_message(), [ 'X-WPML-Proxy-Refused' => 'reconnecting' ] );
 				}
 			}
 
@@ -123,9 +142,34 @@ final class WPML_Proxy {
 				$args['body'] = is_array( $p['body'] ) ? \wpml_http_build_query( $p['body'] ) : (string) $p['body'];
 			}
 
+			if ( isset( $args['body'] ) && is_string( $args['body'] ) && $p['__raw_body'] !== '' ) {
+				$keys = get_option( \WPML_TM_ATE_Authentication::AMS_DATA_KEY, [] );
+				$keys = is_array( $keys ) ? $keys : [];
+				$url  = \WPML\ATE\Proxies\EnvelopeSignature::forForwardedBody(
+					$url,
+					(string) $p['method'],
+					(string) $p['__raw_body'],
+					$args['body'],
+					isset( $keys['shared'] ) && is_string( $keys['shared'] ) ? $keys['shared'] : null,
+					isset( $keys['secret'] ) && is_string( $keys['secret'] ) ? $keys['secret'] : null
+				);
+			}
+
 			$result = wp_remote_request( $url, $args );
 			if ( is_wp_error( $result ) ) {
 				throw new RuntimeException( $result->get_error_message() );
+			}
+
+			if ( $noAnswer ) {
+				try {
+					\WPML\Container\make( \WPML\TM\ATE\ClonedSites\ApiCommunication::class )->noteServerAnswered(
+						$result,
+						\WPML\TM\ATE\ClonedSites\ApiCommunication::CALL_OTHER,
+						\WPML_TM_ATE_AMS_Endpoints::serviceOfUrl( $url )
+					);
+				} catch ( Throwable $t ) {
+					unset( $t );
+				}
 			}
 
 			$status      = (int) wp_remote_retrieve_response_code( $result );
@@ -140,21 +184,25 @@ final class WPML_Proxy {
 
 			$respHeaders = $self->maybeForceContentTypeByUrl( $respHeaders, $url );
 
-			if ( function_exists( 'status_header' ) ) {
-				status_header( (int) $status );
-			}
-			if ( function_exists( 'http_response_code' ) ) {
-				@http_response_code( (int) $status );
-			}
-
-			$self->sendCleanResponse( $respHeaders, (string) $body );
+			return [
+				'status'  => $status,
+				'headers' => $respHeaders,
+				'body'    => (string) $body,
+			];
 		} catch ( UntrustedDestinationException $e ) {
-			self::error( 400, 'invalid_url', 'The URL is not a trusted ATE/AMS destination (' . $e->reason() . ').' );
-			exit;
+			return self::refusal( 400, 'invalid_url', 'The URL is not a trusted ATE/AMS destination (' . $e->reason() . ').' );
 		} catch ( Throwable $e ) {
-			self::error( 500, 'internal_error', \WPML\WordPress\ClientSafeError::message( 'ATE proxy', $e ) );
-			exit;
+			return self::refusal( 500, 'internal_error', \WPML\WordPress\ClientSafeError::message( 'ATE proxy', $e ) );
 		}
+	}
+
+	private static function refusal( $status, $error, $message, array $headers = [] ) {
+		return [
+			'status'  => $status,
+			'error'   => $error,
+			'message' => $message,
+			'headers' => $headers,
+		];
 	}
 
 	private function sendCleanResponse( array $respHeaders, string $body ) {
@@ -354,7 +402,7 @@ final class WPML_Proxy {
 		return $raw === false ? '' : $raw;
 	}
 
-	public static function error( $status_code, $error, $message ) {
+	public static function error( $status_code, $error, $message, array $headers = [] ) {
 		if ( function_exists( 'status_header' ) ) {
 			status_header( $status_code );
 		}
@@ -372,6 +420,9 @@ final class WPML_Proxy {
         );
 		@header( 'Content-Type: application/json', true );
 		@header( 'Content-Length: ' . strlen( (string) $payload ), true );
+		foreach ( $headers as $name => $value ) {
+			@header( "$name: $value", true );
+		}
 
 		echo (string) $payload;
 		if ( function_exists( 'fastcgi_finish_request' ) ) {

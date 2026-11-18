@@ -96,11 +96,15 @@ class CaptureEventService {
 
     $apiKey     = $config->getApiKey();
     $host       = $config->getHost();
-    $distinctId = $properties['distinct_id'] ?? $properties['distinctId'] ?? $this->cookies->getDistinctId();
+    $distinctId = $this->getLiveDistinctId( $event, $properties, $trackingMode );
     $sessionId  = $properties['session_id'] ?? $this->cookies->getSessionId() ?: '';
 
     if ( ! $distinctId ) {
       return false;
+    }
+
+    if ( array_key_exists( 'distinct_id', $properties ) && $properties['distinct_id'] !== $distinctId ) {
+      $event->addProperties( [ 'distinct_id' => $distinctId ] );
     }
 
     return $this->captureEvent->capture(
@@ -111,6 +115,32 @@ class CaptureEventService {
       $event,
       $this->preparePersonProps( $personProperties )
     );
+  }
+
+
+  private function getLiveDistinctId( EventInterface $event, array $properties, string $trackingMode ) {
+    foreach ( [ 'distinct_id', 'distinctId' ] as $key ) {
+      if ( isset( $properties[ $key ] ) && is_string( $properties[ $key ] ) && '' !== $properties[ $key ] ) {
+        return $properties[ $key ];
+      }
+    }
+
+    $cookieDistinctId = $this->cookies->getDistinctId();
+    if ( $cookieDistinctId ) {
+      return $cookieDistinctId;
+    }
+
+    if ( TrackingMode::ALL === $trackingMode && $this->isSetupWizardEvent( $event, $properties ) ) {
+      return $this->setupWizardAnonymousDistinctId->get();
+    }
+
+    return false;
+  }
+
+
+  private function isSetupWizardEvent( EventInterface $event, array $properties ): bool {
+    return $event instanceof SetupWizardLifecycleEventInterface
+           || ( isset( $properties['ui_location'] ) && ClientEventWizardPropertiesService::UI_LOCATION_SETUP_WIZARD === $properties['ui_location'] );
   }
 
 

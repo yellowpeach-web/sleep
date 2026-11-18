@@ -54,6 +54,11 @@ class WPML_Include_Url extends WPML_WPDB_User {
 	public function get_unfiltered_home() {
 		$wpdb = $this->wpdb;
 
+		if ( ! $this->unfiltered_home_url && ! wp_installing() ) {
+			$alloptions                = wp_load_alloptions();
+			$this->unfiltered_home_url = isset( $alloptions['home'] ) ? $alloptions['home'] : null;
+		}
+
 		$this->unfiltered_home_url = $this->unfiltered_home_url
 			? $this->unfiltered_home_url
 			: $this->wpdb->get_var(

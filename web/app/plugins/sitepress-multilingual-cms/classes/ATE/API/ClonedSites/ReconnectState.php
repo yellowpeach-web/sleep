@@ -36,6 +36,14 @@ class ReconnectState {
 
 	const ERROR_LOG_SIZE = 5;
 
+	const CLAIM_SECONDS = 120;
+
+	const CLAIM_ATTEMPT = 'attempt';
+
+	const CLAIM_PROBE = 'probe';
+
+	const PROBE_CLAIM_KEY = 'probe_claimed_until';
+
 	const DISMISS_FOR_SECONDS = 86400;
 
 	public static function recordFailure( $oldUrl = '', $newUrl = '', $httpStatus = 0, $errorKey = '', $retryAfter = 0, $kind = self::KIND_SERVER, $service = '', $host = '', $reattempt = true, $silence = true, $callKind = '' ) {
@@ -255,17 +263,62 @@ class ReconnectState {
 			return false;
 		}
 
-		return \WPML_TM_ATE_Status::is_enabled();
+		return \WPML_TM_ATE_Status::is_ate_account_wanted();
 	}
 
-	public static function isDue() {
-		$state = self::read();
+	public static function isDue( $state = null ) {
+		$state = is_array( $state ) ? $state : self::read();
 
 		if ( ! $state ) {
 			return false;
 		}
 
 		return (int) self::prop( 'next_attempt_at', $state, 0 ) <= time();
+	}
+
+	public static function claim( $what = self::CLAIM_ATTEMPT ) {
+		global $wpdb;
+
+		$row = $wpdb->get_var(
+			$wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name = %s LIMIT 1", self::OPTION )
+		);
+		self::dropCachedCopy();
+
+		$state = is_string( $row ) ? \WPML\Utils\Unserialize::maybe( $row ) : null;
+
+		if ( ! is_array( $state ) || ! $state ) {
+			return [];
+		}
+
+		$noAnswer = self::KIND_NO_ANSWER === self::prop( 'kind', $state, self::KIND_SERVER );
+		$now      = time();
+
+		if ( self::CLAIM_PROBE === $what ) {
+			if ( ! $noAnswer || (int) self::prop( self::PROBE_CLAIM_KEY, $state, 0 ) > $now ) {
+				return [];
+			}
+
+			$state[ self::PROBE_CLAIM_KEY ] = $now + self::CLAIM_SECONDS;
+		} else {
+			if ( $noAnswer || ! self::isDue( $state ) ) {
+				return [];
+			}
+
+			$state['next_attempt_at'] = $now + self::CLAIM_SECONDS;
+			$state['cron_due_at']     = $now + self::CLAIM_SECONDS;
+		}
+
+		$changed = $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->options} SET option_value = %s WHERE option_name = %s AND option_value = %s",
+				maybe_serialize( $state ),
+				self::OPTION,
+				$row
+			)
+		);
+		self::dropCachedCopy();
+
+		return 1 === (int) $changed ? $state : [];
 	}
 
 	public static function isNoAnswer() {
@@ -597,6 +650,12 @@ class ReconnectState {
 	}
 
 	private static function readFresh() {
+		self::dropCachedCopy();
+
+		return self::read();
+	}
+
+	private static function dropCachedCopy() {
 		if ( function_exists( 'wp_cache_delete' ) ) {
 			wp_cache_delete( self::OPTION, 'options' );
 		}
@@ -606,8 +665,6 @@ class ReconnectState {
 			unset( $notoptions[ self::OPTION ] );
 			wp_cache_set( 'notoptions', $notoptions, 'options' );
 		}
-
-		return self::read();
 	}
 
 	private static function currentUrl() {

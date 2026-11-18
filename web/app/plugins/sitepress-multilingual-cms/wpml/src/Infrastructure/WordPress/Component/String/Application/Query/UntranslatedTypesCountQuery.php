@@ -2,6 +2,7 @@
 
 namespace WPML\Infrastructure\WordPress\Component\String\Application\Query;
 
+use WPML\Core\Port\Appearance\AppearanceReaderInterface;
 use WPML\Core\Port\Persistence\Exception\DatabaseErrorException;
 use WPML\Core\Port\Persistence\QueryHandlerInterface;
 use WPML\Core\Port\Persistence\QueryPrepareInterface;
@@ -21,11 +22,17 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
 
   const TAXONOMY_LABEL_STRING_IDS_FILTER = 'wpml_tea_estimate_taxonomy_label_string_ids';
 
+  const CARRIED_STRING_MD5S_FILTER = 'wpml_st_carried_string_md5s';
+
+  const POSITION_KIND_FRONTEND = 6;
+
   private $queryHandler;
 
   private $queryPrepare;
 
   private $languagesQuery;
+
+  private $appearanceReader;
 
   private $englishSourceCode;
 
@@ -35,11 +42,13 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
   public function __construct(
     QueryHandlerInterface $queryHandler,
     QueryPrepareInterface $queryPrepare,
-    LanguagesQueryInterface $languagesQuery
+    LanguagesQueryInterface $languagesQuery,
+    AppearanceReaderInterface $appearanceReader
   ) {
-    $this->queryHandler   = $queryHandler;
-    $this->queryPrepare   = $queryPrepare;
-    $this->languagesQuery = $languagesQuery;
+    $this->queryHandler     = $queryHandler;
+    $this->queryPrepare     = $queryPrepare;
+    $this->languagesQuery   = $languagesQuery;
+    $this->appearanceReader = $appearanceReader;
   }
 
 
@@ -54,6 +63,8 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
       return [];
     }
 
+    list( $appeared, $appearedArgs ) = $this->appearedCondition();
+
     $sql = "
       SELECT
         COUNT( DISTINCT strings.id ) as count
@@ -61,18 +72,22 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
 			{$languageCrossJoin}
 			LEFT JOIN {$this->queryPrepare->prefix()}icl_string_translations translations
 				ON strings.id = translations.string_id AND translations.language = langs.code
-			WHERE {$this->buildLeftToTranslateCondition()}
+			WHERE {$this->buildLeftToTranslateCondition( $appeared )}
 			ORDER BY langs.code, strings.id ASC
 		";
 
     $sql = $this->queryPrepare->prepare(
       $sql,
-      6,
-      self::SITE_IDENTITY_STRING_DOMAIN,
-      self::SITE_IDENTITY_STRING_BLOGNAME,
-      self::SITE_IDENTITY_STRING_TAGLINE,
-      $this->adminTextContextPattern(),
-      $this->englishSourceCode()
+      ...array_merge(
+        $appearedArgs,
+        [
+          self::SITE_IDENTITY_STRING_DOMAIN,
+          self::SITE_IDENTITY_STRING_BLOGNAME,
+          self::SITE_IDENTITY_STRING_TAGLINE,
+          $this->adminTextContextPattern(),
+          $this->englishSourceCode(),
+        ]
+      )
     );
 
     try {
@@ -105,6 +120,8 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
       return [];
     }
 
+    list( $appeared, $appearedArgs ) = $this->appearedCondition();
+
     $sql = "
       SELECT DISTINCT
         strings.id
@@ -112,7 +129,7 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
 			{$languageCrossJoin}
 			LEFT JOIN {$this->queryPrepare->prefix()}icl_string_translations translations
 				ON strings.id = translations.string_id AND translations.language = langs.code
-			WHERE {$this->buildLeftToTranslateCondition()}
+			WHERE {$this->buildLeftToTranslateCondition( $appeared )}
 			ORDER BY strings.id ASC
       LIMIT %d OFFSET %d
     ";
@@ -121,14 +138,18 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
       $ids = $this->queryHandler->queryColumn(
         $this->queryPrepare->prepare(
           $sql,
-          6,
-          self::SITE_IDENTITY_STRING_DOMAIN,
-          self::SITE_IDENTITY_STRING_BLOGNAME,
-          self::SITE_IDENTITY_STRING_TAGLINE,
-          $this->adminTextContextPattern(),
-          $this->englishSourceCode(),
-          $numberOfIdsToFetch,
-          $offset
+          ...array_merge(
+            $appearedArgs,
+            [
+              self::SITE_IDENTITY_STRING_DOMAIN,
+              self::SITE_IDENTITY_STRING_BLOGNAME,
+              self::SITE_IDENTITY_STRING_TAGLINE,
+              $this->adminTextContextPattern(),
+              $this->englishSourceCode(),
+              $numberOfIdsToFetch,
+              $offset,
+            ]
+          )
         )
       );
       return $ids;
@@ -154,16 +175,11 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
   }
 
 
-  private function buildInScopeCondition(): string {
+  private function buildInScopeCondition( string $appeared ): string {
     return "(
 					(
 						strings.string_type = 1
-						AND EXISTS (
-							SELECT 1
-							FROM {$this->queryPrepare->prefix()}icl_string_positions positions
-							WHERE positions.string_id = strings.id
-								AND positions.kind = %d
-						)
+						AND {$appeared}
 					)
 					OR (
 						strings.context = %s
@@ -174,12 +190,25 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
   }
 
 
+  private function appearedCondition(): array {
+    $appeared = $this->appearanceReader->existsSql( "'string'", 'strings.id' );
+    if ( '' !== $appeared ) {
+      return [ $appeared, [] ];
+    }
+
+    return [
+      'EXISTS ( SELECT 1 FROM ' . $this->queryPrepare->prefix() . 'icl_string_positions positions WHERE positions.string_id = strings.id AND positions.kind = %d )',
+      [ self::POSITION_KIND_FRONTEND ],
+    ];
+  }
+
+
   private function adminTextContextPattern(): string {
     return $this->queryPrepare->escLike( self::ADMIN_TEXT_CONTEXT_PREFIX ) . '%';
   }
 
 
-  private function buildLeftToTranslateCondition(): string {
+  private function buildLeftToTranslateCondition( string $appeared ): string {
     $notIntoEnglish = '';
     $englishTargets = $this->englishTargetCodes();
     if ( $englishTargets ) {
@@ -200,11 +229,29 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
       : '';
 
     return "(
-					( {$this->buildInScopeCondition()} AND strings.language = %s {$notIntoEnglish} )
+					( {$this->buildInScopeCondition( $appeared )} AND strings.language = %s {$notIntoEnglish} )
 					{$labelLeg}
 				)
 				AND langs.code <> strings.language
-				AND ( translations.status IS NULL OR translations.status = 0 )";
+				AND ( translations.status IS NULL OR translations.status = 0 )
+				{$this->notCarriedCondition()}";
+  }
+
+
+  private function notCarriedCondition(): string {
+    $md5s = function_exists( 'apply_filters' ) ? \apply_filters( self::CARRIED_STRING_MD5S_FILTER, [] ) : [];
+    $md5s = array_values(
+      array_filter(
+        array_map( 'strval', is_array( $md5s ) ? $md5s : [] ),
+        function ( string $md5 ) {
+          return (bool) preg_match( '/^[0-9a-f]{32}$/', $md5 );
+        }
+      )
+    );
+
+    return $md5s
+      ? "AND strings.domain_name_context_md5 NOT IN ( '" . implode( "', '", $md5s ) . "' )"
+      : '';
   }
 
 

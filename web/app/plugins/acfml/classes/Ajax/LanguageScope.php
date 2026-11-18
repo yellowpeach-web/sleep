@@ -6,6 +6,8 @@ class LanguageScope implements \IWPML_AJAX_Action {
 
 	const ACF_COMPATIBILITY_CLASS = 'ACF_WPML_Compatibility';
 
+	const ALL_LANGUAGES = 'all';
+
 	const OPEN_PRIORITY = 10;
 
 	const CLOSE_PRIORITY = 0;
@@ -51,7 +53,17 @@ class LanguageScope implements \IWPML_AJAX_Action {
 
 		$language = sanitize_text_field( wp_unslash( $_REQUEST['lang'] ) );
 
-		return '' === $language ? null : $language;
+		return $this->isActiveLanguage( $language ) ? $language : null;
+	}
+
+	private function isActiveLanguage( $language ) {
+		if ( self::ALL_LANGUAGES === $language ) {
+			return true;
+		}
+
+		$activeLanguages = apply_filters( 'wpml_active_languages', null );
+
+		return '' !== $language && is_array( $activeLanguages ) && array_key_exists( $language, $activeLanguages );
 	}
 
 	private function removeAcfWholeRequestSwitch() {

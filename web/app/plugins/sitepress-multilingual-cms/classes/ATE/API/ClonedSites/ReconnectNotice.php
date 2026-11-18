@@ -2,6 +2,7 @@
 
 namespace WPML\TM\ATE\ClonedSites;
 
+use WPML\TM\ATE\Cancel\FailedCancelNotice;
 use function WPML\Container\make;
 
 class ReconnectNotice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
@@ -174,7 +175,9 @@ class ReconnectNotice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		       . NoticeBrand::row()
 		       . '<p>'
 		       . esc_html__( 'WPML is reconnecting to our translation system.', 'sitepress' )
-		       . '</p></div>';
+		       . '</p>'
+		       . ( $inline ? '' : FailedCancelNotice::heldParagraph() )
+		       . '</div>';
 	}
 
 	public static function renderFallback( $placement = 'banner' ) {
@@ -233,6 +236,7 @@ class ReconnectNotice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 
 		return '<div class="' . esc_attr( $class ) . '" data-wpml-connection-status="' . esc_attr( $placement ) . '">'
 			. '<p class="wpml-connection-status__text">' . $text . '</p>'
+			. ( 'banner' === $placement ? FailedCancelNotice::heldParagraph() : '' )
 			. '<p class="wpml-connection-status__controls">' . $controls . '</p>'
 			. $countdown
 			. '</div>';
@@ -281,6 +285,7 @@ class ReconnectNotice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		];
 		$state['widgetScriptId'] = \WPML\TM\ATE\Dashboard\ATEDashboardLoader::ATE_DASHBOARD_ID . '-js';
 		$state['pollSeconds']    = ReconnectState::PROBE_FLOOR_SECONDS;
+		$state['heldCancels'] = FailedCancelNotice::heldCount();
 		$state['bannerScreen'] = self::isAteScreen();
 
 		return $state;
@@ -373,6 +378,7 @@ class ReconnectNotice implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 		return '<div class="notice notice-warning wpml-ate-reconnect-escalated">'
 		       . NoticeBrand::row()
 		       . '<p><strong>' . $headline . '</strong></p>'
+		       . ( self::isAteScreen() ? FailedCancelNotice::heldParagraph() : '' )
 		       . '<p><a class="button button-primary wpml-ate-reconnect-retry" href="'
 		       . esc_url( ReconnectActions::retryUrl() ) . '">' . $retry . '</a></p>'
 		       . '<p class="description">' . $retryHint . '</p>'

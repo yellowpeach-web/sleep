@@ -45,6 +45,6 @@ class FormNotifications implements \IWPML_Backend_Action, \IWPML_Frontend_Action
 			);
 		}
 
-		return wp_slash( $fieldValue );
+		return $fieldValue;
 	}
 }

@@ -1,5 +1,7 @@
 <?php
 
+use WPML\EditHistory\InternalWrite;
+
 require_once WPML_TM_PATH . '/inc/translation-jobs/helpers/wpml-translation-job-helper.class.php';
 require_once WPML_TM_PATH . '/inc/translation-jobs/helpers/wpml-translation-job-helper-with-api.class.php';
 require_once WPML_TM_PATH . '/inc/translation-jobs/wpml-translation-jobs-collection.class.php';
@@ -16,10 +18,10 @@ function wpml_tm_save_data( array $data, $redirect_after_saving = true ) {
 	$job_factory      = wpml_tm_load_job_factory();
 	$save_factory     = new WPML_TM_Job_Action_Factory( $job_factory );
 	$save_data_action = $save_factory->save_action( $data );
-	$result           = $save_data_action->save_translation();
+	$result           = InternalWrite::run( InternalWrite::PUBLIC_API, fn() => $save_data_action->save_translation() );
 	$redirect_target  = $redirect_after_saving ? $save_data_action->get_redirect_target() : false;
 	if ( (bool) $redirect_target === true ) {
-		wp_redirect( $redirect_target );
+		wp_safe_redirect( $redirect_target );
 	}
 
 	return $result;

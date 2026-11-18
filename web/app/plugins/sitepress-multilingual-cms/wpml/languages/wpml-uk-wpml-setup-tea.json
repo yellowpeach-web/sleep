@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
             "lang": "uk"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "Перейти на Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "Перейти на PTC"
+         ],
+         "Switching…": [
+            "Перемикання…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "Ми не змогли підтвердити перемикання. Спробуйте ще раз або оновіть сторінку, щоб побачити поточний механізм."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Не вдалося завантажити елементи керування механізмом перекладу. Оновіть сторінку та спробуйте ще раз."
+         ],
+         "Loading translation engine settings…": [
+            "Завантаження налаштувань механізму перекладу…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "Заповніть контекст вашого сайту вище, перш ніж переходити на PTC."
+         ],
+         "Reload page": [
+            "Оновити сторінку"
+         ],
+         "Could not fetch engines data": [
+            "Не вдалося отримати дані двигунів"
+         ],
          "Error in updating since dates for types.": [
             "Помилка оновлення дат «з моменту» для типів."
          ],
@@ -143,9 +170,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "Застосовано застарілу модель ціноутворення. %s — це застаріла система перекладу, яка не рекомендується для нових сайтів і незабаром буде виведена з експлуатації. Для наявних сайтів для неї зберігається скоригований тариф за слово."
          ],
-         "Switch to PTC": [
-            "Перейти на PTC"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Це те, що потрібно для перекладу вашого поточного вмісту сьогодні. Сюди не входять деякі тексти, додані іншими плагінами, як-от форми чи слайдери, які підраховуються після завершення налаштування. Рядки сайту з вашої теми та плагінів також підраховуються після налаштування і зазвичай додають кількасот слів. Після цього редагування безкоштовні. Ви платите знову лише за додані слова."
          ],
@@ -161,8 +185,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Враховуються сторінки, записи та товари разом із їхніми настроюваними полями, текстами конструктора сторінок і медіатекстами, а також категорії, позначки та атрибути, які вони використовують."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Враховуються сторінки, записи та товари разом із їхніми настроюваними полями, текстами конструктора сторінок і медіатекстами, категорії, позначки та атрибути, які вони використовують, а також рядки сайту. Термін підраховується в кожному елементі, де він використовується, і окремо ще один раз, оскільки він надсилається на переклад в обох випадках."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Враховуються сторінки, записи та товари з їхніми настроюваними полями, текстами конструкторів сторінок і медіафайлів, категорії, позначки та атрибути, які вони використовують, а також рядки сайту. Кожна категорія, позначка чи атрибут підраховується один раз у рядку «Таксономії» і не дублюється для елементів, які їх використовують."
          ],
          "Total items": [
             "Усього елементів"
@@ -235,6 +259,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "Щоб запустити <b>Translate Everything Automatically</b>, активуйте <b>Оплата в міру використання</b> або купіть передплачені слова."
+         ],
+         "Translation quality:": [
+            "Якість перекладу:"
          ],
          "Select payment method": [
             "Виберіть спосіб оплати"
@@ -367,6 +394,30 @@
          ],
          "Close modal": [
             "Закрити модальне вікно"
+         ],
+         "Obvious mistakes": [
+            "Очевидні помилки"
+         ],
+         "Mistakes visible": [
+            "Помилки помітні"
+         ],
+         "Ready to publish": [
+            "Готово до публікації"
+         ],
+         "Your engine": [
+            "Ваш рушій"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Якість перекладу (шкала 50-100): %1$s має бал %2$d, %3$s має бал %4$d."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Бали базуються на внутрішньому дослідженні якості перекладу MQM від WPML."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC перекладає з вищою якістю та надає результати, готові до публікації."
          ]
       }
    }

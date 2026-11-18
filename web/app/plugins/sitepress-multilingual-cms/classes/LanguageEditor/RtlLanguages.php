@@ -4,7 +4,7 @@ namespace WPML\LanguageEditor;
 
 class RtlLanguages {
 
-	const DEFAULT_RTL_LANGUAGES = [ 'ar', 'he', 'fa', 'ku', 'ur' ];
+	const DEFAULT_RTL_LANGUAGES = [ 'ar', 'he', 'fa', 'ku', 'ur', 'yi', 'prs' ];
 
 	private static $storedOverrides;
 

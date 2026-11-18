@@ -81,9 +81,16 @@
          "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
             "Her iki durumda da yeni tercih kaydedilir. “Sadece yeni çevirilere uygula” seçeneğiyle, mevcut her çeviri tam olarak olduğu gibi kalır."
          ],
+         "With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "“Yalnızca yeni çevirilere uygula” seçeneğiyle mevcut tüm çeviriler olduğu gibi kalır."
+         ],
          "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
             "%1$s özel alan bu ekranın dışında çevrilebilir hale geldi: %2$s. Halihazırda mevcut olan çevirilere ne olacağına karar verin.",
             "%1$s özel alan bu ekranın dışında çevrilebilir hale geldi: %2$s. Halihazırda mevcut olan çevirilere ne olacağına karar verin."
+         ],
+         "%1$s custom field was waiting for a check an earlier WPML version started and did not finish: %2$s. Its translation setting has not changed. Decide whether the existing translations that use it should be marked as needing an update.": [
+            "%1$s özel alan, önceki bir WPML sürümünün başlattığı ve tamamlayamadığı bir kontrolü bekliyordu: %2$s. Çeviri ayarı değişmedi. Bu alanı kullanan mevcut çevirilerin güncelleme gerektiriyor olarak işaretlenip işaretlenmeyeceğine karar verin.",
+            "%1$s özel alan, önceki bir WPML sürümünün başlattığı ve tamamlayamadığı bir kontrolü bekliyordu: %2$s. Çeviri ayarları değişmedi. Bu alanları kullanan mevcut çevirilerin güncelleme gerektiriyor olarak işaretlenip işaretlenmeyeceğine karar verin."
          ],
          "Review this field": [
             "Bu alanı gözden geçir",
@@ -179,19 +186,19 @@
             "%s yazı çeviri güncellemesi gerekiyor olarak işaretlendi."
          ],
          "%1$s sent to translation and %2$s outside Translate Everything's range marked for later.": [
-            "%1$s yazı çeviriye gönderildi ve Otomatik Çeviri kapsamı dışındaki %2$s yazı daha sonrası için işaretlendi."
+            "%1$s çeviriye gönderildi ve Translate Everything kapsamı dışındaki %2$s daha sonrası için işaretlendi."
          ],
          "%s sent to translation.": [
             "%s yazı çeviriye gönderildi."
          ],
          "Nothing was sent. %s outside Translate Everything's range marked for later.": [
-            "Hiçbir şey gönderilmedi. Otomatik Çeviri kapsamı dışındaki %s yazı daha sonrası için işaretlendi."
+            "Hiçbir şey gönderilmedi. Translate Everything kapsamı dışındaki %s daha sonrası için işaretlendi."
          ],
          "Nothing was sent.": [
             "Hiçbir şey gönderilmedi."
          ],
          "%s in a language Translate Everything does not send marked for later.": [
-            "Otomatik Çeviri'nin göndermediği bir dildeki %s yazı daha sonrası için işaretlendi."
+            "Translate Everything tarafından gönderilmeyen bir dildeki %s daha sonrası için işaretlendi."
          ],
          "The URL of %s translation was updated.": [
             "%s çevirinin URL'si güncellendi.",

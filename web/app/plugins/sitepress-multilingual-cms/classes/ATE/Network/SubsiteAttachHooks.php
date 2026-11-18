@@ -109,7 +109,7 @@ class SubsiteAttachHooks implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 	}
 
 	private function isWaitingForAttach(): bool {
-		return \WPML_TM_ATE_Status::is_enabled() && ! $this->auth->has_keys();
+		return \WPML_TM_ATE_Status::is_ate_account_wanted() && ! $this->auth->has_keys();
 	}
 
 	private function hasOwnAccount(): bool {

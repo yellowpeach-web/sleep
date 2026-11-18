@@ -3,28 +3,44 @@
 namespace WPML\TranslationRoles;
 
 use WPML\Collect\Support\Collection;
+use WPML\FP\Either;
 use WPML\FP\Fns;
 use WPML\LIB\WP\Hooks;
 use WPML\LIB\WP\User;
+use WPML\TranslationRoles\Service\TranslationManagerCapability;
 use function WPML\Container\make;
-use function WPML\FP\invoke;
-use function WPML\FP\partial;
 
 class SaveManager extends SaveUser {
 
 	const TRANSLATION_MANAGER_INSTRUCTIONS_TEMPLATE = 'notification/translation-manager-instructions.twig';
 
 	public function run( Collection $data ) {
+		$refusal = null;
 
-		$setRole = Fns::tap( invoke( 'add_cap' )->with( User::CAP_MANAGE_TRANSLATIONS ) );
+		$grantRole = Fns::tap( function ( $user ) use ( &$refusal ) {
+			make( TranslationManagerCapability::class )->grant( $user->ID );
+			$refusal = \WPML_TM_AMS_Synchronize_Actions::get_last_error();
+		} );
+
+		$result = function ( \WP_User $user ) use ( &$refusal ) {
+			return is_wp_error( $refusal )
+				? Either::left( self::getAteRefusalMessage( $user, $refusal ) )
+				: Either::right( true );
+		};
 
 		return self::getUser( $data )
-		           ->map( $setRole )
+		           ->map( $grantRole )
 		           ->map( [ self::class, 'sendInstructions' ] )
-		           ->map( function( $user ) {
-					   do_action( 'wpml_tm_ate_synchronize_managers', $user->ID );
-					   return true;
-				   } );
+		           ->chain( $result );
+	}
+
+	private static function getAteRefusalMessage( \WP_User $manager, \WP_Error $refusal ) {
+		return sprintf(
+			/* translators: Error shown when a user was made a Translation Manager but the Advanced Translation Editor refused the change. %1$s: the user's display name, %2$s: the error message from the Advanced Translation Editor. */
+			__( '%1$s is now a Translation Manager in WPML. The Advanced Translation Editor did not accept the change, so it does not list this user as a manager yet. Contact WPML support and include this error: %2$s', 'sitepress' ),
+			$manager->display_name,
+			$refusal->get_error_message()
+		);
 	}
 
 	public static function sendInstructions( \WP_User $manager ) {

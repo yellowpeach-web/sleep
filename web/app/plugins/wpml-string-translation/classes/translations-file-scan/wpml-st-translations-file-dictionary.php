@@ -33,13 +33,7 @@ class WPML_ST_Translations_File_Dictionary {
 	}
 
 	public function clear_skipped() {
-		$skipped = wpml_collect( $this->storage->find( null, [ WPML_ST_Translations_File_Entry::SKIPPED ] ) );
-		$skipped->each(
-			function ( WPML_ST_Translations_File_Entry $entry ) {
-				$entry->set_status( WPML_ST_Translations_File_Entry::NOT_IMPORTED );
-				$this->storage->save( $entry );
-			}
-		);
+		$this->storage->move_status( WPML_ST_Translations_File_Entry::SKIPPED, WPML_ST_Translations_File_Entry::NOT_IMPORTED );
 	}
 
 	public function get_imported_files() {

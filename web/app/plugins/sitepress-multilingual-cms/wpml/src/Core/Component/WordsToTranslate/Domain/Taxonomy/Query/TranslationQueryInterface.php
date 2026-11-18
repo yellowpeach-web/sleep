@@ -13,4 +13,7 @@ interface TranslationQueryInterface {
   public function getLastTranslatedOriginalContent( TaxonomyTerm $term, string $lang );
 
 
+  public function getLastTranslatedOriginalFieldContents( TaxonomyTerm $term, string $lang );
+
+
 }

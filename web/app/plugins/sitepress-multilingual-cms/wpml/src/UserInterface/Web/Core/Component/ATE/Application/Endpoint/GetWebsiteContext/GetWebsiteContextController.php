@@ -25,10 +25,16 @@ class GetWebsiteContextController implements EndpointInterface {
             ->jsonSerialize()
       ];
     } catch ( WebsiteContextException $e ) {
-      return [
+      $response = [
         'success' => false,
         'message' => $e->getMessage(),
       ];
+
+      if ( $e->getErrorCode() !== '' ) {
+        $response['code'] = $e->getErrorCode();
+      }
+
+      return $response;
     }
   }
 

@@ -15,13 +15,13 @@ use WPML\Core\Component\MinimumRequirements\Domain\Entity\RestEnabledRequirement
 use WPML\Core\Component\MinimumRequirements\Domain\Entity\SimpleXMLExtensionRequirement;
 use WPML\Core\Component\MinimumRequirements\Domain\Entity\StackSizeRequirement;
 use WPML\Core\Component\MinimumRequirements\Domain\Entity\WordPressVersionRequirement;
-use WPML\Core\Component\Post\Domain\WordCount\ItemContentCalculator\PostCalculator;
-use WPML\Core\Component\Post\Domain\WordCount\ItemContentCalculator\PostContentFilterInterface;
+use WPML\Core\Component\Translation\Application\Event\Links\ItemUpdateListener;
 use WPML\Core\Component\Translation\Application\Query\NewestJobsForPairsQueryInterface;
 use WPML\Core\Component\Translation\Application\Query\Priority\PostDataQueryInterface;
 use WPML\Core\Component\Translation\Application\Query\Priority\SiteSettingsQueryInterface;
 use WPML\Core\Component\Translation\Application\Query\Priority\StringDataQueryInterface;
 use WPML\Core\Component\Translation\Application\Query\Priority\TermDataQueryInterface;
+use WPML\Core\Component\Translation\Application\Service\Links\AdjustTranslationsOfOriginal;
 use WPML\Core\Component\Translation\Application\Service\Priority\ClassificationContextBuilder;
 use WPML\Core\Component\Translation\Application\Service\Priority\JobPriorityService;
 use WPML\Core\Component\Translation\Application\Service\TranslationService;
@@ -33,11 +33,11 @@ use WPML\Core\Component\Translation\Domain\TranslationBatch\Validator\CompletedT
 use WPML\Core\Component\Translation\Domain\TranslationBatch\Validator\CompositeValidator;
 use WPML\Core\Component\Translation\Domain\TranslationBatch\Validator\ElementTargetLanguageValidator;
 use WPML\Core\Component\Translation\Domain\TranslationBatch\Validator\EmptyMethodsValidator;
+use WPML\Core\Component\Translation\Domain\TranslationBatch\Validator\PackageRidesOwnerValidator;
+use WPML\Core\Component\Translation\Domain\TranslationBatch\Validator\ReviewOpenInAteValidator;
 use WPML\Core\Component\Translation\Domain\TranslationBatch\Validator\ValidatorInterface;
-use WPML\Core\Component\WordsToTranslate\Domain\Calculator\WordsToTranslate;
-use WPML\Core\Component\WordsToTranslate\Domain\Post\Query\JobQueryInterface as PostJobQueryInterface;
-use WPML\Core\Component\WordsToTranslate\Domain\Post\Query\PostQueryInterface;
 use WPML\Core\Port\PluginInterface;
+use WPML\Core\SharedKernel\Component\Translation\Domain\PackageOwnerInterface;
 use WPML\Core\SharedKernel\Component\Item\Application\Service\UntranslatedService;
 use WPML\Core\SharedKernel\Component\Language\Application\Query\LanguagesQueryInterface;
 use WPML\Core\SharedKernel\Component\Setting\Application\Service\TranslationEditorService;
@@ -56,10 +56,12 @@ use WPML\Infrastructure\WordPress\Component\WordsToTranslate\Domain\Post\PostBef
 use WPML\Legacy\Component\Language\Application\Query\AutomaticTranslationsSupportInfoDecoratorForLanguagesQuery;
 use WPML\Legacy\Component\Language\Application\Query\LanguagesQuery;
 use WPML\Legacy\Component\Translation\Sender\AteResendGuard;
+use WPML\Legacy\Component\Translation\Sender\ReviewOpenInAteGate;
 use WPML\Legacy\Component\Translation\Sender\ErrorMapper\ErrorMapper;
 use WPML\Legacy\Component\Translation\Sender\ErrorMapper\LegacyAteJobCreationError;
 use WPML\Legacy\Component\Translation\Sender\ErrorMapper\TranslationServiceUnavailable;
 use WPML\Legacy\Component\Translation\Sender\ErrorMapper\UnsupportedLanguagesInTranslationService;
+use WPML\Legacy\Component\Translation\Sender\Taxonomy\TaxonomySendOperationCoordinator;
 use WPML\Legacy\Component\WordsToTranslate\Domain\Post\BeforeSetupJobQuery;
 use WPML\Legacy\Port\Plugin;
 use WPML\UserInterface\Web\Core\Component\Dashboard\Application\DashboardController;
@@ -129,19 +131,6 @@ return [
         \WPML\Legacy\Component\WordsToTranslate\Domain\Post\JobQuery::class
     ],
 
-  PostCalculator::class                                                                        =>
-    function ( DicInterface $dic, PluginInterface $plugin ) {
-      $isSetupComplete = $plugin->isSetupComplete();
-
-      return new PostCalculator(
-        $dic->make( $isSetupComplete ? PostQueryInterface::class : PostBeforeSetupQuery::class ),
-        $dic->make( $isSetupComplete ? PostJobQueryInterface::class : BeforeSetupJobQuery::class ),
-        $dic->make( WordsToTranslate::class ),
-        $dic->make( PostContentFilterInterface::class ),
-        $dic->make( LanguagesQueryInterface::class )
-      );
-    },
-
   JobPriorityService::class =>
     [
       'postDataQuery'   => PostDataQueryInterface::class,
@@ -177,6 +166,10 @@ return [
           $dic->make( TaxonomyUntranslatedTypesCountBeforeSetupQuery::class ),
         ];
 
+        $queries[] = $dic->make(
+          \WPML\Infrastructure\WordPress\Component\StringPackage\Application\Query\UntranslatedTypesCountBeforeSetupQuery::class
+        );
+
         if ( defined( 'WPML_ST_VERSION' ) ) {
           $queries[] = $dic->make( PackageUntranslatedTypesCountQuery::class );
           $queries[] = $dic->make( StringUntranslatedTypesCountQuery::class );
@@ -195,6 +188,11 @@ return [
   \WPML\Legacy\Component\Language\Application\Query\ProspectiveLanguagesDecoratorForLanguagesQuery::class =>
     [ 'languagesQuery' => LanguagesQuery::class ],
 
+  TaxonomySendOperationCoordinator::class =>
+    function () {
+      return new TaxonomySendOperationCoordinator( null, new LanguagesQuery( $GLOBALS['sitepress'] ) );
+    },
+
   EnableController::class               =>
     [
       'languagesQuery' => AutomaticTranslationsSupportInfoDecoratorForLanguagesQuery::class
@@ -212,12 +210,18 @@ return [
       'languagesQuery' => AutomaticTranslationsSupportInfoDecoratorForLanguagesQuery::class,
       'pluginInterface'=> Plugin::class,
     ],
+    \WPML\UserInterface\Web\Core\Component\Dashboard\Application\Endpoint\AutomaticTranslation\GetDefaultLanguageAutomaticSupportController::class =>
+    [
+      'languagesQuery' => AutomaticTranslationsSupportInfoDecoratorForLanguagesQuery::class,
+    ],
     ValidatorInterface::class             =>
     function ( DicInterface $dic ) {
       return new CompositeValidator(
         [
           new ElementTargetLanguageValidator(),
-          new CompletedTranslationValidator( $dic->make( CompletedTranslationDetector::class ) )
+          new PackageRidesOwnerValidator( $dic->make( PackageOwnerInterface::class ) ),
+          new CompletedTranslationValidator( $dic->make( CompletedTranslationDetector::class ) ),
+          new ReviewOpenInAteGate( new ReviewOpenInAteValidator() ),
         ],
         new EmptyMethodsValidator()
       );
@@ -276,6 +280,8 @@ return [
 
   CheckRestIsEnabled::class => [ 'cache' => WordPressOptionCache::class ],
 
+  ItemUpdateListener::class => [ 'adjustTranslationsOfOriginal' => AdjustTranslationsOfOriginal::class ],
+
   \WPML\Core\Component\WordsToTranslate\Domain\Post\Provider::class =>
     [
       'postTermsLoader' => \WPML\Core\Component\WordsToTranslate\Domain\Post\PostTermsLoader::class,
@@ -323,6 +329,7 @@ return [
             ]
           ),
           $dic->make( \WPML\Core\Component\WordsToTranslate\Domain\Strings\Provider::class ),
+          $dic->make( \WPML\Core\Component\WordsToTranslate\Domain\StringPackage\ProviderBeforeSetup::class ),
           $dic->make( \WPML\Core\Component\WordsToTranslate\Domain\StringPackage\Provider::class ),
         ]
       );
@@ -334,7 +341,10 @@ return [
         new \WPML\Legacy\Component\WordsToTranslate\Domain\Job\JobQuery(),
         new \WPML\Legacy\Component\WordsToTranslate\Domain\Job\TranslationEngineQuery(),
         [
-         $dic->make( \WPML\Core\Component\WordsToTranslate\Domain\Post\Provider::class ),
+         $dic->make(
+           \WPML\Core\Component\WordsToTranslate\Domain\Post\Provider::class,
+           [ 'postContentLoader' => \WPML\Core\Component\WordsToTranslate\Domain\Post\JobPostContentLoader::class ]
+         ),
          $dic->make( \WPML\Core\Component\WordsToTranslate\Domain\Strings\Provider::class ),
          $dic->make( \WPML\Core\Component\WordsToTranslate\Domain\StringBatch\Provider::class ),
          $dic->make( \WPML\Core\Component\WordsToTranslate\Domain\StringPackage\Provider::class ),

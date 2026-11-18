@@ -447,6 +447,7 @@ class WPML_Notices {
 				ICL_SITEPRESS_SCRIPT_VERSION,
 				true
 			);
+			Resources::defineAjaxUrlBefore( 'otgs-notices' );
 
 			do_action( 'wpml-notices-scripts-enqueued' );
 		}

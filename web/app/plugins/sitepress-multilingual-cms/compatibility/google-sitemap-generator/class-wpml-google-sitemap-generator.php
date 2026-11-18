@@ -2,8 +2,12 @@
 
 class WPML_Google_Sitemap_Generator {
 
+	const HANDED_OVER_FILTER = 'wpml_google_sitemap_generator_handed_over';
+
 	private $wpdb;
 	private $sitepress;
+
+	private $isBuildingPermalinkInPostLanguage = false;
 
 	public function __construct( wpdb $wpdb, SitePress $sitepress ) {
 		$this->wpdb      = $wpdb;
@@ -25,10 +29,26 @@ class WPML_Google_Sitemap_Generator {
 	}
 
 	public function permalink_filter( $permalink, $post ) {
-		$post_id       = $post instanceof WP_Post ? $post->ID : $post;
-		$language_code = $this->sitepress->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
+		$postId       = $post instanceof WP_Post ? $post->ID : $post;
+		$languageCode = $this->sitepress->get_language_for_element( $postId, 'post_' . get_post_type( $postId ) );
 
-		return $this->sitepress->convert_url( $permalink, $language_code );
+		if ( $this->isBuildingPermalinkInPostLanguage || ! $languageCode || $languageCode === $this->sitepress->get_current_language() ) {
+			return $this->sitepress->convert_url( $permalink, $languageCode );
+		}
+
+		return $this->getPermalinkInLanguage( $postId, $languageCode );
+	}
+
+	private function getPermalinkInLanguage( int $postId, string $languageCode ) {
+		$this->isBuildingPermalinkInPostLanguage = true;
+		$this->sitepress->switch_lang( $languageCode );
+
+		try {
+			return get_permalink( $postId );
+		} finally {
+			$this->sitepress->switch_lang();
+			$this->isBuildingPermalinkInPostLanguage = false;
+		}
 	}
 
 	private function is_per_domain() {

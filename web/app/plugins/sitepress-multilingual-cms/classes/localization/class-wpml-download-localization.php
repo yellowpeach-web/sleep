@@ -2,6 +2,8 @@
 
 use WPML\Localization\TranslationsApiBreaker;
 
+require_once __DIR__ . '/../../inc/upgrade-autoload-shim.php';
+
 class WPML_Download_Localization {
 	private $active_languages;
 	private $default_language;

@@ -28,8 +28,12 @@ class WPML_Tax_Menu_Loader {
 			 && get_taxonomy( $tax_get ) !== false
 		) {
 			$translations = $this->sitepress->get_element_translations( $trid, 'tax_' . $this->taxonomy );
-			if ( isset( $translations[ $_GET['lang'] ] ) && ! empty( $translations[ $_GET['lang'] ]->term_id ) ) {
-				wp_redirect( get_edit_term_link( $translations[ $_GET['lang'] ]->term_id, $tax_get ) );
+			$lang         = isset( $_GET['lang'] ) ? sanitize_text_field( wp_unslash( $_GET['lang'] ) ) : '';
+			if ( $lang && isset( $translations[ $lang ] ) && ! empty( $translations[ $lang ]->term_id ) ) {
+				$edit_link = get_edit_term_link( $translations[ $lang ]->term_id, $tax_get );
+				if ( $edit_link ) {
+					wp_safe_redirect( $edit_link );
+				}
 				exit;
 			} else {
 				add_action( 'admin_notices', [ $this, '_tax_adding' ] );
@@ -49,17 +53,8 @@ class WPML_Tax_Menu_Loader {
 	}
 
 	public function category_display_action() {
-		global $wpml_term_translations;
-
 		$default_categories = (array) $this->sitepress->get_setting( 'default_categories', array() );
-		$default_cat_ids    = array();
-
-		foreach ( $default_categories as $term_taxonomy_id ) {
-			$term_id = (int) $wpml_term_translations->adjust_term_id_for_ttid( (int) $term_taxonomy_id );
-			if ( $term_id && ! in_array( $term_id, $default_cat_ids, true ) ) {
-				$default_cat_ids[] = $term_id;
-			}
-		}
+		$default_cat_ids    = \WPML\TaxonomyTermTranslation\DefaultCategoryDeleteProtection::protectedTermIds( $default_categories );
 
 		if ( $default_cat_ids ) {
 			echo '<div id="icl-default-category-ids" style="display: none;">'

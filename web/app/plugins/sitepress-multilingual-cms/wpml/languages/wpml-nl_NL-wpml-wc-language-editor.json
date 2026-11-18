@@ -443,7 +443,7 @@
             "De meeste gebruikers hebben geen aangepaste taal nodig. De meeste varianten (bijv. Mexicaans Spaans, Braziliaans Portugees) bestaan al in de bovenstaande taallijst. Gebruik dit formulier alleen voor echte aangepaste taalvarianten."
          ],
          "Variant name": [
-            "Naam variant"
+            "Naam van variant"
          ],
          "e.g., Andalusian": [
             "bijv. Andalusisch"
@@ -580,6 +580,9 @@
          "Blocked by a firewall or CDN": [
             "Geblokkeerd door een firewall of CDN"
          ],
+         "Used by another site": [
+            "In gebruik door een andere site"
+         ],
          "Not valid": [
             "Niet geldig"
          ],
@@ -603,6 +606,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s wordt geladen, maar een firewall of CDN heeft de controle van WPML geblokkeerd."
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "In gebruik door een andere site op dit netwerk: %s. Voer een ander domein in om op te slaan."
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "Het domein kon niet worden gevalideerd: %s. Controleer of het naar deze site verwijst, of vink “Valideren bij opslaan” uit om het toch op te slaan."
@@ -730,13 +736,13 @@
             "Oude URL's worden niet automatisch omgeleid. Als u wilt dat ze blijven werken, stel dan zelf de redirects in."
          ],
          "This updates your language settings; existing content isn’t rewritten.": [
-            "Dit werkt uw taalinstellingen bij; bestaande inhoud wordt niet herschreven."
+            "Dit werkt uw instellingen voor talen bij; bestaande inhoud wordt niet herschreven."
          ],
          "Your translations and strings are unchanged.": [
             "Uw vertalingen en strings blijven ongewijzigd."
          ],
          "Update": [
-            "Update"
+            "Bijwerken"
          ],
          "Save changes": [
             "Wijzigingen opslaan"
@@ -959,6 +965,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "Kies voordat deze taal kan worden opgeslagen of u de eerdere content van deze site hierin wilt herstellen of met een schone lei wilt beginnen."
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "Een taal kan niet worden gekoppeld aan de standaardtaal van uw site. Kies in plaats daarvan voor “Automatisch afstemmen”."
+         ],
          "You don’t have permission to change languages.": [
             "U hebt geen toestemming om talen te wijzigen."
          ],
@@ -969,7 +978,7 @@
             "De taal kon niet worden toegevoegd. Probeer het opnieuw."
          ],
          "Couldn’t save the language settings.": [
-            "Kon de taalinstellingen niet opslaan."
+            "Kon de instellingen voor de taal niet opslaan."
          ],
          "One language": [
             "Eén taal"
@@ -1019,6 +1028,9 @@
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "Als u uw taal niet in de lijst kunt vinden, kunt u <a>een aangepaste taal toevoegen</a>."
          ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s verplaatst naar positie %2$d van %3$d."
+         ],
          "Default language": [
             "Standaardtaal"
          ],
@@ -1059,7 +1071,7 @@
             "Niet-Latijnse tekens coderen"
          ],
          "Mapping": [
-            "Koppeling"
+            "Toewijzing"
          ],
          "This language is recognized as the same as your site’s default language, so it can’t be translated automatically. To carry your content over, duplicate it instead.": [
             "Deze taal wordt herkend als dezelfde als de standaardtaal van uw site, dus deze kan niet automatisch worden vertaald. Om uw inhoud over te zetten, kunt u deze in plaats daarvan dupliceren."
@@ -1075,6 +1087,12 @@
          ],
          "Delete language": [
             "Taal verwijderen"
+         ],
+         "Move %s. Use the up and down arrow keys.": [
+            "%s verplaatsen. Gebruik de pijltoetsen omhoog en omlaag."
+         ],
+         "Drag to change the order": [
+            "Sleep om de volgorde te wijzigen"
          ],
          "Type to search all languages…": [
             "Typ om in alle talen te zoeken…"
@@ -1147,6 +1165,9 @@
          ],
          "Recognized as the same language as the default": [
             "Herkend als dezelfde taal als de standaardtaal"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "Automatische vertaling is uitgeschakeld: er is geen vertaal-engine ingeschakeld. Ga naar <link>WPML → Instellingen → AI-vertaling</link> om er een in te schakelen."
          ],
          "%s (Regional)": [
             "%s (regionaal)"

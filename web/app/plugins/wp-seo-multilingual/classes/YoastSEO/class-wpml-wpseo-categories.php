@@ -1,6 +1,7 @@
 <?php
 
 use WPML\FP\Fns;
+use WPML\LIB\WP\User;
 
 class WPML_WPSEO_Categories implements IWPML_Action {
 
@@ -52,13 +53,16 @@ class WPML_WPSEO_Categories implements IWPML_Action {
 
 		global $wpdb;
 
-		$sql = "
-			SELECT t.term_id FROM {$wpdb->terms} t
-			INNER JOIN {$wpdb->term_taxonomy} tt ON tt.term_id = t.term_id
-			WHERE tt.taxonomy = '" . self::CATEGORY_SLUG . "'
-		";
+		$termIds = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT t.term_id FROM {$wpdb->terms} t
+				INNER JOIN {$wpdb->term_taxonomy} tt ON tt.term_id = t.term_id
+				WHERE tt.taxonomy = %s",
+				self::CATEGORY_SLUG
+			)
+		);
 
-		return array_filter( array_map( array( $this, 'map_to_term' ), $wpdb->get_col( $sql ) ) );
+		return array_filter( array_map( array( $this, 'map_to_term' ), $termIds ) );
 	}
 
 	private function is_array_of_wp_term( array $terms ) {
@@ -95,7 +99,7 @@ class WPML_WPSEO_Categories implements IWPML_Action {
 	}
 
 	public function ensureCategoryBaseIsNotTranslated() {
-		if ( $this->slugTranslationSettingsFactory ) {
+		if ( $this->slugTranslationSettingsFactory && current_user_can( User::CAP_MANAGE_OPTIONS ) ) {
 			$taxSettings = $this->slugTranslationSettingsFactory->createTaxSettings();
 
 			if ( $taxSettings->is_translated( self::CATEGORY_SLUG ) ) {

@@ -29,7 +29,7 @@ class BlockPreferenceReapplyHooks implements \IWPML_Backend_Action {
 		$service = $blockPostIds ? TranslationStatusService::get() : null;
 
 		if ( $service && method_exists( $service, 'updateNeedsUpdate' ) ) {
-			$service->updateNeedsUpdate( $blockPostIds );
+			$service->updateNeedsUpdate( $blockPostIds, true );
 		}
 	}
 

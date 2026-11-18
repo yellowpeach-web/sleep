@@ -15,6 +15,7 @@ use WPML\TM\ATE\ClonedSites\MigrationLogger;
 use WPML\TM\ATE\ClonedSites\AliasDomainResetFlag;
 use WPML\TM\ATE\ClonedSites\SetupMigration\Resetter\SiteKeyCleaner;
 use WPML\TM\ATE\ClonedSites\SetupMigration\Resetter\SiteKeyRegistrar;
+use WPML\TM\ATE\ClonedSites\TranslateEverythingOnNewRecord;
 use WPML\TM\ATE\SiteName\Sender as SiteNameSender;
 use WPML\Utilities\AdvisoryLock;
 use WPML\Utilities\AdvisoryLockFactory;
@@ -242,6 +243,7 @@ class Handler {
 		], HOUR_IN_SECONDS );
 
 		if ( ! $sameRecord ) {
+			TranslateEverythingOnNewRecord::switchOff();
 			$cancelledCount = make( InProgressJobsCanceller::class )->cancel();
 			MigrationLogger::jobsCancelled( (int) $cancelledCount );
 		}

@@ -3,6 +3,7 @@
 namespace WPML\WPSEO\RankMathSEO\Slugs;
 
 use WPML\LIB\WP\Hooks as WpHooks;
+use WPML\LIB\WP\User;
 use WPML\WPSEO\RankMathSEO\Utils;
 
 class Hooks implements \IWPML_Action {
@@ -25,6 +26,10 @@ class Hooks implements \IWPML_Action {
 	}
 
 	public function ensureStrippedBasesAreNotTranslated() {
+		if ( ! current_user_can( User::CAP_MANAGE_OPTIONS ) ) {
+			return;
+		}
+
 		foreach ( self::FEATURES as $featureData ) {
 			list( $featureKey, $type, $slug ) = $featureData;
 

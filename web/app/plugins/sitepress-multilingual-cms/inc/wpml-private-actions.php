@@ -26,7 +26,7 @@ function new_duplicated_terms_filter( $post_ids, $duplicates_only = true ) {
 		}
 
 		$taxonomy_help_url = \WPML\OutboundLinks\OutboundLinks::to(
-			'https://wpml.org/documentation/translating-your-contents/taxonomy/',
+			'https://wpml.org/documentation/translating-your-contents/taxonomy/#fine-grained-control-the-taxonomy-tab',
 			array(
 				'medium'   => 'settings',
 				'campaign' => 'taxonomy-translation',

@@ -2,26 +2,28 @@
 
 namespace WPML\TM\Editor;
 
+use WPML\Core\Component\Post\Application\LanguagePanel\SiteEditorEntityTypes;
 use WPML\FP\Either;
 use WPML\FP\Fns;
 use WPML\FP\Left;
 use WPML\FP\Logic;
 use WPML\FP\Obj;
 use WPML\FP\Relation;
+use WPML\UrlHandling\UrlBuilder;
 use WPML\FP\Right;
 use WPML\LIB\WP\User;
 use WPML\Setup\Option as SetupOption;
+use WPML\TM\API\ATE;
 use WPML\TM\API\Jobs;
 use WPML\TM\ATE\Log\Entry;
 use WPML\TM\ATE\Log\Storage;
-use WPML\TM\API\ATE;
 use WPML\TM\ATE\ClonedSites\ApiCommunication;
 use WPML\TM\ATE\ClonedSites\ReconnectState;
 use WPML\TM\ATE\JobCreation\AteCreateReconciler;
-use WPML\TM\ATE\PullDelivery\SingleJobCollect;
-use WPML\TM\ATE\Receive\SingleJobDelivery;
 use WPML\TM\ATE\Review\ReviewStatus;
 use WPML\TM\ATE\Sync\Trigger;
+use WPML\TM\Editor\Dispatch\DispatchPlan;
+use WPML\TM\Editor\Dispatch\DispatchPlanFactory;
 use WPML\TM\Jobs\JobLog;
 use WPML\TM\Jobs\Manual;
 use WPML\TM\Jobs\TranslationRecord;
@@ -44,9 +46,16 @@ class Editor {
 
 	const REASON_JOB_NOT_FOUND = 'job-not-found';
 	const REASON_JOB_NOT_CREATED = 'job-not-created';
+	const REASON_TRANSLATION_RECORD_NOT_WRITTEN = 'translation-record-not-written';
 	const REASON_NOT_ALLOWED = 'not-allowed';
 	const REASON_EDITOR_CANNOT_OPEN = 'editor-cannot-open';
 	const REASON_NOTHING_TO_TRANSLATE = 'nothing-to-translate';
+	const REASON_TRANSLATION_NOT_CREATED = 'translation-not-created';
+	const REASON_PART_TRANSLATION_NOT_CREATED = 'part-translation-not-created';
+	const REASON_PAGE_TRANSLATION_NOT_CREATED = 'page-translation-not-created';
+	const REASON_CANNOT_CREATE_TEMPLATE = 'cannot-create-template';
+	const REASON_CANNOT_CREATE_PART = 'cannot-create-template-part';
+	const REASON_CANNOT_CREATE_PAGE = 'cannot-create-page';
 
 	private $clone_jobs;
 
@@ -54,55 +63,55 @@ class Editor {
 
 	private $record;
 
-	private $singleJobCollect;
-
-	const STALE_DELIVERY_COLLECTED     = 'collected';
-	const STALE_DELIVERY_DEFERRED      = 'deferred_to_the_pull';
-	const STALE_DELIVERY_NOT_COLLECTED = 'not_collected';
-
 	private $cloneRefused = [];
-
-	private $ateSaidDelivered = [];
 
 	private $ateOpenFailed = false;
 
-	public function __construct( CloneJobs $clone_jobs, Manual $manualJobs, ?TranslationRecord $record = null, ?SingleJobCollect $singleJobCollect = null ) {
-		$this->clone_jobs       = $clone_jobs;
-		$this->manualJobs       = $manualJobs;
-		$this->record           = $record ?: new TranslationRecord();
-		$this->singleJobCollect = $singleJobCollect;
+	private $siteEditorCreator;
+
+	private $plan;
+
+	public function __construct( CloneJobs $clone_jobs, Manual $manualJobs, ?TranslationRecord $record = null, ?SiteEditorTranslationCreator $siteEditorCreator = null, ?DispatchPlan $plan = null ) {
+		$this->clone_jobs        = $clone_jobs;
+		$this->manualJobs        = $manualJobs;
+		$this->record            = $record ?: new TranslationRecord();
+		$this->siteEditorCreator = $siteEditorCreator ?: new SiteEditorTranslationCreator();
+		$this->plan              = $plan ?: DispatchPlanFactory::create();
 	}
 
 	public function open( $params ) {
-		return ApiCommunication::duringUserSend(
+		return JobLog::runInGroup(
+			JobLog::GROUP_ID_EDITOR_OPEN,
+			'Translation editor opened',
 			function () use ( $params ) {
-				$lock = ( new OpenLock() )->acquire( is_array( $params ) ? $params : [] );
+				return ApiCommunication::duringUserSend(
+					function () use ( $params ) {
+						$openLock = new OpenLock();
+						$lock     = $openLock->acquire( is_array( $params ) ? $params : [] );
 
-				try {
-					return $this->doOpen( $params );
-				} finally {
-					if ( $lock ) {
-						$lock->release();
+						try {
+							$openLock->readLive();
+
+							return $this->doOpen( $params );
+						} finally {
+							if ( $lock ) {
+								$lock->release();
+							}
+						}
 					}
-				}
+				);
 			}
 		);
 	}
 
 	private function doOpen( $params ) {
 		$shouldOpenCTE = function ( $jobObject ) use ( $params ) {
-			if ( ! \WPML_TM_ATE_Status::is_enabled() ) {
-				return true;
-			}
-
-			$previousJob = $this->previousJob( $params, $jobObject );
-
-			if ( ! $jobObject->get_basic_data_property( 'translated' ) && $previousJob ) {
-				return wpml_tm_load_old_jobs_editor()->shouldStickToWPMLEditor( $jobObject->get_id(), $previousJob );
-			}
-
-			return wpml_tm_load_old_jobs_editor()->editorForTranslationsPreviouslyCreatedUsingCTE() === \WPML_TM_Editors::WPML &&
-			       wpml_tm_load_old_jobs_editor()->get_current_editor( $jobObject->get_id() ) === \WPML_TM_Editors::WPML;
+			return $this->plan->opensClassicEditor(
+				$jobObject,
+				function () use ( $params, $jobObject ) {
+					return $this->previousJob( $params, $jobObject );
+				}
+			);
 		};
 
 		$maybeUpdateTranslationServiceColumn = function ( $jobObject ) {
@@ -135,18 +144,21 @@ class Editor {
 		$isLocalJobInProgress =$this->manualJobs->isLocalJobInProgress( $params )
 		                        && ! $this->noWpmlEditorCanOpenTheLocalJob( $params );
 
+		$fromSiteEditor = SiteEditorEntityTypes::SCREEN === Obj::prop( 'screen', $params );
+		$screen         = (string) Obj::propOr( '', 'screen', $params );
+
 		$dataOfTranslationCreatedInNativeEditorViaConnection = $this->manualJobs->maybeGetDataIfTranslationCreatedInNativeEditorViaConnection( $params );
 		if ( $dataOfTranslationCreatedInNativeEditorViaConnection
 		     && ! $isLocalJobInProgress
-		     && \WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( $dataOfTranslationCreatedInNativeEditorViaConnection['originalPostId'] ) ) {
-			return $this->displayWPNative( $dataOfTranslationCreatedInNativeEditorViaConnection );
+		     && $this->usesNativeEditor( $dataOfTranslationCreatedInNativeEditorViaConnection, $screen ) ) {
+			return $this->displayWPNative( $dataOfTranslationCreatedInNativeEditorViaConnection, $fromSiteEditor, $screen );
 		}
 
 		$dataForNewTranslationInNativeEditor = $this->manualJobs->maybeGetDataForNewTranslationInNativeEditor( $params );
 		if ( $dataForNewTranslationInNativeEditor
 		     && ! $isLocalJobInProgress
-		     && \WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( $dataForNewTranslationInNativeEditor['originalPostId'] ) ) {
-			return $this->displayWPNativeForNewTranslation( $dataForNewTranslationInNativeEditor );
+		     && $this->usesNativeEditor( $dataForNewTranslationInNativeEditor, $screen ) ) {
+			return $this->displayWPNativeForNewTranslation( $dataForNewTranslationInNativeEditor, $fromSiteEditor, $this->renderedAt( $params ), $screen );
 		}
 
 		$response = Either::of( $params )
@@ -156,9 +168,7 @@ class Editor {
 				                  return Either::of( $jobObject );
 			                  }
 
-			                  return Either::left( self::noEditor(
-				                  (int) Obj::propOr( 0, 'job_id', $params ) > 0 ? self::REASON_JOB_NOT_FOUND : self::REASON_JOB_NOT_CREATED
-			                  ) );
+			                  return Either::left( self::noEditor( self::reasonNoJob( $params ) ) );
 		                  } )
 		                  ->chain( function ( $jobObject ) {
 			                  return $jobObject->user_can_translate( User::getCurrent() )
@@ -173,17 +183,132 @@ class Editor {
 
 		if ( $this->ateOpenFailed ) {
 			if ( $dataOfTranslationCreatedInNativeEditorViaConnection
-			     && \WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( $dataOfTranslationCreatedInNativeEditorViaConnection['originalPostId'] ) ) {
-				return $this->displayWPNative( $dataOfTranslationCreatedInNativeEditorViaConnection );
+			     && $this->usesNativeEditor( $dataOfTranslationCreatedInNativeEditorViaConnection, $screen ) ) {
+				return $this->displayWPNative( $dataOfTranslationCreatedInNativeEditorViaConnection, false, $screen );
 			}
 
 			if ( $dataForNewTranslationInNativeEditor
-			     && \WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( $dataForNewTranslationInNativeEditor['originalPostId'] ) ) {
-				return $this->displayWPNativeForNewTranslation( $dataForNewTranslationInNativeEditor );
+			     && $this->usesNativeEditor( $dataForNewTranslationInNativeEditor, $screen ) ) {
+				return $this->displayWPNativeForNewTranslation( $dataForNewTranslationInNativeEditor, false, $this->renderedAt( $params ), $screen );
 			}
 		}
 
 		return $response;
+	}
+
+	/**
+	 * Whether the WordPress editor is the one to open for the element: the
+	 * stored editor choice (`WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor()`),
+	 * read for a type the WordPress editor is OFFERED for.
+	 *
+	 * wpmldev-8629 P2 M8, ruling Q-SE-6 (c): it is never offered for a
+	 * navigation menu. With the WordPress Editor chosen as the translation
+	 * editor (globally, for the type or for the menu), a menu's "+" used to land
+	 * on `post-new.php?post_type=wp_navigation` - WordPress's title-only "Add
+	 * Navigation Menu" form, which creates nothing and edits no menu (M0 SE-B4,
+	 * the same on develop) - and an existing translation's pencil on the
+	 * title-only `post.php`. A menu therefore takes the job tree below whatever
+	 * the choice says: ATE when it is enabled and active, else the Translation
+	 * Editor (`$shouldOpenCTE`); no Site Editor copy either (the creator is for
+	 * templates and parts, Q-SE-2 (a)). The panel's editor choice does not
+	 * offer the WordPress Editor for a menu (PostLanguagePanelQuery::editorMode()).
+	 *
+	 * wpmldev-11657: the type must also have a WordPress edit screen (`show_ui`);
+	 * a type its plugin keeps out of the admin takes the job tree too. After the
+	 * cutover (wpmldev-12248), such a type keeps the WordPress editor when an
+	 * integration declares the post's own edit screen (a Contact Form 7 form).
+	 *
+	 * @param array  $data   Manual's native-editor data: `postType` (`wp_navigation` or `post_wp_navigation`), `originalPostId`, and `translatedPostId` for an existing translation.
+	 * @param string $screen The `screen` of the open params.
+	 *
+	 * @return bool
+	 */
+	private function usesNativeEditor( array $data, $screen = '' ) {
+		$postType = (string) Obj::propOr( '', 'postType', $data );
+		if ( ! SiteEditorEntityTypes::offersNativeEditor( $postType ) ) {
+			return false;
+		}
+
+		$translatedPostId = (int) Obj::propOr( 0, 'translatedPostId', $data );
+		if (
+			! \WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( $data['originalPostId'] )
+			&& ! ( $translatedPostId && \WPML_TM_Post_Edit_TM_Editor_Mode::is_translated_independently( $translatedPostId ) )
+		) {
+			return false;
+		}
+
+		if ( SiteEditorTranslationCreator::isSiteEditorType( $postType ) ) {
+			return true;
+		}
+
+		$object = '' !== $postType ? get_post_type_object( self::postTypeOf( $postType ) ) : null;
+		if ( ! $object || ! isset( $object->show_ui ) || (bool) $object->show_ui ) {
+			return true;
+		}
+
+		return $this->plan->asksNativeEditUrl()
+			&& NativeEditUrl::isAnswered( $this->wpEditorUrl( $data ), $this->nativePostId( $data ), $screen, $this->nativeContext( $data ) );
+	}
+
+	private function wpEditorUrl( array $data, $renderedAt = 0 ) {
+		if ( ! empty( $data['translatedPostId'] ) ) {
+			return admin_url(
+				'post.php?' . http_build_query(
+					[
+						'lang'      => $data['targetLanguageCode'],
+						'action'    => 'edit',
+						'post_type' => str_replace( 'post_', '', $data['postType'] ),
+						'post'      => $data['translatedPostId'],
+					]
+				)
+			);
+		}
+
+		$query = [
+			'lang'        => $data['targetLanguageCode'],
+			'post_type'   => $data['postType'],
+			'trid'        => $data['trid'],
+			'source_lang' => $data['sourceLanguageCode'],
+		];
+
+		if ( $renderedAt > 0 ) {
+			$query[ \WPML_Post_Status_Display::RENDERED_AT_PARAM ] = $renderedAt;
+		}
+
+		return admin_url( 'post-new.php?' . http_build_query( $query ) );
+	}
+
+	private function nativeEditUrl( $url, array $data, $screen ) {
+		if ( ! $this->plan->asksNativeEditUrl() ) {
+			return $url;
+		}
+
+		return NativeEditUrl::answer( $url, $this->nativePostId( $data ), $screen, $this->nativeContext( $data ) );
+	}
+
+	private function nativePostId( array $data ) {
+		return (int) ( empty( $data['translatedPostId'] ) ? $data['originalPostId'] : $data['translatedPostId'] );
+	}
+
+	private function nativeContext( array $data ) {
+		$isNew          = empty( $data['translatedPostId'] );
+		$originalPostId = (int) $data['originalPostId'];
+		$elementType    = 'post_' . self::postTypeOf( (string) $data['postType'] );
+
+		$trid = isset( $data['trid'] )
+			? (int) $data['trid']
+			: (int) apply_filters( 'wpml_element_trid', 0, $originalPostId, $elementType );
+
+		$sourceLanguage = isset( $data['sourceLanguageCode'] )
+			? (string) $data['sourceLanguageCode']
+			: (string) apply_filters( 'wpml_element_language_code', '', [ 'element_id' => $originalPostId, 'element_type' => $elementType ] );
+
+		return [
+			'trid'           => $trid,
+			'language'       => (string) $data['targetLanguageCode'],
+			'sourceLanguage' => $sourceLanguage,
+			'isNew'          => $isNew,
+		];
 	}
 
 	private function noWpmlEditorCanOpenTheLocalJob( $params ) {
@@ -227,45 +352,12 @@ class Editor {
 				pipe( $this->handleATEJobCreationError( $params, self::ATE_IS_NOT_ACTIVE ), Either::left() )
 			);
 
-			$cloneCompletedATEJob = function ( $jobObject ) use ( $params ) {
-				if ( $this->isValidATEJob( $jobObject ) && TranslationRecord::isCompleted( $jobObject ) && ! $this->isUnderAnOpenStatus( $jobObject ) ) {
-					$sentFrom = isset( $params['preview'] ) ? Jobs::SENT_FROM_REVIEW : Jobs::SENT_MANUALLY;
-
-					return $this->clone_jobs->cloneCompletedATEJob( $jobObject, $sentFrom )
-					                        ->bichain(
-						                        function ( $failedJobObject ) {
-							                        $this->cloneRefused[ (int) $failedJobObject->get_id() ] = true;
-
-							                        return Either::of( $failedJobObject );
-						                        },
-						                        Either::of()
-					                        );
-				}
-
-				return Either::of( $jobObject );
-			};
-
 			$refuseStaleDeliveredJob = function ( $jobObject ) use ( $params ) {
 				if ( Obj::prop( 'preview', $params ) ) {
 					return Either::of( $jobObject );
 				}
 
 				if ( ! $this->isStaleDeliveredAteJob( $jobObject ) ) {
-					return Either::of( $jobObject );
-				}
-
-				$collect = $this->collectStaleDelivery( (int) $jobObject->get_id() );
-
-				if ( self::STALE_DELIVERY_COLLECTED === $collect ) {
-					JobLog::add( 'stale_delivered_job_collected', [
-						'job_id'     => (int) $jobObject->get_id(),
-						'ate_job_id' => (int) $jobObject->get_basic_data_property( 'editor_job_id' ),
-					] );
-
-					return Either::of( $jobObject );
-				}
-
-				if ( self::STALE_DELIVERY_DEFERRED === $collect ) {
 					return Either::of( $jobObject );
 				}
 
@@ -282,6 +374,24 @@ class Editor {
 				] );
 
 				return Either::of( $freshJob );
+			};
+
+			$cloneCompletedATEJob = function ( $jobObject ) use ( $params ) {
+				if ( $this->isValidATEJob( $jobObject ) && TranslationRecord::isCompleted( $jobObject ) && ! $this->isUnderAnOpenStatus( $jobObject ) && ! $this->historyRefusesClone( $jobObject ) ) {
+					$sentFrom = isset( $params['preview'] ) ? Jobs::SENT_FROM_REVIEW : Jobs::SENT_MANUALLY;
+
+					return $this->clone_jobs->cloneCompletedATEJob( $jobObject, $sentFrom )
+					                        ->bichain(
+						                        function ( $failedJobObject ) {
+							                        $this->cloneRefused[ (int) $failedJobObject->get_id() ] = true;
+
+							                        return Either::of( $failedJobObject );
+						                        },
+						                        Either::of()
+					                        );
+				}
+
+				return Either::of( $jobObject );
 			};
 
 			$handleMissingATEJob = function ( $jobObject ) use ( $params ) {
@@ -351,6 +461,10 @@ class Editor {
 
 	private function displayCTE( $jobObject = null ) {
 		$fn = curryN( 1, function ( $jobObject ) {
+			if ( TranslationRecord::isCompleted( $jobObject ) && ! $this->plan->opensRequestOnOpen() ) {
+				return [ 'editor' => \WPML_TM_Editors::WPML, 'jobObject' => $jobObject ];
+			}
+
 			if ( TranslationRecord::isCompleted( $jobObject ) ) {
 				$jobObject = $this->requestRowFor( null, $jobObject );
 				if ( ! $jobObject ) {
@@ -366,35 +480,118 @@ class Editor {
 		return call_user_func_array( $fn, func_get_args() );
 	}
 
-	private function displayWPNative( array $dataOfTranslationCreatedInNativeEditorViaConnection ) {
-		$url = 'post.php?' . http_build_query(
-				[
-					'lang'      => $dataOfTranslationCreatedInNativeEditorViaConnection['targetLanguageCode'],
-					'action'    => 'edit',
-					'post_type' => str_replace( 'post_', '', $dataOfTranslationCreatedInNativeEditorViaConnection['postType'] ),
-					'post'      => $dataOfTranslationCreatedInNativeEditorViaConnection['translatedPostId']
-				]
-			);
+	private function opensInSiteEditor( $postType, $fromSiteEditor ) {
+		return SiteEditorTranslationCreator::isSiteEditorType( $postType )
+		       || ( $fromSiteEditor && SiteEditorTranslationCreator::isPageType( $postType ) );
+	}
 
+	private function translationNotCreatedReason( $postType ) {
+		if ( SiteEditorTranslationCreator::isPageType( $postType ) ) {
+			return self::REASON_PAGE_TRANSLATION_NOT_CREATED;
+		}
+
+		return 'wp_template_part' === self::postTypeOf( $postType )
+			? self::REASON_PART_TRANSLATION_NOT_CREATED
+			: self::REASON_TRANSLATION_NOT_CREATED;
+	}
+
+	private function cannotCreateReason( $postType ) {
+		if ( SiteEditorTranslationCreator::isPageType( $postType ) ) {
+			return self::REASON_CANNOT_CREATE_PAGE;
+		}
+
+		return 'wp_template_part' === self::postTypeOf( $postType )
+			? self::REASON_CANNOT_CREATE_PART
+			: self::REASON_CANNOT_CREATE_TEMPLATE;
+	}
+
+	private function userCanCreate( $postType ) {
+		$typeObject = get_post_type_object( self::postTypeOf( $postType ) );
+
+		return $typeObject
+		       && isset( $typeObject->cap->create_posts )
+		       && current_user_can( $typeObject->cap->create_posts );
+	}
+
+	private static function postTypeOf( $postType ) {
+		$postType = (string) $postType;
+
+		return 0 === strpos( $postType, 'post_' ) ? substr( $postType, 5 ) : $postType;
+	}
+
+	private function displayWPNative( array $dataOfTranslationCreatedInNativeEditorViaConnection, $fromSiteEditor = false, $screen = '' ) {
+		if ( $this->opensInSiteEditor( $dataOfTranslationCreatedInNativeEditorViaConnection['postType'], $fromSiteEditor ) ) {
+			return [
+				'editor'    => \WPML_TM_Editors::WP,
+				'jobObject' => null,
+				'url'       => $this->siteEditorCreator->siteEditorUrl(
+					(int) $dataOfTranslationCreatedInNativeEditorViaConnection['translatedPostId'],
+					$dataOfTranslationCreatedInNativeEditorViaConnection['targetLanguageCode']
+				),
+			];
+		}
+
+		$url = $this->nativeEditUrl(
+			$this->wpEditorUrl( $dataOfTranslationCreatedInNativeEditorViaConnection ),
+			$dataOfTranslationCreatedInNativeEditorViaConnection,
+			$screen
+		);
 
 		return [ 'editor' => \WPML_TM_Editors::WP, 'jobObject' => null, 'url' => $url ];
 	}
 
-	private function displayWPNativeForNewTranslation( array $dataForNewTranslationInNativeEditor ) {
-		$url = 'post-new.php?' . http_build_query(
-				[
-					'lang'        => $dataForNewTranslationInNativeEditor['targetLanguageCode'],
-					'post_type'   => $dataForNewTranslationInNativeEditor['postType'],
-					'trid'        => $dataForNewTranslationInNativeEditor['trid'],
-					'source_lang' => $dataForNewTranslationInNativeEditor['sourceLanguageCode'],
-				]
+	private function displayWPNativeForNewTranslation( array $dataForNewTranslationInNativeEditor, $fromSiteEditor = false, $renderedAt = 0, $screen = '' ) {
+		if ( $this->opensInSiteEditor( $dataForNewTranslationInNativeEditor['postType'], $fromSiteEditor ) ) {
+			if ( ! $this->userCanCreate( (string) $dataForNewTranslationInNativeEditor['postType'] ) ) {
+				return self::noEditor( $this->cannotCreateReason( (string) $dataForNewTranslationInNativeEditor['postType'] ) );
+			}
+
+			$translationId = $this->siteEditorCreator->findOrCreate(
+				(int) $dataForNewTranslationInNativeEditor['originalPostId'],
+				(int) $dataForNewTranslationInNativeEditor['trid'],
+				$dataForNewTranslationInNativeEditor['targetLanguageCode'],
+				$dataForNewTranslationInNativeEditor['sourceLanguageCode']
 			);
 
+			if ( ! $translationId ) {
+				return self::noEditor( $this->translationNotCreatedReason( (string) $dataForNewTranslationInNativeEditor['postType'] ) );
+			}
+
+			return [
+				'editor'    => \WPML_TM_Editors::WP,
+				'jobObject' => null,
+				'url'       => $this->siteEditorCreator->siteEditorUrl( $translationId, $dataForNewTranslationInNativeEditor['targetLanguageCode'] ),
+			];
+		}
+
+		$url = $this->nativeEditUrl(
+			$this->wpEditorUrl( $dataForNewTranslationInNativeEditor, $renderedAt ),
+			$dataForNewTranslationInNativeEditor,
+			$screen
+		);
+
 		return [ 'editor' => \WPML_TM_Editors::WP, 'jobObject' => null, 'url' => $url ];
+	}
+
+	private function renderedAt( $params ) {
+		return (int) filter_var( Obj::prop( \WPML_Post_Status_Display::RENDERED_AT_PARAM, is_array( $params ) ? $params : [] ), FILTER_SANITIZE_NUMBER_INT );
 	}
 
 	private static function noEditor( $reason ) {
 		return [ 'editor' => \WPML_TM_Editors::NONE, 'jobObject' => null, 'reason' => $reason ];
+	}
+
+	private static function reasonNoJob( array $params ) {
+		if ( (int) Obj::propOr( 0, 'job_id', $params ) > 0 ) {
+			return self::REASON_JOB_NOT_FOUND;
+		}
+
+		global $iclTranslationManagement;
+
+		return $iclTranslationManagement instanceof \TranslationManagement
+			&& $iclTranslationManagement->translation_row_write_failed( (int) Obj::propOr( 0, 'trid', $params ), (string) Obj::propOr( '', 'language_code', $params ) )
+			? self::REASON_TRANSLATION_RECORD_NOT_WRITTEN
+			: self::REASON_JOB_NOT_CREATED;
 	}
 
 	public static function noEditorMessage( $reason ) {
@@ -405,6 +602,13 @@ class Editor {
 			case self::REASON_JOB_NOT_CREATED:
 				/* translators: Message shown when WPML could not start a translation job for the content someone tried to translate. */
 				return __( 'WPML couldn\'t start a translation job for this content. You may not be assigned to translate this language pair. Ask a translation manager to add the language pair to your translator profile, then open the translation again.', 'sitepress' );
+			case self::REASON_TRANSLATION_RECORD_NOT_WRITTEN:
+				if ( \WPML\TM\Jobs\StatusWriteFailure::isTranslationsTableRepairOffered() ) {
+					/* translators: Message shown when WPML could not start a translation job because the row linking the content to its translation could not be written to the database. "Repair the translations table" is the name of a tool on WPML → Support. */
+					return __( 'WPML could not create the translation job: the translation record for this content could not be written. Run "Repair the translations table" in WPML → Support.', 'sitepress' );
+				}
+				/* translators: Message shown when WPML could not start a translation job because the row linking the content to its translation could not be written to the database, and WPML → Support offers no repair for it. "Translation job logs" is the name of a tool on WPML → Support. */
+				return __( 'WPML could not create the translation job: the translation record for this content could not be written. Try again. If it fails again, send WPML support the newest entry in WPML → Support → Translation job logs.', 'sitepress' );
 			case self::REASON_NOT_ALLOWED:
 				/* translators: Message shown when someone opens a translation job they are not allowed to translate. */
 				return __( 'You can\'t translate this job. It is assigned to another translator, or you don\'t translate its language pair. Ask a translation manager to assign the job to you.', 'sitepress' );
@@ -414,6 +618,24 @@ class Editor {
 			case self::REASON_NOTHING_TO_TRANSLATE:
 				/* translators: Message shown when the content had nothing to translate, so no translation editor opened. */
 				return __( 'This content has nothing to translate, so WPML completed the translation without opening an editor.', 'sitepress' );
+			case self::REASON_TRANSLATION_NOT_CREATED:
+				/* translators: Message shown in the Site Editor when WPML could not create the copy of a template that a translation in the WordPress editor starts from. */
+				return __( 'WPML couldn\'t create the translation of this template. Try again, and if it still doesn\'t work, contact WPML support.', 'wpml' );
+			case self::REASON_PART_TRANSLATION_NOT_CREATED:
+				/* translators: Message shown in the Site Editor when WPML could not create the copy of a template part that a translation in the WordPress editor starts from. */
+				return __( 'WPML couldn\'t create the translation of this template part. Try again, and if it still doesn\'t work, contact WPML support.', 'wpml' );
+			case self::REASON_PAGE_TRANSLATION_NOT_CREATED:
+				/* translators: Message shown in the Site Editor when WPML could not create the copy of a page that a translation in the WordPress editor starts from. */
+				return __( 'WPML couldn\'t create the translation of this page. Try again, and if it still doesn\'t work, contact WPML support.', 'wpml' );
+			case self::REASON_CANNOT_CREATE_PAGE:
+				/* translators: Message shown when someone whose user role may not add pages tries to create the translation of a page in the WordPress editor from the Site Editor. */
+				return __( 'You can\'t create the translation of this page, because your user role isn\'t allowed to add pages. Ask an administrator to give your role that permission, or ask someone who can add pages to create the translation.', 'wpml' );
+			case self::REASON_CANNOT_CREATE_TEMPLATE:
+				/* translators: Message shown when someone whose user role may not add templates tries to create the translation of a template in the WordPress editor. */
+				return __( 'You can\'t create the translation of this template, because your user role isn\'t allowed to add templates. Ask an administrator to give your role that permission, or ask someone who can add templates to create the translation.', 'wpml' );
+			case self::REASON_CANNOT_CREATE_PART:
+				/* translators: Message shown when someone whose user role may not add template parts tries to create the translation of a template part in the WordPress editor. */
+				return __( 'You can\'t create the translation of this template part, because your user role isn\'t allowed to add template parts. Ask an administrator to give your role that permission, or ask someone who can add template parts to create the translation.', 'wpml' );
 			default:
 				return __( 'The translation cannot be opened right now.', 'sitepress' );
 		}
@@ -571,6 +793,25 @@ class Editor {
 		return $this->record->discardRequest( (int) $request->get_id(), (int) $record->get_id() );
 	}
 
+	private function historyRefusesClone( $jobObject ): bool {
+		$send    = $jobObject instanceof \WPML_Post_Translation_Job ? $this->historySend() : null;
+		$refuses = $send && $send->carriesFor(
+			(int) $jobObject->get_resultant_element_id(),
+			(string) $jobObject->get_language_code(),
+			(int) $jobObject->get_original_element_id(),
+			\WPML\EditHistory\HistorySend::JOB_EDITOR_OPEN
+		);
+		if ( $refuses ) {
+			$this->cloneRefused[ (int) $jobObject->get_id() ] = true;
+		}
+
+		return (bool) $refuses;
+	}
+
+	protected function historySend() {
+		return \WPML\EditHistory\SendFactory::send();
+	}
+
 	private function createATECounterpartForExistingWPMLJob( $params, $jobObject ) {
 		$sentFrom = isset( $params['preview'] ) ? Jobs::SENT_FROM_REVIEW : Jobs::SENT_MANUALLY;
 
@@ -652,7 +893,7 @@ class Editor {
 				Obj::prop( 'lang', $params )
 			);
 
-			$return_url = http_build_url( $admin_url_parts );
+			$return_url = UrlBuilder::build( $admin_url_parts );
 		}
 
 		return $return_url;
@@ -680,10 +921,6 @@ class Editor {
 	}
 
 	private function isUnderAnOpenStatus( \WPML_Element_Translation_Job $jobObject ) {
-		if ( ! empty( $this->ateSaidDelivered[ (int) $jobObject->get_id() ] ) ) {
-			return false;
-		}
-
 		return in_array( (int) $jobObject->get_status_value(), [ ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_IN_PROGRESS ], true );
 	}
 
@@ -706,44 +943,8 @@ class Editor {
 			return false;
 		}
 
-		$record    = $ateApi->checkJobStatus( (int) $jobObject->get_id() );
-		$delivered = \WPML_TM_ATE_AMS_Endpoints::ATE_JOB_STATUS_DELIVERED === (int) Obj::propOr( -1, 'status_id', $record ?: [] );
-		if ( $delivered ) {
-			$this->ateSaidDelivered[ (int) $jobObject->get_id() ] = true;
-		}
+		$record = $ateApi->checkJobStatus( (int) $jobObject->get_id() );
 
-		return $delivered;
-	}
-
-	private function collectStaleDelivery( $jobId ) {
-		$collect = $this->singleJobCollect();
-
-		if ( ! $collect ) {
-			return self::STALE_DELIVERY_NOT_COLLECTED;
-		}
-
-		$outcome = $collect->collect( $jobId );
-
-		if ( SingleJobCollect::COLLECT_LOCK_BUSY === $outcome ) {
-			return self::STALE_DELIVERY_DEFERRED;
-		}
-
-		if ( SingleJobDelivery::APPLIED !== $outcome ) {
-			return self::STALE_DELIVERY_NOT_COLLECTED;
-		}
-
-		$job = Jobs::get( $jobId );
-
-		return $job && ICL_TM_COMPLETE === (int) Obj::prop( 'status', $job )
-			? self::STALE_DELIVERY_COLLECTED
-			: self::STALE_DELIVERY_NOT_COLLECTED;
-	}
-
-	private function singleJobCollect() {
-		if ( null === $this->singleJobCollect ) {
-			$this->singleJobCollect = make( SingleJobCollect::class );
-		}
-
-		return $this->singleJobCollect instanceof SingleJobCollect ? $this->singleJobCollect : null;
+		return \WPML_TM_ATE_AMS_Endpoints::ATE_JOB_STATUS_DELIVERED === (int) Obj::propOr( -1, 'status_id', $record ?: [] );
 	}
 }

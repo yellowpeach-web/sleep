@@ -5,10 +5,16 @@ namespace WPML\TM\Jobs\Query;
 use WPML_TM_Job_Entity;
 
 class PostQuery extends AbstractQuery {
+	protected $translated_title_column = 'translated_posts.post_title';
+
 	protected function add_resource_join( QueryBuilder $query_builder ) {
 		$query_builder->add_join( "INNER JOIN {$this->wpdb->prefix}posts posts ON posts.ID = original_translations.element_id" );
 
 		$query_builder->add_AND_where_condition( "original_translations.element_type LIKE 'post%'" );
+	}
+
+	protected function add_translated_title_join( QueryBuilder $query_builder ) {
+		$query_builder->add_join( "LEFT JOIN {$this->wpdb->prefix}posts translated_posts ON translated_posts.ID = translations.element_id" );
 	}
 
 	protected function get_type() {

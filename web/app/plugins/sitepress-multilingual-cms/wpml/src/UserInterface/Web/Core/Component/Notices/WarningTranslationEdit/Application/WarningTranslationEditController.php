@@ -25,7 +25,14 @@ class WarningTranslationEditController implements EventListenerInterface {
 
 
   public function maybeShowPageBuilderWarning( $postId, $pageBuilderName, $args = [] ) {
-    if (
+    $isWaitingInClassicEditor = false;
+
+    if ( $this->translationEditor->carriesEditsMadeOutsideWpml() ) {
+      if ( ! $this->translationEditor->waitsInClassicTranslationEditor( $postId ) ) {
+        return;
+      }
+      $isWaitingInClassicEditor = true;
+    } elseif (
       $this->translationEditor->usesNativeEditor( $postId )
       && ! $this->translationEditor->hasLocalJobInProgress( $postId )
     ) {
@@ -37,6 +44,7 @@ class WarningTranslationEditController implements EventListenerInterface {
     ];
 
     $args = array_merge( $defaultArgs, $args );
+    $args['isWaitingInClassicEditor'] = $isWaitingInClassicEditor;
 
     $translationEditorUrl = $this->translationEditor->getTranslationEditorLink( $postId );
     if ( $translationEditorUrl ) {
@@ -56,7 +64,8 @@ class WarningTranslationEditController implements EventListenerInterface {
           [
               'page_builder_name' => $pageBuilderName,
               'translation_editor_url' => $translationEditorUrl,
-              'iframe_mode_query_selector' => $args['iframeModeQuerySelector']
+              'iframe_mode_query_selector' => $args['iframeModeQuerySelector'],
+              'waits_in_classic_editor' => $args['isWaitingInClassicEditor'] ? '1' : '',
           ]
         )
         ->setScriptVarName( self::SCRIPT_HANDLE )

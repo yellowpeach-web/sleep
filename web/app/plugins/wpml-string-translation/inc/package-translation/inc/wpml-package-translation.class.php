@@ -40,15 +40,10 @@ class WPML_Package_Translation extends WPML_Package_Helper {
 			\WPML\Request\Adapter\Ajax::register( 'wpml_delete_packages', \WPML\Request\Policy\Policy::capability( [ 'wpml_manage_string_translation', 'manage_translations' ], \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_package_nonce', 'wpnonce' ) ), array( $this, 'delete_packages_ajax' ) );
 			\WPML\Request\Adapter\Ajax::register( 'wpml_change_package_lang', \WPML\Request\Policy\Policy::capability( [ 'wpml_manage_string_translation', 'manage_translations' ], \WPML\Request\Policy\Authenticity::actionNonce( 'wpml_package_nonce', 'wpnonce' ) ), array( $this, 'change_package_lang_ajax' ) );
 
-			add_filter( 'wpml_pt_all_packages', array( $this, 'get_all_packages' ) );
-
 			add_filter( 'wpml_tm_element_type', array( $this, 'get_element_type' ), 10, 2 );
 			add_filter( 'wpml_tm_dashboard_title_locations', array( $this, 'add_title_db_location' ), 10, 1 );
 
-			add_filter( 'wpml_string_title_from_id', array( $this, 'string_title_from_id_filter' ), 10, 2 );
 			add_filter( 'WPML_register_string', array( $this, 'register_string_for_translation' ), 10, 5 );
-
-			add_action( 'wpml_add_string_translation', array( $this, 'add_string_translation_action' ), 10, 7 );
 
 			add_filter( 'WPML_get_translated_strings', array( $this, 'get_translated_strings' ), 10, 2 );
 			add_action( 'WPML_set_translated_strings', array( $this, 'set_translated_strings' ), 10, 2 );
@@ -69,7 +64,6 @@ class WPML_Package_Translation extends WPML_Package_Helper {
 			add_filter( 'wpml_get_package_type', array( $this, 'get_package_type' ), 10, 2 );
 			add_filter( 'wpml_get_package_type_prefix', array( $this, 'get_package_type_prefix' ), 10, 2 );
 			add_filter( 'wpml_language_for_element', array( $this, 'get_language_for_element' ), 10, 2 );
-			add_action( 'wpml_save_external', [ $this, 'save_package_translations' ], 10, 3 );
 
 			add_filter( 'wpml_tm_external_translation_job_title', array( $this, 'get_post_title' ), 10, 2 );
 
@@ -100,8 +94,31 @@ class WPML_Package_Translation extends WPML_Package_Helper {
 		add_filter( 'wpml_st_get_post_string_packages', array( $this, 'get_post_string_packages' ), 10, 2 );
 		add_filter( 'wpml_st_get_string_package', array( $this, 'get_string_package' ), 10, 2 );
 		add_filter( 'wpml_string_id_from_package', array( $this, 'string_id_from_package_filter' ), 10, 4 );
+		add_filter( 'wpml_string_title_from_id', array( $this, 'string_title_from_id_filter' ), 10, 2 );
+		$ownership = new \WPML\ST\PackageTranslation\Ownership();
+		add_filter( 'wpml_string_package_owner', array( $ownership, 'owner' ), 10, 2 );
+		add_filter( 'wpml_string_package_rides_owner', array( $ownership, 'rides' ), 10, 2 );
+		add_filter( 'wpml_string_package_rides_owner_sql', array( $ownership, 'ridesSql' ), 10, 2 );
+		add_filter( 'wpml_st_get_owned_string_packages', array( $ownership, 'ownedPackages' ), 10, 3 );
+		add_filter( 'wpml_st_string_package_owners_supported', array( $ownership, 'supported' ) );
+		add_action( 'wpml_st_update_string', array( $ownership, 'queueChangedString' ), 10, 6 );
+		add_action( 'wpml_st_before_remove_strings', array( $ownership, 'queueDeletedStrings' ) );
+		add_action( 'delete_term', array( $this, 'remove_term_packages' ), 10, 2 );
+
+		add_action( 'wpml_st_package_string_carries', array( $this, 'package_string_carries_action' ), 10, 3 );
+		add_action( 'wpml_st_package_string_carries_release', array( $this, 'package_string_carries_release_action' ), 10, 1 );
+		add_filter( 'wpml_st_package_string_carries_accepted', array( $this, 'package_string_carries_accepted_filter' ), 10, 3 );
+		add_action( 'wpml_st_before_remove_strings', array( $this, 'release_carried_strings_action' ), 5, 1 );
+		add_action( 'wpml_st_delete_all_string_data', array( $this, 'release_carried_string_action' ), 5, 1 );
+		add_filter( 'wpml_st_carried_string_md5s', array( $this, 'carried_string_md5s_filter' ) );
+		add_filter( 'wpml_st_carried_string_ids', array( $this, 'carried_string_ids_filter' ) );
 
 		add_filter( 'wpml_is_external', array( $this, 'is_external' ), 10, 2 );
+
+		add_action( 'wpml_add_string_translation', array( $this, 'add_string_translation_action' ), 10, 7 );
+		add_action( 'wpml_save_external', array( $this, 'save_package_translations' ), 10, 3 );
+
+		add_filter( 'wpml_pt_all_packages', array( $this, 'get_all_packages' ) );
 	}
 
 	private function passed_dependencies() {
@@ -376,7 +393,20 @@ class WPML_Package_Translation extends WPML_Package_Helper {
 	public function tm_dashboard_sql_filter( $sql ) {
 		global $wpdb;
 
-		$sql .= " AND i.element_id NOT IN ( SELECT ID FROM {$wpdb->prefix}icl_string_packages WHERE post_id IS NOT NULL AND element_type = 'package_layout' )";
+		$ridesOwnerCondition = apply_filters( 'wpml_string_package_rides_owner_sql', '', 'sp' );
+		if ( ! $ridesOwnerCondition ) {
+			$sql .= " AND i.element_id NOT IN ( SELECT ID FROM {$wpdb->prefix}icl_string_packages WHERE post_id IS NOT NULL AND element_type = 'package_layout' )";
+			return $sql;
+		}
+
+		$sql .= " AND (
+			i.element_type NOT LIKE 'package\_%'
+			OR i.element_id NOT IN (
+				SELECT sp.ID FROM {$wpdb->prefix}icl_string_packages sp
+				WHERE {$ridesOwnerCondition}
+			)
+		)";
+
 		return $sql;
 	}
 

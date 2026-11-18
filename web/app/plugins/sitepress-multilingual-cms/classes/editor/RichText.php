@@ -9,6 +9,8 @@ class RichText {
 
 	const QUOTED_SHORTCODE_PATTERN = '%\[[a-zA-Z][\w-]*[^\]]*[\'"][^\]]*\]%';
 
+	const NEXT_ATTRIBUTE_PATTERN = '%\G\s*[^\s"\'=<>/]+(?:\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|[^\s"\'=<>`]+))?%';
+
 
 	public static function allowedHtml() {
 		$allowed = wp_kses_allowed_html( 'post' );
@@ -44,6 +46,9 @@ class RichText {
 		}
 
 		foreach ( $matches as $match ) {
+			if ( self::hasValueCutInsideShortcode( $match[2] ) ) {
+				return true;
+			}
 			foreach ( wp_kses_hair( $match[2], wp_allowed_protocols() ) as $attribute ) {
 				$value = html_entity_decode( $attribute['value'], ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 				if ( preg_match( self::QUOTED_SHORTCODE_PATTERN, $value ) ) {
@@ -53,6 +58,54 @@ class RichText {
 		}
 
 		return false;
+	}
+
+	private static function hasValueCutInsideShortcode( $attributes ) {
+		$length = strlen( $attributes );
+		$offset = 0;
+		$checkedTo = array( '"' => 0, "'" => 0 );
+		while ( $offset < $length ) {
+			if ( ! preg_match( self::NEXT_ATTRIBUTE_PATTERN, $attributes, $attribute, PREG_UNMATCHED_AS_NULL, $offset ) ) {
+				$offset++;
+				continue;
+			}
+			$offset += strlen( $attribute[0] );
+			if ( isset( $attribute[1] ) ) {
+				list( $value, $quote ) = array( $attribute[1], '"' );
+			} elseif ( isset( $attribute[2] ) ) {
+				list( $value, $quote ) = array( $attribute[2], "'" );
+			} else {
+				continue;
+			}
+			$open  = strrpos( $value, '[' );
+			$close = strrpos( $value, ']' );
+			if ( false === $open || ( false !== $close && $open < $close ) || $offset < $checkedTo[ $quote ] ) {
+				continue;
+			}
+			$end = strpos( $attributes, ']' . $quote, $offset );
+			if ( false === $end ) {
+				$checkedTo[ $quote ] = $length;
+				continue;
+			}
+			$end += 2;
+			if ( ! self::readsAsAttributes( $attributes, $offset, $end ) ) {
+				return true;
+			}
+			$checkedTo[ $quote ] = $end;
+		}
+
+		return false;
+	}
+
+	private static function readsAsAttributes( $attributes, $from, $to ) {
+		while ( $from < $to ) {
+			if ( ! preg_match( self::NEXT_ATTRIBUTE_PATTERN, $attributes, $attribute, 0, $from ) ) {
+				return false;
+			}
+			$from += strlen( $attribute[0] );
+		}
+
+		return $from === $to;
 	}
 
 	private static function everythingUsedIn( $html ) {

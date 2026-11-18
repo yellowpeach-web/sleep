@@ -18,6 +18,8 @@ class VirtualSettingsOption {
 
   private static $lostKeyDefaults = [];
 
+  private static $servingFromRows = false;
+
 
   public static function restoreLostKeyTo( string $key, $default ) {
     self::$lostKeyDefaults[ $key ] = $default;
@@ -36,12 +38,22 @@ class VirtualSettingsOption {
   }
 
 
+  public static function isStoredButUnreadable( string $key ): bool {
+    if ( self::$service === null || ! class_exists( BlobDiffService::class ) ) {
+      return false;
+    }
+
+    return self::$service->isStoredButUnreadable( $key, get_current_blog_id() );
+  }
+
+
   public static function addHooks() {
     if ( ! class_exists( BlobDiffService::class ) ) {
       return;
     }
 
     $adapter = new self();
+    add_filter( 'pre_option_' . StorageQueryInterface::OPTION_NAME, [ $adapter, 'serveFromRows' ], 10, 3 );
     add_filter( 'option_' . StorageQueryInterface::OPTION_NAME, [ $adapter, 'filterRead' ], 5 );
     add_filter( 'option_' . StorageQueryInterface::OPTION_NAME, [ $adapter, 'recordServedSnapshot' ], PHP_INT_MAX );
     add_filter( 'pre_update_option_' . StorageQueryInterface::OPTION_NAME, [ $adapter, 'filterWrite' ], 20, 2 );
@@ -65,6 +77,41 @@ class VirtualSettingsOption {
     }
 
     return self::$service;
+  }
+
+
+  public function serveFromRows( $pre, $option = StorageQueryInterface::OPTION_NAME, $defaultValue = false ) {
+    unset( $defaultValue );
+
+    if ( $pre !== false || self::$servingFromRows || ! class_exists( BlobDiffService::class ) ) {
+      return $pre;
+    }
+
+    if ( self::failsafeHoldsUnrecoverableSettings() ) {
+      return false;
+    }
+
+    self::refreshAfterCacheFlush();
+
+    if ( ! self::service()->servesFromRows( get_current_blog_id() ) ) {
+      return false;
+    }
+
+    self::$servingFromRows = true;
+    try {
+      $value = apply_filters( 'option_' . StorageQueryInterface::OPTION_NAME, null, $option );
+    } finally {
+      self::$servingFromRows = false;
+    }
+
+    return $value === null ? false : $value;
+  }
+
+
+  private static function failsafeHoldsUnrecoverableSettings(): bool {
+    $isUnrecoverable = [ 'WPML_Settings_Failsafe_Loader', 'isUnrecoverable' ];
+
+    return is_callable( $isUnrecoverable ) && call_user_func( $isUnrecoverable ) === true;
   }
 
 

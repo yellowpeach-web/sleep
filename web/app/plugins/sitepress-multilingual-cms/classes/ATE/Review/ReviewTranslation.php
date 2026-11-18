@@ -54,10 +54,10 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 			}
 		}
 
-		Hooks::onFilter( 'user_has_cap', 10, 3 )->then( spreadArgs( [ $this, 'maybeGrantReviewCap' ] ) );
+		add_filter( 'user_has_cap', [ $this, 'maybeGrantReviewCap' ], 10, 3 );
 
 		Hooks::onFilter( 'wpml_tm_allowed_translators_for_job', 10, 2 )
-		     ->then( spreadArgs( function ( $allowedTranslators, \WPML_Element_Translation_Job $job ) {
+		     ->then( spreadArgs( function ( $allowedTranslators, \WPML_Translation_Job $job ) {
 			     $job        = $job->to_array();
 			     $translator = Translators::getCurrent();
 
@@ -80,13 +80,18 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 			return $user_caps;
 		}
 
+		$post    = Obj::prop( 2, $args );
+		$post_id = $post instanceof \WP_Post ? $post->ID : $post;
+
+		if ( ! is_numeric( $post_id ) || (int) $post_id < 1 ) {
+			return $user_caps;
+		}
+
 		$translator = Translators::getCurrent();
 
 		if ( ! $translator->ID || empty( $translator->language_pairs ) ) {
 			return $user_caps;
 		}
-
-		$post_id = is_object( $args[2] ) && $args[2] instanceof \WP_Post ? $args[2]->ID : $args[2];
 
 		$job = $this->review_status_lookup->getJobAwaitingReview( $post_id, Post::getType( $post_id ), WPMLPost::getLang( $post_id ) );
 

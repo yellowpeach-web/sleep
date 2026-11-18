@@ -33,13 +33,15 @@ use WPML\UserInterface\Web\Core\Component\Dashboard\Application\Endpoint\Transla
 use WPML\UserInterface\Web\Core\Component\Dashboard\Application\Endpoint\TranslationProxy\GetRemoteJobsCountController;
 use WPML\UserInterface\Web\Core\Component\Dashboard\Application\Endpoint\TranslationProxy\SendCommitRequestController;
 use WPML\UserInterface\Web\Core\Component\Dashboard\Application\Endpoint\ValidateSelectedTranslationMethods\ValidateSelectedTranslationMethodsController;
+use WPML\UserInterface\Web\Core\Component\Dashboard\Application\Endpoint\AutomaticTranslation\GetAutomaticTranslationSupportController;
+use WPML\UserInterface\Web\Core\Component\Dashboard\Application\Endpoint\AutomaticTranslation\GetDefaultLanguageAutomaticSupportController;
 use WPML\UserInterface\Web\Core\Component\Dashboard\Application\Endpoint\ValidateTranslationBatchName\ValidateTranslationBatchNameController;
+use WPML\Core\Component\Translation\Domain\Settings\ReviewMode;
 use WPML\UserInterface\Web\Core\Component\Preferences\Application\Endpoint\GetEngines\GetEnginesController;
 use WPML\UserInterface\Web\Core\Component\Preferences\Application\Endpoint\SaveAutomaticTranslationsSettings\SaveAutomaticTranslationsSettingsController;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Settings\AiTranslationActiveEngineController;
 use WPML\UserInterface\Web\Core\Component\Support\Application\Endpoint\ActivateRepairToolsController;
 use WPML\UserInterface\Web\Core\Component\Support\Application\Endpoint\CreatePluginReportController;
-use WPML\UserInterface\Web\Core\Component\Troubleshooting\Application\Endpoint\ClearRemoteXMLConfigLogController;
 use WPML\UserInterface\Web\Core\Component\Troubleshooting\Application\Endpoint\EnableAliasDomainController;
 use WPML\UserInterface\Web\Core\Component\Troubleshooting\Application\Endpoint\RegisterAliasDomainController;
 use WPML\UserInterface\Web\Core\Component\Troubleshooting\Application\Endpoint\ResetAliasDomainController;
@@ -51,6 +53,9 @@ use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Billing\BillingPag
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Settings\SettingsSectionDispatcher;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\SupportSubPageDispatcher;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\AliasDomainsController;
+use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\ClearRemoteXMLConfigLogController;
+use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\RepairTranslationsTableKeysController;
+use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\RunPageIdLinkRepairController;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Translations\AdminTextsTranslationController;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Translations\TranslationsTabStripDispatcher;
 
@@ -260,6 +265,19 @@ return [
         'handler' => GetTranslationEditorTypeController::class,
         'method'  => 'GET',
       ],
+      'getautomatictranslationsupport' => [
+        'path'    => '/automatic-translation/support',
+        'handler' => GetAutomaticTranslationSupportController::class,
+        'method'  => 'GET',
+        'args'    => [
+          'sourceLanguageCode' => [ 'type' => 'string' ],
+        ],
+      ],
+      'getdefaultlanguageautomaticsupport' => [
+        'path'    => '/automatic-translation/default-language-support',
+        'handler' => GetDefaultLanguageAutomaticSupportController::class,
+        'method'  => 'GET',
+      ],
 
       'translateexistingcontent'        => [
         'path'    => '/translate-existing-content',
@@ -316,6 +334,25 @@ return [
         'path'    => '/save-automatic-translation-settings',
         'handler' => SaveAutomaticTranslationsSettingsController::class,
         'method'  => 'POST',
+        'args'    => [
+          'engines'                            => [
+            'type'  => 'array',
+            'items' => [ 'type' => 'object' ],
+          ],
+          'reviewMode'                         => [
+            'type' => 'string',
+            'enum' => [
+              ReviewMode::REVIEW_BEFORE_PUBLISH,
+              ReviewMode::PUBLISH_AND_REVIEW,
+              ReviewMode::PUBLISH_WITHOUT_REVIEW,
+            ],
+          ],
+          'shouldTranslateAutomaticallyDrafts' => [ 'type' => 'boolean' ],
+          'appearanceSurfaces'                 => [
+            'type'                 => 'object',
+            'additionalProperties' => [ 'type' => 'boolean' ],
+          ],
+        ],
       ],
       'getactiveengine'                  => [
         'path'    => '/get-active-engine',
@@ -423,6 +460,18 @@ return [
         'path'       => '/troubleshooting/remote-xml-config-log/clear',
         'method'     => MethodType::POST,
         'handler'    => ClearRemoteXMLConfigLogController::class,
+        'capability' => 'wpml_manage_support',
+      ],
+      'repairtranslationstablekeys' => [
+        'path'       => '/troubleshooting/translations-table-keys/repair',
+        'method'     => MethodType::POST,
+        'handler'    => RepairTranslationsTableKeysController::class,
+        'capability' => 'wpml_manage_support',
+      ],
+      'runpageidlinkrepair' => [
+        'path'       => '/troubleshooting/page-id-link-repair/run',
+        'method'     => MethodType::POST,
+        'handler'    => RunPageIdLinkRepairController::class,
         'capability' => 'wpml_manage_support',
       ],
       'enablealiasdomain' => [

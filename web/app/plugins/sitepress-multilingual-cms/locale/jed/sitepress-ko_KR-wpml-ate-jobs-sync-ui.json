@@ -13,11 +13,26 @@
          "The translation could not be started because the server did not answer.": [
             "서버가 응답하지 않아 번역을 시작할 수 없습니다."
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "세션이 만료되었습니다. 이 페이지를 새로고침하고 다시 시도하세요."
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "PTC에서 번역 중입니다. 준비되면 에디터가 열립니다."
+         ],
          "This translation cannot be opened right now.": [
             "지금은 이 번역을 열 수 없습니다."
          ],
          "Refresh this page": [
             "이 페이지 새로고침"
+         ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "이 항목을 자동으로 번역하기에 선불 단어가 부족합니다. 단어를 추가한 후 다시 시도하십시오."
+         ],
+         "Get more words": [
+            "단어 더 가져오기"
+         ],
+         "Close": [
+            "닫기"
          ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
             "이 콘텐츠는 자동으로 번역되고 있습니다. 다른 작업을 수행하려면 먼저 번역 작업을 취소하세요."
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "콘텐츠 번역 중"
+         ],
+         "Translate Everything is active": [
+            "모든 항목 번역 활성 상태"
          ],
          "%d translation notice": [
             "%d개의 번역 알림"
@@ -50,13 +68,13 @@
             "최근 번역 활동에서 예기치 않은 사항이 발견되어 계정의 자동 번역을 일시 중지했습니다. 고객 지원에 문의하시면 함께 검토해 드리겠습니다."
          ],
          "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
-            "<b>모든 항목 자동 번역</b>이 일시 중지됨: 월 지출 한도 도달"
+            "<b>모든 항목 자동 번역</b>이 일시 중지됨: 월간 지출 한도 도달"
          ],
          "Automatic translation is paused: monthly spending cap reached": [
-            "자동 번역이 일시 중지됨: 월 지출 한도 도달"
+            "자동 번역이 일시 중지됨: 월별 지출 한도 도달"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "이 웹사이트가 설정된 월 지출 한도에 도달했습니다. 한도를 높이거나 한도가 초기화되면 번역이 계속됩니다. 계정 소유자만 이 작업을 수행할 수 있습니다."
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "이 웹사이트는 설정된 월간 지출 한도에 도달했습니다. 한도를 늘리거나 한도가 재설정되면 번역이 계속됩니다. AI 번역: 청구 및 사용량 페이지에서 한도를 늘릴 수 있습니다."
          ],
          "Preparing content for translation": [
             "번역할 콘텐츠 준비 중"
@@ -70,8 +88,8 @@
          "Your language, %s, must be mapped to a supported language in order to use automatic translation.": [
             "자동 번역을 사용하려면 사이트의 다음 언어를 지원되는 언어에 매핑해야 합니다: %s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "다음 언어(%s)의 콘텐츠는 기본 언어와 다른 언어로 매핑하지 않으면 자동으로 번역할 수 없습니다."
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "%1$s와(과) 다음 언어는 동일한 언어로 인식되므로 이들 간의 자동 번역을 사용할 수 없습니다: %2$s. 콘텐츠를 그대로 복사하려면 대신 “복제”를 선택하세요."
          ],
          "%d translation waiting for review": [
             "%d개의 번역이 검토 대기 중입니다"
@@ -147,9 +165,6 @@
          ],
          "Pay now": [
             "지금 결제"
-         ],
-         "Get more words": [
-            "단어 더 가져오기"
          ],
          "Assign words": [
             "단어 할당"

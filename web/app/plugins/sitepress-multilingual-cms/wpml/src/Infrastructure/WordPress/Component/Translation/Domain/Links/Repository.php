@@ -14,6 +14,8 @@ class Repository implements RepositoryInterface {
   const TYPE_POST = 'post';
   const TYPE_TERM = 'term';
 
+  const META_COLLECTED = '_wpml_links_collected';
+
   const TABLE_FROM_POST_TO_POST = [
     'name' => 'icl_links_post_to_post',
     'from' => self::TYPE_POST,
@@ -267,6 +269,53 @@ class Repository implements RepositoryInterface {
     }
 
     return $items;
+  }
+
+
+  public function hasRelationshipsFrom( Item $item ): bool {
+    if ( self::TYPE_POST !== $item->getType() ) {
+      return false;
+    }
+
+    $wpdb = $GLOBALS['wpdb'];
+
+    $toPost = $wpdb->get_var(
+      $wpdb->prepare(
+        "SELECT 1 FROM {$wpdb->prefix}icl_links_post_to_post WHERE id_from = %d LIMIT 1",
+        $item->getId()
+      )
+    );
+
+    if ( $toPost !== null ) {
+      return true;
+    }
+
+    $toTerm = $wpdb->get_var(
+      $wpdb->prepare(
+        "SELECT 1 FROM {$wpdb->prefix}icl_links_post_to_term WHERE id_from = %d LIMIT 1",
+        $item->getId()
+      )
+    );
+
+    return $toTerm !== null;
+  }
+
+
+  public function isCollected( Item $item ): bool {
+    if ( self::TYPE_POST !== $item->getType() ) {
+      return false;
+    }
+
+    return (bool) get_post_meta( $item->getId(), self::META_COLLECTED, true );
+  }
+
+
+  public function markAsCollected( Item $item ) {
+    if ( self::TYPE_POST !== $item->getType() ) {
+      return;
+    }
+
+    update_post_meta( $item->getId(), self::META_COLLECTED, 1 );
   }
 
 

@@ -3,7 +3,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitee16cb863d59848f3c0360c58ddf891a
+class ComposerStaticInite34e63a0987a527411245fbdcc33bff2
 {
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
@@ -11,6 +11,8 @@ class ComposerStaticInitee16cb863d59848f3c0360c58ddf891a
         'OTGS_Assets_Store' => __DIR__ . '/..' . '/otgs/ui/src/php/OTGS_Assets_Store.php',
         'OTGS_UI_Assets' => __DIR__ . '/..' . '/otgs/ui/src/php/OTGS_UI_Assets.php',
         'OTGS_UI_Loader' => __DIR__ . '/..' . '/otgs/ui/src/php/OTGS_UI_Loader.php',
+        'WPML\\WPSEO\\GoogleSitemapGenerator\\Hooks' => __DIR__ . '/../..' . '/classes/GoogleSitemapGenerator/Hooks.php',
+        'WPML\\WPSEO\\GoogleSitemapGenerator\\Loaders' => __DIR__ . '/../..' . '/classes/GoogleSitemapGenerator/Loaders.php',
         'WPML\\WPSEO\\IndexNowPlugin\\Loaders' => __DIR__ . '/../..' . '/classes/IndexNowPlugin/Loaders.php',
         'WPML\\WPSEO\\IndexNowPlugin\\SubmitHooks' => __DIR__ . '/../..' . '/classes/IndexNowPlugin/SubmitHooks.php',
         'WPML\\WPSEO\\RankMathSEO\\AuthorBase\\Hooks' => __DIR__ . '/../..' . '/classes/RankMathSEO/AuthorBase/Hooks.php',
@@ -19,6 +21,7 @@ class ComposerStaticInitee16cb863d59848f3c0360c58ddf891a
         'WPML\\WPSEO\\RankMathSEO\\Compatibility\\WooCommerce\\Hooks' => __DIR__ . '/../..' . '/classes/RankMathSEO/Compatibility/WooCommerce/Hooks.php',
         'WPML\\WPSEO\\RankMathSEO\\Compatibility\\WooCommerce\\PreviewQueryVarHooks' => __DIR__ . '/../..' . '/classes/RankMathSEO/Compatibility/WooCommerce/PreviewQueryVarHooks.php',
         'WPML\\WPSEO\\RankMathSEO\\Compatibility\\WooCommerce\\RestRouteHooks' => __DIR__ . '/../..' . '/classes/RankMathSEO/Compatibility/WooCommerce/RestRouteHooks.php',
+        'WPML\\WPSEO\\RankMathSEO\\EditScreen\\TemplatesLanguageHooks' => __DIR__ . '/../..' . '/classes/RankMathSEO/EditScreen/TemplatesLanguageHooks.php',
         'WPML\\WPSEO\\RankMathSEO\\InstantIndexing\\AutoSubmitHooks' => __DIR__ . '/../..' . '/classes/RankMathSEO/InstantIndexing/AutoSubmitHooks.php',
         'WPML\\WPSEO\\RankMathSEO\\InstantIndexing\\ManualSubmitHooks' => __DIR__ . '/../..' . '/classes/RankMathSEO/InstantIndexing/ManualSubmitHooks.php',
         'WPML\\WPSEO\\RankMathSEO\\Loaders' => __DIR__ . '/../..' . '/classes/RankMathSEO/Loaders.php',
@@ -36,6 +39,8 @@ class ComposerStaticInitee16cb863d59848f3c0360c58ddf891a
         'WPML\\WPSEO\\RankMathSEO\\Terms\\Meta\\Hooks' => __DIR__ . '/../..' . '/classes/RankMathSEO/Terms/Meta/Hooks.php',
         'WPML\\WPSEO\\RankMathSEO\\TranslationJob\\Hooks' => __DIR__ . '/../..' . '/classes/RankMathSEO/TranslationJob/Hooks.php',
         'WPML\\WPSEO\\RankMathSEO\\Utils' => __DIR__ . '/../..' . '/classes/RankMathSEO/Utils.php',
+        'WPML\\WPSEO\\Shared\\EditScreen\\BaseTemplatesLanguageHooks' => __DIR__ . '/../..' . '/classes/Shared/EditScreen/BaseTemplatesLanguageHooks.php',
+        'WPML\\WPSEO\\Shared\\EditScreen\\EditedElementLanguage' => __DIR__ . '/../..' . '/classes/Shared/EditScreen/EditedElementLanguage.php',
         'WPML\\WPSEO\\Shared\\HeadLangs' => __DIR__ . '/../..' . '/classes/Shared/HeadLangs.php',
         'WPML\\WPSEO\\Shared\\HeadLangsNoticeHooks' => __DIR__ . '/../..' . '/classes/Shared/HeadLangsNoticeHooks.php',
         'WPML\\WPSEO\\Shared\\IndexNow\\SiteHomeUrlSwitch' => __DIR__ . '/../..' . '/classes/Shared/IndexNow/SiteHomeUrlSwitch.php',
@@ -48,6 +53,7 @@ class ComposerStaticInitee16cb863d59848f3c0360c58ddf891a
         'WPML\\WPSEO\\Shared\\Sitemap\\ShopUrls' => __DIR__ . '/../..' . '/classes/Shared/Sitemap/ShopUrls.php',
         'WPML\\WPSEO\\Shared\\TranslationJob\\BaseHooks' => __DIR__ . '/../..' . '/classes/Shared/TranslationJob/BaseHooks.php',
         'WPML\\WPSEO\\Shared\\Upgrade\\CommandsProvider' => __DIR__ . '/../..' . '/classes/Shared/Upgrade/CommandsProvider.php',
+        'WPML\\WPSEO\\Shared\\Upgrade\\Commands\\AddTermMetaPackageOwners' => __DIR__ . '/../..' . '/classes/Shared/Upgrade/Commands/AddTermMetaPackageOwners.php',
         'WPML\\WPSEO\\Shared\\Upgrade\\Commands\\Command' => __DIR__ . '/../..' . '/classes/Shared/Upgrade/Commands/Command.php',
         'WPML\\WPSEO\\Shared\\Upgrade\\Commands\\DisableHeadLangs' => __DIR__ . '/../..' . '/classes/Shared/Upgrade/Commands/DisableHeadLangs.php',
         'WPML\\WPSEO\\Shared\\Upgrade\\Commands\\InvalidateTermIndexables' => __DIR__ . '/../..' . '/classes/Shared/Upgrade/Commands/InvalidateTermIndexables.php',
@@ -56,9 +62,11 @@ class ComposerStaticInitee16cb863d59848f3c0360c58ddf891a
         'WPML\\WPSEO\\Shared\\Upgrade\\Commands\\RepairTermMetaStringTranslationCopies' => __DIR__ . '/../..' . '/classes/Shared/Upgrade/Commands/RepairTermMetaStringTranslationCopies.php',
         'WPML\\WPSEO\\Shared\\Upgrade\\Commands\\TranslateExistingTermMeta' => __DIR__ . '/../..' . '/classes/Shared/Upgrade/Commands/TranslateExistingTermMeta.php',
         'WPML\\WPSEO\\Shared\\Upgrade\\Hooks' => __DIR__ . '/../..' . '/classes/Shared/Upgrade/Hooks.php',
+        'WPML\\WPSEO\\Shared\\Upgrade\\TermMetaMigration' => __DIR__ . '/../..' . '/classes/Shared/Upgrade/TermMetaMigration.php',
         'WPML\\WPSEO\\Shared\\Upgrade\\TermMetaRepair' => __DIR__ . '/../..' . '/classes/Shared/Upgrade/TermMetaRepair.php',
         'WPML\\WPSEO\\YoastSEO\\Addons\\WPSEONews\\Sitemap\\Hooks' => __DIR__ . '/../..' . '/classes/YoastSEO/Addons/WPSEONews/Sitemap/Hooks.php',
         'WPML\\WPSEO\\YoastSEO\\BulkEditor\\TranslationStatusHooks' => __DIR__ . '/../..' . '/classes/YoastSEO/BulkEditor/TranslationStatusHooks.php',
+        'WPML\\WPSEO\\YoastSEO\\EditScreen\\TemplatesLanguageHooks' => __DIR__ . '/../..' . '/classes/YoastSEO/EditScreen/TemplatesLanguageHooks.php',
         'WPML\\WPSEO\\YoastSEO\\Editor\\ContentLocaleHooks' => __DIR__ . '/../..' . '/classes/YoastSEO/Editor/ContentLocaleHooks.php',
         'WPML\\WPSEO\\YoastSEO\\Indexable\\Hooks' => __DIR__ . '/../..' . '/classes/YoastSEO/Indexable/Hooks.php',
         'WPML\\WPSEO\\YoastSEO\\Indexable\\LinkHomeUrlHooks' => __DIR__ . '/../..' . '/classes/YoastSEO/Indexable/LinkHomeUrlHooks.php',
@@ -66,6 +74,7 @@ class ComposerStaticInitee16cb863d59848f3c0360c58ddf891a
         'WPML\\WPSEO\\YoastSEO\\Indexable\\SiteLinksStoredAsExternalRepair' => __DIR__ . '/../..' . '/classes/YoastSEO/Indexable/SiteLinksStoredAsExternalRepair.php',
         'WPML\\WPSEO\\YoastSEO\\Loaders' => __DIR__ . '/../..' . '/classes/YoastSEO/Loaders.php',
         'WPML\\WPSEO\\YoastSEO\\Meta\\CopyFieldsSyncHooks' => __DIR__ . '/../..' . '/classes/YoastSEO/Meta/CopyFieldsSyncHooks.php',
+        'WPML\\WPSEO\\YoastSEO\\Meta\\DuplicateCanonicalHooks' => __DIR__ . '/../..' . '/classes/YoastSEO/Meta/DuplicateCanonicalHooks.php',
         'WPML\\WPSEO\\YoastSEO\\Meta\\SocialHooks' => __DIR__ . '/../..' . '/classes/YoastSEO/Meta/SocialHooks.php',
         'WPML\\WPSEO\\YoastSEO\\Presentation\\Hooks' => __DIR__ . '/../..' . '/classes/YoastSEO/Presentation/Hooks.php',
         'WPML\\WPSEO\\YoastSEO\\Presentation\\SchemaPieceLanguageHooks' => __DIR__ . '/../..' . '/classes/YoastSEO/Presentation/SchemaPieceLanguageHooks.php',
@@ -103,7 +112,7 @@ class ComposerStaticInitee16cb863d59848f3c0360c58ddf891a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInitee16cb863d59848f3c0360c58ddf891a::$classMap;
+            $loader->classMap = ComposerStaticInite34e63a0987a527411245fbdcc33bff2::$classMap;
 
         }, null, ClassLoader::class);
     }

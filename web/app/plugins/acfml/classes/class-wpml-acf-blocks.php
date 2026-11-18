@@ -1,12 +1,13 @@
 <?php
 
 use WPML\FP\Obj;
+use ACFML\Helper\ClonedFields;
 
 class WPML_ACF_Blocks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
 
 	const AMBIGUOUS = '__wpml_acf_ambiguous_path__';
 
-	const MAX_FIELD_DEPTH = 64;
+	const MAX_FIELD_DEPTH = ClonedFields::MAX_DEPTH;
 
 	private $prefixedSubFieldsMap;
 
@@ -291,34 +292,10 @@ class WPML_ACF_Blocks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, 
 				continue;
 			}
 
-			$subField = $this->findClonedSubField( $cloneField, $fieldKey );
+			$subField = ClonedFields::findSubField( $cloneField, $fieldKey );
 			if ( $subField ) {
 				return $subField;
 			}
-		}
-
-		return null;
-	}
-
-	private function findClonedSubField( array $cloneField, string $fieldKey, int $depth = 0 ): ?array {
-		if ( $depth > self::MAX_FIELD_DEPTH ) {
-			return null;
-		}
-
-		foreach ( (array) ( $cloneField['sub_fields'] ?? [] ) as $subField ) {
-			if ( ! is_array( $subField ) ) {
-				continue;
-			}
-			if ( ( $subField['key'] ?? '' ) !== $fieldKey ) {
-				$subField = 'clone' === ( $subField['type'] ?? '' )
-					? $this->findClonedSubField( $subField, $fieldKey, $depth + 1 )
-					: null;
-			}
-			if ( ! $subField ) {
-				continue;
-			}
-
-			return $this->inheritParentPreference( $cloneField, $subField );
 		}
 
 		return null;
@@ -346,28 +323,17 @@ class WPML_ACF_Blocks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, 
 				$groupKey = $parentField['clone'][0];
 
 				foreach ( (array) acf_get_fields( $groupKey ) as $subField ) {
-					$map[ $prefix . $subField['name'] ] = $this->inheritParentPreference( $parentField, $subField );
+					$map[ $prefix . $subField['name'] ] = ClonedFields::inheritParentPreference( $parentField, $subField );
 				}
 			} elseif ( 'group' === $parentField['type'] && ! empty( $parentField['sub_fields'] ) ) {
 				$prefix = $parentField['name'] . '_';
 
 				foreach ( $parentField['sub_fields'] as $subField ) {
-					$map[ $prefix . $subField['name'] ] = $this->inheritParentPreference( $parentField, $subField );
+					$map[ $prefix . $subField['name'] ] = ClonedFields::inheritParentPreference( $parentField, $subField );
 				}
 			}
 		}
 		return $map;
-	}
-
-	private function inheritParentPreference( array $parentField, array $subField ): array {
-		$parentPreference = isset( $parentField['wpml_cf_preferences'] )
-			? (int) $parentField['wpml_cf_preferences']
-			: WPML_TRANSLATE_CUSTOM_FIELD;
-		if ( WPML_TRANSLATE_CUSTOM_FIELD !== $parentPreference ) {
-			$subField['wpml_cf_preferences'] = $parentPreference;
-		}
-
-		return $subField;
 	}
 
 	private function maybeGetSubfield( $fieldName, $blockName = '' ) {

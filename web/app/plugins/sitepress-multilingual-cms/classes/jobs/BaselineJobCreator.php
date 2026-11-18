@@ -72,7 +72,7 @@ class BaselineJobCreator {
 				return;
 			}
 
-			if ( Map::fromRid( $status->rid() ) ) {
+			if ( Map::jobIdFromRid( $status->rid() ) ) {
 				return;
 			}
 		}

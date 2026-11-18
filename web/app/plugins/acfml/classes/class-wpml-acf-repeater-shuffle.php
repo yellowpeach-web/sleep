@@ -15,10 +15,13 @@ class WPML_ACF_Repeater_Shuffle implements \IWPML_Backend_Action {
 
 	const PRIORITY_BEFORE_ACF_WRITES = 5;
 	const PRIORITY_AFTER_ACF_WROTE   = 15;
+	const PRIORITY_HOLD_BACK         = 10;
 
 	private $shuffled;
 
 	private $rowsBefore = [];
+
+	private $nestedBefore = [];
 
 	private $levelLanguagesBefore = [];
 
@@ -37,13 +40,13 @@ class WPML_ACF_Repeater_Shuffle implements \IWPML_Backend_Action {
 		if ( Mode::LOCALIZATION !== Mode::getForFieldableEntity( $this->shuffled->getEntityType() ) ) {
 			add_action( 'acf/save_post', [ $this, 'store_state_before' ], self::PRIORITY_BEFORE_ACF_WRITES );
 			add_action( 'acf/save_post', [ $this, 'update_translated_repeaters' ], self::PRIORITY_AFTER_ACF_WROTE );
-			add_filter( 'wpml_custom_fields_to_sync_on_post_save', [ $this, 'holdBackRowsOfAnInsert' ], 10, 2 );
+			add_filter( 'wpml_custom_fields_to_sync_on_post_save', [ $this, 'holdBackRowsOfAnInsert' ], self::PRIORITY_HOLD_BACK, 2 );
 		}
 	}
 
 	public function store_state_before( $post_id = 0 ) {
 		if ( $this->shouldSupportSync( $post_id ) ) {
-			$this->rowsBefore           = Rows::read( $post_id );
+			list( $this->rowsBefore, $this->nestedBefore ) = Rows::readWithNested( $post_id );
 			$this->levelLanguagesBefore = array_keys( $this->levelAmong( $this->shuffled->getTranslations( $post_id ) ) );
 		}
 	}
@@ -66,22 +69,32 @@ class WPML_ACF_Repeater_Shuffle implements \IWPML_Backend_Action {
 		$level  = array_intersect_key( $translations, array_flip( $this->levelLanguagesBefore ) );
 		$behind = array_diff_key( $translations, $level );
 
+		$native = $this->shuffled->editedNatively( $post_id );
+		if ( $native ) {
+			$following = array_filter( $translations, fn( $translation ) => $this->status->isSettled( $translation ) );
+		} else {
+			$following = $level;
+		}
+		$notFollowing = array_diff_key( $translations, $following );
+
 		$jobsOutdated = false;
 		$needsUpdate  = false;
 		$unmoved      = [];
 
-		foreach ( Rows::read( $post_id ) as $field => $after ) {
+		list( $rowsAfter, $nestedAfter ) = Rows::readWithNested( $post_id );
+
+		foreach ( $rowsAfter as $field => $after ) {
 			$change = RowChange::between(
 				(array) Obj::pathOr( [], [ $field, 'rows' ], $this->rowsBefore ),
 				$after['rows']
 			);
 
 			$jobsOutdated = $jobsOutdated || $change->outdatesJob();
-			$needsUpdate  = $needsUpdate || $change->needsTranslating();
+			$needsUpdate  = $needsUpdate || ( $change->needsTranslating() && ! ( $native && $this->deliversOnlyCopies( $change, $after['rows'], $translations ) ) );
 
 			if ( ! $change->movesRows() ) {
-				if ( $change->needsTranslating() ) {
-					if ( RowChange::INSERT === $change->getKind() && $this->shuffled->editedNatively( $post_id ) ) {
+				if ( $change->needsTranslating() && ! $change->editsRowsInPlace() ) {
+					if ( RowChange::INSERT === $change->getKind() && $native ) {
 						$settled = array_filter( $translations, fn( $translation ) => $this->status->isSettled( $translation ) );
 
 						foreach ( $settled as $translation ) {
@@ -91,23 +104,32 @@ class WPML_ACF_Repeater_Shuffle implements \IWPML_Backend_Action {
 						foreach ( array_diff_key( $translations, $settled ) as $translation ) {
 							$unmoved[ (int) $translation->element_id ][] = $field;
 						}
+
+						$this->followNestedRows( $post_id, $field, $change->getMap(), $settled, $settled, array_diff_key( $translations, $settled ), $nestedAfter, $unmoved );
 					} else {
 						$this->heldBack[] = $field;
 					}
 				}
 
+				if ( in_array( $change->getKind(), [ RowChange::NONE, RowChange::EDIT ], true ) ) {
+					$nestedChanged = $this->followNestedRows( $post_id, $field, $change->getMap(), $translations, $following, $notFollowing, $nestedAfter, $unmoved );
+					$jobsOutdated  = $jobsOutdated || $nestedChanged;
+				}
+
 				continue;
 			}
 
-			foreach ( $level as $translation ) {
+			foreach ( $following as $translation ) {
 				$this->followRows( $post_id, $translation->element_id, $field, $after['type'], $change->getMap() );
 			}
 
-			foreach ( $behind as $translation ) {
+			foreach ( $notFollowing as $translation ) {
 				$unmoved[ (int) $translation->element_id ][] = $field;
 			}
 
-			if ( $behind ) {
+			$this->followNestedRows( $post_id, $field, $change->getMap(), $following, $following, $notFollowing, $nestedAfter, $unmoved );
+
+			if ( $notFollowing ) {
 				$this->heldBack[] = $field;
 			}
 		}
@@ -129,6 +151,99 @@ class WPML_ACF_Repeater_Shuffle implements \IWPML_Backend_Action {
 
 	private function levelAmong( array $translations ): array {
 		return array_filter( $translations, fn( $translation ) => $this->status->isLevelWithOriginal( $translation ) );
+	}
+
+	private function deliversOnlyCopies( RowChange $change, array $rowsAfter, array $translations ) {
+		if ( RowChange::INSERT !== $change->getKind() ) {
+			return false;
+		}
+
+		foreach ( $change->getMap() as $newIndex => $oldIndex ) {
+			if ( null === $oldIndex && ( ! array_key_exists( $newIndex, $rowsAfter ) || '' !== $rowsAfter[ $newIndex ] ) ) {
+				return false;
+			}
+		}
+
+		foreach ( $translations as $translation ) {
+			if ( ! $this->status->isSettled( $translation ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private function followNestedRows( $postId, $field, array $map, array $translations, array $level, array $behind, array $nestedAfter, array &$unmoved ) {
+		$handled = [];
+
+		foreach ( $nestedAfter as $prefix => $after ) {
+			$prefix = (string) $prefix;
+
+			if ( ! preg_match( self::rowKeyPattern( $field ), $prefix, $matched ) || self::belongsToAnyOf( $prefix, $handled ) ) {
+				continue;
+			}
+
+			$oldIndex = $map[ (int) $matched[2] ] ?? null;
+
+			if ( null === $oldIndex ) {
+				continue;
+			}
+
+			$change = RowChange::between(
+				(array) Obj::pathOr( [], [ $this->reIndex( $prefix, $field, $oldIndex ), 'rows' ], $this->nestedBefore ),
+				$after['rows']
+			);
+
+			if ( ! self::breaksPositions( $change ) ) {
+				continue;
+			}
+
+			$handled[] = $prefix;
+
+			if ( $change->movesRows() ) {
+				foreach ( $level as $translation ) {
+					$this->followRows( $postId, $translation->element_id, $prefix, $after['type'], $change->getMap() );
+				}
+
+				foreach ( $behind as $translation ) {
+					$unmoved[ (int) $translation->element_id ][] = $prefix;
+				}
+
+				if ( $behind ) {
+					$this->heldBack[] = $prefix;
+				}
+			} elseif ( RowChange::INSERT === $change->getKind() && $this->shuffled->editedNatively( $postId ) ) {
+				foreach ( $translations as $translation ) {
+					if ( $this->status->isSettled( $translation ) ) {
+						$this->followRows( $postId, $translation->element_id, $prefix, $after['type'], $change->getMap() );
+					} else {
+						$unmoved[ (int) $translation->element_id ][] = $prefix;
+					}
+				}
+			} else {
+				$this->heldBack[] = $prefix;
+			}
+		}
+
+		return (bool) $handled;
+	}
+
+	private static function breaksPositions( RowChange $change ) {
+		switch ( $change->getKind() ) {
+			case RowChange::NONE:
+			case RowChange::EDIT:
+				return false;
+			case RowChange::INSERT:
+				foreach ( $change->getMap() as $newIndex => $oldIndex ) {
+					if ( null !== $oldIndex && (int) $oldIndex !== (int) $newIndex ) {
+						return true;
+					}
+				}
+
+				return false;
+			default:
+				return true;
+		}
 	}
 
 	public function holdBackRowsOfAnInsert( $fields, $postId = 0 ) {
@@ -162,6 +277,23 @@ class WPML_ACF_Repeater_Shuffle implements \IWPML_Backend_Action {
 		$kept = fn( $metaKey ) => ! self::belongsToAnyOf( $metaKey, $this->heldBack );
 
 		return array_values( array_filter( $fields, $kept ) );
+	}
+
+	public function holdsRowsBack() {
+		return (bool) $this->heldBack;
+	}
+
+	public function holdBackHeldRowsFromEveryTranslation( $postId ) {
+		if ( ! $this->heldBack ) {
+			return;
+		}
+
+		$unmoved = [];
+		foreach ( $this->shuffled->getTranslations( $postId ) as $translation ) {
+			$unmoved[ (int) $translation->element_id ] = $this->heldBack;
+		}
+
+		$this->holdBackCopiesFor( $unmoved );
 	}
 
 	private function holdBackCopiesFor( array $unmoved ) {
@@ -377,7 +509,7 @@ class WPML_ACF_Repeater_Shuffle implements \IWPML_Backend_Action {
 		return false;
 	}
 
-	private static function rowKeyPattern( $field ) {
+	public static function rowKeyPattern( $field ) {
 		return '/^(_?)' . preg_quote( $field, '/' ) . '_(\d+)_/';
 	}
 }

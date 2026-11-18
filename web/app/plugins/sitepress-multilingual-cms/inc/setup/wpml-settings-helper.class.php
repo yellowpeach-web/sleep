@@ -95,6 +95,7 @@ class WPML_Settings_Helper {
 	}
 
 	function set_taxonomy_translatable_mode( $taxonomy, $mode ) {
+		$mode          = (int) $mode;
 		$sync_settings = $this->sitepress->get_setting( 'taxonomies_sync_option', array() );
 
 		$previous_mode = isset( $sync_settings[ $taxonomy ] ) ? $sync_settings[ $taxonomy ] : false;
@@ -280,9 +281,23 @@ class WPML_Settings_Helper {
 	}
 
 	private function hold_back_as_none( array $modes_by_type, $door ) {
-		$types = array_keys( $modes_by_type );
+		$since_repository = \WPML\TM\ATE\TranslateEverything\PostTypesSinceRepositoryFactory::create();
 
-		\WPML\TM\ATE\TranslateEverything\PostTypesSinceRepositoryFactory::create()->holdBack( $types );
+		$always_all = array_filter(
+			array_keys( $modes_by_type ),
+			array( \WPML\UserInterface\Web\Core\SharedKernel\Component\TeaCalculation\Application\Validator\TypeIncludeRules::class, 'isAlwaysAll' )
+		);
+		if ( $always_all ) {
+			$since_repository->applySinceDates( array_fill_keys( $always_all, \WPML\Setup\Option::SINCE_DATE_ALL ) );
+			$modes_by_type = array_diff_key( $modes_by_type, array_flip( $always_all ) );
+		}
+
+		$types = array_keys( $modes_by_type );
+		if ( ! $types ) {
+			return;
+		}
+
+		$since_repository->holdBack( $types );
 
 		$languages = array_values( array_diff(
 			array_keys( $this->sitepress->get_active_languages() ),
@@ -303,6 +318,7 @@ class WPML_Settings_Helper {
 	}
 
 	function update_taxonomy_sync_settings( array $new_options ) {
+		$new_options           = self::valid_taxonomy_modes( $new_options );
 		$taxonomy_sync_options = $this->sitepress->get_setting( WPML_Element_Sync_Settings_Factory::KEY_TAX_SYNC_OPTION, [] );
 		$changed_sync_options  = array_diff_assoc( $new_options, $taxonomy_sync_options );
 		$taxonomy_sync_options = array_merge( $taxonomy_sync_options, $new_options );
@@ -318,6 +334,22 @@ class WPML_Settings_Helper {
 		$this->sitepress->set_setting( WPML_Element_Sync_Settings_Factory::KEY_TAX_SYNC_OPTION, $taxonomy_sync_options, true );
 
 		return $taxonomy_sync_options;
+	}
+
+	public static function valid_taxonomy_modes( array $options ) {
+		$modes = [ WPML_CONTENT_TYPE_DONT_TRANSLATE, WPML_CONTENT_TYPE_TRANSLATE, WPML_CONTENT_TYPE_DISPLAY_AS_IF_TRANSLATED ];
+		$valid = [];
+		foreach ( $options as $taxonomy => $mode ) {
+			if ( ! is_string( $taxonomy ) || '' === $taxonomy || ! taxonomy_exists( $taxonomy ) ) {
+				continue;
+			}
+			if ( ! is_scalar( $mode ) || is_bool( $mode ) || (string) (int) $mode !== (string) $mode || ! in_array( (int) $mode, $modes, true ) ) {
+				continue;
+			}
+			$valid[ $taxonomy ] = (int) $mode;
+		}
+
+		return $valid;
 	}
 
 	function update_cpt_unlocked_settings( array $unlock_options ) {

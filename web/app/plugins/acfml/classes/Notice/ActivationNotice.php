@@ -19,7 +19,12 @@ class ActivationNotice implements \IWPML_Backend_Action {
 	}
 
 	public function maybeShowNotice() {
-		$pending = get_option( Activation::OPTION_PENDING );
+		$pending = get_option( Activation::OPTION_PENDING, null );
+
+		if ( null === $pending ) {
+			update_option( Activation::OPTION_PENDING, 0, true );
+			return;
+		}
 
 		if ( ! $pending || ! function_exists( 'wpml_get_admin_notices' ) ) {
 			return;
@@ -29,7 +34,7 @@ class ActivationNotice implements \IWPML_Backend_Action {
 
 		if ( ! FieldGroup::hasGroupMissingMode() ) {
 			$this->removeNotice( $notices );
-			delete_option( Activation::OPTION_PENDING );
+			update_option( Activation::OPTION_PENDING, 0, true );
 			return;
 		}
 

@@ -46,6 +46,36 @@ class Fields {
 		}
 	}
 
+	public static function patternsByFieldKey( $fields ): array {
+		$patterns = [];
+
+		if ( ! is_array( $fields ) ) {
+			return $patterns;
+		}
+
+		$collect = function ( $field, $fieldPattern ) use ( &$patterns ) {
+			$key = Obj::propOr( '', 'key', $field );
+
+			if ( is_string( $key ) && '' !== $key && ! isset( $patterns[ $key ] ) ) {
+				$patterns[ $key ] = $fieldPattern;
+			}
+
+			return $field;
+		};
+
+		self::iterate( $fields, $collect, function ( $layout ) {
+			return $layout;
+		} );
+
+		return $patterns;
+	}
+
+	public static function representativeKey( string $pattern ): string {
+		$firstRows = str_replace( self::ROW_INDEX_PATTERN, '_0_', $pattern );
+
+		return (string) preg_replace( '/\\\\(.)/s', '$1', $firstRows );
+	}
+
 	public static function getFresh( array $fieldGroup ): array {
 		self::evictFromStore( acf_get_store( 'fields' ), $fieldGroup['ID'] );
 

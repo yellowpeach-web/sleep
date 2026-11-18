@@ -3,6 +3,7 @@
 use OTGS\Installer\Collection;
 use OTGS\Installer\Rest\Push;
 use OTGS\Installer\Recommendations\RecommendationsManager;
+use OTGS\Installer\CommercialTab\DownloadFilter;
 use OTGS\Installer\CommercialTab\PlanPlugins;
 use OTGS\Installer\CommercialTab\SectionsManager;
 use OTGS\Installer\Recommendations\Storage;
@@ -16,16 +17,27 @@ use OTGS\Installer\WpmlOrg\WpmlOrgOrigin;
 
 class WP_Installer {
 
+	const COMPACT_BOX_RENAMED_PRODUCTS = [
+		'multilingual-cms'    => 'wpml-multilingual-cms-2',
+		'multilingual-cms-2'  => 'wpml-multilingual-cms-2',
+		'multilingual-agency' => 'wpml-multilingual-agency-2',
+		'multilingual-blog-2' => 'wpml-multilingual-blog-copy',
+	];
 	const TOOLSET_TYPES = 'Toolset Types';
 	const LEGACY_FREE_TYPES_SUBSCRIPTION_ID = 5495;
 	const GRACE_TIME = MONTH_IN_SECONDS;
 
 	const HARDCODED_SITE_KEY_REFUSAL = 'otgs_installer_hardcoded_key_refusal_';
 	const HARDCODED_SITE_KEY_BACKOFF = HOUR_IN_SECONDS;
+	const CHECK_ORDER_STATUS_ACTION = 'installer_check_order_status';
 
 	protected static $_instance = null;
 
 	private $settings = array();
+
+	private $subscriptions_as_read;
+
+	const SUBSCRIPTION_FIELDS = array( 'subscription', 'site_key_url', 'last_successful_subscription_fetch' );
 
 	private $repositories = array();
 
@@ -61,6 +73,8 @@ class WP_Installer {
 	private $components_setting;
 
 	private $repositories_already_refreshed = false;
+
+	private $feed_read_failed = false;
 
 	private $products_config_xml;
 
@@ -146,8 +160,8 @@ class WP_Installer {
 
 		$forced_check = isset( $_GET['force-check'] ) && $_GET['force-check'] == 1 && current_user_can( 'manage_options' );
 		if ( $forced_check || Settings::requires_update() ) {
-			$this->refresh_repositories_data();
 			$this->refresh_subscriptions_data( $forced_check );
+			$this->refresh_repositories_data();
 		}
 
 		$this->_using_icl    = function_exists( 'wpml_site_uses_icl' ) && wpml_site_uses_icl();
@@ -156,11 +170,7 @@ class WP_Installer {
 		wp_register_script( 'installer-admin', $this->res_url() . '/res/js/admin.js', array( 'jquery' ), $this->version() );
 
 		if ( is_multisite() || ! $this->is_installer_running_on_otgs_plugin() || ( $this->is_commercial_page() && $this->is_installer_running_on_otgs_plugin() ) || $this->is_wpml_activate_update_page() ) {
-			wp_enqueue_script( 'installer-admin' );
-			wp_enqueue_script( 'otgs-installer-notification', $this->res_url() . '/dist/js/notification/app.js', [], $this->version() );
-			wp_enqueue_style( 'installer-admin', $this->res_url() . '/res/css/admin.css', array(), $this->version() );
-			wp_enqueue_style( 'otgs-icons' );
-			wp_enqueue_style( 'installer-admin-notices', $this->res_url() . '/res/css/admin-notices.css', array(), $this->version() );
+			$this->enqueue_admin_assets();
 		}
 
 		if ( $this->is_commercial_page() || $this->is_wpml_activate_update_page() ) {
@@ -188,12 +198,13 @@ class WP_Installer {
 			add_action( 'admin_init', array( $this, 'setup_plugins_action_links' ) );
 
 			wp_enqueue_script( 'installer-plugins', $this->res_url() . '/res/js/plugins.js', array( 'jquery' ), $this->version() );
-			wp_enqueue_style( 'installer-admin-notices', $this->res_url() . '/res/css/admin-notices.css', array(), $this->version() );
+			wp_enqueue_style( 'installer-admin-notices', $this->res_url() . '/res/css/admin-notices.css', array( 'common' ), $this->version() );
 		}
 
 		if ( $this->is_repositories_page() ) {
 			add_action( 'admin_init', array( $this, 'validate_repository_subscription' ) );
 		}
+		add_action( 'admin_post_' . self::CHECK_ORDER_STATUS_ACTION, array( $this, 'check_order_status_from_notice' ) );
 
 		if ( defined( 'DOING_AJAX' ) ) {
 			add_action( 'wp_ajax_installer_download_plugin', array( $this, 'download_plugin_ajax_handler' ) );
@@ -540,9 +551,15 @@ class WP_Installer {
 		return untrailingslashit( plugin_dir_path( dirname( __FILE__ ) ) );
 	}
 
+	private function theme_folder_url() {
+		$theme_url = isset( $this->config['in_theme'] ) && 'stylesheet' === $this->config['in_theme'] ? get_stylesheet_directory_uri() : get_template_directory_uri();
+
+		return untrailingslashit( $theme_url . '/' . $this->config['in_theme_folder'] );
+	}
+
 	public function plugin_url() {
 		if ( isset( $this->config['in_theme_folder'] ) && ! empty( $this->config['in_theme_folder'] ) ) {
-			$url = untrailingslashit( get_template_directory_uri() . '/' . $this->config['in_theme_folder'] );
+			$url = $this->theme_folder_url();
 		} else {
 			$url = untrailingslashit( plugins_url( '/', dirname( __FILE__ ) ) );
 		}
@@ -561,7 +578,7 @@ class WP_Installer {
 	}
 
 	public function get_embedded_at() {
-		$embedded_at = str_replace( array( get_template_directory_uri(), plugins_url() ), '', $this->plugin_url() );
+		$embedded_at = str_replace( array( get_stylesheet_directory_uri(), get_template_directory_uri(), plugins_url() ), '', $this->plugin_url() );
 		preg_match( '/\/(.*?)\//', $embedded_at, $matches );
 
 		return isset( $matches[1] ) ? $matches[1] : '';
@@ -570,12 +587,17 @@ class WP_Installer {
 	public function is_repositories_page() {
 		global $pagenow;
 
-		return $pagenow == 'plugin-install.php' && isset( $_GET['tab'] ) && $_GET['tab'] == 'commercial';
+		if ( $pagenow == 'plugin-install.php' && isset( $_GET['tab'] ) && $_GET['tab'] == 'commercial' ) {
+			return true;
+		}
+
+		return is_multisite() && ! is_network_admin()
+		       && $pagenow == 'options-general.php' && isset( $_GET['page'] ) && $_GET['page'] == 'installer';
 	}
 
 	public function res_url() {
 		if ( isset( $this->config['in_theme_folder'] ) && ! empty( $this->config['in_theme_folder'] ) ) {
-			$url = untrailingslashit( get_template_directory_uri() . '/' . $this->config['in_theme_folder'] );
+			$url = $this->theme_folder_url();
 		} else {
 			$url = $this->plugin_url();
 		}
@@ -588,12 +610,68 @@ class WP_Installer {
 			$this->settings = $settings;
 		}
 
+		$this->keep_stored_registrations();
 		Settings::save( $this->settings );
+		$this->subscriptions_as_read = self::registrations( $this->settings );
+	}
+
+	private function keep_stored_registrations() {
+		if ( null === $this->subscriptions_as_read || is_multisite() || empty( $this->settings['repositories'] ) ) {
+			return;
+		}
+
+		$stored = Settings::read_stored();
+		if ( empty( $stored['repositories'] ) ) {
+			return;
+		}
+
+		$copy = self::registrations( $this->settings );
+		$row  = self::registrations( $stored );
+		foreach ( $row as $repository_id => $stored_registration ) {
+			if ( empty( $stored['repositories'][ $repository_id ]['subscription']['key'] )
+			     || ! isset( $this->settings['repositories'][ $repository_id ] ) ) {
+				continue;
+			}
+
+			$as_read = isset( $this->subscriptions_as_read[ $repository_id ] ) ? $this->subscriptions_as_read[ $repository_id ] : serialize( array() );
+			$in_copy = isset( $copy[ $repository_id ] ) ? $copy[ $repository_id ] : serialize( array() );
+			if ( $in_copy !== $as_read || $stored_registration === $as_read ) {
+				continue;
+			}
+
+			foreach ( self::SUBSCRIPTION_FIELDS as $field ) {
+				if ( isset( $stored['repositories'][ $repository_id ][ $field ] ) ) {
+					$this->settings['repositories'][ $repository_id ][ $field ] = $stored['repositories'][ $repository_id ][ $field ];
+				} else {
+					unset( $this->settings['repositories'][ $repository_id ][ $field ] );
+				}
+			}
+		}
+	}
+
+	private static function registrations( $settings ) {
+		$registrations = array();
+		if ( ! isset( $settings['repositories'] ) || ! is_array( $settings['repositories'] ) ) {
+			return $registrations;
+		}
+
+		foreach ( $settings['repositories'] as $repository_id => $repository ) {
+			$fields = array();
+			foreach ( self::SUBSCRIPTION_FIELDS as $field ) {
+				if ( isset( $repository[ $field ] ) ) {
+					$fields[ $field ] = $repository[ $field ];
+				}
+			}
+			$registrations[ $repository_id ] = serialize( $fields );
+		}
+
+		return $registrations;
 	}
 
 	public function get_settings( $refresh = false ) {
 		if ( $refresh || empty( $this->settings ) ) {
-			$this->settings = Settings::load();
+			$this->settings              = Settings::load();
+			$this->subscriptions_as_read = self::registrations( $this->settings );
 
 			if ( empty( $this->settings ) ) {
 				$this->settings = array(
@@ -685,7 +763,9 @@ class WP_Installer {
 					}
 
 					if ( ! empty( $response['error'] ) ) {
-						$this->remove_site_key( $repository_id, false );
+						// wpmldev-12310: only Refresh license removes a refused key. The stored copy stays, flagged.
+						$this->mark_site_key_as_invalid( $repository_id );
+						$this->save_settings();
 
 						$refusal = $this->remember_hardcoded_site_key_refusal( $repository_id, $site_key, $response['error'] );
 
@@ -885,7 +965,7 @@ class WP_Installer {
 
 	public function refresh_subscriptions_data( $user_requested = false ) {
 		$this->get_settings();
-		$this->settings['last_subscriptions_update'] = time();
+		$checked = false;
 
 		foreach ( $this->repositories as $repository_id => $data ) {
 			$site_key = $this->get_site_key( $repository_id );
@@ -894,21 +974,17 @@ class WP_Installer {
 				continue;
 			}
 
+			$checked = true;
+
 			try {
 				$subscriptionManagerFactory = $this->get_subscription_manager_factory();
 				$subscriptionManager        = $subscriptionManagerFactory->create( $repository_id, $this->repositories[ $repository_id ]['api-url'] );
 				list ( $subscription_data, $site_key_data ) = $subscriptionManager->fetch( $site_key, self::SITE_KEY_VALIDATION_SOURCE_REVALIDATION_DAILY, $user_requested );
 
 				if ( ! $subscription_data ) {
-					$message = sprintf(
-						"Installer could not fetch subscription data for %s. Error message: Invalid site key for the current site.",
-						$repository_id
+					$this->log_subscription_update(
+						sprintf( 'Installer could not fetch subscription data for %s: the answer held no subscription data.', $repository_id )
 					);
-
-					$this->mark_site_key_as_invalid( $repository_id );
-					$this->setLastSuccessSubscriptionFetch( $repository_id );
-					$this->log_subscription_update( $message );
-					$this->register_site_key_refused_message( $repository_id );
 
 					continue;
 				}
@@ -930,17 +1006,23 @@ class WP_Installer {
 			} catch ( Exception $e ) {
 				if ( OTGS_Installer_Fetch_Subscription_Exception::is_site_key_refused( $e ) ) {
 					$this->mark_site_key_as_invalid( $repository_id );
-					$this->setLastSuccessSubscriptionFetch( $repository_id );
-					$this->log_subscription_update( $repository_id . ': Invalid site key for the current site.' );
+					$this->log_subscription_update(
+						$repository_id . ': Invalid site key for the current site. (API: '
+						. OTGS_Installer_Fetch_Subscription_Exception::api_error_text( $e ) . ')'
+					);
 					$this->register_site_key_refused_message( $repository_id );
 				} else {
-					$this->log_subscription_update( $repository_id . ': ' . $e->getMessage() );
+					$evidence = $e instanceof OTGS_Installer_Fetch_Subscription_Exception ? $e->get_evidence() : '';
+					$this->log_subscription_update( $repository_id . ': ' . $e->getMessage() . ( $evidence ? ' (' . $evidence . ')' : '' ) );
 					$this->register_site_key_not_checked_message( $repository_id, $e->getMessage() );
 				}
 			}
 		}
 
-		$this->save_settings();
+		if ( $checked ) {
+			$this->settings['last_subscriptions_update'] = time();
+			$this->save_settings();
+		}
 	}
 
 	protected function get_subscription_manager_factory() {
@@ -972,14 +1054,37 @@ class WP_Installer {
 		$this->register_admin_message( $message, 'notice' );
 	}
 
-	public function mark_site_key_as_invalid( $repository_id ) {
+	/**
+	 * The API refused this key: the subscription data and its update offers go, and the key is
+	 * flagged, so the site reads as not validly registered and shows the "no longer valid" warning
+	 * (wpmldev-6786).
+	 *
+	 * wpmldev-12310: the key itself stays unless $drop_key. A refusal answers for the URL the request
+	 * sent, and a check can send the wrong one (wpmldev-11891: wp-cron on a secondary language's domain);
+	 * the next check that succeeds clears the flag. Only WPML's Refresh license drops the key: it posts
+	 * drop_refused_key=1 to update_site_key. A merely unreachable API never reaches here (the callers
+	 * gate on is_site_key_refused()).
+	 *
+	 * wpmldev-8965: a dropped key takes the time of its last answer with it, as remove_site_key() does.
+	 * Kept, that time aged with no key left to check, and a week later the site read "cannot connect".
+	 * A key that stays has just had an answer, so the refusal sets that time.
+	 *
+	 * @param string $repository_id
+	 * @param bool   $drop_key
+	 */
+	public function mark_site_key_as_invalid( $repository_id, $drop_key = false ) {
 		$this->get_settings();
 
 		if ( empty( $this->settings['repositories'][ $repository_id ]['subscription']['key'] ) ) {
 			return;
 		}
 
-		unset( $this->settings['repositories'][ $repository_id ]['subscription']['key'] );
+		if ( $drop_key ) {
+			unset( $this->settings['repositories'][ $repository_id ]['subscription']['key'] );
+			unset( $this->settings['repositories'][ $repository_id ]['last_successful_subscription_fetch'] );
+		} else {
+			$this->setLastSuccessSubscriptionFetch( $repository_id );
+		}
 		unset( $this->settings['repositories'][ $repository_id ]['subscription']['data'] );
 		unset( $this->settings['repositories'][ $repository_id ]['subscription']['key_type'] );
 		$this->settings['repositories'][ $repository_id ]['subscription']['site_key_invalid'] = true;
@@ -987,8 +1092,31 @@ class WP_Installer {
 		$this->clean_plugins_update_cache();
 	}
 
+	/**
+	 * wpmldev-12310: an update or download attempt that the API answers with a refusal keeps the key and flags
+	 * it, as every other call except Refresh license does, so the registration screen says the key is no longer
+	 * valid. Any other failure says nothing about the key and changes nothing.
+	 *
+	 * @param Exception $e             what the subscription fetch threw
+	 * @param string    $repository_id
+	 *
+	 * @return bool true when the API refused the key
+	 */
+	private function flag_site_key_if_refused( Exception $e, $repository_id ) {
+		if ( ! OTGS_Installer_Fetch_Subscription_Exception::is_site_key_refused( $e ) ) {
+			return false;
+		}
+
+		$this->mark_site_key_as_invalid( $repository_id );
+		$this->save_settings();
+
+		return true;
+	}
+
 	public function shouldDisplayConnectionIssueMessage( $repositoryId ) {
-		return time() - $this->getLastSuccessSubscriptionFetch( $repositoryId ) > WEEK_IN_SECONDS
+		$has_key = $this->get_site_key( $repositoryId ) || self::get_repository_hardcoded_site_key( $repositoryId );
+
+		return ( $has_key && time() - $this->getLastSuccessSubscriptionFetch( $repositoryId ) > WEEK_IN_SECONDS )
 		       || $this->isUsingProductsFallback( $repositoryId );
 	}
 
@@ -1036,7 +1164,8 @@ class WP_Installer {
 	}
 
 	public function refresh_repositories_data( $bypass_bucket = false ) {
-		if ( defined( 'OTGS_DISABLE_AUTO_UPDATES' ) && OTGS_DISABLE_AUTO_UPDATES && empty( $_GET['force-check'] ) || $this->repositories_already_refreshed ) {
+		$skip_refresh = defined( 'OTGS_DISABLE_AUTO_UPDATES' ) && OTGS_DISABLE_AUTO_UPDATES && empty( $_GET['force-check'] ) || $this->repositories_already_refreshed;
+		if ( $skip_refresh && ! $bypass_bucket ) {
 			if ( empty( $this->settings()['repositories'] ) && $this->is_repositories_page() ) {
 				foreach ( $this->repositories as $repository_id => $data ) {
 					$repository_names[] = $repository_id;
@@ -1052,6 +1181,7 @@ class WP_Installer {
 			return;
 		}
 		$this->repositories_already_refreshed = true;
+		$this->feed_read_failed               = false;
 		$this->get_settings();
 
 		foreach ( $this->repositories as $repository_id => $data ) {
@@ -1130,12 +1260,52 @@ class WP_Installer {
 
 		delete_site_transient( 'update_plugins' );
 
+		$read_the_master = $bypass_bucket && ! $this->feed_read_failed;
+		if ( $read_the_master ) {
+			$this->save_master_releases();
+		}
+
 		$this->save_settings();
+
+		if ( $read_the_master ) {
+			Settings::mark_updated();
+		}
 
 		return $this->ajax_messages;
 	}
 
+	private function save_master_releases() {
+		foreach ( $this->settings['repositories'] as $repository_id => $repository ) {
+			if ( ! isset( $repository['data']['downloads']['plugins'] ) ) {
+				continue;
+			}
+
+			foreach ( $repository['data']['downloads']['plugins'] as $slug => $download ) {
+				if ( isset( $download['channel'] ) && WP_Installer_Channels::CHANNEL_PRODUCTION === $download['channel'] ) {
+					$this->settings['repositories'][ $repository_id ]['master_releases'][ $slug ] = [
+						'version'       => $download['version'],
+						'date'          => $download['date'],
+						'release-notes' => $download['release-notes'],
+					];
+				}
+			}
+		}
+	}
+
+	public function get_master_release( $repository_id, $slug, $version ) {
+		$settings = $this->settings();
+
+		if ( ! isset( $settings['repositories'][ $repository_id ]['master_releases'][ $slug ] ) ) {
+			return null;
+		}
+
+		$release = $settings['repositories'][ $repository_id ]['master_releases'][ $slug ];
+
+		return $version === $release['version'] ? $release : null;
+	}
+
 	private function record_products_feed_problem( $repository_id, $products_url, $products_parser, OTGS_Installer_Products_Feed_Problem $problem ) {
+		$this->feed_read_failed = true;
 		$this->register_admin_message( $this->products_feed_problem_message( $repository_id, $problem ), 'error' );
 		$this->store_log( $products_url, null, OTGS_Installer_Logger_Storage::COMPONENT_REPOSITORIES, $problem->describe() );
 
@@ -1230,6 +1400,7 @@ class WP_Installer {
 		}
 
 		if ( $problem ) {
+			$this->feed_read_failed = true;
 			$this->store_log(
 				$releases_url,
 				null,
@@ -1272,10 +1443,24 @@ class WP_Installer {
 	}
 
 	public function show_products( $args = array() ) {
+		$is_compact = is_array( $args ) && isset( $args['template'] ) && 'compact' === $args['template'];
+
 		if ( ! current_user_can( 'install_plugins' ) ) {
-			wp_die( __( 'Sorry, you are not allowed to manage Installer for this site.', 'installer' ) );
+			$message = __( 'Sorry, you are not allowed to manage Installer for this site.', 'installer' );
+
+			if ( $is_compact ) {
+				echo '<p>' . esc_html( $message ) . '</p>';
+
+				return;
+			}
+
+			wp_die( $message );
 
 			return;
+		}
+
+		if ( $is_compact ) {
+			$this->enqueue_admin_assets();
 		}
 
 		$screen = get_current_screen();
@@ -1317,6 +1502,57 @@ class WP_Installer {
 		if ( $screen->base === 'settings_page_installer' ) {
 			echo '</div>';
 		}
+	}
+
+	private function enqueue_admin_assets() {
+		wp_enqueue_script( 'installer-admin' );
+		wp_enqueue_script( 'otgs-installer-notification', $this->res_url() . '/dist/js/notification/app.js', [], $this->version() );
+		wp_enqueue_style( 'installer-admin', $this->res_url() . '/res/css/admin.css', array( 'common' ), $this->version() );
+		wp_enqueue_style( 'otgs-icons' );
+		wp_enqueue_style( 'installer-admin-notices', $this->res_url() . '/res/css/admin-notices.css', array( 'common' ), $this->version() );
+	}
+
+	private function get_compact_box_product( $repository, $product_id ) {
+		$packages = isset( $repository['data']['packages'] ) ? $repository['data']['packages'] : [];
+		$ids      = [ $product_id ];
+
+		if ( isset( self::COMPACT_BOX_RENAMED_PRODUCTS[ $product_id ] ) ) {
+			$ids[] = self::COMPACT_BOX_RENAMED_PRODUCTS[ $product_id ];
+		}
+
+		foreach ( $ids as $id ) {
+			foreach ( $packages as $package ) {
+				if ( isset( $package['products'][ $id ] ) ) {
+					return $package['products'][ $id ];
+				}
+			}
+		}
+
+		return false;
+	}
+
+	private function get_compact_box_downloads( $repository, $repository_id, $subscription_type ) {
+		$downloads = [];
+		$packages  = $this->_render_product_packages(
+			$repository,
+			$repository['data']['packages'],
+			$subscription_type,
+			false,
+			$this->get_upgrade_options( $repository_id ),
+			$repository_id
+		);
+
+		foreach ( $packages as $package ) {
+			foreach ( $this->get_plugins_sections( $repository_id, $package['downloads'] ) as $section ) {
+				foreach ( $section['downloads'] as $download_id => $download ) {
+					if ( DownloadFilter::shouldDisplayRecord( $download_id ) ) {
+						$downloads[ $download_id ] = $download;
+					}
+				}
+			}
+		}
+
+		return $downloads;
 	}
 
 	public function get_plugins_sections( $repositoryId, $downloads ) {
@@ -1526,7 +1762,9 @@ class WP_Installer {
 
 		$installed_version = $this->plugin_is_installed( $plugin['name'], $plugin['slug'] );
 
-		return $installed_version && version_compare( $installed_version, $plugin['version'], '>' );
+		return $installed_version
+			&& WP_Installer_Channels::is_pre_release( $installed_version )
+			&& version_compare( $installed_version, $plugin['version'], '>' );
 	}
 
 	public function get_recommendation_plugins_to_be_installed( $repository_id ): array {
@@ -1732,6 +1970,8 @@ class WP_Installer {
 				}
 				if ( ! empty( $matches ) || preg_match( '#Could not resolve host: (.*)#', $error, $matches ) || preg_match( '#Couldn\'t resolve host \'(.*)\'#', $error, $matches ) ) {
 					$error = $this->connection_sentence( $repository_id, $matches[1] );
+				} elseif ( ! $key_not_checked && $user_requested && ! self::is_subsite_of_unregistered_network( $repository_id ) ) {
+					$error = self::site_key_refused_message( $repository_id );
 				}
 
 				$this->log_subscription_update( $repository_id . ': ' . $e->getMessage() );
@@ -1793,7 +2033,47 @@ class WP_Installer {
 		// translators: %1$s the main site's URL, %2$s and %3$s wrap the link to the main site's registration screen
 			__( 'This site uses the network key registered on %1$s. To change or remove it, %2$sgo to the main site%3$s.', 'installer' ),
 			esc_html( get_site_url( $main_site_id ) ),
-			'<a href="' . esc_url( get_admin_url( $main_site_id, 'options-general.php?page=installer' ) ) . '">',
+			'<a href="' . esc_url( self::main_site_registration_url() ) . '">',
+			'</a>'
+		);
+	}
+
+	private static function main_site_registration_url() {
+		return get_admin_url( get_main_site_id(), 'options-general.php?page=installer' );
+	}
+
+	public static function is_subsite_of_unregistered_network( $repository_id ) {
+		if ( ! is_multisite() || is_main_site() ) {
+			return false;
+		}
+
+		return ! self::site_key_belongs_to_network( $repository_id );
+	}
+
+	public static function checked_site_address( $repository_id ) {
+		$site_url = new SiteUrl();
+
+		return esc_html( $site_url->get( $repository_id ) );
+	}
+
+	public static function site_key_refused_message( $repository_id ) {
+		return sprintf(
+		// translators: %s the site address the key was checked for, e.g. https://www.example.com
+			__( 'This site key does not match %s. Create a site key for this exact address and try again.', 'installer' ),
+			self::checked_site_address( $repository_id )
+		);
+	}
+
+	public static function network_one_key_notice( $repository_id, $product_name ) {
+		$site_url = new SiteUrl();
+		$address = preg_replace( '#^https?://#i', '', untrailingslashit( $site_url->get( $repository_id ) ) );
+
+		return sprintf(
+		// translators: %1$s the product name (WPML, Toolset), %2$s the network's address (domain and path, no scheme), %3$s and %4$s wrap the link to the main site's registration screen
+			__( 'On a network, %1$s uses one site key for all sites, created for the network\'s address %2$s. Create a key for that address in your %1$s account, then register it here or on the %3$smain site%4$s.', 'installer' ),
+			esc_html( $product_name ),
+			'<strong>' . esc_html( $address ) . '</strong>',
+			'<a href="' . esc_url( self::main_site_registration_url() ) . '">',
 			'</a>'
 		);
 	}
@@ -1812,6 +2092,33 @@ class WP_Installer {
 		}
 	}
 
+	public static function check_order_status_url( $repository_id ) {
+		$url = current_user_can( 'install_plugins' )
+			? self::menu_url() . '&validate_repository=' . $repository_id
+			: admin_url( 'admin-post.php?action=' . self::CHECK_ORDER_STATUS_ACTION . '&validate_repository=' . $repository_id );
+
+		return wp_nonce_url( $url, 'validate_repository_' . $repository_id );
+	}
+
+	public static function current_user_can_check_order_status() {
+		return current_user_can( 'install_plugins' )
+		       || current_user_can( 'manage_options' )
+		       || current_user_can( 'wpml_manage_support' );
+	}
+
+	public function check_order_status_from_notice() {
+		$repository_id = isset( $_GET['validate_repository'] ) ? sanitize_text_field( $_GET['validate_repository'] ) : '';
+		if ( ! $repository_id || ! self::current_user_can_check_order_status() ) {
+			wp_die( esc_html__( 'Sorry, you are not allowed to access this page.', 'installer' ), 403 );
+		}
+		check_admin_referer( 'validate_repository_' . $repository_id );
+		$this->check_order_status( $repository_id );
+
+		$back = wp_get_referer();
+		wp_safe_redirect( $back ? $back : admin_url() );
+		exit;
+	}
+
 	public function validate_repository_subscription() {
 		$repository_id = isset( $_GET['validate_repository'] ) ? sanitize_text_field( $_GET['validate_repository'] ) : false;
 		if ( $repository_id ) {
@@ -1819,36 +2126,42 @@ class WP_Installer {
 				return;
 			}
 			check_admin_referer( 'validate_repository_' . $repository_id );
-			$this->forget_hardcoded_site_key_refusal( $repository_id );
-			$site_key = $this->get_site_key( $repository_id );
-			if ( $site_key ) {
-				$key_was_checked = true;
-				try {
-					$subscriptionManagerFactory = $this->get_subscription_manager_factory();
-					$subscriptionManager        = $subscriptionManagerFactory->create( $repository_id, $this->repositories[ $repository_id ]['api-url'] );
-					list ( $subscription_data, $site_key_data ) = $subscriptionManager->fetch( $site_key, self::SITE_KEY_VALIDATION_SOURCE_REVALIDATION, true );
-				} catch ( Exception $e ) {
-					$subscription_data = false;
-					$key_was_checked = OTGS_Installer_Fetch_Subscription_Exception::is_site_key_refused( $e );
-					if ( ! $key_was_checked ) {
-						$this->log_subscription_update( $repository_id . ': ' . $e->getMessage() );
-					}
-				}
-
-				$this->get_settings();
-				if ( empty( $subscription_data ) && $key_was_checked ) {
-					unset( $this->settings['repositories'][ $repository_id ]['subscription'] );
-					delete_site_transient( 'update_plugins' );
-				} elseif ( ! empty( $subscription_data ) ) {
-					$this->settings['repositories'][ $repository_id ]['subscription']['data']     = $subscription_data;
-					$this->settings['repositories'][ $repository_id ]['subscription']['key_type'] = isset( $site_key_data['type'] )
-						? (int) $site_key_data['type'] : OTGS_Installer_Subscription::SITE_KEY_TYPE_PRODUCTION;
-				}
-				$this->save_settings();
-			}
+			$this->check_order_status( $repository_id );
 
 			wp_redirect( $this->menu_url() . '#repository-' . $repository_id );
 			exit;
+		}
+	}
+
+	private function check_order_status( $repository_id ) {
+		$this->forget_hardcoded_site_key_refusal( $repository_id );
+		$site_key = $this->get_site_key( $repository_id );
+		if ( $site_key ) {
+			$key_was_checked = true;
+			try {
+				$subscriptionManagerFactory = $this->get_subscription_manager_factory();
+				$subscriptionManager        = $subscriptionManagerFactory->create( $repository_id, $this->repositories[ $repository_id ]['api-url'] );
+				list ( $subscription_data, $site_key_data ) = $subscriptionManager->fetch( $site_key, self::SITE_KEY_VALIDATION_SOURCE_REVALIDATION, true );
+			} catch ( Exception $e ) {
+				$subscription_data = false;
+				$key_was_checked = OTGS_Installer_Fetch_Subscription_Exception::is_site_key_refused( $e );
+				if ( ! $key_was_checked ) {
+					$this->log_subscription_update( $repository_id . ': ' . $e->getMessage() );
+				}
+			}
+
+			$this->get_settings();
+			if ( empty( $subscription_data ) && $key_was_checked ) {
+				// wpmldev-12310: only Refresh license removes a refused key. Here it stays, flagged.
+				$this->mark_site_key_as_invalid( $repository_id );
+				delete_site_transient( 'update_plugins' );
+			} elseif ( ! empty( $subscription_data ) ) {
+				unset( $this->settings['repositories'][ $repository_id ]['subscription']['site_key_invalid'] );
+				$this->settings['repositories'][ $repository_id ]['subscription']['data']     = $subscription_data;
+				$this->settings['repositories'][ $repository_id ]['subscription']['key_type'] = isset( $site_key_data['type'] )
+					? (int) $site_key_data['type'] : OTGS_Installer_Subscription::SITE_KEY_TYPE_PRODUCTION;
+			}
+			$this->save_settings();
 		}
 	}
 
@@ -2282,7 +2595,7 @@ class WP_Installer {
 		$data_url_parsed = wp_parse_url( $data['url'] );
 		$data_url_args   = $data_url_parsed['query'];
 		unset( $data_url_parsed['query'] );
-		$data_url = http_build_url( $data_url_parsed );
+		$data_url = OTGS_Installer_Url::build( $data_url_parsed );
 
 		$ret              = false;
 		$plugin_id        = false;
@@ -2295,10 +2608,13 @@ class WP_Installer {
 			$subscriptionManager        = $subscriptionManagerFactory->create( $data['repository_id'], $this->repositories[ $data['repository_id'] ]['api-url'] );
 			list ( $subscription_data, $site_key_data ) = $subscriptionManager->fetch( $site_key, self::SITE_KEY_VALIDATION_SOURCE_DOWNLOAD_REPORT, true );
 		} catch ( Exception $e ) {
-			$connection_error  = $e->getMessage();
 			$subscription_data = false;
 
-			$this->store_log( $data_url, $data_url_args, OTGS_Installer_Logger_Storage::COMPONENT_SUBSCRIPTION, $connection_error );
+			$this->store_log( $data_url, $data_url_args, OTGS_Installer_Logger_Storage::COMPONENT_SUBSCRIPTION, $e->getMessage() );
+
+			if ( ! $this->flag_site_key_if_refused( $e, $data['repository_id'] ) ) {
+				$connection_error = $e->getMessage();
+			}
 		}
 
 		if ( $subscription_data && ! is_wp_error( $subscription_data ) && $this->repository_has_valid_subscription( $data['repository_id'] ) ) {
@@ -2414,8 +2730,7 @@ class WP_Installer {
 		$response['success']    = $ret;
 		$response['message']    = $message;
 
-		echo json_encode( $response );
-		exit;
+		wp_send_json( $response );
 	}
 
 	public function get_already_installed_answer( array $plugin ) {
@@ -2608,14 +2923,6 @@ class WP_Installer {
 
 	private function should_fallback_under_wp_org_repo( $download, $site_key ) {
 		return ( ! empty( $download['free-on-wporg'] ) || isset( $download['fallback-free-on-wporg'] ) && $download['fallback-free-on-wporg'] && ! $site_key ) && $download['channel'] == WP_Installer_Channels::CHANNEL_PRODUCTION;
-	}
-
-	private function has_non_wporg_upgrade_available( $plugin_id ) {
-		$plugins_update_data = get_site_transient( 'update_plugins' );
-
-		return ! empty( $plugins_update_data->response[ $plugin_id ] )
-		       &&
-		       ! preg_match( '/w\.org/', $plugins_update_data->response[ $plugin_id ]->id );
 	}
 
 	public function setup_plugins_page_notices() {
@@ -2967,6 +3274,11 @@ class WP_Installer {
 		do_action( 'otgs_installer_clean_plugins_update_cache' );
 	}
 
+	private function register_again_url( $repository_id ) {
+		return wp_nonce_url( $this->menu_url() . '&validate_repository=' . $repository_id, 'validate_repository_' . $repository_id )
+		       . '#repository-' . $repository_id;
+	}
+
 	public function plugin_upgrade_custom_errors() {
 		if ( isset( $_REQUEST['action'] ) ) {
 			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( $_REQUEST['action'] ) : '';
@@ -3015,6 +3327,7 @@ class WP_Installer {
 									$subscriptionManager        = $subscriptionManagerFactory->create( $plugin_repository, $this->repositories[ $plugin_repository ]['api-url'] );
 									list ( $subscription_data, $site_key_data ) = $subscriptionManager->fetch( $site_key, self::SITE_KEY_VALIDATION_SOURCE_REVALIDATION, true );
 								} catch ( Exception $e ) {
+									$this->flag_site_key_if_refused( $e, $plugin_repository );
 								}
 							}
 
@@ -3024,8 +3337,7 @@ class WP_Installer {
 
 							if ( empty( $site_key ) || empty( $subscription_data ) ) {
 								$error_message = sprintf( __( "%s cannot update because your site's registration is not valid. Please %sregister %s%s again for this site first.", 'installer' ),
-									'<strong>' . $plugin_name . '</strong>', '<a target="_top" href="' . $this->menu_url() . '&validate_repository=' . $plugin_repository .
-									                                         '#repository-' . $plugin_repository . '">', $product_name, '</a>' );
+									'<strong>' . $plugin_name . '</strong>', '<a target="_top" href="' . $this->register_again_url( $plugin_repository ) . '">', $product_name, '</a>' );
 
 								echo '<div class="updated error"><p>' . $error_message . '</p></div>';
 
@@ -3080,6 +3392,7 @@ class WP_Installer {
 							list ( $subscription_data, $site_key_data ) = $subscriptionManager->fetch( $site_key, self::SITE_KEY_VALIDATION_SOURCE_REVALIDATION, true );
 						} catch ( Exception $e ) {
 							$subscription_data = false;
+							$this->flag_site_key_if_refused( $e, $plugin_repository );
 						}
 					}
 
@@ -3088,8 +3401,7 @@ class WP_Installer {
 
 					if ( $no_subscription && $not_on_wporg ) {
 						$error_message = sprintf( __( "%s cannot update because your site's registration is not valid. Please %sregister %s%s again for this site first.", 'installer' ),
-							'<strong>' . $plugin_name . '</strong>', '<a href="' . $this->menu_url() . '&validate_repository=' . $plugin_repository .
-							                                         '#repository-' . $plugin_repository . '">', $product_name, '</a>' );
+							'<strong>' . $plugin_name . '</strong>', '<a href="' . $this->register_again_url( $plugin_repository ) . '">', $product_name, '</a>' );
 
 						if ( defined( 'DOING_AJAX' ) ) {
 
@@ -3160,11 +3472,27 @@ class WP_Installer {
 			}
 		}
 
-		return array( '', '' );
+		return array( $current_repository, '' );
 	}
 
 	private function isComplementaryWithWPMLSubscription( $name, $slug ) {
 		return Collection::of( [ 'Toolset Types', 'Toolset Module Manager' ] )->contains( $name ) && $this->plugin_is_registered( 'wpml', $slug );
+	}
+
+	public function toolset_is_covered_by_wpml() {
+		$installed = $this->get_plugin_finder()->get_otgs_installed_plugins_by_repository();
+
+		if ( empty( $installed['toolset'] ) ) {
+			return false;
+		}
+
+		foreach ( $installed['toolset'] as $plugin ) {
+			if ( ! $this->isComplementaryWithWPMLSubscription( $plugin['name'], $plugin['slug'] ) ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	private function isPluginAvailableInRepositoryDownloads( $repository_id, $plugin_slug ) {

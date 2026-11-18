@@ -6,6 +6,20 @@ use WPML\FP\Logic;
 
 class Loaders {
 
+	private static $supportsPerTermPackages;
+
+	public static function supportsPerTermPackages() {
+		if ( null === self::$supportsPerTermPackages ) {
+			$owners       = apply_filters( 'wpml_st_string_package_owners_supported', false );
+			$jobs         = apply_filters( 'wpml_tm_owned_package_jobs_supported', false );
+			$humanMethods = apply_filters( 'wpml_tm_taxonomy_human_methods_supported', false );
+
+			self::$supportsPerTermPackages = $owners && $jobs && $humanMethods;
+		}
+
+		return (bool) self::$supportsPerTermPackages;
+	}
+
 	public static function get( $wpSeoVersion ) {
 		$isSitemapHrefLangEnabled = ! defined( 'WPML_SEO_ENABLE_SITEMAP_HREFLANG' ) || constant( 'WPML_SEO_ENABLE_SITEMAP_HREFLANG' );
 		$isSTEnabled              = defined( 'WPML_ST_VERSION' );
@@ -16,10 +30,12 @@ class Loaders {
 		return wpml_collect(
 			[
 				\WPML\WPSEO\Shared\Upgrade\Hooks::class   => true,
+				\WPML\WPSEO\Shared\Upgrade\TermMetaMigration::class => true,
 				\WPML\WPSEO\Shared\HeadLangsNoticeHooks::class => true,
 				\WPML_WPSEO_Main_Factory::class           => true,
 				PrimaryCategory\Hooks::class              => true,
 				Meta\CopyFieldsSyncHooks::class           => true,
+				Meta\DuplicateCanonicalHooks::class       => true,
 				BulkEditor\TranslationStatusHooks::class  => true,
 				Terms\CopyOnceHooks::class                => true,
 				Terms\Meta\Hooks::class                   => true,
@@ -33,6 +49,7 @@ class Loaders {
 				SlugTranslation\Hooks::class              => $isSTEnabled,
 				Terms\Meta\AdminScreenHooks::class        => $isSTEnabled,
 				Terms\Meta\DashboardHooks::class          => $isSTEnabled,
+				EditScreen\TemplatesLanguageHooks::class  => $isSTEnabled,
 				Addons\WPSEONews\Sitemap\Hooks::class     => $isWPSEONewsEnabled,
 				Presentation\Hooks::class                 => $isGTEVersion14,
 				Presentation\SchemaPieceLanguageHooks::class => $isGTEVersion14,

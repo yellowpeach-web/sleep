@@ -146,10 +146,43 @@ class WPML_TM_REST_AMS_Clients extends WPML_REST_Base {
 	}
 
 	public function update_translation_engines( WP_REST_Request $request ) {
-		$params = $request->get_json_params();
+		$list = self::engine_settings_from( $request->get_json_params() );
+		if ( is_wp_error( $list ) ) {
+			return $list;
+		}
 
-		$result = $this->api->update_translation_engines( $params );
+		return $this->api->update_translation_engines( $list );
+	}
 
-		return $result;
+	public static function engine_settings_from( $params ) {
+		$invalid = function ( $reason ) {
+			return new WP_Error(
+				'rest_invalid_param',
+				/* translators: Shown when the browser sent a translation-engine list the server could not read. */
+				__( 'Invalid parameter(s): the engines list', 'sitepress' ),
+				[ 'status' => 400, 'params' => [ 'list' => $reason ] ]
+			);
+		};
+		if ( ! is_array( $params ) ) {
+			return $invalid( 'the body must be a list of engines' );
+		}
+		$list = [];
+		foreach ( $params as $row ) {
+			if ( ! is_array( $row )
+				|| ! isset( $row['engine'] ) || ! is_string( $row['engine'] ) || ! preg_match( '/^[A-Za-z0-9_.-]{1,64}$/', $row['engine'] )
+				|| ! array_key_exists( 'enabled', $row ) || ! is_bool( $row['enabled'] ) ) {
+				return $invalid( 'every engine is an object with a string `engine` and a boolean `enabled`' );
+			}
+			$entry = [ 'engine' => $row['engine'], 'enabled' => $row['enabled'] ];
+			if ( array_key_exists( 'formality_available', $row ) ) {
+				if ( ! is_bool( $row['formality_available'] ) ) {
+					return $invalid( '`formality_available` is a boolean' );
+				}
+				$entry['formality_available'] = $row['formality_available'];
+			}
+			$list[] = $entry;
+		}
+
+		return $list;
 	}
 }

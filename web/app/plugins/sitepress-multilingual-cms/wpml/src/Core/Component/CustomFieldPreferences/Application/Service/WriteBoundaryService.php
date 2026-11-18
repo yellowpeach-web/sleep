@@ -28,6 +28,8 @@ final class WriteBoundaryService {
 
   private $storeIsReady;
 
+  private $tableMissing;
+
 
   public function __construct(
     PreferenceRepositoryInterface $preferences,
@@ -73,6 +75,7 @@ final class WriteBoundaryService {
   private function syncToStore( array &$settings, bool $migrated ): bool {
     $changed            = false;
     $this->storeIsReady = null;
+    $this->tableMissing = null;
 
     foreach ( ElementType::BLOB_KEYS as $type => $blobKey ) {
       $incoming = $settings[ ElementType::SETTINGS_KEY ][ $blobKey ] ?? null;
@@ -108,7 +111,7 @@ final class WriteBoundaryService {
 
       $this->reportOutcome( $type, $lost, $attempted, $diff );
 
-      if ( $migrated && ! $lost ) {
+      if ( $migrated && ( ! $lost || $this->tableIsMissing() ) ) {
         unset( $settings[ ElementType::SETTINGS_KEY ][ $blobKey ] );
       }
     }
@@ -127,6 +130,10 @@ final class WriteBoundaryService {
 
 
   private function reportLoss( string $type, int $count ) {
+    if ( $this->tableIsMissing() ) {
+      return;
+    }
+
     if ( $this->storeIsReady === null ) {
       $this->storeIsReady = $this->readiness->isReady();
     }
@@ -143,6 +150,15 @@ final class WriteBoundaryService {
     );
 
     StoreIncidents::record( $code, $type, [ 'count' => $count ] );
+  }
+
+
+  private function tableIsMissing(): bool {
+    if ( $this->tableMissing === null ) {
+      $this->tableMissing = $this->readiness->tableIsMissing();
+    }
+
+    return $this->tableMissing;
   }
 
 

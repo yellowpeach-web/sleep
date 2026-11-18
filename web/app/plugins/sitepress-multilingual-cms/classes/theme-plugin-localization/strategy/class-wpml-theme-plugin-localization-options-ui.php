@@ -31,7 +31,7 @@ class WPML_Theme_Plugin_Localization_Options_UI implements IWPML_Theme_Plugin_Lo
 					),
 				),
 			),
-			/* translators: Button label that keeps what was entered. Verb, imperative. */
+			/* translators: Button label that keeps what was entered, for example in the Translation delivery box's "Settings for support" and in the "Translation editor and method" section of WPML → Settings. Verb, imperative. */
 			'button_label'           => __( 'Save', 'sitepress' ),
 			'scanning_progress_msg'  => __( "Scanning now, please don't close this page.", 'sitepress' ),
 			/* translators: Heading above the list of texts found when the theme or a plugin was gone through. */

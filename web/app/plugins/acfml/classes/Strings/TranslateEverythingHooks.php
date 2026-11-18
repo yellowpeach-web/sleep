@@ -41,6 +41,10 @@ class TranslateEverythingHooks implements \IWPML_Backend_Action, \IWPML_Frontend
 	}
 
 	public function registerActiveStringPackageKinds( $kinds ) {
-		return array_merge( $kinds, self::KINDS );
+		if ( is_array( $kinds ) ) {
+			return array_merge( $kinds, self::KINDS );
+		}
+
+		return self::KINDS;
 	}
 }

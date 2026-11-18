@@ -259,6 +259,10 @@ class icl_cache {
 		$this->language_cache_epoch = is_string( $epoch ) && '' !== $epoch ? $epoch : null;
 	}
 
+	public function is_switched_away() {
+		return $this->is_option_cache_switched();
+	}
+
 	protected function is_option_cache_switched() {
 		global $switched;
 
@@ -1035,10 +1039,10 @@ if ( ! function_exists( 'icl_cache_set' ) ) {
 
 if ( ! function_exists( 'icl_cache_clear' ) ) {
 	function icl_cache_clear( $key = false, $key_as_prefix = false, $preserve_language_name = false ) {
-		$cleared = true;
+		$cleared               = true;
+		$targets_language_name = ! $preserve_language_name && wpml_cache_clear_targets_language_name( $key, $key_as_prefix );
 		if ( ! icl_disable_cache() ) {
-			$targets_language_name = ! $preserve_language_name && wpml_cache_clear_targets_language_name( $key, $key_as_prefix );
-			$epoch_rotated         = ! $targets_language_name || false !== wpml_language_cache_rotate_epoch();
+			$epoch_rotated = ! $targets_language_name || false !== wpml_language_cache_rotate_epoch();
 
 			global $wpml_term_translations, $wpml_post_translations;
 
@@ -1105,7 +1109,7 @@ if ( ! function_exists( 'icl_cache_clear' ) ) {
 		}
 		$excluded_key = $preserve_language_name ? 'language_name_cache_class' : false;
 		icl_cache::record_global_clear( $key, $key_as_prefix, $excluded_key );
-		icl_cache::fire_global_clear_action( $preserve_language_name );
+		icl_cache::fire_global_clear_action( ! $targets_language_name );
 
 		return $cleared;
 	}

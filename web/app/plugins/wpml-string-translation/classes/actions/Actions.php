@@ -22,6 +22,7 @@ class Actions {
 			\WPML_ST_Support_Info_Filter::class,
 			\WPML\ST\MO\File\FailureHooksFactory::class,
 			\WPML\ST\DB\Mappers\Hooks::class,
+			\WPML\ST\API\StringById::class,
 			\WPML\ST\Shortcode\Hooks::class,
 			\WPML\ST\AdminTexts\UI::class,
 			\WPML\ST\PackageTranslation\Hooks::class,

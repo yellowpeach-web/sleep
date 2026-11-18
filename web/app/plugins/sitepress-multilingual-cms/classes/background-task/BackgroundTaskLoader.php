@@ -7,7 +7,6 @@ use WPML\Core\BackgroundTask\Command\UpdateBackgroundTask;
 use WPML\Core\BackgroundTask\Repository\BackgroundTaskRepository;
 use WPML\Core\WP\App\Resources;
 use WPML\FP\Either;
-use WPML\FP\Fns;
 use WPML\FP\Lst;
 use WPML\LIB\WP\Hooks;
 use WPML\LIB\WP\User;
@@ -81,12 +80,13 @@ class BackgroundTaskLoader implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 
 
 	public function getSerializedTasks() {
-		return Fns::map(
-			function( $task ) {
-				return BackgroundTaskViewModel::get( $task, true );
-			},
-			$this->backgroundTaskRepository->getAllRunnableTasks()
-		);
+		$lockReadings = [];
+		$tasks        = [];
+		foreach ( $this->backgroundTaskRepository->getAllRunnableTasks() as $key => $task ) {
+			$tasks[ $key ] = BackgroundTaskViewModel::get( $task, true, $lockReadings );
+		}
+
+		return $tasks;
 	}
 
 

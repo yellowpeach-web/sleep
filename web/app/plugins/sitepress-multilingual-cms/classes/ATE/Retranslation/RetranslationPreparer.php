@@ -24,6 +24,55 @@ class RetranslationPreparer {
 			return [ 0, 0, [] ];
 		}
 
+		list( $jobsWhichShouldBeReFetched, $outdatedJobs ) = $this->partition( $ateJobIds );
+
+		if ( count( $jobsWhichShouldBeReFetched ) ) {
+			$this->turnJobsIntoInProgress( $jobsWhichShouldBeReFetched );
+		}
+
+		if ( count( $outdatedJobs ) ) {
+			$this->ateApi->confirm_received_job( $outdatedJobs->pluck( 'editor_job_id' )->toArray() );
+		}
+
+		return [
+			count( $jobsWhichShouldBeReFetched ),
+			count( $outdatedJobs ),
+			self::jobIds( $jobsWhichShouldBeReFetched ),
+		];
+	}
+
+	public function putBackInProgress( array $ateJobIds ): array {
+		if ( ! $ateJobIds ) {
+			return [ 'fresh' => [], 'outdated' => [] ];
+		}
+
+		list( $fresh, $outdated ) = $this->partition( $ateJobIds );
+
+		if ( count( $fresh ) ) {
+			$this->turnJobsIntoInProgress( $fresh );
+		}
+
+		return [
+			'fresh'    => self::jobIds( $fresh ),
+			'outdated' => $outdated->map(
+				function ( $job ) {
+					return [
+						'job_id'        => (int) Obj::prop( 'job_id', $job ),
+						'editor_job_id' => (int) Obj::prop( 'editor_job_id', $job ),
+						'status'        => (int) Obj::prop( 'status', $job ),
+					];
+				}
+			)->values()->toArray(),
+		];
+	}
+
+	private static function jobIds( Collection $jobs ): array {
+		return $jobs->pluck( 'job_id' )->map( function ( $jobId ) {
+			return (int) $jobId;
+		} )->values()->toArray();
+	}
+
+	private function partition( array $ateJobIds ): array {
 		$wpdb   = $this->wpdb;
 		$rowset = \wpml_collect(
 			$wpdb->get_results(
@@ -45,28 +94,13 @@ class RetranslationPreparer {
 			)
 		);
 
-		list( $jobsWhichShouldBeReFetched, $outdatedJobs ) = $rowset->partition( function($job) {
+		$parts = $rowset->partition( function($job) {
 			return Obj::prop( 'is_the_most_recent_job', $job )
 				&& ! Obj::prop( 'needs_update', $job )
 				&& (int) Obj::prop( 'status', $job ) !== ICL_TM_ATE_UNSOLVABLE;
 		} );
 
-
-		if ( count( $jobsWhichShouldBeReFetched ) ) {
-			$this->turnJobsIntoInProgress( $jobsWhichShouldBeReFetched );
-		}
-
-		if ( count( $outdatedJobs ) ) {
-			$this->ateApi->confirm_received_job( $outdatedJobs->pluck( 'editor_job_id' )->toArray() );
-		}
-
-		return [
-			count( $jobsWhichShouldBeReFetched ),
-			count( $outdatedJobs ),
-			$jobsWhichShouldBeReFetched->pluck( 'job_id' )->map( function ( $jobId ) {
-				return (int) $jobId;
-			} )->values()->toArray(),
-		];
+		return [ $parts[0], $parts[1] ];
 	}
 
 	private function turnJobsIntoInProgress( Collection $jobsWhichShouldBeReFetched ) {

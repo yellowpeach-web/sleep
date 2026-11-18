@@ -4,6 +4,7 @@ class WPML_Page_Builders_Media_Shortcodes {
 
 	const TYPE_URL = 'media-url';
 	const TYPE_IDS = 'media-ids';
+	const TYPE_CSS = 'media-css';
 
 	private $media_translate;
 
@@ -15,9 +16,14 @@ class WPML_Page_Builders_Media_Shortcodes {
 
 	private $tag_name;
 
-	public function __construct( IWPML_PB_Media_Find_And_Translate $media_translate, array $config ) {
+	private $attribute_name = '';
+
+	private $css_images;
+
+	public function __construct( IWPML_PB_Media_Find_And_Translate $media_translate, array $config, ?\WPML\PB\Media\CssImages $css_images = null ) {
 		$this->media_translate = $media_translate;
 		$this->config          = $config;
+		$this->css_images      = $css_images ?: new \WPML\PB\Media\CssImages( $media_translate );
 	}
 
 	public function translate( $content ) {
@@ -72,13 +78,16 @@ class WPML_Page_Builders_Media_Shortcodes {
 
 		foreach ( $attributes as $attribute => $data ) {
 			$type = isset( $data['type'] ) ? $data['type'] : '';
-			if ( self::TYPE_URL !== $type ) {
+			if ( self::TYPE_URL !== $type && self::TYPE_CSS !== $type ) {
 				continue;
 			}
 			$pattern = $this->get_attribute_pattern( $tag_name, $attribute );
-			if ( preg_match_all( $pattern, $content, $matches ) && ! empty( $matches[2] ) ) {
-				$urls = array_merge( $urls, $matches[2] );
+			if ( ! preg_match_all( $pattern, $content, $matches ) || empty( $matches[2] ) ) {
+				continue;
 			}
+			$urls = self::TYPE_CSS === $type
+				? array_merge( $urls, ...array_map( [ $this->css_images, 'findImageUrls' ], $matches[2] ) )
+				: array_merge( $urls, $matches[2] );
 		}
 
 		return $urls;
@@ -119,7 +128,13 @@ class WPML_Page_Builders_Media_Shortcodes {
 	}
 
 	private function get_attribute_pattern( $tag, $attribute ) {
-		return '/(\[' . preg_quote( $tag, '/' ) . '(?: [^\]]* | )' . preg_quote( $attribute, '/' ) . '=(?:"|\'))([^"\']*)/';
+		$start = '\[' . preg_quote( $tag, '/' ) . '(?: [^\]]* | )' . preg_quote( $attribute, '/' ) . '=';
+
+		if ( \WPML\Compatibility\WPBakery\ImageLinks::isImageAttribute( $tag, $attribute ) ) {
+			return '/(?|(' . $start . '")([^"]*)|(' . $start . '\')([^"\']*))/';
+		}
+
+		return '/(' . $start . '(?:"|\'))([^"\']*)/';
 	}
 
 	private function get_content_pattern( $tag ) {
@@ -130,8 +145,12 @@ class WPML_Page_Builders_Media_Shortcodes {
 		foreach ( $attributes as $attribute => $data ) {
 			$pattern = $this->get_attribute_pattern( $tag, $attribute );
 			$type    = isset( $data['type'] ) ? $data['type'] : '';
-			$content = preg_replace_callback( $pattern, $this->get_callback( $type ), $content );
+
+			$this->attribute_name = $attribute;
+			$content              = preg_replace_callback( $pattern, $this->get_callback( $type ), $content );
 		}
+
+		$this->attribute_name = '';
 
 		return $content;
 	}
@@ -147,6 +166,10 @@ class WPML_Page_Builders_Media_Shortcodes {
 			return [ $this, 'replace_url_callback' ];
 		}
 
+		if ( self::TYPE_CSS === $type ) {
+			return [ $this, 'replace_css_callback' ];
+		}
+
 		return [ $this, 'replace_ids_callback' ];
 	}
 
@@ -156,18 +179,25 @@ class WPML_Page_Builders_Media_Shortcodes {
 		return $matches[1] . $translated_url;
 	}
 
+	private function replace_css_callback( array $matches ) {
+		return $matches[1] . $this->css_images->translate( $matches[2], $this->target_lang, $this->source_lang, $this->tag_name );
+	}
+
 	private function replace_ids_callback( array $matches ) {
-		if ( ! \WPML\PB\Media\MediaIds::isList( $matches[2] ) ) {
+		$is_image_links = \WPML\Compatibility\WPBakery\ImageLinks::isImageAttribute( $this->tag_name, $this->attribute_name )
+			&& null !== \WPML\Compatibility\WPBakery\ImageLinks::decodeMap( $matches[2] );
+
+		if ( ! $is_image_links && ! \WPML\PB\Media\MediaIds::isList( $matches[2] ) ) {
 			return $matches[0];
 		}
 
-		$ids = explode( ',', $matches[2] );
+		$translate_id = function ( $id ) {
+			return $this->media_translate->translate_id( $id, $this->target_lang );
+		};
 
-		foreach ( $ids as &$id ) {
-			$id = $this->media_translate->translate_id( (int) $id, $this->target_lang );
-		}
-
-		return $matches[1] . implode( ',', $ids );
+		return $is_image_links
+			? $matches[1] . \WPML\Compatibility\WPBakery\ImageLinks::translateIds( $matches[2], $translate_id )
+			: $matches[1] . \WPML\PB\Media\MediaIds::translate( $matches[2], $translate_id );
 	}
 
 	public function set_target_lang( $target_lang ) {

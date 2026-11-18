@@ -18,7 +18,7 @@ class DialogHost implements \IWPML_Backend_Action {
 
 	private static function documentWords() {
 		return array(
-			'post'       => array( /* translators: The name of a content type, used inside sentences of the dialog shown before content is deleted, as in "This post has 3 translations". Singular, in lower case. */ __( 'post', 'sitepress' ), /* translators: The name of a content type, used inside sentences of the dialog shown before content is deleted, as in "3 posts moved to the Trash". Plural, in lower case. */ __( 'posts', 'sitepress' ) ),
+			'post'       => array( /* translators: The name of a content type inside a sentence, as in "This post has 3 translations" in the dialog shown before content is deleted, and the fallback name of a post type that has no name. Singular, in lower case. */ __( 'post', 'sitepress' ), /* translators: The name of a content type, used inside sentences of the dialog shown before content is deleted, as in "3 posts moved to the Trash". Plural, in lower case. */ __( 'posts', 'sitepress' ) ),
 			'page'       => array( /* translators: The name of a content type, used inside sentences of the dialog shown before content is deleted, as in "This page has 3 translations". Singular, in lower case. */ __( 'page', 'sitepress' ), /* translators: The name of a content type, used inside sentences of the dialog shown before content is deleted, as in "3 pages deleted". Plural, in lower case. */ __( 'pages', 'sitepress' ) ),
 			'attachment' => array( /* translators: The name of a content type, used inside sentences of the dialog shown before content is deleted, as in "This image has 3 translations". Singular, in lower case. */ __( 'image', 'sitepress' ), /* translators: The name of a content type, used inside sentences of the dialog shown before content is deleted, as in "3 images deleted". Plural, in lower case. */ __( 'images', 'sitepress' ) ),
 			'product'    => array( /* translators: The name of a content type, used inside sentences of the dialog shown before content is deleted, as in "This product has 3 translations". Singular, in lower case. */ __( 'product', 'sitepress' ), /* translators: The name of a content type, used inside sentences of the dialog shown before content is deleted, as in "3 products deleted". Plural, in lower case. */ __( 'products', 'sitepress' ) ),
@@ -250,6 +250,8 @@ class DialogHost implements \IWPML_Backend_Action {
 			'rememberMembers' => $can_remember ? $remember['members'] : array(),
 			'canRemember'     => $can_remember && '' !== $remember['label'],
 			'rememberTable'   => $can_remember ? $remember['table'] : null,
+			'settingsRow'     => (string) $remember['rowId'],
+			'settingsUrl'     => $can_remember && '' !== $remember['rowId'] ? $this->settingsUrl( $remember['rowId'] ) : '',
 		);
 	}
 
@@ -298,13 +300,18 @@ class DialogHost implements \IWPML_Backend_Action {
 		);
 		$label   = '';
 		$members = array();
+		$row_id  = '';
 
 		foreach ( Rows::withValues() as $row ) {
+			$row_members = array_map( 'strval', (array) $row['members'] );
+
+			if ( '' === $row_id && in_array( $key, $row_members, true ) ) {
+				$row_id = (string) $row['id'];
+			}
+
 			if ( ! empty( $row['locked'] ) ) {
 				continue;
 			}
-
-			$row_members = array_map( 'strval', (array) $row['members'] );
 
 			foreach ( $row_members as $member ) {
 				$table[ Settings::ORIGINALS ][ $member ]    = (string) $row['original'];
@@ -321,6 +328,18 @@ class DialogHost implements \IWPML_Backend_Action {
 			'table'   => $table,
 			'label'   => $label,
 			'members' => $members,
+			'rowId'   => $row_id,
+		);
+	}
+
+	const SETTINGS_PAGE    = 'tm/menu/settings';
+	const SETTINGS_SECTION = 'deleting-content';
+	const SETTINGS_ROW_ID_PREFIX = 'wpml-deleting-content-row-';
+
+	private function settingsUrl( $row_id ) {
+		return admin_url(
+			'admin.php?page=' . self::SETTINGS_PAGE . '&section=' . self::SETTINGS_SECTION
+			. '&flash=' . rawurlencode( self::SETTINGS_ROW_ID_PREFIX . $row_id )
 		);
 	}
 

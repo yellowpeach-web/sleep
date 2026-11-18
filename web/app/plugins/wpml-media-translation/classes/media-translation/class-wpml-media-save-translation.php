@@ -149,23 +149,25 @@ class WPML_Media_Save_Translation implements IWPML_Action {
 				$translated_thumb         = wp_mime_type_icon( $original_attachment_id );
 			}
 
-			$media_usage = get_post_meta( $original_attachment_id, WPML_Media_Usage::FIELD_NAME, true );
-			$posts_list  = array();
-			if ( isset( $media_usage['posts'] ) ) {
-				foreach ( $media_usage['posts'] as $post_id ) {
-					$post_element     = $this->translation_element_factory->create( $post_id, 'post' );
-					$post_translation = $post_element->get_translation( $translated_language );
-					if ( $post_translation ) {
-						$posts_list[] = array(
-							'url'   => get_edit_post_link( $post_translation->get_id() ),
-							'title' => get_post_field( 'post_title', $post_translation->get_id() ),
-						);
-					}
+			$media_usage      = get_post_meta( $original_attachment_id, WPML_Media_Usage::FIELD_NAME, true );
+			$posts_using_file = WPML_Media_Posts_Using_File::get(
+				$original_attachment_id,
+				isset( $media_usage['posts'] ) ? (array) $media_usage['posts'] : array()
+			);
+			$posts_list       = array();
+			foreach ( $posts_using_file as $post_id ) {
+				$post_element     = $this->translation_element_factory->create( $post_id, 'post' );
+				$post_translation = $post_element->get_translation( $translated_language );
+				if ( $post_translation ) {
+					$posts_list[] = array(
+						'url'   => get_edit_post_link( $post_translation->get_id() ),
+						'title' => get_post_field( 'post_title', $post_translation->get_id() ),
+					);
 				}
 			}
 
-			if ( isset( $media_usage['posts'] ) && $this->should_restore_media() ) {
-				do_action( 'wpml_restored_media_file_translation', $attachment_id, $media_usage['posts'] );
+			if ( $posts_using_file && $this->should_restore_media() ) {
+				do_action( 'wpml_restored_media_file_translation', $attachment_id, $posts_using_file );
 			}
 
 			$response = array(

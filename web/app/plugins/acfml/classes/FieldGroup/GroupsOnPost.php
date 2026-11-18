@@ -15,7 +15,7 @@ class GroupsOnPost {
 
 		$blockLocated = array_filter(
 			$groups,
-			fn( $group ) => ! in_array( $group, $onEditScreen, true ) && AttachedBlockPosts::blockNamesForGroup( $group )
+			fn( $group ) => self::isActive( $group ) && ! in_array( $group, $onEditScreen, true ) && AttachedBlockPosts::blockNamesForGroup( $group )
 		);
 
 		$post = $blockLocated ? get_post( $postId ) : null;
@@ -27,6 +27,10 @@ class GroupsOnPost {
 		$inBlocks = array_filter( $blockLocated, fn( $group ) => self::isInBlockOf( $group, $post ) );
 
 		return array_merge( $onEditScreen, array_values( $inBlocks ) );
+	}
+
+	public static function isActive( array $group ): bool {
+		return (bool) ( $group['active'] ?? true );
 	}
 
 	private static function isInBlockOf( array $group, \WP_Post $post ): bool {

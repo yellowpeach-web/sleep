@@ -44,13 +44,30 @@ class WPML_Display_As_Translated_Tax_Query implements IWPML_Action {
 
 	private function get_linked_post_types( WP_Query $q ) {
 		$post_types = array();
-		foreach ( $q->tax_query->queries as $tax_query ) {
-			if ( isset( $tax_query['taxonomy'] ) ) {
-				$post_types = array_unique( array_merge( $post_types, WPML_WP_Taxonomy::get_linked_post_types( $tax_query['taxonomy'] ) ) );
-			}
+		foreach ( $this->get_taxonomies( $this->get_tax_queries( $q ) ) as $taxonomy ) {
+			$post_types = array_unique( array_merge( $post_types, WPML_WP_Taxonomy::get_linked_post_types( $taxonomy ) ) );
 		}
 
 		return $post_types;
+	}
+
+	private function get_tax_queries( WP_Query $q ) {
+		return isset( $q->tax_query->queries ) ? $q->tax_query->queries : array();
+	}
+
+	private function get_taxonomies( array $queries, $with_children_only = false ) {
+		$taxonomies = array();
+		foreach ( $queries as $query ) {
+			if ( isset( $query['taxonomy'] ) ) {
+				if ( ! $with_children_only || ! empty( $query['include_children'] ) ) {
+					$taxonomies[] = $query['taxonomy'];
+				}
+			} elseif ( is_array( $query ) ) {
+				$taxonomies = array_merge( $taxonomies, $this->get_taxonomies( $query, $with_children_only ) );
+			}
+		}
+
+		return array_unique( $taxonomies );
 	}
 
 	private function is_display_as_translated_mode( $post_types ) {
@@ -107,14 +124,31 @@ class WPML_Display_As_Translated_Tax_Query implements IWPML_Action {
 		};
 
 		$queriedObject = $q->get_queried_object();
-		$taxonomy      = isset( $queriedObject->taxonomy ) ? $queriedObject->taxonomy : null;
-
-		if ( $taxonomy && $this->include_term_children( $q ) ) {
-			$mergeChildren = function ( $term ) use ( $taxonomy ) {
-				return [ $term, get_term_children( $term, $taxonomy ) ];
-			};
+		if ( isset( $queriedObject->taxonomy ) ) {
+			$taxonomy      = $queriedObject->taxonomy;
+			$mergeChildren = $this->include_term_children( $q )
+				? function ( $term ) use ( $taxonomy ) {
+					return [ $term, get_term_children( $term, $taxonomy ) ];
+				}
+				: \WPML\FP\Fns::identity();
 		} else {
-			$mergeChildren = \WPML\FP\Fns::identity();
+			$taxonomies      = $this->get_taxonomies( $this->get_tax_queries( $q ), true );
+			$fallbackTermIds = array_flip( $fallback_terms );
+			$mergeChildren   = function ( $term ) use ( $taxonomies, $fallbackTermIds ) {
+				if ( ! isset( $fallbackTermIds[ $term ] ) ) {
+					return $term;
+				}
+
+				$terms = [ $term ];
+				foreach ( $taxonomies as $taxonomy ) {
+					$children = get_term_children( (int) $this->term_translation->adjust_term_id_for_ttid( $term ), $taxonomy );
+					foreach ( is_array( $children ) ? $children : [] as $child ) {
+						$terms[] = $this->term_translation->adjust_ttid_for_term_id( $child );
+					}
+				}
+
+				return $terms;
+			};
 		}
 
 		return wpml_collect( explode( ',', $terms_string ) )

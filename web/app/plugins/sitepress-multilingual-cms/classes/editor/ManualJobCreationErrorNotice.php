@@ -20,7 +20,7 @@ class ManualJobCreationErrorNotice implements \IWPML_Backend_Action {
 	const ROUTE = 'ate-job-creation-error-notice';
 
 	public function add_hooks() {
-		if ( \WPML_TM_ATE_Status::is_enabled() ) {
+		if ( \WPML_TM_ATE_Status::is_editor_ate() ) {
 
 			Hooks::onAction( 'wp_loaded' )
 			     ->then( function () {

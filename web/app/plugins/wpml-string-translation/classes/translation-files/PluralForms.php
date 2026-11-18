@@ -79,6 +79,19 @@ class PluralForms {
 		return self::$shared[ $key ];
 	}
 
+	public static function getForSharedFileAsStored( $domain, $locale ) {
+		wp_cache_delete( self::OPTION, 'options' );
+		$notoptions = wp_cache_get( 'notoptions', 'options' );
+		if ( is_array( $notoptions ) && isset( $notoptions[ self::OPTION ] ) ) {
+			unset( $notoptions[ self::OPTION ] );
+			wp_cache_set( 'notoptions', $notoptions, 'options' );
+		}
+		self::$resolved = [];
+		self::$shared   = [];
+
+		return self::getForSharedFile( $domain, $locale );
+	}
+
 	private static function resolveForSharedFile( $domain, $locale ) {
 		$rules = [];
 		foreach ( self::getAllStored() as $stored_domain => $locales ) {

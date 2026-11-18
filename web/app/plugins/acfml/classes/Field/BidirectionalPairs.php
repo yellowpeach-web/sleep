@@ -55,6 +55,26 @@ class BidirectionalPairs {
 		acf_set_data( self::DOING_BIDIRECTIONAL_UPDATE, false );
 	}
 
+	public function unpairReleasedIds( array $field, $objectId, $objectType, array $releasedIds ) {
+		$linkedObjectType = self::LINKED_OBJECT_TYPE_BY_FIELD_TYPE[ $field['type'] ?? '' ] ?? null;
+		if ( ! $releasedIds || ! $linkedObjectType || ! $this->isBidirectional( $field ) || acf_get_data( self::DOING_BIDIRECTIONAL_UPDATE ) ) {
+			return;
+		}
+
+		$objectId = (int) $objectId;
+
+		acf_set_data( self::DOING_BIDIRECTIONAL_UPDATE, true );
+
+		foreach ( $this->getPairedFields( $field, $objectType ) as $pairedField ) {
+			$heldIds = $this->getIdsListedByFieldsPairedWith( $pairedField, $objectId, $objectType );
+			foreach ( array_diff( array_map( 'intval', $releasedIds ), $heldIds ) as $releasedId ) {
+				$this->removeFromPairedField( $pairedField, $releasedId, $linkedObjectType, $objectId );
+			}
+		}
+
+		acf_set_data( self::DOING_BIDIRECTIONAL_UPDATE, false );
+	}
+
 	private function isBidirectional( array $field ) {
 		return acf_get_setting( 'enable_bidirection' )
 			&& ! empty( $field['bidirectional'] )
@@ -94,7 +114,19 @@ class BidirectionalPairs {
 	}
 
 	private function getStoredIds( array $field, $objectId, $objectType ) {
-		return acf_get_array( get_metadata( $objectType, $objectId, $field['name'], true ) );
+		$storedIds = array_map( [ self::class, 'toId' ], acf_get_array( get_metadata( $objectType, $objectId, $field['name'], true ) ) );
+
+		return array_values( array_filter( $storedIds, 'is_string' ) );
+	}
+
+	private static function toId( $entry ) {
+		if ( is_object( $entry ) && isset( $entry->ID ) ) {
+			$entry = $entry->ID;
+		} elseif ( is_array( $entry ) && isset( $entry['ID'] ) ) {
+			$entry = $entry['ID'];
+		}
+
+		return is_int( $entry ) || ( is_string( $entry ) && is_numeric( $entry ) ) ? (string) $entry : null;
 	}
 
 	private function addToPairedField( array $pairedField, $linkedId, $linkedObjectType, $objectId ) {

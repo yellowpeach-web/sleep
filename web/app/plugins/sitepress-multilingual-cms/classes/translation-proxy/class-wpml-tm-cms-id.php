@@ -21,6 +21,10 @@ class WPML_TM_CMS_ID extends WPML_TM_Record_User {
 		return implode( $this->cms_id_parts_glue, $cms_id_parts );
 	}
 
+	public static function build_taxonomy_cms_id( $term_taxonomy_id, $taxonomy, $source_language, $target_language ) {
+		return 'tax~' . $taxonomy . '_' . $term_taxonomy_id . '_' . $source_language . '_' . $target_language;
+	}
+
 	function cms_id_from_job_id( $job_id ) {
 		$wpdb = $this->wpdb;
 
@@ -52,6 +56,15 @@ class WPML_TM_CMS_ID extends WPML_TM_Record_User {
 	}
 
 	public function parse_cms_id( $cms_id ) {
+		if ( 0 === strpos( $cms_id, 'tax~' ) ) {
+			$parts = explode( '_', substr( $cms_id, 4 ) );
+			if ( count( $parts ) >= 4 ) {
+				$target  = array_pop( $parts );
+				$source  = array_pop( $parts );
+				$element = array_pop( $parts );
+				return [ 'tax_' . implode( '_', $parts ), $element, $source, $target ];
+			}
+		}
 		if ( $this->is_standard_format( $cms_id ) ) {
 			$parts = array_filter( explode( $this->cms_id_parts_glue, $cms_id ) );
 			while ( count( $parts ) > 4 ) {
@@ -72,6 +85,7 @@ class WPML_TM_CMS_ID extends WPML_TM_Record_User {
 		$wpdb = $this->wpdb;
 
 		list( $post_type, $element_id, , $target_lang ) = $this->parse_cms_id( $cms_id );
+		$is_taxonomy                                  = 0 === strpos( $cms_id, 'tax~' );
 		$translation                                    = $wpdb->get_row(
 			$wpdb->prepare(
 				"
@@ -86,15 +100,18 @@ class WPML_TM_CMS_ID extends WPML_TM_Record_User {
 														ON j.rid = st.rid
 													WHERE o.element_id=%d
 														AND t.language_code=%s
-														AND o.element_type LIKE %s
+														AND ( ( %d = 1 AND o.element_type = %s ) OR ( %d = 0 AND o.element_type LIKE %s ) )
 													LIMIT 1",
 				$element_id,
 				$target_lang,
+				(int) $is_taxonomy,
+				$post_type,
+				(int) $is_taxonomy,
 				'%_' . $post_type
 			)
 		);
 		$translation_id                                 = $this->maybe_cleanup_broken_row( $translation, $translation_service );
-		if ( $translation_service && ! isset( $translation_id ) && $translation_service ) {
+		if ( $translation_service && ! isset( $translation_id ) && ! $is_taxonomy ) {
 			$job_id         = $this->job_factory->create_local_post_job( $element_id, $target_lang );
 			$job            = $this->job_factory->get_translation_job( $job_id, false, false, true );
 			$translation_id = $job ? $job->get_translation_id() : 0;

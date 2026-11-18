@@ -10,8 +10,10 @@ use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\FixTr
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\InstallerLogController;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\JobLogsController;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\OrphanLanguageCodesController;
+use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\PageIdLinkRepairController;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\RemoteXMLConfigLogController;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\SystemCheckController;
+use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\TranslationsTableKeysController;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\UsageTrackingController;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\WcmlConfigLogController;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Component\Support\Tool\WcmlStatusController;
@@ -43,6 +45,10 @@ class CoreSupportTools {
 
   private $wcmlConfigLog;
 
+  private $translationsTableKeys;
+
+  private $pageIdLinkRepair;
+
 
   public function __construct(
     SystemCheckController $systemCheck,
@@ -56,7 +62,9 @@ class CoreSupportTools {
     UsageTrackingController $usageTracking,
     AliasDomainsController $aliasDomains,
     WcmlStatusController $wcmlStatus,
-    WcmlConfigLogController $wcmlConfigLog
+    WcmlConfigLogController $wcmlConfigLog,
+    TranslationsTableKeysController $translationsTableKeys,
+    PageIdLinkRepairController $pageIdLinkRepair
   ) {
     $this->systemCheck                = $systemCheck;
     $this->fixTranslations            = $fixTranslations;
@@ -70,6 +78,8 @@ class CoreSupportTools {
     $this->aliasDomains               = $aliasDomains;
     $this->wcmlStatus                 = $wcmlStatus;
     $this->wcmlConfigLog              = $wcmlConfigLog;
+    $this->translationsTableKeys      = $translationsTableKeys;
+    $this->pageIdLinkRepair           = $pageIdLinkRepair;
   }
 
 
@@ -227,6 +237,33 @@ class CoreSupportTools {
           [ 'label' => __( 'Register an alias domain', 'wpml' ), 'anchor' => '' ],
           [ 'label' => __( 'Reset registered alias domains', 'wpml' ), 'anchor' => '' ],
           [ 'label' => __( 'Use an alternative URL for the same WordPress installation', 'wpml' ), 'anchor' => '' ],
+        ],
+      ],
+      [
+        'slug'        => TranslationsTableKeysController::TOOL_SLUG,
+        'title'       => TranslationsTableKeysController::title(),
+        /* translators: Description of a Support tool in the tool list on WPML → Support. "The table" is the database table where WPML records which content is a translation of which. */
+        'description' => __( 'The table that links your content to its translations lost its keys. Restore them.', 'wpml' ),
+        'tier'        => SupportTool::TIER_ADVANCED,
+        'order'       => 30,
+        'controller'  => $this->translationsTableKeys,
+        'applicable'  => [ TranslationsTableKeysController::class, 'isApplicable' ],
+        'icon'        => 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4',
+        'search'      => [
+          [ 'label' => TranslationsTableKeysController::title(), 'anchor' => 'translations-table-keys-plan' ],
+        ],
+      ],
+      [
+        'slug'        => PageIdLinkRepairController::TOOL_SLUG,
+        'title'       => PageIdLinkRepairController::title(),
+        /* translators: Description of a Support tool in the tool list on WPML → Support. "page_id" is a technical word in a web address and stays as it is. */
+        'description' => __( 'Find internal links that older WPML versions rewrote to page_id addresses, and point them to the right pages.', 'wpml' ),
+        'tier'        => SupportTool::TIER_ADVANCED,
+        'order'       => 40,
+        'controller'  => $this->pageIdLinkRepair,
+        'icon'        => 'M13.828 10.172a4 4 0 010 5.656l-2 2a4 4 0 01-5.656-5.656l1.102-1.101m3.898 2.757a4 4 0 010-5.656l2-2a4 4 0 015.656 5.656l-1.1 1.1',
+        'search'      => [
+          [ 'label' => PageIdLinkRepairController::title(), 'anchor' => 'page-id-link-repair' ],
         ],
       ],
       [

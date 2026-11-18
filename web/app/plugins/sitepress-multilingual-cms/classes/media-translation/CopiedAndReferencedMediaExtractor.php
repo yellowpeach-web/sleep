@@ -158,12 +158,21 @@ class CopiedAndReferencedMediaExtractor {
 			$pb_media = array();
 		}
 
+		$urls = array();
+		foreach ( $pb_media as $media ) {
+			if ( ! is_numeric( $media['id'] ) ) {
+				$urls[] = \WPML_Media_Attachment_By_URL::normalizeUrl( $media['url'] );
+			}
+		}
+		$ids_by_url = $urls ? $this->media_parser->idsFromUrls( $urls ) : array();
+
 		$pb_media = array_map(
-			function ( $media ) use ( $post_language ) {
+			function ( $media ) use ( $post_language, $ids_by_url ) {
 				if ( is_numeric( $media['id'] ) ) {
 					$attachment_id = $media['id'];
 				} else {
-					$attachment_id = Attachment::idFromUrl( \WPML_Media_Attachment_By_URL::normalizeUrl( $media['url'] ) );
+					$url           = \WPML_Media_Attachment_By_URL::normalizeUrl( $media['url'] );
+					$attachment_id = isset( $ids_by_url[ $url ] ) ? $ids_by_url[ $url ] : null;
 					$attachment_id = $attachment_id ? $this->in_post_language( (int) $attachment_id, $post_language ) : $attachment_id;
 				}
 
@@ -258,7 +267,7 @@ class CopiedAndReferencedMediaExtractor {
 
 		foreach ( $all_meta as $key => $value ) {
 			if ( strpos( $key, '_bricks_' ) === 0 ) {
-				$item = maybe_unserialize( $value[0] );
+				$item = \WPML\Utils\Unserialize::maybe( $value[0] );
 				if ( is_array( $item ) ) {
 					$data[] = $item;
 				}
@@ -334,7 +343,7 @@ class CopiedAndReferencedMediaExtractor {
 
 		foreach ( $all_meta as $key => $value ) {
 			if ( strpos( $key, 'panels_data' ) === 0 ) {
-				$item = maybe_unserialize( $value[0] );
+				$item = \WPML\Utils\Unserialize::maybe( $value[0] );
 				if ( is_array( $item ) ) {
 					$data[] = $item;
 				}

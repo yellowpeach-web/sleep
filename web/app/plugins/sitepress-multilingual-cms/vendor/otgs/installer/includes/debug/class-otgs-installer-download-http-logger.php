@@ -66,7 +66,7 @@ class OTGS_Installer_Download_HTTP_Logger {
 		$query_string = isset( $url_parts['query'] ) ? $url_parts['query'] : '';
 		unset( $url_parts['query'] );
 
-		$url_without_query = function_exists( 'http_build_url' ) ? http_build_url( $url_parts ) : strtok( $url, '?' );
+		$url_without_query = is_array( $url_parts ) ? OTGS_Installer_Url::build( $url_parts ) : strtok( $url, '?' );
 
 		return array( $url_without_query, $query_string );
 	}

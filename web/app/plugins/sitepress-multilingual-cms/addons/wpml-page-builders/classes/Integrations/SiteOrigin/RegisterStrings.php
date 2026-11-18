@@ -14,6 +14,10 @@ class RegisterStrings extends \WPML_Page_Builders_Register_Strings {
 					$this->register_strings_for_modules( $data[ TranslatableNodes::CHILDREN_FIELD ], $package );
 				} else {
 					$this->register_strings_for_node( $data[ TranslatableNodes::SETTINGS_FIELD ]['class'], $data, $package );
+
+					foreach ( BuilderFields::getWidgetLists( $data ) as $widgets ) {
+						$this->register_strings_for_modules( $widgets, $package );
+					}
 				}
 			} elseif ( is_array( $data ) ) {
 				$this->register_strings_for_modules( $data, $package );

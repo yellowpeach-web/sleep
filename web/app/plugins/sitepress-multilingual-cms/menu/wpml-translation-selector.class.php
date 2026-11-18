@@ -2,6 +2,8 @@
 
 class WPML_Translation_Selector extends WPML_SP_User {
 
+	const NAMES_PER_READ = 1000;
+
 	private $default_language_code;
 	private $source_language_code;
 	private $element_id;
@@ -17,7 +19,7 @@ class WPML_Translation_Selector extends WPML_SP_User {
 		$default_language = $this->default_language_code;
 		$source_language  = $this->source_language_code;
 		?>
-		<input type="hidden" name="icl_trid" value="<?php echo esc_attr( $trid ); ?>"/>
+		<input type="hidden" name="icl_trid" value="<?php echo esc_attr( (string) $trid ); ?>"/>
 
 		<?php
 		if ( $selected_language !== $default_language && 'all' !== $current_language ) {
@@ -53,8 +55,12 @@ class WPML_Translation_Selector extends WPML_SP_User {
 					<?php
 				}
 				if ( ! $source_language || $source_language === $default_language ) {
+					if ( $untranslated_ids instanceof \Closure ) {
+						$untranslated_ids = $untranslated_ids();
+					}
+					$names = $this->get_names_by_ttids( $untranslated_ids );
 					foreach ( $untranslated_ids as $translation_of_id ) {
-						$title = $this->get_name_by_ttid( $translation_of_id );
+						$title = array_key_exists( (int) $translation_of_id, $names ) ? $names[ (int) $translation_of_id ] : null;
 						if ( $title !== null ) {
 							?>
 							<option value="<?php echo esc_attr( $translation_of_id ); ?>"><?php echo esc_html( $title ); ?></option>
@@ -68,20 +74,29 @@ class WPML_Translation_Selector extends WPML_SP_User {
 		}
 	}
 
-	private function get_name_by_ttid( $ttid ) {
+	private function get_names_by_ttids( $ttids ) {
 		global $wpdb;
 
-		return $wpdb->get_var(
-			$wpdb->prepare(
-				" SELECT t.name
-                  FROM {$wpdb->terms} t
-                  JOIN {$wpdb->term_taxonomy} tt
-                    ON t.term_id = tt.term_id
-                  WHERE tt.term_taxonomy_id = %d
-                  LIMIT 1",
-				$ttid
-			)
-		);
+		$names = [];
+		foreach ( array_chunk( array_map( 'intval', (array) $ttids ), self::NAMES_PER_READ ) as $chunk ) {
+			$rows = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT tt.term_taxonomy_id AS ttid, t.name AS name
+					FROM {$wpdb->terms} t
+					JOIN {$wpdb->term_taxonomy} tt
+						ON t.term_id = tt.term_id
+					WHERE tt.term_taxonomy_id IN (" . implode( ',', array_fill( 0, count( $chunk ), '%d' ) ) . ')',
+					$chunk
+				)
+			);
+			foreach ( (array) $rows as $row ) {
+				if ( '' !== (string) $row->name ) {
+					$names[ (int) $row->ttid ] = (string) $row->name;
+				}
+			}
+		}
+
+		return $names;
 	}
 
 	private function get_original_name_by_trid( $trid ) {

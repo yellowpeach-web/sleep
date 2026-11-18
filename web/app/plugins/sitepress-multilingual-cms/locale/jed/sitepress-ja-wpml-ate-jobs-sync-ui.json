@@ -13,11 +13,26 @@
          "The translation could not be started because the server did not answer.": [
             "サーバーが応答しなかったため、翻訳を開始できませんでした。"
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "セッションが期限切れになりました。このページを更新して再試行してください。"
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "PTC が翻訳中です。準備ができ次第、エディタが開きます。"
+         ],
          "This translation cannot be opened right now.": [
             "現在、この翻訳を開くことができません。"
          ],
          "Refresh this page": [
             "このページを更新する"
+         ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "これを自動翻訳するのに十分なプリペイド単語がありません。単語を追加してから、もう一度お試しください。"
+         ],
+         "Get more words": [
+            "単語を追加購入する"
+         ],
+         "Close": [
+            "閉じる"
          ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
             "このコンテンツは自動翻訳されています。別の操作を行いたい場合は、まず翻訳ジョブをキャンセルしてください。"
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "コンテンツを翻訳中"
+         ],
+         "Translate Everything is active": [
+            "すべてを翻訳するが有効です"
          ],
          "%d translation notice": [
             "%d 件の翻訳通知"
@@ -50,13 +68,13 @@
             "最近の翻訳アクティビティに予期しない動きがあったため、アカウントの自動翻訳を停止しました。サポートにお問い合わせいただければ、内容を確認いたします。"
          ],
          "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
-            "<b>すべてを自動翻訳する</b>は一時停止中です：月間利用限度額に達しました"
+            "<b>すべてを自動翻訳する</b>は一時停止中です - 月額利用限度額に達しました"
          ],
          "Automatic translation is paused: monthly spending cap reached": [
-            "自動翻訳は一時停止中です：月間利用限度額に達しました"
+            "自動翻訳は一時停止中です：月額利用限度額に達しました"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "このウェブサイトは設定された月間利用限度額に達しました。限度額が引き上げられるか、リセットされると翻訳が再開されます。これを行えるのはアカウント所有者のみです。"
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "このウェブサイトは設定された月額利用限度額に達しました。限度額を引き上げるか、リセットされると翻訳が再開されます。限度額は「AI 翻訳：請求と使用状況」ページで引き上げることができます。"
          ],
          "Preparing content for translation": [
             "翻訳するコンテンツを準備中"
@@ -70,8 +88,8 @@
          "Your language, %s, must be mapped to a supported language in order to use automatic translation.": [
             "自動翻訳を使用するには、サイトの次の言語をサポートされている言語にマッピングする必要があります：%s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "これらの言語（%s）のコンテンツは、デフォルトとは異なる言語にマッピングしない限り、自動翻訳できません。"
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "%1$s と以下の言語は同じ言語として認識されるため、自動翻訳を利用できません：%2$s。代わりに「複製」を選択してコンテンツをコピーしてください。"
          ],
          "%d translation waiting for review": [
             "%d 件の翻訳がレビュー待ちです"
@@ -147,9 +165,6 @@
          ],
          "Pay now": [
             "今すぐ支払う"
-         ],
-         "Get more words": [
-            "単語を追加購入する"
          ],
          "Assign words": [
             "単語を割り当てる"

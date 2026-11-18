@@ -47,7 +47,7 @@
             "接手并翻译"
          ],
          "This job was created by Translate Everything and cannot be cancelled on its own. To stop it, turn off Translate Everything from the Translation Dashboard.": [
-            "此作业由“自动翻译所有内容”创建，无法单独取消。要停止该作业，请在“翻译仪表板”中关闭“自动翻译所有内容”。"
+            "此作业由“翻译所有内容”创建，无法单独取消。要停止该作业，请在“翻译仪表板”中关闭“翻译所有内容”。"
          ],
          "View": [
             "查看"
@@ -77,10 +77,10 @@
             "应用"
          ],
          "Actions applied to multiple translation jobs can take a few seconds. Please do not leave the page.": [
-            "对多个翻译作业应用操作可能需要几秒钟。请不要离开页面。"
+            "应用于多个翻译任务的操作可能需要几秒钟。请不要离开该页面。"
          ],
          "Actions applied to multiple translation jobs can take a few minutes. Please do not leave the page.": [
-            "对多个翻译作业应用操作可能需要几分钟。请不要离开页面。"
+            "应用于多个翻译任务的操作可能需要几分钟。请不要离开该页面。"
          ],
          "Select translator": [
             "选择译员"
@@ -91,23 +91,107 @@
          "Cancelled": [
             "已取消"
          ],
-         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
-            "自动翻译多次失败，WPML 已停止重试。请从翻译仪表板重送或放弃该作业，或在此处取消。"
+         "Published — Pending review": [
+            "已发布 — 待审核"
          ],
          "Needs translation": [
             "需要翻译"
          ],
-         "Needs update": [
-            "需要更新"
+         "Review in progress": [
+            "审核中"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "正在等待您的现收现付付款"
          ],
          "Translation ready to download": [
             "翻译已准备好下载"
          ],
+         "Waiting for payment": [
+            "等待付款"
+         ],
+         "Waiting for words": [
+            "等待字数"
+         ],
          "Completed": [
             "已完成"
          ],
+         "Insufficient funds": [
+            "余额不足"
+         ],
+         "Sending": [
+            "正在发送"
+         ],
+         "Automatic translation is off, so this job is not retried. Resend it, or switch Translate Everything on.": [
+            "自动翻译已关闭，因此不会重试此作业。请重新发送，或开启“翻译所有内容”。"
+         ],
+         "Waiting for you": [
+            "等待您的操作"
+         ],
          "Failed - needs attention": [
             "失败 - 需要关注"
+         ],
+         "You can also resend the content or open the job in the Translation Queue.": [
+            "您也可以重新发送内容或在翻译队列中打开该作业。"
+         ],
+         "If it keeps failing for about a day, the job is marked as needing your attention.": [
+            "如果持续失败约一天，该作业将被标记为需要您注意。"
+         ],
+         "In progress": [
+            "进行中"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "自动翻译多次失败，WPML 已停止重试。请从翻译仪表板重送或放弃该作业，或在此处取消。"
+         ],
+         "Needs update": [
+            "需要更新"
+         ],
+         "Scheduled — Pending review": [
+            "已定时 — 待审核"
+         ],
+         "Private — Pending review": [
+            "私密 — 待审核"
+         ],
+         "Draft — Pending review": [
+            "草稿 — 待审核"
+         ],
+         "Published — Review in progress": [
+            "已发布 — 审核中"
+         ],
+         "Scheduled — Review in progress": [
+            "已定时 — 审核中"
+         ],
+         "Private — Review in progress": [
+            "私密 — 审核中"
+         ],
+         "Draft — Review in progress": [
+            "草稿 — 审核中"
+         ],
+         "WPML could not reach our translation system.": [
+            "WPML 无法连接到我们的翻译系统。"
+         ],
+         "Our translation system did not accept this job.": [
+            "我们的翻译系统未接受此作业。"
+         ],
+         "WPML could not calculate the word count for this job.": [
+            "WPML 无法计算此作业的字数统计。"
+         ],
+         "WPML could not read the price of automatic translation for this job.": [
+            "WPML 无法读取此作业的自动翻译价格。"
+         ],
+         "WPML could not prepare this job for automatic translation.": [
+            "WPML 无法为此作业准备自动翻译。"
+         ],
+         "Sending this job to automatic translation failed.": [
+            "将此作业发送到自动翻译失败。"
+         ],
+         "WPML tries again within a minute.": [
+            "WPML 将在一分钟内重试。"
+         ],
+         "WPML tries again in about %d minutes.": [
+            "WPML 将在约 %d 分钟后重试。"
+         ],
+         "WPML tries again in about %d hours.": [
+            "WPML 将在约 %d 小时后重试。"
          ],
          "%s terms are published immediately because they don't support draft mode.": [
             "%s 项会立即发布，因为它们不支持草稿模式。"
@@ -115,41 +199,14 @@
          "%s are immediately published because they don't support draft mode.": [
             "%s 会立即发布，因为它们不支持草稿模式。"
          ],
-         "Published — Pending review": [
-            "已发布 — 待审核"
+         "(no title)": [
+            "（无标题）"
          ],
-         "Draft — Pending review": [
-            "草稿 — 待审核"
-         ],
-         "Review in progress": [
-            "审核中"
-         ],
-         "Published — Review in progress": [
-            "已发布 — 审核中"
-         ],
-         "Draft — Review in progress": [
-            "草稿 — 审核中"
-         ],
-         "Waiting for your Pay-As-You-Go payment": [
-            "正在等待您的现收现付付款"
-         ],
-         "Waiting for payment": [
-            "等待付款"
-         ],
-         "Insufficient funds": [
-            "余额不足"
-         ],
-         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
-            "自动翻译因临时错误已暂停，并将自动重试 — 无需执行任何操作。如果状态在大约 30 分钟内没有变化，请联系 WPML 支持。"
-         ],
-         "In progress": [
-            "进行中"
+         "%1$s (ID %2$d)": [
+            "%1$s (ID %2$d)"
          ],
          "View original": [
             "查看原文"
-         ],
-         "(no title)": [
-            "（无标题）"
          ],
          "Automatic translation": [
             "自动翻译"
@@ -305,7 +362,7 @@
             "获取翻译"
          ],
          "This action does not apply to any of the selected translation jobs": [
-            "此操作不适用于任何选定的翻译作业"
+            "此操作不适用于任何所选的翻译任务"
          ],
          "%d translation is still in progress. You will not be charged for it.": [
             "%d 个翻译仍在进行中。您不会被收取费用。"
@@ -452,7 +509,7 @@
             "正在加载翻译队列"
          ],
          "Loading translation jobs": [
-            "正在加载翻译作业"
+            "正在加载翻译任务"
          ],
          "Jobs could not be loaded": [
             "无法加载作业"
@@ -478,9 +535,6 @@
          "Failed to resign from jobs": [
             "放弃作业失败"
          ],
-         "The Advanced Editor jobs synchronization has failed": [
-            "高级编辑器作业同步失败"
-         ],
          "Synchronization with the Professional Translation service has failed": [
             "与专业翻译服务的同步失败"
          ],
@@ -493,8 +547,35 @@
          "Batch sync couldn't be finished": [
             "无法完成批次同步"
          ],
+         "More details": [
+            "更多详情"
+         ],
+         "%s job was left out of the export.": [
+            "有 %s 个作业未包含在导出中。"
+         ],
+         "%s job could not be exported. No file was downloaded.": [
+            "无法导出 %s 个作业。未下载任何文件。"
+         ],
+         "This job was saved while this server had the PHP zlib extension, so its text is stored compressed. PHP on this server has no zlib now, so WPML cannot read it. Ask your hosting provider to enable the PHP zlib extension, then export it again.": [
+            "这些作业是在此服务器已安装 PHP zlib 扩展时保存的，因此它们的文本是以压缩形式存储的。当前服务器上的 PHP 没有 zlib，因此 WPML 无法读取它们。请让您的主机提供商启用 PHP zlib 扩展，然后再重新导出。"
+         ],
+         "This job could not be exported.": [
+            "无法导出这些作业。"
+         ],
+         "%1$s (job %2$s)": [
+            "%1$s（作业 %2$s）"
+         ],
+         "Job %s": [
+            "作业 %s"
+         ],
+         "and %s more job": [
+            "以及另外 %s 个作业"
+         ],
          "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
             "我们的翻译系统未接受此请求（其返回了 %d）。请稍等片刻后重试，如果问题仍然存在，请联系 WPML 支持。"
+         ],
+         "The site stopped answering before this translation was confirmed. If it was not saved, the next download takes it again.": [
+            "在确认此翻译之前，站点已停止响应。如果未保存，下次下载时将重新获取。"
          ]
       }
    }

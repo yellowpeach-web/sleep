@@ -9,7 +9,7 @@ class WPML_TM_ATE_Jobs_Actions_Factory implements IWPML_Backend_Action_Loader, I
 	public function create() {
 		$ams_ate_factories = wpml_tm_ams_ate_factories();
 
-		if ( WPML_TM_ATE_Status::is_enabled_and_activated() ) {
+		if ( WPML_TM_ATE_Status::is_account_usable() ) {
 			$sitepress      = $this->get_sitepress();
 			$current_screen = $this->get_current_screen();
 

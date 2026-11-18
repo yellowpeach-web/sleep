@@ -87,20 +87,22 @@ class DatabaseAlter implements DatabaseAlterInterface {
       return true;
     }
 
-    if ( null === $default ) {
-      $wpdb->query(
-        'ALTER TABLE `' . esc_sql( $table ) . '` ADD `' . esc_sql( $column ) . '` INT(11) UNSIGNED NULL'
-      );
-    } else {
-      $wpdb->query(
+    $alter =   function () use ( $wpdb, $table, $column, $default ) {
+      if ( null === $default ) {
+        return $wpdb->query(
+          'ALTER TABLE `' . esc_sql( $table ) . '` ADD `' . esc_sql( $column ) . '` INT(11) UNSIGNED NULL'
+        );
+      }
+
+      return $wpdb->query(
         $wpdb->prepare(
           'ALTER TABLE `' . esc_sql( $table ) . '` ADD `' . esc_sql( $column ) . '` INT(11) UNSIGNED DEFAULT %s',
           $default
         )
       );
-    }
+    };
 
-    if ( $this->wpdb->last_error ) {
+    if ( false === \WPML\Upgrade\AddColumn::run( $wpdb, $table, $column, $alter ) ) {
       logError( __METHOD__ . ' failed: ' . $this->wpdb->last_error );
 
       throw new DatabaseErrorException( 'Database query failed.' );

@@ -13,6 +13,10 @@ class StringsRetrieve {
 
 	const CHANGED_FROM_MO_STRING = 'NOT ( CAST( st.value AS BINARY ) <=> CAST( st.mo_string AS BINARY ) )';
 
+	const ADMIN_TEXTS_PREFIX = 'admin_texts_';
+
+	const KEEPS_NATIVE_COPIES = "CAST( LOWER( s.context ) AS BINARY ) NOT IN ( 'default', 'wordpress' )";
+
 	private $wpdb;
 
 	private $page_size;
@@ -160,7 +164,7 @@ class StringsRetrieve {
 				AND s.id IN (" . wpml_prepare_in( $ids, '%d' ) . ')';
 
 		if ( $modified_mo_only ) {
-			$query .= $this->getModifiedMOOnlyWhere();
+			$query .= $this->getModifiedMOOnlyWhere( $domain );
 		}
 
 		$query .= ' ORDER BY s.id';
@@ -191,16 +195,33 @@ class StringsRetrieve {
 		return is_array( $rows ) ? $rows : [];
 	}
 
-	private function getModifiedMOOnlyWhere() {
-		return ' AND ' . self::writtenTranslationCondition();
+	private function getModifiedMOOnlyWhere( $domain ) {
+		return ' AND ' . self::writtenStates() .
+			( self::omitsNativeCopies( $domain ) ? ' AND ' . self::CHANGED_FROM_MO_STRING : '' );
+	}
+
+	public static function omitsNativeCopies( $domain ) {
+		return in_array(
+			strtolower( (string) $domain ),
+			[ self::CONTEXT_DEFAULT, strtolower( self::CONTEXT_WORDPRESS ) ],
+			true
+		);
+	}
+
+	public static function isAdminTextsDomain( $domain ) {
+		return 0 === strpos( (string) $domain, self::ADMIN_TEXTS_PREFIX );
 	}
 
 	private static function writtenTranslationCondition() {
+		return '( ( ' . self::writtenStates() . ' AND ' . self::CHANGED_FROM_MO_STRING . ' )' .
+			' OR ( ' . self::KEEPS_NATIVE_COPIES . ' AND ' . self::writtenStates() . ' ) )';
+	}
+
+	private static function writtenStates() {
 		$statuses = array_map( 'intval', [ ICL_TM_COMPLETE, ICL_TM_NEEDS_UPDATE ] );
 
 		return 'st.status IN (' . implode( ', ', $statuses ) . ')' .
-			' AND st.value IS NOT NULL' .
-			' AND ' . self::CHANGED_FROM_MO_STRING;
+			' AND st.value IS NOT NULL';
 	}
 
 	private function bailOnDbError() {

@@ -89,7 +89,8 @@ var otgs_wp_installer = {
 
         otgs_wp_installer.reset_errors();
 
-        var form = button.closest('td').find('form.otgsi_site_key_form');
+        // The compact box may sit outside any table, or inside a table cell the theme owns.
+        var form = button.closest('td, .otgs_wp_installer_table_compact').find('form.otgsi_site_key_form');
         button.closest('.enter_site_key_wrap_js').hide();
 
         form.show();
@@ -353,30 +354,37 @@ var otgs_wp_installer = {
                 reset_to_channel: downloads_form.find('input[name="reset-to-channel"]').val()
             }
 
+            // Without a reason from the server, mark_row_failed shows the form's fallback text.
+            var download_failed = function (message) {
+                failed.push(plugin_name);
+                otgs_wp_installer.mark_row_failed(this_tr, downloads_form, plugin_name, installer_strings.download_failed, message);
+                elem.removeAttr('disabled'); // the user can tick it again and retry
+                this_tr.find('.installer_checkbox.for_spinner_js label').css('display', '');
+                downloads_form.trigger('installer-update-fail');
+            };
+
             otgs_wp_installer.plugins_update_XHR = jQuery.ajax({
                 url: ajaxurl,
                 type: 'POST',
                 dataType: 'json',
                 data: data,
+                // An HTTP error, a timeout or an answer that is not JSON (a PHP fatal page, a login
+                // page) fails the row like a refused download, and the batch goes on (wpmldev-8985).
+                error: function () {
+                    installing.hide();
+                    download_failed('');
+                    spinner.fadeOut();
+                    next_or_finish();
+                },
                 success: function (ret) {
                     installing.hide();
 
                     if (!ret.success) {
-                        failed.push(plugin_name);
-                        otgs_wp_installer.mark_row_failed(this_tr, downloads_form, plugin_name, installer_strings.download_failed, ret.message);
-                        elem.removeAttr('disabled'); // the user can tick it again and retry
-                        this_tr.find('.installer_checkbox.for_spinner_js label').css('display', '');
-                        if (installed.length) {
-                            installed.addClass('installer-status-error');
-                            installed.html(
-                                installed.data('fail') +
-                                '<a class="error-details" href="#" title="' + ret.message + '"></a>'
-                            );
-                        }
-                        downloads_form.trigger('installer-update-fail');
+                        download_failed(ret.message);
+                    } else {
+                        installed.show();
                     }
 
-                    installed.show();
                     spinner.fadeOut();
 
                     if (ret.version) {

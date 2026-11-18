@@ -54,7 +54,13 @@ class LanguageJobs {
 		}
 
 		try {
-			CancelJobsServiceFactory::create()->cancelJobs( $jobIds );
+			\WPML\TM\Jobs\JobLog::runInGroup(
+				\WPML\TM\Jobs\JobLog::GROUP_ID_CANCELS,
+				'Cancel jobs (language removed)',
+				function () use ( $jobIds ) {
+					CancelJobsServiceFactory::create()->cancelJobs( $jobIds, false, \WPML\TM\ATE\Cancel\CancelSource::LANGUAGE_REMOVED );
+				}
+			);
 		} catch ( \Throwable $error ) {
 			return $error->getMessage();
 		}
@@ -110,6 +116,16 @@ class LanguageJobs {
 		if ( ! $jobIds ) {
 			return 0;
 		}
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}icl_translation_status
+				    SET status = %d
+				  WHERE status IN ( %d, %d )
+				    AND rid IN ( SELECT j.rid FROM {$wpdb->prefix}icl_translate_job j WHERE j.job_id IN ( " . implode( ',', array_fill( 0, count( $jobIds ), '%d' ) ) . ' ) )',
+				array_merge( array( ICL_TM_NOT_TRANSLATED, ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_IN_PROGRESS ), $jobIds )
+			)
+		);
 
 		\WPML_Translation_Records_Delete::jobs_by_ids( $jobIds );
 

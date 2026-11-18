@@ -127,6 +127,9 @@
          "Delete language pair(s)": [
             "Ta bort språkpar"
          ],
+         "Can translate to and from all languages": [
+            "Kan översätta till och från alla språk"
+         ],
          "An error occurred. Please try again.": [
             "Ett fel uppstod. Försök igen."
          ],
@@ -153,6 +156,60 @@
          ],
          "Back to Step %1$s: %2$s": [
             "Tillbaka till steg %1$s: %2$s"
+         ],
+         "Available": [
+            "Tillgänglig"
+         ],
+         "Not available": [
+            "Inte tillgänglig"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "Förstår din webbplats ämne, målgrupp och ton"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "Kvalitet redo för publicering, med stöd av vår garanti"
+         ],
+         "Review before publishing": [
+            "Granska före publicering"
+         ],
+         "Pay once per page – only added words are charged": [
+            "Betala en gång per sida – endast tillagda ord debiteras"
+         ],
+         "Per word, changes included": [
+            "Per ord, ändringar inkluderade"
+         ],
+         "A legacy engine": [
+            "En äldre motor"
+         ],
+         "<button>Switch to a different engine</button> if you prefer — no quality guarantee and no free translation edits with other engines.": [
+            "<button>Byt till en annan motor</button> om du föredrar det – ingen kvalitetsgaranti och inga kostnadsfria översättningsredigeringar med andra motorer."
+         ],
+         "Your content will be translated by <strong>Private Translation Cloud (PTC)</strong>, WPML's own AI engine. PTC lets you translate the entire site automatically, in one click, offering free translation edits.": [
+            "Ditt innehåll översätts av <strong>Private Translation Cloud (PTC)</strong>, WPML:s egen AI-motor. Med PTC kan du översätta hela webbplatsen automatiskt med ett klick och få kostnadsfria översättningsredigeringar."
+         ],
+         "Couldn't save — try again": [
+            "Kunde inte spara – försök igen"
+         ],
+         "Your content will be translated by <strong>%s</strong>, a machine translation engine. You pay per word, including changes to content that's already translated.": [
+            "Ditt innehåll översätts av <strong>%s</strong>, en maskinöversättningsmotor. Du betalar per ord, inklusive för ändringar av innehåll som redan har översatts."
+         ],
+         "Switch to PTC": [
+            "Byt till PTC"
+         ],
+         "Switch away from PTC?": [
+            "Sluta använda PTC?"
+         ],
+         "DeepL, Google Translate or Microsoft Translator": [
+            "DeepL, Google Translate eller Microsoft Translator"
+         ],
+         "Your engine now": [
+            "Din motor nu"
+         ],
+         "Switch away from PTC": [
+            "Sluta använda PTC"
+         ],
+         "Stay with PTC": [
+            "Stanna kvar med PTC"
          ],
          "Technical Details (for WPML Support)": [
             "Tekniska detaljer (för WPML-support)"
@@ -186,6 +243,45 @@
          ],
          " and provide the technical details below (use the Copy button to copy them).": [
             " och ange de tekniska detaljerna nedan (använd knappen Kopiera för att kopiera dem)."
+         ],
+         "Publish without review": [
+            "Publicera utan granskning"
+         ],
+         "Translations go live immediately in the target language.": [
+            "Översättningar publiceras omedelbart på målspråket."
+         ],
+         "Wait for review before publishing": [
+            "Vänta på granskning före publicering"
+         ],
+         "Translations stay as drafts until a translation manager approves them.": [
+            "Översättningar förblir utkast tills en översättningschef godkänner dem."
+         ],
+         "Recommended": [
+            "Rekommenderas"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "För DeepL, Google och Microsoft rekommenderar vi en mänsklig granskning för att bekräfta att de är korrekta. PTC levererar översättningar som är bättre än mänskliga och som förstår kontexten, så du kan tryggt hoppa över granskningsprocessen."
+         ],
+         "Publish and mark for review": [
+            "Publicera och markera för granskning"
+         ],
+         "Translations go live but appear in a \"needs review\" queue.": [
+            "Översättningar publiceras men visas i en kö för granskning."
+         ],
+         "After auto-translation": [
+            "Efter automatisk översättning"
+         ],
+         "What happens to content once %s has translated it.": [
+            "Vad som händer med innehållet när %s har översatt det."
+         ],
+         "Wait for review": [
+            "Vänta på granskning"
+         ],
+         "%1$s (<strong>%2$s</strong>)": [
+            "%1$s (<strong>%2$s</strong>)"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "Vad vill du göra när WPML har översatt ditt innehåll automatiskt?"
          ],
          "Loading AI Translation...": [
             "Laddar AI-översättning..."
@@ -299,7 +395,7 @@
             "Vänligen fyll i fältet"
          ],
          "A unique value that identifies the language in the database and URL. Once saved, the language code cannot be changed.": [
-            "Ett unikt värde som identifierar språket i databasen och URL:en. När den väl har sparats kan språkkoden inte ändras."
+            "Ett unikt värde som identifierar språket i databasen och URL:en. När det väl har sparats kan språkkoden inte ändras."
          ],
          "Save language": [
             "Spara språk"
@@ -327,6 +423,15 @@
          ],
          "adding a custom language": [
             "lägga till ett anpassat språk"
+         ],
+         "I will fix my server settings to display languages in directories later.": [
+            "Jag kommer att fixa mina serverinställningar för att visa språk i mappar senare."
+         ],
+         "We could not verify your server's URL-rewrite support.": [
+            "Vi kunde inte verifiera din servers stöd för URL-omskrivning (URL-rewrite)."
+         ],
+         "Learn more about required server settings to display languages in directories": [
+            "Läs mer om nödvändiga serverinställningar för att visa språk i mappar"
          ],
          "I will change the permalink structure later.": [
             "Jag kommer att ändra permalänkstrukturen senare."
@@ -367,8 +472,15 @@
          "This domain does not show this site.": [
             "Den här domänen visar inte denna webbplats."
          ],
+         "This address belongs to another site on this network.": [
+            "Den här adressen tillhör en annan webbplats i detta nätverk."
+         ],
          "WPML could not reach this domain.": [
             "WPML kunde inte nå den här domänen."
+         ],
+         "If you choose this, these URLs will open a sub-site: %s.": [
+            "Om du väljer detta öppnar följande URL en underwebbplats: %s.",
+            "Om du väljer detta öppnar följande URL:er en underwebbplats: %s."
          ],
          "The domain you have entered is invalid.": [
             "Domänen du har angett är ogiltig."
@@ -387,15 +499,6 @@
          ],
          "The URL rewrite is not configured in your server.": [
             "URL-omskrivning är inte konfigurerad på din server."
-         ],
-         "I will fix my server settings to display languages in directories later.": [
-            "Jag kommer att fixa mina serverinställningar för att visa språk i mappar senare."
-         ],
-         "We could not verify your server's URL-rewrite support.": [
-            "Vi kunde inte verifiera din servers stöd för URL-omskrivning (URL-rewrite)."
-         ],
-         "Learn more about required server settings to display languages in directories": [
-            "Läs mer om nödvändiga serverinställningar för att visa språk i mappar"
          ],
          "your pages": [
             "dina sidor"
@@ -421,11 +524,17 @@
          "Translate your posts": [
             "Översätt dina inlägg"
          ],
-         "the Translation Dashboard": [
-            "översättningspanelen"
+         "%s will translate your whole site and keep new content translated from now on. You're charged per word, including later changes.": [
+            "%s översätter hela din webbplats och ser till att nytt innehåll förblir översatt framöver. Du debiteras per ord, inklusive för senare ändringar."
          ],
          "Private Translation Cloud (PTC) will translate your whole site and keep new content translated from now on. You pay once for what's translated — editing it afterward is free.": [
             "Private Translation Cloud (PTC) kommer att översätta hela din webbplats och hålla nytt innehåll översatt från och med nu. Du betalar en gång för det som översätts – att redigera det efteråt är gratis."
+         ],
+         "Automatic translation will translate your whole site and keep new content translated from now on.": [
+            "Automatisk översättning översätter hela din webbplats och ser till att nytt innehåll förblir översatt framöver."
+         ],
+         "the Translation Dashboard": [
+            "översättningspanelen"
          ],
          "Apply settings and start site's translation": [
             "Använd inställningar och påbörja webbplatsens översättning"
@@ -439,8 +548,14 @@
          "the WooCommerce Multilingual setup": [
             "installationen av WooCommerce Multilingual"
          ],
+         "%s will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "%s börjar översätta din webbplats nu och ser till att nytt innehåll förblir översatt framöver. Därefter konfigurerar du din flerspråkiga butik. Dina produkter börjar översättas så snart du har slutfört konfigurationen av WooCommerce Multilingual."
+         ],
          "Private Translation Cloud (PTC) will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup. You pay once for what's translated. Editing it afterward is free.": [
             "Private Translation Cloud (PTC) kommer att börja översätta din webbplats nu och hålla nytt innehåll översatt från och med nu. Härnäst kommer du att ställa in din flerspråkiga butik. Dina produkter börjar översättas när du är klar med installationen av WooCommerce Multilingual. Du betalar en gång för det som översätts. Att redigera det efteråt är gratis."
+         ],
+         "Automatic translation will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "Automatisk översättning börjar översätta din webbplats nu och ser till att nytt innehåll förblir översatt framöver. Därefter konfigurerar du din flerspråkiga butik. Dina produkter börjar översättas så snart du har slutfört konfigurationen av WooCommerce Multilingual."
          ],
          "Continue to WooCommerce Multilingual Setup while translation begins": [
             "Fortsätt till installationen av WooCommerce Multilingual medan översättningen påbörjas"
@@ -484,8 +599,14 @@
          "Applying your setup choices": [
             "Tillämpar dina installationsval"
          ],
+         "%s is translating your content. There's nothing else you need to do here.": [
+            "%s översätter ditt innehåll. Du behöver inte göra något mer här."
+         ],
          "PTC is translating your content. There's nothing else you need to do here.": [
             "PTC översätter ditt innehåll. Det finns inget mer du behöver göra här."
+         ],
+         "Your content is being translated. There's nothing else you need to do here.": [
+            "Ditt innehåll översätts. Du behöver inte göra något mer här."
          ],
          "We're applying all your setup choices and preparing WPML. This is a one-time process.": [
             "Vi tillämpar alla dina installationsval och förbereder WPML. Detta är en engångsprocess."
@@ -580,38 +701,8 @@
          "Full details of the info we’re proposing to share": [
             "Fullständiga detaljer om den information vi föreslår att dela"
          ],
-         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
-            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> med att välja det bästa läget för din webbplats."
-         ],
-         "How would you like to translate your content?": [
-            "Hur vill du översätta ditt innehåll?"
-         ],
-         "Recommended": [
-            "Rekommenderas"
-         ],
-         "Translate Everything Automatically": [
-            "Översätt allt automatiskt"
-         ],
-         "Full-site automatic translation needs AI translation set up.": [
-            "Automatisk översättning av hela webbplatsen kräver att AI-översättning är inställd."
-         ],
-         "Set up AI translation": [
-            "Ställ in AI-översättning"
-         ],
-         "Translate Some: You Choose What to Translate": [
-            "Översätt en del: du väljer vad som ska översättas"
-         ],
-         "Select this option": [
-            "Välj detta alternativ"
-         ],
          "How it works": [
             "Hur det fungerar"
-         ],
-         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
-            "PTC (Private Translation Cloud) är WPML:s egen motor för AI-översättning. Den översätter hela din webbplats till varje språk du valt, i bakgrunden. Du kan redigera vilken översättning som helst och exkludera inläggstyper."
-         ],
-         "Can't decide?": [
-            "Kan du inte bestämma dig?"
          ],
          "You select and submit what to translate.": [
             "Du väljer och skickar in vad som ska översättas."
@@ -619,32 +710,35 @@
          "Costs": [
             "Kostnader"
          ],
-         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
-            "Betala en gång för totalt översatt innehåll.<br/><strong>Revisioner är gratis</strong> — endast utökat innehåll debiteras."
-         ],
          "Pay per translation job submitted.<br/>Each update or new content batch is a separate charge.": [
             "Betala per inskickat översättningsjobb.<br/>Varje uppdatering eller ny batch med innehåll är en separat avgift."
-         ],
-         "Translation quality": [
-            "Översättningskvalitet"
-         ],
-         "WPML ensures excellent quality. Bad translations are refunded.": [
-            "WPML säkerställer utmärkt kvalitet. Dåliga översättningar återbetalas."
          ],
          "Ideal for": [
             "Idealiskt för"
          ],
-         "Known upfront costs": [
-            "Kända kostnader i förväg"
+         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "PTC (Private Translation Cloud) är WPML:s egen motor för AI-översättning. Den översätter hela din webbplats till varje språk du valt, i bakgrunden. Du kan redigera vilken översättning som helst och exkludera inläggstyper."
          ],
-         "Unlimited post-translation editing": [
-            "Obegränsad redigering efter översättning"
+         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
+            "Betala en gång för totalt översatt innehåll.<br/><strong>Revisioner är gratis</strong> — endast utökat innehåll debiteras."
          ],
-         "Marketing optimization": [
-            "Marknadsföringsoptimering"
+         "Included with PTC": [
+            "Ingår i PTC"
          ],
-         "Turn-key solutions": [
-            "Nyckelfärdiga lösningar"
+         "Only with PTC — not with %s": [
+            "Bara med PTC – inte med %s"
+         ],
+         "your current engine": [
+            "din nuvarande motor"
+         ],
+         "%s translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "%s översätter hela din webbplats till alla språk du har valt, i bakgrunden. Du kan redigera alla översättningar och utesluta inläggstyper."
+         ],
+         "Charged per word, including changes to content that's already translated.": [
+            "Debiteras per ord, inklusive för ändringar av innehåll som redan har översatts."
+         ],
+         "You choose what to translate, from the Translation Dashboard or with \"+\" next to each page. PTC translates it.": [
+            "Ni väljer vad som ska översättas, från Översättningspanelen eller med ”+” bredvid varje sida. PTC översätter det."
          ],
          "Partial site translation": [
             "Delvis översättning av webbplatsen"
@@ -652,8 +746,95 @@
          "Maximum control": [
             "Maximal kontroll"
          ],
+         "Quality without the work": [
+            "Kvalitet utan krångel"
+         ],
+         "You choose what to translate. You or your translators write each translation in the Advanced Translation Editor.": [
+            "Ni väljer vad som ska översättas. Ni eller Era översättare skriver varje översättning i Advanced Translation Editor."
+         ],
+         "No words used, unless you start from a machine translation in the editor.": [
+            "Inga ord förbrukas, såvida Ni inte utgår från en maskinöversättning i redigeraren."
+         ],
+         "Your own translators": [
+            "Era egna översättare"
+         ],
+         "Texts that need a human touch": [
+            "Texter som behöver en mänsklig touch"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "PTC translates what you send. You review.": [
+            "PTC översätter det Ni skickar. Ni granskar."
+         ],
+         "I translate": [
+            "Jag översätter"
+         ],
+         "You or your translators write it.": [
+            "Ni eller Era översättare skriver det."
+         ],
+         "When you start a translation, who translates?": [
+            "Vem ska översätta när Ni startar en översättning?"
+         ],
+         "Who translates": [
+            "Vem översätter"
+         ],
          "Contact our support team for help": [
             "Kontakta vårt supportteam för att få hjälp"
+         ],
+         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
+            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> med att välja det bästa läget för din webbplats."
+         ],
+         "How would you like to translate your content?": [
+            "Hur vill du översätta ditt innehåll?"
+         ],
+         "Translate Everything Automatically": [
+            "Översätt allt automatiskt"
+         ],
+         "Translations always in sync": [
+            "Översättningar hålls alltid synkroniserade"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "Automatisk översättning av hela webbplatsen kräver att AI-översättning är inställd."
+         ],
+         "New and updated content translated automatically": [
+            "Nytt och uppdaterat innehåll översätts automatiskt"
+         ],
+         "Set up AI translation": [
+            "Ställ in AI-översättning"
+         ],
+         "Sites that publish often": [
+            "Webbplatser som publicerar ofta"
+         ],
+         "All your languages at once": [
+            "Alla dina språk samtidigt"
+         ],
+         "Translate Some: You Choose What to Translate": [
+            "Översätt en del: du väljer vad som ska översättas"
+         ],
+         "Select this option": [
+            "Välj detta alternativ"
+         ],
+         "WPML uses the Advanced Translation Editor. You can change the editor later in WPML > Settings > Translation editor and method.": [
+            "WPML använder Advanced Translation Editor. Ni kan ändra redigerare senare under WPML > Inställningar > Översättningsredigerare och metod."
+         ],
+         "Quality guarantee, bad translations refunded": [
+            "Kvalitetsgaranti, dåliga översättningar återbetalas"
+         ],
+         "Can't decide?": [
+            "Kan du inte bestämma dig?"
+         ],
+         "Pay once — revisions are free": [
+            "Betala en gång – ändringar är kostnadsfria"
+         ],
+         "Known upfront costs": [
+            "Kända kostnader i förväg"
+         ],
+         "Publish-ready results, no review needed": [
+            "Publiceringsklara resultat, ingen granskning behövs"
+         ],
+         "Marketing optimization based on your site and audience": [
+            "Marknadsföringsoptimering baserad på din webbplats och målgrupp"
          ],
          "Calculate Translation Costs": [
             "Beräkna översättningskostnader"
@@ -668,7 +849,7 @@
             "Innan du översätter allt"
          ],
          "You can continue without them. Nothing here stops the setup.": [
-            "Du kan fortsätta utan dem. Ingenting här stoppar installationen."
+            "Du kan fortsätta utan dem. Inget här stoppar konfigurationen."
          ],
          "Translation Contributors": [
             "Översättningsbidragsgivare"
@@ -698,7 +879,7 @@
             "Jag vill ställa in mänsklig översättning genom:"
          ],
          "Only myself": [
-            "Bara mig själv"
+            "Bara jag själv"
          ],
          "You will be the sole translator for this site.": [
             "Du kommer att vara den enda översättaren för denna webbplats."
@@ -888,6 +1069,9 @@
          ],
          "Ranking": [
             "Ranking"
+         ],
+         "language URL directory and language name\u0004%1$s (%2$s)": [
+            "%1$s (%2$s)"
          ]
       }
    }

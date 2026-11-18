@@ -9,5 +9,3 @@ function icl_load_hacks() {
 	include_once WPML_PLUGIN_PATH . '/inc/hacks/language-canonical-redirects.php';
 }
 
-
-require WPML_PLUGIN_PATH . '/inc/hacks/missing-php-functions.php';

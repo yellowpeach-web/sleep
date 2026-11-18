@@ -8,10 +8,27 @@ class Relation {
 
 	use Macroable;
 
+
+	public static function equals( $a = null, $b = null ) {
+		if ( func_num_args() < 2 || Fns::__ === $a || Fns::__ === $b ) {
+			return call_user_func_array( self::$macros['equals'], func_get_args() );
+		}
+
+		return $a === $b;
+	}
+
+	public static function propEq( $prop = null, $value = null, $obj = null ) {
+		if ( func_num_args() < 3 || Fns::__ === $prop || Fns::__ === $value || Fns::__ === $obj ) {
+			return call_user_func_array( self::$macros['propEq'], func_get_args() );
+		}
+
+		return Obj::prop( $prop, $obj ) === $value;
+	}
+
 	public static function init() {
 
 		self::macro( 'equals', curryN( 2, function ( $a, $b ) {
-			return $a === $b;
+			return self::equals( $a, $b );
 		} ) );
 
 		self::macro( 'lt', curryN( 2, function ( $a, $b ) {
@@ -35,7 +52,7 @@ class Relation {
 		} ) );
 
 		self::macro( 'propEq', curryN( 3, function ( $prop, $value, $obj ) {
-			return Obj::prop( $prop, $obj ) === $value;
+			return self::propEq( $prop, $value, $obj );
 		} ) );
 
 		self::macro( 'sortWith', curryN( 2, function ( $comparators, $array ) {

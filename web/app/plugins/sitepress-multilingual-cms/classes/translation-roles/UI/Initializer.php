@@ -20,6 +20,7 @@ use WPML\Setup\Option;
 use WPML\TranslationRoles\FindAvailableByRole;
 use WPML\TranslationRoles\GetManagerRecords;
 use WPML\TranslationRoles\GetTranslatorRecords;
+use WPML\TranslationRoles\HighUserCount;
 use WPML\TranslationRoles\RemoveManager;
 use WPML\TranslationRoles\RemoveTranslator;
 use WPML\TranslationRoles\SaveManager;
@@ -68,20 +69,13 @@ class Initializer {
 	}
 
 	public static function getTranslationData( $userExtra = null, $preload = true ) {
-		global $wpdb;
 		$currentUser = User::getCurrent();
 		$service     = Option::isTMAllowed() ? \TranslationProxy::get_current_service() : null;
-		$highUserCount = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT 1 FROM {$wpdb->users} LIMIT %d,1",
-				\WPML_Translation_Roles_Records::HIGH_USER_COUNT_THRESHOLD
-			)
-		);
 
 		return [
 			'canManageOptions' => $currentUser->has_cap( 'manage_options' ),
 			'adminUserName'    => $currentUser->display_name,
-			'highUserCount'    => (int)$highUserCount === 1,
+			'highUserCount'    => HighUserCount::isHigh(),
 			'translators'      => $preload ? Fns::map(
 				User::withAvatar(),
 				make( \WPML_Translator_Records::class )->get_users_with_capability()

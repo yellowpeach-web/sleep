@@ -38,6 +38,12 @@ class STPluginHooks implements \IWPML_Backend_Action {
 			return;
 		}
 
+		$missingTables = self::missingStringTables();
+		if ( $missingTables ) {
+			error_log( '[ACFML] Notice: the field strings back-fill waits; String Translation\'s database tables ' . implode( ', ', $missingTables ) . ' are missing. (' . self::class . ')' );
+			return;
+		}
+
 		if ( ! $isPluginStatusActivated || Activation::isBackFillPending() ) {
 			$this->backFill->registerMissing();
 			BackFill::markDone();
@@ -50,6 +56,21 @@ class STPluginHooks implements \IWPML_Backend_Action {
 		$this->backFill->runOnce();
 
 		$this->backFill->copyOnce();
+	}
+
+	public static function missingStringTables() {
+		if ( ! class_exists( '\WPML\Upgrade\SchemaFacts' ) ) {
+			return [];
+		}
+
+		$missing = [];
+		foreach ( [ 'icl_strings', 'icl_string_translations', 'icl_string_packages' ] as $table ) {
+			if ( ! \WPML\Upgrade\SchemaFacts::hasTable( $table ) ) {
+				$missing[] = $table;
+			}
+		}
+
+		return $missing;
 	}
 
 	private static function getPluginStatus() {

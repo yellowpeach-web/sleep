@@ -4,10 +4,16 @@
 
     {% include 'batch-translation.twig' with batch_translation %}
 
+{% if text_scan is defined and text_scan.notice %}
+    {% include 'media-translation-text-scan.twig' with {'notice': text_scan.notice, 'panel': text_scan.panel} only %}
+{% endif %}
     <div class="tablenav top wpml-media-tablenav">
         {% include 'media-translation-filters.twig' %}
     </div>
 
+{% if text_scan is defined %}
+    <div class="wpml-media-table-frame">
+{% endif %}
     <table class="widefat striped wpml-media-table js-otgs-table-sticky-header">
         <thead>
         <tr>
@@ -15,6 +21,9 @@
 			{% if should_handle_media_auto %}
 			<th class="wpml-col-media-title">{{ strings.media_type }}</th>
 			{% endif %}
+{% if text_scan is defined %}
+            <th class="wpml-col-media-scan">{{ text_scan.strings.column }}</th>
+{% endif %}
             <th class="wpml-col-media-translations">
                 {% for code, language in languages %}
                     {% if target_language is empty or target_language == code %}
@@ -33,12 +42,15 @@
             {% endfor %}
         {% else %}
             <tr>
-                <td colspan="2">{{ strings.no_attachments }}</td>
+                <td colspan="{{ text_scan is defined ? 3 + (should_handle_media_auto ? 1 : 0) : 2 }}">{{ strings.no_attachments }}</td>
             </tr>
         {% endif %}
         </tbody>
 
     </table>
+{% if text_scan is defined %}
+    </div>
+{% endif %}
 
     <div class="tablenav bottom">
         {% include 'pagination.twig' with {'pagination_model' : pagination} only %}

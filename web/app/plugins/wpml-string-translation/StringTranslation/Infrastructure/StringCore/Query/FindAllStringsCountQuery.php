@@ -21,6 +21,12 @@ class FindAllStringsCountQuery implements FindAllStringsCountQueryInterface {
 		$query = $this->queryBuilder->build( $criteria );
 		$count = $wpdb->get_var( $query );
 
-		return $count;
+		if ( null === $count ) {
+			FailedStatement::throwIfFailed( $wpdb, 'count the strings' );
+
+			return 0;
+		}
+
+		return (int) $count;
 	}
 }

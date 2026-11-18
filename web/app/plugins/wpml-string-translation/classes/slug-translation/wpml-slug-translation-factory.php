@@ -1,9 +1,12 @@
 <?php
 
+use WPML\ST\SlugTranslation\PostArchive\LinkFilter;
+
 class WPML_Slug_Translation_Factory implements IWPML_Frontend_Action_Loader, IWPML_Backend_Action_Loader, IWPML_AJAX_Action_Loader {
 
-	const POST = 'post';
-	const TAX  = 'taxonomy';
+	const POST         = 'post';
+	const TAX          = 'taxonomy';
+	const POST_ARCHIVE = 'post_archive';
 
 	const INIT_PRIORITY = -1000;
 
@@ -15,12 +18,14 @@ class WPML_Slug_Translation_Factory implements IWPML_Frontend_Action_Loader, IWP
 		$records_factory  = new WPML_Slug_Translation_Records_Factory();
 		$settings_factory = new WPML_ST_Slug_Translation_Settings_Factory();
 
-		$post_records = $records_factory->create( self::POST );
-		$tax_records  = $records_factory->createTaxRecords();
+		$post_records    = $records_factory->create( self::POST );
+		$archive_records = $records_factory->create( self::POST_ARCHIVE );
+		$tax_records     = $records_factory->createTaxRecords();
 
 		$global_settings = $settings_factory->create();
 		$post_settings   = $settings_factory->create( self::POST );
 		$tax_settings    = $settings_factory->createTaxSettings();
+		$is_enabled      = $global_settings->is_enabled();
 
 		$term_link_filter = new WPML_ST_Term_Link_Filter( $tax_records, $sitepress, new WPML_WP_Cache_Factory(), $tax_settings );
 
@@ -34,13 +39,23 @@ class WPML_Slug_Translation_Factory implements IWPML_Frontend_Action_Loader, IWP
 
 		$hooks['rewrite_rules'] = ( new \WPML\ST\SlugTranslation\Hooks\HooksFactory() )->create();
 
+		if ( $is_enabled ) {
+			$hooks['archive_link'] = new LinkFilter(
+				$archive_records,
+				$post_settings,
+				$sitepress,
+				new WPML_ST_Slug_Translations()
+			);
+		}
+
 		if ( is_admin() ) {
 			$hooks['ui_save_post'] = new WPML_ST_Slug_Translation_UI_Save(
 				$post_settings,
 				$post_records,
 				$sitepress,
 				new WPML_WP_Post_Type(),
-				WPML_ST_Slug_Translation_UI_Save::ACTION_HOOK_FOR_POST
+				WPML_ST_Slug_Translation_UI_Save::ACTION_HOOK_FOR_POST,
+				$archive_records
 			);
 			$hooks['ui_save_tax']  = new WPML_ST_Slug_Translation_UI_Save(
 				$tax_settings,
@@ -50,7 +65,7 @@ class WPML_Slug_Translation_Factory implements IWPML_Frontend_Action_Loader, IWP
 				WPML_ST_Slug_Translation_UI_Save::ACTION_HOOK_FOR_TAX
 			);
 
-			if ( $global_settings->is_enabled() ) {
+			if ( $is_enabled ) {
 				$hooks['sync_strings'] = new WPML_ST_Slug_Translation_Strings_Sync(
 					$records_factory,
 					$settings_factory,

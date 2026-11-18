@@ -1,7 +1,6 @@
 <?php
 
 use OTGS\Installer\Subscription\SubscriptionManagerFactory;
-use OTGS\Installer\Api\Exception\InvalidSubscription;
 
 class OTGS_Installer_Site_Key_Ajax {
 
@@ -81,7 +80,13 @@ class OTGS_Installer_Site_Key_Ajax {
 				$error = __( 'Invalid site key for the current site.', 'installer' ) . '<br /><div class="installer-footnote">' . __( 'Please note that the site key is case sensitive.', 'installer' ) . '</div>';
 			}
 		} catch ( Exception $e ) {
-			$error           = $this->get_error_message( $e, $repository );
+			if ( $this->is_refused_on_subsite_of_unregistered_network( $e, $repositoryId ) ) {
+				$error = $this->network_one_key_refusal( $e, $repositoryId, $repository );
+			} elseif ( OTGS_Installer_Fetch_Subscription_Exception::is_site_key_refused( $e ) ) {
+				$error = WP_Installer::site_key_refused_message( $repositoryId );
+			} else {
+				$error = $this->get_error_message( $e, $repository );
+			}
 		}
 
 		$response = array( 'error' => $error );
@@ -141,7 +146,9 @@ class OTGS_Installer_Site_Key_Ajax {
 
 		if ( $nonce && $repositoryId && wp_verify_nonce( $nonce, 'update_site_key_' . $repositoryId ) ) {
 			$repository = $this->repositories->get( $repositoryId );
-			$site_key        = $repository->get_subscription()->get_site_key();
+			$site_key   = $this->site_key_of( $repositoryId, $repository );
+			// wpmldev-12310: only WPML's Refresh license sends this. Without it, as from the update_site_key_js
+			$drop_refused_key = isset( $_POST['drop_refused_key'] ) && '1' === $_POST['drop_refused_key'];
 
 			if ( $site_key ) {
 				try {
@@ -159,14 +166,21 @@ class OTGS_Installer_Site_Key_Ajax {
 						$repository->set_subscription( $subscription_data );
 
 						do_action('check_posthog_should_record');
+
+						$this->repositories->save_subscription( $repository );
 					} else {
-						do_action( 'otgs_installer_before_site_key_removal', $repository->get_id() );
-						$repository->set_subscription( null );
-						do_action( 'otgs_installer_site_key_update', $repository->get_id() );
+						if ( $drop_refused_key ) {
+							do_action( 'otgs_installer_before_site_key_removal', $repository->get_id() );
+							$repository->set_subscription( null );
+							do_action( 'otgs_installer_site_key_update', $repository->get_id() );
+							$this->repositories->save_subscription( $repository );
+						} elseif ( $this->installer ) {
+							$this->installer->mark_site_key_as_invalid( $repositoryId, false );
+							$this->installer->save_settings();
+						}
 						$error = __( 'Invalid site key for the current site. If the error persists, try to un-register first and then register again with the same site key.', 'installer' );
 					}
 
-					$this->repositories->save_subscription( $repository );
 					$messages = $this->repositories->refresh( true );
 
 					if ( is_array( $messages ) ) {
@@ -176,10 +190,15 @@ class OTGS_Installer_Site_Key_Ajax {
 
 					$this->clean_plugins_update_cache();
 				} catch ( Exception $e ) {
-					if ( $e->getPrevious() instanceof InvalidSubscription && $this->installer ) {
-						$this->installer->mark_site_key_as_invalid( $repositoryId );
+					// wpmldev-12310: and only on WPML's Refresh license; every other call keeps a refused key
+					if ( OTGS_Installer_Fetch_Subscription_Exception::is_site_key_refused( $e ) && $this->installer ) {
+						$this->installer->mark_site_key_as_invalid( $repositoryId, $drop_refused_key );
 						$this->installer->save_settings();
-						$error          = __( 'Your site key is no longer valid. Please register a new key.', 'installer' );
+						$error          = sprintf(
+						// translators: %s the site address the key was checked for, e.g. https://www.example.com
+							__( 'Your site key is no longer valid for %s. Create a site key for this exact address and register it.', 'installer' ),
+							WP_Installer::checked_site_address( $repositoryId )
+						);
 						$invalidSiteKey = true;
 					} else {
 						$error = $this->get_error_message( $e, $repository );
@@ -210,19 +229,21 @@ class OTGS_Installer_Site_Key_Ajax {
 
 		if ( $nonce && $repository && $email && wp_verify_nonce( $nonce, 'find_account_' . $repository ) ) {
 			$repository_data = $this->repositories->get( $repository );
-			$siteKey         = $repository_data->get_subscription()->get_site_key();
+			$siteKey         = $this->site_key_of( $repository, $repository_data );
 
-			$args['body'] = [
-				'action'   => 'user_email_exists',
-				'umail'    => md5( $email . $siteKey ),
-				'site_key' => $siteKey,
-				'site_url' => get_site_url()
-			];
+			if ( $siteKey ) {
+				$args['body'] = [
+					'action'   => 'user_email_exists',
+					'umail'    => md5( $email . $siteKey ),
+					'site_key' => $siteKey,
+					'site_url' => get_site_url()
+				];
 
-			$response = wp_remote_post( $repository_data->get_api_url(), $args );
-			if ( $response ) {
-				$body    = json_decode( wp_remote_retrieve_body( $response ) );
-				$success = isset( $body->success ) ? 'Success' === $body->success : false;
+				$response = wp_remote_post( $repository_data->get_api_url(), $args );
+				if ( $response ) {
+					$body    = json_decode( wp_remote_retrieve_body( $response ) );
+					$success = isset( $body->success ) ? 'Success' === $body->success : false;
+				}
 			}
 		}
 
@@ -230,6 +251,15 @@ class OTGS_Installer_Site_Key_Ajax {
 
 	}
 
+
+	private function site_key_of( $repository_id, OTGS_Installer_Repository $repository ) {
+		$subscription = $repository->get_subscription();
+		if ( $subscription ) {
+			return $subscription->get_site_key();
+		}
+
+		return $this->installer ? $this->installer->get_site_key( $repository_id ) : '';
+	}
 
 	private function current_user_can_manage_site_key() {
 		return is_multisite() ? is_super_admin() : current_user_can( 'manage_options' );
@@ -279,6 +309,16 @@ class OTGS_Installer_Site_Key_Ajax {
 		}
 
 		return $error;
+	}
+
+	private function is_refused_on_subsite_of_unregistered_network( Exception $e, $repository_id ) {
+		return OTGS_Installer_Fetch_Subscription_Exception::is_site_key_refused( $e )
+		       && WP_Installer::is_subsite_of_unregistered_network( $repository_id );
+	}
+
+	private function network_one_key_refusal( Exception $e, $repository_id, OTGS_Installer_Repository $repository_data ) {
+		return WP_Installer::network_one_key_notice( $repository_id, $repository_data->get_product_name() )
+		       . ' (' . esc_html( OTGS_Installer_Fetch_Subscription_Exception::api_error_text( $e ) ) . ')';
 	}
 
 	private function clean_plugins_update_cache() {

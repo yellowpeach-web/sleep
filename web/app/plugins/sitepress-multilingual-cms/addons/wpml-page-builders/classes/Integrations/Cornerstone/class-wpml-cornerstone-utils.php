@@ -21,6 +21,9 @@ class Utils {
 		'layout-slide-container',
 		'layout-slide',
 		'layout-dropdown',
+		'layout-table',
+		'layout-table-section',
+		'layout-table-row',
 	];
 
 	const NODES_WITH_MODULES = [
@@ -29,6 +32,7 @@ class Utils {
 		'tabs',
 		'tab-elements',
 		'nav-inline',
+		'layout-table-cell',
 	];
 
 	const LAYOUT_POST_TYPES = [
@@ -38,10 +42,17 @@ class Utils {
 		'cs_layout_archive_wc',
 		'cs_header',
 		'cs_footer',
+		'cs_global_block',
 	];
 
 	public static function getNodeId( $data ) {
 		return md5( serialize( $data ) );
+	}
+
+	public static function getLayoutNodeId( $data ) {
+		unset( $data[ \WPML_Cornerstone_Translatable_Nodes::SETTINGS_FIELD ] );
+
+		return self::getNodeId( $data );
 	}
 
 	public static function typeIsLayout( $type ) {

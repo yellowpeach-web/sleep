@@ -60,6 +60,11 @@ class Provider implements ProviderInterface {
           ? ''
           : $this->translationQuery->getLastTranslatedOriginalContent( $term, $lang )
       );
+      $lastTranslation->setOriginalFieldContents(
+        $freshTranslation
+          ? null
+          : $this->translationQuery->getLastTranslatedOriginalFieldContents( $term, $lang )
+      );
 
       $this->wordsToTranslate->forLastTranslation( $lastTranslation, $term );
       $term->addLastTranslation( $lastTranslation );

@@ -37,14 +37,29 @@
          "Removing strings from <b>String Translation</b> table": [
             "正在从 <b>String Translation</b> 表中删除字符串"
          ],
+         "%s string waiting for translation was kept.": [
+            "已保留 %s 个等待翻译的字符串。"
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "要将字符串重新添加到 <b>String Translation</b> 表，您可能需要重新扫描翻译文件或将字符串登记为可翻译。"
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "阅读更多关于<a>扫描站点字符串并将其登记为可翻译</a>的信息。"
          ],
-         "Successfully removed strings": [
-            "成功删除字符串"
+         "Nothing removed: %s string is waiting for translation": [
+            "未删除任何内容：%s 个字符串正在等待翻译"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "未删除任何内容：所选域中没有未翻译的字符串"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "若也要将其删除，请勾选“同时删除等待翻译的字符串”，然后再次单击“删除”。"
+         ],
+         "OK": [
+            "确定"
+         ],
+         "Removed %s string": [
+            "已删除 %s 个字符串"
          ],
          "OK, Great": [
             "好的，太棒了"
@@ -60,6 +75,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "删除字符串的操作在完成前已停止。未删除的字符串仍保留在表中。请重试以删除它们。"
+         ],
+         "Successfully removed strings": [
+            "成功删除字符串"
          ]
       }
    }

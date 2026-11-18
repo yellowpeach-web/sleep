@@ -27,19 +27,6 @@ class LanguagesController implements PageRenderInterface {
   ) {
     $this->languagesQuery                     = $languagesQuery;
     $this->languagesQueryWithAutomaticSupport = $languagesQueryWithAutomaticSupport;
-    $section = isset( $_GET['section'] ) && is_string( $_GET['section'] ) ? $_GET['section'] : '';
-    if ( $section !== 'languages' ) {
-      return;
-    }
-    add_action(
-      'admin_enqueue_scripts',
-      static function () {
-        if ( class_exists( \WPML\Languages\UI::class ) ) {
-          ( new \WPML\Languages\UI() )->add_hooks();
-        }
-      },
-      1
-    );
   }
 
 

@@ -1,9 +1,13 @@
 <?php
 
-class WPML_Installer_Domain_URL_Factory implements IWPML_Backend_Action_Loader, IWPML_AJAX_Action_Loader {
+class WPML_Installer_Domain_URL_Factory implements IWPML_Backend_Action_Loader, IWPML_Frontend_Action_Loader {
 
 	public function create() {
 		global $sitepress;
+
+		if ( is_multisite() && ! is_main_site() ) {
+			return null;
+		}
 
 		if ( WPML_LANGUAGE_NEGOTIATION_TYPE_DOMAIN === (int) $sitepress->get_setting( 'language_negotiation_type' ) ) {
 			global $wpml_url_converter;

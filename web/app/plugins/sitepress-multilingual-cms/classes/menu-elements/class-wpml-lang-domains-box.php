@@ -9,16 +9,14 @@ class WPML_Lang_Domains_Box extends WPML_SP_User {
 		$default_home     = (string) $this->sitepress->convert_url( $this->sitepress->get_wp_api()->get_home_url(), $default_language );
 		$home_schema      = wpml_parse_url( $default_home, PHP_URL_SCHEME ) . '://';
 		$home_path        = wpml_parse_url( $default_home, PHP_URL_PATH );
+		$host_notes       = \WPML\UrlHandling\SubsiteClash\LanguageHostNote::forShownDomains( $this->shown_domains( $active_languages, $default_language, $default_home, $language_domains ) );
 		ob_start();
 		?>
         <table class="language_domains sub-section">
 			<?php
 			foreach ( $active_languages as $code => $lang ) {
 				$text_box_id = esc_attr( 'language_domain_' . $code );
-				$url_code = \WPML\Core\Component\LanguageEditor\Domain\CustomLanguageFormat::usableDisplayCode(
-					isset( $lang['display_code'] ) ? $lang['display_code'] : null
-				);
-				$url_code = '' !== $url_code ? $url_code : $code;
+				$url_code    = $this->url_code_of( $code, $lang );
 				?>
                 <tr>
                     <td>
@@ -48,10 +46,10 @@ class WPML_Lang_Domains_Box extends WPML_SP_User {
                                     value="<?php echo esc_attr( $this->get_language_domain( $code, $url_code, $default_home, $language_domains ) ); ?>"
                                     data-language="<?php echo esc_attr( $code ); ?>"
 									aria-description="<?php esc_attr_e( 'Edit to change the domain for the language', 'sitepress' ); ?>"
-                                    size="30"/>
+                                    size="30"<?php $host_notes->printDescribedBy( $code ); ?>/>
 							<?php if ( isset( $home_path[1] ) && is_string( $home_path[1] ) ) { ?>
                                 <code><?php echo esc_html( $home_path ); ?></code>
-							<?php } ?>
+							<?php } ?><?php $host_notes->printNote( $code ); ?>
                         </td>
                         <td>
                             <p style="white-space: nowrap"><input
@@ -82,6 +80,25 @@ class WPML_Lang_Domains_Box extends WPML_SP_User {
 		<?php
 
 		return ob_get_clean();
+	}
+
+	private function url_code_of( $code, $lang ) {
+		$url_code = \WPML\Core\Component\LanguageEditor\Domain\CustomLanguageFormat::usableDisplayCode(
+			isset( $lang['display_code'] ) ? $lang['display_code'] : null
+		);
+
+		return '' !== $url_code ? $url_code : $code;
+	}
+
+	private function shown_domains( $active_languages, $default_language, $default_home, $language_domains ) {
+		$domains = array();
+		foreach ( $active_languages as $code => $lang ) {
+			if ( $code !== $default_language ) {
+				$domains[ $code ] = $this->get_language_domain( $code, $this->url_code_of( $code, $lang ), $default_home, $language_domains );
+			}
+		}
+
+		return $domains;
 	}
 
 	private function get_language_domain( $code, $url_code, $default_home, $language_domains ) {

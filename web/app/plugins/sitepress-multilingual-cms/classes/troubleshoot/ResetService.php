@@ -5,6 +5,7 @@ namespace WPML\Troubleshooting;
 use WPML\Infrastructure\WordPress\Component\CustomFieldPreferences\IncidentStore;
 use WPML\Infrastructure\WordPress\Component\CustomFieldPreferences\MigrationStateStorage;
 use WPML\Infrastructure\WordPress\Component\CustomFieldPreferences\Repository\PreferenceRepository;
+use WPML\Knowledge\AppearanceRepository;
 use WPML\Knowledge\ElementKnowledge;
 use WPML\Media\Lookup\MediaLookupSchema;
 use WPML\TM\ATE\ClonedSites\AliasDomainResetFlag;
@@ -12,6 +13,8 @@ use WPML\TM\ATE\ClonedSites\ReconnectState;
 use WPML\TM\ATE\JobCreation\AteCreateReconciler;
 use WPML\TM\Emails\Report\JobRowsStorage;
 use WPML\TM\Settings\ChecksumFieldHistory;
+use WPML\TranslationPolicy\Policy\LegacyFilterLog;
+use WPML\TranslationPolicy\Policy\PolicyTable;
 use WPML_Cache_Directory;
 use WPML_Config_Update;
 use WPML_WP_API;
@@ -59,6 +62,13 @@ class ResetService {
 		'icl_language_preset_countries',
 		ElementKnowledge::TABLE,
 		MediaLookupSchema::TABLE,
+		AppearanceRepository::TABLE,
+		\WPML\TM\ATE\Handshake\Schema::LOG_TABLE,
+		\WPML\TM\ATE\Handshake\Schema::MARKS_TABLE,
+		\WPML\TM\Upgrade\Commands\CreateTermBatchMembersTable::TABLE_NAME,
+		\WPML\EditHistory\Tables::ENTRIES,
+		\WPML\EditHistory\Tables::STATE,
+		PolicyTable::NAME,
 	);
 
 	const WPML_USER_OPTIONS = array(
@@ -266,10 +276,16 @@ class ResetService {
 			'_wpml_jobs_not_notified',
 			'wpml_cms_nav_settings',
 			'wpml_cms_nav_cache_table_ready',
+			\WPML\TM\ATE\TranslateEverything\TermBundleMembers::TABLE_OPTION,
 			'WPML_CMS_NAV_VERSION',
 			'icl_st_settings',
 			'wpml_pb_has_shortcode_settings',
 			'wpml_pb_block_default_strings',
+			'wpml_st_string_carriers',
+			'wpml_st_string_carriers_refused',
+			'wpml_st_string_carriers_handed_over',
+			'wpml_elementor_site_settings_claims_declared',
+			'wpml_elementor_site_settings_claims_retry_at',
 			'wpml-tm-custom-xml',
 			'wpml-st-persist-errors',
 			'wpml_base_slug_translation',
@@ -284,6 +300,7 @@ class ResetService {
 			IncidentStore::OPTION_NAME,
 			ChecksumFieldHistory::OPTION,
 			ChecksumFieldHistory::CHECK_OPTION,
+			LegacyFilterLog::OPTION,
 		);
 
 		$options   = array_merge( $options, \WPML\Options\Reset::get_registered_options() );
@@ -303,7 +320,7 @@ class ResetService {
 		global $wpdb;
 		( new JobRowsStorage( $wpdb ) )->deleteAll();
 
-		foreach ( [ AteCreateReconciler::UNCONFIRMED_OPTION_PREFIX, AteCreateReconciler::IN_FLIGHT_OPTION_PREFIX ] as $prefix ) {
+		foreach ( [ AteCreateReconciler::UNCONFIRMED_OPTION_PREFIX, AteCreateReconciler::IN_FLIGHT_OPTION_PREFIX, AteCreateReconciler::HELD_SEND_OPTION_PREFIX, \WPML\TM\ATE\JobCreation\CreateFailureRecord::OPTION_PREFIX ] as $prefix ) {
 			$names = $wpdb->get_col(
 				$wpdb->prepare(
 					"SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE %s",

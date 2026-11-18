@@ -1,6 +1,9 @@
 <?php
 
 use WPML\UrlHandling\WPLoginUrlConverter;
+use WPML\Core\Component\CustomFieldPreferences\Domain\ElementType;
+use WPML\TM\Settings\PreferenceResolver;
+use WPML\TM\Settings\PreferenceWriter;
 use WPML\AdminLanguageSwitcher\AdminLanguageSwitcher;
 use WPML\Core\Component\PostHog\Application\Service\Event\EventInstanceService;
 
@@ -347,12 +350,48 @@ class WPML_Ajax_Commands {
 		if ( $remember_language < 24 ) {
 			$remember_language = 24;
 		}
-		$iclsettings                       = $this->sitepress->get_settings();
-		$iclsettings['automatic_redirect'] = $this->post_int( 'icl_automatic_redirect' );
-		$iclsettings['remember_language']  = $remember_language;
+		$iclsettings = $this->sitepress->get_settings();
+
+		if ( $this->post_has( 'icl_first_visit' ) ) {
+			$iclsettings['automatic_redirect']          = $this->posted_first_visit_redirect();
+			$iclsettings['suggest_browser_language']    = 'bar' === $this->post_key( 'icl_first_visit' ) ? 1 : 0;
+			$iclsettings['redirect_to_chosen_language'] = 1 === $this->post_int( 'icl_redirect_to_chosen_language' ) ? 1 : 0;
+			$iclsettings['chosen_language_days']        = WPML_Browser_Redirect::sanitize_chosen_language_days( $this->post_text( 'icl_chosen_language_days' ) );
+		} else {
+			$automatic_redirect                = $this->post_int( 'icl_automatic_redirect' );
+			$iclsettings['automatic_redirect'] = in_array( $automatic_redirect, [ 1, 2 ], true ) ? $automatic_redirect : 0;
+			if ( $iclsettings['automatic_redirect'] && ! empty( $iclsettings['suggest_browser_language'] ) ) {
+				$iclsettings['suggest_browser_language'] = 0;
+			}
+		}
+
+		$iclsettings['remember_language'] = $remember_language;
+
+		if ( ! empty( $iclsettings['suggest_browser_language'] ) ) {
+			$this->refresh_bar_texts();
+		} else {
+			$this->drop_bar_texts();
+		}
+
 		$this->sitepress->save_settings( $iclsettings );
 		echo '1|';
 		exit;
+	}
+
+	private function posted_first_visit_redirect() {
+		if ( 'redirect' !== $this->post_key( 'icl_first_visit' ) ) {
+			return 0;
+		}
+
+		return 'home' === $this->post_key( 'icl_redirect_missing' ) ? 2 : 1;
+	}
+
+	protected function refresh_bar_texts() {
+		( new \WPML\BrowserLanguageRedirect\BarTexts( $this->sitepress ) )->refresh();
+	}
+
+	protected function drop_bar_texts() {
+		\WPML\BrowserLanguageRedirect\BarTexts::drop();
 	}
 
 	public function icl_custom_tax_sync_options() {
@@ -502,8 +541,7 @@ class WPML_Ajax_Commands {
 		if ( defined( 'WPML_TM_VERSION' ) ) {
 			global $iclTranslationManagement;
 			if ( ! empty( $iclTranslationManagement ) ) {
-				$iclTranslationManagement->settings[ WPML_POST_META_SETTING_INDEX_PLURAL ][ $custom_field ] = $translate_action;
-				$iclTranslationManagement->save_settings();
+				$this->save_post_field_mode( $custom_field, $translate_action );
 				echo '<strong><em>' . /* translators: Notice shown after the translation setting of one field is saved. */ esc_html__( 'Settings updated', 'sitepress' ) . '</em></strong>';
 			} else {
 				echo '<span style="color:#FF0000;">'
@@ -518,15 +556,20 @@ class WPML_Ajax_Commands {
 		exit;
 	}
 
+	private function save_post_field_mode( $custom_field, $mode ) {
+		if ( PreferenceResolver::mode( ElementType::POST, $custom_field ) !== $mode ) {
+			PreferenceWriter::setModes( ElementType::POST, [ $custom_field => $mode ] );
+		}
+	}
+
 	public function icl_seo_options() {
 		$this->authenticate_or_exit( 'icl_seo_options' );
 		$this->user_is_admin_or_exit();
 
 		$seo = $this->sitepress->get_setting( 'seo', [] );
 
-		$seo['head_langs']                  = $this->post_int( 'icl_seo_head_langs' );
-		$seo['canonicalization_duplicates'] = $this->post_int( 'icl_seo_canonicalization_duplicates' );
-		$seo['head_langs_priority']         = $this->post_int( 'wpml_seo_head_langs_priority', 1 );
+		$seo['head_langs']          = $this->post_int( 'icl_seo_head_langs' );
+		$seo['head_langs_priority'] = $this->post_int( 'wpml_seo_head_langs_priority', 1 );
 
 		$this->sitepress->set_setting( 'seo', $seo, true );
 		echo '1|';
@@ -663,10 +706,8 @@ class WPML_Ajax_Commands {
 		$post_type       = $this->post_key( 'post_type' );
 		$source_language = $this->post_text( 'source_language' );
 
-		$current_group_member_id = (int) $this->get_var_prepared(
-			"SELECT element_id FROM {$this->wpdb->prefix}icl_translations WHERE trid = %d AND element_type = %s LIMIT 1",
-			[ $trid, 'post_' . $post_type ]
-		);
+		$current_group_member_id = ( new \WPML\Translation\OrphanTranslationsRepository( $this->wpdb ) )
+			->memberElementId( $trid, 'post_' . $post_type );
 		if ( ! $current_group_member_id ) {
 			echo wp_json_encode( [] );
 			exit;

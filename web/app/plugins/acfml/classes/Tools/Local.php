@@ -4,6 +4,7 @@ namespace ACFML\Tools;
 
 use ACFML\FieldGroup\CodeGroupModes;
 use ACFML\FieldGroup\Mode;
+use ACFML\FieldGroup\ModePreferenceStamp;
 use ACFML\Helper\FieldGroup;
 use WPML\FP\Obj;
 use WPML\LIB\WP\Hooks;
@@ -14,12 +15,17 @@ class Local extends Transfer implements \IWPML_Backend_Action, \IWPML_Frontend_A
 	const PROCESS_SUBFIELDS_QUEUE_PRIORITY = 9;
 	const SCAN_MODE_CACHE_OPTION_KEY       = 'acfml_local_fields_preferences';
 	const ENSURE_TRANSLATION_MODE_PRIORITY = 10;
+	const WRITE_STAMPED_PREFERENCES_PRIORITY = 1;
 
 	private $field_settings;
 
 	private $codeGroupModes;
 
 	private $subfieldsQueue = [];
+
+	private $stampedForMap = [];
+
+	private $stampedMapWritten = false;
 
 	public function __construct( \WPML_ACF_Field_Settings $field_settings, CodeGroupModes $codeGroupModes ) {
 		$this->field_settings = $field_settings;
@@ -38,6 +44,9 @@ class Local extends Transfer implements \IWPML_Backend_Action, \IWPML_Frontend_A
 
 		Hooks::onFilter( 'acf/prepare_field_group_for_import', self::ENSURE_TRANSLATION_MODE_PRIORITY )
 			->then( spreadArgs( [ $this, 'ensureTranslationMode' ] ) );
+
+		add_action( 'wp_loaded', [ $this, 'writeStampedPreferences' ], self::WRITE_STAMPED_PREFERENCES_PRIORITY );
+		add_action( 'shutdown', [ $this, 'writeStampedPreferences' ], self::WRITE_STAMPED_PREFERENCES_PRIORITY );
 
 		if ( is_admin() ) {
 			add_action( 'acf/include_admin_tools', [ $this, 'loadUI' ] );
@@ -77,7 +86,51 @@ class Local extends Transfer implements \IWPML_Backend_Action, \IWPML_Frontend_A
 			$fieldGroup[ Mode::KEY ] = $this->codeGroupModes->getForUnconfigured( $fieldGroup );
 		}
 
+		if ( self::isRegisteredInPhp( $fieldGroup ) ) {
+			$fieldGroup = ModePreferenceStamp::onFields( $fieldGroup, (string) Mode::getMode( $fieldGroup ) );
+			$this->queueCodeGroupFieldsForMap( $fieldGroup );
+		}
+
 		return $fieldGroup;
+	}
+
+	private function queueCodeGroupFieldsForMap( array $fieldGroup ) {
+		$mode = Mode::getMode( $fieldGroup );
+		if ( $this->stampedMapWritten || Mode::ADVANCED === $mode || ! in_array( $mode, Mode::ALL, true ) ) {
+			return;
+		}
+
+		$fields = [];
+		foreach ( (array) Obj::propOr( [], 'fields', $fieldGroup ) as $field ) {
+			if ( isset( $field['wpml_cf_preferences'] ) ) {
+				$fields[] = $field + [ 'parent' => Obj::prop( 'key', $fieldGroup ) ];
+			}
+		}
+
+		if ( $fields ) {
+			unset( $fieldGroup['fields'] );
+			$this->stampedForMap[] = [
+				'group'  => $fieldGroup,
+				'fields' => $fields,
+			];
+		}
+	}
+
+	public function writeStampedPreferences() {
+		$stamped             = $this->stampedForMap;
+		$this->stampedForMap = [];
+
+		if ( ! $stamped || $this->stampedMapWritten ) {
+			return;
+		}
+
+		if ( $this->field_settings->writeMissingCodeGroupPreferences( $stamped ) > 0 ) {
+			$this->stampedMapWritten = true;
+		}
+	}
+
+	private static function isRegisteredInPhp( $fieldGroup ) {
+		return 'php' === Obj::prop( 'local', $fieldGroup ) && 0 === (int) Obj::prop( 'ID', $fieldGroup );
 	}
 
 	public function processSubfieldsQueue() {

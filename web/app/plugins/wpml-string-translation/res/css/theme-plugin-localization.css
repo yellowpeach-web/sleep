@@ -552,9 +552,6 @@ h5 {
     display: none;
   }
 }
-/* jQuery UI's own sheet also declares .ui-dialog { position: absolute }, at the
-   same specificity as the block above, and WP can enqueue that sheet after this
-   one, so the viewport anchor matches on both classes (wpmldev-8583). */
 .wpml-st-string-scanning-modal-form.ui-dialog {
   position: fixed;
 }

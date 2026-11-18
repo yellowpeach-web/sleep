@@ -38,18 +38,50 @@ class JobHooks implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 			return $prevTranslation;
 		}
 
+		$rowSources = [];
 		foreach ( (array) Obj::propOr( [], 'contents', $package ) as $field => $content ) {
-			if ( ! $this->belongsToARow( (string) $field, $originalId ) ) {
+			if ( $this->belongsToARow( (string) $field, $originalId ) ) {
+				$rowSources[ (string) $field ] = (string) Obj::propOr( '', 'data', $content );
+			}
+		}
+
+		$takenByTheirOwnRow = [];
+		foreach ( $rowSources as $source ) {
+			if ( isset( $translationBySource[ $source ] ) ) {
+				$takenByTheirOwnRow[ $translationBySource[ $source ] ] = true;
+			}
+		}
+
+		foreach ( $rowSources as $field => $source ) {
+			if ( isset( $translationBySource[ $source ] ) ) {
+				$prevTranslation[ $field ] = new \WPML_TM_Translated_Field( $source, $translationBySource[ $source ], true );
 				continue;
 			}
 
-			$source      = (string) Obj::propOr( '', 'data', $content );
-			$translation = (string) Obj::propOr( '', $source, $translationBySource );
-
-			$prevTranslation[ $field ] = new \WPML_TM_Translated_Field( $source, $translation, '' !== $translation );
+			$prevTranslation[ $field ] = new \WPML_TM_Translated_Field(
+				$source,
+				$this->translationOfAnEditedRow( $prevTranslation, $field, $takenByTheirOwnRow ),
+				false
+			);
 		}
 
 		return $prevTranslation;
+	}
+
+	private function translationOfAnEditedRow( array $prevTranslation, $field, array $takenByTheirOwnRow ) {
+		$seeded = $prevTranslation[ $field ] ?? null;
+
+		if ( ! $seeded instanceof \WPML_TM_Translated_Field ) {
+			return '';
+		}
+
+		$translation = (string) $seeded->get_translation();
+
+		if ( '' === $translation || isset( $takenByTheirOwnRow[ $translation ] ) ) {
+			return '';
+		}
+
+		return $translation;
 	}
 
 	private function previousRowTranslations( $originalId, $lang ) {

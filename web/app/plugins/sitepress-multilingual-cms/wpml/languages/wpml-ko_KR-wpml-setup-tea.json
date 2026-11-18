@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=1; plural=0;",
             "lang": "ko_KR"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "Private Translation Cloud(PTC)로 전환"
+         ],
+         "Switch to PTC": [
+            "PTC로 전환"
+         ],
+         "Switching…": [
+            "전환 중…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "전환을 확인할 수 없습니다. 다시 시도하거나 새로 고침하여 현재 엔진을 확인하세요."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "번역 엔진 컨트롤을 로드할 수 없습니다. 페이지를 새로 고침하고 다시 시도하세요."
+         ],
+         "Loading translation engine settings…": [
+            "번역 엔진 설정 로드 중…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "PTC로 전환하기 전에 위의 사이트 문맥을 입력하세요."
+         ],
+         "Reload page": [
+            "페이지 새로 고침"
+         ],
+         "Could not fetch engines data": [
+            "엔진 데이터를 가져올 수 없습니다"
+         ],
          "Error in updating since dates for types.": [
             "유형별 시작 날짜를 업데이트하는 중 오류가 발생했습니다."
          ],
@@ -133,9 +160,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "레거시 가격이 적용되었습니다. %s은(는) 레거시 번역 엔진으로, 새 사이트에는 권장되지 않으며 곧 중단될 예정입니다. 기존 사이트에는 이에 대한 조정된 단어 요율이 유지됩니다."
          ],
-         "Switch to PTC": [
-            "PTC로 전환"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "현재 콘텐츠를 번역하는 데 지금 필요한 단어 수입니다. 다른 플러그인에서 추가한 일부 텍스트(예: 양식이나 슬라이더)는 포함되지 않으며, 설정이 완료된 후에 계산됩니다. 테마 및 플러그인의 사이트 문구도 설정 후에 계산되며 대개 수백 단어가 추가됩니다. 그 이후의 편집은 무료입니다. 새로 추가하는 단어에 대해서만 다시 비용을 지불하면 됩니다."
          ],
@@ -151,8 +175,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "페이지, 글, 상품 및 관련 사용자 정의 필드, 페이지 빌더 텍스트, 미디어 텍스트, 사용된 카테고리, 태그 및 속성이 계산됩니다."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "페이지, 글, 상품 및 관련 사용자 정의 필드, 페이지 빌더 텍스트, 미디어 텍스트, 사용된 카테고리, 태그, 속성 및 사이트 문구가 계산됩니다. 용어는 양방향으로 번역을 위해 전송되므로 해당 용어를 사용하는 모든 항목에서 한 번 계산되고 개별적으로도 한 번 계산됩니다."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "페이지, 글, 상품과 이에 포함된 사용자 정의 필드, 페이지 빌더 텍스트, 미디어 텍스트, 이들이 사용하는 카테고리, 태그, 속성 및 사이트 문구를 계산합니다. 각 카테고리, 태그, 속성은 ‘분류 체계’ 행에서 한 번만 계산되며, 이를 사용하는 항목에서 중복 계산되지 않습니다."
          ],
          "Total items": [
             "총 항목"
@@ -225,6 +249,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "<b>모든 항목 자동 번역</b>을 시작하려면 <b>종량제</b>를 활성화하거나 선불 단어를 구매하십시오."
+         ],
+         "Translation quality:": [
+            "번역 품질:"
          ],
          "Select payment method": [
             "결제 수단 선택"
@@ -341,7 +368,7 @@
             "WPML 계정에 %1$s%2$s 단어%3$s가 있습니다."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "WPML 계정에 %1$s%2$s개를 사용할 수 있습니다.%3$s"
+            "WPML 계정에서 %1$s%2$s단어%3$s를 사용할 수 있습니다."
          ],
          "(Only the WPML account owner can do this.)": [
             "(WPML 계정 소유자만 이 작업을 수행할 수 있습니다.)"
@@ -357,6 +384,30 @@
          ],
          "Close modal": [
             "모달 닫기"
+         ],
+         "Obvious mistakes": [
+            "명백한 오류"
+         ],
+         "Mistakes visible": [
+            "오류 보임"
+         ],
+         "Ready to publish": [
+            "발행 가능"
+         ],
+         "Your engine": [
+            "사용 중인 엔진"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "번역 품질(50-100 척도): %1$s의 점수는 %2$d점이며, %3$s의 점수는 %4$d점입니다."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "점수는 WPML의 내부 MQM 번역 품질 연구를 기반으로 합니다."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC는 더 높은 품질로 번역하며 즉시 게시 가능한 결과를 제공합니다."
          ]
       }
    }

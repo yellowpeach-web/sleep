@@ -45,54 +45,6 @@ class AtePinger implements AtePingerInterface {
   }
 
 
-  public function checkReachability( string $trigger ) {
-    $this->logger->reachabilityProbeRequest( $trigger );
-
-    $startMs  = (int) ( microtime( true ) * 1000 );
-    $response = $this->apiClient->check_delivery_reachability(
-      [ 'site_identifier' => (string) \wpml_get_site_id( \WPML_TM_ATE::SITE_ID_SCOPE ) ],
-      [ 'wpml_ate_bypass_breaker' => true ]
-    );
-    $elapsedMs = (int) ( microtime( true ) * 1000 ) - $startMs;
-
-    if ( \is_wp_error( $response ) ) {
-      if ( self::isEndpointMissing( $response ) ) {
-        $this->logger->reachabilityProbeUnsupported( $trigger );
-
-        return null;
-      }
-
-      $this->logger->reachabilityProbeHttpError( $trigger, $response->get_error_message(), $elapsedMs );
-
-      return $this->persist( $trigger, false );
-    }
-
-    if ( ! is_object( $response ) || ! isset( $response->reachable ) ) {
-      $snippet = is_scalar( $response ) ? (string) $response : (string) json_encode( $response );
-      $reason  = is_object( $response ) ? 'reachable_key_missing' : 'non_object_response';
-      $this->logger->reachabilityProbeMalformedBody( $trigger, $snippet, $elapsedMs, $reason );
-
-      return $this->persist( $trigger, false );
-    }
-
-    $reachable = (bool) $response->reachable;
-    $this->logger->reachabilityProbeResponse(
-      $trigger,
-      isset( $response->accepted ) ? (bool) $response->accepted : null,
-      $reachable,
-      isset( $response->checked_url ) ? (string) $response->checked_url : null,
-      $elapsedMs
-    );
-
-    return $this->persist( $trigger, $reachable );
-  }
-
-
-  private static function isEndpointMissing( $error ): bool {
-    return (int) $error->get_error_code() === 404;
-  }
-
-
   private function persist( string $trigger, bool $reachable ): bool {
     $this->reachabilityRepository->save( $reachable );
     $this->logger->reachabilityPersisted( $trigger, $reachable );

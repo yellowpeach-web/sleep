@@ -36,10 +36,14 @@ class FindStringPackagesQuery implements FindStringPackagesQueryInterface {
 		$this->jobsQuery = $jobsQuery;
 	}
 
+	public static function getResults( $wpdb, $query, $output ) {
+		return $wpdb->get_results( $query, $output );
+	}
+
 	public function execute( StringPackageCriteria $criteria ) {
 		$query = $this->queryBuilder->build( $criteria );
 
-		$packages = $this->wpdb->get_results( $query, ARRAY_A );
+		$packages = self::getResults( $this->wpdb, $query, ARRAY_A );
 		$packages = $this->translationsQuery->get( $packages, $criteria );
 		$jobs = $this->jobsQuery->get( $packages );
 

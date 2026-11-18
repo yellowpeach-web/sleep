@@ -4,7 +4,7 @@ use WPML\FP\Logic;
 use WPML\FP\Obj;
 use WPML\FP\Type;
 
-class WPML_ACF_Field_Annotations implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
+class WPML_ACF_Field_Annotations implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 
 	const ACF_INPUT_PREFIX = 'acf[';
 

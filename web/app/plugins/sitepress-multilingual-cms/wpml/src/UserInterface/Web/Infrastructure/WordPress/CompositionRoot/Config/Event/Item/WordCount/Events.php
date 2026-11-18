@@ -5,7 +5,6 @@ namespace WPML\UserInterface\Web\Infrastructure\WordPress\CompositionRoot\Config
 use WPML\DicInterface;
 use WPML\Infrastructure\PluginFilesMatchLoadedVersionGate;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Events\Item\WordCount\CalculateWordsInPackageListener;
-use WPML\UserInterface\Web\Infrastructure\WordPress\Events\Item\WordCount\CalculateWordsInPostListener;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Events\Item\WordCount\CalculateWordsInStringListener;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Events\Item\WordCount\CountListener;
 use WPML\UserInterface\Web\Infrastructure\WordPress\Events\Item\WordCount\OnStringRegisteredInPackageListener;
@@ -55,19 +54,6 @@ class Events {
     );
 
     add_filter(
-      'wpml_word_count_calculate_post',
-      function ( $currentValue, $stringId ) {
-        if ( ! $this->filesMatchLoadedVersion() ) {
-          return $currentValue;
-        }
-        return $this->dic->make( CalculateWordsInPostListener::class )
-            ->calculate( $currentValue, $stringId );
-      },
-      10,
-      2
-    );
-
-    add_filter(
       'wpml_word_count_chars',
       function ( $currentValue, $content ) {
         if ( ! $this->filesMatchLoadedVersion() ) {
@@ -110,6 +96,9 @@ class Events {
 
 
   public function runShutdownBookkeeping() {
+    if ( $this->onStringRegisteredInPackageListener === null ) {
+      return;
+    }
     if ( ! $this->filesMatchLoadedVersion() ) {
       return;
     }

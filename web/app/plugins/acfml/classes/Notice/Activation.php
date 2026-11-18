@@ -9,6 +9,6 @@ class Activation {
 	const PENDING_RESET = 'reset';
 
 	public static function activate() {
-		update_option( self::OPTION_PENDING, self::PENDING_RESET );
+		update_option( self::OPTION_PENDING, self::PENDING_RESET, true );
 	}
 }

@@ -37,14 +37,32 @@
          "Removing strings from <b>String Translation</b> table": [
             "Strings worden verwijderd uit de tabel <b>Stringvertaling</b>"
          ],
+         "%s string waiting for translation was kept.": [
+            "%s string die wacht op vertaling is behouden.",
+            "%s strings die wachten op vertaling zijn behouden."
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "Om strings opnieuw aan de tabel <b>Stringvertaling</b> toe te voegen, moet u mogelijk vertaalbestanden opnieuw scannen of strings als vertaalbaar registreren."
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "Lees meer over <a>het scannen van uw site op strings en het registreren ervan als vertaalbaar</a>."
          ],
-         "Successfully removed strings": [
-            "Strings succesvol verwijderd"
+         "Nothing removed: %s string is waiting for translation": [
+            "Niets verwijderd: %s string wacht op vertaling",
+            "Niets verwijderd: %s strings wachten op vertaling"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "Niets verwijderd: de geselecteerde domeinen bevatten geen onvertaalde strings"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "Om deze ook te verwijderen, selecteert u “Ook strings verwijderen die wachten op vertaling” en klikt u opnieuw op Verwijderen."
+         ],
+         "OK": [
+            "OK"
+         ],
+         "Removed %s string": [
+            "%s string verwijderd",
+            "%s strings verwijderd"
          ],
          "OK, Great": [
             "Oké, prima"
@@ -60,6 +78,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "Het verwijderen van strings is gestopt voordat het was voltooid. De strings die niet zijn verwijderd, staan nog in de tabel. Probeer ze opnieuw te verwijderen."
+         ],
+         "Successfully removed strings": [
+            "Strings succesvol verwijderd"
          ]
       }
    }

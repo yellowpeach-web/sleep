@@ -2,6 +2,8 @@
 
 class WPML_PB_Handle_Custom_Fields implements IWPML_Action {
 
+	const PRIORITY = 10;
+
 	protected $data_settings;
 
 	public function __construct( IWPML_Page_Builders_Data_Settings $data_settings ) {
@@ -13,7 +15,7 @@ class WPML_PB_Handle_Custom_Fields implements IWPML_Action {
 		add_action( 'wpml_pb_after_page_without_elements_post_content_copy', array(
 			$this,
 			'copy_custom_fields'
-		), 10, 2 );
+		), self::PRIORITY, 2 );
 	}
 
 	public function is_page_builder_page_filter( $is_page_builder_page, $post = null ) {

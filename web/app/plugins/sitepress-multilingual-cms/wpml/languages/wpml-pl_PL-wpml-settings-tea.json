@@ -137,11 +137,11 @@
          "Legacy engine": [
             "Starszy silnik"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "Zastosowano starszy cennik. %s to starszy silnik tłumaczeniowy, który nie jest zalecany dla nowych witryn i zostanie wycofany. Istniejące witryny zachowują dla niego skorygowaną stawkę za słowo."
-         ],
          "Switch to PTC": [
             "Przełącz na PTC"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Zastosowano starszy cennik. %s to starszy silnik tłumaczeniowy, który nie jest zalecany dla nowych witryn i zostanie wycofany. Istniejące witryny zachowują dla niego skorygowaną stawkę za słowo."
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Tyle słów potrzeba dziś na przetłumaczenie Twoich obecnych treści. Wartość ta nie obejmuje niektórych tekstów dodanych przez inne wtyczki, takich jak formularze czy pokazy slajdów, które są zliczane po zakończeniu konfiguracji. Frazy witryny z motywu i wtyczek są również zliczane po konfiguracji i zwykle dodają kilkaset słów. Późniejsze edycje są bezpłatne. Płacisz ponownie tylko za dodane słowa."
@@ -158,8 +158,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Liczba ta obejmuje strony, wpisy i produkty wraz z ich polami niestandardowymi, tekstami page buildera i mediów, a także używanymi przez nie kategoriami, tagami i atrybutami."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Liczba ta obejmuje strony, wpisy i produkty wraz z ich polami niestandardowymi, tekstami page buildera i mediów, używanymi przez nie kategoriami, tagami i atrybutami, a także ciągami witryny. Każdy termin jest liczony przy każdym elemencie, w którym występuje, oraz raz osobno, ponieważ jest przesyłany do tłumaczenia w obu formach."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Uwzględnia strony, wpisy i produkty wraz z ich polami niestandardowymi, tekstami kreatorów stron i tekstami mediów, używanymi przez nie kategoriami, tagami i atrybutami, a także ciągami witryny. Każda kategoria, tag lub atrybut jest liczony tylko raz – w wierszu Taksonomie – i nie jest ponownie uwzględniany przy elementach, które z nich korzystają."
          ],
          "Total items": [
             "Łącznie elementów"
@@ -338,7 +338,7 @@
             "Zaloguj się do witryny z aktywnym kontem tłumaczenia automatycznego."
          ],
          "Go to \"WPML\" → \"Translation Dashboard\".": [
-            "Przejdź do „WPML” → „Panel zarządzania tłumaczeniami”."
+            "Przejdź do „WPML” → „Kokpit tłumaczeń”."
          ],
          "In the \"Payment & Maintenance\" tab, go to \"Connected sites\".": [
             "Na karcie „Płatności i konserwacja” przejdź do „Połączone witryny”."

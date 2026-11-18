@@ -127,11 +127,11 @@
          "Legacy engine": [
             "传统引擎"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "已应用传统定价。%s 是传统翻译引擎，不推荐用于新站点，并且即将停用。现有站点将为其保留调整后的字数费率。"
-         ],
          "Switch to PTC": [
             "切换到 PTC"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "已应用传统定价。%s 是传统翻译引擎，不推荐用于新站点，并且即将停用。现有站点将为其保留调整后的字数费率。"
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "这是目前翻译您现有内容所需的字数。其中不包括其他插件添加的某些文本（例如表单或滑块），这些内容将在设置完成后进行统计。来自主题和插件的站点字符串也会在设置后进行统计，通常会增加数百字。在此之后，编辑是免费的。您只需为新增的字数再次付费。"
@@ -148,8 +148,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "统计内容包括页面、文章和产品，以及它们的自定义字段、页面构建器文本、媒体文本，以及它们使用的分类、标签和属性。"
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "统计内容包括页面、文章和产品，以及它们的自定义字段、页面构建器文本、媒体文本、它们使用的分类、标签和属性，以及站点字符串。术语在使用它的每个项目中均会被统计一次，并且其本身也会单独统计一次，因为这两种情况都会发送以进行翻译。"
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "它统计页面、文章和产品及其自定义字段、页面构建器文本和媒体文本，以及它们使用的分类、标签和属性，还有站点字符串。每个分类、标签或属性仅在“分类法”行中统计一次，不会与使用它们的内容项重复统计。"
          ],
          "Total items": [
             "项目总数"
@@ -266,7 +266,7 @@
             "%1$s查看定价%2$s。"
          ],
          "Lowest cost per word": [
-            "最低字数成本"
+            "最低每字成本"
          ],
          "Pay only for what you use": [
             "仅为您使用的部分付费"
@@ -383,7 +383,7 @@
             "字数仍然不足。请在 %d 秒后再次刷新。"
          ],
          "Already assigned?": [
-            "已经分配？"
+            "已分配？"
          ],
          "Close modal": [
             "关闭模态框"

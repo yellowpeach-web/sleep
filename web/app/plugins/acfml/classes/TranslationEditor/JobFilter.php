@@ -26,6 +26,8 @@ class JobFilter implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML
 
 	private $jobToGroupId = [];
 
+	private $hostLeaves = [];
+
 	private $fieldNamePatterns;
 
 	public function __construct( FieldNamePatterns $fieldNamePatterns ) {
@@ -124,6 +126,17 @@ class JobFilter implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML
 		$acfObject = get_field_object( $customField, $objectId );
 
 		if ( false !== $acfObject ) {
+			$clonedSubField = $this->findClonedSubField( $objectId, $customField );
+			if ( $clonedSubField ) {
+				$field['title'] = $clonedSubField['title'];
+				$field['group'] = [
+					self::ACF_TOP_LEVEL_GROUP_ID => self::ACF_TOP_LEVEL_GROUP_TITLE,
+					$clonedSubField['groupKey']  => $clonedSubField['groupTitle'],
+				];
+
+				return $field;
+			}
+
 			$parentId   = $acfObject['parent'];
 			$fieldGroup = acf_get_field_group( $parentId );
 
@@ -131,6 +144,93 @@ class JobFilter implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML
 		}
 
 		return $field;
+	}
+
+	private function findClonedSubField( $objectId, string $metaKey ) {
+		foreach ( $this->getHostLeaves( $objectId ) as $leaf ) {
+			if ( ! preg_match( $leaf['pattern'], $metaKey, $matches ) ) {
+				continue;
+			}
+
+			if ( ! $leaf['cloned'] ) {
+				return null;
+			}
+
+			$rows   = array_slice( $matches, 1 );
+			$labels = [];
+			foreach ( $leaf['path'] as $segment ) {
+				list( $label, $isRow ) = $segment;
+				if ( $isRow ) {
+					$label .= ' #' . ( (int) array_shift( $rows ) + 1 );
+				}
+				$labels[] = $label;
+			}
+
+			return [
+				'title'      => implode( ' / ', $labels ),
+				'groupKey'   => $leaf['groupKey'],
+				'groupTitle' => $leaf['groupTitle'],
+			];
+		}
+
+		return null;
+	}
+
+	private function getHostLeaves( $objectId ) {
+		if ( ! is_numeric( $objectId ) || ! function_exists( 'acf_get_field_groups' ) || ! function_exists( 'acf_get_fields' ) ) {
+			return [];
+		}
+
+		$objectId = (int) $objectId;
+		if ( ! array_key_exists( $objectId, $this->hostLeaves ) ) {
+			$leaves = [];
+			foreach ( acf_get_field_groups( [ 'post_id' => $objectId ] ) ?: [] as $fieldGroup ) {
+				if ( ! is_array( $fieldGroup ) || ! isset( $fieldGroup['key'], $fieldGroup['title'] ) ) {
+					continue;
+				}
+				$this->collectLeaves( (array) acf_get_fields( $fieldGroup ), '', [], false, $fieldGroup, $leaves );
+			}
+			$this->hostLeaves[ $objectId ] = $leaves;
+		}
+
+		return $this->hostLeaves[ $objectId ];
+	}
+
+	private function collectLeaves( array $fields, string $prefix, array $path, bool $cloned, array $fieldGroup, array &$leaves ) {
+		foreach ( $fields as $acfField ) {
+			if ( ! is_array( $acfField ) || empty( $acfField['name'] ) ) {
+				continue;
+			}
+
+			$name     = (string) $acfField['name'];
+			$label    = (string) Obj::propOr( '', 'label', $acfField );
+			$type     = (string) Obj::prop( 'type', $acfField );
+			$isCloned = $cloned || ! empty( $acfField['_clone'] );
+			$children = Obj::propOr( [], 'sub_fields', $acfField );
+			$quoted   = preg_quote( $name, '/' );
+
+			if ( 'clone' === $type ) {
+				$childPath = 'group' === Obj::prop( 'display', $acfField ) ? array_merge( $path, [ [ $label, false ] ] ) : $path;
+				$this->collectLeaves( is_array( $children ) ? $children : [], $prefix, $childPath, true, $fieldGroup, $leaves );
+			} elseif ( 'group' === $type ) {
+				$this->collectLeaves( is_array( $children ) ? $children : [], $prefix . $quoted . '_', array_merge( $path, [ [ $label, false ] ] ), $isCloned, $fieldGroup, $leaves );
+			} elseif ( 'repeater' === $type ) {
+				$this->collectLeaves( is_array( $children ) ? $children : [], $prefix . $quoted . '_(\d+)_', array_merge( $path, [ [ $label, true ] ] ), $isCloned, $fieldGroup, $leaves );
+			} elseif ( 'flexible_content' === $type ) {
+				foreach ( Obj::propOr( [], 'layouts', $acfField ) as $layout ) {
+					$layoutFields = Obj::propOr( [], 'sub_fields', $layout );
+					$this->collectLeaves( is_array( $layoutFields ) ? $layoutFields : [], $prefix . $quoted . '_(\d+)_', array_merge( $path, [ [ $label, true ] ] ), $isCloned, $fieldGroup, $leaves );
+				}
+			} else {
+				$leaves[] = [
+					'pattern'    => '/^' . $prefix . $quoted . '$/',
+					'cloned'     => $isCloned,
+					'path'       => array_merge( $path, [ [ $label, false ] ] ),
+					'groupKey'   => (string) $fieldGroup['key'],
+					'groupTitle' => (string) $fieldGroup['title'],
+				];
+			}
+		}
 	}
 
 	private function handleAcfField( array $field, $objectId, array $acfObject, $fieldGroup ) {

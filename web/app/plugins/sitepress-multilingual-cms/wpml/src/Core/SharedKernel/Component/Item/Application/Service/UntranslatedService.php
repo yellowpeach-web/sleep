@@ -48,7 +48,9 @@ class UntranslatedService {
       }
 
       $ids = $query->getSomeIds( $numberOfIdsToFetch, $offset, $type );
-      return $ids;
+      if ( $ids ) {
+        return $ids;
+      }
     }
 
     return [];

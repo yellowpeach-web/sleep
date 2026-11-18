@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=2; plural=(n != 1);",
             "lang": "el"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "Μετάβαση στο Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "Μετάβαση στο PTC"
+         ],
+         "Switching…": [
+            "Γίνεται μετάβαση…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "Δεν μπορέσαμε να επιβεβαιώσουμε τη μετάβαση. Δοκιμάστε ξανά ή ανανεώστε για να δείτε την τρέχουσα μηχανή."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Δεν ήταν δυνατή η φόρτωση των στοιχείων ελέγχου της μηχανής μετάφρασης. Ανανεώστε τη σελίδα και δοκιμάστε ξανά."
+         ],
+         "Loading translation engine settings…": [
+            "Φόρτωση ρυθμίσεων μηχανής μετάφρασης…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "Συμπληρώστε το πλαίσιο του ιστότοπού σας παραπάνω πριν μεταβείτε στο PTC."
+         ],
+         "Reload page": [
+            "Ανανέωση σελίδας"
+         ],
+         "Could not fetch engines data": [
+            "Δεν ήταν δυνατή η ανάκτηση δεδομένων των μηχανών"
+         ],
          "Error in updating since dates for types.": [
             "Σφάλμα κατά την ενημέρωση των ημερομηνιών έναρξης για τους τύπους."
          ],
@@ -138,9 +165,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "Εφαρμόστηκε τιμολόγηση παλαιού τύπου. Η %s είναι μια παλαιού τύπου μηχανή μετάφρασης, δεν συνιστάται για νέους ιστότοπους και θα καταργηθεί. Οι υπάρχοντες ιστότοποι διατηρούν μια προσαρμοσμένη τιμή λέξης για αυτήν."
          ],
-         "Switch to PTC": [
-            "Μετάβαση στο PTC"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Αυτός είναι ο αριθμός λέξεων που απαιτείται σήμερα για τη μετάφραση του τρέχοντος περιεχομένου σας. Δεν περιλαμβάνει ορισμένα κείμενα που προστίθενται από άλλα πρόσθετα, όπως φόρμες ή slider, τα οποία καταμετρώνται μετά την ολοκλήρωση της ρύθμισης. Οι συμβολοσειρές του ιστότοπου από το θέμα και τα πρόσθετά σας καταμετρώνται επίσης μετά τη ρύθμιση και συνήθως προσθέτουν μερικές εκατοντάδες λέξεις. Στη συνέχεια, οι επεξεργασίες είναι δωρεάν. Πληρώνετε ξανά μόνο για τις λέξεις που προσθέτετε."
          ],
@@ -156,8 +180,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Καταμετρά σελίδες, δημοσιεύσεις και προϊόντα με τα προσαρμοσμένα πεδία τους, κείμενα κατασκευαστών σελίδων και κείμενα πολυμέσων, καθώς και τις κατηγορίες, τις ετικέτες και τις ιδιότητες που χρησιμοποιούν."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Καταμετρά σελίδες, δημοσιεύσεις και προϊόντα με τα προσαρμοσμένα πεδία τους, κείμενα κατασκευαστών σελίδων και κείμενα πολυμέσων, τις κατηγορίες, τις ετικέτες και τις ιδιότητες που χρησιμοποιούν, καθώς και συμβολοσειρές ιστότοπου. Ένας όρος καταμετράται σε κάθε στοιχείο που τον χρησιμοποιεί και μία φορά ξεχωριστά, επειδή αποστέλλεται για μετάφραση και με τους δύο τρόπους."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Υπολογίζει σελίδες, αναρτήσεις και προϊόντα με τα προσαρμοσμένα πεδία τους, τα κείμενα page-builder και τα κείμενα πολυμέσων, τις κατηγορίες, τις ετικέτες και τις ιδιότητες που χρησιμοποιούν, καθώς και τις συμβολοσειρές του ιστότοπου. Κάθε κατηγορία, ετικέτα ή ιδιότητα υπολογίζεται μία φορά, στη γραμμή «Ταξινομίες», και όχι ξανά με τα στοιχεία που τη χρησιμοποιούν."
          ],
          "Total items": [
             "Συνολικά στοιχεία"
@@ -230,6 +254,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "Για να ξεκινήσετε τη λειτουργία <b>Αυτόματη μετάφραση των πάντων</b>, ενεργοποιήστε τη <b>Χρέωση βάσει χρήσης</b> ή αγοράστε προπληρωμένες λέξεις."
+         ],
+         "Translation quality:": [
+            "Ποιότητα μετάφρασης:"
          ],
          "Select payment method": [
             "Επιλέξτε μέθοδο πληρωμής"
@@ -362,6 +389,30 @@
          ],
          "Close modal": [
             "Κλείσιμο παραθύρου"
+         ],
+         "Obvious mistakes": [
+            "Προφανή λάθη"
+         ],
+         "Mistakes visible": [
+            "Ορατά λάθη"
+         ],
+         "Ready to publish": [
+            "Έτοιμο για δημοσίευση"
+         ],
+         "Your engine": [
+            "Η μηχανή σας"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Ποιότητα μετάφρασης (κλίμακα 50-100): το %1$s βαθμολογείται με %2$d, το %3$s βαθμολογείται με %4$d."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Οι βαθμολογίες βασίζονται στην εσωτερική μελέτη ποιότητας μετάφρασης MQM του WPML."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "Το PTC μεταφράζει με υψηλότερη ποιότητα και σας δίνει αποτελέσματα έτοιμα προς δημοσίευση."
          ]
       }
    }

@@ -20,6 +20,8 @@ abstract class Manager {
 	const SUB_DIRECTORY = 'wpml';
 	const INDEX_CACHE_ID = 'wpml_st_translation_file_index';
 
+	const PERSIST_PRIORITY = 0;
+
 	protected $strings;
 	protected $language_records;
 	protected $builder;
@@ -30,8 +32,10 @@ abstract class Manager {
 	private $index = [];
 	private $index_learned = [];
 	private $index_written = [];
+	private $index_found_gone = [];
 	private $index_storage;
 	private $index_persist_hooked = false;
+	private $index_retry_spent = false;
 
 	public function __construct(
 		StringsRetrieve $strings,
@@ -83,6 +87,9 @@ abstract class Manager {
 		$written  = $this->with_file_lock(
 			$filepath,
 			function () use ( $filepath, $content ) {
+				if ( $content instanceof \Closure ) {
+					$content = $content();
+				}
 				if ( ! $this->save_file_command->run( $filepath, $content ) ) {
 					return false;
 				}
@@ -150,30 +157,49 @@ abstract class Manager {
 		}
 
 		$lang_code = $this->language_records->get_language_code( $locale );
-		$strings   = $this->strings->get( $domain, $lang_code, $this->isPartialFile() );
+
+		$this->builder->set_mark( $this->getMark( $domain, $locale ) );
+
+		$strings = $this->strings->get( $domain, $lang_code, $this->isPartialFile() );
 
 		if ( ! $strings && $this->isPartialFile() ) {
 			$this->remove( $domain, $locale );
 			return false;
 		}
 
-		$this->builder->set_plural_form( PluralForms::getForSharedFile( $domain, $locale ) );
+		$file_content = function () use ( $domain, $locale, $strings ) {
+			$this->builder->set_plural_form( PluralForms::getForSharedFileAsStored( $domain, $locale ) );
 
-		$file_content = $this->builder
-			->set_language( $locale )
-			->get_content( $strings );
+			return $this->builder
+				->set_language( $locale )
+				->get_content( $strings );
+		};
 
 		return $this->write( $domain, $locale, $file_content );
+	}
+
+	protected function getMark( $domain, $locale ) {
+		return null;
 	}
 
 	public function get( $domain, $locale ) {
 		$filepath = $this->getFilepath( $domain, $locale );
 
-		if ( $this->fileExists( $locale, $filepath ) && $this->filesystem->is_readable( $filepath ) ) {
-			return $filepath;
+		if ( $this->fileExists( $locale, $filepath ) ) {
+			if ( $this->filesystem->is_readable( $filepath ) ) {
+				return $filepath;
+			}
+
+			$this->index[ $locale ][ $filepath ]            = false;
+			$this->index_found_gone[ $locale ][ $filepath ] = true;
+			$this->persistIndexOnShutdown();
+			$this->fileFoundMissing( $domain, $locale );
 		}
 
 		return null;
+	}
+
+	protected function fileFoundMissing( $domain, $locale ) {
 	}
 
 	private function fileExists( $locale, $filepath ) {
@@ -212,23 +238,81 @@ abstract class Manager {
 		}
 
 		$this->index_persist_hooked = true;
-		add_action( 'shutdown', [ $this, 'persistIndex' ], PHP_INT_MAX );
+		add_action(
+			'shutdown',
+			[ $this, 'persistIndex' ],
+			doing_action( 'shutdown' ) ? PHP_INT_MAX : self::PERSIST_PRIORITY
+		);
 	}
 
 	public function persistIndex() {
+		foreach ( $this->index_found_gone as $locale => $filepaths ) {
+			foreach ( array_keys( $filepaths ) as $filepath ) {
+				$this->index_written[ $locale ][ $filepath ] = (bool) $this->filesystem->is_readable( $filepath );
+			}
+		}
+		$this->index_found_gone = [];
+
+		$refused = [];
 		foreach ( array_keys( $this->index_learned + $this->index_written ) as $locale ) {
-			$stored = $this->indexStorage()->get( $locale );
+			$stored = null;
+			if ( $this->storageRefused(
+				function () use ( $locale, &$stored ) {
+					$stored = $this->indexStorage()->get( $locale );
+				}
+			) ) {
+				$refused[ $locale ] = true;
+				continue;
+			}
 			$stored = is_array( $stored ) ? $stored : [];
 
 			$merged = $stored + ( $this->index_learned[ $locale ] ?? [] );
 			$merged = array_merge( $merged, $this->index_written[ $locale ] ?? [] );
 
-			$this->indexStorage()->save( $locale, $merged );
+			if ( $this->storageRefused(
+				function () use ( $locale, $merged ) {
+					$this->indexStorage()->save( $locale, $merged );
+				}
+			) ) {
+				$refused[ $locale ] = true;
+				continue;
+			}
 			$this->index[ $locale ] = $merged;
+		}
+
+		$this->index_persist_hooked = false;
+
+		if ( $refused && ! $this->index_retry_spent ) {
+			$this->index_retry_spent = true;
+			$this->index_learned     = array_intersect_key( $this->index_learned, $refused );
+			$this->index_written     = array_intersect_key( $this->index_written, $refused );
+			$this->persistIndexOnShutdown();
+
+			return;
 		}
 
 		$this->index_learned = [];
 		$this->index_written = [];
+	}
+
+	private function storageRefused( callable $operation ) {
+		global $wpdb;
+
+		if ( ! is_object( $wpdb ) || ! property_exists( $wpdb, 'last_error' ) ) {
+			$operation();
+
+			return false;
+		}
+
+		$previous         = $wpdb->last_error;
+		$wpdb->last_error = '';
+		$operation();
+		$error = (string) $wpdb->last_error;
+		if ( '' === $error ) {
+			$wpdb->last_error = $previous;
+		}
+
+		return '' !== $error;
 	}
 
 	private function indexStorage() {

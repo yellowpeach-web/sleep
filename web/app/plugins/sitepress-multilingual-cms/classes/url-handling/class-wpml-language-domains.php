@@ -39,6 +39,16 @@ class WPML_Language_Domains {
 		return is_array( $parts ) && ! empty( $parts['host'] ) ? strtolower( (string) $parts['host'] ) : null;
 	}
 
+	public static function lookupHostOf( $domain ) {
+		$normalized = self::normalize( $domain );
+
+		if ( '' === $normalized || self::is_normalize_error( $normalized ) ) {
+			return null;
+		}
+
+		return (string) preg_replace( '/:(?:80|443)$/', '', $normalized );
+	}
+
 	public static function hostsOf( $domains ) {
 		$hosts = array();
 

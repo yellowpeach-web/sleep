@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=1; plural=0;",
             "lang": "ja"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "Private Translation Cloud (PTC) に切り替える"
+         ],
+         "Switch to PTC": [
+            "PTC に切り替える"
+         ],
+         "Switching…": [
+            "切り替え中…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "切り替えを確認できませんでした。もう一度試すか、再読み込みして現在のエンジンを確認してください。"
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "翻訳エンジンコントロールを読み込めませんでした。ページを再読み込みしてもう一度お試しください。"
+         ],
+         "Loading translation engine settings…": [
+            "翻訳エンジンの設定を読み込んでいます…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "PTC に切り替える前に、上記のサイトコンテキストを入力してください。"
+         ],
+         "Reload page": [
+            "ページを再読み込み"
+         ],
+         "Could not fetch engines data": [
+            "エンジンデータを取得できませんでした"
+         ],
          "Error in updating since dates for types.": [
             "タイプごとの日付以降の更新中にエラーが発生しました。"
          ],
@@ -62,7 +89,7 @@
             "すべての言語における未翻訳の残りのコンテンツに基づいています。"
          ],
          "Estimated from the selected source volume multiplied by the target languages.": [
-            "選択されたソースのボリュームにターゲット言語の数を掛けて推定されます。"
+            "選択されたソースのボリュームに翻訳先言語の数を掛けて推定されます。"
          ],
          "%1$s source words × %2$s language": [
             "%1$s ソース単語 × %2$s 言語"
@@ -133,9 +160,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "レガシー料金が適用されました。%s はレガシー翻訳エンジンであり、新しいサイトには推奨されず、今後廃止される予定です。既存のサイトでは、引き続き調整済み単語レートが適用されます。"
          ],
-         "Switch to PTC": [
-            "PTC に切り替える"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "これは、現在のコンテンツの翻訳に本日必要な単語数です。フォームやスライダーなど、他のプラグインによって追加された一部のテキストは含まれておらず、これらはセットアップ完了後にカウントされます。テーマやプラグインのサイト文字列もセットアップ後にカウントされ、通常は数百単語が加算されます。その後、編集は無料です。追加した単語に対してのみ再度支払いが発生します。"
          ],
@@ -151,8 +175,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "固定ページ、投稿、商品（カスタムフィールド、ページビルダーのテキスト、メディアのテキストを含む）、およびそれらが使用するカテゴリー、タグ、属性がカウントされます。"
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "固定ページ、投稿、商品（カスタムフィールド、ページビルダーのテキスト、メディアのテキストを含む）、それらが使用するカテゴリー、タグ、属性、およびサイトの文字列がカウントされます。タームは、両方の方法で翻訳に送信されるため、それを使用する各項目内で1回、ターム単体として1回カウントされます。"
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "固定ページ、投稿、商品（カスタムフィールド、ページビルダーのテキスト、メディアテキストを含む）、それらが使用するカテゴリー、タグ、属性、およびサイトの文字列をカウントします。各カテゴリー、タグ、属性は「タクソノミー」行で一度だけカウントされ、それらを使用する項目で再度カウントされることはありません。"
          ],
          "Total items": [
             "合計アイテム数"
@@ -225,6 +249,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "<b>すべてを自動翻訳する</b> を開始するには、<b>従量課金制</b> を有効にするか、プリペイド単語を購入してください。"
+         ],
+         "Translation quality:": [
+            "翻訳品質："
          ],
          "Select payment method": [
             "支払い方法を選択"
@@ -341,7 +368,7 @@
             "WPML アカウントに %1$s%2$s 単語%3$s あります。"
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "WPML アカウントに %1$s%2$s 利用可能です。%3$s"
+            "WPML アカウントで %1$s%2$s%3$sを利用できます。"
          ],
          "(Only the WPML account owner can do this.)": [
             "（WPML アカウントの所有者のみがこれを行うことができます。）"
@@ -357,6 +384,30 @@
          ],
          "Close modal": [
             "モーダルを閉じる"
+         ],
+         "Obvious mistakes": [
+            "明らかな間違い"
+         ],
+         "Mistakes visible": [
+            "間違いが目立つ"
+         ],
+         "Ready to publish": [
+            "公開可能"
+         ],
+         "Your engine": [
+            "現在のエンジン"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "翻訳品質 (50-100 スケール)： %1$s のスコアは %2$d、%3$s のスコアは %4$d です。"
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "スコアは WPML 独自の MQM 翻訳品質調査に基づいています。"
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTCはより高い品質で翻訳し、そのまま公開可能な結果を提供します。"
          ]
       }
    }

@@ -9,6 +9,12 @@ class MediaImgParse {
 	private $media = [];
 	private $collector;
 
+	private static $misses = [];
+
+	public static function forgetMisses() {
+		self::$misses = [];
+	}
+
 	public function get_imgs( $text ) {
 		if ( $this->can_parse_blocks( $text ) ) {
 			$blocks = parse_blocks( $text );
@@ -111,14 +117,52 @@ class MediaImgParse {
 			foreach ( $attachments as $attachment ) {
 				$srcs[] = $attachment['attributes']['src'];
 			}
-			$this->primeAttachmentIdCache( $srcs );
+			$ids = $this->idsFromUrls( $srcs );
 
 			foreach ( $attachments as $i => $attachment ) {
-				$attachments[ $i ]['attachment_id'] = Attachment::idFromUrl( $attachment['attributes']['src'] );
+				$src                                = $attachment['attributes']['src'];
+				$attachments[ $i ]['attachment_id'] = is_string( $src ) && isset( $ids[ $src ] ) ? $ids[ $src ] : null;
 			}
 		}
 
 		return $attachments;
+	}
+
+	public function idsFromUrls( array $urls ) {
+		$this->primeAttachmentIdCache( $urls );
+
+		$ids = [];
+		foreach ( $urls as $url ) {
+			if ( ! is_string( $url ) || array_key_exists( $url, $ids ) ) {
+				continue;
+			}
+			$ids[ $url ] = $this->idFromUrl( $url );
+		}
+
+		return $ids;
+	}
+
+	private function idFromUrl( $url ) {
+		$cached = Attachment::idFromUrlCache( $url );
+		if ( is_numeric( $cached ) ) {
+			return $cached;
+		}
+		if ( '' === $url || isset( self::$misses[ $url ] ) || self::isDataUri( $url ) ) {
+			return null;
+		}
+
+		$id = Attachment::idFromUrl( $url );
+		if ( ! $id ) {
+			self::$misses[ $url ] = true;
+
+			return null;
+		}
+
+		return $id;
+	}
+
+	private static function isDataUri( $url ) {
+		return 0 === strncasecmp( ltrim( $url ), 'data:', 5 );
 	}
 
 	private function primeAttachmentIdCache( array $srcs ) {
@@ -126,45 +170,63 @@ class MediaImgParse {
 			return;
 		}
 
+		$pending    = [];
 		$candidates = [];
 		foreach ( $srcs as $src ) {
-			if ( ! is_string( $src ) || '' === $src || null !== Attachment::idFromUrlCache( $src ) ) {
+			if (
+				! is_string( $src ) || '' === $src || isset( $pending[ $src ] ) || isset( self::$misses[ $src ] )
+				|| self::isDataUri( $src ) || null !== Attachment::idFromUrlCache( $src )
+			) {
 				continue;
 			}
-			$candidates[ $src ]                          = true;
-			$candidates[ $this->srcWithoutSize( $src ) ] = true;
+			$pending[ $src ]                = $this->srcWithoutSize( $src );
+			$candidates[ $src ]             = true;
+			$candidates[ $pending[ $src ] ] = true;
 		}
-		$candidates = array_keys( $candidates );
 
-		if ( ! $candidates ) {
+		if ( ! $pending ) {
 			return;
 		}
 
-		$metaMap = Attachment::attachmentUrlsToPostIds( $candidates );
+		$metaMap = Attachment::attachmentUrlsToPostIds( array_keys( $candidates ) );
 
 		$guidTargets = [];
-		foreach ( $candidates as $url ) {
-			if ( empty( $metaMap[ $url ] ) ) {
-				$guidTargets[] = $url;
+		foreach ( $pending as $src => $srcWithoutSize ) {
+			if ( empty( $metaMap[ $src ] ) && empty( $metaMap[ $srcWithoutSize ] ) ) {
+				$guidTargets[ $src ]            = true;
+				$guidTargets[ $srcWithoutSize ] = true;
 			}
 		}
-		$guidMap = $this->attachmentIdsByGuids( $guidTargets );
+		$guidMap = $this->attachmentIdsByGuids( array_keys( $guidTargets ) );
 
 		$primed = [];
-		foreach ( $srcs as $src ) {
-			if ( ! is_string( $src ) || '' === $src ) {
-				continue;
+		foreach ( $pending as $src => $srcWithoutSize ) {
+			$id = self::pickIdWithIdFromUrlPrecedence( $src, $srcWithoutSize, $metaMap, $guidMap );
+			if ( ! $id ) {
+				$id = $this->idByAttachedFileFilters( $src, $srcWithoutSize );
 			}
-			$id = self::pickIdWithIdFromUrlPrecedence( $src, $this->srcWithoutSize( $src ), $metaMap, $guidMap );
 			if ( $id ) {
-				$primed[ $src ]                          = $id;
-				$primed[ $this->srcWithoutSize( $src ) ] = $id;
+				$primed[ $src ]            = $id;
+				$primed[ $srcWithoutSize ] = $id;
+			} else {
+				self::$misses[ $src ] = true;
 			}
 		}
 
 		if ( $primed ) {
 			Attachment::addToCache( $primed );
 		}
+	}
+
+	private function idByAttachedFileFilters( $src, $srcWithoutSize ) {
+		if ( $src !== $srcWithoutSize ) {
+			$id = (int) attachment_url_to_postid( $srcWithoutSize );
+			if ( $id ) {
+				return $id;
+			}
+		}
+
+		return (int) attachment_url_to_postid( $src );
 	}
 
 	public static function pickIdWithIdFromUrlPrecedence( $src, $srcWithoutSize, array $metaMap, array $guidMap ) {
@@ -213,7 +275,7 @@ class MediaImgParse {
 		global $wpdb;
 		$map  = [];
 		$rows = $wpdb->get_results(
-			"SELECT ID, guid FROM {$wpdb->posts} WHERE guid IN (" . wpml_prepare_in( $urls, '%s' ) . ') ORDER BY ID'
+			"SELECT ID, guid FROM {$wpdb->posts} WHERE post_type = 'attachment' AND guid IN (" . wpml_prepare_in( $urls, '%s' ) . ') ORDER BY ID'
 		);
 		foreach ( $rows as $row ) {
 			$key = strtolower( $row->guid );

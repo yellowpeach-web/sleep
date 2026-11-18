@@ -28,18 +28,28 @@ class SlugPercentEncodedFixAction {
       return $title;
     }
 
-    $decoded = rawurldecode( $rawTitle );
-    if ( $decoded !== $rawTitle && mb_check_encoding( $decoded, 'UTF-8' ) ) {
-      $rawTitle = $decoded;
+    return $this->fixPercentInSlug( $rawTitle );
+  }
+
+
+  public function fixPercentInSlug( string $slug ): string {
+    if ( self::$isProcessing || '' === $slug || strpos( $slug, '%' ) === false ) {
+      return $slug;
+    }
+
+    $decoded = rawurldecode( $slug );
+    if ( $decoded !== $slug && mb_check_encoding( $decoded, 'UTF-8' ) ) {
+      $slug = $decoded;
     } else {
-      $rawTitle = preg_replace( '/%(\d)/', '$1', $rawTitle ) ?? $rawTitle;
+      $slug = preg_replace( '/%(\d)/', '$1', $slug ) ?? $slug;
     }
 
     self::$isProcessing = true;
-    $title              = sanitize_title( $rawTitle, '', $context );
-    self::$isProcessing = false;
-
-    return $title;
+    try {
+      return sanitize_title( $slug, '', 'save' );
+    } finally {
+      self::$isProcessing = false;
+    }
   }
 
 

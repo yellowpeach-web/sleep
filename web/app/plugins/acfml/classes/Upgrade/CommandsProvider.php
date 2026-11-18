@@ -3,6 +3,7 @@
 namespace ACFML\Upgrade;
 
 use ACFML\Upgrade\Commands\CollapseSubfieldSettings;
+use ACFML\Upgrade\Commands\MergeStrayLinkOptions;
 use ACFML\Upgrade\Commands\MigrateToV2;
 use ACFML\Upgrade\Commands\MigrateToV2_1;
 use ACFML\Upgrade\Commands\MigrateToV2_2;
@@ -25,6 +26,7 @@ class CommandsProvider {
 			RememberCodeGroupModes::class,
 			StoreInlineBlockGroupModesOnNewSite::class,
 			RenameFieldGroupPackages::class,
+			MergeStrayLinkOptions::class,
 		] );
 	}
 

@@ -8,6 +8,8 @@ class UnfilteredHtmlGrant {
 
 	const FILTER_ALLOW = 'wpml_pb_grant_unfiltered_html';
 
+	const FILTER_DELIVERY = 'wpml_pb_ate_delivery';
+
 	private $settings;
 
 	private $armed = false;
@@ -26,17 +28,17 @@ class UnfilteredHtmlGrant {
 		JobLog::add(
 			'unfiltered_html_grant',
 			[
-				'wpml_job_id' => (int) $jobId,
-				'armed'       => $allowed ? 1 : 0,
+				'wpml_job_id'      => (int) $jobId,
+				'raw_html_allowed' => $allowed ? 1 : 0,
 			]
 		);
 
-		if ( ! $allowed ) {
-			return;
-		}
-
 		$this->armed = true;
 
-		add_filter( self::FILTER_ALLOW, '__return_true' );
+		add_filter( self::FILTER_DELIVERY, '__return_true' );
+
+		if ( $allowed ) {
+			add_filter( self::FILTER_ALLOW, '__return_true' );
+		}
 	}
 }

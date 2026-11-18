@@ -5,7 +5,7 @@ namespace ACFML\Repeater\Shuffle;
 trait MetaValueTrait {
 
 	public function readOneValue( $entry ) {
-		return maybe_unserialize( $this->firstStoredValue( $entry ) );
+		return \WPML\Utils\Unserialize::maybe( $this->firstStoredValue( $entry ) );
 	}
 
 	private function firstStoredValue( $entry ) {

@@ -100,7 +100,7 @@ class SaveTaskRepository {
 		$task->setCompletedCount( isset( $row['completed_count'] ) ? $row['completed_count'] : 0 );
 		$task->setRetryCount( isset( $row['retry_count'] ) ? $row['retry_count'] : 0 );
 		$task->setStartingDate( isset( $row['starting_date'] ) ? $row['starting_date'] : null );
-		$payload = isset( $row['payload'] ) ? maybe_unserialize( $row['payload'] ) : [];
+		$payload = isset( $row['payload'] ) ? \WPML\Utils\Unserialize::maybe( $row['payload'] ) : [];
 		$task->setPayload( is_array( $payload ) ? $payload : [] );
 		return $task;
 	}

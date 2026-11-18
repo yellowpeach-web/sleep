@@ -7,7 +7,7 @@ use WPML\DicInterface;
 use WPML\UserInterface\Web\Infrastructure\WordPress\CompositionRoot\Config\Event\SiteLock\SiteLockDetectedEvent;
 use WPML\UserInterface\Web\Infrastructure\WordPress\CompositionRoot\Config\Event\Item\WordCount\Events as WordCountEvents;
 use WPML\UserInterface\Web\Infrastructure\WordPress\CompositionRoot\Config\Event\UrlHandling\SlugPercentEncodedFixEvent;
-use WPML\Infrastructure\WordPress\Component\PostHog\Application\Event\SetupWizardEventQueueReplayScheduler;
+use WPML\UserInterface\Web\Infrastructure\WordPress\CompositionRoot\Config\Event\WpmlPosthog\SetupWizardEventQueueReplayScheduler;
 use WPML\UserInterface\Web\Infrastructure\WordPress\CompositionRoot\Config\Event\WpmlPosthog\PostHogShouldRecordEvent;
 use WPML\UserInterface\Web\Infrastructure\WordPress\CompositionRoot\Config\Event\TeaUpgrade\DisplayedTrackingEvent;
 
@@ -44,6 +44,8 @@ class ConfigEvents implements ConfigEventsInterface {
     new DisplayedTrackingEvent( $this->dic );
     new Event\Support\SupportToolsEvent( $this->dic );
     new Event\Cdt\CdtEvents( $this->dic );
+    new Event\LanguagePanel\RestFieldEvent( $this->dic );
+    new Event\LanguagePanel\SaveFlagsEvent( $this->dic );
   }
 
 

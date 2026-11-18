@@ -47,7 +47,9 @@ $terms_translations = empty( $translations ) ? array() : $translations;
 $active_languages  = $sitepress->get_active_languages();
 $selected_language = $element_lang_code ? $element_lang_code : $default_language;
 $source_language   = isset( $_GET['source_lang'] ) ? strip_tags( filter_input( INPUT_GET, 'source_lang', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) : false;
-$untranslated_ids  = $sitepress->get_elements_without_translations( $icl_element_type, $selected_language, $default_language );
+$untranslated_ids = function () use ( $sitepress, $icl_element_type, $selected_language, $default_language ) {
+	return $sitepress->get_elements_without_translations( $icl_element_type, $selected_language, $default_language );
+};
 
 $dropdown = new WPML_Taxonomy_Element_Language_Dropdown();
 $dropdown->add_language_selector_to_page(

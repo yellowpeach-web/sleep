@@ -1,9 +1,11 @@
 <?php
 
-use WPML\PB\AutoUpdate\Settings as AutoUpdateSettings;
+use WPML\PB\AutoUpdate\PostSignatureLayoutField;
 use WPML\PB\Elementor\DataConvert;
 
 class WPML_Elementor_Data_Settings implements IWPML_Page_Builders_Data_Settings {
+
+	use PostSignatureLayoutField;
 
 	const META_KEY_DATA = '_elementor_data';
 	const META_KEY_MODE = '_elementor_edit_mode';
@@ -63,6 +65,7 @@ class WPML_Elementor_Data_Settings implements IWPML_Page_Builders_Data_Settings 
 			'_elementor_css',
 			'_elementor_template_type',
 			'_elementor_template_widget_type',
+			'_elementor_popup_display_settings',
 		];
 	}
 
@@ -82,19 +85,23 @@ class WPML_Elementor_Data_Settings implements IWPML_Page_Builders_Data_Settings 
 		return array( '_elementor_data' );
 	}
 
-	public function add_data_custom_field_to_md5( array $custom_fields_values, $post_id ) {
-		if ( AutoUpdateSettings::isEnabled() ) {
-			unset( $custom_fields_values[ $this->get_meta_field() ] );
-		} else {
-			$custom_fields_values[ $this->get_meta_field() ] = get_post_meta( $post_id, $this->get_meta_field(), true );
-		}
-
-		return $custom_fields_values;
+	public function is_handling_post( $postId ) {
+		return self::has_layout( $postId );
 	}
 
-	public function is_handling_post( $postId ) {
-		return (bool) get_post_meta( $postId, $this->get_meta_field(), true )
-			&& self::is_edited_with_elementor( $postId );
+	public static function has_layout( $postId ) {
+		if ( ! self::is_edited_with_elementor( $postId ) ) {
+			return false;
+		}
+
+		$data = get_post_meta( $postId, self::META_KEY_DATA, true );
+		if ( ! $data ) {
+			return false;
+		}
+
+		$elements = DataConvert::unserialize( $data );
+
+		return is_array( $elements ) && count( $elements ) > 0;
 	}
 
 	public static function is_edited_with_elementor( $postId ) {

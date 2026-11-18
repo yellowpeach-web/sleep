@@ -46,7 +46,10 @@ class WPML_URL_Filters {
 			: WPML_Get_LS_Languages_Status::get_instance();
 
 		$urls = $this->sitepress->get_setting( 'urls' );
-		if ( $this->urls_use_root( $urls ) === true || WPML_Root_Page::is_root_page_in_setup( $urls ) ) {
+		if ( $this->urls_use_root( $urls ) === true
+			|| WPML_Root_Page::is_root_page_in_setup( $urls )
+			|| ( isset( $urls['show_on_root'] ) && 'redirect' === $urls['show_on_root'] )
+		) {
 			WPML_Root_Page::init();
 		}
 		$this->add_hooks();
@@ -468,8 +471,16 @@ class WPML_URL_Filters {
 	private function get_translated_post_id_for_current_language( WPML_Post_Element $post_element ) {
 		$post_id          = $post_element->get_element_id();
 		$current_language = $this->sitepress->get_current_language();
+		$translated_id    = $this->post_translation->element_id_in( $post_id, $current_language );
 
-		return $this->post_translation->element_id_in( $post_id, $current_language );
+		if ( ! $translated_id
+			 || (int) $translated_id === (int) $post_id
+			 || apply_filters( 'wpml_force_translated_permalink', false )
+		) {
+			return $translated_id;
+		}
+
+		return \WPML\Translation\ElementVisibility::currentUserCanUseAsTranslation( (int) $translated_id ) ? $translated_id : null;
 	}
 
 	private function is_front_page( $url ) {

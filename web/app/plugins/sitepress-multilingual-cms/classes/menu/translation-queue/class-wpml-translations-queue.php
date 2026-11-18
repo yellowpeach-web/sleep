@@ -60,7 +60,7 @@ class WPML_Translations_Queue {
 				return;
 			}
 
-			$response = $this->editor->open( $_GET );
+			$response = $this->editor->open( Obj::without( 'screen', $_GET ) );
 
 			\WPML\PostHog\Event\CaptureEvent::capture(
 				( new EventInstanceService() )->getOpenTranslationEditorEvent(

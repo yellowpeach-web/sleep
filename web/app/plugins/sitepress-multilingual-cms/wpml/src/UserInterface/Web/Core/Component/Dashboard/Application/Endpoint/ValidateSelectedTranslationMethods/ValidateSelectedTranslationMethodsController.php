@@ -5,6 +5,7 @@ namespace WPML\UserInterface\Web\Core\Component\Dashboard\Application\Endpoint\V
 use WPML\Core\Component\Translation\Application\Service\Dto\SendToTranslationDto;
 use WPML\Core\Component\Translation\Application\Service\Validator\AssignedTranslationServiceValidatorService;
 use WPML\Core\Component\Translation\Application\Service\Validator\AssignedTranslatorsValidatorService;
+use WPML\Core\Component\Translation\Application\Service\Validator\AutomaticTranslationPairValidatorService;
 use WPML\Core\Component\Translation\Application\Service\Validator\Dto\ValidationResultDto;
 use WPML\Core\Component\Translation\Application\Service\Validator\TranslationEditorValidatorService;
 use WPML\Core\Port\Endpoint\EndpointInterface;
@@ -20,15 +21,19 @@ class ValidateSelectedTranslationMethodsController implements EndpointInterface 
 
   private $translationEditorValidatorService;
 
+  private $automaticTranslationPairValidatorService;
+
 
   public function __construct(
     AssignedTranslatorsValidatorService $assignedTranslatorsValidatorService,
     AssignedTranslationServiceValidatorService $assignedTranslationServiceValidatorService,
-    TranslationEditorValidatorService $translationEditorValidatorService
+    TranslationEditorValidatorService $translationEditorValidatorService,
+    AutomaticTranslationPairValidatorService $automaticTranslationPairValidatorService
   ) {
     $this->assignedTranslatorsValidatorService        = $assignedTranslatorsValidatorService;
     $this->assignedTranslationServiceValidatorService = $assignedTranslationServiceValidatorService;
     $this->translationEditorValidatorService          = $translationEditorValidatorService;
+    $this->automaticTranslationPairValidatorService   = $automaticTranslationPairValidatorService;
   }
 
 
@@ -48,6 +53,10 @@ class ValidateSelectedTranslationMethodsController implements EndpointInterface 
       )->toArray();
 
       $validationResults[] = $this->translationEditorValidatorService->validate(
+        $sendToTranslationDto
+      )->toArray();
+
+      $validationResults[] = $this->automaticTranslationPairValidatorService->validate(
         $sendToTranslationDto
       )->toArray();
 

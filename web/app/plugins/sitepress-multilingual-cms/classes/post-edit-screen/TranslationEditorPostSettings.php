@@ -9,6 +9,7 @@ use WPML\LIB\WP\Hooks;
 use WPML\TM\PostEditScreen\Endpoints\GetPtcEngineStatus;
 use WPML\TM\PostEditScreen\Endpoints\SetEditorMode;
 use WPML\Core\WP\App\Resources;
+use WPML\Core\Component\Post\Application\LanguagePanel\SiteEditorEntityTypes;
 use WPML\API\Settings;
 use function WPML\FP\spreadArgs;
 use WPML\PostHog\Event\SendDataToPostHog;
@@ -17,6 +18,8 @@ use WPML\PostHog\State\PostHogState;
 class TranslationEditorPostSettings {
 	private $sitepress;
 
+	private $hooked = false;
+
 	public function __construct( $sitepress ) {
 		$this->sitepress = $sitepress;
 		$this->registerPostHogAjaxCapture();
@@ -24,8 +27,22 @@ class TranslationEditorPostSettings {
 
 	public function add_hooks() {
 		Hooks::onAction( 'admin_enqueue_scripts' )
-		     ->then( [ $this, 'localize' ] )
-		     ->then( Resources::enqueueApp( 'postEditTranslationEditor' ) );
+		     ->then( [ $this, 'enqueueClassicApp' ] );
+
+		$this->addRenderHooks();
+	}
+
+	public function addToPluginScreen() {
+		if ( $this->hooked ) {
+			return;
+		}
+
+		$this->addRenderHooks();
+		$this->enqueueClassicApp();
+	}
+
+	private function addRenderHooks() {
+		$this->hooked = true;
 
 		$render = Fns::once( spreadArgs( [ $this, 'render' ] ) );
 
@@ -34,6 +51,14 @@ class TranslationEditorPostSettings {
 
 		Hooks::onAction( 'wpml_before_post_edit_translations_summary' )
 		     ->then( $render );
+	}
+
+	public function enqueueClassicApp() {
+		if ( \WPML_Block_Editor_Helper::is_block_editor_screen() ) {
+			return;
+		}
+
+		Resources::enqueueApp( 'postEditTranslationEditor' )( self::localize() );
 	}
 
 	public static function localize() {
@@ -62,7 +87,7 @@ class TranslationEditorPostSettings {
 			return;
 		}
 
-		if ( ! apply_filters( 'wpml_tm_post_edit_tm_editor_selector_display', true ) ) {
+		if ( ! apply_filters( 'wpml_tm_post_edit_tm_editor_selector_display', true, $post->ID ) ) {
 			return;
 		}
 
@@ -72,6 +97,25 @@ class TranslationEditorPostSettings {
 		if ( ! $useTmEditor || $isWpmlEditorBlocked ) {
 			$enabledEditor = SetEditorMode::TRANSLATION_EDITOR_NATIVE;
 		}
+
+		/*
+		 * wpmldev-8629 P2 M8 (review P3-2), the panel's rule (ruling Q-SE-6 (c))
+		 * on this screen too: the WordPress Editor is never offered for a
+		 * navigation menu - the editor resolver sends a menu to WPML's editors
+		 * whatever the stored choice - so the box neither offers nor presses it.
+		 * The stored fact stays visible to the app (`data-stored-native`): a
+		 * click on a menu whose stored choice is the WordPress Editor is a
+		 * switch AWAY from it (the dialog, `isSwitchingWpmlNative`), never a
+		 * direct write at the stored scope.
+		 */
+		$nativeOffered = SiteEditorEntityTypes::offersNativeEditor( (string) $post->post_type );
+		$storedNative  = SetEditorMode::TRANSLATION_EDITOR_NATIVE === $enabledEditor;
+		if ( ! $nativeOffered && $storedNative ) {
+			$enabledEditor = SetEditorMode::TRANSLATION_EDITOR_WPML;
+		}
+
+		$isSwitchKeepingTranslations = \WPML\TranslationPolicy\Policy\Policy::editorSwitchKeepsTranslations();
+
 		$postTypeLabels = $wp_post_types[ $post->post_type ]->labels;
 		$currentWpmlEditor     = (string) wpml_get_tm_sub_setting( 'doc_translation_method', ICL_TM_TMETHOD_ATE );
 
@@ -93,6 +137,9 @@ class TranslationEditorPostSettings {
 			data-wpml-editor-mode-for="' . $editorModeFor . '" 
 			data-is-wpml-blocked="' . $isWpmlEditorBlocked . '" 
 			data-wpml-blocked-reason="' . $reason . '" 
+			data-native-offered="' . ( $nativeOffered ? '1' : '0' ) . '" 
+			data-stored-native="' . ( $storedNative ? '1' : '0' ) . '" 
+			data-switch-keeps-translations="' . ( $isSwitchKeepingTranslations ? '1' : '0' ) . '" 
 			data-type-singular="' . $postTypeLabels->singular_name . '" 
 			data-type-plural="' . $postTypeLabels->name . '"
 			data-source-lang="'. $sourceLang .'"

@@ -2,112 +2,121 @@
 
 namespace WPML\StringTranslation\Application\StringCore\Query\Criteria;
 
-class SearchCriteria {
+use WPML\StringTranslation\Application\StringCore\Legacy\OldVersionInMemory;
 
-	private $kind;
+require_once __DIR__ . '/../../Legacy/OldVersionInMemory.php';
 
-	private $type;
+if ( OldVersionInMemory::isBeforeNow( OldVersionInMemory::TRANSLATION_PRIORITY_REMOVED ) ) {
+	require_once __DIR__ . '/Legacy/SearchCriteria510.php';
+	class_alias( Legacy\SearchCriteria510::class, SearchCriteria::class );
+} else {
+	class SearchCriteria {
 
-	private $source;
+		private $kind;
 
-	private $domain;
+		private $type;
 
-	private $title;
+		private $source;
 
-	private $sourceLanguageCode;
+		private $domain;
 
-	private $targetLanguageCode;
+		private $title;
 
-	private $translationStatuses = [];
+		private $sourceLanguageCode;
 
-	private $limit = 10;
+		private $targetLanguageCode;
 
-	private $offset = 0;
+		private $translationStatuses = [];
 
-	private $sorting;
+		private $limit = 10;
 
-	private $ids = [];
+		private $offset = 0;
 
-	public function __construct(
-		?int $kind = null,
-		?int $type = null,
-		?int $source = null,
-		?string $domain = null,
-		?string $title = null,
-		?string $sourceLanguageCode = null,
-		?string $targetLanguageCode = null,
-		array $translationStatuses = [],
-		int $limit = 10,
-		int $offset = 0,
-		?array $sorting = null
-	) {
-		$this->kind                = $kind;
-		$this->type                = $type;
-		$this->source              = $source;
-		$this->domain              = $domain;
-		$this->title               = $title;
-		$this->sourceLanguageCode  = $sourceLanguageCode;
-		$this->targetLanguageCode  = $targetLanguageCode;
-		$this->translationStatuses = $translationStatuses;
-		$this->limit               = $limit;
-		$this->offset              = $offset;
-		$this->sorting             = $sorting;
-	}
+		private $sorting;
 
-	public function getKind() {
-		return $this->kind;
-	}
+		private $ids = [];
 
-	public function getType() {
-		return $this->type;
-	}
+		public function __construct(
+			?int $kind = null,
+			?int $type = null,
+			?int $source = null,
+			?string $domain = null,
+			?string $title = null,
+			?string $sourceLanguageCode = null,
+			?string $targetLanguageCode = null,
+			array $translationStatuses = [],
+			int $limit = 10,
+			int $offset = 0,
+			?array $sorting = null
+		) {
+			$this->kind                = $kind;
+			$this->type                = $type;
+			$this->source              = $source;
+			$this->domain              = $domain;
+			$this->title               = $title;
+			$this->sourceLanguageCode  = $sourceLanguageCode;
+			$this->targetLanguageCode  = $targetLanguageCode;
+			$this->translationStatuses = $translationStatuses;
+			$this->limit               = $limit;
+			$this->offset              = $offset;
+			$this->sorting             = $sorting;
+		}
 
-	public function getSource() {
-		return $this->source;
-	}
+		public function getKind() {
+			return $this->kind;
+		}
 
-	public function getDomain() {
-		return $this->domain;
-	}
+		public function getType() {
+			return $this->type;
+		}
 
-	public function getTitle() {
-		return $this->title;
-	}
+		public function getSource() {
+			return $this->source;
+		}
 
-	public function getSourceLanguageCode() {
-		return $this->sourceLanguageCode;
-	}
+		public function getDomain() {
+			return $this->domain;
+		}
 
-	public function getTargetLanguageCode() {
-		return $this->targetLanguageCode;
-	}
+		public function getTitle() {
+			return $this->title;
+		}
 
-	public function getTranslationStatuses(): array {
-		return $this->translationStatuses;
-	}
+		public function getSourceLanguageCode() {
+			return $this->sourceLanguageCode;
+		}
 
-	public function getLimit(): int {
-		return $this->limit;
-	}
+		public function getTargetLanguageCode() {
+			return $this->targetLanguageCode;
+		}
 
-	public function getOffset(): int {
-		return $this->offset;
-	}
+		public function getTranslationStatuses(): array {
+			return $this->translationStatuses;
+		}
 
-	public function getSorting() {
-		return $this->sorting;
-	}
+		public function getLimit(): int {
+			return $this->limit;
+		}
 
-	public function addIds( array $strings ) {
-		$this->ids = array_map(
-			function( $string ) {
-				return is_array( $string ) ? $string['string_id'] : $string;
-			},
-			$strings
-		);
-	}
+		public function getOffset(): int {
+			return $this->offset;
+		}
 
-	public function getIds(): array {
-		return $this->ids;
+		public function getSorting() {
+			return $this->sorting;
+		}
+
+		public function addIds( array $strings ) {
+			$this->ids = array_map(
+				function( $string ) {
+					return is_array( $string ) ? $string['string_id'] : $string;
+				},
+				$strings
+			);
+		}
+
+		public function getIds(): array {
+			return $this->ids;
+		}
 	}
 }

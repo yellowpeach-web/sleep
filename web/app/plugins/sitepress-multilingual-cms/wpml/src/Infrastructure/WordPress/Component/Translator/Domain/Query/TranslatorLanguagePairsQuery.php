@@ -55,7 +55,7 @@ class TranslatorLanguagePairsQuery implements TranslatorLanguagePairsQueryInterf
     $translatorsIdsIn = $this->queryPrepare->prepareIn( $translatorsIds, '%d' );
 
     $sql = "SELECT umeta.user_id, umeta.meta_value 
-    FROM {$this->queryPrepare->prefix()}usermeta umeta 
+    FROM {$this->queryPrepare->usermetaTable()} umeta 
     WHERE umeta.meta_key=%s
     AND umeta.user_id IN($translatorsIdsIn)";
 

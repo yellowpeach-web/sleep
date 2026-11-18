@@ -685,6 +685,10 @@ class Parser {
         $endpoint->setCapability( $raw['capability'] );
       }
 
+      if ( array_key_exists( 'permission', $raw ) && is_string( $raw['permission'] ) ) {
+        $endpoint->setPermission( $raw['permission'] );
+      }
+
       if ( array_key_exists( 'args', $raw ) && is_array( $raw['args'] ) ) {
         $endpoint->setArgs( $raw['args'] );
       }

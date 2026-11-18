@@ -39,15 +39,15 @@ class AutoRegisterSettings {
 	}
 
 	public function getIsTypeOnlyViewedByAdmin() {
-		return apply_filters( 'wpml_st_get_setting', 'isAutoregisterStringsTypeOnlyViewedByAdmin' );
+		return true === apply_filters( 'wpml_st_get_setting', 'isAutoregisterStringsTypeOnlyViewedByAdmin' );
 	}
 
 	public function getIsTypeViewedByAllUsers() {
-		return apply_filters( 'wpml_st_get_setting', 'isAutoregisterStringsTypeViewedByAllUsers' );
+		return true === apply_filters( 'wpml_st_get_setting', 'isAutoregisterStringsTypeViewedByAllUsers' );
 	}
 
 	public function getIsTypeDisabled() {
-		return apply_filters( 'wpml_st_get_setting', 'isAutoregisterStringsTypeDisabled' );
+		return true === apply_filters( 'wpml_st_get_setting', 'isAutoregisterStringsTypeDisabled' );
 	}
 
 	public function getTypeOnlyViewedByAdmin() {

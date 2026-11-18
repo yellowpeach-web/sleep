@@ -13,6 +13,7 @@ use WPML\Core\Component\Translation\Domain\TranslationBatch\Validator\CompletedT
 use WPML\Core\Component\Translation\Domain\TranslationBatch\Validator\IgnoredElement;
 use WPML\Core\Component\Translation\Domain\TranslationMethod\AutomaticMethod;
 use WPML\Core\Component\Translation\Domain\TranslationType;
+use WPML\Legacy\Component\Translation\Sender\Taxonomy\CarriedTermPairs;
 
 class TaxonomyTermBatchSender {
 
@@ -26,7 +27,10 @@ class TaxonomyTermBatchSender {
     'up_to_date'       => CompletedTranslationValidator::IGNORED_ELEMENT_REASON,
     'being_translated' => self::IGNORED_ELEMENT_REASON_IN_PROGRESS,
     'review_open'      => self::IGNORED_ELEMENT_REASON_IN_PROGRESS,
+    'unsupported_pair' => self::IGNORED_ELEMENT_REASON_UNSUPPORTED_PAIR,
   ];
+
+  const IGNORED_ELEMENT_REASON_UNSUPPORTED_PAIR = 'automatic_translation_not_supported';
 
   private $dispatcherFactory;
 
@@ -34,47 +38,58 @@ class TaxonomyTermBatchSender {
 
   private $claimRepository;
 
+  private $assignedTranslatorsValidator;
+
 
   public function __construct(
     \wpdb $wpdb,
     TranslationQueryInterface $translationQuery,
     $dispatcherFactory = null,
-    ?TaxonomyTermPairClaimRepositoryInterface $claimRepository = null
+    ?TaxonomyTermPairClaimRepositoryInterface $claimRepository = null,
+    ?\WPML\Core\Component\Translation\Domain\TranslationMethod\Validator\AssignedTranslatorsValidator $assignedTranslatorsValidator = null
   ) {
-    $this->wpdb              = $wpdb;
-    $this->translationQuery  = $translationQuery;
-    $this->dispatcherFactory = $dispatcherFactory;
-    $this->claimRepository   = $claimRepository ?: new TaxonomyTermPairClaimRepository( $wpdb );
+    $this->wpdb                       = $wpdb;
+    $this->translationQuery           = $translationQuery;
+    $this->dispatcherFactory          = $dispatcherFactory;
+    $this->claimRepository            = $claimRepository ?: new TaxonomyTermPairClaimRepository( $wpdb );
+    $this->assignedTranslatorsValidator = $assignedTranslatorsValidator;
   }
 
 
   public function send( TranslationBatch $batch ): array {
+    CarriedTermPairs::clear();
+    try {
+      return $this->sendWithCarriedCheck( $batch );
+    } finally {
+      CarriedTermPairs::clear();
+    }
+  }
+
+
+  private function sendWithCarriedCheck( TranslationBatch $batch ): array {
     $jobs            = [];
     $preparedByJobId = [];
+    $members         = [];
     $ignored         = [];
     $failed          = [];
     $candidates      = [];
     $seenPairs       = [];
+    $tpLanguages     = [];
     $owner           = $batch->getOperationId() ?: 'send-' . wp_generate_uuid4();
 
     foreach ( $batch->getTargetLanguages() as $targetLanguage ) {
+      if ( $targetLanguage->getMethod() instanceof \WPML\Core\Component\Translation\Domain\TranslationMethod\TranslationServiceMethod ) {
+        $tpLanguages[ $targetLanguage->getLanguageCode() ] = true;
+      }
       foreach ( $targetLanguage->getElements() as $element ) {
         if ( ! $this->isTerm( $element ) ) {
           continue;
         }
 
-        if ( ! $targetLanguage->getMethod() instanceof AutomaticMethod ) {
-          $ignored[] = new IgnoredElement(
-            $element->getType(),
-            $element->getElementId(),
-            $targetLanguage->getLanguageCode(),
-            $targetLanguage->getMethod(),
-            sprintf(
-              /* translators: %s is a target language code. */
-              __( 'Taxonomy terms were not sent to %s because terms currently support Automatic translation only.', 'wpml' ),
-              $targetLanguage->getLanguageCode()
-            )
-          );
+        $method = $targetLanguage->getMethod();
+        if ( ! $method instanceof AutomaticMethod
+          && ! $method instanceof \WPML\Core\Component\Translation\Domain\TranslationMethod\LocalTranslatorMethod
+          && ! $method instanceof \WPML\Core\Component\Translation\Domain\TranslationMethod\TranslationServiceMethod ) {
           continue;
         }
 
@@ -87,7 +102,21 @@ class TaxonomyTermBatchSender {
           continue;
         }
         $seenPairs[ $pairKey ] = true;
-        $candidates[]          = [ $element, $targetLanguage ];
+
+        if ( $method instanceof \WPML\Core\Component\Translation\Domain\TranslationMethod\LocalTranslatorMethod
+          && ! $this->translatorAvailable( $method, $element->getOriginalLanguageCode() ) ) {
+          $failed[] = [
+            'elementType'    => $element->getType()->get(),
+            'elementId'      => $element->getElementId(),
+            'targetLanguage' => $targetLanguage->getLanguageCode(),
+            'reason'         => __( 'The assigned translator is no longer available for this language pair. Choose another translator and try again.', 'wpml' ),
+            'kind'           => 'rejected',
+            'errorCode'      => 'translator_not_available',
+          ];
+          continue;
+        }
+
+        $candidates[] = [ $element, $targetLanguage ];
       }
     }
 
@@ -99,6 +128,42 @@ class TaxonomyTermBatchSender {
         $list
       );
     };
+    $carriedPairs = CarriedTermPairs::find( $this->wpdb, $pairsOf( $candidates ) );
+    if ( CarriedTermPairs::failed() ) {
+      foreach ( $candidates as $candidate ) {
+        $element        = $candidate[0];
+        $targetLanguage = $candidate[1];
+        $failed[] = [
+          'elementType'    => $element->getType()->get(),
+          'elementId'      => $element->getElementId(),
+          'targetLanguage' => $targetLanguage->getLanguageCode(),
+          'reason'         => __( 'The taxonomy term could not be checked for an existing post translation job. Try again.', 'wpml' ),
+          'kind'           => 'rejected',
+          'errorCode'      => 'taxonomy_term_carried_check_failed',
+        ];
+      }
+      $candidates = [];
+    } elseif ( $carriedPairs ) {
+      $eligible = [];
+      foreach ( $candidates as $candidate ) {
+        $element        = $candidate[0];
+        $targetLanguage = $candidate[1];
+        $pairKey        = $element->getElementId() . '|' . $targetLanguage->getLanguageCode();
+        if ( isset( $carriedPairs[ $pairKey ] ) ) {
+          $ignored[] = new IgnoredElement(
+            $element->getType(),
+            $element->getElementId(),
+            $targetLanguage->getLanguageCode(),
+            $targetLanguage->getMethod(),
+            $this->carriedReason( $carriedPairs[ $pairKey ] )
+          );
+        } else {
+          $eligible[] = $candidate;
+        }
+      }
+      $candidates = $eligible;
+    }
+
     $claimedKeys = $candidates ? $this->claimRepository->claimMany( $pairsOf( $candidates ), $owner ) : [];
     $claimed     = [];
 
@@ -132,14 +197,27 @@ class TaxonomyTermBatchSender {
         continue;
       }
 
-      $preparedJob = $this->dispatcher()->prepareTermJobWithRecord(
-        $element->getElementId(),
-        $taxonomy,
-        $element->getOriginalLanguageCode(),
-        $targetLanguage->getLanguageCode(),
-        HowToHandleExistingTranslationType::HANDLE_EXISTING_OVERRIDE === $batch->getHowToHandleExisting(),
-        '' !== (string) $batch->getOperationId()
-      );
+      $automatic = $targetLanguage->getMethod() instanceof AutomaticMethod;
+      $overwrite = HowToHandleExistingTranslationType::HANDLE_EXISTING_OVERRIDE === $batch->getHowToHandleExisting();
+      $preparedJob = $automatic
+        ? $this->dispatcher()->prepareTermBundleMember(
+          $element->getElementId(),
+          $taxonomy,
+          $element->getOriginalLanguageCode(),
+          $targetLanguage->getLanguageCode(),
+          $overwrite
+        )
+        : $this->dispatcher()->prepareTermJobWithRecord(
+          $element->getElementId(),
+          $taxonomy,
+          $element->getOriginalLanguageCode(),
+          $targetLanguage->getLanguageCode(),
+          $overwrite,
+          '' !== (string) $batch->getOperationId(),
+          $targetLanguage->getMethod() instanceof \WPML\Core\Component\Translation\Domain\TranslationMethod\LocalTranslatorMethod
+            ? $targetLanguage->getMethod()->getTranslatorId()
+            : 0
+        );
 
       $lastRefusal = null === $preparedJob ? $this->dispatcher()->getLastRefusal() : null;
       if ( 'dispatch_uncertain' === $lastRefusal ) {
@@ -166,6 +244,11 @@ class TaxonomyTermBatchSender {
         continue;
       }
 
+      if ( $automatic && null !== $preparedJob ) {
+        $members[] = $preparedJob;
+        continue;
+      }
+
       if ( null === $preparedJob || null === $preparedJob->getModel() ) {
         $failed[] = [
           'elementType'    => $element->getType()->get(),
@@ -187,15 +270,63 @@ class TaxonomyTermBatchSender {
       ];
     }
 
+    $acceptedPairs = [];
+    if ( $members ) {
+      $operationId = (string) $batch->getOperationId();
+      if ( '' !== $operationId ) {
+        if ( ! $this->bundleRounds()->hold( $operationId, $members ) ) {
+          $this->dispatcher()->releasePreparedJobs( $members );
+          foreach ( $members as $member ) {
+            $failed[] = Taxonomy\TaxonomyTermBundleRounds::failedElement( [
+              'member'    => $member,
+              'kind'      => 'rejected',
+              'reason'    => __( 'The taxonomy term could not be prepared for translation. Try again.', 'wpml' ),
+              'errorCode' => 'taxonomy_term_preparation_failed',
+            ] );
+          }
+        }
+      } else {
+        $dispatched = $this->bundleRounds()->dispatch( $members, false );
+        foreach ( $dispatched['accepted'] as $member ) {
+          $acceptedPairs[ $member->getTermTaxonomyId() . '|' . $member->getTargetLanguage() ] = true;
+        }
+        foreach ( $dispatched['failed'] as $failure ) {
+          $failed[] = Taxonomy\TaxonomyTermBundleRounds::failedElement( $failure );
+        }
+      }
+    }
+    $memberTranslations = $this->translationsOfPairs( $acceptedPairs );
+
     if ( ! $jobs ) {
       if ( $claimed ) {
         $this->claimRepository->releaseMany( $pairsOf( $claimed ), $owner );
       }
 
-      return [ [], $ignored, $failed ];
+      return [ $memberTranslations, $ignored, $failed ];
     }
 
-    $dispatchResult = $this->dispatcher()->dispatchToAte( $jobs );
+    $ateJobs = array_values( array_filter( $jobs, function ( $job ) use ( $preparedByJobId ) {
+      return ! $preparedByJobId[ $job->id ]['target']->getMethod() instanceof \WPML\Core\Component\Translation\Domain\TranslationMethod\TranslationServiceMethod;
+    } ) );
+    $tpJobs  = array_values( array_filter( $jobs, function ( $job ) use ( $preparedByJobId ) {
+      return $preparedByJobId[ $job->id ]['target']->getMethod() instanceof \WPML\Core\Component\Translation\Domain\TranslationMethod\TranslationServiceMethod;
+    } ) );
+    $results = [];
+    if ( $ateJobs ) {
+      $results[] = $this->dispatcher()->dispatchToAte( $ateJobs );
+    }
+    if ( $tpJobs ) {
+      \WPML\TM\TranslationProxy\TpBatchState::setRemoteTargetLanguages( array_keys( $tpLanguages ) );
+      $operationId = (string) $batch->getOperationId();
+      $results[] = $this->dispatcher()->dispatchToTp(
+        $tpJobs,
+        [ 'batchName' => $batch->getBatchName(), 'deadline' => $batch->getDeadline(), 'extraFields' => $batch->getTranslationServiceExtraFields() ],
+        '' !== $operationId ? function ( string $name, int $id ) use ( $operationId ): bool {
+          return ( new \WPML\Core\Component\Translation\Application\Service\Taxonomy\TaxonomySendOperationRepository() )->recordTpBatch( $operationId, $name, $id );
+        } : null
+      );
+    }
+    $dispatchResult = $this->mergeDispatchResults( $results );
 
     $retryableJobIds      = array_merge(
       $dispatchResult->getRejectedJobIds(),
@@ -278,10 +409,74 @@ class TaxonomyTermBatchSender {
     $acceptedJobIds = $dispatchResult->getAcceptedJobIds();
 
     return [
-      $acceptedJobIds ? $this->translationQuery->getManyByJobIds( $acceptedJobIds ) : [],
+      array_merge( $acceptedJobIds ? $this->translationQuery->getManyByJobIds( $acceptedJobIds ) : [], $memberTranslations ),
       $ignored,
       $failed,
     ];
+  }
+
+
+  private function translationsOfPairs( array $pairs ): array {
+    if ( ! $pairs ) {
+      return [];
+    }
+    $termTaxonomyIds = array_values( array_unique( array_map( function ( string $pair ): int {
+      return (int) strstr( $pair, '|', true );
+    }, array_keys( $pairs ) ) ) );
+
+    try {
+      $translations = $this->translationQuery->getManyByElementIds( TranslationType::taxonomy(), $termTaxonomyIds );
+    } catch ( \WPML\PHP\Exception\InvalidArgumentException $e ) {
+      return [];
+    }
+
+    return array_values( array_filter(
+      $translations,
+      function ( $translation ) use ( $pairs ): bool {
+        return isset( $pairs[ $translation->getOriginalElementId() . '|' . $translation->getTargetLanguageCode() ] );
+      }
+    ) );
+  }
+
+
+  private function bundleRounds(): Taxonomy\TaxonomyTermBundleRounds {
+    return new Taxonomy\TaxonomyTermBundleRounds( $this->wpdb, $this->dispatcher() );
+  }
+
+
+  private function mergeDispatchResults( array $results ): \WPML\Core\Component\Translation\Application\Service\Taxonomy\TaxonomyTermDispatchResult {
+    $merged = new \WPML\Core\Component\Translation\Application\Service\Taxonomy\TaxonomyTermDispatchResult( [], [], [] );
+    foreach ( $results as $result ) {
+      $merged = new \WPML\Core\Component\Translation\Application\Service\Taxonomy\TaxonomyTermDispatchResult(
+        $merged->getAcceptedMappings() + $result->getAcceptedMappings(),
+        $merged->getBlockedMappings() + $result->getBlockedMappings(),
+        array_merge( $merged->getRejectedJobIds(), $result->getRejectedJobIds() ),
+        $merged->getErrorCode() ?: $result->getErrorCode(),
+        $merged->getErrorMessage() ?: $result->getErrorMessage(),
+        array_merge( $merged->getRemainingJobIds(), $result->getRemainingJobIds() ),
+        array_merge( $merged->getUncertainJobIds(), $result->getUncertainJobIds() )
+      );
+    }
+
+    return $merged;
+  }
+
+
+  private function translatorAvailable(
+    \WPML\Core\Component\Translation\Domain\TranslationMethod\LocalTranslatorMethod $method,
+    string $sourceLanguage
+  ): bool {
+    if ( null === $this->assignedTranslatorsValidator ) {
+      $this->assignedTranslatorsValidator = \WPML\Container\make(
+        \WPML\Core\Component\Translation\Domain\TranslationMethod\Validator\AssignedTranslatorsValidator::class
+      );
+    }
+
+    try {
+      return $this->assignedTranslatorsValidator->validate( [ $method ], $sourceLanguage );
+    } catch ( \Throwable $e ) {
+      return false;
+    }
   }
 
 
@@ -308,8 +503,36 @@ class TaxonomyTermBatchSender {
   }
 
 
+  private function carriedReason( array $carried ): string {
+    $postId = $carried['postId'] ?? 0;
+    $post   = $postId > 0 ? get_post( $postId ) : null;
+    if ( $post instanceof \WP_Post ) {
+      $type  = get_post_type_object( $post->post_type );
+      $label = $type && isset( $type->labels->singular_name ) ? trim( (string) $type->labels->singular_name ) : '';
+      $title = trim( $post->post_title );
+      if ( '' !== $label && '' !== $title ) {
+        return sprintf(
+          /* translators: %1$s is the singular post type label, %2$s is the carrying post's title. */
+          __( 'This taxonomy term is already being translated with the %1$s "%2$s".', 'wpml' ),
+          $label,
+          $title
+        );
+      }
+    }
+
+    return self::IGNORED_ELEMENT_REASON_IN_PROGRESS;
+  }
+
+
   private function refusalReason(): ?string {
     $refusal = $this->dispatcher()->getLastRefusal();
+    if ( 'carried_by_post' === $refusal ) {
+      $postId = method_exists( $this->dispatcher(), 'getLastCarryingPostId' )
+        ? $this->dispatcher()->getLastCarryingPostId()
+        : null;
+
+      return $this->carriedReason( [ 'postId' => (int) $postId ] );
+    }
 
     return is_string( $refusal ) ? ( self::REFUSAL_REASONS[ $refusal ] ?? null ) : null;
   }

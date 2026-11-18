@@ -4,16 +4,22 @@ namespace WPML\UserInterface\Web\Core\Component\Dashboard\Application\Endpoint\S
 
 use WPML\Core\Component\Translation\Application\Service\AutomaticJobsCancellation\ReleaseLedger;
 use WPML\Core\Component\Translation\Application\Service\Dto\SendToTranslationDto;
-use WPML\Legacy\Component\Translation\Sender\Taxonomy\TaxonomySendOperationCoordinator;
+use WPML\Core\Component\Translation\Application\Service\Dto\TargetLanguageMethodDto;
+use WPML\Core\Component\Translation\Application\Service\Taxonomy\PostTermsForAutomaticSendInterface;
+use WPML\Core\Component\Translation\Application\Service\Taxonomy\TaxonomySendOperationCoordinatorInterface;
 use WPML\Core\Component\Translation\Application\Service\TranslationService;
+use WPML\Core\Component\TranslationProxy\Application\Service\SendLockInterface;
 use WPML\Core\Port\Endpoint\EndpointInterface;
-use WPML\Legacy\Component\TranslationProxy\Application\Service\SendLock;
+use WPML\Core\SharedKernel\Component\Translation\Domain\TranslationMethod\TargetLanguageMethodType;
 use WPML\PHP\Exception\Exception;
 use WPML\PHP\Exception\InvalidArgumentException;
+use WPML\TranslationPolicy\Duplicate\DuplicateControls;
 
 class SendToTranslationController implements EndpointInterface {
 
   const CODE_SEND_LOCK_BUSY = 'send_lock_busy';
+
+  const CODE_DUPLICATE_RETIRED = 'duplicate_retired';
 
   private $translationService;
 
@@ -21,20 +27,35 @@ class SendToTranslationController implements EndpointInterface {
 
   private $taxonomyOperations;
 
+  private $postTerms;
+
 
   public function __construct(
     TranslationService $translationService,
-    SendLock $sendLock,
-    ?TaxonomySendOperationCoordinator $taxonomyOperations = null
+    SendLockInterface $sendLock,
+    TaxonomySendOperationCoordinatorInterface $taxonomyOperations,
+    PostTermsForAutomaticSendInterface $postTerms
   ) {
     $this->translationService = $translationService;
     $this->sendLock           = $sendLock;
     $this->taxonomyOperations = $taxonomyOperations;
+    $this->postTerms          = $postTerms;
   }
 
 
   public function handle( $requestData = null ): array {
     $requestData = $requestData ?: [];
+
+    if ( $this->asksForRetiredDuplicate( $requestData ) ) {
+      $reason = DuplicateControls::refusal();
+
+      return [
+        'success' => false,
+        'data'    => $reason,
+        'code'    => self::CODE_DUPLICATE_RETIRED,
+      ];
+    }
+
     $taxonomyContext = null;
     $settledRounds = null;
 
@@ -53,10 +74,10 @@ class SendToTranslationController implements EndpointInterface {
 
     try {
       $startedAt       = $this->now();
-      $taxonomyContext = $this->taxonomyOperations()->prepare( $requestData );
+      $taxonomyContext = $this->taxonomyOperations->prepare( $requestData );
       $sendToTranslationDto = $taxonomyContext
         ? SendToTranslationDto::fromResolvedArray( $this->withIsRetry( $taxonomyContext['request'], $requestData ) )
-        : SendToTranslationDto::fromArray( $requestData );
+        : $this->withPostTerms( $requestData );
 
       $releaseMark = ReleaseLedger::instance()->mark();
 
@@ -64,14 +85,14 @@ class SendToTranslationController implements EndpointInterface {
 
       $data = $result->toArray();
       if ( $taxonomyContext ) {
-        $data = array_merge( $data, $this->taxonomyOperations()->settle( $taxonomyContext, $result ) );
+        $data = array_merge( $data, $this->taxonomyOperations->settle( $taxonomyContext, $result ) );
 
         $slowestRound = $this->now() - $startedAt;
         $rounds       = 1;
-        while ( $this->taxonomyOperations()->mayContinueInRequest( $requestData, $data, $rounds, $this->now() - $startedAt, $slowestRound ) ) {
+        while ( $this->taxonomyOperations->mayContinueInRequest( $requestData, $data, $rounds, $this->now() - $startedAt, $slowestRound ) ) {
           $settledRounds   = $data;
           $roundStartedAt  = $this->now();
-          $taxonomyContext = $this->taxonomyOperations()->prepare( $this->taxonomyOperations()->nextRoundRequest( $requestData, $data ) );
+          $taxonomyContext = $this->taxonomyOperations->prepare( $this->taxonomyOperations->nextRoundRequest( $requestData, $data ) );
           if ( ! $taxonomyContext ) {
             break;
           }
@@ -80,9 +101,9 @@ class SendToTranslationController implements EndpointInterface {
             SendToTranslationDto::fromResolvedArray( $this->withIsRetry( $taxonomyContext['request'], $requestData ) ),
             true
           );
-          $data          = $this->taxonomyOperations()->mergeRounds(
+          $data          = $this->taxonomyOperations->mergeRounds(
             $settledRounds,
-            array_merge( $result->toArray(), $this->taxonomyOperations()->settle( $taxonomyContext, $result ) )
+            array_merge( $result->toArray(), $this->taxonomyOperations->settle( $taxonomyContext, $result ) )
           );
           $settledRounds = null;
           $slowestRound  = max( $slowestRound, $this->now() - $roundStartedAt );
@@ -116,11 +137,11 @@ class SendToTranslationController implements EndpointInterface {
         if ( $taxonomyContext ) {
           $partialData = array_merge(
             $partialData,
-            $this->taxonomyOperations()->settle( $taxonomyContext, $partialResult )
+            $this->taxonomyOperations->settle( $taxonomyContext, $partialResult )
           );
         }
         $response['partialData'] = $settledRounds
-          ? $this->taxonomyOperations()->mergeRounds( $settledRounds, $partialData )
+          ? $this->taxonomyOperations->mergeRounds( $settledRounds, $partialData )
           : $partialData;
         $settledRounds           = null;
       }
@@ -150,17 +171,52 @@ class SendToTranslationController implements EndpointInterface {
   }
 
 
-  protected function now(): float {
-    return microtime( true );
+  private function asksForRetiredDuplicate( array $requestData ): bool {
+    $methods = $requestData['targetLanguageMethods'] ?? null;
+    if ( DuplicateControls::offered() || ! is_array( $methods ) ) {
+      return false;
+    }
+
+    foreach ( $methods as $method ) {
+      if ( is_array( $method ) && TargetLanguageMethodType::DUPLICATE === ( $method['translationMethod'] ?? null ) ) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
 
-  private function taxonomyOperations(): TaxonomySendOperationCoordinator {
-    if ( null === $this->taxonomyOperations ) {
-      $this->taxonomyOperations = new TaxonomySendOperationCoordinator();
+  private function withPostTerms( array $requestData ): SendToTranslationDto {
+    $dto = SendToTranslationDto::fromArray( $requestData );
+
+    $automaticLanguages = [];
+    foreach ( $dto->getTargetLanguageMethods() as $method ) {
+      if ( TargetLanguageMethodType::AUTOMATIC === $method->getTranslationMethod() ) {
+        $automaticLanguages[] = $method->getTargetLanguageCode();
+      }
     }
 
-    return $this->taxonomyOperations;
+    if ( ! $dto->getPosts() || ! $automaticLanguages ) {
+      return $dto;
+    }
+
+    $targets = $this->postTerms->uncoveredTermsOfPosts( $dto->getPosts(), $automaticLanguages );
+    if ( ! $targets ) {
+      return $dto;
+    }
+
+    $resolved = $requestData;
+    unset( $resolved['operationId'] );
+    $resolved['taxonomies']      = array_values( array_unique( array_merge( ...array_values( $targets ) ) ) );
+    $resolved['taxonomyTargets'] = $targets;
+
+    return SendToTranslationDto::fromResolvedArray( $resolved );
+  }
+
+
+  protected function now(): float {
+    return microtime( true );
   }
 
 

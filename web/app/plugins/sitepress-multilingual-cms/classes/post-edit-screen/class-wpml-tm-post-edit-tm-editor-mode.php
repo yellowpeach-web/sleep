@@ -4,6 +4,7 @@ use WPML\API\Settings;
 use WPML\Core\SharedKernel\Component\Post\Domain\TranslationEditorPreference;
 use WPML\Element\API\Translations;
 use WPML\TM\PostEditScreen\Endpoints\SetEditorMode;
+use WPML\TranslationPolicy\Policy\Policy;
 
 class WPML_TM_Post_Edit_TM_Editor_Mode {
 
@@ -35,7 +36,35 @@ class WPML_TM_Post_Edit_TM_Editor_Mode {
 		return self::resolve_editor( $post_id, true );
 	}
 
+	public static function get_translation_editor_for_post_type_with_scope( $post_type ) {
+		$tm_settings = self::init_settings();
+
+		$type_editor = $post_type ? ( $tm_settings[ self::TM_KEY_FOR_POST_TYPE_EDITOR ][ $post_type ] ?? null ) : null;
+		if ( self::is_valid_editor( $type_editor ) ) {
+			return [ $type_editor, SetEditorMode::MODE_FOR_POST_TYPE ];
+		}
+
+		if ( self::is_valid_editor( $tm_settings[ self::TM_KEY_GLOBAL_EDITOR ] ) ) {
+			return [ $tm_settings[ self::TM_KEY_GLOBAL_EDITOR ], SetEditorMode::MODE_FOR_GLOBAL ];
+		}
+
+		return self::derive_from_legacy_with_scope(
+			null,
+			null,
+			$post_type ? ( $tm_settings[ self::TM_KEY_FOR_POST_TYPE_USE_NATIVE ][ $post_type ] ?? null ) : null,
+			$post_type ? ( $tm_settings[ self::TM_KEY_FOR_POST_TYPE_USE_WPML ][ $post_type ] ?? null ) : null,
+			$tm_settings[ self::TM_KEY_GLOBAL_USE_NATIVE ],
+			$tm_settings[ self::TM_KEY_GLOBAL_USE_WPML ],
+			$tm_settings['doc_translation_method']
+		);
+	}
+
 	private static function resolve_editor( $post_id, $should_find_original_id ) {
+		$policy_answer = Policy::reader()->resolverAnswer( (int) $post_id, (bool) $should_find_original_id );
+		if ( null !== $policy_answer ) {
+			return $policy_answer;
+		}
+
 		if ( $should_find_original_id ) {
 			$original_id = (int) Translations::getOriginalId( $post_id, 'post_' . get_post_type( $post_id ) );
 			$post_id     = $original_id ?: $post_id;
@@ -80,6 +109,10 @@ class WPML_TM_Post_Edit_TM_Editor_Mode {
 			}
 		}
 
+		if ( self::is_valid_editor( $tm_settings[ self::TM_KEY_GLOBAL_EDITOR ] ) ) {
+			return self::EDITOR_NATIVE === $tm_settings[ self::TM_KEY_GLOBAL_EDITOR ];
+		}
+
 		return self::EDITOR_NATIVE === self::derive_from_legacy(
 			null,
 			null,
@@ -92,8 +125,8 @@ class WPML_TM_Post_Edit_TM_Editor_Mode {
 	}
 
 	public static function get_editor_settings( $deprecated, $postId ) {
-		$useTmEditor = \WPML_TM_Post_Edit_TM_Editor_Mode::is_using_tm_editor( null, $postId );
-		$useTmEditor = apply_filters( 'wpml_use_tm_editor', $useTmEditor, $postId );
+		$useTmEditor = ! self::is_translated_independently( $postId ) && \WPML_TM_Post_Edit_TM_Editor_Mode::is_using_tm_editor( null, $postId );
+		$useTmEditor = Policy::editorFilters()->useTmEditor( $useTmEditor, $postId );
 
 		$result = self::get_blocked_posts( [ $postId ] );
 
@@ -112,6 +145,14 @@ class WPML_TM_Post_Edit_TM_Editor_Mode {
 		];
 	}
 
+	public static function is_translated_independently( $postId ) {
+		if ( ! is_numeric( $postId ) ) {
+			return false;
+		}
+
+		return 'yes' === get_post_meta( (int) $postId, TranslationEditorPreference::POST_META_KEY_INDEPENDENT, true );
+	}
+
 	public static function uses_native_editor( $post_id ) {
 		list( $use_tm_editor, $is_wpml_editor_blocked ) = self::get_editor_settings( null, $post_id );
 
@@ -119,7 +160,7 @@ class WPML_TM_Post_Edit_TM_Editor_Mode {
 	}
 
 	public static function get_blocked_posts( $postIds ) {
-		return apply_filters( 'wpml_tm_editor_exclude_posts', [], $postIds );
+		return Policy::editorFilters()->blockedPosts( $postIds );
 	}
 
 	private static function init_settings() {
@@ -160,7 +201,7 @@ class WPML_TM_Post_Edit_TM_Editor_Mode {
 		)[0];
 	}
 
-	private static function derive_from_legacy_with_scope(
+	public static function derive_from_legacy_with_scope(
 		$meta_native,
 		$meta_wpml,
 		$type_native,

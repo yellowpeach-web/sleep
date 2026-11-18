@@ -36,20 +36,20 @@ class UpdateHooks implements \IWPML_Action {
 		add_action( 'wpml_st_string_updated', [ Domains::class, 'invalidateMODomainCache' ] );
 
 		add_action( 'wpml_st_add_string_translation', array( $this, 'add_to_update_queue' ) );
+		add_action( 'wpml_st_refresh_string_translation', array( $this, 'add_to_update_queue' ) );
 		add_action( 'wpml_st_update_string', array( $this, 'refresh_after_update_original_string' ), 10, 6 );
 		add_action( 'wpml_st_before_remove_strings', array( $this, 'refresh_before_remove_strings' ) );
 		add_action( 'wpml_st_translation_files_process_queue', [ $this, 'process_update_queue_action' ] );
 
-		add_action( 'wpml_st_refresh_domain', [ $this, 'refresh_domain' ] );
+		add_action( 'wpml_st_refresh_domain', [ $this, 'refresh_domain' ], 10, 2 );
 
-		if ( ! $this->file_manager->isPartialFile() ) {
-			add_action( 'wpml_st_translations_file_post_import', array( $this, 'update_imported_file' ) );
-		}
+		add_action( 'wpml_st_translations_file_post_import', array( $this, 'update_imported_file' ) );
 	}
 
 	public function add_to_update_queue( $string_translation_id ) {
-		if ( ! in_array( $string_translation_id, $this->updated_translation_ids, true ) ) {
-			$this->updated_translation_ids[] = $string_translation_id;
+		$key = (string) $string_translation_id;
+		if ( ! isset( $this->updated_translation_ids[ $key ] ) ) {
+			$this->updated_translation_ids[ $key ] = $string_translation_id;
 			$this->add_shutdown_action();
 		}
 	}
@@ -69,19 +69,29 @@ class UpdateHooks implements \IWPML_Action {
 	public function process_update_queue() {
 		call_user_func( $this->resetDomainsCache );
 
-		$outdated_entities        = $this->domains_locales_mapper->get_from_translation_ids( $this->updated_translation_ids );
-		$this->entities_to_update = $this->entities_to_update->merge( $outdated_entities )
-			->unique( [ DomainsLocalesMapper::class, 'entityKey' ] )
+		$translation_ids = array_values( $this->updated_translation_ids );
+		$queued_entities = $this->entities_to_update;
+
+		$this->updated_translation_ids = [];
+		$this->entities_to_update      = wpml_collect( [] );
+
+		$outdated_entities = $this->domains_locales_mapper->get_from_translation_ids( $translation_ids );
+		$batch             = $queued_entities->merge( $outdated_entities )
+			->unique(
+				function ( $entity ) {
+					return DomainsLocalesMapper::entityKey( $entity );
+				}
+			)
 			->values();
 
-		$this->entities_to_update->each(
+		$batch->each(
 			function ( $entity ) {
 				$updatedFilename = $this->update_file( $entity->domain, $entity->locale );
 				do_action( 'wpml_st_translation_file_updated', $updatedFilename, $entity->domain, $entity->locale );
 			}
 		);
 
-		return $this->entities_to_update->toArray();
+		return $batch->toArray();
 	}
 
 	public function refresh_after_update_original_string( $domain, $name, $old_value, $new_value, $force_complete, $string ) {
@@ -99,9 +109,24 @@ class UpdateHooks implements \IWPML_Action {
 		}
 	}
 
-	public function refresh_domain( $domain ) {
+	public function refresh_domain( $domain, $language_codes = [] ) {
+		$language_codes = array_values( array_filter( array_map( 'strval', (array) $language_codes ), 'strlen' ) );
+		$get_languages  = $language_codes
+			? function () use ( $language_codes ) {
+				$active    = (array) Languages::getActive();
+				$languages = [];
+				foreach ( $language_codes as $code ) {
+					if ( isset( $active[ $code ] ) ) {
+						$languages[ $code ] = $active[ $code ];
+					}
+				}
+
+				return $languages;
+			}
+			: [ Languages::class, 'getActive' ];
+
 		$outdated_entities        = $this->domains_locales_mapper->get_from_domain(
-			[ Languages::class, 'getActive' ],
+			$get_languages,
 			$domain
 		);
 		$this->entities_to_update = $this->entities_to_update->merge( $outdated_entities );

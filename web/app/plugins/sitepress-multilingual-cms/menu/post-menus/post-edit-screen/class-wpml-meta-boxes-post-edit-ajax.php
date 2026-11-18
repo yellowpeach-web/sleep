@@ -1,5 +1,6 @@
 <?php
 
+use WPML\TranslationPolicy\Duplicate\DuplicateControls;
 use WPML\TranslationRoles\LangPairPermissions;
 
 class WPML_Meta_Boxes_Post_Edit_Ajax implements IWPML_Action {
@@ -40,8 +41,12 @@ class WPML_Meta_Boxes_Post_Edit_Ajax implements IWPML_Action {
 	}
 
 	public function enqueue_scripts( $hook ) {
+		if ( WPML_Block_Editor_Helper::is_block_editor_screen() ) {
+			return;
+		}
+
 		if (
-			in_array( $hook, [ 'post.php', 'post-new.php', 'edit.php' ], true ) ||
+			in_array( $hook, [ 'post.php', 'post-new.php' ], true ) ||
 			apply_filters( 'wpml_enable_language_meta_box', false )
 		) {
 			wp_enqueue_script( 'wpml-meta-box', ICL_PLUGIN_URL . '/dist/js/wpml-meta-box/wpml-meta-box.js', [], ICL_SITEPRESS_SCRIPT_VERSION, true );
@@ -77,6 +82,11 @@ class WPML_Meta_Boxes_Post_Edit_Ajax implements IWPML_Action {
 	public function duplicate_post() {
 		if ( ! $this->is_valid_request( self::ACTION_DUPLICATE ) ) {
 			wp_send_json_error();
+			return;
+		}
+
+		if ( ! DuplicateControls::offered() ) {
+			wp_send_json_error( DuplicateControls::refusal() );
 			return;
 		}
 

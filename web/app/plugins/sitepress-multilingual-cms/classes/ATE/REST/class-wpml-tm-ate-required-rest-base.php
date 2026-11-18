@@ -9,7 +9,7 @@ abstract class WPML_TM_ATE_Required_Rest_Base extends WPML_REST_Base {
 	}
 
 	public function validate_permission( WP_REST_Request $request ) {
-		return WPML_TM_ATE_Status::is_enabled() && parent::validate_permission( $request );
+		return WPML_TM_ATE_Status::can_ate_job_exist() && parent::validate_permission( $request );
 	}
 
 	static function get_url( $endpoint ) {

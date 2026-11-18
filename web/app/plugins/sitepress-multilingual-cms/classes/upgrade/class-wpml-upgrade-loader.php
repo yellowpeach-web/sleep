@@ -24,13 +24,18 @@ use WPML\Upgrade\Commands\AddIsCustomColumnToLanguages;
 use WPML\Upgrade\Commands\MigrateLanguagesToCountryModel;
 use WPML\Upgrade\Commands\BackfillLanguageTypeColumn;
 use WPML\Upgrade\Commands\CreateLanguagePresetsTable;
+use WPML\Upgrade\Commands\AddWpCodeColumnToLanguagePresets;
+use WPML\Upgrade\Commands\RefreshLanguageCatalogueForWpCodeColumn;
 use WPML\Upgrade\Commands\CreateCountriesTable;
 use WPML\Upgrade\Commands\CreateCountriesTranslationsTable;
 use WPML\Upgrade\Commands\SeedCountryTranslations;
 use WPML\Upgrade\Commands\SeedLanguageNameTranslations;
+use WPML\Upgrade\Commands\RepairNonWordPressLocaleMap;
 use WPML\Upgrade\Commands\RemoveRecordsOfDeletedTranslations;
 use WPML\Upgrade\Commands\RemoveObsoleteWordCountMeta;
 use WPML\Upgrade\Commands\RestoreElementorFormEmailTokens;
+use WPML\Upgrade\Commands\RestoreElementorV4FormEmailTokens;
+use WPML\Upgrade\Commands\RestoreElementorV4FormEmailSubjectTokens;
 use WPML\Upgrade\Commands\RetireMediaTranslationStatusStore;
 use WPML\Upgrade\Commands\RemoveTruncatedLanguageNameRows;
 use WPML\Upgrade\Commands\CreateLanguagePresetCountriesTable;
@@ -57,7 +62,10 @@ use WPML\Upgrade\Commands\AddSentFromColumnToIclTranslateJob;
 use WPML\Upgrade\Commands\AddCreatedByTranslateEverythingColumnToIclTranslateJob;
 use WPML\Upgrade\Commands\AddReviewModeColumnToIclTranslateJob;
 use WPML\Upgrade\Commands\AddWordsToTranslateCountLifetimeMaxColumnToIclTranslateJob;
+use WPML\Upgrade\Commands\AddAteReceiveTokenColumnToIclTranslateJob;
+use WPML\Upgrade\Commands\AddWordsToTranslateCountUnconfirmedMaxColumnToIclTranslateJob;
 use WPML\Upgrade\Commands\RemoveEndpointsOption;
+use WPML\Upgrade\Commands\RemovePostTypeAutomaticConfig;
 use WPML\TM\Upgrade\Commands\AddReviewStatusColumnToTranslationStatus;
 use WPML\TM\Upgrade\Commands\AddAteCommunicationRetryColumnToTranslationStatus;
 use WPML\TM\Upgrade\Commands\AddAteSyncCountToTranslationJob;
@@ -72,12 +80,15 @@ use WPML\Upgrade\Commands\WidenTranslateJobTranslatorIdColumn;
 use WPML\Upgrade\Commands\WidenTranslateJobManagerIdColumn;
 use WPML\Upgrade\Commands\CreateUrlResolutionCacheTable;
 use WPML\Upgrade\Commands\CreateElementKnowledgeTable;
+use WPML\Upgrade\Commands\CreateAppearancesTable;
 use WPML\TM\Upgrade\Commands\SetCorrectTranslateEverythingState;
 use WPML\TM\Upgrade\Commands\MigrateTranslateEverythingCompletedOption;
 use WPML\TM\Upgrade\Commands\EnableHandleMediaAutoOptionForNewInstalls;
+use WPML\TM\Upgrade\Commands\CreateTermBatchMembersTable;
 use WPML\TM\Upgrade\Commands\CreateUnsolvableJobsTable;
 use WPML\TM\Upgrade\Commands\ValidateAliasDomain;
 use WPML\TM\Upgrade\Commands\BackfillCdtOptions;
+use WPML\TM\Upgrade\Commands\RemovePullDeliveryLeftovers;
 use WPML\Upgrade\Commands\BackfillDefaultLanguageDefaultCategory;
 use WPML\Upgrade\Commands\BackfillTranslateEverythingSinceDates;
 use WPML\Upgrade\Commands\DeleteTranslationJobsBasketOption;
@@ -96,7 +107,10 @@ use WPML\Upgrade\Commands\OffloadMetaSettings;
 use WPML\Upgrade\Commands\ResetLanguageNameCache;
 use WPML\Upgrade\Commands\RepairExistingContentLanguageVerified;
 use WPML\Upgrade\Commands\RepairSuffixedLanguageNames;
+use WPML\Upgrade\Commands\RepairSlovakLanguageNames;
 use WPML\Upgrade\Commands\AddLatestJobPerRidIndex;
+use WPML\Upgrade\Commands\AddFieldTypeJobIdIndex;
+use WPML\Upgrade\Commands\AddStatusRidIndex;
 use WPML\Upgrade\Commands\BackfillCapabilityIndex;
 use WPML\Upgrade\Commands\RestoreTermTranslationStatusRows;
 use WPML\Upgrade\Commands\ReleaseAdoptedAteJobBindings;
@@ -105,8 +119,12 @@ use WPML\Upgrade\Commands\AdoptCustomLanguagesOnCatalogueCodes;
 use WPML\Upgrade\Commands\ReconcileCustomLanguageHeadMappings;
 use WPML\Upgrade\Commands\NormalizeNullDefaultLocale;
 use WPML\Upgrade\Commands\RemoveTroubleshootingCapabilityFromRoles;
+use WPML\Upgrade\Commands\RemoveLanguageMappingsOntoDefaultLanguage;
+use WPML\Upgrade\Commands\RemoveSwappedLanguageMappingPairs;
 use WPML\Upgrade\Commands\ForgetSiteWideSiteKeyNoticeDismissal;
 use WPML\Upgrade\Commands\ResetStringWordCounts;
+use WPML\Upgrade\Commands\FlagOwnersOfStaleRidingPackages;
+use WPML\Upgrade\Commands\ResetResolvedUrls;
 
 class WPML_Upgrade_Loader implements IWPML_Action {
 
@@ -123,6 +141,8 @@ class WPML_Upgrade_Loader implements IWPML_Action {
 	private $factory;
 
 	private $notices;
+
+	private $command_status;
 
 	public function __construct(
 		SitePress $sitepress,
@@ -150,7 +170,7 @@ class WPML_Upgrade_Loader implements IWPML_Action {
 			return;
 		}
 
-		$upgrade = new WPML_Upgrade( $this->get_command_definitions(), $this->sitepress, $this->factory, null, self::FRONT_END_SCOPE_ID );
+		$upgrade = new WPML_Upgrade( $this->get_command_definitions(), $this->sitepress, $this->factory, $this->command_status(), self::FRONT_END_SCOPE_ID );
 		$upgrade->run();
 	}
 
@@ -183,6 +203,7 @@ class WPML_Upgrade_Loader implements IWPML_Action {
 			$this->factory->create_command_definition( WidenBackgroundTaskColumns::class, array( $this->upgrade_schema ), array( 'admin' ) ),
 			$this->factory->create_command_definition( CreateUrlResolutionCacheTable::class, array( $this->upgrade_schema ), array( 'admin', 'ajax', 'front-end' ) ),
 			$this->factory->create_command_definition( CreateElementKnowledgeTable::class, array( $this->upgrade_schema ), array( 'admin', 'ajax', 'front-end', 'cli' ) ),
+			$this->factory->create_command_definition( CreateAppearancesTable::class, array( $this->upgrade_schema ), array( 'admin', 'ajax', 'front-end', 'cli' ) ),
 			$this->factory->create_command_definition( WidenTranslateFieldTypeColumn::class, array( $this->upgrade_schema ), array( 'admin', 'ajax', 'front-end' ) ),
 			$this->factory->create_command_definition( WidenFlagsFlagColumn::class, array( $this->upgrade_schema ), array( 'admin', 'ajax', 'front-end' ) ),
 			$this->factory->create_command_definition( WidenTranslateJobTitleColumn::class, array( $this->upgrade_schema ), array( 'admin', 'ajax', 'front-end' ) ),
@@ -202,6 +223,7 @@ class WPML_Upgrade_Loader implements IWPML_Action {
 			$this->factory->create_command_definition( AddTypeColumnToLanguages::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( AddTranslationPausedColumnToLanguages::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( CreateLanguagePresetsTable::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
+			$this->factory->create_command_definition( AddWpCodeColumnToLanguagePresets::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( CreateCountriesTable::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( CreateCountriesTranslationsTable::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end' ] ),
 			$this->factory->create_command_definition( CreateLanguagePresetCountriesTable::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
@@ -216,6 +238,7 @@ class WPML_Upgrade_Loader implements IWPML_Action {
 			$this->factory->create_command_definition( SeedLanguageCatalogue::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( RefreshLanguageCataloguePairs::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end' ] ),
 			$this->factory->create_command_definition( RefreshLanguageCatalogueForLanguageColumn::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end' ] ),
+			$this->factory->create_command_definition( RefreshLanguageCatalogueForWpCodeColumn::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end' ] ),
 			$this->factory->create_command_definition( RefreshLanguageCatalogueLocaleCoverage::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end' ] ),
 			$this->factory->create_command_definition( RefreshLanguageCataloguePairIdentity::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end' ] ),
 			$this->factory->create_command_definition( RefreshLanguageCatalogueBareCodes::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end' ] ),
@@ -228,11 +251,15 @@ class WPML_Upgrade_Loader implements IWPML_Action {
 			$this->factory->create_command_definition( AddIsCustomColumnToLanguages::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( MigrateLanguagesToCountryModel::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( BackfillLanguageTypeColumn::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end' ] ),
+			$this->factory->create_command_definition( RepairNonWordPressLocaleMap::class, [], [ 'admin', 'ajax', 'front-end' ] ),
 			$this->factory->create_command_definition( AddAutomaticColumnToIclTranslateJob::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( AddSentFromColumnToIclTranslateJob::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( AddCreatedByTranslateEverythingColumnToIclTranslateJob::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( AddReviewModeColumnToIclTranslateJob::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( AddWordsToTranslateCountLifetimeMaxColumnToIclTranslateJob::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
+			$this->factory->create_command_definition( AddAteReceiveTokenColumnToIclTranslateJob::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
+			$this->factory->create_command_definition( RemovePullDeliveryLeftovers::class, [ $this->upgrade_schema->get_wpdb() ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
+			$this->factory->create_command_definition( AddWordsToTranslateCountUnconfirmedMaxColumnToIclTranslateJob::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( AddTMAllowedOption::class, [], [ 'admin', 'ajax', 'front-end' ] ),
 			$this->factory->create_command_definition( AddTranslationManagerCapToAdmin::class, [], [ 'admin', 'ajax', 'front-end' ] ),
 			$this->factory->create_command_definition( AddReviewStatusColumnToTranslationStatus::class, [ $this->upgrade_schema ], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
@@ -241,10 +268,12 @@ class WPML_Upgrade_Loader implements IWPML_Action {
 			$this->factory->create_command_definition( 'WPML_TM_Add_TP_ID_Column_To_Translation_Status', [ $this->upgrade_schema ], array( 'admin', 'ajax', 'front-end' ) ),
 			$this->factory->create_command_definition( 'WPML_TM_Add_TP_Revision_And_TS_Status_Columns_To_Translation_Status', [ $this->upgrade_schema ], array( 'admin', 'ajax', 'front-end' ) ),
 			$this->factory->create_command_definition( RemoveEndpointsOption::class, [], [ 'admin', 'ajax', 'front-end' ] ),
+			$this->factory->create_command_definition( RemovePostTypeAutomaticConfig::class, [], [ 'admin', 'ajax', 'front-end' ] ),
 			$this->factory->create_command_definition( SetCorrectTranslateEverythingState::class, [], [ 'admin' ] ),
 			$this->factory->create_command_definition( MigrateTranslateEverythingCompletedOption::class, [], [ 'admin' ] ),
 			$this->factory->create_command_definition( EnableHandleMediaAutoOptionForNewInstalls::class, [], [ 'admin' ] ),
 			$this->factory->create_command_definition( CreateUnsolvableJobsTable::class, [ $this->upgrade_schema ], [ 'admin' ] ),
+			$this->factory->create_command_definition( CreateTermBatchMembersTable::class, [ $this->upgrade_schema ], [ 'admin' ] ),
 			$this->factory->create_command_definition( ValidateAliasDomain::class, [], [ 'admin' ] ),
 			$this->factory->create_command_definition( BackfillCdtOptions::class, [], [ 'admin' ] ),
 			$this->factory->create_command_definition( DisableAutoloadForUnusedOptions::class, [], [ 'admin' ] ),
@@ -259,6 +288,7 @@ class WPML_Upgrade_Loader implements IWPML_Action {
 			$this->factory->create_command_definition( BackfillDefaultLanguageDefaultCategory::class, [ $this->sitepress ], [ 'admin', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( ResetLanguageNameCache::class, [ $this->sitepress ], [ 'admin' ] ),
 			$this->factory->create_command_definition( RepairSuffixedLanguageNames::class, [], [ 'admin' ] ),
+			$this->factory->create_command_definition( RepairSlovakLanguageNames::class, [ $this->upgrade_schema ], [ 'admin' ] ),
 			$this->factory->create_command_definition( BackfillTranslateEverythingSinceDates::class, [], [ 'admin' ] ),
 			$this->factory->create_command_definition( OffloadMetaSettings::class, array( $this->upgrade_schema ), array( 'admin' ) ),
 			$this->factory->create_command_definition( AddNameHashToMetaSettings::class, array( $this->upgrade_schema ), array( 'admin' ) ),
@@ -271,6 +301,8 @@ class WPML_Upgrade_Loader implements IWPML_Action {
 			$this->factory->create_command_definition( RestoreTermTranslationStatusRows::class, [ $this->upgrade_schema ], [ 'admin', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( RetireMediaTranslationStatusStore::class, [ $this->upgrade_schema ], [ 'admin' ] ),
 			$this->factory->create_command_definition( AddLatestJobPerRidIndex::class, [ $this->upgrade_schema ], [ 'admin', 'front-end', 'cli' ] ),
+			$this->factory->create_command_definition( AddFieldTypeJobIdIndex::class, [ $this->upgrade_schema ], [ 'admin', 'cli' ] ),
+			$this->factory->create_command_definition( AddStatusRidIndex::class, [ $this->upgrade_schema ], [ 'admin', 'cli' ] ),
 			$this->factory->create_command_definition( ReleaseAdoptedAteJobBindings::class, [ $this->upgrade_schema ], [ 'admin', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( NormalizeNullDefaultLocale::class, [], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
 			$this->factory->create_command_definition( AdoptCatalogueCodedCustomLanguages::class, [], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
@@ -280,8 +312,31 @@ class WPML_Upgrade_Loader implements IWPML_Action {
 			$this->factory->create_command_definition( RemoveObsoleteWordCountMeta::class, [ $this->upgrade_schema ], [ 'admin' ] ),
 			$this->factory->create_command_definition( ForgetSiteWideSiteKeyNoticeDismissal::class, [], [ 'admin' ] ),
 			$this->factory->create_command_definition( ResetStringWordCounts::class, [ $this->upgrade_schema ], [ 'admin' ] ),
+			$this->factory->create_command_definition( FlagOwnersOfStaleRidingPackages::class, [ $this->upgrade_schema ], [ 'admin', 'cli' ] ),
 			$this->factory->create_command_definition( RepairExistingContentLanguageVerified::class, [ $this->sitepress, $this->upgrade_schema->get_wpdb() ], [ 'admin', 'cli' ] ),
 			$this->factory->create_command_definition( RestoreElementorFormEmailTokens::class, [ $this->upgrade_schema ], [ 'admin' ] ),
+			$this->factory->create_command_definition( RemoveLanguageMappingsOntoDefaultLanguage::class, [], [ 'admin', 'ajax', 'cli' ] ),
+			$this->factory->create_command_definition( RemoveSwappedLanguageMappingPairs::class, [], [ 'admin', 'cli' ] ),
+			$this->factory->create_command_definition( RestoreElementorV4FormEmailTokens::class, [ $this->upgrade_schema ], [ 'admin' ] ),
+			$this->factory->create_command_definition( RestoreElementorV4FormEmailSubjectTokens::class, [ $this->upgrade_schema ], [ 'admin' ] ),
+			$this->factory->create_command_definition( \WPML\Upgrade\Commands\LinkDiviThemeBuilderLayouts::class, [ $this->upgrade_schema->get_wpdb(), $this->sitepress ], [ 'admin', 'cli' ] ),
+			$this->factory->create_command_definition( \WPML\TranslationPolicy\Migration\AddTranslationPolicy::class, [ $this->upgrade_schema->get_wpdb(), $this->sitepress ], [ 'admin', 'cli' ] ),
+			$this->factory->create_command_definition( ResetResolvedUrls::class, [], [ 'admin', 'ajax', 'front-end', 'cli' ] ),
+			$this->factory->create_command_definition( \WPML\Upgrade\Commands\ClearNameTakenTermRefusals::class, [ $this->upgrade_schema->get_wpdb() ], [ 'admin', 'front-end', 'cli' ] ),
+			$this->factory->create_command_definition( \WPML\Upgrade\Commands\ClearNameTakenTermRefusalsForCleanedSlugs::class, [ $this->upgrade_schema->get_wpdb() ], [ 'admin', 'front-end', 'cli' ] ),
+			$this->factory->create_command_definition( \WPML\Upgrade\Commands\RepairJoblessInFlightStatusRows::class, [ $this->upgrade_schema->get_wpdb() ], [ 'admin', 'front-end', 'cli' ] ),
+			$this->factory->create_command_definition( \WPML\Upgrade\Commands\ReopenGivenUpDownloads::class, [ $this->upgrade_schema->get_wpdb() ], [ 'admin', 'front-end', 'cli' ] ),
+			$this->factory->create_command_definition( \WPML\Upgrade\Commands\DropUnusedIclTables::class, [ $this->upgrade_schema->get_wpdb() ], [ 'admin' ] ),
+			...\WPML\TranslationPolicy\AddOnlySet::definitions( $this->factory, $this->upgrade_schema ),
+			...\WPML\TranslationPolicy\CutoverSet::definitions( $this->factory, $this->sitepress, $this->command_status() ),
 		];
+	}
+
+	private function command_status() {
+		if ( null === $this->command_status ) {
+			$this->command_status = new \WPML\Upgrade\CommandsStatus();
+		}
+
+		return $this->command_status;
 	}
 }

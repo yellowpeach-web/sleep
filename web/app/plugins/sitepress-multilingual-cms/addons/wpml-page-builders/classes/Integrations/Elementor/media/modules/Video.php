@@ -2,9 +2,13 @@
 
 namespace WPML\PB\Elementor\Media\Modules;
 
-class Video extends \WPML_Elementor_Media_Node_With_Image_Property {
+class Video extends \WPML_Elementor_Media_Node {
 
-	public function get_property_name() {
-		return 'image_overlay';
+	public function translate( $settings, $target_lang, $source_lang ) {
+		foreach ( [ 'image_overlay', 'poster', 'hosted_url' ] as $property ) {
+			$settings = $this->translate_image_property( $settings, $property, $target_lang, $source_lang );
+		}
+
+		return $settings;
 	}
 }

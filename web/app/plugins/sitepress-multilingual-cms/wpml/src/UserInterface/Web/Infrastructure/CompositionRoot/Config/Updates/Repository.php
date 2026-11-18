@@ -14,6 +14,8 @@ class Repository {
   const UPDATES_KEY_STARTED = 'started';
   const UPDATES_KEY_ATTEMPTS = 'attempts';
   const UPDATES_KEY_ERROR = 'error';
+  const UPDATES_KEY_PROGRESS = 'progress';
+  const UPDATES_KEY_PERCENT = 'percent';
 
   const STATUS_IN_PROGRESS = 1;
   const STATUS_COMPLETED = 2;
@@ -23,6 +25,8 @@ class Repository {
   const STATUS_TRY_ONLY_ONCE_FAILED = 5;
 
   const STATUS_GAVE_UP = 6;
+
+  const STATUS_CONTINUES = 7;
 
   const IN_PROGRESS_EXPIRY_SECONDS = 300;
   const RETRY_DELAY_SECONDS = 300;
@@ -72,6 +76,59 @@ class Repository {
   }
 
 
+  public function setUpdateToContinue( $update, string $progress, $percent = null ) {
+    $entry = $this->getEntry( $update->id() ) ?? [];
+    $entry[ self::UPDATES_KEY_STATUS ]   = self::STATUS_CONTINUES;
+    $entry[ self::UPDATES_KEY_ATTEMPTS ] = 0;
+    $entry[ self::UPDATES_KEY_PROGRESS ] = $progress;
+    if ( is_int( $percent ) ) {
+      $entry[ self::UPDATES_KEY_PERCENT ] = $percent;
+    } else {
+      unset( $entry[ self::UPDATES_KEY_PERCENT ] );
+    }
+    unset( $entry[ self::UPDATES_KEY_ERROR ] );
+
+    $this->saveEntry( $update->id(), $entry );
+  }
+
+
+  public function getProgress( $update ) {
+    $progress = ( $this->getEntry( $update->id() ) ?? [] )[ self::UPDATES_KEY_PROGRESS ] ?? null;
+
+    return is_string( $progress ) ? $progress : null;
+  }
+
+
+  public function isUnfinished( $update ) {
+    $entry = $this->getEntry( $update->id() );
+    if ( $entry === null ) {
+      return true;
+    }
+
+    return ! in_array(
+      $this->status( $entry ),
+      [
+        self::STATUS_COMPLETED,
+        self::STATUS_TRY_ONLY_ONCE_STUCK,
+        self::STATUS_TRY_ONLY_ONCE_FAILED,
+        self::STATUS_GAVE_UP,
+      ],
+      true
+    );
+  }
+
+
+  public function getPercentWhileUnfinished( $update ) {
+    if ( ! $this->isUnfinished( $update ) ) {
+      return null;
+    }
+
+    $percent = ( $this->getEntry( $update->id() ) ?? [] )[ self::UPDATES_KEY_PERCENT ] ?? null;
+
+    return is_int( $percent ) ? $percent : null;
+  }
+
+
   public function setUpdateFailed( $update, $error = '' ) {
     $this->finishUpdate( $update, self::STATUS_FAILED, $error );
   }
@@ -84,6 +141,23 @@ class Repository {
 
   public function setUpdateTryOnlyOnceFailed( $update, $error = '' ) {
     $this->finishUpdate( $update, self::STATUS_TRY_ONLY_ONCE_FAILED, $error );
+  }
+
+
+  public function retryGaveUp() {
+    $log = $this->getLog();
+
+    foreach ( $log[ self::OPTION_KEY_UPDATES ] as $updateId => $entry ) {
+      if ( ! is_array( $entry ) || $this->status( $entry ) !== self::STATUS_GAVE_UP ) {
+        continue;
+      }
+
+      $entry[ self::UPDATES_KEY_STATUS ]   = self::STATUS_FAILED;
+      $entry[ self::UPDATES_KEY_STARTED ]  = 0;
+      $entry[ self::UPDATES_KEY_ATTEMPTS ] = self::MAX_ATTEMPTS - 1;
+
+      $this->saveEntry( $updateId, $entry );
+    }
   }
 
 
@@ -103,6 +177,9 @@ class Repository {
       case self::STATUS_TRY_ONLY_ONCE_FAILED:
       case self::STATUS_GAVE_UP:
         return false;
+
+      case self::STATUS_CONTINUES:
+        return true;
 
       case self::STATUS_IN_PROGRESS:
         if ( ! $this->isExpired( $entry ) ) {
@@ -225,6 +302,13 @@ class Repository {
     $previousError = $this->error( $previous );
     if ( $previousError !== '' ) {
       $entry[ self::UPDATES_KEY_ERROR ] = $previousError;
+    }
+
+    if ( $previous !== null && is_string( $previous[ self::UPDATES_KEY_PROGRESS ] ?? null ) ) {
+      $entry[ self::UPDATES_KEY_PROGRESS ] = $previous[ self::UPDATES_KEY_PROGRESS ];
+    }
+    if ( $previous !== null && is_int( $previous[ self::UPDATES_KEY_PERCENT ] ?? null ) ) {
+      $entry[ self::UPDATES_KEY_PERCENT ] = $previous[ self::UPDATES_KEY_PERCENT ];
     }
 
     $this->saveEntry( $update->id(), $entry );

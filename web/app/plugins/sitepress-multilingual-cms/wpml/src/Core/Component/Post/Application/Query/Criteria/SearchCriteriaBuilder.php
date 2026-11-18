@@ -54,7 +54,8 @@ final class SearchCriteriaBuilder {
         ],
         null
       ),
-      Validate::int( [ $array, 'heldOut' ], 0 ) === 1
+      Validate::int( [ $array, 'heldOut' ], 0 ) === 1,
+      Validate::int( [ $array, 'appearedOnly' ], 1 ) !== 0
     );
   }
 

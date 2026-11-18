@@ -595,6 +595,9 @@
          "Blocked by a firewall or CDN": [
             "Заблокировано брандмауэром или CDN"
          ],
+         "Used by another site": [
+            "Используется другим сайтом"
+         ],
          "Not valid": [
             "Недействителен"
          ],
@@ -618,6 +621,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s загружается, но брандмауэр или CDN заблокировали проверку WPML."
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "Используется другим сайтом в этой сети: %s. Введите другой домен, чтобы сохранить."
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "Не удалось проверить домен: %s. Убедитесь, что он указывает на этот сайт, или снимите флажок «Проверить при сохранении», чтобы все равно сохранить его."
@@ -756,7 +762,7 @@
             "Это обновит ваши языковые настройки; существующий контент не будет перезаписан."
          ],
          "Your translations and strings are unchanged.": [
-            "Ваши переводы и строки не изменятся."
+            "Ваши переводы и строки остались без изменений."
          ],
          "Update": [
             "Обновить"
@@ -987,6 +993,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "Прежде чем сохранить этот язык, выберите, вернуть ли контент, который ранее был на этом сайте на нем, или начать заново."
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "Язык не может быть сопоставлен с языком по умолчанию вашего сайта. Вместо этого выберите «Сопоставлять автоматически»."
+         ],
          "You don’t have permission to change languages.": [
             "У вас нет прав на изменение языков."
          ],
@@ -1047,6 +1056,9 @@
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "Если вы не можете найти свой язык в списке, <a>добавьте пользовательский язык</a>."
          ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "Язык «%1$s» перемещен на позицию %2$d из %3$d."
+         ],
          "Default language": [
             "Язык по умолчанию"
          ],
@@ -1104,6 +1116,12 @@
          "Delete language": [
             "Удалить язык"
          ],
+         "Move %s. Use the up and down arrow keys.": [
+            "Переместить «%s». Используйте клавиши со стрелками вверх и вниз."
+         ],
+         "Drag to change the order": [
+            "Перетащите, чтобы изменить порядок"
+         ],
          "Type to search all languages…": [
             "Введите текст для поиска по всем языкам…"
          ],
@@ -1138,7 +1156,7 @@
             "По умолчанию"
          ],
          "Set as default": [
-            "Сделать основным"
+            "Сделать языком по умолчанию"
          ],
          "Resume translating": [
             "Возобновить перевод"
@@ -1175,6 +1193,9 @@
          ],
          "Recognized as the same language as the default": [
             "Распознан как тот же язык, что и язык по умолчанию"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "Автоматический перевод отключен: не включена ни одна система перевода. Чтобы включить систему, перейдите в раздел <link>WPML → Настройки → Перевод ИИ</link>."
          ],
          "%s (Regional)": [
             "%s (региональный)"
@@ -1302,9 +1323,9 @@
             "%d элементов контента перемещено"
          ],
          "%d link to the original language updated": [
-            "%d ссылка на исходный язык обновлена",
-            "%d ссылки на исходный язык обновлены",
-            "%d ссылок на исходный язык обновлено"
+            "Обновлена %d ссылка на язык оригинала",
+            "Обновлено %d ссылки на язык оригинала",
+            "Обновлено %d ссылок на язык оригинала"
          ],
          "%d string translation moved": [
             "%d перевод строки перемещен",

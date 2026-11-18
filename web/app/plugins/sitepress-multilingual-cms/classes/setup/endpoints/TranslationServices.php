@@ -11,10 +11,12 @@ use WPML\FP\Relation;
 use WPML\LIB\WP\Http;
 use WPML\TM\Geolocalization;
 use WPML\TM\Menu\TranslationServices\ActiveServiceRepository;
+use WPML\TM\Menu\TranslationServices\CountryName;
 use WPML\TM\Menu\TranslationServices\ServiceMapper;
 use WPML\TM\Menu\TranslationServices\ServicesRetriever;
 use function WPML\Container\make;
 use function WPML\FP\partialRight;
+use function WPML\FP\pipe;
 
 class TranslationServices implements IHandler {
 
@@ -28,7 +30,7 @@ class TranslationServices implements IHandler {
 
 		$services = ServicesRetriever::get(
 			$tpApi,
-			Geolocalization::getCountryByIp( Http::post() ),
+			pipe( Geolocalization::getCountryByIp( Http::post() ), [ CountryName::class, 'localize' ] ),
 			$serviceMapperFunction
 		);
 

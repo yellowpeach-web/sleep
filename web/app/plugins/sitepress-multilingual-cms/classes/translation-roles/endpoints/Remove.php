@@ -6,31 +6,28 @@ use WPML\Collect\Support\Collection;
 use WPML\Ajax\IHandler;
 use WPML\FP\Either;
 use WPML\FP\Fns;
-use WPML\FP\Lst;
-use WPML\FP\Obj;
 use WPML\LIB\WP\User;
+use WPML\TranslationRoles\Service\TranslationManagerCapability;
+use WPML\TranslationRoles\Service\TranslatorCapability;
 use function WPML\Container\make;
 use function WPML\FP\invoke;
-use function WPML\FP\pipe;
 
 abstract class Remove implements IHandler {
 
+	const ROLE_SERVICES = [
+		User::CAP_TRANSLATE           => TranslatorCapability::class,
+		User::CAP_MANAGE_TRANSLATIONS => TranslationManagerCapability::class,
+	];
+
 	public function run( Collection $data ) {
-
-		$removeRole = Fns::tap( invoke( 'remove_cap' )->with( static::getCap() ) );
-
-		$removeOnlyI = Fns::tap( pipe( Obj::prop( 'ID' ), User::deleteMeta( Fns::__, \WPML_TM_Wizard_Options::ONLY_I_USER_META ) ) );
-
-		$doActions = Fns::tap( function ( $user ) {
-			do_action( 'wpml_tm_remove_translation_role', $user, static::getCap() );
-		} );
-
 		return Either::fromNullable( $data->get( 'ID' ) )
 		             ->map( User::get() )
 		             ->filter( invoke( 'exists' ) )
-		             ->map( $removeRole )
-		             ->map( $removeOnlyI )
-		             ->map( $doActions )
+		             ->map( function ( $user ) {
+			             make( self::ROLE_SERVICES[ static::getCap() ] )->revoke( $user->ID );
+
+			             return $user;
+		             } )
 		             ->bimap( Fns::always( $this->msgUserNotFound() ), Fns::always( true ) );
 	}
 

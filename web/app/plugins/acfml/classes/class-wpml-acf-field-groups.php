@@ -13,10 +13,10 @@ class WPML_ACF_Field_Groups implements \IWPML_Backend_Action, \IWPML_Frontend_Ac
 	}
 
 	public function add_hooks() {
-		if ( is_admin()
+		if ( ( is_admin() || wpml_is_rest_request() )
 			&& apply_filters( 'wpml_sub_setting', false, 'custom_posts_sync_option', self::POST_TYPE )
 		) {
-			add_filter( 'wpml_tm_post_edit_tm_editor_selector_display', [ $this, 'disable_tm_editor_selector_for_field_group' ] );
+			add_filter( 'wpml_tm_post_edit_tm_editor_selector_display', [ $this, 'disable_tm_editor_selector_for_field_group' ], 10, 2 );
 			add_action( 'admin_init', [ $this, 'translate_field_groups_with_wp_editor' ] );
 		}
 	}
@@ -31,11 +31,8 @@ class WPML_ACF_Field_Groups implements \IWPML_Backend_Action, \IWPML_Frontend_Ac
 		return $this->nativeEditorEnabled[ $cacheKey ];
 	}
 
-	public function disable_tm_editor_selector_for_field_group( $display ) {
-		$postData = $this->getPostData();
-		$postId   = 'wpml_get_meta_boxes_html' === Obj::prop( 'action', $postData )
-			? (int) Obj::prop( 'post_id', $postData )
-			: null;
+	public function disable_tm_editor_selector_for_field_group( $display, $postId = null ) {
+		$postId = is_numeric( $postId ) && (int) $postId > 0 ? (int) $postId : null;
 
 		if ( ! $this->shouldUseNativeEditor( $postId ) ) {
 			return $display;
@@ -44,10 +41,6 @@ class WPML_ACF_Field_Groups implements \IWPML_Backend_Action, \IWPML_Frontend_Ac
 		$postType = null === $postId ? get_post_type() : get_post_type( $postId );
 
 		return self::POST_TYPE === $postType ? false : $display;
-	}
-
-	protected function getPostData() {
-		return filter_input_array( INPUT_POST ) ?: [];
 	}
 
 	public function translate_field_groups_with_wp_editor() {

@@ -5,6 +5,9 @@ var WPML_TM = WPML_TM || {};
 ( function () {
   'use strict'
 
+  var EDITOR_FORM = '#icl_tm_editor'
+  var SAVE_MESSAGE_CLASS = 'js-wpml-tm-save-message'
+
   WPML_TM.editorFooterView = Backbone.View.extend( {
     tagName: 'footer',
     className: 'wpml-translation-action-buttons',
@@ -33,12 +36,14 @@ var WPML_TM = WPML_TM || {};
       var saveMessage = jQuery( '.js-saving-message' )
       saveMessage.show()
       self.disableButtons( true )
-      self.listenToOnce( self.model, 'saveJobSuccess', function () {
+      self.removeSaveMessages()
+      self.listenToOnce( self.model, 'saveJobSuccess', function ( data ) {
         saveMessage.hide()
         self.disableButtons( false )
+        self.showSaveMessages( data )
       } )
       var updatedValues = []
-      var $textAreas = jQuery('#icl_tm_editor textarea[name^="fields[package-string-"][name$="[data]"]')
+      var $textAreas = jQuery( EDITOR_FORM + ' textarea[name^="fields[package-string-"][name$="[data]"]' )
       $textAreas.each( function () {
         var $textArea = jQuery( this )
         var originalFieldValue = $textArea.closest('.wpml-form-row').find('textarea.js-original-value').val();
@@ -59,7 +64,7 @@ var WPML_TM = WPML_TM || {};
           $textArea.val( updatedText )
         }
       } )
-      self.model.save( jQuery( '#icl_tm_editor' ).serialize() )
+      self.model.save( jQuery( EDITOR_FORM ).serialize() )
       updatedValues.forEach( function ( item ) {
         item.element.val( item.original )
       } )
@@ -77,12 +82,51 @@ var WPML_TM = WPML_TM || {};
     },
     save_and_close: function () {
       var self = this
-      self.listenToOnce( self.model, 'saveJobSuccess', function () {
+      self.listenToOnce( self.model, 'saveJobSuccess', function ( data ) {
         self.setDirty( false )
+        // The person stays on the editor to read what the save could not do (wpmldev-12741).
+        if ( self.getSaveMessages( data ).length ) {
+          return
+        }
         this.redirect_to_return_url( 'wpml_tm_saved=1' )
       } )
 
       self.save()
+    },
+    /**
+     * The messages of a save answer: `{ messages: [ ... ] }`, or an empty list.
+     *
+     * @param {*} data
+     * @returns {string[]}
+     */
+    getSaveMessages: function ( data ) {
+      if ( ! data || ! _.isArray( data.messages ) ) {
+        return []
+      }
+
+      return _.filter( data.messages, function ( message ) {
+        return _.isString( message ) && message !== ''
+      } )
+    },
+    showSaveMessages: function ( data ) {
+      var messages = this.getSaveMessages( data )
+      if ( ! messages.length ) {
+        return
+      }
+
+      var editor = jQuery( EDITOR_FORM )
+      _.each( messages.slice().reverse(), function ( message ) {
+        var notice = jQuery( '<div class="notice notice-error inline"><p></p></div>' ).addClass( SAVE_MESSAGE_CLASS )
+        notice.find( 'p' ).text( message )
+        editor.prepend( notice )
+      } )
+      // Below the fixed admin bar.
+      if ( editor.length ) {
+        jQuery( window ).scrollTop( Math.max( 0, editor.offset().top - 50 ) )
+      }
+    },
+    removeSaveMessages: function () {
+      jQuery( EDITOR_FORM + ' .' + SAVE_MESSAGE_CLASS ).remove()
     },
     redirect_to_return_url: function ( param_string ) {
       var url = WpmlTmEditorModel.return_url
@@ -96,7 +140,7 @@ var WPML_TM = WPML_TM || {};
     render: function () {
       var self = this
       self.$el.html( WPML_TM['templates/translation-editor/footer.html']( tmEditorStrings ) )
-      jQuery('#icl_tm_editor textarea[name^="fields[package-string-"][name$="[data]"]').each(function () {
+      jQuery( EDITOR_FORM + ' textarea[name^="fields[package-string-"][name$="[data]"]' ).each(function () {
         var $textArea = jQuery(this)
         var originalText = $textArea.val() || ''
         var updatedText = originalText.replace(/(<([a-zA-Z0-9]+)[^>]*>[\s\S]*?<\/\2>)|(<br\s*\/?>)/g,

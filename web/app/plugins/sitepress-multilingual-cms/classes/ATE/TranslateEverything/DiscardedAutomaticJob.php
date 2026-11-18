@@ -13,6 +13,10 @@ class DiscardedAutomaticJob {
 		$alias         = self::ALIAS;
 		$notTranslated = (int) TranslationStatus::NOT_TRANSLATED;
 
+		if ( isset( $GLOBALS['wpdb'] ) && $GLOBALS['wpdb'] instanceof \wpdb ) {
+			TermBundleMembers::ensureTable( $GLOBALS['wpdb'] );
+		}
+
 		return "
 			LEFT JOIN (
 				SELECT discarded_status.translation_id,
@@ -21,8 +25,10 @@ class DiscardedAutomaticJob {
 				INNER JOIN {$prefix}icl_translate_job discarded_record
 					ON discarded_record.job_id = discarded_error.job_id
 					AND discarded_record.automatic = 1
+				LEFT JOIN {$prefix}icl_term_batch_members discarded_member
+					ON discarded_member.batch_job_id = discarded_record.job_id
 				INNER JOIN {$prefix}icl_translation_status discarded_status
-					ON discarded_status.rid = discarded_record.rid
+					ON discarded_status.rid = COALESCE( discarded_member.term_rid, discarded_record.rid )
 					AND ( discarded_status.status = {$notTranslated}
 					      OR discarded_error.error_data LIKE '" . self::checksumLike() . "' )
 				LEFT JOIN {$prefix}icl_translate_job discarded_newer

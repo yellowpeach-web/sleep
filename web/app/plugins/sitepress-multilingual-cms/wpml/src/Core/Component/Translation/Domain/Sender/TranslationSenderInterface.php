@@ -26,4 +26,7 @@ interface TranslationSenderInterface {
   public function getHeldBackTranslations(): array;
 
 
+  public function getPriceHeldBackTranslations(): array;
+
+
 }

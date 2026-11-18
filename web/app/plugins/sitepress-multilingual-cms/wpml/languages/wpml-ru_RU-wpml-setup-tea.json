@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);",
             "lang": "ru_RU"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "Перейти на Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "Перейти на PTC"
+         ],
+         "Switching…": [
+            "Переключение…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "Нам не удалось подтвердить переключение. Попробуйте еще раз или перезагрузите страницу, чтобы увидеть текущую систему."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Не удалось загрузить элементы управления системой перевода. Перезагрузите страницу и попробуйте еще раз."
+         ],
+         "Loading translation engine settings…": [
+            "Загрузка настроек системы перевода…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "Заполните контекст вашего сайта выше перед переходом на PTC."
+         ],
+         "Reload page": [
+            "Перезагрузить страницу"
+         ],
+         "Could not fetch engines data": [
+            "Не удалось получить данные о системах перевода"
+         ],
          "Error in updating since dates for types.": [
             "Ошибка при обновлении дат «с момента» для типов."
          ],
@@ -64,7 +91,7 @@
             "На основе оставшегося непереведенного контента на всех языках."
          ],
          "Estimated from the selected source volume multiplied by the target languages.": [
-            "Рассчитано на основе выбранного исходного объема, умноженного на количество целевых языков."
+            "Рассчитано на основе выбранного объема исходных текстов, умноженного на количество языков перевода."
          ],
          "%1$s source words × %2$s language": [
             "%1$s исходное слово × %2$s язык",
@@ -143,9 +170,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "Применены устаревшие расценки. %s — это устаревшая система перевода, она не рекомендуется для новых сайтов и скоро будет выведена из эксплуатации. Для существующих сайтов сохраняется скорректированный тариф за слово."
          ],
-         "Switch to PTC": [
-            "Перейти на PTC"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Столько требуется на сегодняшний день для перевода вашего текущего контента. Сюда не входят некоторые тексты, добавленные другими плагинами, такие как формы или слайдеры — они подсчитываются после завершения настройки. Строки сайта из вашей темы и плагинов также подсчитываются после настройки и обычно добавляют несколько сотен слов. После этого правки бесплатны. Вы платите снова только за добавляемые слова."
          ],
@@ -159,10 +183,10 @@
             "Это то, что требуется для перевода вашего текущего контента сегодня. По тарифу %s за слово; изменения на переведенных страницах оплачиваются повторно."
          ],
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
-            "Учитываются страницы, записи и товары вместе с их произвольными полями, текстами конструкторов страниц и медиафайлов, а также используемые в них категории, метки и атрибуты."
+            "Подсчитываются страницы, записи и товары вместе с их произвольными полями, текстами конструктора страниц и медиафайлов, а также используемые ими рубрики, метки и атрибуты."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Учитываются страницы, записи и товары вместе с их произвольными полями, текстами конструкторов страниц и медиафайлов, используемые в них категории, метки и атрибуты, а также строки сайта. Элемент таксономии подсчитывается в каждом использующем его объекте и один раз отдельно, поскольку он отправляется на перевод обоими способами."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Подсчитываются страницы, записи и товары вместе с их произвольными полями, текстами конструктора страниц и текстами медиафайлов, используемые ими рубрики, метки и атрибуты, а также строки сайта. Каждая рубрика, метка или атрибут учитывается один раз в строке «Таксономии» и не подсчитывается повторно вместе с использующими их элементами."
          ],
          "Total items": [
             "Всего элементов"
@@ -235,6 +259,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "Чтобы запустить режим <b>Переводить все автоматически</b>, активируйте <b>Оплату по мере использования</b> или купите предоплаченные слова."
+         ],
+         "Translation quality:": [
+            "Качество перевода:"
          ],
          "Select payment method": [
             "Выберите способ оплаты"
@@ -351,7 +378,7 @@
             "В вашем аккаунте WPML есть %1$s%2$s слов%3$s."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "В вашем аккаунте WPML доступно %1$s%2$s слов%3$s."
+            "В вашей учетной записи WPML доступно %1$s%2$s%3$s."
          ],
          "(Only the WPML account owner can do this.)": [
             "(Это может сделать только владелец аккаунта WPML.)"
@@ -367,6 +394,30 @@
          ],
          "Close modal": [
             "Закрыть модальное окно"
+         ],
+         "Obvious mistakes": [
+            "Очевидные ошибки"
+         ],
+         "Mistakes visible": [
+            "Ошибки заметны"
+         ],
+         "Ready to publish": [
+            "Готово к публикации"
+         ],
+         "Your engine": [
+            "Ваша система"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Качество перевода (шкала 50–100): %1$s — %2$d баллов, %3$s — %4$d баллов."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Оценки основаны на внутреннем исследовании качества перевода MQM от WPML."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC переводит с более высоким качеством и предоставляет готовые к публикации результаты."
          ]
       }
    }

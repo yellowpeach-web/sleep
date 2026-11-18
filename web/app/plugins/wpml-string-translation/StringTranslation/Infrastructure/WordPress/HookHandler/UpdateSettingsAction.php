@@ -32,7 +32,7 @@ class UpdateSettingsAction extends AbstractActionHookHandler {
 		} else if ( $type === 'disableAutoregistration' ) {
 			$this->settingsRepository->setIsAutoregistrationEnabled( false );
 		} else if ( $type === 'setAutoregisterStringsTypeDisabled' ) {
-			$this->settingsRepository->setAutoregisterStringsTypeSetting(
+			$this->settingsRepository->setAutoregisterStringsTypeSettingByOwner(
 				SettingsRepositoryInterface::AUTOREGISTER_STRINGS_TYPE_DISABLED
 			);
 		} else if ( $type === 'setMaxQueuedFrontendStringsCount' ) {

@@ -16,6 +16,8 @@ final class RequestedLanguage {
 
 	const SYNTAX = '/^[a-z0-9]{2,}(?:[-_][a-z0-9]+)*$/';
 
+	private const CUSTOM_CODE = '/^(?!0$)[a-z0-9_-]+$/';
+
 	private $resolution;
 
 	private $request;
@@ -93,6 +95,9 @@ final class RequestedLanguage {
 	public function validateIn( $raw, $scope, $allowAll ) {
 		$code = self::canonical( $raw );
 		if ( null === $code ) {
+			$code = $this->configuredCustomCode( $raw );
+		}
+		if ( null === $code ) {
 			return null;
 		}
 
@@ -100,7 +105,8 @@ final class RequestedLanguage {
 			return $allowAll && self::SCOPE_CONFIGURED === $scope ? self::ALL : null;
 		}
 
-		if ( ! $this->isConfigured( $code ) ) {
+		$code = $this->storedCode( $code );
+		if ( null === $code ) {
 			return null;
 		}
 
@@ -111,8 +117,34 @@ final class RequestedLanguage {
 		return $this->isVisibleToViewer( $code ) ? $code : null;
 	}
 
+	private function configuredCustomCode( $raw ) {
+		if ( ! is_string( $raw ) && ! is_int( $raw ) ) {
+			return null;
+		}
+
+		$code = strtolower( trim( (string) $raw ) );
+
+		if ( strlen( $code ) > self::MAX_LENGTH || ! preg_match( self::CUSTOM_CODE, $code ) ) {
+			return null;
+		}
+
+		return $this->storedCode( $code );
+	}
+
 	public function isConfigured( $code ) {
-		return in_array( (string) $code, $this->configuredCodes(), true );
+		return null !== $this->storedCode( $code );
+	}
+
+	private function storedCode( $code ) {
+		$wanted = strtolower( (string) $code );
+
+		foreach ( $this->configuredCodes() as $configured ) {
+			if ( strtolower( $configured ) === $wanted ) {
+				return $configured;
+			}
+		}
+
+		return null;
 	}
 
 	public function configuredCodes() {
@@ -128,7 +160,8 @@ final class RequestedLanguage {
 	}
 
 	public function isVisibleToViewer( $code ) {
-		if ( ! $this->isConfigured( $code ) ) {
+		$code = $this->storedCode( $code );
+		if ( null === $code ) {
 			return false;
 		}
 

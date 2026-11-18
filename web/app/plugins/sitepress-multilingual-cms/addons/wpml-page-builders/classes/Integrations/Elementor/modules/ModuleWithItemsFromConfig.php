@@ -18,17 +18,34 @@ class ModuleWithItemsFromConfig extends \WPML_Elementor_Module_With_Items {
 	}
 
 	private function init( array $config ) {
+		$lastKeyedOfValue = [];
+		$unkeyedValues    = [];
+
+		foreach ( $config as $key => $fieldConfig ) {
+			$field = Obj::prop( 'field', $fieldConfig );
+
+			if ( is_string( $key ) ) {
+				$lastKeyedOfValue[ $field ] = $key;
+			} else {
+				$unkeyedValues[ $field ] = true;
+			}
+		}
+
 		foreach ( $config as $key => $fieldConfig ) {
 			$field = Obj::prop( 'field', $fieldConfig );
 			$keyOf = is_string( $key ) ? $key : null;
 
-			if ( $keyOf ) {
-				$this->fields[ $keyOf ] = [ $field ];
+			if ( ! $keyOf ) {
+				$this->fields[]                   = $field;
+				$this->fieldDefinitions[ $field ] = $fieldConfig;
+			} elseif ( $lastKeyedOfValue[ $field ] === $keyOf && ! isset( $unkeyedValues[ $field ] ) ) {
+				$this->fields[ $keyOf ]           = [ $field ];
+				$this->fieldDefinitions[ $field ] = $fieldConfig;
 			} else {
-				$this->fields[] = $field;
+				$flatField                            = $keyOf . self::FIELD_SEPARATOR . $field;
+				$this->fields[]                       = $flatField;
+				$this->fieldDefinitions[ $flatField ] = $fieldConfig;
 			}
-
-			$this->fieldDefinitions[ $field ] = $fieldConfig;
 		}
 	}
 

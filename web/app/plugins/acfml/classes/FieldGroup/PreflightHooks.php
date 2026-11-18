@@ -24,6 +24,7 @@ class PreflightHooks implements \IWPML_Backend_Action, \IWPML_REST_Action {
 		add_action( 'acf/update_field_group', [ $this, 'flushInventory' ], self::FLUSH_PRIORITY );
 		add_action( 'acf/delete_field_group', [ $this, 'flushInventory' ], self::FLUSH_PRIORITY );
 		add_action( 'wpml_custom_fields_sync_option_updated', [ $this, 'flushInventory' ], self::FLUSH_PRIORITY );
+		add_action( 'wpml_clear_all_caches', [ $this, 'flushInventory' ], self::FLUSH_PRIORITY, 0 );
 
 		add_action( 'admin_post_' . self::APPLY_ACTION, [ $this, 'applyRecommendedSetup' ] );
 	}

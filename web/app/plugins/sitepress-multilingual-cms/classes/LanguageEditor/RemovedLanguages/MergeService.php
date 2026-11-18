@@ -122,7 +122,7 @@ class MergeService {
 
 			foreach ( get_term_meta( (int) $sourceTerm->term_id ) as $key => $values ) {
 				foreach ( $values as $value ) {
-					add_term_meta( (int) $targetTerm->term_id, $key, maybe_unserialize( $value ) );
+					add_term_meta( (int) $targetTerm->term_id, $key, \WPML\Utils\Unserialize::maybe( $value ) );
 				}
 			}
 

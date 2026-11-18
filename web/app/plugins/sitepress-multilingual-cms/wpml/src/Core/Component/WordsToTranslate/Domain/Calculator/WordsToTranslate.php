@@ -56,7 +56,7 @@ class WordsToTranslate {
 
     $cacheKey = $original->getType() . ':' . $original->getId();
 
-    if ( $isFreshTranslation && $this->restoreFromFreshCache( $lastTranslation, $original, $cacheKey ) ) {
+    if ( $isFreshTranslation && $this->restoreFromFreshCache( $lastTranslation, $original, $this->freshCacheKey( $cacheKey, $original ) ) ) {
       return;
     }
 
@@ -67,7 +67,7 @@ class WordsToTranslate {
     }
 
     $fieldContents = $original->getFieldContents();
-    if ( $fieldContents !== null ) {
+    if ( $fieldContents !== null && ( $isFreshTranslation || $lastTranslation->getOriginalFieldContents() !== null ) ) {
       $this->forLastTranslationPerField(
         $lastTranslation,
         $original,
@@ -97,12 +97,24 @@ class WordsToTranslate {
     $count = (int) ( round( $this->count->wordsToTranslate( $diff ) * $countFactor ) );
 
     if ( $isFreshTranslation ) {
-      self::$freshWordCount[ $cacheKey ] = $count;
-      self::$freshContentCount[ $cacheKey ] = $sourceContentCount;
+      $freshKey = $this->freshCacheKey( $cacheKey, $original );
+      self::$freshWordCount[ $freshKey ] = $count;
+      self::$freshContentCount[ $freshKey ] = $sourceContentCount;
     }
 
     $lastTranslation->setWordsToTranslate( $count );
 
+  }
+
+
+  private function freshCacheKey( $cacheKey, Item $original ) {
+    $fieldContents = $original->getFieldContents();
+    $parts = [ null === $fieldContents ? 'blob' : 'fields', (string) $original->getContent() ];
+    foreach ( (array) $fieldContents as $fieldKey => $content ) {
+      $parts[] = $fieldKey . "\0" . $content;
+    }
+
+    return $cacheKey . '|' . md5( implode( "\1", $parts ) );
   }
 
 
@@ -190,9 +202,10 @@ class WordsToTranslate {
     $original->setContentCount( $sourceContentCount );
 
     if ( $isFreshTranslation ) {
-      self::$freshWordCount[ $cacheKey ] = $wordsToTranslate;
-      self::$freshContentCount[ $cacheKey ] = $sourceContentCount;
-      self::$freshFieldCounts[ $cacheKey ] = $fieldCounts;
+      $freshKey = $this->freshCacheKey( $cacheKey, $original );
+      self::$freshWordCount[ $freshKey ] = $wordsToTranslate;
+      self::$freshContentCount[ $freshKey ] = $sourceContentCount;
+      self::$freshFieldCounts[ $freshKey ] = $fieldCounts;
     }
 
     $lastTranslation->setWordsToTranslate( $wordsToTranslate );

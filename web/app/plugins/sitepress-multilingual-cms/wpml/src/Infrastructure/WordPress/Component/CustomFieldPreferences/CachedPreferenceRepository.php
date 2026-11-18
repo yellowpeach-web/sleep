@@ -5,6 +5,7 @@ namespace WPML\Infrastructure\WordPress\Component\CustomFieldPreferences;
 use WPML\Core\Component\CustomFieldPreferences\Application\Repository\PreferenceRepositoryInterface;
 use WPML\Core\Component\CustomFieldPreferences\Domain\ElementType;
 use WPML\Core\Component\CustomFieldPreferences\Domain\StorableKeys;
+use WPML\Infrastructure\WordPress\Component\CustomFieldPreferences\Repository\PreferenceRepository;
 
 class CachedPreferenceRepository implements PreferenceRepositoryInterface {
 
@@ -36,7 +37,7 @@ class CachedPreferenceRepository implements PreferenceRepositoryInterface {
       } else {
         $map                         = $this->inner->getMap( $type );
         self::$map[ $blog ][ $type ] = $map;
-        \wp_cache_set( 'map_' . $type, $map, self::CACHE_GROUP );
+        self::share( $type, $map );
       }
     }
     return self::$map[ $blog ][ $type ];
@@ -62,7 +63,7 @@ class CachedPreferenceRepository implements PreferenceRepositoryInterface {
       foreach ( $missing as $type ) {
         $map                         = isset( $fresh[ $type ] ) ? $fresh[ $type ] : [];
         self::$map[ $blog ][ $type ] = $map;
-        \wp_cache_set( 'map_' . $type, $map, self::CACHE_GROUP );
+        self::share( $type, $map );
       }
     }
 
@@ -181,6 +182,22 @@ class CachedPreferenceRepository implements PreferenceRepositoryInterface {
   public function resetRuntimeCache() {
     self::$map   = [];
     self::$modes = [];
+  }
+
+
+  public static function forgetEverything() {
+    self::$map   = [];
+    self::$modes = [];
+    foreach ( ElementType::all() as $type ) {
+      \wp_cache_delete( 'map_' . $type, self::CACHE_GROUP );
+    }
+  }
+
+
+  private static function share( string $type, array $map ) {
+    if ( ! PreferenceRepository::tableMissingThisRequest() ) {
+      \wp_cache_set( 'map_' . $type, $map, self::CACHE_GROUP );
+    }
   }
 
 

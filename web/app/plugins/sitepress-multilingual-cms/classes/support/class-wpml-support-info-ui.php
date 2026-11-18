@@ -69,11 +69,11 @@ class WPML_Support_Info_UI {
 					'utf8mb4_charset'    => array(
 						/* translators: Label of the row that says whether the database can hold every character, on the Support screen. Utf8mb4 is a technical name and stays as it is. */
 						'label'    => __( 'Utf8mb4 charset', 'sitepress' ),
-						'value'    => $this->support_info->is_utf8mb4_charset_supported() ? /* translators: Option in a dropdown, and the value shown in a table cell, meaning that the setting is turned on. */ __( 'Yes', 'sitepress' ) : /* translators: Option in a dropdown, and the value shown in a table cell, meaning that the setting is turned off. */ __( 'No', 'sitepress' ),
+						'value'    => $this->support_info->is_utf8mb4_charset_supported() ? /* translators: Meaning that a setting is on or that a row applies: an option in a dropdown, the value in a table cell, and the screen reader name of the tick in the table of the "Who translates" step of WPML → Settings. */ __( 'Yes', 'sitepress' ) : /* translators: Option in a dropdown, and the value shown in a table cell, meaning that the setting is turned off. */ __( 'No', 'sitepress' ),
 						'url'      => 'https://dev.mysql.com/doc/refman/5.5/en/charset-unicode-utf8mb4.html',
 						'messages' => array(
 							__( 'Some WPML String Translation features may not work correctly without utf8mb4 character support.', 'sitepress' ) => \WPML\OutboundLinks\OutboundLinks::to(
-								'https://wpml.org/home/minimum-requirements/',
+								'https://wpml.org/home/minimum-requirements/collation-and-charset/',
 								array(
 									'medium'   => 'support',
 									'campaign' => 'requirements',
@@ -103,7 +103,7 @@ class WPML_Support_Info_UI {
 					'multisite'        => array(
 						/* translators: Label of the row that says whether this is a network of several sites, on the Support screen. */
 						'label' => __( 'Multisite', 'sitepress' ),
-						'value' => $this->support_info->get_wp_multisite() ? /* translators: Option in a dropdown, and the value shown in a table cell, meaning that the setting is turned on. */ __( 'Yes', 'sitepress' ) : /* translators: Option in a dropdown, and the value shown in a table cell, meaning that the setting is turned off. */ __( 'No', 'sitepress' ),
+						'value' => $this->support_info->get_wp_multisite() ? /* translators: Meaning that a setting is on or that a row applies: an option in a dropdown, the value in a table cell, and the screen reader name of the tick in the table of the "Who translates" step of WPML → Settings. */ __( 'Yes', 'sitepress' ) : /* translators: Option in a dropdown, and the value shown in a table cell, meaning that the setting is turned off. */ __( 'No', 'sitepress' ),
 					),
 					'WP_MEMORY_LIMIT'     => array(
 						'label'    =>'WP_MEMORY_LIMIT',
@@ -116,7 +116,7 @@ class WPML_Support_Info_UI {
 					'rest_enabled'     => array(
 						/* translators: Label of the row that says whether the site answers requests from other programs, on the Support screen. REST is a technical name and stays as it is. */
 						'label'    => __( 'REST enabled', 'sitepress' ),
-						'value'    => wpml_is_rest_enabled() ? /* translators: Option in a dropdown, and the value shown in a table cell, meaning that the setting is turned on. */ __( 'Yes', 'sitepress' ) : /* translators: Option in a dropdown, and the value shown in a table cell, meaning that the setting is turned off. */ __( 'No', 'sitepress' ),
+						'value'    => wpml_is_rest_enabled() ? /* translators: Meaning that a setting is on or that a row applies: an option in a dropdown, the value in a table cell, and the screen reader name of the tick in the table of the "Who translates" step of WPML → Settings. */ __( 'Yes', 'sitepress' ) : /* translators: Option in a dropdown, and the value shown in a table cell, meaning that the setting is turned off. */ __( 'No', 'sitepress' ),
 					),
 				),
 			),
@@ -184,7 +184,7 @@ class WPML_Support_Info_UI {
 		$reserved_stack_unlimited = $reserved_stack_bytes === 0;
 
 		if ( $max_stack_unlimited ) {
-			/* translators: Value of a row on the Support screen: WPML picks this by itself, nobody set it. */
+			/* translators: Meaning that nobody set it by hand: the value of a row on the Support screen (WPML picks it by itself), and the small label above the "PTC" column of the "Who translates" table (PTC translates automatically). Adjective. */
 			$available_stack_display = __( 'Automatic', 'sitepress' );
 			$available_stack_too_low = false;
 		} else {

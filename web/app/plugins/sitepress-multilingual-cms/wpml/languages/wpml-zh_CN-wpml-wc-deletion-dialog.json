@@ -41,7 +41,7 @@
             "%1$s 保持在线。%2$s %3$s 将成为其他内容的源语言，因为它在您的语言顺序中排在首位 — 请选择其他语言。"
          ],
          "%1$s stay online. The %2$s %3$s becomes the one the others are translated from.": [
-            "%1$s 保持在线。%2$s %3$s 将成为其他内容的源语言。"
+            "%1$s 保持在线。%2$s %3$s 将成为其他内容的翻译来源。"
          ],
          "%s stay online.": [
             "%s 保持在线。"
@@ -89,10 +89,10 @@
             "仅此 %1$s %2$s"
          ],
          "Delete them all permanently and cancel the %d translation job in progress": [
-            "全部永久删除并取消正在进行的 %d 个翻译作业"
+            "全部永久删除并取消正在进行的 %d 个翻译任务"
          ],
          "Trash them all and cancel the %d translation job in progress": [
-            "全部移至回收站并取消正在进行的 %d 个翻译作业"
+            "全部移至回收站并取消正在进行的 %d 个翻译任务"
          ],
          "Stops work already under way. Words already sent are still charged.": [
             "停止正在进行的工作。已发送的字数仍将计费。"
@@ -127,6 +127,15 @@
          "This is a duplicate, kept in step with its original. Saving that original brings it back out of the Trash — delete it permanently to remove it for good.": [
             "这是一个副本，与原文保持同步。保存原文会将其从回收站中找回 — 请永久删除以彻底移除。"
          ],
+         "Continue": [
+            "继续"
+         ],
+         "Cancel": [
+            "取消"
+         ],
+         "Change the default in Settings": [
+            "在“设置”中更改默认值"
+         ],
          "Delete permanently": [
             "永久删除"
          ],
@@ -136,11 +145,8 @@
          "Move to Trash": [
             "移至回收站"
          ],
-         "Continue": [
-            "继续"
-         ],
-         "Cancel": [
-            "取消"
+         "Changing this default needs permission to manage WPML languages. Ask an administrator to change it under WPML → Settings → Deleting content.": [
+            "更改此默认值需要管理 WPML 语言的权限。请联系管理员在“WPML”→“设置”→“删除内容”下进行更改。"
          ],
          "Choose a different one": [
             "选择另一个"

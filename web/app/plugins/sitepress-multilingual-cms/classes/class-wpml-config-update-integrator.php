@@ -54,8 +54,14 @@ class WPML_Config_Update_Integrator {
 			return;
 		}
 
-		if ( ! is_admin() && ! wp_doing_cron() && ! ( defined( 'WP_CLI' ) && WP_CLI ) ) {
+		$is_cron_or_cli = wp_doing_cron() || ( defined( 'WP_CLI' ) && WP_CLI );
+
+		if ( ! is_admin() && ! $is_cron_or_cli ) {
 			return;
+		}
+
+		if ( $is_cron_or_cli ) {
+			$this->get_worker()->defer_local_config_import();
 		}
 
 		$this->get_worker()->run_deferred_import();

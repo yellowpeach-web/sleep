@@ -33,7 +33,7 @@ class SavePendingStringsPhpCommand implements SavePendingStringsCommandInterface
 		$lock     = $this->fileLock->acquire( $filepath . '.lock' );
 
 		if ( ! $lock ) {
-			return false;
+			return $this->spillIntoClaim( $domain, $strings, $filepath );
 		}
 
 		try {
@@ -51,6 +51,21 @@ class SavePendingStringsPhpCommand implements SavePendingStringsCommandInterface
 		} finally {
 			$this->fileLock->release( $lock );
 		}
+	}
+
+	private function spillIntoClaim( string $domain, array $strings, string $filepath ): bool {
+		$processingDir = rtrim( $this->filesystemRepository->getQueueDir(), '/\\' ) . '/processing/';
+		if ( ! is_dir( $processingDir ) ) {
+			@mkdir( $processingDir, 0777, true );
+		}
+		if ( ! is_dir( $processingDir ) ) {
+			return false;
+		}
+
+		$token         = str_replace( '.', '', uniqid( '', true ) );
+		$claimFilepath = $processingDir . basename( $filepath ) . '.' . $token . '.php';
+
+		return $this->createPhpFile->run( $strings, $claimFilepath );
 	}
 
 	private function getExistingPendingStrings( string $filepath ) {

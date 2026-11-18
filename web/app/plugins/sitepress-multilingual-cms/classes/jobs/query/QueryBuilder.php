@@ -75,14 +75,19 @@ class QueryBuilder {
 		return $this;
 	}
 
-	public function set_multi_value_text_filter( $column, $values ) {
+	public function set_multi_value_text_filter( $columns, $values ) {
 		if ( $values ) {
-			$this->assert_allowed_filter_column( $column );
-			$where = \wpml_collect( $values )->map(
-				function ( $value ) use ( $column ) {
-					return $this->wpdb->prepare( esc_sql( $column ) . ' LIKE %s', '%' . $value . '%' );
+			$columns = (array) $columns;
+			foreach ( $columns as $column ) {
+				$this->assert_allowed_filter_column( $column );
+			}
+
+			$where = [];
+			foreach ( (array) $values as $value ) {
+				foreach ( $columns as $column ) {
+					$where[] = $this->wpdb->prepare( esc_sql( $column ) . " LIKE %s ESCAPE '|'", \WPML\Utils\LikeEscape::contains( $value ) );
 				}
-			)->toArray();
+			}
 
 			$this->where[] = '( ' . implode( ' OR ', $where ) . ' )';
 		}
@@ -139,9 +144,12 @@ class QueryBuilder {
 	private function assert_allowed_filter_column( $column ) {
 		$allowed = array(
 			'posts.post_title',
+			'translated_posts.post_title',
 			'terms.name',
+			'translated_terms.name',
 			'string_packages.title',
 			'translation_batches.batch_name',
+			'translate_job.title',
 			'batches.batch_name',
 			'translations.source_language_code',
 			'translations.language_code',

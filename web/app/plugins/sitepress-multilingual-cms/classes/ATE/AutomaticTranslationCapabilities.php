@@ -7,12 +7,18 @@ use WPML\FP\Obj;
 use WPML\Setup\Option;
 use WPML\TM\API\ATE\CachedLanguageMappings;
 use WPML\TM\API\ATE\LanguageMappings;
+use WPML\TM\ATE\ClonedSites\ReconnectState;
+use WPML\TM\Jobs\JobLog;
+use WPML\TranslationPolicy\Policy\Policy;
 use function WPML\FP\curryN;
 
 class AutomaticTranslationCapabilities {
 
+	const UNAVAILABLE_REASON_SAME_AS_DEFAULT = 'same-as-default';
+	const UNAVAILABLE_REASON_MANUAL_ONLY = 'manual-only';
+
 	public static function isAvailable() {
-		return \WPML_TM_ATE_Status::is_enabled_and_activated();
+		return Policy::isAccountUsable();
 	}
 
 	public static function isLanguageEligible( $languageCode, $sourceLang = null ) {
@@ -36,6 +42,20 @@ class AutomaticTranslationCapabilities {
 		} );
 
 		return call_user_func_array( $fn, func_get_args() );
+	}
+
+	public static function unavailableReasonFor( $defaultCode ) {
+		return function ( $lang ) use ( $defaultCode ) {
+			$canBeTranslated = Obj::prop( 'can_be_translated_automatically', $lang );
+
+			if ( null === $canBeTranslated || $canBeTranslated ) {
+				return null;
+			}
+
+			return LanguageMappings::resolvesToSameAteLanguageAsDefault( (string) Obj::prop( 'code', $lang ), (string) $defaultCode )
+				? self::UNAVAILABLE_REASON_SAME_AS_DEFAULT
+				: self::UNAVAILABLE_REASON_MANUAL_ONLY;
+		};
 	}
 
 	public static function shouldTranslateEverything() {
@@ -66,7 +86,17 @@ class AutomaticTranslationCapabilities {
 			return [];
 		}
 
-		return LanguageMappings::geCodesEligibleForAutomaticTranslations( $sourceLang );
+		$codes = LanguageMappings::geCodesEligibleForAutomaticTranslations( $sourceLang );
+
+		if ( ! $codes && ReconnectState::isReconnecting() ) {
+			$codes = CachedLanguageMappings::geCodesEligibleForAutomaticTranslations( $sourceLang );
+			JobLog::add( 'auto_translate_eligible_from_day_cache_while_reconnecting', [
+				'source_lang'      => $sourceLang,
+				'target_languages' => array_values( $codes ),
+			] );
+		}
+
+		return $codes;
 	}
 
 	public static function doesDefaultLanguageSupport() {

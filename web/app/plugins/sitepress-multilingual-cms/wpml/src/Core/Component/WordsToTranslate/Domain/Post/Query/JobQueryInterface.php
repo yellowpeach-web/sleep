@@ -19,4 +19,7 @@ interface JobQueryInterface {
   public function useThisContentForItem( $idItem, $content );
 
 
+  public function carriesJobContent( Post $post );
+
+
 }

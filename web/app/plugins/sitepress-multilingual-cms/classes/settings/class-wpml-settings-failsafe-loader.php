@@ -32,6 +32,22 @@ class WPML_Settings_Failsafe_Loader {
 
 	private static $absent_option;
 
+	const KEPT_CACHE_GROUP = 'wpml-settings-kept';
+
+	private static $kept = array();
+
+	private static $settled_blogs = array();
+
+	private static $kept_group_registered = false;
+
+	public static function forgetKeptSettings( $blog_id = null ) {
+		unset( self::$kept[ null === $blog_id ? self::getBlogId() : (int) $blog_id ] );
+	}
+
+	public static function forgetKeptSettingsOfCurrentBlog() {
+		self::forgetKeptSettings();
+	}
+
 	public static function isUnrecoverable() {
 		return array_key_exists( self::getBlogId(), self::$unrecoverable_blogs );
 	}
@@ -64,8 +80,6 @@ class WPML_Settings_Failsafe_Loader {
 	}
 
 	public static function load() {
-		global $wpdb;
-
 		$blog_id = self::getBlogId();
 		if ( ! empty( self::$loads_in_progress[ $blog_id ] ) ) {
 			return self::$memo[ $blog_id ] ?? array();
@@ -73,6 +87,23 @@ class WPML_Settings_Failsafe_Loader {
 		if ( isset( self::$memo[ $blog_id ] ) ) {
 			return self::$memo[ $blog_id ];
 		}
+		$kept = self::recallKeptSettings( $blog_id );
+		if ( null !== $kept ) {
+			return $kept;
+		}
+
+		unset( self::$settled_blogs[ $blog_id ] );
+		$settings = self::readSettings( $blog_id );
+		if ( ! empty( self::$settled_blogs[ $blog_id ] ) ) {
+			unset( self::$settled_blogs[ $blog_id ] );
+			self::keepSettings( $blog_id, $settings );
+		}
+
+		return $settings;
+	}
+
+	private static function readSettings( $blog_id ) {
+		global $wpdb;
 
 		self::$loads_in_progress[ $blog_id ] = true;
 		try {
@@ -81,6 +112,7 @@ class WPML_Settings_Failsafe_Loader {
 				if ( is_array( $settings ) ) {
 					unset( self::$confirmed_missing_rows[ $blog_id ] );
 					self::handleHealthyValue();
+					self::$settled_blogs[ $blog_id ] = true;
 
 					return $settings;
 				}
@@ -148,8 +180,9 @@ class WPML_Settings_Failsafe_Loader {
 
 		if ( null === $row ) {
 			self::$confirmed_missing_rows[ $blog_id ] = true;
-			self::clearOptionCaches();
+			self::refreshOptionCachesIfStale( null );
 			self::registerPersistedNotice();
+			self::$settled_blogs[ $blog_id ] = true;
 
 			return self::filterMissingSettings();
 		}
@@ -157,8 +190,9 @@ class WPML_Settings_Failsafe_Loader {
 		unset( self::$confirmed_missing_rows[ $blog_id ] );
 		$settings = self::decodeCompleteSettings( (string) $row['option_value'] );
 		if ( is_array( $settings ) ) {
-			self::clearOptionCaches();
+			self::refreshOptionCachesIfStale( (string) $row['option_value'] );
 			self::handleHealthyValue( $row );
+			self::$settled_blogs[ $blog_id ] = true;
 
 			return self::filterValidatedSettings( $settings );
 		}
@@ -310,6 +344,7 @@ class WPML_Settings_Failsafe_Loader {
 	public static function beginDestructiveReset() {
 		$blog_id = self::getBlogId();
 		self::forgetHealthyHousekeeping();
+		self::forgetKeptSettings( $blog_id );
 		self::armWriteGuard( $blog_id );
 		self::$memo[ $blog_id ]                = array();
 		self::$unrecoverable_blogs[ $blog_id ] = true;
@@ -342,12 +377,14 @@ class WPML_Settings_Failsafe_Loader {
 		self::clearNetworkFailureIfSettingsAbsent( $blog_id );
 		self::disarmBlog( $blog_id );
 		self::forgetHealthyHousekeeping();
+		self::forgetKeptSettings( $blog_id );
 		self::$confirmed_missing_rows[ $blog_id ] = true;
 
 		return true;
 	}
 
 	private static function markUnrecoverable( $blog_id, $backup_name, $backup_saved, ?array $row = null ) {
+		self::forgetKeptSettings( $blog_id );
 		self::$memo[ $blog_id ]                = array();
 		self::$unrecoverable_blogs[ $blog_id ] = true;
 		self::recordNetworkFailure( $blog_id, $row );
@@ -358,6 +395,7 @@ class WPML_Settings_Failsafe_Loader {
 
 	private static function disarmBlog( $blog_id ) {
 		unset(
+			self::$kept[ $blog_id ],
 			self::$memo[ $blog_id ],
 			self::$write_guarded_blogs[ $blog_id ],
 			self::$unrecoverable_blogs[ $blog_id ],
@@ -762,6 +800,75 @@ class WPML_Settings_Failsafe_Loader {
 		self::clearNamedOptionCaches( self::OPTION );
 	}
 
+	private static function keepSettings( $blog_id, array $settings ) {
+		if (
+			! is_multisite()
+			|| ! empty( self::$write_guarded_blogs[ $blog_id ] )
+			|| ! empty( self::$unrecoverable_blogs[ $blog_id ] )
+			|| ! function_exists( 'wp_cache_add_non_persistent_groups' )
+		) {
+			return;
+		}
+
+		if ( ! self::$kept_group_registered ) {
+			wp_cache_add_non_persistent_groups( array( self::KEPT_CACHE_GROUP ) );
+			self::$kept_group_registered = true;
+		}
+		wp_cache_set( self::keptCacheKey( $blog_id ), 1, self::KEPT_CACHE_GROUP );
+		self::$kept[ $blog_id ] = $settings;
+	}
+
+	private static function recallKeptSettings( $blog_id ) {
+		if ( ! isset( self::$kept[ $blog_id ] ) ) {
+			return null;
+		}
+		if ( 1 !== wp_cache_get( self::keptCacheKey( $blog_id ), self::KEPT_CACHE_GROUP ) ) {
+			self::$kept = array();
+
+			return null;
+		}
+
+		return self::$kept[ $blog_id ];
+	}
+
+	private static function keptCacheKey( $blog_id ) {
+		return 'kept-' . (int) $blog_id;
+	}
+
+	private static function refreshOptionCachesIfStale( $stored ) {
+		if ( self::optionCachesDisagree( $stored ) ) {
+			self::clearOptionCaches();
+		}
+	}
+
+	private static function optionCachesDisagree( $stored ) {
+		$alloptions = wp_cache_get( 'alloptions', 'options' );
+		if (
+			is_array( $alloptions )
+			&& array_key_exists( self::OPTION, $alloptions )
+			&& ! self::cachedValueMatches( $alloptions[ self::OPTION ], $stored )
+		) {
+			return true;
+		}
+
+		$single = wp_cache_get( self::OPTION, 'options' );
+		if ( false !== $single && ! self::cachedValueMatches( $single, $stored ) ) {
+			return true;
+		}
+
+		$notoptions = wp_cache_get( 'notoptions', 'options' );
+
+		return null !== $stored && is_array( $notoptions ) && isset( $notoptions[ self::OPTION ] );
+	}
+
+	private static function cachedValueMatches( $cached, $stored ) {
+		if ( null === $stored ) {
+			return false;
+		}
+
+		return is_string( $cached ) ? $cached === $stored : maybe_serialize( $cached ) === $stored;
+	}
+
 	private static function clearNamedOptionCaches( $option_name ) {
 		wp_cache_delete( $option_name, 'options' );
 		wp_cache_delete( 'alloptions', 'options' );
@@ -836,6 +943,7 @@ class WPML_Settings_Failsafe_Loader {
 			self::$absent_option = new \stdClass();
 		}
 
+		self::primeStateOptions();
 		foreach ( self::getStateOptionFormats() as $option_name => $format ) {
 			$state = self::readStateOptionThroughCache( $option_name, $format );
 			if ( null !== $state ) {
@@ -844,6 +952,17 @@ class WPML_Settings_Failsafe_Loader {
 		}
 
 		return null;
+	}
+
+	private static function primeStateOptions() {
+		if ( ! function_exists( 'wp_prime_option_caches' ) ) {
+			return;
+		}
+		try {
+			wp_prime_option_caches( array_keys( self::getStateOptionFormats() ) );
+		} catch ( \Throwable $e ) {
+			return;
+		}
 	}
 
 	private static function readStateOptionThroughCache( $option_name, $format ) {

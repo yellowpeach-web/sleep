@@ -26,6 +26,8 @@ class Hooks implements \WPML\PB\Gutenberg\Integration {
 
 	private $in_delivery;
 
+	private $rebuilt = [];
+
 	public function __construct( \WPML\PB\Gutenberg\StringsInBlock\Collection $parsers, ?Registry $registry = null, $sitepress = null, ?callable $in_delivery = null ) {
 		$this->parsers     = $parsers;
 		$this->registry    = null === $registry ? new Registry() : $registry;
@@ -45,6 +47,7 @@ class Hooks implements \WPML\PB\Gutenberg\Integration {
 		add_filter( 'wpml_pb_block_uids_healed', [ $this, 'was_healed' ], 10, 2 );
 		add_action( 'wpml_pro_translation_after_post_save', [ $this, 'inherit_after_link' ] );
 		add_filter( 'wpml_pb_block_uid_texts', [ $this, 'add_block_texts' ], 10, 3 );
+		add_filter( 'wpml_pb_gutenberg_translated_content_before_save', [ $this, 'remember_rebuild' ], 1000, 4 );
 	}
 
 	private function get_skipped_blocks() {
@@ -67,12 +70,21 @@ class Hooks implements \WPML\PB\Gutenberg\Integration {
 	}
 
 	public function update_registry( $post_id, $post ) {
+		if ( (int) $post_id <= 0 || ! is_object( $post ) ) {
+			return;
+		}
+
 		if ( 'revision' === $post->post_type || ! $this->registry->isAvailable() ) {
 			return;
 		}
 
 		$post_id = (int) $post_id;
-		$rows    = $this->registry->getEntries( $post_id );
+
+		if ( isset( $this->rebuilt[ $post_id ] ) && $this->pair_rebuilt( $post_id, (string) $post->post_content ) ) {
+			return;
+		}
+
+		$rows = $this->registry->getEntries( $post_id );
 
 		$this->healed[ $post_id ] = $this->adopt_original_uids( $post_id, $rows );
 
@@ -110,6 +122,68 @@ class Hooks implements \WPML\PB\Gutenberg\Integration {
 
 	public function was_healed( $healed, $post_id ) {
 		return ! empty( $this->healed[ (int) $post_id ] ) || (bool) $healed;
+	}
+
+	public function remember_rebuild( $content, $translated_post_id, $lang = '', $original_post = null ) {
+		$post_id = (int) $translated_post_id;
+
+		if (
+			! is_string( $content )
+			|| ! $original_post instanceof \WP_Post
+			|| $post_id <= 0
+			|| (int) $original_post->ID === $post_id
+			|| ! $this->registry->isAvailable()
+		) {
+			return $content;
+		}
+
+		$this->rebuilt[ $post_id ] = [
+			'original' => (int) $original_post->ID,
+			'content'  => (string) $original_post->post_content,
+		];
+
+		$post = get_post( $post_id );
+
+		if ( $post instanceof \WP_Post && $post->post_content === $content ) {
+			$this->pair_rebuilt( $post_id, $content );
+		}
+
+		return $content;
+	}
+
+	private function pair_rebuilt( $post_id, $content ) {
+		$rebuild = $this->rebuilt[ $post_id ];
+		$blocks  = $this->tracked_blocks( $content );
+		$source  = $this->tracked_blocks( $rebuild['content'] );
+
+		if ( ! $blocks || array_column( $blocks, 'name' ) !== array_column( $source, 'name' ) ) {
+			return false;
+		}
+
+		$uids      = $this->assign( $rebuild['original'], $source, false );
+		$rows      = $this->registry->getEntries( $post_id );
+		$reserved  = array_replace( array_fill_keys( array_keys( $rows ), true ), array_fill_keys( array_values( $uids ), true ) );
+		$hashes    = [];
+		$addresses = [];
+
+		foreach ( $blocks as $index => $block ) {
+			$uid = isset( $uids[ $index ] ) ? (string) $uids[ $index ] : '';
+
+			if ( '' === $uid || isset( $hashes[ $uid ] ) ) {
+				$uid              = self::mint( $reserved );
+				$reserved[ $uid ] = true;
+			}
+
+			$hashes[ $uid ]    = $block['hash'];
+			$addresses[ $uid ] = $block['address'];
+		}
+
+		$this->registry->update( $post_id, $hashes, self::SOURCE, null, $addresses );
+
+		$this->healed[ $post_id ] = false;
+		unset( $this->unlinked[ $post_id ] );
+
+		return true;
 	}
 
 	private function write_rows( $post_id, $content, array $rows ) {
@@ -302,7 +376,8 @@ class Hooks implements \WPML\PB\Gutenberg\Integration {
 
 	private function assign( $post_id, array $blocks, $mint, ?array $all = null ) {
 		$all      = null === $all ? $this->registry->getEntries( $post_id ) : $all;
-		$rows     = self::in_document_order( self::of_source( $all ) );
+		$ordered  = self::in_document_order( self::of_source( $all ) );
+		$rows     = $ordered;
 		$assigned = [];
 		$claimed  = [];
 
@@ -331,12 +406,16 @@ class Hooks implements \WPML\PB\Gutenberg\Integration {
 		}
 
 		foreach ( $blocks as $index => $block ) {
-			if ( ! isset( $assigned[ $index ] ) ) {
-				$this->take( $rows, $assigned, $claimed, $index, self::byName( $block['name'] ) );
+			if ( $unshifted && ! isset( $assigned[ $index ] ) ) {
+				$this->take( $rows, $assigned, $claimed, $index, self::byNameAt( $block['name'], $block['address'] ) );
 			}
 		}
 
-		$this->inherit( $post_id, $blocks, $assigned, $claimed, $mint );
+		$this->take_alone_between_neighbours( $ordered, $rows, $blocks, $assigned, $claimed );
+
+		if ( $mint ) {
+			$this->inherit( $post_id, $blocks, $assigned, $claimed, $ordered );
+		}
 
 		if ( $mint ) {
 			$reserved = array_replace( $claimed, array_fill_keys( array_keys( $all ), true ) );
@@ -355,7 +434,55 @@ class Hooks implements \WPML\PB\Gutenberg\Integration {
 		return $assigned;
 	}
 
-	private function inherit( $post_id, array $blocks, array &$assigned, array &$claimed, $mint ) {
+	private function take_alone_between_neighbours( array $ordered, array &$rows, array $blocks, array &$assigned, array &$claimed ) {
+		if ( ! $rows ) {
+			return;
+		}
+
+		$rowGaps = [];
+		$before  = [];
+
+		foreach ( $ordered as $uid => $entry ) {
+			if ( isset( $rows[ $uid ] ) ) {
+				$rowGaps[ (string) $uid ] = self::gap( $before, self::name_of( $entry ) );
+			} elseif ( isset( $claimed[ $uid ] ) ) {
+				$before[] = (string) $uid;
+			}
+		}
+
+		$blockGaps = [];
+		$before    = [];
+
+		foreach ( $blocks as $index => $block ) {
+			if ( ! isset( $assigned[ $index ] ) ) {
+				$blockGaps[ $index ] = self::gap( $before, $block['name'] );
+			} elseif ( isset( $ordered[ $assigned[ $index ] ] ) ) {
+				$before[] = (string) $assigned[ $index ];
+			}
+		}
+
+		$rowsIn   = array_count_values( $rowGaps );
+		$blocksIn = array_count_values( $blockGaps );
+
+		foreach ( $blockGaps as $index => $gap ) {
+			if ( 1 === $blocksIn[ $gap ] && 1 === ( $rowsIn[ $gap ] ?? 0 ) ) {
+				$uid = (string) array_search( $gap, $rowGaps, true );
+
+				$assigned[ $index ] = $uid;
+				$claimed[ $uid ]    = true;
+
+				unset( $rows[ $uid ] );
+			}
+		}
+	}
+
+	private static function gap( array $before, $name ) {
+		sort( $before, SORT_STRING );
+
+		return $name . '|' . implode( ',', $before );
+	}
+
+	private function inherit( $post_id, array $blocks, array &$assigned, array &$claimed, array $own ) {
 		$unplaced = [];
 
 		foreach ( $blocks as $index => $block ) {
@@ -371,7 +498,7 @@ class Hooks implements \WPML\PB\Gutenberg\Integration {
 		$original_id = $this->original_of( $post_id );
 
 		if ( ! $original_id ) {
-			if ( $mint && $this->may_be_linked_later( $post_id ) ) {
+			if ( $this->may_be_linked_later( $post_id ) ) {
 				$this->unlinked[ (int) $post_id ] = true;
 			}
 
@@ -380,7 +507,15 @@ class Hooks implements \WPML\PB\Gutenberg\Integration {
 
 		unset( $this->unlinked[ (int) $post_id ] );
 
+		if ( $own ) {
+			return;
+		}
+
 		$rows = self::in_document_order( self::of_source( $this->registry->getEntries( $original_id ) ) );
+
+		if ( ! call_user_func( $this->in_delivery ) && ! self::names_line_up( $blocks, $rows ) ) {
+			return;
+		}
 
 		foreach ( array_keys( $claimed ) as $uid ) {
 			unset( $rows[ $uid ] );
@@ -451,6 +586,20 @@ class Hooks implements \WPML\PB\Gutenberg\Integration {
 				&& $entry['hash'] === $hash
 				&& (string) $entry['address'] === (string) $address;
 		};
+	}
+
+	private static function byNameAt( $name, $address ) {
+		return function ( array $entry ) use ( $name, $address ) {
+			return self::name_of( $entry ) === $name
+				&& isset( $entry['address'] )
+				&& (string) $entry['address'] === (string) $address;
+		};
+	}
+
+	private static function names_line_up( array $blocks, array $rows ) {
+		$names = array_map( [ self::class, 'name_of' ], array_values( $rows ) );
+
+		return ! in_array( '', $names, true ) && array_column( $blocks, 'name' ) === $names;
 	}
 
 	private static function byName( $name ) {

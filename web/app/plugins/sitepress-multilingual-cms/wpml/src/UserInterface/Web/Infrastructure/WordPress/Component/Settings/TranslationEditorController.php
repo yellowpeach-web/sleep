@@ -12,10 +12,12 @@ class TranslationEditorController implements PageRenderInterface {
   public function render() {
     wp_enqueue_script( 'wpml-settings-flash' );
 
+    $policySection = \WPML\TranslationPolicy\Settings\Loader::section();
+
     SettingsPageChrome::printTitle(
       /* translators: Name of the Translation Editor section of WPML → Settings: its entry in the settings search list and its heading. */
-      __( 'Translation Editor', 'wpml' ),
-      __( 'Choose between the Advanced and Classic editors, and configure editor-wide preferences.', 'wpml' )
+      $policySection ? $policySection->title() : __( 'Translation Editor', 'wpml' ),
+      $policySection ? $policySection->subtitle() : __( 'Choose between the Advanced and Classic editors, and configure editor-wide preferences.', 'wpml' )
     );
 
     $html = LegacySectionExtractor::captureSettingsMcsContent();

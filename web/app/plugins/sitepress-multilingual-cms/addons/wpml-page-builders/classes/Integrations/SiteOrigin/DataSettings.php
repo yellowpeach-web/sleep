@@ -3,8 +3,9 @@
 namespace WPML\PB\SiteOrigin;
 
 use WPML\FP\Obj;
+use WPML\PB\TranslationBody\RendersTranslationBody;
 
-class DataSettings implements \IWPML_Page_Builders_Data_Settings {
+class DataSettings implements \IWPML_Page_Builders_Data_Settings, RendersTranslationBody {
 
 	public function get_meta_field() {
 		return 'panels_data';
@@ -23,7 +24,7 @@ class DataSettings implements \IWPML_Page_Builders_Data_Settings {
 	}
 
 	public function prepare_data_for_saving( array $data ) {
-		return $data;
+		return wp_slash( $data );
 	}
 
 	public function get_pb_name() {
@@ -38,6 +39,10 @@ class DataSettings implements \IWPML_Page_Builders_Data_Settings {
 		add_filter( 'pre_wpml_is_translated_taxonomy', [ $this, 'filterMenus' ], 10, 2 );
 		add_filter( 'siteorigin_panels_widgets', [ $this, 'removeWidgets' ] );
 		add_filter( 'siteorigin_panels_widget_form', [ $this, 'removeLanguageSelector' ] );
+	}
+
+	public function render_translation_body( $translated_post_id, \WP_Post $original_post ) {
+		return ( new BodyRenderer( $this ) )->render( $translated_post_id );
 	}
 
 	public function filterMenus( $result, $tax ) {
@@ -55,7 +60,9 @@ class DataSettings implements \IWPML_Page_Builders_Data_Settings {
 	}
 
 	public function is_handling_post( $postId ) {
-		return (bool) get_post_meta( $postId, $this->get_meta_field(), true );
+		$data = get_post_meta( $postId, $this->get_meta_field(), true );
+
+		return is_array( $data ) && ! empty( $data['widgets'] );
 	}
 
 	public function removeLanguageSelector( $form ) {

@@ -2,7 +2,6 @@
 
 namespace WPML\Compatibility\FusionBuilder;
 
-use WPML\FP\Maybe;
 use WPML\FP\Obj;
 use WPML\LIB\WP\Hooks;
 use function WPML\FP\spreadArgs;
@@ -20,7 +19,7 @@ class FormContent implements \IWPML_Backend_Action, \IWPML_Frontend_Action {
 		Hooks::onAction( 'init' )->then( [ $this, 'disableAvadaBuiltinShortcodeHooks' ] );
 		Hooks::onFilter( 'wpml_pb_shortcode_decode', 10, 2 )->then( spreadArgs( [ $this, 'decode' ] ) );
 		Hooks::onFilter( 'wpml_pb_shortcode_encode', 10, 2 )->then( spreadArgs( [ $this, 'encode' ] ) );
-		Hooks::onFilter( 'fusion_pre_shortcode_atts' )->then( spreadArgs( [ $this, 'convertForm' ] ) );
+		add_filter( 'fusion_pre_shortcode_atts', [ $this, 'convertForm' ] );
 	}
 
 	public function disableAvadaBuiltinShortcodeHooks() {
@@ -94,19 +93,18 @@ class FormContent implements \IWPML_Backend_Action, \IWPML_Frontend_Action {
 	}
 
 	public function convertForm( $atts ) {
-		$convertId = function( $id ) {
-			return apply_filters( 'wpml_object_id', $id, self::CPT_FORM, true );
-		};
+		if ( ! Obj::prop( 'form_post_id', $atts ) ) {
+			return $atts;
+		}
 
 		$convertForm = Obj::over(
 			Obj::lensProp( 'form_post_id' ),
-			$convertId
+			function( $id ) {
+				return apply_filters( 'wpml_object_id', $id, self::CPT_FORM, true );
+			}
 		);
 
-		return Maybe::just( $atts )
-			->filter( Obj::prop( 'form_post_id' ) )
-			->map( $convertForm )
-			->getOrElse( $atts );
+		return $convertForm( $atts );
 	}
 
 }

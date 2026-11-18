@@ -1,5 +1,6 @@
 <?php
 
+use WPML\ST\SlugTranslation\PostArchive\Records;
 use WPML\Core\SharedKernel\Component\Language\Domain\LanguageCode;
 
 class WPML_ST_String {
@@ -225,6 +226,12 @@ class WPML_ST_String {
 			return false;
 		}
 
+		$carrier = WPML_ST_Package_String_Carriers::get()->forStringId( $this->string_id );
+		if ( $carrier && (int) $carrier['carrier'] !== (int) $this->string_id ) {
+			return $this->carrier_string( (int) $carrier['carrier'] )
+				->set_translation( $language, $value, $status, $translator_id, $translation_service, $batch_id );
+		}
+
 		$res = $this->read_translation_row( $language );
 
 		if ( $this->is_reserved_for_translator( $res, $value, $status ) ) {
@@ -404,9 +411,21 @@ class WPML_ST_String {
 		do_action(
 			'wpml_activate_slug_translation',
 			$slug_update['name'],
-			null,
+			$this->get_post_slug_to_register( $slug_update ),
 			$element_type
 		);
+	}
+
+	private function get_post_slug_to_register( array $slug_update ) {
+		if ( empty( $slug_update['archive'] ) ) {
+			return null;
+		}
+
+		$post_type_object = get_post_type_object( $slug_update['name'] );
+
+		return $post_type_object && ! empty( $post_type_object->rewrite['slug'] )
+			? trim( $post_type_object->rewrite['slug'], '/' )
+			: null;
 	}
 
 	public function set_location( $location ) {
@@ -430,6 +449,10 @@ class WPML_ST_String {
 		\WPML\ST\PackageTranslation\StringRowsCache::noteFieldUpdate( $this->string_id, array( $property => $value ) );
 
 		do_action( 'wpml_st_string_updated' );
+	}
+
+	protected function carrier_string( $string_id ) {
+		return new WPML_ST_String( $string_id, $this->wpdb, $this->slug_translation_records_factory );
 	}
 
 	public function exists() {
@@ -493,8 +516,16 @@ class WPML_ST_String {
 
 	public function normalize_line_breaks( $translation_string ) {
 		$original_string = $this->get_value();
-		if ( is_string( $original_string ) && strpos( $original_string, "\r\n" ) !== false ) {
-			$translation_string = preg_replace( '/(?<!\r)\n/', "\r\n", $translation_string );
+		if ( ! is_string( $original_string ) ) {
+			return $translation_string;
+		}
+
+		if ( strpos( $original_string, "\r\n" ) !== false ) {
+			return preg_replace( '/(?<!\r)\n/', "\r\n", $translation_string );
+		}
+
+		if ( strpos( $original_string, "\n" ) !== false ) {
+			return str_replace( "\r\n", "\n", $translation_string );
 		}
 
 		return $translation_string;
@@ -518,6 +549,10 @@ class WPML_ST_String {
 
 		if ( false !== strpos( $string_name, 'URL slug:' ) ) {
 			$factory->create( WPML_Slug_Translation_Factory::POST )->flush_cache();
+		}
+
+		if ( 0 === strpos( $string_name, Records::STRING_NAME_PREFIX ) ) {
+			$factory->create( WPML_Slug_Translation_Factory::POST_ARCHIVE )->flush_cache();
 		}
 
 		if ( false !== strpos( $string_name, 'tax slug' ) ) {
@@ -560,6 +595,18 @@ class WPML_ST_String {
 	}
 
 	private function get_precise_slug_update( $string_name ) {
+		if ( 0 === strpos( $string_name, Records::STRING_NAME_PREFIX ) ) {
+			$slug_name = substr( $string_name, strlen( Records::STRING_NAME_PREFIX ) );
+
+			return $slug_name
+				? [
+					'kind'    => 'post_type',
+					'name'    => $slug_name,
+					'archive' => true,
+				]
+				: null;
+		}
+
 		$post_slug_prefix = 'URL slug: ';
 		if ( 0 === strpos( $string_name, $post_slug_prefix ) ) {
 			$slug_name = substr( $string_name, strlen( $post_slug_prefix ) );

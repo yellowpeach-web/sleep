@@ -71,7 +71,7 @@ abstract class QueryBuilder {
 			$sql[] = 'strings.component_type';
 		}
 		if ( $dto->shouldSelect( 'sources' ) ) {
-			$sql[] = 'string_positions.sources';
+			$sql[] = $this->getSourcesColumnSql();
 		}
 		if ( $dto->shouldSelect( 'word_count' ) ) {
 			$sql[] = 'word_count';
@@ -129,12 +129,36 @@ abstract class QueryBuilder {
 		";
 	}
 
+	protected function getAppearedSql(): string {
+		$appeared = apply_filters( 'wpml_appearance_exists_sql', '', "'string'", 'strings.id' );
+
+		return is_string( $appeared ) ? $appeared : '';
+	}
+
+	protected function getSourcesColumnSql(): string {
+		$appeared = $this->getAppearedSql();
+		if ( '' === $appeared ) {
+			return 'string_positions.sources';
+		}
+
+		$frontEnd = (int) ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND;
+
+		return "NULLIF( CONCAT_WS( ', ', CASE WHEN {$appeared} THEN '{$frontEnd}' END, string_positions.sources ), '' ) AS sources";
+	}
+
 	protected function getStringPositionsSql( $criteria ): string {
+		$notSources = [ ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND_WHERE ];
+		if ( '' !== $this->getAppearedSql() ) {
+			$notSources[] = ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND;
+		}
+		$notSources = implode( ', ', array_map( 'intval', $notSources ) );
+
 		return "
             LEFT JOIN (
                 SELECT string_id,
                 GROUP_CONCAT(kind SEPARATOR ', ') AS sources
                 FROM {$this->getPrefix()}icl_string_positions
+                WHERE kind NOT IN ( {$notSources} )
                 GROUP BY string_id
             ) AS string_positions
             ON strings.id = string_positions.string_id
@@ -176,18 +200,6 @@ abstract class QueryBuilder {
         ";
 	}
 
-	private function getSourcesSql( $source ): array {
-		if ( $source === ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND ) {
-			return [ $source ];
-		}
-
-		return [
-			ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_BACKEND,
-			ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_AJAX,
-			ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_REST,
-		];
-	}
-
 	protected function getWhereSqlParts( $criteria ): array {
 		global $wpdb;
 
@@ -196,7 +208,12 @@ abstract class QueryBuilder {
 
 		$sqlParts   = [];
 		$sqlParts[] = 'strings.string_package_id IS NULL';
-		$sqlParts[] = 'strings.value != ""';
+		$sqlParts[] = "strings.value != ''";
+
+		$notCarried = \WPML_ST_Package_String_Carriers::get()->notCarriedCondition( 'strings.domain_name_context_md5' );
+		if ( '' !== $notCarried ) {
+			$sqlParts[] = $notCarried;
+		}
 
 		if ( $selectOnlyAutoregistered || $selectOnlyNotAutoregistered ) {
 			$kind       = $selectOnlyAutoregistered ? StringItem::STRING_TYPE_AUTOREGISTER : StringItem::STRING_TYPE_DEFAULT;
@@ -208,11 +225,17 @@ abstract class QueryBuilder {
 		}
 
 		if ( $criteria->getSource() && $selectOnlyAutoregistered ) {
-			$like = '%' . $this->prepareLike( ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND ) . '%';
-			if ( $criteria->getSource() === ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND ) {
-				$sqlParts[] = '(' . $wpdb->prepare( 'string_positions.sources IS NOT NULL AND string_positions.sources LIKE %s', $like ) . ')';
+			$frontEnd = $criteria->getSource() === ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND;
+			$appeared = $this->getAppearedSql();
+			if ( '' !== $appeared ) {
+				$sqlParts[] = $frontEnd ? $appeared : "NOT {$appeared}";
 			} else {
-				$sqlParts[] = '(' . $wpdb->prepare( 'string_positions.sources IS NULL OR string_positions.sources NOT LIKE %s', $like ) . ')';
+				$like = '%' . $this->prepareLike( ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND ) . '%';
+				if ( $frontEnd ) {
+					$sqlParts[] = '(' . $wpdb->prepare( 'string_positions.sources IS NOT NULL AND string_positions.sources LIKE %s', $like ) . ')';
+				} else {
+					$sqlParts[] = '(' . $wpdb->prepare( 'string_positions.sources IS NULL OR string_positions.sources NOT LIKE %s', $like ) . ')';
+				}
 			}
 		}
 		if ( $criteria->getDomain() ) {
@@ -226,18 +249,18 @@ abstract class QueryBuilder {
 			}
 		}
 		if ( $criteria->getTitle() ) {
-			$title = '%' . $this->prepareLike( $criteria->getTitle() ) . '%';
-			$escTitle = '%' . $this->prepareLike( esc_html( $criteria->getTitle() ) ) . '%';
+			$title = \WPML\Utils\LikeEscape::contains( $criteria->getTitle() );
+			$escTitle = \WPML\Utils\LikeEscape::contains( esc_html( $criteria->getTitle() ) );
 
 			if ( $title === $escTitle ) {
 				$sqlParts[] = '(' . $wpdb->prepare(
-					'strings.value LIKE %s OR strings.name LIKE %s',
+					"strings.value LIKE %s ESCAPE '|' OR strings.name LIKE %s ESCAPE '|'",
 					$title,
 					$title
 				) . ')';
 			} else {
 				$sqlParts[] = '(' . $wpdb->prepare(
-					'strings.value LIKE %s OR strings.value LIKE %s OR strings.name LIKE %s OR strings.name LIKE %s',
+					"strings.value LIKE %s ESCAPE '|' OR strings.value LIKE %s ESCAPE '|' OR strings.name LIKE %s ESCAPE '|' OR strings.name LIKE %s ESCAPE '|'",
 					$title,
 					$escTitle,
 					$title,

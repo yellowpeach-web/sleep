@@ -41,8 +41,8 @@ class Provider {
   }
 
 
-  public function getById( $id, $freshTranslation = false ) {
-    $job = $this->getWithItemById( $id, $freshTranslation );
+  public function getById( $id, $freshTranslation = false, $priceRequired = true ) {
+    $job = $this->getWithItemById( $id, $freshTranslation, $priceRequired );
 
     return new JobDTO(
       $job->getId(),
@@ -54,7 +54,7 @@ class Provider {
   }
 
 
-  public function getWithItemById( $id, $freshTranslation = false ) {
+  public function getWithItemById( $id, $freshTranslation = false, $priceRequired = true ) {
     $sourceLang = $this->jobQuery->getSourceLang( $id );
     $targetLang = $this->jobQuery->getTargetLang( $id );
     $isAutomatic = $this->jobQuery->isAutomatic( $id );
@@ -62,28 +62,9 @@ class Provider {
       ? []
       : $this->jobQuery->getPreviousAteJobIds( $id );
 
-    $jobItemId = $this->jobQuery->getJobItemId( $id );
-    $jobItemType = $this->jobQuery->getJobItemType( $id );
+    $item = $this->loadItem( $id, $targetLang, $freshTranslation );
 
-    $item = false;
-    $content = $this->jobQuery->getContent( $id );
-
-    foreach ( $this->providers as $provider ) {
-      $provider->useThisContentForItem( $jobItemId, $jobItemType, $content );
-      if ( $item = $provider->getByIdAndTypeForLangs( $jobItemId, $jobItemType, [ $targetLang ], $freshTranslation ) ) {
-        break;
-      }
-    }
-
-    if ( ! $item ) {
-      throw new InvalidArgumentException(
-        sprintf(
-          'Item with id %d and type %s not found',
-          $jobItemId,
-          $jobItemType
-        )
-      );
-    }
+    $costsPerWord = $this->costsPerWord( $sourceLang, $targetLang, $priceRequired );
 
     if ( $this->jobQuery->wasCreatedByTEA( $id ) ) {
       $this->applyTeaPricingGate( $id, $item );
@@ -96,8 +77,54 @@ class Provider {
       $item,
       $isAutomatic,
       $previousAteJobIds,
-      $this->translationEngineQuery->getCostsPerWordForLang( $targetLang )
+      $costsPerWord
     );
+  }
+
+
+  private function costsPerWord( $sourceLang, $targetLang, $priceRequired ) {
+    try {
+      return $this->translationEngineQuery->getCostsPerWordForLang( $targetLang, $sourceLang );
+    } catch ( RuntimeException $e ) {
+      if ( $priceRequired ) {
+        $pricesUnavailable = new PricesUnavailableException( PricesUnavailableException::MESSAGE, 0, $e );
+        throw $pricesUnavailable;
+      }
+
+      return false;
+    }
+  }
+
+
+  public function getWordsToTranslateById( $id, $freshTranslation = false ) {
+    $targetLang = $this->jobQuery->getTargetLang( $id );
+
+    return $this->loadItem( $id, $targetLang, $freshTranslation )->getWordsToTranslate( $targetLang );
+  }
+
+
+  private function loadItem( $id, $targetLang, $freshTranslation ) {
+    $jobItemId = $this->jobQuery->getJobItemId( $id );
+    $jobItemType = $this->jobQuery->getJobItemType( $id );
+
+    $item = false;
+    $content = $this->jobQuery->getContent( $id );
+
+    foreach ( $this->providers as $provider ) {
+      $provider->useThisContentForItem( $jobItemId, $jobItemType, $content );
+      $item = $provider->getByIdAndTypeForLangs( $jobItemId, $jobItemType, [ $targetLang ], $freshTranslation );
+      if ( $item ) {
+        break;
+      }
+    }
+
+    if ( ! $item ) {
+      throw new InvalidArgumentException(
+        sprintf( 'Job item with id %d not found', intval( $jobItemId ) )
+      );
+    }
+
+    return $item;
   }
 
 

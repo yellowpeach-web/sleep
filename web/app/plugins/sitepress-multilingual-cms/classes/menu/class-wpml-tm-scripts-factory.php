@@ -50,7 +50,7 @@ class WPML_TM_Scripts_Factory {
 			wp_enqueue_style( 'otgs-notices' );
 		}
 
-		if ( WPML_TM_Page::is_translation_queue() && WPML_TM_ATE_Status::is_enabled() ) {
+		if ( WPML_TM_Page::is_translation_queue() && WPML_TM_ATE_Status::can_ate_job_exist() ) {
 			$this->localize_script( 'ate-translation-queue' );
 			wp_enqueue_script( 'ate-translation-queue' );
 			wp_enqueue_style( 'otgs-notices' );
@@ -103,7 +103,7 @@ class WPML_TM_Scripts_Factory {
 
 	public function build_localize_script_data($additional_data = array()  ) {
 		$data = array(
-			'hasATEEnabled'      => WPML_TM_ATE_Status::is_enabled(),
+			'hasATEEnabled'      => WPML_TM_ATE_Status::can_ate_job_exist(),
 			'restUrl'            => untrailingslashit( $this->getRestUrl() ),
 			'restNonce'          => wp_create_nonce( 'wp_rest' ),
 			'syncJobStatesNonce' => wp_create_nonce( 'sync-job-states' ),
@@ -173,7 +173,7 @@ class WPML_TM_Scripts_Factory {
 	}
 
 	public function filter_translators_view_strings( array $strings, $all_users_have_subscription ) {
-		if ( WPML_TM_ATE_Status::is_enabled() ) {
+		if ( WPML_TM_ATE_Status::is_editor_ate() ) {
 			$strings['ate'] = $this->create_ate_strings()
 								->get_status_HTML(
 									$this->get_ate_activation_status(),

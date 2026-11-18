@@ -2,6 +2,7 @@
 
 namespace WPML\WPSEO\Shared\Upgrade;
 
+use WPML\LIB\WP\User;
 use WPML\Utilities\Lock;
 use WPML\WPSEO\Shared\Options;
 
@@ -16,7 +17,7 @@ class Hooks implements \IWPML_Backend_Action {
 	}
 
 	public function init() {
-		if ( ! wp_doing_ajax() && $this->needsUpgrade() ) {
+		if ( ! wp_doing_ajax() && current_user_can( User::CAP_MANAGE_OPTIONS ) && $this->needsUpgrade() ) {
 			Lock::whileLocked( self::LOCK_NAME, MINUTE_IN_SECONDS, [ $this, 'run' ] );
 		}
 	}

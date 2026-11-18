@@ -1,6 +1,6 @@
 <?php
 
-class WPML_Config_Built_With_Page_Builders extends WPML_WP_Option implements IWPML_Action, IWPML_Backend_Action_Loader, IWPML_AJAX_Action_Loader {
+class WPML_Config_Built_With_Page_Builders extends WPML_WP_Option implements IWPML_Action, IWPML_Backend_Action_Loader, IWPML_Frontend_Action_Loader, IWPML_AJAX_Action_Loader {
 
 	const CONFIG_KEY = 'built-with-page-builder';
 
@@ -25,7 +25,7 @@ class WPML_Config_Built_With_Page_Builders extends WPML_WP_Option implements IWP
 			$data_saved = $this->get();
 			$data_saved = $data_saved ? $data_saved : array();
 
-			$data_saved[] = $config_data['wpml-config'][ self::CONFIG_KEY ];
+			$data_saved = array_merge( $data_saved, (array) $config_data['wpml-config'][ self::CONFIG_KEY ] );
 			$this->set( array_unique( $data_saved ) );
 		}
 

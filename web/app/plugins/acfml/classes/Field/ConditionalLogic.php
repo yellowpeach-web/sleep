@@ -23,13 +23,15 @@ class ConditionalLogic implements \IWPML_Backend_Action, \IWPML_Frontend_Action 
 			return $field;
 		}
 
-		$field['conditional_logic'] = array_map( [ $this, 'translateRuleGroup' ], $field['conditional_logic'] );
+		$groups = isset( $field['conditional_logic']['field'] ) ? [ [ $field['conditional_logic'] ] ] : $field['conditional_logic'];
+
+		$field['conditional_logic'] = array_map( [ $this, 'translateRuleGroup' ], $groups );
 
 		return $field;
 	}
 
 	private function translateRuleGroup( $group ) {
-		return array_map( [ $this, 'translateRule' ], $group );
+		return is_array( $group ) ? array_map( [ $this, 'translateRule' ], $group ) : $group;
 	}
 
 	private function translateRule( $rule ) {

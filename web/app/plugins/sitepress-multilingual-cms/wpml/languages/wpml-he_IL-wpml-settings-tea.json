@@ -132,17 +132,17 @@
          "Legacy engine": [
             "מנוע מדור קודם"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "הוחל תמחור מדור קודם. %s הוא מנוע תרגום מדור קודם, אינו מומלץ לאתרים חדשים ויוצא משימוש בעתיד. אתרים קיימים שומרים עבורו על תעריף מילים מותאם."
-         ],
          "Switch to PTC": [
             "מעבר ל־PTC"
          ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "הוחל תמחור מדור קודם. %s הוא מנוע תרגום מדור קודם, אינו מומלץ לאתרים חדשים ויוצא משימוש בעתיד. אתרים קיימים שומרים עבורו על תעריף מילים מותאם."
+         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
-            "זה מה שנדרש כיום לצורך תרגום התוכן הנוכחי שלך. הנתון אינו כולל טקסטים מסוימים שנוספו על ידי תוספים אחרים, כגון טפסים או מצגות (sliders), הנספרים לאחר השלמת ההגדרה. מחרוזות אתר מתבנית העיצוב שלך ומתוספים נספרות אף הן לאחר ההגדרה ובדרך כלל מוסיפות כמה מאות מילים. לאחר מכן, עריכות אינן כרוכות בתשלום. תשלם שוב רק עבור מילים שתוסיף."
+            "זה מה שנדרש כיום לצורך תרגום התוכן הנוכחי שלך. הנתון אינו כולל טקסטים מסוימים שנוספו על ידי תוספים אחרים, כגון טפסים או מצגות (sliders), הנספרים לאחר השלמת ההגדרה. מחרוזות אתר מערכת העיצוב שלך ומתוספים נספרות אף הן לאחר ההגדרה ובדרך כלל מוסיפות כמה מאות מילים. לאחר מכן, עריכות אינן כרוכות בתשלום. תשלם שוב רק עבור מילים שתוסיף."
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
-            "זה מה שדרוש היום לתרגום התוכן הנוכחי שלך. זה לא כולל טקסטים מסוימים שנוספו על ידי תוספים אחרים, כגון טפסים או סליידרים, שנספרים לאחר השלמת ההגדרה. מחרוזות אתר מתבנית העיצוב ומהתוספים שלך נספרות גם הן לאחר ההגדרה ובדרך כלל מוסיפות כמה מאות מילים. לפי התעריף למילה של %s; שינויים בדפים מתורגמים יחויבו שוב."
+            "זה מה שדרוש היום לתרגום התוכן הנוכחי שלך. זה לא כולל טקסטים מסוימים שנוספו על ידי תוספים אחרים, כגון טפסים או סליידרים, שנספרים לאחר השלמת ההגדרה. מחרוזות אתר מערכת העיצוב ומהתוספים שלך נספרות גם הן לאחר ההגדרה ובדרך כלל מוסיפות כמה מאות מילים. לפי התעריף למילה של %s; שינויים בדפים מתורגמים יחויבו שוב."
          ],
          "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
             "זה מה שנדרש כיום לצורך תרגום התוכן הנוכחי שלך. לאחר מכן, עריכות אינן כרוכות בתשלום. תשלם שוב רק עבור מילים שתוסיף."
@@ -153,8 +153,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "הספירה כוללת עמודים, פוסטים ומוצרים יחד עם השדות המותאמים אישית שלהם, טקסטים של בוני עמודים וטקסטים של מדיה, וכן את הקטגוריות, התגים והמאפיינים שבהם הם משתמשים."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "הספירה כוללת עמודים, פוסטים ומוצרים יחד עם השדות המותאמים אישית שלהם, טקסטים של בוני עמודים וטקסטים של מדיה, את הקטגוריות, התגים והמאפיינים שבהם הם משתמשים, ומחרוזות אתר. מונח נספר בכל פריט שמשתמש בו ופעם אחת בפני עצמו, מכיוון שהוא נשלח לתרגום בשני האופנים."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "החישוב סופר עמודים, פוסטים ומוצרים יחד עם השדות המותאמים אישית שלהם, טקסטים של בונה עמודים וטקסטים של מדיה, הקטגוריות, התגיות והמאפיינים שבהם נעשה שימוש, ומחרוזות האתר. כל קטגוריה, תגית או מאפיין נספרים פעם אחת, בשורה ”טקסונומיות“, ולא נספרים שוב יחד עם הפריטים שמשתמשים בהם."
          ],
          "Total items": [
             "סה\"כ פריטים"

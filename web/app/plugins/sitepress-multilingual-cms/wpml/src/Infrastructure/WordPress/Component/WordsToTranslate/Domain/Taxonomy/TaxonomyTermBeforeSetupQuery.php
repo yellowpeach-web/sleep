@@ -5,6 +5,7 @@ namespace WPML\Infrastructure\WordPress\Component\WordsToTranslate\Domain\Taxono
 use WPML\Core\Component\WordsToTranslate\Domain\Taxonomy\Query\TermQueryInterface;
 use WPML\Core\Component\WordsToTranslate\Domain\Taxonomy\TaxonomyTerm;
 use WPML\PHP\Exception\InvalidItemIdException;
+use WPML\TM\Taxonomy\Job\TermWords;
 use WPML\TM\Taxonomy\TranslatableTermMeta;
 
 class TaxonomyTermBeforeSetupQuery implements TermQueryInterface {
@@ -44,18 +45,28 @@ class TaxonomyTermBeforeSetupQuery implements TermQueryInterface {
     $term->setDateModified( '0000-00-00' );
 
     $taxonomy = (string) $row['taxonomy'];
+    $termId   = (int) $row['term_id'];
 
-    $content  = (string) $row['name'] . "\n" . (string) $row['description'];
-    $metaText = TranslatableTermMeta::metaTextById(
-      (int) $row['term_id'],
-      TranslatableTermMeta::keys( $taxonomy ),
-      $taxonomy
+    $keys = array_values(
+      array_unique(
+        array_merge(
+          TranslatableTermMeta::keys( $taxonomy ),
+          TranslatableTermMeta::resolvedKeysOfTerm( $termId )
+        )
+      )
     );
+
+    $metaValues = TranslatableTermMeta::valuesOfTermById( $termId, $keys, $taxonomy );
+    $content    = (string) $row['name'] . "\n" . (string) $row['description'];
+    $metaText   = implode( "\n", $metaValues );
     if ( '' !== $metaText ) {
       $content .= "\n" . $metaText;
     }
 
     $term->setContent( $content );
+    $term->setFieldContents(
+      TermWords::fieldsOf( (string) $row['name'], (string) $row['description'], $metaValues, (int) $row['term_taxonomy_id'] )
+    );
 
     return $term;
   }

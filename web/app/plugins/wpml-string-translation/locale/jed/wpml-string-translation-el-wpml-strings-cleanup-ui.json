@@ -37,14 +37,32 @@
          "Removing strings from <b>String Translation</b> table": [
             "Κατάργηση συμβολοσειρών από τον πίνακα <b>String Translation</b>"
          ],
+         "%s string waiting for translation was kept.": [
+            "Διατηρήθηκε %s συμβολοσειρά που περιμένει μετάφραση.",
+            "Διατηρήθηκαν %s συμβολοσειρές που περιμένουν μετάφραση."
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "Για να προσθέσετε ξανά συμβολοσειρές στον πίνακα <b>String Translation</b>, ίσως χρειαστεί να σαρώσετε ξανά τα αρχεία μετάφρασης ή να καταχωρίσετε τις συμβολοσειρές ως μεταφράσιμες."
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "Διαβάστε περισσότερα σχετικά με τη <a>σάρωση του ιστότοπού σας για συμβολοσειρές και την καταχώρισή τους ως μεταφράσιμες</a>."
          ],
-         "Successfully removed strings": [
-            "Επιτυχής κατάργηση συμβολοσειρών"
+         "Nothing removed: %s string is waiting for translation": [
+            "Δεν αφαιρέθηκε τίποτα: %s συμβολοσειρά περιμένει μετάφραση",
+            "Δεν αφαιρέθηκε τίποτα: %s συμβολοσειρές περιμένουν μετάφραση"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "Δεν αφαιρέθηκε τίποτα: οι επιλεγμένοι τομείς δεν έχουν μη μεταφρασμένες συμβολοσειρές"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "Για να τις αφαιρέσετε επίσης, επιλέξτε “Να αφαιρεθούν επίσης οι συμβολοσειρές που περιμένουν μετάφραση” και κάντε κλικ ξανά στην Αφαίρεση."
+         ],
+         "OK": [
+            "OK"
+         ],
+         "Removed %s string": [
+            "Αφαιρέθηκε %s συμβολοσειρά",
+            "Αφαιρέθηκαν %s συμβολοσειρές"
          ],
          "OK, Great": [
             "Εντάξει, τέλεια"
@@ -60,6 +78,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "Η αφαίρεση των συμβολοσειρών σταμάτησε πριν ολοκληρωθεί. Οι συμβολοσειρές που δεν αφαιρέθηκαν παραμένουν στον πίνακα. Δοκιμάστε ξανά για να τις αφαιρέσετε."
+         ],
+         "Successfully removed strings": [
+            "Επιτυχής κατάργηση συμβολοσειρών"
          ]
       }
    }

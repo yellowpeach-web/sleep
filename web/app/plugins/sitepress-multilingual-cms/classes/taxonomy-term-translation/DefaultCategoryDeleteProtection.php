@@ -123,7 +123,7 @@ class DefaultCategoryDeleteProtection implements \IWPML_Backend_Action, \IWPML_A
 		return $caps;
 	}
 
-	private static function protectedTermIds( array $default_categories ) {
+	public static function protectedTermIds( array $default_categories ) {
 		if ( null !== self::$protected_term_ids ) {
 			return self::$protected_term_ids;
 		}

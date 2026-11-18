@@ -1,5 +1,7 @@
 <?php
 
+use WPML\LanguageSwitcher\LandmarkLabels;
+
 class WPML_LS_Model_Build extends WPML_SP_User {
 
 	const LINK_CSS_CLASS = 'wpml-ls-link';
@@ -58,7 +60,7 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 		$vars['has_alternatives']      = $this->has_alternatives( $vars['languages'] );
 		$vars['css_classes']           = $this->get_wrapper_css_classes( $slot );
 		$vars['css_classes_link']      = self::LINK_CSS_CLASS;
-		/* translators: Screen reader name of the language switcher on the site, and the name of the language switcher widget. */
+		/* translators: The name of the WPML language switcher: the name of the Language Switcher block and widget, a keyword for finding the block in the editor, and the text read out by screen readers for the switcher on the site. */
 		$vars['ls_aria_label']         = __( 'Language Switcher', 'sitepress' );
 		$vars['dropdown_ls_aria_label']  = __( 'Language switcher, press tab to navigate to other languages', 'sitepress' );
 		$vars['dropdown_click_ls_aria_label'] = __( 'Language switcher, click to open then tab to navigate', 'sitepress' );
@@ -66,6 +68,39 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 		$vars = $this->add_backward_compatibility_to_wrapper( $vars, $slot );
 
 		return $this->sanitize_vars( $vars, $this->allowed_vars );
+	}
+
+	public function printed_ls_aria_label( $slot ) {
+		/* translators: The name of the WPML language switcher: the name of the Language Switcher block and widget, a keyword for finding the block in the editor, and the text read out by screen readers for the switcher on the site. */
+		$plain = __( 'Language Switcher', 'sitepress' );
+
+		$label = LandmarkLabels::unique( $plain, $this->get_qualified_ls_aria_label( $slot, $plain ) );
+
+		return apply_filters( 'wpml_ls_aria_label', $label, $slot, LandmarkLabels::instances() );
+	}
+
+	private function get_qualified_ls_aria_label( $slot, $plain ) {
+		if ( $slot->is_footer() ) {
+			/* translators: Screen reader name of the footer language switcher, on a page with another language switcher. */
+			return __( 'Language switcher (footer)', 'sitepress' );
+		}
+
+		if ( $slot->is_menu() ) {
+			/* translators: Screen reader name of the menu language switcher, on a page with another language switcher. */
+			return __( 'Language switcher (menu)', 'sitepress' );
+		}
+
+		if ( $slot->is_sidebar() ) {
+			/* translators: Screen reader name of the widget language switcher, on a page with another language switcher. */
+			return __( 'Language switcher (widget)', 'sitepress' );
+		}
+
+		if ( $slot->is_shortcode_actions() ) {
+			/* translators: Screen reader name of the shortcode language switcher, on a page with another language switcher. */
+			return __( 'Language switcher (shortcode)', 'sitepress' );
+		}
+
+		return $plain;
 	}
 
 	private function has_alternatives( array $languages ) {

@@ -53,13 +53,13 @@ class WPML_Term_Language_Filter extends WPML_Language_Filter_Bar {
 				 FROM {$wpdb->prefix}icl_translations t
 				 JOIN {$wpdb->term_taxonomy} tt
 					ON t.element_id = tt.term_taxonomy_id
-					AND t.element_type = CONCAT('tax_', tt.taxonomy)
+					AND t.element_type = %s
 				 JOIN {$wpdb->terms} tm ON tt.term_id = tm.term_id
 				 WHERE tt.taxonomy = %s
 					{$language_snippet}";
 
 		return $wpdb->get_results(
-			$wpdb->prepare( $sql, array_merge( array( $taxonomy ), $languages ) )
+			$wpdb->prepare( $sql, array_merge( array( 'tax_' . $taxonomy, $taxonomy ), $languages ) )
 		);
 	}
 }

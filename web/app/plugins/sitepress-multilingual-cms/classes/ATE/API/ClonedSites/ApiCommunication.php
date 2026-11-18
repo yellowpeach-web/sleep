@@ -22,6 +22,8 @@ class ApiCommunication {
 
 	const RECONNECTING_ERROR_CODE = 'wpml_ate_reconnecting';
 
+	const GATED_DATA_KEY = 'gated';
+
 	const RECONNECTING_MESSAGE = 'Reconnecting to the translation service.';
 
 	const NO_ANSWER_ERROR_KEY = 'no_answer';
@@ -453,10 +455,56 @@ class ApiCommunication {
 				return null;
 			}
 
-			return self::reconnectingError();
+			return self::gatedError();
 		}
 
-		return self::reconnectingError();
+		return self::gatedError();
+	}
+
+	public static function wouldRefuse() {
+		if ( \apply_filters( 'wpml_ate_locked_endpoints_whitelist', [] ) ) {
+			return false;
+		}
+
+		if (
+			self::$userSend
+			&& 'failed' !== self::$probeOutcome
+			&& ReconnectState::get()
+			&& ReconnectState::isNoAnswer()
+			&& ReconnectState::isReconnecting()
+		) {
+			return false;
+		}
+
+		if ( self::$forceNextProbe && ( ! ReconnectState::get() || ReconnectState::isNoAnswer() ) ) {
+			return false;
+		}
+
+		if ( ! ReconnectState::isReconnecting() ) {
+			return false;
+		}
+
+		if ( ReconnectState::isNoAnswer() ) {
+			if ( self::$deliveryAnswered && 'answered' === self::$probeOutcome ) {
+				return false;
+			}
+
+			if ( ReconnectState::isDue() ) {
+				return false;
+			}
+
+			if ( null === self::$probeOutcome && self::isComponentPageLoad() ) {
+				return false;
+			}
+
+			return true;
+		}
+
+		return true;
+	}
+
+	public static function gatedError() {
+		return self::reconnectingError( [ self::GATED_DATA_KEY => true ] );
 	}
 
 	public static function reconnectingError( array $data = [] ) {
@@ -533,6 +581,7 @@ class ApiCommunication {
 		ReconnectState::clear();
 
 		if ( $previousUuid !== (string) $resolution['new_website_uuid'] ) {
+			TranslateEverythingOnNewRecord::switchOff();
 			OldIdentityJobs::cancel();
 		}
 

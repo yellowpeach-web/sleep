@@ -8,13 +8,25 @@ class PostTermDto {
 
   private $name;
 
+  private $ttid;
+
+  private $parent;
+
+  private $description;
+
 
   public function __construct(
     int $id,
-    string $name
+    string $name,
+    ?int $ttid = null,
+    ?int $parent = null,
+    string $description = ''
   ) {
-    $this->id       = $id;
-    $this->name    = $name;
+    $this->id          = $id;
+    $this->name        = $name;
+    $this->ttid        = $ttid;
+    $this->parent      = $parent;
+    $this->description = $description;
   }
 
 
@@ -25,6 +37,21 @@ class PostTermDto {
 
   public function getName(): string {
     return $this->name;
+  }
+
+
+  public function getTtid(): ?int {
+    return $this->ttid;
+  }
+
+
+  public function getParent(): ?int {
+    return $this->parent;
+  }
+
+
+  public function getDescription(): string {
+    return $this->description;
   }
 
 

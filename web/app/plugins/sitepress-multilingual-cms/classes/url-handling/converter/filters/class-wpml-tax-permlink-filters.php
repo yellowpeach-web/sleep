@@ -16,13 +16,16 @@ class WPML_Tax_Permalink_Filters implements IWPML_Action {
 
 	private $debug_backtrace;
 
+	private $sitepress;
+
 	public function __construct(
 		WPML_URL_Converter $url_converter,
 		WPML_WP_Cache_Factory $cache_factory,
 		WPML_Translation_Element_Factory $term_element_factory,
 		WPML_Get_LS_Languages_Status $ls_language_status,
 		$language_negotiation_type,
-		WPML_Debug_BackTrace $debug_backtrace
+		WPML_Debug_BackTrace $debug_backtrace,
+		?SitePress $sitepress = null
 	) {
 		$this->term_element_factory      = $term_element_factory;
 		$this->url_converter             = $url_converter;
@@ -30,6 +33,7 @@ class WPML_Tax_Permalink_Filters implements IWPML_Action {
 		$this->ls_languages_status       = $ls_language_status;
 		$this->language_negotiation_type = (int) $language_negotiation_type;
 		$this->debug_backtrace           = $debug_backtrace;
+		$this->sitepress                 = $sitepress;
 	}
 
 	public function add_hooks() {
@@ -46,18 +50,19 @@ class WPML_Tax_Permalink_Filters implements IWPML_Action {
 
 		$term_taxonomy_id = $tag_id && isset( $tag->term_taxonomy_id ) ? (int) $tag->term_taxonomy_id : 0;
 
-		$cache = $this->cache_factory->create_language_aware_cache_item( self::CACHE_GROUP, array(
+		$term_language = $this->get_term_language( $term_taxonomy_id );
+		$cache         = $this->cache_factory->create_language_aware_cache_item( self::CACHE_GROUP, array(
 			$permalink,
 			$tag_id,
 			$taxonomy,
 			$this->is_link_for_language_switcher(),
-			$this->get_term_language( $term_taxonomy_id ),
+			$term_language,
 		) );
 		if ( $cache->exists() ) {
 			return $cache->get();
 		}
 
-		$permalink = $this->filter_tax_permalink( $permalink, $term_taxonomy_id );
+		$permalink = $this->filter_tax_permalink( $permalink, $term_taxonomy_id, $term_language, $tag && ! empty( $tag->taxonomy ) ? $tag->taxonomy : $taxonomy );
 
 		$cache->set( $permalink );
 
@@ -78,7 +83,18 @@ class WPML_Tax_Permalink_Filters implements IWPML_Action {
 		return $this->term_element_factory->create( $term_taxonomy_id, 'term' )->get_language_code();
 	}
 
-	private function filter_tax_permalink( $permalink, $term_taxonomy_id ) {
+	private function filter_tax_permalink( $permalink, $term_taxonomy_id, $term_language, $taxonomy ) {
+		if ( $term_taxonomy_id && $term_language && $taxonomy && $this->sitepress ) {
+			$display_as_translated_and_in_default_lang = $this->sitepress->is_display_as_translated_taxonomy( $taxonomy )
+				&& $term_language === $this->sitepress->get_default_language();
+
+			if ( ! $display_as_translated_and_in_default_lang || $this->is_link_for_language_switcher() ) {
+				$permalink = $this->url_converter->convert_url( $permalink, $term_language );
+			}
+
+			return $permalink;
+		}
+
 		if ( $term_taxonomy_id ) {
 			$term_element = $this->term_element_factory->create( $term_taxonomy_id, 'term' );
 

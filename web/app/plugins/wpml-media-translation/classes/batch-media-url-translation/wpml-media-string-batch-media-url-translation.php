@@ -27,6 +27,20 @@ class WPML_Media_String_Batch_Url_Translation extends WPML_Media_Batch_Url_Trans
 		return isset( $_POST['action'] ) && self::AJAX_ACTION === $_POST['action'];
 	}
 
+	public function add_hooks() {
+		parent::add_hooks();
+
+		add_action( 'wpml_added_media_file_translation', [ $this, 'translateUrlInStrings' ] );
+	}
+
+	public function translateUrlInStrings( int $attachmentId ): void {
+		$offset = 0;
+		do {
+			$numberOfStringsLeft = $this->process_batch_for_selected_media( $offset, $attachmentId );
+			$offset             += $this->get_batch_size( parent::BATCH_SIZE_FACTOR_SPECIFIC_MEDIA );
+		} while ( $numberOfStringsLeft > 0 );
+	}
+
 	protected function get_response_message( $number_of_strings_left ) {
 		return sprintf(
 			/* translators: Progress message on the Media Translation page while media addresses inside translated texts are being updated. %s: either the number of items still left or the word for "done!". */

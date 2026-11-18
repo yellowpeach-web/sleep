@@ -8,16 +8,28 @@ use function WPML\FP\spreadArgs;
 
 class RawHtml implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_REST_Action {
 
-	const UNMATCHABLE_ELEMENT = 'wpml_unmatchable_element';
+	const WPBAKERY_CUSTOM_HTML_STRIP = 'wpb_remove_custom_html';
+
+	const PRIORITY_BEFORE_WPBAKERY_STRIP = 9;
 
 	public function add_hooks() {
-		Hooks::onFilter( 'wpb_custom_html_elements' )
-			->then( spreadArgs( [ $this, 'keep_raw_html_on_ate_delivery' ] ) );
+		Hooks::onFilter( 'content_save_pre', self::PRIORITY_BEFORE_WPBAKERY_STRIP )
+			->then( spreadArgs( [ $this, 'skipCustomHtmlStripOnAteDelivery' ] ) );
 	}
 
-	public function keep_raw_html_on_ate_delivery( $elements ) {
-		return apply_filters( 'wpml_pb_grant_unfiltered_html', false )
-			? [ self::UNMATCHABLE_ELEMENT ]
-			: $elements;
+	public function skipCustomHtmlStripOnAteDelivery( $content ) {
+		if ( apply_filters( 'wpml_pb_grant_unfiltered_html', false ) ) {
+			$this->detachWpbakeryCustomHtmlStrip();
+		}
+
+		return $content;
+	}
+
+	private function detachWpbakeryCustomHtmlStrip() {
+		$stripPriority = has_filter( 'content_save_pre', self::WPBAKERY_CUSTOM_HTML_STRIP );
+
+		if ( false !== $stripPriority ) {
+			remove_filter( 'content_save_pre', self::WPBAKERY_CUSTOM_HTML_STRIP, $stripPriority );
+		}
 	}
 }

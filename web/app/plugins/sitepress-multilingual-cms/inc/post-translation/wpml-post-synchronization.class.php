@@ -474,7 +474,7 @@ class WPML_Post_Synchronization extends WPML_SP_And_PT_User {
 		$comment_status = $this->sync_comment_status ? ( comments_open( $post_id ) ? 'open' : 'closed' ) : null;
 		$post_password = $this->sync_password ? $post->post_password : null;
 		$menu_order = $this->sync_menu_order && ! empty( $post->menu_order ) ? $post->menu_order : null;
-		$page_template = $this->sync_page_template && get_post_type( $post_id ) === 'page' ? get_post_meta( $post_id, '_wp_page_template', true ) : null;
+		$page_template = $this->get_page_template_to_sync( $post_id );
 		$post_date = $this->sync_post_date ? $wpdb->get_var( $wpdb->prepare( "SELECT post_date FROM {$wpdb->posts} WHERE ID=%d LIMIT 1", $post_id ) ) : null;
 
 		$menu_order_written = false;
@@ -594,7 +594,31 @@ class WPML_Post_Synchronization extends WPML_SP_And_PT_User {
 			return array();
 		}
 
-		return $this->sync_custom_fields( (int) $post_id, (int) $post_id, array_values( $meta_keys ) );
+		$processed_custom_fields = $this->sync_custom_fields( (int) $post_id, (int) $post_id, array_values( $meta_keys ) );
+
+		if ( in_array( '_wp_page_template', $meta_keys, true ) && $this->sync_page_template_to_translations( (int) $post_id ) ) {
+			$processed_custom_fields[] = '_wp_page_template';
+		}
+
+		return $processed_custom_fields;
+	}
+
+	private function get_page_template_to_sync( $post_id ) {
+		return $this->sync_page_template && get_post_type( $post_id ) === 'page' ? get_post_meta( $post_id, '_wp_page_template', true ) : null;
+	}
+
+	public function sync_page_template_to_translations( $post_id ) {
+		$page_template = $this->get_page_template_to_sync( $post_id );
+		if ( $page_template === null ) {
+			return false;
+		}
+
+		$translated_ids = $this->post_translation->get_element_translations( $post_id, false, true );
+		foreach ( $translated_ids as $translated_pid ) {
+			update_post_meta( $translated_pid, '_wp_page_template', $page_template );
+		}
+
+		return true;
 	}
 
 	private function sync_custom_fields( $original_id, $post_id, $custom_fields_to_sync = null ) {
@@ -661,9 +685,10 @@ class WPML_Post_Synchronization extends WPML_SP_And_PT_User {
 					do_action( 'wpml_translation_update', array( 'trid' => $trid ) );
 				}
 
-				$wpdb->query( "	UPDATE {$wpdb->prefix}icl_translations
+				$repaired_rows = $wpdb->query( "	UPDATE {$wpdb->prefix}icl_translations
 								SET source_language_code = NULL
 								WHERE language_code = source_language_code" );
+				WPML_Translations::flush_cache_after_source_repair( $trid, $repaired_rows, 0 < $rows_updated );
 
 				if ( 0 < $rows_updated ) {
 					do_action( \WPML\ContentDeletion\ItemDeleteRecorder::HOOK_PROMOTED, $trid, $new_source_lang_code );

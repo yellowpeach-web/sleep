@@ -114,7 +114,7 @@ class WPML_Admin_Text_Import extends WPML_Admin_Text_Functionality {
 			$arr_options = array();
 			if ( ! empty( $arr ) ) {
 				foreach ( $arr as $key => $v ) {
-					$value = maybe_unserialize( (string) $this->get_option_without_filtering( (string) $key ) );
+					$value = \WPML\Utils\Unserialize::maybe( (string) $this->get_option_without_filtering( (string) $key ) );
 					$value = is_array( $value ) && is_array( $v ) ? array_intersect_key( $value, $v ) : $value;
 					$admin_text_context = isset( $arr_context[ $key ] ) ? $arr_context[ $key ] : '';
 					$type               = isset( $arr_type[ $key ] ) ? $arr_type[ $key ] : '';

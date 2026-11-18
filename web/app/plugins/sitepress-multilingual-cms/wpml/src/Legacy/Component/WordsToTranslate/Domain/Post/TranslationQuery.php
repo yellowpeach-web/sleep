@@ -8,11 +8,22 @@ use WPML\Core\Component\WordsToTranslate\Domain\Post\Term\Term;
 use WPML\Core\Component\WordsToTranslate\Domain\Post\Term\TermContent;
 use WPML\Core\Component\WordsToTranslate\Domain\Post\Query\TranslationQueryInterface;
 
+use WPML\Legacy\Component\WordsToTranslate\Domain\BareUrl;
 use WPML\Translation\TranslationElements\FieldCompression;
 
+use WPML\Core\Port\Persistence\Exception\DatabaseErrorException;
+use WPML\Core\Port\Persistence\QueryHandlerInterface;
+use WPML\Core\Port\Persistence\QueryPrepareInterface;
+use WPML\Core\SharedKernel\Component\Translation\Application\Query\TranslationToSendConditionInterface;
 use WPML\Core\SharedKernel\Component\Translation\Domain\TranslationStatus;
 
 class TranslationQuery implements TranslationQueryInterface {
+
+  private $toSend;
+
+  private $queryPrepare;
+
+  private $queryHandler;
 
   private $jobs = [];
 
@@ -24,7 +35,20 @@ class TranslationQuery implements TranslationQueryInterface {
 
   private $translatedCompletely = [];
 
+  private $alreadyTranslated = [];
+
   private $_isTermRetranslationAllowed;
+
+
+  public function __construct(
+    TranslationToSendConditionInterface $toSend,
+    QueryPrepareInterface $queryPrepare,
+    QueryHandlerInterface $queryHandler
+  ) {
+    $this->toSend       = $toSend;
+    $this->queryPrepare = $queryPrepare;
+    $this->queryHandler = $queryHandler;
+  }
 
 
   public function getLastTranslatedOriginalContentForPost(
@@ -52,10 +76,15 @@ class TranslationQuery implements TranslationQueryInterface {
   ) {
     $job = $this->getJobByPost( $post, $lang );
 
-    if ( ! $job || ! $job->elements ) {
-      return [];
-    }
+    return $this->appendCompletePackageStrings(
+      $job && $job->elements ? $this->getJobFieldContents( $job, $fieldsToTranslate ) : [],
+      $post,
+      $lang
+    );
+  }
 
+
+  private function getJobFieldContents( LegacyJob $job, $fieldsToTranslate ) {
     $fieldContents = [];
 
     foreach ( $job->elements as $element ) {
@@ -79,6 +108,65 @@ class TranslationQuery implements TranslationQueryInterface {
     }
 
     return $fieldContents;
+  }
+
+
+  private function appendCompletePackageStrings( array $fieldContents, Post $post, $lang ) {
+    if ( ! defined( 'WPML_ST_VERSION' ) ) {
+      return $fieldContents;
+    }
+
+    $prefix = $this->queryPrepare->prefix();
+    $sql    = "SELECT s.value AS source, st.status AS status, st.value AS translation
+         FROM {$prefix}icl_string_packages p
+         JOIN {$prefix}icl_strings s ON s.string_package_id = p.ID
+         JOIN {$prefix}icl_string_translations st ON st.string_id = s.id AND st.language = %s
+         WHERE p.post_id = %d
+         ORDER BY p.ID, s.id";
+
+    try {
+      $rows = $this->queryHandler->query(
+        $this->queryPrepare->prepare( $sql, $lang, $post->getId() )
+      )->getResults();
+    } catch ( DatabaseErrorException $e ) {
+      return $fieldContents;
+    }
+
+    $sources = [];
+    foreach ( $rows as $row ) {
+      $source = trim( (string) $row['source'] );
+      if (
+        $source === ''
+        || (int) $row['status'] !== TranslationStatus::COMPLETE
+        || (string) $row['translation'] === ''
+        || ! $this->isCountedText( (string) $row['source'] )
+      ) {
+        continue;
+      }
+      $sources[] = $source;
+    }
+
+    if ( ! $sources ) {
+      return $fieldContents;
+    }
+
+    $key = FieldKey::PACKAGE_STRINGS_GROUP_KEY;
+
+    $fieldContents[ $key ] = trim( ( $fieldContents[ $key ] ?? '' ) . ' ' . implode( ' ', $sources ) );
+
+    return $fieldContents;
+  }
+
+
+  private function isCountedText( string $value ): bool {
+    if ( BareUrl::matches( $value ) ) {
+      return false;
+    }
+
+    return ! (
+      class_exists( \WPML_String_Functions::class )
+      && \WPML_String_Functions::is_not_translatable( $value )
+    );
   }
 
 
@@ -117,49 +205,103 @@ class TranslationQuery implements TranslationQueryInterface {
       return $this->translatedCompletely[ $cacheKey ] = false;
     }
 
-    global $wpdb;
-    $row = $wpdb->get_row(
-      $wpdb->prepare(
-        "SELECT t.element_id AS element_id, t.source_language_code AS src, s.status AS status, s.needs_update AS needs_update
-         FROM {$wpdb->prefix}icl_translations t
-         LEFT JOIN {$wpdb->prefix}icl_translation_status s
+    $prefix = $this->queryPrepare->prefix();
+    $sql    = "SELECT t.element_id AS element_id, t.source_language_code AS src, s.status AS status, s.needs_update AS needs_update,
+           ( {$this->toSend->sql( 's' )} {$this->toSend->notDiscardedSql( 's' )} ) AS will_be_sent
+         FROM {$prefix}icl_translations t
+         LEFT JOIN {$prefix}icl_translation_status s
            ON s.translation_id = t.translation_id
+         {$this->toSend->joinSql( 's' )}
          WHERE t.trid = %d AND t.language_code = %s
-         LIMIT 1;",
-        $trid,
-        $lang
-      )
-    );
+         LIMIT 1;";
 
-    if ( ! $row ) {
+    try {
+      $row = $this->queryHandler->queryOne(
+        $this->queryPrepare->prepare( $sql, $this->toSend->joblessCutoff(), $trid, $lang )
+      );
+    } catch ( DatabaseErrorException $e ) {
+      $row = null;
+    }
+
+    if ( ! is_array( $row ) ) {
+      if ( $this->toSend->isRefusedPair( $post->getSourceLang(), $lang ) ) {
+        return $this->translatedCompletely[ $cacheKey ] = true;
+      }
+
       return $this->translatedCompletely[ $cacheKey ] = false;
     }
 
-    if ( $row->src === null ) {
+    if ( $row['src'] === null ) {
       return $this->translatedCompletely[ $cacheKey ] = true;
     }
 
-    if ( $row->status === null ) {
-      return $this->translatedCompletely[ $cacheKey ] = $this->isObservablyComplete( $row );
+    if ( $row['src'] !== null && $this->toSend->isRefusedPair( $row['src'], $lang ) ) {
+      return $this->translatedCompletely[ $cacheKey ] = true;
     }
 
-    $isComplete = (int) $row->status === TranslationStatus::COMPLETE && (int) $row->needs_update === 0;
+    if ( ! (int) $row['will_be_sent'] ) {
+      return $this->translatedCompletely[ $cacheKey ] = true;
+    }
 
-    return $this->translatedCompletely[ $cacheKey ] = $isComplete;
+    if ( $row['status'] === null && $this->isObservablyComplete( $row['element_id'] ) ) {
+      return $this->translatedCompletely[ $cacheKey ] = true;
+    }
+
+    return $this->translatedCompletely[ $cacheKey ] = false;
   }
 
 
-  private function isObservablyComplete( $row ) {
-    if ( empty( $row->element_id ) ) {
+  private function isObservablyComplete( $translatedPostId ) {
+    if ( empty( $translatedPostId ) ) {
       return false;
     }
 
-    $translatedPost = get_post( (int) $row->element_id );
+    $translatedPost = get_post( (int) $translatedPostId );
     if ( ! is_object( $translatedPost ) || 'publish' !== $translatedPost->post_status ) {
       return false;
     }
 
-    return ! get_post_meta( (int) $row->element_id, '_icl_lang_duplicate_of', true );
+    return ! \WPML\TranslationPolicy\Duplicate\DuplicateReaders::isCopy( (int) $translatedPostId );
+  }
+
+
+  public function isAlreadyTranslated( $post, $lang ): bool {
+    $cacheKey = $post->getType() . $post->getId() . $lang;
+    if ( isset( $this->alreadyTranslated[ $cacheKey ] ) ) {
+      return $this->alreadyTranslated[ $cacheKey ];
+    }
+
+    $trid = $this->getJobTridByPost( $post, $lang );
+    if ( ! $trid ) {
+      return $this->alreadyTranslated[ $cacheKey ] = false;
+    }
+
+    $prefix = $this->queryPrepare->prefix();
+    $sql    = "SELECT t.source_language_code AS src, s.status AS status, s.needs_update AS needs_update
+         FROM {$prefix}icl_translations t
+         LEFT JOIN {$prefix}icl_translation_status s
+           ON s.translation_id = t.translation_id
+         WHERE t.trid = %d AND t.language_code = %s
+         LIMIT 1;";
+
+    try {
+      $row = $this->queryHandler->queryOne( $this->queryPrepare->prepare( $sql, $trid, $lang ) );
+    } catch ( DatabaseErrorException $e ) {
+      $row = null;
+    }
+
+    if ( ! is_array( $row ) ) {
+      return $this->alreadyTranslated[ $cacheKey ] = false;
+    }
+
+    if ( $row['src'] === null ) {
+      return $this->alreadyTranslated[ $cacheKey ] = true;
+    }
+
+    return $this->alreadyTranslated[ $cacheKey ] =
+      $row['status'] !== null
+      && (int) $row['status'] === TranslationStatus::COMPLETE
+      && (int) $row['needs_update'] === 0;
   }
 
 

@@ -4,11 +4,14 @@ namespace WPML\PB\Elementor\Helper;
 
 use WPML\FP\Obj;
 use WPML\FP\Str;
+use WPML\PB\TranslationJob\Editor;
 
 class StringFormat {
 
 	public static function useWpAutoP( $settings, $string ) {
-		return 'VISUAL' === $string->get_editor_type() && self::isOneLine( self::getOriginalString( $settings, $string ) );
+		return 'VISUAL' === $string->get_editor_type()
+			&& ! Editor::isATE()
+			&& self::isOneLine( self::getOriginalString( $settings, $string ) );
 	}
 
 	private static function isOneLine( $content ) {

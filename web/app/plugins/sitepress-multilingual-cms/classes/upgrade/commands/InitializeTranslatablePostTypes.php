@@ -17,9 +17,13 @@ class InitializeTranslatablePostTypes extends \WPML_Upgrade_Run_All {
 		$sync_option      = $this->sitepress->get_setting( 'custom_posts_sync_option', [] );
 		$default_language = $this->sitepress->get_default_language();
 		$initializer      = new \WPML_Initialize_Language_For_Post_Type( $this->wpdb );
+		$site_editor_types = [ 'wp_template', 'wp_template_part', 'wp_navigation' ];
 
 		foreach ( (array) $sync_option as $post_type => $mode ) {
 			if ( ! in_array( (int) $mode, [ WPML_CONTENT_TYPE_TRANSLATE, WPML_CONTENT_TYPE_DISPLAY_AS_IF_TRANSLATED ], true ) ) {
+				continue;
+			}
+			if ( in_array( (string) $post_type, $site_editor_types, true ) ) {
 				continue;
 			}
 			if ( ! $initializer->run( $post_type, $default_language ) ) {

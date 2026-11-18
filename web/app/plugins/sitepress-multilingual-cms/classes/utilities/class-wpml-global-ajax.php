@@ -114,13 +114,10 @@ class WPML_Global_AJAX extends WPML_SP_User {
 							$root_page_id = isset( $urls['root_page'] ) ? (int) $urls['root_page'] : 0;
 							$root_page    = $root_page_id > 0 ? get_post( $root_page_id ) : null;
 
-							if ( ! WPML_Root_Page_Actions::is_usable_root_page( $root_page ) ) {
-								$has_page_to_edit = $root_page && 'trash' !== $root_page->post_status;
-
-								$errors[]         = $has_page_to_edit
-									? __( 'The root page is not published. Use the "Edit root page" link above to publish it, then save.', 'sitepress' )
-									: __( 'Please create a root page before saving. Use the "Create root page" link above.', 'sitepress' );
-								$response         = false;
+							$root_page_state = WPML_Root_Page_Actions::root_page_state( $root_page );
+							if ( WPML_Root_Page_Actions::ROOT_PAGE_USABLE !== $root_page_state ) {
+								$errors[] = WPML_Root_Page_Actions::root_page_save_error( $root_page );
+								$response = false;
 							} else {
 								$urls['hide_language_switchers'] = $hide_language_switchers ? $hide_language_switchers : 0;
 								$saved_root_page_id              = $root_page_id;
@@ -129,10 +126,12 @@ class WPML_Global_AJAX extends WPML_SP_User {
 								$postHogCaptureEventData['root_page_id'] = $root_page_id;
 								$postHogCaptureEventData['hide_language_switchers'] = (bool) $urls['hide_language_switchers'];
 							}
+						} elseif ( 'redirect' === $show_on_root ) {
+							$urls['show_on_root'] = 'redirect';
 						} elseif ( $root_was_forgotten && in_array( $show_on_root, [ '', null, false ], true ) ) {
 							$urls['show_on_root'] = '';
 						} else {
-							$errors[] = __( 'Please choose what to show for the root URL (an HTML file or a page).', 'sitepress' );
+							$errors[] = __( 'Please choose what to show for the root URL: "Redirect to the default language", "HTML file" or "A page".', 'sitepress' );
 							$response = false;
 						}
 					}

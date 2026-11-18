@@ -10,7 +10,7 @@ class WPML_Media_Attachment_By_URL {
 
 	private $media_attachment_by_url_query;
 
-	const SIZE_SUFFIX_REGEXP = '/-([0-9]+)x([0-9]+)\.([a-z]{3,4})$/';
+	const SIZE_SUFFIX_REGEXP = '/-([0-9]+)x([0-9]+)\.([a-z]{3,4})$/i';
 
 	const CACHE_KEY_PREFIX = 'attachment-id-from-guid-';
 	const CACHE_GROUP      = 'wpml-media-setup';
@@ -31,7 +31,13 @@ class WPML_Media_Attachment_By_URL {
 	}
 
 	public static function normalizeUrl( $url ) {
-		if ( ! is_string( $url ) || '' === $url || '/' !== $url[0] ) {
+		if ( ! is_string( $url ) || '' === $url ) {
+			return $url;
+		}
+
+		$url = self::decodePath( $url );
+
+		if ( '/' !== $url[0] ) {
 			return $url;
 		}
 
@@ -53,6 +59,40 @@ class WPML_Media_Attachment_By_URL {
 		$port = isset( $baseurl['port'] ) ? ':' . $baseurl['port'] : '';
 
 		return $baseurl['scheme'] . '://' . $baseurl['host'] . $port . $url;
+	}
+
+	public static function hasEncodedPath( $url ) {
+		return is_string( $url ) && self::decodePath( $url ) !== $url;
+	}
+
+	private static function decodePath( $url ) {
+		if ( false === strpos( $url, '%' ) ) {
+			return $url;
+		}
+
+		$parts = explode( '?', $url, 2 );
+		$path  = rawurldecode( $parts[0] );
+		if ( ! preg_match( '//u', $path ) ) {
+			return $url;
+		}
+		$parts[0] = $path;
+
+		return implode( '?', $parts );
+	}
+
+	public static function encodePathLike( $reference, $url ) {
+		if ( ! is_string( $url ) || ! self::hasEncodedPath( $reference ) || false !== strpos( $url, '%' ) ) {
+			return $url;
+		}
+
+		$parts = explode( '?', $url, 2 );
+		if ( preg_match( '#^([a-z][a-z0-9+.-]*:)?(//[^/]*)?(/.*)?$#i', $parts[0], $m ) ) {
+			$path     = isset( $m[3] ) ? $m[3] : '';
+			$encoded  = implode( '/', array_map( 'rawurlencode', explode( '/', $path ) ) );
+			$parts[0] = ( isset( $m[1] ) ? $m[1] : '' ) . ( isset( $m[2] ) ? $m[2] : '' ) . $encoded;
+		}
+
+		return implode( '?', $parts );
 	}
 
 	public static function getUrl( $url ) {

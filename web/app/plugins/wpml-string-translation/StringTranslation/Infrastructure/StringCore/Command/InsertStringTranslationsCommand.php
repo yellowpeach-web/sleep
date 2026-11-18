@@ -45,7 +45,7 @@ class InsertStringTranslationsCommand extends BulkActionBaseCommand implements I
 
 	private function buildStringTranslationRow( StringTranslation $translation ) {
 		return $this->wpdb->prepare(
-			'(%s, %s, %s, %s, %s, %s, %s, %s, %s)',
+			'(%s, %s, %s, %s, %s, %s, %s, %s, NOW())',
 			$translation->getString()->getId(),
 			$translation->getLanguage(),
 			ICL_TM_COMPLETE,
@@ -53,8 +53,7 @@ class InsertStringTranslationsCommand extends BulkActionBaseCommand implements I
 			$translation->getValue(),
 			null,
 			'local',
-			0,
-			'2024-01-01 00:00:00'
+			0
 		);
 	}
 }

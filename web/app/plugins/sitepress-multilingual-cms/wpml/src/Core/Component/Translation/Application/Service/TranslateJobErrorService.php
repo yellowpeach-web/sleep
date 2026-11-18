@@ -64,6 +64,21 @@ class TranslateJobErrorService {
   }
 
 
+  public function recordDiscardedMemberSourceMd5s( int $jobId, array $md5s ): void {
+    $this->repository->mergeErrorData(
+      $jobId,
+      [
+        JobError::ERROR_DATA_MEMBER_SOURCE_MD5 => array_map(
+          function ( string $md5 ): array {
+            return [ JobError::ERROR_DATA_SOURCE_MD5 => $md5 ];
+          },
+          array_values( $md5s )
+        ),
+      ]
+    );
+  }
+
+
   public function getCount(): int {
     return $this->repository->count();
   }

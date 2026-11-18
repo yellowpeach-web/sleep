@@ -49,12 +49,15 @@ class RegisterStrings implements \IWPML_REST_Action, \IWPML_DIC_Action, \WPML\PB
 	}
 
 	public function deleteEmptyStringPackage( $packageData ) {
-		if ( isset( $packageData['kind_slug'] ) && Strings::PACKAGE_KIND_SLUG === $packageData['kind_slug'] ) {
+		if (
+			( is_array( $packageData ) || is_object( $packageData ) )
+			&& Strings::PACKAGE_KIND_SLUG === Obj::prop( 'kind_slug', $packageData )
+		) {
 			$package        = $this->pbFactory->get_wpml_package( $packageData );
 			$packageStrings = $package->get_package_strings( true );
 
 			if ( ! $packageStrings ) {
-				do_action( 'wpml_delete_package', $packageData['name'], $packageData['kind'] );
+				do_action( 'wpml_delete_package', Obj::prop( 'name', $packageData ), Obj::prop( 'kind', $packageData ) );
 			}
 		}
 	}

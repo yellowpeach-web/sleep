@@ -1,5 +1,7 @@
 <?php
 
+use WPML\ST\SlugTranslation\PostArchive\Records;
+
 class WPML_Slug_Translation_Records_Factory {
 
 	public function create( $type ) {
@@ -11,6 +13,8 @@ class WPML_Slug_Translation_Records_Factory {
 			return new WPML_Post_Slug_Translation_Records( $wpdb, $cache_factory );
 		} elseif ( WPML_Slug_Translation_Factory::TAX === $type ) {
 			return new WPML_Tax_Slug_Translation_Records( $wpdb, $cache_factory );
+		} elseif ( WPML_Slug_Translation_Factory::POST_ARCHIVE === $type ) {
+			return new Records( $wpdb, $cache_factory );
 		}
 
 		return null;

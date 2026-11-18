@@ -5,6 +5,11 @@ var WPMLTranslationServicesDialog = function () {
 
 	var self = this;
 
+	// Button labels, translated by PHP (Resources::enqueue_scripts); the
+	// English literals below are only the fallback for a page that enqueued
+	// the script without them.
+	self.strings = window.wpml_tm_ts_strings || {};
+
 	self.INVALIDATION_ACTION = 'translation_service_invalidation';
 	self.AUTHENTICATION_ACTION = 'translation_service_authentication';
 	self.UPDATE_CREDENTIALS_ACTION = 'translation_service_update_credentials';
@@ -213,13 +218,13 @@ var WPMLTranslationServicesDialog = function () {
 			},
 			buttons:     [
 				{
-					text:    "Cancel",
+					text:    self.strings.cancel || "Cancel",
 					click:   function () {
 						jQuery(this).dialog("close");
 					},
 					'class': 'button-secondary alignleft'
 				}, {
-					text:    "Submit",
+					text:    self.strings.submit || "Submit",
 					click:   function () {
 						self.hideButtons();
 						self.translationServiceAuthentication(serviceId, false, action, 0);

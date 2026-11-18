@@ -19,15 +19,29 @@ class TranslateLinks {
 				return $language === $string->get_language();
 			};
 
-			$hasTranslatorValue = function ( $language ) use ( $existingByLanguage ) {
+			$seedValue = function ( $language ) use ( $string, $string_id ) {
+				$original = (string) $string->get_value();
+				$data     = apply_filters( 'wpml_st_string_translation_before_save', [ 'value' => $original ], $language, $string_id );
+
+				return is_array( $data ) && isset( $data['value'] ) ? (string) $data['value'] : $original;
+			};
+
+			$shouldKeepRow = function ( $language ) use ( $existingByLanguage, $seedValue ) {
 				if ( ! isset( $existingByLanguage[ $language ] ) ) {
 					return false;
 				}
 
-				$row = $existingByLanguage[ $language ];
+				$row    = $existingByLanguage[ $language ];
+				$value  = (string) ( $row->value ?? '' );
+				$status = (int) ( $row->status ?? ICL_TM_NOT_TRANSLATED );
 
-				return isset( $row->value ) && '' !== (string) $row->value
-					&& (int) ICL_TM_NEEDS_UPDATE !== (int) ( isset( $row->status ) ? $row->status : 0 );
+				if ( '' === $value || (int) ICL_TM_NEEDS_UPDATE === $status ) {
+					return false;
+				}
+
+				$isSeed = (int) ICL_TM_NOT_TRANSLATED === $status;
+
+				return ! $isSeed || $seedValue( $language ) === $value;
 			};
 
 			$setTranslation = function ( $language ) use ( $string ) {
@@ -36,7 +50,7 @@ class TranslateLinks {
 
 			\wpml_collect( $activeLanguages )->pluck( 'code' )
 			                                 ->reject( $sameStringLanguage )
-			                                 ->reject( $hasTranslatorValue )
+			                                 ->reject( $shouldKeepRow )
 			                                 ->each( $setTranslation );
 		};
 	}

@@ -127,6 +127,9 @@
          "Delete language pair(s)": [
             "Taalkoppel(s) verwijderen"
          ],
+         "Can translate to and from all languages": [
+            "Kan naar en vanuit alle talen vertalen"
+         ],
          "An error occurred. Please try again.": [
             "Er is een fout opgetreden. Probeer het opnieuw."
          ],
@@ -153,6 +156,60 @@
          ],
          "Back to Step %1$s: %2$s": [
             "Terug naar stap %1$s: %2$s"
+         ],
+         "Available": [
+            "Beschikbaar"
+         ],
+         "Not available": [
+            "Niet beschikbaar"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "Begrijpt het onderwerp, het publiek en de toon van uw site"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "Kwaliteit die klaar is voor publicatie, ondersteund door onze garantie"
+         ],
+         "Review before publishing": [
+            "Controleren voor publicatie"
+         ],
+         "Pay once per page – only added words are charged": [
+            "Betaal eenmalig per pagina – alleen toegevoegde woorden worden in rekening gebracht"
+         ],
+         "Per word, changes included": [
+            "Per woord, inclusief wijzigingen"
+         ],
+         "A legacy engine": [
+            "Een legacy engine"
+         ],
+         "<button>Switch to a different engine</button> if you prefer — no quality guarantee and no free translation edits with other engines.": [
+            "<button>Schakel over naar een andere engine</button> als u dat wilt — geen kwaliteitsgarantie en geen gratis vertaalbewerkingen bij andere engines."
+         ],
+         "Your content will be translated by <strong>Private Translation Cloud (PTC)</strong>, WPML's own AI engine. PTC lets you translate the entire site automatically, in one click, offering free translation edits.": [
+            "Uw inhoud wordt vertaald door <strong>Private Translation Cloud (PTC)</strong>, de eigen AI-engine van WPML. Met PTC kunt u de hele site automatisch met één klik vertalen, inclusief gratis vertaalbewerkingen."
+         ],
+         "Couldn't save — try again": [
+            "Kon niet opslaan — probeer het opnieuw"
+         ],
+         "Your content will be translated by <strong>%s</strong>, a machine translation engine. You pay per word, including changes to content that's already translated.": [
+            "Uw inhoud wordt vertaald door <strong>%s</strong>, een machinevertalingsengine. U betaalt per woord, inclusief wijzigingen aan reeds vertaalde inhoud."
+         ],
+         "Switch to PTC": [
+            "Overschakelen naar PTC"
+         ],
+         "Switch away from PTC?": [
+            "Afstappen van PTC?"
+         ],
+         "DeepL, Google Translate or Microsoft Translator": [
+            "DeepL, Google Translate of Microsoft Translator"
+         ],
+         "Your engine now": [
+            "Uw huidige engine"
+         ],
+         "Switch away from PTC": [
+            "Stap af van PTC"
+         ],
+         "Stay with PTC": [
+            "Blijf bij PTC"
          ],
          "Technical Details (for WPML Support)": [
             "Technische details (voor WPML-support)"
@@ -186,6 +243,45 @@
          ],
          " and provide the technical details below (use the Copy button to copy them).": [
             " en vermeld de onderstaande technische details (gebruik de knop Kopiëren om ze te kopiëren)."
+         ],
+         "Publish without review": [
+            "Publiceren zonder beoordeling"
+         ],
+         "Translations go live immediately in the target language.": [
+            "Vertalingen gaan onmiddellijk live in de doeltaal."
+         ],
+         "Wait for review before publishing": [
+            "Wachten op beoordeling voor publicatie"
+         ],
+         "Translations stay as drafts until a translation manager approves them.": [
+            "Vertalingen blijven concepten totdat een vertaalbeheerder ze goedkeurt."
+         ],
+         "Recommended": [
+            "Aanbevolen"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "Voor DeepL, Google en Microsoft raden we een menselijke beoordeling aan om te bevestigen dat ze correct zijn. PTC biedt vertalingen die beter zijn dan menselijke vertalingen en die context begrijpen, zodat u het beoordelingsproces met een gerust hart kunt overslaan."
+         ],
+         "Publish and mark for review": [
+            "Publiceren en markeren voor beoordeling"
+         ],
+         "Translations go live but appear in a \"needs review\" queue.": [
+            "Vertalingen gaan live, maar verschijnen in een wachtrij voor beoordeling."
+         ],
+         "After auto-translation": [
+            "Na automatische vertaling"
+         ],
+         "What happens to content once %s has translated it.": [
+            "Wat er met inhoud gebeurt zodra %s deze heeft vertaald."
+         ],
+         "Wait for review": [
+            "Wachten op review"
+         ],
+         "%1$s (<strong>%2$s</strong>)": [
+            "%1$s (<strong>%2$s</strong>)"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "Wat wilt u doen wanneer WPML klaar is met het automatisch vertalen van uw content?"
          ],
          "Loading AI Translation...": [
             "AI-vertaling laden..."
@@ -328,6 +424,15 @@
          "adding a custom language": [
             "een aangepaste taal toevoegen"
          ],
+         "I will fix my server settings to display languages in directories later.": [
+            "Ik zal mijn serverinstellingen om talen in mappen weer te geven later herstellen."
+         ],
+         "We could not verify your server's URL-rewrite support.": [
+            "We konden de ondersteuning voor URL-rewrite van uw server niet verifiëren."
+         ],
+         "Learn more about required server settings to display languages in directories": [
+            "Meer informatie over de vereiste serverinstellingen om talen in mappen weer te geven"
+         ],
          "I will change the permalink structure later.": [
             "Ik zal de permalinkstructuur later wijzigen."
          ],
@@ -367,8 +472,15 @@
          "This domain does not show this site.": [
             "Dit domein toont deze site niet."
          ],
+         "This address belongs to another site on this network.": [
+            "Dit adres behoort toe aan een andere site in dit netwerk."
+         ],
          "WPML could not reach this domain.": [
             "WPML kon dit domein niet bereiken."
+         ],
+         "If you choose this, these URLs will open a sub-site: %s.": [
+            "Als u dit kiest, openen deze URL's een subsite: %s.",
+            "Als u dit kiest, openen deze URL's een subsite: %s."
          ],
          "The domain you have entered is invalid.": [
             "Het domein dat u heeft ingevoerd is ongeldig."
@@ -387,15 +499,6 @@
          ],
          "The URL rewrite is not configured in your server.": [
             "De URL-rewrite is niet geconfigureerd op uw server."
-         ],
-         "I will fix my server settings to display languages in directories later.": [
-            "Ik zal mijn serverinstellingen om talen in mappen weer te geven later herstellen."
-         ],
-         "We could not verify your server's URL-rewrite support.": [
-            "We konden de ondersteuning voor URL-rewrite van uw server niet verifiëren."
-         ],
-         "Learn more about required server settings to display languages in directories": [
-            "Meer informatie over de vereiste serverinstellingen om talen in mappen weer te geven"
          ],
          "your pages": [
             "uw pagina's"
@@ -421,11 +524,17 @@
          "Translate your posts": [
             "Uw berichten vertalen"
          ],
-         "the Translation Dashboard": [
-            "het vertaaldashboard"
+         "%s will translate your whole site and keep new content translated from now on. You're charged per word, including later changes.": [
+            "%s vertaalt uw hele site en zorgt dat nieuwe inhoud vanaf nu vertaald blijft. U betaalt per woord, inclusief latere wijzigingen."
          ],
          "Private Translation Cloud (PTC) will translate your whole site and keep new content translated from now on. You pay once for what's translated — editing it afterward is free.": [
             "Private Translation Cloud (PTC) vertaalt uw hele site en houdt nieuwe inhoud vanaf nu vertaald. U betaalt eenmalig voor wat vertaald is — het achteraf bewerken is gratis."
+         ],
+         "Automatic translation will translate your whole site and keep new content translated from now on.": [
+            "Automatische vertaling vertaalt uw hele site en zorgt dat nieuwe inhoud vanaf nu vertaald blijft."
+         ],
+         "the Translation Dashboard": [
+            "het vertaaldashboard"
          ],
          "Apply settings and start site's translation": [
             "Instellingen toepassen en vertaling van de site starten"
@@ -439,8 +548,14 @@
          "the WooCommerce Multilingual setup": [
             "de WooCommerce Multilingual-installatie"
          ],
+         "%s will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "%s begint nu met het vertalen van uw site en zorgt dat nieuwe inhoud vanaf nu vertaald blijft. Vervolgens configureert u uw meertalige winkel. Uw producten worden vertaald zodra u de configuratie van WooCommerce Multilingual afrondt."
+         ],
          "Private Translation Cloud (PTC) will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup. You pay once for what's translated. Editing it afterward is free.": [
             "Private Translation Cloud (PTC) begint nu met het vertalen van uw site en houdt nieuwe inhoud vanaf nu vertaald. Vervolgens stelt u uw meertalige winkel in. Uw producten worden vertaald zodra u de WooCommerce Multilingual-installatie heeft voltooid. U betaalt eenmalig voor wat vertaald is. Het achteraf bewerken is gratis."
+         ],
+         "Automatic translation will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "Automatische vertaling begint nu met het vertalen van uw site en zorgt dat nieuwe inhoud vanaf nu vertaald blijft. Vervolgens configureert u uw meertalige winkel. Uw producten worden vertaald zodra u de configuratie van WooCommerce Multilingual afrondt."
          ],
          "Continue to WooCommerce Multilingual Setup while translation begins": [
             "Doorgaan naar WooCommerce Multilingual-installatie terwijl de vertaling begint"
@@ -484,8 +599,14 @@
          "Applying your setup choices": [
             "Uw installatiekeuzes toepassen"
          ],
+         "%s is translating your content. There's nothing else you need to do here.": [
+            "%s vertaalt uw inhoud. U hoeft hier verder niets te doen."
+         ],
          "PTC is translating your content. There's nothing else you need to do here.": [
             "PTC vertaalt uw inhoud. U hoeft hier verder niets te doen."
+         ],
+         "Your content is being translated. There's nothing else you need to do here.": [
+            "Uw inhoud wordt vertaald. U hoeft hier verder niets te doen."
          ],
          "We're applying all your setup choices and preparing WPML. This is a one-time process.": [
             "We passen al uw installatiekeuzes toe en bereiden WPML voor. Dit is een eenmalig proces."
@@ -580,38 +701,8 @@
          "Full details of the info we’re proposing to share": [
             "Volledige details van de informatie die we voorstellen te delen"
          ],
-         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
-            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> bij het kiezen van de beste modus voor uw site."
-         ],
-         "How would you like to translate your content?": [
-            "Hoe wilt u uw inhoud vertalen?"
-         ],
-         "Recommended": [
-            "Aanbevolen"
-         ],
-         "Translate Everything Automatically": [
-            "Alles automatisch vertalen"
-         ],
-         "Full-site automatic translation needs AI translation set up.": [
-            "Voor automatische vertaling van de volledige site moet AI-vertaling zijn ingesteld."
-         ],
-         "Set up AI translation": [
-            "AI-vertaling instellen"
-         ],
-         "Translate Some: You Choose What to Translate": [
-            "Gedeeltelijk vertalen: u kiest wat u wilt vertalen"
-         ],
-         "Select this option": [
-            "Selecteer deze optie"
-         ],
          "How it works": [
             "Hoe het werkt"
-         ],
-         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
-            "PTC (Private Translation Cloud) is de eigen AI-vertaalmachine van WPML. Het vertaalt uw hele site op de achtergrond in elke taal die u heeft geselecteerd. U kunt elke vertaling bewerken en berichttypen uitsluiten."
-         ],
-         "Can't decide?": [
-            "Kunt u niet beslissen?"
          ],
          "You select and submit what to translate.": [
             "U selecteert en verzendt wat er vertaald moet worden."
@@ -619,32 +710,35 @@
          "Costs": [
             "Kosten"
          ],
-         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
-            "Betaal eenmalig voor de totale vertaalde inhoud.<br/><strong>Revisies zijn gratis</strong> — alleen voor het uitbreiden van inhoud worden kosten in rekening gebracht."
-         ],
          "Pay per translation job submitted.<br/>Each update or new content batch is a separate charge.": [
             "Betaal per ingediende vertaalopdracht.<br/>Elke update of nieuwe inhoudsbatch is een aparte kost."
-         ],
-         "Translation quality": [
-            "Vertaalkwaliteit"
-         ],
-         "WPML ensures excellent quality. Bad translations are refunded.": [
-            "WPML garandeert uitstekende kwaliteit. Slechte vertalingen worden vergoed."
          ],
          "Ideal for": [
             "Ideaal voor"
          ],
-         "Known upfront costs": [
-            "Bekende kosten vooraf"
+         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "PTC (Private Translation Cloud) is de eigen AI-vertaalmachine van WPML. Het vertaalt uw hele site op de achtergrond in elke taal die u heeft geselecteerd. U kunt elke vertaling bewerken en berichttypen uitsluiten."
          ],
-         "Unlimited post-translation editing": [
-            "Onbeperkt bewerken na vertaling"
+         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
+            "Betaal eenmalig voor de totale vertaalde inhoud.<br/><strong>Revisies zijn gratis</strong> — alleen voor het uitbreiden van inhoud worden kosten in rekening gebracht."
          ],
-         "Marketing optimization": [
-            "Marketingoptimalisatie"
+         "Included with PTC": [
+            "Inbegrepen bij PTC"
          ],
-         "Turn-key solutions": [
-            "Kant-en-klare oplossingen"
+         "Only with PTC — not with %s": [
+            "Alleen bij PTC — niet bij %s"
+         ],
+         "your current engine": [
+            "uw huidige engine"
+         ],
+         "%s translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "%s vertaalt uw hele site op de achtergrond naar elke door u geselecteerde taal. U kunt elke vertaling bewerken en berichttypen uitsluiten."
+         ],
+         "Charged per word, including changes to content that's already translated.": [
+            "Kosten per woord, inclusief wijzigingen aan reeds vertaalde inhoud."
+         ],
+         "You choose what to translate, from the Translation Dashboard or with \"+\" next to each page. PTC translates it.": [
+            "U kiest wat u wilt vertalen, vanuit het Translation Dashboard of met “+” naast elke pagina. PTC vertaalt het."
          ],
          "Partial site translation": [
             "Gedeeltelijke sitevertaling"
@@ -652,8 +746,95 @@
          "Maximum control": [
             "Maximale controle"
          ],
+         "Quality without the work": [
+            "Kwaliteit zonder het werk"
+         ],
+         "You choose what to translate. You or your translators write each translation in the Advanced Translation Editor.": [
+            "U kiest wat u wilt vertalen. U of uw vertalers schrijven elke vertaling in de Advanced Translation Editor."
+         ],
+         "No words used, unless you start from a machine translation in the editor.": [
+            "Geen woorden gebruikt, tenzij u in de editor start vanuit een machinevertaling."
+         ],
+         "Your own translators": [
+            "Uw eigen vertalers"
+         ],
+         "Texts that need a human touch": [
+            "Teksten die een menselijke touch nodig hebben"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "PTC translates what you send. You review.": [
+            "PTC vertaalt wat u verzendt. U controleert."
+         ],
+         "I translate": [
+            "Ik vertaal"
+         ],
+         "You or your translators write it.": [
+            "U of uw vertalers schrijven het."
+         ],
+         "When you start a translation, who translates?": [
+            "Wie vertaalt er wanneer u een vertaling start?"
+         ],
+         "Who translates": [
+            "Wie vertaalt er"
+         ],
          "Contact our support team for help": [
             "Neem contact op met ons supportteam voor hulp"
+         ],
+         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
+            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> bij het kiezen van de beste modus voor uw site."
+         ],
+         "How would you like to translate your content?": [
+            "Hoe wilt u uw inhoud vertalen?"
+         ],
+         "Translate Everything Automatically": [
+            "Alles automatisch vertalen"
+         ],
+         "Translations always in sync": [
+            "Vertalingen altijd gesynchroniseerd"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "Voor automatische vertaling van de volledige site moet AI-vertaling zijn ingesteld."
+         ],
+         "New and updated content translated automatically": [
+            "Nieuwe en bijgewerkte inhoud automatisch vertaald"
+         ],
+         "Set up AI translation": [
+            "AI-vertaling instellen"
+         ],
+         "Sites that publish often": [
+            "Sites die vaak publiceren"
+         ],
+         "All your languages at once": [
+            "Al uw talen tegelijk"
+         ],
+         "Translate Some: You Choose What to Translate": [
+            "Gedeeltelijk vertalen: u kiest wat u wilt vertalen"
+         ],
+         "Select this option": [
+            "Selecteer deze optie"
+         ],
+         "WPML uses the Advanced Translation Editor. You can change the editor later in WPML > Settings > Translation editor and method.": [
+            "WPML gebruikt de Advanced Translation Editor. U kunt de editor later wijzigen via WPML > Instellingen > Vertaaleditor en -methode."
+         ],
+         "Quality guarantee, bad translations refunded": [
+            "Kwaliteitsgarantie, slechte vertalingen terugbetaald"
+         ],
+         "Can't decide?": [
+            "Kunt u niet beslissen?"
+         ],
+         "Pay once — revisions are free": [
+            "Betaal eenmalig — herzieningen zijn gratis"
+         ],
+         "Known upfront costs": [
+            "Bekende kosten vooraf"
+         ],
+         "Publish-ready results, no review needed": [
+            "Resultaten klaar voor publicatie, geen controle nodig"
+         ],
+         "Marketing optimization based on your site and audience": [
+            "Marketingoptimalisatie op basis van uw site en doelgroep"
          ],
          "Calculate Translation Costs": [
             "Vertaalkosten berekenen"
@@ -668,7 +849,7 @@
             "Voordat u alles vertaalt"
          ],
          "You can continue without them. Nothing here stops the setup.": [
-            "U kunt zonder deze doorgaan. Niets hier houdt de installatie tegen."
+            "U kunt doorgaan zonder deze onderdelen. Niets houdt hier de configuratie tegen."
          ],
          "Translation Contributors": [
             "Vertaalmedewerkers"
@@ -888,6 +1069,9 @@
          ],
          "Ranking": [
             "Ranking"
+         ],
+         "language URL directory and language name\u0004%1$s (%2$s)": [
+            "%1$s (%2$s)"
          ]
       }
    }

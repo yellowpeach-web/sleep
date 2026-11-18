@@ -30,26 +30,26 @@
             "%1$s termes traduits comportent %2$s — seules les nouvelles traductions sont concernées."
          ],
          "The number of translated posts carrying %s could not be counted.": [
-            "Le nombre de publications traduites comportant %s n'a pas pu être compté."
+            "Le nombre d'articles traduits comportant %s n'a pas pu être calculé."
          ],
          "There are no translated posts carrying %s yet that need translating again. The change applies to new translations.": [
-            "Il n'y a pas encore de publications traduites comportant %s qui doivent être traduites à nouveau. La modification s'applique aux nouvelles traductions."
+            "Il n'y a pas encore d'articles traduits comportant %s nécessitant une nouvelle traduction. La modification s'applique aux nouvelles traductions."
          ],
          "%1$s translated post carries %2$s — it will be marked as needing a translation update.": [
-            "%1$s publication traduite comporte %2$s — elle sera marquée comme nécessitant une mise à jour de la traduction.",
-            "%1$s publications traduites comportent %2$s — elles seront marquées comme nécessitant une mise à jour de la traduction."
+            "%1$s article traduit comporte %2$s — il sera marqué comme nécessitant une mise à jour de traduction.",
+            "%1$s articles traduits comportent %2$s — ils seront marqués comme nécessitant une mise à jour de traduction."
          ],
          "%1$s translated post carries %2$s — its translation will show the original's value from now on.": [
-            "%1$s publication traduite comporte %2$s — sa traduction affichera désormais la valeur de l'original.",
-            "%1$s publications traduites comportent %2$s — leurs traductions afficheront désormais la valeur de l'original."
+            "%1$s article traduit comporte %2$s — sa traduction affichera désormais la valeur de l'original.",
+            "%1$s articles traduits comportent %2$s — leurs traductions afficheront désormais la valeur de l'original."
          ],
          "%1$s translated post carries %2$s — translations without a value get the original's once.": [
-            "%1$s publication traduite comporte %2$s — les traductions sans valeur reçoivent une fois celle de l'original.",
-            "%1$s publications traduites comportent %2$s — les traductions sans valeur reçoivent une fois celle de l'original."
+            "%1$s article traduit comporte %2$s — les traductions sans valeur reçoivent une seule fois celle de l'original.",
+            "%1$s articles traduits comportent %2$s — les traductions sans valeur reçoivent une seule fois celle de l'original."
          ],
          "%1$s translated post carries %2$s — it is no longer translated and what its translations hold stays as it is.": [
-            "%1$s publication traduite comporte %2$s — elle n'est plus traduite et le contenu de ses traductions reste en l'état.",
-            "%1$s publications traduites comportent %2$s — elles ne sont plus traduites et le contenu de leurs traductions reste en l'état."
+            "%1$s article traduit comporte %2$s — il n'est plus traduit et le contenu de ses traductions reste inchangé.",
+            "%1$s articles traduits comportent %2$s — ils ne sont plus traduits et le contenu de leurs traductions reste inchangé."
          ],
          "Review these translation setting changes": [
             "Réviser ces modifications de réglages de traduction"
@@ -61,18 +61,18 @@
             "Enregistrer les modifications"
          ],
          "Also update the existing posts now": [
-            "Mettre également à jour les publications existantes maintenant"
+            "Mettre également à jour les articles existants maintenant"
          ],
          "Also update the %s existing post now": [
-            "Mettre également à jour la %s publication existante maintenant",
-            "Mettre également à jour les %s publications existantes maintenant"
+            "Mettre également à jour le %s article existant maintenant",
+            "Mettre également à jour les %s articles existants maintenant"
          ],
          "Only apply to new translations": [
             "Appliquer uniquement aux nouvelles traductions"
          ],
          "Once saved, WPML automatically sends new and updated posts with this field to translation. This may use translation words.": [
-            "Une fois enregistrées, WPML envoie automatiquement les nouvelles publications et celles mises à jour avec ce champ à la traduction. Cela peut consommer des mots de traduction.",
-            "Une fois enregistrées, WPML envoie automatiquement les nouvelles publications et celles mises à jour avec ces champs à la traduction. Cela peut consommer des mots de traduction."
+            "Une fois enregistré, WPML envoie automatiquement les articles nouveaux et mis à jour comportant ce champ en traduction. Cela peut utiliser des mots de traduction.",
+            "Une fois enregistré, WPML envoie automatiquement les articles nouveaux et mis à jour comportant ces champs en traduction. Cela peut utiliser des mots de traduction."
          ],
          "Once saved, WPML automatically sends new and updated terms with this key to translation. This may use translation words.": [
             "Une fois enregistrés, WPML envoie automatiquement les nouveaux termes et ceux mis à jour avec cette clé à la traduction. Cela peut consommer des mots de traduction.",
@@ -81,9 +81,16 @@
          "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
             "Dans les deux cas, la nouvelle préférence est enregistrée. Avec « Appliquer uniquement aux nouvelles traductions », chaque traduction existante reste exactement en l'état."
          ],
+         "With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "Avec « Appliquer uniquement aux nouvelles traductions », chaque traduction existante reste exactement telle quelle."
+         ],
          "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
             "%1$s champ personnalisé est devenu traduisible en dehors de cet écran : %2$s. Décidez de ce qu'il advient des traductions déjà existantes.",
             "%1$s champs personnalisés sont devenus traduisibles en dehors de cet écran : %2$s. Décidez de ce qu'il advient des traductions déjà existantes."
+         ],
+         "%1$s custom field was waiting for a check an earlier WPML version started and did not finish: %2$s. Its translation setting has not changed. Decide whether the existing translations that use it should be marked as needing an update.": [
+            "%1$s champ personnalisé était en attente d'une vérification commencée et non terminée par une version précédente de WPML : %2$s. Son réglage de traduction n'a pas changé. Décidez si les traductions existantes qui l'utilisent doivent être marquées comme nécessitant une mise à jour.",
+            "%1$s champs personnalisés étaient en attente d'une vérification commencée et non terminée par une version précédente de WPML : %2$s. Leur réglage de traduction n'a pas changé. Décidez si les traductions existantes qui les utilisent doivent être marquées comme nécessitant une mise à jour."
          ],
          "Review this field": [
             "Réviser ce champ",
@@ -128,7 +135,7 @@
             "Modifier les URL des traductions existantes ?"
          ],
          "Counting the existing translations this affects… %1$s of %2$s posts.": [
-            "Comptage des traductions existantes concernées… %1$s sur %2$s publications."
+            "Calcul des traductions existantes concernées… %1$s sur %2$s articles."
          ],
          "Counting the existing translations this affects…": [
             "Comptage des traductions existantes concernées…"
@@ -166,14 +173,14 @@
             "Mise à jour de %1$s traductions sur %2$s…"
          ],
          "Updating %1$s of %2$s posts…": [
-            "Mise à jour de %1$s publications sur %2$s…"
+            "Mise à jour de %1$s sur %2$s articles…"
          ],
          "%1$s %2$s updated.": [
             "%1$s %2$s mis à jour."
          ],
          "%s post updated.": [
-            "%s publication mise à jour.",
-            "%s publications mises à jour."
+            "%s article mis à jour.",
+            "%s articles mis à jour."
          ],
          "%s marked as needing a translation update.": [
             "%s marqués comme nécessitant une mise à jour de la traduction."
@@ -211,14 +218,14 @@
             "Comptage des mots que cela envoie…"
          ],
          "Counting the words this sends… %1$s of %2$s posts.": [
-            "Comptage des mots que cela envoie… %1$s sur %2$s publications."
+            "Calcul des mots envoyés… %1$s sur %2$s articles."
          ],
          "The number of words this sends could not be estimated. The Translation Dashboard shows the cost once the posts are queued.": [
-            "Le nombre de mots que cela envoie n'a pas pu être estimé. Le tableau de bord de traduction affichera le coût une fois les publications mises en file d'attente."
+            "Le nombre de mots envoyés n'a pas pu être estimé. Le tableau de bord de traduction affiche le coût une fois les articles mis en file d'attente."
          ],
          "This sends %s word of content that could not be priced. The Translation Dashboard shows the cost once the posts are queued.": [
-            "Ceci envoie %s mot de contenu dont le prix n'a pas pu être déterminé. Le tableau de bord de traduction affichera le coût une fois les publications mises en file d'attente.",
-            "Ceci envoie %s mots de contenu dont le prix n'a pas pu être déterminé. Le tableau de bord de traduction affichera le coût une fois les publications mises en file d'attente."
+            "Cela envoie %s mot de contenu dont le prix n'a pas pu être déterminé. Le tableau de bord de traduction affiche le coût une fois les articles mis en file d'attente.",
+            "Cela envoie %s mots de contenu dont le prix n'a pas pu être déterminé. Le tableau de bord de traduction affiche le coût une fois les articles mis en file d'attente."
          ],
          "Sending it again to %2$s languages uses about %1$s word.": [
             "Le renvoyer vers %2$s langues utilise environ %1$s mot.",
@@ -237,8 +244,8 @@
             "Les renvoyer utilise environ %s mots."
          ],
          "%s of the posts is outside Translate Everything's range: its translations will be marked without being sent.": [
-            "%s des publications est hors de la portée de Tout traduire : ses traductions seront marquées sans être envoyées.",
-            "%s des publications sont hors de la portée de Tout traduire : leurs traductions seront marquées sans être envoyées."
+            "%s des articles est hors de portée de Tout traduire : ses traductions seront marquées sans être envoyées.",
+            "%s des articles sont hors de portée de Tout traduire : leurs traductions seront marquées sans être envoyées."
          ],
          "Your choice for the existing translations was not recorded.": [
             "Votre choix pour les traductions existantes n'a pas été enregistré."

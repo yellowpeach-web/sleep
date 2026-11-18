@@ -28,22 +28,43 @@ class SendToTranslationDtoCollectionBuilder {
   }
 
 
-  public function buildCollection( string $batchName, array $translations ): array {
+  public function buildGroups( string $batchName, array $translations ): array {
     $batchIdToStringIdsMap = $this->batchStringIdExtractor->extract( $translations );
 
     $groupedBySourceLanguage = $this->translationGrouper->groupBySourceLanguage( $translations );
 
-    $dtos = [];
+    $groups = [];
     foreach ( $groupedBySourceLanguage as $sourceLanguage => $translationsGroup ) {
-      $dtos[ $sourceLanguage ] = $this->dtoBuilder->build(
-        $batchName,
-        $sourceLanguage,
-        $translationsGroup,
-        $batchIdToStringIdsMap
-      );
+      $groupedByTargetLanguages = $this->translationGrouper->groupByTargetLanguages( $translationsGroup );
+
+      foreach ( $groupedByTargetLanguages as $groupKey => $translationsSubgroup ) {
+        $key            = count( $groupedByTargetLanguages ) > 1 ? $sourceLanguage . ':' . $groupKey : $sourceLanguage;
+        $groups[ $key ] = [
+          'dto'    => $this->dtoBuilder->build(
+            $batchName,
+            $sourceLanguage,
+            $translationsSubgroup,
+            $batchIdToStringIdsMap
+          ),
+          'jobIds' => $this->jobIdsOf( $translationsSubgroup ),
+        ];
+      }
     }
 
-    return $dtos;
+    return $groups;
+  }
+
+
+  private function jobIdsOf( array $translations ): array {
+    $jobIds = [];
+    foreach ( $translations as $translation ) {
+      $job = $translation->getJob();
+      if ( $job ) {
+        $jobIds[ $job->getId() ] = $job->getId();
+      }
+    }
+
+    return array_values( $jobIds );
   }
 
 

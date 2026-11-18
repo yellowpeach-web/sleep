@@ -61,6 +61,7 @@ class MigrateToV2_2 implements Command {
 
 					do_action( 'wpml_st_string_updated' );
 					do_action( 'wpml_st_translation_files_process_queue' );
+					self::forgetFieldsLoadedBeforeMigration();
 					if ( $isLocalEnabled ) {
 						acf_enable_local();
 					}
@@ -69,6 +70,11 @@ class MigrateToV2_2 implements Command {
 					}
 				}
 			} );
+	}
+
+	private static function forgetFieldsLoadedBeforeMigration() {
+		acf_get_store( 'field-groups' )->reset();
+		acf_get_store( 'fields' )->reset();
 	}
 
 	public static function isStActivated() {

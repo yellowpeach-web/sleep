@@ -2,8 +2,12 @@
 
 namespace WPML\TM\Settings;
 
+use WPML\Core\Component\CustomFieldPreferences\Domain\ElementType;
+use WPML\Core\Component\CustomFieldPreferences\Domain\StoreIncidents;
+use WPML\Infrastructure\WordPress\Component\CustomFieldPreferences\CachedPreferenceRepository;
 use WPML\Infrastructure\WordPress\Component\CustomFieldPreferences\ContainerFreeServices;
 use WPML\Infrastructure\WordPress\Component\CustomFieldPreferences\Repository\PreferenceRepository;
+use WPML\Infrastructure\WordPress\Component\CustomFieldPreferences\StoreReadiness;
 use WPML\Upgrade\Commands\OffloadMetaSettings;
 use WPML\Upgrade\CommandsStatus;
 
@@ -26,6 +30,7 @@ class MetaSettingsLifecycle {
 		if ( is_admin() && ! wp_doing_ajax() ) {
 			add_action( 'wpml_loaded', [ self::class, 'maybeRearm' ], 0 );
 			add_action( 'admin_init', [ self::class, 'maybeFinishParkedCutover' ] );
+			add_action( 'admin_init', [ self::class, 'maybeRecreateMissingTable' ], 0 );
 		}
 	}
 
@@ -209,9 +214,61 @@ class MetaSettingsLifecycle {
 		}
 	}
 
+	public static function maybeRecreateMissingTable() {
+		if ( \WPML_Settings_Failsafe_Loader::isUnrecoverable() ) {
+			return;
+		}
+		if ( ! ContainerFreeServices::state()->isMigrated() ) {
+			return;
+		}
+		if ( ! PreferenceRepository::tableMissingThisRequest() ) {
+			ContainerFreeServices::preferences()->getMaps();
+			if ( ! PreferenceRepository::tableMissingThisRequest() ) {
+				return;
+			}
+		}
+		if ( ! ContainerFreeServices::storeReadiness()->tableIsMissing() ) {
+			return;
+		}
+		if ( ! PreferenceRepository::createTable() ) {
+			return;
+		}
+
+		StoreReadiness::forget();
+		CachedPreferenceRepository::forgetEverything();
+		ContainerFreeServices::incidents();
+		foreach ( ElementType::all() as $type ) {
+			StoreIncidents::resolve( StoreIncidents::UPGRADE_PENDING, $type );
+			StoreIncidents::resolve( StoreIncidents::WRITE_FAILED, $type );
+		}
+		StoreIncidents::record( StoreIncidents::TABLE_RECREATED, StoreIncidents::TYPE_TABLE, [] );
+		\WPML\PHP\Logger\error( 'WPML meta-settings table was missing after the cutover and has been created again, empty.' );
+
+		if ( did_action( 'init' ) ) {
+			self::refillFromConfigurationFiles();
+		} else {
+			add_action( 'admin_init', [ self::class, 'refillFromConfigurationFiles' ], 0 );
+		}
+	}
+
+	public static function refillFromConfigurationFiles() {
+		if ( ! class_exists( '\WPML_Config' ) ) {
+			return;
+		}
+		try {
+			\WPML_Config::reload_now();
+		} catch ( \Throwable $e ) {
+			\WPML\PHP\Logger\error( 'WPML meta-settings refill from the configuration files failed: ' . $e->getMessage() );
+		}
+	}
+
 	public static function maybeRearm() {
 		if ( \WPML_Settings_Failsafe_Loader::isUnrecoverable() ) {
 			return;
+		}
+
+		if ( PreferenceRepository::tableMissingThisRequest() ) {
+			self::maybeRecreateMissingTable();
 		}
 
 		$state = ContainerFreeServices::state();

@@ -60,7 +60,17 @@ class Endpoint implements IHandler {
 
 		$page = $data->get( 'page', 1 );
 
-		$singlePageBatchHandlerResult = $this->singlePageBatchHandler->handle( $page );
+		try {
+			$singlePageBatchHandlerResult = $this->singlePageBatchHandler->handle( $page );
+		} catch ( \Throwable $e ) {
+			$this->syncLock->release();
+			JobLog::addRetranslationEvent( 'retranslation_lock_released_on_error', [
+				'page'    => (int) $page,
+				'message' => $e->getMessage(),
+			] );
+
+			throw $e;
+		}
 
 		switch ( $singlePageBatchHandlerResult['state'] ) {
 			case SinglePageBatchHandler::NOT_FINISHED_IN_ATE:

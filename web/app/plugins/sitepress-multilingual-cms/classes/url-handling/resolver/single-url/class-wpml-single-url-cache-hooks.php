@@ -69,8 +69,13 @@ class WPML_Single_Url_Cache_Hooks implements IWPML_Action {
 			wp_die( 'Invalid URL cache worker signature.' );
 		}
 
-		$this->scheduler->allow_redispatch( $blog_id );
+		if ( function_exists( 'ignore_user_abort' ) ) {
+			ignore_user_abort( true );
+		}
+		\WPML\Request\Loopback::answered( WPML_Single_Url_Cache_Scheduler::LOOPBACK_NAME );
+
 		$result = $this->worker->run( $blog_id );
+		$this->scheduler->allow_redispatch( $blog_id );
 		if ( is_array( $result ) ) {
 			$this->scheduler->note_worker_result( $blog_id, $result );
 		}
@@ -82,6 +87,7 @@ class WPML_Single_Url_Cache_Hooks implements IWPML_Action {
 	}
 
 	public function generation_changed( $old_generation, $new_generation, $reason = '' ) {
+		$this->admin->record_generation_change( (int) $old_generation, (int) $new_generation, (string) $reason );
 		$this->admin->begin_generation_rebuild( (int) $old_generation, (int) $new_generation );
 	}
 }

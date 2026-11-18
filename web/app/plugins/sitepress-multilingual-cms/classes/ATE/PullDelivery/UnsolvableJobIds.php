@@ -83,7 +83,6 @@ class UnsolvableJobIds {
 				        OR (
 				            (
 				                error.error_type = 'SyncError'
-				                OR ( error.error_type = 'DownloadError' AND error.counter >= 3 )
 				                OR ( error.error_type = 'ApplyError' AND error.counter >= 1 )
 				            )
 				            AND status.status IN ( %d, %d )

@@ -4,13 +4,44 @@ use WPML\FP\Fns;
 use function WPML\FP\partial;
 
 class WPML_ST_Slug_New_Match_Finder {
+
+	private $needles_of;
+
+	private $needles = [];
+
 	public function get( $match, array $custom_types ) {
+		if ( ! $this->may_be_rewritten( $match, $custom_types ) ) {
+			return new WPML_ST_Slug_New_Match( $match, false );
+		}
+
 		$best_match = $this->find_the_best_match( $match, $this->map_to_new_matches( $match, $custom_types ) );
 		if ( ! $best_match ) {
 			$best_match = new WPML_ST_Slug_New_Match( $match, false );
 		}
 
 		return $best_match;
+	}
+
+	private function may_be_rewritten( $match, array $custom_types ) {
+		if ( $this->needles_of !== $custom_types ) {
+			$this->needles_of = $custom_types;
+			$this->needles    = [];
+			foreach ( $custom_types as $custom_type ) {
+				$slug = $custom_type->is_using_tags() ? $this->filter_slug_using_tag( $custom_type->get_slug() ) : $custom_type->get_slug();
+				$slug = trim( (string) $slug, '/' );
+				if ( '' !== $slug ) {
+					$this->needles[] = $slug;
+				}
+			}
+		}
+
+		foreach ( $this->needles as $needle ) {
+			if ( false !== strpos( $match, $needle ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private function map_to_new_matches( $match, array $custom_types ) {
@@ -63,8 +94,12 @@ class WPML_ST_Slug_New_Match_Finder {
 	}
 
 	private function adjust_match( $match, $slug, $slug_translation, $translation_is_pattern = false ) {
+		$slug             = trim( (string) $slug, '/' );
+		$slug_translation = trim( (string) $slug_translation, '/' );
+
 		if (
-			! empty( $slug_translation )
+			'' !== $slug
+			&& ! empty( $slug_translation )
 			&& preg_match( '#^[^/]*/?\(?' . preg_quote( $slug ) . '\)?/#', $match )
 			&& $slug !== $slug_translation
 		) {

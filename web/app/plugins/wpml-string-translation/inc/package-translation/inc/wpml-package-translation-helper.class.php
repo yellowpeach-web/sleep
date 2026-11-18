@@ -86,6 +86,62 @@ class WPML_Package_Helper {
 		return $string_id;
 	}
 
+	public function package_string_carries_action( $package, $string_name, $target ) {
+		list( $package_id, $string_id ) = $this->package_and_string_id( $package, $string_name );
+
+		WPML_ST_Package_String_Carriers::get()->claim( $string_id, $package_id, $target );
+	}
+
+	public function package_string_carries_release_action( $package ) {
+		$package_id = (int) $this->package_factory->create( $package )->ID;
+
+		if ( $package_id ) {
+			WPML_ST_Package_String_Carriers::get()->releasePackage( $package_id );
+		}
+	}
+
+	public function package_string_carries_accepted_filter( $accepted, $package, $string_name ) {
+		list( , $string_id ) = $this->package_and_string_id( $package, $string_name );
+
+		return WPML_ST_Package_String_Carriers::get()->isCarrier( $string_id );
+	}
+
+	private function package_and_string_id( $package, $string_name ) {
+		global $wpdb;
+
+		$package    = $this->package_factory->create( $package );
+		$package_id = (int) $package->ID;
+		$string_id  = 0;
+
+		if ( $package_id && is_string( $string_name ) ) {
+			$string_id = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT id FROM {$wpdb->prefix}icl_strings WHERE string_package_id = %d AND name = %s",
+					$package_id,
+					$package->sanitize_string_name( $string_name )
+				)
+			);
+		}
+
+		return [ $package_id, $string_id ];
+	}
+
+	public function release_carried_strings_action( $string_ids ) {
+		WPML_ST_Package_String_Carriers::get()->release( (array) $string_ids );
+	}
+
+	public function release_carried_string_action( $string_id ) {
+		WPML_ST_Package_String_Carriers::get()->release( [ (int) $string_id ] );
+	}
+
+	public function carried_string_md5s_filter( $md5s ) {
+		return array_values( array_unique( array_merge( is_array( $md5s ) ? $md5s : [], WPML_ST_Package_String_Carriers::get()->md5s() ) ) );
+	}
+
+	public function carried_string_ids_filter( $ids ) {
+		return array_values( array_unique( array_merge( is_array( $ids ) ? array_map( 'intval', $ids ) : [], WPML_ST_Package_String_Carriers::get()->carriedStringIds() ) ) );
+	}
+
 	function string_title_from_id_filter( $default, $string_id ) {
 		global $wpdb;
 
@@ -268,15 +324,21 @@ class WPML_Package_Helper {
 		return null;
 	}
 
+	public static function get_editor_string_styles() {
+		return array(
+			'LINE'   => 0,
+			'AREA'   => 1,
+			'VISUAL' => 2,
+		);
+	}
+
 	final function get_editor_string_style( $style, $field_type, $package ) {
 		$package       = $this->package_factory->create( $package );
 		$package_id    = $package->ID;
 		$element_style = $this->get_editor_string_element( $field_type, $package_id, 'type' );
 		if ( $element_style ) {
-			$style = 0;
-			if ( defined( $element_style ) ) {
-				$style = constant( $element_style );
-			}
+			$styles = self::get_editor_string_styles();
+			$style  = isset( $styles[ $element_style ] ) ? $styles[ $element_style ] : 0;
 		}
 
 		return $style;
@@ -358,6 +420,13 @@ class WPML_Package_Helper {
 		$packages = $this->get_post_string_packages( array(), $post_id );
 
 		foreach ( $packages as $package ) {
+			$this->delete_package( $package->ID );
+		}
+	}
+
+	final public function remove_term_packages( $term_id, $ttid ) {
+		$packages = ( new \WPML\ST\PackageTranslation\Ownership() )->ownedPackages( null, 'term', $ttid );
+		foreach ( (array) $packages as $package ) {
 			$this->delete_package( $package->ID );
 		}
 	}
@@ -576,8 +645,8 @@ class WPML_Package_Helper {
 	}
 
 	private function maybe_update_package( $package ) {
-		if ( $package->new_title ) {
-			$package->title = $package->new_title;
+		if ( $package->new_title || $package->has_owner_change() ) {
+			$package->title = $package->new_title ?: $package->title;
 			$package->update_package_record();
 		}
 	}
@@ -690,8 +759,10 @@ class WPML_Package_Helper {
 		$addons = [
 			'WPML_PAGE_BUILDERS_VERSION'        => [
 				'Block' => [
-					'title'  => 'Widget',
-					'plural' => 'Widgets',
+					/* translators: Name of the kind of content made of block widgets (the Widgets screen), on the WPML translation dashboard. Singular. */
+					'title'  => __( 'Widget', 'wpml-string-translation' ),
+					/* translators: Name of the kind of content made of block widgets (the Widgets screen), on the WPML translation dashboard. Plural. */
+					'plural' => __( 'Widgets', 'wpml-string-translation' ),
 					'slug'   => 'Block',
 				],
 			],

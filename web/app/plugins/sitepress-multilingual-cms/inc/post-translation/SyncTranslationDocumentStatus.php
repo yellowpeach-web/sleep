@@ -66,7 +66,7 @@ class SyncTranslationDocumentStatus implements \IWPML_Action, \IWPML_DIC_Action,
 				$oldStatus,
 				$newStatus,
 				$translation->post_status,
-				(bool) get_post_meta( $translation->ID, '_icl_lang_duplicate_of', true ),
+				\WPML\TranslationPolicy\Duplicate\DuplicateReaders::isKeptInStep( (int) $translation->ID ),
 				StatusSyncRule::goesLive( $newStatus ) && $this->needsReview( $translation, $data->language_code ),
 				$translation->post_date_gmt !== $post->post_date_gmt
 			);

@@ -7,6 +7,8 @@ use WPML\Ajax\IHandler;
 use WPML\Collect\Support\Collection;
 use WPML\FP\Right;
 use WPML\LIB\WP\User;
+use WPML\TranslationPolicy\FeatureSwitch;
+use WPML\TranslationPolicy\Policy\PolicyEditorMode;
 use WPML_TM_Post_Edit_TM_Editor_Mode;
 
 class SetEditorMode implements IHandler, Authorized {
@@ -39,6 +41,10 @@ class SetEditorMode implements IHandler, Authorized {
 	}
 
 	public function run( Collection $data ) {
+		if ( FeatureSwitch::isOn() ) {
+			return PolicyEditorMode::create( $this->sitepress )->run( $data );
+		}
+
 		$tmSettings = $this->sitepress->get_setting( 'translation-management' );
 
 		$enabledEditor = $data->get( 'enabledEditor' );

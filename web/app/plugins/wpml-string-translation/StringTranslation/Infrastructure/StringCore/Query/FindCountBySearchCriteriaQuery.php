@@ -22,6 +22,12 @@ class FindCountBySearchCriteriaQuery implements FindCountBySearchCriteriaQueryIn
 		$query = $this->queryBuilder->build( $criteria );
 		$res = $wpdb->get_var( $query );
 
-		return $res;
+		if ( null === $res ) {
+			FailedStatement::throwIfFailed( $wpdb, 'count the strings of the search' );
+
+			return 0;
+		}
+
+		return (int) $res;
 	}
 }

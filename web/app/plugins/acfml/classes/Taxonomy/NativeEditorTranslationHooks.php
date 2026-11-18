@@ -10,6 +10,11 @@ use WPML\LIB\WP\Hooks;
 class NativeEditorTranslationHooks implements \IWPML_Backend_Action {
 
 	public function add_hooks() {
+		Hooks::onAction( 'load-term.php' )
+			->then( [ self::class, 'loadFieldLocksOnTermTranslation' ] );
+	}
+
+	public static function loadFieldLocksOnTermTranslation() {
 		$termId   = isset( $_GET['tag_ID'] ) ? (int) $_GET['tag_ID'] : 0;
 		$taxonomy = Sanitize::stringProp( 'taxonomy', $_GET );
 

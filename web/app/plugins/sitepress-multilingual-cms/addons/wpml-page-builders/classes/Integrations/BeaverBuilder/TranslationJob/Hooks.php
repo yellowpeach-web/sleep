@@ -15,9 +15,13 @@ class Hooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC
 
 	const FILTER_PACKAGES_TO_TRANSLATE = 'wpml_pb_string_packages_to_translate';
 
+	const JOB_DATA_PRIORITY = PHP_INT_MAX;
+
+	const PACKAGES_TO_TRANSLATE_PRIORITY = 10;
+
 	public function add_hooks() {
-		add_filter( 'wpml_tm_translation_job_data', [ $this, 'filterFieldsByPageBuilderKind' ], PHP_INT_MAX, 2 );
-		add_filter( self::FILTER_PACKAGES_TO_TRANSLATE, [ $this, 'filterPackagesByPageBuilderKind' ], 10, 2 );
+		add_filter( 'wpml_tm_translation_job_data', [ $this, 'filterFieldsByPageBuilderKind' ], self::JOB_DATA_PRIORITY, 2 );
+		add_filter( self::FILTER_PACKAGES_TO_TRANSLATE, [ $this, 'filterPackagesByPageBuilderKind' ], self::PACKAGES_TO_TRANSLATE_PRIORITY, 2 );
 	}
 
 	public function filterFieldsByPageBuilderKind( array $translationPackage, $post ) {
@@ -42,7 +46,7 @@ class Hooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC
 			return $packages;
 		}
 
-		$kindSlugToRemove = $this->dataSettings->is_handling_post( $postId ) ? 'gutenberg' : 'beaver-builder';
+		$kindSlugToRemove = $this->dataSettings->is_handling_post( $postId ) ? 'gutenberg' : \WPML_Beaver_Builder_Integration_Factory::SLUG;
 
 		return array_filter(
 			$packages,

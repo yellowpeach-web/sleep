@@ -8,6 +8,19 @@ use Elementor\Core\Kits\Documents\Tabs\Global_Colors;
 
 class WidgetAdaptor {
 
+	const ACTIVE_SELECTOR = '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item.wpml-ls-current-language > .wpml-ls-link,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item.wpml-ls-current-language > a,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item.wpml-ls-item__active > a,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link.wpml-ls-link__active';
+
+	const DROPDOWN_SELECTOR = '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-sub-menu .wpml-ls-link,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-sub-menu a';
+
+	const DROPDOWN_HOVER_SELECTOR = '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-sub-menu .wpml-ls-link:hover,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-sub-menu .wpml-ls-link:focus,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-sub-menu a:hover,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-sub-menu a:focus';
+
 	private $widget;
 
 	public function setTarget( Widget $widget ) {
@@ -52,7 +65,7 @@ class WidgetAdaptor {
 				'options' => [
 					/* translators: Adjective, in two language switcher dropdowns: the group heading for styles that come from the theme rather than from WPML, and the Elementor option for the switcher built from the settings below. */
 					'custom'            => __( 'Custom', 'sitepress' ),
-					/* translators: Option of the language-switcher type dropdown in Elementor: the plain list layout WPML calls the footer switcher. */
+					/* translators: Used in two places: the kind of a Divi Theme Builder layout, as Divi names it, and an option of the language-switcher type dropdown in Elementor (the plain list layout WPML calls the footer switcher). */
 					'footer'            => __( 'Footer', 'sitepress' ),
 					/* translators: Option of the language-switcher type dropdown in Elementor: the layout that links to this post's translations only. */
 					'post_translations' => __( 'Post Translations', 'sitepress' ),
@@ -200,6 +213,148 @@ class WidgetAdaptor {
 					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link.wpml-ls-link__active,
 					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link.highlighted,
 					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link:focus' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->widget->add_control(
+			'switcher_hover_bg_color',
+			[
+				/* translators: Label of the colour field for the language switcher's background, in the Elementor widget settings. */
+				'label'     => __( 'Background Color', 'sitepress' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown a:hover,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown a:focus,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown .wpml-ls-current-language:hover>a,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link:hover,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link.highlighted,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link:focus' => 'background-color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->widget->end_controls_tab();
+
+		$this->widget->start_controls_tab(
+			'style_active_tab',
+			[
+				/* translators: Adjective. In a table, the value saying that the thing the row is about is turned on and in use; in the Elementor language switcher widget, the heading of the style settings for the current language. */
+				'label' => __( 'Active', 'sitepress' ),
+			]
+		);
+
+		$this->widget->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'switcher_active_typography',
+				'selector' => self::ACTIVE_SELECTOR,
+			]
+		);
+
+		$this->widget->add_control(
+			'switcher_active_color',
+			[
+				/* translators: Label of the colour field for the language switcher's text, in the Elementor widget settings. */
+				'label'     => __( 'Text Color', 'sitepress' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					self::ACTIVE_SELECTOR => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->widget->add_control(
+			'switcher_active_bg_color',
+			[
+				/* translators: Label of the colour field for the language switcher's background, in the Elementor widget settings. */
+				'label'     => __( 'Background Color', 'sitepress' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					self::ACTIVE_SELECTOR => 'background-color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->widget->end_controls_tab();
+
+		$this->widget->end_controls_tabs();
+
+		$this->widget->end_controls_section();
+
+		$this->widget->start_controls_section(
+			'dropdown_section',
+			[
+				/* translators: Name of the language switcher style where the languages open as a dropdown from the current language, on WPML → Languages; in the Elementor language switcher widget, the heading of the color settings for that list of languages. */
+				'label' => __( 'Dropdown', 'sitepress' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->widget->start_controls_tabs( 'dropdown_tabs' );
+
+		$this->widget->start_controls_tab(
+			'dropdown_normal_tab',
+			[
+				/* translators: Heading of the color settings that apply to the language switcher in its normal state, as opposed to when the mouse is over it. */
+				'label' => __( 'Normal', 'sitepress' ),
+			]
+		);
+
+		$this->widget->add_control(
+			'dropdown_text_color',
+			[
+				/* translators: Label of the colour field for the language switcher's text, in the Elementor widget settings. */
+				'label'     => __( 'Text Color', 'sitepress' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					self::DROPDOWN_SELECTOR => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->widget->add_control(
+			'dropdown_bg_color',
+			[
+				/* translators: Label of the colour field for the language switcher's background, in the Elementor widget settings. */
+				'label'     => __( 'Background Color', 'sitepress' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					self::DROPDOWN_SELECTOR => 'background-color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->widget->end_controls_tab();
+
+		$this->widget->start_controls_tab(
+			'dropdown_hover_tab',
+			[
+				/* translators: Heading of the color settings that apply while the mouse is over the language switcher. */
+				'label' => __( 'Hover', 'sitepress' ),
+			]
+		);
+
+		$this->widget->add_control(
+			'dropdown_hover_text_color',
+			[
+				/* translators: Label of the colour field for the language switcher's text, in the Elementor widget settings. */
+				'label'     => __( 'Text Color', 'sitepress' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					self::DROPDOWN_HOVER_SELECTOR => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->widget->add_control(
+			'dropdown_hover_bg_color',
+			[
+				/* translators: Label of the colour field for the language switcher's background, in the Elementor widget settings. */
+				'label'     => __( 'Background Color', 'sitepress' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					self::DROPDOWN_HOVER_SELECTOR => 'background-color: {{VALUE}}',
 				],
 			]
 		);

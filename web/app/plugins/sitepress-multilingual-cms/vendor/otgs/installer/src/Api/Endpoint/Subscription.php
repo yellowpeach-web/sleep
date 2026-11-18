@@ -2,6 +2,7 @@
 
 namespace OTGS\Installer\Api\Endpoint;
 
+use OTGS\Installer\Api\DatabaseVersion;
 use OTGS\Installer\Api\Exception\InvalidResponseException;
 use OTGS\Installer\Api\Exception\InvalidSubscription;
 use OTGS\Installer\Api\Exception\InvalidSubscriptionResponseException;
@@ -35,6 +36,7 @@ class Subscription {
 			'site_name'         => get_bloginfo( 'name' ),
 			'wp_version'        => get_bloginfo( 'version' ),
 			'phpversion'        => phpversion(),
+			'mysql_version'     => DatabaseVersion::get(),
 			'repository_id'     => $this->repositoryId,
 			'versions'          => $this->plugin_finder->getLocalPluginVersions(),
 		];
@@ -47,7 +49,7 @@ class Subscription {
 		return apply_filters( 'installer_fetch_subscription_data_request', $requestParameters );
 	}
 
-	public function parseResponse( $response ) {
+	public function parseResponse( $response, $apiUrl = '' ) {
 		$status = (int) wp_remote_retrieve_response_code( $response );
 		if ( 429 === $status ) {
 			throw new RateLimited( RateLimited::sentence( null ) );
@@ -57,7 +59,7 @@ class Subscription {
 		}
 
 		$body = wp_remote_retrieve_body( $response );
-		if ( ! $body || ! is_serialized( $body ) || ! ( $apiResponse = @unserialize( $body ) ) ) {
+		if ( ! $body || ! is_serialized( $body ) || ! ( $apiResponse = \OTGS_Installer_Serialized::decode( $body ) ) ) {
 			throw new InvalidResponseException();
 		}
 
@@ -66,14 +68,49 @@ class Subscription {
 		}
 
 		if ( isset( $apiResponse->error ) ) {
-			throw new InvalidSubscription( $apiResponse->error );
+			throw new InvalidSubscription( $apiResponse->error, $this->isTheApisOwnAnswer( $status, $apiResponse, $response, $apiUrl ) );
 		}
 
-		if ( isset( $apiResponse->subscription_data )
+		if ( ! empty( $apiResponse->subscription_data )
 		     && isset( $apiResponse->site_key )) {
 			return $apiResponse;
 		}
 
 		throw  new InvalidSubscriptionResponseException();
+	}
+
+	private function isTheApisOwnAnswer( $status, $apiResponse, $response, $apiUrl ) {
+		$info = isset( $apiResponse->info ) ? (array) $apiResponse->info : [];
+		if ( 200 !== $status || ! isset( $info['site_key_validation'] ) || ! $apiUrl ) {
+			return false;
+		}
+
+		$expectedHost = strtolower( (string) parse_url( $apiUrl, PHP_URL_HOST ) );
+		$answeredHost = strtolower( (string) parse_url( self::answeredFrom( $response ), PHP_URL_HOST ) );
+
+		return '' !== $expectedHost && $expectedHost === $answeredHost;
+	}
+
+	public static function answeredFrom( $response ) {
+		$http = is_array( $response ) && isset( $response['http_response'] ) ? $response['http_response'] : null;
+		if ( ! is_object( $http ) || ! method_exists( $http, 'get_response_object' ) ) {
+			return '';
+		}
+
+		$requestsResponse = $http->get_response_object();
+
+		return is_object( $requestsResponse ) && isset( $requestsResponse->url ) ? (string) $requestsResponse->url : '';
+	}
+
+	public static function evidence( $response ) {
+		if ( ! is_array( $response ) ) {
+			return 'no HTTP answer';
+		}
+
+		$status = isset( $response['response']['code'] ) ? $response['response']['code'] : '';
+		$body   = isset( $response['body'] ) ? (string) $response['body'] : '';
+		$body   = trim( (string) preg_replace( '/\s+/', ' ', substr( $body, 0, 120 ) ) );
+
+		return sprintf( 'HTTP %s, body: %s', $status, '' === $body ? '(empty)' : $body );
 	}
 }

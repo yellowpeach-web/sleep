@@ -3,6 +3,7 @@
 namespace WPML\PB\TranslationJob;
 
 use WPML\PB\Elementor\TranslationJob\WidgetTitles as ElementorWidgetTitles;
+use WPML\PB\Gutenberg\ConfigLabels;
 
 class LabelResolver {
 
@@ -10,11 +11,14 @@ class LabelResolver {
 
 	private $widgetTitles;
 
-	public function __construct( $translate = null, $widgetTitles = null ) {
+	private $configLabels;
+
+	public function __construct( $translate = null, $widgetTitles = null, $configLabels = null ) {
 		$this->translate    = $translate ?: [ self::class, 'translateLabel' ];
 		$this->widgetTitles = null === $widgetTitles
 			? [ 'elementor' => [ ElementorWidgetTitles::class, 'get' ] ]
 			: $widgetTitles;
+		$this->configLabels = $configLabels;
 	}
 
 	public function resolve( $storedTitle, $getPackageKind = null ) {
@@ -40,13 +44,27 @@ class LabelResolver {
 
 		$groupLabels = [];
 		foreach ( $groupNames as $group => $name ) {
-			$groupLabels[ $group ] = Labels::convertToHuman( $name );
+			$groupLabels[ $group ] = $name === $group ? $this->toHumanGroup( $group ) : Labels::convertToHuman( $name );
 		}
 
 		return [
-			'title'  => Labels::convertToHuman( $title ),
+			'title'  => $this->toHumanTitle( $title, $groups ),
 			'groups' => $groupLabels,
 		];
+	}
+
+	public function toHumanTitle( $title, array $groups ) {
+		if ( $this->configLabels && $this->configLabels->isConfigLabel( $title, $groups ) ) {
+			return $title;
+		}
+
+		return Labels::convertToHuman( $title );
+	}
+
+	public function toHumanGroup( $group ) {
+		$blockLabel = $this->configLabels ? $this->configLabels->getBlockLabel( $group ) : null;
+
+		return null !== $blockLabel ? $blockLabel : Labels::convertToHuman( $group );
 	}
 
 	private function getSourceLabel( array $groups, $title ) {

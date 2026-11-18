@@ -367,7 +367,7 @@ class WPML_Media_Attachment_By_URL_Query {
 
 	private function hasAllowedExtension( $ext ) {
 		$exts = $this->getAllowedExtensionsForFilename();
-		return in_array( $ext, $exts );
+		return in_array( strtolower( $ext ), $exts, true );
 	}
 
 	private function partItemsWithExtAndWithout( $source_items ) {

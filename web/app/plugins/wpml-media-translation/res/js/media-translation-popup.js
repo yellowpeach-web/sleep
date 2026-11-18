@@ -209,8 +209,21 @@ jQuery(function ($) {
 
 								thisDialog.dialog('close');
 								ajaxLoader.remove();
+							} else {
+								// A refused save says why where the upload's errors show, and Save can be pressed again.
+								// An answer without a reason (admin-ajax's bare 0 or -1) gets the general text.
+								setDialogError(response.data && response.data.error ? response.data.error : wpml_media_popup.save_failed);
+								ajaxLoader.remove();
+								enableFormSave();
 							}
 
+						},
+						error:    function () {
+							// No answer from the handler (the request check's 403, a 500, a timeout): the dialog says
+							// so and is usable again.
+							setDialogError(wpml_media_popup.save_failed);
+							ajaxLoader.remove();
+							enableFormSave();
 						}
 					});
 				}
@@ -220,6 +233,10 @@ jQuery(function ($) {
 
 	function disableFormSave() {
 		$('.wpml-media-dialog .ui-dialog-buttonset .button-primary').prop('disabled', true);
+	}
+
+	function setDialogError(text) {
+		$('#wpml-media-upload-error').text(text);
 	}
 
 	function enableFormSave(e) {
@@ -444,6 +461,8 @@ jQuery(function ($) {
 		// A file staged in an earlier opening of the dialog was cancelled. Left
 		// at 1, a save that only changed the texts put that file live (MED-4a).
 		dialogForm.find('input[name=update-media-file]').val(0);
+		// An error from an earlier opening (another image's upload or save) is not this one's.
+		setDialogError('');
 
 		mediaFileUploadForm.find('input[name=attachment-id]').val(translatedMedia.data('attachment-id'));
 		mediaFileUploadForm.find('input[name=original-attachment-id]').val(attachmentRow.data('attachment-id'));

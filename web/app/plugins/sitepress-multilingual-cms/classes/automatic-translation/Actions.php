@@ -14,17 +14,22 @@ use WPML\LIB\WP\Hooks;
 use WPML\LIB\WP\Post;
 use WPML\Settings\PostType\Automatic;
 use WPML\TM\ATE\TranslateEverything\Cutoff;
+use WPML\TranslationPolicy\Policy\Policy;
 use WPML\TM\API\Job\Map;
 use function WPML\Container\make;
 use function WPML\FP\invoke;
 use WPML\LIB\WP\User;
 use WPML\Setup\Option;
 use WPML\TM\ATE\AutomaticTranslationCapabilities;
+use WPML\Infrastructure\WordPress\Component\LanguagePanel\Rest\SaveFlags;
 use WPML\Infrastructure\WordPress\Component\StringPackage\Application\Query\PackageDefinitionQuery;
 
 use WPML\Core\Component\Translation\Application\Service\AutomaticJobsCancellation\ReleaseLedger;
+use WPML\Core\Component\Translation\Application\Service\AutomaticJobsCancellation\ReleaseSummary;
 use WPML\Core\SharedKernel\Component\Post\Domain\TranslateEverythingScope;
 use WPML\TM\API\Jobs;
+use WPML\TM\ATE\Cancel\CancelSource;
+use WPML\TM\ATE\Release\InFlightChargedJobs;
 use WPML\TM\ATE\Release\ReleaseNotices;
 use WPML\TM\Jobs\JobLog;
 use WPML\TM\Jobs\TranslationRecord;
@@ -38,6 +43,20 @@ class Actions implements \IWPML_Action {
 
 	const PRIORITY_AFTER_PB_PROCESS = 100;
 
+	const EDITOR_SAVE_BEFORE_RESPONSE = 'wpml_editor_save_before_response';
+
+	const META_BOX_SAVE_FALLBACK = 'wpml_tea_meta_box_save_fallback';
+
+	private $queuedDispatches = [];
+
+	private $seenSaves = [];
+
+	private $dispatchedBeforeResponse = [];
+
+	private $queuedSendLog = [];
+
+	private $appliedFirstJobIds = [];
+
 	const SINCE_DATE_WITHIN        = 'within';
 	const SINCE_DATE_BEFORE_CUTOFF = 'before-cutoff';
 	const SINCE_DATE_SKIP_SENTINEL = 'skip-sentinel (type never offered)';
@@ -47,6 +66,8 @@ class Actions implements \IWPML_Action {
 	private $translationElementFactory;
 
 	private $packageDefinitionQuery;
+
+	private const MAX_AUTOMATIC_SENDS_AFTER_GIVE_UP = 2;
 
 	public function __construct(
 		\WPML_Translation_Element_Factory $translationElementFactory,
@@ -58,22 +79,32 @@ class Actions implements \IWPML_Action {
 
 	public function add_hooks() {
 		Hooks::onAction( 'wpml_after_save_post', 100 )
-		     ->then( spreadArgs( Fns::memorize( [ $this, 'sendToTranslation' ] ) ) );
+		     ->then( spreadArgs( [ $this, 'onAfterSavePost' ] ) );
+		Hooks::onAction( self::EDITOR_SAVE_BEFORE_RESPONSE, self::PRIORITY_AFTER_PB_PROCESS )
+		     ->then( spreadArgs( [ $this, 'runQueuedBeforeResponse' ] ) );
+		Hooks::onAction( self::META_BOX_SAVE_FALLBACK )
+		     ->then( spreadArgs( [ $this, 'runMetaBoxSaveFallback' ] ) );
 		Hooks::onAction( 'wpml_st_package_string_registered' )
 			->then( spreadArgs( [ $this, 'sendPackageToTranslation' ] ) );
+		add_action( 'post_updated', [ $this, 'rememberSaveSource' ], 10, 3 );
+
+		\WPML\Request\Adapter\Ajax::register(
+			DeferredDispatch::AJAX_ACTION,
+			\WPML\Request\Policy\Policy::machine(
+				function () {
+					return DeferredDispatch::hasRecord( DeferredDispatch::requestToken() );
+				},
+				'Translate Everything deferred on-save dispatch: the site\'s own loopback, carrying the single-use random token of a record the save request stored (DeferredDispatch::flush)'
+			),
+			[ DeferredDispatch::class, 'handleRequest' ]
+		);
+
+		add_action( SaveOverFinished::ACTION_DISPATCH, [ $this, 'dispatchAfterApplyFirst' ], 10, 4 );
 	}
 
 	public static function isBlockEditorMetaBoxSave() {
-		if ( ! isset( $_GET['meta-box-loader'], $_GET['meta-box-loader-nonce'], $_POST['action'] ) ) {
-			return false;
-		}
-
-		$nonce = sanitize_key( wp_unslash( $_GET['meta-box-loader-nonce'] ) );
-		if ( ! wp_verify_nonce( $nonce, 'meta-box-loader' ) ) {
-			return false;
-		}
-
-		return 'editpost' === sanitize_key( wp_unslash( $_POST['action'] ) );
+		// re-review): the TM and Blog-licence readers ask it for the leg of a
+		return \WPML\Posts\MetaBoxLoaderLeg::is_request();
 	}
 
 	public function sendToTranslation( $postId, $onComplete = null ) {
@@ -83,111 +114,279 @@ class Actions implements \IWPML_Action {
 			}
 		};
 
-		if ( self::isBlockEditorMetaBoxSave() && ! \WPML_Post_Translation::did_language_assignment_change( (int) $postId ) ) {
-			JobLog::maybeInitRequest();
-			JobLog::createNewGroup(
-				JobLog::GROUP_ID_TRANSLATE_EVERYTHING,
-				'Auto-translate on save skipped (block editor meta-box leg)',
-				[ 'post_id' => $postId ]
-			);
-			JobLog::add( 'auto_translate_skipped_meta_box_leg', [ 'post_id' => $postId ] );
-			JobLog::finishCurrentGroup();
+		$isMetaBoxSave = self::isBlockEditorMetaBoxSave();
+
+		if ( empty( $_POST['icl_minor_edit'] ) ) {
+			if ( SaveFlags::isMinorEdit() || \WPML\Posts\MetaBoxLoaderLeg::is_minor_edit_leg( $postId ) ) {
+				// helper the TM and Blog-licence readers ask.
+				$execOnComplete();
+
+				return;
+			}
+		} else {
 			$execOnComplete();
 
 			return;
 		}
 
-		if ( empty( $_POST['icl_minor_edit'] ) ) {
-			$postElement = $this->translationElementFactory->create_post( $postId );
-			if ( $postElement->is_translatable() && Automatic::isAutomatic( $postElement->get_type() ) ) {
-				Hooks::onAction( 'shutdown', self::PRIORITY_AFTER_PB_PROCESS )
-				     ->then( function () use ( $postId, $execOnComplete ) {
-					     JobLog::maybeInitRequest();
-					     JobLog::createNewGroup(
-						     JobLog::GROUP_ID_TRANSLATE_EVERYTHING,
-						     'Auto-translate on save (TEA refill / per-post)',
-						     [ 'post_id' => $postId ]
-					     );
-					     JobLog::addExtraLogData( 'trigger', current_action() ?: 'shutdown' );
-					     JobLog::addExtraLogData( 'post_id', $postId );
+		$pending = $isMetaBoxSave ? PendingMetaBoxSave::consume( $postId ) : null;
 
-					     try {
-						     $this->maybeRepairEmptySinceDates();
-
-						     $postElement           = $this->translationElementFactory->create_post( $postId );
-						     $postStatus            = $postElement->get_wp_object()->post_status;
-						     $sourceLang            = $postElement->get_source_language_code();
-						     $isOriginal            = $sourceLang === null;
-						     $hasAnchorRow          = $this->hasAnchorRow( $postElement );
-						     $statusSends           = self::isStatusTranslateEverythingSends( $postStatus );
-						     $isDisplayAsTranslated = $postElement->is_display_as_translated();
-						     $sinceDateResolution   = $this->resolvePostSinceDate( $postElement );
-						     $withinSinceDate       = self::SINCE_DATE_WITHIN === $sinceDateResolution;
-						     $excluded              = self::isExcludedFromAutomaticTranslation( $postId );
-
-						     if ( $isOriginal && ! $hasAnchorRow ) {
-							     $this->logOrphanedElementSkipped( $postElement );
-						     } elseif (
-							     $statusSends
-							     && $isOriginal
-							     && ! $isDisplayAsTranslated
-							     && $withinSinceDate
-							     && ! $excluded
-						     ) {
-							     $secondaryLanguageCodes = AutomaticTranslationCapabilities::getEligibleLanguageCodes(
-								     $postElement->get_language_code()
-							     );
-
-							     JobLog::add( 'auto_translate_eligible', [
-								     'post_status'      => $postStatus,
-								     'target_languages' => $secondaryLanguageCodes,
-								     'lang_count'       => Lst::length( $secondaryLanguageCodes ),
-							     ] );
-
-							     if ( ! Lst::length( $secondaryLanguageCodes ) ) {
-								     JobLog::addError( 'auto_translate_no_eligible_languages', [ 'post_id' => $postId ] );
-								     do_action( 'wpml_update_failed_jobs_notice', $postElement );
-							     }
-
-							     $secondaryLanguageCodes = $this->rejectDuplicates(
-								     $postElement,
-								     $secondaryLanguageCodes
-							     );
-							     $secondaryLanguageCodes = $this->rejectLanguagesWithUnchangedInFlightJob(
-								     $postElement,
-								     $secondaryLanguageCodes
-							     );
-
-							     $this->cancelExistingTranslationJobs( $postElement, $secondaryLanguageCodes );
-							     $this->createTranslationJobs( $postElement, $secondaryLanguageCodes );
-							     JobLog::add( 'auto_translate_jobs_dispatched', [
-								     'languages' => $secondaryLanguageCodes,
-							     ] );
-						     } else {
-							     JobLog::add( 'auto_translate_skipped_not_eligible', [
-								     'post_status'              => $postStatus,
-								     'is_original'              => $isOriginal,
-								     'source_lang_code'         => $sourceLang,
-								     'is_display_as_translated' => $isDisplayAsTranslated,
-								     'within_since_date'        => $withinSinceDate,
-								     'since_date_resolution'    => $sinceDateResolution,
-								     'excluded'                 => (bool) $excluded,
-							     ] );
-						     }
-
-						     $execOnComplete();
-					     } finally {
-						     JobLog::removeExtraLogData( 'trigger' );
-						     JobLog::removeExtraLogData( 'post_id' );
-						     JobLog::finishCurrentGroup();
-					     }
-				     } );
-			} else {
-				$execOnComplete();
-			}
-		} else {
+		if ( $isMetaBoxSave && ! $pending && ! \WPML_Post_Translation::did_language_assignment_change( (int) $postId ) ) {
+			$this->logSkippedMetaBoxLeg( $postId );
 			$execOnComplete();
+
+			return;
 		}
+
+		$postElement = $this->translationElementFactory->create_post( $postId );
+		if ( ! $postElement->is_translatable() || ! Automatic::isAutomatic( $postElement->get_type() ) ) {
+			$execOnComplete();
+
+			return;
+		}
+
+		if ( ! $isMetaBoxSave && SaveFlags::isRestSave() && SaveFlags::metaBoxSaveFollows() ) {
+			$this->deferToMetaBoxSave( $postId );
+			$execOnComplete();
+
+			return;
+		}
+
+		if ( $pending ) {
+			$this->queuedSendLog[ (int) $postId ] = [
+				'auto_translate_sent_by_meta_box_save',
+				[
+					'post_id'             => $postId,
+					'deferred_by_user_id' => $pending['user'],
+					'deferred_at'         => $pending['at'],
+				],
+			];
+		}
+
+		$this->queuedDispatches[ (int) $postId ] = function () use ( $postId, $execOnComplete ) {
+			     JobLog::maybeInitRequest();
+			     JobLog::createNewGroup(
+				     JobLog::GROUP_ID_TRANSLATE_EVERYTHING,
+				     'Auto-translate on save (TEA refill / per-post)',
+				     [ 'post_id' => $postId ]
+			     );
+			     JobLog::addExtraLogData( 'trigger', current_action() ?: 'shutdown' );
+			     JobLog::addExtraLogData( 'post_id', $postId );
+
+			     if ( isset( $this->queuedSendLog[ (int) $postId ] ) ) {
+				     list( $logId, $logData ) = $this->queuedSendLog[ (int) $postId ];
+				     unset( $this->queuedSendLog[ (int) $postId ] );
+				     JobLog::add( $logId, $logData );
+			     }
+
+			     try {
+				     $this->maybeRepairEmptySinceDates();
+
+				     $postElement           = $this->translationElementFactory->create_post( $postId );
+				     if ( ! is_object( $postElement->get_wp_object() ) ) {
+					     JobLog::add( 'auto_translate_skipped_post_deleted', [ 'post_id' => $postId ] );
+					     $execOnComplete();
+
+					     return;
+				     }
+				     $postStatus            = $postElement->get_wp_object()->post_status;
+				     $sourceLang            = $postElement->get_source_language_code();
+				     $isOriginal            = $sourceLang === null;
+				     $hasAnchorRow          = $this->hasAnchorRow( $postElement );
+				     $statusSends           = self::isStatusTranslateEverythingSends( $postStatus );
+				     $isDisplayAsTranslated = $postElement->is_display_as_translated();
+				     $sinceDateResolution   = $this->resolvePostSinceDate( $postElement );
+				     $withinSinceDate       = self::SINCE_DATE_WITHIN === $sinceDateResolution;
+				     $excluded              = self::isExcludedFromAutomaticTranslation( $postId );
+
+				     if ( $isOriginal && ! $hasAnchorRow ) {
+					     $this->logOrphanedElementSkipped( $postElement );
+				     } elseif (
+					     $statusSends
+					     && $isOriginal
+					     && ( ! $isDisplayAsTranslated || $this->hasCompletedAutomaticTranslation( $postElement ) )
+					     && $withinSinceDate
+					     && ! $excluded
+				     ) {
+					     $secondaryLanguageCodes = AutomaticTranslationCapabilities::getEligibleLanguageCodes(
+						     $postElement->get_language_code()
+					     );
+
+					     JobLog::add( 'auto_translate_eligible', [
+						     'post_status'      => $postStatus,
+						     'target_languages' => $secondaryLanguageCodes,
+						     'lang_count'       => Lst::length( $secondaryLanguageCodes ),
+					     ] );
+
+					     if ( ! Lst::length( $secondaryLanguageCodes ) ) {
+						     JobLog::addError( 'auto_translate_no_eligible_languages', [ 'post_id' => $postId ] );
+						     do_action( 'wpml_update_failed_jobs_notice', $postElement );
+					     }
+
+					     $secondaryLanguageCodes = $this->rejectDuplicates(
+						     $postElement,
+						     $secondaryLanguageCodes
+					     );
+					     $secondaryLanguageCodes = $this->rejectLanguagesWithUnchangedInFlightJob(
+						     $postElement,
+						     $secondaryLanguageCodes
+					     );
+
+					     $isDeferred = DeferredDispatch::open( $postId );
+					     try {
+						     $saveSource = SaveSource::consume( $postId );
+						     $secondaryLanguageCodes = $this->applyFinishedFirst( $postElement, $secondaryLanguageCodes, $saveSource, $isDeferred );
+						     $this->cancelExistingTranslationJobs( $postElement, $secondaryLanguageCodes, $saveSource );
+						     $this->createTranslationJobs( $postElement, $secondaryLanguageCodes );
+					     } finally {
+						     DeferredDispatch::close();
+					     }
+					     JobLog::add( 'auto_translate_jobs_dispatched', [
+						     'languages' => $secondaryLanguageCodes,
+					     ] );
+				     } else {
+					     JobLog::add( 'auto_translate_skipped_not_eligible', [
+						     'post_status'              => $postStatus,
+						     'is_original'              => $isOriginal,
+						     'source_lang_code'         => $sourceLang,
+						     'is_display_as_translated' => $isDisplayAsTranslated,
+						     'within_since_date'        => $withinSinceDate,
+						     'since_date_resolution'    => $sinceDateResolution,
+						     'excluded'                 => (bool) $excluded,
+					     ] );
+				     }
+
+				     $execOnComplete();
+			     } finally {
+				     JobLog::removeExtraLogData( 'trigger' );
+				     JobLog::removeExtraLogData( 'post_id' );
+				     JobLog::finishCurrentGroup();
+			     }
+		     };
+		Hooks::onAction( 'shutdown', self::PRIORITY_AFTER_PB_PROCESS )
+		     ->then( function () use ( $postId ) {
+			     $this->runQueuedNow( $postId );
+		     } );
+	}
+
+	private function logSkippedMetaBoxLeg( $postId ) {
+		JobLog::maybeInitRequest();
+		JobLog::createNewGroup(
+			JobLog::GROUP_ID_TRANSLATE_EVERYTHING,
+			'Auto-translate on save skipped (block editor meta-box leg)',
+			[ 'post_id' => $postId ]
+		);
+		JobLog::add( 'auto_translate_skipped_meta_box_leg', [ 'post_id' => $postId ] );
+		JobLog::finishCurrentGroup();
+	}
+
+	private function deferToMetaBoxSave( $postId ) {
+		$userId = (int) User::getCurrentId();
+		PendingMetaBoxSave::defer( (int) $postId, $userId );
+
+		JobLog::maybeInitRequest();
+		JobLog::createNewGroup(
+			JobLog::GROUP_ID_TRANSLATE_EVERYTHING,
+			'Auto-translate on save deferred to the meta-box request',
+			[ 'post_id' => $postId ]
+		);
+		JobLog::add( 'auto_translate_deferred_to_meta_box_save', [
+			'post_id'             => $postId,
+			'user_id'             => $userId,
+			'fallback_in_seconds' => PendingMetaBoxSave::FALLBACK_DELAY,
+		] );
+		JobLog::finishCurrentGroup();
+	}
+
+	public function runMetaBoxSaveFallback( $postId ) {
+		$postId = (int) $postId;
+		$marker = PendingMetaBoxSave::consumeForFallback( $postId );
+		if ( ! $marker ) {
+			return;
+		}
+
+		$ownsLogRequest = JobLog::maybeInitBackgroundRequest( 'wpml-tea-meta-box-save-fallback' );
+
+		$userId   = $this->fallbackUserId( $marker['user'], $postId );
+		$previous = (int) User::getCurrentId();
+
+		wp_set_current_user( $userId );
+		try {
+			$this->queuedSendLog[ $postId ] = [
+				'auto_translate_sent_by_fallback',
+				[
+					'post_id'             => $postId,
+					'user_id'             => $userId,
+					'deferred_by_user_id' => $marker['user'],
+					'deferred_at'         => $marker['at'],
+				],
+			];
+			$this->sendToTranslation( $postId );
+			$this->runQueuedNow( $postId );
+		} finally {
+			unset( $this->queuedSendLog[ $postId ] );
+			wp_set_current_user( $previous );
+			if ( $ownsLogRequest ) {
+				JobLog::flushBackgroundRequest();
+			}
+		}
+	}
+
+	private function fallbackUserId( $userId, $postId ) {
+		$userId = (int) $userId;
+		if ( $userId <= 0 ) {
+			return 0;
+		}
+
+		$user = get_userdata( $userId );
+		if ( ! $user || ! user_can( $user, 'edit_post', (int) $postId ) ) {
+			return 0;
+		}
+
+		return $userId;
+	}
+
+	public function onAfterSavePost( $postId ) {
+		$postId = (int) $postId;
+
+		if ( isset( $this->dispatchedBeforeResponse[ $postId ] ) ) {
+			unset( $this->dispatchedBeforeResponse[ $postId ], $this->seenSaves[ $postId ] );
+		}
+
+		if ( isset( $this->seenSaves[ $postId ] ) ) {
+			return;
+		}
+
+		$this->seenSaves[ $postId ] = true;
+		$this->sendToTranslation( $postId );
+	}
+
+	public function rememberSaveSource( $postId, $after, $before ) {
+		if ( Option::shouldTranslateEverything() ) {
+			SaveSource::remember( $postId, $after, $before );
+		}
+	}
+
+	public function runQueuedBeforeResponse( $postId ) {
+		$postId = (int) $postId;
+
+		if ( $this->runQueuedNow( $postId ) ) {
+			$this->dispatchedBeforeResponse[ $postId ] = true;
+		}
+	}
+
+	public function runQueuedNow( $postId ) {
+		$postId = (int) $postId;
+
+		if ( ! isset( $this->queuedDispatches[ $postId ] ) ) {
+			return false;
+		}
+
+		$dispatch = $this->queuedDispatches[ $postId ];
+		$dispatch();
+		unset( $this->queuedDispatches[ $postId ] );
+
+		return true;
 	}
 
 	public function passesTranslateEverythingPostGates( $postId ) {
@@ -203,7 +402,7 @@ class Actions implements \IWPML_Action {
 	}
 
 	public static function isStatusTranslateEverythingSends( $postStatus ) {
-		return 'publish' === $postStatus
+		return in_array( $postStatus, make( PublishedPostStatuses::class )->get(), true )
 			|| ( 'draft' === $postStatus && (bool) \WPML\Setup\Option::getTranslateEverythingDrafts() );
 	}
 
@@ -262,6 +461,13 @@ class Actions implements \IWPML_Action {
 			JobLog::addExtraLogData( 'package_id', JobLog::safeProp( $package, 'ID' ) );
 
 			try {
+				if ( apply_filters( 'wpml_string_package_rides_owner', false, $package->ID ) ) {
+					JobLog::add( 'package_rides_owner', [
+						'owner' => apply_filters( 'wpml_string_package_owner', null, $package->ID ),
+					] );
+					return;
+				}
+
 				$packageElement  = $this->translationElementFactory->create_package( $package->ID, $package->kind_slug );
 				$sourceLang      = JobLog::safeCall( $packageElement, 'get_source_language_code' );
 				$withinSinceDate = $this->isPackageWithinSinceDate( $package );
@@ -269,7 +475,9 @@ class Actions implements \IWPML_Action {
 				if ( $sourceLang === null && ! $this->hasAnchorRow( $packageElement ) ) {
 					$this->logOrphanedElementSkipped( $packageElement );
 				} elseif ( $sourceLang === null && $withinSinceDate ) {
-					$secondaryLanguageCodes = AutomaticTranslationCapabilities::getEligibleLanguageCodes();
+					$secondaryLanguageCodes = AutomaticTranslationCapabilities::getEligibleLanguageCodes(
+						$packageElement->get_language_code()
+					);
 
 					JobLog::add( 'auto_translate_package_eligible', [
 						'target_languages' => $secondaryLanguageCodes,
@@ -289,7 +497,7 @@ class Actions implements \IWPML_Action {
 						return;
 					}
 
-					$this->cancelExistingTranslationJobs( $packageElement, $secondaryLanguageCodes );
+					$this->cancelExistingTranslationJobs( $packageElement, $secondaryLanguageCodes, CancelSource::SAVE_CONTENT );
 					$this->createTranslationJobs( $packageElement, $secondaryLanguageCodes );
 					JobLog::add( 'auto_translate_package_jobs_dispatched', [
 						'languages' => $secondaryLanguageCodes,
@@ -325,12 +533,25 @@ class Actions implements \IWPML_Action {
 		$kept = [];
 		foreach ( $languages as $language ) {
 			if ( isset( $inFlight[ $language ] ) ) {
-				JobLog::add( 'auto_translate_skipped_unchanged_in_flight', [
+				$row = $inFlight[ $language ];
+				$log = [
 					'target_lang' => $language,
-					'rid'         => $inFlight[ $language ]['rid'],
-					'job_id'      => $inFlight[ $language ]['job_id'],
-					'status'      => $inFlight[ $language ]['status'],
-				] );
+					'rid'         => $row['rid'],
+					'job_id'      => $row['job_id'],
+					'status'      => $row['status'],
+				];
+
+				if ( ICL_TM_ATE_UNSOLVABLE === $row['status'] ) {
+					if ( $row['sends_since_delivery'] < self::MAX_AUTOMATIC_SENDS_AFTER_GIVE_UP ) {
+						$kept[] = $language;
+						continue;
+					}
+					$log['sends_since_delivery'] = $row['sends_since_delivery'];
+					JobLog::add( 'auto_translate_skipped_unchanged_unsolvable', $log );
+					continue;
+				}
+
+				JobLog::add( 'auto_translate_skipped_unchanged_in_flight', $log );
 
 				continue;
 			}
@@ -355,7 +576,14 @@ class Actions implements \IWPML_Action {
 				"SELECT t.language_code AS language_code,
 				        s.rid           AS rid,
 				        s.status        AS status,
-				        j.job_id        AS job_id
+				        j.job_id        AS job_id,
+				        ( SELECT COUNT(*)
+				            FROM {$wpdb->prefix}icl_translate_job j3
+				           WHERE j3.rid = s.rid
+				             AND j3.job_id > COALESCE( ( SELECT MAX( j4.job_id )
+				                                           FROM {$wpdb->prefix}icl_translate_job j4
+				                                          WHERE j4.rid = s.rid
+				                                            AND j4.translated = 1 ), 0 ) ) AS sends_since_delivery
 				   FROM {$wpdb->prefix}icl_translations t
 				   INNER JOIN {$wpdb->prefix}icl_translation_status s
 				           ON s.translation_id = t.translation_id
@@ -368,10 +596,12 @@ class Actions implements \IWPML_Action {
 				    AND t.source_language_code IS NOT NULL
 				    AND s.needs_update = 0
 				    AND j.translated = 0
-				    AND s.status IN ( %d, %d )",
+				    AND s.status IN ( %d, %d, %d, %d )",
 				(int) $trid,
 				ICL_TM_WAITING_FOR_TRANSLATOR,
-				ICL_TM_IN_PROGRESS
+				ICL_TM_IN_PROGRESS,
+				ICL_TM_ATE_NEEDS_RETRY,
+				ICL_TM_ATE_UNSOLVABLE
 			),
 			ARRAY_A
 		);
@@ -387,9 +617,10 @@ class Actions implements \IWPML_Action {
 			}
 
 			$inFlight[ $row['language_code'] ] = [
-				'rid'    => (int) $row['rid'],
-				'job_id' => (int) $row['job_id'],
-				'status' => (int) $row['status'],
+				'rid'                  => (int) $row['rid'],
+				'job_id'               => (int) $row['job_id'],
+				'status'               => (int) $row['status'],
+				'sends_since_delivery' => (int) $row['sends_since_delivery'],
 			];
 		}
 
@@ -403,7 +634,12 @@ class Actions implements \IWPML_Action {
 			return $languages;
 		}
 
-		$duplicates = $this->getDuplicatesOf( $element );
+		$duplicates = Policy::translateEverythingGate()->copiesOf(
+			(int) $element->get_element_id(),
+			function () use ( $element ) {
+				return $this->getDuplicatesOf( $element );
+			}
+		);
 
 		if ( ! $duplicates ) {
 			return $languages;
@@ -441,14 +677,75 @@ class Actions implements \IWPML_Action {
 		return $this->duplicatesByOriginal[ $postId ];
 	}
 
-	private function cancelExistingTranslationJobs( \WPML_Translation_Element $translationElement, $languages ) {
+	private function applyFinishedFirst( \WPML_Translation_Element $postElement, array $languages, $source, $isDeferred ) {
+		$candidates = SaveOverFinished::candidates( $postElement, $languages );
+
+		if ( ! $candidates ) {
+			return $languages;
+		}
+
+		if ( ! $isDeferred ) {
+			foreach ( SaveOverFinished::applyInline( $candidates ) as $language => $outcome ) {
+				if ( \WPML\TM\ATE\Handshake\ApplyFinished::APPLIED === $outcome && isset( $candidates[ $language ] ) ) {
+					$this->appliedFirstJobIds[ (int) $candidates[ $language ]['job_id'] ] = true;
+				}
+			}
+
+			return $languages;
+		}
+
+		$deferred = SaveOverFinished::completedOnly( $candidates );
+
+		foreach ( $deferred as $language => $item ) {
+			DeferredDispatch::deferApplyFirst( $language, $item['job_id'], $item['ate_job_id'], $source );
+		}
+
+		return array_values( array_diff( $languages, array_keys( $deferred ) ) );
+	}
+
+	public function dispatchAfterApplyFirst( $postId, $languages, $source = '', $appliedJobIds = [] ) {
+		$languages = array_values( array_map( 'strval', (array) $languages ) );
+
+		if ( ! $languages ) {
+			return;
+		}
+
+		foreach ( (array) $appliedJobIds as $jobId ) {
+			$this->appliedFirstJobIds[ (int) $jobId ] = true;
+		}
+
+		JobLog::runInGroup(
+			JobLog::GROUP_ID_TRANSLATE_EVERYTHING,
+			'Auto-translate on save (after applying finished translations)',
+			function () use ( $postId, $languages, $source ) {
+				$postElement = $this->translationElementFactory->create_post( (int) $postId );
+
+				if ( ! $postElement->is_translatable() || ! Automatic::isAutomatic( $postElement->get_type() ) ) {
+					JobLog::add( 'auto_translate_skipped_not_eligible', [ 'post_id' => (int) $postId, 'after_apply_first' => true ] );
+
+					return;
+				}
+
+				$this->cancelExistingTranslationJobs( $postElement, $languages, (string) $source );
+				$this->createTranslationJobs( $postElement, $languages );
+
+				JobLog::add( 'auto_translate_jobs_dispatched', [
+					'languages'         => $languages,
+					'after_apply_first' => true,
+				] );
+			},
+			[ 'post_id' => (int) $postId ]
+		);
+	}
+
+	private function cancelExistingTranslationJobs( \WPML_Translation_Element $translationElement, $languages, $source = '' ) {
 		$releaseMark = ReleaseLedger::instance()->mark();
 
 		$getJobEntity = function ( $jobId ) use ( $translationElement ) {
-			return wpml_tm_get_jobs_repository()->get_job( Map::fromJobId( $jobId ), $translationElement->get_element_type() );
+			return wpml_tm_get_jobs_repository()->get_job( Map::ridFromJobId( $jobId ), $translationElement->get_element_type() );
 		};
 
-		$cancelJob = function ( $job ) use ( $getJobEntity, $translationElement ) {
+		$cancelJob = function ( $job ) use ( $getJobEntity, $translationElement, $source ) {
 			$jobId = Obj::prop( 'job_id', $job );
 
 			Jobs::clearReviewStatus( $jobId );
@@ -465,6 +762,12 @@ class Actions implements \IWPML_Action {
 				}
 			}
 
+			if ( isset( $this->appliedFirstJobIds[ (int) $jobId ] ) ) {
+				JobLog::add( 'auto_translate_cancel_skipped_applied_first', [ 'wpml_job_id' => (int) $jobId ] );
+
+				return;
+			}
+
 			$jobEntity = $getJobEntity( $jobId );
 
 			if ( null === $jobEntity ) {
@@ -476,19 +779,27 @@ class Actions implements \IWPML_Action {
 				return;
 			}
 
-			do_action( 'wpml_tm_job_cancelled', $jobEntity );
+			do_action( 'wpml_tm_job_cancelled', $jobEntity, \WPML_TM_ATE_API::CANCEL_REASON_SUPERSEDED, $source );
 		};
 
-		wpml_collect( $languages )
+		$jobsToCancel = wpml_collect( $languages )
 			->map( Jobs::getElementJob( $translationElement->get_element_id(), $translationElement->get_wpml_element_type() ) )
 			->filter()
-			->reject( self::isCompleteAndUpToDateJob() )
-			->map( $cancelJob );
+			->reject( self::isCompleteAndUpToDateJob() );
+
+		$isDeferredPostSave = $translationElement instanceof \WPML_Post_Element && DeferredDispatch::isCollecting();
+		$replacedChargedJobs = $isDeferredPostSave
+			? InFlightChargedJobs::countChargedJobRows( $jobsToCancel->map( Obj::prop( 'job_id' ) )->toArray() )
+			: 0;
+
+		$jobsToCancel->map( $cancelJob );
 
 		if ( $translationElement instanceof \WPML_Post_Element ) {
 			ReleaseNotices::queueUpdateNotice(
 				(int) $translationElement->get_element_id(),
-				ReleaseLedger::instance()->summaryFrom( $releaseMark )
+				$isDeferredPostSave
+					? new ReleaseSummary( 0, 0, $replacedChargedJobs )
+					: ReleaseLedger::instance()->summaryFrom( $releaseMark )
 			);
 		}
 	}
@@ -501,6 +812,19 @@ class Actions implements \IWPML_Action {
 
 	private static function isDeliveredJob( $job ) {
 		return Cast::toInt( Obj::prop( 'status', $job ) ) === ICL_TM_COMPLETE;
+	}
+
+	private function hasCompletedAutomaticTranslation( \WPML_Translation_Element $postElement ) {
+		$languages = AutomaticTranslationCapabilities::getEligibleLanguageCodes( $postElement->get_language_code() );
+
+		foreach ( $languages as $language ) {
+			$job = Jobs::getElementJob( $postElement->get_element_id(), $postElement->get_wpml_element_type(), $language );
+			if ( $job && self::isDeliveredJob( $job ) && Jobs::wasCreatedByTEA( (int) $job->job_id ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	protected function hasAnchorRow( \WPML_Translation_Element $element ) {
@@ -558,7 +882,7 @@ class Actions implements \IWPML_Action {
 					! $job
 					|| (
 						$isNotCompleteAndUpToDate( $job )
-						&& $this->canJobBeReTranslatedAutomatically( $job->job_id )
+						&& $this->canJobBeReTranslatedAutomaticallyFor( $translationElement, $job->job_id )
 					)
 				)
 			) {
@@ -575,6 +899,16 @@ class Actions implements \IWPML_Action {
 		$currentJobEditor        = $wpmlTmLoadOldJobsEditor->get_current_editor( $jobId );
 
 		return $editorForOldJobs === \WPML_TM_Editors::ATE || $currentJobEditor === \WPML_TM_Editors::WP;
+	}
+
+	private function canJobBeReTranslatedAutomaticallyFor( \WPML_Translation_Element $translationElement, $jobId ) {
+		$todays = function () use ( $jobId ) {
+			return $this->canJobBeReTranslatedAutomatically( $jobId );
+		};
+
+		return $translationElement->get_element_type() === 'post'
+			? Policy::translateEverythingGate()->sendsOverJob( (int) $translationElement->get_element_id(), $todays )
+			: $todays();
 	}
 
 	private function createJob( \WPML_Translation_Element $translationElement, $language ) {
@@ -749,8 +1083,15 @@ class Actions implements \IWPML_Action {
 	}
 
 	private function isPostElementAndUsingNativeEditor( \WPML_Translation_Element $translationElement ): bool {
-		return $translationElement->get_element_type() === 'post'
-			? \WPML_TM_Post_Edit_TM_Editor_Mode::is_using_tm_editor( null, $translationElement->get_element_id(), false )
-			: true;
+		if ( $translationElement->get_element_type() !== 'post' ) {
+			return true;
+		}
+
+		return Policy::translateEverythingGate()->sendsPost(
+			(int) $translationElement->get_element_id(),
+			function () use ( $translationElement ) {
+				return \WPML_TM_Post_Edit_TM_Editor_Mode::is_using_tm_editor( null, $translationElement->get_element_id(), false );
+			}
+		);
 	}
 }

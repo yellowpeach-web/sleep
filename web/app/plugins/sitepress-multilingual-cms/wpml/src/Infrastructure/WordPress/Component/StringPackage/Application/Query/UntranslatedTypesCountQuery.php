@@ -59,7 +59,7 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
         package.kind,
         package.kind_slug,
         COUNT( DISTINCT package.ID ) as count
-      {$this->buildLeftToTranslateSelection( "package.kind_slug IN ({$translatablePackages})" )}
+      {$this->buildLeftToTranslateSelection( "package.kind_slug IN ({$translatablePackages})", array_keys( $packageInfo ) )}
       GROUP BY package.kind
     ";
 
@@ -118,7 +118,7 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
     $sql = "
       SELECT DISTINCT
         package.ID
-      {$this->buildLeftToTranslateSelection( $kindCondition )}
+      {$this->buildLeftToTranslateSelection( $kindCondition, [ $type ] )}
       ORDER BY package.ID ASC
       " . sprintf( 'LIMIT %d OFFSET %d', $numberOfIdsToFetch, $offset );
 
@@ -131,7 +131,19 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
   }
 
 
-  private function buildLeftToTranslateSelection( string $kindCondition ): string {
+  public static function excludedPackageIds( array $kinds, array $languages ): array {
+    $excluded = [];
+    foreach ( $kinds as $kind ) {
+      $answer   = apply_filters( 'wpml_exclude_packages_from_auto_translate', [], strtolower( (string) $kind ), $languages );
+      $ids      = (array) $answer;
+      $excluded = array_merge( $excluded, array_map( 'intval', array_values( array_filter( $ids, 'is_numeric' ) ) ) );
+    }
+
+    return array_values( array_unique( array_filter( $excluded ) ) );
+  }
+
+
+  private function buildLeftToTranslateSelection( string $kindCondition, array $kinds ): string {
     $prefix     = $this->queryPrepare->prefix();
     $statusesIn = implode(
       ',',
@@ -140,6 +152,15 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
         TranslationStatus::ATE_CANCELED,
       ]
     );
+
+    $ridesOwner          = apply_filters( 'wpml_string_package_rides_owner_sql', '', 'package' );
+    $ridesOwnerCondition = $ridesOwner ? 'AND NOT (' . $ridesOwner . ')' : '';
+
+    $excluded          = self::excludedPackageIds(
+      $kinds,
+      array_map( fn( $language ) => $language->getCode(), $this->languagesQuery->getSecondaryTranslatable() )
+    );
+    $excludedCondition = $excluded ? 'AND package.ID NOT IN (' . $this->queryPrepare->prepareIn( $excluded, '%d' ) . ')' : '';
 
     return "
       FROM {$prefix}icl_string_packages package
@@ -154,6 +175,8 @@ class UntranslatedTypesCountQuery implements UntranslatedTypesCountQueryInterfac
       LEFT JOIN {$prefix}icl_translation_status translation_status
         ON translation_status.translation_id = translations.translation_id
       WHERE {$kindCondition}
+        {$ridesOwnerCondition}
+        {$excludedCondition}
         AND langs.code <> original_translation.language_code
         AND (
           translation_status.status IS NULL

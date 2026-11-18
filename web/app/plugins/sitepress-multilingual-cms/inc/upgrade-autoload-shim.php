@@ -11,23 +11,45 @@ if ( ! function_exists( 'wpml_register_upgrade_autoload_shim' ) ) {
 		$vendor       = dirname( __DIR__ ) . '/vendor/composer';
 		$classmapFile = $vendor . '/autoload_classmap.php';
 		$psr4File     = $vendor . '/autoload_psr4.php';
-		if ( ! is_readable( $classmapFile ) || ! is_readable( $psr4File ) ) {
-			return;
-		}
-
-		$classmap = require $classmapFile;
-		$psr4     = require $psr4File;
-		if ( ! is_array( $classmap ) || ! is_array( $psr4 ) ) {
-			return;
-		}
 
 		spl_autoload_register(
-			function ( $class ) use ( $classmap, $psr4 ) {
-				wpml_upgrade_autoload_resolve( $class, $classmap, $psr4 );
+			function ( $class ) use ( $classmapFile, $psr4File ) {
+				wpml_upgrade_autoload_fallback( $class, $classmapFile, $psr4File );
 			},
 			true,
 			false
 		);
+	}
+}
+
+if ( ! function_exists( 'wpml_upgrade_autoload_fallback' ) ) {
+	function wpml_upgrade_autoload_fallback( $class, $classmapFile, $psr4File ) {
+		static $read = array();
+
+		clearstatcache( true, $classmapFile );
+		$stat = @stat( $classmapFile );
+		if ( false === $stat ) {
+			return;
+		}
+		$signature = $stat['ino'] . ':' . $stat['mtime'] . ':' . $stat['size'];
+
+		if ( ! isset( $read[ $classmapFile ] ) || $read[ $classmapFile ]['signature'] !== $signature ) {
+			if ( ! is_readable( $classmapFile ) || ! is_readable( $psr4File ) ) {
+				return;
+			}
+			$classmap = require $classmapFile;
+			$psr4     = require $psr4File;
+			if ( ! is_array( $classmap ) || ! is_array( $psr4 ) ) {
+				return;
+			}
+			$read[ $classmapFile ] = array(
+				'signature' => $signature,
+				'classmap'  => $classmap,
+				'psr4'      => $psr4,
+			);
+		}
+
+		wpml_upgrade_autoload_resolve( $class, $read[ $classmapFile ]['classmap'], $read[ $classmapFile ]['psr4'] );
 	}
 }
 
@@ -68,6 +90,4 @@ if ( ! function_exists( 'wpml_upgrade_autoload_resolve' ) ) {
 	}
 }
 
-if ( ! class_exists( 'WPML\ContentDeletion\DialogAnswer' ) ) {
-	wpml_register_upgrade_autoload_shim();
-}
+wpml_register_upgrade_autoload_shim();

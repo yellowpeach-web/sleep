@@ -5,348 +5,319 @@ namespace WPML\Collect\Support;
 use ArrayAccess;
 use WPML\Collect\Support\Traits\Macroable;
 
-class Arr
-{
-    use Macroable;
-
-    public static function accessible($value)
-    {
-        return is_array($value) || $value instanceof ArrayAccess;
-    }
-
-    public static function add($array, $key, $value)
-    {
-        if (is_null(static::get($array, $key))) {
-            static::set($array, $key, $value);
-        }
-
-        return $array;
-    }
-
-    public static function collapse($array)
-    {
-        $results = [];
-
-        foreach ($array as $values) {
-            if ($values instanceof Collection) {
-                $values = $values->all();
-            } elseif (! is_array($values)) {
-                continue;
-            }
-
-            $results = array_merge($results, $values);
-        }
-
-        return $results;
-    }
-
-    public static function divide($array)
-    {
-        return [array_keys($array), array_values($array)];
-    }
-
-    public static function dot($array, $prepend = '')
-    {
-        $results = [];
-
-        foreach ($array as $key => $value) {
-            if (is_array($value) && ! empty($value)) {
-                $results = array_merge($results, static::dot($value, $prepend.$key.'.'));
-            } else {
-                $results[$prepend.$key] = $value;
-            }
-        }
-
-        return $results;
-    }
-
-    public static function except($array, $keys)
-    {
-        static::forget($array, $keys);
-
-        return $array;
-    }
-
-    public static function exists($array, $key)
-    {
-        if ($array instanceof ArrayAccess) {
-            return $array->offsetExists($key);
-        }
-
-        return array_key_exists($key, $array);
-    }
-
-    public static function first($array, ?callable $callback = null, $default = null)
-    {
-        if (is_null($callback)) {
-            if (empty($array)) {
-                return value($default);
-            }
-
-            foreach ($array as $item) {
-                return $item;
-            }
-        }
-
-        foreach ($array as $key => $value) {
-            if (call_user_func($callback, $value, $key)) {
-                return $value;
-            }
-        }
-
-        return value($default);
-    }
-
-    public static function last($array, ?callable $callback = null, $default = null)
-    {
-        if (is_null($callback)) {
-            return empty($array) ? value($default) : end($array);
-        }
-
-        return static::first(array_reverse($array, true), $callback, $default);
-    }
-
-    public static function flatten($array, $depth = INF)
-    {
-        return array_reduce($array, function ($result, $item) use ($depth) {
-            $item = $item instanceof Collection ? $item->all() : $item;
-
-            if (! is_array($item)) {
-                return array_merge($result, [$item]);
-            } elseif ($depth === 1) {
-                return array_merge($result, array_values($item));
-            } else {
-                return array_merge($result, static::flatten($item, $depth - 1));
-            }
-        }, []);
-    }
-
-    public static function forget(&$array, $keys)
-    {
-        $original = &$array;
-
-        $keys = (array) $keys;
-
-        if (count($keys) === 0) {
-            return;
-        }
-
-        foreach ($keys as $key) {
-            if (static::exists($array, $key)) {
-                unset($array[$key]);
-
-                continue;
-            }
-
-            $parts = explode('.', $key);
-
-            $array = &$original;
-
-            while (count($parts) > 1) {
-                $part = array_shift($parts);
-
-                if (isset($array[$part]) && is_array($array[$part])) {
-                    $array = &$array[$part];
-                } else {
-                    continue 2;
-                }
-            }
-
-            unset($array[array_shift($parts)]);
-        }
-    }
-
-    public static function get($array, $key, $default = null)
-    {
-        if (! static::accessible($array)) {
-            return value($default);
-        }
-
-        if (is_null($key)) {
-            return $array;
-        }
-
-        if (static::exists($array, $key)) {
-            return $array[$key];
-        }
-
-        foreach (explode('.', $key) as $segment) {
-            if (static::accessible($array) && static::exists($array, $segment)) {
-                $array = $array[$segment];
-            } else {
-                return value($default);
-            }
-        }
-
-        return $array;
-    }
-
-    public static function has($array, $keys)
-    {
-        if (is_null($keys)) {
-            return false;
-        }
-
-        $keys = (array) $keys;
-
-        if (! $array) {
-            return false;
-        }
-
-        if ($keys === []) {
-            return false;
-        }
+if ( ! class_exists( 'WPML\\Collect\\Support\\HelperFunctions', false ) ) {
+	require_once __DIR__ . '/../../HelperFunctions.php';
+}
 
-        foreach ($keys as $key) {
-            $subKeyArray = $array;
+class Arr {
 
-            if (static::exists($array, $key)) {
-                continue;
-            }
+	use Macroable;
 
-            foreach (explode('.', $key) as $segment) {
-                if (static::accessible($subKeyArray) && static::exists($subKeyArray, $segment)) {
-                    $subKeyArray = $subKeyArray[$segment];
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    public static function isAssoc(array $array)
-    {
-        $keys = array_keys($array);
-
-        return array_keys($keys) !== $keys;
-    }
-
-    public static function only($array, $keys)
-    {
-        return array_intersect_key($array, array_flip((array) $keys));
-    }
-
-    public static function pluck($array, $value, $key = null)
-    {
-        $results = [];
-
-        list($value, $key) = static::explodePluckParameters($value, $key);
+	public static function accessible( $value ) {
+		return is_array( $value ) || $value instanceof ArrayAccess;
+	}
 
-        foreach ($array as $item) {
-            $itemValue = data_get($item, $value);
+	public static function exists( $array, $key ) {
+		if ( $array instanceof ArrayAccess ) {
+			return $array->offsetExists( $key );
+		}
 
-            if (is_null($key)) {
-                $results[] = $itemValue;
-            } else {
-                $itemKey = data_get($item, $key);
+		return array_key_exists( $key, $array );
+	}
 
-                $results[$itemKey] = $itemValue;
-            }
-        }
+	public static function get( $array, $key, $default = null ) {
+		if ( ! static::accessible( $array ) ) {
+			return HelperFunctions::value( $default );
+		}
 
-        return $results;
-    }
+		if ( is_null( $key ) ) {
+			return $array;
+		}
 
-    protected static function explodePluckParameters($value, $key)
-    {
-        $value = is_string($value) ? explode('.', $value) : $value;
+		if ( static::exists( $array, $key ) ) {
+			return $array[ $key ];
+		}
 
-        $key = is_null($key) || is_array($key) ? $key : explode('.', $key);
+		foreach ( explode( '.', $key ) as $segment ) {
+			if ( ! static::accessible( $array ) || ! static::exists( $array, $segment ) ) {
+				return HelperFunctions::value( $default );
+			}
 
-        return [$value, $key];
-    }
+			$array = $array[ $segment ];
+		}
 
-    public static function prepend($array, $value, $key = null)
-    {
-        if (is_null($key)) {
-            array_unshift($array, $value);
-        } else {
-            $array = [$key => $value] + $array;
-        }
+		return $array;
+	}
 
-        return $array;
-    }
+	public static function has( $array, $keys ) {
+		if ( is_null( $keys ) ) {
+			return false;
+		}
 
-    public static function pull(&$array, $key, $default = null)
-    {
-        $value = static::get($array, $key, $default);
+		$keys = (array) $keys;
 
-        static::forget($array, $key);
+		if ( ! $array || [] === $keys ) {
+			return false;
+		}
 
-        return $value;
-    }
+		foreach ( $keys as $key ) {
+			if ( static::exists( $array, $key ) ) {
+				continue;
+			}
 
-    public static function set(&$array, $key, $value)
-    {
-        if (is_null($key)) {
-            return $array = $value;
-        }
+			$level = $array;
 
-        $keys = explode('.', $key);
+			foreach ( explode( '.', $key ) as $segment ) {
+				if ( ! static::accessible( $level ) || ! static::exists( $level, $segment ) ) {
+					return false;
+				}
 
-        while (count($keys) > 1) {
-            $key = array_shift($keys);
+				$level = $level[ $segment ];
+			}
+		}
 
-            if (! isset($array[$key]) || ! is_array($array[$key])) {
-                $array[$key] = [];
-            }
+		return true;
+	}
 
-            $array = &$array[$key];
-        }
+	public static function set( &$array, $key, $value ) {
+		if ( is_null( $key ) ) {
+			$array = $value;
 
-        $array[array_shift($keys)] = $value;
+			return $array;
+		}
 
-        return $array;
-    }
+		$segments = explode( '.', $key );
+		$last     = array_pop( $segments );
 
-    public static function sort($array, $callback)
-    {
-        return Collection::make($array)->sortBy($callback)->all();
-    }
+		foreach ( $segments as $segment ) {
+			if ( ! isset( $array[ $segment ] ) || ! is_array( $array[ $segment ] ) ) {
+				$array[ $segment ] = [];
+			}
 
-    public static function sortRecursive($array)
-    {
-        foreach ($array as &$value) {
-            if (is_array($value)) {
-                $value = static::sortRecursive($value);
-            }
-        }
+			$array = &$array[ $segment ];
+		}
 
-        if (static::isAssoc($array)) {
-            ksort($array);
-        } else {
-            sort($array);
-        }
+		$array[ $last ] = $value;
 
-        return $array;
-    }
+		return $array;
+	}
 
-    public static function where($array, callable $callback)
-    {
-        return array_filter($array, $callback, ARRAY_FILTER_USE_BOTH);
-    }
+	public static function add( $array, $key, $value ) {
+		if ( is_null( static::get( $array, $key ) ) ) {
+			static::set( $array, $key, $value );
+		}
 
+		return $array;
+	}
 
-	public static function crossJoin(...$arrays)
-	{
-		$results = [[]];
+	public static function forget( &$array, $keys ) {
+		$root = &$array;
+		$keys = (array) $keys;
 
-		foreach ($arrays as $index => $array) {
-			$append = [];
+		if ( count( $keys ) === 0 ) {
+			return;
+		}
 
-			foreach ($results as $product) {
-				foreach ($array as $item) {
-					$product[$index] = $item;
+		foreach ( $keys as $key ) {
+			if ( static::exists( $array, $key ) ) {
+				unset( $array[ $key ] );
 
-					$append[] = $product;
+				continue;
+			}
+
+			$segments = explode( '.', $key );
+			$array    = &$root;
+
+			while ( count( $segments ) > 1 ) {
+				$segment = array_shift( $segments );
+
+				if ( ! isset( $array[ $segment ] ) || ! is_array( $array[ $segment ] ) ) {
+					continue 2;
+				}
+
+				$array = &$array[ $segment ];
+			}
+
+			unset( $array[ array_shift( $segments ) ] );
+		}
+	}
+
+	public static function pull( &$array, $key, $default = null ) {
+		$value = static::get( $array, $key, $default );
+
+		static::forget( $array, $key );
+
+		return $value;
+	}
+
+	public static function except( $array, $keys ) {
+		static::forget( $array, $keys );
+
+		return $array;
+	}
+
+	public static function only( $array, $keys ) {
+		return array_intersect_key( $array, array_flip( (array) $keys ) );
+	}
+
+	public static function first( $array, ?callable $callback = null, $default = null ) {
+		foreach ( $array as $key => $value ) {
+			if ( is_null( $callback ) || call_user_func( $callback, $value, $key ) ) {
+				return $value;
+			}
+		}
+
+		return HelperFunctions::value( $default );
+	}
+
+	public static function last( $array, ?callable $callback = null, $default = null ) {
+		if ( is_null( $callback ) ) {
+			return empty( $array ) ? HelperFunctions::value( $default ) : end( $array );
+		}
+
+		return static::first( array_reverse( $array, true ), $callback, $default );
+	}
+
+	public static function where( $array, callable $callback ) {
+		return array_filter( $array, $callback, ARRAY_FILTER_USE_BOTH );
+	}
+
+	public static function pluck( $array, $value, $key = null ) {
+		list( $value, $key ) = static::explodePluckParameters( $value, $key );
+
+		$plucked = [];
+
+		foreach ( $array as $item ) {
+			$itemValue = HelperFunctions::dataGet( $item, $value );
+
+			if ( is_null( $key ) ) {
+				$plucked[] = $itemValue;
+			} else {
+				$plucked[ HelperFunctions::dataGet( $item, $key ) ] = $itemValue;
+			}
+		}
+
+		return $plucked;
+	}
+
+	protected static function explodePluckParameters( $value, $key ) {
+		if ( is_string( $value ) ) {
+			$value = explode( '.', $value );
+		}
+
+		if ( ! is_null( $key ) && ! is_array( $key ) ) {
+			$key = explode( '.', $key );
+		}
+
+		return [ $value, $key ];
+	}
+
+	public static function collapse( $array ) {
+		$merged = [];
+
+		foreach ( $array as $values ) {
+			if ( $values instanceof Collection ) {
+				$values = $values->all();
+			} elseif ( ! is_array( $values ) ) {
+				continue;
+			}
+
+			$merged = array_merge( $merged, $values );
+		}
+
+		return $merged;
+	}
+
+	public static function flatten( $array, $depth = INF ) {
+		$flat = [];
+
+		foreach ( $array as $item ) {
+			if ( $item instanceof Collection ) {
+				$item = $item->all();
+			}
+
+			if ( ! is_array( $item ) ) {
+				$flat[] = $item;
+			} elseif ( 1 === $depth ) {
+				$flat = array_merge( $flat, array_values( $item ) );
+			} else {
+				$flat = array_merge( $flat, static::flatten( $item, $depth - 1 ) );
+			}
+		}
+
+		return $flat;
+	}
+
+	public static function dot( $array, $prepend = '' ) {
+		$flat = [];
+
+		foreach ( $array as $key => $value ) {
+			if ( is_array( $value ) && ! empty( $value ) ) {
+				$flat = array_merge( $flat, static::dot( $value, $prepend . $key . '.' ) );
+			} else {
+				$flat[ $prepend . $key ] = $value;
+			}
+		}
+
+		return $flat;
+	}
+
+	public static function divide( $array ) {
+		return [ array_keys( $array ), array_values( $array ) ];
+	}
+
+	public static function isAssoc( array $array ) {
+		$keys = array_keys( $array );
+
+		return array_keys( $keys ) !== $keys;
+	}
+
+	public static function prepend( $array, $value, $key = null ) {
+		if ( is_null( $key ) ) {
+			array_unshift( $array, $value );
+
+			return $array;
+		}
+
+		return [ $key => $value ] + $array;
+	}
+
+	public static function sort( $array, $callback ) {
+		return Collection::make( $array )->sortBy( $callback )->all();
+	}
+
+	public static function sortRecursive( $array ) {
+		foreach ( $array as &$value ) {
+			if ( is_array( $value ) ) {
+				$value = static::sortRecursive( $value );
+			}
+		}
+
+		if ( static::isAssoc( $array ) ) {
+			ksort( $array );
+		} else {
+			sort( $array );
+		}
+
+		return $array;
+	}
+
+	public static function crossJoin( ...$arrays ) {
+		$combinations = [ [] ];
+
+		foreach ( $arrays as $index => $array ) {
+			$longer = [];
+
+			foreach ( $combinations as $combination ) {
+				foreach ( $array as $item ) {
+					$combination[ $index ] = $item;
+					$longer[]              = $combination;
 				}
 			}
 
-			$results = $append;
+			$combinations = $longer;
 		}
 
-		return $results;
+		return $combinations;
 	}
 }

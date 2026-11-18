@@ -31,8 +31,6 @@ class UpgraderProcessCompleteAction extends AbstractActionHookHandler {
 			return;
 		}
 
-		$this->loadExistingStringTranslationsForAllStringsCommand->run();
-		$this->settingsRepository->setNewTranslationsWereLoadedSetting();
-		$this->settingsRepository->removeKeyFromSettings( SettingsRepositoryInterface::WAS_FRONTEND_VISITED_KEY );
+		$this->settingsRepository->markPackTranslationsReloadPending();
 	}
 }

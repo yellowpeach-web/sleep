@@ -2,6 +2,7 @@
 
 namespace ACFML\Options;
 
+use ACFML\Field\CompositeValue;
 use ACFML\Strings\Factory;
 use ACFML\Strings\Package;
 use WPML\FP\Obj;
@@ -19,26 +20,37 @@ class StringTranslationHooks implements \IWPML_Backend_Action, \IWPML_REST_Actio
 			return;
 		}
 
-		global $wpdb;
-		$string = $wpdb->get_row( $wpdb->prepare( "SELECT name, string_package_id FROM {$wpdb->prefix}icl_strings WHERE id = %d", $stringId ) );
-		if ( ! $string || ! $string->string_package_id ) {
+		$string = apply_filters( 'wpml_st_get_string_by_id', null, (int) $stringId );
+		if ( ! is_array( $string ) || empty( $string['string_package_id'] ) ) {
 			return;
 		}
 
-		$optionFieldName = Str::match( '/^options-(.*?)-(field_.*?)-.*?$/', $string->name );
+		$optionFieldName = Str::match( '/^options-(.*?)-(field_.*?)-.*?$/', $string['name'] );
 		if ( ! $optionFieldName || empty( $optionFieldName[1] ) || empty( $optionFieldName[2] ) ) {
 			return;
 		}
 
-		$packageObject = Factory::createWpmlPackage( $string->string_package_id );
+		$packageObject = Factory::createWpmlPackage( $string['string_package_id'] );
 		if ( Package::OPTION_PACKAGE_KIND_SLUG !== Obj::prop( 'kind_slug', $packageObject ) || ! isset( $packageObject->name ) ) {
 			return;
 		}
 
-		$optionField = $optionFieldName[1];
-		$optionKey   = $optionFieldName[2];
-		$optionName  = $packageObject->name . '_' . $language . '_' . $optionField;
-		update_option( $optionName, $translationData['value'] );
+		list( $fieldName, $subKey ) = CompositeValue::splitName( $optionFieldName[1] );
+
+		$optionName      = $packageObject->name . '_' . $language . '_' . $fieldName;
+		$translatedValue = TranslatedValue::toStore(
+			$translationData['value'],
+			$subKey,
+			$packageObject->name . '_' . $fieldName,
+			$optionName
+		);
+
+		if ( null === $translatedValue ) {
+			return;
+		}
+
+		$optionKey = $optionFieldName[2];
+		update_option( $optionName, $translatedValue );
 		update_option( '_' . $optionName, $optionKey );
 	}
 }

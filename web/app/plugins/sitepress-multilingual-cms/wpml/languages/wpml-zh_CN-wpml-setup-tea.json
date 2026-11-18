@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=1; plural=0;",
             "lang": "zh_CN"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "切换到 Private Translation Cloud (PTC)"
+         ],
+         "Switch to PTC": [
+            "切换到 PTC"
+         ],
+         "Switching…": [
+            "正在切换…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "我们无法确认切换。请重试，或刷新以查看当前引擎。"
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "翻译引擎控件无法加载。请刷新页面并重试。"
+         ],
+         "Loading translation engine settings…": [
+            "正在加载翻译引擎设置…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "在切换到 PTC 之前，请在上方填写您的站点背景信息。"
+         ],
+         "Reload page": [
+            "刷新页面"
+         ],
+         "Could not fetch engines data": [
+            "无法获取引擎数据"
+         ],
          "Error in updating since dates for types.": [
             "更新类型的起始日期时出错。"
          ],
@@ -133,9 +160,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "已应用传统定价。%s 是传统翻译引擎，不推荐用于新站点，并且即将停用。现有站点将保留其调整后的字数费率。"
          ],
-         "Switch to PTC": [
-            "切换到 PTC"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "这是翻译您当前内容现在所需的字数。其中不包括其他插件添加的某些文本（如表单或滑块），这些内容将在设置完成后计入。来自主题和插件的站点字符串也会在设置完成后计入，通常会增加数百字。此后，编辑均免费。您只需为您新添加的字数付费。"
          ],
@@ -151,8 +175,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "这统计了页面、文章和产品及其自定义字段、页面构建器文本和媒体文本，以及它们使用的分类目录、标签和属性。"
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "这统计了页面、文章和产品及其自定义字段、页面构建器文本和媒体文本、它们使用的分类目录、标签和属性，以及站点字符串。术语在使用它的每个项目中均会被统计，且本身也会被单独统计一次，因为它是以这两种方式发送以供翻译的。"
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "它会统计页面、文章和产品及其自定义字段、页面构建器文本和媒体文本，它们所使用的分类目录、标签和属性，以及站点字符串。每个分类目录、标签或属性仅在“分类法”行中计入一次，不会在其所属的项目中重复统计。"
          ],
          "Total items": [
             "项目总数"
@@ -226,14 +250,17 @@
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "要开始<b>自动翻译所有内容</b>，请激活<b>现收现付</b>或购买预付费字数。"
          ],
+         "Translation quality:": [
+            "翻译质量："
+         ],
          "Select payment method": [
-            "选择支付方式"
+            "选择付款方式"
          ],
          "%1$sCheck pricing%2$s.": [
             "%1$s查看定价%2$s。"
          ],
          "Lowest cost per word": [
-            "单字成本最低"
+            "最低每字成本"
          ],
          "Pay only for what you use": [
             "仅为您使用的部分付费"
@@ -357,6 +384,30 @@
          ],
          "Close modal": [
             "关闭模态框"
+         ],
+         "Obvious mistakes": [
+            "明显错误"
+         ],
+         "Mistakes visible": [
+            "可见错误"
+         ],
+         "Ready to publish": [
+            "可以发布"
+         ],
+         "Your engine": [
+            "您的引擎"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "翻译质量（50-100 分）：%1$s 得分为 %2$d，%3$s 得分为 %4$d。"
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "评分基于 WPML 的内部 MQM 翻译质量研究。"
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC 的翻译质量更高，并为您提供可直接发布的翻译结果。"
          ]
       }
    }

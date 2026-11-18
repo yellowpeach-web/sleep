@@ -8,6 +8,7 @@ use WPML\Collect\Support\Collection;
 
 use WPML\FP\Right;
 use WPML\FP\Left;
+use WPML\Utilities\KeyedLock;
 
 use function WPML\Container\make;
 
@@ -20,6 +21,10 @@ class PerformSetup implements IHandler {
 		$offset    = $data->get( 'offset' );
 		$mediaFlag = make( \WPML_Media_Set_Posts_Media_Flag_Factory::class )->create();
 		list ( , $newOffset, $continue ) = $mediaFlag->process_batch( $offset );
+
+		if ( $continue ) {
+			make( KeyedLock::class, [ ':name' => PrepareSetup::class ] )->release();
+		}
 
 		return Right::of( [ 'continue' => $continue, 'offset' => $newOffset, ] );
 	}

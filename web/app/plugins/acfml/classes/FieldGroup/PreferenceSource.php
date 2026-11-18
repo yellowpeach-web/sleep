@@ -3,6 +3,8 @@
 namespace ACFML\FieldGroup;
 
 use ACFML\FieldPreferences\SubfieldRules;
+use ACFML\Helper\FieldGroup;
+use ACFML\Helper\Fields;
 use ACFML\Tools\AdminUrl;
 use WPML\FP\Obj;
 
@@ -27,6 +29,8 @@ class PreferenceSource {
 	private $fieldNamePatterns;
 
 	private $localJsonFiles = null;
+
+	private $patternsByGroup = [];
 
 	public function __construct( $tm = null, $fieldNamePatterns = null ) {
 		$this->tm                = $tm;
@@ -54,6 +58,7 @@ class PreferenceSource {
 			return $resolution;
 		}
 
+		$fieldName   = $this->getKeyTheSiteResolves( $field, $fieldName, $fieldGroup );
 		$elementType = $this->getElementType( $fieldGroup );
 		$state       = $this->readSettingState( $fieldName, $elementType );
 
@@ -67,6 +72,27 @@ class PreferenceSource {
 		}
 
 		return array_merge( $resolution, $this->readGroupSource( $fieldName, $fieldGroup ) );
+	}
+
+	private function getKeyTheSiteResolves( $field, $fieldName, $fieldGroup ) {
+		$fieldKey = (string) Obj::propOr( '', 'key', $field );
+		$groupKey = (string) Obj::propOr( '', 'key', (array) $fieldGroup );
+
+		if ( '' === $fieldKey || '' === $groupKey || ! function_exists( 'acf_get_fields' ) ) {
+			return $fieldName;
+		}
+
+		if ( ! array_key_exists( $groupKey, $this->patternsByGroup ) ) {
+			$this->patternsByGroup[ $groupKey ] = Fields::patternsByFieldKey( acf_get_fields( $fieldGroup ) );
+		}
+
+		$pattern = isset( $this->patternsByGroup[ $groupKey ][ $fieldKey ] ) ? $this->patternsByGroup[ $groupKey ][ $fieldKey ] : null;
+
+		if ( null === $pattern || preg_quote( $fieldName ) === $pattern ) {
+			return $fieldName;
+		}
+
+		return Fields::representativeKey( $pattern );
 	}
 
 	private function readConfigSource( $fieldName, $elementType ) {
@@ -174,6 +200,11 @@ class PreferenceSource {
 		}
 
 		$fieldGroup = acf_get_field_group( $parent );
+
+		if ( ! is_array( $fieldGroup ) && function_exists( 'acf_get_field' ) ) {
+			$groupKey   = FieldGroup::getKey( $parent );
+			$fieldGroup = $groupKey ? acf_get_field_group( $groupKey ) : null;
+		}
 
 		return is_array( $fieldGroup ) ? $fieldGroup : null;
 	}

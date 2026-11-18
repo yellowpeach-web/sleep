@@ -88,8 +88,6 @@ class WPML_TM_Settings_Update extends WPML_SP_User {
 					unset( $this->tm_instance->settings[ $this->index_ro ][ $key ] );
 				}
 			}
-
-			$this->tm_instance->save_settings();
 		}
 	}
 

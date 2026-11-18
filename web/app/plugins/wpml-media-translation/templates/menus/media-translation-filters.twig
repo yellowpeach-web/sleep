@@ -55,6 +55,19 @@
 					value="{{ statuses.needs_translation }}">{{ strings.status_needs_translation }}</option>
 		</select>
 	</div>
+{% if text_scan is defined %}
+
+	{# wpmldev-8628: the Scan result filter (L-2), only with the text scan on. #}
+	<div class="wpml-media-translation-header-col">
+		<label for="filter-by-scan-result" class="screen-reader-text">{{ text_scan.strings.filter_label }}</label>
+		<select id="filter-by-scan-result" name="scan">
+			{% for option in text_scan.filter.options %}
+			<option {% if( text_scan.filter.selected == option.value ) %}selected="selected"{% endif %}
+					value="{{ option.value }}">{{ option.label }}</option>
+			{% endfor %}
+		</select>
+	</div>
+{% endif %}
 
 	<div id="media-search-input-wrap">
     	<label class="screen-reader-text" for="media-search-input">{{ strings.search_media }}</label>

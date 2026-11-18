@@ -33,6 +33,10 @@ abstract class WPML_Element_Translation extends WPML_WPDB_User {
 			? $this->element_data[ $element_id ]['trid'] : null;
 	}
 
+	public function get_cached_trid( $element_id ) {
+		return isset( $this->element_data[ $element_id ]['trid'] ) ? (int) $this->element_data[ $element_id ]['trid'] : null;
+	}
+
 	public function element_id_in( $element_id, $lang, $original_fallback = false ) {
 		$result = ( $original_fallback ? (int) $element_id : null );
 		if ( $this->maybe_populate_cache( $element_id ) && isset( $this->translations[ $element_id ][ $lang ] ) ) {
@@ -173,9 +177,14 @@ abstract class WPML_Element_Translation extends WPML_WPDB_User {
 	}
 
 	public function prefetch_ids( $element_ids ) {
-		$element_ids = (array) $element_ids;
-		$element_ids = array_diff( $element_ids, array_keys( $this->element_data ), array_keys( $this->translations ) );
-		if ( (bool) $element_ids === false ) {
+		$uncached = [];
+		foreach ( (array) $element_ids as $key => $element_id ) {
+			if ( ! isset( $this->element_data[ $element_id ] ) && ! isset( $this->translations[ $element_id ] ) ) {
+				$uncached[ $key ] = $element_id;
+			}
+		}
+		$element_ids = $uncached;
+		if ( ! $element_ids ) {
 			return;
 		}
 
@@ -185,14 +194,14 @@ abstract class WPML_Element_Translation extends WPML_WPDB_User {
 			$this->group_and_populate_cache( $elements );
 		}
 
-		foreach ( array_diff( $element_ids, array_keys( $this->element_data ) ) as $missing_id ) {
-			if ( ! isset( $this->translations[ $missing_id ] ) ) {
+		foreach ( $element_ids as $missing_id ) {
+			if ( ! isset( $this->element_data[ $missing_id ] ) && ! isset( $this->translations[ $missing_id ] ) ) {
 				$this->translations[ $missing_id ] = [];
 			}
 		}
 	}
 
-	private function prefetch_batches( array $element_ids ) {
+	protected function prefetch_batches( array $element_ids ) {
 		if ( count( $element_ids ) <= self::PREFETCH_BATCH_SIZE ) {
 			return [ $element_ids ];
 		}
@@ -306,6 +315,6 @@ abstract class WPML_Element_Translation extends WPML_WPDB_User {
 	}
 
 	public function is_a_duplicate( $post_id ) {
-		return (bool) get_post_meta( $post_id, '_icl_lang_duplicate_of', true );
+		return \WPML\TranslationPolicy\Duplicate\DuplicateReaders::isKeptInStep( (int) $post_id );
 	}
 }

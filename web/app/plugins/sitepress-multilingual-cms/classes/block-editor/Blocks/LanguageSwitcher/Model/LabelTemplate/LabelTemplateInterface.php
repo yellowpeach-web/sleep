@@ -7,4 +7,6 @@ interface LabelTemplateInterface {
 	public function matchesXPath( \DOMXPath $domXPath, $prefix );
 
 	public function getDisplayName( LanguageItem $languageItem );
+
+	public function writeLabel( \DOMElement $label, LanguageItem $languageItem );
 }

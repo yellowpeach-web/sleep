@@ -219,7 +219,11 @@ class WPML_Absolute_To_Permalinks {
 
 			$this->met_gone_target = $this->met_gone_target || $gone;
 
-			if ( $gone && ( $this->strip_gone_targets || ( $this->strip_gone_targets_in_theme_render && $this->is_theme_render() ) ) ) {
+			if (
+				$gone
+				&& ( $this->strip_gone_targets || ( $this->strip_gone_targets_in_theme_render && $this->is_theme_render() ) )
+				&& $this->target_names_nothing( $parts )
+			) {
 				return '<a' . $parts->pre_href . $parts->trail . '>';
 			}
 
@@ -231,7 +235,7 @@ class WPML_Absolute_To_Permalinks {
 		$url      = $this->add_page_number( $url, $page_number );
 		$fragment = $this->get_fragment( $url, $fragment_parts );
 
-		if ( 'widget_text' == $this->sitepress->get_wp_api()->current_filter() ) {
+		if ( in_array( $this->sitepress->get_wp_api()->current_filter(), [ 'widget_text', 'widget_block_content' ], true ) ) {
 			$url = $this->sitepress->convert_url( $url );
 		}
 
@@ -278,6 +282,30 @@ class WPML_Absolute_To_Permalinks {
 		}
 
 		return ! $this->sitepress->get_wp_api()->get_post( (int) $parts->id );
+	}
+
+	private function target_names_nothing( $parts ) {
+		$value    = (string) $parts->id;
+		$is_id    = ctype_digit( $value ) && 0 !== (int) $value;
+		$taxonomy = 'cat_ID' === $parts->content_type ? false : $this->taxonomies_query->find( $parts->content_type );
+
+		if ( $taxonomy ) {
+			if ( get_term_by( 'slug', $value, $taxonomy ) ) {
+				return false;
+			}
+
+			return ! $is_id || empty( get_term( (int) $value ) );
+		}
+
+		if ( ! $is_id ) {
+			return false;
+		}
+
+		if ( 'cat_ID' === $parts->content_type ) {
+			return empty( get_term( (int) $value ) );
+		}
+
+		return ! $this->sitepress->get_wp_api()->get_post( (int) $value );
 	}
 
 	private function get_found_parts( $matches ) {
@@ -342,13 +370,13 @@ class WPML_Absolute_To_Permalinks {
 		$resolved_id = $this->sitepress->get_object_id( $link_id, $post_type, false, $this->lang );
 		$resolved    = get_post( $resolved_id ? (int) $resolved_id : $link_id );
 
-		return $resolved && ! $this->is_linkable( $resolved ) ? $resolved : null;
+		return $resolved && ! self::is_linkable( $resolved ) ? $resolved : null;
 	}
 
-	private function is_linkable( $post ) {
+	public static function is_linkable( $post ) {
 		$blocked = apply_filters(
 			'wpml_link_target_not_convert_post_statuses',
-			array( 'draft', 'auto-draft', 'pending', 'future', 'private', 'trash' ),
+			array( 'draft', 'auto-draft', 'pending', 'future', 'trash' ),
 			$post
 		);
 
@@ -373,9 +401,7 @@ class WPML_Absolute_To_Permalinks {
 		$fragment_parts = clone $parts;
 
 		if ( is_string( $parts->fragment ) && '' !== $parts->fragment ) {
-			$query = preg_match( '@(?<!&)#|#(?!038;)@', $parts->fragment, $anchor, PREG_OFFSET_CAPTURE )
-				? substr( $parts->fragment, 0, $anchor[0][1] )
-				: $parts->fragment;
+			list( $query ) = self::split_anchor( $parts->fragment );
 
 			if ( preg_match( '@(?:^|&(?:amp;|#038;)?)page=([0-9]+)(?=&|$)@', $query, $matches, PREG_OFFSET_CAPTURE ) ) {
 				$page_number              = (int) $matches[1][0];
@@ -407,8 +433,16 @@ class WPML_Absolute_To_Permalinks {
 		return trailingslashit( $path ) . user_trailingslashit( (string) $page_number, 'single_paged' ) . ( null !== $query ? '?' . $query : '' );
 	}
 
+	private static function split_anchor( $tail ) {
+		if ( ! is_string( $tail ) || ! preg_match( '@(?<!&)#|#(?!038;)@', $tail, $anchor, PREG_OFFSET_CAPTURE ) ) {
+			return [ $tail, '' ];
+		}
+
+		return [ substr( $tail, 0, $anchor[0][1] ), substr( $tail, $anchor[0][1] ) ];
+	}
+
 	private function get_fragment( $url, $parts ) {
-		$fragment = $parts->fragment;
+		list( $fragment, $anchor ) = self::split_anchor( $parts->fragment );
 		$fragment = $this->remove_query_in_wrong_lang( $fragment );
 		if ( is_string( $fragment ) && $fragment != '' ) {
 			$fragment = str_replace( '&#038;', '&', $fragment );
@@ -424,7 +458,7 @@ class WPML_Absolute_To_Permalinks {
 			}
 		}
 
-		return $fragment;
+		return $fragment . $anchor;
 	}
 
 	private function remove_query_in_wrong_lang( $fragment ) {

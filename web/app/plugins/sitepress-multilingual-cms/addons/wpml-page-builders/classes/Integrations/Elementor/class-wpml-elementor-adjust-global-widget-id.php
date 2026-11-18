@@ -1,5 +1,7 @@
 <?php
 
+use WPML\PB\Elementor\Helper\Template;
+
 class WPML_Elementor_Adjust_Global_Widget_ID implements IWPML_Action {
 
 	private $elementor_settings;
@@ -98,8 +100,10 @@ class WPML_Elementor_Adjust_Global_Widget_ID implements IWPML_Action {
 					if ( $widget_post->get_language_code() !== $language ) {
 						$translation = $widget_post->get_translation( $language );
 						if ( $translation ) {
-							$data['templateID'] = $translation->get_element_id();
+							$data['templateID'] = Template::fallBackWhenUnpublished( $data['templateID'], $translation->get_element_id(), Template::POST_TYPE );
 						}
+					} else {
+						$data['templateID'] = Template::fallBackWhenUnpublished( $data['templateID'], $data['templateID'], Template::POST_TYPE );
 					}
 				} catch ( Exception $e ) {
 				}

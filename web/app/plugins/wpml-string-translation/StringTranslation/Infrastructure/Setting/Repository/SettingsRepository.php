@@ -14,9 +14,15 @@ class SettingsRepository implements SettingsRepositoryInterface {
 
 	const DETECT_JS_STRINGS = 'detect_js_strings';
 
+	const PACK_TRANSLATIONS_RELOAD_PENDING_OPTION = 'wpml_st_pack_translations_reload_pending';
+
+	const PACK_TRANSLATIONS_RELOAD_FAILURES_OPTION = 'wpml_st_pack_translations_reload_failures';
+
 	const AUTOREGISTER_STRINGS_ENABLED_TIME_KEY = 'autoregister_strings_enabled_time';
 
 	const AUTOREGISTER_STRINGS_TIMEOUT = 2 * HOUR_IN_SECONDS;
+
+	const ACTION_MODE_CHANGED = 'wpml_st_autoregister_strings_mode_changed';
 
 	const MAX_QUEUED_FRONTEND_STRINGS_COUNT = 2500;
 
@@ -74,6 +80,20 @@ class SettingsRepository implements SettingsRepositoryInterface {
 	}
 
 	public function setAutoregisterStringsTypeSetting( $value ) {
+		$this->writeAutoregisterStringsTypeSetting( $value, false );
+	}
+
+	public function setAutoregisterStringsTypeSettingByOwner( $value ) {
+		$this->writeAutoregisterStringsTypeSetting( $value, true );
+	}
+
+	public function isAutoregisterModeSetByOwner(): bool {
+		$settings = $this->getSettings();
+
+		return ! empty( $settings[ SettingsRepositoryInterface::AUTOREGISTER_STRINGS_SET_BY_OWNER_KEY ] );
+	}
+
+	private function writeAutoregisterStringsTypeSetting( $value, bool $byOwner ) {
 		$allowedValues = [
 			SettingsRepositoryInterface::AUTOREGISTER_STRINGS_TYPE_ONLY_VIEWED_BY_ADMIN,
 			SettingsRepositoryInterface::AUTOREGISTER_STRINGS_TYPE_VIEWED_BY_ALL_USERS,
@@ -97,8 +117,16 @@ class SettingsRepository implements SettingsRepositoryInterface {
 			unset( $settings[ self::AUTOREGISTER_STRINGS_ENABLED_TIME_KEY ] );
 		}
 
+		if ( $byOwner ) {
+			$settings[ SettingsRepositoryInterface::AUTOREGISTER_STRINGS_SET_BY_OWNER_KEY ] = 1;
+		} else {
+			unset( $settings[ SettingsRepositoryInterface::AUTOREGISTER_STRINGS_SET_BY_OWNER_KEY ] );
+		}
+
 		$this->saveSettings( $settings );
 		$this->updateWpmlSettingToPreloadThemeMoFilesAutomatically( $isEnabled );
+
+		do_action( self::ACTION_MODE_CHANGED, (int) $value );
 	}
 
 	private function updateWpmlSettingToPreloadThemeMoFilesAutomatically( bool $isEnabled ) {
@@ -123,7 +151,7 @@ class SettingsRepository implements SettingsRepositoryInterface {
 
 		$type = (int) $settings['autoregister_strings'];
 
-		if ( $type === SettingsRepositoryInterface::AUTOREGISTER_STRINGS_TYPE_DISABLED ) {
+		if ( $type !== SettingsRepositoryInterface::AUTOREGISTER_STRINGS_TYPE_VIEWED_BY_ALL_USERS ) {
 			return $type;
 		}
 
@@ -137,7 +165,7 @@ class SettingsRepository implements SettingsRepositoryInterface {
 
 		$settings = $this->settings = $this->freshSettings();
 		$type     = (int) ( $settings['autoregister_strings'] ?? SettingsRepositoryInterface::AUTOREGISTER_STRINGS_TYPE_DISABLED );
-		if ( $type === SettingsRepositoryInterface::AUTOREGISTER_STRINGS_TYPE_DISABLED || $this->autoregisterHorizonIsRunning( $settings ) ) {
+		if ( $type !== SettingsRepositoryInterface::AUTOREGISTER_STRINGS_TYPE_VIEWED_BY_ALL_USERS || $this->autoregisterHorizonIsRunning( $settings ) ) {
 			return $type;
 		}
 
@@ -149,8 +177,11 @@ class SettingsRepository implements SettingsRepositoryInterface {
 
 		$settings['autoregister_strings'] = SettingsRepositoryInterface::AUTOREGISTER_STRINGS_TYPE_DISABLED;
 		unset( $settings[ self::AUTOREGISTER_STRINGS_ENABLED_TIME_KEY ] );
+		unset( $settings[ SettingsRepositoryInterface::AUTOREGISTER_STRINGS_SET_BY_OWNER_KEY ] );
 		$this->saveSettings( $settings );
 		$this->updateWpmlSettingToPreloadThemeMoFilesAutomatically( false );
+
+		do_action( self::ACTION_MODE_CHANGED, (int) SettingsRepositoryInterface::AUTOREGISTER_STRINGS_TYPE_DISABLED );
 
 		return SettingsRepositoryInterface::AUTOREGISTER_STRINGS_TYPE_DISABLED;
 	}
@@ -212,7 +243,24 @@ class SettingsRepository implements SettingsRepositoryInterface {
 	}
 
 	public function saveKeyToSettings( string $keyName, $value = 1 ) {
-		$this->saveKey( $keyName, $value );
+		if ( ! function_exists( 'wpml_save_setting_onto_stored' ) ) {
+			$this->saveKey( $keyName, $value );
+			return;
+		}
+
+		$settings             = $this->freshSettings();
+		$settings[ $keyName ] = $value;
+		$this->sitepress->set_setting( 'st', $settings );
+		$this->settings = $settings;
+		wpml_save_setting_onto_stored(
+			'st',
+			function ( $stored ) use ( $keyName, $value ) {
+				$stored             = is_array( $stored ) ? $stored : [];
+				$stored[ $keyName ] = $value;
+
+				return $stored;
+			}
+		);
 	}
 
 	public function removeKeyFromSettings( string $keyName ) {
@@ -224,6 +272,36 @@ class SettingsRepository implements SettingsRepositoryInterface {
 	public function hasKeyInSettings( string $keyName ): bool {
 		$settings = $this->getSettings();
 		return array_key_exists( $keyName, $settings );
+	}
+
+	public function markPackTranslationsReloadPending() {
+		update_option( self::PACK_TRANSLATIONS_RELOAD_PENDING_OPTION, time(), false );
+	}
+
+	public function isPackTranslationsReloadPending(): bool {
+		if ( $this->hasKeyInSettings( self::PACK_TRANSLATIONS_RELOAD_PENDING_KEY ) ) {
+			$this->markPackTranslationsReloadPending();
+			$this->removeKeyFromSettings( self::PACK_TRANSLATIONS_RELOAD_PENDING_KEY );
+
+			return true;
+		}
+
+		return false !== get_option( self::PACK_TRANSLATIONS_RELOAD_PENDING_OPTION, false );
+	}
+
+	public function claimPackTranslationsReloadPending(): bool {
+		return delete_option( self::PACK_TRANSLATIONS_RELOAD_PENDING_OPTION );
+	}
+
+	public function recordPackTranslationsReloadFailure(): int {
+		$failures = (int) get_option( self::PACK_TRANSLATIONS_RELOAD_FAILURES_OPTION, 0 ) + 1;
+		update_option( self::PACK_TRANSLATIONS_RELOAD_FAILURES_OPTION, $failures, false );
+
+		return $failures;
+	}
+
+	public function clearPackTranslationsReloadFailures() {
+		delete_option( self::PACK_TRANSLATIONS_RELOAD_FAILURES_OPTION );
 	}
 
 	public function getKeyValueFromSettings( string $keyName ): string {
@@ -428,6 +506,22 @@ class SettingsRepository implements SettingsRepositoryInterface {
 
 	private function isCliRequest(): bool {
 		return defined('WP_CLI' ) && WP_CLI;
+	}
+
+	public function isGuestRequestInAdminOnlyMode(): bool {
+		if (
+			! $this->isAutoregisterStringsTypeOnlyViewedByAdmin() ||
+			$this->isCronRequest() ||
+			$this->isCliRequest() ||
+			! defined( 'LOGGED_IN_COOKIE' )
+		) {
+			return false;
+		}
+
+		return empty( $_COOKIE[ LOGGED_IN_COOKIE ] ) &&
+			empty( $_SERVER['HTTP_AUTHORIZATION'] ) &&
+			empty( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) &&
+			empty( $_SERVER['PHP_AUTH_USER'] );
 	}
 
 	public function shouldNotAutoregisterStringsFromCurrentUrl(): bool {

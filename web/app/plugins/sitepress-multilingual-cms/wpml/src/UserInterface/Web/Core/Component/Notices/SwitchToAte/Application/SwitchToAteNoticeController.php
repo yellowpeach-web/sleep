@@ -4,12 +4,17 @@ namespace WPML\UserInterface\Web\Core\Component\Notices\SwitchToAte\Application;
 
 use WPML\Core\Component\Communication\Application\Query\DismissedNoticesQuery;
 use WPML\Core\Component\Translation\Application\Repository\SettingsRepository;
+use WPML\Core\SharedKernel\Component\ATE\Application\Query\AutomaticTranslationAccountQueryInterface;
 use WPML\Core\SharedKernel\Component\User\Application\Query\UserQueryInterface;
 use WPML\UserInterface\Web\Core\Component\Notices\TeaUpgrade\Application\TeaUpgradeNoticeDataProvider;
 use WPML\UserInterface\Web\Core\SharedKernel\Config\NoticeRenderInterface;
 use WPML\UserInterface\Web\Core\SharedKernel\Config\NoticeRequirementsInterface;
 
 class SwitchToAteNoticeController implements NoticeRenderInterface, NoticeRequirementsInterface {
+
+  const NOTICE_ID = 'switch-to-ate-notice';
+
+  const AUTOMATIC_TRANSLATION_OFF_NOTICE_ID = 'automatic-translation-off-notice';
 
   private $dismissedNoticesQuery;
 
@@ -19,20 +24,21 @@ class SwitchToAteNoticeController implements NoticeRenderInterface, NoticeRequir
 
   private $teaUpgradeNotice;
 
-  private $noticeId;
+  private $accountQuery;
 
 
   public function __construct(
     DismissedNoticesQuery $dismissedNoticesQuery,
     UserQueryInterface $userQuery,
     SettingsRepository $settingsRepository,
-    TeaUpgradeNoticeDataProvider $teaUpgradeNotice
+    TeaUpgradeNoticeDataProvider $teaUpgradeNotice,
+    AutomaticTranslationAccountQueryInterface $accountQuery
   ) {
     $this->dismissedNoticesQuery = $dismissedNoticesQuery;
     $this->userQuery = $userQuery;
     $this->settingsRepository = $settingsRepository;
     $this->teaUpgradeNotice = $teaUpgradeNotice;
-    $this->noticeId = 'switch-to-ate-notice';
+    $this->accountQuery = $accountQuery;
   }
 
 
@@ -75,7 +81,14 @@ HTML;
       return false;
     }
 
-    return empty( $this->dismissedNoticesQuery->getDismissedByUser( $user->getId(), [ $this->noticeId ] ) );
+    return empty( $this->dismissedNoticesQuery->getDismissedByUser( $user->getId(), [ $this->noticeId() ] ) );
+  }
+
+
+  private function noticeId() : string {
+    return $this->accountQuery->needsAccountOnly()
+      ? self::AUTOMATIC_TRANSLATION_OFF_NOTICE_ID
+      : self::NOTICE_ID;
   }
 
 

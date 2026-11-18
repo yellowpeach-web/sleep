@@ -75,7 +75,7 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
             var triggerNode = $(this),
                 messageWrapper = triggerNode.closest('.js-wpml-ls-option').find('.js-wpml-ls-messages');
 
-            showUpdatedContent(messageWrapper, wpml_ls.strings.leave_text_box_to_save, 0, 'notice');
+            showUpdatedMessage(messageWrapper, wpml_ls.strings.leave_text_box_to_save, 0, 'notice');
         });
     };
 
@@ -772,10 +772,10 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
 					updateDialogInlineStyle(data.styles);
 					buildCSSLinks(data.css);
 					buildJSScripts(data.js);
-					showUpdatedContent(preview, data.html);
+					showUpdatedPreview(preview, data.html);
 				},
 				error: function (data) {
-					showUpdatedContent(preview, data, 0, 'error');
+					showUpdatedMessage(preview, data, 0, 'error');
 				}
 			});
 		}
@@ -806,14 +806,14 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
 				settings: settings
 			},
 			success:  function (data) {
-				showUpdatedContent(messageWrapper, data, 2500, 'updated');
+				showUpdatedMessage(messageWrapper, data, 2500, 'updated');
 
 				if(typeof successCallback === 'function') {
 					successCallback();
 				}
 			},
 			error: function (data) {
-				showUpdatedContent(messageWrapper, data, 2500, 'error');
+				showUpdatedMessage(messageWrapper, data, 2500, 'error');
 			}
 		});
 	}, 500);
@@ -861,7 +861,7 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
 		wrapper.siblings('.spinner').addClass('is-active');
 	};
 
-	var showUpdatedContent = function(wrapper, content, delay, type) {
+	var showUpdated = function(wrapper, delay, type) {
 		wrapper.siblings('.spinner').removeClass('is-active');
 
 		wrapper.removeClass('updated notice error');
@@ -870,13 +870,33 @@ WPML_core.languageSwitcher = (function( $, wpml_ls ) {
 			wrapper.addClass(type);
 		}
 
-		wrapper.html(content).fadeIn();
+		wrapper.fadeIn();
 
 		if(delay) {
 			wrapper.delay(delay).fadeOut();
 		}
 
 		$('.js-wpml-ls-dialog-save').prop('disabled', false);
+	};
+
+	// The switcher preview is markup the server rendered for this purpose: the
+	// one place an AJAX answer is inserted as HTML.
+	var showUpdatedPreview = function(wrapper, html) {
+		wrapper.html(html);
+		showUpdated(wrapper);
+	};
+
+	// The server escapes its messages for HTML (esc_html__), so the entities
+	// are decoded first; a textarea parses no tags and runs nothing.
+	var decodeEntities = function(text) {
+		return $('<textarea/>').html(String(text)).text();
+	};
+
+	// A message - "Settings saved", an error, a localized hint - is text,
+	// whatever it carries (wpmldev-11634): it is never inserted as HTML.
+	var showUpdatedMessage = function(wrapper, message, delay, type) {
+		wrapper.text(decodeEntities(message));
+		showUpdated(wrapper, delay, type);
 	};
 
 	var updateDialogInlineStyle = function (styles) {

@@ -13,14 +13,29 @@
          "The translation could not be started because the server did not answer.": [
             "La traduction n'a pas pu être lancée car le serveur n'a pas répondu."
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "Votre session a expiré. Actualisez cette page et réessayez."
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "PTC traduit le contenu. L'éditeur s'ouvrira dès qu'il sera prêt."
+         ],
          "This translation cannot be opened right now.": [
             "Cette traduction ne peut pas être ouverte pour le moment."
          ],
          "Refresh this page": [
             "Actualiser cette page"
          ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "Pas assez de mots prépayés pour traduire cet élément automatiquement. Ajoutez d'autres mots, puis réessayez."
+         ],
+         "Get more words": [
+            "Obtenir plus de mots"
+         ],
+         "Close": [
+            "Fermer"
+         ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
-            "Ce contenu est en cours de traduction automatique. Si vous souhaitez effectuer une autre action, annulez d'abord les travaux de traduction."
+            "Ce contenu est en cours de traduction automatique. Si vous souhaitez en faire autre chose, annulez d'abord les tâches de traduction."
          ],
          "You don't have the rights to review this language": [
             "Vous n'avez pas les droits pour réviser cette langue"
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "Traduction de votre contenu"
+         ],
+         "Translate Everything is active": [
+            "Tout traduire est actif"
          ],
          "%d translation notice": [
             "%d avis de traduction",
@@ -51,13 +69,13 @@
             "Nous avons remarqué quelque chose d'inattendu dans votre activité de traduction récente et avons suspendu la traduction automatique sur votre compte. Contactez le support et nous l'examinerons avec vous."
          ],
          "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
-            "<b>Tout traduire automatiquement</b> est en pause : limite de dépenses mensuelle atteinte"
+            "<b>Tout traduire automatiquement</b> est en pause : limite de dépenses mensuelles atteinte"
          ],
          "Automatic translation is paused: monthly spending cap reached": [
-            "La traduction automatique est en pause : limite de dépenses mensuelle atteinte"
+            "La traduction automatique est en pause : limite de dépenses mensuelles atteinte"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "Ce site web a atteint la limite de dépenses mensuelle qui lui a été fixée. La traduction reprendra lorsque la limite sera augmentée ou réinitialisée. Seul le propriétaire du compte peut effectuer cette action."
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "Ce site web a atteint la limite de dépenses mensuelles qui lui a été fixée. La traduction reprendra lorsque la limite sera augmentée ou réinitialisée. Vous pouvez l'augmenter sur la page Traduction IA : facturation et utilisation."
          ],
          "Preparing content for translation": [
             "Préparation du contenu pour la traduction"
@@ -72,8 +90,9 @@
             "Votre langue, %s, doit être associée à une langue prise en charge afin d'utiliser la traduction automatique.",
             "Les langues suivantes sur votre site doivent être associées à une langue prise en charge afin d'utiliser la traduction automatique : %s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "Le contenu dans ces langues : %s, ne peut pas être traduit automatiquement à moins que vous ne les associiez à une langue différente de celle par défaut."
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "La traduction automatique n'est pas disponible entre %1$s et %2$s, car elles sont reconnues comme étant la même langue. Choisissez plutôt « Dupliquer » pour copier le contenu.",
+            "La traduction automatique n'est pas disponible entre le %1$s et ces langues car elles sont reconnues comme étant la même langue : %2$s. Choisissez plutôt « Dupliquer » pour copier le contenu."
          ],
          "%d translation waiting for review": [
             "%d traduction en attente de révision",
@@ -154,14 +173,11 @@
          "Pay now": [
             "Payer maintenant"
          ],
-         "Get more words": [
-            "Obtenir plus de mots"
-         ],
          "Assign words": [
             "Attribuer des mots"
          ],
          "Go to Translation Jobs": [
-            "Aller aux travaux de traduction"
+            "Accéder aux tâches de traduction"
          ],
          "Raise the cap": [
             "Augmenter la limite"

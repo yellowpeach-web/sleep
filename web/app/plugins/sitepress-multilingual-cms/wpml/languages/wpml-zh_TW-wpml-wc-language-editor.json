@@ -565,6 +565,9 @@
          "Blocked by a firewall or CDN": [
             "遭到防火牆或 CDN 封鎖"
          ],
+         "Used by another site": [
+            "已被其他網站使用"
+         ],
          "Not valid": [
             "無效"
          ],
@@ -588,6 +591,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s 可以載入，但防火牆或 CDN 封鎖了 WPML 的檢查。"
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "已被此網路上的其他網站使用：%s。請輸入其他網域以儲存。"
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "無法驗證網域：%s。請檢查它是否指向此網站，或取消勾選「儲存時驗證」以強制儲存。"
@@ -931,6 +937,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "在儲存此語言之前，請選擇要還原此網站先前在該語言中的內容，還是重新開始。"
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "語言無法對應到您網站的預設語言。請改選「自動配對」。"
+         ],
          "You don’t have permission to change languages.": [
             "您沒有變更語言的權限。"
          ],
@@ -991,6 +1000,9 @@
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "如果您在清單中找不到您的語言，請 <a>新增自訂語言</a>。"
          ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s 已移動至第 %2$d 個位置（共 %3$d 個）。"
+         ],
          "Default language": [
             "預設語言"
          ],
@@ -1047,6 +1059,12 @@
          ],
          "Delete language": [
             "刪除語言"
+         ],
+         "Move %s. Use the up and down arrow keys.": [
+            "移動 %s。請使用向上鍵和向下鍵。"
+         ],
+         "Drag to change the order": [
+            "拖曳以變更順序"
          ],
          "Type to search all languages…": [
             "輸入以搜尋所有語言…"
@@ -1119,6 +1137,9 @@
          ],
          "Recognized as the same language as the default": [
             "被識別為與預設語言相同的語言"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "自動翻譯已關閉：尚未啟用任何翻譯引擎。若要啟用，請前往 <link>WPML → 設定 → AI 翻譯</link>。"
          ],
          "%s (Regional)": [
             "%s (地區性)"

@@ -115,6 +115,8 @@ function wpml_st_init_register_widget_titles() {
 			}
 		}
 	}
+	$default_lang = Languages::getDefaultCode();
+
 	foreach ( $active_widgets as $aw ) {
 		$int = preg_match( '#-([0-9]+)$#i', $aw, $matches );
 		if ( $int ) {
@@ -137,7 +139,7 @@ function wpml_st_init_register_widget_titles() {
 		}
 
 		if ( $w_title ) {
-			icl_register_string( WPML_ST_WIDGET_STRING_DOMAIN, 'widget title - ' . md5( $w_title ), $w_title );
+			icl_register_string( WPML_ST_WIDGET_STRING_DOMAIN, 'widget title - ' . md5( $w_title ), $w_title, false, $default_lang );
 		}
 	}
 }
@@ -404,11 +406,72 @@ add_filter( 'translate_string', 'translate_string_filter', 10, 5 );
 function wpml_translate_single_string_filter( $original_value, $context, $name, $language_code = null, $has_translation = null ) {
 	$result = $original_value;
 	if ( is_string( $name ) ) {
+		$name   = wpml_st_widget_title_lookup_name( $context, $name, $original_value );
 		$result = icl_translate( $context, $name, $original_value, false, $has_translation, $language_code );
 	}
 
 	return $result;
 }
+
+function wpml_st_widget_title_lookup_name( $context, $name, $value ) {
+	$resolved = &wpml_st_widget_title_lookup_cache();
+
+	$widgets_domain = defined( 'WPML_ST_WIDGET_STRING_DOMAIN' ) ? WPML_ST_WIDGET_STRING_DOMAIN : 'Widgets';
+
+	if (
+		$widgets_domain !== $context
+		|| 'widget title' !== $name
+		|| ! is_string( $value )
+		|| '' === $value
+	) {
+		return $name;
+	}
+
+	global $wpdb;
+
+	$key = $wpdb->prefix . "\0" . $value;
+	if ( isset( $resolved[ $key ] ) ) {
+		return $resolved[ $key ];
+	}
+
+	$widget_title_name = 'widget title - ' . md5( $value );
+	$stored            = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT name, value FROM {$wpdb->prefix}icl_strings WHERE context = %s AND gettext_context = '' AND name IN ( %s, %s )",
+			$context,
+			$name,
+			$widget_title_name
+		)
+	);
+
+	$found = [];
+	foreach ( (array) $stored as $row ) {
+		$found[ $row->name ] = $row->value;
+	}
+
+	if ( isset( $found[ $name ] ) && $found[ $name ] === $value ) {
+		$resolved[ $key ] = $name;
+	} else {
+		$resolved[ $key ] = isset( $found[ $widget_title_name ] ) ? $widget_title_name : $name;
+	}
+
+	return $resolved[ $key ];
+}
+
+function &wpml_st_widget_title_lookup_cache() {
+	static $resolved = [];
+
+	return $resolved;
+}
+
+function wpml_st_widget_title_lookup_reset() {
+	$resolved = &wpml_st_widget_title_lookup_cache();
+	$resolved = [];
+}
+
+add_action( 'wpml_st_string_unregistered', 'wpml_st_widget_title_lookup_reset' );
+add_action( 'wpml_st_string_updated', 'wpml_st_widget_title_lookup_reset' );
+add_action( 'wpml_st_update_string', 'wpml_st_widget_title_lookup_reset' );
 
 add_filter( 'wpml_translate_single_string', 'wpml_translate_single_string_filter', 10, 5 );
 

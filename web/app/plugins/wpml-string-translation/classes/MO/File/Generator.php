@@ -5,6 +5,7 @@ namespace WPML\ST\MO\File;
 
 use WPML\Collect\Support\Collection;
 use WPML\ST\TranslateWpmlString;
+use WPML\ST\TranslationFile\FileMark;
 use WPML\ST\TranslationFile\StringEntity;
 use function wpml_collect;
 
@@ -15,10 +16,13 @@ class Generator {
 		$this->moFactory = $moFactory;
 	}
 
-	public function getContent( array $entries, $pluralForms = null ) {
+	public function getContent( array $entries, $pluralForms = null, $mark = null ) {
 		$mo = $this->moFactory->createNewInstance();
 		if ( $pluralForms ) {
 			$mo->set_header( 'Plural-Forms', $pluralForms );
+		}
+		if ( null !== $mark && '' !== $mark ) {
+			$mo->set_header( FileMark::HEADER, $mark );
 		}
 		wpml_collect( $entries )
 			->reduce( [ $this, 'createMOFormatEntities' ], wpml_collect( [] ) )
@@ -42,7 +46,7 @@ class Generator {
 	public function createMOFormatEntities( $carry, StringEntity $entry ) {
 		$carry->push( $this->mapStringEntityToMOFormatUsing( $entry, 'original' ) );
 
-		if ( TranslateWpmlString::canTranslateWithMO( $entry->get_original(), $entry->get_name() ) ) {
+		if ( TranslateWpmlString::hasNameEntry( $entry->get_original(), $entry->get_name() ) ) {
 			$carry->push( $this->mapStringEntityToMOFormatUsing( $entry, 'name' ) );
 		}
 

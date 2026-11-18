@@ -9,11 +9,19 @@ interface SettingsRepositoryInterface {
 
 	const WAS_FRONTEND_VISITED_KEY = 'was_frontend_visited_key';
 
+	const PACK_TRANSLATIONS_RELOAD_PENDING_KEY = 'pack_translations_reload_pending';
+
+	const AUTOREGISTER_STRINGS_SET_BY_OWNER_KEY = 'autoregister_strings_set_by_owner';
+
+	const AUTOREGISTER_MODE_RESTORED_NOTICE_KEY = 'autoregister_mode_restored_notice';
+
 	public function canProcessQueueInCurrentRequest(): bool;
 	public function isAutoregisterStringsTypeOnlyViewedByAdmin(): bool;
 	public function isAutoregisterStringsTypeViewedByAllUsers(): bool;
 	public function isAutoregisterStringsTypeDisabled(): bool;
 	public function setAutoregisterStringsTypeSetting( $value );
+	public function setAutoregisterStringsTypeSettingByOwner( $value );
+	public function isAutoregisterModeSetByOwner(): bool;
 	public function getAutoregisterStringsTypeSetting(): int;
 
 	public function getVisibleColumns(): array;
@@ -25,6 +33,15 @@ interface SettingsRepositoryInterface {
 	public function saveKeyToSettings( string $keyName, $value = 1 );
 	public function removeKeyFromSettings( string $keyName );
 	public function hasKeyInSettings( string $keyName ): bool;
+
+	public function markPackTranslationsReloadPending();
+	public function isPackTranslationsReloadPending(): bool;
+
+	public function claimPackTranslationsReloadPending(): bool;
+
+	public function recordPackTranslationsReloadFailure(): int;
+
+	public function clearPackTranslationsReloadFailures();
 	public function getKeyValueFromSettings( string $keyName ): string;
 	public function getIsCurrentUserAdmin(): bool;
 	public function isAdminViewingFrontendPage(): bool;
@@ -46,6 +63,7 @@ interface SettingsRepositoryInterface {
 	public function getLanguageDetails( string $languageCode ): array;
 	public function isCronRequest(): bool;
 	public function shouldNotAutoregisterStringsFromCurrentUrl(): bool;
+	public function isGuestRequestInAdminOnlyMode(): bool;
 	public function deleteCache();
 	public function updateIfIsCurrentUserAdminCache();
 	public function switchToLocale( string $locale, array $domainsToAllowReloadTranslations = [], $languageCode = null );

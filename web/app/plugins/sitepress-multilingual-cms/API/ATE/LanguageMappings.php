@@ -12,6 +12,7 @@ use WPML\FP\Obj;
 use WPML\FP\Relation;
 use WPML\FP\Wrapper;
 use WPML\Element\API\Entity\LanguageMapping;
+use WPML\Core\Component\LanguageEditor\Domain\LanguageDerivation;
 use WPML\LanguageEditor\LanguageCodeResolution;
 use WPML\Setup\Option;
 use WPML\TM\ATE\API\CacheStorage\StaticVariable;
@@ -52,24 +53,55 @@ class LanguageMappings {
 
 		$ateAPI = static::getATEAPI();
 
-		$mappedTargets = static::mappedTargetsOfCustomRowsOnCatalogueCodes( $targetLanguages );
+		$sourceLanguageCode = $sourceLang && \WPML\TM\ATE\AutomaticPairSupport::isRefusalEnabled()
+			? (string) $sourceLang
+			: (string) Languages::getDefaultCode();
 
-		$targetCodes = [];
-		foreach ( $targetLanguages as $lang ) {
-			$targetCodes = array_merge( $targetCodes, static::lookupVariantsOf( $lang, $mappedTargets ) );
+		$mappedTargets = array_merge(
+			static::mappedTargetsOfCustomRowsOnCatalogueCodes( [ [ 'code' => $sourceLanguageCode ] ] ),
+			static::mappedTargetsOfCustomRowsOnCatalogueCodes( $targetLanguages )
+		);
+
+		$variantsByRow = [];
+		$targetCodes   = [];
+		foreach ( $targetLanguages as $key => $lang ) {
+			$variantsByRow[ $key ] = static::lookupVariantsOf( $lang, $mappedTargets );
+			$targetCodes           = array_merge( $targetCodes, $variantsByRow[ $key ] );
 		}
 		$targetCodes = array_values( array_unique( $targetCodes ) );
 
-		$ateAnswer = $ateAPI->get_languages_supported_by_automatic_translations( $targetCodes, $sourceLang );
+		$supportedLanguagesByATE = [];
+		foreach ( static::sourceLookupVariants( $sourceLanguageCode, $mappedTargets ) as $i => $sourceVariant ) {
+			$codesToAsk = 0 === $i
+				? $targetCodes
+				: array_values( array_diff( static::unreachedTargetCodes( $targetLanguages, $variantsByRow, $sourceLanguageCode, $supportedLanguagesByATE ), [ $sourceVariant ] ) );
+			if ( ! $codesToAsk ) {
+				break;
+			}
 
-		if ( Fns::isNothing( $ateAnswer ) ) {
-			return static::withUnknownAutomaticSupport( $targetLanguages );
+			$ateAnswer = $ateAPI->get_languages_supported_by_automatic_translations( $codesToAsk, 0 === $i ? $sourceLang : $sourceVariant );
+
+			if ( Fns::isNothing( $ateAnswer ) ) {
+				if ( 0 === $i ) {
+					return static::withUnknownAutomaticSupport( $targetLanguages );
+				}
+				continue;
+			}
+
+			$ateResponse = $ateAnswer->getOrElse( [] );
+			if ( ! is_object( $ateResponse ) && ! is_array( $ateResponse ) ) {
+				break;
+			}
+
+			foreach ( ( is_object( $ateResponse ) ? get_object_vars( $ateResponse ) : $ateResponse ) as $answeredCode => $answer ) {
+				$knownKey = static::resolveVariantKey( $answeredCode, $supportedLanguagesByATE );
+				if ( null === $knownKey ) {
+					$supportedLanguagesByATE[ $answeredCode ] = $answer;
+				} elseif ( static::isSupportedAnswer( $answer ) && ! static::isSupportedAnswer( $supportedLanguagesByATE[ $knownKey ] ) ) {
+					$supportedLanguagesByATE[ $knownKey ] = $answer;
+				}
+			}
 		}
-
-		$ateResponse        = $ateAnswer->getOrElse( [] );
-		$supportedLanguagesByATE = is_object( $ateResponse ) ? get_object_vars( $ateResponse ) : ( is_array( $ateResponse ) ? $ateResponse : [] );
-
-		$sourceLanguageCode = Languages::getDefaultCode();
 
 		$hasAnySupportedLanguage = false;
 		foreach ( $supportedLanguagesByATE as $supported ) {
@@ -84,20 +116,15 @@ class LanguageMappings {
 		foreach ( $targetLanguages as $key => $lang ) {
 			$code             = Obj::prop( 'code', $lang );
 			$supportedVariant = null;
-			foreach ( static::lookupVariantsOf( $lang, $mappedTargets ) as $variant ) {
+			foreach ( $variantsByRow[ $key ] as $variant ) {
 				$matchedKey = static::resolveVariantKey( $variant, $supportedLanguagesByATE );
-				if (
-					null !== $matchedKey
-					&& null !== $supportedLanguagesByATE[ $matchedKey ]
-					&& false !== $supportedLanguagesByATE[ $matchedKey ]
-				) {
+				if ( null !== $matchedKey && static::isSupportedAnswer( $supportedLanguagesByATE[ $matchedKey ] ) ) {
 					$supportedVariant = $matchedKey;
 					break;
 				}
 			}
-			$engine = $supportedVariant && is_object( $ateResponse ) && isset( $ateResponse->{$supportedVariant} )
-				? ( $ateResponse->{$supportedVariant}->engine ?? null )
-				: null;
+			$answer = null !== $supportedVariant ? $supportedLanguagesByATE[ $supportedVariant ] : null;
+			$engine = is_object( $answer ) ? ( $answer->engine ?? null ) : null;
 
 			if ( $code === $sourceLanguageCode ) {
 				$canAutoTranslate = $hasAnySupportedLanguage;
@@ -241,6 +268,25 @@ class LanguageMappings {
 
 
 	public static function saveMapping( array $mappings ) {
+		list( $mappings, $refused, $doubtful, $defaultOntoSecondary ) = static::partitionMappingsOntoDefaultLanguage( $mappings );
+		$ontoDefault = array_values(
+			array_filter(
+				$refused,
+				function ( $mapping ) use ( $defaultOntoSecondary ) {
+					return ! in_array( $mapping, $defaultOntoSecondary, true );
+				}
+			)
+		);
+		if ( $ontoDefault ) {
+			static::logMappings( $ontoDefault, __( 'A language mapping onto the default language was not sent to ATE.', 'sitepress' ) );
+		}
+		if ( $defaultOntoSecondary ) {
+			static::logMappings( $defaultOntoSecondary, __( 'A mapping of the default language onto one of the site\'s other languages was not sent to ATE.', 'sitepress' ) );
+		}
+		if ( $doubtful ) {
+			static::logMappings( $doubtful, static::doubtfulMappingsLogText() );
+		}
+
 		list( $ignoredMapping, $mappingSet ) = \wpml_collect( $mappings )->partition( Relation::propEq( 'targetId', self::IGNORE_MAPPING_ID ) );
 
 		$ignoredCodes = $ignoredMapping->pluck( 'sourceCode' )->toArray();
@@ -260,6 +306,232 @@ class LanguageMappings {
 		CachedATEAPI::clearAllCaches();
 
 		return $result;
+	}
+
+	const VERDICT_SEND = 'send';
+
+	const VERDICT_REFUSE = 'refuse';
+
+	const VERDICT_DOUBT = 'doubt';
+
+	public static function isOntoDefaultLanguage( $sourceCode, $targetCode, $defaultCode = null ): bool {
+		return self::VERDICT_REFUSE === static::ontoDefaultLanguageVerdict( $sourceCode, $targetCode, $defaultCode );
+	}
+
+	public static function ontoDefaultLanguageVerdict( $sourceCode, $targetCode, $defaultCode = null ): string {
+		$defaultCode = null === $defaultCode ? static::defaultCodeOrEmpty() : (string) $defaultCode;
+		$source      = static::foldCode( $sourceCode );
+		$target      = static::foldCode( $targetCode );
+		$default     = static::foldCode( $defaultCode );
+
+		if ( '' === $source || '' === $target || '' === $default || $source === $default ) {
+			return self::VERDICT_SEND;
+		}
+
+		$defaultHead = static::headOf( $default );
+		if ( static::headOf( $target ) !== $defaultHead ) {
+			return self::VERDICT_SEND;
+		}
+
+		$sourceHead = static::confidentHeadOf( $source );
+		if ( null === $sourceHead ) {
+			return self::VERDICT_DOUBT;
+		}
+
+		return $sourceHead !== $defaultHead ? self::VERDICT_REFUSE : self::VERDICT_SEND;
+	}
+
+	public static function defaultOntoSecondaryVerdict( $sourceCode, $targetCode, $defaultCode = null, $secondaryCodes = null ): string {
+		$defaultCode = null === $defaultCode ? static::defaultCodeOrEmpty() : (string) $defaultCode;
+		$source      = static::foldCode( $sourceCode );
+		$target      = static::foldCode( $targetCode );
+		$default     = static::foldCode( $defaultCode );
+
+		if ( '' === $source || '' === $target || '' === $default || $source !== $default ) {
+			return self::VERDICT_SEND;
+		}
+
+		$defaultHead = static::headOf( $default );
+		$targetHead  = static::headOf( $target );
+		if ( $targetHead === $defaultHead ) {
+			return self::VERDICT_SEND;
+		}
+
+		$doubt = false;
+		foreach ( null === $secondaryCodes ? static::secondaryCodesOrEmpty() : (array) $secondaryCodes as $secondaryCode ) {
+			$secondary = static::foldCode( $secondaryCode );
+			if ( '' === $secondary || $secondary === $default ) {
+				continue;
+			}
+
+			$secondaryHead = static::confidentHeadOf( $secondary );
+			if ( null === $secondaryHead ) {
+				$doubt = $doubt || static::headOf( $secondary ) === $targetHead;
+				continue;
+			}
+
+			if ( $secondaryHead === $targetHead && $secondaryHead !== $defaultHead ) {
+				return self::VERDICT_REFUSE;
+			}
+		}
+
+		return $doubt ? self::VERDICT_DOUBT : self::VERDICT_SEND;
+	}
+
+	public static function partitionMappingsOntoDefaultLanguage( array $mappings, $defaultCode = null, $secondaryCodes = null ): array {
+		$defaultCode          = null === $defaultCode ? static::defaultCodeOrEmpty() : (string) $defaultCode;
+		$kept                 = [];
+		$refused              = [];
+		$doubtful             = [];
+		$defaultOntoSecondary = [];
+
+		foreach ( $mappings as $mapping ) {
+			$verdict   = self::VERDICT_SEND;
+			$ofDefault = self::VERDICT_SEND;
+			if ( is_object( $mapping ) || is_array( $mapping ) ) {
+				$source    = (string) Obj::propOr( '', 'sourceCode', $mapping );
+				$target    = (string) Obj::propOr( '', 'targetCode', $mapping );
+				$verdict   = static::ontoDefaultLanguageVerdict( $source, $target, $defaultCode );
+				$ofDefault = static::defaultOntoSecondaryVerdict( $source, $target, $defaultCode, $secondaryCodes );
+			}
+
+			if ( self::VERDICT_REFUSE === $ofDefault ) {
+				$refused[]              = $mapping;
+				$defaultOntoSecondary[] = $mapping;
+				continue;
+			}
+			if ( self::VERDICT_REFUSE === $verdict ) {
+				$refused[] = $mapping;
+				continue;
+			}
+
+			$kept[] = $mapping;
+			if ( self::VERDICT_DOUBT === $verdict || self::VERDICT_DOUBT === $ofDefault ) {
+				$doubtful[] = $mapping;
+			}
+		}
+
+		return [ $kept, $refused, $doubtful, $defaultOntoSecondary ];
+	}
+
+	public static function swappedPairPartners( array $mappings, array $ontoDefault, $defaultCode = null ): array {
+		$default = static::foldCode( null === $defaultCode ? static::defaultCodeOrEmpty() : (string) $defaultCode );
+		if ( '' === $default ) {
+			return [];
+		}
+
+		$mappedOntoDefault = [];
+		foreach ( $ontoDefault as $mapping ) {
+			$head = static::confidentHeadOf( static::foldCode( Obj::propOr( '', 'sourceCode', $mapping ) ) );
+			if ( null !== $head ) {
+				$mappedOntoDefault[ $head ] = true;
+			}
+		}
+		if ( ! $mappedOntoDefault ) {
+			return [];
+		}
+
+		$defaultHead = static::headOf( $default );
+		$partners    = [];
+		foreach ( $mappings as $key => $mapping ) {
+			if ( ( ! is_object( $mapping ) && ! is_array( $mapping ) ) || static::foldCode( Obj::propOr( '', 'sourceCode', $mapping ) ) !== $default ) {
+				continue;
+			}
+
+			$target = static::foldCode( Obj::propOr( '', 'targetCode', $mapping ) );
+			if ( '' === $target ) {
+				continue;
+			}
+
+			$targetHead = static::headOf( $target );
+			if ( $targetHead !== $defaultHead && isset( $mappedOntoDefault[ $targetHead ] ) ) {
+				$partners[] = $key;
+			}
+		}
+
+		return $partners;
+	}
+
+	public static function doubtfulMappingsLogText(): string {
+		return __( 'A language mapping onto the default language was kept because the mapped language could not be identified.', 'sitepress' );
+	}
+
+	public static function logMappings( array $mappings, string $description ) {
+		if ( ! $mappings ) {
+			return;
+		}
+
+		static::logLine(
+			$description,
+			[
+				'mappings' => array_values(
+					array_map(
+						function ( $mapping ) {
+							return [
+								'source' => (string) Obj::propOr( Obj::propOr( '', 'source_code', $mapping ), 'sourceCode', $mapping ),
+								'target' => (string) Obj::propOr( Obj::propOr( '', 'target_code', $mapping ), 'targetCode', $mapping ),
+							];
+						},
+						$mappings
+					)
+				),
+			]
+		);
+	}
+
+	public static function logLine( string $description, array $extraData = [] ) {
+		if ( ! function_exists( 'wpml_tm_ate_ams_log' ) || ! class_exists( \WPML\TM\ATE\Log\Entry::class ) ) {
+			return;
+		}
+
+		try {
+			$entry              = new \WPML\TM\ATE\Log\Entry();
+			$entry->eventType   = \WPML\TM\ATE\Log\EventsTypes::SERVER_ATE;
+			$entry->description = $description;
+			$entry->extraData   = $extraData;
+			wpml_tm_ate_ams_log( $entry, true );
+		} catch ( \Throwable $e ) {
+		}
+	}
+
+	protected static function defaultCodeOrEmpty(): string {
+		try {
+			return (string) Languages::getDefaultCode();
+		} catch ( \Throwable $e ) {
+			return '';
+		}
+	}
+
+	protected static function secondaryCodesOrEmpty(): array {
+		try {
+			return array_values( array_map( 'strval', (array) Languages::getSecondaryCodes() ) );
+		} catch ( \Throwable $e ) {
+			return [];
+		}
+	}
+
+	private static function foldCode( $code ): string {
+		return str_replace( '_', '-', strtolower( trim( (string) $code ) ) );
+	}
+
+	private static function headOf( string $code ): string {
+		try {
+			$head = LanguageCodeResolution::head( $code );
+		} catch ( \Throwable $e ) {
+			$head = $code;
+		}
+
+		return LanguageDerivation::languageHead( static::foldCode( '' === (string) $head ? $code : $head ) );
+	}
+
+	private static function confidentHeadOf( string $code ) {
+		try {
+			$head = LanguageCodeResolution::confidentHead( $code );
+		} catch ( \Throwable $e ) {
+			return null;
+		}
+
+		return null === $head || '' === (string) $head ? null : LanguageDerivation::languageHead( static::foldCode( $head ) );
 	}
 
 	public static function getLanguagesEligibleForAutomaticTranslations() {
@@ -314,6 +586,40 @@ class LanguageMappings {
 		);
 
 		return [] !== $shared;
+	}
+
+	protected static function sourceLookupVariants( string $sourceCode, array $mappedTargets ): array {
+		$chain = [ $sourceCode ];
+		foreach ( static::lookupVariantsOf( [ 'code' => $sourceCode ], $mappedTargets ) as $variant ) {
+			$variant = (string) $variant;
+			if ( '' !== $variant && ! in_array( $variant, $chain, true ) ) {
+				$chain[] = $variant;
+			}
+		}
+
+		return $chain;
+	}
+
+	protected static function unreachedTargetCodes( $targetLanguages, array $variantsByRow, string $sourceLanguageCode, array $supportMap ): array {
+		$codes = [];
+		foreach ( $targetLanguages as $key => $lang ) {
+			if ( (string) Obj::prop( 'code', $lang ) === $sourceLanguageCode || empty( $variantsByRow[ $key ] ) ) {
+				continue;
+			}
+			foreach ( $variantsByRow[ $key ] as $variant ) {
+				$matchedKey = static::resolveVariantKey( $variant, $supportMap );
+				if ( null !== $matchedKey && static::isSupportedAnswer( $supportMap[ $matchedKey ] ) ) {
+					continue 2;
+				}
+			}
+			$codes = array_merge( $codes, $variantsByRow[ $key ] );
+		}
+
+		return array_values( array_unique( $codes ) );
+	}
+
+	protected static function isSupportedAnswer( $answer ): bool {
+		return null !== $answer && false !== $answer;
 	}
 
 	protected static function getLookupVariants( $lang ): array {

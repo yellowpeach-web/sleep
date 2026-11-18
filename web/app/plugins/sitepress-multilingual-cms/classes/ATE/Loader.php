@@ -93,6 +93,8 @@ class Loader implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 			return;
 		}
 
+		wp_enqueue_script( 'wp-api-fetch' );
+
 		$enqueue = Resources::enqueueApp( 'ate-jobs-sync' );
 		$enqueue( $data );
 
@@ -121,7 +123,7 @@ class Loader implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 	public function getData() {
 		$ateTab = admin_url( UIPage::getTMATE() );
 
-		$isAteActive = \WPML_TM_ATE_Status::is_enabled_and_activated();
+		$isAteActive = \WPML_TM_ATE_Status::is_account_usable();
 
 		$defaultLanguage = Languages::getDefaultCode();
 		$getLanguages    = pipe(
@@ -129,6 +131,12 @@ class Loader implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 			AutomaticTranslationCapabilities::withCapabilityInfo(),
 			\WPML\TM\API\ATE\CachedLanguageMappings::withMapping(),
 			Fns::map( Obj::over( Obj::lensProp( 'mapping' ), Obj::prop( 'targetCode' ) ) ),
+			Fns::map(
+				Obj::addProp(
+					'automatic_translation_unavailable_reason',
+					AutomaticTranslationCapabilities::unavailableReasonFor( $defaultLanguage )
+				)
+			),
 			Fns::map(
 				Obj::addProp(
 					'is_default',
@@ -169,17 +177,17 @@ class Loader implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 				'ateConsole'           => self::getAteData(),
 				'isAteActive'          => $isAteActive,
 				'editorMode'           => wpml_get_tm_sub_setting( 'doc_translation_method', false ),
+				'translationPolicyEnabled' => \WPML\TranslationPolicy\FeatureSwitch::isOn(),
 				'shouldCheckForRetranslation' => $scheduler->shouldRun(),
 				'ateCallbacks' => [],
 
-					'pullDelivery' => [
-						'enabled'      => self::canRetryAteJobs(),
-						'restUrl'      => \WPML\TM\ATE\REST\PullPing::url(),
-						'restNonce'    => wp_create_nonce( 'wp_rest' ),
-						'heartbeatKey' => \WPML\TM\ATE\PullDelivery\Hooks::HEARTBEAT_KEY,
-						'minPing'      => \WPML\TM\ATE\PullDelivery\Cadence::minPing(),
-						'snapshot'     => \WPML\TM\ATE\PullDelivery\State::snapshot(),
-					],
+				'handshake' => self::handshakeConfig(),
+
+				'rest'                        => [
+					'root'      => esc_url_raw( rest_url() ),
+					'nonce'     => wp_create_nonce( 'wp_rest' ),
+					'translate' => 'wpml/v1/posts/%d/translate',
+				],
 
 				'settings' => [
 					'numberOfParallelDownloads' => defined('WPML_ATE_MAX_PARALLEL_DOWNLOADS') ? WPML_ATE_MAX_PARALLEL_DOWNLOADS : 2,
@@ -240,11 +248,27 @@ class Loader implements \IWPML_Backend_Action, \IWPML_DIC_Action {
 			'getJobsCount'             => GetJobsCount::class,
 				'getJobsInfo'              => GetJobsInfo::class,
 				'languages'                => EndpointLanguages::class,
-				'pullPing'                     => \WPML\TM\ATE\PullDelivery\AjaxPing::class,
 				'assignToTranslation'          => RetranslationEndpoint::class,
 				'retranslationInfo'            => RetranslationInfoEndpoint::class,
 				'invalidateLangMappingCache'   => InvalidateCacheEndpoint::class,
 			];
+	}
+
+	public static function handshakeConfig() {
+		$mayRun = false;
+
+		foreach ( \WPML\TM\ATE\Handshake\Routes::CAPABILITIES as $capability ) {
+			$mayRun = $mayRun || current_user_can( $capability );
+		}
+
+		return [
+			'inFlight'  => $mayRun ? max( 0, (int) \WPML\TM\ATE\Handshake\State::getKey( 'in_flight' ) ) : 0,
+			'runUrl'    => \WPML\TM\ATE\Handshake\Routes::url( \WPML\TM\ATE\Handshake\Routes::RUN ),
+			'statusUrl' => \WPML\TM\ATE\Handshake\Routes::url( \WPML\TM\ATE\Handshake\Routes::STATUS ),
+			'restNonce' => wp_create_nonce( 'wp_rest' ),
+			'stalled'   => $mayRun ? \WPML\TM\ATE\Handshake\Support\Stalled::forPage() : \WPML\TM\ATE\Handshake\Support\Stalled::view( [] ),
+			'parked'    => $mayRun ? \WPML\TM\ATE\Handshake\Support\Stalled::parkedLists() : [ 'insufficientBalanceJobIds' => [], 'paymentPendingJobIds' => [] ],
+		];
 	}
 
 	private static function getUrls( $ateTab ) {

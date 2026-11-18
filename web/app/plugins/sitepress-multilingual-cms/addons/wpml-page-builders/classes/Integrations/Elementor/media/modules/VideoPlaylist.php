@@ -2,21 +2,24 @@
 
 namespace WPML\PB\Elementor\Media\Modules;
 
-use WPML\FP\Obj;
-use function WPML\FP\partialRight;
-
 class VideoPlaylist extends \WPML_Elementor_Media_Node {
 
-	public function translate( $settings, $target_lang, $source_lang ) {
-		$thumbnailLens     = Obj::lensProp( 'thumbnail' );
-		$convertImageArray = partialRight( [ $this, 'translate_image_array' ], $target_lang, $source_lang );
+	const TAB_FIELDS = [ 'thumbnail', 'hosted_url' ];
 
-		return Obj::assoc(
-			'tabs',
-			wpml_collect( Obj::propOr( [], 'tabs', $settings ) )
-				->map( Obj::over( $thumbnailLens, $convertImageArray ) )
-				->toArray(),
-			$settings
-		);
+	public function translate( $settings, $target_lang, $source_lang ) {
+		$settings = $this->translate_image_property( $settings, 'image_overlay', $target_lang, $source_lang );
+
+		if ( ! isset( $settings['tabs'] ) || ! is_array( $settings['tabs'] ) ) {
+			return $settings;
+		}
+
+		foreach ( $settings['tabs'] as &$tab ) {
+			foreach ( self::TAB_FIELDS as $field ) {
+				$tab = $this->translate_image_property( $tab, $field, $target_lang, $source_lang );
+			}
+		}
+		unset( $tab );
+
+		return $settings;
 	}
 }

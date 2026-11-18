@@ -29,6 +29,14 @@ class EnableAliasDomainController implements EndpointInterface {
       ];
     }
 
+    if ( $this->secondaryDomains->isAnotherSiteOfTheNetwork( $originalSiteUrl ) ) {
+      return [
+        'success' => false,
+        /* translators: Error shown when a subsite of a WordPress network is declared to be another subsite of the same network under a different address. */
+        'message' => __( 'This address belongs to another site in this network, so this site cannot use it as its original address. A site created by duplicating another site connects to our translation system as a site of its own: reset its alias domains under WPML → Support and let it connect again.', 'wpml' ),
+      ];
+    }
+
     $aliasDomains = $this->secondaryDomains->add( $aliasUrl, $originalSiteUrl );
 
     ReconnectState::resolveAsMove();

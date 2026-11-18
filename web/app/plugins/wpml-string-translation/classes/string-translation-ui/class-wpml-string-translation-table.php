@@ -23,12 +23,8 @@ class WPML_String_Translation_Table {
 			}
 
 			$this->strings_in_page = icl_get_strings_tracked_in_pages( $strings );
-			$frontendKind = ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND;
-			if ( isset( $this->strings_in_page[ $frontendKind ] ) ) {
-				foreach ( $this->strings_in_page[ $frontendKind ] as $id => $value ) {
-					if ( ! isset( $this->strings[ $id ] ) ) {
-						continue;
-					}
+			foreach ( $this->get_appeared_ids() as $id ) {
+				if ( isset( $this->strings[ $id ] ) ) {
 					$this->strings[ $id ]['hasFrontendKind'] = 1;
 				}
 			}
@@ -37,6 +33,19 @@ class WPML_String_Translation_Table {
 
 		$this->additional_columns_to_render = wpml_collect();
 		$this->active_languages             = $sitepress->get_active_languages();
+	}
+
+	private function get_appeared_ids() {
+		$ids = array_map( 'intval', array_keys( $this->strings ) );
+
+		$appeared = apply_filters( 'wpml_appearance_filter_ids', null, 'string', $ids );
+		if ( is_array( $appeared ) ) {
+			return array_map( 'intval', $appeared );
+		}
+
+		$positions = Obj::propOr( [], ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND, (array) $this->strings_in_page );
+
+		return array_map( 'intval', array_keys( (array) $positions ) );
 	}
 
 	public function render() {
@@ -216,14 +225,37 @@ class WPML_String_Translation_Table {
 					<img width="18" height="12"
 						 src="<?php echo esc_url( $sitepress->get_flag_url( $icl_string['string_language'] ) ); ?>"> <?php echo esc_html( $icl_string['value'] ); ?>
 				</div>
+				<?php if ( ! empty( $icl_string['carried_by'] ) ) : ?>
+					<?php $this->render_carried_notice( $icl_string['carried_by'] ); ?>
+				<?php endif; ?>
 				<input type="hidden" id="icl_st_wc_<?php echo esc_attr( $string_id ); ?>" value="
 															  <?php
 																echo $WPML_String_Translation->estimate_word_count( $icl_string['value'], $icl_string['string_language'] )
 																?>
 				"/>
 			</td>
-			<td class="languages-status wpml-col-languages"></td>
+			<?php if ( ! empty( $icl_string['carried_by'] ) ) : ?>
+				<td class="wpml-st-carried-languages wpml-col-languages"></td>
+			<?php else : ?>
+				<td class="languages-status wpml-col-languages"></td>
+			<?php endif; ?>
 		</tr>
+		<?php
+	}
+
+	public function render_carried_notice( array $package ) {
+		$title = (string) $package['title'];
+
+		/* translators: Shown on the String Translation page instead of a text's translation controls, when the text is translated as part of a package of texts, for example the site title translated with Elementor's Site Settings. %s: the package's name, for example "Elementor Site Settings". */
+		$message = sprintf( __( 'Translated as part of %s.', 'wpml-string-translation' ), $title );
+		/* translators: Link after "Translated as part of ..." on the String Translation page; it opens the package on the Translation Dashboard. %s: the package's name, for example "Elementor Site Settings". */
+		$link = sprintf( __( 'Translate %s', 'wpml-string-translation' ), $title );
+
+		?>
+		<p class="wpml-st-carried">
+			<span class="wpml-st-carried-message"><?php echo esc_html( $message ); ?></span>
+			<a class="wpml-st-carried-link" href="<?php echo esc_url( (string) $package['link'] ); ?>"><?php echo esc_html( $link ); ?></a>
+		</p>
 		<?php
 	}
 
@@ -245,6 +277,10 @@ class WPML_String_Translation_Table {
 	}
 
 	private function render_checkbox_cell( $string ) {
+		if ( ! empty( $string['carried_by'] ) ) {
+			return '<td><input class="wpml-checkbox-native wpml-st-carried-cb" type="checkbox" disabled="disabled" value="' . esc_attr( $string['string_id'] ) . '" /></td>';
+		}
+
 		$class = 'icl_st_row_cb' . ( ! empty( $string['string_package_id'] ) ? ' icl_st_row_package' : '' ) . ' js-icl-st-row-cb';
 
 		return '<td><input class="wpml-checkbox-native ' . esc_attr( $class ) . '" type="checkbox" value="' . esc_attr( $string['string_id'] )
@@ -265,7 +301,10 @@ class WPML_String_Translation_Table {
 			return;
 		}
 
-		if ( isset( $this->strings_in_page[ ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND ][ $string_id ] ) ) {
+		if (
+			isset( $this->strings_in_page[ ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND ][ $string_id ] )
+			|| isset( $this->strings_in_page[ ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND_WHERE ][ $string_id ] )
+		) {
 			$thickbox_url = $this->get_thickbox_url( WPML_ST_String_Tracking_AJAX_Factory::ACTION_POSITION_IN_PAGE, $string_id );
 			echo $this->generate_string_preview_link($icl_string, $thickbox_url, $sitepress);
 		}
@@ -336,10 +375,12 @@ class WPML_String_Translation_Table {
 		$tracked_source   = Obj::prop( ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_SOURCE, $this->strings_in_page );
 		$tracked_page     = Obj::prop( ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_PAGE, $this->strings_in_page );
 		$tracked_frontend = Obj::prop( ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND, $this->strings_in_page );
+		$tracked_where    = Obj::prop( ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND_WHERE, $this->strings_in_page );
 
 		return ( $tracked_source && Obj::prop( $string_id, $tracked_source ) )
 			   || ( $tracked_page && Obj::prop( $string_id, $tracked_page ) )
-			   || ( $tracked_frontend && Obj::prop( $string_id, $tracked_frontend ) );
+			   || ( $tracked_frontend && Obj::prop( $string_id, $tracked_frontend ) )
+			   || ( $tracked_where && Obj::prop( $string_id, $tracked_where ) );
 	}
 }
 

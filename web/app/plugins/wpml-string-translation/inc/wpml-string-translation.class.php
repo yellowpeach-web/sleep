@@ -8,7 +8,10 @@ use WPML\StringTranslation\Application\Setting\Repository\SettingsRepositoryInte
 use WPML\StringTranslation\Infrastructure\TranslateEverything\EnglishSourceLanguage;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\HasKeyInSettingsFilter;
 use WPML\ST\AutoRegisterStringsNotice;
+use WPML\ST\AutoregisterModeRestoredNotice;
 use WPML\ST\AdminTexts\SendStringsForTranslationNotice;
+use WPML\ST\SlugTranslation\PostArchive\Records as PostArchiveRecords;
+use WPML\Element\API\Languages;
 
 class WPML_String_Translation {
 
@@ -33,6 +36,8 @@ class WPML_String_Translation {
 	protected $sitepress;
 
 	private $cache;
+
+	private $slug_records_factory;
 
 	private $filesToScanRepository;
 
@@ -85,6 +90,10 @@ class WPML_String_Translation {
 		}
 
 		add_action( 'init', [ $this, 'init' ] );
+
+		if ( is_admin() ) {
+			( new \WPML\StringTranslation\Infrastructure\StringCore\Schema\StringTables() )->createMissing();
+		}
 
 		$factory = new WPML_ST_Upgrade_Command_Factory( $wpdb, $sitepress );
 		$upgrade = new WPML_ST_Upgrade( $sitepress, $factory );
@@ -251,6 +260,7 @@ class WPML_String_Translation {
 		load_plugin_textdomain( 'wpml-string-translation', false, WPML_ST_FOLDER . '/locale' );
 		AutoRegisterStringsNotice::init();
 		SendStringsForTranslationNotice::init();
+		AutoregisterModeRestoredNotice::init();
 
 		$this->maybe_add_script_for_string_tracking_modal_iframe();
 
@@ -974,7 +984,7 @@ class WPML_String_Translation {
 		list( $string_lang, $found ) = $this->get_cache()->get_with_found( $key );
 
 		if ( ! $found ) {
-			$string_lang = $wpdb->get_var(
+			$string_lang = $this->get_listed_slug_language( $domain, $name ) ?? $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT language FROM {$wpdb->prefix}icl_strings WHERE context = %s AND name = %s",
 					$domain,
@@ -986,6 +996,27 @@ class WPML_String_Translation {
 		}
 
 		return $string_lang;
+	}
+
+	private function get_listed_slug_language( $domain, $name ) {
+		if ( WPML_Slug_Translation_Records::CONTEXT_WORDPRESS !== $domain ) {
+			return null;
+		}
+		foreach ( array( WPML_Slug_Translation_Factory::POST => WPML_Post_Slug_Translation_Records::STRING_NAME, WPML_Slug_Translation_Factory::POST_ARCHIVE => PostArchiveRecords::STRING_NAME, WPML_Slug_Translation_Factory::TAX => WPML_Tax_Slug_Translation_Records::STRING_NAME ) as $element_type => $format ) {
+			list( $before, $after ) = explode( '%s', $format );
+			$type                   = (string) substr( (string) $name, strlen( $before ), strlen( (string) $name ) - strlen( $before ) - strlen( $after ) );
+			if ( '' === $type || sprintf( $format, $type ) !== $name || sanitize_key( $type ) !== $type ) {
+				continue;
+			}
+			$slug = ( $this->slug_records_factory = $this->slug_records_factory ?? new WPML_Slug_Translation_Records_Factory() )->create( $element_type )->get_listed_slug( $type );
+			return $slug && $slug->get_original_id() && WPML_Slug_Translation_Records::CONTEXT_WORDPRESS === $slug->get_context()
+				&& strtolower( (string) $slug->get_name() ) === strtolower( $name ) ? $slug->get_original_lang() : null;
+		}
+		return null;
+	}
+
+	public function set_slug_records_factory( WPML_Slug_Translation_Records_Factory $factory ) {
+		$this->slug_records_factory = $factory;
 	}
 
 	public function set_cache( WPML_WP_Cache $cache ) {
@@ -1044,9 +1075,11 @@ class WPML_String_Translation {
 
 		$widget_text = get_option( 'widget_text' );
 		if ( is_array( $widget_text ) ) {
+			$default_lang = Languages::getDefaultCode();
+
 			foreach ( $widget_text as $k => $w ) {
 				if ( ! empty( $w ) && isset( $w['title'], $w['text'] ) && in_array( $k, $active_text_widgets ) && $w['text'] ) {
-					icl_register_string( WPML_ST_WIDGET_STRING_DOMAIN, 'widget body - ' . md5( $w['text'] ), $w['text'] );
+					icl_register_string( WPML_ST_WIDGET_STRING_DOMAIN, 'widget body - ' . md5( $w['text'] ), $w['text'], false, $default_lang );
 				}
 			}
 		}

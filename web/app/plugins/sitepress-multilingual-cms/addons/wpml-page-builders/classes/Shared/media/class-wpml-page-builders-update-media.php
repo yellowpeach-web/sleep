@@ -24,7 +24,7 @@ class WPML_Page_Builders_Update_Media implements IWPML_PB_Media_Update {
 
 	public function translate( $post ) {
 		$element        = $this->element_factory->create_post( $post->ID );
-		$source_element = $element->get_source_element();
+		$source_element = $element->get_source_element( true );
 
 		if ( ! $source_element ) {
 			return;

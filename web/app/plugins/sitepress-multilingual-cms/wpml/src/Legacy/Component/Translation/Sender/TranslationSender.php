@@ -76,7 +76,12 @@ class TranslationSender implements TranslationSenderInterface {
 
 
   public function getHeldBackTranslations(): array {
-    return $this->translationsOfJobs( $this->heldBackJobIds() );
+    return $this->translationsOfJobs( $this->countHeldBackJobIds() );
+  }
+
+
+  public function getPriceHeldBackTranslations(): array {
+    return $this->translationsOfJobs( $this->priceHeldBackJobIds() );
   }
 
 
@@ -282,12 +287,29 @@ class TranslationSender implements TranslationSenderInterface {
 
 
   private function heldBackJobIds(): array {
+    return array_values( array_unique( array_merge( $this->countHeldBackJobIds(), $this->priceHeldBackJobIds() ) ) );
+  }
+
+
+  private function countHeldBackJobIds(): array {
     if ( ! method_exists( $this->legacyTranslationManagement, 'get_held_back_job_ids' ) ) {
       return [];
     }
 
-    $jobIds = $this->legacyTranslationManagement->get_held_back_job_ids();
+    return $this->asJobIds( $this->legacyTranslationManagement->get_held_back_job_ids() );
+  }
 
+
+  private function priceHeldBackJobIds(): array {
+    if ( ! method_exists( $this->legacyTranslationManagement, 'get_prices_held_back_job_ids' ) ) {
+      return [];
+    }
+
+    return $this->asJobIds( $this->legacyTranslationManagement->get_prices_held_back_job_ids() );
+  }
+
+
+  private function asJobIds( $jobIds ): array {
     return is_array( $jobIds ) ? array_map( 'intval', $jobIds ) : [];
   }
 

@@ -4,6 +4,7 @@ require_once __DIR__ . '/../inc/constants-since-5-0.php';
 
 use WPML\TM\ATE\Review\ReviewStatus;
 use WPML\FP\Obj;
+use WPML\TranslationRoles\Service\TranslatorCapability;
 
 class WPML_TM_API {
 
@@ -20,7 +21,7 @@ class WPML_TM_API {
 			/* translators: Status of a piece of content: it has no translation in that language yet. */
 			ICL_TM_NOT_TRANSLATED         => __( 'Not translated', 'sitepress' ),
 			ICL_TM_WAITING_FOR_TRANSLATOR => __( 'Waiting for translator', 'sitepress' ),
-			/* translators: Status of a translation: it is being made right now. */
+			/* translators: Status of something that is being done right now, for example a translation being made. Also read by screen readers for a blue dot in the Translation delivery box. */
 			ICL_TM_IN_PROGRESS            => __( 'In progress', 'sitepress' ),
 			/* translators: Status of a translation: it is a copy of the original that WPML keeps in step, not a translation of its own. Noun. */
 			ICL_TM_DUPLICATE              => _x( 'Duplicate', 'status of a translation', 'sitepress' ),
@@ -61,18 +62,13 @@ class WPML_TM_API {
 	}
 
 	private function edit_translator( $user_id, $language_pairs ) {
-		global $wpdb;
-
-		$user = new WP_User( $user_id );
+		$translator_role = \WPML\Container\make( TranslatorCapability::class );
 
 		if ( empty( $language_pairs ) ) {
-			$user->remove_cap( \WPML\LIB\WP\User::CAP_TRANSLATE );
-		} elseif ( ! $user->has_cap( \WPML\LIB\WP\User::CAP_TRANSLATE ) ) {
-			$user->add_cap( \WPML\LIB\WP\User::CAP_TRANSLATE );
+			$translator_role->revoke( (int) $user_id );
+		} else {
+			$translator_role->grant( (int) $user_id, $language_pairs, TranslatorCapability::PAIRS_SET );
 		}
-
-		$language_pair_records = new WPML_Language_Pair_Records( $wpdb, new WPML_Language_Records( $wpdb ) );
-		$language_pair_records->store( $user_id, $language_pairs );
 	}
 
 	public function translator_languages_pairs_filter( $default, $user ) {

@@ -132,11 +132,11 @@
          "Legacy engine": [
             "Eski motor"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "Eski fiyatlandırma uygulandı. %s eski bir çeviri motorudur, yeni siteler için önerilmez ve kullanımdan kaldırılacaktır. Mevcut siteler bunun için ayarlanmış bir kelime oranını korur."
-         ],
          "Switch to PTC": [
             "PTC'ye Geç"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Eski fiyatlandırma uygulandı. %s eski bir çeviri motorudur, yeni siteler için önerilmez ve kullanımdan kaldırılacaktır. Mevcut siteler bunun için ayarlanmış bir kelime oranını korur."
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Mevcut içeriğinizi çevirmek için bugün gereken miktar budur. Kurulum tamamlandıktan sonra sayılan formlar veya kaydırıcılar gibi diğer eklentiler tarafından eklenen bazı metinleri içermez. Temanızdan ve eklentilerinizden gelen site dizgileri de kurulumdan sonra sayılır ve genellikle birkaç yüz kelime ekler. Bundan sonra düzenlemeler ücretsizdir. Yalnızca eklediğiniz kelimeler için tekrar ödeme yaparsınız."
@@ -153,8 +153,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Sayfaları, yazıları ve ürünleri özel alanları, sayfa tasarımcısı metinleri ve ortam metinleriyle birlikte; ayrıca kullandıkları kategorileri, etiketleri ve nitelikleri sayar."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Sayfaları, yazıları ve ürünleri özel alanları, sayfa tasarımcısı metinleri ve ortam metinleriyle birlikte; kullandıkları kategorileri, etiketleri, nitelikleri ve site dizgilerini sayar. Bir terim hem kullanıldığı her öğede hem de çeviriye iki şekilde gönderildiği için kendi başına bir kez sayılır."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Sayfaları, yazıları ve ürünleri; özel alanları, sayfa oluşturucu metinleri ve ortam metinleriyle birlikte, kullandıkları kategorileri, etiketleri ve nitelikleri ve site dizgilerini sayar. Her kategori, etiket veya nitelik, bunları kullanan öğelerle tekrar değil, Taksonomiler satırında bir kez sayılır."
          ],
          "Total items": [
             "Toplam öğe"

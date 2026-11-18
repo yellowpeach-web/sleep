@@ -51,7 +51,7 @@ class WPML_URL_Converter_Domain_Strategy extends WPML_URL_Converter_Abstract_Str
 			unset( $url_parts['port'] );
 		}
 
-		return http_build_url( $url_parts );
+		return \WPML\UrlHandling\UrlBuilder::build( $url_parts );
 	}
 
 	public function get_lang_from_url_string( $url ) {
@@ -98,7 +98,7 @@ class WPML_URL_Converter_Domain_Strategy extends WPML_URL_Converter_Abstract_Str
 			$url_parts['host'] = $base_url_parts['host'];
 		}
 
-		$converted_url = http_build_url( $url_parts );
+		$converted_url = \WPML\UrlHandling\UrlBuilder::build( $url_parts );
 
 		return $this->slash_helper->maybe_user_trailingslashit( $converted_url );
 	}
@@ -121,7 +121,7 @@ class WPML_URL_Converter_Domain_Strategy extends WPML_URL_Converter_Abstract_Str
 			$url_parts = $this->slash_helper->parse_missing_host_from_path( $url_parts );
 			unset( $url_parts['scheme'] );
 
-			return http_build_url( $url_parts );
+			return \WPML\UrlHandling\UrlBuilder::build( $url_parts );
 		} else {
 			return preg_replace( '/^https?:\/\//', '', $url );
 		}

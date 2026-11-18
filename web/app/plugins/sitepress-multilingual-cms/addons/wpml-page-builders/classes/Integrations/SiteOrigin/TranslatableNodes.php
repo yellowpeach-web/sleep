@@ -7,8 +7,10 @@ use WPML\PB\SiteOrigin\Modules\ModuleWithItemsFromConfig;
 
 class TranslatableNodes implements \IWPML_Page_Builders_Translatable_Nodes {
 
-	const SETTINGS_FIELD = 'panels_info';
-	const CHILDREN_FIELD = 'panels_data';
+	const SETTINGS_FIELD  = 'panels_info';
+	const CHILDREN_FIELD  = 'panels_data';
+	const WIDGET_ID_FIELD = 'widget_id';
+	const POSITION_FIELD  = 'id';
 
 	const WRAPPING_MODULES = [
 		'SiteOrigin_Panels_Widgets_Layout',
@@ -99,7 +101,10 @@ class TranslatableNodes implements \IWPML_Page_Builders_Translatable_Nodes {
 	}
 
 	public function get_string_name( $node_id, $field, $settings ) {
-		return $node_id . '-' . $settings[ self::SETTINGS_FIELD ]['id'] . '-' . $field['field'];
+		$widgetId = Obj::pathOr( '', [ self::SETTINGS_FIELD, self::WIDGET_ID_FIELD ], $settings );
+		$identity = '' !== (string) $widgetId ? $widgetId : $settings[ self::SETTINGS_FIELD ][ self::POSITION_FIELD ];
+
+		return $node_id . '-' . $identity . '-' . $field['field'];
 	}
 
 	private function get_wrap_tag( $settings ) {

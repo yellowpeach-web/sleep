@@ -31,23 +31,65 @@ class Loader implements \IWPML_Backend_Action, \IWPML_REST_Action {
 
 	public function add_hooks() {
 		if ( \WPML_Block_Editor_Helper::is_active() ) {
-			Hooks::onAction( 'init' )
-				->then( [ $this, 'registerBlocks' ] )
-				->then( [ $this, 'maybeEnqueueNavigationBlockStyles' ] );
+			$this->hookBlockRendering();
+			$this->hookEditorAssets();
 
-			add_filter(
-				'render_block',
-				[ $this, 'frontendPrintStyleIfBlockIsUsed' ],
-				10,
-				2
-			);
-
-			Hooks::onAction( 'enqueue_block_assets' )
-			     ->then( [ $this, 'enqueueBlockAssets' ] );
-
-			Hooks::onFilter( 'block_categories_all', 10, 2 )
-				->then( spreadArgs( [ $this, 'registerCategory' ] ) );
+			return;
 		}
+
+		$this->hookBlockRendering();
+
+		if ( did_action( 'after_setup_theme' ) ) {
+			$this->hookEditorAssetsOnABlockTheme();
+
+			return;
+		}
+
+		add_action( 'after_setup_theme', [ $this, 'hookEditorAssetsOnABlockTheme' ] );
+	}
+
+	public function hookEditorAssetsOnABlockTheme() {
+		if ( $this->isBlockTheme() ) {
+			$this->hookEditorAssets();
+		}
+	}
+
+	private function hookBlockRendering() {
+		Hooks::onAction( 'init' )
+			->then( [ $this, 'registerBlocks' ] )
+			->then( [ $this, 'maybeEnqueueNavigationBlockStyles' ] );
+
+		add_filter(
+			'render_block',
+			[ $this, 'frontendPrintStyleIfBlockIsUsed' ],
+			10,
+			2
+		);
+	}
+
+	private function hookEditorAssets() {
+		Hooks::onAction( 'enqueue_block_assets' )
+		     ->then( [ $this, 'enqueueBlockAssets' ] );
+
+		Hooks::onAction( 'enqueue_block_editor_assets' )
+		     ->then( [ $this, 'enqueueBlockEditorAssets' ] );
+
+		Hooks::onFilter( 'block_categories_all', 10, 2 )
+			->then( spreadArgs( [ $this, 'maybeRegisterCategory' ] ) );
+	}
+
+	public function shouldLoadEditorAssets() {
+		return \WPML_Block_Editor_Helper::is_active() || \WPML_Block_Editor_Helper::is_site_editor_screen();
+	}
+
+	protected function isBlockTheme() {
+		return function_exists( 'wp_is_block_theme' ) && wp_is_block_theme();
+	}
+
+	public function maybeRegisterCategory( $block_categories ) {
+		return $this->shouldLoadEditorAssets()
+			? $this->registerCategory( $block_categories )
+			: $block_categories;
 	}
 
 	public function registerCategory( $block_categories ) {
@@ -70,7 +112,15 @@ class Loader implements \IWPML_Backend_Action, \IWPML_REST_Action {
 	}
 
 	public function enqueueBlockAssets() {
-		if ( ! is_admin() ) {
+		if ( ! $this->shouldEnqueueEditorAssets() ) {
+			return;
+		}
+
+		$this->enqueueStyleIfBuilt( 'wpml-blocks-ui', '/dist/css/blocks/styles.css' );
+	}
+
+	public function enqueueBlockEditorAssets() {
+		if ( ! $this->shouldEnqueueEditorAssets() ) {
 			return;
 		}
 
@@ -80,17 +130,18 @@ class Loader implements \IWPML_Backend_Action, \IWPML_REST_Action {
 			'wp-element',
 		], $this->getEditorDependencies() );
 		$localizedScriptData = [ 'name' => 'WPMLBlocks', 'data' => $this->localizedScriptData ];
-		$this->enqueueBlocksApp( $localizedScriptData, $dependencies );
+		$this->enqueueBlocksScript( $localizedScriptData, $dependencies );
+		$this->enqueueStyleIfBuilt( 'wpml-blocks-editor-ui', '/dist/css/blocks-editor/styles.css' );
 	}
 
-	private function enqueueBlocksApp( array $localizedScriptData, array $dependencies ) {
+	private function shouldEnqueueEditorAssets() {
+		return is_admin() && $this->shouldLoadEditorAssets();
+	}
+
+	private function enqueueBlocksScript( array $localizedScriptData, array $dependencies ) {
 		$handle         = 'wpml-blocks-ui';
 		$scriptRelative = '/dist/js/blocks/app.js';
-		$styleRelative  = '/dist/css/blocks/styles.css';
-		$scriptPath     = WPML_PLUGIN_PATH . $scriptRelative;
-		$stylePath      = WPML_PLUGIN_PATH . $styleRelative;
-		$scriptVersion  = file_exists( $scriptPath ) ? (string) filemtime( $scriptPath ) : (string) ICL_SITEPRESS_SCRIPT_VERSION;
-		$styleVersion   = file_exists( $stylePath ) ? (string) filemtime( $stylePath ) : $scriptVersion;
+		$scriptVersion  = $this->builtFileVersion( $scriptRelative ) ?: (string) ICL_SITEPRESS_SCRIPT_VERSION;
 
 		wp_register_script(
 			$handle,
@@ -103,17 +154,28 @@ class Loader implements \IWPML_Backend_Action, \IWPML_REST_Action {
 		wp_localize_script( $handle, $localizedScriptData['name'], $localizedScriptData['data'] );
 		wp_localize_script( $handle, 'wpmlOutboundLinks', \WPML\OutboundLinks\OutboundLinks::getJsConfig() );
 		wp_enqueue_script( $handle );
+		wp_set_script_translations( $handle, 'sitepress', WPML_PLUGIN_PATH . '/locale/jed' );
+	}
 
-		if ( file_exists( $stylePath ) ) {
-			wp_enqueue_style(
-				$handle,
-				ICL_PLUGIN_URL . $styleRelative,
-				[],
-				$styleVersion
-			);
+	private function enqueueStyleIfBuilt( $handle, $relativePath ) {
+		$version = $this->builtFileVersion( $relativePath );
+
+		if ( null === $version ) {
+			return;
 		}
 
-		wp_set_script_translations( $handle, 'sitepress', WPML_PLUGIN_PATH . '/locale/jed' );
+		wp_enqueue_style(
+			$handle,
+			ICL_PLUGIN_URL . $relativePath,
+			[],
+			$version
+		);
+	}
+
+	protected function builtFileVersion( $relativePath ) {
+		$path = WPML_PLUGIN_PATH . $relativePath;
+
+		return file_exists( $path ) ? (string) filemtime( $path ) : null;
 	}
 
 	public function frontendPrintStyleIfBlockIsUsed( $content, $block ) {

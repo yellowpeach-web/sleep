@@ -9,6 +9,7 @@ use WPML\ST\TranslationPauseScope;
 use WPML\TM\API\ATE\CachedLanguageMappings;
 use WPML\TM\API\ATE\LanguageMappings;
 use WPML\TM\ATE\TranslateEverything\CreatableElementsInterface;
+use WPML\TM\ATE\TranslateEverything\TranslatableTaxonomies;
 use WPML\TM\ATE\TranslateEverything\UntranslatedElementsInterface;
 use WPML\TM\AutomaticTranslation\Actions\Actions;
 
@@ -19,15 +20,8 @@ class UntranslatedTaxonomyLabelStrings implements UntranslatedElementsInterface,
 
 	private $dispatcher;
 
-	private $sitepress;
-
 	public function __construct( TaxonomyLabelJobDispatcher $dispatcher, ?\SitePress $sitepress = null ) {
 		$this->dispatcher = $dispatcher;
-
-		if ( ! $sitepress ) {
-			global $sitepress;
-		}
-		$this->sitepress = $sitepress;
 	}
 
 	public function getTypeWithLanguagesToProcess() {
@@ -162,15 +156,7 @@ class UntranslatedTaxonomyLabelStrings implements UntranslatedElementsInterface,
 	}
 
 	private function getTranslatableTaxonomies(): array {
-		$taxonomies = [];
-
-		foreach ( get_taxonomies( [], 'names' ) as $taxonomy ) {
-			if ( $this->sitepress && $this->sitepress->is_translated_taxonomy( $taxonomy ) ) {
-				$taxonomies[] = $taxonomy;
-			}
-		}
-
-		return $taxonomies;
+		return TranslatableTaxonomies::getEligibleForTea();
 	}
 
 	private function getSourceLanguage(): string {

@@ -1,3 +1,6 @@
+<?php
+$args += [ 'box_title' => '', 'box_description' => '' ];
+?>
 <h3><?php echo $args['box_title']  ?></h3>
 
 <?php
@@ -6,19 +9,7 @@ if(empty($args['repository']) || empty($args['package']) || empty($args['product
     return;
 }
 
-$product = false;
-foreach($this->settings['repositories'][$repository_id]['data']['packages'] as $package_idx => $package){
-
-    if(!isset($package['id'])){
-        $package['id'] = sanitize_title_with_dashes($package['name']);
-    }
-
-    if($package['id'] == $args['package']){
-        $product = $this->settings['repositories'][$repository_id]['data']['packages'][$package_idx]['products'][$args['product']];
-        break;
-    }
-}
-
+$product = $this->get_compact_box_product( $repository, $args['product'] );
 
 if(!$product){
     echo __('Invalid product', 'installer');
@@ -38,16 +29,28 @@ if(isset($this->settings['repositories'][$repository_id])){
 
 $subscription_type = $this->get_subscription_type_for_repository($repository_id);
 $expired = false;
+$downloads = [];
+$masked_site_key = '';
 
-if($subscription_type != $product['subscription_type'] && !$this->have_superior_subscription($subscription_type, $product) && $site_key){
-    $subscription_no_match = sprintf(__(' Your current site key (%s) does not match the selected product (%s).', 'installer'), $site_key, $product['name']);
+if ( $site_key ) {
+    $masked_site_key = \OTGS\Installer\Templates\Repository\Registered::getMaskedSiteKey( $repository_id );
+
+    if ( $this->repository_has_invalid_site_key( $repository_id ) ) {
+        $subscription_no_match = __( 'Your site key is no longer valid.', 'installer' );
+    } else {
+        $downloads = $this->get_compact_box_downloads( $repository, $repository_id, $subscription_type );
+
+        if ( ! $downloads ) {
+            $subscription_no_match = sprintf(__(' Your current site key (%s) does not match the selected product (%s).', 'installer'), $masked_site_key, $product['name']);
+        }
+    }
 }
 
 if(!isset($args['product_name'])) $args['product_name'] = $product['name'];
 
 ?>
 
-<div class="otgs_wp_installer_table otgs_wp_installer_table_compact">
+<div class="otgs_wp_installer_table otgs_wp_installer_table_compact" id="installer_repo_<?php echo esc_attr( $repository_id ) ?>">
 
 <p><?php echo $args['box_description']  ?></p>
 
@@ -91,6 +94,12 @@ if(!isset($args['product_name'])) $args['product_name'] = $product['name'];
     <?php if($this->repository_has_expired_subscription($repository_id)): $expired = true; ?>
 
         <div><p class="installer-warn-box"><?php _e('Subscription is expired.', 'installer') ?></p></div>
+        <p><a class="button-primary" href="<?php echo $this->append_parameters_to_buy_url($product['url'], $repository_id, $args) ?>"><?php printf(__('Buy %s', 'installer'), $args['product_name']) ?></a></p>
+
+    <?php elseif($this->repository_has_refunded_subscription($repository_id)): $expired = true; ?>
+
+        <div><p class="installer-warn-box"><?php echo esc_html( sprintf( __( '%s registration needs your attention', 'installer' ), $args['product_name'] ) ) ?></p></div>
+        <p><a class="button-primary" href="<?php echo $this->append_parameters_to_buy_url($product['url'], $repository_id, $args) ?>"><?php printf(__('Buy %s', 'installer'), $args['product_name']) ?></a></p>
 
     <?php else: ?>
 
@@ -121,7 +130,7 @@ if(!isset($args['product_name'])) $args['product_name'] = $product['name'];
             title="<?php printf( esc_attr__("Site-key was set by %s, most likely in wp-config.php. Please remove the constant before attempting to unregister.", 'installer'), 'OTGS_INSTALLER_SITE_KEY_' . strtoupper($repository_id) ) ?>"
         <?php endif; ?>
         >
-            <?php printf(__("Remove current site key (%s)", 'installer'), $site_key) ?>
+            <?php printf(__("Remove current site key (%s)", 'installer'), $masked_site_key) ?>
     </a>
     <?php endif; ?>
     </center>

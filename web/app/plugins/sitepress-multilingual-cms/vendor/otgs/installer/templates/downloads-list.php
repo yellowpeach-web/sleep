@@ -74,5 +74,8 @@
 
     <div class="installer-status-success"><?php _e( 'Operation complete!', 'installer' ) ?></div>
 
-    <span class="installer-revalidate-message hidden"><?php _e( "Download failed!\n\nPlease refresh the page and try again.", 'installer' ) ?></span>
+    <span class="installer-revalidate-message hidden"><?php
+		/* translators: "Check for updates" is the label of the button above the list of plugins. */
+		esc_html_e( 'Download failed. Click Check for updates, then try again.', 'installer' );
+	?></span>
 </form>

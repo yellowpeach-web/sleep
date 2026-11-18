@@ -36,7 +36,7 @@ class TranslateNestedIds {
 					$entry[ $key ] = $this->convertByPath( $attr, $nextPath, $elementType, $elementSlug );
 				}
 			}
-		} elseif ( $currentKey && isset( $entry[ $currentKey ] ) ) {
+		} elseif ( '' !== (string) $currentKey && isset( $entry[ $currentKey ] ) ) {
 			$entry[ $currentKey ] = $this->convertByPath( $entry[ $currentKey ], $nextPath, $elementType, $elementSlug );
 		} elseif ( ! $nextPath ) {
 			$entry = $this->convertIds( $entry, $elementType, $elementSlug );

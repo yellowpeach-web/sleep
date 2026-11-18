@@ -5,6 +5,7 @@ namespace WPML\Core\Component\WordsToTranslate\Application\Service;
 use WPML\Core\Component\WordsToTranslate\Domain\Item;
 use WPML\Core\Component\WordsToTranslate\Domain\Job\Job;
 use WPML\Core\Component\WordsToTranslate\Domain\Job\JobDTO;
+use WPML\Core\Component\WordsToTranslate\Domain\Job\PricesUnavailableException;
 use WPML\Core\Component\WordsToTranslate\Domain\Job\Provider as ProviderJob;
 use WPML\Core\Component\WordsToTranslate\Domain\Job\Query\TranslationEngineQueryInterface;
 use WPML\Core\Component\WordsToTranslate\Domain\Post\Provider as ProviderPost;
@@ -102,8 +103,8 @@ class WordsToTranslateService {
   }
 
 
-  public function getForJob( $idJob, $freshTranslation = false ) {
-    return $this->providerJob->getById( $idJob, $freshTranslation );
+  public function getForJob( $idJob, $freshTranslation = false, $priceRequired = true ) {
+    return $this->providerJob->getById( $idJob, $freshTranslation, $priceRequired );
   }
 
 

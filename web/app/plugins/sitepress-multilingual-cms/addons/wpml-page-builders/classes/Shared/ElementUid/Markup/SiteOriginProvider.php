@@ -4,6 +4,7 @@ namespace WPML\PB\ElementUid\Markup;
 
 use WPML\PB\ElementUid\Capture;
 use WPML\PB\ElementUid\Hash;
+use WPML\PB\SiteOrigin\BuilderFields;
 use WPML\PB\SiteOrigin\DataSettings;
 use WPML\PB\SiteOrigin\TranslatableNodes;
 
@@ -48,6 +49,10 @@ class SiteOriginProvider implements Provider {
 				if ( TranslatableNodes::isWrappingModule( $widget ) ) {
 					$this->walk( $widget[ TranslatableNodes::CHILDREN_FIELD ], $nodes, $elements );
 					continue;
+				}
+
+				foreach ( BuilderFields::getWidgetLists( $widget ) as $widgets ) {
+					$this->walk( $widgets, $nodes, $elements );
 				}
 
 				$uid = isset( $widget[ TranslatableNodes::SETTINGS_FIELD ]['widget_id'] )

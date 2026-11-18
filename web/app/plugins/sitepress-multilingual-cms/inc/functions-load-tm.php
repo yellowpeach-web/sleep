@@ -11,8 +11,10 @@ use WPML\TM\Jobs\Query\PostQuery;
 use WPML\TM\Jobs\Query\QueryBuilder;
 use WPML\TM\Jobs\Query\StringsBatchQuery;
 use WPML\TM\Jobs\Query\TaxonomyQuery;
+use WPML\TM\Jobs\Query\TermBundleQuery;
 use WPML\TM\Settings\RequestSettings;
 use WPML\FP\Obj;
+use WPML\LIB\WP\User;
 use function WPML\Container\make;
 use \WPML\Setup\Option as SetupOptions;
 
@@ -264,6 +266,8 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 
 	add_action( 'admin_init', array( '\WPML\PostHog\DashboardSessionCounter', 'maybeCount' ) );
 
+	add_action( 'admin_init', array( '\WPML\TM\TranslationProxy\StrandedBatchRecovery', 'onDashboardLoad' ) );
+
 	add_action( 'admin_init', array( '\WPML\PostHog\RetryPendingOptOutStop', 'handle' ) );
 
 	add_action( 'wpml_set_translate_everything', array( '\WPML\PostHog\StopOptOutOnTeaEnabled', 'handle' ) );
@@ -347,7 +351,7 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 		return $xliff_frontend;
 	}
 
-	function wpml_tm_create_ATE_job_creation_model( $job_id, $applyTranslationMemoryForCompletedJobs = true ) {
+	function wpml_tm_create_ATE_job_creation_model( $job_id, $applyTranslationMemoryForCompletedJobs = true, $priceRequired = true ) {
 		$job_factory     = wpml_tm_load_job_factory();
 		$translation_job = $job_factory->get_translation_job( $job_id, false, 0, true );
 
@@ -355,7 +359,7 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 			return null;
 		}
 
-		$rid = \WPML\TM\API\Job\Map::fromJobId( $job_id );
+		$rid = \WPML\TM\API\Job\Map::ridFromJobId( $job_id );
 
 		$job             = new WPML_TM_ATE_Models_Job_Create();
 		$job->id         = $job_id;
@@ -368,8 +372,17 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 			: null;
 
 		$stillAtesOwnJob = WPML_TM_Editors::ATE === $translation_job->get_basic_data_property( 'editor' );
+		$resumes         = $previousStatus && ICL_TM_ATE_CANCELLED === (int) $previousStatus['status'] && $stillAtesOwnJob;
 
-		if ( $previousStatus && ICL_TM_ATE_CANCELLED === (int) $previousStatus['status'] && $stillAtesOwnJob ) {
+		$history_send = $translation_job instanceof WPML_Post_Translation_Job ? \WPML\EditHistory\SendFactory::send() : null;
+		$resumes = $resumes && ! ( $history_send && $history_send->carriesFor(
+			(int) $translation_job->get_resultant_element_id(),
+			(string) $translation_job->get_language_code(),
+			(int) $translation_job->get_original_element_id(),
+			\WPML\EditHistory\HistorySend::JOB_RESUME
+		) );
+
+		if ( $resumes ) {
 			wpml_tm_load_job_factory()->update_job_data( $job_id, array( 'editor' => WPML_TM_Editors::ATE ) );
 			$job->existing_ate_id = make( \WPML\TM\ATE\JobRecords::class )->get_ate_job_id( $job_id );
 		} else {
@@ -387,7 +400,7 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 			$job->apply_memory          = $apply_memory;
 			$job->job_sender            = \WPML\TM\ATE\JobSender\JobSenderRepository::get();
 
-			$wtt = wpml_tm_set_words_to_translate( $job, $job_id, $apply_memory );
+			$wtt = wpml_tm_set_words_to_translate( $job, $job_id, $apply_memory, $priceRequired );
 
 			if ( null === $wtt ) {
 				return null;
@@ -411,10 +424,21 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 
 			$job->notify_enabled = true;
 			$job->notify_url     = \WPML\TM\ATE\REST\PublicReceive::get_receive_ate_job_url( $job_id );
+			$job->receive_token_kind = \WPML\TM\ATE\REST\PublicReceive::receive_token_kind( $job_id );
 
 			$job->site_identifier = wpml_get_site_id( WPML_TM_ATE::SITE_ID_SCOPE );
 
-			$xliff = wpml_tm_get_job_xliff_or_null( $job_id );
+			$render = fn( $history_marking = null ) => wpml_tm_get_job_xliff_or_null( $job_id, $history_marking );
+			$xliff  = $history_send
+				? $history_send->render(
+					$job,
+					(int) $translation_job->get_resultant_element_id(),
+					(string) $translation_job->get_language_code(),
+					(int) $translation_job->get_original_element_id(),
+					$render,
+					$apply_memory ? \WPML\EditHistory\HistorySend::JOB_UPDATE : \WPML\EditHistory\HistorySend::JOB_FROM_SCRATCH
+				)
+				: $render();
 
 			$job->file->type = 'data:application/x-xliff;base64';
 			$job->file->name = $translation_job->get_title();
@@ -461,11 +485,11 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 		return $data;
 	}
 
-	function wpml_tm_set_words_to_translate( $job, $job_id, $apply_memory ) {
+	function wpml_tm_set_words_to_translate( $job, $job_id, $apply_memory, $priceRequired = true ) {
 		try {
 			global $wpml_dic;
 			$wordsToTranslateService = $wpml_dic->make( \WPML\Core\Component\WordsToTranslate\Application\Service\WordsToTranslateService::class );
-			$wtt = $wordsToTranslateService->getForJob( $job_id, ! $apply_memory );
+			$wtt = $wordsToTranslateService->getForJob( $job_id, ! $apply_memory, $priceRequired );
 
 			$job->wpml_words_to_translate_count    = $wtt->getWordsToTranslate();
 			$job->wpml_automatic_translation_costs = $wtt->getAutomaticTranslationCosts();
@@ -490,7 +514,13 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 					'message' => $e->getMessage(),
 				)
 			);
-			wpml_tm_record_words_to_translate_failure( $job_id, $e->getMessage() );
+			wpml_tm_record_words_to_translate_failure(
+				$job_id,
+				$e->getMessage() . ( $e->getPrevious() ? ' ' . $e->getPrevious()->getMessage() : '' ),
+				$e instanceof \WPML\Core\Component\WordsToTranslate\Domain\Job\PricesUnavailableException
+					? \WPML\Core\Component\Translation\Application\Service\TranslationService::PRICES_UNAVAILABLE
+					: \WPML\Core\Component\Translation\Application\Service\TranslationService::WORD_COUNT_FAILED
+			);
 
 			try {
 				\WPML\TM\API\Jobs::setStatus( (int) $job_id, ICL_TM_ATE_NEEDS_RETRY );
@@ -509,7 +539,7 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 		}
 	}
 
-	function wpml_tm_record_words_to_translate_failure( $job_id, $message ) {
+	function wpml_tm_record_words_to_translate_failure( $job_id, $message, $reason = \WPML\Core\Component\Translation\Application\Service\TranslationService::WORD_COUNT_FAILED ) {
 		$failures = get_option( 'wpml_words_to_translate_failures', array() );
 		if ( ! is_array( $failures ) ) {
 			$failures = array();
@@ -520,6 +550,7 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 		$failures[ (int) $job_id ] = array(
 			'time'    => $isNewFailure ? time() : (int) ( $failures[ (int) $job_id ]['time'] ?? time() ),
 			'message' => (string) $message,
+			'reason'  => (string) $reason,
 		);
 
 		if ( count( $failures ) > 100 ) {
@@ -616,16 +647,42 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 			return;
 		}
 
-		$text = '<p>' . sprintf(
-			/* translators: %d is the number of translation jobs that were held back. */
-			_n(
-				'WPML could not calculate the word count for %d translation job, so it was not sent for translation. WPML retries automatically; you can also resend the content or open the job in the Translation Queue.',
-				'WPML could not calculate the word count for %d translation jobs, so they were not sent for translation. WPML retries automatically; you can also resend the content or open the jobs in the Translation Queue.',
-				count( $failures ),
-				'sitepress'
-			),
-			count( $failures )
-		) . '</p>';
+		$priceHeld = count(
+			array_filter(
+				$failures,
+				function ( $failure ) {
+					return is_array( $failure )
+						&& \WPML\Core\Component\Translation\Application\Service\TranslationService::PRICES_UNAVAILABLE === ( $failure['reason'] ?? '' );
+				}
+			)
+		);
+		$countFailed = count( $failures ) - $priceHeld;
+
+		$text = '';
+		if ( $countFailed > 0 ) {
+			$text .= '<p>' . sprintf(
+				/* translators: %d is the number of translation jobs that were held back. */
+				_n(
+					'WPML could not calculate the word count for %d translation job, so it was not sent for translation. WPML retries automatically; you can also resend the content or open the job in the Translation Queue.',
+					'WPML could not calculate the word count for %d translation jobs, so they were not sent for translation. WPML retries automatically; you can also resend the content or open the jobs in the Translation Queue.',
+					$countFailed,
+					'sitepress'
+				),
+				$countFailed
+			) . '</p>';
+		}
+		if ( $priceHeld > 0 ) {
+			$text .= '<p>' . sprintf(
+				/* translators: %d is the number of automatic translation jobs that were held back because the price of automatic translation could not be read from our translation system. */
+				_n(
+					'WPML could not get the price of automatic translation from our translation system for %d translation job, so it was not sent for translation. WPML retries automatically in a few minutes; you can also resend the content later.',
+					'WPML could not get the price of automatic translation from our translation system for %d translation jobs, so they were not sent for translation. WPML retries automatically in a few minutes; you can also resend the content later.',
+					$priceHeld,
+					'sitepress'
+				),
+				$priceHeld
+			) . '</p>';
+		}
 
 		$notice = $notices->create_notice( 'words-to-translate-failed', $text, 'wpml-tm' );
 		$notice->set_css_class_types( 'notice-warning' );
@@ -647,26 +704,15 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 		return $xliff_writer->generate_job_xliff( $job_id );
 	}
 
-	function wpml_tm_get_job_xliff_or_null( $job_id ) {
+	function wpml_tm_get_job_xliff_or_null( $job_id, $history_marking = null ) {
 		static $xliff_writer;
 
 		if ( ! $xliff_writer ) {
 			$job_factory  = wpml_tm_load_job_factory();
-			$xliff_writer = ( new WPML_TM_Xliff_Writer( $job_factory ) )->withDeclaredPlaceholders();
+			$xliff_writer = ( new WPML_TM_Xliff_Writer( $job_factory ) )->withDeclaredPlaceholders()->withOutdatedFieldSegments();
 		}
 
-		return $xliff_writer->generate_job_xliff_or_null( $job_id );
-	}
-
-	function wpml_tm_get_wpml_rest() {
-		static $wpml_rest;
-
-		if ( ! $wpml_rest ) {
-			$http      = new WP_Http();
-			$wpml_rest = new WPML_Rest( $http );
-		}
-
-		return $wpml_rest;
+		return $xliff_writer->generate_job_xliff_or_null( $job_id, $history_marking );
 	}
 
 	function wpml_tm_get_tp_api_client() {
@@ -750,11 +796,16 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 			global $wpdb;
 
 			$limit_helper = new LimitQueryHelper();
-			$order_helper = new OrderQueryHelper();
+			$order_helper = new OrderQueryHelper(
+				function () {
+					return User::getCurrentId();
+				}
+			);
 
 			$subqueries = array(
 				new PostQuery( $wpdb, new QueryBuilder( $limit_helper, $order_helper ) ),
 				new TaxonomyQuery( $wpdb, new QueryBuilder( $limit_helper, $order_helper ) ),
+				new TermBundleQuery( $wpdb, new QueryBuilder( $limit_helper, $order_helper ) ),
 			);
 			if ( wpml_is_st_loaded() && get_option( 'wpml-package-translation-db-updates-run' ) ) {
 				$subqueries[] = new PackageQuery(
@@ -894,14 +945,15 @@ if ( \WPML\Plugins::latchTMLoadedForRequest(
 	function wpml_tm_save_post( $post_id, $post, $force_set_status = false ) {
 		global $wpdb, $wpml_post_translations, $wpml_term_translations;
 
-		if ( false === $force_set_status && get_post_meta( $post_id, '_icl_lang_duplicate_of', true ) ) {
+		if ( false === $force_set_status && \WPML\TranslationPolicy\Duplicate\DuplicateReaders::isKeptInStep( (int) $post_id ) ) {
 			$force_set_status = ICL_TM_DUPLICATE;
 		}
 
 		$action_helper    = new WPML_TM_Action_Helper();
 		$blog_translators = wpml_tm_load_blog_translators();
 		$tm_records       = new WPML_TM_Records( $wpdb, $wpml_post_translations, $wpml_term_translations );
-		$save_post_action = new WPML_TM_Post_Actions( $action_helper, $blog_translators, $tm_records );
+		$takeover         = \WPML\TranslationPolicy\FeatureSwitch::isOn() ? new \WPML\EditHistory\Takeover() : null;
+		$save_post_action = new WPML_TM_Post_Actions( $action_helper, $blog_translators, $tm_records, $takeover );
 		if ( 'revision' === $post->post_type || 'auto-draft' === $post->post_status || isset( $_POST['autosave'] ) ) {
 			return;
 		}

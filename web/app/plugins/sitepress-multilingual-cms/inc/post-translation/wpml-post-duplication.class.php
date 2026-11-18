@@ -1,5 +1,7 @@
 <?php
 
+use WPML\EditHistory\InternalWrite;
+
 require_once dirname( __FILE__ ) . '/wpml-wordpress-actions.class.php';
 
 class WPML_Post_Duplication extends WPML_WPDB_And_SP_User {
@@ -30,6 +32,9 @@ class WPML_Post_Duplication extends WPML_WPDB_And_SP_User {
 	function get_duplicates( $master_post_id ) {
 		global $wpml_post_translations;
 		$duplicates = array();
+		if ( ! \WPML\TranslationPolicy\Duplicate\DuplicateReaders::keepsInStep() ) {
+			return $duplicates;
+		}
 		$wpdb       = $this->wpdb;
 		$post_ids   = $wpdb->get_col(
 			$wpdb->prepare(
@@ -70,7 +75,7 @@ class WPML_Post_Duplication extends WPML_WPDB_And_SP_User {
 		}
 		self::$duplication_depth_by_master[ $master_post_id ]++;
 		try {
-			return $this->make_duplicate_inner( $master_post_id, $lang );
+			return InternalWrite::run( InternalWrite::COPY, fn() => $this->make_duplicate_inner( $master_post_id, $lang ) );
 		} finally {
 			self::$duplication_depth_by_master[ $master_post_id ]--;
 			if ( 0 === self::$duplication_depth_by_master[ $master_post_id ] ) {
@@ -93,7 +98,7 @@ class WPML_Post_Duplication extends WPML_WPDB_And_SP_User {
 			return false;
 		}
 
-		return ! get_post_meta( $target_id, '_icl_lang_duplicate_of', true );
+		return ! \WPML\TranslationPolicy\Duplicate\DuplicateReaders::isCopy( $target_id );
 	}
 
 	private function make_duplicate_inner( $master_post_id, $lang ) {
@@ -207,19 +212,24 @@ class WPML_Post_Duplication extends WPML_WPDB_And_SP_User {
 		}
 		$this->duplicate_custom_fields( $master_post_id, $lang );
 
-		$status_helper = wpml_get_post_status_helper();
-		$status_helper->set_status( $id, ICL_TM_DUPLICATE );
+		$must_keep_in_step = \WPML\TranslationPolicy\Duplicate\DuplicateReaders::keepsInStep();
+		$status_helper     = wpml_get_post_status_helper();
+		$status_helper->set_status( $id, $must_keep_in_step ? ICL_TM_DUPLICATE : ICL_TM_COMPLETE );
 		$status_helper->set_update_status( $id, false );
-		update_post_meta( $id, '_icl_lang_duplicate_of', $master_post->ID );
+		if ( $must_keep_in_step ) {
+			update_post_meta( $id, \WPML\TranslationPolicy\Duplicate\DuplicateReaders::META, $master_post->ID );
+		}
+		delete_post_meta( $id, \WPML\Core\SharedKernel\Component\Post\Domain\TranslationEditorPreference::POST_META_KEY_INDEPENDENT );
 
 		if ( $this->sitepress->get_setting( 'sync_post_format' ) ) {
 			$_wp_post_format = get_post_format( $master_post_id );
 			$_wp_post_format && set_post_format( $id, $_wp_post_format );
 		}
-		if ( $this->sitepress->get_setting( 'sync_comments_on_duplicates' ) ) {
+		if ( $must_keep_in_step && $this->sitepress->get_setting( 'sync_comments_on_duplicates' ) ) {
 			$this->duplicate_comments( $master_post_id, $id );
 		}
 		do_action( 'icl_make_duplicate', $master_post_id, $lang, $post_array, $id );
+		\WPML\TranslationPolicy\Duplicate\DuplicateReaders::afterCopy( (int) $id, (string) $lang, (int) $master_post->ID );
 		clean_post_cache( $id );
 
 		if ( function_exists( 'wp_cache_supports' ) && wp_cache_supports( 'flush_group' ) ) {

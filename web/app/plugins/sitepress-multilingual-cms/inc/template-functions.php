@@ -125,8 +125,10 @@ function wpml_link_to_element_filter(
 	$post_types = array_keys( (array) $wp_post_types );
 	$taxonomies = array_keys( (array) $wp_taxonomies );
 
+	$original_term_id = 0;
 	if ( in_array( $element_type, $taxonomies ) ) {
-		$element_id = $wpdb->get_var( $wpdb->prepare( "SELECT term_taxonomy_id FROM {$wpdb->term_taxonomy} WHERE term_id= %d AND taxonomy=%s", $element_id, $element_type ) );
+		$original_term_id = (int) $element_id;
+		$element_id       = $wpdb->get_var( $wpdb->prepare( "SELECT term_taxonomy_id FROM {$wpdb->term_taxonomy} WHERE term_id= %d AND taxonomy=%s", $element_id, $element_type ) );
 	} elseif ( in_array( $element_type, $post_types ) ) {
 		$element_type = 'post';
 	}
@@ -183,16 +185,16 @@ function wpml_link_to_element_filter(
 			$url   = get_permalink( $element_id );
 			$title = get_the_title( $element_id );
 		} elseif ( $element_type == 'post_tag' ) {
-			$url    = get_tag_link( $element_id );
-			$my_tag = &get_term( $element_id, 'post_tag', OBJECT, 'display' );
+			$url    = get_tag_link( $original_term_id );
+			$my_tag = get_term( $original_term_id, 'post_tag', OBJECT, 'display' );
 			$title  = apply_filters( 'single_tag_title', $my_tag->name );
 		} elseif ( $element_type == 'category' ) {
-			$url    = get_category_link( $element_id );
-			$my_cat = &get_term( $element_id, 'category', OBJECT, 'display' );
+			$url    = get_category_link( $original_term_id );
+			$my_cat = get_term( $original_term_id, 'category', OBJECT, 'display' );
 			$title  = apply_filters( 'single_cat_title', $my_cat->name );
 		} else {
-			$url    = get_term_link( (int) $element_id, $element_type );
-			$my_cat = &get_term( $element_id, $element_type, OBJECT, 'display' );
+			$url    = get_term_link( $original_term_id, $element_type );
+			$my_cat = get_term( $original_term_id, $element_type, OBJECT, 'display' );
 			$title  = apply_filters( 'single_cat_title', $my_cat->name );
 		}
 	}
@@ -431,7 +433,7 @@ function wpml_cf_translation_preferences( $id, $custom_field = false, $class = '
 		/* translators: Option in the dropdown that says what happens to a field: put the value in the translation once, and leave it alone afterwards. Verb phrase, imperative. */
 		$output .= wpml_translation_preference_input_helper( $args, 'wpml_cf_translation_preferences_option_copy_once_', WPML_COPY_ONCE_CUSTOM_FIELD, __( 'Copy once', 'sitepress' ) );
 		$output .= '</li><li>';
-		/* translators: Option in the dropdown that says what happens to a field, and the heading of the column of the post editing screen where a translation is started: the text is translated. Verb, imperative. */
+		/* translators: Verb, imperative: an option in the dropdown that says what happens to a field, the heading of the column of the post editing screen where a translation is started, and the heading of the list of languages without a translation in the post editor's Language box. */
 		$output .= wpml_translation_preference_input_helper( $args, 'wpml_cf_translation_preferences_option_translate_', WPML_TRANSLATE_CUSTOM_FIELD, __( 'Translate', 'sitepress' ) );
 		$output .= '</li></ul>';
 
@@ -753,11 +755,11 @@ function wpml_get_content_translations_filter( $empty, $post_id, $content_type =
 }
 
 function wpml_get_master_post_from_duplicate( $post_id ) {
-	return get_post_meta( $post_id, '_icl_lang_duplicate_of', true );
+	return \WPML\TranslationPolicy\Duplicate\DuplicateReaders::keepsInStep() ? get_post_meta( $post_id, \WPML\TranslationPolicy\Duplicate\DuplicateReaders::META, true ) : '';
 }
 
 function wpml_get_master_post_from_duplicate_filter( $post_id ) {
-	return get_post_meta( $post_id, '_icl_lang_duplicate_of', true );
+	return \WPML\TranslationPolicy\Duplicate\DuplicateReaders::keepsInStep() ? get_post_meta( $post_id, \WPML\TranslationPolicy\Duplicate\DuplicateReaders::META, true ) : '';
 }
 
 function wpml_get_post_duplicates( $master_post_id ) {

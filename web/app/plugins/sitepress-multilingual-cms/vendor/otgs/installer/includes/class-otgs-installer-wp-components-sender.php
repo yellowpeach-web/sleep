@@ -33,6 +33,7 @@ class OTGS_Installer_WP_Components_Sender {
 							'site_url'   => get_site_url(),
 							'components' => $components,
 							'phpversion' => phpversion(),
+							'mysql_version' => \OTGS\Installer\Api\DatabaseVersion::get(),
 							'wp_version' => get_bloginfo( 'version' ),
 							'force'      => $force,
 						),

@@ -2,7 +2,7 @@
 
 namespace WPML\Collect\Contracts\Support;
 
-interface Arrayable
-{
-    public function toArray();
+interface Arrayable {
+
+	public function toArray();
 }

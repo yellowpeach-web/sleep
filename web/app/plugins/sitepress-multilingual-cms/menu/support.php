@@ -38,7 +38,7 @@ $data = Initializer::getData();
                 <tr>
                     <th>' . /* translators: Column heading in the table of WPML plugins on the Support screen. */ esc_html__( 'Plugin Name', 'sitepress' ) . '</th>
                     <th style="text-align:right">' . /* translators: Column heading in tables of the WPML admin, above the cells that say how far something has got. Noun, singular. */ esc_html__( 'Status', 'sitepress' ) . '</th>
-                    <th>' . /* translators: Value in a table saying that the thing the row is about is turned on and in use. Adjective. */ esc_html__( 'Active', 'sitepress' ) . '</th>
+                    <th>' . /* translators: Adjective. In a table, the value saying that the thing the row is about is turned on and in use; in the Elementor language switcher widget, the heading of the style settings for the current language. */ esc_html__( 'Active', 'sitepress' ) . '</th>
                     <th>' . /* translators: Label of the row that gives the version number of a piece of software, on the Support screen. */ esc_html__( 'Version', 'sitepress' ) . '</th>
                 </tr>
             </thead>
@@ -62,7 +62,7 @@ $data = Initializer::getData();
 		}
 		echo '</td>';
 		echo '<td align="center">';
-		echo isset( $file ) && is_plugin_active( $file ) ? /* translators: Option in a dropdown, and the value shown in a table cell, meaning that the setting is turned on. */ esc_html__( 'Yes', 'sitepress' ) : /* translators: Option in a dropdown, and the value shown in a table cell, meaning that the setting is turned off. */ esc_html__( 'No', 'sitepress' );
+		echo isset( $file ) && is_plugin_active( $file ) ? /* translators: Meaning that a setting is on or that a row applies: an option in a dropdown, the value in a table cell, and the screen reader name of the tick in the table of the "Who translates" step of WPML → Settings. */ esc_html__( 'Yes', 'sitepress' ) : /* translators: Option in a dropdown, and the value shown in a table cell, meaning that the setting is turned off. */ esc_html__( 'No', 'sitepress' );
 		echo '</td>';
 		echo '<td align="right">';
 		/* translators: Shown in a table cell in place of a value that is not there. Keep the short form your language uses for "not available". */

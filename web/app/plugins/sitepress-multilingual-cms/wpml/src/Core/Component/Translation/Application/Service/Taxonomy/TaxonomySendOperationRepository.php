@@ -72,7 +72,9 @@ class TaxonomySendOperationRepository {
     }
 
     if ( $manifest['expiresAt'] < time() ) {
-      $this->deleteOperation( $operationId );
+      if ( ! $this->hasUncommittedTpBatch( $manifest ) ) {
+        $this->deleteOperation( $operationId );
+      }
       throw new InvalidArgumentException(
         esc_html__( 'This translation send has expired. Start a new send to continue.', 'wpml' )
       );
@@ -136,9 +138,192 @@ class TaxonomySendOperationRepository {
     $manifest['rounds']     = $manifest['rounds'] + 1;
     $manifest['expiresAt']  = time() + self::LIFETIME_SECONDS;
 
+    $stored = get_option( $this->key( $operationId ), null );
+    if ( is_array( $stored ) ) {
+      if ( array_key_exists( 'batchName', $stored ) ) {
+        $manifest['batchName'] = (string) $stored['batchName'];
+      }
+      if ( array_key_exists( 'batchId', $stored ) ) {
+        $manifest['batchId'] = (int) $stored['batchId'];
+      }
+      if ( array_key_exists( 'batchCommitted', $stored ) ) {
+        $manifest['batchCommitted'] = (bool) $stored['batchCommitted'];
+      }
+      if ( array_key_exists( 'commitAttempts', $stored ) ) {
+        $manifest['commitAttempts'] = (int) $stored['commitAttempts'];
+      }
+      if ( array_key_exists( 'committedBatches', $stored ) && is_array( $stored['committedBatches'] ) ) {
+        $committedBatches = $stored['committedBatches'];
+        $manifest['committedBatches'] = $committedBatches;
+      }
+      unset( $manifest['openBundleMembers'] );
+      if ( is_array( $stored['openBundleMembers'] ?? null ) && $stored['openBundleMembers'] ) {
+        $openBundleMembers             = $stored['openBundleMembers'];
+        $manifest['openBundleMembers'] = $openBundleMembers;
+      }
+    }
+
     update_option( $this->key( $operationId ), $manifest, false );
 
     return $manifest;
+  }
+
+
+  public function openBundleMembers( string $operationId ): array {
+    $this->assertValidId( $operationId );
+    $manifest = get_option( $this->key( $operationId ), null );
+    if ( ! is_array( $manifest ) || ! is_array( $manifest['openBundleMembers'] ?? null ) ) {
+      return [];
+    }
+    $members = array_values( $manifest['openBundleMembers'] );
+
+    return $members;
+  }
+
+
+  public function setOpenBundleMembers( string $operationId, array $members ): bool {
+    $this->assertValidId( $operationId );
+    $manifest = get_option( $this->key( $operationId ), null );
+    if ( ! is_array( $manifest ) || self::VERSION !== ( $manifest['version'] ?? null ) ) {
+      return false;
+    }
+    $members = array_values( $members );
+    if ( ( $manifest['openBundleMembers'] ?? [] ) === $members ) {
+      return true;
+    }
+    if ( $members ) {
+      $manifest['openBundleMembers'] = $members;
+    } else {
+      unset( $manifest['openBundleMembers'] );
+    }
+
+    return update_option( $this->key( $operationId ), $manifest, false );
+  }
+
+
+  public function recordTpBatch( string $operationId, string $batchName, int $batchId ): bool {
+    $this->assertValidId( $operationId );
+    $manifest = get_option( $this->key( $operationId ), null );
+    if ( ! is_array( $manifest ) || self::VERSION !== ( $manifest['version'] ?? null ) ) {
+      return false;
+    }
+    if ( $batchName === ( $manifest['batchName'] ?? null ) && $batchId === ( $manifest['batchId'] ?? null ) ) {
+      return true;
+    }
+    if ( isset( $manifest['batchName'] ) || isset( $manifest['batchId'] ) ) {
+      if ( empty( $manifest['batchCommitted'] ) ) {
+        return false;
+      }
+      $manifest['committedBatches'][] = [
+        'batchName' => (string) $manifest['batchName'],
+        'batchId'   => (int) $manifest['batchId'],
+      ];
+      $manifest['batchCommitted'] = false;
+      $manifest['commitAttempts'] = 0;
+    }
+    $manifest['batchName'] = $batchName;
+    $manifest['batchId']   = $batchId;
+
+    return update_option( $this->key( $operationId ), $manifest, false );
+  }
+
+
+  public function recordTpCommitAttempt( string $operationId, string $batchName, int $batchId ): int {
+    $this->assertValidId( $operationId );
+    $manifest = get_option( $this->key( $operationId ), null );
+    if ( ! is_array( $manifest )
+      || self::VERSION !== ( $manifest['version'] ?? null )
+      || $batchName !== ( $manifest['batchName'] ?? null )
+      || $batchId !== ( $manifest['batchId'] ?? null )
+    ) {
+      return 0;
+    }
+    if ( ! $this->hasUncommittedTpBatch( $manifest ) ) {
+      return 0;
+    }
+    $manifest['commitAttempts'] = ( $manifest['commitAttempts'] ?? 0 ) + 1;
+
+    return update_option( $this->key( $operationId ), $manifest, false )
+      ? $manifest['commitAttempts']
+      : 0;
+  }
+
+
+  public function isTpBatchCommitted( string $operationId, string $batchName, int $batchId ): bool {
+    $this->assertValidId( $operationId );
+    $manifest = get_option( $this->key( $operationId ), null );
+
+    if ( ! is_array( $manifest ) || self::VERSION !== ( $manifest['version'] ?? null ) ) {
+      return false;
+    }
+    if ( $batchName === ( $manifest['batchName'] ?? null )
+      && $batchId === ( $manifest['batchId'] ?? null )
+      && ! empty( $manifest['batchCommitted'] )
+    ) {
+      return true;
+    }
+    foreach ( $manifest['committedBatches'] ?? [] as $committed ) {
+      if ( $batchName === ( $committed['batchName'] ?? null ) && $batchId === ( $committed['batchId'] ?? null ) ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+
+  public function hasUncommittedTpBatch( array $manifest ): bool {
+    return isset( $manifest['batchName'], $manifest['batchId'] ) && empty( $manifest['batchCommitted'] );
+  }
+
+
+  public function markTpBatchCommitted( string $operationId, string $batchName, int $batchId ): bool {
+    $this->assertValidId( $operationId );
+    $manifest = get_option( $this->key( $operationId ), null );
+    if ( ! is_array( $manifest )
+      || self::VERSION !== ( $manifest['version'] ?? null )
+      || $batchName !== ( $manifest['batchName'] ?? null )
+      || $batchId !== ( $manifest['batchId'] ?? null )
+    ) {
+      return false;
+    }
+    if ( ! empty( $manifest['batchCommitted'] ) ) {
+      return true;
+    }
+    $manifest['batchCommitted'] = true;
+
+    return update_option( $this->key( $operationId ), $manifest, false );
+  }
+
+
+  public function deleteCommittedOperation( string $operationId, string $batchName, int $batchId ): bool {
+    $this->assertValidId( $operationId );
+    $manifest = get_option( $this->key( $operationId ), null );
+    if ( ! is_array( $manifest )
+      || self::VERSION !== ( $manifest['version'] ?? null )
+      || $batchName !== ( $manifest['batchName'] ?? null )
+      || $batchId !== ( $manifest['batchId'] ?? null )
+      || empty( $manifest['batchCommitted'] )
+    ) {
+      return false;
+    }
+
+    if ( ! $this->isComplete( $manifest ) || $this->hasRetryablePairs( $manifest ) ) {
+      return false;
+    }
+
+    $this->deleteOperation( $operationId );
+    return true;
+  }
+
+
+  private function hasRetryablePairs( array $manifest ): bool {
+    foreach ( $manifest['failures'] as $failure ) {
+      if ( in_array( $failure['outcome'] ?? '', [ 'rejected', 'remaining' ], true ) ) {
+        return true;
+      }
+    }
+    return false;
   }
 
 

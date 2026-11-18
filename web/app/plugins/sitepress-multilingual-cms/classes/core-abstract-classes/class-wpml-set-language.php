@@ -4,9 +4,15 @@ class WPML_Set_Language extends WPML_Full_Translation_API {
 
 	const TRID_ALLOCATION_LOCK_TIMEOUT_SECONDS = 15;
 
+	const ELEMENT_LANGUAGE_DETAILS_CACHE_GROUP = 'element_language_details';
+
+	const ELEMENT_LANGUAGE_DETAILS_MISSES_CACHE_GROUP = 'element_language_details_misses';
+
 	const TRID_ALLOCATION_LOCK_TTL_SECONDS = 30;
 
 	private static $exempt_core_flow_depth = 0;
+
+	private static $last_insert_failure = [ 'errno' => 0, 'error' => '' ];
 
 	private $trid_allocation_lock;
 
@@ -43,7 +49,7 @@ class WPML_Set_Language extends WPML_Full_Translation_API {
 			return false;
 		}
 
-		$this->clear_cache();
+		$this->clear_cache( $el_type );
 		if ( $check_duplicates && $el_id && (bool) ( $el_type_db = $this->check_duplicate(
 			$el_type,
 			$el_id
@@ -141,20 +147,29 @@ class WPML_Set_Language extends WPML_Full_Translation_API {
 			$translation_id = $this->insert_new_row( $el_id, false, $el_type, $language_code, $src_language_code );
 		}
 
-		$this->clear_cache();
+		$this->clear_cache( $el_type );
 		if ( $translation_id && substr( $el_type, 0, 4 ) === 'tax_' ) {
 			$taxonomy = substr( $el_type, 4 );
 			do_action( 'created_term_translation', $taxonomy, $el_id, $language_code );
 		}
 		do_action( 'icl_set_element_language', $translation_id, $el_id, $language_code, $trid );
 
-		wp_cache_delete( ...self::get_cache_ref( $el_id, $el_type ) );
-
 		return $translation_id;
 	}
 
 	public static function get_cache_ref( $el_id, $el_type ) {
-		return [ $el_id . ':' . $el_type, 'element_language_details' ];
+		return [ $el_id . ':' . $el_type, self::ELEMENT_LANGUAGE_DETAILS_CACHE_GROUP ];
+	}
+
+	public static function element_language_details_misses() {
+		wp_cache_add_non_persistent_groups( self::ELEMENT_LANGUAGE_DETAILS_MISSES_CACHE_GROUP );
+
+		return new WPML_WP_Cache( self::ELEMENT_LANGUAGE_DETAILS_MISSES_CACHE_GROUP );
+	}
+
+	public static function flush_element_language_details_cache() {
+		( new WPML_WP_Cache( self::ELEMENT_LANGUAGE_DETAILS_CACHE_GROUP ) )->flush_group_cache();
+		self::element_language_details_misses()->flush_group_cache();
 	}
 
 	private function get_existing( $element_type, $element_id ) {
@@ -242,7 +257,7 @@ class WPML_Set_Language extends WPML_Full_Translation_API {
 		$src_language_code = empty( $src_language_code )
 			? $this->sitepress->get_source_language_by_trid( $trid ) : $src_language_code;
 		if ( $src_language_code !== $language_code ) {
-			$this->release_status_of_row_leaving_group( $trid, $el_id, $el_type );
+			$left_trid = $this->release_status_of_row_leaving_group( $trid, $el_id, $el_type );
 
 			$this->wpdb->update(
 				$this->wpdb->prefix . 'icl_translations',
@@ -256,6 +271,8 @@ class WPML_Set_Language extends WPML_Full_Translation_API {
 					'element_id'   => $el_id,
 				)
 			);
+
+			WPML_Translations::flush_cache_for_trids( array( $left_trid ) );
 
 			$context = explode( '_', $el_type );
 
@@ -285,7 +302,11 @@ class WPML_Set_Language extends WPML_Full_Translation_API {
 
 		if ( is_object( $row ) && (int) $row->trid !== (int) $trid ) {
 			WPML_Translation_Records_Delete::status_by_translation_ids( array( $row->translation_id ) );
+
+			return (int) $row->trid;
 		}
+
+		return null;
 	}
 
 	private function delete_existing_row( $el_type, $el_id ) {
@@ -331,6 +352,7 @@ class WPML_Set_Language extends WPML_Full_Translation_API {
 
 			if ( ! $trid_lock_acquired ) {
 				$this->log_trid_allocation_lock_failure( $el_id, $el_type, $language_code );
+				self::element_language_details_misses()->flush_group_cache();
 
 				return $el_id ? (int) $this->existing_element( $el_id, $el_type ) : 0;
 			}
@@ -340,6 +362,8 @@ class WPML_Set_Language extends WPML_Full_Translation_API {
 			if ( false === $trid ) {
 				$translation_id = $el_id ? $this->existing_element( $el_id, $el_type ) : false;
 				if ( $translation_id ) {
+					self::element_language_details_misses()->flush_group_cache();
+
 					return (int) $translation_id;
 				}
 
@@ -410,7 +434,13 @@ class WPML_Set_Language extends WPML_Full_Translation_API {
 				);
 			}
 
+			self::$last_insert_failure = [ 'errno' => 0, 'error' => '' ];
 			if ( false === $result ) {
+				self::$last_insert_failure = [
+					'errno' => $wpdb->dbh instanceof \mysqli ? (int) $wpdb->dbh->errno : 0,
+					'error' => (string) $wpdb->last_error,
+				];
+
 				return 0;
 			}
 
@@ -422,7 +452,14 @@ class WPML_Set_Language extends WPML_Full_Translation_API {
 			}
 		}
 
+		if ( 0 === $translation_id && ! $inserted ) {
+			$translation_id = $this->replace_zero_id_row( $new );
+			$inserted       = $translation_id > 0;
+		}
+
 		if ( ! $inserted ) {
+			self::element_language_details_misses()->flush_group_cache();
+
 			return $translation_id;
 		}
 
@@ -441,6 +478,80 @@ class WPML_Set_Language extends WPML_Full_Translation_API {
 		);
 
 		return $translation_id;
+	}
+
+	private function replace_zero_id_row( array $new ) {
+		$wpdb = $this->wpdb;
+
+		if ( ! class_exists( \WPML\Troubleshooting\TranslationsTableKeys::class )
+			|| ( new \WPML\Troubleshooting\TranslationsTableKeys( $wpdb ) )->lacksPrimaryKeyOrAutoIncrement()
+		) {
+			return 0;
+		}
+
+		$zero = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT element_id, source_language_code FROM {$wpdb->prefix}icl_translations
+				 WHERE translation_id = 0 AND trid = %d AND language_code = %s AND element_type = %s",
+				$new['trid'],
+				$new['language_code'],
+				$new['element_type']
+			)
+		);
+		if ( ! $zero ) {
+			return 0;
+		}
+		if ( isset( $new['element_id'] ) && null !== $zero->element_id && (int) $zero->element_id !== (int) $new['element_id'] ) {
+			return 0;
+		}
+
+		$row = [
+			'element_type'         => $new['element_type'],
+			'element_id'           => isset( $new['element_id'] ) ? (int) $new['element_id'] : ( null === $zero->element_id ? null : (int) $zero->element_id ),
+			'trid'                 => (int) $new['trid'],
+			'language_code'        => $new['language_code'],
+			'source_language_code' => isset( $new['source_language_code'] ) ? $new['source_language_code'] : $zero->source_language_code,
+		];
+
+		$wpdb->query( 'START TRANSACTION' );
+		$deleted = $wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->prefix}icl_translations
+				 WHERE translation_id = 0 AND trid = %d AND language_code = %s AND element_type = %s",
+				$row['trid'],
+				$row['language_code'],
+				$row['element_type']
+			)
+		);
+		$wpdb->insert_id = 0;
+		$written         = 1 === $deleted ? $wpdb->insert( $wpdb->prefix . 'icl_translations', $row ) : false;
+		$translation_id  = (int) $wpdb->insert_id;
+
+		if ( 1 !== $written || $translation_id <= 0 ) {
+			$wpdb->query( 'ROLLBACK' );
+
+			return 0;
+		}
+		$wpdb->query( 'COMMIT' );
+
+		if ( class_exists( \WPML\TM\Jobs\JobLog::class ) ) {
+			\WPML\TM\Jobs\JobLog::add(
+				'translation_row_zero_id_replaced',
+				[
+					'trid'           => $row['trid'],
+					'language_code'  => $row['language_code'],
+					'element_type'   => $row['element_type'],
+					'element_id'     => $row['element_id'],
+					'translation_id' => $translation_id,
+				]
+			);
+		}
+
+		return $translation_id;
+	}
+
+	public static function last_insert_failure() {
+		return self::$last_insert_failure;
 	}
 
 	private function acquire_trid_allocation_lock() {
@@ -619,14 +730,20 @@ class WPML_Set_Language extends WPML_Full_Translation_API {
 			);
 
 			if ( class_exists( \WPML\TM\Jobs\JobLog::class ) ) {
-				\WPML\TM\Jobs\JobLog::addError( 'orphan_translation_deleted', [
-					'trid'                  => (int) $trid,
-					'language_code'         => $language_code,
-					'translation_id'        => (int) $translation_id,
-					'orphan_element_id'     => null === $result->element_id ? null : (int) $result->element_id,
-					'kept_element_id'       => (int) $correct_element_id,
-					'element_type'          => $result->element_type,
-				] );
+				\WPML\TM\Jobs\JobLog::runInGroup(
+					\WPML\TM\Jobs\JobLog::GROUP_ID_MAINTENANCE,
+					'Orphan translation row deleted',
+					function () use ( $trid, $language_code, $translation_id, $result, $correct_element_id ) {
+						\WPML\TM\Jobs\JobLog::addError( 'orphan_translation_deleted', [
+							'trid'                  => (int) $trid,
+							'language_code'         => $language_code,
+							'translation_id'        => (int) $translation_id,
+							'orphan_element_id'     => null === $result->element_id ? null : (int) $result->element_id,
+							'kept_element_id'       => (int) $correct_element_id,
+							'element_type'          => $result->element_type,
+						] );
+					}
+				);
 			}
 
 			do_action( 'wpml_translation_update', array_merge( $update_args, array( 'type' => 'before_delete' ) ) );
@@ -670,9 +787,11 @@ class WPML_Set_Language extends WPML_Full_Translation_API {
 		);
 	}
 
-	private function clear_cache() {
+	private function clear_cache( $el_type ) {
 		$this->term_translations->reload();
+		if ( 'tax_' === substr( (string) $el_type, 0, 4 ) ) {
+			$this->term_translations->invalidate_cache();
+		}
 		$this->post_translations->reload();
-		$this->sitepress->get_translations_cache()->clear();
 	}
 }

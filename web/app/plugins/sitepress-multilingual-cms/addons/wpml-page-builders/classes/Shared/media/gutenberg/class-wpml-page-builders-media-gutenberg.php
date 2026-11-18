@@ -26,7 +26,7 @@ class WPML_Page_Builders_Media_Gutenberg {
 		}
 
 		$this->block_name = $block['blockName'];
-		$block_config     = $this->get_block_config( $block['blockName'] );
+		$block_config     = self::get_block_config( $this->config, $block['blockName'] );
 
 		if ( $block_config && isset( $block_config['key'] ) ) {
 			$block['attrs'] = $this->translate_attributes( $block['attrs'], $block_config['key'] );
@@ -35,26 +35,66 @@ class WPML_Page_Builders_Media_Gutenberg {
 		return $block;
 	}
 
-	private function get_block_config( $block_name ) {
+	public static function find_media_ids( array $config, $block_name, array $attrs ) {
+		$block_config = self::get_block_config( $config, (string) $block_name );
+		$ids          = [];
+
+		if ( ! isset( $block_config['key'] ) || ! is_array( $block_config['key'] ) ) {
+			return $ids;
+		}
+
+		$collect = function ( $value ) use ( &$ids ) {
+			if ( is_int( $value ) ) {
+				$ids[] = $value;
+			} elseif ( \WPML\PB\Media\MediaIds::isList( $value ) ) {
+				foreach ( explode( ',', $value ) as $id ) {
+					$ids[] = (int) trim( $id );
+				}
+			}
+
+			return $value;
+		};
+
+		foreach ( $block_config['key'] as $path => $type ) {
+			if ( self::TYPE_IDS === $type ) {
+				self::map_by_path( $attrs, explode( '>', $path ), $collect );
+			}
+		}
+
+		return $ids;
+	}
+
+	private static function get_block_config( array $config, $block_name ) {
 		list( $namespace ) = explode( '/', $block_name, 2 );
 
-		return array_merge(
-			isset( $this->config[ $namespace ] ) ? $this->config[ $namespace ] : [],
-			isset( $this->config[ $block_name ] ) ? $this->config[ $block_name ] : []
-		);
+		$namespace_config = isset( $config[ $namespace ] ) ? $config[ $namespace ] : [];
+		$block_config     = isset( $config[ $block_name ] ) ? $config[ $block_name ] : [];
+		$merged           = array_merge( $namespace_config, $block_config );
+
+		if ( isset( $namespace_config['key'], $block_config['key'] ) && is_array( $namespace_config['key'] ) && is_array( $block_config['key'] ) ) {
+			$merged['key'] = array_replace( $namespace_config['key'], $block_config['key'] );
+		}
+
+		return $merged;
 	}
 
 	private function translate_attributes( array $attrs, array $keys_config ) {
 		foreach ( $keys_config as $path => $type ) {
 			if ( self::TYPE_URL === $type || self::TYPE_IDS === $type ) {
-				$attrs = $this->translate_by_path( $attrs, explode( '>', $path ), $type );
+				$attrs = self::map_by_path(
+					$attrs,
+					explode( '>', $path ),
+					function ( $value ) use ( $type ) {
+						return $this->translate_value( $value, $type );
+					}
+				);
 			}
 		}
 
 		return $attrs;
 	}
 
-	private function translate_by_path( $attrs, $path, $type ) {
+	private static function map_by_path( $attrs, $path, callable $map_value ) {
 		$current_key = reset( $path );
 		$next_path   = array_slice( $path, 1 );
 
@@ -64,22 +104,26 @@ class WPML_Page_Builders_Media_Gutenberg {
 
 		if ( '*' === $current_key ) {
 			foreach ( $attrs as $key => $value ) {
-				$attrs[ $key ] = $this->translate_at_path( $value, $next_path, $type );
+				$attrs[ $key ] = self::map_at_path( $value, $next_path, $map_value );
 			}
 		} elseif ( isset( $attrs[ $current_key ] ) ) {
-			$attrs[ $current_key ] = $this->translate_at_path( $attrs[ $current_key ], $next_path, $type );
+			$attrs[ $current_key ] = self::map_at_path( $attrs[ $current_key ], $next_path, $map_value );
 		}
 
 		return $attrs;
 	}
 
-	private function translate_at_path( $value, $next_path, $type ) {
+	private static function map_at_path( $value, $next_path, callable $map_value ) {
 		return $next_path
-			? $this->translate_by_path( $value, $next_path, $type )
-			: $this->translate_value( $value, $type );
+			? self::map_by_path( $value, $next_path, $map_value )
+			: $map_value( $value );
 	}
 
 	private function translate_value( $value, $type ) {
+		if ( self::TYPE_IDS === $type && is_int( $value ) ) {
+			return $this->media_translate->translate_id( $value, $this->target_lang );
+		}
+
 		if ( ! is_string( $value ) || empty( $value ) ) {
 			return $value;
 		}
@@ -100,13 +144,12 @@ class WPML_Page_Builders_Media_Gutenberg {
 			return $value;
 		}
 
-		$ids = explode( ',', $value );
-
-		foreach ( $ids as &$id ) {
-			$id = $this->media_translate->translate_id( (int) $id, $this->target_lang );
-		}
-
-		return implode( ',', $ids );
+		return \WPML\PB\Media\MediaIds::translate(
+			$value,
+			function ( $id ) {
+				return $this->media_translate->translate_id( $id, $this->target_lang );
+			}
+		);
 	}
 
 	public function set_target_lang( $target_lang ) {

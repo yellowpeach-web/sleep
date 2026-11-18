@@ -68,8 +68,12 @@ class WPML_PB_Factory {
 			$string_registration,
 			$strategy,
 			new WPML_PB_Shortcode_Encoding(),
-			$migration_mode ? null : new WPML_PB_Reuse_Translations_By_Strategy( $strategy, $string_factory )
+			$migration_mode ? null : new WPML_PB_Reuse_Translations_By_Strategy( $strategy, $string_factory, $this->get_previous_shortcode_forms() )
 		);
+	}
+
+	private function get_previous_shortcode_forms() {
+		return function_exists( 'avia_lang_setup' ) ? [ WPML_Compatibility_Theme_Enfold::class, 'getPreviousRegistrationForms' ] : null;
 	}
 
 	public function get_update_post( $package_data, IWPML_PB_Strategy $strategy ) {
@@ -93,7 +97,8 @@ class WPML_PB_Factory {
 			new WPML_Page_Builders_Page_Built(
 				new WPML_Config_Built_With_Page_Builders()
 			),
-			$this->get_element_factory()
+			$this->get_element_factory(),
+			new WPML_TM_Job_Elements_Repository( $this->wpdb )
 		);
 	}
 
@@ -102,6 +107,10 @@ class WPML_PB_Factory {
 	}
 
 	public function get_post_element( $post_id ) {
+		if ( ! is_numeric( $post_id ) || (int) $post_id <= 0 ) {
+			return null;
+		}
+
 		return $this->get_element_factory()->create_post( $post_id );
 	}
 

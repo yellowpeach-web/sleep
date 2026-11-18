@@ -3,11 +3,13 @@
 namespace WPML\Infrastructure\WordPress\Component\Item\Application\Query\SearchQuery\QueryBuilder;
 
 use WPML\Core\Component\Post\Application\Query\Criteria\SearchCriteria;
+use WPML\Core\Port\Appearance\AppearanceReaderInterface;
 use WPML\Core\Port\Persistence\QueryPrepareInterface;
 use WPML\Core\SharedKernel\Component\Post\Domain\TranslationEditorPreference;
+use WPML\Core\SharedKernel\Component\Post\Domain\TranslatorNote;
 use WPML\Infrastructure\WordPress\Component\Item\Application\Query\HeldOutTranslationCondition;
 use WPML\Infrastructure\WordPress\Component\Item\Application\Query\SearchQuery\QueryBuilder\SearchCriteriaQueryBuilder\SortingCriteriaQueryBuilder;
-use WPML\Infrastructure\WordPress\Component\Translation\Application\Repository\PostTranslatorNoteRepository;
+use WPML\TranslationPolicy\Policy\Policy;
 
 class SearchQueryBuilder {
   use SearchQueryBuilderTrait;
@@ -18,15 +20,19 @@ class SearchQueryBuilder {
 
   private $heldOutCondition;
 
+  private $appearanceReader;
+
 
   public function __construct(
     QueryPrepareInterface $queryPrepare,
     SortingCriteriaQueryBuilder $sortingQueryBuilder,
-    HeldOutTranslationCondition $heldOutCondition
+    HeldOutTranslationCondition $heldOutCondition,
+    AppearanceReaderInterface $appearanceReader
   ) {
     $this->queryPrepare        = $queryPrepare;
     $this->sortingQueryBuilder = $sortingQueryBuilder;
     $this->heldOutCondition    = $heldOutCondition;
+    $this->appearanceReader    = $appearanceReader;
   }
 
 
@@ -37,6 +43,18 @@ class SearchQueryBuilder {
     $useWpml      = $this->buildMetaValue( TranslationEditorPreference::POST_META_KEY_USE_WPML );
     $editorNative = TranslationEditorPreference::EDITOR_NATIVE;
 
+    $useNativeEditor = Policy::editorSql()->nativeEditorFlag(
+      "CASE
+          WHEN {$editor} = '{$editorNative}' THEN 'yes'
+          WHEN {$editor} IS NOT NULL THEN 'no'
+          WHEN {$useNative} = 'yes' AND {$useWpml} IS NULL THEN 'yes'
+          WHEN {$useNative} = 'no' THEN 'no'
+          ELSE NULL
+        END",
+      'p.ID',
+      'p.post_type'
+    );
+
     return "
       SELECT
         p.ID,
@@ -44,14 +62,8 @@ class SearchQueryBuilder {
         p.post_status,
         p.post_date,
         p.post_type,
-        {$this->buildMetaValue( PostTranslatorNoteRepository::TRANSLATOR_NOTE_META_KEY )} AS translator_note,
-        CASE
-          WHEN {$editor} = '{$editorNative}' THEN 'yes'
-          WHEN {$editor} IS NOT NULL THEN 'no'
-          WHEN {$useNative} = 'yes' AND {$useWpml} IS NULL THEN 'yes'
-          WHEN {$useNative} = 'no' THEN 'no'
-          ELSE NULL
-        END AS use_native_editor
+        {$this->buildMetaValue( TranslatorNote::POST_META_KEY )} AS translator_note,
+        {$useNativeEditor} AS use_native_editor
       FROM (
         SELECT p.ID, p.post_title, p.post_status, p.post_date, p.post_type
         {$this->buildFromAndWhere( $criteria )}
@@ -78,6 +90,7 @@ class SearchQueryBuilder {
         {$this->buildTaxonomyTermCondition( $criteria )}
         {$this->buildParentCondition( $criteria )}
         {$this->buildHeldOutCondition( $criteria )}
+        {$this->buildAppearedCondition( $criteria )}
         AND {$this->buildTranslationStatusCondition( $criteria )}
     ";
   }
@@ -95,12 +108,15 @@ class SearchQueryBuilder {
 
 
   private function buildPostTitleCondition( SearchCriteria $criteria ): string {
-    $searchKeyword = $this->queryPrepare->escLike( $criteria->getTitle() );
-    if ( $searchKeyword === '' ) {
+    $title = $criteria->getTitle();
+    if ( null === $title || '' === $title ) {
       return '';
     }
 
-    return $this->queryPrepare->prepare( 'AND p.post_title LIKE %s', '%' . $searchKeyword . '%' );
+    return $this->queryPrepare->prepare(
+      'AND p.post_title LIKE %s ESCAPE \'|\'',
+      \WPML\Utils\LikeEscape::contains( $title )
+    );
   }
 
 
@@ -142,6 +158,21 @@ class SearchQueryBuilder {
     $exists = $this->heldOutCondition->existsSql( 'source_t.trid' );
 
     return $exists === '' ? 'AND 1 = 0' : "AND {$exists}";
+  }
+
+
+  private function buildAppearedCondition( SearchCriteria $criteria ): string {
+    if ( ! $criteria->isAppearedOnly() ) {
+      return '';
+    }
+
+    if ( ! in_array( 'post_' . $criteria->getType(), $this->appearanceReader->heldTypes(), true ) ) {
+      return '';
+    }
+
+    $appeared = $this->appearanceReader->existsSql( 'source_t.element_type', 'p.ID' );
+
+    return $appeared === '' ? '' : "AND {$appeared}";
   }
 
 

@@ -14,7 +14,7 @@ class WPML_TM_Jobs_Summary_Report_View extends WPML_TM_Email_View {
 		$model   = $this->get_model();
 		$content = $this->render_header( $model['username'] );
 		$content .= $this->template_service->show( $model, self::WEEKLY_SUMMARY_TEMPLATE );
-		$content .= $this->render_email_footer();
+		$content .= $this->render_notification_settings_footer();
 
 		return $content;
 	}

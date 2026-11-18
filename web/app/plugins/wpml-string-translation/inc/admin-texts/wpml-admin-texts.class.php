@@ -5,6 +5,7 @@ use WPML\Convert\Ids;
 use WPML\FP\Either;
 use \WPML\FP\Obj;
 use \WPML\ST\AdminTexts\JsonValue;
+use WPML\ST\AdminTexts\LeafTranslation;
 use \WPML\ST\AdminTexts\TranslateNestedIds;
 use WPML\ST\AdminTexts\StringsPassReopen;
 use function WPML\Container\make;
@@ -39,8 +40,11 @@ class WPML_Admin_Texts extends WPML_Admin_Text_Functionality {
 
 	private $json_wholes_to_retire = [];
 
-	public function __construct( &$tm_instance, &$st_instance, ?StringsPassReopen $strings_pass_reopen = null ) {
+	private $leaf_translation;
+
+	public function __construct( &$tm_instance, &$st_instance, ?StringsPassReopen $strings_pass_reopen = null, ?LeafTranslation $leaf_translation = null ) {
 		$this->strings_pass_reopen = $strings_pass_reopen ?: new StringsPassReopen();
+		$this->leaf_translation    = $leaf_translation;
 		add_action( 'plugins_loaded', [ $this, 'icl_st_set_admin_options_filters' ], 10 );
 		add_action( 'plugins_loaded', [ $this, 'set_admin_options_ids_filters' ], 10 );
 		add_filter( 'wpml_unfiltered_admin_string', flip( [ $this, 'get_option_without_filtering' ] ), 10, 2 );
@@ -111,7 +115,7 @@ class WPML_Admin_Texts extends WPML_Admin_Text_Functionality {
 				continue;
 			}
 
-			$option = $key === '' ? array( $k => maybe_unserialize( $this->get_option_without_filtering( $k ) ) ) : $option;
+			$option = $key === '' ? array( $k => \WPML\Utils\Unserialize::maybe( $this->get_option_without_filtering( $k ) ) ) : $option;
 			if ( is_array( $v ) ) {
 				$this->walk_admin_options( $v, $key . '[' . $k . ']', $option[ $k ], $json_root );
 			} else {
@@ -313,7 +317,9 @@ class WPML_Admin_Texts extends WPML_Admin_Text_Functionality {
 	public function getOptions() {
 		return wpml_collect( wp_load_alloptions() )
 			->reject( flip( [ $this, 'is_blacklisted' ] ) )
-			->map( 'maybe_unserialize' );
+			->map( function ( $value ) {
+				return \WPML\Utils\Unserialize::maybe( $value );
+			} );
 	}
 
 	private function shouldFilterOption( $optionKey ) {
@@ -384,7 +390,7 @@ class WPML_Admin_Texts extends WPML_Admin_Text_Functionality {
 	}
 
 	public function keepUntouchedValues( $value, $old_value, $option ) {
-		$stored = maybe_unserialize( $this->get_option_without_filtering( $option ) );
+		$stored = \WPML\Utils\Unserialize::maybe( $this->get_option_without_filtering( $option ) );
 		$value  = $this->restoreUntouched( $value, $old_value, $stored );
 
 		if ( $value === $stored ) {
@@ -414,43 +420,54 @@ class WPML_Admin_Texts extends WPML_Admin_Text_Functionality {
 		add_filter( 'option_' . $option, [ $this, 'translate_ids_in_admin_string' ], 11, 2 );
 	}
 
-	public function icl_st_translate_admin_string( $option_value, $key = '', $name = '', $root_level = true, $lang = null ) {
+	public function icl_st_translate_admin_string( $option_value, $key = '', $name = '', $root_level = true, $lang = null, $node = null ) {
 		if ( $root_level && $this->lock ) {
 			return $option_value;
 		}
 
 		$this->lock = true;
 
+		try {
+			return $this->translate_admin_string( $option_value, $key, $name, $root_level, $lang, $node );
+		} finally {
+			if ( $root_level ) {
+				$this->lock = false;
+			}
+		}
+	}
+
+	private function translate_admin_string( $option_value, $key, $name, $root_level, $lang, $node ) {
+		$registered = null !== $node && '' !== $name;
+
 		$option_name = substr( current_filter(), 7 );
 		$name        = $name === '' ? $option_name : $name;
 		$lang        = $lang ?: $this->st_instance->get_current_string_language( $name );
 		$blog_id     = get_current_blog_id();
 
-		if ( isset( $this->cache[ $blog_id ][ $lang ][ $name ] ) ) {
-			$this->lock = false;
-
+		if ( $root_level && isset( $this->cache[ $blog_id ][ $lang ][ $name ] ) ) {
 			return $this->cache[ $blog_id ][ $lang ][ $name ];
 		}
 
 		$is_serialized = self::decodeSerializedData( $option_value, $decoded );
 		$option_value  = $is_serialized ? $decoded : $option_value;
 
-		$json = ! $is_serialized && is_array( $this->getRegisteredNode( $key, $name ) )
+		$node = $registered ? $node : $this->getRegisteredNode( $key, $name );
+
+		$json = ! $is_serialized && is_array( $node )
 			? JsonValue::decode( $option_value )
 			: null;
 
 		if ( is_array( $option_value ) || is_object( $option_value ) ) {
-			$option_value = $this->translate_multiple( $option_value, $key, $name, $lang );
+			$option_value = $this->translate_multiple( $option_value, $key, $name, $lang, $node );
 		} elseif ( null !== $json ) {
-			$option_value = JsonValue::encode( $option_value, $this->translate_multiple( $json, $key, $name, $lang ) );
+			$option_value = JsonValue::encode( $option_value, $this->translate_multiple( $json, $key, $name, $lang, $node ) );
 		} else {
-			$option_value = $this->translate_single( $option_value, $key, $name, $option_name, $lang );
+			$option_value = $this->translate_single( $option_value, $key, $name, $option_name, $lang, $registered );
 		}
 
 		$option_value = $is_serialized ? serialize( $option_value ) : $option_value;
 
 		if ( $root_level ) {
-			$this->lock                                = false;
 			$this->cache[ $blog_id ][ $lang ][ $name ] = $option_value;
 		}
 
@@ -558,7 +575,7 @@ class WPML_Admin_Texts extends WPML_Admin_Text_Functionality {
 
 	public function migrate_original_values() {
 		$migrate = function ( $option_name ) {
-			$option_value = maybe_unserialize( $this->get_option_without_filtering( $option_name ) );
+			$option_value = \WPML\Utils\Unserialize::maybe( $this->get_option_without_filtering( $option_name ) );
 			$this->on_update_original_value( '', $option_value, $option_name );
 		};
 		wpml_collect( $this->getOptionNames() )
@@ -573,31 +590,46 @@ class WPML_Admin_Texts extends WPML_Admin_Text_Functionality {
 		};
 	}
 
-	private function translate_multiple( $option_value, $key, $name, $lang = null ) {
+	private function translate_multiple( $option_value, $key, $name, $lang, $node ) {
 		$subKey = $this->getSubKey( $key, $name );
 
 		foreach ( $option_value as $k => &$value ) {
+			if ( ! is_array( $node ) || ! array_key_exists( $k, $node ) ) {
+				continue;
+			}
+
 			$value = $this->icl_st_translate_admin_string(
 				$value,
 				$subKey,
 				$k,
 				false,
-				$lang
+				$lang,
+				$node[ $k ]
 			);
 		}
 
 		return $option_value;
 	}
 
-	private function translate_single( $option_value, $key, $name, $option_name, $lang = null ) {
-		if ( $option_value !== '' && $this->isAdminText( $key, $name ) ) {
-			$has_translation = null;
-			$translation     = icl_translate(
+	private function translate_single( $option_value, $key, $name, $option_name, $lang = null, $registered = false ) {
+		if ( $option_value !== '' && ( $registered || $this->isAdminText( $key, $name ) ) ) {
+			$carriers = $this->leafTranslation()->isCarried( self::DOMAIN_NAME_PREFIX . $option_name )
+				? WPML_ST_Package_String_Carriers::get()
+				: null;
+			if ( $carriers && $carriers->forTarget( self::DOMAIN_NAME_PREFIX . $option_name, $key . $name ) ) {
+				$carried = $carriers->translation(
+					self::DOMAIN_NAME_PREFIX . $option_name,
+					$key . $name,
+					(string) ( $lang ?: $this->st_instance->get_current_string_language( $name ) )
+				);
+
+				return null === $carried ? $option_value : $carried;
+			}
+
+			$translation = $this->leafTranslation()->translate(
 				self::DOMAIN_NAME_PREFIX . $option_name,
 				$key . $name,
 				$option_value,
-				false,
-				$has_translation,
 				$lang
 			);
 
@@ -609,6 +641,14 @@ class WPML_Admin_Texts extends WPML_Admin_Text_Functionality {
 		}
 
 		return $option_value;
+	}
+
+	private function leafTranslation() {
+		if ( ! $this->leaf_translation ) {
+			$this->leaf_translation = new LeafTranslation();
+		}
+
+		return $this->leaf_translation;
 	}
 
 	private function getRegisteredNode( $key, $name ) {

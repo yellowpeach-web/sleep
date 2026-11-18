@@ -16,6 +16,10 @@ class WPML_Media_Post_With_Media_Files {
 
 	private $attached_media_ids;
 
+	private $all_languages_lookup_language;
+
+	private $prefetched_content;
+
 	public function __construct(
 		$post_id,
 		\WPML\Media\Factories\WPML_Media_Element_Parser_Factory $media_parser_factory,
@@ -39,10 +43,15 @@ class WPML_Media_Post_With_Media_Files {
 
 		if ( $post = get_post( $this->post_id ) ) {
 
-			$content_to_parse   = apply_filters( 'wpml_media_content_for_media_usage', $post->post_content, $post );
-			$media_parsers       = $this->media_parser_factory->create( $content_to_parse );
+			if ( null !== $this->prefetched_content ) {
+				list( $content_to_parse, $media_parsers ) = $this->prefetched_content;
+				$this->prefetched_content                 = null;
+			} else {
+				$content_to_parse = apply_filters( 'wpml_media_content_for_media_usage', $post->post_content, $post );
+				$media_parsers    = $this->media_parser_factory->create( $content_to_parse );
 
-			$this->prefetchDataForFutureAttachmentByUrlGetIdCalls( $media_parsers );
+				$this->prefetchDataForFutureAttachmentByUrlGetIdCalls( $media_parsers );
+			}
 
 			foreach ( $media_parsers as $media_parser ) {
 				$media_ids = $this->unique_array_merge( $media_ids, $this->_get_ids_from_media_array( $media_parser, $media_parser->getMediaElements() ) );
@@ -94,7 +103,7 @@ class WPML_Media_Post_With_Media_Files {
 			} else {
 				$attachment_by_url = $this->attachment_by_url_factory->create(
 					$media_parser->getMediaSrcFromAttributes( $media['attributes'] ),
-					wpml_get_current_language(),
+					$this->get_lookup_language(),
 					$this->mediaAttachmentByURLQuery
 				);
 				if ( $attachment_by_url->get_id() ) {
@@ -106,7 +115,51 @@ class WPML_Media_Post_With_Media_Files {
 		return $media_ids;
 	}
 
+	public static function prefetch_media_of_posts( array $postsWithMediaFiles ) {
+		$urlsByLanguage = [];
+		$query          = null;
+
+		foreach ( $postsWithMediaFiles as $postWithMediaFiles ) {
+			$urls = $postWithMediaFiles->read_content_for_prefetch();
+			if ( ! $urls ) {
+				continue;
+			}
+
+			$language = $postWithMediaFiles->get_lookup_language();
+			if ( ! isset( $urlsByLanguage[ $language ] ) ) {
+				$urlsByLanguage[ $language ] = [];
+			}
+			$urlsByLanguage[ $language ] = array_merge( $urlsByLanguage[ $language ], $urls );
+			$query                       = $postWithMediaFiles->mediaAttachmentByURLQuery;
+		}
+
+		foreach ( $urlsByLanguage as $language => $urls ) {
+			self::prefetch_guids( $query, $language, $urls );
+			self::prefetch_metas( $query, $language, $urls );
+		}
+	}
+
+	private function read_content_for_prefetch() {
+		$post = $this->post_id ? get_post( $this->post_id ) : null;
+		if ( ! $post ) {
+			return [];
+		}
+
+		$content_to_parse         = apply_filters( 'wpml_media_content_for_media_usage', $post->post_content, $post );
+		$media_parsers            = $this->media_parser_factory->create( $content_to_parse );
+		$this->prefetched_content = [ $content_to_parse, $media_parsers ];
+
+		return $this->get_urls_to_prefetch( $media_parsers );
+	}
+
 	private function prefetchDataForFutureAttachmentByUrlGetIdCalls( $mediaParsers ) {
+		$urls = $this->get_urls_to_prefetch( $mediaParsers );
+
+		self::prefetch_guids( $this->mediaAttachmentByURLQuery, $this->get_lookup_language(), $urls );
+		self::prefetch_metas( $this->mediaAttachmentByURLQuery, $this->get_lookup_language(), $urls );
+	}
+
+	private function get_urls_to_prefetch( $mediaParsers ) {
 		$urls = [];
 		foreach ( $mediaParsers as $mediaParser ) {
 			foreach( $mediaParser->getMediaElements() as $media ) {
@@ -118,8 +171,12 @@ class WPML_Media_Post_With_Media_Files {
 			}
 		}
 
-		$this->mediaAttachmentByURLQuery->prefetchAllIdsFromGuids(
-			[ wpml_get_current_language() ],
+		return $urls;
+	}
+
+	private static function prefetch_guids( $query, $language, array $urls ) {
+		$query->prefetchAllIdsFromGuids(
+			[ $language ],
 			array_merge(
 				$urls,
 				array_map(
@@ -136,8 +193,11 @@ class WPML_Media_Post_With_Media_Files {
 				)
 			)
 		);
-		$this->mediaAttachmentByURLQuery->prefetchAllIdsFromMetas(
-			[ wpml_get_current_language() ],
+	}
+
+	private static function prefetch_metas( $query, $language, array $urls ) {
+		$query->prefetchAllIdsFromMetas(
+			[ $language ],
 			array_merge(
 				array_map(
 					function( $url ) {
@@ -161,6 +221,22 @@ class WPML_Media_Post_With_Media_Files {
 				)
 			)
 		);
+	}
+
+	private function get_lookup_language() {
+		$language = wpml_get_current_language();
+		if ( 'all' !== $language ) {
+			return $language;
+		}
+
+		if ( null === $this->all_languages_lookup_language ) {
+			$post_type     = get_post_type( $this->post_id );
+			$post_language = $post_type ? $this->sitepress->get_language_for_element( $this->post_id, 'post_' . $post_type ) : null;
+
+			$this->all_languages_lookup_language = $post_language ?: $this->sitepress->get_default_language();
+		}
+
+		return $this->all_languages_lookup_language;
 	}
 
 	private function get_gallery_media_ids( $post_content ) {

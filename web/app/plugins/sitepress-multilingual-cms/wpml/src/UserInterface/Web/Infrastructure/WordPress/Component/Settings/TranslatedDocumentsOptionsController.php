@@ -8,8 +8,6 @@ class TranslatedDocumentsOptionsController implements PageRenderInterface {
 
   const SECTION_ID = 'ml-content-setup-sec-3';
 
-  const PAGE_URL_HEADING = 'Page URL';
-
 
   public function render() {
     wp_enqueue_script( 'wpml-settings-flash' );
@@ -26,10 +24,10 @@ class TranslatedDocumentsOptionsController implements PageRenderInterface {
       return;
     }
 
-    $section = LegacySectionExtractor::extractSectionByIdWithoutInner(
+    $section = LegacySectionExtractor::extractSectionByIdWithoutInnerId(
       $html,
       self::SECTION_ID,
-      self::PAGE_URL_HEADING
+      UrlsAndSeoController::PAGE_URL_INNER_ID
     );
     if ( $section === '' ) {
       $message = esc_html__( 'Translated documents section is not available on this site.', 'wpml' );

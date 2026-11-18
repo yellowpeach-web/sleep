@@ -40,6 +40,13 @@ class TranslateWpmlString {
 		$this->languageSwitch->initCurrentLocale();
 
 		add_action( 'change_locale', [ self::class, 'allowReloadAfterNoop' ] );
+		add_action( 'wpml_st_translation_file_updated', [ self::class, 'allowReloadAfterFileUpdate' ], 10, 3 );
+	}
+
+	public static function allowReloadAfterFileUpdate( $filename, $domain, $locale ) {
+		if ( $filename && false === ( self::$loadedDomains[ $locale ][ $domain ] ?? null ) ) {
+			unset( self::$loadedDomains[ $locale ][ $domain ], self::$reloadedAfterNoop[ $locale ][ $domain ] );
+		}
 	}
 
 	public static function allowReloadAfterNoop() {
@@ -167,7 +174,7 @@ class TranslateWpmlString {
 					$this->languageSwitch->switchToLocale( $initialLocale );
 				}
 			} else {
-				$result = $function( $initialLocale );
+				$result = $function( $initialLocale ?: determine_locale() );
 			}
 		} finally {
 			$this->restoreControllerLocale( $controllerLocale );
@@ -183,9 +190,12 @@ class TranslateWpmlString {
 		}
 
 		$controller = \WP_Translation_Controller::get_instance();
-		if ( $controller->get_locale() !== $controllerLocale ) {
-			$controller->set_locale( $controllerLocale );
+		if ( $controller->get_locale() === $controllerLocale ) {
+			return;
 		}
+
+		$determined = determine_locale();
+		$controller->set_locale( is_string( $determined ) && '' !== $determined ? $determined : $controllerLocale );
 	}
 
 	private static function getTranslationControllerLocale() {
@@ -196,6 +206,10 @@ class TranslateWpmlString {
 
 	public static function canTranslateWithMO( $original, $name ) {
 		return $original && self::isWpmlRegisteredString( $original, $name );
+	}
+
+	public static function hasNameEntry( $original, $name ) {
+		return self::isWpmlRegisteredString( $original, $name );
 	}
 
 	private static function isWpmlRegisteredString( $original, $name ) {

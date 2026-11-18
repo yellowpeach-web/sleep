@@ -5,7 +5,10 @@ namespace WPML\Compatibility\Divi;
 class Search implements \IWPML_Frontend_Action {
 
 	public function add_hooks() {
+		global $sitepress;
+
 		add_action( 'et_search_form_fields', [ $this, 'add_language_form_field' ] );
+		add_filter( 'render_block_divi/search', [ $sitepress, 'get_search_form_filter' ] );
 	}
 
 	public function add_language_form_field() {
@@ -13,4 +16,3 @@ class Search implements \IWPML_Frontend_Action {
 	}
 
 }
-

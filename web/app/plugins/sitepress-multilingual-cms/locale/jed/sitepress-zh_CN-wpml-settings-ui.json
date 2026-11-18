@@ -73,8 +73,14 @@
          "Either way the new preference is saved. With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
             "无论哪种方式，新偏好设置都会被保存。选择“仅应用于新翻译”后，每个现有翻译都将保持原样。"
          ],
+         "With \"Only apply to new translations\" every existing translation stays exactly as it is.": [
+            "选择“仅应用于新翻译”，所有现有翻译都将保持原样不变。"
+         ],
          "%1$s custom field became translatable outside this screen: %2$s. Decide what happens to the translations that already exist.": [
             "%1$s 个自定义字段在此屏幕外变为可翻译：%2$s。请决定如何处理已存在的翻译。"
+         ],
+         "%1$s custom field was waiting for a check an earlier WPML version started and did not finish: %2$s. Its translation setting has not changed. Decide whether the existing translations that use it should be marked as needing an update.": [
+            "有 %1$s 个自定义字段一直在等待较早 WPML 版本启动但未完成的检查：%2$s。它们的翻译设置未发生更改。请决定是否应将使用这些字段的现有翻译标记为需要更新。"
          ],
          "Review this field": [
             "审核这些字段"
@@ -101,7 +107,7 @@
             "是，继续"
          ],
          "No, go back": [
-            "不，返回"
+            "否，返回"
          ],
          "%d term": [
             "%d 个术语"

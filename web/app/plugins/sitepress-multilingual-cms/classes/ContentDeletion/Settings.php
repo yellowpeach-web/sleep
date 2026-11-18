@@ -25,6 +25,8 @@ class Settings {
 
 	const LEGACY_TERMS = 'sync_delete_tax';
 
+	const UNWRITTEN_DEFAULT_KEY = 'content_deletion_unwritten';
+
 	const FORCED_CASCADE_POST_TYPES = [ 'wp_template', 'wp_template_part' ];
 
 	private $reader;
@@ -45,7 +47,7 @@ class Settings {
 			return $stored;
 		}
 
-		return $this->legacyOriginalAction( self::LEGACY_POSTS );
+		return $this->unwrittenOriginalAction( self::LEGACY_POSTS );
 	}
 
 	public function termOriginalAction( $taxonomy ) {
@@ -54,7 +56,7 @@ class Settings {
 			return $stored;
 		}
 
-		return $this->legacyOriginalAction( self::LEGACY_TERMS );
+		return $this->unwrittenOriginalAction( self::LEGACY_TERMS );
 	}
 
 	public function translationAction( $post_type ) {
@@ -84,7 +86,7 @@ class Settings {
 			}
 		}
 
-		return $written ? false : self::ALL === $this->legacyOriginalAction( self::LEGACY_POSTS );
+		return $written ? false : self::ALL === $this->unwrittenOriginalAction( self::LEGACY_POSTS );
 	}
 
 	public function effectiveFor( $element_key ) {
@@ -158,6 +160,14 @@ class Settings {
 
 	private function legacyOriginalAction( $legacy_key ) {
 		return $this->setting( $legacy_key, false ) ? self::ALL : self::ONLY;
+	}
+
+	private function unwrittenOriginalAction( $legacy_key ) {
+		if ( self::ASK === $this->setting( self::UNWRITTEN_DEFAULT_KEY, null ) && ! $this->setting( $legacy_key, false ) ) {
+			return self::ASK;
+		}
+
+		return $this->legacyOriginalAction( $legacy_key );
 	}
 
 	private function storedTranslation( $element_key ) {

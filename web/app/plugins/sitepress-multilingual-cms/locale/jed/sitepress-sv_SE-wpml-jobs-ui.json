@@ -91,23 +91,107 @@
          "Cancelled": [
             "Avbrutet"
          ],
-         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
-            "Automatisk översättning misslyckades upprepade gånger och WPML har slutat försöka igen. Skicka om eller släng jobbet från översättningspanelen, eller avbryt det här."
+         "Published — Pending review": [
+            "Publicerad — Väntar på granskning"
          ],
          "Needs translation": [
             "Behöver översättas"
          ],
-         "Needs update": [
-            "Behöver uppdateras"
+         "Review in progress": [
+            "Granskning pågår"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "Väntar på din betalning för användningsbaserad debitering"
          ],
          "Translation ready to download": [
             "Översättning klar att laddas ner"
          ],
+         "Waiting for payment": [
+            "Väntar på betalning"
+         ],
+         "Waiting for words": [
+            "Väntar på ord"
+         ],
          "Completed": [
             "Slutfört"
          ],
+         "Insufficient funds": [
+            "Otillräckliga medel"
+         ],
+         "Sending": [
+            "Skickar"
+         ],
+         "Automatic translation is off, so this job is not retried. Resend it, or switch Translate Everything on.": [
+            "Automatisk översättning är avstängd, så detta jobb försöks inte igen. Skicka det igen eller slå på Översätt allt."
+         ],
+         "Waiting for you": [
+            "Väntar på er"
+         ],
          "Failed - needs attention": [
             "Misslyckades – kräver åtgärd"
+         ],
+         "You can also resend the content or open the job in the Translation Queue.": [
+            "Ni kan även skicka innehållet igen eller öppna jobbet i översättningskön."
+         ],
+         "If it keeps failing for about a day, the job is marked as needing your attention.": [
+            "Om det fortsätter att misslyckas i ungefär ett dygn markeras jobbet som att det kräver er uppmärksamhet."
+         ],
+         "In progress": [
+            "Pågår"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "Automatisk översättning misslyckades upprepade gånger och WPML har slutat försöka igen. Skicka om eller släng jobbet från översättningspanelen, eller avbryt det här."
+         ],
+         "Needs update": [
+            "Behöver uppdateras"
+         ],
+         "Scheduled — Pending review": [
+            "Tidsinställd — Väntar på granskning"
+         ],
+         "Private — Pending review": [
+            "Privat — Väntar på granskning"
+         ],
+         "Draft — Pending review": [
+            "Utkast — Väntar på granskning"
+         ],
+         "Published — Review in progress": [
+            "Publicerad — Granskning pågår"
+         ],
+         "Scheduled — Review in progress": [
+            "Tidsinställd — Granskning pågår"
+         ],
+         "Private — Review in progress": [
+            "Privat — Granskning pågår"
+         ],
+         "Draft — Review in progress": [
+            "Utkast — Granskning pågår"
+         ],
+         "WPML could not reach our translation system.": [
+            "WPML kunde inte nå vårt översättningssystem."
+         ],
+         "Our translation system did not accept this job.": [
+            "Vårt översättningssystem accepterade inte detta jobb."
+         ],
+         "WPML could not calculate the word count for this job.": [
+            "WPML kunde inte beräkna ordantalet för detta jobb."
+         ],
+         "WPML could not read the price of automatic translation for this job.": [
+            "WPML kunde inte läsa priset för automatisk översättning för detta jobb."
+         ],
+         "WPML could not prepare this job for automatic translation.": [
+            "WPML kunde inte förbereda detta jobb för automatisk översättning."
+         ],
+         "Sending this job to automatic translation failed.": [
+            "Det gick inte att skicka detta jobb till automatisk översättning."
+         ],
+         "WPML tries again within a minute.": [
+            "WPML försöker igen inom en minut."
+         ],
+         "WPML tries again in about %d minutes.": [
+            "WPML försöker igen om ungefär %d minuter."
+         ],
+         "WPML tries again in about %d hours.": [
+            "WPML försöker igen om ungefär %d timmar."
          ],
          "%s terms are published immediately because they don't support draft mode.": [
             "%s termer publiceras omedelbart eftersom de inte stödjer utkastläge."
@@ -115,41 +199,14 @@
          "%s are immediately published because they don't support draft mode.": [
             "%s publiceras omedelbart eftersom de inte stödjer utkastläge."
          ],
-         "Published — Pending review": [
-            "Publicerad — Väntar på granskning"
+         "(no title)": [
+            "(ingen titel)"
          ],
-         "Draft — Pending review": [
-            "Utkast — Väntar på granskning"
-         ],
-         "Review in progress": [
-            "Granskning pågår"
-         ],
-         "Published — Review in progress": [
-            "Publicerad — Granskning pågår"
-         ],
-         "Draft — Review in progress": [
-            "Utkast — Granskning pågår"
-         ],
-         "Waiting for your Pay-As-You-Go payment": [
-            "Väntar på din betalning för användningsbaserad debitering"
-         ],
-         "Waiting for payment": [
-            "Väntar på betalning"
-         ],
-         "Insufficient funds": [
-            "Otillräckliga medel"
-         ],
-         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
-            "Automatisk översättning pausades av ett tillfälligt fel och försöker igen automatiskt — ingen åtgärd krävs. Om statusen inte har ändrats på cirka 30 minuter, kontakta WPML-support."
-         ],
-         "In progress": [
-            "Pågår"
+         "%1$s (ID %2$d)": [
+            "%1$s (ID %2$d)"
          ],
          "View original": [
             "Visa original"
-         ],
-         "(no title)": [
-            "(ingen titel)"
          ],
          "Automatic translation": [
             "Automatisk översättning"
@@ -486,9 +543,6 @@
          "Failed to resign from jobs": [
             "Misslyckades med att avsäga sig jobben"
          ],
-         "The Advanced Editor jobs synchronization has failed": [
-            "Synkronisering av jobb i Advanced Editor har misslyckats"
-         ],
          "Synchronization with the Professional Translation service has failed": [
             "Synkronisering med den professionella översättningstjänsten har misslyckats"
          ],
@@ -501,8 +555,40 @@
          "Batch sync couldn't be finished": [
             "Batch-synkronisering kunde inte slutföras"
          ],
+         "More details": [
+            "Mer information"
+         ],
+         "%s job was left out of the export.": [
+            "%s jobb utelämnades från exporten.",
+            "%s jobb utelämnades från exporten."
+         ],
+         "%s job could not be exported. No file was downloaded.": [
+            "%s jobb kunde inte exporteras. Ingen fil laddades ner.",
+            "%s jobb kunde inte exporteras. Ingen fil laddades ner."
+         ],
+         "This job was saved while this server had the PHP zlib extension, so its text is stored compressed. PHP on this server has no zlib now, so WPML cannot read it. Ask your hosting provider to enable the PHP zlib extension, then export it again.": [
+            "Detta jobb sparades medan den här servern hade PHP zlib-tillägget, så dess text lagras komprimerad. PHP på denna server saknar zlib nu, så WPML kan inte läsa det. Be ditt webbhotell att aktivera PHP zlib-tillägget och exportera det sedan igen.",
+            "Dessa jobb sparades medan den här servern hade PHP zlib-tillägget, så deras text lagras komprimerad. PHP på denna server saknar zlib nu, så WPML kan inte läsa dem. Be ditt webbhotell att aktivera PHP zlib-tillägget och exportera dem sedan igen."
+         ],
+         "This job could not be exported.": [
+            "Detta jobb kunde inte exporteras.",
+            "Dessa jobb kunde inte exporteras."
+         ],
+         "%1$s (job %2$s)": [
+            "%1$s (jobb %2$s)"
+         ],
+         "Job %s": [
+            "Jobb %s"
+         ],
+         "and %s more job": [
+            "och ytterligare %s jobb",
+            "och ytterligare %s jobb"
+         ],
          "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
             "Vårt översättningssystem accepterade inte den här begäran (det svarade %d). Vänta en minut och försök igen, och kontakta WPML-supporten om det fortsätter att hända."
+         ],
+         "The site stopped answering before this translation was confirmed. If it was not saved, the next download takes it again.": [
+            "Webbplatsen slutade svara innan denna översättning bekräftades. Om den inte sparades hämtas den igen vid nästa nedladdning."
          ]
       }
    }

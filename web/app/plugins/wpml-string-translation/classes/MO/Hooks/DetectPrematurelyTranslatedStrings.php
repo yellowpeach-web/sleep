@@ -20,7 +20,7 @@ class DetectPrematurelyTranslatedStrings implements \IWPML_Action {
 	}
 
 	public function add_hooks() {
-		if ( $this->gettextHooksSettings->isAutoRegistrationEnabled() ) {
+		if ( $this->gettextHooksSettings->isAutoRegistrationEnabled() && ! $this->isGuestRequestInAdminOnlyMode() ) {
 			$domains                = $this->sitepress->get_setting( 'gettext_theme_domain_name' );
 			$this->preloadedDomains = array_filter( array_map( 'trim', explode( ',', $domains ) ) );
 
@@ -31,6 +31,10 @@ class DetectPrematurelyTranslatedStrings implements \IWPML_Action {
 
 			add_filter( 'override_load_textdomain', [ $this, 'registerDomainToPreloading' ], 10, 2 );
 		}
+	}
+
+	private function isGuestRequestInAdminOnlyMode() {
+		return true === apply_filters( 'wpml_st_get_setting', 'isGuestRequestInAdminOnlyMode' );
 	}
 
 	public function gettext_filter( $translation, $text, $domain ) {

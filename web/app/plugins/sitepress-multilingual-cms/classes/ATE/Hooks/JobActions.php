@@ -7,14 +7,20 @@ require_once __DIR__ . '/../../../inc/constants-since-5-0.php';
 use WPML\Core\Component\Translation\Application\Service\AutomaticJobsCancellation\AteResponse;
 use WPML\Core\Component\Translation\Application\Service\AutomaticJobsCancellation\BatchResult;
 use WPML\Core\Component\Translation\Application\Service\AutomaticJobsCancellation\ReleaseLedger;
+use WPML\TM\ATE\Cancel\CancelSource;
+use WPML\TM\ATE\Cancel\FinishedAtAte;
 use WPML\TM\ATE\Cancel\PendingCancels;
+use WPML\TM\ATE\Handshake\Decline;
+use WPML\TM\AutomaticTranslation\Actions\DeferredDispatch;
 use WPML\TM\ATE\Release\InFlightChargedJobs;
 use WPML\TM\ATE\Release\WordsLifetimeMax;
+use WPML\TM\ATE\TranslateEverything\TermBundleMembers;
 use WPML\Element\API\Languages;
 use WPML\FP\Lst;
 use WPML\TM\ATE\Retry\Process as RetryProcess;
 use WPML\TM\ATE\TranslateEverything;
 use WPML\TM\ATE\TranslateEverything\OfferedTypeDefaults;
+use WPML\TM\ATE\TranslateEverything\TermBundle;
 use WPML\TM\Jobs\JobLog;
 use WPML\Translation\CancelJobsServiceFactory;
 use WPML\Translation\StringBatchCleanupServiceFactory;
@@ -36,6 +42,8 @@ class JobActions implements \IWPML_Action {
 	const SUFFIX_RELEASED            = '_released';
 	const SUFFIX_RELEASE_UNCONFIRMED = '_release_unconfirmed';
 
+	const SUFFIX_DECLINED = '_declined';
+
 	const EVENT_SUPERSEDE_CANCELED = 'translation_job_superseded_canceled';
 
 	const EVENT_SUPERSEDE_CANCEL_UNCONFIRMED = 'translation_job_superseded_cancel_unconfirmed';
@@ -48,7 +56,7 @@ class JobActions implements \IWPML_Action {
 	const EVENT_CANCEL_RELEASED            = 'translation_job_cancelled_released';
 	const EVENT_CANCEL_RELEASE_UNCONFIRMED = 'translation_job_cancelled_release_unconfirmed';
 
-	const DEFINITIVE_NOT_RELEASED_REASONS = [ 'delivered', 'not_charged', 'already_released' ];
+	const DEFINITIVE_NOT_RELEASED_REASONS = [ 'delivered', 'not_charged', 'already_released', 'correction_not_refunded' ];
 
 	const RESPONSE_LOG_MAX_LENGTH = 500;
 
@@ -58,21 +66,25 @@ class JobActions implements \IWPML_Action {
 
 	private $disableRelease = null;
 
+	private $owedForTheRun = false;
+
 	public function __construct( \WPML_TM_ATE_API $apiClient, TranslateEverything $translateEverything ) {
 		$this->apiClient           = $apiClient;
 		$this->translateEverything = $translateEverything;
 	}
 
 	public function add_hooks() {
-		add_action( 'wpml_tm_job_cancelled', [ $this, 'cancelJobInATE' ], 10, 2 );
-		add_action( 'wpml_tm_jobs_cancelled', [ $this, 'cancelJobsInATE' ] );
+		add_action( 'wpml_tm_job_cancelled', [ $this, 'cancelJobInATE' ], 10, 3 );
+		add_action( 'wpml_tm_jobs_cancelled', [ $this, 'cancelJobsInATE' ], 10, 2 );
 		add_action( 'wpml_set_translate_everything', [ $this, 'onTranslateEverythingModeChanged' ], 10, 2 );
 		add_action( 'wpml_update_active_languages', [ $this, 'markRemovedLanguagesUncompleted' ] );
 		add_action( 'wpml_cancel_all_automatic_jobs', [ $this, 'cancelAllAutomaticJobs' ], 10 );
+		add_action( PendingCancels::OWED_CANCEL_ANSWERED_ACTION, [ $this, 'onOwedCancelAnswered' ], 10, 3 );
 		add_filter( 'wpml_tea_disable_release', [ $this, 'fillDisableRelease' ] );
+		add_filter( 'wpml_tea_disable_has_jobs_to_cancel', [ $this, 'hasJobsToCancelOnDisable' ] );
 	}
 
-	public function cancelJobInATE( \WPML_TM_Post_Job_Entity $job, $reason = null ) {
+	public function cancelJobInATE( \WPML_TM_Post_Job_Entity $job, $reason = null, $source = null ) {
 		if ( ! $job->is_ate_editor() ) {
 			return;
 		}
@@ -84,7 +96,15 @@ class JobActions implements \IWPML_Action {
 		}
 
 		$reason = $reason ? (string) $reason : \WPML_TM_ATE_API::CANCEL_REASON_SUPERSEDED;
-		$stem   = self::eventStem( $reason );
+		$source = \WPML_TM_ATE_API::normaliseCancelSource( $source );
+
+		if ( DeferredDispatch::isCollecting() ) {
+			DeferredDispatch::deferCancel( $job, $reason, $source );
+
+			return;
+		}
+
+		$stem = self::eventStem( $reason );
 
 		$wpmlJobId = (int) $job->get_translate_job_id();
 		$rid       = (int) $job->get_rid();
@@ -95,15 +115,18 @@ class JobActions implements \IWPML_Action {
 			'wpml_job_id' => $wpmlJobId,
 			'rid'         => $rid,
 			'reason'      => $reason,
+			'source'      => $source,
 			'words'       => $money['words'],
 			'credits'     => $money['credits'],
 		];
 
 		$answered = false;
+		$response = null;
+		$answeredWithoutId = false;
 
 		try {
-			$response  = $this->apiClient->hideJobs( [ $ateJobId ], true, $reason );
-			$answered  = ! PendingCancels::isUnanswered( $response );
+			$response  = $this->apiClient->hideJobs( [ $ateJobId ], true, $reason, PendingCancels::firstTryRequestArgs(), $source );
+			$answered  = ! PendingCancels::isOwed( $response );
 			$confirmed = AteResponse::getConfirmedJobIds( $response );
 
 			if ( is_array( $confirmed ) && in_array( $ateJobId, $confirmed, true ) ) {
@@ -117,6 +140,8 @@ class JobActions implements \IWPML_Action {
 
 				return;
 			}
+
+			$answeredWithoutId = $answered && ! is_wp_error( $response );
 
 			JobLog::addError( $stem . self::SUFFIX_CANCEL_UNCONFIRMED, array_merge( $context, [
 				'response' => self::describeResponse( $response ),
@@ -133,7 +158,25 @@ class JobActions implements \IWPML_Action {
 		}
 
 		if ( ! $answered ) {
-			PendingCancels::remember( [ $ateJobId ], PendingCancels::ENDPOINT_HIDE, $reason, true, $context );
+			PendingCancels::remember( [ $ateJobId ], PendingCancels::ENDPOINT_HIDE, $reason, true, $context, $response );
+
+			return;
+		}
+
+		if ( $answeredWithoutId && self::STEM_SUPERSEDE === $stem ) {
+			if ( DeferredDispatch::isRunning() ) {
+				$declined = PendingCancels::declineOrOwe( [ $ateJobId => $wpmlJobId ], Decline::SUPERSEDED );
+			} else {
+				PendingCancels::oweDecline( [ $ateJobId => $wpmlJobId ], Decline::SUPERSEDED );
+				$declined = [ 'declined' => [], 'refused' => [], 'owed' => [ $ateJobId ] ];
+			}
+
+			JobLog::add( $stem . self::SUFFIX_DECLINED, array_merge( $context, [
+				'declined' => (bool) $declined['declined'],
+				'refused'  => (bool) $declined['refused'],
+				'owed'     => (bool) $declined['owed'],
+				'sent_now' => DeferredDispatch::isRunning(),
+			] ) );
 		}
 	}
 
@@ -286,7 +329,9 @@ class JobActions implements \IWPML_Action {
 			: $encoded;
 	}
 
-	public function cancelJobsInATE( $jobs ) {
+	public function cancelJobsInATE( $jobs, $source = null ) {
+		$source = \WPML_TM_ATE_API::normaliseCancelSource( $source );
+
 		if ( is_object( $jobs ) ) {
 			$jobs = [ $jobs ];
 		}
@@ -318,17 +363,21 @@ class JobActions implements \IWPML_Action {
 			] );
 
 			$ateJobIds = array_map( 'intval', $ateJobIds );
-			$context   = self::cancelContexts( $normalizedJobs, $ateJobIds );
+			$context   = self::cancelContexts( $normalizedJobs, $ateJobIds, $source );
 			$keepErrorRecord = self::ateJobIdsKeepingTheirErrorRecord( $normalizedJobs );
 			$answered  = false;
+			$response  = null;
+			$unconfirmed = [];
 
 			try {
 				$response = $this->apiClient->cancelJobs(
 					$ateJobIds,
 					false,
-					\WPML_TM_ATE_API::CANCEL_REASON_CANCELLED
+					\WPML_TM_ATE_API::CANCEL_REASON_CANCELLED,
+					PendingCancels::firstTryRequestArgs(),
+					$source
 				);
-				$answered = ! PendingCancels::isUnanswered( $response );
+				$answered = ! PendingCancels::isOwed( $response );
 
 				$confirmed = AteResponse::getConfirmedJobIds( $response );
 				$confirmed = is_array( $confirmed ) ? $confirmed : [];
@@ -344,6 +393,10 @@ class JobActions implements \IWPML_Action {
 							$this->clearJobError( $context[ $ateJobId ]['wpml_job_id'] ?? null );
 						}
 					} else {
+						if ( $answered && ! is_wp_error( $response ) ) {
+							$unconfirmed[] = $ateJobId;
+						}
+
 						JobLog::addError(
 							self::STEM_CANCEL . self::SUFFIX_CANCEL_UNCONFIRMED,
 							array_merge( $context[ $ateJobId ], [
@@ -368,8 +421,15 @@ class JobActions implements \IWPML_Action {
 				$this->recordRelease( null, $ateJobIds, self::STEM_CANCEL, $context );
 			}
 
-			if ( ! $answered ) {
-				PendingCancels::remember( $ateJobIds, PendingCancels::ENDPOINT_CANCEL, \WPML_TM_ATE_API::CANCEL_REASON_CANCELLED );
+			if ( ! $answered || $unconfirmed ) {
+				$owed = [];
+				foreach ( $answered ? $unconfirmed : $ateJobIds as $ateJobId ) {
+					$owed[ $ateJobId ] = [
+						'wpml_job_id' => $context[ $ateJobId ]['wpml_job_id'] ?? 0,
+						'source'      => $source,
+					];
+				}
+				PendingCancels::rememberEach( $owed, PendingCancels::ENDPOINT_CANCEL, \WPML_TM_ATE_API::CANCEL_REASON_CANCELLED, false, $response );
 			}
 
 			foreach ( $keepErrorRecord as $keptAteJobId ) {
@@ -404,6 +464,22 @@ class JobActions implements \IWPML_Action {
 		$md5         = (string) $row->md5;
 		$elementType = (string) $row->element_type;
 
+		if ( TermBundle::ELEMENT_TYPE === $elementType ) {
+			$memberMd5s = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT ts.md5
+					   FROM {$wpdb->prefix}icl_term_batch_members m
+					   INNER JOIN {$wpdb->prefix}icl_translation_status ts ON ts.rid = m.term_rid
+					  WHERE m.batch_job_id = %d AND m.state <> %s",
+					(int) $wpmlJobId,
+					TermBundleMembers::STATE_APPLIED
+				)
+			);
+			TranslateJobErrorServiceFactory::create()->recordDiscardedMemberSourceMd5s( (int) $wpmlJobId, array_map( 'strval', (array) $memberMd5s ) );
+
+			return;
+		}
+
 		if ( 0 === strpos( $elementType, 'post_' ) ) {
 			if ( '' === $md5 ) {
 				return;
@@ -427,7 +503,7 @@ class JobActions implements \IWPML_Action {
 		return $keep;
 	}
 
-	private static function cancelContexts( array $normalizedJobs, array $ateJobIds ) {
+	private static function cancelContexts( array $normalizedJobs, array $ateJobIds, $source ) {
 		$wpmlJobIdByAteId = [];
 		foreach ( $normalizedJobs as $job ) {
 			$ateJobId = isset( $job->editor_job_id ) ? (int) $job->editor_job_id : 0;
@@ -452,6 +528,7 @@ class JobActions implements \IWPML_Action {
 				'ate_job_id'  => $ateJobId,
 				'wpml_job_id' => isset( $wpmlJobIdByAteId[ $ateJobId ] ) ? $wpmlJobIdByAteId[ $ateJobId ] : null,
 				'reason'      => \WPML_TM_ATE_API::CANCEL_REASON_CANCELLED,
+				'source'      => $source,
 			];
 		}
 
@@ -561,6 +638,15 @@ class JobActions implements \IWPML_Action {
 	}
 
 
+	public function hasJobsToCancelOnDisable( $hasJobs = false ) {
+		try {
+			return wpml_tm_get_jobs_repository()->exists( self::getInProgressSearch() );
+		} catch ( \Throwable $e ) {
+			return false;
+		}
+	}
+
+
 	public function cancelAllAutomaticJobs( $batchResult = null ) {
 		$batchResult = $batchResult instanceof BatchResult ? $batchResult : new BatchResult();
 
@@ -573,6 +659,8 @@ class JobActions implements \IWPML_Action {
 				[]
 			);
 		}
+
+		$this->owedForTheRun = false;
 
 		try {
 			JobLog::add( 'tea_cancel_all_started', [] );
@@ -594,7 +682,45 @@ class JobActions implements \IWPML_Action {
 			if ( $ownsGroup ) {
 				JobLog::finishCurrentGroup();
 			}
+
+			if ( $this->owedForTheRun ) {
+				do_action( PendingCancels::OWED_FOR_RUN_ACTION );
+			}
 		}
+	}
+
+	public function onOwedCancelAnswered( $response, $ateJobIds, $source = '' ) {
+		$ateJobIds = array_map( 'intval', (array) $ateJobIds );
+		$this->recordRelease( $response, $ateJobIds, self::STEM_CANCEL, [], false );
+
+		$finished = FinishedAtAte::idsOf( $response, $ateJobIds );
+		if ( ! $finished ) {
+			return;
+		}
+
+		$putBack = FinishedAtAte::putBack( $finished );
+		JobLog::add( 'tea_cancel_all_already_translated_in_ate', [
+			'ate_job_ids'  => $finished,
+			'put_back'     => array_values( $putBack ),
+			'wpml_job_ids' => array_keys( $putBack ),
+		] );
+
+		if ( $putBack ) {
+			do_action( 'wpml_tm_ate_jobs_created', $putBack );
+		}
+	}
+
+	private function oweForTheRun( array $byAteJobId, BatchResult $batchResult ) {
+		if ( ! $byAteJobId ) {
+			return;
+		}
+
+		PendingCancels::rememberEach( $byAteJobId, PendingCancels::ENDPOINT_HIDE, \WPML_TM_ATE_API::CANCEL_REASON_CANCELLED, true );
+		$this->owedForTheRun = true;
+
+		$releaseMark = ReleaseLedger::instance()->mark();
+		$this->recordRelease( null, array_keys( $byAteJobId ), self::STEM_CANCEL, [], false );
+		$batchResult->addRelease( ReleaseLedger::instance()->summaryFrom( $releaseMark ) );
 	}
 
 	private static function getInProgressSearch() {
@@ -616,91 +742,38 @@ class JobActions implements \IWPML_Action {
 			->filter( invoke( 'is_automatic' ) );
 		$foundJobs = $translationJobs->count();
 
+		$translationJobs = $translationJobs->reject( function ( \WPML_TM_Post_Job_Entity $job ) {
+			return TermBundle::ELEMENT_TYPE === $job->get_element_type();
+		} );
+
+		$translationJobs = $translationJobs->reject( fn( \WPML_TM_Post_Job_Entity $job ) => FinishedAtAte::wasPutBack( (int) $job->get_editor_job_id() ) );
+
 		if ( self::CANCEL_BATCH_SIZE === $foundJobs ) {
 			$batchResult->markHasMore();
 		}
 
-		$ateJobs   = $translationJobs->filter( invoke( 'is_ate_editor' ) );
-		$ateJobIds = $ateJobs->map( invoke( 'get_editor_job_id' ) )
-		                     ->map( function ( $jobId ) {
-			                     return (int) $jobId;
-		                     } )
-		                     ->filter()
-		                     ->values()
-		                     ->toArray();
-
-		$jobsHiddenInATE   = [];
-		$jobsReportedByATE = null;
-		if ( $ateJobIds ) {
-			$releaseMark = ReleaseLedger::instance()->mark();
-
-			try {
-				$response        = $this->apiClient->hideJobs(
-					$ateJobIds,
-					true,
-					\WPML_TM_ATE_API::CANCEL_REASON_CANCELLED
-				);
-				$confirmedJobIds = AteResponse::getConfirmedJobIds( $response );
-				if ( null !== $confirmedJobIds ) {
-					$jobsHiddenInATE   = $confirmedJobIds;
-					$jobsReportedByATE = AteResponse::getReportedJobIds( $response );
-				} else {
-					JobLog::addError( 'tea_cancel_all_ate_invalid_response', [] );
-				}
-
-				$this->recordRelease( $response, $ateJobIds, self::STEM_CANCEL, [], false );
-			} catch ( \Throwable $e ) {
-				JobLog::addError( 'tea_cancel_all_ate_request_failed', [
-					'error' => $e->getMessage(),
-				] );
-
-				$this->recordRelease( null, $ateJobIds, self::STEM_CANCEL, [], false );
-			}
-
-			$batchResult->addRelease( ReleaseLedger::instance()->summaryFrom( $releaseMark ) );
-		}
-
-		$updateJob       = make( \WPML_TP_Sync_Update_Job::class );
-		$processedJobs   = 0;
-		$unconfirmedJobs = 0;
-		$alreadyFinished = [];
-
-		$translationJobs->each( function ( \WPML_TM_Post_Job_Entity $job ) use ( $jobsHiddenInATE, $jobsReportedByATE, $updateJob, &$processedJobs, &$unconfirmedJobs, &$alreadyFinished ) {
+		$owed = [];
+		$translationJobs->each( function ( \WPML_TM_Post_Job_Entity $job ) use ( &$owed ) {
 			$ateJobId = (int) $job->get_editor_job_id();
 			if ( $job->is_ate_editor() && $ateJobId > 0 ) {
-				if ( ! in_array( $ateJobId, $jobsHiddenInATE, true ) ) {
-					if ( is_array( $jobsReportedByATE ) && ! in_array( $ateJobId, $jobsReportedByATE, true ) ) {
-						$alreadyFinished[] = $ateJobId;
-
-						return;
-					}
-
-					$unconfirmedJobs ++;
-
-					return;
-				}
-
-				$cancelled = $updateJob->cancel( $job, ICL_TM_ATE_CANCELLED );
-			} else {
-				$cancelled = $updateJob->cancel( $job, ICL_TM_NOT_TRANSLATED );
+				$owed[ $ateJobId ] = [ 'wpml_job_id' => (int) $job->get_translate_job_id(), 'source' => CancelSource::TRANSLATE_EVERYTHING_OFF ];
 			}
+		} );
+		$this->oweForTheRun( $owed, $batchResult );
+
+		$updateJob     = make( \WPML_TP_Sync_Update_Job::class );
+		$processedJobs = 0;
+
+		$translationJobs->each( function ( \WPML_TM_Post_Job_Entity $job ) use ( $owed, $updateJob, &$processedJobs ) {
+			$status    = $job->is_ate_editor() && isset( $owed[ (int) $job->get_editor_job_id() ] ) ? ICL_TM_ATE_CANCELLED : ICL_TM_NOT_TRANSLATED;
+			$cancelled = $updateJob->cancel( $job, $status );
 
 			$this->cleanupCancelledStringBatch( $cancelled instanceof \WPML_TM_Job_Entity ? $cancelled : $job );
 
 			$processedJobs ++;
 		} );
 
-		if ( $alreadyFinished ) {
-			JobLog::add( 'tea_cancel_all_already_translated_in_ate', [
-				'ate_job_ids' => $alreadyFinished,
-			] );
-		}
-
 		$batchResult->addProcessed( $processedJobs );
-		if ( $unconfirmedJobs ) {
-			$batchResult->addFailure( 'post_jobs_not_confirmed_by_ate' );
-			$batchResult->markHasMore();
-		}
 
 		return $foundJobs;
 	}
@@ -796,60 +869,16 @@ class JobActions implements \IWPML_Action {
 			]
 		);
 
-		$ateAnswered     = true;
-		$jobsHiddenInATE = [];
-		if ( $ateJobIds ) {
-			$ateAnswered = false;
-			$releaseMark = ReleaseLedger::instance()->mark();
-
-			try {
-				$response        = $this->apiClient->hideJobs(
-					$ateJobIds,
-					true,
-					\WPML_TM_ATE_API::CANCEL_REASON_CANCELLED
-				);
-				$confirmedJobIds = AteResponse::getConfirmedJobIds( $response );
-				if ( null !== $confirmedJobIds ) {
-					$jobsHiddenInATE = $confirmedJobIds;
-					$ateAnswered     = true;
-				} else {
-					JobLog::addError( 'tea_cancel_all_orphan_ate_invalid_response', [] );
-				}
-
-				$this->recordRelease( $response, $ateJobIds, self::STEM_CANCEL, [], false );
-			} catch ( \Throwable $e ) {
-				JobLog::addError( 'tea_cancel_all_orphan_ate_request_failed', [
-					'error' => $e->getMessage(),
-				] );
-
-				$this->recordRelease( null, $ateJobIds, self::STEM_CANCEL, [], false );
-			}
-
-			$batchResult->addRelease( ReleaseLedger::instance()->summaryFrom( $releaseMark ) );
-		}
-
-		if ( ! $ateAnswered ) {
-			$batchResult->addFailure( 'orphan_jobs_not_confirmed_by_ate' );
-			$batchResult->markHasMore();
-
-			return;
-		}
-
-		$notConfirmedByAte = [];
+		$owed = [];
 		foreach ( $rows as $row ) {
 			$ateJobId = (int) $row->editor_job_id;
-			if ( $ateJobId > 0 && ! in_array( $ateJobId, $jobsHiddenInATE, true ) ) {
-				$notConfirmedByAte[] = $ateJobId;
+			if ( $ateJobId > 0 ) {
+				$owed[ $ateJobId ] = [ 'wpml_job_id' => (int) $row->job_id, 'source' => CancelSource::TRANSLATE_EVERYTHING_OFF ];
 			}
 		}
+		$this->oweForTheRun( $owed, $batchResult );
 
-		if ( $notConfirmedByAte ) {
-			JobLog::addError( 'tea_cancel_all_orphan_ate_not_confirmed', [
-				'ate_job_ids' => $notConfirmedByAte,
-			] );
-		}
-
-		CancelJobsServiceFactory::create()->cancelJobs( $jobIds );
+		CancelJobsServiceFactory::create()->cancelJobs( $jobIds, false, CancelSource::TRANSLATE_EVERYTHING_OFF );
 		$batchResult->addProcessed( count( $jobIds ) );
 	}
 }

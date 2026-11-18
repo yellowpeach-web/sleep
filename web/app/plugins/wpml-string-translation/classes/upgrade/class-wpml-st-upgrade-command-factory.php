@@ -4,15 +4,26 @@ use function WPML\Container\make;
 use WPML\ST\Upgrade\Command\RegenerateMoFilesWithStringNames;
 use WPML\ST\Upgrade\Command\RegenerateDefaultMoForWpRouting;
 use WPML\ST\Upgrade\Command\RegenerateMoFilesWithoutNativeCopies;
+use WPML\ST\Upgrade\Command\RegenerateAdminTextsMoFiles;
+use WPML\ST\Upgrade\Command\RegenerateMoFilesWithNativeCopies;
 use WPML\ST\Upgrade\Command\MigrateMultilingualWidgets;
 use WPML\ST\Upgrade\Command\UpgradeWpSettingsStrings;
 use WPML\ST\Upgrade\Command\DeleteFileHashingOption;
 use WPML\ST\Upgrade\Command\RecomputeStatusesZeroedByOutdatedHandler;
 use WPML\ST\Upgrade\Command\AlignTaxonomyLabelSourceLanguage;
 use WPML\ST\Upgrade\Command\AddStringPackagesUniqueKey;
+use WPML\ST\Upgrade\Command\AddStringPackageOwnerColumns;
 use WPML\ST\Upgrade\Command\CreateStringPackagesTable;
 use WPML\ST\Upgrade\Command\RemoveSameLanguageTranslations;
 use WPML\ST\Upgrade\Command\ReopenStringsPassForAdminTexts;
+use WPML\ST\Upgrade\Command\RewriteRulesWrittenAgain;
+use WPML\ST\Upgrade\Command\RestoreAutoregisterModeEndedByHorizon;
+use WPML\StringTranslation\Infrastructure\Setting\Repository\SettingsRepository;
+use WPML\StringTranslation\Infrastructure\Setting\Repository\UrlRepository;
+use WPML\ST\Upgrade\Command\MigrateFrontendStringPositionsToAppearances;
+use WPML\ST\Upgrade\Command\ReleaseStringsOfEndedBatches;
+use WPML\ST\Batch\Translation\OrphanedBatchSweep;
+use WPML\ST\Upgrade\Command\CreateStringCarriersOption;
 
 class WPML_ST_Upgrade_Command_Factory {
 	private $wpdb;
@@ -44,6 +55,9 @@ class WPML_ST_Upgrade_Command_Factory {
 				break;
 			case AddStringPackagesUniqueKey::class:
 				$result = new AddStringPackagesUniqueKey( $this->wpdb );
+				break;
+			case AddStringPackageOwnerColumns::class:
+				$result = new AddStringPackageOwnerColumns( $this->wpdb );
 				break;
 			case 'WPML_ST_Upgrade_DB_String_Name_Index':
 				$result = new WPML_ST_Upgrade_DB_String_Name_Index( $this->wpdb );
@@ -77,6 +91,12 @@ class WPML_ST_Upgrade_Command_Factory {
 			case RegenerateMoFilesWithoutNativeCopies::class:
 				$result = new RegenerateMoFilesWithoutNativeCopies( \WPML\ST\MO\File\ManagerFactory::create() );
 				break;
+			case RegenerateAdminTextsMoFiles::class:
+				$result = new RegenerateAdminTextsMoFiles();
+				break;
+			case RegenerateMoFilesWithNativeCopies::class:
+				$result = new RegenerateMoFilesWithNativeCopies();
+				break;
 			case MigrateMultilingualWidgets::class:
 				$result = new MigrateMultilingualWidgets();
 				break;
@@ -97,6 +117,23 @@ class WPML_ST_Upgrade_Command_Factory {
 				break;
 			case ReopenStringsPassForAdminTexts::class:
 				$result = new ReopenStringsPassForAdminTexts( $this->wpdb );
+				break;
+			case RewriteRulesWrittenAgain::class:
+				$result = new RewriteRulesWrittenAgain();
+				break;
+			case RestoreAutoregisterModeEndedByHorizon::class:
+				$result = new RestoreAutoregisterModeEndedByHorizon(
+					new SettingsRepository( $this->sitepress, new UrlRepository( $this->sitepress ) )
+				);
+				break;
+			case MigrateFrontendStringPositionsToAppearances::class:
+				$result = new MigrateFrontendStringPositionsToAppearances();
+				break;
+			case ReleaseStringsOfEndedBatches::class:
+				$result = new ReleaseStringsOfEndedBatches( new OrphanedBatchSweep( $this->wpdb ) );
+				break;
+			case CreateStringCarriersOption::class:
+				$result = new CreateStringCarriersOption();
 				break;
 			default:
 				throw new WPML_ST_Upgrade_Command_Not_Found_Exception( $class_name );

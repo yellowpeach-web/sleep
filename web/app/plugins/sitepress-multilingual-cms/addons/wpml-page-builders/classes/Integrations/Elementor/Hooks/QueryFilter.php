@@ -97,6 +97,14 @@ class QueryFilter implements \IWPML_Frontend_Action, \IWPML_DIC_Action {
 			'product_query_exclude_term_ids',
 			'query_include_term_ids',
 			'query_exclude_term_ids',
+			'posts_include_term_ids',
+			'posts_exclude_term_ids',
+			'post_taxonomy_term_taxonomy_id',
+			'post_taxonomy_posts_ids',
+			'post_taxonomy_exclude_ids',
+			'product_taxonomy_term_taxonomy_id',
+			'product_taxonomy_posts_ids',
+			'product_taxonomy_exclude_ids',
 		];
 
 		return apply_filters( 'wpml_pb_elementor_query_term_id_properties', $properties );
@@ -117,6 +125,20 @@ class QueryFilter implements \IWPML_Frontend_Action, \IWPML_DIC_Action {
 		$translateTermTaxonomyId = function ( $termTaxonomyId ) use ( $currentLanguage ) {
 			return $this->wpmlTermTranslation->element_id_in( $termTaxonomyId, $currentLanguage, true );
 		};
+
+		if ( is_scalar( $ids ) ) {
+			if ( ! is_numeric( $ids ) ) {
+				return $ids;
+			}
+
+			$converted = $translateTermTaxonomyId( (int) $ids );
+
+			if ( ! $converted ) {
+				return $ids;
+			}
+
+			return is_string( $ids ) ? (string) $converted : (int) $converted;
+		}
 
 		return wpml_collect( $ids )
 			->map( $translateTermTaxonomyId )

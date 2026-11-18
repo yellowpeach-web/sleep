@@ -580,6 +580,9 @@
          "Blocked by a firewall or CDN": [
             "Αποκλείστηκε από τείχος προστασίας ή CDN"
          ],
+         "Used by another site": [
+            "Χρησιμοποιείται από άλλον ιστότοπο"
+         ],
          "Not valid": [
             "Μη έγκυρο"
          ],
@@ -603,6 +606,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "Το %s φορτώνει, αλλά ένα τείχος προστασίας ή CDN εμπόδισε τον έλεγχο του WPML."
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "Χρησιμοποιείται από άλλον ιστότοπο σε αυτό το δίκτυο: %s. Εισαγάγετε ένα διαφορετικό domain για να αποθηκεύσετε."
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "Δεν ήταν δυνατή η επικύρωση του τομέα: %s. Ελέγξτε αν αντιστοιχεί σε αυτόν τον ιστότοπο ή αποεπιλέξτε το “Επικύρωση κατά την αποθήκευση” για να τον αποθηκεύσετε ούτως ή άλλως."
@@ -959,6 +965,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "Για να μπορέσει να αποθηκευτεί αυτή η γλώσσα, επιλέξτε αν θα επαναφέρετε το προϋπάρχον περιεχόμενο αυτού του ιστότοπου σε αυτήν ή αν θα ξεκινήσετε από την αρχή."
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "Μια γλώσσα δεν μπορεί να αντιστοιχιστεί στην προεπιλεγμένη γλώσσα του ιστότοπού σας. Αντ' αυτού, επιλέξτε “Αυτόματη αντιστοίχιση”."
+         ],
          "You don’t have permission to change languages.": [
             "Δεν έχετε άδεια να αλλάξετε γλώσσες."
          ],
@@ -1019,6 +1028,9 @@
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "Εάν δεν μπορείτε να βρείτε τη γλώσσα σας στη λίστα, <a>προσθέστε μια προσαρμοσμένη γλώσσα</a>."
          ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "Το στοιχείο %1$s μετακινήθηκε στη θέση %2$d από %3$d."
+         ],
          "Default language": [
             "Προεπιλεγμένη γλώσσα"
          ],
@@ -1075,6 +1087,12 @@
          ],
          "Delete language": [
             "Διαγραφή γλώσσας"
+         ],
+         "Move %s. Use the up and down arrow keys.": [
+            "Μετακίνηση %s. Χρησιμοποιήστε τα πλήκτρα με το επάνω και κάτω βέλος."
+         ],
+         "Drag to change the order": [
+            "Σύρετε για να αλλάξετε τη σειρά"
          ],
          "Type to search all languages…": [
             "Πληκτρολογήστε για αναζήτηση σε όλες τις γλώσσες…"
@@ -1147,6 +1165,9 @@
          ],
          "Recognized as the same language as the default": [
             "Αναγνωρίζεται ως η ίδια γλώσσα με την προεπιλεγμένη"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "Η αυτόματη μετάφραση είναι ανενεργή: δεν είναι ενεργοποιημένη καμία μηχανή μετάφρασης. Για να ενεργοποιήσετε μία, μεταβείτε στο <link>WPML → Ρυθμίσεις → AI Translation</link>."
          ],
          "%s (Regional)": [
             "%s (περιφερειακή)"

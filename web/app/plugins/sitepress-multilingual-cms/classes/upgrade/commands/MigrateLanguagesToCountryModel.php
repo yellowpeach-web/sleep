@@ -87,6 +87,7 @@ class MigrateLanguagesToCountryModel implements \IWPML_Upgrade_Command, \IWPML_P
 		$stored = $this->stored_model_columns();
 
 		$defaultCode = $this->site_default_code();
+		$written     = false;
 
 		foreach ( (array) $rows as $row ) {
 			list( $set, $formats ) = $this->row_set( $row, $presets, $ateCountry, $defaultCode );
@@ -103,9 +104,15 @@ class MigrateLanguagesToCountryModel implements \IWPML_Upgrade_Command, \IWPML_P
 				$formats,
 				[ '%d' ]
 			);
+			$this->mirror_locale_map( $row, $set );
+
+			$written = true;
 		}
 
 		self::forgetRowIdentityMemo();
+		if ( $written ) {
+			self::forgetLanguageStore();
+		}
 
 		$this->record_undetermined_flag();
 
@@ -161,9 +168,18 @@ class MigrateLanguagesToCountryModel implements \IWPML_Upgrade_Command, \IWPML_P
 				)
 			);
 			if ( $pairLocale && strcasecmp( $pairLocale, (string) $row->default_locale ) !== 0 ) {
-				$set['default_locale'] = $pairLocale;
+				$isCatalogueLocale = '' === (string) $row->default_locale || $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT 1 FROM `{$wpdb->prefix}icl_language_preset_countries` WHERE default_locale = %s LIMIT 1",
+						(string) $row->default_locale
+					)
+				);
+				if ( $isCatalogueLocale ) {
+					$set['default_locale'] = $pairLocale;
+					$formats[]             = '%s';
+				}
 				$set['tag'] = self::identity_tag( $assignment['code'], $assignment['country'], $pairLocale );
-				array_push( $formats, '%s', '%s' );
+				$formats[]  = '%s';
 			}
 		}
 
@@ -197,9 +213,28 @@ class MigrateLanguagesToCountryModel implements \IWPML_Upgrade_Command, \IWPML_P
 		return false;
 	}
 
+	private function mirror_locale_map( $row, array $set ) {
+		if ( ! isset( $set['default_locale'] ) ) {
+			return;
+		}
+
+		$wpdb = $this->schema->get_wpdb();
+		$wpdb->update(
+			$wpdb->prefix . 'icl_locale_map',
+			[ 'locale' => (string) $set['default_locale'] ],
+			[ 'code' => (string) $row->code ]
+		);
+	}
+
 	protected static function forgetRowIdentityMemo() {
 		if ( class_exists( '\WPML\LanguageEditor\LanguageCodeResolution' ) ) {
 			\WPML\LanguageEditor\LanguageCodeResolution::resetStoredTags();
+		}
+	}
+
+	protected static function forgetLanguageStore() {
+		if ( class_exists( '\WPML\Language\ActiveLanguagesReadModel' ) ) {
+			\WPML\Language\ActiveLanguagesReadModel::invalidate();
 		}
 	}
 
@@ -656,12 +691,14 @@ class MigrateLanguagesToCountryModel implements \IWPML_Upgrade_Command, \IWPML_P
 				$formats,
 				[ '%d' ]
 			);
+			$this->mirror_locale_map( $row, $set );
 
 			$written = true;
 		}
 
 		if ( $written ) {
 			self::forgetRowIdentityMemo();
+			self::forgetLanguageStore();
 		}
 	}
 

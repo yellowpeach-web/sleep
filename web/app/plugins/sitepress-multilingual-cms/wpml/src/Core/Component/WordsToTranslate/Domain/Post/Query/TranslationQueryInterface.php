@@ -27,6 +27,9 @@ interface TranslationQueryInterface {
   public function isTranslatedCompletely( $post, $lang );
 
 
+  public function isAlreadyTranslated( $post, $lang ): bool;
+
+
   public function isTermTranslatable( Term $term, string $lang );
 
 

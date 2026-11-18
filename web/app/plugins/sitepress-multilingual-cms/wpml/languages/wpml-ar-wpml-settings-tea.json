@@ -29,7 +29,7 @@
             "تضمين"
          ],
          "These settings can be changed on the Translations dashboard.": [
-            "يمكن تغيير هذه الإعدادات من لوحة تحكم الترجمة."
+            "يمكن تغيير هذه الإعدادات من لوحة إدارة الترجمة."
          ],
          "Items": [
             "العناصر"
@@ -64,7 +64,7 @@
             "بناءً على المحتوى المتبقي غير المترجم في جميع اللغات."
          ],
          "Estimated from the selected source volume multiplied by the target languages.": [
-            "تقديري بناءً على حجم المصدر المحدد مضروبًا في لغات الهدف."
+            "تقديري بناءً على حجم المصدر المحدد مضروبًا في اللغات الهدف."
          ],
          "%1$s source words × %2$s language": [
             "%1$s كلمة مصدر × %2$s لغة",
@@ -152,17 +152,17 @@
          "Legacy engine": [
             "المحرك القديم"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "تم تطبيق تسعير المحرك القديم. %s هو محرك ترجمة قديم، ولا يوصى به للمواقع الجديدة وسيتم إيقافه. تحتفظ المواقع الحالية بمعدل كلمات معدل له."
-         ],
          "Switch to PTC": [
             "التبديل إلى PTC"
          ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "تم تطبيق تسعير المحرك القديم. %s هو محرك ترجمة قديم، ولا يوصى به للمواقع الجديدة وسيتم إيقافه. تحتفظ المواقع الحالية بمعدل كلمات معدل له."
+         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
-            "هذا ما تحتاجه ترجمة محتواك الحالي اليوم. وهو لا يشمل بعض النصوص التي تضيفها إضافات أخرى، مثل النماذج أو أشرطة التمرير (sliders)، والتي تُحتسب بعد اكتمال الإعداد. كما تُحتسب سلاسل الموقع النصية من قالبك وإضافاتك بعد الإعداد، وعادةً ما تضيف عدة مئات من الكلمات. بعد ذلك، تكون التعديلات مجانية. لن تدفع مجددًا إلا مقابل الكلمات التي تضيفها."
+            "هذا ما تحتاجه ترجمة محتواك الحالي اليوم. وهو لا يشمل بعض النصوص التي أضافتها إضافات أخرى، مثل النماذج أو أشرطة التمرير (sliders)، والتي تُحسب بعد اكتمال الإعداد. كما تُحسب نصوص الموقع من قالبك وإضافاتك بعد الإعداد وعادةً ما تضيف عدة مئات من الكلمات. بعد ذلك، تكون التعديلات مجانية. لن تدفع مجددًا إلا مقابل الكلمات التي تضيفها."
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. At %s's per-word rate; changes to translated pages are charged again.": [
-            "هذا ما تحتاجه ترجمة محتواك الحالي اليوم. ولا يشمل ذلك بعض النصوص التي تمت إضافتها بواسطة إضافات أخرى، مثل النماذج أو أشرطة التمرير (sliders)، والتي يتم احتسابها بعد اكتمال الإعداد. كما يتم احتساب نصوص الموقع من القالب والإضافات الخاصة بك بعد الإعداد، وعادةً ما تضيف عدة مئات من الكلمات. بسعر الكلمة الخاص بـ %s؛ يتم فرض رسوم مرة أخرى عند إجراء تغييرات على الصفحات المترجمة."
+            "هذا ما تحتاجه ترجمة محتواك الحالي اليوم. وهو لا يشمل بعض النصوص التي أضافتها إضافات أخرى، مثل النماذج أو أشرطة التمرير (sliders)، والتي تُحسب بعد اكتمال الإعداد. كما تُحسب نصوص الموقع من قالبك وإضافاتك بعد الإعداد وعادةً ما تضيف عدة مئات من الكلمات. وذلك بسعر الكلمة لدى %s؛ وتُفرض رسوم مجددًا على التغييرات في الصفحات المترجمة."
          ],
          "This is what translating your current content needs today. After that, edits are free. You pay again only for words you add.": [
             "هذا ما تحتاجه ترجمة محتواك الحالي اليوم. بعد ذلك، تكون التعديلات مجانية. لن تدفع مجددًا إلا مقابل الكلمات التي تضيفها."
@@ -173,8 +173,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "يحسب الصفحات والمقالات والمنتجات مع حقولها المخصصة ونصوص منشئ الصفحات ونصوص الوسائط، بالإضافة إلى التصنيفات والوسوم والسمات التي تستخدمها."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "يحسب الصفحات والمقالات والمنتجات مع حقولها المخصصة ونصوص منشئ الصفحات ونصوص الوسائط، والتصنيفات والوسوم والسمات التي تستخدمها، وسلاسل الموقع. يُحسب المصطلح في كل عنصر يستخدمه ومرة واحدة بمفرده، لأنه يُرسل للترجمة بكلتا الطريقتين."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "يحسب الصفحات والمقالات والمنتجات مع حقولها المخصصة ونصوص أداة بناء الصفحات ونصوص الوسائط، بالإضافة إلى التصنيفات والوسوم والسمات التي تستخدمها وسلاسل الموقع النصية. يُحسب كل تصنيف أو وسم أو سمة مرة واحدة في صف التصنيفات، ولا يُحسب مرة أخرى مع العناصر التي تستخدمه."
          ],
          "Total items": [
             "إجمالي العناصر"

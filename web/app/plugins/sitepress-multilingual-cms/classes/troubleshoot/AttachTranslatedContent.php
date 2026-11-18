@@ -59,6 +59,19 @@ class AttachTranslatedContent {
 			)
 		);
 
+		$movedStringDomains = (array) $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT DISTINCT s.context
+				 FROM {$wpdb->prefix}icl_string_translations st
+				 INNER JOIN {$wpdb->prefix}icl_strings s ON s.id = st.string_id
+				 LEFT JOIN {$wpdb->prefix}icl_string_translations x
+					ON x.string_id = st.string_id AND x.language = %s
+				 WHERE st.language = %s AND x.id IS NULL",
+				$target,
+				$source
+			)
+		);
+
 		$stringTranslations = (int) $wpdb->query(
 			$wpdb->prepare(
 				"UPDATE {$wpdb->prefix}icl_string_translations st
@@ -84,6 +97,8 @@ class AttachTranslatedContent {
 
 		\WPML\Comments\Counts\Store::markOutOfDateIfOn();
 
+		self::refreshStringTranslationFiles( $movedStringDomains, $target );
+
 		$left = TranslatedContentOfLanguages::counts( array( $source ) );
 
 		return array(
@@ -102,6 +117,21 @@ class AttachTranslatedContent {
 		}
 		if ( function_exists( 'wp_cache_flush' ) ) {
 			wp_cache_flush();
+		}
+	}
+
+	private static function refreshStringTranslationFiles( array $domains, $target ) {
+		if ( ! $domains || ! class_exists( '\\WPML\\ST\\TranslationFile\\UpdateHooksFactory' ) ) {
+			return;
+		}
+
+		try {
+			$queue = \WPML\ST\TranslationFile\UpdateHooksFactory::create();
+			foreach ( $domains as $domain ) {
+				$queue->refresh_domain( (string) $domain, array( (string) $target ) );
+			}
+		} catch ( \Throwable $e ) {
+			error_log( 'WPML: the translation files of the moved strings were not refreshed: ' . $e->getMessage() );
 		}
 	}
 }

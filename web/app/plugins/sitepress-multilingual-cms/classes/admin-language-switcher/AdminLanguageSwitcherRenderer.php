@@ -17,7 +17,7 @@ class AdminLanguageSwitcherRenderer {
 
                 <label for="language-switcher-locales">
                     <span class="dashicons dashicons-translation" aria-hidden="true"></span>
-                    <span class="screen-reader-text"><?php /* translators: Column heading and field label in the WPML admin, for the language of a piece of content. Noun, singular. */ esc_html_e( 'Language', 'sitepress' ); ?></span>
+                    <span class="screen-reader-text"><?php /* translators: Column heading and field label in the WPML admin, for the language of a piece of content, for example on the Updated translations page (the language of the updated translation). Noun, singular. */ esc_html_e( 'Language', 'sitepress' ); ?></span>
                 </label>
                 <select name="wpml_lang" id="wpml-language-switcher-locales">
 					<?php

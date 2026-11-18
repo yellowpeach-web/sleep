@@ -35,11 +35,11 @@ class CreateUnsolvableJobsTable implements \IWPML_Upgrade_Command {
 				`error_message` text NULL,
 				`error_data` text NULL,
 				`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-				`last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				`last_update` timestamp NULL DEFAULT NULL,
 				`counter` tinyint(4)  NOT NULL,
 				PRIMARY KEY (`job_id`),
 				KEY `ate_job_id` (`ate_job_id`)
-				) ENGINE=INNODB
+				)
 			";
 
 			return CreateTable::create( $wpdb, $table_name, $query );

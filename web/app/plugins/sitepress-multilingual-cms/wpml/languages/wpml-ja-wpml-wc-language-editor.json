@@ -413,7 +413,7 @@
             "言語"
          ],
          "Select a language…": [
-            "言語を選択..."
+            "言語を選択…"
          ],
          "Show cost": [
             "コストを表示"
@@ -565,6 +565,9 @@
          "Blocked by a firewall or CDN": [
             "ファイアウォールまたは CDN によってブロックされました"
          ],
+         "Used by another site": [
+            "他のサイトで使用中"
+         ],
          "Not valid": [
             "無効"
          ],
@@ -588,6 +591,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s は読み込まれますが、ファイアウォールまたは CDN によって WPML のチェックがブロックされました。"
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "このネットワーク上の別のサイトで使用されています: %s。保存するには別のドメインを入力してください。"
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "ドメインを検証できませんでした： %s。このサイトを指しているか確認するか、「保存時に検証する」のチェックを外して強制的に保存してください。"
@@ -931,6 +937,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "この言語を保存する前に、このサイトに以前からあるその言語のコンテンツを復元するか、新しく開始するかを選択してください。"
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "言語をサイトのデフォルト言語にマッピングすることはできません。代わりに「自動的に照合」を選択してください。"
+         ],
          "You don’t have permission to change languages.": [
             "言語を変更する権限がありません。"
          ],
@@ -991,6 +1000,9 @@
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "リストに言語が見つからない場合は、<a>カスタム言語を追加</a>してください。"
          ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s が %3$d 件中 %2$d 番目に移動しました。"
+         ],
          "Default language": [
             "デフォルト言語"
          ],
@@ -1047,6 +1059,12 @@
          ],
          "Delete language": [
             "言語を削除"
+         ],
+         "Move %s. Use the up and down arrow keys.": [
+            "%s を移動。上下の矢印キーを使用してください。"
+         ],
+         "Drag to change the order": [
+            "ドラッグして順序を変更"
          ],
          "Type to search all languages…": [
             "入力してすべての言語を検索…"
@@ -1119,6 +1137,9 @@
          ],
          "Recognized as the same language as the default": [
             "デフォルトと同じ言語として認識されています"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "自動翻訳がオフです：有効になっている翻訳エンジンがありません。オンにするには、<link>WPML → 設定 → AI 翻訳</link>に移動してください。"
          ],
          "%s (Regional)": [
             "%s（地域）"
@@ -1211,7 +1232,7 @@
             "重複するタームは削除されます"
          ],
          "Objects and settings move onto the existing version; the duplicate is deleted. Nothing in the target language is deleted.": [
-            "オブジェクトと設定は既存のバージョンに移動し、重複は削除されます。ターゲット言語のものは何も削除されません。"
+            "オブジェクトと設定は既存のバージョンに移動し、複製は削除されます。翻訳先言語のものは何も削除されません。"
          ],
          "What should happen to the items already in %s?": [
             "すでに %s にあるアイテムをどうしますか？"

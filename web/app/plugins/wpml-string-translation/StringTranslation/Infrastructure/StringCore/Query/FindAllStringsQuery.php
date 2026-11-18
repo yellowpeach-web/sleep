@@ -22,6 +22,11 @@ class FindAllStringsQuery implements FindAllStringsQueryInterface {
 
 		$query = $this->queryBuilder->build( $criteria, $selectCriteria );
 		$strings = $wpdb->get_results( $query, ARRAY_A );
+		if ( ! is_array( $strings ) ) {
+			FailedStatement::throwIfFailed( $wpdb, 'read the strings' );
+
+			return [];
+		}
 		$strings = $this->mapStringsCollection( $strings );
 
 		return $strings;

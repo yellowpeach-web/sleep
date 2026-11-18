@@ -74,7 +74,7 @@ msgid ""
 "Dashboard."
 msgstr ""
 
-#: src/js/jobs/components/Actions/View.js:22
+#: src/js/jobs/components/Actions/View.js:47
 #. Button label that opens the translated page: verb, imperative, not the noun "a view".
 msgid "View"
 msgstr ""
@@ -148,10 +148,7 @@ msgid "Cancelled"
 msgstr ""
 
 #: src/js/jobs/components/Cells/StatusCell.js:104
-#. Tooltip beside the "Failed - needs attention" status of a translation job in the jobs table.
-msgid ""
-"Automatic translation failed repeatedly and WPML stopped retrying. Resend "
-"or discard the job from the Translation Dashboard, or cancel it here."
+msgid "Published — Pending review"
 msgstr ""
 
 #: src/js/jobs/components/Cells/StatusCell.js:11
@@ -160,15 +157,28 @@ msgstr ""
 msgid "Needs translation"
 msgstr ""
 
-#: src/js/jobs/components/Cells/StatusCell.js:117
-#: src/js/jobs/model/store/columnsManagement.js:48
-#. Status of a translation job, shown in the jobs table and offered in its status filter: the original has changed, so the translation has to be redone.
-msgid "Needs update"
+#: src/js/jobs/components/Cells/StatusCell.js:112
+msgid "Review in progress"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:122
+#. Tooltip beside the "In progress" status of a translation job in the jobs table: the job waits for the site's Pay-As-You-Go payment to go through. Pay-As-You-Go is the name of a payment plan.
+msgid "Waiting for your Pay-As-You-Go payment"
 msgstr ""
 
 #: src/js/jobs/components/Cells/StatusCell.js:14
 #: src/js/jobs/model/store/columnsManagement.js:23
 msgid "Translation ready to download"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:140
+#. Status of a translation job in the jobs table on a Pay-As-You-Go account: the automatic payment for it was declined and the job waits until the site owner pays.
+msgid "Waiting for payment"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:148
+#. Status of a translation job in the jobs table: the job waits until the site has AI translation words again.
+msgid "Waiting for words"
 msgstr ""
 
 #: src/js/jobs/components/Cells/StatusCell.js:15
@@ -177,89 +187,176 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
+#: src/js/jobs/components/Cells/StatusCell.js:152
+#. Status of a translation job in the jobs table: there are not enough translation words left to translate it.
+msgid "Insufficient funds"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:158
+#. Status of a translation job in the jobs table: the job was just created and is on its way to automatic translation.
+msgid "Sending"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:166
+#. Tooltip beside the "Waiting for you" status of an automatic translation job that WPML could not send. Translate Everything is the name of a WPML feature.
+msgid ""
+"Automatic translation is off, so this job is not retried. Resend it, or "
+"switch Translate Everything on."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:168
+#. Status of a translation job in the jobs table: WPML does not retry sending this automatic job on its own, and it waits until the site owner acts.
+msgid "Waiting for you"
+msgstr ""
+
 #: src/js/jobs/components/Cells/StatusCell.js:17
 #: src/js/jobs/model/store/columnsManagement.js:37
 #. Status of a translation job, shown in the jobs table and offered in its status filter: automatic translation failed for good and the job needs the site owner's attention.
 msgid "Failed - needs attention"
 msgstr ""
 
-#: src/js/jobs/components/Cells/StatusCell.js:30
-#. Tooltip beside the status of a translation job on a taxonomy term. %s: the name of the taxonomy, in the singular, for example "Category" or "Tag".
-msgid "%s terms are published immediately because they don't support draft mode."
+#: src/js/jobs/components/Cells/StatusCell.js:187
+#. Tooltip beside the "In progress" status of a translation job whose word count failed: what the site owner can do meanwhile. Translation Queue is the name of a WPML screen.
+msgid "You can also resend the content or open the job in the Translation Queue."
 msgstr ""
 
-#: src/js/jobs/components/Cells/StatusCell.js:31
-#. Tooltip beside the status of a translation job. %s: the name of the kind of content, in the plural, for example "WP Forms" or "ACF Field Groups".
-msgid "%s are immediately published because they don't support draft mode."
-msgstr ""
-
-#: src/js/jobs/components/Cells/StatusCell.js:43
-msgid "Published — Pending review"
-msgstr ""
-
-#: src/js/jobs/components/Cells/StatusCell.js:44
-msgid "Draft — Pending review"
-msgstr ""
-
-#: src/js/jobs/components/Cells/StatusCell.js:49
-msgid "Review in progress"
-msgstr ""
-
-#: src/js/jobs/components/Cells/StatusCell.js:52
-msgid "Published — Review in progress"
-msgstr ""
-
-#: src/js/jobs/components/Cells/StatusCell.js:53
-msgid "Draft — Review in progress"
-msgstr ""
-
-#: src/js/jobs/components/Cells/StatusCell.js:61
-#. Tooltip beside the "In progress" status of a translation job in the jobs table: the job waits for the site's Pay-As-You-Go payment to go through. Pay-As-You-Go is the name of a payment plan.
-msgid "Waiting for your Pay-As-You-Go payment"
-msgstr ""
-
-#: src/js/jobs/components/Cells/StatusCell.js:79
-#. Status of a translation job in the jobs table on a Pay-As-You-Go account: the automatic payment for it was declined and the job waits until the site owner pays.
-msgid "Waiting for payment"
-msgstr ""
-
-#: src/js/jobs/components/Cells/StatusCell.js:83
-#. Status of a translation job in the jobs table: there are not enough translation words left to translate it.
-msgid "Insufficient funds"
-msgstr ""
-
-#: src/js/jobs/components/Cells/StatusCell.js:90
+#: src/js/jobs/components/Cells/StatusCell.js:189
+#. Tooltip beside the "In progress" status of a translation job that WPML could not send to automatic translation yet. "Needing your attention" refers to the status "Failed - needs attention".
 msgid ""
-"Automatic translation was paused by a temporary error and retries "
-"automatically — no action needed. If the status has not changed in about 30 "
-"minutes, contact WPML support."
+"If it keeps failing for about a day, the job is marked as needing your "
+"attention."
 msgstr ""
 
-#: src/js/jobs/components/Cells/StatusCell.js:92
+#: src/js/jobs/components/Cells/StatusCell.js:192
 #: src/js/jobs/model/store/columnsManagement.js:52
 #. Status of a translation job, shown in the jobs table and offered in its status filter: it is being translated right now.
 msgid "In progress"
 msgstr ""
 
-#: src/js/jobs/components/Cells/TitleCell.js:14
-#. Link under the title in the jobs table that opens the original content; verb, imperative.
-msgid "View original"
+#: src/js/jobs/components/Cells/StatusCell.js:205
+#. Tooltip beside the "Failed - needs attention" status of a translation job in the jobs table.
+msgid ""
+"Automatic translation failed repeatedly and WPML stopped retrying. Resend "
+"or discard the job from the Translation Dashboard, or cancel it here."
 msgstr ""
 
-#: src/js/jobs/components/Cells/TitleCell.js:9
+#: src/js/jobs/components/Cells/StatusCell.js:220
+#: src/js/jobs/model/store/columnsManagement.js:48
+#. Status of a translation job, shown in the jobs table and offered in its status filter: the original has changed, so the translation has to be redone.
+msgid "Needs update"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:33
+#. Status of a translation job in the jobs table: the translation is scheduled to be published at its original's date, and waits for a reviewer.
+msgid "Scheduled — Pending review"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:35
+#. Status of a translation job in the jobs table: the translation is a private post, and waits for a reviewer.
+msgid "Private — Pending review"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:37
+msgid "Draft — Pending review"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:44
+msgid "Published — Review in progress"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:46
+#. Status of a translation job in the jobs table: the translation is scheduled to be published at its original's date, and a reviewer is reviewing it now.
+msgid "Scheduled — Review in progress"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:48
+#. Status of a translation job in the jobs table: the translation is a private post, and a reviewer is reviewing it now.
+msgid "Private — Review in progress"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:50
+msgid "Draft — Review in progress"
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:59
+#. Tooltip beside the status of a translation job: why it is not translated yet. "Our translation system" is WPML's automatic translation in the background.
+msgid "WPML could not reach our translation system."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:61
+#. Tooltip beside the status of a translation job: why it is not translated yet. "Our translation system" is WPML's automatic translation in the background.
+msgid "Our translation system did not accept this job."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:63
+#. Tooltip beside the status of a translation job: why it is not translated yet.
+msgid "WPML could not calculate the word count for this job."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:65
+#. Tooltip beside the status of a translation job: why it is not translated yet.
+msgid "WPML could not read the price of automatic translation for this job."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:67
+#. Tooltip beside the status of a translation job: why it is not translated yet.
+msgid "WPML could not prepare this job for automatic translation."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:69
+#. Tooltip beside the status of a translation job: why it is not translated yet, when WPML has no record of what failed.
+msgid "Sending this job to automatic translation failed."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:78
+#. Tooltip beside the status of a translation job that WPML could not send yet.
+msgid "WPML tries again within a minute."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:82
+#. Tooltip beside the status of a translation job that WPML could not send yet. %d: a number of minutes.
+msgid "WPML tries again in about %d minutes."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:85
+#. Tooltip beside the status of a translation job that WPML could not send yet. %d: a number of hours, 2 or more.
+msgid "WPML tries again in about %d hours."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:95
+#. Tooltip beside the status of a translation job on a taxonomy term. %s: the name of the taxonomy, in the singular, for example "Category" or "Tag".
+msgid "%s terms are published immediately because they don't support draft mode."
+msgstr ""
+
+#: src/js/jobs/components/Cells/StatusCell.js:96
+#. Tooltip beside the status of a translation job. %s: the name of the kind of content, in the plural, for example "WP Forms" or "ACF Field Groups".
+msgid "%s are immediately published because they don't support draft mode."
+msgstr ""
+
+#: src/js/jobs/components/Cells/TitleCell.js:26
 #: src/js/jobs/model/store/applyTranslations.js:38
 #. Shown in place of the title of a page or post that has no title.
 msgid "(no title)"
 msgstr ""
 
-#: src/js/jobs/components/Cells/TranslatorCell.js:21
-#: src/js/jobs/components/Filters/FiltersList.js:64
+#: src/js/jobs/components/Cells/TitleCell.js:33
+#. Under the title in the jobs table: the translated item. %1$s: the language it was translated into, for example French, %2$d: the number that stands for it (its ID).
+msgid "%1$s (ID %2$d)"
+msgstr ""
+
+#: src/js/jobs/components/Cells/TitleCell.js:44
+#. Link under the title in the jobs table that opens the original content; verb, imperative.
+msgid "View original"
+msgstr ""
+
+#: src/js/jobs/components/Cells/TranslatorCell.js:20
+#: src/js/jobs/components/Filters/FiltersList.js:63
 #: src/js/jobs/components/Filters/TranslatedBy.js:32
 #. Shown in the "Translated by" column of the jobs table, and offered in its filter, when the content was translated automatically.
 msgid "Automatic translation"
 msgstr ""
 
-#: src/js/jobs/components/Cells/TranslatorCell.js:42
+#: src/js/jobs/components/Cells/TranslatorCell.js:41
 #. The translation service's own reference number for a batch, shown beside the service name in the jobs table. %d: that number.
 msgid "TP ID: %d"
 msgstr ""
@@ -274,66 +371,66 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:104
+#: src/js/jobs/components/Filters/FiltersList.js:103
 #. Tag showing an active filter on the jobs table. %s: the reference number that was filtered for.
 msgid "Reference ID (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:106
+#: src/js/jobs/components/Filters/FiltersList.js:105
 #. Tag showing an active filter on the jobs table. %s: the job number that was filtered for.
 msgid "Job ID (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:108
+#: src/js/jobs/components/Filters/FiltersList.js:107
 #. Tag showing an active filter on the jobs table. %s: the words the titles were filtered for.
 msgid "Title (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:110
+#: src/js/jobs/components/Filters/FiltersList.js:109
 #. Tag showing an active filter on the jobs table. %s: the name of the kind of content that was filtered for.
 msgid "Type (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:112
+#: src/js/jobs/components/Filters/FiltersList.js:111
 #. Tag showing an active filter on the jobs table. %s: the languages that were filtered for, written as "From: <language> To: <languages>".
 msgid "Language (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:114
+#: src/js/jobs/components/Filters/FiltersList.js:113
 #. Tag showing an active filter on the jobs table. %s: the batch name that was filtered for.
 msgid "Batch name (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:116
+#: src/js/jobs/components/Filters/FiltersList.js:115
 #. Tag showing an active filter on the jobs table. %s: the statuses that were filtered for, separated by commas.
 msgid "Status (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:118
+#: src/js/jobs/components/Filters/FiltersList.js:117
 #. Tag showing an active filter on the jobs table. %s: who the jobs were filtered by, for example a translator's name or "Automatic translation".
 msgid "Translated by (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:120
+#: src/js/jobs/components/Filters/FiltersList.js:119
 #. Tag showing an active filter on the jobs table. %s: the range of dates that was filtered for, written as "<from> - <to>".
 msgid "Sent date (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:122
+#: src/js/jobs/components/Filters/FiltersList.js:121
 #. Tag showing an active filter on the jobs table. %s: the range of dates that was filtered for, written as "<from> - <to>".
 msgid "Deadline (%s)"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:162
+#: src/js/jobs/components/Filters/FiltersList.js:161
 msgid "Clear all filters"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:56
+#: src/js/jobs/components/Filters/FiltersList.js:55
 #: src/js/jobs/components/Filters/TranslatedBy.js:37
 msgid "Any Translation Service"
 msgstr ""
 
-#: src/js/jobs/components/Filters/FiltersList.js:60
+#: src/js/jobs/components/Filters/FiltersList.js:59
 #: src/js/jobs/components/Filters/TranslatedBy.js:42
 msgid "Any WordPress Translator"
 msgstr ""
@@ -720,11 +817,11 @@ msgstr ""
 msgid "Download XLIFF file couldn't be finished"
 msgstr ""
 
-#: src/js/jobs/model/store/exportToXLIFF.js:20
+#: src/js/jobs/model/store/exportToXLIFF.js:21
 msgid "Could not load jobs for export"
 msgstr ""
 
-#: src/js/jobs/model/store/exportToXLIFF.js:44
+#: src/js/jobs/model/store/exportToXLIFF.js:56
 msgid "The export to XLIFF failed"
 msgstr ""
 
@@ -790,10 +887,6 @@ msgstr ""
 msgid "Failed to resign from jobs"
 msgstr ""
 
-#: src/js/jobs/model/store/synchronizeATEJobs.js:48
-msgid "The Advanced Editor jobs synchronization has failed"
-msgstr ""
-
 #: src/js/jobs/model/store/synchronizeTranslationProxyJobs.js:12
 msgid "Synchronization with the Professional Translation service has failed"
 msgstr ""
@@ -815,9 +908,74 @@ msgstr ""
 msgid "Batch sync couldn't be finished"
 msgstr ""
 
+#: src/js/jobs/model/store/xliffLeftOut.js:105
+#. Link that opens the explanation under a notice.
+msgid "More details"
+msgstr ""
+
+#: src/js/jobs/model/store/xliffLeftOut.js:129
+#. Notice after an XLIFF export, on the translation jobs screens: the other jobs were downloaded. %s: the number of jobs, already formatted.
+msgid "%s job was left out of the export."
+msgid_plural "%s jobs were left out of the export."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/jobs/model/store/xliffLeftOut.js:138
+#. Notice after an XLIFF export, on the translation jobs screens: nothing was downloaded. %s: the number of jobs, already formatted.
+msgid "%s job could not be exported. No file was downloaded."
+msgid_plural "%s jobs could not be exported. No file was downloaded."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/jobs/model/store/xliffLeftOut.js:49
+#. In the "More details" fold of the notice after an XLIFF export, on the translation jobs screens. Says why one job was left out of the export and what the site owner can do.
+msgid ""
+"This job was saved while this server had the PHP zlib extension, so its "
+"text is stored compressed. PHP on this server has no zlib now, so WPML "
+"cannot read it. Ask your hosting provider to enable the PHP zlib extension, "
+"then export it again."
+msgid_plural ""
+"These jobs were saved while this server had the PHP zlib extension, so "
+"their text is stored compressed. PHP on this server has no zlib now, so "
+"WPML cannot read them. Ask your hosting provider to enable the PHP zlib "
+"extension, then export them again."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/jobs/model/store/xliffLeftOut.js:57
+#. In the "More details" fold of the notice after an XLIFF export, on the translation jobs screens: the job below could not be exported, for a reason WPML has no sentence for.
+msgid "This job could not be exported."
+msgid_plural "These jobs could not be exported."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/js/jobs/model/store/xliffLeftOut.js:72
+#. One line in the list of jobs left out of an XLIFF export. %1$s: the title of the content, %2$s: the job number.
+msgid "%1$s (job %2$s)"
+msgstr ""
+
+#: src/js/jobs/model/store/xliffLeftOut.js:78
+#. One line in the list of jobs left out of an XLIFF export, for a job whose title is not on the screen. %s: the job number.
+msgid "Job %s"
+msgstr ""
+
+#: src/js/jobs/model/store/xliffLeftOut.js:84
+#. Last line of the list of jobs left out of an XLIFF export, when the list shows only the first of them. %s: the number of jobs not listed, already formatted.
+msgid "and %s more job"
+msgid_plural "and %s more jobs"
+msgstr[0] ""
+msgstr[1] ""
+
 #: src/js/shared/Request.js:39
 #. Shown when our translation system (WPML's own) refused a request. %d: the HTTP status it answered with.
 msgid ""
 "Our translation system did not accept this request (it answered %d). Wait a "
 "minute and try again, and contact WPML support if it keeps happening."
+msgstr ""
+
+#: src/js/translationDashboard/pickup-translations/model/DownloadTranslations.js:102
+#. Why a downloaded translation is listed as not applied on the WPML translation dashboard: the request to save it was cut off (for example by a server time limit), so WPML does not know whether it was saved.
+msgid ""
+"The site stopped answering before this translation was confirmed. If it was "
+"not saved, the next download takes it again."
 msgstr ""

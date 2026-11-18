@@ -18,6 +18,7 @@ class WPML_Translate_Independently {
 
 		if ( $post_id && wp_verify_nonce( $nonce, 'icl_check_duplicates' ) && current_user_can( 'edit_post', $post_id ) ) {
 			if ( delete_post_meta( $post_id, '_icl_lang_duplicate_of' ) ) {
+				update_post_meta( $post_id, \WPML\Core\SharedKernel\Component\Post\Domain\TranslationEditorPreference::POST_META_KEY_INDEPENDENT, 'yes' );
 				wp_send_json_success( true );
 			} else {
 				wp_send_json_error( false );
@@ -36,7 +37,7 @@ class WPML_Translate_Independently {
 		);
 
 		$post = isset( $_GET['post'] ) ? filter_var( $_GET['post'], FILTER_SANITIZE_NUMBER_INT ) : 0;
-		if ( $post && '' !== get_post_meta( (int) $post, '_icl_lang_duplicate_of', true ) ) {
+		if ( $post && \WPML\TranslationPolicy\Duplicate\DuplicateReaders::isKeptInStep( (int) $post ) ) {
 			$duplicate_data['duplicate_post_nonce']      = wp_create_nonce( 'icl_check_duplicates' );
 			$duplicate_data['duplicate_post']            = $post;
 			$duplicate_data['wp_classic_editor_changed'] = false;
@@ -48,7 +49,9 @@ class WPML_Translate_Independently {
 	public function add_tiny_mce_change_detection( $initArray ) {
 		$initArray['setup'] = 'function(ed) {
                   ed.on(\'change\', function() {
-                    icl_duplicate_data.wp_classic_editor_changed = true;
+                    if (typeof icl_duplicate_data !== \'undefined\') {
+                      icl_duplicate_data.wp_classic_editor_changed = true;
+                    }
                   });
             }';
 		return $initArray;

@@ -12,7 +12,7 @@ use function WPML\Container\make;
 
 class ReapplyPreferenceChanges extends AbstractTaskEndpoint {
 
-	const LOCK_TIME         = 5;
+	const LOCK_TIME         = 60;
 	const MAX_RETRIES       = 10;
 	const POSTS_PER_REQUEST = 10;
 	const TERMS_PER_REQUEST = 10;
@@ -406,6 +406,8 @@ class ReapplyPreferenceChanges extends AbstractTaskEndpoint {
 		$sync = $this->syncFor( $fieldNames );
 
 		foreach ( $translationIds as $translationId ) {
+			\WPML\CustomFieldTranslation\CopyOnceRecord::forget( $translationId, $fieldNames );
+
 			$targetMeta = get_post_meta( $translationId );
 			$targetMeta = is_array( $targetMeta ) ? $targetMeta : [];
 
@@ -430,6 +432,7 @@ class ReapplyPreferenceChanges extends AbstractTaskEndpoint {
 
 				if ( empty( $values ) ) {
 					$sync->sync_custom_field( $postId, $translationId, $metaKey );
+					\WPML\CustomFieldTranslation\CopyOnceRecord::record( $translationId, $metaKey );
 				}
 			}
 		}

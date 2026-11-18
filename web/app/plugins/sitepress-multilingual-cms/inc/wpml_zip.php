@@ -111,6 +111,10 @@ class wpml_zip {
 	}
 
 	public function setZipFile( $fileName ) {
+		if ( ! $this->isAllowedZipFilePath( $fileName ) ) {
+			return false;
+		}
+
 		if ( is_file( $fileName ) ) {
 			unlink( $fileName );
 		}
@@ -134,6 +138,70 @@ class wpml_zip {
 		$this->zipFile = $fd;
 
 		return true;
+	}
+
+	private function isAllowedZipFilePath( $fileName ) {
+		if ( ! is_string( $fileName ) || '' === $fileName || false !== strpos( $fileName, "\0" ) ) {
+			return false;
+		}
+
+		$normalized = str_replace( '\\', '/', $fileName );
+		if ( in_array( '..', explode( '/', $normalized ), true ) ) {
+			return false;
+		}
+
+		if ( 'zip' !== strtolower( (string) pathinfo( $normalized, PATHINFO_EXTENSION ) ) ) {
+			return false;
+		}
+
+		$directory = realpath( dirname( $fileName ) );
+		if ( false === $directory || ! is_dir( $directory ) ) {
+			return false;
+		}
+
+		foreach ( $this->allowedZipDirectories() as $root ) {
+			if ( self::isInsideDirectory( $directory, $root ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	protected function allowedZipDirectories() {
+		$candidates = [];
+
+		if ( function_exists( 'wp_upload_dir' ) ) {
+			$uploads = wp_upload_dir( null, false );
+			if ( is_array( $uploads ) && ! empty( $uploads['basedir'] ) ) {
+				$candidates[] = (string) $uploads['basedir'];
+			}
+		}
+
+		if ( defined( 'WPML_SAVE_XLIFF_PATH' ) && is_string( WPML_SAVE_XLIFF_PATH ) && '' !== trim( WPML_SAVE_XLIFF_PATH ) ) {
+			$candidates[] = trim( WPML_SAVE_XLIFF_PATH );
+		}
+
+		$roots = [];
+		foreach ( $candidates as $candidate ) {
+			$resolved = realpath( $candidate );
+			if ( false !== $resolved && is_dir( $resolved ) ) {
+				$roots[] = $resolved;
+			}
+		}
+
+		return $roots;
+	}
+
+	private static function isInsideDirectory( $directory, $root ) {
+		$directory = rtrim( str_replace( '\\', '/', $directory ), '/' ) . '/';
+		$root      = rtrim( str_replace( '\\', '/', $root ), '/' ) . '/';
+
+		if ( '\\' === DIRECTORY_SEPARATOR ) {
+			return 0 === strncasecmp( $directory, $root, strlen( $root ) );
+		}
+
+		return 0 === strncmp( $directory, $root, strlen( $root ) );
 	}
 
 	public function addDirectory( $directoryPath, $timestamp = 0, $fileComment = null, $extFileAttr = self::EXT_FILE_ATTR_DIR ) {
@@ -166,7 +234,7 @@ class wpml_zip {
 		$dataLength = strlen( $data );
 		$fileCRC32  = pack( 'V', crc32( $data ) );
 
-		if ( $compress ) {
+		if ( $compress && \WPML\Translation\TranslationElements\ZlibAvailabilityChecker::isGzcompressAvailable() ) {
 			$gzTmp  = gzcompress( $data );
 			if ( ! $gzTmp ) {
 				return false;
@@ -374,7 +442,10 @@ class wpml_zip {
 		} else {
 			rewind( $this->zipFile );
 			$filestat = fstat( $this->zipFile );
-			return fread( $this->zipFile, $filestat['size'] > 0 ? $filestat['size'] : 0 );
+			if ( ! $filestat || $filestat['size'] < 1 ) {
+				return '';
+			}
+			return (string) fread( $this->zipFile, $filestat['size'] );
 		}
 	}
 

@@ -7,6 +7,33 @@
             "plural_forms": "nplurals=2; plural=(n > 1);",
             "lang": "tr_TR"
          },
+         "Switch to Private Translation Cloud (PTC)": [
+            "Private Translation Cloud (PTC) hizmetine geç"
+         ],
+         "Switch to PTC": [
+            "PTC'ye Geç"
+         ],
+         "Switching…": [
+            "Geçiliyor…"
+         ],
+         "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
+            "Geçişi onaylayamadık. Tekrar deneyin veya mevcut motoru görmek için sayfayı yenileyin."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Çeviri motoru kontrolleri yüklenemedi. Sayfayı yenileyin ve tekrar deneyin."
+         ],
+         "Loading translation engine settings…": [
+            "Çeviri motoru ayarları yükleniyor…"
+         ],
+         "Fill in your site context above before switching to PTC.": [
+            "PTC'ye geçmeden önce yukarıdaki site bağlamını doldurun."
+         ],
+         "Reload page": [
+            "Sayfayı yenile"
+         ],
+         "Could not fetch engines data": [
+            "Motor verileri alınamadı"
+         ],
          "Error in updating since dates for types.": [
             "Türler için başlangıç tarihlerini güncellerken hata oluştu."
          ],
@@ -138,9 +165,6 @@
          "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
             "Eski fiyatlandırma uygulandı. %s eski bir çeviri motorudur, yeni siteler için önerilmez ve kullanımdan kaldırılacaktır. Mevcut siteler bu motor için ayarlanmış kelime oranını korur."
          ],
-         "Switch to PTC": [
-            "PTC'ye Geç"
-         ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Bu miktar, mevcut içeriğinizi bugün çevirmek için gereken sözcük sayısıdır. Kurulum tamamlandıktan sonra sayılan formlar veya kaydırıcılar gibi diğer eklentiler tarafından eklenen bazı metinleri içermez. Temanızdan ve eklentilerinizden gelen site dizgileri de kurulumdan sonra sayılır ve genellikle fazladan birkaç yüz kelime ekler. Bundan sonra, düzenlemeler ücretsizdir. Yalnızca eklediğiniz kelimeler için tekrar ödeme yaparsınız."
          ],
@@ -156,8 +180,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Sayfaları, yazıları ve ürünleri; özel alanları, sayfa tasarımcısı metinleri ve ortam metinlerinin yanı sıra kullandıkları kategoriler, etiketler ve niteliklerle birlikte sayar."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Sayfaları, yazıları ve ürünleri; özel alanları, sayfa tasarımcısı metinleri ve ortam metinlerinin yanı sıra kullandıkları kategoriler, etiketler, nitelikler ve site dizgileriyle birlikte sayar. Bir terim, her iki şekilde de çeviriye gönderildiğinden hem onu kullanan her ögede hem de kendi başına bir kez sayılır."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Sayfaları, yazıları ve ürünleri özel alanları, sayfa oluşturucu metinleri ve ortam metinleriyle birlikte; kullandıkları kategorileri, etiketleri ve nitelikleri ile site dizgilerini sayar. Her kategori, etiket veya nitelik, bunları kullanan öğelerle tekrar değil, Taksonomiler satırında bir kez sayılır."
          ],
          "Total items": [
             "Toplam öğe"
@@ -230,6 +254,9 @@
          ],
          "To start <b>Translate Everything Automatically</b>, activate <b>Pay-As-You-Go</b> or buy prepaid words.": [
             "<b>Otomatik Olarak Her Şeyi Çevir</b> özelliğini başlatmak için <b>Kullandıkça ödeme</b> sistemini etkinleştirin veya ön ödemeli kelime satın alın."
+         ],
+         "Translation quality:": [
+            "Çeviri kalitesi:"
          ],
          "Select payment method": [
             "Ödeme yöntemi seçin"
@@ -346,7 +373,7 @@
             "WPML hesabınızda %1$s%2$s kelime%3$s var."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "WPML hesabınızda %1$s%2$s kullanılabilir kelime%3$s var."
+            "WPML hesabınızda %1$s%2$s kullanılabilir kelime var.%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(Bunu yalnızca WPML hesap sahibi yapabilir.)"
@@ -362,6 +389,30 @@
          ],
          "Close modal": [
             "Modalı kapat"
+         ],
+         "Obvious mistakes": [
+            "Belirgin hatalar"
+         ],
+         "Mistakes visible": [
+            "Hatalar görünüyor"
+         ],
+         "Ready to publish": [
+            "Yayınlanmaya hazır"
+         ],
+         "Your engine": [
+            "Motorunuz"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "Translation quality (50-100 scale): %1$s scores %2$d, %3$s scores %4$d.": [
+            "Çeviri kalitesi (50-100 ölçeği): %1$s puanı %2$d, %3$s puanı %4$d."
+         ],
+         "Scores based on WPML's internal MQM translation quality study.": [
+            "Puanlar WPML'nin dahili MQM çeviri kalitesi çalışmasına dayanmaktadır."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC daha yüksek kalitede çeviri yapar ve size yayına hazır sonuçlar sunar."
          ]
       }
    }

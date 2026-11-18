@@ -132,11 +132,11 @@
          "Legacy engine": [
             "Legacy-engine"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "Legacy-prijzen toegepast. %s is een legacy-vertaalengine, wordt niet aanbevolen voor nieuwe sites en zal worden uitgefaseerd. Bestaande sites behouden hiervoor een aangepast woordtarief."
-         ],
          "Switch to PTC": [
             "Overschakelen naar PTC"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Legacy-prijzen toegepast. %s is een legacy-vertaalengine, wordt niet aanbevolen voor nieuwe sites en zal worden uitgefaseerd. Bestaande sites behouden hiervoor een aangepast woordtarief."
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Dit is wat het vertalen van uw huidige content vandaag vereist. Dit omvat niet bepaalde teksten die door andere plugins zijn toegevoegd, zoals formulieren of sliders; deze worden geteld nadat de installatie is voltooid. Sitestrings van uw thema en plugins worden ook na de installatie geteld en voegen doorgaans enkele honderden woorden toe. Daarna zijn bewerkingen gratis. U betaalt alleen opnieuw voor woorden die u toevoegt."
@@ -153,8 +153,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Hierbij worden pagina's, berichten en producten meegeteld, inclusief hun aangepaste velden, pagebuilder-teksten en mediateksten, evenals de categorieën, tags en attributen die ze gebruiken."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Hierbij worden pagina's, berichten en producten meegeteld, inclusief hun aangepaste velden, pagebuilder-teksten en mediateksten, de categorieën, tags en attributen die ze gebruiken, en sitestrings. Een term wordt meegeteld in elk item waarin deze voorkomt en één keer afzonderlijk, omdat deze voor beide manieren ter vertaling wordt verzonden."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Het telt pagina's, berichten en producten met hun aangepaste velden, pagebuilder-teksten en mediateksten, de categorieën, tags en attributen die ze gebruiken, en sitestrings. Elke categorie, tag of attribuut wordt één keer geteld, in de rij Taxonomieën, en niet nogmaals bij de items die deze gebruiken."
          ],
          "Total items": [
             "Totaal aantal items"
@@ -377,7 +377,7 @@
             "Er staan %1$s%2$s woorden%3$s op uw WPML-account."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "Er zijn er %1$s%2$s beschikbaar op uw WPML-account.%3$s"
+            "Er zijn %1$s%2$s beschikbaar op uw WPML-account.%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(Alleen de eigenaar van het WPML-account kan dit doen.)"

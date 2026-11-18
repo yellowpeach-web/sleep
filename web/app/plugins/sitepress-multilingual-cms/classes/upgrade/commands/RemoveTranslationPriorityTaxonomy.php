@@ -2,7 +2,6 @@
 
 namespace WPML\Upgrade\Commands;
 
-use WPML\LanguageEditor\Save\Phase\SyncSuspension;
 use WPML\Upgrade\CommandsStatus;
 
 class RemoveTranslationPriorityTaxonomy implements \IWPML_Upgrade_Command {
@@ -23,18 +22,37 @@ class RemoveTranslationPriorityTaxonomy implements \IWPML_Upgrade_Command {
 	const LEGACY_TM_COMMAND = 'WPML_TM_Upgrade_Translation_Priorities_For_Posts';
 	const LEGACY_ST_COMMAND = 'WPML_ST_Upgrade_DB_Strings_Add_Translation_Priority_Field';
 
+	const BATCH = 5000;
+
+	const TIME_BUDGET = 10;
+
+	const FRONT_END_BUDGET = 2;
+
 	private $upgrade_schema;
 
 	private $sitepress;
 
 	private $result = false;
 
+	private $hasBudgetOverride;
+
+	private $budgetOverride;
+
+	private $onBatch;
+
 	public function __construct( array $args ) {
-		$this->upgrade_schema = $args[0];
-		$this->sitepress      = $args[1];
+		$this->upgrade_schema    = $args[0];
+		$this->sitepress         = $args[1];
+		$this->hasBudgetOverride = array_key_exists( 2, $args );
+		$this->budgetOverride    = $this->hasBudgetOverride ? $args[2] : null;
+		$this->onBatch           = isset( $args[3] ) && is_callable( $args[3] ) ? $args[3] : null;
 	}
 
-	private function run() {
+	private function run( $budget ) {
+		if ( $this->hasBudgetOverride ) {
+			$budget = $this->budgetOverride;
+		}
+
 		$lock = \WPML\Container\make( \WPML\Utilities\AdvisoryLockFactory::class )->create( 'wpml_4160_remove_priority' );
 		if ( ! $lock->acquire( 0 ) ) {
 			$this->result = false;
@@ -43,18 +61,86 @@ class RemoveTranslationPriorityTaxonomy implements \IWPML_Upgrade_Command {
 		}
 
 		try {
-			$this->result = $this->deleteTerms()
+			$independent = [
+				$this->dropStringsColumn(),
+				$this->deleteLabelStrings(),
+				$this->forgetTaxonomyInSettings(),
+				$this->deleteChildrenOptions(),
+				$this->retireLegacyCommands(),
+			];
+
+			$this->result = $this->deleteRelationships( $budget )
+				&& $this->deleteTerms()
 				&& $this->deleteOrphanTranslationRows()
-				&& $this->forgetTaxonomyInSettings()
-				&& $this->dropStringsColumn()
-				&& $this->deleteLabelStrings()
-				&& $this->deleteChildrenOptions()
-				&& $this->retireLegacyCommands();
+				&& ! in_array( false, $independent, true );
 		} finally {
 			$lock->release();
 		}
 
 		return $this->result;
+	}
+
+	private function deleteRelationships( $budget ) {
+		$wpdb = $this->upgrade_schema->get_wpdb();
+
+		$ttIds = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT term_taxonomy_id FROM {$wpdb->term_taxonomy} WHERE taxonomy = %s",
+				self::TAXONOMY
+			)
+		);
+		if ( ! $ttIds ) {
+			return true;
+		}
+
+		$ids        = array_map( 'intval', $ttIds );
+		$started    = microtime( true );
+		$deletedAny = false;
+		$done       = false;
+
+		while ( true ) {
+			$deleted = $wpdb->query(
+				$wpdb->prepare(
+					"DELETE FROM {$wpdb->term_relationships} WHERE term_taxonomy_id IN (" . implode( ',', array_fill( 0, count( $ids ), '%d' ) ) . ') LIMIT %d',
+					...array_merge( $ids, [ self::BATCH ] )
+				)
+			);
+			if ( false === $deleted ) {
+				break;
+			}
+
+			$deleted = (int) $deleted;
+			if ( $deleted > 0 ) {
+				$deletedAny = true;
+			}
+			if ( $this->onBatch ) {
+				call_user_func( $this->onBatch, $deleted );
+			}
+
+			if ( $deleted < self::BATCH ) {
+				$done = true;
+				break;
+			}
+			if ( null !== $budget && microtime( true ) - $started >= $budget ) {
+				break;
+			}
+		}
+
+		if ( $deletedAny ) {
+			$this->forgetTermCaches(
+				array_map(
+					'intval',
+					$wpdb->get_col(
+						$wpdb->prepare(
+							"SELECT term_id FROM {$wpdb->term_taxonomy} WHERE taxonomy = %s",
+							self::TAXONOMY
+						)
+					)
+				)
+			);
+		}
+
+		return $done;
 	}
 
 	private function deleteTerms() {
@@ -70,42 +156,26 @@ class RemoveTranslationPriorityTaxonomy implements \IWPML_Upgrade_Command {
 			return true;
 		}
 
-		$wasRegistered = taxonomy_exists( self::TAXONOMY );
-		if ( ! $wasRegistered ) {
-			register_taxonomy(
-				self::TAXONOMY,
-				[],
-				[
-					'public'    => false,
-					'show_ui'   => false,
-					'query_var' => false,
-					'rewrite'   => false,
-				]
-			);
+		$ids = array_values( array_unique( array_map( 'intval', $termIds ) ) );
+
+		if ( false === $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->term_taxonomy} WHERE taxonomy = %s", self::TAXONOMY ) ) ) {
+			return false;
 		}
+		$terms = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->terms} WHERE term_id IN (" . implode( ',', array_fill( 0, count( $ids ), '%d' ) ) . ") AND term_id NOT IN (SELECT term_id FROM {$wpdb->term_taxonomy})", ...$ids ) );
+		$meta  = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->termmeta} WHERE term_id IN (" . implode( ',', array_fill( 0, count( $ids ), '%d' ) ) . ") AND term_id NOT IN (SELECT term_id FROM {$wpdb->terms})", ...$ids ) );
 
-		$ok = true;
-		try {
-			$ok = SyncSuspension::around(
-				function () use ( $termIds ) {
-					$ok = true;
-					foreach ( $termIds as $termId ) {
-						$deleted = wp_delete_term( (int) $termId, self::TAXONOMY );
-						if ( is_wp_error( $deleted ) ) {
-							$ok = false;
-						}
-					}
+		$this->forgetTermCaches( $ids );
 
-					return $ok;
-				}
-			);
-		} finally {
-			if ( ! $wasRegistered ) {
-				unregister_taxonomy( self::TAXONOMY );
-			}
+		return false !== $terms && false !== $meta;
+	}
+
+	private function forgetTermCaches( array $termIds ) {
+		foreach ( $termIds as $termId ) {
+			wp_cache_delete( (int) $termId, 'terms' );
 		}
-
-		return $ok;
+		wp_cache_delete( 'all_ids', self::TAXONOMY );
+		wp_cache_delete( 'get', self::TAXONOMY );
+		wp_cache_set_terms_last_changed();
 	}
 
 	private function deleteChildrenOptions() {
@@ -222,15 +292,15 @@ class RemoveTranslationPriorityTaxonomy implements \IWPML_Upgrade_Command {
 	}
 
 	public function run_admin() {
-		return $this->run();
+		return $this->run( self::TIME_BUDGET );
 	}
 
 	public function run_ajax() {
-		return $this->run();
+		return $this->run( self::TIME_BUDGET );
 	}
 
 	public function run_frontend() {
-		return $this->run();
+		return $this->run( defined( 'WP_CLI' ) && constant( 'WP_CLI' ) ? self::TIME_BUDGET : self::FRONT_END_BUDGET );
 	}
 
 	public function get_results() {

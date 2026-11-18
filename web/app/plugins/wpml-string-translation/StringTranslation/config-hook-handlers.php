@@ -6,6 +6,7 @@ use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\GetSettingFilter
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\HasKeyInSettingsFilter;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\GetTextFilter;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\GettextStrings\AddToQueueAction;
+use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\GettextStrings\CanQueueCustomStringsFilter;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\GettextStrings\ProcessQueueAction;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\GettextStrings\UnloadQueueAction;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\GetTextWithContextFilter;
@@ -23,12 +24,16 @@ use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\ThemeLocaleFilte
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\UpdateSettingsAction;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\WpAction;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\WordPress\UpgraderProcessCompleteAction;
+use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\WordPress\ReloadPackTranslationsOnAdminInitAction;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\Wpml\St\WpmlStBeforeRemoveStringsAction;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\Wpml\WpmlResetPluginsBeforeAction;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\Wpml\WpmlUpdateActiveLanguagesAction;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\TranslateEverything\AddUntranslatedStringsStrategyFilter;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\TranslateEverything\AddUntranslatedTaxonomyLabelStringsStrategyFilter;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\TranslateEverything\AddTaxonomyLabelStringIdsToEstimateFilter;
+use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\TranslateEverything\AppearancePartOfTypesFilter;
+use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\TranslateEverything\AppearanceSurfaceLabelsFilter;
+use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\TranslateEverything\AppearanceStringsRecordedAction;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\Wpml\TaxonomyMadeTranslatableAction;
 use WPML\StringTranslation\Infrastructure\WordPress\HookHandler\Wpml\TaxonomySlugTranslationEnabledAction;
 
@@ -37,6 +42,7 @@ return [
 	QueueFrontendGettextStringsAction::class,
 	QueueJsonFrontendGettextStringsAction::class,
 	AddToQueueAction::class,
+	CanQueueCustomStringsFilter::class,
 	ProcessQueueAction::class,
 	UnloadQueueAction::class,
 	WpmlResetPluginsBeforeAction::class,
@@ -56,11 +62,15 @@ return [
 	HasKeyInSettingsFilter::class,
 	ThemeLocaleFilter::class,
 	UpgraderProcessCompleteAction::class,
+	ReloadPackTranslationsOnAdminInitAction::class,
 	PluginLocaleFilter::class,
 	UpdateSettingsAction::class,
 	AddUntranslatedStringsStrategyFilter::class,
 	AddUntranslatedTaxonomyLabelStringsStrategyFilter::class,
 	AddTaxonomyLabelStringIdsToEstimateFilter::class,
+	AppearancePartOfTypesFilter::class,
+	AppearanceStringsRecordedAction::class,
+	AppearanceSurfaceLabelsFilter::class,
 	TaxonomyMadeTranslatableAction::class,
 	TaxonomySlugTranslationEnabledAction::class,
 	WpAction::class,

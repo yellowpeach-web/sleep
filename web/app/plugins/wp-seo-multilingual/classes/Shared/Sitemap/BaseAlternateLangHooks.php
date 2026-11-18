@@ -22,6 +22,8 @@ abstract class BaseAlternateLangHooks implements \IWPML_Frontend_Action, \IWPML_
 
 	private $frontPageIds = null;
 
+	private $postsPageUrlsByLanguage = null;
+
 	const KEY = 'alternateLangs';
 
 	public function __construct( \WPML_Translation_Element_Factory $elementFactory, ShopUrls $shopUrls ) {
@@ -61,7 +63,55 @@ abstract class BaseAlternateLangHooks implements \IWPML_Frontend_Action, \IWPML_
 			return $link;
 		}
 
+		$postsPageUrls = 'post' === $postType ? $this->getPostsPageUrlsByLanguage() : [];
+
+		if ( isset( $link['loc'] ) && in_array( $link['loc'], $postsPageUrls, true ) ) {
+			$link[ self::KEY ] = $postsPageUrls;
+
+			return $link;
+		}
+
 		return $this->addAlternateLangDataToFirstLink( $link );
+	}
+
+	private function getPostsPageUrlsByLanguage(): array {
+		if ( null === $this->postsPageUrlsByLanguage ) {
+			$this->postsPageUrlsByLanguage = [];
+			$postsPageId                   = (int) get_option( 'page_for_posts' );
+
+			if ( $postsPageId > 0 && 'page' === get_option( 'show_on_front' ) ) {
+				$this->postsPageUrlsByLanguage = wpml_collect( $this->elementFactory->create_post( $postsPageId )->get_translations() )
+					->map( invoke( 'get_element_id' ) )
+					->filter( function ( $id, $language ) {
+						return in_array( $language, $this->getActiveLanguages(), true );
+					} )
+					->filter( function ( $id ) {
+						return 'publish' === get_post_status( $id );
+					} )
+					->filter( [ $this->getUtils(), 'isIndexablePost' ] )
+					->map( function ( $id, $language ) {
+						return $this->getUrl( $id, $language, 'post', function ( $id ) use ( $language ) {
+							return $this->getPermalinkInLanguage( $id, $language );
+						} );
+					} )
+					->filter( function ( $url ) {
+						return $this->isUrl( $url );
+					} )
+					->toArray();
+			}
+		}
+
+		return $this->postsPageUrlsByLanguage;
+	}
+
+	private function getPermalinkInLanguage( int $id, string $language ) {
+		do_action( 'wpml_switch_language', $language );
+
+		try {
+			return get_permalink( $id );
+		} finally {
+			do_action( 'wpml_switch_language', null );
+		}
 	}
 
 	private function getShopUrlsByLanguage(): array {
@@ -160,7 +210,8 @@ abstract class BaseAlternateLangHooks implements \IWPML_Frontend_Action, \IWPML_
 					$result       = [];
 
 					foreach ( $translations as $langCode => $translation ) {
-						$term = get_term_by( 'term_taxonomy_id', $translation->get_element_id() );
+						$translationTaxonomyId = $translation->get_element_id();
+						$term                  = $translationTaxonomyId ? get_term_by( 'term_taxonomy_id', $translationTaxonomyId ) : false;
 						if ( $term ) {
 							$result[ $langCode ] = $term;
 						}

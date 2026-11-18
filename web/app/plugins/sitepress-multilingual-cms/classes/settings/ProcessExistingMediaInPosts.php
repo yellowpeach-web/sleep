@@ -14,7 +14,7 @@ use WPML\MediaTranslation\PostWithMediaFilesFactory;
 use WPML\MediaTranslation\UsageOfMediaFilesInPosts;
 
 class ProcessExistingMediaInPosts extends AbstractTaskEndpoint {
-	const LOCK_TIME         = 5;
+	const LOCK_TIME         = 60;
 	const MAX_RETRIES       = 10;
 	const DESCRIPTION       = 'Processing media in posts.';
 	const POSTS_PER_REQUEST = 40;
@@ -48,11 +48,18 @@ class ProcessExistingMediaInPosts extends AbstractTaskEndpoint {
 	public function runBackgroundTask( BackgroundTask $task ) {
 		$payload = $task->getPayload();
 		$page    = Obj::propOr( 1, 'page', $payload );
-		$postIds = $this->getPosts( $page );
+		$lastId  = isset( $payload['last_id'] ) ? (int) $payload['last_id'] : null;
+
+		if ( null === $lastId && $page > 1 ) {
+			$postIds = $this->getPostsByPage( $page );
+		} else {
+			$postIds = $this->getPostsAfter( (int) $lastId );
+		}
 
 		if ( count( $postIds ) > 0 ) {
 			$this->processExistingMediaInPosts( $postIds );
-			$payload['page'] = $page + 1;
+			$payload['page']    = $page + 1;
+			$payload['last_id'] = max( array_map( 'intval', $postIds ) );
 			$task->setPayload( $payload );
 			$task->addCompletedCount( count( $postIds ) );
 			$task->setRetryCount(0 );
@@ -89,7 +96,34 @@ class ProcessExistingMediaInPosts extends AbstractTaskEndpoint {
 		);
 	}
 
-	private function getPosts( $page ) {
+	private function getPostsAfter( $lastId ) {
+		$postTypes = $this->getAllowedPostTypes();
+		if ( count( $postTypes ) === 0 ) {
+			return [];
+		}
+		$wpdb = $this->wpdb;
+
+		return $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT p.ID
+						FROM {$wpdb->posts} AS p
+						INNER JOIN {$wpdb->prefix}icl_translations t
+							ON t.element_id = p.ID AND t.element_type = CONCAT('post_', p.post_type)
+						WHERE t.source_language_code IS NULL
+						AND p.post_status NOT IN ('auto-draft', 'trash', 'inherit')
+						AND p.post_type IN (" . implode( ', ', array_fill( 0, count( $postTypes ), '%s' ) ) . ")
+						AND p.ID > %d
+						ORDER BY p.ID ASC
+						LIMIT %d",
+				...array_merge(
+					array_values( $postTypes ),
+					[ (int) $lastId, $this->postsPerRequest ]
+				)
+			)
+		);
+	}
+
+	private function getPostsByPage( $page ) {
 		$postTypes = $this->getAllowedPostTypes();
 		if ( count( $postTypes ) === 0 ) {
 			return [];
@@ -124,9 +158,10 @@ class ProcessExistingMediaInPosts extends AbstractTaskEndpoint {
 
 		return (int) $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT COUNT(DISTINCT(p.ID))
+				"SELECT COUNT(*)
 					FROM {$wpdb->posts} AS p
-					INNER JOIN {$wpdb->prefix}icl_translations t ON t.element_id = p.ID
+					INNER JOIN {$wpdb->prefix}icl_translations t
+						ON t.element_id = p.ID AND t.element_type = CONCAT('post_', p.post_type)
 					WHERE t.source_language_code IS NULL
 					AND p.post_status NOT IN ('auto-draft', 'trash', 'inherit')
 					AND p.post_type IN (" . implode( ', ', array_fill( 0, count( $postTypes ), '%s' ) ) . ')',

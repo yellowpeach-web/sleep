@@ -8,9 +8,32 @@ class WPML_Translation_Records_Delete {
 			return 0;
 		}
 
+		$trids = self::trids_of( $translation_ids );
+
 		self::status_by_translation_ids( $translation_ids );
 
-		return self::delete_by_translation_ids( 'icl_translations', $translation_ids );
+		$deleted = self::delete_by_translation_ids( 'icl_translations', $translation_ids );
+		if ( $deleted ) {
+			WPML_Set_Language::flush_element_language_details_cache();
+		}
+
+		WPML_Translations::flush_cache_for_trids( $trids );
+
+		return $deleted;
+	}
+
+	private static function trids_of( array $translation_ids ) {
+		global $wpdb;
+
+		return array_map(
+			'intval',
+			(array) $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT DISTINCT trid FROM {$wpdb->prefix}icl_translations WHERE translation_id IN (" . implode( ',', array_fill( 0, count( $translation_ids ), '%d' ) ) . ') LIMIT %d',
+					array_merge( $translation_ids, [ WPML_Translations::MAX_GROUPS_FLUSHED_ONE_BY_ONE + 1 ] )
+				)
+			)
+		);
 	}
 
 	public static function status_by_translation_ids( array $translation_ids ) {

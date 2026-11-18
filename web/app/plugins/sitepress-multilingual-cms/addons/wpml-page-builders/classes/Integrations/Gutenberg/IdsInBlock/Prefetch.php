@@ -14,6 +14,10 @@ class Prefetch {
 		self::bySlug( $bySlug );
 	}
 
+	public static function ids( array $bySlug ) {
+		self::bySlug( $bySlug );
+	}
+
 	public static function idsIn( $value ) {
 		if ( is_int( $value ) || ( is_string( $value ) && ctype_digit( $value ) ) ) {
 			return [ (int) $value ];
@@ -80,7 +84,7 @@ class Prefetch {
 		$termIds = array_values( array_unique( array_filter( $termIds ) ) );
 		if ( $termIds && $wpml_term_translations instanceof \WPML_Term_Translation ) {
 			$wpml_term_translations->prefetch_ids(
-				array_values( array_unique( array_map( 'intval', array_map( [ $wpml_term_translations, 'adjust_ttid_for_term_id' ], $termIds ) ) ) )
+				array_values( array_unique( $wpml_term_translations->ttids_for_term_ids( array_map( 'intval', $termIds ) ) ) )
 			);
 		}
 	}

@@ -37,6 +37,14 @@ class DisplayConditions implements \IWPML_Frontend_Action {
 						'field' => 'pages',
 						'type'  => 'post',
 					],
+					'page_title'            => [
+						'field' => 'titles',
+						'type'  => 'post',
+					],
+					'post_title'            => [
+						'field' => 'titles',
+						'type'  => 'post',
+					],
 				]
 			);
 		}
@@ -53,7 +61,41 @@ class DisplayConditions implements \IWPML_Frontend_Action {
 			$element['settings']['e_display_conditions'] = $this->processDisplayConditions( $element['settings']['e_display_conditions'] );
 		}
 
+		if ( isset( $element['settings']['display-conditions']['value'] ) && is_array( $element['settings']['display-conditions']['value'] ) ) {
+			$element['settings']['display-conditions']['value'] = $this->processAtomicDisplayConditions( $element['settings']['display-conditions']['value'] );
+		}
+
 		return $element;
+	}
+
+	private function processAtomicDisplayConditions( array $conditionGroups ): array {
+		return array_map(
+			function ( $conditionGroup ) {
+				if ( ! isset( $conditionGroup['value'] ) || ! is_array( $conditionGroup['value'] ) ) {
+					return $conditionGroup;
+				}
+
+				$conditionGroup['value'] = array_map(
+					function ( $conditionProp ) {
+						if ( ! isset( $conditionProp['value'] ) ) {
+							return $conditionProp;
+						}
+
+						$condition = $this->parseCondition( $conditionProp['value'] );
+
+						if ( null !== $condition && isset( $condition['condition'] ) ) {
+							$conditionProp['value'] = wp_json_encode( $this->convertConditionIds( $condition ) );
+						}
+
+						return $conditionProp;
+					},
+					$conditionGroup['value']
+				);
+
+				return $conditionGroup;
+			},
+			$conditionGroups
+		);
 	}
 
 	private function processDisplayConditions( $conditions ) {

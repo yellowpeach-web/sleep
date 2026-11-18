@@ -24,6 +24,12 @@ class Languages implements IHandler {
 			AutomaticTranslationCapabilities::withCapabilityInfo(),
 			Fns::map(
 				Obj::addProp(
+					'automatic_translation_unavailable_reason',
+					AutomaticTranslationCapabilities::unavailableReasonFor( $defaultLanguage )
+				)
+			),
+			Fns::map(
+				Obj::addProp(
 					'is_default',
 					Relation::propEq( 'code', $defaultLanguage )
 				)

@@ -52,17 +52,32 @@
          "Language padding": [
             "言語の内側の余白"
          ],
-         "Display": [
-            "表示"
-         ],
          "Show flag": [
             "国旗を表示する"
          ],
-         "Show language name": [
-            "言語名を表示する"
+         "Show current language": [
+            "現在の言語を表示"
          ],
-         "Display language name in": [
-            "言語名の表示言語："
+         "Not available while the flag is hidden. Enable Show flag to hide the language name.": [
+            "国旗が非表示の間は利用できません。言語名を非表示にするには、「国旗を表示」を有効化してください。"
+         ],
+         "Must be enabled while the language name is hidden. Enable Full name or Code to hide the flag.": [
+            "言語名が非表示の間は有効にする必要があります。国旗を非表示にするには、「正式名称」または「コード」を有効化してください。"
+         ],
+         "Not available in the Dropdown layout. Switch the layout to List to hide the current language.": [
+            "ドロップダウンレイアウトでは利用できません。現在の言語を非表示にするには、レイアウトをリストに切り替えてください。"
+         ],
+         "Example:": [
+            "例："
+         ],
+         "Display": [
+            "表示"
+         ],
+         "Language name": [
+            "言語名"
+         ],
+         "Full name written in": [
+            "正式名称の表記言語"
          ],
          "Style": [
             "スタイル"
@@ -133,6 +148,24 @@
          "Code": [
             "コード"
          ],
+         "Native": [
+            "自言語"
+         ],
+         "Translated": [
+            "翻訳済み"
+         ],
+         "Both": [
+            "両方"
+         ],
+         "Hidden": [
+            "非表示"
+         ],
+         "Dropdown": [
+            "ドロップダウン"
+         ],
+         "List": [
+            "リスト"
+         ],
          "Justify items left": [
             "左揃え"
          ],
@@ -175,11 +208,11 @@
          "Small": [
             "小"
          ],
-         "Displays the WPML Language Switcher.": [
-            "WPML 言語スイッチャーを表示します。"
-         ],
          "displays the WPML Language Switcher": [
-            "WPML 言語スイッチャーを表示します"
+            "WPML言語スイッチャーを表示します"
+         ],
+         "Displays the WPML Language Switcher.": [
+            "WPML言語スイッチャーを表示します。"
          ],
          "Navigation Language Switcher": [
             "ナビゲーション言語スイッチャー"

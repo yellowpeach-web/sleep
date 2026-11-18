@@ -102,7 +102,7 @@ class EntityTimelineView {
 			<div class="job-log-entity-state-block">
 				<strong><?php esc_html_e( 'Translations (current state):', 'sitepress' ); ?></strong>
 				<?php if ( empty( $translations ) ) : ?>
-					<em><?php /* translators: Shown in place of a value when there is nothing to show. Written in lower case because it stands where a value would. */ esc_html_e( 'none', 'sitepress' ); ?></em>
+					<em><?php /* translators: Shown in place of a value when there is nothing to show, for example the language of a post that has none. Written in lower case because it stands where a value would. */ esc_html_e( 'none', 'sitepress' ); ?></em>
 				<?php else : ?>
 					<ul>
 						<?php foreach ( $translations as $tr ) : ?>
@@ -121,7 +121,7 @@ class EntityTimelineView {
 			<div class="job-log-entity-state-block">
 				<strong><?php esc_html_e( 'In-flight jobs (translated = 0):', 'sitepress' ); ?></strong>
 				<?php if ( empty( $activeJobs ) ) : ?>
-					<em><?php /* translators: Shown in place of a value when there is nothing to show. Written in lower case because it stands where a value would. */ esc_html_e( 'none', 'sitepress' ); ?></em>
+					<em><?php /* translators: Shown in place of a value when there is nothing to show, for example the language of a post that has none. Written in lower case because it stands where a value would. */ esc_html_e( 'none', 'sitepress' ); ?></em>
 				<?php else : ?>
 					<ul>
 						<?php foreach ( $activeJobs as $j ) : ?>
@@ -170,8 +170,9 @@ class EntityTimelineView {
 				<p><em><?php esc_html_e( 'No events found for this post in the joblog.', 'sitepress' ); ?></em></p>
 			<?php else : ?>
 				<ol class="job-log-entity-timeline-list">
-					<?php foreach ( $events as $event ) : ?>
-						<?php $this->renderEventRow( $event ); ?>
+					<?php $depths = self::nestingDepths( $events ); ?>
+					<?php foreach ( $events as $k => $event ) : ?>
+						<?php $this->renderEventRow( $event, $depths[ $k ] ?? 0 ); ?>
 					<?php endforeach; ?>
 				</ol>
 			<?php endif; ?>
@@ -179,7 +180,7 @@ class EntityTimelineView {
 		<?php
 	}
 
-	private function renderEventRow( array $event ) {
+	private function renderEventRow( array $event, $depth = 0 ) {
 		$isError = isset( $event['logType'] ) && (int) $event['logType'] === JobLog::LOG_TYPE_ERROR;
 		$ts      = (string) ( $event['timestamp_utc'] ?? '' );
 		$logUid  = (string) ( $event['__logUid'] ?? '' );
@@ -227,8 +228,10 @@ class EntityTimelineView {
 			$classes .= ' is-envelope';
 		}
 
+		$style = $depth > 0 ? 'margin-left: ' . ( 2 * (int) $depth ) . 'em;' : '';
+
 		?>
-		<li class="<?php echo esc_attr( $classes ); ?>">
+		<li class="<?php echo esc_attr( $classes ); ?>" style="<?php echo esc_attr( $style ); ?>">
 			<div class="job-log-entity-event-head">
 				<span class="job-log-entity-event-time"><?php echo esc_html( $ts ); ?></span>
 				<?php if ( $logUid ) : ?>
@@ -340,20 +343,22 @@ class EntityTimelineView {
 		}
 
 		$lastReq = null;
-		foreach ( $events as $event ) {
+		$depths  = self::nestingDepths( $events );
+		foreach ( $events as $k => $event ) {
 			$ts     = (string) ( $event['timestamp_utc'] ?? '' );
 			$logUid = (string) ( $event['__logUid'] ?? '' );
 			$reqTag = $logUid !== '' ? 'req:' . substr( $logUid, 0, 6 ) : '';
 			$label  = self::eventLabel( $event );
 			$isErr  = isset( $event['logType'] ) && (int) $event['logType'] === JobLog::LOG_TYPE_ERROR;
 			$marker = $isErr ? ' [ERROR]' : '';
+			$indent = str_repeat( '  ', $depths[ $k ] ?? 0 );
 
-			echo $ts . '  [' . $reqTag . ']  ' . $label . $marker . "\n";
+			echo $ts . '  [' . $reqTag . ']  ' . $indent . $label . $marker . "\n";
 
 			if ( isset( $event['data'] ) && is_array( $event['data'] ) && ! empty( $event['data'] ) ) {
 				$json = wp_json_encode( $event['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
 				if ( is_string( $json ) ) {
-					echo '    ' . str_replace( "\n", "\n    ", $json ) . "\n";
+					echo '    ' . $indent . str_replace( "\n", "\n    " . $indent, $json ) . "\n";
 				}
 			}
 
@@ -366,6 +371,50 @@ class EntityTimelineView {
 		echo "\n========================================\n";
 		echo "End of timeline\n";
 		echo "========================================\n";
+	}
+
+	private static function nestingDepths( array $events ) {
+		$open   = [];
+		$depths = [];
+
+		foreach ( $events as $k => $event ) {
+			$uid   = (string) ( $event['__logUid'] ?? '' );
+			$stack = $open[ $uid ] ?? [];
+			$top   = $stack ? $stack[ count( $stack ) - 1 ] : null;
+			$type  = (string) ( $event['type'] ?? '' );
+
+			switch ( $type ) {
+				case 'group_started':
+					$parentGroupId = $event['parentGroupId'] ?? null;
+					if ( $top !== null && $parentGroupId !== null && $parentGroupId === $top[0] ) {
+						$depth = $top[1] + 1;
+					} else {
+						$stack = [];
+						$depth = 0;
+					}
+					$stack[]      = [ $event['groupId'] ?? null, $depth ];
+					$depths[ $k ] = $depth;
+					break;
+
+				case 'group_finished':
+					$depths[ $k ] = $top !== null ? $top[1] : 0;
+					array_pop( $stack );
+					break;
+
+				case 'request_started':
+				case 'request_finished':
+					$stack        = [];
+					$depths[ $k ] = 0;
+					break;
+
+				default:
+					$depths[ $k ] = $top !== null ? $top[1] : 0;
+			}
+
+			$open[ $uid ] = $stack;
+		}
+
+		return $depths;
 	}
 
 	private static function eventLabel( array $event ) {

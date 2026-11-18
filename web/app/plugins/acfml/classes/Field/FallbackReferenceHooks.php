@@ -14,16 +14,13 @@ class FallbackReferenceHooks implements \IWPML_Backend_Action, \IWPML_Frontend_A
 
 	const PRIORITY_AFTER_WORKER_CONVERSION = \WPML_ACF_Worker::PRIORITY_CONVERT_COPIED_FIELD + 1;
 
-	private $wpdb;
-
 	private $bidirectionalPairs;
 
 	private $userFallbackReferences;
 
 	private $handled = [];
 
-	public function __construct( \wpdb $wpdb, BidirectionalPairs $bidirectionalPairs, UserFallbackReferences $userFallbackReferences ) {
-		$this->wpdb                   = $wpdb;
+	public function __construct( BidirectionalPairs $bidirectionalPairs, UserFallbackReferences $userFallbackReferences ) {
 		$this->bidirectionalPairs     = $bidirectionalPairs;
 		$this->userFallbackReferences = $userFallbackReferences;
 	}
@@ -45,8 +42,12 @@ class FallbackReferenceHooks implements \IWPML_Backend_Action, \IWPML_Frontend_A
 			$translationMetadata = (array) get_post_meta( $translationId );
 
 			foreach ( $sourceMetadata as $metaKey => $rawValues ) {
-				if ( $this->holdsTheSameIds( (string) $metaKey, $rawValues, $sourceMetadata, $translationMetadata ) ) {
-					$this->repointHeldIds( $sourceId, $translationId, (string) $metaKey, $languageCode );
+				if (
+					$this->holdsIdsOnBothSides( (string) $metaKey, $rawValues, $sourceMetadata, $translationMetadata )
+					&& self::holdsAnIdOfTheSource( (array) $rawValues, (array) $translationMetadata[ $metaKey ] )
+				) {
+					$isSameValue = array_values( (array) $rawValues ) === array_values( (array) $translationMetadata[ $metaKey ] );
+					$this->repointHeldIds( $sourceId, $translationId, (string) $metaKey, $languageCode, $isSameValue );
 				}
 			}
 		}
@@ -57,7 +58,7 @@ class FallbackReferenceHooks implements \IWPML_Backend_Action, \IWPML_Frontend_A
 			return [];
 		}
 
-		$elements   = $this->getElementsOf( $trid );
+		$elements   = $this->getTranslationGroup( $trid, 'post_' . get_post_type( $postId ) );
 		$originalId = self::getOriginalId( $elements );
 		if ( ! $originalId ) {
 			return [];
@@ -87,18 +88,27 @@ class FallbackReferenceHooks implements \IWPML_Backend_Action, \IWPML_Frontend_A
 		return 0;
 	}
 
-	private function holdsTheSameIds( string $metaKey, $rawValues, array $sourceMetadata, array $translationMetadata ): bool {
+	private function holdsIdsOnBothSides( string $metaKey, $rawValues, array $sourceMetadata, array $translationMetadata ): bool {
 		if ( '' === $metaKey || '_' === $metaKey[0] || ! isset( $translationMetadata[ $metaKey ] ) ) {
 			return false;
 		}
 
-		$rawValues = array_values( (array) $rawValues );
-		$reference = (array) ( $sourceMetadata[ '_' . $metaKey ] ?? [] );
+		$rawValues            = array_values( (array) $rawValues );
+		$translationRawValues = array_values( (array) $translationMetadata[ $metaKey ] );
+		$reference            = (array) ( $sourceMetadata[ '_' . $metaKey ] ?? [] );
 
 		return 1 === count( $rawValues )
-			&& array_values( (array) $translationMetadata[ $metaKey ] ) === $rawValues
+			&& 1 === count( $translationRawValues )
 			&& 0 === strpos( (string) reset( $reference ), 'field_' )
-			&& self::holdsOnlyIds( maybe_unserialize( $rawValues[0] ) );
+			&& self::holdsOnlyIds( \WPML\Utils\Unserialize::maybe( $rawValues[0] ) )
+			&& self::holdsOnlyIds( \WPML\Utils\Unserialize::maybe( $translationRawValues[0] ) );
+	}
+
+	private static function holdsAnIdOfTheSource( array $rawValues, array $translationRawValues ): bool {
+		$sourceIds = array_map( 'strval', (array) \WPML\Utils\Unserialize::maybe( reset( $rawValues ) ) );
+		$ids       = array_map( 'strval', (array) \WPML\Utils\Unserialize::maybe( reset( $translationRawValues ) ) );
+
+		return (bool) array_intersect( $ids, $sourceIds );
 	}
 
 	private static function holdsOnlyIds( $value ): bool {
@@ -107,30 +117,49 @@ class FallbackReferenceHooks implements \IWPML_Backend_Action, \IWPML_Frontend_A
 		return $ids && count( $ids ) === count( array_filter( $ids, 'is_numeric' ) );
 	}
 
-	private function repointHeldIds( int $sourceId, int $translationId, string $metaKey, string $languageCode ) {
+	private function repointHeldIds( int $sourceId, int $translationId, string $metaKey, string $languageCode, bool $isSameValue ) {
 		$field = $this->getCopiedRelationalField( $metaKey, $sourceId );
 		if ( ! $field ) {
 			return;
 		}
 
-		$value             = get_post_meta( $translationId, $metaKey, true );
-		$newValue          = $value;
-		$hasUntranslatedId = false;
-		foreach ( (array) $value as $id ) {
-			$translatedId = RelationalIds::getTranslatedId( (int) $id, $field, $languageCode );
-			if ( ! $translatedId ) {
-				$hasUntranslatedId = true;
-			} elseif ( $translatedId !== (int) $id ) {
-				$newValue = RelationalIds::replaceFallback( $newValue, $value, (int) $id, $translatedId );
-			}
+		$isCopyField = WPML_COPY_CUSTOM_FIELD === (int) Obj::prop( 'wpml_cf_preferences', $field );
+		if ( ! $isSameValue && ! $isCopyField ) {
+			return;
 		}
 
-		if ( $newValue !== $value ) {
-			update_post_meta( $translationId, $metaKey, $newValue, $value );
+		$value       = get_post_meta( $translationId, $metaKey, true );
+		$sourceValue = get_post_meta( $sourceId, $metaKey, true );
+		$newValue    = RelationalIds::translateHeldFallbacks( $value, $sourceValue, $field, $languageCode );
+
+		if ( $newValue !== $value && false !== update_post_meta( $translationId, $metaKey, $newValue, $value ) ) {
+			$repointedIds = self::getRepointedIds( $value, $newValue );
+			$this->deleteMarkersOf( $field, $repointedIds, $translationId . ':' . $metaKey );
+			$this->bidirectionalPairs->unpairReleasedIds( $field, $translationId, ReferenceRepository::META_TYPE_POST, $repointedIds );
+			$this->bidirectionalPairs->pairTranslation( $field, $translationId, ReferenceRepository::META_TYPE_POST );
+		}
+
+		$hasUntranslatedId = false;
+		foreach ( (array) $sourceValue as $id ) {
+			$hasUntranslatedId = $hasUntranslatedId || ! RelationalIds::getTranslatedId( (int) $id, $field, $languageCode );
 		}
 
 		if ( $hasUntranslatedId ) {
 			$this->recordFallbacks( $sourceId, $translationId, $metaKey );
+		}
+	}
+
+	private static function getRepointedIds( $value, $newValue ): array {
+		$ids = array_diff( array_map( 'strval', (array) $value ), array_map( 'strval', (array) $newValue ) );
+
+		return array_values( array_unique( array_map( 'intval', $ids ) ) );
+	}
+
+	private function deleteMarkersOf( array $field, array $ids, string $marker ) {
+		$metaType = RelationalIds::holdsTermIds( $field ) ? ReferenceRepository::META_TYPE_TERM : ReferenceRepository::META_TYPE_POST;
+
+		foreach ( $ids as $id ) {
+			delete_metadata( $metaType, $id, self::MARKER_KEY, $marker );
 		}
 	}
 
@@ -207,12 +236,15 @@ class FallbackReferenceHooks implements \IWPML_Backend_Action, \IWPML_Frontend_A
 	}
 
 	private function recordFallbacksOfNewTranslation( $postId, $elementType ) {
-		$translation = $this->getTranslationRowBypassingWpmlCache( $postId, $elementType );
+		$translation = $this->getLanguageDetails( $postId, $elementType );
 		if ( ! $translation || ! $translation->source_language_code ) {
 			return;
 		}
 
-		$sourceId = $this->getElementIdInLanguage( (int) $translation->trid, (string) $translation->source_language_code );
+		$sourceId = self::getElementIdInLanguage(
+			$this->getTranslationGroup( (int) $translation->trid, $elementType ),
+			(string) $translation->source_language_code
+		);
 		if ( ! $sourceId ) {
 			return;
 		}
@@ -233,17 +265,18 @@ class FallbackReferenceHooks implements \IWPML_Backend_Action, \IWPML_Frontend_A
 			return;
 		}
 
-		$element = $this->getTranslationRowBypassingWpmlCache( $elementId, $elementType );
+		$element = $this->getLanguageDetails( $elementId, $elementType );
 		if ( ! $element || ! $element->source_language_code ) {
 			return;
 		}
 
 		$this->handled[ $handledKey ] = true;
 
+		$group        = $this->getTranslationGroup( (int) $element->trid, $elementType );
 		$metaType     = $isTerm ? ReferenceRepository::META_TYPE_TERM : ReferenceRepository::META_TYPE_POST;
-		$translatedId = $isTerm ? $this->getTermId( $elementId ) : $elementId;
+		$translatedId = $isTerm ? self::getTermIdOf( $group, (int) $elementId ) : $elementId;
 
-		foreach ( $this->getIdsInOtherLanguages( (int) $element->trid, $element->language_code, $isTerm ) as $referencedId ) {
+		foreach ( self::getIdsInOtherLanguages( $group, (string) $element->language_code, $isTerm ) as $referencedId ) {
 			foreach ( (array) get_metadata( $metaType, $referencedId, self::MARKER_KEY ) as $marker ) {
 				if ( $this->repointMarkedReferrer( (string) $marker, (int) $referencedId, $translatedId, $element->language_code ) ) {
 					delete_metadata( $metaType, $referencedId, self::MARKER_KEY, $marker );
@@ -261,7 +294,8 @@ class FallbackReferenceHooks implements \IWPML_Backend_Action, \IWPML_Frontend_A
 	private function repointReferrer( $marker, $referencedId, $translatedId, $languageCode ) {
 		list( $referrerId, $metaKey ) = array_pad( explode( ':', $marker, 2 ), 2, '' );
 
-		$referrer = $this->getTranslationRowBypassingWpmlCache( (int) $referrerId, 'post_' . get_post_type( (int) $referrerId ) );
+		$referrerType = 'post_' . get_post_type( (int) $referrerId );
+		$referrer     = $this->getLanguageDetails( (int) $referrerId, $referrerType );
 		if ( ! $referrer ) {
 			return true;
 		}
@@ -270,7 +304,10 @@ class FallbackReferenceHooks implements \IWPML_Backend_Action, \IWPML_Frontend_A
 			return false;
 		}
 
-		$sourceId = $this->getElementIdInLanguage( (int) $referrer->trid, (string) $referrer->source_language_code );
+		$sourceId = self::getElementIdInLanguage(
+			$this->getTranslationGroup( (int) $referrer->trid, $referrerType ),
+			(string) $referrer->source_language_code
+		);
 		$field    = $sourceId ? $this->getCopiedRelationalField( $metaKey, $sourceId ) : null;
 		if ( ! $field ) {
 			return true;
@@ -286,6 +323,7 @@ class FallbackReferenceHooks implements \IWPML_Backend_Action, \IWPML_Frontend_A
 			return false;
 		}
 
+		$this->bidirectionalPairs->unpairReleasedIds( $field, (int) $referrerId, ReferenceRepository::META_TYPE_POST, self::getRepointedIds( $value, $newValue ) );
 		$this->bidirectionalPairs->pairTranslation( $field, (int) $referrerId, ReferenceRepository::META_TYPE_POST );
 
 		return true;
@@ -303,53 +341,61 @@ class FallbackReferenceHooks implements \IWPML_Backend_Action, \IWPML_Frontend_A
 		return $isRelational && $isCopied ? $field : null;
 	}
 
+	private function getLanguageDetails( $elementId, $elementType ) {
+		$details = apply_filters(
+			'wpml_element_language_details',
+			null,
+			[
+				'element_id'   => (int) $elementId,
+				'element_type' => $elementType,
+			]
+		);
 
-	private function getTranslationRowBypassingWpmlCache( $elementId, $elementType ) {
-		return $this->wpdb->get_row(
-			$this->wpdb->prepare(
-				"SELECT trid, language_code, source_language_code
-				FROM {$this->wpdb->prefix}icl_translations
-				WHERE element_type = %s AND element_id = %d",
-				$elementType,
-				$elementId
+		return is_object( $details ) && ! empty( $details->trid ) ? $details : null;
+	}
+
+	private function getTranslationGroup( int $trid, string $elementType ): array {
+		$rows = apply_filters( 'wpml_get_element_translations', [], $trid, $elementType, false, true, true );
+
+		return array_values(
+			array_filter(
+				is_array( $rows ) ? $rows : [],
+				function ( $row ) {
+					return is_object( $row ) && ! empty( $row->element_id );
+				}
 			)
 		);
 	}
 
-	private function getElementIdInLanguage( $trid, $languageCode ) {
-		return (int) $this->wpdb->get_var(
-			$this->wpdb->prepare(
-				"SELECT element_id FROM {$this->wpdb->prefix}icl_translations WHERE trid = %d AND language_code = %s",
-				$trid,
-				$languageCode
-			)
-		);
+	private static function getElementIdInLanguage( array $group, string $languageCode ): int {
+		foreach ( $group as $row ) {
+			if ( $languageCode === $row->language_code ) {
+				return (int) $row->element_id;
+			}
+		}
+
+		return 0;
 	}
 
-	private function getElementsOf( int $trid ): array {
-		return (array) $this->wpdb->get_results(
-			$this->wpdb->prepare(
-				"SELECT element_id, language_code, source_language_code FROM {$this->wpdb->prefix}icl_translations WHERE trid = %d AND element_id IS NOT NULL",
-				$trid
-			)
-		);
+	private static function getIdsInOtherLanguages( array $group, string $languageCode, bool $isTerm ): array {
+		$ids = [];
+		foreach ( $group as $row ) {
+			$id = (int) ( $isTerm ? Obj::prop( 'term_id', $row ) : $row->element_id );
+			if ( $id && $languageCode !== $row->language_code ) {
+				$ids[] = $id;
+			}
+		}
+
+		return $ids;
 	}
 
-	private function getIdsInOtherLanguages( $trid, $languageCode, $isTerm ) {
-		$query = $isTerm
-			? "SELECT tt.term_id FROM {$this->wpdb->prefix}icl_translations t
-				INNER JOIN {$this->wpdb->term_taxonomy} tt ON tt.term_taxonomy_id = t.element_id
-				WHERE t.trid = %d AND t.language_code <> %s"
-			: "SELECT t.element_id FROM {$this->wpdb->prefix}icl_translations t
-				WHERE t.trid = %d AND t.language_code <> %s AND t.element_id IS NOT NULL";
+	private static function getTermIdOf( array $group, int $termTaxonomyId ): int {
+		foreach ( $group as $row ) {
+			if ( $termTaxonomyId === (int) $row->element_id ) {
+				return (int) Obj::prop( 'term_id', $row );
+			}
+		}
 
-		return array_map( 'intval', $this->wpdb->get_col( $this->wpdb->prepare( $query, $trid, $languageCode ) ) );
+		return 0;
 	}
-
-	private function getTermId( $termTaxonomyId ) {
-		return (int) $this->wpdb->get_var(
-			$this->wpdb->prepare( "SELECT term_id FROM {$this->wpdb->term_taxonomy} WHERE term_taxonomy_id = %d", $termTaxonomyId )
-		);
-	}
-
 }

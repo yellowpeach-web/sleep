@@ -29,7 +29,7 @@
             "Sök"
          ],
          "Strings that are queued for translation, in progress, or waiting for a retry.": [
-            "Strängar som står i kö för översättning, pågår eller väntar på ett nytt försök."
+            "Strängar som står i kö för översättning, behandlas eller väntar på ett nytt försök."
          ],
          "Also remove strings waiting for translation": [
             "Ta även bort strängar som väntar på översättning"
@@ -37,14 +37,32 @@
          "Removing strings from <b>String Translation</b> table": [
             "Tar bort strängar från tabellen för <b>String Translation</b>"
          ],
+         "%s string waiting for translation was kept.": [
+            "%s sträng som väntar på översättning behölls.",
+            "%s strängar som väntar på översättning behölls."
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "För att lägga till strängar i tabellen för <b>String Translation</b> igen kan du behöva skanna om översättningsfiler eller registrera strängar som översättningsbara."
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "Läs mer om att <a>skanna din webbplats efter strängar och registrera dem som översättningsbara</a>."
          ],
-         "Successfully removed strings": [
-            "Strängarna har tagits bort"
+         "Nothing removed: %s string is waiting for translation": [
+            "Inget togs bort: %s sträng väntar på översättning",
+            "Inget togs bort: %s strängar väntar på översättning"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "Inget togs bort: de valda domänerna har inga oöversatta strängar"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "Om du vill ta bort dem också markerar du “Ta även bort strängar som väntar på översättning” och klickar på Ta bort igen."
+         ],
+         "OK": [
+            "OK"
+         ],
+         "Removed %s string": [
+            "Tog bort %s sträng",
+            "Tog bort %s strängar"
          ],
          "OK, Great": [
             "Okej, bra"
@@ -60,6 +78,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "Borttagningen av strängar stoppades innan den slutfördes. Strängarna som inte togs bort finns kvar i tabellen. Försök igen för att ta bort dem."
+         ],
+         "Successfully removed strings": [
+            "Strängarna har tagits bort"
          ]
       }
    }

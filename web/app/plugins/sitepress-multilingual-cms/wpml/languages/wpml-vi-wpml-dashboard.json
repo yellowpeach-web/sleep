@@ -7,11 +7,14 @@
             "plural_forms": "nplurals=1; plural=0;",
             "lang": "vi"
          },
+         "(no title)": [
+            "(không có tiêu đề)"
+         ],
          "Untranslated strings that I encounter on front-end while logged in": [
-            "Các chuỗi chưa dịch mà tôi gặp ở frontend khi đang đăng nhập"
+            "Các chuỗi chưa dịch mà tôi gặp ở giao diện người dùng khi đang đăng nhập"
          ],
          "Untranslated strings that all front-end users encounter": [
-            "Các chuỗi chưa dịch mà tất cả người dùng frontend gặp phải"
+            "Các chuỗi chưa dịch mà tất cả người dùng giao diện người dùng gặp phải"
          ],
          "Disable auto-registration of strings": [
             "Tắt tự động đăng ký chuỗi"
@@ -37,6 +40,15 @@
          "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
             "Chúng tôi đã gửi lại %1$d trong số %2$d mục, nhưng %3$d mục đã thất bại. Vui lòng tải lại trang và thử lại."
          ],
+         "We resent %1$d of %2$d items.": [
+            "Chúng tôi đã gửi lại %1$d trên tổng số %2$d mục."
+         ],
+         "%1$s from %2$s": [
+            "%1$s từ %2$s"
+         ],
+         "%1$d item can't be translated automatically: %2$s. Choose another translation method for it, or change your engines.": [
+            "Không thể dịch tự động %1$d mục: %2$s. Hãy chọn một phương thức dịch khác cho các mục này, hoặc thay đổi bộ máy dịch của bạn."
+         ],
          "Error in fetching default translation batch name": [
             "Lỗi khi lấy tên đợt dịch mặc định"
          ],
@@ -51,6 +63,9 @@
          ],
          "Validation failed": [
             "Xác thực thất bại"
+         ],
+         "The translation service batch could not be committed. Continue sending to try again.": [
+            "Không thể xác nhận đợt gửi của dịch vụ dịch thuật. Hãy tiếp tục gửi để thử lại."
          ],
          "%s: labels and slug": [
             "%s: nhãn và slug"
@@ -91,6 +106,12 @@
          "They are still waiting and will be tried again on the next download.": [
             "Chúng vẫn đang chờ và sẽ được thử lại trong lần tải xuống tiếp theo."
          ],
+         "Job %d": [
+            "Công việc %d"
+         ],
+         "and %d more": [
+            "và %d nhóm khác"
+         ],
          "Status: ": [
             "Trạng thái: "
          ],
@@ -130,11 +151,11 @@
          "Switching…": [
             "Đang chuyển đổi…"
          ],
-         "Translation engine controls couldn't load. Reload the page and try again.": [
-            "Không thể tải các điều khiển công cụ dịch thuật. Tải lại trang và thử lại."
-         ],
          "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
             "Chúng tôi không thể xác nhận việc chuyển đổi. Hãy thử lại hoặc tải lại để xem công cụ hiện tại."
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "Không thể tải các điều khiển công cụ dịch thuật. Tải lại trang và thử lại."
          ],
          "Loading translation engine settings…": [
             "Đang tải cài đặt công cụ dịch thuật…"
@@ -289,14 +310,20 @@
          "Select %s": [
             "Chọn %s"
          ],
-         "(no title)": [
-            "(không có tiêu đề)"
+         "Appears on the site": [
+            "Xuất hiện trên trang web"
+         ],
+         "Not shown yet": [
+            "Chưa hiển thị"
          ],
          "Image": [
             "Hình ảnh"
          ],
          "%s Title": [
             "Tiêu đề %s"
+         ],
+         "Source": [
+            "Nguồn"
          ],
          "%s Date": [
             "Ngày %s"
@@ -328,9 +355,6 @@
          "Show selected items": [
             "Hiển thị các mục đã chọn"
          ],
-         "Looking for more items...": [
-            "Đang tìm thêm các mục..."
-         ],
          " / page": [
             " / trang"
          ],
@@ -339,6 +363,9 @@
          ],
          "Next": [
             "Tiếp theo"
+         ],
+         "Looking for more items...": [
+            "Đang tìm thêm các mục..."
          ],
          "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
             "Nội dung trang web của bạn quá lớn cho một đợt dịch duy nhất. Hãy sử dụng các bộ lọc để giảm bớt lựa chọn, sau đó “chọn tất cả”."
@@ -370,11 +397,29 @@
          "Select all %ss": [
             "Chọn tất cả %s"
          ],
+         "%d not shown on the site yet": [
+            "%d chưa hiển thị trên trang web"
+         ],
+         "Show them": [
+            "Hiển thị các mục này"
+         ],
+         "Hide them": [
+            "Ẩn các mục này"
+         ],
          "Save note": [
             "Lưu ghi chú"
          ],
-         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
-            "Các ngôn ngữ đích sau đây không hỗ trợ dịch tự động: %s. <a>Ánh xạ tới các ngôn ngữ đã biết</a> để bật dịch tự động."
+         "%1$s and %2$s": [
+            "%1$s và %2$s"
+         ],
+         "The following target languages do not support automatic translation: %s.": [
+            "Các ngôn ngữ đích sau không hỗ trợ dịch tự động: %s."
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "Dịch tự động không khả dụng giữa %1$s và %2$s vì chúng được nhận diện là cùng một ngôn ngữ. Thay vào đó, hãy chọn “Nhân bản” để sao chép nội dung qua."
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "Dịch tự động không khả dụng giữa %1$s và %2$s vì chúng được nhận dạng là cùng một ngôn ngữ."
          ],
          "The site's default language %s doesn't support automatic translation.": [
             "Ngôn ngữ mặc định của trang web %s không hỗ trợ dịch tự động."
@@ -418,8 +463,8 @@
          "Raise the cap": [
             "Nâng hạn mức"
          ],
-         "Only the account owner can do this.": [
-            "Chỉ chủ sở hữu tài khoản mới có thể thực hiện việc này."
+         "You can raise it on the AI Translation: billing and usage page.": [
+            "Bạn có thể tăng hạn mức này trên trang Dịch thuật AI: thanh toán và sử dụng."
          ],
          "Show strings in:": [
             "Hiển thị chuỗi trong:"
@@ -442,9 +487,6 @@
          "Domain": [
             "Miền"
          ],
-         "Source": [
-            "Nguồn"
-         ],
          "Type": [
             "Loại"
          ],
@@ -460,11 +502,8 @@
          "All sources": [
             "Tất cả các nguồn"
          ],
-         "Frontend (viewed)": [
-            "Frontend (đã xem)"
-         ],
-         "Backend (viewed)": [
-            "Backend (đã xem)"
+         "Seen in the admin": [
+            "Được nhìn thấy trong trang quản trị"
          ],
          "Unknown": [
             "Không xác định"
@@ -478,17 +517,11 @@
          "Search string or a name": [
             "Tìm kiếm chuỗi hoặc tên"
          ],
-         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
-            "Bộ lọc này chỉ khả dụng nếu nguồn được đặt thành “Frontend” hoặc “Backend”."
+         "%1$s, %2$s and %3$s": [
+            "%1$s, %2$s và %3$s"
          ],
-         "front-end": [
-            "front-end"
-         ],
-         "back-end": [
-            "back-end"
-         ],
-         "viewed": [
-            "đã xem"
+         "This filter is available only when Source is \"Appears on the site\" or \"Seen in the admin\".": [
+            "Bộ lọc này chỉ khả dụng khi Nguồn là “Xuất hiện trên trang web” hoặc “Được nhìn thấy trong trang quản trị”."
          ],
          "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
             "Mở trang bản địa hóa giao diện và plugin, nơi bạn có thể quét giao diện và các plugin của mình để tìm các chuỗi chưa được đăng ký và cung cấp chúng để dịch tại đây."
@@ -500,7 +533,7 @@
             "Các chuỗi trong giao diện và plugin"
          ],
          "Translate front-end texts you can customize from the WordPress admin like footer text, copyright notices, plugin options and settings, time format, widget texts, and more.": [
-            "Dịch các văn bản frontend mà bạn có thể tùy chỉnh từ quản trị WordPress như văn bản chân trang, thông báo bản quyền, các tùy chọn và cài đặt plugin, định dạng thời gian, văn bản widget, v.v."
+            "Dịch các văn bản giao diện người dùng mà bạn có thể tùy chỉnh từ trang quản trị WordPress như văn bản chân trang, thông báo bản quyền, các tùy chọn và cài đặt plugin, định dạng thời gian, văn bản widget, v.v."
          ],
          "Translating Strings From Admin and Settings": [
             "Dịch các chuỗi từ Quản trị và Cài đặt"
@@ -518,7 +551,7 @@
             "Dịch các chuỗi hồ sơ người dùng"
          ],
          "No strings have been registered for translation yet. Open your site's front-end (<a/>) and WPML will automatically detect the untranslated strings and list them here. ": [
-            "Chưa có chuỗi nào được đăng ký để dịch. Hãy mở frontend trang web của bạn (<a/>) và WPML sẽ tự động phát hiện các chuỗi chưa dịch và liệt kê chúng tại đây. "
+            "Chưa có chuỗi nào được đăng ký để dịch. Hãy mở giao diện người dùng trên trang web của bạn (<a/>) và WPML sẽ tự động phát hiện các chuỗi chưa dịch và liệt kê chúng tại đây. "
          ],
          "hide details": [
             "ẩn chi tiết"
@@ -581,7 +614,7 @@
             "Tìm hiểu cách sử dụng tính năng tự động đăng ký"
          ],
          "recommended": [
-            "được khuyến nghị"
+            "được đề xuất"
          ],
          "Also register strings from the website's back-end": [
             "Đồng thời đăng ký các chuỗi từ backend của trang web"
@@ -604,8 +637,8 @@
          "You can only translate %1$s from the site's default language (%2$s).": [
             "Bạn chỉ có thể dịch %1$s từ ngôn ngữ mặc định của trang web (%2$s)."
          ],
-         "Search taxonomy or a name": [
-            "Tìm kiếm phân loại hoặc tên"
+         "Search taxonomies and terms": [
+            "Tìm kiếm phân loại và thuật ngữ"
          ],
          "Filter by post type": [
             "Lọc theo loại bài viết"
@@ -619,6 +652,9 @@
          "No translatable taxonomies match the current filters.": [
             "Không có phân loại có thể dịch nào khớp với các bộ lọc hiện tại."
          ],
+         "Words in the terms, in %s": [
+            "Số từ trong các thuật ngữ, bằng %s"
+         ],
          "Select all taxonomies": [
             "Chọn tất cả các phân loại"
          ],
@@ -628,11 +664,20 @@
          "Terms in": [
             "Mục trong"
          ],
-         "Post types": [
-            "Loại bài viết"
+         "Used on": [
+            "Được dùng trên"
          ],
-         "Translated / Total terms": [
-            "Đã dịch / Tổng số mục"
+         "Terms": [
+            "Mục phân loại"
+         ],
+         "Words": [
+            "Từ"
+         ],
+         "Hide terms": [
+            "Ẩn các mục"
+         ],
+         "Choose terms": [
+            "Chọn mục"
          ],
          "translated": [
             "đã dịch"
@@ -658,11 +703,32 @@
          "%1$s: %2$s": [
             "%1$s: %2$s"
          ],
-         "Open %s in the Taxonomy Translation tab": [
-            "Mở %s trong tab Dịch phân loại"
+         "Translated": [
+            "Đã dịch"
+         ],
+         "Partially translated": [
+            "Đã dịch một phần"
+         ],
+         "Translation needs update": [
+            "Bản dịch cần cập nhật"
+         ],
+         "Preparing for translation": [
+            "Đang chuẩn bị để dịch"
+         ],
+         "Translation stalled": [
+            "Bản dịch bị đình trệ"
+         ],
+         "Not translated": [
+            "Chưa được dịch"
+         ],
+         "Status icons": [
+            "Biểu tượng trạng thái"
          ],
          "Taxonomy labels and slug": [
             "Nhãn phân loại và slug"
+         ],
+         "The taxonomy's own texts: its singular and plural names and its URL slug. Not its terms.": [
+            "Các văn bản riêng của phân loại: tên số ít, tên số nhiều và slug URL. Không bao gồm các mục của phân loại."
          ],
          "WPML String Translation is not active.": [
             "WPML String Translation không hoạt động."
@@ -694,14 +760,125 @@
          "Rescan": [
             "Quét lại"
          ],
-         "%d Taxonomy selected": [
-            "Đã chọn %d phân loại"
+         "Send categories, tags and other terms for translation, a whole taxonomy or the terms you pick.": [
+            "Gửi danh mục, thẻ và các thuật ngữ khác để dịch, toàn bộ phân loại hoặc các thuật ngữ bạn chọn."
          ],
-         "<b>Translate Everything Automatically</b> (TEA) is active.": [
-            "<b>Dịch mọi thứ tự động</b> (TEA) đang hoạt động."
+         "Edit translations manually": [
+            "Chỉnh sửa bản dịch thủ công"
          ],
-         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
-            "Các mục mới và được cập nhật trong các phân loại Có thể dịch sẽ được đưa vào hàng đợi tự động. Chọn các phân loại bên dưới để gửi một công việc hàng loạt một lần cho bất kỳ mục nào còn lại chưa được dịch."
+         "(opens in a new tab)": [
+            "(mở trong một tab mới)"
+         ],
+         "To edit one term's translation by hand: <link/>": [
+            "Để chỉnh sửa thủ công bản dịch của một thuật ngữ: <link/>"
+         ],
+         "There is nothing to send. New and changed terms will show up here.": [
+            "Không có gì để gửi. Các thuật ngữ mới và đã thay đổi sẽ hiển thị tại đây."
+         ],
+         "Every term is translated into every language.": [
+            "Mọi thuật ngữ đều đã được dịch sang mọi ngôn ngữ."
+         ],
+         "No taxonomy or term matches “%s”.": [
+            "Không có phân loại hoặc thuật ngữ nào khớp với “%s”."
+         ],
+         "Clear search": [
+            "Xóa tìm kiếm"
+         ],
+         "<b>Translate Everything</b> is on. It translates every term of every translatable taxonomy automatically. You do not need to send terms or pick them.": [
+            "<b>Dịch mọi thứ</b> đang bật. Tính năng này tự động dịch mọi mục của từng phân loại có thể dịch. Bạn không cần gửi hay chọn các mục phân loại."
+         ],
+         "Use this section to see their status, or to send terms to a translator or a translation service.": [
+            "Sử dụng phần này để xem trạng thái của chúng hoặc gửi các thuật ngữ cho một người dịch hoặc dịch vụ dịch thuật."
+         ],
+         "%1$d sub-term, %2$d not translated": [
+            "%1$d mục con, %2$d chưa được dịch"
+         ],
+         "%d sub-term, all translated": [
+            "%d mục con, tất cả đã được dịch"
+         ],
+         "%1$s and its %2$d sub-term selected.": [
+            "Đã chọn %1$s và %2$d mục con của mục này."
+         ],
+         "%1$s and its %2$d sub-term cleared.": [
+            "Đã bỏ chọn %1$s và %2$d mục con của mục này."
+         ],
+         "Select %1$s, in %2$s": [
+            "Chọn %1$s, trong %2$s"
+         ],
+         "Hide sub-terms of %s": [
+            "Ẩn các mục con của %s"
+         ],
+         "Show sub-terms of %s": [
+            "Hiển thị các mục con của %s"
+         ],
+         "in": [
+            "bằng"
+         ],
+         "Added because a sub-term is selected": [
+            "Được thêm vì một mục con đã được chọn"
+         ],
+         "The terms could not be loaded.": [
+            "Không thể tải các thuật ngữ."
+         ],
+         "Showing %1$d term matching “%2$s”": [
+            "Đang hiển thị %1$d mục khớp với “%2$s”"
+         ],
+         "Showing roots %1$d to %2$d of %3$d": [
+            "Đang hiển thị mục gốc %1$d đến %2$d trên tổng số %3$d"
+         ],
+         "Showing %1$d to %2$d of %3$d": [
+            "Hiển thị từ %1$d đến %2$d trong tổng số %3$d"
+         ],
+         "%s: terms": [
+            "%s: các mục"
+         ],
+         "All terms are selected until you untick some.": [
+            "Tất cả các mục được chọn cho đến khi bạn bỏ chọn một số mục."
+         ],
+         "Terms matching “%s”, found by the section search.": [
+            "Các mục khớp với “%s”, được tìm thấy bởi tìm kiếm phần."
+         ],
+         "%1$s: %2$d term matches the section search.": [
+            "%1$s: %2$d thuật ngữ khớp với tìm kiếm trong phần này."
+         ],
+         "Show all terms": [
+            "Hiển thị tất cả các mục"
+         ],
+         "Select all %d terms": [
+            "Chọn tất cả %d mục"
+         ],
+         "Ticking a parent selects its sub-terms.": [
+            "Đánh dấu mục cha sẽ chọn các mục con của mục đó."
+         ],
+         "Expand all": [
+            "Mở rộng tất cả"
+         ],
+         "Collapse all": [
+            "Thu gọn tất cả"
+         ],
+         "Select all terms on this page": [
+            "Chọn tất cả các mục trên trang này"
+         ],
+         "Term": [
+            "Mục"
+         ],
+         "No term matches “%s”.": [
+            "Không có thuật ngữ nào khớp với “%s”."
+         ],
+         "%1$d of %2$d": [
+            "%1$d trên %2$d"
+         ],
+         "Pages of %s terms": [
+            "Các trang của mục %s"
+         ],
+         "All %d terms selected": [
+            "Đã chọn tất cả %d mục"
+         ],
+         "%1$d of %2$d terms selected": [
+            "Đã chọn %1$d trên tổng số %2$d mục"
+         ],
+         "No terms selected": [
+            "Chưa chọn mục nào"
          ],
          "Switch Now": [
             "Chuyển đổi ngay"
@@ -881,13 +1058,25 @@
             "Dịch tự động"
          ],
          "<b>Translate Everything Automatically</b> is already on, with %s (per word).": [
-            "<b>Dịch mọi thứ tự động</b> đã được bật, với %s (tính theo từng từ)."
+            "<b>Dịch mọi thứ tự động</b> đã được bật, với %s (mỗi từ)."
          ],
          "Not now": [
             "Để sau"
          ],
+         "This site is not registered with our translation system yet. Register it on WPML → Activate & Update to use automatic translation.": [
+            "Trang web này chưa được đăng ký với hệ thống dịch thuật của chúng tôi. Hãy đăng ký trên WPML → Kích hoạt & Cập nhật để sử dụng dịch tự động."
+         ],
          "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
             "Lỗi kết nối. Vui lòng đợi một phút và tải lại trang này. Nếu vấn đề vẫn tiếp diễn, vui lòng liên hệ với bộ phận hỗ trợ của WPML."
+         ],
+         "Posts": [
+            "Bài viết"
+         ],
+         "Taxonomy terms": [
+            "Các mục phân loại"
+         ],
+         "Words required:": [
+            "Số từ yêu cầu:"
          ],
          "You don’t have enough prepaid words to translate this content.": [
             "Bạn không có đủ từ trả trước để dịch nội dung này."
@@ -901,14 +1090,8 @@
          "Automatic translation costs:": [
             "Chi phí dịch tự động:"
          ],
-         "Words": [
-            "Từ"
-         ],
          "Words to translate automatic": [
             "Số từ cần dịch tự động"
-         ],
-         "Words required:": [
-            "Số từ yêu cầu:"
          ],
          "Pricing": [
             "Bảng giá"
@@ -928,17 +1111,35 @@
          "%s word assigned to this site.": [
             "%s từ đã được gán cho trang web này."
          ],
-         "Leave existing translations as they are": [
-            "Giữ nguyên các bản dịch hiện có"
-         ],
-         "Overwrite existing translations": [
-            "Ghi đè lên các bản dịch hiện có"
-         ],
          "Some of the content you want to translate is already translated": [
             "Một số nội dung bạn muốn dịch đã được dịch rồi"
          ],
          "What do you want to do with the content that's already translated?": [
             "Bạn muốn làm gì với nội dung đã được dịch?"
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Translate from scratch\" translates them again from the start.": [
+            "Các mục đã thay đổi sau khi được dịch đều được gửi đi theo cả hai cách. “Giữ nguyên” chỉ dịch những nội dung đã thay đổi. “Dịch lại từ đầu” sẽ dịch lại toàn bộ các mục đó ngay từ đầu."
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Overwrite\" translates them again from the start.": [
+            "Các mục đã thay đổi sau khi được dịch vẫn sẽ được gửi theo một trong hai cách. “Giữ nguyên” chỉ dịch những phần đã thay đổi. “Ghi đè” sẽ dịch lại chúng từ đầu."
+         ],
+         "\"Translate from scratch\" replaces the edits made to these translations:": [
+            "“Dịch lại từ đầu” sẽ thay thế các chỉnh sửa đã thực hiện đối với các bản dịch này:"
+         ],
+         "And %s more item.": [
+            "Và thêm %s mục khác."
+         ],
+         "Leave existing translations as they are": [
+            "Giữ nguyên các bản dịch hiện có"
+         ],
+         "Translate from scratch": [
+            "Dịch lại từ đầu"
+         ],
+         "Replaces the existing translations, including the edits made to them": [
+            "Thay thế các bản dịch hiện có, bao gồm cả các chỉnh sửa đã thực hiện đối với chúng"
+         ],
+         "Overwrite existing translations": [
+            "Ghi đè lên các bản dịch hiện có"
          ],
          "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
             "Các bản dịch từ DeepL, Google Translate và Microsoft Translator tốt nhất nên được đánh giá trước khi xuất bản."
@@ -973,8 +1174,17 @@
          " Checking ": [
             " Đang kiểm tra "
          ],
+         "To translate automatically, WPML needs an active automatic translation account. Turn on automatic translation, or choose a different translation option.": [
+            "Để dịch tự động, WPML cần một tài khoản dịch tự động đang hoạt động. Bật dịch tự động hoặc chọn một tùy chọn dịch khác."
+         ],
          "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
             "Để dịch tự động, trước tiên bạn cần <enable_ate>bật <b>Trình biên tập dịch thuật nâng cao</b> của WPML</enable_ate>.<br/>Hãy bật <b>Trình biên tập dịch thuật nâng cao</b> và nhấp vào <check_again>kiểm tra lại</check_again> hoặc chọn một tùy chọn dịch thuật khác."
+         ],
+         "Turn on automatic translation": [
+            "Bật dịch tự động"
+         ],
+         "Learn more": [
+            "Tìm hiểu thêm"
          ],
          "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
             "Nội dung đã chọn đã được dịch bằng <b>Trình biên tập dịch thuật cổ điển</b> và không thể gửi để dịch tự động. Để cho phép việc này, hãy bật \"Cũng sử dụng cho các bản dịch cũ\" trong trang <wpmlSettingLink>Cài đặt WPML</wpmlSettingLink>."
@@ -1045,11 +1255,14 @@
          "WPML does not support duplicating %1$s elements and strings.": [
             "WPML không hỗ trợ nhân bản các thành phần %1$s và chuỗi."
          ],
-         "WPML does not support duplicating taxonomies.": [
-            "WPML không hỗ trợ nhân bản phân loại."
+         "Taxonomy terms cannot be duplicated. Translate them instead. When you duplicate posts, WPML copies their terms that have no translation yet and lists these copies as not translated until they are translated.": [
+            "Không thể nhân bản các thuật ngữ phân loại. Hãy dịch chúng thay vào đó. Khi bạn nhân bản bài viết, WPML sẽ sao chép các thuật ngữ chưa có bản dịch của bài viết đó và liệt kê các bản sao này là chưa được dịch cho đến khi chúng được dịch."
          ],
-         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
-            "WPML không hỗ trợ nhân bản phân loại. Lựa chọn nhân bản phân loại sang %1$s của bạn sẽ bị bỏ qua nếu bạn tiếp tục dịch."
+         "Taxonomy terms cannot be duplicated, so the terms you selected will not be duplicated to %1$s. The posts you duplicate get copies of their terms that have no translation yet. WPML lists these copies as not translated until they are translated.": [
+            "Không thể nhân bản các thuật ngữ phân loại, vì vậy các thuật ngữ bạn đã chọn sẽ không được nhân bản sang %1$s. Các bài viết bạn nhân bản sẽ nhận được bản sao của các thuật ngữ chưa có bản dịch. WPML liệt kê các bản sao này là chưa được dịch cho đến khi chúng được dịch."
+         ],
+         "If the editor is set to translate automatically when it opens, it starts from a machine translation that uses your words. Undo translation in the editor clears it.": [
+            "Nếu trình soạn thảo được thiết lập để dịch tự động khi mở, nó sẽ bắt đầu từ một bản dịch máy sử dụng số từ của bạn. Thao tác hoàn tác dịch trong trình soạn thảo sẽ xóa bản dịch này."
          ],
          "Finish setting up %s on your site": [
             "Hoàn tất thiết lập %s trên trang web của bạn"
@@ -1057,14 +1270,26 @@
          "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
             "Bạn cần xác thực %s để gửi nội dung cho họ dịch.<br/>Hãy truy cập <a>tab Người dịch</a> để hoàn tất thiết lập và nhấp vào <check_again>kiểm tra lại</check_again> hoặc chọn một tùy chọn dịch thuật khác."
          ],
+         "WPML will not send these items. A reviewer has their translation open:": [
+            "WPML sẽ không gửi các mục này. Một người đánh giá đang mở bản dịch của chúng:"
+         ],
+         "To send them, finish or cancel the review in Translation Tasks first.": [
+            "Để gửi chúng, trước tiên hãy hoàn thành hoặc hủy đánh giá trong Nhiệm vụ dịch thuật."
+         ],
          "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
             "Một số nội dung đã chọn có bản dịch đang mở để đánh giá. Gửi lại nội dung này sẽ thay thế bản dịch đó."
          ],
          "You selected multiple translation methods for content across different languages:": [
             "Bạn đã chọn nhiều phương thức dịch cho nội dung trên các ngôn ngữ khác nhau:"
          ],
+         "Translation Service": [
+            "Dịch vụ dịch thuật"
+         ],
          "Sent for translation": [
             "Đã gửi để dịch"
+         ],
+         "Some content was not sent": [
+            "Một số nội dung chưa được gửi"
          ],
          "Some items were not sent for translation": [
             "Một số mục không được gửi để dịch"
@@ -1092,6 +1317,9 @@
          ],
          "Continue sending": [
             "Tiếp tục gửi"
+         ],
+         "Open Translations": [
+            "Mở Bản dịch"
          ],
          "Ok": [
             "Ok"
@@ -1159,6 +1387,15 @@
          "WPML could not count the words of these items.": [
             "WPML không thể đếm số từ của các mục này."
          ],
+         "WPML could not get the price of automatic translation from our translation system. Try again in a few minutes.": [
+            "WPML không thể lấy giá dịch tự động từ hệ thống dịch của chúng tôi. Hãy thử lại sau vài phút."
+         ],
+         "No translation engine translates this content from %1$s into %2$s.": [
+            "Không có bộ máy dịch thuật nào dịch nội dung này từ %1$s sang %2$s."
+         ],
+         "WPML did not send these items. A reviewer has their translation open. Finish or cancel the review in Translation Tasks, then send them again.": [
+            "WPML đã không gửi các mục này. Một người đánh giá đang mở bản dịch của chúng. Hãy hoàn thành hoặc hủy đánh giá trong Nhiệm vụ dịch thuật, sau đó gửi lại."
+         ],
          "Some content couldn't be sent to translation.": [
             "Một số nội dung không thể gửi để dịch."
          ],
@@ -1192,6 +1429,81 @@
          "Items already sent will be translated and delivered normally.": [
             "Các mục đã được gửi sẽ được dịch và phân phối bình thường."
          ],
+         "%d post": [
+            "%d bài viết"
+         ],
+         "%1$s and %2$d term": [
+            "%1$s và %2$d thuật ngữ"
+         ],
+         "%d term": [
+            "%d mục"
+         ],
+         "%1$s: %2$s is assigned to %3$s. They find it in their Translations queue.": [
+            "%1$s: %2$s được chỉ định cho %3$s. Họ sẽ thấy chúng trong hàng đợi Bản dịch của mình."
+         ],
+         "First available": [
+            "Người đầu tiên có sẵn"
+         ],
+         "%1$s: %2$s is waiting for you in Translations.": [
+            "%1$s: %2$s đang chờ bạn trong Bản dịch."
+         ],
+         "%1$s: %2$s is sent to %3$s.": [
+            "%1$s: %2$s được gửi tới %3$s."
+         ],
+         "%1$s: %2$s is being translated automatically.": [
+            "%1$s: %2$s đang được dịch tự động."
+         ],
+         "%1$s and %2$d of %3$d term": [
+            "%1$s và %2$d trên %3$d thuật ngữ"
+         ],
+         "%1$d of %2$d term": [
+            "%1$d trên %2$d thuật ngữ"
+         ],
+         "%1$s: %2$s sent for automatic translation.": [
+            "%1$s: %2$s đã gửi để dịch tự động."
+         ],
+         "%1$s: %2$s sent for translation.": [
+            "%1$s: %2$s đã gửi để dịch."
+         ],
+         "The term names could not be read.": [
+            "Không thể đọc tên thuật ngữ."
+         ],
+         "%s, and more": [
+            "%s và các mục khác"
+         ],
+         "Already translated: %s": [
+            "Đã dịch: %s"
+         ],
+         "In translation: %s": [
+            "Đang dịch: %s"
+         ],
+         "In translation with their posts: %s": [
+            "Đang dịch cùng với bài viết của chúng: %s"
+         ],
+         "Which terms were not sent again": [
+            "Các thuật ngữ nào không được gửi lại"
+         ],
+         "Terms not sent again: %1$d already translated and %2$d in translation (%3$d with their posts).": [
+            "Các thuật ngữ không gửi lại: %1$d đã dịch và %2$d đang dịch (%3$d cùng với bài viết của chúng)."
+         ],
+         "The terms could not be sent.": [
+            "Không thể gửi các thuật ngữ."
+         ],
+         "%1$s: %2$d term": [
+            "%1$s: %2$d thuật ngữ"
+         ],
+         "%1$s: not sent. %2$s no longer translates from %3$s to %4$s. <a>Choose another translator</a> at Step 2, then send again.": [
+            "%1$s: chưa gửi. %2$s không còn dịch từ %3$s sang %4$s. <a>Chọn người dịch khác</a> ở Bước 2, sau đó gửi lại."
+         ],
+         "Not sent (%s)": [
+            "Chưa gửi (%s)"
+         ],
+         "%1$s: %2$d term (%3$s).": [
+            "%1$s: %2$d thuật ngữ (%3$s)."
+         ],
+         "%1$s %2$d": [
+            "%1$s %2$d"
+         ],
          "Continue to %s": [
             "Tiếp tục đến %s"
          ],
@@ -1200,9 +1512,6 @@
          ],
          "<p><a><s>Contact WPML support for help</s></a></p>": [
             "<p><a><s>Liên hệ với bộ phận hỗ trợ của WPML để được giúp đỡ</s></a></p>"
-         ],
-         "Translation Service": [
-            "Dịch vụ dịch thuật"
          ],
          "sending for professional translation..": [
             "đang gửi để dịch thuật chuyên nghiệp.."
@@ -1221,6 +1530,12 @@
          ],
          "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
             "Trình biên tập dịch thuật hiện đang được chọn không hỗ trợ dịch tự động. Bạn phải bật <b>Trình biên tập dịch thuật nâng cao</b> để gửi nội dung để dịch tự động.<br/> Hãy kiểm tra cài đặt của bạn trên <wpml_settings>trang cài đặt WPML</wpml_settings>."
+         ],
+         "WPML cannot translate automatically: automatic translation is off for this site. Click \"Turn on automatic translation\" on the dashboard, then send again.": [
+            "WPML không thể dịch tự động: dịch tự động đã bị tắt cho trang web này. Nhấp vào “Bật dịch tự động” trên bảng điều khiển, sau đó gửi lại."
+         ],
+         "%1$s cannot be translated automatically from %2$s with your translation engines. Choose another translation method for it, or change your engines.": [
+            "Không thể dịch tự động sang %1$s từ %2$s bằng các bộ máy dịch của bạn. Hãy chọn một phương thức dịch khác cho mục này, hoặc thay đổi bộ máy dịch của bạn."
          ],
          "Validation error happened during send to translation.": [
             "Lỗi xác thực đã xảy ra trong quá trình gửi để dịch."
@@ -1291,20 +1606,92 @@
          "No, I will split jobs myself": [
             "Không, tôi sẽ tự chia các công việc"
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
-            "Một số thuật ngữ phân loại vẫn chưa được gửi. Những thuật ngữ đã gửi đang được dịch - nhấp vào Tiếp tục gửi để gửi phần còn lại."
+         "%d not translated": [
+            "%d chưa dịch"
+         ],
+         "%d needs an update": [
+            "%d cần cập nhật"
+         ],
+         "%d picked": [
+            "đã chọn %d"
+         ],
+         "plus %d parent term": [
+            "cộng thêm %d thuật ngữ cha"
+         ],
+         "%d of them a parent term": [
+            "%d trong số đó là thuật ngữ cha"
+         ],
+         "%1$s, %2$s": [
+            "%1$s, %2$s"
+         ],
+         "What will be sent": [
+            "Nội dung sẽ được gửi"
+         ],
+         "Target language": [
+            "Ngôn ngữ đích"
+         ],
+         "Terms sent now": [
+            "Các thuật ngữ gửi bây giờ"
+         ],
+         "Terms not sent again: already translated": [
+            "Các thuật ngữ không gửi lại: đã được dịch"
+         ],
+         "Terms not sent again: queued or in translation": [
+            "Các thuật ngữ không gửi lại: đang xếp hàng hoặc đang dịch"
+         ],
+         "Terms not sent again: in translation": [
+            "Các thuật ngữ không gửi lại: đang dịch"
+         ],
+         "%d with their posts": [
+            "%d cùng với bài viết của chúng"
+         ],
+         "queued by Translate Everything": [
+            "được đưa vào hàng đợi bởi Dịch mọi thứ"
+         ],
+         "Terms Translate Everything has queued are counted and not sent again. They are translated automatically.": [
+            "Các mục phân loại được Dịch mọi thứ đưa vào hàng đợi đã được tính và không gửi lại nữa. Chúng được dịch tự động."
+         ],
+         "Terms in translation, with their posts or from this section, are counted but not sent again. Their translation arrives with the job that has them.": [
+            "Các thuật ngữ đang dịch, cùng với bài viết của chúng hoặc từ phần này, được tính nhưng không gửi lại. Bản dịch của chúng sẽ đến cùng với công việc chứa chúng."
+         ],
+         "Terms you send from here are not sent again when their posts are translated.": [
+            "Các thuật ngữ bạn gửi từ đây sẽ không được gửi lại khi bài viết của chúng được dịch."
+         ],
+         "This send creates %d job for the translation service from the selected terms.": [
+            "Lần gửi này tạo %d công việc dịch thuật cho dịch vụ dịch thuật từ các thuật ngữ đã chọn."
+         ],
+         "%d term you did not select is not sent.": [
+            "%d thuật ngữ bạn không chọn sẽ không được gửi."
+         ],
+         "A picked term whose parent is not translated takes its parent along, so the hierarchy is kept: plus %1$d parent term (%2$s).": [
+            "Một thuật ngữ được chọn có thuật ngữ cha chưa dịch sẽ mang theo thuật ngữ cha của nó, để thứ bậc được giữ nguyên: cộng thêm %1$d thuật ngữ cha (%2$s)."
+         ],
+         "Translate automatically": [
+            "Dịch tự động"
+         ],
+         "Translate myself": [
+            "Tự dịch"
+         ],
+         "Assign a translator": [
+            "Chỉ định người dịch"
+         ],
+         "Assign translation service": [
+            "Chỉ định dịch vụ dịch thuật"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Click Continue sending to send the rest.": [
+            "Một số thuật ngữ phân loại vẫn chưa được gửi. Những mục đã gửi đang được dịch. Nhấp vào Tiếp tục gửi để gửi phần còn lại."
          ],
          "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
             "Các thuật ngữ phân loại vẫn chưa được gửi. Nhấp vào Tiếp tục gửi để gửi chúng."
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
-            "Một số thuật ngữ phân loại vẫn chưa được gửi. Những thuật ngữ đã gửi đang được dịch - hãy thử lại các mục chưa gửi để gửi phần còn lại."
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Retry the not-sent items to send the rest.": [
+            "Một số thuật ngữ phân loại vẫn chưa được gửi. Những mục đã gửi đang được dịch. Hãy thử lại các mục chưa gửi để gửi phần còn lại."
          ],
          "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
             "Các thuật ngữ phân loại vẫn chưa được gửi. Thử lại các mục chưa gửi để gửi chúng."
          ],
-         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
-            "Một số thuật ngữ phân loại đã không được gửi để dịch. Những thuật ngữ đã được gửi đang được dịch - hãy gửi phần còn lại một lần nữa để hoàn tất."
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated. Send the rest again to finish.": [
+            "Một số thuật ngữ phân loại không được gửi để dịch. Những mục đã gửi đang được dịch. Gửi lại phần còn lại để hoàn tất."
          ],
          "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
             "WPML không thể gửi các thuật ngữ phân loại để dịch, vì vậy không có thuật ngữ nào được gửi. Vui lòng thử lại."
@@ -1321,6 +1708,9 @@
          "Existing content": [
             "Nội dung hiện có"
          ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$sTổng cộng:%2$s %3$s"
+         ],
          "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
             "Bạn đã chọn dịch các chuỗi nằm trong %1$s. Chỉ những chuỗi này mới được dịch sang %2$s."
          ],
@@ -1330,14 +1720,8 @@
          "Source language": [
             "Ngôn ngữ nguồn"
          ],
-         "Target language": [
-            "Ngôn ngữ đích"
-         ],
          "Words to translate": [
             "Số từ cần dịch"
-         ],
-         "%1$sTotal:%2$s %3$s": [
-            "%1$sTổng cộng:%2$s %3$s"
          ],
          "Translation service additional options": [
             "Các tùy chọn bổ sung của dịch vụ dịch thuật"
@@ -1348,20 +1732,32 @@
          "Fetching translation service data...": [
             "Đang lấy dữ liệu dịch vụ dịch thuật..."
          ],
+         "%1$s: all %2$d terms": [
+            "%1$s: tất cả %2$d mục"
+         ],
+         "%1$s: %2$d of %3$d terms": [
+            "%1$s: %2$d trên tổng số %3$d mục"
+         ],
+         "%1$d Taxonomy (%2$s)": [
+            "%1$d phân loại (%2$s)"
+         ],
+         "Selected: %1$s · %2$s": [
+            "Đã chọn: %1$s · %2$s"
+         ],
+         "%d Post": [
+            "%d bài viết"
+         ],
+         "Selected: %s": [
+            "Đã chọn: %s"
+         ],
+         "Change": [
+            "Thay đổi"
+         ],
+         "The term counts could not be read.": [
+            "Không thể đọc số lượng thuật ngữ."
+         ],
          "-": [
             "-"
-         ],
-         "Translate automatically": [
-            "Dịch tự động"
-         ],
-         "Translate myself": [
-            "Tự dịch"
-         ],
-         "Assign a translator": [
-            "Chỉ định người dịch"
-         ],
-         "Assign translation service": [
-            "Chỉ định dịch vụ dịch thuật"
          ],
          "Do nothing": [
             "Không làm gì cả"
@@ -1371,9 +1767,6 @@
          ],
          "Choose a translator": [
             "Chọn một người dịch"
-         ],
-         "First available": [
-            "Người đầu tiên có sẵn"
          ],
          "(Me)": [
             "(tôi)"
@@ -1393,9 +1786,6 @@
          "Minimize": [
             "Thu nhỏ"
          ],
-         "PTC translates at higher quality and gives you publish-ready results.": [
-            "PTC dịch với chất lượng cao hơn và mang lại cho bạn kết quả sẵn sàng để xuất bản."
-         ],
          "Step 2": [
             "Bước 2"
          ],
@@ -1404,54 +1794,6 @@
          ],
          "Set up AI translation": [
             "Thiết lập dịch thuật AI"
-         ],
-         "Keep a wp-admin window open until WPML finishes translating": [
-            "Giữ một cửa sổ wp-admin mở cho đến khi WPML hoàn tất việc dịch"
-         ],
-         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
-            "WPML thường dịch nội dung của bạn ở chế độ nền mà bạn không cần phải ở lại trong trang quản trị WordPress. Tuy nhiên, WPML không thể kết nối tới trang web này, vì vậy nó sẽ nhận các bản dịch của bạn trong khi một cửa sổ wp-admin đang mở."
-         ],
-         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
-            "Bạn có thể tiếp tục làm việc ở bất kỳ đâu trong trang quản trị WordPress. Chỉ cần để một cửa sổ mở cho đến khi quá trình dịch hoàn tất."
-         ],
-         "Next check for translations in %s.": [
-            "Lần kiểm tra bản dịch tiếp theo trong %s."
-         ],
-         "Hide details": [
-            "Ẩn chi tiết"
-         ],
-         "What could be blocking it, and how to fix it": [
-            "Điều gì có thể đang chặn nó và cách khắc phục"
-         ],
-         "Check these on your site": [
-            "Kiểm tra những điều này trên trang web của bạn"
-         ],
-         "The site might be on a private network, in staging, or only reachable through a VPN.": [
-            "Trang web có thể đang ở trong mạng nội bộ, đang trong giai đoạn thử nghiệm hoặc chỉ có thể truy cập được qua VPN."
-         ],
-         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
-            "Xác thực HTTP cơ bản hoặc danh sách IP cho phép có thể đang chặn các yêu cầu từ bên ngoài."
-         ],
-         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
-            "Một plugin bảo mật, tường lửa hoặc WAF có thể đang từ chối các yêu cầu từ WPML."
-         ],
-         "The site might be in maintenance mode.": [
-            "Trang web có thể đang ở chế độ bảo trì."
-         ],
-         "Already fixed this on your site?": [
-            "Đã khắc phục lỗi này trên trang web của bạn?"
-         ],
-         "Check again whether the site is reachable": [
-            "Kiểm tra lại xem trang web có thể truy cập được không"
-         ],
-         "Checking…": [
-            "Đang kiểm tra…"
-         ],
-         "Check again": [
-            "Kiểm tra lại"
-         ],
-         "Still couldn't reach your site.": [
-            "Vẫn không thể kết nối tới trang web của bạn."
          ],
          "Automatic translations completed": [
             "Các bản dịch tự động đã hoàn thành"
@@ -1474,56 +1816,11 @@
          "Map the language": [
             "Ánh xạ ngôn ngữ"
          ],
-         "%d second": [
-            "%d giây"
+         "%d translation picked up.": [
+            "Đã nhận %d bản dịch."
          ],
-         "%d minute": [
-            "%d phút"
-         ],
-         "%d hour": [
-            "%d giờ"
-         ],
-         "%d day": [
-            "%d ngày"
-         ],
-         "%d translation": [
-            "%d bản dịch"
-         ],
-         "checking now": [
-            "đang kiểm tra ngay bây giờ"
-         ],
-         "next check in %s": [
-            "lần kiểm tra tiếp theo trong %s"
-         ],
-         "WPML stopped checking for delivered translations after repeated failures.": [
-            "WPML đã ngừng kiểm tra các bản dịch được gửi sau nhiều lần thất bại liên tiếp."
-         ],
-         "Receiving translations: last received %1$s ago · %2$s": [
-            "Đang nhận bản dịch: nhận lần cuối cách đây %1$s · %2$s"
-         ],
-         "Receiving translations: last received %s ago": [
-            "Đang nhận bản dịch: nhận lần cuối cách đây %s"
-         ],
-         "Receiving translations: no translations received yet · %s": [
-            "Đang nhận bản dịch: chưa nhận được bản dịch nào · %s"
-         ],
-         "Receiving translations: no translations received yet": [
-            "Đang nhận bản dịch: chưa nhận được bản dịch nào"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
-            "Đang nhận bản dịch: nhận lần cuối cách đây %1$s · %2$s đang chờ · %3$s"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting": [
-            "Đang nhận bản dịch: nhận lần cuối cách đây %1$s · %2$s đang chờ"
-         ],
-         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
-            "Đang nhận bản dịch: chưa nhận được bản dịch nào · %1$s đang chờ · %2$s"
-         ],
-         "Receiving translations: no translations received yet · %s waiting": [
-            "Đang nhận bản dịch: chưa nhận được bản dịch nào · %s đang chờ"
-         ],
-         "These translations are taking longer than they should to arrive.": [
-            "Các bản dịch này đang mất nhiều thời gian hơn bình thường để gửi đến."
+         "Nothing new to pick up yet.": [
+            "Chưa có nội dung mới nào để nhận."
          ],
          "Picking up translations…": [
             "Đang nhận bản dịch…"
@@ -1582,8 +1879,8 @@
          "New content is ready to translate": [
             "Nội dung mới đã sẵn sàng để dịch"
          ],
-         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
-            "%s đã có thể dịch được sau khi bạn xem xét chi phí dịch thuật, vì vậy Dịch mọi thứ đã không bao gồm chúng. Hãy xem xét chi phí và bao gồm chúng để giữ cho trang web của bạn được dịch đầy đủ."
+         "%s became translatable after Translate Everything was set up, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "%s đã chuyển sang trạng thái có thể dịch sau khi Dịch mọi thứ được thiết lập, vì vậy Dịch mọi thứ chưa bao gồm chúng. Đánh giá chi phí và thêm chúng vào để giữ cho trang web của bạn được dịch đầy đủ."
          ],
          "Review cost and include": [
             "Xem xét chi phí và bao gồm"
@@ -1602,15 +1899,6 @@
          ],
          "PTC can translate your software right inside your Git workflow.": [
             "PTC có thể dịch phần mềm của bạn ngay trong quy trình làm việc Git của bạn."
-         ],
-         "The following target languages do not support automatic translations: %s": [
-            "Các ngôn ngữ đích sau đây không hỗ trợ dịch tự động: %s"
-         ],
-         "To enable automatic translation map them to known languages.": [
-            "Để bật dịch tự động, hãy ánh xạ chúng tới các ngôn ngữ đã biết."
-         ],
-         "Map to known languages": [
-            "Ánh xạ tới các ngôn ngữ đã biết"
          ],
          "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
             "Để nhận được sự hỗ trợ, vui lòng <supportLink>mở một phiếu hỗ trợ trong Luồng diễn đàn của chúng tôi (Maiya)</supportLink>, nhấp vào nút “Sao chép tất cả” để lấy thông tin gỡ lỗi và “dán” nó vào đại lý Maiya của chúng tôi. Nếu bạn vẫn gặp sự cố, hãy sử dụng <logsLink>công cụ nhật ký</logsLink> để thu thập thêm dữ liệu."
@@ -1702,6 +1990,9 @@
          "Add your site description before you can turn this on.": [
             "Thêm mô tả trang web của bạn trước khi bạn có thể bật tính năng này."
          ],
+         "Translate Everything needs an active automatic translation account.": [
+            "Dịch mọi thứ cần có một tài khoản dịch tự động đang hoạt động."
+         ],
          "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
             "Bạn phải bật Trình biên tập dịch thuật nâng cao để kích hoạt Dịch mọi thứ tự động."
          ],
@@ -1754,7 +2045,7 @@
             "Trả một lần cho mỗi trang – chỉ tính phí các từ được thêm mới"
          ],
          "Per word, changes included": [
-            "Tính theo từng từ, bao gồm cả các thay đổi"
+            "Mỗi từ, bao gồm các thay đổi"
          ],
          "Your active engine": [
             "Công cụ đang hoạt động của bạn"
@@ -1876,11 +2167,8 @@
          "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
             "WPML sẽ ngừng tự động dịch nội dung mới và nội dung đã chỉnh sửa. Các bản dịch đã được phân phối vẫn giữ nguyên như hiện tại."
          ],
-         "%d translation is still in progress. You will not be charged for it.": [
-            "%d bản dịch vẫn đang được tiến hành. Bạn sẽ không bị tính phí cho chúng."
-         ],
-         "%d translation is currently in progress and will be cancelled.": [
-            "%d bản dịch hiện đang được tiến hành và sẽ bị hủy."
+         "Translations in progress will be cancelled and refunded. When you switch back on, changed pages will be sent again.": [
+            "Các bản dịch đang xử lý sẽ bị hủy và được hoàn tiền. Khi bật lại, các trang đã thay đổi sẽ được gửi lại."
          ],
          "You can adjust the content limits once Translate Everything finishes the current translation run.": [
             "Bạn có thể điều chỉnh giới hạn nội dung sau khi Dịch mọi thứ hoàn tất đợt dịch hiện tại."
@@ -1952,7 +2240,7 @@
             "có thể sử dụng, nhưng vẫn thấy lỗi"
          ],
          "Per word, changes included. ": [
-            "Tính theo từng từ, bao gồm cả các thay đổi. "
+            "Mỗi từ, bao gồm các thay đổi. "
          ],
          " to make changes free.": [
             " để thực hiện các thay đổi miễn phí."
@@ -2176,6 +2464,9 @@
          "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
             "Mục này cần cập nhật bản dịch nhưng trước đó đã được dịch bằng Trình soạn thảo WordPress. Việc sử dụng Trình biên tập dịch thuật của WPML sẽ ghi đè lên bản dịch hiện có."
          ],
+         "%s: review in progress": [
+            "%s: đang đánh giá"
+         ],
          "%1$s: %2$s%3$s": [
             "%1$s: %2$s%3$s"
          ],
@@ -2263,9 +2554,6 @@
          "Same as default": [
             "Giống như mặc định"
          ],
-         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
-            "Dịch tự động không khả dụng giữa %1$s và %2$s vì chúng được nhận dạng là cùng một ngôn ngữ."
-         ],
          "Translation paused": [
             "Bản dịch bị tạm dừng"
          ],
@@ -2308,8 +2596,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Số lượng này tính các trang, bài viết và sản phẩm cùng với các trường tùy chỉnh, văn bản trình tạo trang và văn bản phương tiện của chúng, cũng như các chuyên mục, thẻ và thuộc tính mà chúng sử dụng."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Số lượng này tính các trang, bài viết và sản phẩm cùng với các trường tùy chỉnh, văn bản trình tạo trang và văn bản phương tiện của chúng, các chuyên mục, thẻ và thuộc tính mà chúng sử dụng, cũng như các chuỗi của trang web. Một thuật ngữ được tính trong mọi mục sử dụng thuật ngữ đó và được tính riêng một lần, vì thuật ngữ đó được gửi đi để dịch theo cả hai cách."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Mục này đếm các trang, bài viết và sản phẩm cùng với các trường tùy chỉnh, văn bản trình tạo trang và văn bản phương tiện của chúng, các danh mục, thẻ và thuộc tính mà chúng sử dụng, cũng như các chuỗi trang web. Mỗi danh mục, thẻ hoặc thuộc tính chỉ được tính một lần trong hàng Các phân loại, chứ không tính lại cùng với các mục sử dụng nó."
          ],
          "Total items": [
             "Tổng số mục"
@@ -2349,6 +2637,9 @@
          ],
          "To use prepaid words, register WPML on this site.": [
             "Để sử dụng từ trả trước, hãy đăng ký WPML trên trang web này."
+         ],
+         "Checking…": [
+            "Đang kiểm tra…"
          ],
          "We could not reach our translation system.": [
             "Chúng tôi không thể kết nối tới hệ thống dịch thuật của mình."
@@ -2453,13 +2744,10 @@
             "Kết nối trang web này với tài khoản đó"
          ],
          "Activate Pay-As-You-Go": [
-            "Kích hoạt Trả theo mức sử dụng"
+            "Kích hoạt trả theo mức sử dụng"
          ],
          "Connect your sites to share translation memory, glossary and word quota.": [
             "Kết nối các trang web của bạn để chia sẻ bộ nhớ dịch, thuật ngữ và hạn ngạch từ."
-         ],
-         "Learn more": [
-            "Tìm hiểu thêm"
          ],
          "Copy your migration code:": [
             "Sao chép mã di chuyển của bạn:"
@@ -2547,6 +2835,9 @@
          ],
          "Scores based on WPML's internal MQM translation quality study.": [
             "Điểm số dựa trên nghiên cứu chất lượng dịch thuật MQM nội bộ của WPML."
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC dịch với chất lượng cao hơn và mang lại cho bạn kết quả sẵn sàng để xuất bản."
          ],
          "Select an item": [
             "Chọn một mục"

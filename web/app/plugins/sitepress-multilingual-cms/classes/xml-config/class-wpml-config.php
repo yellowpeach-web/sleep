@@ -16,7 +16,7 @@ class WPML_Config {
 	static $wpml_config_files = array();
 	static $active_plugins    = array();
 
-	private static $readonly_configs_before_import;
+	private static $tm_settings_before_import;
 
 	private static $imported_index_signature;
 
@@ -98,6 +98,14 @@ class WPML_Config {
 		}
 		self::$imported_index_signature = $index_signature;
 
+		self::reload_now();
+	}
+
+	public static function reload_now() {
+		if ( ! self::can_import() ) {
+			return false;
+		}
+
 		if ( ! function_exists( 'get_plugins' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
@@ -107,6 +115,8 @@ class WPML_Config {
 		self::$active_plugins    = array();
 
 		self::load_config_run();
+
+		return true;
 	}
 
 	static function load_config_run() {
@@ -169,12 +179,12 @@ class WPML_Config {
 	static function load_config_post_process() {
 		global $iclTranslationManagement;
 
-		if ( null === self::$readonly_configs_before_import ) {
+		if ( null === self::$tm_settings_before_import ) {
 			return;
 		}
 		$post_process = new WPML_TM_Settings_Post_Process( $iclTranslationManagement );
-		$post_process->run( self::$readonly_configs_before_import );
-		self::$readonly_configs_before_import = null;
+		$post_process->run( self::$tm_settings_before_import );
+		self::$tm_settings_before_import = null;
 	}
 
 	static function load_config_pre_process() {
@@ -183,7 +193,7 @@ class WPML_Config {
 
 		PreferenceSourceIndex::reset();
 
-		self::$readonly_configs_before_import = [];
+		self::$tm_settings_before_import = is_array( $tm_settings ) ? $tm_settings : [];
 		foreach (
 			[
 				WPML_POST_TYPE_READONLY_SETTING_INDEX,
@@ -191,8 +201,6 @@ class WPML_Config {
 				WPML_TERM_META_READONLY_SETTING_INDEX,
 			] as $index
 		) {
-			self::$readonly_configs_before_import[ $index ] =
-				isset( $tm_settings[ $index ] ) && is_array( $tm_settings[ $index ] ) ? $tm_settings[ $index ] : [];
 			$iclTranslationManagement->settings[ $index ] = [];
 			unset( $iclTranslationManagement->settings[ '__' . $index . '_prev' ] );
 		}
@@ -396,8 +404,10 @@ class WPML_Config {
 		$validate  = new WPML_XML_Config_Validate();
 		$transform = new WPML_XML2Array();
 
-		if ( ! empty( self::$wpml_config_files ) ) {
-			foreach ( self::$wpml_config_files as $file ) {
+		$config_files = (array) apply_filters( 'wpml_config_sources', self::$wpml_config_files );
+
+		if ( ! empty( $config_files ) ) {
+			foreach ( $config_files as $file ) {
 				if ( is_object( $file ) ) {
 					$config = $file->config;
 				} else {
@@ -511,7 +521,10 @@ class WPML_Config {
 			}
 
 			if ( isset( $wpml_config['built-with-page-builder']['value'] ) ) {
-				$wpml_config_all['built-with-page-builder'] = $wpml_config['built-with-page-builder']['value'];
+				$wpml_config_all['built-with-page-builder'] = array_merge(
+					$wpml_config_all['built-with-page-builder'],
+					(array) $wpml_config['built-with-page-builder']['value']
+				);
 			}
 
 			$all_configs['wpml-config'] = $wpml_config_all;

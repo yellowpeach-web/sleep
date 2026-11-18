@@ -11,6 +11,7 @@ class Provider {
 				EssentialAddons\ContentTimeline::get(),
 				PremiumAddonsForElementor\PremiumAddonsButton::get(),
 				LoopGrid::get(),
+				LoopGrid::getAlternateTemplates(),
 				LoopCarousel::get(),
 				Hotspot::get(),
 				Popup::get(),

@@ -2,6 +2,8 @@
 
 namespace WPML\TM\ATE\Download;
 
+use WPML\EditHistory\DeliveryAnswer;
+
 class Job {
 
 	const NOT_ENOUGH_CREDIT_STATUS = \WPML_TM_ATE_AMS_Endpoints::ATE_JOB_STATUS_NOT_ENOUGH;
@@ -42,6 +44,10 @@ class Job {
 
 	public $original_element_id = null;
 
+	public $ateReason = [];
+
+	public $editAnswer = null;
+
 	public static function fromAteResponse( \stdClass $item ) {
 		$job               = new self();
 		$job->ateJobId     = $item->ate_id;
@@ -53,6 +59,8 @@ class Job {
 		if ( $job->isUnsolvable ) {
 			$job->errorType = 'SyncError';
 		}
+		$job->ateReason  = self::reasonFieldsOf( $item );
+		$job->editAnswer = DeliveryAnswer::keysOf( $item );
 
 		if ( self::NOT_ENOUGH_CREDIT_STATUS === $job->ateStatus ) {
 			$job->errorType = self::ERROR_TYPE_CREDIT_EXHAUSTED;
@@ -65,6 +73,18 @@ class Job {
 		return $job;
 	}
 
+
+	public static function reasonFieldsOf( \stdClass $item ) {
+		$fields = [];
+		foreach ( get_object_vars( $item ) as $key => $value ) {
+			if ( preg_match( '/error|reason|code|detail/i', (string) $key )
+				&& ! in_array( $key, [ 'id', 'ate_id', 'status', 'download_link', 'is_unsolvable', 'message', 'errorType', 'errorData' ], true ) ) {
+				$fields[ $key ] = $value;
+			}
+		}
+
+		return $fields;
+	}
 
 	public function isCreditExhausted(): bool {
 		return self::ERROR_TYPE_CREDIT_EXHAUSTED === $this->errorType;

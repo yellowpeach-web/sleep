@@ -25,6 +25,10 @@ class HooksFactory implements \IWPML_Backend_Action_Loader, \IWPML_Frontend_Acti
 		$hooks[] = new CustomNamespacesHooks();
 		$hooks[] = new CurrentLanguageHooks();
 
+		if ( ! is_admin() ) {
+			$hooks[] = new DefaultLanguageFallbackHooks();
+		}
+
 		return $hooks;
 	}
 }

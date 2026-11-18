@@ -39,6 +39,8 @@ class AteCreateMarksPrune implements \IWPML_Backend_Action, \IWPML_Frontend_Acti
 	public function run() {
 		try {
 			$this->prune( time() );
+			$this->pruneHeldSends( time() );
+			$this->pruneCreateFailures( time() );
 		} catch ( \Throwable $e ) {
 			$this->logFailure( $e );
 		}
@@ -72,6 +74,14 @@ class AteCreateMarksPrune implements \IWPML_Backend_Action, \IWPML_Frontend_Acti
 		];
 	}
 
+	public function pruneHeldSends( $now ) {
+		return $this->prunePrefix( AteCreateReconciler::HELD_SEND_OPTION_PREFIX, $now );
+	}
+
+	public function pruneCreateFailures( $now ) {
+		return $this->prunePrefix( CreateFailureRecord::OPTION_PREFIX, $now );
+	}
+
 	private function prunePrefix( $prefix, $now ) {
 		$wpdb    = $this->wpdb();
 		$deleted = 0;
@@ -98,9 +108,13 @@ class AteCreateMarksPrune implements \IWPML_Backend_Action, \IWPML_Frontend_Acti
 			foreach ( $rows as $row ) {
 				$after = max( $after, (int) $row->option_id );
 
-				$goes = AteCreateReconciler::IN_FLIGHT_OPTION_PREFIX === $prefix
-					? $this->inFlightMarkerGoes( $row, $now )
-					: $this->markGoes( $row, $now );
+				if ( AteCreateReconciler::IN_FLIGHT_OPTION_PREFIX === $prefix ) {
+					$goes = $this->inFlightMarkerGoes( $row, $now );
+				} elseif ( AteCreateReconciler::HELD_SEND_OPTION_PREFIX === $prefix || CreateFailureRecord::OPTION_PREFIX === $prefix ) {
+					$goes = $this->heldSendGoes( $row, $now );
+				} else {
+					$goes = $this->markGoes( $row, $now );
+				}
 
 				if ( $goes && $this->deleteIfUnchanged( $row ) ) {
 					$deleted++;
@@ -117,6 +131,16 @@ class AteCreateMarksPrune implements \IWPML_Backend_Action, \IWPML_Frontend_Acti
 		}
 
 		return ! is_numeric( $row->option_value ) || (int) $row->option_value <= $now - self::IN_FLIGHT_GRACE;
+	}
+
+	private function heldSendGoes( $row, $now ) {
+		if ( null === $row->job_id || (int) $row->editor_job_id > 0 ) {
+			return true;
+		}
+
+		$at = $this->markedAt( $row->option_value );
+
+		return null !== $at && $at <= $now - self::MARK_MAX_AGE;
 	}
 
 	private function markGoes( $row, $now ) {

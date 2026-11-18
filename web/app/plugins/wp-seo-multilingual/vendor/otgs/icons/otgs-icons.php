@@ -3,7 +3,7 @@ if( ! defined( 'OTGS_ICONS_ROOT_URL' ) )
 	return;
 
 if( !defined( 'OTGS_ICONS_VERSION' ) )
-	define( 'OTGS_ICONS_VERSION', '1.0' );
+	define( 'OTGS_ICONS_VERSION', '1.0.8' );
 
 if( ! has_action( 'wp_enqueue_scripts', 'otgs_icons' ) )
 	add_action( 'wp_enqueue_scripts', 'otgs_icons' );

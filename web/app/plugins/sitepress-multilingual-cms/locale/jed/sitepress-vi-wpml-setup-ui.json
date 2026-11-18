@@ -127,6 +127,9 @@
          "Delete language pair(s)": [
             "Xóa (các) cặp ngôn ngữ"
          ],
+         "Can translate to and from all languages": [
+            "Có thể dịch qua lại giữa tất cả ngôn ngữ"
+         ],
          "An error occurred. Please try again.": [
             "Đã xảy ra lỗi. Vui lòng thử lại."
          ],
@@ -153,6 +156,60 @@
          ],
          "Back to Step %1$s: %2$s": [
             "Quay lại Bước %1$s: %2$s"
+         ],
+         "Available": [
+            "Có sẵn"
+         ],
+         "Not available": [
+            "Không có sẵn"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "Hiểu chủ đề, đối tượng và tông giọng của trang web"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "Chất lượng sẵn sàng để xuất bản, được đảm bảo bởi chúng tôi"
+         ],
+         "Review before publishing": [
+            "Đánh giá trước khi xuất bản"
+         ],
+         "Pay once per page – only added words are charged": [
+            "Trả phí một lần cho mỗi trang – chỉ tính phí các từ được thêm mới"
+         ],
+         "Per word, changes included": [
+            "Trên mỗi từ, bao gồm cả các thay đổi"
+         ],
+         "A legacy engine": [
+            "Một công cụ cũ"
+         ],
+         "<button>Switch to a different engine</button> if you prefer — no quality guarantee and no free translation edits with other engines.": [
+            "<button>Chuyển sang một công cụ khác</button> nếu bạn muốn — không có đảm bảo chất lượng và không chỉnh sửa bản dịch miễn phí với các công cụ khác."
+         ],
+         "Your content will be translated by <strong>Private Translation Cloud (PTC)</strong>, WPML's own AI engine. PTC lets you translate the entire site automatically, in one click, offering free translation edits.": [
+            "Nội dung của bạn sẽ được dịch bởi <strong>Private Translation Cloud (PTC)</strong>, công cụ AI riêng của WPML. PTC cho phép bạn dịch toàn bộ trang web tự động, chỉ với một cú nhấp chuột, cung cấp các chỉnh sửa bản dịch miễn phí."
+         ],
+         "Couldn't save — try again": [
+            "Không thể lưu — hãy thử lại"
+         ],
+         "Your content will be translated by <strong>%s</strong>, a machine translation engine. You pay per word, including changes to content that's already translated.": [
+            "Nội dung của bạn sẽ được dịch bởi <strong>%s</strong>, một công cụ dịch máy. Bạn trả phí theo mỗi từ, bao gồm cả các thay đổi đối với nội dung đã được dịch."
+         ],
+         "Switch to PTC": [
+            "Chuyển sang PTC"
+         ],
+         "Switch away from PTC?": [
+            "Ngừng sử dụng PTC?"
+         ],
+         "DeepL, Google Translate or Microsoft Translator": [
+            "DeepL, Google Translate hoặc Microsoft Translator"
+         ],
+         "Your engine now": [
+            "Công cụ hiện tại của bạn"
+         ],
+         "Switch away from PTC": [
+            "Ngừng sử dụng PTC"
+         ],
+         "Stay with PTC": [
+            "Tiếp tục dùng PTC"
          ],
          "Technical Details (for WPML Support)": [
             "Chi tiết kỹ thuật (dành cho Hỗ trợ WPML)"
@@ -186,6 +243,45 @@
          ],
          " and provide the technical details below (use the Copy button to copy them).": [
             " và cung cấp các chi tiết kỹ thuật bên dưới (sử dụng nút Sao chép để sao chép chúng)."
+         ],
+         "Publish without review": [
+            "Xuất bản mà không cần đánh giá"
+         ],
+         "Translations go live immediately in the target language.": [
+            "Các bản dịch sẽ hiển thị ngay lập tức ở ngôn ngữ đích."
+         ],
+         "Wait for review before publishing": [
+            "Chờ đánh giá trước khi xuất bản"
+         ],
+         "Translations stay as drafts until a translation manager approves them.": [
+            "Các bản dịch sẽ ở dạng bản nháp cho đến khi người quản lý dịch thuật phê duyệt."
+         ],
+         "Recommended": [
+            "Được khuyến nghị"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "Đối với DeepL, Google và Microsoft, chúng tôi khuyên bạn nên đánh giá bởi con người để xác nhận chúng chính xác. PTC cung cấp các bản dịch tốt hơn con người và hiểu rõ ngữ cảnh, vì vậy bạn có thể tự tin bỏ qua quá trình đánh giá."
+         ],
+         "Publish and mark for review": [
+            "Xuất bản và đánh dấu để đánh giá"
+         ],
+         "Translations go live but appear in a \"needs review\" queue.": [
+            "Các bản dịch sẽ hiển thị nhưng xuất hiện trong hàng đợi “cần đánh giá”."
+         ],
+         "After auto-translation": [
+            "Sau khi tự động dịch"
+         ],
+         "What happens to content once %s has translated it.": [
+            "Điều gì xảy ra với nội dung sau khi %s dịch xong."
+         ],
+         "Wait for review": [
+            "Chờ đánh giá"
+         ],
+         "%1$s (<strong>%2$s</strong>)": [
+            "%1$s (<strong>%2$s</strong>)"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "Bạn muốn làm gì khi WPML hoàn tất việc dịch nội dung của bạn một cách tự động?"
          ],
          "Loading AI Translation...": [
             "Đang tải dịch thuật AI..."
@@ -328,6 +424,15 @@
          "adding a custom language": [
             "thêm một ngôn ngữ tùy chỉnh"
          ],
+         "I will fix my server settings to display languages in directories later.": [
+            "Tôi sẽ sửa các cài đặt máy chủ để hiển thị ngôn ngữ trong các thư mục sau."
+         ],
+         "We could not verify your server's URL-rewrite support.": [
+            "Chúng tôi không thể xác minh hỗ trợ ghi lại URL (URL-rewrite) của máy chủ của bạn."
+         ],
+         "Learn more about required server settings to display languages in directories": [
+            "Tìm hiểu thêm về các cài đặt máy chủ bắt buộc để hiển thị ngôn ngữ trong các thư mục"
+         ],
          "I will change the permalink structure later.": [
             "Tôi sẽ thay đổi cấu trúc đường dẫn tĩnh sau."
          ],
@@ -367,8 +472,14 @@
          "This domain does not show this site.": [
             "Tên miền này không hiển thị trang web này."
          ],
+         "This address belongs to another site on this network.": [
+            "Địa chỉ này thuộc về một trang web khác trong mạng này."
+         ],
          "WPML could not reach this domain.": [
             "WPML không thể kết nối tới tên miền này."
+         ],
+         "If you choose this, these URLs will open a sub-site: %s.": [
+            "Nếu bạn chọn tùy chọn này, các URL sau sẽ mở một trang web con: %s."
          ],
          "The domain you have entered is invalid.": [
             "Tên miền bạn đã nhập không hợp lệ."
@@ -387,15 +498,6 @@
          ],
          "The URL rewrite is not configured in your server.": [
             "Việc ghi lại URL không được cấu hình trong máy chủ của bạn."
-         ],
-         "I will fix my server settings to display languages in directories later.": [
-            "Tôi sẽ sửa các cài đặt máy chủ để hiển thị ngôn ngữ trong các thư mục sau."
-         ],
-         "We could not verify your server's URL-rewrite support.": [
-            "Chúng tôi không thể xác minh hỗ trợ ghi lại URL (URL-rewrite) của máy chủ của bạn."
-         ],
-         "Learn more about required server settings to display languages in directories": [
-            "Tìm hiểu thêm về các cài đặt máy chủ bắt buộc để hiển thị ngôn ngữ trong các thư mục"
          ],
          "your pages": [
             "các trang của bạn"
@@ -421,11 +523,17 @@
          "Translate your posts": [
             "Dịch các bài viết của bạn"
          ],
-         "the Translation Dashboard": [
-            "Bảng điều khiển dịch thuật"
+         "%s will translate your whole site and keep new content translated from now on. You're charged per word, including later changes.": [
+            "%s sẽ dịch toàn bộ trang web của bạn và tiếp tục dịch nội dung mới kể từ bây giờ. Bạn bị tính phí theo mỗi từ, bao gồm cả những thay đổi sau này."
          ],
          "Private Translation Cloud (PTC) will translate your whole site and keep new content translated from now on. You pay once for what's translated — editing it afterward is free.": [
             "Private Translation Cloud (PTC) sẽ dịch toàn bộ trang web của bạn và duy trì việc dịch các nội dung mới từ nay về sau. Bạn chỉ trả tiền một lần cho những gì được dịch — việc chỉnh sửa sau đó là miễn phí."
+         ],
+         "Automatic translation will translate your whole site and keep new content translated from now on.": [
+            "Dịch tự động sẽ dịch toàn bộ trang web của bạn và tiếp tục dịch nội dung mới kể từ bây giờ."
+         ],
+         "the Translation Dashboard": [
+            "Bảng điều khiển dịch thuật"
          ],
          "Apply settings and start site's translation": [
             "Áp dụng cài đặt và bắt đầu dịch trang web"
@@ -439,8 +547,14 @@
          "the WooCommerce Multilingual setup": [
             "thiết lập WooCommerce Multilingual"
          ],
+         "%s will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "%s sẽ bắt đầu dịch trang web của bạn ngay bây giờ và tiếp tục dịch nội dung mới kể từ bây giờ. Tiếp theo, bạn sẽ thiết lập cửa hàng đa ngôn ngữ của mình. Các sản phẩm của bạn bắt đầu được dịch sau khi bạn hoàn tất thiết lập WooCommerce Multilingual."
+         ],
          "Private Translation Cloud (PTC) will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup. You pay once for what's translated. Editing it afterward is free.": [
             "Private Translation Cloud (PTC) sẽ bắt đầu dịch trang web của bạn ngay bây giờ và duy trì việc dịch các nội dung mới từ nay về sau. Tiếp theo, bạn sẽ thiết lập cửa hàng đa ngôn ngữ của mình. Các sản phẩm của bạn sẽ bắt đầu được dịch sau khi bạn hoàn thành thiết lập WooCommerce Multilingual. Bạn chỉ trả tiền một lần cho những gì được dịch. Việc chỉnh sửa sau đó là miễn phí."
+         ],
+         "Automatic translation will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "Dịch tự động sẽ bắt đầu dịch trang web của bạn ngay bây giờ và tiếp tục dịch nội dung mới kể từ bây giờ. Tiếp theo, bạn sẽ thiết lập cửa hàng đa ngôn ngữ của mình. Các sản phẩm của bạn bắt đầu được dịch sau khi bạn hoàn tất thiết lập WooCommerce Multilingual."
          ],
          "Continue to WooCommerce Multilingual Setup while translation begins": [
             "Tiếp tục thiết lập WooCommerce Multilingual trong khi quá trình dịch bắt đầu"
@@ -484,8 +598,14 @@
          "Applying your setup choices": [
             "Đang áp dụng các lựa chọn thiết lập của bạn"
          ],
+         "%s is translating your content. There's nothing else you need to do here.": [
+            "%s đang dịch nội dung của bạn. Bạn không cần làm gì thêm ở đây."
+         ],
          "PTC is translating your content. There's nothing else you need to do here.": [
             "PTC đang dịch nội dung của bạn. Bạn không cần phải làm gì thêm ở đây."
+         ],
+         "Your content is being translated. There's nothing else you need to do here.": [
+            "Nội dung của bạn đang được dịch. Bạn không cần làm gì thêm ở đây."
          ],
          "We're applying all your setup choices and preparing WPML. This is a one-time process.": [
             "Chúng tôi đang áp dụng tất cả các lựa chọn thiết lập của bạn và chuẩn bị WPML. Đây là quy trình chỉ thực hiện một lần."
@@ -580,38 +700,8 @@
          "Full details of the info we’re proposing to share": [
             "Chi tiết đầy đủ về thông tin mà chúng tôi đề xuất chia sẻ"
          ],
-         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
-            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> để giúp chọn chế độ tốt nhất cho trang web của bạn."
-         ],
-         "How would you like to translate your content?": [
-            "Bạn muốn dịch nội dung của mình như thế nào?"
-         ],
-         "Recommended": [
-            "Được khuyến nghị"
-         ],
-         "Translate Everything Automatically": [
-            "Dịch mọi thứ tự động"
-         ],
-         "Full-site automatic translation needs AI translation set up.": [
-            "Dịch tự động toàn bộ trang web cần thiết lập dịch thuật AI."
-         ],
-         "Set up AI translation": [
-            "Thiết lập dịch thuật AI"
-         ],
-         "Translate Some: You Choose What to Translate": [
-            "Dịch một phần: Bạn chọn nội dung để dịch"
-         ],
-         "Select this option": [
-            "Chọn tùy chọn này"
-         ],
          "How it works": [
             "Cách thức hoạt động"
-         ],
-         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
-            "PTC (Private Translation Cloud) là công cụ dịch thuật AI riêng của WPML. Nó dịch toàn bộ trang web của bạn sang mọi ngôn ngữ bạn đã chọn ở chế độ chạy ngầm. Bạn có thể chỉnh sửa bất kỳ bản dịch nào và loại trừ các loại bài viết."
-         ],
-         "Can't decide?": [
-            "Không thể quyết định?"
          ],
          "You select and submit what to translate.": [
             "Bạn chọn và gửi những gì cần dịch."
@@ -619,32 +709,35 @@
          "Costs": [
             "Chi phí"
          ],
-         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
-            "Trả tiền một lần cho tổng số nội dung được dịch.<br/><strong>Các bản sửa đổi là miễn phí</strong> — chỉ tính phí khi mở rộng nội dung."
-         ],
          "Pay per translation job submitted.<br/>Each update or new content batch is a separate charge.": [
             "Trả tiền cho mỗi công việc dịch thuật được gửi.<br/>Mỗi lần cập nhật hoặc đợt nội dung mới là một khoản phí riêng biệt."
-         ],
-         "Translation quality": [
-            "Chất lượng bản dịch"
-         ],
-         "WPML ensures excellent quality. Bad translations are refunded.": [
-            "WPML đảm bảo chất lượng tuyệt vời. Các bản dịch kém chất lượng sẽ được hoàn tiền."
          ],
          "Ideal for": [
             "Lý tưởng cho"
          ],
-         "Known upfront costs": [
-            "Biết trước chi phí"
+         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "PTC (Private Translation Cloud) là công cụ dịch thuật AI riêng của WPML. Nó dịch toàn bộ trang web của bạn sang mọi ngôn ngữ bạn đã chọn ở chế độ chạy ngầm. Bạn có thể chỉnh sửa bất kỳ bản dịch nào và loại trừ các loại bài viết."
          ],
-         "Unlimited post-translation editing": [
-            "Chỉnh sửa sau dịch không giới hạn"
+         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
+            "Trả tiền một lần cho tổng số nội dung được dịch.<br/><strong>Các bản sửa đổi là miễn phí</strong> — chỉ tính phí khi mở rộng nội dung."
          ],
-         "Marketing optimization": [
-            "Tối ưu hóa tiếp thị"
+         "Included with PTC": [
+            "Bao gồm trong PTC"
          ],
-         "Turn-key solutions": [
-            "Giải pháp trọn gói"
+         "Only with PTC — not with %s": [
+            "Chỉ có với PTC — không có với %s"
+         ],
+         "your current engine": [
+            "công cụ hiện tại của bạn"
+         ],
+         "%s translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "%s dịch toàn bộ trang web của bạn sang mọi ngôn ngữ bạn đã chọn ở chế độ nền. Bạn có thể chỉnh sửa bất kỳ bản dịch nào và loại trừ các loại bài đăng."
+         ],
+         "Charged per word, including changes to content that's already translated.": [
+            "Tính phí theo mỗi từ, bao gồm cả các thay đổi đối với nội dung đã được dịch."
+         ],
+         "You choose what to translate, from the Translation Dashboard or with \"+\" next to each page. PTC translates it.": [
+            "Quý vị chọn nội dung cần dịch từ Bảng điều khiển dịch thuật hoặc bằng dấu “+” bên cạnh mỗi trang. PTC sẽ dịch nội dung đó."
          ],
          "Partial site translation": [
             "Dịch một phần trang web"
@@ -652,8 +745,95 @@
          "Maximum control": [
             "Kiểm soát tối đa"
          ],
+         "Quality without the work": [
+            "Chất lượng mà không tốn công sức"
+         ],
+         "You choose what to translate. You or your translators write each translation in the Advanced Translation Editor.": [
+            "Quý vị chọn nội dung cần dịch. Quý vị hoặc người dịch của quý vị sẽ viết từng bản dịch trong Trình biên tập dịch thuật nâng cao."
+         ],
+         "No words used, unless you start from a machine translation in the editor.": [
+            "Không sử dụng từ nào, trừ khi quý vị bắt đầu từ bản dịch máy trong trình biên tập."
+         ],
+         "Your own translators": [
+            "Người dịch của riêng bạn"
+         ],
+         "Texts that need a human touch": [
+            "Các văn bản cần sự can thiệp của con người"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "PTC translates what you send. You review.": [
+            "PTC dịch nội dung quý vị gửi. Quý vị đánh giá."
+         ],
+         "I translate": [
+            "Tôi tự dịch"
+         ],
+         "You or your translators write it.": [
+            "Quý vị hoặc người dịch của quý vị sẽ viết nội dung."
+         ],
+         "When you start a translation, who translates?": [
+            "Khi bạn bắt đầu dịch, ai sẽ là người dịch?"
+         ],
+         "Who translates": [
+            "Ai dịch"
+         ],
          "Contact our support team for help": [
             "Liên hệ với đội ngũ hỗ trợ của chúng tôi để được trợ giúp"
+         ],
+         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
+            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> để giúp chọn chế độ tốt nhất cho trang web của bạn."
+         ],
+         "How would you like to translate your content?": [
+            "Bạn muốn dịch nội dung của mình như thế nào?"
+         ],
+         "Translate Everything Automatically": [
+            "Dịch mọi thứ tự động"
+         ],
+         "Translations always in sync": [
+            "Các bản dịch luôn được đồng bộ"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "Dịch tự động toàn bộ trang web cần thiết lập dịch thuật AI."
+         ],
+         "New and updated content translated automatically": [
+            "Nội dung mới và nội dung cập nhật được dịch tự động"
+         ],
+         "Set up AI translation": [
+            "Thiết lập dịch thuật AI"
+         ],
+         "Sites that publish often": [
+            "Các trang web thường xuyên xuất bản"
+         ],
+         "All your languages at once": [
+            "Tất cả ngôn ngữ của bạn cùng một lúc"
+         ],
+         "Translate Some: You Choose What to Translate": [
+            "Dịch một phần: Bạn chọn nội dung để dịch"
+         ],
+         "Select this option": [
+            "Chọn tùy chọn này"
+         ],
+         "WPML uses the Advanced Translation Editor. You can change the editor later in WPML > Settings > Translation editor and method.": [
+            "WPML sử dụng Trình biên tập dịch thuật nâng cao. Quý vị có thể thay đổi trình biên tập sau này trong WPML > Cài đặt > Trình biên tập và phương pháp dịch."
+         ],
+         "Quality guarantee, bad translations refunded": [
+            "Đảm bảo chất lượng, hoàn tiền cho các bản dịch kém"
+         ],
+         "Can't decide?": [
+            "Không thể quyết định?"
+         ],
+         "Pay once — revisions are free": [
+            "Thanh toán một lần — các bản sửa đổi là miễn phí"
+         ],
+         "Known upfront costs": [
+            "Biết trước chi phí"
+         ],
+         "Publish-ready results, no review needed": [
+            "Kết quả sẵn sàng để xuất bản, không cần đánh giá"
+         ],
+         "Marketing optimization based on your site and audience": [
+            "Tối ưu hóa tiếp thị dựa trên trang web và đối tượng của bạn"
          ],
          "Calculate Translation Costs": [
             "Tính toán chi phí dịch thuật"
@@ -668,7 +848,7 @@
             "Trước khi dịch mọi thứ"
          ],
          "You can continue without them. Nothing here stops the setup.": [
-            "Bạn có thể tiếp tục mà không cần chúng. Không có gì ở đây ngăn cản việc thiết lập."
+            "Bạn có thể tiếp tục mà không cần chúng. Không có gì ở đây cản trở quá trình thiết lập."
          ],
          "Translation Contributors": [
             "Người đóng góp dịch thuật"
@@ -888,6 +1068,9 @@
          ],
          "Ranking": [
             "Xếp hạng"
+         ],
+         "language URL directory and language name\u0004%1$s (%2$s)": [
+            "%1$s (%2$s)"
          ]
       }
    }

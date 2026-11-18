@@ -13,14 +13,29 @@
          "The translation could not be started because the server did not answer.": [
             "由于服务器未响应，无法开始翻译。"
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "您的会话已过期。请刷新此页面后重试。"
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "PTC 正在翻译。就绪后将打开编辑器。"
+         ],
          "This translation cannot be opened right now.": [
             "目前无法打开此翻译。"
          ],
          "Refresh this page": [
             "刷新此页面"
          ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "预付费字数不足，无法自动翻译此内容。请添加更多字数，然后重试。"
+         ],
+         "Get more words": [
+            "获取更多字数"
+         ],
+         "Close": [
+            "关闭"
+         ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
-            "此内容正在自动翻译中。如果您想进行其他操作，请先取消翻译作业。"
+            "此内容正在自动翻译。如果您想进行其他操作，请先取消翻译任务。"
          ],
          "You don't have the rights to review this language": [
             "您没有权限审核此语言"
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "正在翻译您的内容"
+         ],
+         "Translate Everything is active": [
+            "翻译所有内容处于活动状态"
          ],
          "%d translation notice": [
             "%d 条翻译通知"
@@ -50,13 +68,13 @@
             "我们注意到您最近的翻译活动中存在异常，因此暂停了您账户的自动翻译。请联系支持人员，我们将与您一起进行审核。"
          ],
          "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
-            "<b>自动翻译所有内容</b>已暂停：已达到每月支出限额"
+            "<b>自动翻译所有内容</b>已暂停：已达到每月限额"
          ],
          "Automatic translation is paused: monthly spending cap reached": [
             "自动翻译已暂停：已达到每月支出限额"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "此网站已达到为其设置的每月支出限额。提高限额或重置限额后，翻译将继续。只有账户所有者可以执行此操作。"
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "本网站已达到为其设置的每月限额。提高限额或限额重置后，翻译将继续进行。您可以在“AI 翻译：计费和使用情况”页面上提高限额。"
          ],
          "Preparing content for translation": [
             "正在准备翻译内容"
@@ -70,8 +88,8 @@
          "Your language, %s, must be mapped to a supported language in order to use automatic translation.": [
             "您站点上的以下语言必须映射到受支持的语言才能使用自动翻译：%s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "这些语言（%s）的内容无法自动翻译，除非您将它们映射到与默认语言不同的语言。"
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "%1$s 与这些语言之间不支持自动翻译，因为它们被识别为同一种语言：%2$s。请改为选择“复制”以将内容直接复制过去。"
          ],
          "%d translation waiting for review": [
             "%d 个翻译等待审核"
@@ -148,14 +166,11 @@
          "Pay now": [
             "立即支付"
          ],
-         "Get more words": [
-            "获取更多字数"
-         ],
          "Assign words": [
             "分配字数"
          ],
          "Go to Translation Jobs": [
-            "前往翻译作业"
+            "前往翻译任务"
          ],
          "Raise the cap": [
             "提高限额"

@@ -52,11 +52,14 @@ class GettextStringsService {
 			return false;
 		}
 
-		if ( $this->settingsRepository->isAutoregisterStringsTypeOnlyViewedByAdmin() && ! $this->settingsRepository->getIsCurrentUserAdmin() ) {
-			return false;
-		}
+		return $this->isAutoregisterAllowedForCurrentUser();
+	}
 
-		return true;
+	private function isAutoregisterAllowedForCurrentUser(): bool {
+		return ! (
+			$this->settingsRepository->isAutoregisterStringsTypeOnlyViewedByAdmin() &&
+			! $this->settingsRepository->getIsCurrentUserAdmin()
+		);
 	}
 
 	public function queueStringAsPendingIfUntranslatedOrNotTracked( $text, $domain, $context = '' ) {
@@ -103,10 +106,10 @@ class GettextStringsService {
 		$this->isProcessingString = true;
 
 		if (
-			$this->settingsRepository->isAutoregisterStringsTypeDisabled() ||
-			$this->settingsRepository->shouldNotAutoregisterStringsFromCurrentUrl() ||
+			! $this->settingsAllowQueueingForCurrentRequest() ||
 			strlen( $text ) === 0 ||
-			$this->isExcludedDomainStringValidator->validate( $text, $domain )
+			$this->isExcludedDomainStringValidator->validate( $text, $domain ) ||
+			! $this->isAutoregisterAllowedForCurrentUser()
 		) {
 			$this->isProcessingString = false;
 			return $text;
@@ -131,6 +134,24 @@ class GettextStringsService {
 
 		$this->isProcessingString = false;
 		return $text;
+	}
+
+	public function canQueueCustomStringsForCurrentRequest(): bool {
+		if ( $this->isProcessingString ) {
+			return false;
+		}
+
+		$this->isProcessingString = true;
+		try {
+			return $this->settingsAllowQueueingForCurrentRequest() && $this->isAutoregisterAllowedForCurrentUser();
+		} finally {
+			$this->isProcessingString = false;
+		}
+	}
+
+	private function settingsAllowQueueingForCurrentRequest(): bool {
+		return ! $this->settingsRepository->isAutoregisterStringsTypeDisabled()
+			&& ! $this->settingsRepository->shouldNotAutoregisterStringsFromCurrentUrl();
 	}
 
 	private function maybeTrackString( string $text, string $domain, string $requestUrl, ?string $context = null ) {

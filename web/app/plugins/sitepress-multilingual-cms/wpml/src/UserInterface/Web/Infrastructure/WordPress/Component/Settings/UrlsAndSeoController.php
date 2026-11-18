@@ -10,11 +10,18 @@ class UrlsAndSeoController implements PageRenderInterface {
 
   const LANGUAGES_PARTIAL = '/menu/languages.php';
 
-  const PAGE_URL_HEADING = 'Page URL';
+  const PAGE_URL_INNER_ID = 'wpml-page-url-inner';
   const PAGE_URL_PARENT_SECTION = 'ml-content-setup-sec-3';
   const PAGE_URL_WRAPPER_ID = 'page-url';
 
   const AFTER_SECTIONS_HOOK = 'wpml_admin_after_urls_and_seo_sections';
+
+  const SLUG_TRANSLATIONS_SECTION_ID = 'ml-content-setup-sec-4';
+
+
+  public static function rendersSlugTranslationsSection(): bool {
+    return defined( 'WPML_ST_PATH' ) && \wpml_is_st_loaded();
+  }
 
 
   public function render() {
@@ -23,7 +30,7 @@ class UrlsAndSeoController implements PageRenderInterface {
 
     SettingsPageChrome::printTitle(
       __( 'URLs and SEO', 'wpml' ),
-      __( 'How translated URLs are built, how search engines are told about them, and whether visitors are redirected by their browser language.', 'wpml' )
+      __( 'How translated URLs are built, how search engines are told about them, and which language visitors see when they arrive.', 'wpml' )
     );
 
     $languagesHtml = LegacySectionExtractor::captureLegacyPartial( ICL_PLUGIN_PATH . self::LANGUAGES_PARTIAL );
@@ -58,10 +65,11 @@ class UrlsAndSeoController implements PageRenderInterface {
       return;
     }
 
-    $inner = LegacySectionExtractor::extractInnerSectionByHeading(
+    $inner = LegacySectionExtractor::extractInnerSectionById(
       $mcsHtml,
       self::PAGE_URL_PARENT_SECTION,
-      self::PAGE_URL_HEADING
+      self::PAGE_URL_INNER_ID,
+      true
     );
     if ( $inner === '' ) {
       return;
@@ -125,7 +133,7 @@ class UrlsAndSeoController implements PageRenderInterface {
 
 
   private function renderSlugTranslationsSection(): void {
-    if ( ! defined( 'WPML_ST_PATH' ) ) {
+    if ( ! defined( 'WPML_ST_PATH' ) || ! self::rendersSlugTranslationsSection() ) {
       return;
     }
 

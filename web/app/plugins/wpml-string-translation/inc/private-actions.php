@@ -90,8 +90,7 @@ function icl_st_update_blogname_actions( $old, $new ) {
 		WPML_ST_Blog_Name_And_Description_Hooks::STRING_DOMAIN,
 		WPML_ST_Blog_Name_And_Description_Hooks::STRING_NAME_BLOGNAME,
 		$old,
-		$new,
-		true
+		$new
 	);
 }
 
@@ -100,7 +99,6 @@ function icl_st_update_blogdescription_actions( $old, $new ) {
 		WPML_ST_Blog_Name_And_Description_Hooks::STRING_DOMAIN,
 		WPML_ST_Blog_Name_And_Description_Hooks::STRING_NAME_BLOGDESCRIPTION,
 		$old,
-		$new,
-		true
+		$new
 	);
 }

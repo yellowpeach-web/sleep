@@ -18,9 +18,9 @@ class Repository {
 		$this->languageSwitcherModelBuilder = new \WPML_LS_Model_Build( $dependencies->settings(), $sitepress, 'wpml-ls-' );
 	}
 
-	public function getModel() {
+	public function getModel( $showCurrentLanguage = true ) {
 		return $this->languageSwitcherModelBuilder->get( new \WPML_LS_Slot( [
-			'display_link_for_current_lang' => true,
+			'display_link_for_current_lang' => $showCurrentLanguage,
 			'display_names_in_native_lang' => true,
 			'display_names_in_current_lang' => true,
 			'display_flags' => true,
@@ -53,7 +53,8 @@ class Repository {
 			Obj::propOr( '', 'url', $language ),
 			Obj::propOr( '', 'flag_url', $language ),
 			Obj::propOr( '', 'flag_title', $language ),
-			Obj::propOr( '', 'flag_alt', $language )
+			Obj::propOr( '', 'flag_alt', $language ),
+			Obj::propOr( '', 'hreflang', $language )
 		);
 	}
 

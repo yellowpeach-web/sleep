@@ -132,11 +132,11 @@
          "Legacy engine": [
             "Moteur hérité"
          ],
-         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
-            "Tarification héritée appliquée. %s est un moteur de traduction hérité, non recommandé pour les nouveaux sites et sera bientôt obsolète. Les sites existants conservent un taux de mots ajusté pour celui-ci."
-         ],
          "Switch to PTC": [
             "Passer à PTC"
+         ],
+         "Legacy pricing applied. %s is a legacy translation engine, not recommended for new sites and will be deprecated. Existing sites keep an adjusted word rate for it.": [
+            "Tarification héritée appliquée. %s est un moteur de traduction hérité, non recommandé pour les nouveaux sites et sera bientôt obsolète. Les sites existants conservent un taux de mots ajusté pour celui-ci."
          ],
          "This is what translating your current content needs today. It does not include some texts added by other plugins, such as forms or sliders, which are counted after setup is complete. Site strings from your theme and plugins are also counted after setup and typically add several hundred words. After that, edits are free. You pay again only for words you add.": [
             "Voici ce qui est nécessaire aujourd’hui pour traduire votre contenu actuel. Cela n’inclut pas certains textes ajoutés par d’autres extensions, tels que les formulaires ou les diaporamas, qui sont comptabilisés une fois la configuration terminée. Les chaînes du site provenant de votre thème et de vos extensions sont également comptabilisées après la configuration et ajoutent généralement plusieurs centaines de mots. Par la suite, les modifications sont gratuites. Vous ne payez à nouveau que pour les mots que vous ajoutez."
@@ -153,8 +153,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "Il prend en compte les pages, les articles et les produits avec leurs champs personnalisés, les textes des constructeurs de pages et des médias, ainsi que les catégories, les étiquettes et les attributs qu'ils utilisent."
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "Il prend en compte les pages, les articles et les produits avec leurs champs personnalisés, les textes des constructeurs de pages et des médias, les catégories, les étiquettes et les attributs qu'ils utilisent, ainsi que les chaînes du site. Un terme est compté dans chaque élément qui l'utilise et une fois séparément, car il est envoyé en traduction des deux manières."
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "Il prend en compte les pages, les articles et les produits avec leurs champs personnalisés, les textes du constructeur de pages et les textes de médias, ainsi que les catégories, les étiquettes et les attributs qu'ils utilisent, de même que les chaînes du site. Chaque catégorie, étiquette ou attribut n'est comptabilisé qu'une seule fois, dans la ligne Taxonomies, et n'est pas recompté avec les éléments qui l'utilisent."
          ],
          "Total items": [
             "Total des éléments"
@@ -377,7 +377,7 @@
             "Il y a %1$s%2$s mots%3$s sur votre compte WPML."
          ],
          "There are %1$s%2$s available on your WPML account.%3$s": [
-            "Il y en a %1$s%2$s disponibles sur votre compte WPML.%3$s"
+            "Il y a %1$s%2$s disponibles sur votre compte WPML.%3$s"
          ],
          "(Only the WPML account owner can do this.)": [
             "(Seul le propriétaire du compte WPML peut faire cela.)"

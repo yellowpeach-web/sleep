@@ -3,52 +3,80 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "X-Generator: babel-plugin-makepot\n"
 
-#: src/js/ate/AutoTranslate.js:28
+#: src/js/ate/AutoTranslate.js:39
 msgid "Sending for translation"
 msgstr ""
 
-#: src/js/ate/IntentControls.js:156
+#: src/js/ate/IntentControls.js:265
 msgid "The translation could not be started because the server did not answer."
 msgstr ""
 
-#: src/js/ate/IntentControls.js:245
+#: src/js/ate/IntentControls.js:366
+msgid "Your session has expired. Refresh this page and try again."
+msgstr ""
+
+#: src/js/ate/IntentControls.js:484
+#. Tooltip of the spinning icon after a click on "+": PTC translates the content, then WPML opens the editor. PTC is the name of WPML's automatic translation. Keep "PTC" as it is.
+msgid "PTC is translating. The editor opens when it is ready."
+msgstr ""
+
+#: src/js/ate/IntentControls.js:593
+#: src/js/ate/RefusalPopover.js:58
 msgid "This translation cannot be opened right now."
 msgstr ""
 
-#: src/js/ate/IntentControls.js:250
+#: src/js/ate/IntentControls.js:598
+#: src/js/ate/RefusalPopover.js:75
 msgid "Refresh this page"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/PostTranslationEditorSettings.js:118
-#: src/js/postEditTranslationEditor/components/SaveModal.js:30
+#: src/js/ate/RefusalPopover.js:57
+#. The popover next to a "+" in the WPML Language panel, when the site has not enough prepaid words for an automatic translation.
+msgid ""
+"Not enough prepaid words to translate this automatically. Add more words, "
+"then try again."
+msgstr ""
+
+#: src/js/ate/RefusalPopover.js:66
+#. The button of the popover next to a "+" in the WPML Language panel; it opens the window where the user buys or assigns words. Verb, imperative.
+msgid "Get more words"
+msgstr ""
+
+#: src/js/ate/RefusalPopover.js:83
+#. The screen reader name of the "×" that closes the popover next to a "+" in the WPML Language panel. Verb, imperative.
+msgid "Close"
+msgstr ""
+
+#: src/js/postEditTranslationEditor/components/PostTranslationEditorSettings.js:135
+#: src/js/postEditTranslationEditor/components/SaveModal.js:33
 #: src/js/postEditTranslationEditor/components/showDashboardEditor.js:29
 #. The name of the WPML screen where content is sent for translation. Used as a button label, as a tooltip and inside sentences.
 msgid "Translation Dashboard"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/PostTranslationEditorSettings.js:135
+#: src/js/postEditTranslationEditor/components/PostTranslationEditorSettings.js:152
 msgid "WPML Translation Editor"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/PostTranslationEditorSettings.js:142
-#: src/js/postEditTranslationEditor/components/SaveModal.js:28
+#: src/js/postEditTranslationEditor/components/PostTranslationEditorSettings.js:159
+#: src/js/postEditTranslationEditor/components/SaveModal.js:31
 #. The name of the standard WordPress editor, as opposed to WPML's own translation editor.
 msgid "WordPress Editor"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:104
+#: src/js/postEditTranslationEditor/components/SaveModal.js:108
 msgid ""
 "The WordPress Editor doesn't offer Automatic Translation, <b>Translation "
 "Memory</b> and other features that make translation easier."
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:107
+#: src/js/postEditTranslationEditor/components/SaveModal.js:111
 msgid ""
 "Also, switching back to WPML's Translation Editor later will require "
 "re-translating content that you translated with the WordPress editor."
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:115
+#: src/js/postEditTranslationEditor/components/SaveModal.js:119
 msgid ""
 "This translation was previously created in the WordPress editor. When you "
 "switch to WPML Translation Editor, the structure of the translated post "
@@ -56,67 +84,67 @@ msgid ""
 "translation as a base so the tone and terminology are preserved."
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:118
+#: src/js/postEditTranslationEditor/components/SaveModal.js:122
 #. Warning in the dialog that changes the translation editor. "This" is the switch to WPML's translation editor.
 msgid ""
 "This will overwrite content you translated with the WordPress Editor. If "
 "you switch now, you'll have to translate selected content again."
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:13
+#: src/js/postEditTranslationEditor/components/SaveModal.js:16
 msgid "I understand, switch to the WordPress Editor"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:14
+#: src/js/postEditTranslationEditor/components/SaveModal.js:17
 #. Label of the checkbox that confirms changing the translation editor. %s: the name of the editor being switched to.
 msgid "I understand, switch to %s"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:15
+#: src/js/postEditTranslationEditor/components/SaveModal.js:18
 msgid "I understand, switch to <b>Translation Dashboard</b>"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:41
+#: src/js/postEditTranslationEditor/components/SaveModal.js:44
 #. Heading of the dialog that confirms changing the translation editor. %s: the name of the editor being switched to.
 msgid "You are about to translate with the %s"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:47
+#: src/js/postEditTranslationEditor/components/SaveModal.js:50
 msgid ""
 "Translate with the WordPress Editor if you need different designs per "
 "language or if the content isn't compatible with WPML's Translation Editor."
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:57
+#: src/js/postEditTranslationEditor/components/SaveModal.js:60
 msgid "What do you want to translate?"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:81
+#: src/js/postEditTranslationEditor/components/SaveModal.js:84
 #. Button label that runs the action picked in the dropdown beside it, or applies the filter; verb, imperative.
 msgid "Apply"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:82
+#: src/js/postEditTranslationEditor/components/SaveModal.js:85
 #. Button label that closes a dialog or clears a filter without applying it: verb, imperative, not the noun "a cancellation".
 msgid "Cancel"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:91
+#: src/js/postEditTranslationEditor/components/SaveModal.js:94
 #. Option in the dialog that changes the translation editor: change it for this one item only. %s: the name of the kind of content in the singular, for example "post" or "page".
 msgid "Only this %s"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:91
+#: src/js/postEditTranslationEditor/components/SaveModal.js:94
 #. Badge beside the option WPML suggests; an adjective describing that option.
 msgid "Recommended"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:92
+#: src/js/postEditTranslationEditor/components/SaveModal.js:95
 #. Option in the dialog that changes the translation editor: change it for every item of this kind. %s: the name of the kind of content in the plural, for example "posts" or "pages".
 msgid "All %s"
 msgstr ""
 
-#: src/js/postEditTranslationEditor/components/SaveModal.js:93
+#: src/js/postEditTranslationEditor/components/SaveModal.js:96
 msgid "All the site's content"
 msgstr ""
 

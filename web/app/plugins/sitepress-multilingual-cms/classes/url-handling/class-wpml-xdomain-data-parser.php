@@ -66,8 +66,10 @@ class WPML_XDomain_Data_Parser {
 		$data = apply_filters( 'wpml_cross_domain_language_data', $data );
 
 		if ( ! empty( $data ) ) {
-			$encoded_data        = json_encode( $data );
-			$encoded_data        = $this->encryptor->encrypt( $encoded_data );
+			$encoded_data = $this->encryptor->encrypt( json_encode( $data ) );
+			if ( false === $encoded_data ) {
+				return $ret;
+			}
 			$base64_encoded_data = base64_encode( $encoded_data );
 			$ret['xdomain_data'] = urlencode( $base64_encoded_data );
 
@@ -108,9 +110,9 @@ class WPML_XDomain_Data_Parser {
 			}
 
 			if ( $xdomain_data_request ) {
-				$data         = base64_decode( $xdomain_data_request );
-				$data         = $this->encryptor->decrypt( $data );
-				$xdomain_data = (array) json_decode( $data, true );
+				$data = base64_decode( $xdomain_data_request, true );
+				$data = false === $data ? false : $this->encryptor->decrypt( $data );
+				$xdomain_data = false === $data ? array() : (array) json_decode( $data, true );
 			}
 		}
 		return $xdomain_data;

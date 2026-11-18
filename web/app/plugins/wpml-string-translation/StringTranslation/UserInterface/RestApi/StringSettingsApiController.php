@@ -42,13 +42,15 @@ class StringSettingsApiController extends AbstractController {
 							'type'    => 'integer',
 							'default' => 0,
 						],
-						'setNoticeThatCachePluginCanBlockAutoregisterAsDismissed' => [
-							'type'    => 'integer',
-							'default' => 0,
+						'shouldShowNoticeThatCachePluginCanBlockAutoregister' => [
+							'type' => 'boolean',
 						],
-						'setDetectStringsInJS'         => [
-							'type'    => 'integer',
-							'default' => 0,
+						'detectStringsInJS'            => [
+							'type' => 'boolean',
+						],
+						'visibleColumns'               => [
+							'type'                 => 'object',
+							'additionalProperties' => [ 'type' => 'boolean' ],
 						],
 					],
 				],
@@ -75,7 +77,7 @@ class StringSettingsApiController extends AbstractController {
 		}
 
 		if ( null !== $autoregisterType ) {
-			$this->settingsRepository->setAutoregisterStringsTypeSetting( $autoregisterType );
+			$this->settingsRepository->setAutoregisterStringsTypeSettingByOwner( $autoregisterType );
 		}
 
 		if ( null !== $shouldRegisterBackendStrings ) {

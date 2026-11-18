@@ -53,7 +53,7 @@ class WPML_TM_XLIFF {
 					$phase->setAttribute( 'phase-name', $name );
 					$phase->setAttribute( 'process-name', $data['process-name'] );
 					$note = $this->dom->createElement( 'note' );
-					$note->nodeValue = $data['note'];
+					$note->appendChild( $this->dom->createTextNode( $data['note'] ) );
 					$phase->appendChild( $note );
 					$phase_items[] = $phase;
 
@@ -128,10 +128,14 @@ class WPML_TM_XLIFF {
 
 	private function appendData( $type, $trans_unit, $trans_unit_element ) {
 		if ( array_key_exists( $type, $trans_unit ) ) {
-			$source       = $this->dom->createElement( $type );
-			$datatype     = isset( $trans_unit['attributes']['datatype'] ) ? $trans_unit['attributes']['datatype'] : '';
+			$source   = $this->dom->createElement( $type );
+			$datatype = isset( $trans_unit['attributes']['datatype'] ) ? $trans_unit['attributes']['datatype'] : '';
+			$content  = $trans_unit[ $type ]['content'];
+			if ( is_string( $content ) ) {
+				$content = \WPML\Utilities\Utf8Text::scrub( $content );
+			}
 			$source_cdata = $this->dom->createCDATASection(
-				$this->validate( $datatype, $trans_unit[ $type ]['content'] )
+				$this->validate( $datatype, $content )
 			);
 			$source->appendChild( $source_cdata );
 

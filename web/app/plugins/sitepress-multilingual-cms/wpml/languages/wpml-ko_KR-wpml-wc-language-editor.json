@@ -38,7 +38,7 @@
             "업데이트가 필요한 기존 콘텐츠가 없습니다."
          ],
          "%d post will be updated.": [
-            "%d개의 포스트가 업데이트됩니다."
+            "%d개의 글이 업데이트됩니다."
          ],
          "%d link will be adjusted.": [
             "%d개의 링크가 조정됩니다."
@@ -155,7 +155,7 @@
             "%1$s — %2$d개 항목"
          ],
          "Pages and posts": [
-            "페이지 및 포스트"
+            "페이지 및 글"
          ],
          "Products": [
             "상품"
@@ -176,7 +176,7 @@
             "카테고리, 태그 및 메뉴는 WordPress 휴지통이 없으므로 어떤 방식으로든 즉시 삭제됩니다."
          ],
          "Your site’s setting “when deleting a post, delete its translations too” is on. We will not apply it here, so nothing in %s is deleted.": [
-            "사이트의 “포스트 삭제 시 번역본도 삭제” 설정이 켜져 있습니다. 여기서는 적용하지 않으므로 %s의 어떤 항목도 삭제되지 않습니다."
+            "사이트의 “글을 삭제할 때 번역도 함께 삭제” 설정이 켜져 있습니다. 여기에는 이 설정이 적용되지 않으므로 %s의 항목은 삭제되지 않습니다."
          ],
          ", ": [
             ", "
@@ -565,6 +565,9 @@
          "Blocked by a firewall or CDN": [
             "방화벽 또는 CDN에 의해 차단됨"
          ],
+         "Used by another site": [
+            "다른 사이트에서 사용 중"
+         ],
          "Not valid": [
             "유효하지 않음"
          ],
@@ -588,6 +591,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s이(가) 로드되지만 방화벽 또는 CDN이 WPML의 확인 작업을 차단했습니다."
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "이 네트워크의 다른 사이트에서 사용 중: %s. 저장하려면 다른 도메인을 입력하세요."
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "도메인 유효성을 검사할 수 없습니다: %s. 이 사이트를 가리키는지 확인하거나, 그대로 저장하려면 “저장 시 유효성 검사”를 선택 해제하십시오."
@@ -931,6 +937,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "이 언어를 저장하려면 먼저 이 사이트에 기존에 있던 해당 언어의 콘텐츠를 복원할지, 아니면 새로 시작할지 선택하세요."
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "언어는 사이트의 기본 언어에 매핑할 수 없습니다. 대신 “자동으로 일치”를 선택하세요."
+         ],
          "You don’t have permission to change languages.": [
             "언어를 변경할 권한이 없습니다."
          ],
@@ -956,10 +965,10 @@
             "%1$s: %2$s에 대한 WordPress 언어 팩을 다운로드할 수 없어 번역 파일 없이 로케일이 저장되었습니다."
          ],
          "%1$s: the links in post %2$s did not match the old language code and were left as they were.": [
-            "%1$s: 포스트 %2$s의 링크가 이전 언어 코드와 일치하지 않아 그대로 유지되었습니다."
+            "%1$s: %2$s번 글의 링크가 이전 언어 코드와 일치하지 않아 그대로 유지되었습니다."
          ],
          "%1$s: the links in post %2$s could not be rewritten.": [
-            "%1$s: 포스트 %2$s의 링크를 다시 작성할 수 없습니다."
+            "%1$s: %2$s번 글의 링크를 다시 작성할 수 없습니다."
          ],
          "%1$s: some translation jobs could not be cancelled.": [
             "%1$s: 일부 번역 작업을 취소할 수 없습니다."
@@ -990,6 +999,9 @@
          ],
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "목록에서 언어를 찾을 수 없는 경우 <a>사용자 정의 언어를 추가</a>하세요."
+         ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s이(가) %3$d개 중 %2$d번째 위치로 이동되었습니다."
          ],
          "Default language": [
             "기본 언어"
@@ -1047,6 +1059,12 @@
          ],
          "Delete language": [
             "언어 삭제"
+         ],
+         "Move %s. Use the up and down arrow keys.": [
+            "%s 이동. 위/아래 화살표 키를 사용하세요."
+         ],
+         "Drag to change the order": [
+            "드래그하여 순서 변경"
          ],
          "Type to search all languages…": [
             "모든 언어를 검색하려면 입력하세요…"
@@ -1119,6 +1137,9 @@
          ],
          "Recognized as the same language as the default": [
             "기본 언어와 동일한 언어로 인식됨"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "자동 번역이 꺼져 있습니다. 활성화된 번역 엔진이 없습니다. 활성화하려면 <link>WPML → 설정 → AI 번역</link>으로 이동하세요."
          ],
          "%s (Regional)": [
             "%s (지역)"

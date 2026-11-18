@@ -37,14 +37,29 @@
          "Removing strings from <b>String Translation</b> table": [
             "<b>文字列翻訳</b>テーブルから文字列を削除しています"
          ],
+         "%s string waiting for translation was kept.": [
+            "翻訳待ちの文字列 %s 件は保持されました。"
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "文字列を<b>文字列翻訳</b>テーブルに戻すには、翻訳ファイルを再スキャンするか、文字列を翻訳可能として登録する必要がある場合があります。"
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "<a>サイトの文字列のスキャンと翻訳可能としての登録</a>についての詳細を読む。"
          ],
-         "Successfully removed strings": [
-            "文字列を正常に削除しました"
+         "Nothing removed: %s string is waiting for translation": [
+            "何も削除されませんでした：%s 件の文字列が翻訳待ちです"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "何も削除されませんでした：選択したドメインには未翻訳の文字列がありません"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "これらも削除するには、「翻訳待ちの文字列も削除する」を選択して、もう一度 [削除] をクリックしてください。"
+         ],
+         "OK": [
+            "OK"
+         ],
+         "Removed %s string": [
+            "%s 件の文字列を削除しました"
          ],
          "OK, Great": [
             "OK"
@@ -60,6 +75,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "文字列の削除が完了前に停止しました。削除されなかった文字列はまだテーブルに残っています。もう一度削除を試みてください。"
+         ],
+         "Successfully removed strings": [
+            "文字列を正常に削除しました"
          ]
       }
    }

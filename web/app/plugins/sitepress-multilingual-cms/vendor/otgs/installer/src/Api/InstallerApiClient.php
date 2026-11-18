@@ -26,12 +26,15 @@ class InstallerApiClient {
 
 	public function fetchSubscription( $siteKey, $source ) {
 		$requestParams = $this->subscription->prepareRequest( $siteKey, $source );
+		$response      = null;
 		try {
 			$response = $this->client->post( $requestParams );
 
-			return $this->subscription->parseResponse( $response );
+			return $this->subscription->parseResponse( $response, $this->client->url() );
 		} catch ( \Exception $exception ) {
-			throw new \OTGS_Installer_Fetch_Subscription_Exception( $exception->getMessage(), 0, $exception );
+			$failure = new \OTGS_Installer_Fetch_Subscription_Exception( $exception->getMessage(), 0, $exception );
+			$failure->set_evidence( SubscriptionEndpoint::evidence( $response ) );
+			throw $failure;
 		}
 	}
 

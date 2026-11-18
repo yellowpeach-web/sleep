@@ -26,6 +26,31 @@ use WPML\UserInterface\Web\Infrastructure\WordPress\Component\NoticeStartUsingDa
 
 return [
 
+
+  \WPML\Core\Component\Post\Application\LanguagePanel\Query\PostLanguagePanelQueryInterface::class =>
+    \WPML\Legacy\Component\Post\Application\LanguagePanel\PostLanguagePanelQuery::class,
+
+  \WPML\Core\Component\Post\Application\LanguagePanel\PanelDataFilterInterface::class =>
+    \WPML\Infrastructure\WordPress\Component\LanguagePanel\Filter\PanelDataFilter::class,
+
+  \WPML\Core\Component\Post\Application\LanguagePanel\EditorSaveRequestInterface::class =>
+    \WPML\Legacy\Component\Post\Application\LanguagePanel\EditorSaveRequest::class,
+
+  \WPML\Core\Component\Post\Application\LanguagePanel\TranslatableRestPostTypesQueryInterface::class =>
+    \WPML\Legacy\Component\Post\Application\LanguagePanel\TranslatableRestPostTypesQuery::class,
+
+  \WPML\Core\Component\Post\Application\LanguagePanel\ReleaseNoticeReaderInterface::class =>
+    \WPML\Legacy\Component\Post\Application\LanguagePanel\ReleaseNoticeReader::class,
+
+  \WPML\Core\Component\Post\Application\LanguagePanel\Write\PostLanguageWriteGatewayInterface::class =>
+    \WPML\Legacy\Component\Post\Application\LanguagePanel\Write\PostLanguageWriteGateway::class,
+
+  \WPML\Core\Component\Post\Application\LanguagePanel\Write\PostWriteAuthorizationInterface::class =>
+    \WPML\Legacy\Component\Post\Application\LanguagePanel\Write\PostWriteAuthorization::class,
+
+  \WPML\Core\Component\Post\Application\LanguagePanel\EditorScreenQueryInterface::class =>
+    \WPML\Legacy\Component\Post\Application\LanguagePanel\EditorScreen::class,
+
   \WPML\Core\Port\Persistence\DatabaseSchemaInfoInterface::class =>
     \WPML\Infrastructure\WordPress\Port\Persistence\DatabaseSchemaInfo::class,
 
@@ -65,6 +90,9 @@ return [
   \WPML\Core\Component\Translation\Application\Repository\TranslateEverythingCompletedMapsInterface::class =>
     \WPML\Legacy\Component\Translation\Application\Repository\TranslateEverythingCompletedMaps::class,
 
+  \WPML\Core\Component\Translation\Application\Repository\TermBundleMembersInterface::class =>
+    \WPML\Legacy\Component\Translation\Application\Repository\TermBundleMembers::class,
+
   \WPML\Core\Component\Translation\Application\Authorization\TranslationGroupAuthorizationInterface::class =>
     \WPML\Legacy\Component\Translation\Application\Authorization\TranslationGroupAuthorization::class,
 
@@ -73,6 +101,9 @@ return [
 
   \WPML\Core\SharedKernel\Component\Post\Application\Query\TranslatableTypesQueryInterface::class =>
     \WPML\Legacy\Component\Post\Application\Query\TranslatableTypesQuery::class,
+
+  \WPML\Core\SharedKernel\Component\Post\Application\Query\PublishedPostStatusesQueryInterface::class =>
+    \WPML\Legacy\Component\Post\Application\Query\PublishedPostStatusesQuery::class,
 
   \WPML\Core\SharedKernel\Component\Taxonomy\Application\Query\TranslatableTaxonomiesQueryInterface::class =>
     \WPML\Legacy\Component\Taxonomy\Application\Query\TranslatableTaxonomiesQuery::class,
@@ -104,6 +135,9 @@ return [
   \WPML\Core\Port\Remote\RemoteInterface::class =>
     \WPML\Infrastructure\WordPress\Port\Remote\Remote::class,
 
+  \WPML\Core\SharedKernel\Component\Translation\Domain\PackageOwnerInterface::class =>
+    \WPML\Infrastructure\WordPress\Port\Translation\PackageOwner::class,
+
   \WPML\Core\Component\Translation\Application\Query\ItemLanguageQueryInterface::class =>
     \WPML\Infrastructure\WordPress\Component\Translation\Application\Query\RegularItemsAndStringsLanguageQuery::class,
 
@@ -118,8 +152,14 @@ return [
   \WPML\Core\Component\ATE\Application\Query\WebsiteContextQueryInterface::class =>
     \WPML\Legacy\Component\ATE\Application\Query\WebsiteContextQuery::class,
 
+  \WPML\Core\SharedKernel\Component\ATE\Application\Query\AutomaticTranslationAccountQueryInterface::class =>
+    \WPML\Legacy\Component\ATE\Application\Query\AutomaticTranslationAccountQuery::class,
+
   \WPML\Core\Component\Translation\Application\Query\TranslateEverythingEnabledQueryInterface::class =>
     \WPML\Legacy\Component\Translation\Application\Query\TranslateEverythingEnabledQuery::class,
+
+  \WPML\Core\Component\Translation\Application\Query\AutomaticTranslationSupportQueryInterface::class =>
+    \WPML\Legacy\Component\Translation\Application\Query\AutomaticTranslationSupportQuery::class,
 
   \WPML\Core\Component\ATE\Application\Query\GlossaryInterface::class =>
     \WPML\Legacy\Component\ATE\Application\Query\Glossary::class,
@@ -139,11 +179,20 @@ return [
   \WPML\Core\Port\Persistence\QueryPrepareInterface::class =>
     \WPML\Infrastructure\WordPress\Port\Persistence\QueryPrepare::class,
 
+  \WPML\Core\SharedKernel\Component\Translation\Application\Query\TranslationToSendConditionInterface::class =>
+    \WPML\Infrastructure\WordPress\Component\Item\Application\Query\TranslationToSendCondition::class,
+
   \WPML\Core\Port\Persistence\DatabaseAlterInterface::class =>
     \WPML\Infrastructure\WordPress\Port\Persistence\DatabaseAlter::class,
 
   \WPML\Core\Port\Persistence\DatabaseWriteInterface::class =>
     \WPML\Infrastructure\WordPress\Port\Persistence\DatabaseWrite::class,
+
+  \WPML\Core\Port\Appearance\AppearanceReaderInterface::class =>
+    \WPML\Infrastructure\WordPress\Port\Appearance\AppearanceReader::class,
+
+  \WPML\Core\Port\Appearance\AppearanceSurfacesInterface::class =>
+    \WPML\Infrastructure\WordPress\Port\Appearance\AppearanceSurfaces::class,
 
   \WPML\Core\Component\Translation\Domain\Sender\TranslationSenderInterface::class =>
     \WPML\Legacy\Component\Translation\Sender\TranslationSender::class,
@@ -190,6 +239,18 @@ return [
   \WPML\Core\Component\TranslationProxy\Application\Service\TranslationProxyServiceInterface::class =>
     \WPML\Legacy\Component\TranslationProxy\Application\Service\TranslationProxyService::class,
 
+  \WPML\Core\SharedKernel\Component\Translation\Domain\TaxonomyBatchCommitterInterface::class =>
+    \WPML\Legacy\Component\TranslationProxy\Application\Service\TranslationProxyService::class,
+
+  \WPML\Core\Component\TranslationProxy\Application\Service\SendLockInterface::class =>
+    \WPML\Legacy\Component\TranslationProxy\Application\Service\SendLock::class,
+
+  \WPML\Core\Component\Translation\Application\Service\Taxonomy\TaxonomySendOperationCoordinatorInterface::class =>
+    \WPML\Legacy\Component\Translation\Sender\Taxonomy\TaxonomySendOperationCoordinator::class,
+
+  \WPML\Core\Component\Translation\Application\Service\Taxonomy\PostTermsForAutomaticSendInterface::class =>
+    \WPML\Legacy\Component\Translation\Sender\Taxonomy\PostTermsForAutomaticSend::class,
+
   \WPML\Core\Port\Event\DispatcherInterface::class =>
     \WPML\Infrastructure\WordPress\Port\Event\Dispatcher::class,
 
@@ -204,6 +265,9 @@ return [
 
   \WPML\Core\Component\Translation\Domain\Links\RepositoryInterface::class =>
     \WPML\Infrastructure\WordPress\Component\Translation\Domain\Links\Repository::class,
+
+  \WPML\Core\Component\Translation\Application\Update\Database\Links\LinksBackfillQueryInterface::class =>
+    \WPML\Infrastructure\WordPress\Component\Translation\Application\Update\Database\Links\LinksBackfillQuery::class,
 
   \WPML\Core\SharedKernel\Component\Post\Domain\PublicationStatusDefinitionsInterface::class        =>
     \WPML\Infrastructure\WordPress\SharedKernel\Post\Domain\PublicationStatusDefinitions::class,
@@ -230,9 +294,6 @@ return [
 
   \WPML\Core\Component\Communication\Domain\DismissedNoticesStorageInterface::class =>
     \WPML\Infrastructure\WordPress\Component\Communication\Domain\DismissedNoticesStorage::class,
-
-  WPML\Core\Component\Post\Domain\WordCount\ItemContentCalculator\PostContentFilterInterface::class =>
-    WPML\Infrastructure\WordPress\Component\Item\Domain\WordCount\ItemContentCalculator\PostContentFilter::class,
 
   WPML\Core\Component\Post\Domain\WordCount\Calculator\WordCountInterface::class =>
     WPML\Core\Component\Post\Domain\WordCount\Calculator\WordsToTranslateWordCount::class,
@@ -293,6 +354,9 @@ return [
   \WPML\Core\SharedKernel\Component\ATE\Application\Query\SiteSharedKeyQueryInterface::class =>
     \WPML\Legacy\Component\ATE\Application\Query\SiteSharedKeyQuery::class,
 
+  \WPML\Core\SharedKernel\Component\ATE\Application\Query\AmsCredentialsQueryInterface::class =>
+    \WPML\Legacy\Component\ATE\Application\Query\AmsCredentialsQuery::class,
+
   \WPML\Core\SharedKernel\Component\ATE\Application\Service\AtePingerInterface::class =>
     \WPML\Legacy\Component\ATE\Application\Service\AtePinger::class,
 
@@ -349,6 +413,9 @@ return [
   \WPML\Core\Component\WordsToTranslate\Domain\Post\Query\TranslationQueryInterface::class =>
     \WPML\Legacy\Component\WordsToTranslate\Domain\Post\TranslationQuery::class,
 
+  \WPML\Core\Component\WordsToTranslate\Domain\Post\Query\TermJobWordsQueryInterface::class =>
+    \WPML\Legacy\Component\WordsToTranslate\Domain\Post\TermJobWordsQuery::class,
+
   \WPML\Core\Component\WordsToTranslate\Domain\Post\StoreRepositoryInterface::class =>
     \WPML\Infrastructure\WordPress\Component\WordsToTranslate\Domain\Post\StoreRepository::class,
 
@@ -356,13 +423,15 @@ return [
     \WPML\Infrastructure\WordPress\Component\WordsToTranslate\Domain\Strings\StringQuery::class,
 
   \WPML\Core\Component\WordsToTranslate\Domain\Strings\Query\TranslationQueryInterface::class =>
-    \WPML\Infrastructure\WordPress\Component\WordsToTranslate\Domain\Strings\TranslationQuery::class,
+    \WPML\Legacy\Component\WordsToTranslate\Domain\Strings\TranslationQuery::class,
 
   \WPML\Core\Component\WordsToTranslate\Domain\StringBatch\Query\StringBatchQueryInterface::class =>
     \WPML\Infrastructure\WordPress\Component\WordsToTranslate\Domain\StringBatch\StringBatchQuery::class,
 
   \WPML\Core\Component\WordsToTranslate\Domain\StringPackage\Query\JobQueryInterface::class =>
     \WPML\Legacy\Component\WordsToTranslate\Domain\StringPackage\JobQuery::class,
+  \WPML\Core\Component\WordsToTranslate\Domain\StringPackage\Query\BeforeSetupPackagesQueryInterface::class =>
+    \WPML\Legacy\Component\WordsToTranslate\Domain\StringPackage\BeforeSetupPackagesQuery::class,
 
   \WPML\Core\Component\WordsToTranslate\Domain\StringPackage\Query\StringPackageQueryInterface::class =>
     \WPML\Infrastructure\WordPress\Component\WordsToTranslate\Domain\StringPackage\StringPackageQuery::class,
@@ -500,6 +569,9 @@ return [
     \WPML\Infrastructure\WordPress\Component\MinimumRequirements\Application\Repository\RequirementsRefreshLock::class,
 
   ServerInfoInterface::class => ServerInfo::class,
+
+  \WPML\Core\SharedKernel\Component\Server\Application\Query\TemplateCacheStateQueryInterface::class =>
+    \WPML\Legacy\Component\Server\Application\Query\TemplateCacheStateQuery::class,
 
   \WPML\Core\Component\Translation\Application\Query\HasPostsUsingNativeEditorQueryInterface::class =>
     \WPML\Infrastructure\WordPress\Component\Translation\Application\Query\HasPostsUsingNativeEditorQuery::class,

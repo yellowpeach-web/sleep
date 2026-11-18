@@ -91,65 +91,122 @@
          "Cancelled": [
             "Annullato"
          ],
-         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
-            "La traduzione automatica non è riuscita ripetutamente e WPML ha smesso di riprovare. Invia di nuovo o scarta il lavoro dalla Dashboard di traduzione, oppure annullalo qui."
+         "Published — Pending review": [
+            "Pubblicato — In attesa di revisione"
          ],
          "Needs translation": [
             "Necessita di traduzione"
          ],
-         "Needs update": [
-            "Necessita di un aggiornamento"
-         ],
-         "Translation ready to download": [
-            "Traduzione pronta per il download"
-         ],
-         "Completed": [
-            "Completato"
-         ],
-         "Failed - needs attention": [
-            "Non riuscito - richiede attenzione"
-         ],
-         "%s terms are published immediately because they don't support draft mode.": [
-            "%s termini vengono pubblicati immediatamente perché non supportano la modalità bozza."
-         ],
-         "%s are immediately published because they don't support draft mode.": [
-            "%s vengono pubblicati immediatamente perché non supportano la modalità bozza."
-         ],
-         "Published — Pending review": [
-            "Pubblicato — In attesa di revisione"
-         ],
-         "Draft — Pending review": [
-            "Bozza — In attesa di revisione"
-         ],
          "Review in progress": [
             "Revisione in corso"
-         ],
-         "Published — Review in progress": [
-            "Pubblicato — Revisione in corso"
-         ],
-         "Draft — Review in progress": [
-            "Bozza — Revisione in corso"
          ],
          "Waiting for your Pay-As-You-Go payment": [
             "In attesa del tuo pagamento a consumo"
          ],
+         "Translation ready to download": [
+            "Traduzione pronta da scaricare"
+         ],
          "Waiting for payment": [
             "In attesa di pagamento"
+         ],
+         "Waiting for words": [
+            "In attesa di parole"
+         ],
+         "Completed": [
+            "Completato"
          ],
          "Insufficient funds": [
             "Fondi insufficienti"
          ],
-         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
-            "La traduzione automatica è stata sospesa a causa di un errore temporaneo e riproverà automaticamente — non è necessaria alcuna azione. Se lo stato non cambia entro circa 30 minuti, contatta il supporto WPML."
+         "Sending": [
+            "Invio in corso"
+         ],
+         "Automatic translation is off, so this job is not retried. Resend it, or switch Translate Everything on.": [
+            "La traduzione automatica è disattivata, quindi questo lavoro non verrà ritentato. Invialo di nuovo o attiva Traduci tutto."
+         ],
+         "Waiting for you": [
+            "In attesa di una tua azione"
+         ],
+         "Failed - needs attention": [
+            "Non riuscito - richiede attenzione"
+         ],
+         "You can also resend the content or open the job in the Translation Queue.": [
+            "Puoi anche inviare nuovamente il contenuto o aprire il lavoro nella Coda di traduzione."
+         ],
+         "If it keeps failing for about a day, the job is marked as needing your attention.": [
+            "Se continua a non riuscire per circa un giorno, il lavoro verrà contrassegnato come richiedente attenzione."
          ],
          "In progress": [
             "In corso"
          ],
-         "View original": [
-            "Visualizza originale"
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "La traduzione automatica non è riuscita ripetutamente e WPML ha smesso di riprovare. Invia di nuovo o scarta il lavoro dalla Dashboard di traduzione, oppure annullalo qui."
+         ],
+         "Needs update": [
+            "Necessita di un aggiornamento"
+         ],
+         "Scheduled — Pending review": [
+            "Pianificato — In attesa di revisione"
+         ],
+         "Private — Pending review": [
+            "Privato — In attesa di revisione"
+         ],
+         "Draft — Pending review": [
+            "Bozza — In attesa di revisione"
+         ],
+         "Published — Review in progress": [
+            "Pubblicato — Revisione in corso"
+         ],
+         "Scheduled — Review in progress": [
+            "Pianificato — Revisione in corso"
+         ],
+         "Private — Review in progress": [
+            "Privato — Revisione in corso"
+         ],
+         "Draft — Review in progress": [
+            "Bozza — Revisione in corso"
+         ],
+         "WPML could not reach our translation system.": [
+            "WPML non è riuscito a raggiungere il nostro sistema di traduzione."
+         ],
+         "Our translation system did not accept this job.": [
+            "Il nostro sistema di traduzione non ha accettato questo lavoro."
+         ],
+         "WPML could not calculate the word count for this job.": [
+            "WPML non è riuscito a calcolare il conteggio parole per questo lavoro."
+         ],
+         "WPML could not read the price of automatic translation for this job.": [
+            "WPML non è riuscito a leggere il prezzo della traduzione automatica per questo lavoro."
+         ],
+         "WPML could not prepare this job for automatic translation.": [
+            "WPML non è riuscito a preparare questo lavoro per la traduzione automatica."
+         ],
+         "Sending this job to automatic translation failed.": [
+            "L'invio di questo lavoro alla traduzione automatica non è riuscito."
+         ],
+         "WPML tries again within a minute.": [
+            "WPML riproverà entro un minuto."
+         ],
+         "WPML tries again in about %d minutes.": [
+            "WPML riproverà tra circa %d minuti."
+         ],
+         "WPML tries again in about %d hours.": [
+            "WPML riproverà tra circa %d ore."
+         ],
+         "%s terms are published immediately because they don't support draft mode.": [
+            "I termini di %s vengono pubblicati immediatamente perché non supportano la modalità bozza."
+         ],
+         "%s are immediately published because they don't support draft mode.": [
+            "%s vengono pubblicati immediatamente perché non supportano la modalità bozza."
          ],
          "(no title)": [
             "(nessun titolo)"
+         ],
+         "%1$s (ID %2$d)": [
+            "%1$s (ID %2$d)"
+         ],
+         "View original": [
+            "Visualizza originale"
          ],
          "Automatic translation": [
             "Traduzione automatica"
@@ -436,7 +493,7 @@
             "Lingue"
          ],
          "Download XLIFF file couldn't be finished": [
-            "Impossibile completare il download del file XLIFF"
+            "Impossibile completare lo scaricamento del file XLIFF"
          ],
          "Could not load jobs for export": [
             "Impossibile caricare i lavori per l'esportazione"
@@ -472,7 +529,7 @@
             "Questo traduttore non è più disponibile. Ricarica la pagina e scegli di nuovo un traduttore."
          ],
          "Specify some jobs to resign": [
-            "Specifica alcuni lavori da cui rinunciare"
+            "Specifica alcuni lavori a cui rinunciare"
          ],
          "We could not resign jobs: %s": [
             "Impossibile rinunciare ai lavori: %s"
@@ -486,9 +543,6 @@
          "Failed to resign from jobs": [
             "Impossibile rinunciare ai lavori"
          ],
-         "The Advanced Editor jobs synchronization has failed": [
-            "La sincronizzazione dei lavori dell'Editor avanzato è fallita"
-         ],
          "Synchronization with the Professional Translation service has failed": [
             "La sincronizzazione con il servizio di traduzione professionale è fallita"
          ],
@@ -501,8 +555,40 @@
          "Batch sync couldn't be finished": [
             "Impossibile completare la sincronizzazione del lotto"
          ],
+         "More details": [
+            "Maggiori dettagli"
+         ],
+         "%s job was left out of the export.": [
+            "%s lavoro è stato escluso dall'esportazione.",
+            "%s lavori sono stati esclusi dall'esportazione."
+         ],
+         "%s job could not be exported. No file was downloaded.": [
+            "Impossibile esportare %s lavoro. Nessun file è stato scaricato.",
+            "Impossibile esportare %s lavori. Nessun file è stato scaricato."
+         ],
+         "This job was saved while this server had the PHP zlib extension, so its text is stored compressed. PHP on this server has no zlib now, so WPML cannot read it. Ask your hosting provider to enable the PHP zlib extension, then export it again.": [
+            "Questo lavoro è stato salvato quando il server disponeva dell'estensione PHP zlib, pertanto il suo testo è memorizzato in formato compresso. Al momento PHP su questo server non ha zlib, quindi WPML non può leggerlo. Chiedi al tuo provider di hosting di abilitare l'estensione PHP zlib, poi esportalo di nuovo.",
+            "Questi lavori sono stati salvati quando il server disponeva dell'estensione PHP zlib, pertanto il loro testo è memorizzato in formato compresso. Al momento PHP su questo server non ha zlib, quindi WPML non può leggerli. Chiedi al tuo provider di hosting di abilitare l'estensione PHP zlib, poi esportali di nuovo."
+         ],
+         "This job could not be exported.": [
+            "Impossibile esportare questo lavoro.",
+            "Impossibile esportare questi lavori."
+         ],
+         "%1$s (job %2$s)": [
+            "%1$s (lavoro %2$s)"
+         ],
+         "Job %s": [
+            "Lavoro %s"
+         ],
+         "and %s more job": [
+            "e un altro %s lavoro",
+            "e altri %s lavori"
+         ],
          "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
             "Il nostro sistema di traduzione non ha accettato questa richiesta (ha risposto %d). Attendi un minuto e riprova; contatta il supporto di WPML se il problema persiste."
+         ],
+         "The site stopped answering before this translation was confirmed. If it was not saved, the next download takes it again.": [
+            "Il sito ha smesso di rispondere prima della conferma di questa traduzione. Se non è stata salvata, il download successivo la scaricherà nuovamente."
          ]
       }
    }

@@ -7,6 +7,9 @@
             "plural_forms": "nplurals=1; plural=0;",
             "lang": "zh_TW"
          },
+         "(no title)": [
+            "(無標題)"
+         ],
          "Untranslated strings that I encounter on front-end while logged in": [
             "當我登入時，在前端遇到的未翻譯字串"
          ],
@@ -37,6 +40,15 @@
          "We resent %1$d of %2$d items, but %3$d failed. Please reload the page and try again.": [
             "我們已重新傳送 %2$d 個項目中的 %1$d 個，但有 %3$d 個失敗。請重新整理頁面並再試一次。"
          ],
+         "We resent %1$d of %2$d items.": [
+            "我們已重新傳送 %2$d 個項目中的 %1$d 個。"
+         ],
+         "%1$s from %2$s": [
+            "從 %2$s 到 %1$s"
+         ],
+         "%1$d item can't be translated automatically: %2$s. Choose another translation method for it, or change your engines.": [
+            "%1$d 個項目無法自動翻譯：%2$s。請為這些項目選擇其他翻譯方法，或變更您的翻譯引擎。"
+         ],
          "Error in fetching default translation batch name": [
             "擷取預設翻譯批次名稱時發生錯誤"
          ],
@@ -51,6 +63,9 @@
          ],
          "Validation failed": [
             "驗證失敗"
+         ],
+         "The translation service batch could not be committed. Continue sending to try again.": [
+            "無法提交翻譯服務批次。請繼續傳送以重試。"
          ],
          "%s: labels and slug": [
             "%s：標籤與代稱"
@@ -91,6 +106,12 @@
          "They are still waiting and will be tried again on the next download.": [
             "它們仍在等待中，並將在下次下載時再次嘗試。"
          ],
+         "Job %d": [
+            "工作 %d"
+         ],
+         "and %d more": [
+            "以及另外 %d 個"
+         ],
          "Status: ": [
             "狀態： "
          ],
@@ -130,11 +151,11 @@
          "Switching…": [
             "正在切換…"
          ],
-         "Translation engine controls couldn't load. Reload the page and try again.": [
-            "翻譯引擎控制項無法載入。請重新整理頁面並再試一次。"
-         ],
          "We couldn't confirm the switch. Try again, or reload to see the current engine.": [
             "我們無法確認切換。請再試一次，或重新整理以查看目前的引擎。"
+         ],
+         "Translation engine controls couldn't load. Reload the page and try again.": [
+            "翻譯引擎控制項無法載入。請重新整理頁面並再試一次。"
          ],
          "Loading translation engine settings…": [
             "正在載入翻譯引擎設定…"
@@ -289,14 +310,20 @@
          "Select %s": [
             "選取 %s"
          ],
-         "(no title)": [
-            "(無標題)"
+         "Appears on the site": [
+            "顯示於網站上"
+         ],
+         "Not shown yet": [
+            "尚未顯示"
          ],
          "Image": [
             "圖片"
          ],
          "%s Title": [
             "%s 標題"
+         ],
+         "Source": [
+            "來源"
          ],
          "%s Date": [
             "%s 日期"
@@ -328,9 +355,6 @@
          "Show selected items": [
             "顯示選取的項目"
          ],
-         "Looking for more items...": [
-            "正在尋找更多項目..."
-         ],
          " / page": [
             " / 頁"
          ],
@@ -339,6 +363,9 @@
          ],
          "Next": [
             "下一頁"
+         ],
+         "Looking for more items...": [
+            "正在尋找更多項目..."
          ],
          "Your site's content is too vast for a single translation batch. Use filters to reduce the selection, then \"select all\".": [
             "您的網站內容過多，無法放入單一翻譯批次。請使用篩選條件減少選取範圍，然後點選「全選」。"
@@ -370,11 +397,29 @@
          "Select all %ss": [
             "選取所有 %s"
          ],
+         "%d not shown on the site yet": [
+            "尚有 %d 個項目未顯示在網站上"
+         ],
+         "Show them": [
+            "顯示這些項目"
+         ],
+         "Hide them": [
+            "隱藏這些項目"
+         ],
          "Save note": [
             "儲存備註"
          ],
-         "The following target languages do not support automatic translation: %s. <a>Map to known languages</a> to enable automatic translation.": [
-            "以下目標語言不支援自動翻譯：%s。<a>對應至已知語言</a>以啟用自動翻譯。"
+         "%1$s and %2$s": [
+            "%1$s 和 %2$s"
+         ],
+         "The following target languages do not support automatic translation: %s.": [
+            "以下目標語言不支援自動翻譯：%s。"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "%1$s 與 %2$s 之間無法使用自動翻譯，因為它們被辨識為相同的語言。請改選「複製」以複製內容。"
+         ],
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
+            "由於 %1$s 和 %2$s 被識別為相同的語言，因此無法在兩者之間使用自動翻譯。"
          ],
          "The site's default language %s doesn't support automatic translation.": [
             "網站的預設語言 %s 不支援自動翻譯。"
@@ -418,8 +463,8 @@
          "Raise the cap": [
             "提高上限"
          ],
-         "Only the account owner can do this.": [
-            "只有帳戶擁有者可以執行此操作。"
+         "You can raise it on the AI Translation: billing and usage page.": [
+            "您可以在「AI 翻譯：帳單與使用情況」頁面提高限額。"
          ],
          "Show strings in:": [
             "顯示字串於："
@@ -442,9 +487,6 @@
          "Domain": [
             "網域"
          ],
-         "Source": [
-            "來源"
-         ],
          "Type": [
             "類型"
          ],
@@ -460,11 +502,8 @@
          "All sources": [
             "所有來源"
          ],
-         "Frontend (viewed)": [
-            "前端（已檢視）"
-         ],
-         "Backend (viewed)": [
-            "後端（已檢視）"
+         "Seen in the admin": [
+            "見於管理後台"
          ],
          "Unknown": [
             "未知"
@@ -478,17 +517,11 @@
          "Search string or a name": [
             "搜尋字串或名稱"
          ],
-         "This filter is available only if source is set to \"Frontend\" or \"Backend\".": [
-            "此篩選條件僅在來源設定為「前端」或「後端」時可用。"
+         "%1$s, %2$s and %3$s": [
+            "%1$s、%2$s 和 %3$s"
          ],
-         "front-end": [
-            "前端"
-         ],
-         "back-end": [
-            "後端"
-         ],
-         "viewed": [
-            "已檢視"
+         "This filter is available only when Source is \"Appears on the site\" or \"Seen in the admin\".": [
+            "僅當來源為「顯示於網站上」或「見於管理後台」時，此篩選條件才可用。"
          ],
          "Opens the theme and plugin localization page, where you can scan your theme and plugins for strings that are not yet registered and make them available for translation here.": [
             "開啟佈景主題與外掛在地化頁面，您可以在該處掃描佈景主題與外掛中尚未註冊的字串，並使其在此處可供翻譯。"
@@ -604,8 +637,8 @@
          "You can only translate %1$s from the site's default language (%2$s).": [
             "您只能從網站的預設語言 (%2$s) 翻譯 %1$s。"
          ],
-         "Search taxonomy or a name": [
-            "搜尋分類法或名稱"
+         "Search taxonomies and terms": [
+            "搜尋分類法與項目"
          ],
          "Filter by post type": [
             "依文章類型篩選"
@@ -619,6 +652,9 @@
          "No translatable taxonomies match the current filters.": [
             "沒有可翻譯的分類法符合目前的篩選條件。"
          ],
+         "Words in the terms, in %s": [
+            "項目中的字數，以 %s 計算"
+         ],
          "Select all taxonomies": [
             "選取所有分類法"
          ],
@@ -628,11 +664,20 @@
          "Terms in": [
             "項目於"
          ],
-         "Post types": [
-            "文章類型"
+         "Used on": [
+            "用於"
          ],
-         "Translated / Total terms": [
-            "已翻譯 / 總項目數"
+         "Terms": [
+            "詞彙"
+         ],
+         "Words": [
+            "字數"
+         ],
+         "Hide terms": [
+            "隱藏項目"
+         ],
+         "Choose terms": [
+            "選擇項目"
          ],
          "translated": [
             "已翻譯"
@@ -658,11 +703,32 @@
          "%1$s: %2$s": [
             "%1$s：%2$s"
          ],
-         "Open %s in the Taxonomy Translation tab": [
-            "在分類法翻譯分頁中開啟 %s"
+         "Translated": [
+            "已翻譯"
+         ],
+         "Partially translated": [
+            "部分翻譯"
+         ],
+         "Translation needs update": [
+            "翻譯需要更新"
+         ],
+         "Preparing for translation": [
+            "正在準備翻譯"
+         ],
+         "Translation stalled": [
+            "翻譯停滯"
+         ],
+         "Not translated": [
+            "未翻譯"
+         ],
+         "Status icons": [
+            "狀態圖示"
          ],
          "Taxonomy labels and slug": [
             "分類法標籤與代稱"
+         ],
+         "The taxonomy's own texts: its singular and plural names and its URL slug. Not its terms.": [
+            "分類法本身的文字：單數與複數名稱及其網址代稱 (slug)。不含其分類項目。"
          ],
          "WPML String Translation is not active.": [
             "WPML String Translation 尚未啟用。"
@@ -694,14 +760,125 @@
          "Rescan": [
             "重新掃描"
          ],
-         "%d Taxonomy selected": [
-            "已選取 %d 個分類法"
+         "Send categories, tags and other terms for translation, a whole taxonomy or the terms you pick.": [
+            "送交分類、標籤及其他項目進行翻譯，可選擇整個分類法或您挑選的項目。"
          ],
-         "<b>Translate Everything Automatically</b> (TEA) is active.": [
-            "<b>自動翻譯所有內容</b> (TEA) 已啟用。"
+         "Edit translations manually": [
+            "手動編輯翻譯"
          ],
-         "New and updated terms in Translatable taxonomies are queued automatically. Select taxonomies below to send a one-off bulk job for any remaining untranslated terms.": [
-            "可翻譯分類法中新增與更新的項目會自動排入佇列。請在下方選取分類法，為任何剩餘的未翻譯項目傳送一次性批次工作。"
+         "(opens in a new tab)": [
+            "（在新分頁中開啟）"
+         ],
+         "To edit one term's translation by hand: <link/>": [
+            "若要手動編輯單一項目的翻譯：<link/>"
+         ],
+         "There is nothing to send. New and changed terms will show up here.": [
+            "沒有可送交的內容。新增和變更的項目將會顯示在此處。"
+         ],
+         "Every term is translated into every language.": [
+            "所有項目皆已翻譯為所有語言。"
+         ],
+         "No taxonomy or term matches “%s”.": [
+            "沒有符合「%s」的分類法或項目。"
+         ],
+         "Clear search": [
+            "清除搜尋"
+         ],
+         "<b>Translate Everything</b> is on. It translates every term of every translatable taxonomy automatically. You do not need to send terms or pick them.": [
+            "<b>Translate Everything</b> 已開啟。系統會自動翻譯每個可翻譯分類法的所有分類項目。您無需傳送或挑選項目。"
+         ],
+         "Use this section to see their status, or to send terms to a translator or a translation service.": [
+            "使用此區段查看其狀態，或將分類字詞傳送給翻譯人員或翻譯服務。"
+         ],
+         "%1$d sub-term, %2$d not translated": [
+            "%1$d 個子項目，%2$d 個尚未翻譯"
+         ],
+         "%d sub-term, all translated": [
+            "%d 個子項目，已全部翻譯"
+         ],
+         "%1$s and its %2$d sub-term selected.": [
+            "已選取 %1$s 及其 %2$d 個子項目。"
+         ],
+         "%1$s and its %2$d sub-term cleared.": [
+            "已清除 %1$s 及其 %2$d 個子項目的選取狀態。"
+         ],
+         "Select %1$s, in %2$s": [
+            "選取 %1$s，位於 %2$s"
+         ],
+         "Hide sub-terms of %s": [
+            "隱藏 %s 的子項目"
+         ],
+         "Show sub-terms of %s": [
+            "顯示 %s 的子項目"
+         ],
+         "in": [
+            "在"
+         ],
+         "Added because a sub-term is selected": [
+            "因已選取子項目而一併加入"
+         ],
+         "The terms could not be loaded.": [
+            "無法載入項目。"
+         ],
+         "Showing %1$d term matching “%2$s”": [
+            "正在顯示符合「%2$s」的 %1$d 個項目"
+         ],
+         "Showing roots %1$d to %2$d of %3$d": [
+            "正在顯示第 %1$d 至 %2$d 個頂層項目，共 %3$d 個"
+         ],
+         "Showing %1$d to %2$d of %3$d": [
+            "顯示第 %1$d 至 %2$d 項，共 %3$d 項"
+         ],
+         "%s: terms": [
+            "%s：項目"
+         ],
+         "All terms are selected until you untick some.": [
+            "除非取消勾選，否則所有項目均預設選取。"
+         ],
+         "Terms matching “%s”, found by the section search.": [
+            "透過區段搜尋找到符合「%s」的項目。"
+         ],
+         "%1$s: %2$d term matches the section search.": [
+            "%1$s：有 %2$d 個分類項目符合此區段的搜尋條件。"
+         ],
+         "Show all terms": [
+            "顯示所有項目"
+         ],
+         "Select all %d terms": [
+            "選取全部 %d 個項目"
+         ],
+         "Ticking a parent selects its sub-terms.": [
+            "勾選父項目會同時選取其子項目。"
+         ],
+         "Expand all": [
+            "全部展開"
+         ],
+         "Collapse all": [
+            "全部摺疊"
+         ],
+         "Select all terms on this page": [
+            "選取此頁面上的所有項目"
+         ],
+         "Term": [
+            "項目"
+         ],
+         "No term matches “%s”.": [
+            "沒有符合「%s」的項目。"
+         ],
+         "%1$d of %2$d": [
+            "第 %1$d 頁，共 %2$d 頁"
+         ],
+         "Pages of %s terms": [
+            "%s 項目的分頁"
+         ],
+         "All %d terms selected": [
+            "已選取全部 %d 個項目"
+         ],
+         "%1$d of %2$d terms selected": [
+            "已選取 %1$d / %2$d 個項目"
+         ],
+         "No terms selected": [
+            "未選取任何項目"
          ],
          "Switch Now": [
             "立即切換"
@@ -746,7 +923,7 @@
             "知道了"
          ],
          "See your pricing": [
-            "查看您的定價"
+            "查看您的價格方案"
          ],
          "You’re all set. The new pricing is active.": [
             "您已準備就緒。新定價已生效。"
@@ -886,8 +1063,20 @@
          "Not now": [
             "稍後再說"
          ],
+         "This site is not registered with our translation system yet. Register it on WPML → Activate & Update to use automatic translation.": [
+            "此網站尚未向我們的翻譯系統註冊。請在「WPML → Activate & Update」中註冊以使用自動翻譯。"
+         ],
          "Connection Error. Please wait a minute and reload this page. If the problem continues, please contact WPML support.": [
             "連線錯誤。請稍候片刻並重新載入此頁面。如果問題持續發生，請聯絡 WPML 支援。"
+         ],
+         "Posts": [
+            "文章"
+         ],
+         "Taxonomy terms": [
+            "分類法項目"
+         ],
+         "Words required:": [
+            "所需字數："
          ],
          "You don’t have enough prepaid words to translate this content.": [
             "您沒有足夠的預付字數來翻譯此內容。"
@@ -901,14 +1090,8 @@
          "Automatic translation costs:": [
             "自動翻譯費用："
          ],
-         "Words": [
-            "字數"
-         ],
          "Words to translate automatic": [
             "自動翻譯字數"
-         ],
-         "Words required:": [
-            "所需字數："
          ],
          "Pricing": [
             "定價"
@@ -928,17 +1111,35 @@
          "%s word assigned to this site.": [
             "已為此網站分配 %s 個字數。"
          ],
-         "Leave existing translations as they are": [
-            "保留現有翻譯不變"
-         ],
-         "Overwrite existing translations": [
-            "覆寫現有翻譯"
-         ],
          "Some of the content you want to translate is already translated": [
             "您要翻譯的部分內容已經翻譯過了"
          ],
          "What do you want to do with the content that's already translated?": [
             "您想如何處理已經翻譯過的內容？"
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Translate from scratch\" translates them again from the start.": [
+            "翻譯後有所變更的項目無論如何都會被傳送。「保留」只會翻譯變更的內容。「從頭開始翻譯」則會從頭重新翻譯。"
+         ],
+         "Items that changed after they were translated are sent either way. \"Leave\" translates only what changed. \"Overwrite\" translates them again from the start.": [
+            "翻譯後發生變更的項目無論如何都會被傳送。「保留」只翻譯變更的內容。「覆寫」則會從頭重新翻譯。"
+         ],
+         "\"Translate from scratch\" replaces the edits made to these translations:": [
+            "「從頭開始翻譯」會取代對這些翻譯所做的編輯："
+         ],
+         "And %s more item.": [
+            "還有其他 %s 個項目。"
+         ],
+         "Leave existing translations as they are": [
+            "保留現有翻譯不變"
+         ],
+         "Translate from scratch": [
+            "從頭開始翻譯"
+         ],
+         "Replaces the existing translations, including the edits made to them": [
+            "取代現有的翻譯，包含對其所做的編輯"
+         ],
+         "Overwrite existing translations": [
+            "覆寫現有翻譯"
          ],
          "Translations from DeepL, Google Translate and Microsoft Translator are best reviewed before publishing.": [
             "來自 DeepL、Google Translate 和 Microsoft Translator 的翻譯建議在發佈前進行審核。"
@@ -973,8 +1174,17 @@
          " Checking ": [
             " 正在檢查 "
          ],
+         "To translate automatically, WPML needs an active automatic translation account. Turn on automatic translation, or choose a different translation option.": [
+            "若要進行自動翻譯，WPML 需要一個有效的使用中自動翻譯帳戶。請開啟自動翻譯，或選擇其他翻譯選項。"
+         ],
          "In order to translate automatically, you first need to <enable_ate>enable WPML's <b>Advanced Translation Editor</b></enable_ate>.<br/>Enable the <b>Advanced Translation Editor</b> and click <check_again>check again</check_again> or choose a different translation option.": [
             "為了進行自動翻譯，您首先需要<enable_ate>啟用 WPML 的<b>進階翻譯編輯器</b></enable_ate>。<br/>啟用<b>進階翻譯編輯器</b>並按一下<check_again>重新檢查</check_again>或選擇不同的翻譯選項。"
+         ],
+         "Turn on automatic translation": [
+            "開啟自動翻譯"
+         ],
+         "Learn more": [
+            "了解更多"
          ],
          "Selected content was translated using the <b>Classic Translation Editor</b> and can't be sent for automatic translation. To allow this, enable \"Use also for old translations\" in <wpmlSettingLink>WPML Settings</wpmlSettingLink> page.": [
             "選取的內容是使用<b>傳統翻譯編輯器</b>翻譯的，無法傳送進行自動翻譯。若要允許此操作，請在 <wpmlSettingLink>WPML 設定</wpmlSettingLink>頁面中啟用「也用於舊翻譯」。"
@@ -1045,11 +1255,14 @@
          "WPML does not support duplicating %1$s elements and strings.": [
             "WPML 不支援重製 %1$s 元素與字串。"
          ],
-         "WPML does not support duplicating taxonomies.": [
-            "WPML 不支援重製分類法。"
+         "Taxonomy terms cannot be duplicated. Translate them instead. When you duplicate posts, WPML copies their terms that have no translation yet and lists these copies as not translated until they are translated.": [
+            "分類法分類統整不能重複。請改為進行翻譯。當您重複文章時，WPML 會複製尚未翻譯的分類統整，並將這些副本標示為未翻譯，直到完成翻譯為止。"
          ],
-         "WPML does not support duplicating taxonomies. Your selection to duplicate taxonomies to %1$s will be ignored if you proceed with the translation.": [
-            "WPML 不支援重製分類法。如果您繼續進行翻譯，您選擇重製分類法至 %1$s 的設定將被忽略。"
+         "Taxonomy terms cannot be duplicated, so the terms you selected will not be duplicated to %1$s. The posts you duplicate get copies of their terms that have no translation yet. WPML lists these copies as not translated until they are translated.": [
+            "分類法分類統整不能重複，因此您選取的分類統整不會重複至 %1$s。您重複的文章會取得尚未翻譯之分類統整的副本。WPML 會將這些副本標示為未翻譯，直到完成翻譯為止。"
+         ],
+         "If the editor is set to translate automatically when it opens, it starts from a machine translation that uses your words. Undo translation in the editor clears it.": [
+            "如果編輯器設定為在開啟時自動翻譯，它會以機器翻譯為起點並扣除您的字數。在編輯器中復原翻譯可將其清除。"
          ],
          "Finish setting up %s on your site": [
             "完成在您的網站上設定 %s"
@@ -1057,14 +1270,26 @@
          "You need to authenticate %s to send them content for translation.<br/>Visit the <a>Translators tab</a> to finish the setup and click <check_again>check again</check_again> or choose a different translation option.": [
             "您需要驗證 %s 才能向其傳送內容進行翻譯。<br/>造訪<a>翻譯人員分頁</a>以完成設定，然後按一下<check_again>重新檢查</check_again>或選擇不同的翻譯選項。"
          ],
+         "WPML will not send these items. A reviewer has their translation open:": [
+            "WPML 將不會傳送這些項目。審閱者已開啟其翻譯："
+         ],
+         "To send them, finish or cancel the review in Translation Tasks first.": [
+            "若要傳送它們，請先在「Translation Tasks」中完成或取消審閱。"
+         ],
          "Some of the selected content has a translation open for review. Sending it again will replace that translation.": [
             "部分選取的內容已有翻譯待審核。再次傳送將會替換該翻譯。"
          ],
          "You selected multiple translation methods for content across different languages:": [
             "您為不同語言的內容選取了多種翻譯方法："
          ],
+         "Translation Service": [
+            "翻譯服務"
+         ],
          "Sent for translation": [
-            "已傳送進行翻譯"
+            "已送交翻譯"
+         ],
+         "Some content was not sent": [
+            "部分內容未傳送"
          ],
          "Some items were not sent for translation": [
             "部分項目未傳送進行翻譯"
@@ -1092,6 +1317,9 @@
          ],
          "Continue sending": [
             "繼續傳送"
+         ],
+         "Open Translations": [
+            "開啟翻譯"
          ],
          "Ok": [
             "確定"
@@ -1159,6 +1387,15 @@
          "WPML could not count the words of these items.": [
             "WPML 無法計算這些項目的字數。"
          ],
+         "WPML could not get the price of automatic translation from our translation system. Try again in a few minutes.": [
+            "WPML 無法從我們的翻譯系統取得自動翻譯的價格。請稍候幾分鐘再試一次。"
+         ],
+         "No translation engine translates this content from %1$s into %2$s.": [
+            "沒有翻譯引擎能將此內容從 %1$s 翻譯為 %2$s。"
+         ],
+         "WPML did not send these items. A reviewer has their translation open. Finish or cancel the review in Translation Tasks, then send them again.": [
+            "WPML 未傳送這些項目。審閱者已開啟其翻譯。請在「Translation Tasks」中完成或取消審閱，然後重新傳送。"
+         ],
          "Some content couldn't be sent to translation.": [
             "部分內容無法傳送進行翻譯。"
          ],
@@ -1192,6 +1429,81 @@
          "Items already sent will be translated and delivered normally.": [
             "已傳送的項目將正常翻譯並交付。"
          ],
+         "%d post": [
+            "%d 篇文章"
+         ],
+         "%1$s and %2$d term": [
+            "%1$s 和 %2$d 個分類項目"
+         ],
+         "%d term": [
+            "%d 個項目"
+         ],
+         "%1$s: %2$s is assigned to %3$s. They find it in their Translations queue.": [
+            "%1$s：%2$s 已指派給 %3$s。他們可以在其「翻譯」佇列中找到這些項目。"
+         ],
+         "First available": [
+            "首位可用人員"
+         ],
+         "%1$s: %2$s is waiting for you in Translations.": [
+            "%1$s：%2$s 正在「翻譯」中等候您處理。"
+         ],
+         "%1$s: %2$s is sent to %3$s.": [
+            "%1$s：%2$s 已傳送至 %3$s。"
+         ],
+         "%1$s: %2$s is being translated automatically.": [
+            "%1$s：%2$s 正在自動翻譯。"
+         ],
+         "%1$s and %2$d of %3$d term": [
+            "%1$s 和 %2$d 個分類項目（共 %3$d 個）"
+         ],
+         "%1$d of %2$d term": [
+            "%1$d 個分類項目（共 %2$d 個）"
+         ],
+         "%1$s: %2$s sent for automatic translation.": [
+            "%1$s：%2$s 已送交自動翻譯。"
+         ],
+         "%1$s: %2$s sent for translation.": [
+            "%1$s：%2$s 已送交翻譯。"
+         ],
+         "The term names could not be read.": [
+            "無法讀取分類項目名稱。"
+         ],
+         "%s, and more": [
+            "%s 等更多內容"
+         ],
+         "Already translated: %s": [
+            "已翻譯：%s"
+         ],
+         "In translation: %s": [
+            "翻譯中：%s"
+         ],
+         "In translation with their posts: %s": [
+            "隨其文章翻譯中：%s"
+         ],
+         "Which terms were not sent again": [
+            "哪些分類項目未再次傳送"
+         ],
+         "Terms not sent again: %1$d already translated and %2$d in translation (%3$d with their posts).": [
+            "未再次傳送的分類項目：%1$d 個已翻譯，%2$d 個翻譯中（%3$d 個隨其文章一同處理）。"
+         ],
+         "The terms could not be sent.": [
+            "無法傳送分類項目。"
+         ],
+         "%1$s: %2$d term": [
+            "%1$s：%2$d 個分類項目"
+         ],
+         "%1$s: not sent. %2$s no longer translates from %3$s to %4$s. <a>Choose another translator</a> at Step 2, then send again.": [
+            "%1$s：未傳送。%2$s 已不再負責從 %3$s 翻譯至 %4$s。請在步驟 2 <a>選擇其他翻譯者</a>，然後重新傳送。"
+         ],
+         "Not sent (%s)": [
+            "未傳送 (%s)"
+         ],
+         "%1$s: %2$d term (%3$s).": [
+            "%1$s：%2$d 個分類項目 (%3$s)。"
+         ],
+         "%1$s %2$d": [
+            "%1$s %2$d"
+         ],
          "Continue to %s": [
             "繼續前往 %s"
          ],
@@ -1200,9 +1512,6 @@
          ],
          "<p><a><s>Contact WPML support for help</s></a></p>": [
             "<p><a><s>聯絡 WPML 支援以尋求協助</s></a></p>"
-         ],
-         "Translation Service": [
-            "翻譯服務"
          ],
          "sending for professional translation..": [
             "正在傳送進行專業翻譯.."
@@ -1221,6 +1530,12 @@
          ],
          "Currently selected translation editor doesn't support automatic translation. You must enable the <b>Advanced Translation Editor</b> to send content for automatic translation.<br/> Check your settings on the <wpml_settings>WPML settings page</wpml_settings>.": [
             "目前選取的翻譯編輯器不支援自動翻譯。您必須啟用<b>進階翻譯編輯器</b>才能傳送內容進行自動翻譯。<br/> 請在 <wpml_settings>WPML 設定頁面</wpml_settings>檢查您的設定。"
+         ],
+         "WPML cannot translate automatically: automatic translation is off for this site. Click \"Turn on automatic translation\" on the dashboard, then send again.": [
+            "WPML 無法進行自動翻譯：此網站已關閉自動翻譯。請按一下控制台上的「開啟自動翻譯」，然後重新傳送。"
+         ],
+         "%1$s cannot be translated automatically from %2$s with your translation engines. Choose another translation method for it, or change your engines.": [
+            "無法使用您的翻譯引擎將 %1$s 從 %2$s 自動翻譯。請為其選擇其他翻譯方法，或變更您的翻譯引擎。"
          ],
          "Validation error happened during send to translation.": [
             "傳送進行翻譯時發生驗證錯誤。"
@@ -1277,7 +1592,7 @@
             "在 WPML 傳送翻譯內容時，請保持此頁面開啟。現在離開將停止傳送剩餘項目。"
          ],
          "Sending content for translation": [
-            "正在傳送翻譯內容"
+            "正在傳送內容以進行翻譯"
          ],
          "<s>%1$s</s> cannot process more than <s>%2$d</s> jobs in a single batch. WPML will automatically split your jobs into separate batches to ensure an error-free delivery to <s>%3$s</s>. <br/><br/> Do you want to proceed?": [
             "<s>%1$s</s> 在單一批次中無法處理超過 <s>%2$d</s> 個工作。WPML 會自動將您的工作拆分為獨立批次，以確保能無誤地傳送至 <s>%3$s</s>。<br/><br/>您要繼續嗎？"
@@ -1291,20 +1606,92 @@
          "No, I will split jobs myself": [
             "否，我將自行拆分工作"
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - click Continue sending to send the rest.": [
-            "部分分類法字詞尚未傳送。已傳送的字詞正在翻譯中 - 按一下「繼續傳送」以傳送其餘項目。"
+         "%d not translated": [
+            "%d 個未翻譯"
+         ],
+         "%d needs an update": [
+            "%d 個需要更新"
+         ],
+         "%d picked": [
+            "已選取 %d 個"
+         ],
+         "plus %d parent term": [
+            "另含 %d 個父層分類項目"
+         ],
+         "%d of them a parent term": [
+            "其中 %d 個為父層分類項目"
+         ],
+         "%1$s, %2$s": [
+            "%1$s，%2$s"
+         ],
+         "What will be sent": [
+            "即將傳送的內容"
+         ],
+         "Target language": [
+            "目標語言"
+         ],
+         "Terms sent now": [
+            "本次傳送的分類項目"
+         ],
+         "Terms not sent again: already translated": [
+            "未再次傳送的分類項目：已翻譯"
+         ],
+         "Terms not sent again: queued or in translation": [
+            "未再次傳送的分類項目：排隊中或翻譯中"
+         ],
+         "Terms not sent again: in translation": [
+            "未再次傳送的分類項目：翻譯中"
+         ],
+         "%d with their posts": [
+            "%d 個隨其文章一同處理"
+         ],
+         "queued by Translate Everything": [
+            "由 Translate Everything 排入佇列"
+         ],
+         "Terms Translate Everything has queued are counted and not sent again. They are translated automatically.": [
+            "Translate Everything 已排入佇列的項目均已計入且不會再次傳送。系統會自動翻譯這些項目。"
+         ],
+         "Terms in translation, with their posts or from this section, are counted but not sent again. Their translation arrives with the job that has them.": [
+            "處於翻譯中狀態的分類項目（隨其文章一同翻譯或在此區段送交）已計入但不會再次傳送。其翻譯會隨包含它們的工作一併送達。"
+         ],
+         "Terms you send from here are not sent again when their posts are translated.": [
+            "您在此處傳送的分類項目，在其文章翻譯時不會再次傳送。"
+         ],
+         "This send creates %d job for the translation service from the selected terms.": [
+            "此次傳送將從選取的詞彙為翻譯服務建立 %d 個工作。"
+         ],
+         "%d term you did not select is not sent.": [
+            "您未選取的 %d 個分類項目不會傳送。"
+         ],
+         "A picked term whose parent is not translated takes its parent along, so the hierarchy is kept: plus %1$d parent term (%2$s).": [
+            "已選取的分類項目若其父層尚未翻譯，則會隨同其父層一同傳送以維持階層架構：另含 %1$d 個父層分類項目 (%2$s)。"
+         ],
+         "Translate automatically": [
+            "自動翻譯"
+         ],
+         "Translate myself": [
+            "我自行翻譯"
+         ],
+         "Assign a translator": [
+            "指派翻譯人員"
+         ],
+         "Assign translation service": [
+            "指派翻譯服務"
+         ],
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Click Continue sending to send the rest.": [
+            "部分分類項目尚未傳送。已傳送的項目正在翻譯中。按一下「繼續傳送」以傳送其餘項目。"
          ],
          "The taxonomy terms have not been sent yet. Click Continue sending to send them.": [
             "分類法字詞尚未傳送。按一下「繼續傳送」以傳送這些字詞。"
          ],
-         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated - retry the not-sent items to send the rest.": [
-            "部分分類法字詞尚未傳送。已傳送的字詞正在翻譯中 - 請重試未傳送的項目以傳送其餘內容。"
+         "Some taxonomy terms have not been sent yet. The ones that were sent are being translated. Retry the not-sent items to send the rest.": [
+            "部分分類項目尚未傳送。已傳送的項目正在翻譯中。重試未傳送的項目以傳送其餘項目。"
          ],
          "The taxonomy terms have not been sent yet. Retry the not-sent items to send them.": [
             "分類法字詞尚未傳送。請重試未傳送的項目以傳送這些字詞。"
          ],
-         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated - send the rest again to finish.": [
-            "部分分類法術語未傳送翻譯。已傳送的術語正在翻譯中 - 請再次傳送其餘術語以完成翻譯。"
+         "Some taxonomy terms were not sent for translation. The ones that were sent are being translated. Send the rest again to finish.": [
+            "部分分類項目未送交翻譯。已傳送的項目正在翻譯中。請再次傳送其餘項目以完成。"
          ],
          "WPML could not send the taxonomy terms for translation, so none of them were sent. Please try again.": [
             "WPML 無法傳送分類法術語進行翻譯，因此未傳送任何術語。請再試一次。"
@@ -1321,6 +1708,9 @@
          "Existing content": [
             "現有內容"
          ],
+         "%1$sTotal:%2$s %3$s": [
+            "%1$s總計：%2$s %3$s"
+         ],
          "You selected to translate strings that are in %1$s. Only these strings will be translated to %2$s.": [
             "您選擇翻譯位於 %1$s 中的字串。只有這些字串會被翻譯為 %2$s。"
          ],
@@ -1330,14 +1720,8 @@
          "Source language": [
             "原文語言"
          ],
-         "Target language": [
-            "目標語言"
-         ],
          "Words to translate": [
             "待翻譯字數"
-         ],
-         "%1$sTotal:%2$s %3$s": [
-            "%1$s總計：%2$s %3$s"
          ],
          "Translation service additional options": [
             "翻譯服務附加選項"
@@ -1348,20 +1732,32 @@
          "Fetching translation service data...": [
             "正在擷取翻譯服務資料..."
          ],
+         "%1$s: all %2$d terms": [
+            "%1$s：全部 %2$d 個項目"
+         ],
+         "%1$s: %2$d of %3$d terms": [
+            "%1$s：%2$d / %3$d 個項目"
+         ],
+         "%1$d Taxonomy (%2$s)": [
+            "%1$d 個分類法 (%2$s)"
+         ],
+         "Selected: %1$s · %2$s": [
+            "已選取：%1$s · %2$s"
+         ],
+         "%d Post": [
+            "%d 篇文章"
+         ],
+         "Selected: %s": [
+            "已選取：%s"
+         ],
+         "Change": [
+            "變更"
+         ],
+         "The term counts could not be read.": [
+            "無法讀取項目計數。"
+         ],
          "-": [
             "-"
-         ],
-         "Translate automatically": [
-            "自動翻譯"
-         ],
-         "Translate myself": [
-            "我自行翻譯"
-         ],
-         "Assign a translator": [
-            "指派翻譯人員"
-         ],
-         "Assign translation service": [
-            "指派翻譯服務"
          ],
          "Do nothing": [
             "不執行任何動作"
@@ -1371,9 +1767,6 @@
          ],
          "Choose a translator": [
             "選擇翻譯人員"
-         ],
-         "First available": [
-            "首位可用人員"
          ],
          "(Me)": [
             "(我)"
@@ -1393,9 +1786,6 @@
          "Minimize": [
             "最小化"
          ],
-         "PTC translates at higher quality and gives you publish-ready results.": [
-            "PTC 提供更高品質的翻譯，並為您提供可直接發佈的結果。"
-         ],
          "Step 2": [
             "步驟 2"
          ],
@@ -1404,54 +1794,6 @@
          ],
          "Set up AI translation": [
             "設定 AI 翻譯"
-         ],
-         "Keep a wp-admin window open until WPML finishes translating": [
-            "請保持 wp-admin 視窗開啟，直到 WPML 完成翻譯"
-         ],
-         "WPML normally translates your content in the background, without you having to stay in the WordPress admin. However, WPML can't reach this site, so it picks up your translations while a wp-admin window is open.": [
-            "WPML 通常會在背景翻譯您的內容，您無需留在 WordPress 管理介面。然而，WPML 無法連線至此網站，因此它會在 wp-admin 視窗開啟時接收您的翻譯。"
-         ],
-         "You can keep working anywhere in the WordPress admin. Just leave one window open until translation finishes.": [
-            "您可以在 WordPress 管理介面的任何地方繼續工作。只需保持一個視窗開啟，直到翻譯完成。"
-         ],
-         "Next check for translations in %s.": [
-            "下次檢查 %s 中的翻譯。"
-         ],
-         "Hide details": [
-            "隱藏詳細資料"
-         ],
-         "What could be blocking it, and how to fix it": [
-            "可能阻礙連線的原因以及如何修復"
-         ],
-         "Check these on your site": [
-            "檢查您網站上的這些項目"
-         ],
-         "The site might be on a private network, in staging, or only reachable through a VPN.": [
-            "網站可能位於私有網路、預備環境 (staging)，或僅能透過 VPN 連線。"
-         ],
-         "HTTP basic authentication or an IP allowlist might be blocking outside requests.": [
-            "HTTP 基本驗證或 IP 允許清單可能會阻擋外部請求。"
-         ],
-         "A security plugin, firewall, or WAF might be rejecting requests from WPML.": [
-            "安全性外掛、防火牆或 WAF 可能會拒絕來自 WPML 的請求。"
-         ],
-         "The site might be in maintenance mode.": [
-            "網站可能處於維護模式。"
-         ],
-         "Already fixed this on your site?": [
-            "已經在您的網站上修復此問題？"
-         ],
-         "Check again whether the site is reachable": [
-            "再次檢查網站是否可連線"
-         ],
-         "Checking…": [
-            "正在檢查…"
-         ],
-         "Check again": [
-            "再次檢查"
-         ],
-         "Still couldn't reach your site.": [
-            "仍然無法連線至您的網站。"
          ],
          "Automatic translations completed": [
             "自動翻譯已完成"
@@ -1474,56 +1816,11 @@
          "Map the language": [
             "對應語言"
          ],
-         "%d second": [
-            "%d 秒"
+         "%d translation picked up.": [
+            "已擷取 %d 筆翻譯。"
          ],
-         "%d minute": [
-            "%d 分鐘"
-         ],
-         "%d hour": [
-            "%d 小時"
-         ],
-         "%d day": [
-            "%d 天"
-         ],
-         "%d translation": [
-            "%d 則翻譯"
-         ],
-         "checking now": [
-            "正在檢查"
-         ],
-         "next check in %s": [
-            "下次檢查於 %s"
-         ],
-         "WPML stopped checking for delivered translations after repeated failures.": [
-            "在多次失敗後，WPML 已停止檢查已傳遞的翻譯。"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s": [
-            "正在接收翻譯：上次接收於 %1$s 前 · %2$s"
-         ],
-         "Receiving translations: last received %s ago": [
-            "正在接收翻譯：上次接收於 %s 前"
-         ],
-         "Receiving translations: no translations received yet · %s": [
-            "正在接收翻譯：尚未收到任何翻譯 · %s"
-         ],
-         "Receiving translations: no translations received yet": [
-            "正在接收翻譯：尚未收到任何翻譯"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting · %3$s": [
-            "正在接收翻譯：上次接收於 %1$s 前 · %2$s 等待中 · %3$s"
-         ],
-         "Receiving translations: last received %1$s ago · %2$s waiting": [
-            "正在接收翻譯：上次接收於 %1$s 前 · %2$s 等待中"
-         ],
-         "Receiving translations: no translations received yet · %1$s waiting · %2$s": [
-            "正在接收翻譯：尚未收到翻譯 · %1$s 等待中 · %2$s"
-         ],
-         "Receiving translations: no translations received yet · %s waiting": [
-            "正在接收翻譯：尚未收到翻譯 · %s 等待中"
-         ],
-         "These translations are taking longer than they should to arrive.": [
-            "這些翻譯的送達時間比預期要長。"
+         "Nothing new to pick up yet.": [
+            "目前沒有可擷取的新內容。"
          ],
          "Picking up translations…": [
             "正在接收翻譯…"
@@ -1582,11 +1879,11 @@
          "New content is ready to translate": [
             "新內容已準備好進行翻譯"
          ],
-         "%s became translatable after you reviewed the translation cost, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
-            "在您審核翻譯費用後，%s 變為可翻譯，因此「自動翻譯所有內容」未包含它們。請審核費用並將其包含在內，以保持您的網站完整翻譯。"
+         "%s became translatable after Translate Everything was set up, so Translate Everything did not include them. Review the cost and include them to keep your site fully translated.": [
+            "%s 在設定「自動翻譯所有內容」後變為可翻譯，因此「自動翻譯所有內容」並未將其納入。請檢視費用並將其納入，以讓您的網站保持完整翻譯。"
          ],
          "Review cost and include": [
-            "審核費用並包含"
+            "檢視費用並納入"
          ],
          "Learn more →": [
             "深入瞭解 →"
@@ -1602,15 +1899,6 @@
          ],
          "PTC can translate your software right inside your Git workflow.": [
             "PTC 可以在您的 Git 工作流程中直接翻譯您的軟體。"
-         ],
-         "The following target languages do not support automatic translations: %s": [
-            "以下目標語言不支援自動翻譯：%s"
-         ],
-         "To enable automatic translation map them to known languages.": [
-            "若要啟用自動翻譯，請將其對應至已知語言。"
-         ],
-         "Map to known languages": [
-            "對應至已知語言"
          ],
          "In order to get help, please <supportLink>open a ticket in our Forum Thread (Maiya)</supportLink>, click on the \"Copy All\" button to get the debug information and \"paste\" it into our Maiya agent. If you are still having problems, use the <logsLink>log tool</logsLink> to gather more data.": [
             "為了獲得協助，請 <supportLink>在我們的論壇主題 (Maiya) 中開啟支援票證</supportLink>，按一下「全部複製」按鈕以取得偵錯資訊，並將其「貼上」到我們的 Maiya 代理程式中。如果您仍然遇到問題，請使用 <logsLink>記錄工具</logsLink> 收集更多資料。"
@@ -1701,6 +1989,9 @@
          ],
          "Add your site description before you can turn this on.": [
             "請先新增您的網站描述，然後才能開啟此功能。"
+         ],
+         "Translate Everything needs an active automatic translation account.": [
+            "「全部翻譯」需要一個有效的使用中自動翻譯帳戶。"
          ],
          "You must enable the Advanced Translation Editor to activate Translate Everything Automatically.": [
             "您必須啟用 Advanced Translation Editor 才能啟用「自動翻譯所有內容」。"
@@ -1876,11 +2167,8 @@
          "WPML will stop automatically translating new and edited content. Translations already delivered stay as they are.": [
             "WPML 將停止自動翻譯新內容和編輯過的內容。已交付的翻譯將保持不變。"
          ],
-         "%d translation is still in progress. You will not be charged for it.": [
-            "%d 則翻譯仍在進行中。您不會被收取這些費用。"
-         ],
-         "%d translation is currently in progress and will be cancelled.": [
-            "%d 則翻譯目前正在進行中，將會被取消。"
+         "Translations in progress will be cancelled and refunded. When you switch back on, changed pages will be sent again.": [
+            "進行中的翻譯將會取消並退款。當您重新開啟時，已變更的頁面將會再次傳送。"
          ],
          "You can adjust the content limits once Translate Everything finishes the current translation run.": [
             "一旦「自動翻譯」完成目前的翻譯執行，您就可以調整內容限制。"
@@ -2176,6 +2464,9 @@
          "This item needs a translation update but was previously translated using the WordPress Editor. Using the WPML's Translation Editor will overwrite the existing translation.": [
             "此項目需要更新翻譯，但先前是使用 WordPress 編輯器翻譯的。使用 WPML 翻譯編輯器將會覆寫現有的翻譯。"
          ],
+         "%s: review in progress": [
+            "%s：審查進行中"
+         ],
          "%1$s: %2$s%3$s": [
             "%1$s：%2$s %3$s"
          ],
@@ -2263,9 +2554,6 @@
          "Same as default": [
             "與預設相同"
          ],
-         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language.": [
-            "由於 %1$s 和 %2$s 被識別為相同的語言，因此無法在兩者之間使用自動翻譯。"
-         ],
          "Translation paused": [
             "翻譯已暫停"
          ],
@@ -2308,8 +2596,8 @@
          "It counts pages, posts and products with their custom fields, page-builder texts and media texts, and the categories, tags and attributes they use.": [
             "這會計算頁面、文章和產品及其自訂欄位、頁面編輯器文字和媒體文字，以及它們使用的分類、標籤和屬性。"
          ],
-         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. A term is counted in every item that uses it and once on its own, because it is sent for translation both ways.": [
-            "這會計算頁面、文章和產品及其自訂欄位、頁面編輯器文字和媒體文字、它們使用的分類、標籤和屬性，以及網站字串。在每個使用分類字詞的項目中都會計算該字詞一次，並且它本身也會被單獨計算一次，因為它會以這兩種方式傳送翻譯。"
+         "It counts pages, posts and products with their custom fields, page-builder texts and media texts, the categories, tags and attributes they use, and site strings. Each category, tag or attribute is counted once, in the Taxonomies row, and not again with the items that use it.": [
+            "計算範圍包括頁面、文章和產品及其自訂欄位、頁面編輯器文字和媒體文字，以及它們使用的分類法、標籤、屬性與網站字串。每個分類、標籤或屬性僅在「分類法」列中計算一次，不會與使用該項目的內容重複計算。"
          ],
          "Total items": [
             "項目總數"
@@ -2349,6 +2637,9 @@
          ],
          "To use prepaid words, register WPML on this site.": [
             "若要使用預付字數，請在此網站上註冊 WPML。"
+         ],
+         "Checking…": [
+            "正在檢查…"
          ],
          "We could not reach our translation system.": [
             "我們無法連線至我們的翻譯系統。"
@@ -2441,7 +2732,7 @@
             "在新分頁中繼續"
          ],
          "Activate <b>Pay-As-You-Go</b>": [
-            "啟用<b>隨用隨付</b>"
+            "啟用 <b>隨用隨付</b>"
          ],
          "<b>Pay-As-You-Go</b> is not active yet.": [
             "<b>隨用隨付</b>尚未啟用。"
@@ -2457,9 +2748,6 @@
          ],
          "Connect your sites to share translation memory, glossary and word quota.": [
             "連接您的網站以共享翻譯記憶、詞彙表和字數配額。"
-         ],
-         "Learn more": [
-            "了解更多"
          ],
          "Copy your migration code:": [
             "複製您的遷移代碼："
@@ -2525,7 +2813,7 @@
             "字數仍然不足。請在 %d 秒後再次重新整理。"
          ],
          "Already assigned?": [
-            "已經分配？"
+            "已指派？"
          ],
          "Collapse": [
             "收合"
@@ -2547,6 +2835,9 @@
          ],
          "Scores based on WPML's internal MQM translation quality study.": [
             "評分基於 WPML 的內部 MQM 翻譯品質研究。"
+         ],
+         "PTC translates at higher quality and gives you publish-ready results.": [
+            "PTC 提供更高品質的翻譯，並為您提供可直接發佈的結果。"
          ],
          "Select an item": [
             "選擇一個項目"

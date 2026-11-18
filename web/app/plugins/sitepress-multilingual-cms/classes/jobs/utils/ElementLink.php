@@ -2,6 +2,7 @@
 
 namespace WPML\TM\Jobs\Utils;
 
+use WPML\TM\ATE\TranslateEverything\TermBundle;
 use WPML\TM\Menu\PostLinkUrl;
 use WPML_Post_Translation;
 
@@ -20,6 +21,9 @@ class ElementLink {
 	}
 
 	public function getOriginal( \WPML_TM_Post_Job_Entity $job ) {
+		if ( $this->isTermBundle( $job ) ) {
+			return '';
+		}
 		if ( $this->isTermJob( $job ) ) {
 			return $this->getTermLink( $job, (int) $job->get_original_element_id() );
 		}
@@ -28,6 +32,9 @@ class ElementLink {
 	}
 
 	public function getTranslation( \WPML_TM_Post_Job_Entity $job ) {
+		if ( $this->isTermBundle( $job ) ) {
+			return '';
+		}
 		if ( $this->isExternalType( $job->get_element_type_prefix() ) ) {
 			return '';
 		}
@@ -68,6 +75,10 @@ class ElementLink {
 		);
 
 		return $tmPostLink;
+	}
+
+	private function isTermBundle( \WPML_TM_Post_Job_Entity $job ) {
+		return TermBundle::ELEMENT_TYPE === $job->get_element_type();
 	}
 
 	private function isTermJob( \WPML_TM_Post_Job_Entity $job ) {

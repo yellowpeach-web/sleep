@@ -108,7 +108,7 @@
             "שנה את הלוקאל של WordPress %1$s ← %2$s"
          ],
          "WordPress uses this to load admin language packs and plugin / theme translations.": [
-            "WordPress משתמש בזה כדי לטעון חבילות שפה של ממשק הניהול ותרגומים של תוספים / תבניות."
+            "‏WordPress משתמש בזה כדי לטעון ערכות שפה לממשק הניהול ותרגומים של תוספים / ערכות עיצוב."
          ],
          "Already used by %s.": [
             "כבר בשימוש על ידי %s."
@@ -193,7 +193,7 @@
             "תרגומי המחרוזות של %s יימחקו יחד איתה."
          ],
          "Its queued translation jobs are cancelled without charge; any already in progress are stopped, and the words already sent are still charged.": [
-            "עבודות התרגום שלה שנמצאות בתור יבוטלו ללא חיוב; עבודות שכבר נמצאות בתהליך ייעצרו, והמילים שכבר נשלחו עדיין יחויבו."
+            "עבודות התרגום שלה שבתור מבוטלות ללא חיוב; עבודות שכבר נמצאות בתהליך נעצרות, והמילים שכבר נשלחו עדיין יחויבו."
          ],
          "Move this content into": [
             "העבר תוכן זה אל"
@@ -310,11 +310,11 @@
             "אם האתר שלך משתמש בדומיין אחד לכל שפה, הדומיין של אותה שפה לא יופנה: בעודו עדיין מצביע על אתר זה, הוא יציג את שפת ברירת המחדל של האתר באותן כתובות."
          ],
          "The listed items are removed, along with their translation records, their string translations and their translation jobs.": [
-            "הפריטים המפורטים מוסרים, יחד עם רשומות התרגום שלהם, תרגומי המחרוזות שלהם ועבודות התרגום שלהם."
+            "הפריטים שברשימה מוסרים, יחד עם רשומות התרגום שלהם, תרגומי המחרוזות שלהם ועבודות התרגום שלהם."
          ],
          "The listed items are removed, along with their translation records, their string translations and their %d translation job.": [
-            "הפריטים המפורטים מוסרים, יחד עם רשומות התרגום שלהם, תרגומי המחרוזות שלהם ועבודת תרגום %d שלהם.",
-            "הפריטים המפורטים מוסרים, יחד עם רשומות התרגום שלהם, תרגומי המחרוזות שלהם ו-%d עבודות התרגום שלהם."
+            "הפריטים שברשימה מוסרים, יחד עם רשומות התרגום שלהם, תרגומי המחרוזות שלהם ועבודת התרגום ה-%d שלהם.",
+            "הפריטים שברשימה מוסרים, יחד עם רשומות התרגום שלהם, תרגומי המחרוזות שלהם ו-%d עבודות התרגום שלהם."
          ],
          "We couldn’t check for translated content. You can still remove the language; its translations are kept. Deleting its content and moving it into another language both need that count, so those two goals are unavailable.": [
             "לא הצלחנו לבדוק אם קיים תוכן מתורגם. עדיין ניתן להסיר את השפה; התרגומים שלה יישמרו. מחיקת התוכן שלה והעברתו לשפה אחרת דורשות את הספירה הזו, לכן שני היעדים הללו אינם זמינים."
@@ -443,7 +443,7 @@
             "רוב המשתמשים אינם זקוקים לשפה מותאמת אישית. רוב הגרסאות (למשל, ספרדית מקסיקנית, פורטוגזית ברזילאית) כבר קיימות ברשימת השפות שלעיל. השתמש בטופס זה רק עבור גרסאות שפה מותאמות אישית אמיתיות."
          ],
          "Variant name": [
-            "שם הגרסה"
+            "שם הווריאנט"
          ],
          "e.g., Andalusian": [
             "למשל, אנדלוסית"
@@ -575,13 +575,16 @@
             "שנה אותה ב-הגדרות ← כללי."
          ],
          "Valid": [
-            "תקף"
+            "תקין"
          ],
          "Blocked by a firewall or CDN": [
             "נחסם על ידי חומת אש או CDN"
          ],
+         "Used by another site": [
+            "בשימוש על ידי אתר אחר"
+         ],
          "Not valid": [
-            "לא תקף"
+            "לא תקין"
          ],
          "Validate on save": [
             "אימות בעת שמירה"
@@ -603,6 +606,9 @@
          ],
          "%s loads, but a firewall or CDN blocked WPML's check.": [
             "%s נטען, אך חומת אש או CDN חסמו את הבדיקה של WPML."
+         ],
+         "Used by another site on this network: %s. Enter a different domain to save.": [
+            "בשימוש על ידי אתר אחר ברשת זו: %s. הזן דומיין אחר כדי לשמור."
          ],
          "The domain could not be validated: %s. Check that it points at this site, or untick \"Validate on save\" to save it anyway.": [
             "לא ניתן היה לאמת את הדומיין: %s. בדוק שהוא מצביע על אתר זה, או בטל את הסימון של ”אימות בעת שמירה“ כדי לשמור אותו בכל זאת."
@@ -959,6 +965,9 @@
          "Before this language can be saved, choose whether to bring back the content this site has from before in it or to start fresh.": [
             "לפני שניתן יהיה לשמור שפה זו, יש לבחור אם לשחזר את התוכן שהיה באתר זה בעבר בשפה זו או להתחיל מחדש."
          ],
+         "A language can’t be mapped to your site’s default language. Choose “Match automatically” instead.": [
+            "לא ניתן למפות שפה אל שפת ברירת המחדל של האתר שלך. בחר ”התאמה אוטומטית“ במקום זאת."
+         ],
          "You don’t have permission to change languages.": [
             "אין לך הרשאה לשנות שפות."
          ],
@@ -990,7 +999,7 @@
             "%1$s: לא ניתן היה לכתוב מחדש את הקישורים בפוסט %2$s."
          ],
          "%1$s: some translation jobs could not be cancelled.": [
-            "%1$s: לא ניתן היה לבטל חלק מעבודות התרגום."
+            "‏%1$s: לא ניתן היה לבטל חלק מעבודות התרגום."
          ],
          "%1$s: one step of the save kept failing and was skipped.": [
             "%1$s: שלב אחד של השמירה המשיך להיכשל ודולג."
@@ -1018,6 +1027,9 @@
          ],
          "If you cannot find your language in the list, <a>add a custom language</a>.": [
             "אם אינך מוצא את השפה שלך ברשימה, <a>הוסף שפה מותאמת אישית</a>."
+         ],
+         "%1$s moved to position %2$d of %3$d.": [
+            "%1$s הועברה למיקום %2$d מתוך %3$d."
          ],
          "Default language": [
             "שפת ברירת מחדל"
@@ -1075,6 +1087,12 @@
          ],
          "Delete language": [
             "מחק שפה"
+         ],
+         "Move %s. Use the up and down arrow keys.": [
+            "הזזת %s. השתמש במקשי החצים למעלה ולמטה."
+         ],
+         "Drag to change the order": [
+            "גררו כדי לשנות את הסדר"
          ],
          "Type to search all languages…": [
             "הקלד כדי לחפש בכל השפות…"
@@ -1147,6 +1165,9 @@
          ],
          "Recognized as the same language as the default": [
             "מזוהה כאותה שפה כמו ברירת המחדל"
+         ],
+         "Automatic translation is off: no translation engine is enabled. To turn one on, go to <link>WPML → Settings → AI Translation</link>.": [
+            "התרגום האוטומטי כבוי: לא הופעל מנוע תרגום. כדי להפעיל מנוע, עבור אל <link>WPML ← הגדרות ← תרגום AI</link>."
          ],
          "%s (Regional)": [
             "%s (אזורי)"
@@ -1323,11 +1344,11 @@
             "דולג בגלל: %s"
          ],
          "No translation jobs needed cancelling.": [
-            "לא היה צורך בביטול עבודות תרגום."
+            "לא היו עבודות תרגום שנדרש לבטל."
          ],
          "%d translation job was cancelled without charge.": [
             "עבודת תרגום %d בוטלה ללא חיוב.",
-            "%d עבודות תרגום בוטלו ללא חיוב."
+            "‏%d עבודות תרגום בוטלו ללא חיוב."
          ],
          "%d job was stopped mid-work — the words already sent are still charged.": [
             "עבודה %d הופסקה באמצע העבודה — המילים שכבר נשלחו עדיין מחויבות.",
@@ -1427,10 +1448,10 @@
             "מגדיר את הגרסה האזורית של השפה. תרגום אוטומטי משתמש בזה כדי להפיק תרגומים מדויקים יותר."
          ],
          "The flag shown next to this language in the front-end language switcher.": [
-            "הדגל שמוצג לצד שפה זו בבורר השפות בחזית האתר."
+            "הדגל המוצג לצד שפה זו בבורר השפות בצד הלקוח."
          ],
          "The WordPress locale, for example en_US. WordPress uses it to load the matching theme and plugin translation files.": [
-            "הלוקאל של WordPress, לדוגמה en_US. WordPress משתמש בו כדי לטעון את קובצי התרגום התואמים של התבנית והתוספים."
+            "‏ה-locale של WordPress, לדוגמה en_US. ‏WordPress משתמש בו כדי לטעון את קובצי התרגום התואמים של ערכת העיצוב והתוסף."
          ],
          "Used to build this language’s page URLs, for example /en/.": [
             "משמש לבניית כתובות ה-URL של עמודי השפה, לדוגמה /he/."

@@ -8,14 +8,18 @@ class WPML_TM_Post_Actions extends WPML_Translation_Job_Helper {
 
 	private $tm_records;
 
+	private $takeover;
+
 	public function __construct(
 		WPML_TM_Action_Helper $helper,
 		WPML_TM_Blog_Translators $blog_translators,
-		WPML_TM_Records $tm_records )
+		WPML_TM_Records $tm_records,
+		?\WPML\EditHistory\Takeover $takeover = null )
 	{
 		$this->action_helper    = $helper;
 		$this->blog_translators = $blog_translators;
 		$this->tm_records       = $tm_records;
+		$this->takeover         = $takeover;
 	}
 
 	public function save_post_actions( $post_id, $post, $force_set_status = false ) {
@@ -30,14 +34,20 @@ class WPML_TM_Post_Actions extends WPML_Translation_Job_Helper {
 		$trid = $this->maybe_retrive_trid_again( $trid, $post );
 		$needs_second_update = array_key_exists( 'needs_second_update', $_POST ) ? (bool) $_POST['needs_second_update'] : false;
 
-		$is_original = empty( $trid )
-			? false
-			: ! (bool) $this->tm_records
-				->icl_translations_by_element_id_and_type_prefix( $post_id, 'post_' . $post->post_type )
-				->source_language_code();
+		try {
+			$is_original = empty( $trid )
+				? false
+				: ! (bool) $this->tm_records
+					->icl_translations_by_element_id_and_type_prefix( $post_id, 'post_' . $post->post_type )
+					->source_language_code();
+		} catch ( InvalidArgumentException $e ) {
+			$is_original = true;
+		}
 
-		if ( ! empty( $trid ) && ! $is_original && ! $this->is_quick_edit() ) {
-			$lang = $lang ? $lang : $this->get_save_post_lang( $lang, $post_id );
+		if ( ! empty( $trid ) && ! $is_original && $this->is_quick_edit() ) {
+			$this->accept_review_on_quick_edit( $trid, $lang ? $lang : $this->saved_post_lang( $post_id ), $post_id, $post );
+		} elseif ( ! empty( $trid ) && ! $is_original ) {
+			$lang = $lang ? $lang : $this->saved_post_lang( $post_id );
 			$res  = $wpdb->get_row( $wpdb->prepare( "
 			 SELECT element_id, language_code FROM {$wpdb->prefix}icl_translations WHERE trid=%d AND source_language_code IS NULL
 		 ",
@@ -50,9 +60,13 @@ class WPML_TM_Post_Actions extends WPML_Translation_Job_Helper {
 					return;
 				}
 				$md5              = $this->action_helper->post_md5( $original_post );
-				$translation_id   = $this->tm_records
-					->icl_translations_by_trid_and_lang( $trid, $lang )
-					->translation_id();
+				try {
+					$translation_id = $this->tm_records
+						->icl_translations_by_trid_and_lang( $trid, $lang )
+						->translation_id();
+				} catch ( InvalidArgumentException $e ) {
+					$translation_id = 0;
+				}
 				$status_record = $translation_id
 					? $this->tm_records->icl_translation_status_by_translation_id( $translation_id )
 					: null;
@@ -68,48 +82,48 @@ class WPML_TM_Post_Actions extends WPML_Translation_Job_Helper {
 				if ( $translation_id ) {
 					$needs_update_before_save = $status_record->needs_update();
 					$superseded_ate_job = $this->in_flight_ate_job( $status_record );
-					$translation_package = $this->action_helper->create_translation_package( $original_post_id );
-					list( $rid, $update ) = $this->action_helper->get_tm_instance()->update_translation_status( array(
-						                                                                                            'translation_id'      => $translation_id,
-						                                                                                            'status'              => isset( $force_set_status ) && $force_set_status > 0 ? $force_set_status : ICL_TM_COMPLETE,
-						                                                                                            'translator_id'       => $user_id,
-						                                                                                            'needs_update'        => $needs_second_update,
-						                                                                                            'md5'                 => $md5,
-						                                                                                            'translation_service' => 'local',
-					                                                                                            ) );
-					if ( ! $update ) {
-						$job_id = $this->action_helper->add_translation_job( $rid, $user_id, $translation_package );
-					} else {
-						$job_id          = \WPML\TM\API\Job\Map::fromRid( $rid );
-						if ( ! $job_id || $needs_update_before_save ) {
-							$job_id = $this->action_helper->add_translation_job(
-								$rid,
-								$user_id,
-								$translation_package
-							);
-						} elseif ( \WPML\TM\Jobs\TranslationRecord::isCompletedJobId( $job_id ) ) {
-							$job_id = $this->translated_text_changed( $job_id, $post )
-								? $this->action_helper->add_translation_job( $rid, $user_id, $translation_package )
-								: 0;
+					$review_rules = $this->review_rules();
+					$review_rid   = $review_rules->reviewAcceptedBySave(
+						$status_record,
+						$this->is_persons_save_of( $post_id ),
+						isset( $post->post_status ) ? (string) $post->post_status : ''
+					);
+
+					if ( $superseded_ate_job && $this->takeover && $this->takeover->leavesJobRunning( $superseded_ate_job['review_status'] ) ) {
+						return;
+					}
+
+					$own_row = $superseded_ate_job && $this->takeover;
+
+					\WPML\TM\Jobs\JobLog::runInGroup(
+						\WPML\TM\Jobs\JobLog::GROUP_ID_LOCAL_SAVES,
+						'Translation saved in the WordPress editor',
+						function () use ( $post, $force_set_status, $original_post_id, $md5, $translation_id, $user_id, $needs_second_update, $needs_update_before_save, $own_row, $review_rules, $review_rid ) {
+							$this->record_saved_translation( $post, $force_set_status, $original_post_id, $md5, $translation_id, $user_id, $needs_second_update, $needs_update_before_save, $own_row );
+
+							if ( $review_rid ) {
+								$review_rules->acceptOnSave( $review_rid );
+							}
 						}
-					}
-
-					if ( $job_id ) {
-						wpml_tm_load_old_jobs_editor()->set( $job_id, WPML_TM_Editors::WP );
-
-						do_action( 'wpml_save_job_fields_from_post', $job_id );
-
-						$this->complete_saved_job( $job_id );
-					}
+					);
 
 					if ( $superseded_ate_job ) {
 						$this->cancel_superseded_ate_job( $superseded_ate_job, $post_id );
+					}
+					if ( $own_row ) {
+						$this->takeover->tookOver( $superseded_ate_job['rid'], \WPML\TM\API\Jobs::isAutomatic( $superseded_ate_job['job_id'] ) );
 					}
 				}
 			}
 		}
 
 		if ( ! empty( $trid ) && empty( $_POST['icl_minor_edit'] ) ) {
+			if ( \WPML\Infrastructure\WordPress\Component\LanguagePanel\Rest\SaveFlags::isMinorEdit()
+			     || \WPML\Posts\MetaBoxLoaderLeg::is_minor_edit_leg( $post_id )
+			) {
+				return;
+			}
+
 			$is_original  = false;
 			$translations = $sitepress->get_element_translations( $trid, 'post_' . $post->post_type, false, true );
 			foreach ( $translations as $translation ) {
@@ -129,6 +143,42 @@ class WPML_TM_Post_Actions extends WPML_Translation_Job_Helper {
 		}
 	}
 
+	private function record_saved_translation( $post,$force_set_status, $original_post_id, $md5, $translation_id, $user_id, $needs_second_update, $needs_update_before_save, $own_row = false ) {
+		$translation_package = $this->action_helper->create_translation_package( $original_post_id );
+		list( $rid, $update ) = $this->action_helper->get_tm_instance()->update_translation_status( array(
+			                                                                                            'translation_id'      => $translation_id,
+			                                                                                            'status'              => $force_set_status > 0 ? $force_set_status : ICL_TM_COMPLETE,
+			                                                                                            'translator_id'       => $user_id,
+			                                                                                            'needs_update'        => $needs_second_update,
+			                                                                                            'md5'                 => $md5,
+			                                                                                            'translation_service' => 'local',
+		                                                                                            ) );
+		if ( ! $update ) {
+			$job_id = $this->action_helper->add_translation_job( $rid, $user_id, $translation_package );
+		} else {
+			$job_id          = \WPML\TM\API\Job\Map::jobIdFromRid( $rid );
+			if ( ! $job_id || $needs_update_before_save || $own_row ) {
+				$job_id = $this->action_helper->add_translation_job(
+					$rid,
+					$user_id,
+					$translation_package
+				);
+			} elseif ( \WPML\TM\Jobs\TranslationRecord::isCompletedJobId( $job_id ) ) {
+				$job_id = $this->translated_text_changed( $job_id, $post )
+					? $this->action_helper->add_translation_job( $rid, $user_id, $translation_package )
+					: 0;
+			}
+		}
+
+		if ( $job_id ) {
+			wpml_tm_load_old_jobs_editor()->set( $job_id, WPML_TM_Editors::WP );
+
+			do_action( 'wpml_save_job_fields_from_post', $job_id );
+
+			$this->complete_saved_job( $job_id );
+		}
+	}
+
 	protected function translated_text_changed( $job_id, $post ) {
 		$job = new WPML_Post_Translation_Job( $job_id );
 
@@ -141,6 +191,37 @@ class WPML_TM_Post_Actions extends WPML_Translation_Job_Helper {
 		if ( (int) $job->translated() ) {
 			$job->complete();
 		}
+	}
+
+	private function accept_review_on_quick_edit( $trid, $lang, $post_id, $post ) {
+		try {
+			$translation_id = $this->tm_records->icl_translations_by_trid_and_lang( $trid, $lang )->translation_id();
+		} catch ( InvalidArgumentException $e ) {
+			return;
+		}
+
+		if ( ! $translation_id ) {
+			return;
+		}
+
+		$review_rules = $this->review_rules();
+		$review_rid   = $review_rules->reviewAcceptedBySave(
+			$this->tm_records->icl_translation_status_by_translation_id( $translation_id ),
+			$this->is_persons_save_of( $post_id ),
+			isset( $post->post_status ) ? (string) $post->post_status : ''
+		);
+
+		if ( ! $review_rid ) {
+			return;
+		}
+
+		\WPML\TM\Jobs\JobLog::runInGroup(
+			\WPML\TM\Jobs\JobLog::GROUP_ID_LOCAL_SAVES,
+			'Translation saved with Quick Edit',
+			function () use ( $review_rules, $review_rid ) {
+				$review_rules->acceptOnSave( $review_rid );
+			}
+		);
 	}
 
 	private function is_quick_edit() {
@@ -161,7 +242,7 @@ class WPML_TM_Post_Actions extends WPML_Translation_Job_Helper {
 		}
 
 		$rid    = (int) $status_record->rid();
-		$job_id = $rid > 0 ? (int) \WPML\TM\API\Job\Map::fromRid( $rid ) : 0;
+		$job_id = $rid > 0 ? (int) \WPML\TM\API\Job\Map::jobIdFromRid( $rid ) : 0;
 		$job    = $job_id > 0 ? \WPML\TM\API\Jobs::get( $job_id ) : null;
 
 		if ( ! is_object( $job )
@@ -177,6 +258,7 @@ class WPML_TM_Post_Actions extends WPML_Translation_Job_Helper {
 			'rid'           => $rid,
 			'editor_job_id' => (int) $job->editor_job_id,
 			'status'        => $status,
+			'review_status' => $job->review_status ?? null,
 		);
 	}
 
@@ -194,27 +276,51 @@ class WPML_TM_Post_Actions extends WPML_Translation_Job_Helper {
 		$entity->set_editor( WPML_TM_Editors::ATE );
 		$entity->set_editor_job_id( $ate_job['editor_job_id'] );
 
-		\WPML\TM\Jobs\JobLog::add(
-			'translation_job_superseded_by_manual_save',
-			array(
-				'job_id'     => $ate_job['job_id'],
-				'rid'        => $ate_job['rid'],
-				'ate_job_id' => $ate_job['editor_job_id'],
-				'post_id'    => (int) $post_id,
-			)
-		);
+		\WPML\TM\Jobs\JobLog::runInGroup(
+			\WPML\TM\Jobs\JobLog::GROUP_ID_CANCELS,
+			'Cancel ATE job (superseded by a manual save)',
+			function () use ( $entity, $ate_job, $post_id ) {
+				\WPML\TM\Jobs\JobLog::add(
+					'translation_job_superseded_by_manual_save',
+					array(
+						'job_id'     => $ate_job['job_id'],
+						'rid'        => $ate_job['rid'],
+						'ate_job_id' => $ate_job['editor_job_id'],
+						'post_id'    => (int) $post_id,
+					)
+				);
 
-		$this->announce_cancel( $entity, WPML_TM_ATE_API::CANCEL_REASON_SUPERSEDED );
+				$this->announce_cancel( $entity, WPML_TM_ATE_API::CANCEL_REASON_SUPERSEDED, \WPML\TM\ATE\Cancel\CancelSource::MANUAL_SAVE );
+			}
+		);
 
 		\WPML\TM\ATE\Release\ReleaseNotices::queueManualSaveNotice( (int) $post_id );
 	}
 
-	protected function announce_cancel( WPML_TM_Post_Job_Entity $job, $reason ) {
-		do_action( 'wpml_tm_job_cancelled', $job, $reason );
+	protected function announce_cancel( WPML_TM_Post_Job_Entity $job, $reason, $source ) {
+		do_action( 'wpml_tm_job_cancelled', $job, $reason, $source );
 	}
 
 	private function save_records_the_current_user_as_translator( $post_id, $status_record ) {
 		return $this->is_edit_of_this_post( $post_id ) || ! $this->translation_has_a_job( $status_record );
+	}
+
+	protected function review_rules() {
+		return \WPML\TM\ATE\Review\ReviewRulesFactory::create();
+	}
+
+	private function is_persons_save_of( $post_id ) {
+		return ! WPML_Save_Translation_Data_Action::is_delivery_window_open()
+			&& ! ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+			&& ( $this->is_edit_of_this_post( $post_id ) || $this->is_page_builder_save_of( $post_id ) );
+	}
+
+	private function is_page_builder_save_of( $post_id ) {
+		if ( doing_action( 'wp_ajax_heartbeat' ) ) {
+			return false;
+		}
+
+		return (bool) apply_filters( 'wpml_pb_is_editing_translation_with_native_editor', false, (int) $post_id );
 	}
 
 	private function is_edit_of_this_post( $post_id ) {
@@ -247,15 +353,15 @@ class WPML_TM_Post_Actions extends WPML_Translation_Job_Helper {
 
 		$rid = $status_record->rid();
 
-		return $rid && \WPML\TM\API\Job\Map::fromRid( $rid );
+		return $rid && \WPML\TM\API\Job\Map::jobIdFromRid( $rid );
 	}
 
 	private function recorded_translator( $status_record ) {
 		return $status_record ? (int) $status_record->translator_id() : 0;
 	}
 
-	public function get_translation_statuses_updater( $post_id, $translations ) {
-		return function () use ( $post_id, $translations ) {
+	public function get_translation_statuses_updater( $post_id, $translations, $force = false ) {
+		return function () use ( $post_id, $translations, $force ) {
 			$needsUpdate = false;
 			$md5 = null;
 			foreach ( $translations as $translation ) {
@@ -265,8 +371,8 @@ class WPML_TM_Post_Actions extends WPML_Translation_Job_Helper {
 					}
 					$statusRecord = $this->tm_records->icl_translation_status_by_translation_id( $translation->translation_id );
 					$storedMd5    = $statusRecord->md5();
-					if ( $md5 !== $storedMd5 ) {
-						if ( $this->action_helper->post_md5_matches( $post_id, $storedMd5, $md5 ) ) {
+					if ( $force || $md5 !== $storedMd5 ) {
+						if ( ! $force && $this->action_helper->post_md5_matches( $post_id, $storedMd5, $md5 ) ) {
 							$statusRecord->update( [ 'md5' => $md5 ] );
 							continue;
 						}
@@ -318,25 +424,18 @@ class WPML_TM_Post_Actions extends WPML_Translation_Job_Helper {
 			                                                        'admin_override' => false
 		                                                        ) )
 		) {
-			global $wpdb;
-
-			$user->add_cap( \WPML\LIB\WP\User::CAP_TRANSLATE );
-
-			$language_pair_records = new WPML_Language_Pair_Records( $wpdb, new WPML_Language_Records( $wpdb ) );
-			$language_pair_records->store( $user_id, array( $source_lang => array( $target_lang ) ) );
+			\WPML\Container\make( \WPML\TranslationRoles\Service\TranslatorCapability::class )->grant(
+				(int) $user_id,
+				array( $source_lang => array( $target_lang ) ),
+				\WPML\TranslationRoles\Service\TranslatorCapability::PAIRS_ADD
+			);
 		}
 	}
 
-	private function get_save_post_lang( $lang, $post_id ) {
-		if ( ( ! isset( $lang ) || ! $lang ) && ! empty( $_POST['icl_post_language'] ) ) {
-			$lang = $_POST['icl_post_language'];
-		} else {
-			global $wpml_post_translations;
+	private function saved_post_lang( $post_id ) {
+		$post_translations = $GLOBALS['wpml_post_translations'];
 
-			$lang = $wpml_post_translations->get_element_lang_code( $post_id );
-		}
-
-		return $lang;
+		return $post_translations->get_element_lang_code( $post_id );
 	}
 
 	private function maybe_retrive_trid_again( $trid, $post ) {

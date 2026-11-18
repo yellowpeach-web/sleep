@@ -128,7 +128,7 @@ class AutomaticTranslationJobCreationFailureNotice implements \IWPML_Action {
 		$kind = $element->get_type();
 
 		return $kind
-			/* translators: Names one item in a list of content that could not be sent for translation. %1$s: the kind of item, for example Block, %2$d: the number that stands for it. */
+			/* translators: One item in a list on the WPML admin, for example a Divi template on WPML → Support or a piece of content that could not be sent for translation. %1$s: its title or its kind (for example Block), %2$d: its ID. */
 			? sprintf( __( '%1$s (ID %2$d)', 'sitepress' ), $kind, $element->get_id() )
 			: (string) $element->get_id();
 	}

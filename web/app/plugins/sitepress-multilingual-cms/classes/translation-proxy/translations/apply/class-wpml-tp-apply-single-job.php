@@ -14,7 +14,7 @@ class WPML_TP_Apply_Single_Job {
 	}
 
 	public function apply( WPML_TM_Job_Entity $job ) {
-		$translations = $this->translations_repository->get_job_translations_by_job_entity( $job );
+		$translations = $this->translations_repository->get_job_translations_by_job_entity( $job, WPML_TM_Job_Entity::TAXONOMY_TYPE !== $job->get_type() );
 
 		$this->strategy_dispatcher->get( $job )->apply( $job, $translations );
 		$job->set_status( ICL_TM_COMPLETE );

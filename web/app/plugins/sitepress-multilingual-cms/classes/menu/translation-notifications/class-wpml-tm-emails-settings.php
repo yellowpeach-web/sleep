@@ -55,7 +55,7 @@ class WPML_TM_Emails_Settings {
 				'label_completed_job'      => esc_html__( 'Send the translation manager a completed-jobs summary %s', 'sitepress' ),
 				/* translators: %s: number of overdue days. */
 				'label_overdue_job'        => esc_html__( 'Notify the translation manager when jobs are late by %s days', 'sitepress' ),
-				/* translators: Button label that keeps what was entered. Verb, imperative. */
+				/* translators: Button label that keeps what was entered, for example in the Translation delivery box's "Settings for support" and in the "Translation editor and method" section of WPML → Settings. Verb, imperative. */
 				'label_save'               => esc_attr__( 'Save', 'sitepress' ),
 			),
 			'settings' => array(

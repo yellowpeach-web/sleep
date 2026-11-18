@@ -19,16 +19,6 @@
 .installer-status-updating{color: var(--orange); }
 .installer-status-updated{color: var(--wpml-blue); font-weight: 500; }
 
-.installer-status-installed .error-details:before,
-.installer-status-updated .error-details:before{
-    content: "\f534";
-    font: 200 16px/1 dashicons;
-    vertical-align: text-bottom;
-    margin-left: 5px;
-    color: red;
-    cursor: help;
-}
-
 .installer-status-activating{color: var(--gray-dim); }
 .installer-status-activated{color: var(--gray-dark); font-weight: 500; }
 
@@ -170,7 +160,12 @@
     width:16px;
 }
 
-.otgs_wp_installer_table_compact .installer-status-downloading,
+/* admin.js shows the row's spinner through visibility, so it must not be display:none. */
+.otgs_wp_installer_table_compact .installer-status-downloading{
+    visibility: hidden;
+    color:transparent; width: 12px; padding:2px;
+}
+
 .otgs_wp_installer_table_compact .installer-status-downloaded,
 .otgs_wp_installer_table_compact .installer-status-activating,
 .otgs_wp_installer_table_compact .installer-status-activated{
@@ -193,6 +188,37 @@
 .otgs_wp_installer_table_compact .installer-status-activating{background: url(../img/dn.gif) no-repeat center; }
 .otgs_wp_installer_table_compact .installer-status-activated{background: url(../img/complete.png) no-repeat center; }
 .otgs_wp_installer_table_compact .installer-status-error{background: url(../img/icon_error.gif) no-repeat center; }
+
+/* Compact box: the row spinners use the same SVG spinner as the progress line, at full size (dn.gif is 16px wide and was cut to 12px). */
+.otgs_wp_installer_table_compact .installer-status-downloading,
+.otgs_wp_installer_table_compact .installer-status-activating {
+    background: none;
+    width: 16px;
+    padding: 2px 0;
+    font-size: 0;
+    line-height: 0;
+}
+
+/* Compact box: the Commercial tab's 32px under the submit button would push the progress line far from it. */
+.otgs_wp_installer_table_compact .otgsi_downloads_form .button-secondary[type="submit"] {
+    margin-bottom: 12px;
+}
+
+/* Compact box: progress and result lines go under the Download button, left-aligned, not floated against the box edge. */
+.otgs_wp_installer_table_compact .installer-download-progress-status,
+.otgs_wp_installer_table_compact .installer-status-success {
+    float: none;
+    clear: both;
+    margin-top: 0;
+    padding-left: 0;
+    font-style: normal;
+    line-height: 16px;
+}
+
+.otgs_wp_installer_table_compact .installer-download-progress-status::before {
+    margin: 0 6px 0 0;
+    vertical-align: text-bottom;
+}
 
 .installer_highlight{
     color:#c5510b;
@@ -423,6 +449,8 @@ label.activate-label {
 }
 
 .installer-download-progress-status::before,
+.otgs_wp_installer_table_compact .installer-status-downloading::before,
+.otgs_wp_installer_table_compact .installer-status-activating::before,
 .installer-table-wrap .for_spinner_js .spinner::before {
     content: '';
     width: 16px;

@@ -73,7 +73,7 @@ class Display {
 		wp_enqueue_style(
 			'installer-admin-notices',
 			$installer->res_url() . '/res/css/admin-notices.css',
-			[],
+			[ 'common' ],
 			$installer->version()
 		);
 		wp_enqueue_script(

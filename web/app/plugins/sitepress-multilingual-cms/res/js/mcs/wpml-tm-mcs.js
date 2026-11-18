@@ -111,10 +111,13 @@ jQuery(function () {
     // exists on the Translation Editor settings section. The script is also
     // enqueued on other TM-settings sections for the Page-URL handler, where the
     // table is absent - bail out instead of dereferencing null.
-    if (!table || !useForOldTranslationsCheckbox) {
+    // wpmldev-12664: after the cutover, the table has no checkbox for old translations.
+    if (!table) {
       return;
     }
-    useForOldTranslationsCheckbox.setAttribute('style', 'display: none;');
+    if (useForOldTranslationsCheckbox) {
+      useForOldTranslationsCheckbox.setAttribute('style', 'display: none;');
+    }
 
     radioButtons.forEach(function(radio) {
       var radioLabel = radio.nextElementSibling;
@@ -123,7 +126,9 @@ jQuery(function () {
         if (radio.value === "ATE") {
           table.classList.add('t_method__ate-editor');
           table.classList.remove('t_method__classic-editor');
-          useForOldTranslationsCheckbox.setAttribute('style', 'display: inline-block;');
+          if (useForOldTranslationsCheckbox) {
+            useForOldTranslationsCheckbox.setAttribute('style', 'display: inline-block;');
+          }
         } else if (radio.value === "1") {
           table.classList.add('t_method__classic-editor');
           table.classList.remove('t_method__ate-editor');

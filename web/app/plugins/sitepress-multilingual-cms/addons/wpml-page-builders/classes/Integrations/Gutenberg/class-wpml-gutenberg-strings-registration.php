@@ -50,10 +50,12 @@ class WPML_Gutenberg_Strings_Registration {
 		$this->registered_in_pass = [];
 
 		$this->register_blocks(
-			WPML_Gutenberg_Integration::parse_blocks( $post->post_content ),
+			WPML_Gutenberg_Integration::join_shortcodes_split_by_blocks( WPML_Gutenberg_Integration::parse_blocks( $post->post_content ) ),
 			$package_data,
 			$post->ID
 		);
+
+		$this->register_more_strings( $post, $package_data );
 
 		$current_strings = $this->string_translation->get_package_strings( $package_data );
 
@@ -93,8 +95,10 @@ class WPML_Gutenberg_Strings_Registration {
 			$block   = WPML_Gutenberg_Integration::sanitize_block( $block );
 			$strings = $this->strings_in_blocks->find( $block );
 
-			$sequence  = apply_filters( 'wpml_pb_replace_sequence_with_attachment_id', $this->sequence, $block );
-			$group     = $this->getGroupIdOfBlock( $block, $sequence );
+			$sequence = apply_filters( 'wpml_pb_replace_sequence_with_attachment_id', $this->sequence, $block );
+
+			$attachmentId = (int) apply_filters( 'wpml_pb_gutenberg_block_attachment_id', 0, $block );
+			$group        = $this->getGroupIdOfBlock( $block, (int) $sequence, $attachmentId );
 			$newCrumbs = $crumbs;
 			if ( ! $this->isLayoutBlock( $block ) ) {
 				$newCrumbs[] = $group;
@@ -156,8 +160,10 @@ class WPML_Gutenberg_Strings_Registration {
 		return isset( $block->attrs['layout'] );
 	}
 
-	private function getGroupIdOfBlock( WP_Block_Parser_Block $block, int $sequence ): string {
-		return str_replace( '/', '-', $block->blockName ) . '-' . $sequence;
+	private function getGroupIdOfBlock( WP_Block_Parser_Block $block, int $sequence, int $attachmentId ): string {
+		$groupId = str_replace( '/', '-', $block->blockName ) . '-' . $sequence;
+
+		return $attachmentId > 0 ? $groupId . '-' . $attachmentId : $groupId;
 	}
 
 	private function update_string_location( array $package_data, stdClass $string_data ) {
@@ -176,6 +182,14 @@ class WPML_Gutenberg_Strings_Registration {
 
 		if ( $string_id ) {
 			$string->set_wrap_tag( $wrap_tag );
+		}
+	}
+
+	private function register_more_strings( WP_Post $post, array $package_data ) {
+		$values = apply_filters( 'wpml_pb_gutenberg_register_more_strings', [], $post, $package_data );
+
+		foreach ( is_array( $values ) ? $values : [] as $value ) {
+			$this->remove_string_from_leftovers( $value );
 		}
 	}
 

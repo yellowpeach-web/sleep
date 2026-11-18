@@ -188,10 +188,6 @@ class PreferenceSourceIndex {
 			}
 		}
 
-		if ( $changed ) {
-			$tm->save_settings();
-		}
-
 		return $changed;
 	}
 }

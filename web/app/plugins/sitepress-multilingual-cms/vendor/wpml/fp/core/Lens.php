@@ -40,12 +40,51 @@ class Lens {
 		} );
 
 		self::macro( 'isoParsedUrl', function() {
-			return self::iso( 'parse_url', 'http_build_url' );
+			return self::iso( 'parse_url', [ self::class, 'buildUrl' ] );
 		} );
 
 		self::macro( 'isoParsedQuery', function() {
 			return self::iso( Str::parse(), 'http_build_query' );
 		} );
+	}
+
+	public static function buildUrl( $parts ) {
+		$parts = is_array( $parts ) ? $parts : [];
+		if ( isset( $parts['query'] ) && ! is_string( $parts['query'] ) ) {
+			unset( $parts['query'] );
+		}
+		if ( isset( $parts['path'] ) && '' !== $parts['path'] && '/' !== substr( (string) $parts['path'], 0, 1 ) ) {
+			$parts['path'] = '/' . $parts['path'];
+		}
+
+		$url = '';
+		if ( ! empty( $parts['scheme'] ) ) {
+			$url .= $parts['scheme'] . '://';
+		}
+		if ( ! empty( $parts['user'] ) ) {
+			$url .= $parts['user'];
+			if ( isset( $parts['pass'] ) ) {
+				$url .= ':' . $parts['pass'];
+			}
+			$url .= '@';
+		}
+		if ( ! empty( $parts['host'] ) ) {
+			$url .= $parts['host'];
+		}
+		if ( ! empty( $parts['port'] ) ) {
+			$url .= ':' . $parts['port'];
+		}
+		if ( ! empty( $parts['path'] ) ) {
+			$url .= $parts['path'];
+		}
+		if ( ! empty( $parts['query'] ) ) {
+			$url .= '?' . $parts['query'];
+		}
+		if ( ! empty( $parts['fragment'] ) ) {
+			$url .= '#' . $parts['fragment'];
+		}
+
+		return $url;
 	}
 }
 

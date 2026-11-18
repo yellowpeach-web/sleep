@@ -72,6 +72,7 @@ $product_logo           = ! empty( $packages ) ? \OTGS\Installer\Templates\Repos
 					} elseif ( $this->repository_has_expired_subscription( $repository_id ) ) {
 						\OTGS\Installer\Templates\Repository\Expired::render( $model );
 					} elseif ( $this->repository_has_refunded_subscription( $repository_id ) ) {
+						$model->coveredByWpml = 'toolset' === $repository_id && WP_Installer()->toolset_is_covered_by_wpml();
 						\OTGS\Installer\Templates\Repository\Refunded::render( $model );
 					} elseif ( $this->repository_has_legacy_free_subscription( $repository_id ) ) {
 						$model->displayCheckForUpdates = false;

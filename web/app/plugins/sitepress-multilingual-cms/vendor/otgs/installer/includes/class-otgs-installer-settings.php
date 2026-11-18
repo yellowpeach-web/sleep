@@ -47,6 +47,19 @@ class Settings {
 		return self::$settings;
 	}
 
+	public static function read_stored() {
+		if ( function_exists( 'wp_cache_delete' ) ) {
+			\wp_cache_delete( 'wp_installer_settings', 'options' );
+		}
+
+		$settings = \get_option( 'wp_installer_settings' );
+		if ( is_string( $settings ) && '' !== $settings ) {
+			$settings = self::uncompress( $settings );
+		}
+
+		return is_array( $settings ) ? $settings : array();
+	}
+
 	private static function load_common() {
 		if ( null === self::$settings_common ) {
 			self::$settings_common = self::with_network_subscriptions( self::read_common() );
@@ -141,7 +154,7 @@ class Settings {
 	}
 
 	private static function read_network_subscriptions() {
-		$network = \maybe_unserialize( \get_site_option( self::NETWORK_OPTION ) );
+		$network = \OTGS_Installer_Serialized::maybe_decode( \get_site_option( self::NETWORK_OPTION ) );
 
 		return is_array( $network ) ? array_filter( $network ) : array();
 	}
@@ -214,11 +227,15 @@ class Settings {
 		$last_update = \get_option( 'wp_installer_last_update', false );
 
 		if ( ! $last_update || ( time() - $last_update ) > 86400 ) {
-			\update_option( 'wp_installer_last_update', time(), false );
+			self::mark_updated();
 			return true;
 		}
 
 		return false;
+	}
+
+	public static function mark_updated() {
+		\update_option( 'wp_installer_last_update', time(), false );
 	}
 
 
@@ -263,7 +280,7 @@ class Settings {
 				return false;
 			}
 		}
-		return unserialize( (string) $content );
+		return \OTGS_Installer_Serialized::decode( $content );
 	}
 
 	private static function inflate( $bytes ) {

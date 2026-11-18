@@ -10,6 +10,7 @@ use WPML\PHP\Exception\InvalidArgumentException as WpmlInvalidArgumentException;
 use WPML\PHP\Exception\InvalidItemIdException;
 use WPML\PHP\Exception\InvalidTypeException;
 use WPML\UserInterface\Web\Core\SharedKernel\Config\Endpoint\Endpoint;
+use WPML\UserInterface\Web\Core\SharedKernel\Config\Endpoint\PermissionInterface;
 use function WPML\PHP\Logger\error as logError;
 
 class EndpointLoader {
@@ -17,6 +18,8 @@ class EndpointLoader {
   const GENERIC_ERROR_MESSAGE = 'Internal server error.';
 
   const STATUS_BAD_REQUEST = 400;
+
+  const LOGGED_TRACE_FRAMES = 5;
 
   private $endpoint;
 
@@ -86,15 +89,35 @@ class EndpointLoader {
 
       logError(
         sprintf(
-          'REST endpoint "%s" failed: %s: %s',
+          'REST endpoint "%s" failed: %s: %s in %s:%d%s',
           $this->endpoint->id(),
           get_class( $e ),
-          $e->getMessage()
+          $e->getMessage(),
+          self::relativePath( $e->getFile() ),
+          $e->getLine(),
+          $this->logsTraceFrames() ? self::traceFrames( $e ) : ''
         )
       );
 
       return $this->api->responseJsonError( self::GENERIC_ERROR_MESSAGE );
     }
+  }
+
+
+  protected function logsTraceFrames(): bool {
+    return defined( 'WP_DEBUG' ) && WP_DEBUG;
+  }
+
+
+  private static function traceFrames( Throwable $e ): string {
+    $frames = array_slice( explode( "\n", $e->getTraceAsString() ), 0, self::LOGGED_TRACE_FRAMES );
+
+    return "\n" . implode( "\n", array_map( [ self::class, 'relativePath' ], $frames ) );
+  }
+
+
+  private static function relativePath( string $path ): string {
+    return defined( 'WP_CONTENT_DIR' ) ? str_replace( WP_CONTENT_DIR . '/', '', $path ) : $path;
   }
 
 
@@ -106,8 +129,19 @@ class EndpointLoader {
   }
 
 
-  public function authorisation() {
-    return $this->api->validateRequest( $this->endpoint->capabilities() );
+  public function authorisation( $request = null ) {
+    if ( ! $this->api->validateRequest( $this->endpoint->capabilities() ) ) {
+      return false;
+    }
+
+    $permissionClass = $this->endpoint->permission();
+    if ( ! $permissionClass ) {
+      return true;
+    }
+
+    $permission = $this->dic->make( $permissionClass );
+
+    return true === $permission->check( $request );
   }
 
 

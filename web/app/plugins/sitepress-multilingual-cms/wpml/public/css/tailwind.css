@@ -408,6 +408,9 @@
   .wpml\:gap-x-3 {
     column-gap: calc(var(--wpml-spacing) * 3) !important;
   }
+  .wpml\:gap-y-1 {
+    row-gap: calc(var(--wpml-spacing) * 1) !important;
+  }
   .wpml\:gap-y-\[20px\] {
     row-gap: 20px !important;
   }
@@ -676,6 +679,9 @@
   }
   .wpml\:pb-16 {
     padding-bottom: calc(var(--wpml-spacing) * 16) !important;
+  }
+  .wpml\:pl-7 {
+    padding-left: calc(var(--wpml-spacing) * 7) !important;
   }
   .wpml\:pl-12 {
     padding-left: calc(var(--wpml-spacing) * 12) !important;
@@ -1271,6 +1277,37 @@ wc-language-editor, .wpml-language-editor {
   gap: 8px;
   padding: 8px 10px;
   min-height: 44px;
+}
+.wpml-le-row__handle {
+  flex-shrink: 0;
+  color: var(--le-muted);
+  cursor: grab;
+  line-height: 1;
+  padding: 2px;
+  border-radius: 2px;
+  user-select: none;
+}
+.wpml-le-row__handle::before {
+  content: "\283F";
+}
+.wpml-le-row__handle:hover {
+  color: var(--le-text);
+}
+.wpml-le-row__handle:active {
+  cursor: grabbing;
+}
+.wpml-le-row__handle:focus-visible {
+  outline: 2px solid var(--le-accent);
+  outline-offset: 1px;
+}
+.wpml-le-row.is-dragging {
+  opacity: 0.5;
+}
+.wpml-le-row.is-drop-before {
+  box-shadow: 0 -2px 0 0 var(--le-accent);
+}
+.wpml-le-row.is-drop-after {
+  box-shadow: 0 2px 0 0 var(--le-accent);
 }
 .wpml-le-flag {
   flex-shrink: 0;
@@ -3857,6 +3894,10 @@ button.wpml-le-code-chip:hover, button.wpml-le-code-chip:focus-visible {
 .wpml-flash {
   animation: wpml-flash-pulse 0.75s ease-in-out 2;
 }
+tr.wpml-flash > th,
+tr.wpml-flash > td {
+  animation: wpml-flash-pulse 0.75s ease-in-out 2;
+}
 body .wrap mark {
   background-color: #BEE3F5;
   color: inherit;
@@ -3890,6 +3931,21 @@ body .wrap .wpml-section-content h4,
 body .wrap .wpml-section-content-inner h4,
 body .wrap .wpml-notifications-subsection h4 {
   font-size: 14px;
+}
+body .wrap #lang-sec-9.wpml-section {
+  border: 1px solid #ededed;
+}
+body .wrap #lang-sec-9 .explanation-text {
+  margin: 2px 0 0;
+  margin-inline-start: 20px;
+}
+body .wrap #lang-sec-9 .js-chosen-language-days,
+body .wrap #lang-sec-9 .js-redirect-missing,
+body .wrap #lang-sec-9 .js-remember-language-hours {
+  margin-inline-start: 20px;
+}
+body .wrap #page-url .wpml-section-content-inner {
+  padding-top: 13px;
 }
 @layer utilities {
   body .wrap .wpml-section .hidden,

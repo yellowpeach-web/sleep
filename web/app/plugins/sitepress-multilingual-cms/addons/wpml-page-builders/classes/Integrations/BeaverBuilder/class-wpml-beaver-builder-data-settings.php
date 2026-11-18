@@ -1,8 +1,10 @@
 <?php
 
 use WPML\PB\BeaverBuilder\BeaverThemer\HooksFactory as BeaverThemer;
+use WPML\PB\BeaverBuilder\BodyRenderer;
+use WPML\PB\TranslationBody\RendersTranslationBody;
 
-class WPML_Beaver_Builder_Data_Settings implements IWPML_Page_Builders_Data_Settings {
+class WPML_Beaver_Builder_Data_Settings implements IWPML_Page_Builders_Data_Settings, RendersTranslationBody {
 
 	const META_FIELD_KEY       = '_fl_builder_data';
 	const META_FIELD_DRAFT_KEY = '_fl_builder_draft';
@@ -29,6 +31,7 @@ class WPML_Beaver_Builder_Data_Settings implements IWPML_Page_Builders_Data_Sett
 					'_fl_theme_builder_locations',
 					'_fl_theme_builder_exclusions',
 					'_fl_theme_builder_edit_mode',
+					'_fl_theme_builder_user_rules',
 				]
 			);
 		}
@@ -53,6 +56,10 @@ class WPML_Beaver_Builder_Data_Settings implements IWPML_Page_Builders_Data_Sett
 	}
 
 	public function add_hooks() {}
+
+	public function render_translation_body( $translated_post_id, WP_Post $original_post ) {
+		return ( new BodyRenderer( $this ) )->render( $translated_post_id );
+	}
 
 	private function slash( $data ) {
 		if ( is_array( $data ) ) {

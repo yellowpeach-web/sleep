@@ -13,6 +13,14 @@ class WPML_TM_Action_Helper {
 
 	private $translatable_memo = null;
 
+	private $post_fields_memo = null;
+
+	private $custom_field_scope = null;
+
+	private $older_forms = null;
+
+	private $walk_checksums = null;
+
 	public function __construct(
 		?LegacyChecksumOrders $legacy_checksum_orders = null,
 		?ChecksumFieldHistory $checksum_field_history = null
@@ -55,7 +63,11 @@ class WPML_TM_Action_Helper {
 			}
 		);
 
-		$custom_fields_values = $this->without_empty_values( $this->get_post_custom_fields( $post ) );
+		return $this->checksum_over( $post, array_keys( $this->post_checksum_fields( $post ) ) );
+	}
+
+	private function checksum_over( $post, array $names ) {
+		$custom_fields_values = $this->without_empty_values( $this->get_post_custom_field_values( $post, $names ) );
 
 		ksort( $custom_fields_values, SORT_STRING );
 
@@ -88,6 +100,64 @@ class WPML_TM_Action_Helper {
 			return false;
 		}
 
+		$key = $this->older_forms_key( $post, $current );
+		if ( null === $this->older_forms || $key !== $this->older_forms['key'] ) {
+			$this->older_forms = array(
+				'key'     => $key,
+				'matched' => array(),
+				'walked'  => null,
+			);
+		}
+		if ( isset( $this->older_forms['matched'][ $md5 ] ) ) {
+			return true;
+		}
+		if ( ! array_key_exists( 'narrow', $this->older_forms ) ) {
+			$this->older_forms['narrow'] = $this->checksum_without_resolved_fields( $post );
+		}
+		if ( $md5 === $this->older_forms['narrow'] ) {
+			return true;
+		}
+		if ( null !== $this->older_forms['walked'] ) {
+			return isset( $this->older_forms['walked'][ $md5 ] ) || $this->matches_an_earlier_set( $post, $md5, $current );
+		}
+
+		$outer_scope              = $this->custom_field_scope;
+		$outer_checksums          = $this->walk_checksums;
+		$this->custom_field_scope = array(
+			'post'   => (int) $post->ID,
+			'values' => array(),
+		);
+		$this->walk_checksums     = array();
+		try {
+			$found  = $this->matches_a_legacy_form( $post, $md5 );
+			$walked = $this->walk_checksums;
+		} finally {
+			$this->custom_field_scope = $outer_scope;
+			$this->walk_checksums     = $outer_checksums;
+		}
+
+		if ( null === $this->older_forms || $key !== $this->older_forms['key'] ) {
+			$this->older_forms = array(
+				'key'     => $key,
+				'matched' => array(),
+				'walked'  => null,
+			);
+		}
+		if ( $found ) {
+			$this->older_forms['matched'][ $md5 ] = true;
+
+			return true;
+		}
+		$this->older_forms['walked'] = $walked;
+
+		return $this->matches_an_earlier_set( $post, $md5, $current );
+	}
+
+	private function older_forms_key( $post, $current ) {
+		return get_current_blog_id() . ':' . $post->ID . ':' . $current . ':' . md5( implode( "\0", array_keys( $this->translatable_custom_fields() ) ) );
+	}
+
+	private function matches_a_legacy_form( $post, $md5 ) {
 		$values = $this->get_post_custom_fields( $post );
 		$names  = array_keys( $this->translatable_custom_fields() );
 		$empty  = array_values(
@@ -100,21 +170,31 @@ class WPML_TM_Action_Helper {
 		);
 
 		if ( ! $empty && count( $values ) < 2 ) {
-			return $this->matches_an_earlier_set( $post, $md5, $current );
+			return false;
 		}
 
-		$parts = $this->post_key_parts( $post );
-		foreach ( $this->legacy_field_sets( $names, $empty ) as $set ) {
-			$orders = $this->legacy_checksum_orders()->forNames( $set ) ?: array( $set );
-			foreach ( $orders as $order ) {
-				$legacy_key = $this->build_post_key( $parts, $this->get_post_custom_fields( $post, $order ) );
-				if ( md5( $this->filter_post_key( $legacy_key, $post ) ) === $md5 ) {
-					return true;
-				}
+		$current_values = $this->read_custom_field_values( $post, $names );
+		$order_values   = array();
+		foreach ( $this->legacy_checksum_orders()->forNames( $names ) as $order ) {
+			$order_values[] = $this->read_custom_field_values( $post, array_keys( $this->translatable_custom_fields( $order ) ) );
+		}
+
+		return $this->matches_a_legacy_field_set( $post, $md5, $current_values, $order_values, $empty );
+	}
+
+	protected function legacy_field_set_matches( $post, $md5, array $parts, array $forms ) {
+		foreach ( $forms as $values_in_order ) {
+			$legacy_key = $this->build_post_key( $parts, $this->filter_custom_field_values( $values_in_order, $post ) );
+			$checksum   = md5( $this->filter_post_key( $legacy_key, $post ) );
+			if ( null !== $this->walk_checksums ) {
+				$this->walk_checksums[ $checksum ] = true;
+			}
+			if ( $checksum === $md5 ) {
+				return true;
 			}
 		}
 
-		return $this->matches_an_earlier_set( $post, $md5, $current );
+		return false;
 	}
 
 	private function matches_an_earlier_set( $post, $md5, $current ) {
@@ -160,24 +240,38 @@ class WPML_TM_Action_Helper {
 		return $this->earlier_set_checksums[ $memo_key ];
 	}
 
-	private function legacy_field_sets( array $names, array $empty ) {
-		$drops = array( array() );
+	private function matches_a_legacy_field_set( $post, $md5, array $current_values, array $order_values, array $empty ) {
+		$parts = $this->post_key_parts( $post );
 
-		$newest_first = array_reverse( $empty );
-		foreach ( $newest_first as $i => $name ) {
-			$drops[] = array_slice( $newest_first, 0, $i + 1 );
-		}
-		foreach ( $empty as $name ) {
-			$drops[] = array( $name );
+		$forms = LegacyChecksumOrders::without( $order_values, array() ) ?: array( $current_values );
+		if ( $this->legacy_field_set_matches( $post, $md5, $parts, $forms ) ) {
+			return true;
 		}
 
-		$sets = array();
-		foreach ( $drops as $drop ) {
-			$set                           = array_values( array_diff( $names, $drop ) );
-			$sets[ implode( "\0", $set ) ] = $set;
+		$set  = $current_values;
+		$kept = $order_values;
+		foreach ( array_reverse( $empty ) as $name ) {
+			unset( $set[ $name ] );
+			foreach ( array_keys( $kept ) as $i ) {
+				unset( $kept[ $i ][ $name ] );
+			}
+			$forms = LegacyChecksumOrders::without( $kept, array() ) ?: array( $set );
+			if ( $this->legacy_field_set_matches( $post, $md5, $parts, $forms ) ) {
+				return true;
+			}
+			unset( $forms );
 		}
 
-		return array_values( $sets );
+		foreach ( array_slice( $empty, 0, -1 ) as $name ) {
+			$set = $current_values;
+			unset( $set[ $name ] );
+			$forms = LegacyChecksumOrders::without( $order_values, array( $name ) ) ?: array( $set );
+			if ( $this->legacy_field_set_matches( $post, $md5, $parts, $forms ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private function without_empty_values( array $values ) {
@@ -316,20 +410,37 @@ class WPML_TM_Action_Helper {
 	}
 
 	private function get_post_custom_field_values( $post, array $names ) {
+		return $this->filter_custom_field_values( $this->read_custom_field_values( $post, $names ), $post );
+	}
+
+	private function read_custom_field_values( $post, array $names ) {
 		$custom_fields_values = array();
 
 		foreach ( $names as $cf ) {
 			$custom_fields_values[ $cf ] = $this->read_custom_field( $post, $cf );
 		}
 
-		$custom_fields_values = apply_filters( 'wpml_custom_field_values_for_post_signature', $custom_fields_values, $post->ID );
 		return $custom_fields_values;
 	}
 
-	private function read_custom_field( $post, $name ) {
-		$value = get_post_meta( $post->ID, $name, true );
+	private function filter_custom_field_values( array $custom_fields_values, $post ) {
+		return apply_filters( 'wpml_custom_field_values_for_post_signature', $custom_fields_values, $post->ID );
+	}
 
-		return is_scalar( $value ) ? $value : wp_json_encode( $value );
+	private function read_custom_field( $post, $name ) {
+		$scoped = null !== $this->custom_field_scope && (int) $post->ID === $this->custom_field_scope['post'];
+		if ( $scoped && array_key_exists( (string) $name, $this->custom_field_scope['values'] ) ) {
+			return $this->custom_field_scope['values'][ (string) $name ];
+		}
+
+		$value = get_post_meta( $post->ID, $name, true );
+		$value = is_scalar( $value ) ? $value : wp_json_encode( $value );
+
+		if ( $scoped ) {
+			$this->custom_field_scope['values'][ (string) $name ] = $value;
+		}
+
+		return $value;
 	}
 
 	private function translatable_custom_fields( ?array $names = null ) {
@@ -354,6 +465,66 @@ class WPML_TM_Action_Helper {
 		}
 
 		return $chosen;
+	}
+
+	private function post_checksum_fields( $post ) {
+		$fields = $this->translatable_custom_fields();
+		if ( ! isset( $post->ID ) ) {
+			return $fields;
+		}
+
+		$map  = \WPML\TM\Settings\Repository::getCustomFields();
+		$meta = get_post_custom( $post->ID );
+		$keys = is_array( $meta ) ? array_keys( $meta ) : array();
+		$id   = get_current_blog_id() . ':' . $post->ID;
+
+		if (
+			null !== $this->post_fields_memo
+			&& $id === $this->post_fields_memo['post']
+			&& $keys === $this->post_fields_memo['keys']
+			&& $map === $this->post_fields_memo['map']
+		) {
+			return $this->post_fields_memo['all'];
+		}
+
+		$unmapped = array_values(
+			array_filter(
+				$keys,
+				function ( $key ) use ( $map ) {
+					return ! array_key_exists( $key, $map );
+				}
+			)
+		);
+
+		$all = $fields;
+		if ( $unmapped ) {
+			foreach ( wpml_resolve_custom_field_preferences( $unmapped ) as $name => $mode ) {
+				if (
+					! array_key_exists( $name, $map )
+					&& in_array( (int) $mode, array( WPML_TRANSLATE_CUSTOM_FIELD, WPML_COPY_ONCE_CUSTOM_FIELD ), true )
+				) {
+					$all[ $name ] = $mode;
+				}
+			}
+		}
+
+		$this->post_fields_memo = array(
+			'post' => $id,
+			'keys' => $keys,
+			'map'  => $map,
+			'all'  => $all,
+		);
+
+		return $all;
+	}
+
+	private function checksum_without_resolved_fields( $post ) {
+		$fields = $this->translatable_custom_fields();
+		if ( count( $this->post_checksum_fields( $post ) ) === count( $fields ) ) {
+			return null;
+		}
+
+		return $this->checksum_over( $post, array_keys( $fields ) );
 	}
 
 	protected function translatable_fields_of( array $map ) {

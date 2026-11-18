@@ -2,17 +2,17 @@
 
 namespace WPML\Legacy\Component\Translation\Sender\Taxonomy;
 
+use WPML\Core\Component\Translation\Application\Service\Taxonomy\TaxonomySendOperationCoordinatorInterface;
 use WPML\Core\Component\Translation\Application\Service\Taxonomy\TaxonomySendOperationRepository;
 use WPML\Core\Component\Translation\Application\Service\TranslationService\Dto\ResultDto;
 use WPML\Core\Component\Translation\Domain\HowToHandleExistingTranslationType;
 use WPML\Core\SharedKernel\Component\Language\Application\Query\LanguagesQueryInterface;
 use WPML\Core\SharedKernel\Component\Translation\Domain\TranslationMethod\TargetLanguageMethodType;
-use WPML\Legacy\Component\Language\Application\Query\LanguagesQuery;
 use WPML\PHP\Exception\InvalidArgumentException;
 use WPML\TM\ATE\TranslateEverything\TranslatableTaxonomies;
 use WPML\TM\Dashboard\Taxonomy\TaxonomyLabelStatus;
 
-class TaxonomySendOperationCoordinator {
+class TaxonomySendOperationCoordinator implements TaxonomySendOperationCoordinatorInterface {
 
   const ACTION_START    = 'start';
   const ACTION_CONTINUE = 'continue';
@@ -32,17 +32,21 @@ class TaxonomySendOperationCoordinator {
 
   private $sweeper;
 
+  private $bundleRounds;
+
 
   public function __construct(
     ?TaxonomySendOperationRepository $repository = null,
     ?LanguagesQueryInterface $languages = null,
     ?TaxonomySendPairWalker $walker = null,
-    ?TaxonomySendOperationSweeper $sweeper = null
+    ?TaxonomySendOperationSweeper $sweeper = null,
+    ?TaxonomyTermBundleRounds $bundleRounds = null
   ) {
-    $this->repository = $repository ?: new TaxonomySendOperationRepository();
-    $this->languages  = $languages;
-    $this->walker     = $walker;
-    $this->sweeper    = $sweeper;
+    $this->repository   = $repository ?: new TaxonomySendOperationRepository();
+    $this->languages    = $languages;
+    $this->walker       = $walker;
+    $this->sweeper      = $sweeper;
+    $this->bundleRounds = $bundleRounds;
   }
 
 
@@ -153,6 +157,27 @@ class TaxonomySendOperationCoordinator {
       $handledKeys[ $this->outcomeKey( $pair['elementId'], $pair['targetLanguage'] ) ] = true;
     }
 
+    $bundleOutcomes     = [];
+    $pendingKeys        = [];
+    $lateFailedElements = [];
+    $openMembers        = $this->repository->openBundleMembers( $context['operationId'] );
+    if ( $openMembers ) {
+      $ended     = null !== $context['walk'] ? ! empty( $context['walk']['ended'] ) : ! empty( $context['manifest']['ended'] );
+      $dispatched = $this->bundleRounds()->settleRound( $context['operationId'], $openMembers, $ended );
+      foreach ( $dispatched['accepted'] as $member ) {
+        $pair = TaxonomyTermBundleRounds::pairOf( $member );
+        $bundleOutcomes[ $this->outcomeKey( $pair['elementId'], $pair['targetLanguage'] ) ] = $pair + [ 'outcome' => 'accepted' ];
+      }
+      foreach ( $dispatched['failed'] as $failure ) {
+        $pair = TaxonomyTermBundleRounds::pairOf( $failure['member'] );
+        $bundleOutcomes[ $this->outcomeKey( $pair['elementId'], $pair['targetLanguage'] ) ] = $pair + [ 'outcome' => $failure['kind'] ];
+        $lateFailedElements[] = TaxonomyTermBundleRounds::failedElement( $failure );
+      }
+      foreach ( $dispatched['open'] as $member ) {
+        $pendingKeys[ $this->outcomeKey( $member->getTermTaxonomyId(), $member->getTargetLanguage() ) ] = true;
+      }
+    }
+
     $termSuccessful = 0;
     $failures       = [];
     $outcomes       = [];
@@ -164,16 +189,28 @@ class TaxonomySendOperationCoordinator {
         'targetLanguage' => $pagePair['targetLanguage'],
       ];
       $key     = $this->outcomeKey( $pair['elementId'], $pair['targetLanguage'] );
-      $outcome = isset( $handledKeys[ $key ] ) ? 'ignored' : ( $failureKeys[ $key ]
+      if ( isset( $pendingKeys[ $key ] ) && ! isset( $handledKeys[ $key ] ) ) {
+        continue;
+      }
+      $outcome = isset( $handledKeys[ $key ] ) ? 'ignored' : ( $bundleOutcomes[ $key ]['outcome'] ?? $failureKeys[ $key ]
         ?? ( isset( $createdKeys[ $key ] )
           ? 'accepted'
           : ( isset( $ignoredKeys[ $key ] ) ? 'ignored' : 'remaining' ) ) );
+      unset( $bundleOutcomes[ $key ] );
       if ( 'rejected' === $outcome || 'blocked' === $outcome || 'remaining' === $outcome ) {
         $failures[] = $pair + [ 'outcome' => $outcome ];
       } else {
         ++$termSuccessful;
       }
       $outcomes[] = $pair + [ 'outcome' => $outcome ];
+    }
+    foreach ( $bundleOutcomes as $pair ) {
+      if ( 'accepted' === $pair['outcome'] ) {
+        ++$termSuccessful;
+      } else {
+        $failures[] = $pair;
+      }
+      $outcomes[] = $pair;
     }
 
     $labelSuccessful           = 0;
@@ -216,6 +253,10 @@ class TaxonomySendOperationCoordinator {
       }
     }
 
+    if ( ! empty( $context['skipped'] ) ) {
+      $additionalWarnings[] = __( 'Some selected taxonomy terms were deleted before they could be sent. The remaining terms were not affected.', 'wpml' );
+    }
+
     $manifest  = $this->repository->commitRound(
       $context['operationId'],
       $context['manifest'],
@@ -253,7 +294,11 @@ class TaxonomySendOperationCoordinator {
       0,
       TaxonomySendOperationRepository::PAGE_SIZE
     );
-    if ( $complete && ! $retryable ) {
+    if ( $complete && ! $retryable && ! $this->repository->hasUncommittedTpBatch( $manifest ) ) {
+      $leftOpen = $this->repository->openBundleMembers( $context['operationId'] );
+      if ( $leftOpen ) {
+        TaxonomyTermBundleRounds::releaseRecords( $GLOBALS['wpdb'], $leftOpen );
+      }
       $this->repository->deleteOperation( $context['operationId'] );
     }
     if ( $roundLimitReached ) {
@@ -284,21 +329,50 @@ class TaxonomySendOperationCoordinator {
       ]
     );
 
-    return [
-      'operationId' => $context['operationId'],
-      'status'      => $status,
-      'total'       => $this->total( $manifest ),
-      'successful'  => $manifest['successful'],
-      'remaining'   => $remaining,
-      'completed'   => $complete,
-      'progressed'  => $progressed,
-      'overwrite'   => ! empty( $manifest['selection']['overwrite'] ),
-      'warnings'    => array_values( $manifest['warnings'] ),
-      'incompleteTaxonomies' => $this->incompleteTaxonomies( $manifest ),
-      'incompleteLabelTaxonomies' => array_values( $manifest['incompleteLabelTaxonomies'] ),
-      'outcomes'    => $outcomes,
-      'retryable'   => $this->withTermNames( $retryable ),
-    ];
+    return array_merge(
+      [
+        'operationId' => $context['operationId'],
+        'status'      => $status,
+        'total'       => $this->total( $manifest ),
+        'successful'  => $manifest['successful'],
+        'remaining'   => $remaining,
+        'completed'   => $complete,
+        'progressed'  => $progressed,
+        'overwrite'   => ! empty( $manifest['selection']['overwrite'] ),
+        'warnings'    => array_values( $manifest['warnings'] ),
+        'incompleteTaxonomies' => $this->incompleteTaxonomies( $manifest ),
+        'incompleteLabelTaxonomies' => array_values( $manifest['incompleteLabelTaxonomies'] ),
+        'outcomes'    => $outcomes,
+        'retryable'   => $this->withTermNames( $retryable ),
+        'planned'     => $this->planned( $manifest ),
+      ],
+      $lateFailedElements
+        ? [ 'failedElements' => array_merge( $resultData['failedElements'], $lateFailedElements ) ]
+        : [],
+      isset( $manifest['batchName'], $manifest['batchId'] )
+        ? [
+          'batchName' => $manifest['batchName'],
+          'batchId' => $manifest['batchId'],
+          'batchCommitted' => ! empty( $manifest['batchCommitted'] ),
+        ]
+        : []
+    );
+  }
+
+
+  private function planned( array $manifest ) {
+    if ( isset( $manifest['selection']['counts'] ) ) {
+      $planned = $manifest['selection']['counts'];
+    } else {
+      $planned = [];
+      foreach ( $manifest['selection']['plans'] ?? [] as $taxonomy => $plan ) {
+        if ( isset( $plan['counts'] ) ) {
+          $planned[ $taxonomy ] = $plan['counts'];
+        }
+      }
+    }
+
+    return $planned ?: new \stdClass();
   }
 
 
@@ -320,15 +394,15 @@ class TaxonomySendOperationCoordinator {
     $translatableMethods    = array_intersect_key( $methods, $translatable );
     $warnings               = [];
     $incompleteTaxonomies   = [];
-    $automaticLanguages     = array_keys(
+    $termLanguages = array_keys(
       array_filter(
         $translatableMethods,
         function ( string $method ): bool {
-          return TargetLanguageMethodType::AUTOMATIC === $method;
+          return in_array( $method, [ TargetLanguageMethodType::AUTOMATIC, TargetLanguageMethodType::LOCAL_TRANSLATOR, TargetLanguageMethodType::TRANSLATION_SERVICE, 'myself' ], true );
         }
       )
     );
-    $walkedTaxonomies       = [];
+    $walkedTaxonomies = [];
 
     if ( $selectors && ! $methods ) {
       $warnings[] = __( 'Choose a translation method before sending taxonomy terms.', 'wpml' );
@@ -347,7 +421,7 @@ class TaxonomySendOperationCoordinator {
       }
 
       foreach ( $translatableMethods as $targetLanguage => $method ) {
-        if ( 'do_nothing' === $method || TargetLanguageMethodType::AUTOMATIC === $method ) {
+        if ( in_array( $method, [ 'do_nothing', TargetLanguageMethodType::AUTOMATIC, TargetLanguageMethodType::LOCAL_TRANSLATOR, TargetLanguageMethodType::TRANSLATION_SERVICE, TargetLanguageMethodType::DUPLICATE, 'myself' ], true ) ) {
           continue;
         }
         if ( 'please_choose' === $method ) {
@@ -359,18 +433,20 @@ class TaxonomySendOperationCoordinator {
           $incompleteTaxonomies[] = $selector;
           continue;
         }
-        $warnings[] = sprintf(
-          /* translators: %s is a target language code. */
-          esc_html__( 'Taxonomy terms were not sent to %s because terms currently support Automatic translation only.', 'wpml' ),
-          $targetLanguage
-        );
         $incompleteTaxonomies[] = $selector;
       }
 
       $walkedTaxonomies[] = $selector;
     }
 
-    $frozen = $this->walker()->freeze( $walkedTaxonomies, $automaticLanguages, $overwrite );
+    $taxonomySelection = $requestData['taxonomySelection'] ?? null;
+    if ( null !== $taxonomySelection && ! is_array( $taxonomySelection ) ) {
+      throw new InvalidArgumentException( esc_html__( 'The taxonomy selection is not valid.', 'wpml' ) );
+    }
+
+    $frozen = null === $taxonomySelection
+      ? $this->walker()->freeze( $walkedTaxonomies, $termLanguages, $overwrite )
+      : $this->walker()->freeze( $walkedTaxonomies, $termLanguages, $overwrite, $taxonomySelection );
 
     $validLabelSelectors          = [];
     $incompleteLabelTaxonomies    = [];
@@ -449,6 +525,19 @@ class TaxonomySendOperationCoordinator {
   }
 
 
+  private function bundleRounds(): TaxonomyTermBundleRounds {
+    if ( null === $this->bundleRounds ) {
+      $this->bundleRounds = new TaxonomyTermBundleRounds(
+        $GLOBALS['wpdb'],
+        new \WPML\TM\ATE\TranslateEverything\TaxonomyTermJobDispatcher( $GLOBALS['wpdb'] ),
+        $this->repository
+      );
+    }
+
+    return $this->bundleRounds;
+  }
+
+
   private function sweepAbandonedOperations(): void {
     try {
       $this->sweeper = $this->sweeper ?: new TaxonomySendOperationSweeper();
@@ -469,6 +558,7 @@ class TaxonomySendOperationCoordinator {
     $this->assertNoInjectedWork( $requestData );
     $operationId = is_string( $requestData['operationId'] ?? null ) ? $requestData['operationId'] : '';
     $manifest    = $this->repository->get( $operationId, get_current_user_id() );
+    $manifest['selection'] = $this->walker()->normalizeSelection( $manifest['selection'] );
     if ( ! empty( $manifest['halted'] ) ) {
       throw new InvalidArgumentException( esc_html__( 'This translation send has retryable taxonomy terms. Retry those exact terms before continuing.', 'wpml' ) );
     }
@@ -481,6 +571,7 @@ class TaxonomySendOperationCoordinator {
     $this->assertNoInjectedWork( $requestData );
     $operationId = is_string( $requestData['operationId'] ?? null ) ? $requestData['operationId'] : '';
     $manifest    = $this->repository->get( $operationId, get_current_user_id() );
+    $manifest['selection'] = $this->walker()->normalizeSelection( $manifest['selection'] );
     $failures    = array_slice( $this->retryableFailures( $manifest ), 0, TaxonomySendOperationRepository::PAGE_SIZE );
 
     if ( ! $failures ) {
@@ -500,16 +591,18 @@ class TaxonomySendOperationCoordinator {
     bool $isRetry = false,
     array $handled = []
   ): array {
-    $walk = null;
-    $page = $retryPage;
+    $walk    = null;
+    $page    = $retryPage;
+    $skipped = [];
     if ( null === $page ) {
       $next = $this->walker()->next(
         $manifest['selection'],
         $manifest['cursor'],
         TaxonomySendOperationRepository::PAGE_SIZE
       );
-      $page = $next['pairs'];
-      $walk = [
+      $page    = $next['pairs'];
+      $skipped = $next['skipped'] ?? [];
+      $walk    = [
         'cursor' => $next['cursor'],
         'ended'  => $next['ended'],
       ];
@@ -537,6 +630,7 @@ class TaxonomySendOperationCoordinator {
       'manifest'         => $manifest,
       'page'             => array_merge( $page, $handled ),
       'handled'          => $handled,
+      'skipped'          => $skipped,
       'walk'             => $walk,
       'labelsWereSent'   => $labelsWereSent,
       'isRetry'          => $isRetry,
@@ -773,7 +867,7 @@ class TaxonomySendOperationCoordinator {
 
 
   private function assertNoInjectedWork( array $requestData ): void {
-    foreach ( [ 'taxonomySelections', 'taxonomyLabelSelections', 'taxonomies', 'taxonomyTargets', 'posts', 'strings', 'stringPackages' ] as $field ) {
+    foreach ( [ 'taxonomySelections', 'taxonomySelection', 'taxonomyLabelSelections', 'taxonomies', 'taxonomyTargets', 'posts', 'strings', 'stringPackages' ] as $field ) {
       if ( ! empty( $requestData[ $field ] ) ) {
         throw new InvalidArgumentException( esc_html__( 'A translation send continuation cannot add new work.', 'wpml' ) );
       }
@@ -804,9 +898,7 @@ class TaxonomySendOperationCoordinator {
 
 
   private function languages(): LanguagesQueryInterface {
-    if ( null === $this->languages ) {
-      $this->languages = new LanguagesQuery( $GLOBALS['sitepress'] );
-    }
+    assert( null !== $this->languages );
 
     return $this->languages;
   }

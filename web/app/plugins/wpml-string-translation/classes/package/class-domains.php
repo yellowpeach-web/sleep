@@ -10,12 +10,22 @@ class Domains {
 
 	private $domains;
 
+	private $domainLookup;
+
 	public function __construct( \wpdb $wpdb ) {
 		$this->wpdb = $wpdb;
 	}
 
 	public function isPackage( $domain ) {
-		return $domain && $this->getDomains()->contains( $domain );
+		if ( ! $domain ) {
+			return false;
+		}
+
+		if ( null === $this->domainLookup ) {
+			$this->domainLookup = array_flip( $this->getDomains()->toArray() );
+		}
+
+		return isset( $this->domainLookup[ $domain ] );
 	}
 
 	public function getDomains() {

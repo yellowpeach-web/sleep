@@ -10,6 +10,7 @@ use WPML\TM\ATE\API\RequestException;
 use WPML\TM\ATE\Download\OrphanPostCleaner;
 use WPML\TM\ATE\JobError\Recorder;
 use WPML\TM\ATE\TranslateEverything\TaxonomyTermJobApplier;
+use WPML\TM\ATE\TranslateEverything\TermBundleMembers;
 use WPML\TM\Jobs\JobLog;
 use WPML_TM_ATE_API;
 use WPML_TM_ATE_Jobs;
@@ -26,18 +27,26 @@ class ATE {
 
 	private $getStatus;
 
+	private $bundleMembers;
+
 	public function __construct(
 		WPML_TM_ATE_API $ateApi,
 		WPML_TM_ATE_Jobs $ateJobs,
 		OrphanPostCleaner $orphanPostCleaner,
 		Recorder $jobErrorRecorder,
-		$getStatus = null
+		$getStatus = null,
+		$bundleMembers = null
 	) {
 		$this->ateApi            = $ateApi;
 		$this->ateJobs           = $ateJobs;
 		$this->orphanPostCleaner = $orphanPostCleaner;
 		$this->jobErrorRecorder  = $jobErrorRecorder;
 		$this->getStatus         = $getStatus ?: [ Jobs::class, 'getStatus' ];
+		$this->bundleMembers     = $bundleMembers ?: function ( $jobId ) {
+			global $wpdb;
+
+			return ( new TermBundleMembers( $wpdb ) )->membersOf( $jobId );
+		};
 	}
 
 	public function checkJobStatus( $wpmlJobId, array $options = [] ) {
@@ -68,7 +77,7 @@ class ATE {
 			);
 	}
 
-	public function applyTranslation( $wpmlJobId, $postId, $xliffUrl ) {
+	public function applyTranslation( $wpmlJobId, $postId, $xliffUrl, $ateAnswer = null ) {
 		$ateJobId = $this->ateJobs->get_ate_job_id( $wpmlJobId );
 
 		try {
@@ -102,7 +111,7 @@ class ATE {
 
 		try {
 			try {
-				$applied = $this->ateJobs->apply( $xliffContent, $wpmlJobId ? (int) $wpmlJobId : null, $ateJobId ? (int) $ateJobId : null );
+				$applied = $this->ateJobs->apply( $xliffContent, $wpmlJobId ? (int) $wpmlJobId : null, $ateJobId ? (int) $ateJobId : null, $ateAnswer );
 			} catch ( RequestException $error ) {
 				$this->jobErrorRecorder->recordThrowable(
 					$wpmlJobId,
@@ -126,6 +135,10 @@ class ATE {
 					$error
 				);
 
+				if ( ICL_TM_ATE_UNSOLVABLE === (int) call_user_func( $this->getStatus, $wpmlJobId ) ) {
+					$this->confirmGivenUpDelivery( $wpmlJobId, $ateJobId );
+				}
+
 				throw $error;
 			}
 
@@ -135,13 +148,19 @@ class ATE {
 				}
 
 				$termReason = TaxonomyTermJobApplier::lastFailureReason();
+				$errorData  = [];
+				if ( '' === $termReason ) {
+					$termReason = \WPML_TM_ATE_Jobs::lastUnsavedReason();
+					$errorData  = \WPML_TM_ATE_Jobs::lastUnsavedData();
+				}
+				$message    = implode( ' ', array_filter( [ 'The translation job could not be applied.', $termReason, self::saveErrors() ] ) );
+				$errorData  = '' !== $termReason ? [ 'reason' => $termReason ] + $errorData : [];
 
-				$this->jobErrorRecorder->record(
-					$wpmlJobId,
-					$ateJobId,
-					Recorder::TYPE_APPLY,
-					trim( 'The translation job could not be applied. ' . $termReason )
-				);
+				if ( TaxonomyTermJobApplier::lastFailureIsFinal() ) {
+					$this->jobErrorRecorder->giveUp( $wpmlJobId, $ateJobId, Recorder::TYPE_APPLY, $message, $errorData );
+				} else {
+					$this->jobErrorRecorder->record( $wpmlJobId, $ateJobId, Recorder::TYPE_APPLY, $message, $errorData );
+				}
 
 				if ( false === $applied && ICL_TM_ATE_UNSOLVABLE === (int) call_user_func( $this->getStatus, $wpmlJobId ) ) {
 					return $this->confirmGivenUpDelivery( $wpmlJobId, $ateJobId );
@@ -156,7 +175,7 @@ class ATE {
 
 		if ( WPML_TM_ATE_Jobs::SKIPPED_NOT_AWAITING_DELIVERY === $applied ) {
 			if ( ICL_TM_ATE_UNSOLVABLE === (int) call_user_func( $this->getStatus, (int) $wpmlJobId ) ) {
-				return $this->confirmKeepingError( $wpmlJobId, $ateJobId );
+				return $this->answerGivenUpDelivery( $wpmlJobId, $ateJobId );
 			}
 
 			return $this->confirmAndClearError( $wpmlJobId, $ateJobId );
@@ -180,13 +199,23 @@ class ATE {
 			}
 
 			if ( TaxonomyTermJobApplier::lastDeliveryGivenUp() ) {
-				return $this->confirmKeepingError( $wpmlJobId, $ateJobId );
+				return $this->answerGivenUpDelivery( $wpmlJobId, $ateJobId );
 			}
 
 			return $this->confirmAndClearError( $wpmlJobId, $ateJobId );
 		}
 
 		return false;
+	}
+
+	private function answerGivenUpDelivery( $wpmlJobId, $ateJobId ) {
+		$states = array_column( call_user_func( $this->bundleMembers, (int) $wpmlJobId ), 'state' );
+
+		if ( $states && ! in_array( TermBundleMembers::STATE_APPLIED, $states, true ) ) {
+			return $this->confirmGivenUpDelivery( $wpmlJobId, $ateJobId );
+		}
+
+		return $this->confirmKeepingError( $wpmlJobId, $ateJobId );
 	}
 
 	private function confirmKeepingError( $wpmlJobId, $ateJobId ) {
@@ -214,6 +243,22 @@ class ATE {
 		);
 
 		return false;
+	}
+
+	public function confirmApplied( $wpmlJobId, $ateJobId ) {
+		return $this->confirmAndClearError( $wpmlJobId, $ateJobId );
+	}
+
+	private static function saveErrors() {
+		global $iclTranslationManagement;
+
+		if ( ! is_object( $iclTranslationManagement ) || ! method_exists( $iclTranslationManagement, 'messages_by_type' ) ) {
+			return '';
+		}
+
+		$messages = $iclTranslationManagement->messages_by_type( 'error' );
+
+		return is_array( $messages ) ? trim( implode( ' ', array_filter( array_map( fn( $m ) => is_array( $m ) && isset( $m['text'] ) ? (string) $m['text'] : '', $messages ) ) ) ) : '';
 	}
 
 	private function confirmAndClearError( $wpmlJobId, $ateJobId ) {
@@ -252,21 +297,6 @@ class ATE {
 	}
 
 	private function confirmGivenUpDelivery( $wpmlJobId, $ateJobId ) {
-		try {
-			$response = $this->ateApi->confirm_received_job( $ateJobId );
-		} catch ( Throwable $error ) {
-			JobLog::add(
-				'ate_given_up_delivery_confirm_failed',
-				[
-					'job_id'      => (int) $wpmlJobId,
-					'ate_job_id'  => (int) $ateJobId,
-					'error_class' => get_class( $error ),
-				]
-			);
-
-			return false;
-		}
-
-		return ! is_wp_error( $response );
+		return \WPML\TM\ATE\Handshake\Decline::givenUp( (int) $wpmlJobId, (int) $ateJobId );
 	}
 }

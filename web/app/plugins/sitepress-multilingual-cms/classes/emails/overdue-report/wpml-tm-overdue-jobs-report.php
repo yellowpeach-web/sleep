@@ -59,10 +59,6 @@ class WPML_TM_Overdue_Jobs_Report {
 
 		foreach ( $jobs as $key => $job ) {
 
-			if ( $this->tp_jobs && $this->tp_jobs->is_job_canceled( $job ) ) {
-				continue;
-			}
-
 			if ( ! $job instanceof WPML_Element_Translation_Job ) {
 				continue;
 			}
@@ -71,11 +67,29 @@ class WPML_TM_Overdue_Jobs_Report {
 				continue;
 			}
 
+			if ( $this->is_canceled_on_translation_service( $job ) ) {
+				continue;
+			}
+
 			$job->get_basic_data();
 			$jobs_by_manager_id[ $job->get_manager_id() ][] = $job;
 		}
 
 		return $jobs_by_manager_id;
+	}
+
+	private function is_canceled_on_translation_service( WPML_Element_Translation_Job $job ) {
+		if ( ! $this->tp_jobs ) {
+			return false;
+		}
+
+		try {
+			return $this->tp_jobs->is_job_canceled( $job );
+		} catch ( WPMLTranslationProxyApiException $e ) {
+			$this->tp_jobs = null;
+
+			return false;
+		}
 	}
 
 	private function send_email( $manager_id, array $jobs ) {

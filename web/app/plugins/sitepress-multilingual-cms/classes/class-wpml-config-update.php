@@ -3,6 +3,8 @@
 use WPML\FP\Lst;
 use WPML\FP\Relation;
 
+require_once __DIR__ . '/../inc/upgrade-autoload-shim.php';
+
 class WPML_Config_Update {
 
 	const CONFIG_KEY_GLOBAL_NOTICES        = 'global-wpml-notices';
@@ -28,6 +30,8 @@ class WPML_Config_Update {
 
 	private $local_signature;
 
+	private $wpml_version;
+
 	public function __construct( $sitepress, $http, ?WPML_Log $log = null ) {
 		$this->sitepress = $sitepress;
 		$this->http      = $http;
@@ -44,6 +48,35 @@ class WPML_Config_Update {
 
 	public function set_local_signature( $local_signature ) {
 		$this->local_signature = $local_signature;
+	}
+
+	public function set_wpml_version( $wpml_version ) {
+		$this->wpml_version = $wpml_version;
+	}
+
+	private function should_fetch( \stdClass $item, ?string $saved_config ): bool {
+		if ( null === $saved_config ) {
+			return true;
+		}
+
+		return md5( $saved_config ) !== $item->hash && $this->meets_min_version( $item );
+	}
+
+	private function meets_min_version( \stdClass $item ): bool {
+		if ( empty( $item->minVersion ) ) {
+			return true;
+		}
+
+		$wpml_version = $this->wpml_version ?? ICL_SITEPRESS_VERSION;
+
+		return version_compare( self::release_version( $wpml_version ), self::release_version( (string) $item->minVersion ), '>=' );
+	}
+
+	private static function release_version( string $version ): string {
+		preg_match( '/^[0-9]+(\.[0-9]+)*/', $version, $matches );
+		$parts = $matches ? explode( '.', $matches[0] ) : array( '0' );
+
+		return implode( '.', array_slice( array_pad( $parts, 3, '0' ), 0, 3 ) );
 	}
 
 	private function import_config() {
@@ -73,6 +106,19 @@ class WPML_Config_Update {
 		}
 
 		$state[ self::STATE_LOCAL ] = $signature;
+
+		update_option( self::OPTION_KEY_IMPORT_STATE, $state, true );
+	}
+
+	public function mark_local_config_imported() {
+		$local_signature = $this->local_signature ? $this->local_signature : array( 'WPML_Config', 'local_config_files_signature' );
+		$signature       = call_user_func( $local_signature );
+
+		$state = get_option( self::OPTION_KEY_IMPORT_STATE, array() );
+		$state = is_array( $state ) ? $state : array();
+
+		$state[ self::STATE_LOCAL ]           = $signature;
+		$state[ self::STATE_LOCAL_ATTEMPTED ] = $signature;
 
 		update_option( self::OPTION_KEY_IMPORT_STATE, $state, true );
 	}
@@ -211,7 +257,7 @@ class WPML_Config_Update {
 
 							unset( $deleted_configs_for_themes[ $theme->name ] );
 
-							if ( ! isset( $config_files_for_themes[ $theme->name ] ) || md5( $config_files_for_themes[ $theme->name ] ) !== $theme->hash ) {
+							if ( $this->should_fetch( $theme, $config_files_for_themes[ $theme->name ] ?? null ) ) {
 								$theme_config = $this->fetch_config_file_content( $theme->path, $theme->name );
 
 								if ( $theme_config ) {
@@ -234,7 +280,7 @@ class WPML_Config_Update {
 
 							unset( $deleted_configs_for_plugins[ $plugin->name ] );
 
-							if ( ! isset( $config_files_for_plugins[ $plugin->name ] ) || md5( $config_files_for_plugins[ $plugin->name ] ) !== $plugin->hash ) {
+							if ( $this->should_fetch( $plugin, $config_files_for_plugins[ $plugin->name ] ?? null ) ) {
 								$plugin_config = $this->fetch_config_file_content( $plugin->path, $plugin->name );
 
 								if ( $plugin_config ) {

@@ -18,6 +18,17 @@ class PendingJobs {
 				               (
 				                   SELECT CASE
 				                              WHEN newest.editor = %s AND newest.editor_job_id > 0
+				                                   AND (
+				                                       SELECT deliverable_original.translation_id
+				                                         FROM {$wpdb->prefix}icl_translations deliverable_target
+				                                        INNER JOIN {$wpdb->prefix}icl_translations deliverable_original
+				                                                ON deliverable_original.trid = deliverable_target.trid
+				                                               AND deliverable_original.element_type = deliverable_target.element_type
+				                                               AND deliverable_original.source_language_code IS NULL
+				                                               AND deliverable_original.element_id IS NOT NULL
+				                                        WHERE deliverable_target.translation_id = status.translation_id
+				                                        LIMIT 1
+				                                   ) IS NOT NULL
 				                              THEN 1 + ( newest.automatic = %d )
 				                              ELSE 0
 				                          END

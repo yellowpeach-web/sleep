@@ -10,6 +10,10 @@ class WP_Installer_Channels{
 
 	protected static $_instance = null;
 
+	public static function is_pre_release( $version ) {
+		return ! preg_match( '/^\d+(\.\d+)*$/', (string) $version );
+	}
+
 	function __construct() {
 		add_action( 'init', array( $this, 'init' ), 20 );
 	}

@@ -37,14 +37,29 @@
          "Removing strings from <b>String Translation</b> table": [
             "Đang xóa các chuỗi khỏi bảng <b>Dịch chuỗi</b>"
          ],
+         "%s string waiting for translation was kept.": [
+            "Đã giữ lại %s chuỗi đang chờ dịch."
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "Để thêm lại các chuỗi vào bảng <b>Dịch chuỗi</b>, bạn có thể cần quét lại các tệp dịch thuật hoặc đăng ký các chuỗi là có thể dịch được."
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "Đọc thêm về <a>quét trang web của bạn để tìm chuỗi và đăng ký chúng là có thể dịch được</a>."
          ],
-         "Successfully removed strings": [
-            "Đã xóa các chuỗi thành công"
+         "Nothing removed: %s string is waiting for translation": [
+            "Không có gì bị xóa: %s chuỗi đang chờ dịch"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "Không có gì bị xóa: các miền đã chọn không có chuỗi chưa dịch"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "Để xóa cả những chuỗi này, hãy chọn “Đồng thời xóa các chuỗi đang chờ dịch” và nhấp lại vào Xóa."
+         ],
+         "OK": [
+            "OK"
+         ],
+         "Removed %s string": [
+            "Đã xóa %s chuỗi"
          ],
          "OK, Great": [
             "OK, Tuyệt"
@@ -60,6 +75,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "Việc xóa các chuỗi đã dừng trước khi hoàn tất. Các chuỗi chưa được xóa vẫn còn trong bảng. Hãy thử xóa lại lần nữa."
+         ],
+         "Successfully removed strings": [
+            "Đã xóa các chuỗi thành công"
          ]
       }
    }

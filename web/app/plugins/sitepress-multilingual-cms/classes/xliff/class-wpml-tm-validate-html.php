@@ -2,6 +2,10 @@
 
 class WPML_TM_Validate_HTML {
 
+	const ANY_SELF_CLOSING_TAG_PATTERN = '<\s*?[^<>]*/>';
+	const SCRIPT_PATTERN               = '<\s*?script\b[^<>]*>((?:.|\s)*?)</script\s*?>';
+	const STYLE_PATTERN                = '<\s*?style\b[^<>]*>((?:.|\s)*?)</style\s*?>';
+
 	private $html = '';
 
 	private $tags = array();
@@ -16,9 +20,9 @@ class WPML_TM_Validate_HTML {
 		$html = $this->hide_wp_bugs( $html );
 		$html = $this->hide_cdata( $html );
 		$html = $this->hide_comments( $html );
-		$html = $this->hide_self_closing_tags( $html );
 		$html = $this->hide_scripts( $html );
 		$html = $this->hide_styles( $html );
+		$html = $this->hide_self_closing_tags( $html );
 
 		$processed_html = '';
 		$html_arr       = array(
@@ -34,9 +38,9 @@ class WPML_TM_Validate_HTML {
 
 		$html = $processed_html;
 
+		$html = $this->restore_self_closing_tags( $html );
 		$html = $this->restore_styles( $html );
 		$html = $this->restore_scripts( $html );
-		$html = $this->restore_self_closing_tags( $html );
 		$html = $this->restore_comments( $html );
 		$html = $this->restore_wp_bugs( $html );
 
@@ -45,29 +49,54 @@ class WPML_TM_Validate_HTML {
 		return $this->error_count;
 	}
 
-	private function validate_next( $html ) {
+	protected function has_mb_regex() {
+		return function_exists( 'mb_ereg_replace_callback' ) && function_exists( 'mb_eregi' );
+	}
+
+	private function replace_callback( $pattern, $callback, $html ) {
+		return $this->has_mb_regex()
+			? mb_ereg_replace_callback( $pattern, $callback, $html, 'msri' )
+			: preg_replace_callback( $this->to_pcre( $pattern ), $callback, $html );
+	}
+
+	private function first_match( $pattern, $html ) {
 		$regs = array();
 
+		if ( $this->has_mb_regex() ) {
+			mb_eregi( $pattern, $html, $regs );
+		} else {
+			preg_match( $this->to_pcre( $pattern ), $html, $regs );
+		}
+
+		return $regs;
+	}
+
+	private function to_pcre( $pattern ) {
+		return '~' . str_replace( '(?:.|\s)*?', '.*?', $pattern ) . '~siu';
+	}
+
+	private function validate_next( $html ) {
 		$pattern = '<\s*?([a-z]+|/[a-z]+)((?:.|\s)*?)>';
-		mb_eregi( $pattern, $html, $regs );
+		$regs    = $this->first_match( $pattern, $html );
 
 		if ( $regs ) {
 			$full_tag  = $regs[0];
-			$pos       = mb_strpos( $html, $full_tag );
-			$next_html = mb_substr( $html, $pos + mb_strlen( $full_tag ) );
+			$pos       = (int) strpos( $html, $full_tag );
+			$end       = $pos + strlen( $full_tag );
+			$next_html = (string) substr( $html, $end );
 
 			$tag    = $regs[1];
 			$result = true;
-			if ( '/' === mb_substr( $tag, 0, 1 ) ) {
-				$result = $this->close_tag( mb_substr( $tag, 1 ) );
+			if ( '/' === $tag[0] ) {
+				$result = $this->close_tag( (string) substr( $tag, 1 ) );
 			} else {
 				$this->open_tag( $tag );
 			}
 
 			if ( $result ) {
-				$processed_html = mb_substr( $html, 0, $pos + mb_strlen( $full_tag ) );
+				$processed_html = (string) substr( $html, 0, $end );
 			} else {
-				$processed_html = mb_substr( $html, 0, (int) $pos ) . '<!-- wpml:html_fragment ' . $full_tag . ' -->';
+				$processed_html = (string) substr( $html, 0, $pos ) . '<!-- wpml:html_fragment ' . $full_tag . ' -->';
 			}
 
 			return array(
@@ -85,9 +114,9 @@ class WPML_TM_Validate_HTML {
 	private function hide_wp_bugs( $html ) {
 		$html = str_replace( '< !--', '<    !--', $html );
 		$pattern = '<([0-9]{1})';
-		$filtered = mb_ereg_replace_callback( $pattern, array( $this, 'hide_wp_bug_callback' ), $html, 'msri' );
+		$filtered = $this->replace_callback( $pattern, array( $this, 'hide_wp_bug_callback' ), $html );
 
-		return $filtered === false ? $html : $filtered;
+		return is_string( $filtered ) ? $filtered : $html;
 	}
 
 	public function hide_wp_bug_callback( $matches ) {
@@ -96,8 +125,8 @@ class WPML_TM_Validate_HTML {
 
 	private function restore_wp_bugs( $html ) {
 		$pattern  = '<!-- wpml:wp_bug (.*?) -->';
-		$filtered = mb_ereg_replace_callback( $pattern, array( $this, 'restore_bug_callback' ), $html, 'msri' );
-		$html     = $filtered === false ? $html : $filtered;
+		$filtered = $this->replace_callback( $pattern, array( $this, 'restore_bug_callback' ), $html );
+		$html     = is_string( $filtered ) ? $filtered : $html;
 		$html     = str_replace( '<    !--', '< !--', $html );
 
 		return $html;
@@ -109,13 +138,13 @@ class WPML_TM_Validate_HTML {
 
 	private function hide_comments( $html ) {
 		$pattern  = '<!--(.*?)-->';
-		$filtered = mb_ereg_replace_callback( $pattern, array( $this, 'hide_comment_callback' ), $html, 'msri' );
-		$html     = $filtered === false ? $html : $filtered;
+		$filtered = $this->replace_callback( $pattern, array( $this, 'hide_comment_callback' ), $html );
+		$html     = is_string( $filtered ) ? $filtered : $html;
 
 		$pattern  = '<!((?!-- wpml:).*?)>';
-		$filtered = mb_ereg_replace_callback( $pattern, array( $this, 'hide_declaration_callback' ), $html, 'msri' );
+		$filtered = $this->replace_callback( $pattern, array( $this, 'hide_declaration_callback' ), $html );
 
-		return $filtered === false ? $html : $filtered;
+		return is_string( $filtered ) ? $filtered : $html;
 	}
 
 	public function hide_comment_callback( $matches ) {
@@ -128,13 +157,13 @@ class WPML_TM_Validate_HTML {
 
 	private function restore_comments( $html ) {
 		$pattern  = '<!-- wpml:html_comment (.*?) -->';
-		$filtered = mb_ereg_replace_callback( $pattern, array( $this, 'restore_encoded_content_callback' ), $html, 'msri' );
-		$html     = $filtered === false ? $html : $filtered;
+		$filtered = $this->replace_callback( $pattern, array( $this, 'restore_encoded_content_callback' ), $html );
+		$html     = is_string( $filtered ) ? $filtered : $html;
 
 		$pattern  = '<!-- wpml:html_declaration (.*?) -->';
-		$filtered = mb_ereg_replace_callback( $pattern, array( $this, 'restore_encoded_content_callback' ), $html, 'msri' );
+		$filtered = $this->replace_callback( $pattern, array( $this, 'restore_encoded_content_callback' ), $html );
 
-		return $filtered === false ? $html : $filtered;
+		return is_string( $filtered ) ? $filtered : $html;
 	}
 
 	public function restore_encoded_content_callback( $matches ) {
@@ -168,15 +197,14 @@ class WPML_TM_Validate_HTML {
 			'polyline',
 		);
 		foreach ( $self_closing_tags as $self_closing_tag ) {
-			$pattern  = '<\s*?' . $self_closing_tag . '((?:.|\s)*?)(>|/>)';
-			$filtered = mb_ereg_replace_callback( $pattern, array( $this, 'hide_sct_callback' ), $html, 'msri' );
-			$html = $filtered === false ? $html : $filtered;
+			$pattern  = '<\s*?' . $self_closing_tag . '\b([^<>]*?)(>|/>)';
+			$filtered = $this->replace_callback( $pattern, array( $this, 'hide_sct_callback' ), $html );
+			$html = is_string( $filtered ) ? $filtered : $html;
 		}
 
-		$pattern = '<\s*?[^>]*/>';
-		$filtered = mb_ereg_replace_callback( $pattern, array( $this, 'hide_sct_callback' ), $html, 'msri' );
+		$filtered = $this->replace_callback( self::ANY_SELF_CLOSING_TAG_PATTERN, array( $this, 'hide_sct_callback' ), $html );
 
-		return $filtered === false ? $html : $filtered;
+		return is_string( $filtered ) ? $filtered : $html;
 	}
 
 	public function hide_sct_callback( $matches ) {
@@ -185,9 +213,9 @@ class WPML_TM_Validate_HTML {
 
 	private function restore_self_closing_tags( $html ) {
 		$pattern = '<!-- wpml:html_self_closing_tag (.*?) -->';
-		$filtered = mb_ereg_replace_callback( $pattern, array( $this, 'restore_sct_callback' ), $html, 'msri' );
+		$filtered = $this->replace_callback( $pattern, array( $this, 'restore_sct_callback' ), $html );
 
-		return $filtered === false ? $html : $filtered;
+		return is_string( $filtered ) ? $filtered : $html;
 	}
 
 	public function restore_sct_callback( $matches ) {
@@ -201,9 +229,9 @@ class WPML_TM_Validate_HTML {
 	}
 	private function restore_html_fragments( $html ) {
 		$pattern  = '<!-- wpml:html_fragment (.*?) -->';
-		$filtered = mb_ereg_replace_callback( $pattern, array( $this, 'restore_html_fragment_callback' ), $html, 'msri' );
+		$filtered = $this->replace_callback( $pattern, array( $this, 'restore_html_fragment_callback' ), $html );
 
-		return $filtered === false ? $html : $filtered;
+		return is_string( $filtered ) ? $filtered : $html;
 	}
 
 	public function restore_html_fragment_callback( $matches ) {
@@ -211,10 +239,9 @@ class WPML_TM_Validate_HTML {
 	}
 
 	private function hide_scripts( $html ) {
-		$pattern  = '<\s*?script\s*?>((?:.|\s)*?)</script\s*?>';
-		$filtered = mb_ereg_replace_callback( $pattern, array( $this, 'hide_script_callback' ), $html, 'msri' );
+		$filtered = $this->replace_callback( self::SCRIPT_PATTERN, array( $this, 'hide_script_callback' ), $html );
 
-		return $filtered === false ? $html : $filtered;
+		return is_string( $filtered ) ? $filtered : $html;
 	}
 
 	public function hide_script_callback( $matches ) {
@@ -223,16 +250,16 @@ class WPML_TM_Validate_HTML {
 
 	private function restore_scripts( $html ) {
 		$pattern = '<!-- wpml:script (.*?) -->';
-		$filtered    = mb_ereg_replace_callback( $pattern, array( $this, 'restore_encoded_content_callback' ), $html, 'msri' );
+		$filtered    = $this->replace_callback( $pattern, array( $this, 'restore_encoded_content_callback' ), $html );
 
-		return $filtered === false ? $html : $filtered;
+		return is_string( $filtered ) ? $filtered : $html;
 	}
 
 	private function hide_cdata( $html ) {
 		$pattern = '<!\[CDATA\[((?:.|\s)*?)\]\]>';
-		$filtered    = mb_ereg_replace_callback( $pattern, array( $this, 'hide_cdata_callback' ), $html, 'msri' );
+		$filtered    = $this->replace_callback( $pattern, array( $this, 'hide_cdata_callback' ), $html );
 
-		return $filtered === false ? $html : $filtered;
+		return is_string( $filtered ) ? $filtered : $html;
 	}
 
 	public function hide_cdata_callback( $matches ) {
@@ -241,16 +268,15 @@ class WPML_TM_Validate_HTML {
 
 	private function restore_cdata( $html ) {
 		$pattern = '<!-- wpml:cdata (.*?) -->';
-		$filtered    = mb_ereg_replace_callback( $pattern, array( $this, 'restore_encoded_content_callback' ), $html, 'msri' );
+		$filtered    = $this->replace_callback( $pattern, array( $this, 'restore_encoded_content_callback' ), $html );
 
-		return $filtered === false ? $html : $filtered;
+		return is_string( $filtered ) ? $filtered : $html;
 	}
 
 	private function hide_styles( $html ) {
-		$pattern = '<\s*?style\s*?>((?:.|\s)*?)</style\s*?>';
-		$filtered    = mb_ereg_replace_callback( $pattern, array( $this, 'hide_style_callback' ), $html, 'msri' );
+		$filtered = $this->replace_callback( self::STYLE_PATTERN, array( $this, 'hide_style_callback' ), $html );
 
-		return $filtered === false ? $html : $filtered;
+		return is_string( $filtered ) ? $filtered : $html;
 	}
 
 	public function hide_style_callback( $matches ) {
@@ -259,9 +285,9 @@ class WPML_TM_Validate_HTML {
 
 	private function restore_styles( $html ) {
 		$pattern = '<!-- wpml:style (.*?) -->';
-		$filtered    = mb_ereg_replace_callback( $pattern, array( $this, 'restore_encoded_content_callback' ), $html, 'msri' );
+		$filtered    = $this->replace_callback( $pattern, array( $this, 'restore_encoded_content_callback' ), $html );
 
-		return $filtered === false ? $html : $filtered;
+		return is_string( $filtered ) ? $filtered : $html;
 	}
 
 	private function open_tag( $tag ) {

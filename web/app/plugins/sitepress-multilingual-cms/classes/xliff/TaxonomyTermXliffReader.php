@@ -44,7 +44,7 @@ class TaxonomyTermXliffReader {
 					if ( '' === $id ) {
 						continue;
 					}
-					$fields[ $id ] = $this->extractTarget( $unit );
+					$fields[ $id ] = self::targetOf( $unit );
 				}
 			}
 		}
@@ -92,12 +92,12 @@ class TaxonomyTermXliffReader {
 		return array_values( array_unique( $ids ) );
 	}
 
-	private function extractTarget( \SimpleXMLElement $unit ) {
+	public static function targetOf( \SimpleXMLElement $unit ) {
 		if ( isset( $unit->target->mrk ) ) {
-			return (string) $unit->target->mrk;
+			return \WPML\TM\Jobs\ReferenceAttributes::strip( (string) $unit->target->mrk );
 		}
 		if ( isset( $unit->target ) ) {
-			return (string) $unit->target;
+			return \WPML\TM\Jobs\ReferenceAttributes::strip( (string) $unit->target );
 		}
 
 		return '';

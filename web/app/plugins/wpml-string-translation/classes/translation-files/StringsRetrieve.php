@@ -19,7 +19,19 @@ class StringsRetrieve {
 
 
 	public function get( $domain, $language, $modified_mo_only ) {
-		return $this->loadFromDb( $language, $domain, $modified_mo_only )
+		$strings = $this->loadFromDb( $language, $domain, $modified_mo_only );
+
+		$pluralGroups = [];
+		if ( $modified_mo_only && ! \WPML\ST\DB\Mappers\StringsRetrieve::omitsNativeCopies( $domain ) ) {
+			foreach ( $strings as $string ) {
+				$grouped = $this->groupPluralFormsOfSameString( $string );
+				if ( null !== current( $grouped )['index'] ) {
+					$pluralGroups[ (string) key( $grouped ) ] = true;
+				}
+			}
+		}
+
+		return $strings
 					->filter(
 						function ( $string ) {
 							return (bool) $string['translation'];
@@ -31,8 +43,8 @@ class StringsRetrieve {
 						}
 					)
 					->map(
-						function ( Collection $strings, $key ) {
-							return $this->buildStringEntity( $strings, $key );
+						function ( Collection $strings, $key ) use ( $pluralGroups ) {
+							return $this->buildStringEntity( $strings, $key, isset( $pluralGroups[ (string) $key ] ) );
 						}
 					)
 					->filter()
@@ -111,7 +123,7 @@ class StringsRetrieve {
 	}
 
 	private function getFormGroup( array $row ) {
-		if ( TranslateWpmlString::canTranslateWithMO( $row['original'], $row['name'] ) ) {
+		if ( TranslateWpmlString::hasNameEntry( $row['original'], $row['name'] ) ) {
 			return null;
 		}
 
@@ -134,12 +146,16 @@ class StringsRetrieve {
 	}
 
 	private function parseResult( array $row_data ) {
+		$translation = self::parseTranslation( $row_data );
+		$mo_string   = isset( $row_data['mo_string'] ) ? $row_data['mo_string'] : null;
+
 		return [
 			'id'          => $row_data['id'],
 			'original'    => $row_data['original'],
 			'context'     => $row_data['gettext_context'],
-			'translation' => self::parseTranslation( $row_data ),
+			'translation' => $translation,
 			'name'        => $row_data['name'],
+			'native_copy' => null !== $translation && null !== $mo_string && (string) $translation === (string) $mo_string,
 		];
 	}
 
@@ -179,7 +195,7 @@ class StringsRetrieve {
 	}
 
 	private function getPluralGroupKey( array $string ) {
-		$cannotBelongToPluralGroup = TranslateWpmlString::canTranslateWithMO( $string['original'], $string['name'] );
+		$cannotBelongToPluralGroup = TranslateWpmlString::hasNameEntry( $string['original'], $string['name'] );
 
 		if ( $cannotBelongToPluralGroup ) {
 			return $string['name'];
@@ -188,15 +204,17 @@ class StringsRetrieve {
 		return '';
 	}
 
-	private function buildStringEntity( Collection $strings, $key ) {
-		$forms = [];
-		$name  = null;
+	private function buildStringEntity( Collection $strings, $key, $isPluralString = false ) {
+		$forms      = [];
+		$name       = null;
+		$nativeCopy = false;
 		foreach ( $strings as $string ) {
 			$form = (int) $string['index'];
 			if ( ! array_key_exists( $form, $forms ) ) {
 				$forms[ $form ] = $string['translation'];
 				if ( 0 === $form ) {
-					$name = $string['name'];
+					$name       = $string['name'];
+					$nativeCopy = ! empty( $string['native_copy'] );
 				}
 			}
 		}
@@ -208,6 +226,10 @@ class StringsRetrieve {
 
 		list( $original, $context ) = explode( self::KEY_JOIN, $key );
 		$isPlural                   = count( $forms ) > 1 && array_keys( $forms ) === range( 0, count( $forms ) - 1 );
+
+		if ( $isPluralString && ! $isPlural && $nativeCopy ) {
+			return null;
+		}
 		$translations               = $isPlural ? array_values( $forms ) : [ $forms[0] ];
 		$stringEntity               = new StringEntity( $original, $translations, $context, $isPlural ? $original : null );
 		$stringEntity->set_name( $name );

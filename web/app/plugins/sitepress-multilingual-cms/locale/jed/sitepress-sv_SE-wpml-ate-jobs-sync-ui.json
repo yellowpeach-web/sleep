@@ -13,11 +13,26 @@
          "The translation could not be started because the server did not answer.": [
             "Översättningen kunde inte påbörjas eftersom servern inte svarade."
          ],
+         "Your session has expired. Refresh this page and try again.": [
+            "Din session har löpt ut. Ladda om sidan och försök igen."
+         ],
+         "PTC is translating. The editor opens when it is ready.": [
+            "PTC översätter. Redigeraren öppnas när den är klar."
+         ],
          "This translation cannot be opened right now.": [
             "Den här översättningen kan inte öppnas just nu."
          ],
          "Refresh this page": [
             "Uppdatera den här sidan"
+         ],
+         "Not enough prepaid words to translate this automatically. Add more words, then try again.": [
+            "Inte tillräckligt med förbetalda ord för att översätta detta automatiskt. Lägg till fler ord och försök sedan igen."
+         ],
+         "Get more words": [
+            "Skaffa fler ord"
+         ],
+         "Close": [
+            "Stäng"
          ],
          "This content is being automatically translated. If you want to do something different with it cancel translation jobs first.": [
             "Det här innehållet översätts automatiskt. Om du vill göra något annat med det måste du avbryta översättningsjobben först."
@@ -30,6 +45,9 @@
          ],
          "Translating your content": [
             "Översätter ditt innehåll"
+         ],
+         "Translate Everything is active": [
+            "Översätt allt är aktivt"
          ],
          "%d translation notice": [
             "%d översättningsmeddelande",
@@ -51,13 +69,13 @@
             "Vi upptäckte något oväntat i din senaste översättningsaktivitet och pausade automatisk översättning på ditt konto. Kontakta supporten så granskar vi det tillsammans med dig."
          ],
          "<b>Translate Everything Automatically</b> is paused: monthly spending cap reached": [
-            "<b>Translate Everything Automatically</b> är pausat: månatlig utgiftsgräns har nåtts"
+            "<b>Translate Everything Automatically</b> är pausat: månatligt utgiftstak har nåtts"
          ],
          "Automatic translation is paused: monthly spending cap reached": [
             "Automatisk översättning är pausad: månatlig utgiftsgräns har nåtts"
          ],
-         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. Only the account owner can do this.": [
-            "Den här webbplatsen har nått den månatliga utgiftsgräns som angetts för den. Översättningen fortsätter när gränsen höjs eller när gränsen återställs. Endast kontoägaren kan göra detta."
+         "This website reached the monthly spending cap set for it. Translation continues when the cap is raised, or when the cap resets. You can raise it on the AI Translation: billing and usage page.": [
+            "Denna webbplats har nått sitt månatliga utgiftstak. Översättningen fortsätter när taket höjs eller återställs. Du kan höja det på sidan AI-översättning: fakturering och användning."
          ],
          "Preparing content for translation": [
             "Förbereder innehåll för översättning"
@@ -72,8 +90,9 @@
             "Ditt språk, %s, måste kopplas till ett språk som stöds för att du ska kunna använda automatisk översättning.",
             "Följande språk på din webbplats måste kopplas till ett språk som stöds för att du ska kunna använda automatisk översättning: %s"
          ],
-         "Content in those languages: %s, cannot be automatically translated unless you map them to a language that's different from the default.": [
-            "Innehåll på dessa språk: %s, kan inte översättas automatiskt om du inte kopplar dem till ett språk som skiljer sig från standardspråket."
+         "Automatic translation isn't available between %1$s and %2$s because they're recognized as the same language. Choose \"Duplicate\" instead to copy the content across.": [
+            "Automatisk översättning är inte tillgänglig mellan %1$s och %2$s eftersom de identifieras som samma språk. Välj “Duplicera” istället för att kopiera över innehållet.",
+            "Automatisk översättning är inte tillgänglig mellan %1$s och dessa språk eftersom de identifieras som samma språk: %2$s. Välj “Duplicera” istället för att kopiera över innehållet."
          ],
          "%d translation waiting for review": [
             "%d översättning väntar på granskning",
@@ -130,7 +149,7 @@
             "Det finns ett obetalt saldo på ett annat konto kopplat till denna faktura-e-post. Betala det eller kontakta support."
          ],
          "<b>Translate Everything</b> automatically is paused - not enough words": [
-            "<b>Translate Everything Automatically</b> är pausat – inte tillräckligt med ord"
+            "<b>Översätt allt</b> automatiskt är pausat – inte tillräckligt med ord"
          ],
          "Automatic translation is paused — not enough words": [
             "Automatisk översättning är pausad – inte tillräckligt med ord"
@@ -154,9 +173,6 @@
          "Pay now": [
             "Betala nu"
          ],
-         "Get more words": [
-            "Skaffa fler ord"
-         ],
          "Assign words": [
             "Tilldela ord"
          ],
@@ -164,7 +180,7 @@
             "Gå till översättningsjobb"
          ],
          "Raise the cap": [
-            "Höj gränsen"
+            "Höj taket"
          ],
          "Contact support": [
             "Kontakta support"

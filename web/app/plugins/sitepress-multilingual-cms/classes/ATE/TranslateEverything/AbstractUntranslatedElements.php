@@ -5,10 +5,16 @@ namespace WPML\TM\ATE\TranslateEverything;
 use WPML\API\PostTypes;
 use WPML\Element\API\Languages;
 use WPML\FP\Lst;
+use WPML\Infrastructure\WordPress\Component\Item\Application\Query\TranslationToSendCondition;
+use WPML\Infrastructure\WordPress\Port\Persistence\QueryPrepare;
 use WPML\LanguageEditor\TranslationPause;
 use WPML\Setup\Option;
 use WPML\TM\API\ATE\CachedLanguageMappings;
 use WPML\TM\API\ATE\LanguageMappings;
+use WPML\TM\ATE\API\CachedATEAPI;
+use WPML\TM\ATE\AutomaticPairSupport;
+use WPML\TM\ATE\Review\ReviewRulesFactory;
+use WPML\TM\ATE\Review\ReviewStatus;
 use WPML\TM\AutomaticTranslation\Actions\Actions;
 use WPML\TM\Jobs\JobLog;
 use WPML\WP\OptionManager;
@@ -17,7 +23,24 @@ abstract class AbstractUntranslatedElements implements UntranslatedElementsInter
 
 	protected $wpdb;
 
+	private $toSend;
+
 	private $oldJobsEditor;
+
+	const COMPLETION_REFUSAL_NEW_ELEMENTS = 'new_elements';
+	const COMPLETION_REFUSAL_CARRIED_PAIR = 'carried_pair';
+
+	private $completionRefusalReasons = [];
+
+	public function getCompletionRefusalReason( string $type ): ?string {
+		return $this->completionRefusalReasons[ $type ] ?? null;
+	}
+
+	private $refusedSourcesMemo = [];
+
+	private static $originLanguagesMemo = [];
+
+	const ORIGIN_LANGUAGES_TRANSIENT_PREFIX = 'wpml_tea_origin_languages_';
 
 	public function __construct( \wpdb $wpdb, ?\WPML_TM_Old_Jobs_Editor $oldJobsEditor = null ) {
 		$this->wpdb          = $wpdb;
@@ -71,12 +94,23 @@ abstract class AbstractUntranslatedElements implements UntranslatedElementsInter
 	}
 
 	public function markTypeAsCompleted( string $type, ?array $probeLanguages = null, int $probeLimit = 1 ) {
-		$languages = $this->getCompletableLanguageCodes();
+		unset( $this->completionRefusalReasons[ $type ] );
+		$languages    = $this->getCompletableLanguageCodes();
+		$completedNow = true;
 
 		$this->updateCompleted(
-			function ( array $completed ) use ( $type, $languages, $probeLanguages, $probeLimit ) {
+			function ( array $completed ) use ( $type, $languages, $probeLanguages, $probeLimit, &$completedNow ) {
 				if ( null !== $probeLanguages && $this->hasElementsToProcessNow( $probeLanguages, $type, $probeLimit ) ) {
+					$completedNow = false;
+					$this->completionRefusalReasons[ $type ] = self::COMPLETION_REFUSAL_NEW_ELEMENTS;
 					JobLog::add( 'tea_strategy_completion_refused_new_elements', [ 'types' => $type ] );
+
+					return $completed;
+				}
+				if ( null !== $probeLanguages && $this->hasCarriedPairToProcessNow( $probeLanguages, $type ) ) {
+					$completedNow = false;
+					$this->completionRefusalReasons[ $type ] = self::COMPLETION_REFUSAL_CARRIED_PAIR;
+					JobLog::add( 'tea_strategy_completion_refused_carried_pair', [ 'types' => $type ] );
 
 					return $completed;
 				}
@@ -87,12 +121,18 @@ abstract class AbstractUntranslatedElements implements UntranslatedElementsInter
 				return $completed;
 			}
 		);
+
+		return $completedNow;
 	}
 
 	private function hasElementsToProcessNow( array $languages, string $type, int $limit ): bool {
 		( new OptionManager() )->invalidateGroup( Option::OPTION_GROUP );
 
 		return (bool) $this->getElementsToProcess( $languages, $type, max( 1, $limit ) );
+	}
+
+	protected function hasCarriedPairToProcessNow( array $languages, string $type ): bool {
+		return false;
 	}
 
 	protected function getCompletableLanguageCodes(): array {
@@ -210,15 +250,107 @@ abstract class AbstractUntranslatedElements implements UntranslatedElementsInter
 
 		$languages = array_values( array_unique( array_map( 'strval', $languages ) ) );
 
+		$refusedSources = $this->refusedSourcesByTarget( $languages );
+
 		return implode(
 			' UNION ALL ',
 			array_map(
-				function ( $code ) use ( $wpdb ) {
-					return $wpdb->prepare( 'SELECT %s AS code', $code );
+				function ( $code ) use ( $wpdb, $refusedSources ) {
+					if ( ! $refusedSources ) {
+						return $wpdb->prepare( 'SELECT %s AS code', $code );
+					}
+
+					return $wpdb->prepare(
+						'SELECT %s AS code, %s AS refused_sources',
+						$code,
+						implode( ',', $refusedSources[ $code ] ?? [] )
+					);
 				},
 				$languages
 			)
 		);
+	}
+
+	protected function notOpenForReviewInAteSql( string $statusAlias ): string {
+		if ( ! ReviewRulesFactory::create()->refusesSendOfReviewOpenInAte() ) {
+			return '';
+		}
+
+		return "AND ( {$statusAlias}.review_status IS NULL OR {$statusAlias}.review_status <> '" . ReviewStatus::EDITING . "' )";
+	}
+
+	protected function toSend(): TranslationToSendCondition {
+		if ( null === $this->toSend ) {
+			$this->toSend = new TranslationToSendCondition( new QueryPrepare( $this->wpdb ) );
+		}
+
+		return $this->toSend;
+	}
+
+	protected function pairNotRefusedSql( string $sourceColumn, array $languages ): string {
+		$languages = array_values( array_unique( array_map( 'strval', $languages ) ) );
+
+		if ( ! $this->refusedSourcesByTarget( $languages ) ) {
+			return '';
+		}
+
+		return "AND NOT FIND_IN_SET( {$sourceColumn}, languages.refused_sources )";
+	}
+
+	private function refusedSourcesByTarget( array $languages ): array {
+		$key = implode( ',', $languages );
+		if ( ! array_key_exists( $key, $this->refusedSourcesMemo ) ) {
+			$this->refusedSourcesMemo[ $key ] = array_filter(
+				AutomaticPairSupport::refusedSourcesByTarget( $this->originLanguages(), $languages )
+			);
+		}
+
+		return $this->refusedSourcesMemo[ $key ];
+	}
+
+	protected function originLanguages(): array {
+		$default   = (string) Languages::getDefaultCode();
+		$prefix    = $this->getElementTypePrefix();
+		$transient = self::ORIGIN_LANGUAGES_TRANSIENT_PREFIX . $prefix;
+
+		if ( ! array_key_exists( $prefix, self::$originLanguagesMemo ) ) {
+			$kept = get_transient( $transient );
+			if ( is_array( $kept ) ) {
+				self::$originLanguagesMemo[ $prefix ] = array_map( 'strval', $kept );
+			}
+		}
+
+		if ( ! array_key_exists( $prefix, self::$originLanguagesMemo ) ) {
+			$origins = [];
+			try {
+				$wpdb = $this->wpdb;
+				$codes = $wpdb->get_col(
+					$wpdb->prepare(
+						"SELECT DISTINCT language_code FROM {$wpdb->prefix}icl_translations WHERE source_language_code IS NULL AND element_type LIKE %s",
+						str_replace( [ '\\', '%', '_' ], [ '\\\\', '\\%', '\\_' ], $prefix ) . '%'
+					)
+				);
+				$read    = is_array( $codes ) && ( ! isset( $wpdb->last_error ) || '' === (string) $wpdb->last_error );
+				$origins = $read ? array_map( 'strval', $codes ) : [];
+				if ( $read ) {
+					set_transient( $transient, $origins, CachedATEAPI::UNSUPPORTED_ANSWER_TTL );
+				}
+			} catch ( \Throwable $e ) {
+				$origins = [];
+			}
+			self::$originLanguagesMemo[ $prefix ] = $origins;
+		}
+
+		$active = array_map( 'strval', array_keys( (array) Languages::getActive() ) );
+
+		return array_values( array_unique( array_merge(
+			'' === $default ? [] : [ $default ],
+			array_values( array_intersect( self::$originLanguagesMemo[ $prefix ], $active ) )
+		) ) );
+	}
+
+	public static function resetOriginLanguagesMemo() {
+		self::$originLanguagesMemo = [];
 	}
 
 	abstract protected function getElementTypePrefix(): string;

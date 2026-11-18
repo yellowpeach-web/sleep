@@ -270,6 +270,10 @@ class WPML_REST_Posts_Hooks implements IWPML_Action {
 	}
 
 	private function isRestSavingPostFromEditor( ?array $handler ) {
+		return self::is_rest_saving_post_from_editor( $handler );
+	}
+
+	public static function is_rest_saving_post_from_editor( ?array $handler ) {
 		if ( empty( $handler['callback'] ) || ! is_array( $handler['callback'] ) ) {
 			return false;
 		}

@@ -19,6 +19,10 @@ class TermJobIntegration implements \IWPML_Frontend_Action, \IWPML_Backend_Actio
 
 	private $indexableHooks;
 
+	private $hasOptionValue = false;
+
+	private $optionValue;
+
 	public function __construct( SitePress $sitepress, StringLanguage $stringLanguage, IndexableHooks $indexableHooks ) {
 		$this->sitepress      = $sitepress;
 		$this->stringLanguage = $stringLanguage;
@@ -26,17 +30,28 @@ class TermJobIntegration implements \IWPML_Frontend_Action, \IWPML_Backend_Actio
 	}
 
 	public function add_hooks() {
+		WPHooks::onAction( 'wpml_string_package_owner_changed', 10, 3 )
+			->then( spreadArgs( [ $this, 'invalidateTermIndexablesOnOwnerChange' ] ) );
 		WPHooks::onFilter( 'wpml_translatable_term_meta_values', 10, 3 )
 			->then( spreadArgs( [ $this, 'addTermJobValues' ] ) );
+		WPHooks::onAction( 'update_option', 10, 3 )
+			->then( spreadArgs( [ $this, 'onOptionUpdated' ] ) );
 
 		WPHooks::onFilter( 'wpml_apply_translated_term_meta', 10, 5 )
 			->then( spreadArgs( [ $this, 'applyTranslatedValue' ] ) );
 
-		WPHooks::onAction( 'update_option', 10, 3 )
-			->then( spreadArgs( [ $this, 'onOptionUpdated' ] ) );
+		WPHooks::onAction( 'update_option', 10, 1 )
+			->then( spreadArgs( [ $this, 'forgetOptionValue' ] ) );
+		WPHooks::onAction( 'add_option', 10, 1 )
+			->then( spreadArgs( [ $this, 'forgetOptionValue' ] ) );
+		WPHooks::onAction( 'delete_option', 10, 1 )
+			->then( spreadArgs( [ $this, 'forgetOptionValue' ] ) );
 	}
 
 	public function addTermJobValues( $values, $termId, $taxonomy ) {
+		if ( \WPML\WPSEO\YoastSEO\Loaders::supportsPerTermPackages() ) {
+			return $values;
+		}
 		if ( ! is_array( $values ) || ! $termId || ! $taxonomy ) {
 			return $values;
 		}
@@ -72,7 +87,8 @@ class TermJobIntegration implements \IWPML_Frontend_Action, \IWPML_Backend_Actio
 			return true;
 		}
 
-		if ( ! function_exists( 'icl_get_string_id' ) || ! function_exists( 'icl_add_string_translation' ) ) {
+		$perTermPackages = \WPML\WPSEO\YoastSEO\Loaders::supportsPerTermPackages();
+		if ( ! function_exists( 'icl_add_string_translation' ) ) {
 			return true;
 		}
 
@@ -89,12 +105,20 @@ class TermJobIntegration implements \IWPML_Frontend_Action, \IWPML_Backend_Actio
 				return get_term( $sourceTermId, $taxonomy );
 			}
 		);
+		if ( $perTermPackages && $term instanceof \WP_Term && ! apply_filters( 'wpml_tm_term_units_in_flight', [], (int) $term->term_taxonomy_id, 't_' ) ) {
+			return $handled;
+		}
+
 		if ( $term instanceof \WP_Term ) {
+			$package = Hooks::PACKAGE;
+			if ( $perTermPackages ) {
+				$package['name'] = 'term-' . $term->term_taxonomy_id;
+			}
 			do_action(
 				'wpml_register_string',
 				$sourceValue,
 				$stringName,
-				Hooks::PACKAGE,
+				$package,
 				Hooks::FIELDS[ $key ] . ': ' . $term->name,
 				'LINE'
 			);
@@ -102,10 +126,19 @@ class TermJobIntegration implements \IWPML_Frontend_Action, \IWPML_Backend_Actio
 			$this->setSourceStringLanguage( $stringName, $term );
 		}
 
-		$stringId = icl_get_string_id( $sourceValue, Hooks::stringContext(), $stringName );
+		if ( $perTermPackages ) {
+			if ( ! $term instanceof \WP_Term ) {
+				return true;
+			}
+			$stringId = (int) apply_filters( 'wpml_string_id', null, [ 'context' => Hooks::stringContext( $term->term_taxonomy_id ), 'name' => $stringName ] );
+		} elseif ( function_exists( 'icl_get_string_id' ) ) {
+			$stringId = icl_get_string_id( $sourceValue, Hooks::stringContext(), $stringName );
+		} else {
+			return true;
+		}
 		if ( $stringId ) {
 			icl_add_string_translation( $stringId, $targetLang, (string) $value, ICL_TM_COMPLETE );
-			$this->invalidateTermIndexable( (int) $targetTermId );
+			$this->indexableHooks->rebuildTermIndexable( (int) $targetTermId );
 		}
 
 		return true;
@@ -114,40 +147,15 @@ class TermJobIntegration implements \IWPML_Frontend_Action, \IWPML_Backend_Actio
 	private function setSourceStringLanguage( $stringName, \WP_Term $sourceTerm ) {
 		$language = $this->stringLanguage->getTermLanguage( $sourceTerm->term_taxonomy_id, $sourceTerm->taxonomy );
 		if ( $language ) {
-			$this->stringLanguage->apply( [ $stringName => $language ] );
-		}
-	}
-
-	private function invalidateTermIndexable( $termId ) {
-		if ( ! $termId || ! function_exists( 'YoastSEO' ) || ! class_exists( '\Yoast\WP\SEO\Repositories\Indexable_Repository' ) ) {
-			return;
-		}
-
-		try {
-			$yoastSEO = YoastSEO();
-			$classes    = $yoastSEO->classes;
-			$repository = $classes->get( \Yoast\WP\SEO\Repositories\Indexable_Repository::class );
-			$indexable  = $repository->find_by_id_and_type( $termId, 'term', false );
-			if ( $indexable ) {
-				$indexable->version = 0;
-				$indexable->save();
-
-				$rebuild = function () use ( $repository, $termId ) {
-					Hooks::withoutTermAdjustId(
-						function () use ( $repository, $termId ) {
-							$repository->find_by_id_and_type( $termId, 'term' );
-						}
-					);
-				};
-
-				Hooks::withForcedTranslation( $rebuild );
-			}
-		} catch ( \Throwable $e ) {
-			return;
+			$ttId = \WPML\WPSEO\YoastSEO\Loaders::supportsPerTermPackages() ? $sourceTerm->term_taxonomy_id : null;
+			$this->stringLanguage->apply( [ $stringName => $language ], $ttId );
 		}
 	}
 
 	public function onOptionUpdated( $option, $oldValue, $value ) {
+		if ( \WPML\WPSEO\YoastSEO\Loaders::supportsPerTermPackages() ) {
+			return;
+		}
 		if ( $option !== $this->getWpSeoOptionName() || ! is_array( $value ) ) {
 			return;
 		}
@@ -176,6 +184,24 @@ class TermJobIntegration implements \IWPML_Frontend_Action, \IWPML_Backend_Actio
 		}
 	}
 
+	public function invalidateTermIndexablesOnOwnerChange( $elementType, $elementId ) {
+		if ( ! \WPML\WPSEO\YoastSEO\Loaders::supportsPerTermPackages() ) {
+			return;
+		}
+		if ( 0 !== strpos( (string) $elementType, 'tax_' ) ) {
+			return;
+		}
+		$taxonomy = substr( $elementType, 4 );
+		$term     = Hooks::withoutTermAdjustId(
+			function () use ( $elementId, $taxonomy ) {
+				return get_term_by( 'term_taxonomy_id', (int) $elementId, $taxonomy );
+			}
+		);
+		if ( $term instanceof \WP_Term ) {
+			$this->invalidateTranslatedTermIndexablesOfSourceTerm( $taxonomy, (int) $term->term_id );
+		}
+	}
+
 	private function invalidateTranslatedTermIndexablesOfSourceTerm( string $taxonomy, int $termId ) {
 		$term = Hooks::withoutTermAdjustId(
 			function () use ( $termId, $taxonomy ) {
@@ -201,17 +227,37 @@ class TermJobIntegration implements \IWPML_Frontend_Action, \IWPML_Backend_Actio
 	}
 
 	private function getTermEntry( $taxonomy, $termId ) {
-		$optionName = $this->getWpSeoOptionName();
-		if ( ! $optionName ) {
-			return null;
-		}
-
-		$all = get_option( $optionName );
+		$all = $this->getOptionValue();
 		if ( ! is_array( $all ) || ! isset( $all[ $taxonomy ][ $termId ] ) || ! is_array( $all[ $taxonomy ][ $termId ] ) ) {
 			return null;
 		}
 
 		return $all[ $taxonomy ][ $termId ];
+	}
+
+	private function getOptionValue() {
+		if ( ! $this->hasOptionValue ) {
+			$optionName = $this->getWpSeoOptionName();
+			if ( ! $optionName ) {
+				return null;
+			}
+
+			$this->optionValue = Hooks::withStoredValues(
+				function () use ( $optionName ) {
+					return get_option( $optionName );
+				}
+			);
+			$this->hasOptionValue = true;
+		}
+
+		return $this->optionValue;
+	}
+
+	public function forgetOptionValue( $option ) {
+		if ( $option === $this->getWpSeoOptionName() ) {
+			$this->hasOptionValue = false;
+			$this->optionValue    = null;
+		}
 	}
 
 	private function getWpSeoOptionName() {

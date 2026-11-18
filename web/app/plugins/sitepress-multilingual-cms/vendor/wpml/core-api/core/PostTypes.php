@@ -8,7 +8,6 @@ use WPML\FP\Lst;
 use WPML\FP\Obj;
 use WPML\FP\Relation;
 use WPML\LIB\WP\PostType;
-use WPML\Settings\PostType\Automatic;
 
 class PostTypes {
 

@@ -1,7 +1,5 @@
 <?php
 
-use WPML\PB\Gutenberg\StringsInBlock\Base;
-
 class WPML_Compatibility_Theme_Enfold {
 
 	public function init_hooks() {
@@ -13,6 +11,10 @@ class WPML_Compatibility_Theme_Enfold {
 	}
 
 	public function wp_insert_post_action( $post_id, $post ) {
+		if ( (int) $post_id <= 0 || ! $post instanceof WP_Post ) {
+			return;
+		}
+
 		if ( $this->is_using_standard_wp_editor() || wp_is_post_revision( $post_id ) ) {
 			return;
 		}
@@ -26,14 +28,15 @@ class WPML_Compatibility_Theme_Enfold {
 		}
 	}
 
-	public function get_content_from_custom_field( $content, $post_id ) {
+	public static function getPreviousRegistrationForms( $value ) {
+		$decoded = html_entity_decode( $value );
 
+		return $decoded === $value ? [] : [ $decoded ];
+	}
+
+	public function get_content_from_custom_field( $content, $post_id ) {
 		if ( $this->is_active( $post_id ) ) {
 			$content = str_replace( "\r\n", "\n", get_post_meta( $post_id, '_aviaLayoutBuilderCleanData', true ) );
-		}
-
-		if ( 'VISUAL' !== Base::get_string_type( $content ) ) {
-			$content = html_entity_decode( $content );
 		}
 
 		return $content;
@@ -41,8 +44,8 @@ class WPML_Compatibility_Theme_Enfold {
 
 	public function sync_duplicate( $master_post_id, $lang, $post_array, $id ) {
 		if ( $this->is_active( $master_post_id ) ) {
-			$data = get_post_meta( $master_post_id, '_aviaLayoutBuilderCleanData', true );
-			update_post_meta( $id, '_aviaLayoutBuilderCleanData', $data );
+			$duplicate_content = get_post_field( 'post_content', $id, 'raw' );
+			update_post_meta( $id, '_aviaLayoutBuilderCleanData', wp_slash( $duplicate_content ) );
 		}
 	}
 

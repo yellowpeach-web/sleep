@@ -60,10 +60,8 @@ class StringBatchRepository implements StringBatchRepositoryInterface {
       return 0;
     }
 
-    $sql = $this->queryPrepare->prepare(
-      "DELETE FROM {$this->queryPrepare->prefix()}icl_string_translations
-       WHERE id IN (" . $this->queryPrepare->prepareIn( $translationIds ) . ")"
-    );
+    $sql = "DELETE FROM {$this->queryPrepare->prefix()}icl_string_translations
+       WHERE id IN (" . $this->queryPrepare->prepareIn( $translationIds ) . ")";
 
     return $this->databaseWrite->execute( $sql );
   }

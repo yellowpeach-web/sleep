@@ -6,9 +6,23 @@ class WPML_Single_Url_Cache_Repository {
 	const MAX_ROWS   = 250000;
 	const SQL_NULL   = '__WPML_SINGLE_URL_CACHE_SQL_NULL__';
 
+	const CAPACITY_TRANSIENT = 'wpml_single_url_resolution_at_capacity';
+	const CAPACITY_TTL       = 300;
+
+	const SUPERSEDED_BATCH = 200;
+
+	const INVALIDATION_BATCH       = 500;
+	const MAX_INVALIDATION_BATCHES = 20;
+
 	private $wpdb;
 
 	private $available = [];
+
+	private $at_capacity = [];
+
+	private $superseded_removed = [];
+
+	private $last_invalidation_complete;
 
 	private $max_rows;
 
@@ -81,6 +95,58 @@ class WPML_Single_Url_Cache_Repository {
 		);
 
 		return false !== $result && $this->is_available();
+	}
+
+	public function at_capacity() {
+		$blog_id = get_current_blog_id();
+		if ( isset( $this->at_capacity[ $blog_id ] ) ) {
+			return $this->at_capacity[ $blog_id ];
+		}
+
+		$transient = self::CAPACITY_TRANSIENT . '_' . $this->max_rows;
+		$known     = function_exists( 'get_transient' ) ? get_transient( $transient ) : false;
+		if ( 'yes' === $known || 'no' === $known ) {
+			$full = 'yes' === $known;
+		} else {
+			$full = $this->can_query() && $this->rows_beyond( $this->max_rows - 1, 1 ) > 0;
+			if ( function_exists( 'set_transient' ) ) {
+				set_transient( $transient, $full ? 'yes' : 'no', self::CAPACITY_TTL );
+			}
+		}
+
+		$this->at_capacity[ $blog_id ] = $full;
+
+		return $full;
+	}
+
+	public function delete_superseded( $current_generation, $limit = self::SUPERSEDED_BATCH ) {
+		$blog_id = get_current_blog_id();
+		if ( isset( $this->superseded_removed[ $blog_id ] ) || ! $this->can_query() ) {
+			return [];
+		}
+		$this->superseded_removed[ $blog_id ] = true;
+
+		$rebuild = get_option( WPML_Single_Url_Cache_Worker::REBUILD_OPTION, [] );
+		$keep    = is_array( $rebuild ) && ! empty( $rebuild['active'] ) && empty( $rebuild['seed_complete'] ) && isset( $rebuild['old_generation'] )
+			? (int) $rebuild['old_generation']
+			: 0;
+		$wpdb    = $this->wpdb;
+		$now     = current_time( 'mysql', true );
+
+		return $this->delete_selected_keys(
+			$wpdb->prepare(
+				"SELECT HEX(cache_key) FROM {$wpdb->prefix}icl_url_resolution_cache
+				WHERE generation < %d
+					AND generation <> %d
+					AND (lease_until IS NULL OR lease_until < %s)
+				LIMIT %d",
+				(int) $current_generation,
+				$keep,
+				$now,
+				max( 1, (int) $limit )
+			),
+			$now
+		);
 	}
 
 	public function request_refresh( $key_hex ) {
@@ -617,22 +683,19 @@ class WPML_Single_Url_Cache_Repository {
 			return [ 'cache_keys' => [], 'more' => false ];
 		}
 
-		$limit       = max( 1, (int) $limit );
-		$cache_keys  = $this->cleanup_keys( $generation, $limit );
-		$remaining   = $limit - count( $cache_keys );
-		$current_rows = $this->count_rows();
+		$limit      = max( 1, (int) $limit );
+		$cache_keys = $this->cleanup_keys( $generation, $limit );
+		$remaining  = $limit - count( $cache_keys );
 
-		if ( $remaining > 0 && $current_rows > $this->max_rows ) {
-			$cache_keys = array_merge(
-				$cache_keys,
-				$this->cleanup_keys( null, min( $remaining, $current_rows - $this->max_rows ) )
-			);
+		$over = $remaining > 0 ? $this->rows_beyond( $this->max_rows, $remaining ) : 0;
+		if ( $over > 0 ) {
+			$cache_keys = array_merge( $cache_keys, $this->cleanup_keys( null, $over ) );
 		}
 
 		return [
 			'cache_keys' => array_values( array_unique( $cache_keys ) ),
 			'more'       => $this->has_older_generation( $generation )
-				|| $this->count_rows() > $this->max_rows,
+				|| $this->rows_beyond( $this->max_rows, 1 ) > 0,
 		];
 	}
 
@@ -661,10 +724,10 @@ class WPML_Single_Url_Cache_Repository {
 			$now
 		);
 		$remaining         = $limit - count( $cache_keys );
-		$outside           = $this->count_rows_outside( $source_generation );
+		$over              = $remaining > 0 ? $this->rows_beyond( $this->max_rows, $remaining, $source_generation ) : 0;
 		$overflow          = [];
 
-		if ( $remaining > 0 && $outside > $this->max_rows ) {
+		if ( $over > 0 ) {
 			$overflow = $this->delete_selected_keys(
 				$wpdb->prepare(
 					"SELECT HEX(cache_key) FROM {$wpdb->prefix}icl_url_resolution_cache
@@ -674,7 +737,7 @@ class WPML_Single_Url_Cache_Repository {
 					LIMIT %d",
 					$source_generation,
 					$now,
-					min( $remaining, $outside - $this->max_rows )
+					$over
 				),
 				$now
 			);
@@ -683,58 +746,111 @@ class WPML_Single_Url_Cache_Repository {
 		return [
 			'cache_keys' => array_values( array_unique( array_merge( $cache_keys, $overflow ) ) ),
 			'more'       => $this->has_superseded_generation( $source_generation, $target_generation )
-				|| $outside - count( $overflow ) > $this->max_rows,
+				|| $this->rows_beyond( $this->max_rows, 1, $source_generation ) > 0,
 		];
 	}
 
 	public function invalidate_object( $kind, $object_id ) {
-		if ( ! $this->can_query() ) {
-			return [];
-		}
-
 		$wpdb = $this->wpdb;
-		$keys = $this->without_errors(
-			function() use ( $wpdb, $kind, $object_id ) {
+
+		return $this->invalidate_in_batches(
+			function( $limit, $generation ) use ( $wpdb, $kind, $object_id ) {
 				return $wpdb->get_col(
 					$wpdb->prepare(
 						"SELECT HEX(cache_key)
 						FROM {$wpdb->prefix}icl_url_resolution_cache
-						WHERE (source_object_kind = %s AND source_object_id = %d)
-							OR (source_object_kind = %s AND translated_object_id = %d)
-						LIMIT 501",
+						WHERE ((source_object_kind = %s AND source_object_id = %d)
+							OR (source_object_kind = %s AND translated_object_id = %d))
+							AND generation = %d
+						LIMIT %d",
 						$kind,
 						$object_id,
 						$kind,
-						$object_id
+						$object_id,
+						$generation,
+						$limit
 					)
 				);
 			}
 		);
-
-		return $this->delete_keys( $keys );
 	}
 
 	public function invalidate_trid( $trid ) {
-		if ( ! $this->can_query() ) {
-			return [];
-		}
-
 		$wpdb = $this->wpdb;
-		$keys = $this->without_errors(
-			function() use ( $wpdb, $trid ) {
+
+		return $this->invalidate_in_batches(
+			function( $limit, $generation ) use ( $wpdb, $trid ) {
 				return $wpdb->get_col(
 					$wpdb->prepare(
 						"SELECT HEX(cache_key)
 						FROM {$wpdb->prefix}icl_url_resolution_cache
 						WHERE translation_trid = %d
-						LIMIT 501",
-						$trid
+							AND generation = %d
+						LIMIT %d",
+						$trid,
+						$generation,
+						$limit
 					)
 				);
 			}
 		);
+	}
 
-		return $this->delete_keys( $keys );
+	public function last_invalidation_complete() {
+		return $this->last_invalidation_complete;
+	}
+
+	private function invalidate_in_batches( callable $select ) {
+		$this->last_invalidation_complete = true;
+		if ( ! $this->can_query() ) {
+			return [];
+		}
+
+		$wpdb       = $this->wpdb;
+		$generation = $this->without_errors(
+			function() use ( $wpdb ) {
+				return $wpdb->get_var( "SELECT MAX(generation) FROM {$wpdb->prefix}icl_url_resolution_cache" );
+			}
+		);
+		if ( ! $this->is_available() ) {
+			$this->last_invalidation_complete = false;
+			return [];
+		}
+		if ( null === $generation ) {
+			return [];
+		}
+		$generation = (int) $generation;
+
+		$deleted = [];
+		for ( $batch = 0; $batch < self::MAX_INVALIDATION_BATCHES; ++$batch ) {
+			$keys = $this->without_errors(
+				function() use ( $select, $generation ) {
+					return $select( self::INVALIDATION_BATCH, $generation );
+				}
+			);
+			if ( ! $this->is_available() || ! is_array( $keys ) ) {
+				$this->last_invalidation_complete = false;
+				return $deleted;
+			}
+			if ( ! $keys ) {
+				return $deleted;
+			}
+
+			$gone = $this->delete_keys( $keys );
+			if ( count( $gone ) < count( array_unique( $keys ) ) ) {
+				$this->last_invalidation_complete = false;
+				return array_merge( $deleted, $gone );
+			}
+
+			$deleted = array_merge( $deleted, $gone );
+			if ( count( $keys ) < self::INVALIDATION_BATCH ) {
+				return $deleted;
+			}
+		}
+
+		$this->last_invalidation_complete = false;
+
+		return $deleted;
 	}
 
 	public function is_available() {
@@ -848,34 +964,35 @@ class WPML_Single_Url_Cache_Repository {
 		);
 	}
 
-	private function count_rows_outside( $source_generation ) {
-		if ( ! $this->can_query() ) {
+	private function rows_beyond( $offset, $count, $exclude_generation = null ) {
+		if ( ! $this->can_query() || $count < 1 ) {
 			return 0;
 		}
 
-		$wpdb = $this->wpdb;
+		$wpdb   = $this->wpdb;
+		$offset = max( 0, (int) $offset );
+		$count  = (int) $count;
+
 		return (int) $this->without_errors(
-			function() use ( $wpdb, $source_generation ) {
+			function() use ( $wpdb, $offset, $count, $exclude_generation ) {
+				if ( null === $exclude_generation ) {
+					return $wpdb->get_var(
+						$wpdb->prepare(
+							"SELECT COUNT(*) FROM ( SELECT 1 FROM {$wpdb->prefix}icl_url_resolution_cache LIMIT %d, %d ) AS beyond",
+							$offset,
+							$count
+						)
+					);
+				}
+
 				return $wpdb->get_var(
 					$wpdb->prepare(
-						"SELECT COUNT(*) FROM {$wpdb->prefix}icl_url_resolution_cache WHERE generation <> %d",
-						$source_generation
+						"SELECT COUNT(*) FROM ( SELECT 1 FROM {$wpdb->prefix}icl_url_resolution_cache WHERE generation <> %d LIMIT %d, %d ) AS beyond",
+						(int) $exclude_generation,
+						$offset,
+						$count
 					)
 				);
-			}
-		);
-	}
-
-	private function count_rows() {
-		if ( ! $this->can_query() ) {
-			return 0;
-		}
-
-		$wpdb = $this->wpdb;
-
-		return (int) $this->without_errors(
-			function() use ( $wpdb ) {
-				return $this->wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}icl_url_resolution_cache" );
 			}
 		);
 	}
@@ -913,8 +1030,13 @@ class WPML_Single_Url_Cache_Repository {
 		}
 
 		$keys = array_values( array_unique( array_map( 'strval', $keys ) ) );
-		if ( count( $keys ) > 500 ) {
-			return $keys;
+		if ( count( $keys ) > self::INVALIDATION_BATCH ) {
+			$deleted = [];
+			foreach ( array_chunk( $keys, self::INVALIDATION_BATCH ) as $chunk ) {
+				$deleted = array_merge( $deleted, $this->delete_keys( $chunk ) );
+			}
+
+			return $deleted;
 		}
 
 		$wpdb = $this->wpdb;

@@ -14,7 +14,7 @@
             "Якорь HTML"
          ],
          "Add a shortcut to this block when loading the page using the “#anchor” URL.": [
-            "Добавьте ярлык к этому блоку при загрузке страницы с использованием URL «#anchor»."
+            "Добавьте быстрый переход к этому блоку при загрузке страницы с использованием URL «#anchor»."
          ],
          "Additional CSS class(es)": [
             "Дополнительные классы CSS"
@@ -52,17 +52,32 @@
          "Language padding": [
             "Внутренний отступ языка"
          ],
-         "Display": [
-            "Отображение"
-         ],
          "Show flag": [
             "Показывать флаг"
          ],
-         "Show language name": [
-            "Показывать название языка"
+         "Show current language": [
+            "Показывать текущий язык"
          ],
-         "Display language name in": [
-            "Отображать название языка на"
+         "Not available while the flag is hidden. Enable Show flag to hide the language name.": [
+            "Недоступно, пока флаг скрыт. Включите «Показывать флаг», чтобы скрыть название языка."
+         ],
+         "Must be enabled while the language name is hidden. Enable Full name or Code to hide the flag.": [
+            "Должно быть включено, пока название языка скрыто. Включите «Полное название» или «Код», чтобы скрыть флаг."
+         ],
+         "Not available in the Dropdown layout. Switch the layout to List to hide the current language.": [
+            "Недоступно в макете «Выпадающий список». Переключите макет на «Список», чтобы скрыть текущий язык."
+         ],
+         "Example:": [
+            "Пример:"
+         ],
+         "Display": [
+            "Отображение"
+         ],
+         "Language name": [
+            "Название языка"
+         ],
+         "Full name written in": [
+            "Полное название на языке"
          ],
          "Style": [
             "Стиль"
@@ -89,7 +104,7 @@
             "Разрешить перенос на несколько строк"
          ],
          "Open on click": [
-            "Открыть по клику"
+            "Открыть при нажатии"
          ],
          "Show arrow": [
             "Показывать стрелку"
@@ -107,7 +122,7 @@
             "Переключатель языков"
          ],
          "Language switcher, press tab to navigate to other languages": [
-            "Переключатель языков, нажмите tab для перехода к другим языкам"
+            "Переключатель языков, нажмите Tab для перехода к другим языкам"
          ],
          "Typography": [
             "Типографика"
@@ -132,6 +147,24 @@
          ],
          "Code": [
             "Код"
+         ],
+         "Native": [
+            "Родном"
+         ],
+         "Translated": [
+            "Переведено"
+         ],
+         "Both": [
+            "Оба"
+         ],
+         "Hidden": [
+            "Скрыто"
+         ],
+         "Dropdown": [
+            "Выпадающий список"
+         ],
+         "List": [
+            "Список"
          ],
          "Justify items left": [
             "Выровнять элементы по левому краю"
@@ -175,11 +208,11 @@
          "Small": [
             "Маленький"
          ],
-         "Displays the WPML Language Switcher.": [
-            "Отображает переключатель языков WPML."
-         ],
          "displays the WPML Language Switcher": [
             "отображает переключатель языков WPML"
+         ],
+         "Displays the WPML Language Switcher.": [
+            "Отображает переключатель языков WPML."
          ],
          "Navigation Language Switcher": [
             "Навигационный переключатель языков"

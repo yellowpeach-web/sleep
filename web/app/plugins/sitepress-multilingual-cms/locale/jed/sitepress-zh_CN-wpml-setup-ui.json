@@ -127,6 +127,9 @@
          "Delete language pair(s)": [
             "删除语言对"
          ],
+         "Can translate to and from all languages": [
+            "可以在所有语言之间进行互译"
+         ],
          "An error occurred. Please try again.": [
             "发生错误。请重试。"
          ],
@@ -153,6 +156,60 @@
          ],
          "Back to Step %1$s: %2$s": [
             "返回第 %1$s 步：%2$s"
+         ],
+         "Available": [
+            "可用"
+         ],
+         "Not available": [
+            "不可用"
+         ],
+         "Understands your site's topic, audience and tone": [
+            "理解您站点的专业话题、受众和语调"
+         ],
+         "Publish-ready quality, backed by our guarantee": [
+            "发布级质量，由我们的质量保证提供支持"
+         ],
+         "Review before publishing": [
+            "发布前审核"
+         ],
+         "Pay once per page – only added words are charged": [
+            "每页仅需支付一次费用 – 仅对新增字数计费"
+         ],
+         "Per word, changes included": [
+            "按每字计费，包含修改内容"
+         ],
+         "A legacy engine": [
+            "传统引擎"
+         ],
+         "<button>Switch to a different engine</button> if you prefer — no quality guarantee and no free translation edits with other engines.": [
+            "如果您愿意，可以<button>切换到其他引擎</button> — 其他引擎不提供质量保证，也不提供免费翻译编辑。"
+         ],
+         "Your content will be translated by <strong>Private Translation Cloud (PTC)</strong>, WPML's own AI engine. PTC lets you translate the entire site automatically, in one click, offering free translation edits.": [
+            "您的内容将由 WPML 自有的 AI 引擎 <strong>Private Translation Cloud (PTC)</strong> 进行翻译。PTC 让您只需一键即可自动翻译整个站点，并提供免费翻译编辑。"
+         ],
+         "Couldn't save — try again": [
+            "无法保存 — 请重试"
+         ],
+         "Your content will be translated by <strong>%s</strong>, a machine translation engine. You pay per word, including changes to content that's already translated.": [
+            "您的内容将由机器翻译引擎 <strong>%s</strong> 进行翻译。按每字计费，包括对已翻译内容的更改。"
+         ],
+         "Switch to PTC": [
+            "切换到 PTC"
+         ],
+         "Switch away from PTC?": [
+            "不再使用 PTC？"
+         ],
+         "DeepL, Google Translate or Microsoft Translator": [
+            "DeepL、Google Translate 或 Microsoft Translator"
+         ],
+         "Your engine now": [
+            "您现在的引擎"
+         ],
+         "Switch away from PTC": [
+            "不再使用 PTC"
+         ],
+         "Stay with PTC": [
+            "留在 PTC"
          ],
          "Technical Details (for WPML Support)": [
             "技术详情（用于 WPML 支持）"
@@ -186,6 +243,45 @@
          ],
          " and provide the technical details below (use the Copy button to copy them).": [
             " 并提供下方的技术详情（使用“复制”按钮进行复制）。"
+         ],
+         "Publish without review": [
+            "无需审核即可发布"
+         ],
+         "Translations go live immediately in the target language.": [
+            "翻译会立即在目标语言中上线。"
+         ],
+         "Wait for review before publishing": [
+            "发布前等待审核"
+         ],
+         "Translations stay as drafts until a translation manager approves them.": [
+            "翻译将保持为草稿状态，直到翻译管理员批准为止。"
+         ],
+         "Recommended": [
+            "推荐"
+         ],
+         "For DeepL, Google, and Microsoft we recommend a human review to confirm they are correct. PTC provides Better Than Human Translations that understand context, so you can confidently skip the review process.": [
+            "对于 DeepL、Google 和 Microsoft，我们建议进行人工审核以确认其正确性。PTC 提供优于人工的翻译，能够理解上下文，因此您可以放心跳过审核流程。"
+         ],
+         "Publish and mark for review": [
+            "发布并标记为待审核"
+         ],
+         "Translations go live but appear in a \"needs review\" queue.": [
+            "翻译会上线，但会出现在“需要审核”队列中。"
+         ],
+         "After auto-translation": [
+            "自动翻译后"
+         ],
+         "What happens to content once %s has translated it.": [
+            "%s 翻译内容后会发生什么。"
+         ],
+         "Wait for review": [
+            "等待审核"
+         ],
+         "%1$s (<strong>%2$s</strong>)": [
+            "%1$s (<strong>%2$s</strong>)"
+         ],
+         "What would you like to do when WPML finishes translating your content automatically?": [
+            "当 WPML 完成自动翻译您的内容后，您想做什么？"
          ],
          "Loading AI Translation...": [
             "正在加载 AI 翻译..."
@@ -328,6 +424,15 @@
          "adding a custom language": [
             "添加自定义语言"
          ],
+         "I will fix my server settings to display languages in directories later.": [
+            "我稍后会修复服务器设置以在目录中显示语言。"
+         ],
+         "We could not verify your server's URL-rewrite support.": [
+            "我们无法验证您的服务器是否支持 URL 重写。"
+         ],
+         "Learn more about required server settings to display languages in directories": [
+            "详细了解在目录中显示语言所需的服务器设置"
+         ],
          "I will change the permalink structure later.": [
             "我稍后再更改固定链接结构。"
          ],
@@ -356,7 +461,7 @@
             "我的域名正常工作。跳过 WPML 检查并继续。"
          ],
          "I will set up the domains for my secondary languages later.": [
-            "我稍后会为我的次级语言设置域名。"
+            "我稍后会为我的次要语言设置域名。"
          ],
          "Your server cannot convert international domain names. Enter the xn-- form of %s.": [
             "您的服务器无法转换国际化域名。请输入 %s 的 xn-- 格式。"
@@ -367,8 +472,14 @@
          "This domain does not show this site.": [
             "此域名未指向此站点。"
          ],
+         "This address belongs to another site on this network.": [
+            "此地址属于该网络中的另一个站点。"
+         ],
          "WPML could not reach this domain.": [
             "WPML 无法连接到此域名。"
+         ],
+         "If you choose this, these URLs will open a sub-site: %s.": [
+            "如果选择此项，这些 URL 将打开子站点：%s。"
          ],
          "The domain you have entered is invalid.": [
             "您输入的域名无效。"
@@ -377,7 +488,7 @@
             "您输入的域名必须是唯一的。"
          ],
          "Please Note: Your site won't work in your secondary languages until this is successfully set up or you switch to a different URL option.": [
-            "请注意：在成功设置此项或切换到其他 URL 选项之前，您的站点将无法以次级语言运行。"
+            "请注意：在此项成功设置或您切换到其他 URL 选项之前，您的站点将无法以次要语言运行。"
          ],
          "How would you like to structure your site's URLs?": [
             "您希望如何构建站点的 URL？"
@@ -387,15 +498,6 @@
          ],
          "The URL rewrite is not configured in your server.": [
             "您的服务器中未配置 URL 重写。"
-         ],
-         "I will fix my server settings to display languages in directories later.": [
-            "我稍后会修复服务器设置以在目录中显示语言。"
-         ],
-         "We could not verify your server's URL-rewrite support.": [
-            "我们无法验证您的服务器是否支持 URL 重写。"
-         ],
-         "Learn more about required server settings to display languages in directories": [
-            "详细了解在目录中显示语言所需的服务器设置"
          ],
          "your pages": [
             "您的页面"
@@ -421,11 +523,17 @@
          "Translate your posts": [
             "翻译您的文章"
          ],
-         "the Translation Dashboard": [
-            "翻译仪表板"
+         "%s will translate your whole site and keep new content translated from now on. You're charged per word, including later changes.": [
+            "%s 将翻译您的整个站点，并在今后持续翻译新内容。您将按每字付费，包括后续的更改。"
          ],
          "Private Translation Cloud (PTC) will translate your whole site and keep new content translated from now on. You pay once for what's translated — editing it afterward is free.": [
             "Private Translation Cloud (PTC) 将翻译您的整个站点，并从现在起保持新内容的翻译。您只需为翻译的内容支付一次费用——之后的编辑是免费的。"
+         ],
+         "Automatic translation will translate your whole site and keep new content translated from now on.": [
+            "自动翻译将翻译您的整个站点，并在今后持续翻译新内容。"
+         ],
+         "the Translation Dashboard": [
+            "翻译仪表板"
          ],
          "Apply settings and start site's translation": [
             "应用设置并开始站点翻译"
@@ -439,8 +547,14 @@
          "the WooCommerce Multilingual setup": [
             "WooCommerce Multilingual 设置"
          ],
+         "%s will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "%s 现在将开始翻译您的站点，并在今后持续翻译新内容。下一步，您将设置多语言商店。完成 WooCommerce Multilingual 设置后，您的产品将开始翻译。"
+         ],
          "Private Translation Cloud (PTC) will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup. You pay once for what's translated. Editing it afterward is free.": [
             "Private Translation Cloud (PTC) 现在将开始翻译您的站点，并从现在起保持新内容的翻译。接下来，您将设置多语言商店。完成 WooCommerce Multilingual 设置后，您的产品将开始翻译。您只需为翻译的内容支付一次费用。之后的编辑是免费的。"
+         ],
+         "Automatic translation will start translating your site now and keep new content translated from now on. Next, you'll set up your multilingual store. Your products start translating once you finish the WooCommerce Multilingual setup.": [
+            "自动翻译现在将开始翻译您的站点，并在今后持续翻译新内容。下一步，您将设置多语言商店。完成 WooCommerce Multilingual 设置后，您的产品将开始翻译。"
          ],
          "Continue to WooCommerce Multilingual Setup while translation begins": [
             "在翻译开始时继续进行 WooCommerce Multilingual 设置"
@@ -484,8 +598,14 @@
          "Applying your setup choices": [
             "正在应用您的设置选择"
          ],
+         "%s is translating your content. There's nothing else you need to do here.": [
+            "%s 正在翻译您的内容。您无需在此执行任何其他操作。"
+         ],
          "PTC is translating your content. There's nothing else you need to do here.": [
             "PTC 正在翻译您的内容。您无需在此执行任何其他操作。"
+         ],
+         "Your content is being translated. There's nothing else you need to do here.": [
+            "正在翻译您的内容。您无需在此执行任何其他操作。"
          ],
          "We're applying all your setup choices and preparing WPML. This is a one-time process.": [
             "我们正在应用您的所有设置选择并准备 WPML。这是一个一次性的过程。"
@@ -580,38 +700,8 @@
          "Full details of the info we’re proposing to share": [
             "我们建议共享的信息的完整详情"
          ],
-         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
-            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> 帮助您为站点选择最佳模式。"
-         ],
-         "How would you like to translate your content?": [
-            "您希望如何翻译您的内容？"
-         ],
-         "Recommended": [
-            "推荐"
-         ],
-         "Translate Everything Automatically": [
-            "自动翻译所有内容"
-         ],
-         "Full-site automatic translation needs AI translation set up.": [
-            "全站自动翻译需要设置 AI 翻译。"
-         ],
-         "Set up AI translation": [
-            "设置 AI 翻译"
-         ],
-         "Translate Some: You Choose What to Translate": [
-            "翻译部分内容：由您选择要翻译的内容"
-         ],
-         "Select this option": [
-            "选择此选项"
-         ],
          "How it works": [
             "工作原理"
-         ],
-         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
-            "PTC (Private Translation Cloud) 是 WPML 自有的 AI 翻译引擎。它会在后台将您的整个站点翻译成您选择的每种语言。您可以编辑任何翻译并排除文章类型。"
-         ],
-         "Can't decide?": [
-            "无法决定？"
          ],
          "You select and submit what to translate.": [
             "您选择并提交要翻译的内容。"
@@ -619,32 +709,35 @@
          "Costs": [
             "费用"
          ],
-         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
-            "为翻译的总内容支付一次费用。<br/><strong>修订是免费的</strong> —— 仅对扩充内容收费。"
-         ],
          "Pay per translation job submitted.<br/>Each update or new content batch is a separate charge.": [
-            "按提交的每个翻译作业付费。<br/>每次更新或新内容批次都是单独收费的。"
-         ],
-         "Translation quality": [
-            "翻译质量"
-         ],
-         "WPML ensures excellent quality. Bad translations are refunded.": [
-            "WPML 确保卓越的质量。翻译不佳可退款。"
+            "按提交的每个翻译任务付费。<br/>每次更新或新内容批次都将单独收费。"
          ],
          "Ideal for": [
             "理想选择"
          ],
-         "Known upfront costs": [
-            "已知的预付费用"
+         "PTC (Private Translation Cloud) is WPML's own AI translation engine. It translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "PTC (Private Translation Cloud) 是 WPML 自有的 AI 翻译引擎。它会在后台将您的整个站点翻译成您选择的每种语言。您可以编辑任何翻译并排除文章类型。"
          ],
-         "Unlimited post-translation editing": [
-            "无限的翻译后编辑"
+         "Pay once for total content translated.<br/><strong>Revisions are free</strong> — only extending content is charged.": [
+            "为翻译的总内容支付一次费用。<br/><strong>修订是免费的</strong> —— 仅对扩充内容收费。"
          ],
-         "Marketing optimization": [
-            "营销优化"
+         "Included with PTC": [
+            "PTC 包含的功能"
          ],
-         "Turn-key solutions": [
-            "即插即用解决方案"
+         "Only with PTC — not with %s": [
+            "仅限 PTC — %s 不支持"
+         ],
+         "your current engine": [
+            "您当前的引擎"
+         ],
+         "%s translates your entire site into every language you selected, in the background. You can edit any translation and exclude post types.": [
+            "%s 会在后台将您的整个站点翻译为您选择的每种语言。您可以编辑任何翻译并排除文章类型。"
+         ],
+         "Charged per word, including changes to content that's already translated.": [
+            "按每字计费，包括对已翻译内容的更改。"
+         ],
+         "You choose what to translate, from the Translation Dashboard or with \"+\" next to each page. PTC translates it.": [
+            "您可以从翻译仪表板或通过每个页面旁边的“+”选择要翻译的内容。PTC 将对其进行翻译。"
          ],
          "Partial site translation": [
             "部分站点翻译"
@@ -652,11 +745,98 @@
          "Maximum control": [
             "最大程度的控制"
          ],
+         "Quality without the work": [
+            "无需费力即可获得高品质"
+         ],
+         "You choose what to translate. You or your translators write each translation in the Advanced Translation Editor.": [
+            "由您选择要翻译的内容。您或您的译者将在高级翻译编辑器中撰写每项翻译。"
+         ],
+         "No words used, unless you start from a machine translation in the editor.": [
+            "不消耗字数，除非您在编辑器中从机器翻译开始。"
+         ],
+         "Your own translators": [
+            "您自己的译员"
+         ],
+         "Texts that need a human touch": [
+            "需要人工润色的文本"
+         ],
+         "PTC": [
+            "PTC"
+         ],
+         "PTC translates what you send. You review.": [
+            "PTC 翻译您发送的内容。由您进行审核。"
+         ],
+         "I translate": [
+            "我自己翻译"
+         ],
+         "You or your translators write it.": [
+            "由您或您的译者撰写。"
+         ],
+         "When you start a translation, who translates?": [
+            "当您开始翻译时，由谁来翻译？"
+         ],
+         "Who translates": [
+            "由谁翻译"
+         ],
          "Contact our support team for help": [
             "联系我们的支持团队以寻求帮助"
          ],
+         "<LinkToTheDifferentWaysYouCanTranslateYourSite/> with choosing the best mode for your site.": [
+            "<LinkToTheDifferentWaysYouCanTranslateYourSite/> 帮助您为站点选择最佳模式。"
+         ],
+         "How would you like to translate your content?": [
+            "您希望如何翻译您的内容？"
+         ],
+         "Translate Everything Automatically": [
+            "自动翻译所有内容"
+         ],
+         "Translations always in sync": [
+            "翻译始终保持同步"
+         ],
+         "Full-site automatic translation needs AI translation set up.": [
+            "全站自动翻译需要设置 AI 翻译。"
+         ],
+         "New and updated content translated automatically": [
+            "自动翻译新建和更新的内容"
+         ],
+         "Set up AI translation": [
+            "设置 AI 翻译"
+         ],
+         "Sites that publish often": [
+            "经常发布内容的网站"
+         ],
+         "All your languages at once": [
+            "一次性翻译所有语言"
+         ],
+         "Translate Some: You Choose What to Translate": [
+            "翻译部分内容：由您选择要翻译的内容"
+         ],
+         "Select this option": [
+            "选择此选项"
+         ],
+         "WPML uses the Advanced Translation Editor. You can change the editor later in WPML > Settings > Translation editor and method.": [
+            "WPML 使用高级翻译编辑器。您稍后可以在 WPML > 设置 > 翻译编辑器和方法中更改编辑器。"
+         ],
+         "Quality guarantee, bad translations refunded": [
+            "质量保证，不良翻译退款"
+         ],
+         "Can't decide?": [
+            "无法决定？"
+         ],
+         "Pay once — revisions are free": [
+            "一次付费 — 免费修订"
+         ],
+         "Known upfront costs": [
+            "已知的预付费用"
+         ],
+         "Publish-ready results, no review needed": [
+            "结果可直接发布，无需审核"
+         ],
+         "Marketing optimization based on your site and audience": [
+            "根据您的站点和受众进行营销优化"
+         ],
          "Calculate Translation Costs": [
-            "计算翻译成本"
+            "计算翻译费用"
          ],
          "Review your site content and estimate the translation cost based on what you choose to translate.": [
             "审核您的站点内容，并根据您选择翻译的内容估算翻译成本。"
@@ -668,7 +848,7 @@
             "在自动翻译所有内容之前"
          ],
          "You can continue without them. Nothing here stops the setup.": [
-            "您可以继续操作。此处没有任何内容会阻止设置。"
+            "您可以在不包含它们的情况下继续操作。此处没有任何内容会阻止设置。"
          ],
          "Translation Contributors": [
             "翻译贡献者"
@@ -707,7 +887,7 @@
             "将为我的站点设置译者的翻译管理员"
          ],
          "You will choose a user of this site and delegate the setup of translators to him/her. Choose this option when you are building a website for a client, who will set up translator users or choose a translation service.": [
-            "您将选择此站点的一名用户，并授权其负责译者设置。当您为客户构建网站，且客户将自行设置译者用户或选择翻译服务时，请选择此选项。"
+            "您将选择此站点的一名用户，并委托其负责译员设置。当您为客户构建网站，且客户将自行设置译员用户或选择翻译服务时，请选择此选项。"
          ],
          "Error: %s": [
             "错误：%s"
@@ -888,6 +1068,9 @@
          ],
          "Ranking": [
             "排名"
+         ],
+         "language URL directory and language name\u0004%1$s (%2$s)": [
+            "%1$s (%2$s)"
          ]
       }
    }

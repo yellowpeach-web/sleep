@@ -37,14 +37,35 @@
          "Removing strings from <b>String Translation</b> table": [
             "Видалення рядків із таблиці <b>String Translation</b>"
          ],
+         "%s string waiting for translation was kept.": [
+            "Збережено %s рядок, що очікує на переклад.",
+            "Збережено %s рядки, що очікують на переклад.",
+            "Збережено %s рядків, що очікують на переклад."
+         ],
          "To add strings back to the <b>String Translation</b> table, you may need to rescan translation files or register strings as translatable.": [
             "Щоб знову додати рядки до таблиці <b>String Translation</b>, вам може знадобитися повторно просканувати файли перекладу або зареєструвати рядки як придатні для перекладу."
          ],
          "Read more about <a>scanning your site for strings and registering them as translatable</a>.": [
             "Дізнайтеся більше про те, як <a>сканувати свій сайт на наявність рядків і реєструвати їх як придатні для перекладу</a>."
          ],
-         "Successfully removed strings": [
-            "Рядки успішно видалено"
+         "Nothing removed: %s string is waiting for translation": [
+            "Нічого не видалено: %s рядок очікує на переклад",
+            "Нічого не видалено: %s рядки очікують на переклад",
+            "Нічого не видалено: %s рядків очікують на переклад"
+         ],
+         "Nothing removed: the selected domains have no untranslated strings": [
+            "Нічого не видалено: вибрані домени не містять неперекладених рядків"
+         ],
+         "To remove them too, select “Also remove strings waiting for translation” and click Remove again.": [
+            "Щоб видалити й їх, виберіть «Також видалити рядки, що очікують на переклад» і знову натисніть «Видалити»."
+         ],
+         "OK": [
+            "ОК"
+         ],
+         "Removed %s string": [
+            "Видалено %s рядок",
+            "Видалено %s рядки",
+            "Видалено %s рядків"
          ],
          "OK, Great": [
             "Гаразд, чудово"
@@ -60,6 +81,9 @@
          ],
          "Removing strings stopped before it finished. The strings that were not removed are still in the table. Try again to remove them.": [
             "Видалення рядків зупинилося до завершення. Рядки, які не були видалені, все ще залишаються в таблиці. Спробуйте видалити їх знову."
+         ],
+         "Successfully removed strings": [
+            "Рядки успішно видалено"
          ]
       }
    }

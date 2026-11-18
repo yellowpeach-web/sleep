@@ -175,7 +175,7 @@ class OTGS_Installer_Logger_Storage {
 	private function read_stored() {
 		global $wpdb;
 		$raw = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name = %s LIMIT 1", self::OPTION_KEY ) );
-		$rows = maybe_unserialize( $raw );
+		$rows = OTGS_Installer_Serialized::maybe_decode( $raw, false );
 
 		return is_array( $rows ) ? $rows : array();
 	}

@@ -18,19 +18,27 @@ class Controller implements UpdatesHandlerInterface {
 
   private $plugin;
 
+  private $backgroundRun;
+
+  private $progressNotice;
+
 
   public function __construct(
     ApiInterface $api,
     Repository $repository,
     ScriptLoader $scriptLoader,
     UpdateHandler $updateHandler,
-    PluginInterface $plugin
+    PluginInterface $plugin,
+    BackgroundRun $backgroundRun,
+    ProgressNotice $progressNotice
   ) {
     $this->api = $api;
     $this->repository = $repository;
     $this->scriptLoader = $scriptLoader;
     $this->updateHandler = $updateHandler;
     $this->plugin = $plugin;
+    $this->backgroundRun = $backgroundRun;
+    $this->progressNotice = $progressNotice;
   }
 
 
@@ -39,8 +47,18 @@ class Controller implements UpdatesHandlerInterface {
       return;
     }
 
+    if ( $this->backgroundRun->isRunning() ) {
+      $this->onBackgroundRun( $allUpdates );
+      return;
+    }
+
     if ( $this->api->isRestRequest() ) {
       $this->onRest( $allUpdates );
+      return;
+    }
+
+    if ( $this->backgroundRun->isFrontEnd() ) {
+      $this->backgroundRun->arm( $allUpdates );
       return;
     }
 
@@ -48,9 +66,25 @@ class Controller implements UpdatesHandlerInterface {
   }
 
 
+  private function onBackgroundRun( $allUpdates ) {
+    $lazyLoadedUpdates = array_filter(
+      $allUpdates,
+      function ( Update $update ) {
+        return $update->lazyLoad();
+      }
+    );
+
+    foreach ( $this->repository->getUpdatesToPerform( $lazyLoadedUpdates ) as $update ) {
+      $this->updateHandler->runExclusively( $update );
+    }
+
+    $this->backgroundRun->arm( $allUpdates );
+  }
+
+
   private function onRest( $allUpdates ) {
     $updatesToPerform = $this->repository->getUpdatesToPerform( $allUpdates );
-    $this->updateHandler->registerRoute( $updatesToPerform );
+    $this->updateHandler->registerRoute( $updatesToPerform, $allUpdates );
   }
 
 
@@ -74,6 +108,29 @@ class Controller implements UpdatesHandlerInterface {
       if ( $this->api->validateRequest( $endpoint->capabilities() ) ) {
         $this->scriptLoader->loadScript( array_keys( $lazyLoadedUpdates ), $endpoint );
       }
+    }
+
+    $this->backgroundRun->arm( $allUpdates );
+    $this->showProgress( $allUpdates );
+  }
+
+
+  private function showProgress( $allUpdates ) {
+    foreach ( $allUpdates as $update ) {
+      if ( ! $update->lazyLoad() ) {
+        continue;
+      }
+
+      $percent = $this->repository->getPercentWhileUnfinished( $update );
+      if ( $percent === null ) {
+        continue;
+      }
+
+      if ( $this->api->validateRequest( $this->updateHandler->endpoint()->capabilities() ) ) {
+        $this->progressNotice->show( $percent );
+      }
+
+      return;
     }
   }
 

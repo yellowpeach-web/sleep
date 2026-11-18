@@ -5,6 +5,8 @@ namespace WPML\TM\ATE\Sync;
 use WPML\FP\Fns;
 use WPML\FP\Logic;
 use WPML\FP\Obj;
+use WPML\TM\API\ATE\CachedLanguageMappings;
+use WPML\Element\API\Languages;
 use WPML\FP\Relation;
 use WPML\TM\API\Job\Map;
 use WPML\TM\API\Jobs;
@@ -40,9 +42,15 @@ class Process {
 
 	private $ateRepository;
 
-	public function __construct( WPML_TM_ATE_API $api, WPML_TM_ATE_Job_Repository $ateRepository ) {
+	private $orphanedJobs;
+
+	private $manualBackoff;
+
+	public function __construct( WPML_TM_ATE_API $api, WPML_TM_ATE_Job_Repository $ateRepository, $orphanedJobs = null, $manualBackoff = null ) {
 		$this->api           = $api;
 		$this->ateRepository = $ateRepository;
+		$this->orphanedJobs  = $orphanedJobs instanceof OrphanedJobs ? $orphanedJobs : new OrphanedJobs();
+		$this->manualBackoff = $manualBackoff instanceof ManualSyncBackoff ? $manualBackoff : new ManualSyncBackoff();
 	}
 
 	public function run( Arguments $args ) {
@@ -120,7 +128,11 @@ class Process {
 	}
 
 	private function runSyncInit( Result $result, $includeManualAndLongstandingJobs = true ) {
-		$jobsData   = $this->ateRepository->get_jobs_to_sync_with_element_ids( $includeManualAndLongstandingJobs );
+		$this->orphanedJobs->close();
+
+		$leaveOutBackedOff = $includeManualAndLongstandingJobs && ! $this->manualBackoff->isDue();
+
+		$jobsData   = $this->ateRepository->get_jobs_to_sync_with_element_ids( $includeManualAndLongstandingJobs, $leaveOutBackedOff );
 		$ateJobIds  = $jobsData['ateJobIds'];
 		$postIds    = $jobsData['postIds'];
 		$stringIds  = $jobsData['stringIds'];
@@ -138,6 +150,7 @@ class Process {
 				[
 					'ateJobIds'                        => $ateJobIds,
 					'includeManualAndLongstandingJobs' => $includeManualAndLongstandingJobs,
+					'leaveOutBackedOffManualJobs'      => $leaveOutBackedOff,
 				]
 			);
 			if ( count( $ateJobIds ) < $total ) {
@@ -150,10 +163,19 @@ class Process {
 				);
 			}
 			$this->ateRepository->increment_ate_sync_count( $ateJobIds );
+			$result->askedAteJobIds = $ateJobIds;
 			$data = $this->api->sync_all( $ateJobIds, $postIds, $stringIds, $packageIds, $termIds );
 
 			$result->ateTransportFailure = self::isTransportFailure( $data );
 			$result->ateRefusedLocally   = self::isRefusedLocally( $data );
+
+			if (
+				$includeManualAndLongstandingJobs && ! $leaveOutBackedOff
+				&& count( $ateJobIds ) >= $total
+				&& ! $result->ateTransportFailure && ! $result->ateRefusedLocally
+			) {
+				$this->manualBackoff->markSynced();
+			}
 
 			$jobs         = Obj::propOr( [], 'items', $data );
 			$result->jobs = $this->handleJobs( $jobs );
@@ -189,9 +211,7 @@ class Process {
 	}
 
 	private static function syncAllChunkSize() {
-		$size = apply_filters( 'wpml_ate_sync_all_chunk', self::SYNC_ALL_CHUNK );
-
-		return ( is_int( $size ) && $size >= 1 ) ? $size : self::SYNC_ALL_CHUNK;
+		return SyncChunk::size();
 	}
 
 	private function getAteJobIdsToSync( $includeManualAndLongstandingJobs = true ) {
@@ -203,7 +223,7 @@ class Process {
 	private function handleJobs( array $items ) {
 		return wpml_collect( $items )
 			->map( [ Job::class, 'fromAteResponse' ] )
-			->map( Obj::over( Obj::lensProp( 'jobId' ), Map::fromRid() ) )
+			->map( Obj::over( Obj::lensProp( 'jobId' ), Map::jobIdFromRid() ) )
 			->map(
 				function ( $job ) {
 					return $this->readFailedByAte( $job );
@@ -279,7 +299,7 @@ class Process {
 
 		if ( in_array( $freshStatus, self::IN_FLIGHT_STATUSES, true ) ) {
 			$restored = PreviousStateServiceFactory::create()->revertInFlight(
-				[ (int) Map::fromJobId( $jobId ) ],
+				[ (int) Map::ridFromJobId( $jobId ) ],
 				[ $freshStatus ],
 				ICL_TM_ATE_CANCELLED
 			);
@@ -299,7 +319,45 @@ class Process {
 		] );
 	}
 
+	public function reflectNotHeldByAte( $jobId, $ateJobId ) {
+		$jobId       = (int) $jobId;
+		$freshStatus = Jobs::getStatus( $jobId );
+
+		if ( null === $freshStatus || ICL_TM_COMPLETE === $freshStatus ) {
+			JobLog::add( 'ate_job_not_held_row_left_alone', [
+				'job_id'     => $jobId,
+				'ate_job_id' => (int) $ateJobId,
+				'status'     => $freshStatus,
+			] );
+
+			return;
+		}
+
+		$status = $freshStatus;
+
+		if ( in_array( $freshStatus, self::IN_FLIGHT_STATUSES, true ) ) {
+			$restored = PreviousStateServiceFactory::create()->revertInFlight(
+				[ (int) Map::ridFromJobId( $jobId ) ],
+				[ $freshStatus ],
+				ICL_TM_ATE_CANCELLED
+			);
+			$status   = $restored ? reset( $restored ) : $freshStatus;
+		} elseif ( ICL_TM_NOT_TRANSLATED === $freshStatus ) {
+			Jobs::setStatus( $jobId, ICL_TM_ATE_CANCELLED );
+			$status = ICL_TM_ATE_CANCELLED;
+		}
+
+		JobLog::add( 'ate_job_not_held_reflected', [
+			'job_id'      => $jobId,
+			'ate_job_id'  => (int) $ateJobId,
+			'from_status' => $freshStatus,
+			'to_status'   => $status,
+		] );
+	}
+
 	private function logUnsolvableJob( $job ) {
+		$this->logFailureReason( $job );
+
 		$recorder = new \WPML\TM\ATE\JobError\Recorder( TranslateJobErrorServiceFactory::create() );
 
 		$recorder->record(
@@ -310,6 +368,44 @@ class Process {
 			[
 				'ateStatus' => $job->ateStatus,
 				'jobData'   => $job->errorData,
+			]
+		);
+	}
+
+	private function logFailureReason( Job $job ) {
+		$jobData = is_object( $job->errorData ) ? $job->errorData : null;
+		$source  = $jobData && isset( $jobData->source_language_code ) ? (string) $jobData->source_language_code : null;
+		$target  = $jobData && isset( $jobData->language_code ) ? (string) $jobData->language_code : null;
+
+		$pairSupport = null;
+		if ( $source && $target ) {
+			try {
+				$asked = $source === (string) Languages::getDefaultCode() ? null : $source;
+				$rows  = CachedLanguageMappings::getAllLanguagesWithAutomaticSupportInfo( $asked );
+				$row   = is_array( $rows ) && isset( $rows[ $target ] ) && is_array( $rows[ $target ] ) ? $rows[ $target ] : null;
+
+				$pairSupport = [
+					'supported' => $row ? ( $row['can_be_translated_automatically'] ?? null ) : null,
+					'engine'    => $row ? ( $row['engine'] ?? null ) : null,
+				];
+			} catch ( \Throwable $e ) {
+				$pairSupport = null;
+			}
+		}
+
+		JobLog::addError(
+			'ate_job_failed_reason',
+			[
+				'job_id'          => (int) $job->jobId,
+				'ate_job_id'      => (int) $job->ateJobId,
+				'ate_status'      => (int) $job->ateStatus,
+				'ate_message'     => $job->message ?: null,
+				'ate_reason'      => $job->ateReason ?: null,
+				'ate_reason_sent' => ! empty( $job->ateReason ),
+				'source_lang'     => $source,
+				'target_lang'     => $target,
+				'automatic'       => $jobData && isset( $jobData->automatic ) ? (int) $jobData->automatic : null,
+				'pair_support'    => $pairSupport,
 			]
 		);
 	}

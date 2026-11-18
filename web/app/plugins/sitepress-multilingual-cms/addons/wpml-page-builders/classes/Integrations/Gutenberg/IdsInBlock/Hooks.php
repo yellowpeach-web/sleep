@@ -61,10 +61,17 @@ class Hooks implements Integration {
 
 		list( $namespace ) = explode( '/', $blockName, 2 );
 
-		return array_merge(
-			Obj::propOr( [], $namespace, $config ),
-			Obj::propOr( [], $blockName, $config )
-		);
+		$namespaceConfig = (array) Obj::propOr( [], $namespace, $config );
+		$blockConfig     = (array) Obj::propOr( [], $blockName, $config );
+		$merged          = array_merge( $namespaceConfig, $blockConfig );
+
+		foreach ( [ 'key', 'xpath' ] as $type ) {
+			if ( is_array( Obj::prop( $type, $namespaceConfig ) ) && is_array( Obj::prop( $type, $blockConfig ) ) ) {
+				$merged[ $type ] = array_replace( $namespaceConfig[ $type ], $blockConfig[ $type ] );
+			}
+		}
+
+		return $merged;
 	}
 
 	private function getBlockAttributesConverter( $blockConfig ) {

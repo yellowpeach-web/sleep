@@ -2,46 +2,54 @@
 
 namespace WPML\StringTranslation\Application\StringCore\Domain;
 
-class StringTranslation {
+use WPML\StringTranslation\Application\StringCore\Legacy\OldVersionInMemory;
 
-	private $string;
+require_once __DIR__ . '/../Legacy/OldVersionInMemory.php';
 
-	private $language;
+if ( OldVersionInMemory::isBeforeNow( OldVersionInMemory::STRING_TRANSLATION_REORDERED ) ) {
+	require_once __DIR__ . '/Legacy/StringTranslation352.php';
+	class_alias( Legacy\StringTranslation352::class, StringTranslation::class );
+} else {
+	class StringTranslation {
 
-	private $value;
+		private $string;
 
-	public function __construct(
-		string $language,
-		string $value,
-		?StringItem $string = null
-	) {
-		$this->setString( $string );
-		$this->setLanguage( $language );
-		$this->setValue( $value );
-	}
+		private $language;
 
-	public function setString( ?StringItem $string ) {
-		$this->string = $string;
-	}
+		private $value;
 
-	public function getString(): ?StringItem {
-		return $this->string;
-	}
+		public function __construct(
+			string $language,
+			string $value,
+			?StringItem $string = null
+		) {
+			$this->setString( $string );
+			$this->setLanguage( $language );
+			$this->setValue( $value );
+		}
 
-	public function getLanguage(): string {
-		return $this->language;
-	}
+		public function setString( ?StringItem $string ) {
+			$this->string = $string;
+		}
 
-	public function setLanguage( string $language ) {
-		$this->language = $language;
-	}
+		public function getString(): ?StringItem {
+			return $this->string;
+		}
 
-	public function getValue(): string {
-		return $this->value;
-	}
+		public function getLanguage(): string {
+			return $this->language;
+		}
 
-	public function setValue( string $value ) {
-		$this->value = $value;
+		public function setLanguage( string $language ) {
+			$this->language = $language;
+		}
+
+		public function getValue(): string {
+			return $this->value;
+		}
+
+		public function setValue( string $value ) {
+			$this->value = $value;
+		}
 	}
 }
-

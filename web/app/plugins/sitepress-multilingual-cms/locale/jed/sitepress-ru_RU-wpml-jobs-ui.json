@@ -47,7 +47,7 @@
             "Взять и перевести"
          ],
          "This job was created by Translate Everything and cannot be cancelled on its own. To stop it, turn off Translate Everything from the Translation Dashboard.": [
-            "Это задание было создано в режиме «Переводить все автоматически», и его нельзя отменить отдельно. Чтобы остановить его, выключите режим «Переводить все автоматически» на панели управления переводами."
+            "Это задание было создано в режиме «Переводить все», и его нельзя отменить отдельно. Чтобы остановить его, выключите режим «Переводить все» на панели управления переводами."
          ],
          "View": [
             "Просмотр"
@@ -56,7 +56,7 @@
             "Неважно. Я хочу проверить эти переводы."
          ],
          "Cancel": [
-            "Отмена"
+            "Отменить"
          ],
          "This will remove the selected jobs from the Translations Queue without publishing them. What would you like to do with the translations?": [
             "Это действие удалит выбранные задания из очереди переводов без их публикации. Что вы хотите сделать с переводами?"
@@ -91,23 +91,107 @@
          "Cancelled": [
             "Отменено"
          ],
-         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
-            "Автоматический перевод неоднократно завершался ошибкой, и WPML прекратил попытки. Отправьте повторно или удалите задание на панели управления переводами либо отмените его здесь."
+         "Published — Pending review": [
+            "Опубликовано — Ожидает проверки"
          ],
          "Needs translation": [
             "Нужен перевод"
          ],
-         "Needs update": [
-            "Нужно обновить"
+         "Review in progress": [
+            "Проверка в процессе"
+         ],
+         "Waiting for your Pay-As-You-Go payment": [
+            "Ожидание вашего платежа «Оплата по мере использования»"
          ],
          "Translation ready to download": [
             "Перевод готов к скачиванию"
          ],
+         "Waiting for payment": [
+            "Ожидание оплаты"
+         ],
+         "Waiting for words": [
+            "Ожидает слов"
+         ],
          "Completed": [
             "Завершено"
          ],
+         "Insufficient funds": [
+            "Недостаточно средств"
+         ],
+         "Sending": [
+            "Отправляется"
+         ],
+         "Automatic translation is off, so this job is not retried. Resend it, or switch Translate Everything on.": [
+            "Автоматический перевод отключен, поэтому повторные попытки для этого задания не выполняются. Отправьте его повторно или включите «Переводить все»."
+         ],
+         "Waiting for you": [
+            "Ожидает ваших действий"
+         ],
          "Failed - needs attention": [
             "Ошибка — требуется внимание"
+         ],
+         "You can also resend the content or open the job in the Translation Queue.": [
+            "Вы также можете повторно отправить контент или открыть задание в Очереди переводов."
+         ],
+         "If it keeps failing for about a day, the job is marked as needing your attention.": [
+            "Если сбои продолжатся в течение суток, задание будет отмечено как требующее вашего внимания."
+         ],
+         "In progress": [
+            "В процессе"
+         ],
+         "Automatic translation failed repeatedly and WPML stopped retrying. Resend or discard the job from the Translation Dashboard, or cancel it here.": [
+            "Автоматический перевод неоднократно завершался ошибкой, и WPML прекратил попытки. Отправьте повторно или удалите задание на панели управления переводами либо отмените его здесь."
+         ],
+         "Needs update": [
+            "Нужно обновить"
+         ],
+         "Scheduled — Pending review": [
+            "Запланировано — ожидает проверки"
+         ],
+         "Private — Pending review": [
+            "Личное — ожидает проверки"
+         ],
+         "Draft — Pending review": [
+            "Черновик — Ожидает проверки"
+         ],
+         "Published — Review in progress": [
+            "Опубликовано — Проверка в процессе"
+         ],
+         "Scheduled — Review in progress": [
+            "Запланировано — проверка в процессе"
+         ],
+         "Private — Review in progress": [
+            "Личное — проверка в процессе"
+         ],
+         "Draft — Review in progress": [
+            "Черновик — Проверка в процессе"
+         ],
+         "WPML could not reach our translation system.": [
+            "WPML не удалось связаться с нашей системой перевода."
+         ],
+         "Our translation system did not accept this job.": [
+            "Наша система перевода не приняла это задание."
+         ],
+         "WPML could not calculate the word count for this job.": [
+            "WPML не удалось подсчитать количество слов для этого задания."
+         ],
+         "WPML could not read the price of automatic translation for this job.": [
+            "WPML не удалось получить стоимость автоматического перевода для этого задания."
+         ],
+         "WPML could not prepare this job for automatic translation.": [
+            "WPML не удалось подготовить это задание к автоматическому переводу."
+         ],
+         "Sending this job to automatic translation failed.": [
+            "Не удалось отправить это задание на автоматический перевод."
+         ],
+         "WPML tries again within a minute.": [
+            "WPML повторит попытку в течение минуты."
+         ],
+         "WPML tries again in about %d minutes.": [
+            "WPML повторит попытку примерно через %d мин."
+         ],
+         "WPML tries again in about %d hours.": [
+            "WPML повторит попытку примерно через %d ч."
          ],
          "%s terms are published immediately because they don't support draft mode.": [
             "Элементы таксономии %s публикуются немедленно, так как они не поддерживают режим черновика."
@@ -115,41 +199,14 @@
          "%s are immediately published because they don't support draft mode.": [
             "%s публикуются немедленно, так как они не поддерживают режим черновика."
          ],
-         "Published — Pending review": [
-            "Опубликовано — Ожидает проверки"
+         "(no title)": [
+            "(без заголовка)"
          ],
-         "Draft — Pending review": [
-            "Черновик — Ожидает проверки"
-         ],
-         "Review in progress": [
-            "Проверка в процессе"
-         ],
-         "Published — Review in progress": [
-            "Опубликовано — Проверка в процессе"
-         ],
-         "Draft — Review in progress": [
-            "Черновик — Проверка в процессе"
-         ],
-         "Waiting for your Pay-As-You-Go payment": [
-            "Ожидание вашего платежа «Оплата по мере использования»"
-         ],
-         "Waiting for payment": [
-            "Ожидание оплаты"
-         ],
-         "Insufficient funds": [
-            "Недостаточно средств"
-         ],
-         "Automatic translation was paused by a temporary error and retries automatically — no action needed. If the status has not changed in about 30 minutes, contact WPML support.": [
-            "Автоматический перевод был приостановлен из-за временной ошибки и возобновится автоматически — никаких действий не требуется. Если статус не изменится в течение 30 минут, обратитесь в службу поддержки WPML."
-         ],
-         "In progress": [
-            "В процессе"
+         "%1$s (ID %2$d)": [
+            "%1$s (ID %2$d)"
          ],
          "View original": [
             "Просмотреть оригинал"
-         ],
-         "(no title)": [
-            "(без заголовка)"
          ],
          "Automatic translation": [
             "Автоматический перевод"
@@ -266,7 +323,7 @@
             "Импортирование"
          ],
          "Import": [
-            "Импорт"
+            "Импортировать"
          ],
          "Import / Export XLIFF": [
             "Импорт / Экспорт XLIFF"
@@ -417,7 +474,7 @@
             "Не удалось отменить проверку перевода"
          ],
          "Translated by": [
-            "Переводчик"
+            "Кем переведено"
          ],
          "Sent on": [
             "Отправлено"
@@ -494,9 +551,6 @@
          "Failed to resign from jobs": [
             "Не удалось отказаться от заданий"
          ],
-         "The Advanced Editor jobs synchronization has failed": [
-            "Синхронизация заданий расширенного редактора не удалась"
-         ],
          "Synchronization with the Professional Translation service has failed": [
             "Синхронизация с профессиональным сервисом перевода не удалась"
          ],
@@ -509,8 +563,45 @@
          "Batch sync couldn't be finished": [
             "Не удалось завершить синхронизацию пакетов"
          ],
+         "More details": [
+            "Подробнее"
+         ],
+         "%s job was left out of the export.": [
+            "%s задание не было включено в экспорт.",
+            "%s задания не были включены в экспорт.",
+            "%s заданий не были включены в экспорт."
+         ],
+         "%s job could not be exported. No file was downloaded.": [
+            "Не удалось экспортировать %s задание. Файл не был скачан.",
+            "Не удалось экспортировать %s задания. Файл не был скачан.",
+            "Не удалось экспортировать %s заданий. Файл не был скачан."
+         ],
+         "This job was saved while this server had the PHP zlib extension, so its text is stored compressed. PHP on this server has no zlib now, so WPML cannot read it. Ask your hosting provider to enable the PHP zlib extension, then export it again.": [
+            "Это задание было сохранено, когда на сервере было активно расширение PHP zlib, поэтому его текст хранится в сжатом виде. Сейчас zlib в PHP на этом сервере отсутствует, и WPML не может его прочитать. Попросите своего хостинг-провайдера включить расширение PHP zlib, а затем повторите экспорт.",
+            "Эти задания были сохранены, когда на сервере было активно расширение PHP zlib, поэтому их текст хранится в сжатом виде. Сейчас zlib в PHP на этом сервере отсутствует, и WPML не может их прочитать. Попросите своего хостинг-провайдера включить расширение PHP zlib, а затем повторите экспорт.",
+            "Эти задания были сохранены, когда на сервере было активно расширение PHP zlib, поэтому их текст хранится в сжатом виде. Сейчас zlib в PHP на этом сервере отсутствует, и WPML не может их прочитать. Попросите своего хостинг-провайдера включить расширение PHP zlib, а затем повторите экспорт."
+         ],
+         "This job could not be exported.": [
+            "Не удалось экспортировать это задание.",
+            "Не удалось экспортировать эти задания.",
+            "Не удалось экспортировать эти задания."
+         ],
+         "%1$s (job %2$s)": [
+            "%1$s (задание %2$s)"
+         ],
+         "Job %s": [
+            "Задание %s"
+         ],
+         "and %s more job": [
+            "и еще %s задание",
+            "и еще %s задания",
+            "и еще %s заданий"
+         ],
          "Our translation system did not accept this request (it answered %d). Wait a minute and try again, and contact WPML support if it keeps happening.": [
             "Наша система перевода не приняла этот запрос (ответ: %d). Подождите минуту и попробуйте еще раз. Если проблема повторится, обратитесь в службу поддержки WPML."
+         ],
+         "The site stopped answering before this translation was confirmed. If it was not saved, the next download takes it again.": [
+            "Сайт перестал отвечать до подтверждения этого перевода. Если он не сохранился, при следующем скачивании он будет загружен снова."
          ]
       }
    }

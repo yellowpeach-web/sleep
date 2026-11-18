@@ -31,14 +31,9 @@ class ConnectTranslations {
 			)
 		);
 
-		$ownGroupSize = $post
-			? (int) $wpdb->get_var(
-				$wpdb->prepare(
-					"SELECT COUNT(*) FROM {$wpdb->prefix}icl_translations WHERE trid = %d AND element_type = %s",
-					[ (int) $post->trid, $elementType ]
-				)
-			)
-			: 0;
+		$repository      = new OrphanTranslationsRepository( $wpdb );
+		$ownGroupSize    = $post ? $repository->countMembers( (int) $post->trid, $elementType ) : 0;
+		$ownPlaceholders = $post ? $repository->placeholderIds( (int) $post->trid, $elementType ) : [];
 
 		$target = $newTrid > 0
 			? $wpdb->get_results(
@@ -48,27 +43,36 @@ class ConnectTranslations {
 				)
 			)
 			: [];
-		$target = is_array( $target ) ? $target : [];
+		$target       = is_array( $target ) ? $target : [];
+		$placeholders = $target ? $repository->placeholderIds( $newTrid, $elementType ) : [];
+		foreach ( $target as $row ) {
+			$row->placeholder = in_array( (int) $row->translation_id, $placeholders, true );
+		}
 
 		$targetOriginal = null;
 		foreach ( $target as $row ) {
-			if ( null === $row->source_language_code ) {
+			if ( null === $row->source_language_code && ! $this->isUnused( $row ) ) {
 				$targetOriginal = $row;
 				break;
 			}
 		}
 
 		return [
-			'postId'         => $postId,
-			'postType'       => (string) $postType,
-			'realPostType'   => get_post_type( $postId ),
-			'elementType'    => $elementType,
-			'newTrid'        => $newTrid,
-			'post'           => $post,
-			'ownGroupSize'   => $ownGroupSize,
-			'target'         => $target,
-			'targetOriginal' => $targetOriginal,
+			'postId'          => $postId,
+			'postType'        => (string) $postType,
+			'realPostType'    => get_post_type( $postId ),
+			'elementType'     => $elementType,
+			'newTrid'         => $newTrid,
+			'post'            => $post,
+			'ownGroupSize'    => $ownGroupSize,
+			'ownPlaceholders' => $ownPlaceholders,
+			'target'          => $target,
+			'targetOriginal'  => $targetOriginal,
 		];
+	}
+
+	private function isUnused( $row ) {
+		return ! empty( $row->placeholder );
 	}
 
 	public function refuseTarget( array $state ) {
@@ -124,7 +128,7 @@ class ConnectTranslations {
 		}
 
 		foreach ( $state['target'] as $row ) {
-			if ( $row->language_code === $post->language_code ) {
+			if ( $row->language_code === $post->language_code && ! $this->isUnused( $row ) ) {
 				return Payload::invalid( 'new_trid', 'language_taken', $this->languageTakenMessage( $post->language_code ) );
 			}
 		}
@@ -137,6 +141,8 @@ class ConnectTranslations {
 		$table         = $wpdb->prefix . 'icl_translations';
 		$post          = $state['post'];
 		$translationId = (int) $post->translation_id;
+
+		$this->removeRows( $this->unusedTargetRowsIn( $state, $post->language_code ) );
 
 		$moved = $this->wpdb->update(
 			$table,
@@ -161,6 +167,8 @@ class ConnectTranslations {
 
 		if ( ! $setAsSource ) {
 			$this->releaseStatusOfMovedRow( $post, $state['newTrid'] );
+			$this->removeRows( $state['ownPlaceholders'] );
+			$this->flushTranslationsCache( $post, $state['newTrid'] );
 
 			return null;
 		}
@@ -188,8 +196,31 @@ class ConnectTranslations {
 		}
 
 		$this->releaseStatusOfMovedRow( $post, $state['newTrid'] );
+		$this->removeRows( $state['ownPlaceholders'] );
+		$this->flushTranslationsCache( $post, $state['newTrid'] );
 
 		return null;
+	}
+
+	private function unusedTargetRowsIn( array $state, $languageCode ) {
+		$ids = [];
+		foreach ( $state['target'] as $row ) {
+			if ( $row->language_code === $languageCode && $this->isUnused( $row ) ) {
+				$ids[] = (int) $row->translation_id;
+			}
+		}
+
+		return $ids;
+	}
+
+	private function removeRows( array $translationIds ) {
+		if ( $translationIds ) {
+			\WPML_Translation_Records_Delete::translations_by_ids( $translationIds );
+		}
+	}
+
+	private function flushTranslationsCache( $post, $newTrid ) {
+		\WPML_Translations::flush_cache_for_trids( [ (int) $post->trid, (int) $newTrid ] );
 	}
 
 	private function releaseStatusOfMovedRow( $post, $newTrid ) {

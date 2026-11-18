@@ -13,6 +13,25 @@ class PostWithMediaFiles {
 
 	const REFERENCED_MEDIA_IDS_SETTING = 'referenced_media_ids';
 
+	const MEDIA_INPUTS_HASH_SETTING = '_wpml_media_inputs_hash';
+
+	const META_NOT_READ_FOR_MEDIA = [
+		'_edit_lock',
+		'_edit_last',
+		'_wp_old_slug',
+		'_wp_old_date',
+		'_encloseme',
+		'_pingme',
+		'_alp_processed',
+		'_elementor_version',
+		'_elementor_pro_version',
+		'_elementor_css',
+		'_elementor_page_assets',
+		'_elementor_element_cache',
+		'_elementor_screenshot',
+		'_elementor_screenshot_failed',
+	];
+
 	private $post_id;
 	private $media_parser;
 	private $attachment_by_url_factory;
@@ -264,6 +283,56 @@ class PostWithMediaFiles {
 			$this->usage_of_media_files_in_posts->getUsagesAsCopy( $media_file_id ),
 			$this->usage_of_media_files_in_posts->getUsagesAsReference( $media_file_id ),
 		];
+	}
+
+	public function extract_and_save_media_ids_when_inputs_changed() {
+		$hash = $this->get_media_inputs_hash();
+		if ( null !== $hash && get_post_meta( $this->post_id, self::MEDIA_INPUTS_HASH_SETTING, true ) === $hash ) {
+			return false;
+		}
+
+		$this->extract_and_save_media_ids();
+		if ( null !== $hash ) {
+			update_post_meta( $this->post_id, self::MEDIA_INPUTS_HASH_SETTING, $hash );
+		}
+
+		return true;
+	}
+
+	public function get_media_inputs_hash() {
+		$post = get_post( $this->post_id );
+		if ( ! $post ) {
+			return null;
+		}
+
+		$meta = get_post_meta( $this->post_id );
+		$meta = is_array( $meta ) ? $meta : [];
+		foreach ( array_merge( [ self::COPIED_MEDIA_IDS_SETTING, self::REFERENCED_MEDIA_IDS_SETTING, self::MEDIA_INPUTS_HASH_SETTING ], self::META_NOT_READ_FOR_MEDIA ) as $key ) {
+			unset( $meta[ $key ] );
+		}
+		ksort( $meta );
+
+		$localization = MediaSettings::get_setting( 'media_files_localization' );
+		$translatable = [];
+		if ( ! empty( $localization['custom_fields'] ) && $meta ) {
+			wpml_resolve_custom_field_preferences( array_keys( $meta ) );
+			foreach ( array_keys( $meta ) as $meta_key ) {
+				$translatable[ $meta_key ] = WPML_TRANSLATE_CUSTOM_FIELD === $this->cf_settings_factory->post_meta_setting( $meta_key )->status();
+			}
+		}
+
+		return md5(
+			serialize(
+				[
+					$post->post_content,
+					$post->post_type,
+					$this->get_post_language( $post ),
+					$localization,
+					$translatable,
+					$meta,
+				]
+			)
+		);
 	}
 
 	public function extract_and_save_media_ids() {

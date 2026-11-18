@@ -224,6 +224,22 @@ class SaveLanguagesService {
       }
     }
 
+    foreach ( $languages as $row ) {
+      if ( ! isset( $row['code'] ) || ! array_key_exists( 'mapping', $row ) || ! is_array( $row['mapping'] ) ) {
+          continue;
+      }
+        $code    = (string) $row['code'];
+        $refusal = $this->ate->mappingRefusal(
+          $code,
+          (string) ( $row['mapping']['ateLang'] ?? '' ),
+          isset( $row['mapping']['ateCountry'] ) ? (string) $row['mapping']['ateCountry'] : null,
+          $defaultCode
+        );
+      if ( null !== $refusal ) {
+          return Result::error( $refusal, [ 'code' => $code ] );
+      }
+    }
+
       return null;
   }
 
@@ -253,7 +269,7 @@ class SaveLanguagesService {
     if ( $englishName === '' ) {
         return Result::error( 'name_required', [ 'displayCode' => $code ] );
     }
-    if ( in_array( strtolower( $englishName ), $claimedNames, true ) || $this->nameWouldConflict( $englishName, $code, $desired ) ) {
+    if ( in_array( strtolower( $englishName ), $claimedNames, true ) || $this->nameWouldConflict( $englishName, $this->customCanonicalCode( $code ), $desired ) ) {
         return Result::error( 'name_in_use', [ 'name' => $englishName ] );
     }
 
@@ -320,6 +336,21 @@ class SaveLanguagesService {
   }
 
 
+  public function existingCodeFor( array $row ): ?string {
+      $code = isset( $row['code'] ) ? (string) $row['code'] : '';
+    if ( $code === '' ) {
+        return null;
+    }
+    if ( in_array( $code, $this->languages->activeCodes(), true ) ) {
+        return $code;
+    }
+      $presetCode = isset( $row['presetCode'] ) && $row['presetCode'] !== null ? (string) $row['presetCode'] : '';
+      $country    = isset( $row['country'] ) && is_string( $row['country'] ) ? $row['country'] : null;
+
+      return $presetCode === '' ? null : $this->activeCodeForPair( $presetCode, $country );
+  }
+
+
   private function activeCodeForPair( string $presetCode, ?string $country ): ?string {
       $presetCode = strtolower( trim( $presetCode ) );
     if ( $presetCode === '' ) {
@@ -375,7 +406,9 @@ class SaveLanguagesService {
         return Result::error( 'name_required', [ 'displayCode' => $code ] );
     }
 
-      $free = $this->freeEnglishName( $englishName, $code, $desired );
+      $canonical = $this->customCanonicalCode( $code );
+
+      $free = $this->freeEnglishName( $englishName, $canonical, $desired );
     if ( ! $free->isOk() ) {
         return $free;
     }
@@ -396,18 +429,6 @@ class SaveLanguagesService {
     if ( $country === null && $withdrawn !== null && $withdrawn['country'] !== null ) {
         $country = $withdrawn['country'];
     }
-
-      $canonical = LanguageDerivation::customCanonicalCode(
-        $code,
-        $this->languages->activeCodes(),
-        function ( string $candidate ): bool {
-            return $this->languages->rowId( $candidate ) !== null
-              || $this->languages->presetOwningCode( $candidate ) !== null;
-        },
-        function ( string $candidate ): bool {
-            return $this->languages->rowIsCustom( $candidate ) === false;
-        }
-      );
 
       $id = $this->languages->insertCustom(
         [
@@ -450,6 +471,21 @@ class SaveLanguagesService {
   }
 
 
+  private function customCanonicalCode( string $code ): string {
+      return LanguageDerivation::customCanonicalCode(
+        $code,
+        $this->languages->activeCodes(),
+        function ( string $candidate ): bool {
+            return $this->languages->rowId( $candidate ) !== null
+              || $this->languages->presetOwningCode( $candidate ) !== null;
+        },
+        function ( string $candidate ): bool {
+            return $this->languages->rowIsCustom( $candidate ) === false;
+        }
+      );
+  }
+
+
   private function rejectMalformedFormat( array $row, string $code ): ?Result {
       $codeError = CustomLanguageFormat::validateCode( $code );
     if ( $codeError !== '' ) {
@@ -479,8 +515,7 @@ class SaveLanguagesService {
         return null;
     }
 
-    if ( $this->languages->withdrawnCatalogueCode( $catalogueCode ) !== null
-      && $this->languages->rowIsCustom( $catalogueCode ) !== false ) {
+    if ( $this->languages->withdrawnCatalogueCode( $catalogueCode ) !== null ) {
         return null;
     }
 

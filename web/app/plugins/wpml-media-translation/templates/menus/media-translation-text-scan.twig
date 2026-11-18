@@ -1,0 +1,171 @@
+{# wpmldev-8628: the image scan's notice (L-3, L-4) and the setting "Find images with text" (L-6).
+   Every state is written here from the one status body; the listing script (res/js/text-scan-listing.js) shows one
+   at a time, updates the counts of a running scan and calls the REST routes. #}
+<div class="wpml-media-text-scan" id="wpml-media-text-scan" data-status="{{ notice.status_json }}">
+	<div class="wpml-media-text-scan__states" aria-live="polite">
+
+		<div class="notice notice-info inline wpml-media-text-scan__notice" data-ts-state="idle"{% if notice.state != 'idle' %} hidden{% endif %}>
+			<div class="wpml-media-text-scan__body">
+				{% if notice.strings.idle_title %}
+				<p class="wpml-media-text-scan__title">{{ notice.strings.idle_title }}</p>
+				{% endif %}
+				<p class="wpml-media-text-scan__text">
+					{{ notice.strings.idle_text_html|raw }}
+					{% if notice.can_act %}
+					<button type="button" class="button-link js-wpml-media-text-scan-open" aria-controls="wpml-media-text-scan-settings" aria-expanded="false" aria-label="{{ notice.strings.change_label }}">{{ notice.strings.change }}</button>
+					{% endif %}
+				</p>
+				{% if notice.strings.no_permission %}
+				<p class="wpml-media-text-scan__permission">{{ notice.strings.no_permission }}</p>
+				{% endif %}
+			</div>
+			{% if notice.can_act and notice.not_scanned %}
+			<div class="wpml-media-text-scan__actions">
+				<button type="button" class="wpml-button base-btn js-wpml-media-text-scan-ask">{{ notice.strings.scan }}</button>
+			</div>
+			{% endif %}
+		</div>
+
+		{% if notice.can_act and notice.not_scanned %}
+		<div class="notice notice-info inline wpml-media-text-scan__notice" data-ts-state="confirm" hidden>
+			<div class="wpml-media-text-scan__body">
+				<p class="wpml-media-text-scan__title" tabindex="-1">{{ notice.strings.confirm_title }}</p>
+				<p class="wpml-media-text-scan__text">{{ notice.strings.confirm_text }}</p>
+				<p class="wpml-media-text-scan__error" role="alert"></p>
+			</div>
+			<div class="wpml-media-text-scan__actions">
+				<button type="button" class="wpml-button base-btn cancel-button js-wpml-media-text-scan-cancel">{{ notice.strings.cancel }}</button>
+				<button type="button" class="wpml-button base-btn js-wpml-media-text-scan-start">{{ notice.strings.start }}</button>
+			</div>
+		</div>
+		{% endif %}
+
+		<div class="notice notice-info inline wpml-media-text-scan__notice" data-ts-state="running"{% if notice.state != 'running' %} hidden{% endif %}>
+			<div class="wpml-media-text-scan__body">
+				<p class="wpml-media-text-scan__title"><span class="wpml-media-text-scan__spinner" aria-hidden="true"></span><span>{{ notice.strings.running_html|raw }}</span></p>
+				<div class="wpml-media-text-scan__progress" role="progressbar" aria-label="{{ notice.strings.progress_label }}" aria-valuemin="0" aria-valuemax="{{ notice.total }}" aria-valuenow="{{ notice.processed }}" aria-valuetext="{{ notice.strings.progress_text }}" data-ts-one="{{ notice.strings.progress_forms.one }}" data-ts-other="{{ notice.strings.progress_forms.other }}"><span style="width: {{ notice.percent }}%"></span></div>
+				<p class="wpml-media-text-scan__text">{{ notice.strings.running_text }}</p>
+				<p class="wpml-media-text-scan__text" data-ts="held" data-ts-one="{{ notice.strings.held_forms.one }}" data-ts-other="{{ notice.strings.held_forms.other }}"{% if not notice.held %} hidden{% endif %}>{{ notice.strings.held_text }}</p>
+			</div>
+		</div>
+
+		<div class="notice notice-warning inline wpml-media-text-scan__notice" data-ts-state="interrupted"{% if notice.state != 'interrupted' %} hidden{% endif %}>
+			<div class="wpml-media-text-scan__body">
+				<p class="wpml-media-text-scan__title"><span class="dashicons dashicons-warning" aria-hidden="true"></span><span>{{ notice.strings.paused_html|raw }}</span></p>
+				<div class="wpml-media-text-scan__progress wpml-media-text-scan__progress--waiting" role="progressbar" aria-label="{{ notice.strings.progress_label }}" aria-valuemin="0" aria-valuemax="{{ notice.total }}" aria-valuenow="{{ notice.processed }}" aria-valuetext="{{ notice.strings.paused_text }}" data-ts-one="{{ notice.strings.paused_forms.one }}" data-ts-other="{{ notice.strings.paused_forms.other }}"><span style="width: {{ notice.percent }}%"></span></div>
+				<p class="wpml-media-text-scan__text">{{ notice.strings.interrupted_text }}</p>
+				<p class="wpml-media-text-scan__text" data-ts="held" data-ts-one="{{ notice.strings.held_forms.one }}" data-ts-other="{{ notice.strings.held_forms.other }}"{% if not notice.held %} hidden{% endif %}>{{ notice.strings.held_text }}</p>
+				{% if notice.strings.no_permission %}
+				<p class="wpml-media-text-scan__permission">{{ notice.strings.no_permission }}</p>
+				{% endif %}
+				<p class="wpml-media-text-scan__error" role="alert"></p>
+			</div>
+			{% if notice.can_act %}
+			<div class="wpml-media-text-scan__actions">
+				<button type="button" class="wpml-button base-btn wpml-button--outlined js-wpml-media-text-scan-retry">{{ notice.strings.retry }}</button>
+			</div>
+			{% endif %}
+		</div>
+
+		<div class="notice notice-warning inline wpml-media-text-scan__notice" data-ts-state="paused-off"{% if notice.state != 'paused-off' %} hidden{% endif %}>
+			<div class="wpml-media-text-scan__body">
+				<p class="wpml-media-text-scan__title"><span class="dashicons dashicons-warning" aria-hidden="true"></span><span>{{ notice.strings.paused_html|raw }}</span></p>
+				<div class="wpml-media-text-scan__progress wpml-media-text-scan__progress--off" role="progressbar" aria-label="{{ notice.strings.progress_label }}" aria-valuemin="0" aria-valuemax="{{ notice.total }}" aria-valuenow="{{ notice.processed }}" aria-valuetext="{{ notice.strings.paused_text }}" data-ts-one="{{ notice.strings.paused_forms.one }}" data-ts-other="{{ notice.strings.paused_forms.other }}"><span style="width: {{ notice.percent }}%"></span></div>
+				<p class="wpml-media-text-scan__text">{{ notice.strings.paused_off_text }}</p>
+				<p class="wpml-media-text-scan__text" data-ts="held" data-ts-one="{{ notice.strings.held_forms.one }}" data-ts-other="{{ notice.strings.held_forms.other }}"{% if not notice.held %} hidden{% endif %}>{{ notice.strings.held_text }}</p>
+				{% if notice.strings.no_permission %}
+				<p class="wpml-media-text-scan__permission">{{ notice.strings.no_permission }}</p>
+				{% endif %}
+			</div>
+			{% if notice.can_act %}
+			<div class="wpml-media-text-scan__actions">
+				<button type="button" class="wpml-button base-btn wpml-button--outlined js-wpml-media-text-scan-open" aria-controls="wpml-media-text-scan-settings" aria-expanded="false" aria-label="{{ notice.strings.turn_on_label }}">{{ notice.strings.turn_on }}</button>
+			</div>
+			{% endif %}
+		</div>
+
+		<div class="notice notice-info inline wpml-media-text-scan__notice" data-ts-state="off"{% if notice.state != 'off' %} hidden{% endif %}>
+			<div class="wpml-media-text-scan__body">
+				<p class="wpml-media-text-scan__title">{{ notice.strings.off_title }}</p>
+				<p class="wpml-media-text-scan__text">
+					{{ notice.strings.off_text }}
+					{% if notice.can_act %}
+					<button type="button" class="button-link js-wpml-media-text-scan-open" aria-controls="wpml-media-text-scan-settings" aria-expanded="false" aria-label="{{ notice.strings.turn_on_label }}">{{ notice.strings.turn_on }}</button>
+					{% endif %}
+				</p>
+				{% if notice.strings.no_permission %}
+				<p class="wpml-media-text-scan__permission">{{ notice.strings.no_permission }}</p>
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="notice notice-success inline wpml-media-text-scan__notice" data-ts-state="finished"{% if notice.state != 'finished' %} hidden{% endif %}>
+			<div class="wpml-media-text-scan__body">
+				<p class="wpml-media-text-scan__title">{{ notice.strings.finished_title }}</p>
+				{% if notice.strings.finished_text %}
+				<p class="wpml-media-text-scan__text">{{ notice.strings.finished_text }}</p>
+				{% endif %}
+				{% if notice.summary %}
+				<ul class="wpml-media-text-scan__summary">
+					{% for chip in notice.summary %}
+					<li><a href="{{ chip.url }}"><span class="chip chip--{{ chip.variant }}">{% include 'media-translation-text-scan-icon.twig' with {'variant': chip.variant} only %}{{ chip.label }}</span></a></li>
+					{% endfor %}
+				</ul>
+				{% endif %}
+				{% if notice.strings.since_text %}
+				<p class="wpml-media-text-scan__text">{{ notice.strings.since_text }}</p>
+				{% endif %}
+				<p class="wpml-media-text-scan__text" data-ts="held" data-ts-one="{{ notice.strings.held_forms.one }}" data-ts-other="{{ notice.strings.held_forms.other }}"{% if not notice.held %} hidden{% endif %}>{{ notice.strings.held_text }}</p>
+				{% if notice.can_act %}
+				<p class="wpml-media-text-scan__text" data-ts-when="mode-on"{% if not notice.mode_on %} hidden{% endif %}>
+					{{ notice.strings.mode_line_html|raw }}
+					<button type="button" class="button-link js-wpml-media-text-scan-open" aria-controls="wpml-media-text-scan-settings" aria-expanded="false" aria-label="{{ notice.strings.change_label }}">{{ notice.strings.change }}</button>
+				</p>
+				{% endif %}
+				{% if notice.strings.no_permission %}
+				<p class="wpml-media-text-scan__permission">{{ notice.strings.no_permission }}</p>
+				{% endif %}
+			</div>
+			{% if notice.can_act %}
+			<div class="wpml-media-text-scan__actions">
+				{% if notice.not_scanned %}
+				<span data-ts-when="mode-on"{% if not notice.mode_on %} hidden{% endif %}><button type="button" class="wpml-button base-btn wpml-button--outlined js-wpml-media-text-scan-ask">{{ notice.strings.scan_new }}</button></span>
+				{% endif %}
+				<span data-ts-when="mode-off"{% if notice.mode_on %} hidden{% endif %}><button type="button" class="wpml-button base-btn wpml-button--outlined js-wpml-media-text-scan-open" aria-controls="wpml-media-text-scan-settings" aria-expanded="false" aria-label="{{ notice.strings.turn_on_label }}">{{ notice.strings.turn_on }}</button></span>
+			</div>
+			{% endif %}
+		</div>
+
+	</div>
+	{% if panel %}
+
+	<section class="wpml-media-text-scan__panel" id="wpml-media-text-scan-settings" aria-labelledby="wpml-media-text-scan-settings-legend" hidden>
+		<form class="js-wpml-media-text-scan-settings">
+			<fieldset aria-describedby="wpml-media-text-scan-settings-lead">
+				<legend id="wpml-media-text-scan-settings-legend">{{ panel.strings.legend }}</legend>
+				<p class="wpml-media-text-scan__lead" id="wpml-media-text-scan-settings-lead">{{ panel.strings.lead }}</p>
+				<div class="wpml-media-text-scan__options">
+					{% for option in panel.options %}
+					<label class="wpml-media-text-scan__option{% if option.checked %} is-checked{% endif %}" for="{{ option.id }}">
+						<input type="radio" class="wpml-radio-native" name="wpml_media_text_scan_mode" id="{{ option.id }}" value="{{ option.value }}" aria-describedby="{{ option.id }}-text"{% if option.checked %} checked="checked"{% endif %}>
+						<span class="wpml-media-text-scan__option-label">{{ option.label }}{% if option.recommended %}<span class="wpml-media-text-scan__badge">{{ panel.strings.recommended }}</span>{% endif %}</span>
+						<span class="wpml-media-text-scan__option-text" id="{{ option.id }}-text">{{ option.description }}</span>
+					</label>
+					{% endfor %}
+				</div>
+				<div class="wpml-media-text-scan__note">
+					<span class="dashicons dashicons-camera" aria-hidden="true"></span>
+					<p><strong>{{ panel.strings.camera_head }}</strong> {{ panel.strings.camera_text }}</p>
+				</div>
+				<p class="wpml-media-text-scan__scope">{{ panel.strings.scope }}</p>
+			</fieldset>
+			<div class="wpml-media-text-scan__save-row">
+				<span class="wpml-media-text-scan__message wpml-media-text-scan__message--saved" role="status" data-text="{{ panel.strings.saved }}"></span>
+				<span class="wpml-media-text-scan__message wpml-media-text-scan__message--failed" role="alert" data-text="{{ panel.strings.failed }}"></span>
+				<button type="button" class="wpml-button base-btn cancel-button js-wpml-media-text-scan-settings-cancel">{{ panel.strings.cancel }}</button>
+				<button type="submit" class="wpml-button base-btn">{{ panel.strings.save }}</button>
+			</div>
+		</form>
+	</section>
+	{% endif %}
+</div>

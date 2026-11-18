@@ -2,49 +2,33 @@
 
 namespace WPML\TM\ATE\AutoTranslate;
 
-use WPML\Element\API\Languages;
 use WPML\FP\Obj;
 use WPML\Settings\PostType\Automatic;
 use WPML\TM\API\Jobs;
-use WPML\TM\ATE\AutomaticTranslationCapabilities;
+use WPML\TranslationPolicy\Policy\Policy;
 
-class Eligibility {
+class Eligibility extends EligibilityRules {
 
-	public function shouldAutoTranslate( $trid, $postId, $targetLang ) {
-		global $sitepress;
-
-		if ( ! AutomaticTranslationCapabilities::isAvailable() ) {
-			return false;
-		}
-
-		$postTranslations = $sitepress->post_translations();
-
-		$isOriginalPost = ! (bool) $postTranslations->get_source_lang_code( $postId );
-		$postLanguage   = $postTranslations->get_element_lang_code( $postId );
-
-		return $isOriginalPost
-		       && $postLanguage === Languages::getDefaultCode()
-		       && $this->shouldUseTMEditor( $postId )
-		       && Automatic::shouldTranslate( get_post_type( $postId ) )
-		       && AutomaticTranslationCapabilities::isLanguageEligible( $targetLang, $postLanguage )
-		       && $this->isExistingTranslationOpenToAte( $trid, $targetLang );
+	protected function postTranslatesAutomatically( $postId ) {
+		return $this->shouldUseTMEditor( $postId )
+		       && Automatic::shouldTranslate( get_post_type( $postId ) );
 	}
 
 	private function shouldUseTMEditor( $postId ) {
-		return ! \WPML_TM_Post_Edit_TM_Editor_Mode::uses_native_editor( $postId );
+		return Policy::translateEverythingGate()->opensOnClick(
+			(int) $postId,
+			function () use ( $postId ) {
+				return ! Policy::listEditor()->usesNativeEditor(
+					$postId,
+					function () {
+						return [];
+					}
+				);
+			}
+		);
 	}
 
-	private function isExistingTranslationOpenToAte( $trid, $targetLang ) {
-		$translation = Jobs::getTridJob( $trid, $targetLang );
-
-		if ( ! $translation ) {
-			return true;
-		}
-
-		if ( Jobs::isDeliveredAndCurrent( $translation ) ) {
-			return false;
-		}
-
+	protected function isTranslationOpen( $translation ) {
 		$jobId = (int) Obj::prop( 'job_id', $translation );
 
 		if ( ! $jobId ) {

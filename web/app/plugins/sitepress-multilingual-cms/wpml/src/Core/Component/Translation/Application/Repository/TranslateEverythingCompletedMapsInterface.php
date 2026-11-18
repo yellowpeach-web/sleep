@@ -10,5 +10,6 @@ interface TranslateEverythingCompletedMapsInterface {
 
   public function removeTypes( string $map, array $types );
 
+  public function reopenTaxonomiesForJobs( array $jobIds ): void;
 
 }

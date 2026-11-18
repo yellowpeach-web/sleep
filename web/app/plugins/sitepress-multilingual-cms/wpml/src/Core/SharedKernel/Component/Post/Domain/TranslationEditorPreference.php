@@ -20,4 +20,6 @@ class TranslationEditorPreference {
   const EDITOR_WPML      = 'wpml';
   const EDITOR_DASHBOARD = 'dashboard';
 
+  const POST_META_KEY_INDEPENDENT = '_wpml_translated_independently';
+
 }

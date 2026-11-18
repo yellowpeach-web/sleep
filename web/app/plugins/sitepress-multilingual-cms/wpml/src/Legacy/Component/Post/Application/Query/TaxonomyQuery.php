@@ -44,14 +44,18 @@ class TaxonomyQuery implements TaxonomyQueryInterface
 
 
   public function getTerms( TaxonomyTermCriteria $criteria ): array {
+    if ( $criteria->getOriginalsOnly() ) {
+        return $this->getOriginalTerms( $criteria );
+    }
+
       $original_language
       = $this->applySourceLanguageCodeCriteria( $criteria->getSourceLanguageCode() );
 
       $wpTerms = get_terms(
         array(
-          'orderby'    => 'name',
+          'orderby'    => $criteria->getOrderBy(),
           'taxonomy'   => $criteria->getTaxonomyId(),
-          'hide_empty' => true,
+          'hide_empty' => $criteria->getHideEmpty(),
           'search'     => $criteria->getSearch() ?? '',
           'number'     => $criteria->getLimit() ?? '',
           'offset'     => (int) $criteria->getOffset(),
@@ -80,6 +84,70 @@ class TaxonomyQuery implements TaxonomyQueryInterface
           },
           $wpTerms
         )
+      );
+  }
+
+  private function getOriginalTerms( TaxonomyTermCriteria $criteria ): array {
+      global $wpdb;
+
+    if ( ! taxonomy_exists( $criteria->getTaxonomyId() ) ) {
+        throw new InvalidArgumentException( 'Unknown taxonomy: ' . esc_html( $criteria->getTaxonomyId() ) );
+    }
+
+      $where = [ 'original.source_language_code IS NULL' ];
+    if ( $criteria->getHideEmpty() ) {
+        $where[] = 'tt.count > 0';
+    }
+    if ( null !== $criteria->getParentTtid() ) {
+        $where[] = 'tt.parent = ' . $criteria->getParentTtid();
+    }
+    if ( $criteria->getIncludeTtids() ) {
+        $ids     = array_values( array_unique( $criteria->getIncludeTtids() ) );
+        $where[] = 'tt.term_taxonomy_id IN (' . implode( ',', array_map( 'intval', $ids ) ) . ')';
+    }
+      $order    = 'name' === $criteria->getOrderBy() ? 't.name, tt.term_taxonomy_id' : 'tt.term_taxonomy_id';
+      $limitSql = '';
+    if ( null !== $criteria->getLimit() ) {
+        $limitSql = ' LIMIT ' . $criteria->getLimit() . ' OFFSET ' . max( 0, (int) $criteria->getOffset() );
+    }
+
+    if ( null !== $criteria->getSearch() && '' !== $criteria->getSearch() ) {
+        $rows = $wpdb->get_results(
+          "SELECT tt.term_taxonomy_id, tt.term_id, tt.parent, tt.description, t.name
+          FROM {$wpdb->prefix}icl_translations original
+          INNER JOIN {$wpdb->term_taxonomy} tt ON tt.term_taxonomy_id = original.element_id
+          INNER JOIN {$wpdb->terms} t ON t.term_id = tt.term_id
+          WHERE original.element_type = '" . esc_sql( 'tax_' . $criteria->getTaxonomyId() ) . "'
+          AND " . esc_sql( implode( ' AND ', $where ) ) . " AND " . $wpdb->prepare( "t.name LIKE %s ESCAPE '|'", \WPML\Utils\LikeEscape::contains( $criteria->getSearch() ) ) . "
+          ORDER BY " . esc_sql( $order ) . esc_sql( $limitSql ),
+          ARRAY_A
+        );
+    } else {
+        $rows = $wpdb->get_results(
+          "SELECT tt.term_taxonomy_id, tt.term_id, tt.parent, tt.description, t.name
+          FROM {$wpdb->prefix}icl_translations original
+          INNER JOIN {$wpdb->term_taxonomy} tt ON tt.term_taxonomy_id = original.element_id
+          INNER JOIN {$wpdb->terms} t ON t.term_id = tt.term_id
+          WHERE original.element_type = '" . esc_sql( 'tax_' . $criteria->getTaxonomyId() ) . "'
+          AND " . esc_sql( implode( ' AND ', $where ) ) . ' ORDER BY ' . esc_sql( $order ) . esc_sql( $limitSql ),
+          ARRAY_A
+        );
+    }
+    if ( ! is_array( $rows ) ) {
+        throw new \Exception( 'Could not retrieve terms.' );
+    }
+
+      return array_map(
+        function ( array $row ): PostTermDto {
+            return new PostTermDto(
+              (int) $row['term_id'],
+              (string) $row['name'],
+              (int) $row['term_taxonomy_id'],
+              (int) $row['parent'],
+              (string) $row['description']
+            );
+        },
+        $rows
       );
   }
 

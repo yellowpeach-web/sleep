@@ -14,9 +14,13 @@ abstract class BaseDynamicContent implements \IWPML_DIC_Action, \IWPML_Backend_A
 
 	public function add_hooks() {
 		if ( $this->sitepress->is_setup_complete() ) {
-			add_filter( 'wpml_pb_shortcode_decode', [ $this, 'decode_dynamic_content' ], 10, 2 );
+			add_filter( 'wpml_pb_shortcode_decode', [ $this, 'guardDecodersAgainstNonStringValues' ], 10, 2 );
 			add_filter( 'wpml_pb_shortcode_encode', [ $this, 'encode_dynamic_content' ], 10, 2 );
 		}
+	}
+
+	public function guardDecodersAgainstNonStringValues( $content, $encoding ) {
+		return is_string( $content ) ? $this->decode_dynamic_content( $content, $encoding ) : $content;
 	}
 
 	abstract public function decode_dynamic_content( $string, $encoding );

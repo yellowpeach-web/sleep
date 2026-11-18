@@ -18,8 +18,10 @@ class FindStringPackagesQueryBuilder {
 	}
 
 	public function build( StringPackageCriteria $criteria ): string {
-		$sourceLanguage = $this->sqlStringLiteral( $this->getSourceLanguageCode( $criteria ) );
-		$kindSlug       = $this->sqlStringLiteral( $criteria->getType() );
+		$sourceLanguage        = $this->sqlStringLiteral( $this->getSourceLanguageCode( $criteria ) );
+		$kindSlug              = $this->sqlStringLiteral( $criteria->getType() );
+		$ridesOwnerSql         = apply_filters( 'wpml_string_package_rides_owner_sql', '', 'sp' );
+		$excludeRidingPackages = $ridesOwnerSql ? "AND NOT ({$ridesOwnerSql})" : '';
 
 		return "
 			SELECT sp.ID, sp.name, sp.kind_slug, sp.title, sp.word_count, sp.translator_note
@@ -29,6 +31,7 @@ class FindStringPackagesQueryBuilder {
 				AND source_t.element_type = CONCAT('package_', sp.kind_slug)
 				AND source_t.language_code = {$sourceLanguage}
 			WHERE sp.kind_slug = {$kindSlug}
+				{$excludeRidingPackages}
 				{$this->buildPostTitleCondition( $criteria )}
 				AND {$this->buildTranslationStatusCondition( $criteria, $this->getTargetLanguageCodes( $criteria ) )}
 			{$this->buildSortingQueryPart( $criteria )}

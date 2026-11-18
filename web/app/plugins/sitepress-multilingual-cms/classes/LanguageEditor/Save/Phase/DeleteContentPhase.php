@@ -80,21 +80,42 @@ class DeleteContentPhase implements PhaseProcessor {
 		return self::CHUNK_SIZE;
 	}
 
+	public static function closeRecordForRefusal( array $change, ?UndoWindow $undoWindow = null ) {
+		$scope  = RemovalScope::fromChange( $change );
+		$record = RemovalRecord::running( $scope->codesList() );
+
+		if ( null === $record ) {
+			return;
+		}
+
+		$phase = new self( $undoWindow );
+		( new Repository() )->finalize(
+			(int) $record['id'],
+			$phase->withUndoWindow( $record, $scope, array() )
+		);
+	}
+
 	public function isSkippable() {
 		return true;
 	}
 
 	public function processChunk( array $change, $offset ) {
 		if ( '' !== self::defaultLanguageIn( $change ) ) {
+			self::closeRecordForRefusal( $change, $this->undoWindow );
+
 			return PhaseResult::hardFail( self::REFUSED_DEFAULT );
 		}
 
 		$scope = RemovalScope::fromChange( $change );
 
 		if ( $scope->isLegacy() ) {
-			$deleted = TranslatedContentOfLanguages::deleteChunk(
-				$scope->codesList(),
-				self::CHUNK_SIZE
+			$deleted = SyncSuspension::around(
+				function () use ( $scope ) {
+					return TranslatedContentOfLanguages::deleteChunk(
+						$scope->codesList(),
+						self::CHUNK_SIZE
+					);
+				}
 			);
 
 			return PhaseResult::ok( $deleted > 0 ? $deleted : 1 );

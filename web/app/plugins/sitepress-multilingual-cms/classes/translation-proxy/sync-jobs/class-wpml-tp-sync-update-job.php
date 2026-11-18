@@ -9,6 +9,7 @@ class WPML_TP_Sync_Update_Job {
 		WPML_TM_Job_Entity::POST_TYPE    => 'update_post_job',
 		WPML_TM_Job_Entity::PACKAGE_TYPE => 'update_post_job',
 		WPML_TM_Job_Entity::STRING_BATCH => 'update_post_job',
+		WPML_TM_Job_Entity::TAXONOMY_TYPE => 'update_post_job',
 	);
 
 	private $wpdb;
@@ -98,7 +99,7 @@ class WPML_TP_Sync_Update_Job {
 			array( 'rid' => $rid )
 		);
 
-		if ( ICL_TM_NOT_TRANSLATED === $job->get_status() ) {
+		if ( ICL_TM_NOT_TRANSLATED === $job->get_status() && WPML_TM_Job_Entity::TAXONOMY_TYPE !== $job->get_type() ) {
 			$this->delete_orphan_translation( $job );
 		}
 

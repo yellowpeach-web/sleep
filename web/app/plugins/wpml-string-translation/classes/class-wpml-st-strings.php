@@ -37,8 +37,11 @@ class WPML_ST_Strings {
 			} elseif ( ICL_STRING_TRANSLATION_PARTIAL === $status_filter ) {
 				$extra_cond .= ' AND s.status = ' . ICL_STRING_TRANSLATION_PARTIAL;
 			} elseif ( ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND === $status_filter ) {
-				$joins[] = "INNER JOIN {$this->wpdb->prefix}icl_string_positions string_positions ON s.id = string_positions.string_id";
-				$extra_cond .= ' AND string_positions.kind = ' . ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND;
+				$appeared = $this->get_appeared_sql();
+				if ( '' !== $appeared['join'] ) {
+					$joins[] = $appeared['join'];
+				}
+				$extra_cond .= $appeared['condition'];
 				$extra_cond .= ' AND s.status IN (' . ICL_STRING_TRANSLATION_PARTIAL . ',' . ICL_TM_NEEDS_UPDATE . ',' . ICL_TM_NOT_TRANSLATED . ',' . ICL_TM_WAITING_FOR_TRANSLATOR . ')';
 			} elseif ( ICL_TM_WAITING_FOR_TRANSLATOR !== $status_filter ) {
 				$extra_cond .= ' AND s.status IN (' . ICL_STRING_TRANSLATION_PARTIAL . ',' . ICL_TM_NEEDS_UPDATE . ',' . ICL_TM_NOT_TRANSLATED . ',' . ICL_TM_WAITING_FOR_TRANSLATOR . ')';
@@ -113,6 +116,40 @@ class WPML_ST_Strings {
 						$string_translations[ $row['string_id'] ]['translations'][ $t['language'] ] = $t;
 					}
 				}
+			}
+		}
+
+		return $this->add_carriers( $string_translations );
+	}
+
+	private function add_carriers( array $string_translations ) {
+		$carriers = WPML_ST_Package_String_Carriers::get();
+
+		if ( ! $carriers->hasAny() ) {
+			return $string_translations;
+		}
+
+		$packages = [];
+
+		foreach ( $string_translations as $string_id => $row ) {
+			$claim = $carriers->forTarget(
+				(string) $row['context'],
+				(string) $row['name'],
+				isset( $row['gettext_context'] ) ? (string) $row['gettext_context'] : ''
+			);
+
+			if ( ! $claim ) {
+				continue;
+			}
+
+			$package_id = (int) $claim['package'];
+
+			if ( ! array_key_exists( $package_id, $packages ) ) {
+				$packages[ $package_id ] = $carriers->package( $claim );
+			}
+
+			if ( $packages[ $package_id ] ) {
+				$string_translations[ $string_id ]['carried_by'] = $packages[ $package_id ];
 			}
 		}
 
@@ -202,18 +239,20 @@ class WPML_ST_Strings {
 		$search_filter_html = esc_html( (string) $search_filter );
 
 		$column             = esc_sql( $column );
+		$like               = (string) esc_sql( \WPML\Utils\LikeEscape::escape( (string) $search_filter ) );
+		$like_html          = (string) esc_sql( \WPML\Utils\LikeEscape::escape( $search_filter_html ) );
 		$search_filter      = esc_sql( (string) $search_filter );
 		$search_filter_html = esc_sql( $search_filter_html );
 
 		if ( $search_filter === $search_filter_html ) {
 			return $exact_match
 				? "$column = '$search_filter'"
-				: "$column LIKE '%$search_filter%'";
+				: "$column LIKE '%$like%' ESCAPE '|'";
 		}
 
 		return $exact_match
 			? "($column = '$search_filter' OR $column = '$search_filter_html')"
-			: "($column LIKE '%$search_filter%' OR $column LIKE '%$search_filter_html%')";
+			: "($column LIKE '%$like%' ESCAPE '|' OR $column LIKE '%$like_html%' ESCAPE '|')";
 	}
 
 	public function get_per_domain_counts( $status ) {
@@ -226,8 +265,9 @@ class WPML_ST_Strings {
 			if ( ICL_TM_COMPLETE === $status ) {
 				$extra_cond .= ' AND s.status = ' . ICL_TM_COMPLETE;
 			} elseif ( ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND === $status ) {
-				$extra_sql  .= " INNER JOIN {$this->wpdb->prefix}icl_string_positions string_positions ON s.id = string_positions.string_id";
-				$extra_cond .= ' AND string_positions.kind = ' . ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND;
+				$appeared    = $this->get_appeared_sql();
+				$extra_sql  .= ' ' . $appeared['join'];
+				$extra_cond .= $appeared['condition'];
 				$extra_cond .= ' AND s.status IN (' . ICL_STRING_TRANSLATION_PARTIAL . ',' . ICL_TM_NEEDS_UPDATE . ',' . ICL_TM_NOT_TRANSLATED . ')';
 			} else {
 				$extra_cond .= ' AND s.status IN (' . ICL_STRING_TRANSLATION_PARTIAL . ',' . ICL_TM_NEEDS_UPDATE . ',' . ICL_TM_NOT_TRANSLATED . ')';
@@ -253,6 +293,21 @@ class WPML_ST_Strings {
 		";
 
 		return $this->wpdb->get_results( $query );
+	}
+
+	private function get_appeared_sql() {
+		$appeared = apply_filters( 'wpml_appearance_exists_sql', '', "'string'", 's.id' );
+		if ( is_string( $appeared ) && '' !== $appeared ) {
+			return [
+				'join'      => '',
+				'condition' => ' AND ' . $appeared,
+			];
+		}
+
+		return [
+			'join'      => "INNER JOIN {$this->wpdb->prefix}icl_string_positions string_positions ON s.id = string_positions.string_id",
+			'condition' => ' AND string_positions.kind = ' . ICL_STRING_TRANSLATION_STRING_TRACKING_TYPE_FRONTEND,
+		];
 	}
 
 	private function get_excluded_string_package_condition( $is_exclusive = true ) {

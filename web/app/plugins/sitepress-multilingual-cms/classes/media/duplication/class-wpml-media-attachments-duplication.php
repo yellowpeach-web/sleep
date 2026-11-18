@@ -4,6 +4,7 @@ use WPML\FP\Obj;
 use WPML\LIB\WP\Nonce;
 use WPML\LIB\WP\User;
 use WPML\Media\Option;
+use WPML\MediaTranslation\MediaImgParse;
 use WPML\MediaTranslation\PostWithMediaFiles;
 use WPML\Core\BackgroundTask\Service\BackgroundTaskService;
 use function WPML\Container\make;
@@ -73,11 +74,15 @@ class WPML_Media_Attachments_Duplication {
 		if ( $this->is_admin_or_xmlrpc() && 1 < count( $active_languages ) ) {
 			add_action( 'edit_attachment', array( $this, 'save_attachment_actions' ) );
 			add_action( 'icl_make_duplicate', array( $this, 'make_duplicate' ), 10, 4 );
+		} elseif ( wpml_is_rest_request() && 1 < count( $active_languages ) ) {
+			add_action( 'icl_make_duplicate', array( $this, 'make_duplicate' ), 10, 4 );
 		}
 
 		$this->add_postmeta_hooks();
 
 		add_action( 'save_post', array( $this, 'save_post_actions' ), 100, 2 );
+		add_action( 'add_attachment', array( MediaImgParse::class, 'forgetMisses' ) );
+		add_action( 'edit_attachment', array( MediaImgParse::class, 'forgetMisses' ) );
 		if ( Option::shouldHandleMediaAuto() ) {
 			add_action( 'wp_after_insert_post', array( $this, 'extract_media_ids_from_post_content_and_meta' ), 100, 3 );
 			add_action( 'woocommerce_after_product_object_save', array( $this, 'woocommerce_extract_media_ids_from_post_content_and_meta' ), 100, 2 );
@@ -830,7 +835,7 @@ class WPML_Media_Attachments_Duplication {
 		}
 
 		$post_media = $this->post_media_factory->create( $post->ID );
-		$post_media->extract_and_save_media_ids();
+		$post_media->extract_and_save_media_ids_when_inputs_changed();
 	}
 
 	private function is_original( $post ) {
@@ -1039,7 +1044,7 @@ class WPML_Media_Attachments_Duplication {
 			$language_details = $this->sitepress->get_element_language_details( $pidd, 'post_' . $post_type );
 
 			if ( ! $language_details ) {
-				$this->sitepress->get_translations_cache()->clear();
+				WPML_Set_Language::flush_element_language_details_cache();
 				$language_details = $this->sitepress->get_element_language_details( $pidd, 'post_' . $post_type );
 			}
 			if ( $language_details ) {
@@ -1852,32 +1857,14 @@ class WPML_Media_Attachments_Duplication {
 		$response                    = [];
 		$wpmlMediaProcessedMetaValue = 1;
 		$limit                       = 300;
-		$wpdb                        = $this->wpdb;
-
-		$attachmentsCount = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT COUNT(ID) from {$wpdb->posts} where post_type = %s",
-				'attachment'
-			)
-		);
 
 		$limitedAttachmentsWithMetaDataQuery = "SELECT posts.ID, post_meta.post_id, post_meta.meta_key, post_meta.meta_value
 		FROM {$this->wpdb->posts} AS posts
 		LEFT JOIN {$this->wpdb->postmeta} AS post_meta
 		ON posts.ID = post_meta.post_id AND post_meta.meta_key = %s
-		WHERE posts.post_type = %s AND (post_meta.meta_value IS NULL OR post_meta.meta_value != %d)
+		WHERE posts.post_type = %s AND posts.ID > %d AND (post_meta.meta_value IS NULL OR post_meta.meta_value != %d)
+		ORDER BY posts.ID ASC
 		LIMIT %d";
-
-		$limitedAttachmentsWithMetaDataQueryPrepared = $this->wpdb->prepare( $limitedAttachmentsWithMetaDataQuery,
-			[
-				self::WPML_MEDIA_PROCESSED_META_KEY,
-				'attachment',
-				1,
-				$limit,
-			] );
-
-
-		$attachmentsProcessingLoopRounds = $attachmentsCount ? ceil( $attachmentsCount / $limit ) : 0;
 
 		$attachmentHasNoMetaData = function ( $attachmentWithMetaData ) {
 			return Obj::prop( 'post_id', $attachmentWithMetaData ) === null &&
@@ -1890,11 +1877,24 @@ class WPML_Media_Attachments_Duplication {
 		};
 
 
-		for ( $i = 0; $i < $attachmentsProcessingLoopRounds; $i ++ ) {
+		$lastAttachmentId = 0;
+		do {
 
-			$attachmentsWithMetaData = $this->wpdb->get_results( $limitedAttachmentsWithMetaDataQueryPrepared );
+			$attachmentsWithMetaData = $this->wpdb->get_results(
+				$this->wpdb->prepare(
+					$limitedAttachmentsWithMetaDataQuery,
+					[
+						self::WPML_MEDIA_PROCESSED_META_KEY,
+						'attachment',
+						$lastAttachmentId,
+						1,
+						$limit,
+					]
+				)
+			);
+			$roundRows = is_array( $attachmentsWithMetaData ) ? count( $attachmentsWithMetaData ) : 0;
 
-			if ( is_array( $attachmentsWithMetaData ) && count( $attachmentsWithMetaData ) ) {
+			if ( $roundRows ) {
 
 				list( $notExistingMetaAttachmentIds, $existingAttachmentsWithMetaData ) = \WPML\FP\Lst::partition( $attachmentHasNoMetaData, $attachmentsWithMetaData );
 
@@ -1922,20 +1922,28 @@ class WPML_Media_Attachments_Duplication {
 
 					$attachmentsIn = wpml_prepare_in( $existingAttachmentsIds, '%d' );
 
-					$updateAttachmentsMetaQuery = $this->wpdb->prepare( "UPDATE {$this->wpdb->postmeta} SET meta_value = %d WHERE post_id IN ({$attachmentsIn})",
+					$updateAttachmentsMetaQuery = $this->wpdb->prepare( "UPDATE {$this->wpdb->postmeta} SET meta_value = %d WHERE meta_key = %s AND post_id IN ({$attachmentsIn})",
 						[
 							$wpmlMediaProcessedMetaValue,
+							self::WPML_MEDIA_PROCESSED_META_KEY,
 						]
 					);
 
 					$this->wpdb->query( $updateAttachmentsMetaQuery );
 				}
+
+				$lastRow          = end( $attachmentsWithMetaData );
+				$nextAttachmentId = (int) $lastRow->ID;
+				if ( $nextAttachmentId <= $lastAttachmentId ) {
+					break;
+				}
+				$lastAttachmentId = $nextAttachmentId;
 			} else {
 
 				break;
 			}
 
-		}
+		} while ( $roundRows >= $limit );
 
 		Option::setSetupFinished();
 
@@ -2150,7 +2158,7 @@ class WPML_Media_Attachments_Duplication {
 			<div id="admin_banner_about_automatic_media_detection_after_30_days" class="warning notice-warning otgs-notice wpml-notices-list-notice">
 				<button class="dismiss-button dismiss-button-in-top-right" aria-label="<?php echo /* translators: Screen reader name of the button that closes a banner. */ esc_attr__( 'Close banner', 'sitepress' ); ?>"><span class="otgs-ico otgs-ico-cancel"></span></button>
 				<p><?php echo esc_html__( 'We strongly recommend enabling WPML\'s automatic detection for image texts to avoid duplicated media fields and missing translations.', 'sitepress' ); ?>
-					<a href="<?php echo esc_url( $media_translation_url ); ?>" class="external-link"><?php echo /* translators: Link text that opens a page on wpml.org explaining the notice above it. Verb phrase, imperative. */ esc_html__( 'Learn more', 'sitepress' ); ?></a></p>
+					<a href="<?php echo esc_url( $media_translation_url ); ?>" class="external-link"><?php echo /* translators: Link text that opens a page on wpml.org explaining the text before it. Verb phrase, imperative. */ esc_html__( 'Learn more', 'sitepress' ); ?></a></p>
 				<a href="<?php echo esc_url( $this->get_media_settings_link() ); ?>">
 					<button class="wpml-button base-btn button-with-progress button-horizontal-padding">
 						<span class="button-text"><?php echo /* translators: Button label in a banner on the media translation screen; "it" is the setting the banner is about. Verb, imperative. */ esc_html__( 'Enable it now', 'sitepress' ); ?></span>

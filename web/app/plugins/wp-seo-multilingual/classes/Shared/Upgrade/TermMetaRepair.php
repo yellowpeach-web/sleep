@@ -152,6 +152,36 @@ class TermMetaRepair {
 	}
 
 	private function readStringTranslations() {
+		if ( \WPML\WPSEO\YoastSEO\Loaders::supportsPerTermPackages() ) {
+			if ( ! function_exists( 'icl_get_string_translations_by_id' ) ) {
+				return [];
+			}
+			$translations = [];
+			$option       = $this->readOption();
+			foreach ( $this->sourceTerms( $option ) as $source ) {
+				$term = $this->unadjustedTerm( $source['termId'], $source['taxonomy'] );
+				if ( ! $term || ! $this->sitepress->is_original_content_filter( false, (int) $term->term_taxonomy_id, 'tax_' . $source['taxonomy'] ) ) {
+					continue;
+				}
+				foreach ( self::LEAKED_FIELDS as $field ) {
+					if ( empty( $option[ $source['taxonomy'] ][ $source['termId'] ][ $field ] ) ) {
+						continue;
+					}
+					$name     = Hooks::buildStringName( $source['taxonomy'], $source['termId'], $field );
+					$stringId = (int) apply_filters( 'wpml_string_id', null, [ 'context' => Hooks::stringContext( $term->term_taxonomy_id ), 'name' => $name ] );
+					if ( ! $stringId ) {
+						continue;
+					}
+					foreach ( (array) icl_get_string_translations_by_id( $stringId ) as $language => $translation ) {
+						if ( ICL_TM_COMPLETE === (int) $translation['status'] && is_string( $translation['value'] ) && '' !== $translation['value'] ) {
+							$translations[ $name ][ $language ] = $translation['value'];
+						}
+					}
+				}
+			}
+			return $translations;
+		}
+
 		$wpdb = $this->wpdb;
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(

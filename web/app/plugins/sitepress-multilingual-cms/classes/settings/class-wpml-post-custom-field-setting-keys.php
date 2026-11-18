@@ -34,6 +34,8 @@ class WPML_Post_Custom_Field_Setting_Keys {
 			'_thumbnail_id',
 			\WPML\MediaTranslation\PostWithMediaFiles::COPIED_MEDIA_IDS_SETTING,
 			\WPML\MediaTranslation\PostWithMediaFiles::REFERENCED_MEDIA_IDS_SETTING,
+			\WPML\MediaTranslation\PostWithMediaFiles::MEDIA_INPUTS_HASH_SETTING,
+			\WPML\Infrastructure\WordPress\Component\Translation\Domain\Links\Repository::META_COLLECTED,
 		);
 	}
 }

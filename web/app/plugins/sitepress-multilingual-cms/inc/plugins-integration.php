@@ -18,6 +18,8 @@ function wpml_plugins_integration_setup() {
 		$wpml_bbpress_api     = new WPML_BBPress_API();
 		$wpml_bbpress_filters = new WPML_BBPress_Filters( $wpml_bbpress_api );
 		$wpml_bbpress_filters->add_hooks();
+
+		$factories_to_load[] = \WPML\Compatibility\BBPress\Hooks::class;
 	}
 
 	if ( defined( 'NEXTGEN_GALLERY_PLUGIN_VERSION' ) ) {
@@ -25,8 +27,12 @@ function wpml_plugins_integration_setup() {
 	}
 
 	if ( class_exists( 'GoogleSitemapGeneratorLoader' ) ) {
-		$wpml_google_sitemap_generator = new WPML_Google_Sitemap_Generator( $wpdb, $sitepress );
-		$wpml_google_sitemap_generator->init_hooks();
+		$is_handed_over = apply_filters( WPML_Google_Sitemap_Generator::HANDED_OVER_FILTER, false );
+
+		if ( ! $is_handed_over ) {
+			$wpml_google_sitemap_generator = new WPML_Google_Sitemap_Generator( $wpdb, $sitepress );
+			$wpml_google_sitemap_generator->init_hooks();
+		}
 	}
 
 	if ( class_exists( 'Tiny_Plugin' ) ) {
@@ -48,6 +54,18 @@ function wpml_plugins_integration_setup() {
 
 	if ( defined( 'WPSEO_VERSION' ) ) {
 		$factories_to_load[] = \WPML\Compatibility\YoastSEO\SitemapPermalinks::class;
+	}
+
+	if ( defined( 'BETTERDOCS_VERSION' ) ) {
+		$factories_to_load[] = \WPML\Compatibility\BetterDocs\Hooks::class;
+	}
+
+	if ( defined( 'PODS_VERSION' ) ) {
+		$factories_to_load[] = \WPML\Compatibility\Pods\CopiedRelationshipFields::class;
+	}
+
+	if ( defined( 'LSCWP_V' ) ) {
+		$factories_to_load[] = \WPML\Compatibility\LiteSpeedCache\StaticUrls::class;
 	}
 
 	$action_filter_loader = new WPML_Action_Filter_Loader();

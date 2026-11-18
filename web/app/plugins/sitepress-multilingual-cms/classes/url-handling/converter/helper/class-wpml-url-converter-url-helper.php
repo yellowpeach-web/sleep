@@ -89,6 +89,13 @@ class WPML_URL_Converter_Url_Helper {
 		if ( $this->wpml_include_url_filter ) {
 			return $this->wpml_include_url_filter->get_unfiltered_home();
 		} else {
+			if ( ! wp_installing() ) {
+				$alloptions = wp_load_alloptions();
+				if ( isset( $alloptions['home'] ) ) {
+					return $alloptions['home'];
+				}
+			}
+
 			$wpdb = $this->wpdb;
 
 			return $wpdb->get_var(

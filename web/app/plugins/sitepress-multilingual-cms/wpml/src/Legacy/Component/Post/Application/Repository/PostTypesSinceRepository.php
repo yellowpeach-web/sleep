@@ -3,9 +3,11 @@
 namespace WPML\Legacy\Component\Post\Application\Repository;
 
 use WPML\Setup\Option;
+use WPML\TM\ATE\TranslateEverything\OfferedTypeSinceDate;
 use WPML\TM\ATE\TranslateEverything\UntranslatedPackages;
 use WPML\TM\ATE\TranslateEverything\UntranslatedPosts;
 use WPML\UserInterface\Web\Core\SharedKernel\Component\TeaCalculation\Application\Repository\PostTypesSinceRepositoryInterface;
+use WPML\UserInterface\Web\Core\SharedKernel\Component\TeaCalculation\Application\Validator\TypeIncludeRules;
 use WPML\WP\OptionManager;
 
 
@@ -31,6 +33,11 @@ class PostTypesSinceRepository implements PostTypesSinceRepositoryInterface {
 
   public function getPostTypesSinceDates(): array {
     return Option::getTranslateEverythingPostsSinceDates();
+  }
+
+
+  public function getPostTypeSinceDate( string $type ): string {
+    return OfferedTypeSinceDate::resolve( $type );
   }
 
 
@@ -90,6 +97,26 @@ class PostTypesSinceRepository implements PostTypesSinceRepositoryInterface {
     $this->mutateSinceDates(
       fn( array $fresh ) => $fresh + array_fill_keys( $types, $default )
     );
+  }
+
+
+  public function includeAlwaysAllTypes( array $offeredPostTypes ): array {
+    $changed = [];
+
+    $this->mutateSinceDates(
+      function ( array $fresh ) use ( $offeredPostTypes, &$changed ): array {
+        foreach ( array_unique( array_merge( $offeredPostTypes, array_keys( $fresh ) ) ) as $type ) {
+          if ( TypeIncludeRules::isAlwaysAll( $type ) && ( $fresh[ $type ] ?? null ) !== Option::SINCE_DATE_ALL ) {
+            $fresh[ $type ] = Option::SINCE_DATE_ALL;
+            $changed[]      = $type;
+          }
+        }
+
+        return $fresh;
+      }
+    );
+
+    return $changed;
   }
 
 

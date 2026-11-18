@@ -112,11 +112,11 @@ class ExtraFieldDataInEditor implements \IWPML_Backend_Action {
 	private function appendToRegularField( $field ) {
 		$field['title'] = \wpml_collect(
 			[
-				/* translators: Column heading in the table of translation jobs, and the label of the title field in the translation editor: the title of the piece of content. */
+				/* translators: Column heading and field label for the title of a piece of content: in the table of translation jobs, in the translation editor, and in the table of changes on the "Translation updates" screen. Noun. */
 				'title'   => __( 'Title', 'sitepress' ),
-				/* translators: Label of the field holding the main text of a post, in the translation editor. */
+				/* translators: Used in two places: the kind of a Divi Theme Builder layout, as Divi names it, and the label of the field holding the main text of a post, in the translation editor. Noun. */
 				'body'    => __( 'Body', 'sitepress' ),
-				/* translators: Label of the field holding the short summary of a post, in the translation editor. */
+				/* translators: Label for the short summary of a post: a field in the translation editor, and a row in the table of changes on the "Translation updates" screen. Noun. */
 				'excerpt' => __( 'Excerpt', 'sitepress' ),
 			]
 		)->get( $field['field_type'], $field['field_type'] );

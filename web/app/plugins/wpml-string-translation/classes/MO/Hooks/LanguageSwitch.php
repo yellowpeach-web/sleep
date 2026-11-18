@@ -22,6 +22,8 @@ class LanguageSwitch implements \IWPML_Action {
 	const SNAPSHOT_PER_DOMAIN_BYTES  = 2048;
 	const LEGACY_ENTRY_BYTES         = 640;
 
+	const DETERMINE_LOCALE_PRIORITY = 5;
+
 	private $jit_mo_factory;
 
 	private $language_resolution;
@@ -56,6 +58,8 @@ class LanguageSwitch implements \IWPML_Action {
 
 	public function add_hooks() {
 		add_action( 'wpml_language_has_switched', [ $this, 'languageHasSwitched' ], 10, 3 );
+		add_filter( 'determine_locale', [ $this, 'filterDetermineLocale' ], self::DETERMINE_LOCALE_PRIORITY );
+		add_action( 'change_locale', [ $this, 'reinstallJustInTimeMOs' ] );
 	}
 
 	private function setCurrentLocale( $locale ) {
@@ -96,10 +100,7 @@ class LanguageSwitch implements \IWPML_Action {
 			$this->seed( $found, $found );
 		}
 
-		self::$locale_stack[] = [
-			'locale'     => $found,
-			'controller' => self::getTranslationControllerLocale(),
-		];
+		self::$locale_stack[] = [ 'locale' => $found ];
 	}
 
 	private function restoreLocale() {
@@ -110,17 +111,19 @@ class LanguageSwitch implements \IWPML_Action {
 		}
 
 		$this->switchToLocale( $frame['locale'] );
-		self::restoreTranslationControllerLocale( $frame['controller'] );
+		self::putTranslationControllerOnDeterminedLocale();
 	}
 
-	private static function getTranslationControllerLocale() {
-		return class_exists( \WP_Translation_Controller::class )
-			? \WP_Translation_Controller::get_instance()->get_locale()
-			: null;
-	}
+	private static function putTranslationControllerOnDeterminedLocale( $fallback = null ) {
+		if ( ! class_exists( \WP_Translation_Controller::class ) ) {
+			return;
+		}
 
-	private static function restoreTranslationControllerLocale( $locale ) {
-		if ( ! $locale || ! class_exists( \WP_Translation_Controller::class ) ) {
+		$locale = determine_locale();
+		if ( ! self::isLocale( $locale ) ) {
+			$locale = $fallback;
+		}
+		if ( ! self::isLocale( $locale ) ) {
 			return;
 		}
 
@@ -204,10 +207,8 @@ class LanguageSwitch implements \IWPML_Action {
 				$GLOBALS[ $global ] = $state[ $global ];
 			}
 		}
-		if ( self::isLocale( $state['controller'] ) ) {
-			$this->setLocaleInWP65TranslationController( $state['controller'] );
-		}
 		$this->setCurrentLocale( null );
+		self::putTranslationControllerOnDeterminedLocale( $state['controller'] );
 	}
 
 	public static function resetCache( $locale = null ) {
@@ -519,6 +520,39 @@ class LanguageSwitch implements \IWPML_Action {
 		}
 
 		return $currentLocale;
+	}
+
+	public function filterDetermineLocale( $locale ) {
+		if ( ! self::$locale_stack || ! self::isLocale( $this->getCurrentLocale() ) ) {
+			return $locale;
+		}
+
+		return $this->getCurrentLocale();
+	}
+
+	public function reinstallJustInTimeMOs( $locale ) {
+		if ( ! self::isLocale( $locale ) || empty( $GLOBALS['l10n'] ) || ! is_array( $GLOBALS['l10n'] ) ) {
+			return;
+		}
+
+		$noopDomains = [];
+		foreach ( $GLOBALS['l10n'] as $domain => $translations ) {
+			if ( 'default' !== $domain && $translations instanceof \NOOP_Translations ) {
+				$noopDomains[] = $domain;
+			}
+		}
+
+		if ( ! $noopDomains ) {
+			return;
+		}
+
+		$moObjects = $this->jit_mo_factory->get( $locale, $this->getUnloadedDomains(), [] );
+		foreach ( $noopDomains as $domain ) {
+			if ( isset( $moObjects[ $domain ] ) ) {
+				unset( $GLOBALS['l10n'][ $domain ] );
+				$GLOBALS['l10n'][ $domain ] = $moObjects[ $domain ];
+			}
+		}
 	}
 
 	private function getUnloadedDomains() {

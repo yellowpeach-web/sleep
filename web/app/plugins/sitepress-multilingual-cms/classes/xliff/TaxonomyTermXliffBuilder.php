@@ -3,13 +3,13 @@
 namespace WPML\TM\XLIFF;
 
 use WPML\FP\Obj;
+use WPML\TM\OwnedPackages\OwnerJobService;
 use WPML\TM\Taxonomy\TranslatableTermMeta;
 
 class TaxonomyTermXliffBuilder {
 
 	public function build( \WP_Term $term, $sourceLang, $targetLang, array $options = [] ) {
-		$ancestors = $this->buildAncestorNames( $term );
-		$note      = $this->buildContextNote( $ancestors, $term );
+		$forTp = ! empty( $options['for_translation_proxy'] );
 
 		$fileAttributes = [
 			'original'        => 'term-' . $term->term_id,
@@ -21,15 +21,39 @@ class TaxonomyTermXliffBuilder {
 		$bodyGroups = [
 			[
 				'id'    => 'term-' . $term->term_id,
-				'units' => $this->buildUnits( $term, $note, $options ),
+				'units' => $this->unitsFor( $term, $options ),
 			],
 		];
 
 		$xliff = new \WPML_TM_XLIFF( '1.2' );
 		$xliff->setFileAttributes( $fileAttributes );
+		if ( $forTp ) {
+			$xliff->setReferences( [ 'external-file' => $this->termLink( $term ) ] );
+			$xliff->setPhaseGroup( ( new \WPML_TM_XLIFF_Post_Type( 'tax_' . $term->taxonomy ) )->get() );
+		}
 		$xliff->setBodyGroups( $bodyGroups );
 
 		return $xliff->toString();
+	}
+
+	public function unitsFor( \WP_Term $term, array $options = [] ) {
+		$note = ! empty( $options['for_translation_proxy'] )
+			? $this->parentNote( $term )
+			: $this->buildContextNote( $this->buildAncestorNames( $term ), $term );
+
+		return $this->buildUnits( $term, $note, $options );
+	}
+
+	public function termLink( \WP_Term $term ): string {
+		$link = get_term_link( $term );
+
+		return is_string( $link ) && '' !== $link
+			? $link
+			: admin_url( 'edit-tags.php?taxonomy=' . $term->taxonomy . '&tag_ID=' . $term->term_id );
+	}
+
+	public function parentNote( \WP_Term $term ): string {
+		return implode( ' > ', $this->buildAncestorNames( $term ) );
 	}
 
 	public function sourceChecksum( \WP_Term $term ): string {
@@ -40,6 +64,9 @@ class TaxonomyTermXliffBuilder {
 		foreach ( $meta as $metaKey => $value ) {
 			$parts[] = (string) $metaKey;
 			$parts[] = (string) $value;
+		}
+		foreach ( (array) OwnerJobService::ownedStrings( 'term', (int) $term->term_taxonomy_id ) as $owned ) {
+			$parts[] = (string) $owned[1]->value;
 		}
 
 		return md5( implode( "\0", $parts ) );
@@ -122,6 +149,29 @@ class TaxonomyTermXliffBuilder {
 				'source'    => $value,
 				'note'      => $note,
 				'extradata' => \WPML_TM_Xliff_Writer::buildFieldExtradata( $fieldsByMetaKey[ $metaKey ], true ),
+			];
+		}
+
+		foreach ( (array) OwnerJobService::ownedStrings( 'term', (int) $term->term_taxonomy_id ) as $owned ) {
+			list( $package, $string ) = $owned;
+			$slug  = \WPML_TM_Page_Builders_Field_Wrapper::generate_field_slug( $package->ID, $string->id );
+			$title = apply_filters( 'wpml_string_title_from_id', false, $string->id );
+			$title = ! empty( $title ) ? $title : ( $string->title ?? '' );
+			$extraData = \WPML_TM_Xliff_Writer::buildFieldExtradata(
+				[
+					'field_type' => $slug,
+					'title'      => $title,
+					'group'      => [ 'package-' . $package->ID => $package->title ],
+				],
+				true
+			);
+			$extraData['is_xliff_for_ate'] = true;
+			$patterns = apply_filters( 'wpml_tm_xliff_unit_placeholders', [], (object) [ 'field_type' => $slug ], $extraData );
+			$units[] = [
+				'id'        => $slug,
+				'source'    => DeclaredPlaceholders::encode( (string) $string->value, array_values( array_unique( array_filter( (array) $patterns, 'is_string' ) ) ) ),
+				'note'      => $note,
+				'extradata' => $extraData,
 			];
 		}
 
